@@ -1,0 +1,27 @@
+#!/bin/sh
+set -eu
+
+cd "$(dirname "$0")/.."
+
+echo "==> RetroHexChat boot starting..."
+echo "==> PHX_HOST=${PHX_HOST:-not set}"
+echo "==> PORT=${PORT:-4000}"
+echo "==> DATABASE_URL is $([ -n "${DATABASE_URL:-}" ] && echo 'set' || echo 'NOT SET')"
+echo "==> SECRET_KEY_BASE is $([ -n "${SECRET_KEY_BASE:-}" ] && echo 'set' || echo 'NOT SET')"
+echo "==> RUN_MIGRATIONS=${RUN_MIGRATIONS:-true}"
+
+# Run migrations unless explicitly disabled
+if [ "${RUN_MIGRATIONS:-true}" = "true" ]; then
+  echo "==> Running migrations..."
+  if bin/retro_hex_chat_umbrella eval "RetroHexChat.Release.migrate()"; then
+    echo "==> Migrations complete."
+  else
+    echo "==> Migration failed! Check database connectivity." >&2
+    exit 1
+  fi
+else
+  echo "==> Skipping migrations (RUN_MIGRATIONS=false)"
+fi
+
+echo "==> Starting server..."
+exec bin/retro_hex_chat_umbrella start

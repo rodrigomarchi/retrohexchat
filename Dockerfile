@@ -33,6 +33,7 @@ RUN --mount=type=cache,target=/root/.hex \
 
 # Copy all application source (98.css is vendored, no npm needed)
 COPY apps apps
+COPY rel rel
 
 # Build assets, compile, and create release
 RUN mix assets.deploy && \
@@ -58,4 +59,4 @@ USER app
 
 COPY --from=builder --chown=app:app /app/_build/prod/rel/retro_hex_chat_umbrella ./
 
-CMD ["bin/retro_hex_chat_umbrella", "start"]
+CMD ["bin/server"]
