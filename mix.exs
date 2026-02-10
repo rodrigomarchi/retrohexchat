@@ -8,7 +8,19 @@ defmodule RetroHexChat.Umbrella.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
-      listeners: [Phoenix.CodeReloader]
+      listeners: [Phoenix.CodeReloader],
+      releases: releases()
+    ]
+  end
+
+  defp releases do
+    [
+      retro_hex_chat_umbrella: [
+        applications: [
+          retro_hex_chat: :permanent,
+          retro_hex_chat_web: :permanent
+        ]
+      ]
     ]
   end
 
