@@ -66,7 +66,11 @@ defmodule RetroHexChatWeb.ConnectLive do
               <p :if={@nickname_error} class="error-text">{@nickname_error}</p>
             </fieldset>
             <div class="button-row">
-              <button type="submit" disabled={@nickname_error != nil or @nickname == ""}>
+              <button
+                type="submit"
+                data-testid="connect-btn"
+                disabled={@nickname_error != nil or @nickname == ""}
+              >
                 Connect
               </button>
             </div>

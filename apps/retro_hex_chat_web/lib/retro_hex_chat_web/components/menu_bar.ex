@@ -11,26 +11,38 @@ defmodule RetroHexChatWeb.Components.MenuBar do
       <div class="menu-item-wrapper">
         <div class="menu-item" role="menuitem" tabindex="0">File</div>
         <div class="menu-dropdown">
-          <div class="menu-dropdown-item" phx-click="quit_chat">Disconnect</div>
+          <div class="menu-dropdown-item" data-testid="menu-disconnect" phx-click="quit_chat">
+            Disconnect
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">
         <div class="menu-item" role="menuitem" tabindex="0">Edit</div>
         <div class="menu-dropdown">
-          <div class="menu-dropdown-item" phx-click="open_search">Find...</div>
+          <div class="menu-dropdown-item" data-testid="menu-find" phx-click="open_search">
+            Find...
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">
         <div class="menu-item" role="menuitem" tabindex="0">View</div>
         <div class="menu-dropdown">
-          <div class="menu-dropdown-item" phx-click="toggle_treebar">Toggle Treebar</div>
-          <div class="menu-dropdown-item" phx-click="toggle_nicklist">Toggle Nicklist</div>
+          <div class="menu-dropdown-item" data-testid="menu-toggle-treebar" phx-click="toggle_treebar">
+            Toggle Treebar
+          </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-toggle-nicklist"
+            phx-click="toggle_nicklist"
+          >
+            Toggle Nicklist
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">
         <div class="menu-item" role="menuitem" tabindex="0">Help</div>
         <div class="menu-dropdown">
-          <div class="menu-dropdown-item" phx-click="show_about">About</div>
+          <div class="menu-dropdown-item" data-testid="menu-about" phx-click="show_about">About</div>
         </div>
       </div>
     </div>

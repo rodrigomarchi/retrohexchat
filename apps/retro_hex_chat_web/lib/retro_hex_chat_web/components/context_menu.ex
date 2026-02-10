@@ -21,24 +21,48 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
     >
       <div class="window" style="padding: 2px;">
         <ul class="tree-view" style="margin: 0; padding: 2px;">
-          <li phx-click="context_query" phx-value-nick={@target_nick}>Query (PM)</li>
-          <li phx-click="context_whois" phx-value-nick={@target_nick}>Whois</li>
+          <li data-testid="ctx-query" phx-click="context_query" phx-value-nick={@target_nick}>
+            Query (PM)
+          </li>
+          <li data-testid="ctx-whois" phx-click="context_whois" phx-value-nick={@target_nick}>
+            Whois
+          </li>
           <li
             :if={@viewer_is_op}
             class="separator"
             style="border-top: 1px solid #666; margin: 2px 0;"
           >
           </li>
-          <li :if={@viewer_is_op} phx-click="context_kick" phx-value-nick={@target_nick}>
+          <li
+            :if={@viewer_is_op}
+            data-testid="ctx-kick"
+            phx-click="context_kick"
+            phx-value-nick={@target_nick}
+          >
             Kick
           </li>
-          <li :if={@viewer_is_op} phx-click="context_ban" phx-value-nick={@target_nick}>
+          <li
+            :if={@viewer_is_op}
+            data-testid="ctx-ban"
+            phx-click="context_ban"
+            phx-value-nick={@target_nick}
+          >
             Ban
           </li>
-          <li :if={@viewer_is_op} phx-click="context_op" phx-value-nick={@target_nick}>
+          <li
+            :if={@viewer_is_op}
+            data-testid="ctx-op"
+            phx-click="context_op"
+            phx-value-nick={@target_nick}
+          >
             Give Op
           </li>
-          <li :if={@viewer_is_op} phx-click="context_voice" phx-value-nick={@target_nick}>
+          <li
+            :if={@viewer_is_op}
+            data-testid="ctx-voice"
+            phx-click="context_voice"
+            phx-value-nick={@target_nick}
+          >
             Give Voice
           </li>
         </ul>

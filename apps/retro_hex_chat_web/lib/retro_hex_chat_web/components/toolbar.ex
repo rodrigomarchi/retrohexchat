@@ -10,14 +10,35 @@ defmodule RetroHexChatWeb.Components.Toolbar do
   def toolbar(assigns) do
     ~H"""
     <div class="toolbar" role="toolbar">
-      <button :if={@connected} type="button" class="toolbar-btn" phx-click="disconnect">
+      <button
+        :if={@connected}
+        type="button"
+        class="toolbar-btn"
+        data-testid="toolbar-disconnect"
+        phx-click="disconnect"
+      >
         Disconnect
       </button>
-      <button :if={!@connected} type="button" class="toolbar-btn" phx-click="connect">
+      <button
+        :if={!@connected}
+        type="button"
+        class="toolbar-btn"
+        data-testid="toolbar-connect"
+        phx-click="connect"
+      >
         Connect
       </button>
-      <button type="button" class="toolbar-btn" phx-click="channel_list">Channel List</button>
-      <button type="button" class="toolbar-btn" phx-click="settings">Settings</button>
+      <button
+        type="button"
+        class="toolbar-btn"
+        data-testid="toolbar-channel-list"
+        phx-click="channel_list"
+      >
+        Channel List
+      </button>
+      <button type="button" class="toolbar-btn" data-testid="toolbar-settings" phx-click="settings">
+        Settings
+      </button>
     </div>
     """
   end

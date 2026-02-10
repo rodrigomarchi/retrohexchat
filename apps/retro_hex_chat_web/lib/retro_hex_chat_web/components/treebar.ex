@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
               <li
                 :for={channel <- @channels}
                 class={treebar_item_class(channel, @active_channel, @unread_channels)}
+                data-testid={"channel-#{channel}"}
                 phx-click="switch_channel"
                 phx-value-channel={channel}
               >
@@ -38,6 +39,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
               <li
                 :for={pm <- @pm_conversations}
                 class={pm_item_class(pm, @active_pm, @unread_channels)}
+                data-testid={"pm-#{pm}"}
                 phx-click="switch_pm"
                 phx-value-nickname={pm}
               >
