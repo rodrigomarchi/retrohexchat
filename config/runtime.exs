@@ -43,9 +43,7 @@ if config_env() == :prod do
   config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [
-      # Enable IPv6 and bind on all interfaces.
-      # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
-      ip: {0, 0, 0, 0, 0, 0, 0, 0},
+      ip: if(System.get_env("ECTO_IPV6") in ~w(true 1), do: {0, 0, 0, 0, 0, 0, 0, 0}, else: {0, 0, 0, 0}),
       port: port
     ],
     secret_key_base: secret_key_base,
