@@ -143,6 +143,40 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
     end
   end
 
+  describe "execute/2 - error paths via handler" do
+    test "register returns error when nick already registered" do
+      {:ok, _} = NickServ.register("NsDupeReg", "pass123")
+      context = %{@base_context | nickname: "NsDupeReg"}
+
+      # Second registration with different password should fail via handler
+      assert {:error, msg} = Ns.execute(["register", "otherpass"], context)
+      assert msg =~ "NickServ"
+    end
+
+    test "identify returns error with wrong password" do
+      {:ok, _} = Queries.insert_registered_nick("NsBadPw", "correct123")
+      context = %{@base_context | nickname: "NsBadPw"}
+
+      assert {:error, msg} = Ns.execute(["identify", "wrong_password"], context)
+      assert msg =~ "NickServ"
+    end
+
+    test "ghost returns error for unregistered nick" do
+      context = %{@base_context | nickname: "GhostRequester"}
+
+      assert {:error, msg} = Ns.execute(["ghost", "UnregisteredGhostTarget"], context)
+      assert msg =~ "NickServ"
+    end
+
+    test "drop returns error with wrong password" do
+      {:ok, _} = NickServ.register("NsDropBad", "correct123")
+      context = %{@base_context | nickname: "NsDropBad"}
+
+      assert {:error, msg} = Ns.execute(["drop", "wrong_password"], context)
+      assert msg =~ "NickServ"
+    end
+  end
+
   describe "help/0" do
     test "returns help map" do
       help = Ns.help()

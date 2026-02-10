@@ -1,7 +1,7 @@
 defmodule RetroHexChat.Channels.ServerTest do
-  use ExUnit.Case, async: false
+  use RetroHexChat.DataCase, async: false
 
-  @moduletag :unit
+  @moduletag :integration
 
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
 
@@ -617,6 +617,125 @@ defmodule RetroHexChat.Channels.ServerTest do
         event: "new_message",
         payload: %{author: "voiced_user", content: "I can speak!"}
       }
+    end
+  end
+
+  describe "mode enforcement via Server" do
+    test "join blocked when channel is full (+l)" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+l", ["2"])
+      {:ok, _} = Server.join(channel, "user2")
+
+      assert {:error, "Channel is full (+l)"} = Server.join(channel, "user3")
+    end
+
+    test "join allowed after removing user limit (-l)" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+l", ["2"])
+      {:ok, _} = Server.join(channel, "user2")
+
+      assert {:error, "Channel is full (+l)"} = Server.join(channel, "user3")
+
+      :ok = Server.set_mode(channel, "op", "-l")
+      assert {:ok, _} = Server.join(channel, "user3")
+    end
+
+    test "join blocked on invite-only channel (+i)" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+i")
+
+      assert {:error, "Channel is invite-only (+i)"} = Server.join(channel, "user2")
+    end
+
+    test "join allowed after removing invite-only (-i)" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+i")
+
+      assert {:error, "Channel is invite-only (+i)"} = Server.join(channel, "user2")
+
+      :ok = Server.set_mode(channel, "op", "-i")
+      assert {:ok, _} = Server.join(channel, "user2")
+    end
+
+    test "join blocked without channel key (+k)" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+k", ["secret"])
+
+      assert {:error, "Bad channel key (+k)"} = Server.join(channel, "user2")
+      assert {:error, "Bad channel key (+k)"} = Server.join(channel, "user2", "wrong")
+    end
+
+    test "join allowed with correct channel key (+k)" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+k", ["secret"])
+
+      assert {:ok, _} = Server.join(channel, "user2", "secret")
+    end
+
+    test "removing channel key (-k) allows keyless join" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+k", ["secret"])
+
+      assert {:error, "Bad channel key (+k)"} = Server.join(channel, "user2")
+
+      :ok = Server.set_mode(channel, "op", "-k")
+      assert {:ok, _} = Server.join(channel, "user2")
+    end
+
+    test "send_message with type :action broadcasts correctly" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      {:ok, _} = Server.join(channel, "actor")
+      assert_receive {:user_joined, _}
+
+      assert :ok = Server.send_message(channel, "actor", "dances", :action)
+
+      assert_receive %{
+        event: "new_message",
+        payload: %{author: "actor", content: "dances", type: :action, channel: ^channel}
+      }
+    end
+  end
+
+  describe "kick last member of unregistered channel" do
+    test "kick that empties unregistered channel causes shutdown" do
+      channel = unique_channel()
+      {:ok, pid} = start_channel(channel)
+
+      # First user is operator
+      {:ok, _} = Server.join(channel, "op")
+
+      ref = Process.monitor(pid)
+
+      # Op self-kicks: removes only member → channel shuts down
+      assert :ok = Server.kick(channel, "op", "op", "self-kick")
+
+      assert_receive {:DOWN, ^ref, :process, ^pid, :normal}, 1000
+      wait_until(fn -> Registry.lookup(channel) == {:error, :not_found} end, 100, 20)
     end
   end
 

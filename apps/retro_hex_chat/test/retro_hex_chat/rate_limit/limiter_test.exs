@@ -83,6 +83,21 @@ defmodule RetroHexChat.RateLimit.LimiterTest do
     end
   end
 
+  describe "check_rate while muted" do
+    test "check_rate returns rate_limited when user is muted", %{table: table} do
+      # Exhaust rate to trigger mute
+      for _ <- 1..5 do
+        Limiter.check_rate(table, "muted_cr", :message)
+      end
+
+      assert {:error, :rate_limited} = Limiter.check_rate(table, "muted_cr", :message)
+      assert Limiter.muted?(table, "muted_cr")
+
+      # Subsequent check_rate should also return rate_limited (hits line 26)
+      assert {:error, :rate_limited} = Limiter.check_rate(table, "muted_cr", :message)
+    end
+  end
+
   describe "mute expiry" do
     test "muted user is unblocked after mute duration expires", %{table: table} do
       # Exhaust message rate

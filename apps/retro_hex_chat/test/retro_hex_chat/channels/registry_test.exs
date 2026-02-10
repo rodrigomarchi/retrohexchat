@@ -1,5 +1,5 @@
 defmodule RetroHexChat.Channels.RegistryTest do
-  use ExUnit.Case, async: false
+  use RetroHexChat.DataCase, async: false
 
   @moduletag :integration
 

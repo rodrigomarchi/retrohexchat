@@ -1,7 +1,7 @@
 defmodule RetroHexChat.Channels.SupervisorTest do
-  use ExUnit.Case, async: false
+  use RetroHexChat.DataCase, async: false
 
-  @moduletag :unit
+  @moduletag :integration
 
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
 

@@ -184,6 +184,87 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
     end
   end
 
+  describe "validate/1" do
+    test "accepts any input" do
+      assert :ok = Cs.validate("anything")
+      assert :ok = Cs.validate("")
+    end
+  end
+
+  describe "execute/2 - access level without subcommand" do
+    test "sop without subcommand returns usage error" do
+      context = %{
+        nickname: "Tester",
+        active_channel: "#test",
+        channels: ["#test"],
+        identified: false,
+        operator_in: [],
+        chan_serv: nil
+      }
+
+      assert {:error, msg} = Cs.execute(["sop"], context)
+      assert msg =~ "Usage"
+      assert msg =~ "sop"
+    end
+
+    test "aop without subcommand returns usage error" do
+      context = %{
+        nickname: "Tester",
+        active_channel: "#test",
+        channels: ["#test"],
+        identified: false,
+        operator_in: [],
+        chan_serv: nil
+      }
+
+      assert {:error, msg} = Cs.execute(["aop"], context)
+      assert msg =~ "aop"
+    end
+
+    test "vop without subcommand returns usage error" do
+      context = %{
+        nickname: "Tester",
+        active_channel: "#test",
+        channels: ["#test"],
+        identified: false,
+        operator_in: [],
+        chan_serv: nil
+      }
+
+      assert {:error, msg} = Cs.execute(["vop"], context)
+      assert msg =~ "vop"
+    end
+  end
+
+  describe "execute/2 - manage_access error path" do
+    test "manage_access returns error when manage_access fails", ctx do
+      {:ok, :system, _} = Cs.execute(["register"], ctx.context)
+
+      # Try to add access for a user without sufficient privilege
+      # Create a non-founder user context
+      NickServ.register("LowUser", "pass123", ctx.nick_server)
+
+      low_context = %{
+        ctx.context
+        | nickname: "LowUser"
+      }
+
+      assert {:error, msg} = Cs.execute(["sop", "add", "SomeTarget"], low_context)
+      assert msg =~ "ChanServ"
+    end
+  end
+
+  describe "execute/2 - list_access error path" do
+    test "list_access returns error for unregistered channel", ctx do
+      # Use a context pointing to an unregistered channel
+      context = %{ctx.context | active_channel: "#nonexistent_cs_list"}
+
+      assert {:error, msg} = Cs.execute(["sop", "list"], context)
+      assert msg =~ "ChanServ"
+      assert msg =~ "not registered"
+    end
+  end
+
   describe "help/0" do
     test "returns help map" do
       help = Cs.help()

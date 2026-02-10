@@ -40,6 +40,24 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
   end
 
+  describe "nickname boundary" do
+    test "connect with single-char nickname succeeds", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/")
+      view |> element("form") |> render_change(%{"nickname" => "A"})
+      result = view |> element("form") |> render_submit(%{"nickname" => "A"})
+      assert {:error, {:live_redirect, %{to: "/chat?nickname=A"}}} = result
+    end
+
+    test "connect with 16-char nickname succeeds", %{conn: conn} do
+      nick = String.duplicate("A", 16)
+      {:ok, view, _html} = live(conn, "/")
+      view |> element("form") |> render_change(%{"nickname" => nick})
+      result = view |> element("form") |> render_submit(%{"nickname" => nick})
+      expected_path = "/chat?nickname=#{nick}"
+      assert {:error, {:live_redirect, %{to: ^expected_path}}} = result
+    end
+  end
+
   describe "connect" do
     test "valid submit navigates to /chat", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")

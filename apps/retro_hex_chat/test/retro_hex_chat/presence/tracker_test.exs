@@ -57,5 +57,18 @@ defmodule RetroHexChat.Presence.TrackerTest do
       assert user.away == true
       assert user.away_message == "Gone fishing"
     end
+
+    test "updates away without message (3-arg form)" do
+      topic = "test:away3_#{System.unique_integer([:positive])}"
+      {:ok, _ref} = Tracker.track_user(topic, "Dave")
+      Process.sleep(50)
+
+      {:ok, _ref} = Tracker.update_away(topic, "Dave", true)
+      Process.sleep(50)
+
+      [user] = Tracker.list_users(topic)
+      assert user.away == true
+      assert user.away_message == nil
+    end
   end
 end

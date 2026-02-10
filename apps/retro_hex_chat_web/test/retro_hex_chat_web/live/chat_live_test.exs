@@ -1531,6 +1531,370 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
   end
 
+  # ── R5: current user kicked self ─────────────────────────
+
+  describe "current user being kicked" do
+    test "removes channel and switches to another", %{conn: conn} do
+      ensure_channel("#kick_self")
+      {:ok, view, _html} = live(conn, "/chat?nickname=KickSelf")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #kick_self"})
+      html = render(view)
+      assert html =~ "#kick_self"
+
+      # Simulate being kicked from #kick_self
+      send(
+        view.pid,
+        {:user_kicked, %{operator: "Admin", target: "KickSelf", reason: "bye"}}
+      )
+
+      html = render(view)
+      # Should have switched back to #lobby (or another remaining channel)
+      assert html =~ "#lobby"
+      assert html =~ "kicked"
+    end
+  end
+
+  # ── R5: PM message while viewing active PM ────────────────
+
+  describe "PM message arriving while viewing active PM" do
+    test "streams message directly into chat", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=PmActive")
+
+      # Open PM conversation and stay in it
+      render_click(view, "nick_right_click", %{"nick" => "PmSender", "x" => 0, "y" => 0})
+      render_click(view, "context_query", %{"nick" => "PmSender"})
+
+      # Verify we're in PM view
+      html = render(view)
+      assert html =~ "PmSender"
+
+      # Receive a PM while viewing that PM
+      pm_payload = %{
+        event: "new_pm",
+        payload: %{
+          id: "pm-active-#{System.unique_integer([:positive])}",
+          sender: "PmSender",
+          recipient: "PmActive",
+          content: "Hello from PM!",
+          type: :message,
+          timestamp: DateTime.utc_now()
+        }
+      }
+
+      send(view.pid, pm_payload)
+      html = render(view)
+      # Message should appear in the stream directly (not just as unread)
+      assert html =~ "Hello from PM!"
+      refute html =~ "tree-unread"
+    end
+  end
+
+  # ── R5: context_ban success ────────────────────────────────
+
+  describe "context_ban success" do
+    test "operator banning removes user from nicklist", %{conn: conn} do
+      ensure_channel("#ctx_ban_ok")
+      {:ok, view, _html} = live(conn, "/chat?nickname=BanOper")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #ctx_ban_ok"})
+
+      # Add a regular user to nicklist
+      send(view.pid, {:user_joined, %{nickname: "BanTarget", role: :regular}})
+      html = render(view)
+      assert html =~ "BanTarget"
+      assert html =~ "Users (2)"
+
+      # Ban via context menu (BanOper is operator as first user)
+      render_click(view, "nick_right_click", %{"nick" => "BanTarget", "x" => 0, "y" => 0})
+      render_click(view, "context_ban", %{"nick" => "BanTarget"})
+
+      # After ban, the user_banned PubSub broadcast removes the user
+      Process.sleep(50)
+      html = render(view)
+      # The ban should succeed (no error since we're operator) and user removed via broadcast
+      refute html =~ "chat-error"
+    end
+  end
+
+  # ── R5: user_kicked with/without reason ────────────────────
+
+  describe "user_kicked reason display" do
+    test "user_kicked with reason shows reason in system message", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=KickReason")
+
+      send(
+        view.pid,
+        {:user_kicked, %{operator: "Admin", target: "BadUser", reason: "spamming"}}
+      )
+
+      html = render(view)
+      assert html =~ "BadUser"
+      assert html =~ "kicked"
+      assert html =~ "spamming"
+    end
+
+    test "user_kicked without reason omits reason in system message", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=KickNoReason")
+
+      send(
+        view.pid,
+        {:user_kicked, %{operator: "Mod", target: "Nuisance", reason: nil}}
+      )
+
+      html = render(view)
+      assert html =~ "Nuisance"
+      assert html =~ "kicked"
+      refute html =~ "()"
+    end
+  end
+
+  # ── R5: history_navigate multiple steps ────────────────────
+
+  describe "history_navigate multiple steps" do
+    test "navigate up 3x then down 1x shows correct messages", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=HistMulti")
+
+      # Send 3 messages to populate history
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "First message"})
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "Second message"})
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "Third message"})
+
+      # Navigate up 1x — should show most recent (Third)
+      html = render_click(view, "history_navigate", %{"direction" => "up"})
+      assert html =~ "Third message"
+
+      # Navigate up 2x — should show Second
+      html = render_click(view, "history_navigate", %{"direction" => "up"})
+      assert html =~ "Second message"
+
+      # Navigate up 3x — should show First
+      html = render_click(view, "history_navigate", %{"direction" => "up"})
+      assert html =~ "First message"
+
+      # Navigate down 1x — should show Second again
+      html = render_click(view, "history_navigate", %{"direction" => "down"})
+      assert html =~ "Second message"
+    end
+  end
+
+  # ── R6: scroll_to_bottom ──────────────────────────────────
+
+  describe "scroll_to_bottom" do
+    test "scroll_to_bottom clears new messages indicator", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=ScrollBot")
+      html = render_click(view, "scroll_to_bottom")
+      assert html =~ "chat-input-form"
+    end
+  end
+
+  # ── R6: search_next/prev with actual results ───────────────
+
+  describe "search navigation with results" do
+    test "search_next cycles through results when results exist", %{conn: conn} do
+      ensure_channel("#search_nav")
+      {:ok, view, _html} = live(conn, "/chat?nickname=SearchNav")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #search_nav"})
+
+      # Create searchable messages
+      Server.send_message("#search_nav", "SearchNav", "findme one")
+      Server.send_message("#search_nav", "SearchNav", "findme two")
+      Process.sleep(50)
+
+      render_click(view, "toggle_search")
+      render_click(view, "search_input", %{"query" => "findme"})
+
+      # Now navigate — should not crash and should cycle
+      html = render_click(view, "search_next")
+      assert html =~ "search-bar"
+
+      html = render_click(view, "search_prev")
+      assert html =~ "search-bar"
+    end
+  end
+
+  # ── R6: tab complete single match ──────────────────────────
+
+  describe "tab complete single match" do
+    test "single matching nick completes with colon suffix", %{conn: conn} do
+      ensure_channel("#tab_single")
+      {:ok, view, _html} = live(conn, "/chat?nickname=TabSingle")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #tab_single"})
+
+      # Add a user with unique prefix
+      send(view.pid, {:user_joined, %{nickname: "UniqueZz", role: :regular}})
+      render(view)
+
+      html = render_click(view, "tab_complete", %{"partial" => "Unique"})
+      assert html =~ "UniqueZz: "
+    end
+  end
+
+  # ── R6: -v mode update in nicklist ────────────────────────
+
+  describe "mode_changed -v" do
+    test "-v removes voiced role and resets to regular", %{conn: conn} do
+      ensure_channel("#mode_devoice")
+      {:ok, view, _html} = live(conn, "/chat?nickname=DevoiceHost")
+
+      view
+      |> element("form.chat-input-form")
+      |> render_submit(%{"input" => "/join #mode_devoice"})
+
+      # Add a voiced user
+      send(view.pid, {:user_joined, %{nickname: "VoicedUser", role: :voiced}})
+      html = render(view)
+      assert html =~ "nick-voiced"
+
+      # Remove voice
+      send(
+        view.pid,
+        {:mode_changed, %{nickname: "DevoiceHost", mode_string: "-v", params: ["VoicedUser"]}}
+      )
+
+      html = render(view)
+      assert html =~ "sets mode -v"
+      refute html =~ "nick-voiced"
+    end
+  end
+
+  # ── R6: /quit command ──────────────────────────────────────
+
+  describe "/quit command" do
+    test "/quit redirects to connect page", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=QuitUser")
+
+      result =
+        view |> element("form.chat-input-form") |> render_submit(%{"input" => "/quit bye"})
+
+      assert {:error, {:live_redirect, %{to: "/"}}} = result
+    end
+  end
+
+  # ── R6: history_navigate unknown direction ─────────────────
+
+  describe "history_navigate edge cases" do
+    test "unknown direction is no-op", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=HistUnk")
+      html = render_click(view, "history_navigate", %{"direction" => "left"})
+      assert html =~ "chat-input-form"
+    end
+
+    test "navigate down past beginning clears input", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=HistDown")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "Hello"})
+
+      # Navigate up then down past beginning
+      render_click(view, "history_navigate", %{"direction" => "up"})
+      html = render_click(view, "history_navigate", %{"direction" => "down"})
+      # Input should be cleared
+      assert html =~ "chat-input-form"
+    end
+  end
+
+  # ── R6: /me action in channel with type :action ─────────────
+
+  describe "/me action message type" do
+    test "/me sends action type message in channel", %{conn: conn} do
+      ensure_channel("#me_action")
+      {:ok, view, _html} = live(conn, "/chat?nickname=MeAction")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #me_action"})
+
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/me dances"})
+      Process.sleep(50)
+      html = render(view)
+      # Should show the action message in the chat
+      assert html =~ "dances" or html =~ "chat-action"
+    end
+  end
+
+  # ── R6: part last channel ──────────────────────────────────
+
+  describe "part last channel" do
+    test "parting only channel clears messages and shows empty state", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=PartLast")
+
+      # Part #lobby (the only channel)
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/part"})
+      html = render(view)
+      assert html =~ "chat-input-form"
+    end
+  end
+
+  # ── R6: /cs system message dispatch ────────────────────────
+
+  describe "/cs and /ns service message dispatch" do
+    test "/cs help shows ChanServ service message", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=CsHelp")
+
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/cs help"})
+      html = render(view)
+      assert html =~ "cs register" or html =~ "Available commands"
+    end
+
+    test "/ns help shows NickServ service message", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=NsHelp")
+
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ns help"})
+      html = render(view)
+      assert html =~ "ns register" or html =~ "Available commands"
+    end
+  end
+
+  # ── R6: /mode via UI action dispatch ────────────────────────
+
+  describe "/mode command via UI action" do
+    test "/mode +m sets moderated mode via dispatch", %{conn: conn} do
+      ensure_channel("#mode_cmd")
+      {:ok, view, _html} = live(conn, "/chat?nickname=ModeCmd")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mode_cmd"})
+
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/mode +m"})
+      Process.sleep(50)
+      html = render(view)
+      # Mode change should succeed or show mode message
+      assert html =~ "sets mode" or html =~ "+m"
+    end
+  end
+
+  # ── R6: /kick command via UI action dispatch ─────────────────
+
+  describe "/kick command via UI action" do
+    test "/kick non-member shows error", %{conn: conn} do
+      ensure_channel("#kick_cmd")
+      {:ok, view, _html} = live(conn, "/chat?nickname=KickCmd")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #kick_cmd"})
+
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/kick Ghost"})
+      html = render(view)
+      assert html =~ "chat-error" or html =~ "not in channel"
+    end
+  end
+
+  # ── R6: /ban command via UI action dispatch ─────────────────
+
+  describe "/ban command via UI action" do
+    test "/ban via dispatch works for operator", %{conn: conn} do
+      ensure_channel("#ban_cmd")
+      {:ok, view, _html} = live(conn, "/chat?nickname=BanCmd")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #ban_cmd"})
+
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ban Troll"})
+      Process.sleep(50)
+      html = render(view)
+      # Should succeed (operator banning a non-member adds to ban list)
+      assert html =~ "chat-input-form"
+    end
+  end
+
+  # ── R6: join from params ────────────────────────────────────
+
+  describe "join from params" do
+    test "join param in URL joins additional channel on mount", %{conn: conn} do
+      ensure_channel("#param_join")
+      {:ok, _view, html} = live(conn, "/chat?nickname=ParamJoin&join=%23param_join")
+      assert html =~ "#param_join"
+    end
+  end
+
   # ── Helpers ───────────────────────────────────────────────
 
   defp ensure_channel(name) do

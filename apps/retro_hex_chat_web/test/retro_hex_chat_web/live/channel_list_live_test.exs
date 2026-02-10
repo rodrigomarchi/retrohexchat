@@ -38,6 +38,28 @@ defmodule RetroHexChatWeb.ChannelListLiveTest do
     end
   end
 
+  describe "empty channel list" do
+    test "shows no channels when none match filter", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/channels")
+
+      html =
+        view
+        |> element("input[name=search]")
+        |> render_keyup(%{"search" => "zzz_nonexistent_channel"})
+
+      assert html =~ "No channels found"
+    end
+  end
+
+  describe "filter with special characters" do
+    test "filter with regex metacharacters does not crash", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/channels")
+      html = view |> element("input[name=search]") |> render_keyup(%{"search" => "[test(.*"})
+      # Should not crash — either shows filtered results or "No channels found"
+      assert html =~ "Channel List"
+    end
+  end
+
   describe "join" do
     test "navigates to /chat with join param", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/channels")

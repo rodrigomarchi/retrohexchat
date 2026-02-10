@@ -42,6 +42,20 @@ defmodule RetroHexChat.Commands.Handlers.PartTest do
     end
   end
 
+  describe "validate/1" do
+    test "accepts any input" do
+      assert :ok = Part.validate("anything")
+      assert :ok = Part.validate("")
+    end
+  end
+
+  describe "execute/2 - nil active channel with non-channel args" do
+    test "returns error when active_channel is nil and args don't start with #" do
+      ctx = %{@base_context | active_channel: nil}
+      assert {:error, "You are not in any channel"} = Part.execute(["goodbye"], ctx)
+    end
+  end
+
   describe "help/0" do
     test "returns help map" do
       help = Part.help()

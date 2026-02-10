@@ -211,6 +211,28 @@ defmodule RetroHexChat.Channels.ModesTest do
     end
   end
 
+  describe "to_string/1 with invite_only flag" do
+    test "to_string includes 'i' when invite_only is set" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+i")
+      assert Modes.to_string(modes) == "+i"
+    end
+
+    test "to_string with invite_only and moderated includes both" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+im")
+      result = Modes.to_string(modes)
+      assert result =~ "i"
+      assert result =~ "m"
+    end
+  end
+
+  describe "+k without parameter" do
+    test "+k without param sets key to nil" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+k")
+      # Key is set to nil (parsed as {:add, :key, nil})
+      assert modes.key == nil
+    end
+  end
+
   describe "to_string/1 with only key or limit" do
     test "to_string with only key set returns +k" do
       {:ok, modes} = Modes.apply_changes(Modes.new(), "+k", ["secret"])

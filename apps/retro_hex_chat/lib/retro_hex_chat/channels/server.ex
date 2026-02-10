@@ -412,21 +412,6 @@ defmodule RetroHexChat.Channels.Server do
       {"msg-#{System.unique_integer([:positive])}", DateTime.utc_now()}
   end
 
-  defp maybe_persist_message(channel_name, nickname, content, type) do
-    Chat.Queries.insert_message(%{
-      channel_name: channel_name,
-      author_nickname: nickname,
-      content: content,
-      type: Atom.to_string(type)
-    })
-
-    :ok
-  rescue
-    e ->
-      Logger.warning("Failed to persist message in #{channel_name}: #{inspect(e)}")
-      :ok
-  end
-
   defp load_persisted_state(state) do
     case Queries.load_persisted_state(state.name) do
       nil ->

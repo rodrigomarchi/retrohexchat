@@ -91,6 +91,26 @@ defmodule RetroHexChat.Services.ChanServTest do
       assert {:error, msg} = ChanServ.info("#cascchan", ctx.server)
       assert msg =~ "not registered"
     end
+
+    test "dropping channel with bans removes bans too", ctx do
+      register_and_identify("CsBanF", "pass123", ctx.nick_server)
+      {:ok, _} = ChanServ.register("#banchan", "CsBanF", ctx.server)
+
+      # Add bans directly via Queries
+      alias RetroHexChat.Services.Queries
+      {:ok, _} = Queries.add_ban("#banchan", "Troll1", "CsBanF")
+      {:ok, _} = Queries.add_ban("#banchan", "Troll2", "CsBanF")
+
+      # Verify bans exist
+      bans = Queries.list_bans("#banchan")
+      assert length(bans) == 2
+
+      # Drop the channel — should clean up bans
+      assert {:ok, _} = ChanServ.drop("#banchan", "CsBanF", ctx.server)
+
+      # Bans should be removed
+      assert Queries.list_bans("#banchan") == []
+    end
   end
 
   describe "info/2" do
