@@ -1,22 +1,3 @@
-<!--
-=== Sync Impact Report ===
-Version change: 1.0.0 → 1.0.1
-Modified principles:
-  - VII. Lean LiveViews & Component Architecture: PubSub topic
-    `"user:#{id}"` changed to `"user:#{nickname}"` (Phase 1 has no
-    persistent user IDs; nicknames are the only viable key)
-Added sections: None
-Removed sections: None
-Templates requiring updates:
-  - .specify/templates/plan-template.md — ⚠ pending (Constitution Check
-    section must be filled per-feature; no structural change needed)
-  - .specify/templates/spec-template.md — ✅ compatible (no changes needed)
-  - .specify/templates/tasks-template.md — ⚠ pending (path conventions
-    should reference umbrella app structure per-feature)
-Follow-up TODOs: None
-===========================
--->
-
 # RetroHexChat Constitution
 
 ## Core Principles

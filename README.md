@@ -4,8 +4,6 @@ A real-time IRC client for the web — built with Elixir, Phoenix LiveView, and 
 
 RetroHexChat recreates the experience of classic IRC clients like mIRC, complete with multi-channel chat, private messaging, NickServ/ChanServ services, moderation tools, and a faithful dark-themed Windows 98 UI powered by [98.css](https://jdan.github.io/98.css/).
 
-> **Status**: Phase 3 complete (US1: Connect + Chat in #lobby). 822 tests, 0 failures, 95%+ domain coverage. All static analysis gates clean.
-
 ---
 
 ## Table of Contents
@@ -53,7 +51,7 @@ RetroHexChat recreates the experience of classic IRC clients like mIRC, complete
 - **Rate limiting** — Flood control with mute enforcement via ETS counters
 
 ### UI
-- **Windows 98 aesthetic** — 98.css with a custom 620-line dark theme
+- **Windows 98 aesthetic** — 98.css with a custom dark theme
 - **MDI layout** — Treebar (channels/PMs) | Chat area | Nicklist
 - **Context menus** — Right-click users for Query, Whois, Kick, Ban, Op, Voice
 - **Command palette** — `Ctrl+/` to browse all slash commands
@@ -146,8 +144,8 @@ retro_hex_chat/
 │   │   │   ├── presence/               # Phoenix.Presence tracker
 │   │   │   ├── rate_limit/             # ETS-backed flood control
 │   │   │   └── services/               # NickServ + ChanServ bots
-│   │   ├── priv/repo/migrations/       # 7 database migrations
-│   │   └── test/                       # 621 tests (9 property-based)
+│   │   ├── priv/repo/migrations/       # Database migrations
+│   │   └── test/                       # Domain tests (unit + integration)
 │   │
 │   └── retro_hex_chat_web/             # Web app (Phoenix + LiveView)
 │       ├── lib/retro_hex_chat_web/
@@ -170,13 +168,13 @@ retro_hex_chat/
 │       │       ├── scroll_loader.ex     # Infinite scroll loader
 │       │       └── dialog.ex            # Modal dialogs
 │       ├── assets/
-│       │   ├── css/dark-theme.css       # 620-line Win98 dark theme
+│       │   ├── css/dark-theme.css       # Win98 dark theme
 │       │   └── js/hooks/               # 4 LiveView hooks
 │       │       ├── scroll_hook.js       # Infinite scroll + auto-scroll
 │       │       ├── command_palette_hook.js # Ctrl+/ + keyboard shortcuts
 │       │       ├── keyboard_hook.js     # ↑/↓ history, Tab completion
 │       │       └── sound_hook.js        # Web Audio API notifications
-│       └── test/                        # 201 tests (64 LiveView + 137 E2E)
+│       └── test/                        # Web tests (LiveView + E2E)
 │
 ├── config/                              # Environment configs (dev/test/prod)
 ├── .specify/                            # Speckit design artifacts
@@ -184,7 +182,6 @@ retro_hex_chat/
 └── CLAUDE.md                            # Development guidelines
 ```
 
-**By the numbers**: 91 source modules · 88 test files · ~6,600 lines of Elixir · 620 lines of CSS
 
 ---
 
@@ -578,32 +575,46 @@ Only 4 hooks — all UI logic lives in the server via LiveView:
 
 ### Prerequisites
 
-- **Elixir** >= 1.17 (tested on 1.19.4)
-- **Erlang/OTP** >= 27 (tested on OTP 28)
+- **Elixir** >= 1.17
+- **Erlang/OTP** >= 27
 - **PostgreSQL** >= 16
 - **Node.js** (for 98.css npm package in assets)
+- **Docker** (optional — for running PostgreSQL via Docker Compose)
 
 ### Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/rodrigo/retro_hex_chat.git
+git clone https://github.com/rodrigomarchi/retro_hex_chat.git
 cd retro_hex_chat
 
-# Install dependencies
-mix deps.get
+# One-command setup (starts Docker, installs deps, creates DB)
+make setup
 
-# Install Node.js dependencies (98.css)
+# Start the development server
+make server
+```
+
+Or step by step:
+
+```bash
+# Start PostgreSQL containers (dev + test)
+make docker.up
+
+# Install dependencies
+make deps
 npm install --prefix apps/retro_hex_chat_web/assets
 
 # Create and migrate the database
-mix ecto.setup
+make db.setup
 
 # Start the development server
-mix phx.server
+make server
 ```
 
 Visit [`http://localhost:4000`](http://localhost:4000) — enter a nickname and start chatting.
+
+Run `make help` to see all available commands.
 
 ### Environment Variables (optional)
 
@@ -619,44 +630,44 @@ Visit [`http://localhost:4000`](http://localhost:4000) — enter a nickname and 
 
 ## Running Tests
 
-The project follows a strict test pyramid. All 822 tests pass with 0 failures.
+The project follows a strict test pyramid with unit, integration, LiveView, and E2E layers.
 
 ```bash
-# Full test suite (~8 seconds, excludes E2E)
-mix test
+# Full test suite (excludes E2E by default)
+make test
 
-# Domain tests only (621 tests, includes 9 property-based)
-mix test --only unit
-mix test --only integration
+# By layer
+make test.unit            # Pure functions, validations, policies
+make test.integration     # Database, GenServer, PubSub
+make test.liveview        # LiveView rendering, interactions
+make test.e2e             # Full screen flows (excluded from default run)
 
-# Web/LiveView tests only (64 tests)
-mix test --only liveview
+# By app
+make test.domain          # Domain app only
+make test.web             # Web app only
 
-# E2E tests (137 tests across 20 screens, excluded from default run)
-mix test --only e2e
+# All tests including E2E
+make test.all
 
-# Full suite including E2E (822 tests)
-mix test --include e2e
-
-# With coverage report
-mix test --cover
+# Coverage report
+make test.cover
 ```
-
-### Test Coverage
-
-| App | Coverage | Threshold |
-|-----|----------|-----------|
-| Domain (`retro_hex_chat`) | **95.70%** | 80% |
-| Web (`retro_hex_chat_web`) | **81.61%** | 70% |
 
 ### Test Tags
 
-| Tag | Scope | Count |
-|-----|-------|-------|
-| `@tag :unit` | Pure functions, validations, policies | ~390 |
-| `@tag :integration` | Database, GenServer, PubSub | ~231 |
-| `@tag :liveview` | LiveView rendering, interactions | 64 |
-| `@tag :e2e` | Full screen flows | 137 |
+| Tag | Scope |
+|-----|-------|
+| `@tag :unit` | Pure functions, validations, policies |
+| `@tag :integration` | Database, GenServer, PubSub |
+| `@tag :liveview` | LiveView rendering, interactions |
+| `@tag :e2e` | Full screen flows |
+
+### Coverage Thresholds
+
+| App | Threshold |
+|-----|-----------|
+| Domain (`retro_hex_chat`) | 80% |
+| Web (`retro_hex_chat_web`) | 70% |
 
 ---
 
@@ -665,17 +676,16 @@ mix test --cover
 All three gates must pass before any change is merged:
 
 ```bash
-# Code formatting (enforced)
-mix format --check-formatted
+# Run all static analysis checks at once
+make lint
 
-# Linting — strict mode, zero warnings allowed
-mix credo --strict
+# Or individually
+make format.check         # Code formatting
+make credo                # Linting (strict mode, zero warnings)
+make dialyzer             # Type checking (@spec on all public functions)
 
-# Type checking — @spec on all public functions
-mix dialyzer
-
-# Run all checks at once
-mix precommit
+# Full pre-commit pipeline (compile + format + test)
+make precommit
 ```
 
 ---

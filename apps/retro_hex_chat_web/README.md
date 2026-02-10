@@ -1,18 +1,19 @@
 # RetroHexChatWeb
 
-To start your Phoenix server:
+Phoenix LiveView web layer with Windows 98 aesthetic.
 
-* Run `mix setup` to install and setup dependencies
-* Start Phoenix endpoint with `mix phx.server`
+### LiveView Screens
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+- **ConnectLive** (`/`) — Nickname entry dialog
+- **ChatLive** (`/chat`) — Main MDI chat interface
+- **ChannelListLive** (`/channels`) — Channel browser
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+### Components
 
-## Learn more
+15 function components rendering semantic HTML styled by 98.css with a custom dark theme: Window, TitleBar, MenuBar, Toolbar, Treebar, ChatMessage, Nicklist, StatusBar, CommandPalette, ContextMenu, SearchBar, ScrollLoader, Dialog.
 
-* Official website: https://www.phoenixframework.org/
-* Guides: https://hexdocs.pm/phoenix/overview.html
-* Docs: https://hexdocs.pm/phoenix
-* Forum: https://elixirforum.com/c/phoenix-forum
-* Source: https://github.com/phoenixframework/phoenix
+### JavaScript Hooks
+
+4 minimal hooks (all UI logic lives server-side via LiveView): ScrollHook, CommandPaletteHook, KeyboardHook, SoundHook.
+
+See the [project README](../../README.md) for full documentation.
