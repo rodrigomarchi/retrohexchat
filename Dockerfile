@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 # ---- Build Stage ----
 ARG ELIXIR_VERSION=1.17.3
 ARG OTP_VERSION=27.2
@@ -9,14 +11,14 @@ ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}-slim"
 FROM ${BUILDER_IMAGE} AS builder
 
 RUN apt-get update -y && \
-    apt-get install -y build-essential git npm && \
+    apt-get install -y build-essential && \
     apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 ENV MIX_ENV=prod
 
 WORKDIR /app
 
-# Install hex + rebar
+# Install hex + rebar (baked into image layer)
 RUN mix local.hex --force && mix local.rebar --force
 
 # Copy dependency manifests first for cache efficiency
@@ -25,25 +27,17 @@ COPY config/config.exs config/prod.exs config/runtime.exs config/
 COPY apps/retro_hex_chat/mix.exs apps/retro_hex_chat/
 COPY apps/retro_hex_chat_web/mix.exs apps/retro_hex_chat_web/
 
-RUN mix deps.get
+# Fetch and compile dependencies (hex download cache persists across rebuilds)
+RUN --mount=type=cache,target=/root/.hex \
+    mix deps.get && mix deps.compile
 
-RUN mix deps.compile
-
-# Install npm dependencies (98.css)
-COPY apps/retro_hex_chat_web/assets/package.json apps/retro_hex_chat_web/assets/package-lock.json apps/retro_hex_chat_web/assets/
-RUN npm ci --prefix apps/retro_hex_chat_web/assets
-
-# Copy all application source
+# Copy all application source (98.css is vendored, no npm needed)
 COPY apps apps
 
-# Build assets
-RUN mix assets.deploy
-
-# Compile the project
-RUN mix compile
-
-# Build the release
-RUN mix release
+# Build assets, compile, and create release
+RUN mix assets.deploy && \
+    mix compile && \
+    mix release
 
 # ---- Runtime Stage ----
 FROM ${RUNNER_IMAGE}
