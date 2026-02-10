@@ -67,9 +67,10 @@ defmodule RetroHexChatWeb.MixProject do
       setup: ["deps.get", "assets.setup", "assets.build"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["esbuild.install --if-missing"],
-      "assets.build": ["compile", "esbuild retro_hex_chat_web"],
+      "assets.build": ["compile", "esbuild retro_hex_chat_web", "esbuild retro_hex_chat_web_css"],
       "assets.deploy": [
         "esbuild retro_hex_chat_web --minify",
+        "esbuild retro_hex_chat_web_css --minify",
         "phx.digest"
       ]
     ]

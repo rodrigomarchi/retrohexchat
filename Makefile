@@ -172,6 +172,7 @@ assets.setup: ## Install esbuild and Node.js dependencies
 
 assets.build: ## Build JS/CSS assets for development
 	mix esbuild retro_hex_chat_web
+	mix esbuild retro_hex_chat_web_css
 
 assets.deploy: ## Build and minify assets for production
 	mix assets.deploy
