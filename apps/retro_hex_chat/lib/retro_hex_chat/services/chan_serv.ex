@@ -2,6 +2,8 @@ defmodule RetroHexChat.Services.ChanServ do
   @moduledoc "ChanServ: Channel registration and access list management."
   use GenServer
 
+  require Logger
+
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.Queries
 
@@ -167,11 +169,27 @@ defmodule RetroHexChat.Services.ChanServ do
 
   defp cleanup_channel(channel_name) do
     Enum.each(Queries.list_access(channel_name), fn entry ->
-      Queries.remove_access(channel_name, entry.nickname)
+      case Queries.remove_access(channel_name, entry.nickname) do
+        :ok ->
+          :ok
+
+        {:error, reason} ->
+          Logger.warning(
+            "Failed to remove access for #{entry.nickname} in #{channel_name}: #{inspect(reason)}"
+          )
+      end
     end)
 
     Enum.each(Queries.list_bans(channel_name), fn ban ->
-      Queries.remove_ban(channel_name, ban.banned_nickname)
+      case Queries.remove_ban(channel_name, ban.banned_nickname) do
+        :ok ->
+          :ok
+
+        {:error, reason} ->
+          Logger.warning(
+            "Failed to remove ban for #{ban.banned_nickname} in #{channel_name}: #{inspect(reason)}"
+          )
+      end
     end)
   end
 

@@ -499,7 +499,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
     Enum.each(session.channels, fn channel ->
       try do
-        Tracker.untrack_user("channel:#{channel}", session.nickname)
+        safe_untrack_user("channel:#{channel}", session.nickname)
         Server.part(channel, session.nickname, "Connection lost")
       rescue
         e ->
@@ -704,12 +704,18 @@ defmodule RetroHexChatWeb.ChatLive do
   defp maybe_join_from_params(socket, _params), do: socket
 
   defp join_channel(socket, channel_name, session, password \\ nil) do
-    ensure_channel_exists(channel_name)
+    case ensure_channel_exists(channel_name) do
+      :ok ->
+        :ok
+
+      {:error, reason} ->
+        Logger.error("Failed to start channel #{channel_name}: #{inspect(reason)}")
+    end
 
     case Server.join(channel_name, session.nickname, password) do
       {:ok, _state} ->
         Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
-        Tracker.track_user("channel:#{channel_name}", session.nickname)
+        safe_track_user("channel:#{channel_name}", session.nickname)
 
         new_session =
           session
@@ -738,7 +744,7 @@ defmodule RetroHexChatWeb.ChatLive do
     end
 
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
-    Tracker.untrack_user("channel:#{channel_name}", session.nickname)
+    safe_untrack_user("channel:#{channel_name}", session.nickname)
     new_session = Session.remove_channel(session, channel_name)
 
     socket = assign(socket, session: new_session)
@@ -756,7 +762,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
   defp part_channel_after_kick(socket, channel_name) do
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
-    Tracker.untrack_user("channel:#{channel_name}", socket.assigns.session.nickname)
+    safe_untrack_user("channel:#{channel_name}", socket.assigns.session.nickname)
     new_session = Session.remove_channel(socket.assigns.session, channel_name)
 
     socket = assign(socket, session: new_session)
@@ -787,8 +793,15 @@ defmodule RetroHexChatWeb.ChatLive do
 
   defp ensure_channel_exists(channel_name) do
     case Registry.lookup(channel_name) do
-      {:ok, _pid} -> :ok
-      {:error, :not_found} -> Supervisor.start_child(channel_name)
+      {:ok, _pid} ->
+        :ok
+
+      {:error, :not_found} ->
+        case Supervisor.start_child(channel_name) do
+          {:ok, _pid} -> :ok
+          {:error, {:already_started, _pid}} -> :ok
+          {:error, reason} -> {:error, reason}
+        end
     end
   end
 
@@ -1010,8 +1023,10 @@ defmodule RetroHexChatWeb.ChatLive do
   defp handle_action_message(socket, session, content) do
     cond do
       session.active_pm ->
-        Service.send_private_message(session.nickname, session.active_pm, content, "action")
-        socket
+        case Service.send_private_message(session.nickname, session.active_pm, content, "action") do
+          {:ok, _pm} -> socket
+          {:error, reason} -> stream_insert(socket, :chat_messages, error_message(reason))
+        end
 
       session.active_channel ->
         case Server.send_message(session.active_channel, session.nickname, content, :action) do
@@ -1030,22 +1045,35 @@ defmodule RetroHexChatWeb.ChatLive do
 
     # Update Server membership for all channels
     Enum.each(session.channels, fn channel ->
-      Server.rename_user(channel, old_nick, new_nick)
+      try do
+        Server.rename_user(channel, old_nick, new_nick)
+      rescue
+        e ->
+          Logger.warning("Failed to rename #{old_nick}->#{new_nick} in #{channel}: #{inspect(e)}")
+      end
     end)
 
     # Broadcast nick change to all shared channels
     Enum.each(session.channels, fn channel ->
-      Phoenix.PubSub.broadcast(
-        RetroHexChat.PubSub,
-        "channel:#{channel}",
-        {:nick_changed, %{old_nick: old_nick, new_nick: new_nick}}
-      )
+      case Phoenix.PubSub.broadcast(
+             RetroHexChat.PubSub,
+             "channel:#{channel}",
+             {:nick_changed, %{old_nick: old_nick, new_nick: new_nick}}
+           ) do
+        :ok ->
+          :ok
+
+        {:error, reason} ->
+          Logger.warning(
+            "PubSub nick_changed broadcast to channel:#{channel} failed: #{inspect(reason)}"
+          )
+      end
     end)
 
     # Update Presence: untrack old, track new
     Enum.each(session.channels, fn channel ->
-      Tracker.untrack_user("channel:#{channel}", old_nick)
-      Tracker.track_user("channel:#{channel}", new_nick)
+      safe_untrack_user("channel:#{channel}", old_nick)
+      safe_track_user("channel:#{channel}", new_nick)
     end)
 
     # Resubscribe user topic
@@ -1072,7 +1100,7 @@ defmodule RetroHexChatWeb.ChatLive do
     session = Session.set_away(socket.assigns.session, message)
 
     Enum.each(session.channels, fn channel ->
-      Tracker.update_away("channel:#{channel}", session.nickname, true, message)
+      safe_update_away("channel:#{channel}", session.nickname, true, message)
     end)
 
     socket
@@ -1085,7 +1113,7 @@ defmodule RetroHexChatWeb.ChatLive do
     new_session = Session.set_away(session, nil)
 
     Enum.each(session.channels, fn channel ->
-      Tracker.update_away("channel:#{channel}", session.nickname, false, nil)
+      safe_update_away("channel:#{channel}", session.nickname, false, nil)
     end)
 
     socket
@@ -1127,6 +1155,32 @@ defmodule RetroHexChatWeb.ChatLive do
   defp show_command_help_message(socket, help) do
     text = "#{help.syntax} - #{help.description}"
     stream_insert(socket, :chat_messages, system_message(text))
+  end
+
+  defp safe_track_user(topic, nickname) do
+    case Tracker.track_user(topic, nickname) do
+      {:ok, _} ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("Tracker.track_user(#{topic}, #{nickname}): #{inspect(reason)}")
+    end
+  end
+
+  defp safe_untrack_user(topic, nickname) do
+    Tracker.untrack_user(topic, nickname)
+  rescue
+    e -> Logger.warning("Tracker.untrack_user(#{topic}, #{nickname}): #{inspect(e)}")
+  end
+
+  defp safe_update_away(topic, nickname, away, message) do
+    case Tracker.update_away(topic, nickname, away, message) do
+      {:ok, _} ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("Tracker.update_away(#{topic}, #{nickname}): #{inspect(reason)}")
+    end
   end
 
   defp system_message(content) do

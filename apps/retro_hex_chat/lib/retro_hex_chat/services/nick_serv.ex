@@ -2,6 +2,8 @@ defmodule RetroHexChat.Services.NickServ do
   @moduledoc "NickServ: Nick registration and protection service."
   use GenServer
 
+  require Logger
+
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Services.RegisteredNick
 
@@ -133,11 +135,17 @@ defmodule RetroHexChat.Services.NickServ do
         {:reply, {:error, "Nickname #{target_nick} is not registered"}, state}
 
       true ->
-        Phoenix.PubSub.broadcast(
-          RetroHexChat.PubSub,
-          "user:#{target_nick}",
-          {:force_disconnect, %{reason: "Ghosted by #{requester_nick}"}}
-        )
+        case Phoenix.PubSub.broadcast(
+               RetroHexChat.PubSub,
+               "user:#{target_nick}",
+               {:force_disconnect, %{reason: "Ghosted by #{requester_nick}"}}
+             ) do
+          :ok ->
+            :ok
+
+          {:error, reason} ->
+            Logger.warning("PubSub broadcast to user:#{target_nick} failed: #{inspect(reason)}")
+        end
 
         {:reply, {:ok, "Ghost command sent for #{target_nick}"}, state}
     end
@@ -183,11 +191,17 @@ defmodule RetroHexChat.Services.NickServ do
   def handle_info({:identify_timeout, nickname}, state) do
     new_timers = Map.delete(state.timers, nickname)
 
-    Phoenix.PubSub.broadcast(
-      RetroHexChat.PubSub,
-      "user:#{nickname}",
-      {:force_rename, %{reason: "Identify timeout (60s)"}}
-    )
+    case Phoenix.PubSub.broadcast(
+           RetroHexChat.PubSub,
+           "user:#{nickname}",
+           {:force_rename, %{reason: "Identify timeout (60s)"}}
+         ) do
+      :ok ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("PubSub broadcast to user:#{nickname} failed: #{inspect(reason)}")
+    end
 
     {:noreply, %{state | timers: new_timers}}
   end

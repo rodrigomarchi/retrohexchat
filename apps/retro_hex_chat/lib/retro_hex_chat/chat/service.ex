@@ -3,6 +3,8 @@ defmodule RetroHexChat.Chat.Service do
   Orchestrates message sending: policy check -> persist -> PubSub broadcast.
   """
 
+  require Logger
+
   alias RetroHexChat.Chat.{Policy, Queries}
 
   @spec send_message(String.t(), String.t(), String.t(), String.t()) ::
@@ -58,21 +60,27 @@ defmodule RetroHexChat.Chat.Service do
   defp broadcast_private_message(sender, recipient, pm) do
     topic = "pm:#{pm_topic(sender, recipient)}"
 
-    Phoenix.PubSub.broadcast(
-      RetroHexChat.PubSub,
-      topic,
-      %{
-        event: "new_pm",
-        payload: %{
-          sender: pm.sender_nickname,
-          recipient: pm.recipient_nickname,
-          content: pm.content,
-          type: String.to_existing_atom(pm.type),
-          timestamp: pm.inserted_at,
-          id: pm.id
-        }
-      }
-    )
+    case Phoenix.PubSub.broadcast(
+           RetroHexChat.PubSub,
+           topic,
+           %{
+             event: "new_pm",
+             payload: %{
+               sender: pm.sender_nickname,
+               recipient: pm.recipient_nickname,
+               content: pm.content,
+               type: String.to_existing_atom(pm.type),
+               timestamp: pm.inserted_at,
+               id: pm.id
+             }
+           }
+         ) do
+      :ok ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("PubSub broadcast to #{topic} failed: #{inspect(reason)}")
+    end
   end
 
   defp pm_topic(nick_a, nick_b) do
@@ -80,20 +88,26 @@ defmodule RetroHexChat.Chat.Service do
   end
 
   defp broadcast_message(channel_name, message) do
-    Phoenix.PubSub.broadcast(
-      RetroHexChat.PubSub,
-      "channel:#{channel_name}",
-      %{
-        event: "new_message",
-        payload: %{
-          channel: channel_name,
-          author: message.author_nickname,
-          content: message.content,
-          type: String.to_existing_atom(message.type),
-          timestamp: message.inserted_at,
-          id: message.id
-        }
-      }
-    )
+    case Phoenix.PubSub.broadcast(
+           RetroHexChat.PubSub,
+           "channel:#{channel_name}",
+           %{
+             event: "new_message",
+             payload: %{
+               channel: channel_name,
+               author: message.author_nickname,
+               content: message.content,
+               type: String.to_existing_atom(message.type),
+               timestamp: message.inserted_at,
+               id: message.id
+             }
+           }
+         ) do
+      :ok ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("PubSub broadcast to channel:#{channel_name} failed: #{inspect(reason)}")
+    end
   end
 end

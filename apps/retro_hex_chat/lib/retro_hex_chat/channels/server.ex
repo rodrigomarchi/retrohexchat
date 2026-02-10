@@ -361,7 +361,13 @@ defmodule RetroHexChat.Channels.Server do
   defp via(channel_name), do: Registry.via_tuple(channel_name)
 
   defp broadcast(channel_name, message) do
-    Phoenix.PubSub.broadcast(@pubsub, "channel:#{channel_name}", message)
+    case Phoenix.PubSub.broadcast(@pubsub, "channel:#{channel_name}", message) do
+      :ok ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("PubSub broadcast to channel:#{channel_name} failed: #{inspect(reason)}")
+    end
   end
 
   defp state_to_map(state) do
@@ -403,7 +409,8 @@ defmodule RetroHexChat.Channels.Server do
       {:ok, message} ->
         {message.id, message.inserted_at}
 
-      {:error, _} ->
+      {:error, changeset} ->
+        Logger.warning("Failed to persist message in #{channel_name}: #{inspect(changeset)}")
         {"msg-#{System.unique_integer([:positive])}", DateTime.utc_now()}
     end
   rescue
