@@ -59,4 +59,6 @@ USER app
 
 COPY --from=builder --chown=app:app /app/_build/prod/rel/retro_hex_chat_umbrella ./
 
+EXPOSE 4000
+
 CMD ["bin/server"]
