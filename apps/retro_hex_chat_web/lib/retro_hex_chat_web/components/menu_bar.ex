@@ -1,0 +1,39 @@
+defmodule RetroHexChatWeb.Components.MenuBar do
+  @moduledoc """
+  Menu bar with File, Edit, View, Help dropdowns and phx-click handlers.
+  """
+  use Phoenix.Component
+
+  @spec menu_bar(map()) :: Phoenix.LiveView.Rendered.t()
+  def menu_bar(assigns) do
+    ~H"""
+    <div class="menu-bar" role="menubar">
+      <div class="menu-item-wrapper">
+        <div class="menu-item" role="menuitem" tabindex="0">File</div>
+        <div class="menu-dropdown">
+          <div class="menu-dropdown-item" phx-click="quit_chat">Disconnect</div>
+        </div>
+      </div>
+      <div class="menu-item-wrapper">
+        <div class="menu-item" role="menuitem" tabindex="0">Edit</div>
+        <div class="menu-dropdown">
+          <div class="menu-dropdown-item" phx-click="open_search">Find...</div>
+        </div>
+      </div>
+      <div class="menu-item-wrapper">
+        <div class="menu-item" role="menuitem" tabindex="0">View</div>
+        <div class="menu-dropdown">
+          <div class="menu-dropdown-item" phx-click="toggle_treebar">Toggle Treebar</div>
+          <div class="menu-dropdown-item" phx-click="toggle_nicklist">Toggle Nicklist</div>
+        </div>
+      </div>
+      <div class="menu-item-wrapper">
+        <div class="menu-item" role="menuitem" tabindex="0">Help</div>
+        <div class="menu-dropdown">
+          <div class="menu-dropdown-item" phx-click="show_about">About</div>
+        </div>
+      </div>
+    </div>
+    """
+  end
+end

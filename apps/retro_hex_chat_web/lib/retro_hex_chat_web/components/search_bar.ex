@@ -1,0 +1,65 @@
+defmodule RetroHexChatWeb.Components.SearchBar do
+  @moduledoc """
+  Win98-styled search dialog with text input, Find Next/Prev buttons,
+  and an X of Y result counter.
+  """
+  use Phoenix.Component
+
+  attr :visible, :boolean, default: false
+  attr :query, :string, default: ""
+  attr :result_count, :integer, default: 0
+  attr :current_index, :integer, default: 0
+
+  @spec search_bar(map()) :: Phoenix.LiveView.Rendered.t()
+  def search_bar(assigns) do
+    ~H"""
+    <div
+      :if={@visible}
+      class="search-bar window"
+      style="position: absolute; top: 4px; right: 4px; z-index: 100; min-width: 320px;"
+    >
+      <div class="title-bar" style="padding: 2px 4px;">
+        <div class="title-bar-text" style="font-size: 11px;">Find</div>
+        <div class="title-bar-controls">
+          <button aria-label="Close" phx-click="close_search"></button>
+        </div>
+      </div>
+      <div class="window-body" style="padding: 4px; display: flex; gap: 4px; align-items: center;">
+        <form phx-change="search_input" phx-submit="search_next" style="display: contents;">
+          <input
+            type="text"
+            name="query"
+            value={@query}
+            placeholder="Find..."
+            autocomplete="off"
+            style="flex: 1; font-size: 11px;"
+            phx-debounce="300"
+          />
+        </form>
+        <span style="font-size: 11px; white-space: nowrap; min-width: 50px; text-align: center;">
+          {search_counter(@current_index, @result_count)}
+        </span>
+        <button
+          type="button"
+          phx-click="search_prev"
+          disabled={@result_count == 0}
+          style="font-size: 11px; padding: 1px 6px;"
+        >
+          Prev
+        </button>
+        <button
+          type="button"
+          phx-click="search_next"
+          disabled={@result_count == 0}
+          style="font-size: 11px; padding: 1px 6px;"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+    """
+  end
+
+  defp search_counter(_, 0), do: "No results"
+  defp search_counter(current, total), do: "#{current} of #{total}"
+end

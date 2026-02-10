@@ -1,0 +1,14 @@
+/* RetroHexChat - main CSS entry point */
+@import "98.css";
+@import "./dark-theme.css";
+
+/* Phoenix LiveView visibility helpers */
+[data-phx-session],
+[data-phx-teleported-src] {
+  display: contents;
+}
+
+/* LiveView page transition - prevent flash of unstyled content */
+[phx-page-loading] {
+  cursor: wait;
+}
