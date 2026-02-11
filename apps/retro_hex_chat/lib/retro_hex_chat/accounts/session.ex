@@ -7,6 +7,7 @@ defmodule RetroHexChat.Accounts.Session do
   alias RetroHexChat.Accounts.ContactList
   alias RetroHexChat.Accounts.NickColors
   alias RetroHexChat.Chat.HighlightWords
+  alias RetroHexChat.Chat.IgnoreList
   alias RetroHexChat.Presence.NotifyList
 
   @type t :: %__MODULE__{
@@ -23,7 +24,8 @@ defmodule RetroHexChat.Accounts.Session do
           notify_list: map(),
           contacts: map(),
           nick_colors: map(),
-          highlight_words: map()
+          highlight_words: map(),
+          ignore_list: map()
         }
 
   @enforce_keys [:nickname]
@@ -41,7 +43,8 @@ defmodule RetroHexChat.Accounts.Session do
     notify_list: nil,
     contacts: nil,
     nick_colors: nil,
-    highlight_words: nil
+    highlight_words: nil,
+    ignore_list: nil
   ]
 
   @spec new(String.t()) :: t()
@@ -52,7 +55,8 @@ defmodule RetroHexChat.Accounts.Session do
       notify_list: NotifyList.new(),
       contacts: ContactList.new(),
       nick_colors: NickColors.new(),
-      highlight_words: HighlightWords.new()
+      highlight_words: HighlightWords.new(),
+      ignore_list: IgnoreList.new()
     }
   end
 
@@ -166,5 +170,15 @@ defmodule RetroHexChat.Accounts.Session do
   @spec get_highlight_words(t()) :: map()
   def get_highlight_words(%__MODULE__{highlight_words: highlight_words}) do
     highlight_words
+  end
+
+  @spec set_ignore_list(t(), map()) :: t()
+  def set_ignore_list(%__MODULE__{} = session, ignore_list) do
+    %{session | ignore_list: ignore_list}
+  end
+
+  @spec get_ignore_list(t()) :: map()
+  def get_ignore_list(%__MODULE__{ignore_list: ignore_list}) do
+    ignore_list
   end
 end

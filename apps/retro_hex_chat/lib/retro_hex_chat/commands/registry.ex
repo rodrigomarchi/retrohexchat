@@ -10,6 +10,7 @@ defmodule RetroHexChat.Commands.Registry do
     "clear" => RetroHexChat.Commands.Handlers.Clear,
     "cs" => RetroHexChat.Commands.Handlers.Cs,
     "help" => RetroHexChat.Commands.Handlers.Help,
+    "ignore" => RetroHexChat.Commands.Handlers.Ignore,
     "join" => RetroHexChat.Commands.Handlers.Join,
     "kick" => RetroHexChat.Commands.Handlers.Kick,
     "leave" => RetroHexChat.Commands.Handlers.Part,
@@ -24,6 +25,7 @@ defmodule RetroHexChat.Commands.Registry do
     "query" => RetroHexChat.Commands.Handlers.Query,
     "quit" => RetroHexChat.Commands.Handlers.Quit,
     "topic" => RetroHexChat.Commands.Handlers.Topic,
+    "unignore" => RetroHexChat.Commands.Handlers.Unignore,
     "whois" => RetroHexChat.Commands.Handlers.Whois
   }
 

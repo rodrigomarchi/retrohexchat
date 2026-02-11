@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive do
     HelpTopics,
     Highlight,
     HighlightWords,
+    IgnoreList,
     LinkPreview,
     Queries,
     Search,
@@ -125,7 +126,11 @@ defmodule RetroHexChatWeb.ChatLive do
       url_catcher_search_query: "",
       url_catcher_sort_column: :timestamp,
       url_catcher_sort_direction: :desc,
-      whois_target: nil
+      whois_target: nil,
+      ignore_timers: %{},
+      show_ignore_dialog: false,
+      ignore_selected: nil,
+      show_ignore_add_dialog: false
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -294,6 +299,19 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  def handle_event("window_keydown", %{"key" => "i", "altKey" => true}, socket) do
+    if socket.assigns.show_ignore_dialog do
+      {:noreply,
+       assign(socket,
+         show_ignore_dialog: false,
+         ignore_selected: nil,
+         show_ignore_add_dialog: false
+       )}
+    else
+      {:noreply, assign(socket, show_ignore_dialog: true)}
+    end
+  end
+
   def handle_event("window_keydown", %{"key" => "h", "altKey" => true}, socket) do
     if socket.assigns.show_highlight_dialog do
       {:noreply,
@@ -427,6 +445,51 @@ defmodule RetroHexChatWeb.ChatLive do
 
   def handle_event("context_set_nick_color", _params, socket) do
     {:noreply, assign(socket, show_context_color_picker: true)}
+  end
+
+  def handle_event("context_ignore", %{"nick" => nick}, socket) do
+    session = socket.assigns.session
+
+    case IgnoreList.add_entry(session.ignore_list, nick, :all, nil) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        {:noreply,
+         socket
+         |> close_context_menu()
+         |> assign(session: new_session)
+         |> maybe_persist_ignore_list(new_session)
+         |> stream_insert(:chat_messages, system_message("* #{nick} is now ignored"))}
+
+      {:error, :list_full} ->
+        {:noreply,
+         socket
+         |> close_context_menu()
+         |> stream_insert(:chat_messages, error_message("Ignore list is full (max 100 entries)"))}
+
+      {:error, _reason} ->
+        {:noreply, close_context_menu(socket)}
+    end
+  end
+
+  def handle_event("context_unignore", %{"nick" => nick}, socket) do
+    session = socket.assigns.session
+
+    case IgnoreList.remove_entry(session.ignore_list, nick) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        {:noreply,
+         socket
+         |> close_context_menu()
+         |> assign(session: new_session)
+         |> cancel_ignore_timer(nick)
+         |> maybe_persist_ignore_list(new_session)
+         |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))}
+
+      {:error, :not_found} ->
+        {:noreply, close_context_menu(socket)}
+    end
   end
 
   def handle_event("context_pick_color", %{"color_index" => color_str}, socket) do
@@ -826,6 +889,84 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  # Ignore dialog events
+  def handle_event("open_ignore_dialog", _params, socket) do
+    {:noreply, assign(socket, show_ignore_dialog: true)}
+  end
+
+  def handle_event("close_ignore_dialog", _params, socket) do
+    {:noreply,
+     assign(socket,
+       show_ignore_dialog: false,
+       ignore_selected: nil,
+       show_ignore_add_dialog: false
+     )}
+  end
+
+  def handle_event("ignore_select", %{"nickname" => nick}, socket) do
+    {:noreply, assign(socket, ignore_selected: nick)}
+  end
+
+  def handle_event("ignore_dialog_add", _params, socket) do
+    {:noreply, assign(socket, show_ignore_add_dialog: true)}
+  end
+
+  def handle_event("close_ignore_add_dialog", _params, socket) do
+    {:noreply, assign(socket, show_ignore_add_dialog: false)}
+  end
+
+  def handle_event("ignore_dialog_add_confirm", params, socket) do
+    nick = params["nickname"]
+    type = String.to_existing_atom(params["type"])
+    duration_str = params["duration"]
+
+    {duration, expires_at} = parse_dialog_duration(duration_str)
+
+    session = socket.assigns.session
+
+    case IgnoreList.add_entry(session.ignore_list, nick, type, expires_at) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_ignore_add_dialog: false)
+         |> cancel_ignore_timer(nick)
+         |> maybe_start_ignore_timer(nick, duration)
+         |> maybe_persist_ignore_list(new_session)
+         |> stream_insert(:chat_messages, system_message("* #{nick} is now ignored (#{type})"))}
+
+      {:error, reason} ->
+        {:noreply,
+         stream_insert(socket, :chat_messages, error_message("Failed to add ignore: #{reason}"))}
+    end
+  end
+
+  def handle_event("ignore_dialog_remove", _params, socket) do
+    nick = socket.assigns.ignore_selected
+
+    if nick do
+      session = socket.assigns.session
+
+      case IgnoreList.remove_entry(session.ignore_list, nick) do
+        {:ok, updated_list} ->
+          new_session = Session.set_ignore_list(session, updated_list)
+
+          {:noreply,
+           socket
+           |> assign(session: new_session, ignore_selected: nil)
+           |> cancel_ignore_timer(nick)
+           |> maybe_persist_ignore_list(new_session)
+           |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))}
+
+        {:error, :not_found} ->
+          {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
   # Highlight dialog events
   def handle_event("open_highlight_dialog", _params, socket) do
     {:noreply, assign(socket, show_highlight_dialog: true)}
@@ -1074,37 +1215,37 @@ defmodule RetroHexChatWeb.ChatLive do
   @impl true
   def handle_info(%{event: "new_message", payload: payload}, socket) do
     session = socket.assigns.session
-    decorated = maybe_highlight(payload, session)
+    msg_type = if payload.type == :action, do: :action, else: :message
 
-    socket =
-      socket
-      |> maybe_play_highlight_sound(decorated, payload.channel)
-      |> capture_urls(payload.content, payload.channel, :channel, payload.author)
-
-    if payload.channel == session.active_channel do
-      {:noreply, stream_insert(socket, :chat_messages, decorated)}
+    if IgnoreList.ignored?(session.ignore_list, payload.author, msg_type) do
+      {:noreply, socket}
     else
-      unread = MapSet.put(socket.assigns.unread_channels, payload.channel)
+      decorated = maybe_highlight(payload, session)
 
-      highlight =
-        if Map.get(decorated, :highlighted),
-          do: MapSet.put(socket.assigns.highlight_channels, payload.channel),
-          else: socket.assigns.highlight_channels
+      socket =
+        socket
+        |> maybe_play_highlight_sound(decorated, payload.channel)
+        |> capture_urls(payload.content, payload.channel, :channel, payload.author)
 
-      {:noreply, assign(socket, unread_channels: unread, highlight_channels: highlight)}
+      {:noreply, apply_new_message(socket, decorated, payload.channel, session)}
     end
   end
 
   def handle_info(%{event: "new_pm", payload: payload}, socket) do
     session = socket.assigns.session
-    other_nick = pm_other_nick(payload, session.nickname)
-    socket = capture_urls(socket, payload.content, other_nick, :pm, payload.sender)
 
-    if session.active_pm == other_nick do
-      {:noreply, stream_insert(socket, :chat_messages, pm_to_stream_item(payload))}
+    if IgnoreList.ignored?(session.ignore_list, payload.sender, :pm) do
+      {:noreply, socket}
     else
-      unread = MapSet.put(socket.assigns.unread_channels, "pm:#{other_nick}")
-      {:noreply, assign(socket, unread_channels: unread)}
+      other_nick = pm_other_nick(payload, session.nickname)
+      socket = capture_urls(socket, payload.content, other_nick, :pm, payload.sender)
+
+      if session.active_pm == other_nick do
+        {:noreply, stream_insert(socket, :chat_messages, pm_to_stream_item(payload))}
+      else
+        unread = MapSet.put(socket.assigns.unread_channels, "pm:#{other_nick}")
+        {:noreply, assign(socket, unread_channels: unread)}
+      end
     end
   end
 
@@ -1227,10 +1368,44 @@ defmodule RetroHexChatWeb.ChatLive do
         socket
       end
 
+    # Update ignore list if old_nick is ignored
+    socket =
+      if IgnoreList.get_entry(socket.assigns.session.ignore_list, old_nick) do
+        session = socket.assigns.session
+        updated_list = IgnoreList.update_nickname(session.ignore_list, old_nick, new_nick)
+        new_session = Session.set_ignore_list(session, updated_list)
+        assign(socket, session: new_session)
+      else
+        socket
+      end
+
     {:noreply,
      socket
      |> assign(channel_users: users)
      |> stream_insert(:chat_messages, system_message(msg))}
+  end
+
+  def handle_info({:ignore_expired, nickname}, socket) do
+    session = socket.assigns.session
+
+    case IgnoreList.remove_entry(session.ignore_list, nickname) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        timers = Map.delete(socket.assigns.ignore_timers, String.downcase(nickname))
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, ignore_timers: timers)
+         |> maybe_persist_ignore_list(new_session)
+         |> stream_insert(
+           :chat_messages,
+           system_message("* #{nickname} is no longer ignored (timer expired)")
+         )}
+
+      {:error, :not_found} ->
+        {:noreply, socket}
+    end
   end
 
   def handle_info({:force_disconnect, %{reason: reason}}, socket) do
@@ -1659,6 +1834,73 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  defp handle_ui_action(socket, :ignore_list, _payload) do
+    session = socket.assigns.session
+    entries = IgnoreList.sorted_entries(session.ignore_list)
+
+    if entries == [] do
+      stream_insert(socket, :chat_messages, system_message("Your ignore list is empty"))
+    else
+      Enum.reduce(entries, socket, fn entry, acc ->
+        stream_insert(acc, :chat_messages, system_message(format_ignore_entry(entry)))
+      end)
+    end
+  end
+
+  defp handle_ui_action(socket, :ignore_add, %{nickname: nick, type: type} = payload) do
+    session = socket.assigns.session
+    duration = Map.get(payload, :duration)
+    expires_at = if duration, do: DateTime.add(DateTime.utc_now(), duration, :second)
+    existing = IgnoreList.get_entry(session.ignore_list, nick)
+
+    case IgnoreList.add_entry(session.ignore_list, nick, type, expires_at) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        msg =
+          if existing do
+            "* #{nick} ignore updated to: #{type}"
+          else
+            "* #{nick} is now ignored (#{type})"
+          end
+
+        socket
+        |> assign(session: new_session)
+        |> cancel_ignore_timer(nick)
+        |> maybe_start_ignore_timer(nick, duration)
+        |> maybe_persist_ignore_list(new_session)
+        |> stream_insert(:chat_messages, system_message(msg))
+
+      {:error, :list_full} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("Ignore list is full (max 100 entries)")
+        )
+
+      {:error, :invalid_type} ->
+        stream_insert(socket, :chat_messages, error_message("Invalid ignore type: #{type}"))
+    end
+  end
+
+  defp handle_ui_action(socket, :ignore_remove, %{nickname: nick}) do
+    session = socket.assigns.session
+
+    case IgnoreList.remove_entry(session.ignore_list, nick) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        socket
+        |> assign(session: new_session)
+        |> cancel_ignore_timer(nick)
+        |> maybe_persist_ignore_list(new_session)
+        |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))
+
+      {:error, :not_found} ->
+        stream_insert(socket, :chat_messages, error_message("#{nick} is not in your ignore list"))
+    end
+  end
+
   defp handle_ui_action(socket, _action, _payload), do: socket
 
   defp maybe_join_from_params(socket, %{"join" => channel_name})
@@ -1802,6 +2044,12 @@ defmodule RetroHexChatWeb.ChatLive do
         {:error, _} -> false
       end
     end)
+  end
+
+  defp context_target_ignored?(_session, nil), do: false
+
+  defp context_target_ignored?(session, target_nick) do
+    IgnoreList.get_entry(session.ignore_list, target_nick) != nil
   end
 
   defp viewer_is_op?(session) do
@@ -2325,6 +2573,14 @@ defmodule RetroHexChatWeb.ChatLive do
     socket
   end
 
+  defp maybe_persist_ignore_list(socket, session) do
+    if session.identified do
+      Task.start(fn -> IgnoreList.save(session.nickname, session.ignore_list) end)
+    end
+
+    socket
+  end
+
   @spec load_persisted_data(Session.t(), String.t()) :: Session.t()
   defp load_persisted_data(session, nick) do
     session
@@ -2332,6 +2588,7 @@ defmodule RetroHexChatWeb.ChatLive do
     |> load_if_found(ContactList.load(nick), &Session.set_contacts/2)
     |> load_if_found(NickColors.load(nick), &Session.set_nick_colors/2)
     |> load_if_found(HighlightWords.load(nick), &Session.set_highlight_words/2)
+    |> load_if_found(IgnoreList.load(nick), &Session.set_ignore_list/2)
   end
 
   @spec load_if_found(Session.t(), {:ok, term()} | {:error, term()}, (Session.t(), term() ->
@@ -2408,6 +2665,49 @@ defmodule RetroHexChatWeb.ChatLive do
     status = if entry.online, do: "online", else: "offline"
     note = if entry.note, do: " - #{entry.note}", else: ""
     "  #{entry.tracked_nickname} [#{status}]#{note}"
+  end
+
+  defp format_ignore_entry(entry) do
+    alias RetroHexChat.Chat.IgnoreEntry
+    expires = if IgnoreEntry.permanent?(entry), do: "permanent", else: "timed"
+    "  #{entry.nickname} [#{entry.ignore_type}] (#{expires})"
+  end
+
+  defp maybe_start_ignore_timer(socket, _nick, nil), do: socket
+
+  defp maybe_start_ignore_timer(socket, nick, duration_seconds) do
+    ref = Process.send_after(self(), {:ignore_expired, nick}, duration_seconds * 1000)
+    timers = Map.put(socket.assigns.ignore_timers, String.downcase(nick), ref)
+    assign(socket, ignore_timers: timers)
+  end
+
+  defp parse_dialog_duration(nil), do: {nil, nil}
+  defp parse_dialog_duration(""), do: {nil, nil}
+
+  defp parse_dialog_duration(str) do
+    case Regex.run(~r/^(\d+)([mhd])$/, String.trim(str)) do
+      [_, num_str, unit] ->
+        num = String.to_integer(num_str)
+        multiplier = %{"m" => 60, "h" => 3600, "d" => 86_400}
+        seconds = num * multiplier[unit]
+        {seconds, DateTime.add(DateTime.utc_now(), seconds, :second)}
+
+      _ ->
+        {nil, nil}
+    end
+  end
+
+  defp cancel_ignore_timer(socket, nick) do
+    key = String.downcase(nick)
+
+    case Map.get(socket.assigns.ignore_timers, key) do
+      nil ->
+        socket
+
+      ref ->
+        Process.cancel_timer(ref)
+        assign(socket, ignore_timers: Map.delete(socket.assigns.ignore_timers, key))
+    end
   end
 
   defp system_message(content) do
@@ -2598,6 +2898,7 @@ defmodule RetroHexChatWeb.ChatLive do
         viewer_is_op={viewer_is_op?(@session)}
         nick_color_fn={@nick_color_fn}
         show_color_picker={@show_context_color_picker}
+        is_ignored={context_target_ignored?(@session, @context_menu.target_nick)}
       />
 
       <RetroHexChatWeb.Components.Dialog.dialog
@@ -2636,6 +2937,13 @@ defmodule RetroHexChatWeb.ChatLive do
         nick_colors_selected={@nick_colors_selected}
         show_nick_color_add_dialog={@show_nick_color_add_dialog}
         show_nick_color_edit_dialog={@show_nick_color_edit_dialog}
+      />
+
+      <RetroHexChatWeb.Components.IgnoreListDialog.ignore_list_dialog
+        visible={@show_ignore_dialog}
+        ignore_entries={IgnoreList.sorted_entries(@session.ignore_list)}
+        ignore_selected={@ignore_selected}
+        show_ignore_add_dialog={@show_ignore_add_dialog}
       />
 
       <RetroHexChatWeb.Components.HighlightDialog.highlight_dialog
@@ -2679,6 +2987,22 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   @nick_colors ~w(#e74c3c #3498db #2ecc71 #e67e22 #9b59b6 #1abc9c #f39c12 #e91e63 #00bcd4 #8bc34a #ff5722 #607d8b)
+
+  defp apply_new_message(socket, decorated, channel, session) do
+    if channel == session.active_channel do
+      stream_insert(socket, :chat_messages, decorated)
+    else
+      unread = MapSet.put(socket.assigns.unread_channels, channel)
+      highlight = maybe_add_highlight_channel(socket, decorated, channel)
+      assign(socket, unread_channels: unread, highlight_channels: highlight)
+    end
+  end
+
+  defp maybe_add_highlight_channel(socket, decorated, channel) do
+    if Map.get(decorated, :highlighted),
+      do: MapSet.put(socket.assigns.highlight_channels, channel),
+      else: socket.assigns.highlight_channels
+  end
 
   @spec maybe_highlight(map(), Session.t()) :: map()
   defp maybe_highlight(%{type: type} = payload, session)

@@ -383,6 +383,50 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<pre>/help\n/help join\n/help mode</pre>" <>
           "<p>You can also press <strong>F1</strong> at any time to open this Help window.</p>"
     },
+    %{
+      id: "cmd-ignore",
+      title: "/ignore",
+      category: "Commands",
+      keywords: ["ignore", "block", "silence", "mute", "filter", "hide"],
+      content:
+        "<h3>/ignore</h3>" <>
+          "<p>Add a user to your ignore list, hiding their messages from your view. " <>
+          "The ignored user receives no notification.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/ignore                        — Show your ignore list\n" <>
+          "/ignore &lt;nick&gt;                 — Ignore all content from nick\n" <>
+          "/ignore &lt;nick&gt; &lt;type&gt;           — Ignore specific type only\n" <>
+          "/ignore &lt;nick&gt; &lt;type&gt; &lt;duration&gt; — Timed ignore</pre>" <>
+          "<h4>Types</h4>" <>
+          "<pre>all      — All messages, PMs, actions (default)\n" <>
+          "messages — Channel messages only\n" <>
+          "pms      — Private messages only\n" <>
+          "actions  — /me actions only\n" <>
+          "invites  — Channel invites only</pre>" <>
+          "<h4>Duration Format</h4>" <>
+          "<pre>5m  — 5 minutes\n2h  — 2 hours\n1d  — 1 day</pre>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/ignore SpamBot\n/ignore AnnoyingGuy pms\n/ignore LoudPerson all 5m</pre>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-unignore\">/unignore</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-ignore-list\">Ignore List</a></p>"
+    },
+    %{
+      id: "cmd-unignore",
+      title: "/unignore",
+      category: "Commands",
+      keywords: ["unignore", "unblock", "unmute", "unsilence"],
+      content:
+        "<h3>/unignore</h3>" <>
+          "<p>Remove a user from your ignore list. Their messages will be visible again.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/unignore &lt;nick&gt;</pre>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/unignore SpamBot</pre>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-ignore\">/ignore</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-ignore-list\">Ignore List</a></p>"
+    },
     # ── Services ─────────────────────────────────────────────
     %{
       id: "nickserv",
@@ -634,6 +678,31 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<p><a href=\"#\" data-help-topic=\"formatting-overview\">Text Formatting</a></p>"
     },
     %{
+      id: "feature-ignore-list",
+      title: "Ignore List",
+      category: "Features",
+      keywords: ["ignore", "block", "silence", "mute", "filter", "hide", "unignore"],
+      content:
+        "<h3>Ignore List</h3>" <>
+          "<p>The Ignore List lets you hide messages from specific users without moderator intervention. " <>
+          "Ignored users are not notified — filtering happens entirely on your side.</p>" <>
+          "<h4>Opening the Ignore List Dialog</h4>" <>
+          "<p>Press <strong>Alt+I</strong> or go to <strong>Tools &gt; Ignore List</strong>.</p>" <>
+          "<h4>Features</h4>" <>
+          "<p><strong>Per-Type Filtering:</strong> Ignore all content, or just messages, PMs, actions, or invites.<br/>" <>
+          "<strong>Timed Ignores:</strong> Set a duration (e.g., 5m, 2h, 1d) — the ignore automatically expires.<br/>" <>
+          "<strong>Dialog Management:</strong> View, add, and remove ignores from the visual dialog.<br/>" <>
+          "<strong>Context Menu:</strong> Right-click a nickname to quickly Ignore or Unignore.<br/>" <>
+          "<strong>Persistence:</strong> Registered users' ignore lists are saved across sessions.</p>" <>
+          "<h4>Filtering Rules</h4>" <>
+          "<p>User-authored content (messages, PMs, /me actions) is hidden. " <>
+          "System messages (joins, parts, kicks) from ignored users remain visible to maintain channel context.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-ignore\">/ignore Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-unignore\">/unignore Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
+    },
+    %{
       id: "feature-search",
       title: "Search",
       category: "Features",
@@ -760,7 +829,7 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<h4>Navigation</h4>" <>
           "<pre>F1            — Open Help\nCtrl+F        — Find / Search\nEscape        — Close search bar</pre>" <>
           "<h4>Windows &amp; Dialogs</h4>" <>
-          "<pre>Alt+B         — Address Book\nAlt+H         — Highlight Words\nAlt+U         — URL Catcher</pre>" <>
+          "<pre>Alt+B         — Address Book\nAlt+H         — Highlight Words\nAlt+I         — Ignore List\nAlt+U         — URL Catcher</pre>" <>
           "<h4>Text Formatting</h4>" <>
           "<pre>Ctrl+B        — Bold\nCtrl+I        — Italic\nCtrl+U        — Underline\nCtrl+K        — Color\nCtrl+R        — Reverse\nCtrl+O        — Reset formatting</pre>" <>
           "<h4>Input</h4>" <>
