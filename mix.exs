@@ -9,7 +9,12 @@ defmodule RetroHexChat.Umbrella.MixProject do
       deps: deps(),
       aliases: aliases(),
       listeners: [Phoenix.CodeReloader],
-      releases: releases()
+      releases: releases(),
+      dialyzer: [
+        plt_local_path: "priv/plts",
+        plt_core_path: "priv/plts",
+        plt_add_apps: [:ex_unit]
+      ]
     ]
   end
 

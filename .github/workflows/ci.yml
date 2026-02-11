@@ -1,0 +1,351 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  MIX_ENV: test
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    outputs:
+      compile: ${{ steps.compile.outcome }}
+      format: ${{ steps.format.outcome }}
+      credo: ${{ steps.credo.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Elixir/OTP
+        id: beam
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: '28'
+          elixir-version: '1.19'
+
+      - name: Cache deps
+        uses: actions/cache@v4
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - name: Cache _build
+        uses: actions/cache@v4
+        with:
+          path: _build
+          key: build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-${{ github.sha }}
+          restore-keys: |
+            build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-
+            build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - run: mix deps.get
+
+      - name: Compile
+        id: compile
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          mix compile --warnings-as-errors 2>&1 | tee /tmp/compile_output.txt
+
+      - name: Format
+        id: format
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          mix format --check-formatted 2>&1 | tee /tmp/format_output.txt
+
+      - name: Credo
+        id: credo
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          mix credo --strict 2>&1 | tee /tmp/credo_output.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lint-outputs
+          path: /tmp/*_output.txt
+          if-no-files-found: ignore
+          retention-days: 1
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    outputs:
+      tests: ${{ steps.tests.outcome }}
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: retro_hex_chat_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
+    env:
+      PGHOST: localhost
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Elixir/OTP
+        id: beam
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: '28'
+          elixir-version: '1.19'
+
+      - name: Cache deps
+        uses: actions/cache@v4
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - name: Cache _build
+        uses: actions/cache@v4
+        with:
+          path: _build
+          key: build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-${{ github.sha }}
+          restore-keys: |
+            build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-
+            build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - run: mix deps.get
+      - run: npm install --prefix apps/retro_hex_chat_web/assets
+      - run: mix compile
+      - run: mix ecto.create --quiet && mix ecto.migrate --quiet
+
+      - name: Tests
+        id: tests
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          mix test 2>&1 | tee /tmp/tests_output.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-outputs
+          path: /tmp/tests_output.txt
+          if-no-files-found: ignore
+          retention-days: 1
+
+  dialyzer:
+    name: Dialyzer
+    runs-on: ubuntu-latest
+    outputs:
+      dialyzer: ${{ steps.dialyzer.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Elixir/OTP
+        id: beam
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: '28'
+          elixir-version: '1.19'
+
+      - name: Cache deps
+        uses: actions/cache@v4
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - name: Cache _build
+        uses: actions/cache@v4
+        with:
+          path: _build
+          key: build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-${{ github.sha }}
+          restore-keys: |
+            build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-
+            build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - name: Restore PLT cache
+        id: plt_cache
+        uses: actions/cache/restore@v4
+        with:
+          path: priv/plts
+          key: plt-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            plt-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - run: mix deps.get
+      - run: mix compile
+
+      - name: Create PLTs
+        if: steps.plt_cache.outputs.cache-hit != 'true'
+        run: mix dialyzer --plt
+
+      - name: Dialyzer
+        id: dialyzer
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          mix dialyzer 2>&1 | tee /tmp/dialyzer_output.txt
+
+      - name: Save PLT cache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: priv/plts
+          key: plt-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dialyzer-outputs
+          path: /tmp/dialyzer_output.txt
+          if-no-files-found: ignore
+          retention-days: 1
+
+  report:
+    name: CI Report
+    needs: [lint, test, dialyzer]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: /tmp/ci-outputs
+          pattern: '*-outputs'
+          merge-multiple: true
+
+      - name: Build CI report
+        env:
+          STATUS_COMPILE: ${{ needs.lint.outputs.compile }}
+          STATUS_FORMAT: ${{ needs.lint.outputs.format }}
+          STATUS_CREDO: ${{ needs.lint.outputs.credo }}
+          STATUS_TESTS: ${{ needs.test.outputs.tests }}
+          STATUS_DIALYZER: ${{ needs.dialyzer.outputs.dialyzer }}
+          RUN_NUMBER: ${{ github.run_number }}
+          RUN_ID: ${{ github.run_id }}
+          REPO: ${{ github.repository }}
+          SERVER_URL: ${{ github.server_url }}
+        run: |
+          icon() {
+            case "$1" in
+              success) echo "✅" ;;
+              failure) echo "❌" ;;
+              *) echo "⏭️" ;;
+            esac
+          }
+
+          # Extract test summary (e.g. "822 tests, 0 failures")
+          TEST_SUMMARY=""
+          if [ -f /tmp/ci-outputs/tests_output.txt ]; then
+            TEST_SUMMARY=$(grep -oE '[0-9]+ tests?, [0-9]+ failures?(, [0-9]+ excluded)?' /tmp/ci-outputs/tests_output.txt | tail -1)
+          fi
+
+          # Extract credo summary
+          CREDO_SUMMARY=""
+          if [ -f /tmp/ci-outputs/credo_output.txt ]; then
+            if [ "$STATUS_CREDO" = "success" ]; then
+              CREDO_SUMMARY="no issues"
+            else
+              CREDO_ISSUES=$(grep -cE '┃' /tmp/ci-outputs/credo_output.txt 2>/dev/null || echo "0")
+              CREDO_SUMMARY="${CREDO_ISSUES} issue(s)"
+            fi
+          fi
+
+          # Extract dialyzer summary
+          DIALYZER_SUMMARY=""
+          if [ -f /tmp/ci-outputs/dialyzer_output.txt ]; then
+            if [ "$STATUS_DIALYZER" = "success" ]; then
+              DIALYZER_SUMMARY="no warnings"
+            else
+              DIALYZER_WARNINGS=$(grep -cE '^.+:\d+:' /tmp/ci-outputs/dialyzer_output.txt 2>/dev/null || echo "0")
+              DIALYZER_SUMMARY="${DIALYZER_WARNINGS} warning(s)"
+            fi
+          fi
+
+          SHORT_SHA="${GITHUB_SHA:0:7}"
+
+          {
+            echo "## CI Results"
+            echo ""
+            echo "| Check | Result |"
+            echo "|-------|--------|"
+            echo "| **Compile** | $(icon "$STATUS_COMPILE") |"
+            echo "| **Format** | $(icon "$STATUS_FORMAT") |"
+            echo "| **Credo** | $(icon "$STATUS_CREDO") ${CREDO_SUMMARY} |"
+            echo "| **Tests** | $(icon "$STATUS_TESTS") ${TEST_SUMMARY} |"
+            echo "| **Dialyzer** | $(icon "$STATUS_DIALYZER") ${DIALYZER_SUMMARY} |"
+            echo ""
+
+            # Detailed output for each failed check
+            for check in compile format credo tests dialyzer; do
+              status_var="STATUS_$(echo "$check" | tr '[:lower:]' '[:upper:]')"
+              status="${!status_var}"
+
+              if [ "$status" = "failure" ] && [ -f "/tmp/ci-outputs/${check}_output.txt" ]; then
+                check_title="$(echo "$check" | sed 's/^./\U&/')"
+                echo "<details>"
+                echo "<summary>❌ <strong>${check_title}</strong> — click to expand</summary>"
+                echo ""
+                echo '```'
+                tail -60 "/tmp/ci-outputs/${check}_output.txt"
+                echo '```'
+                echo ""
+                echo "</details>"
+                echo ""
+              fi
+            done
+
+            echo "---"
+            echo "📋 [Run #${RUN_NUMBER}](${SERVER_URL}/${REPO}/actions/runs/${RUN_ID}) · \`${SHORT_SHA}\` · $(date -u +'%Y-%m-%d %H:%M UTC')"
+          } > /tmp/ci_report.md
+
+          cp /tmp/ci_report.md "$GITHUB_STEP_SUMMARY"
+
+      - name: PR Comment
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: ci-results
+          path: /tmp/ci_report.md
+
+      - name: Fail if any check failed
+        run: |
+          # Check for infrastructure failures (job didn't complete)
+          if [[ "${{ needs.lint.result }}" != "success" || \
+                "${{ needs.test.result }}" != "success" || \
+                "${{ needs.dialyzer.result }}" != "success" ]]; then
+            echo "::error::One or more jobs had infrastructure failures"
+            exit 1
+          fi
+
+          # Check individual step outcomes
+          if [[ "${{ needs.lint.outputs.compile }}" == "failure" || \
+                "${{ needs.lint.outputs.format }}" == "failure" || \
+                "${{ needs.lint.outputs.credo }}" == "failure" || \
+                "${{ needs.test.outputs.tests }}" == "failure" || \
+                "${{ needs.dialyzer.outputs.dialyzer }}" == "failure" ]]; then
+            echo "::error::One or more checks failed"
+            exit 1
+          fi
