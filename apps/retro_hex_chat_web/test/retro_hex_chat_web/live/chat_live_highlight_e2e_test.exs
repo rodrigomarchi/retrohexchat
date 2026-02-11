@@ -318,7 +318,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightE2ETest do
 
   defp click_channel(view, channel) do
     view
-    |> element(~s([phx-click="switch_channel"][phx-value-channel="#{channel}"]))
+    |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#{channel}"]))
     |> render_click()
   end
 

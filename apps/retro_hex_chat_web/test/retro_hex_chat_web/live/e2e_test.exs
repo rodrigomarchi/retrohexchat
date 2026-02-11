@@ -166,7 +166,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
       # Switch to #lobby
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       html = render(view)
@@ -286,7 +286,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
       html =
         view
-        |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+        |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
         |> render_click()
 
       assert html =~ "tree-active"
@@ -300,7 +300,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
       # Switch back to #lobby
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       # Send message to inactive channel
@@ -327,7 +327,7 @@ defmodule RetroHexChatWeb.E2ETest do
       send_command(view, "/join #{ch}")
 
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       send(view.pid, %{
@@ -347,7 +347,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
       html =
         view
-        |> element(~s([phx-click="switch_channel"][phx-value-channel="#{ch}"]))
+        |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#{ch}"]))
         |> render_click()
 
       refute html =~ "tree-unread"
@@ -751,7 +751,7 @@ defmodule RetroHexChatWeb.E2ETest do
       # Switch back to channel — nicklist should show
       html =
         view
-        |> element(~s([phx-click="switch_channel"][phx-value-channel="#{ch}"]))
+        |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#{ch}"]))
         |> render_click()
 
       assert html =~ "nicklist"
@@ -765,7 +765,7 @@ defmodule RetroHexChatWeb.E2ETest do
       render_click(view, "context_query", %{"nick" => "UnrdPal"})
 
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       # Receive PM while in channel
@@ -792,7 +792,7 @@ defmodule RetroHexChatWeb.E2ETest do
       render_click(view, "context_query", %{"nick" => "ClrPal"})
 
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       send(view.pid, %{
@@ -812,7 +812,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
       html =
         view
-        |> element(~s([phx-click="switch_pm"][phx-value-nickname="ClrPal"]))
+        |> element(~s(li[phx-click="switch_pm"][phx-value-nickname="ClrPal"]))
         |> render_click()
 
       refute html =~ "tree-unread"

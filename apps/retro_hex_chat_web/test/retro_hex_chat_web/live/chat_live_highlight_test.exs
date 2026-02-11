@@ -123,7 +123,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
 
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       # Now #lobby is active, ch is non-active — send highlight to ch
@@ -154,7 +154,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
 
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       # Send highlight to non-active channel
@@ -164,7 +164,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
       # Switch to that channel — flash should clear
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#{ch}"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#{ch}"]))
       |> render_click()
 
       html = render(view)
@@ -181,7 +181,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
 
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       send_new_message(view, "OtherUser", "hello world", ch)
@@ -224,7 +224,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
 
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       send_new_message(view, "OtherUser", "hey #{nick}!", ch)

@@ -98,6 +98,7 @@ defmodule RetroHexChatWeb.ChatLive do
       show_nick_color_add_dialog: false,
       show_nick_color_edit_dialog: false,
       show_nicklist: true,
+      show_status_tab: false,
       show_notify_add_dialog: false,
       show_notify_edit_dialog: false,
       show_notify_list: false,
@@ -106,6 +107,8 @@ defmodule RetroHexChatWeb.ChatLive do
       show_highlight_add_dialog: false,
       show_highlight_dialog: false,
       show_highlight_edit_dialog: false,
+      current_topic: nil,
+      current_modes: nil,
       show_treebar: true,
       show_url_catcher: false,
       show_whois: false,
@@ -148,7 +151,12 @@ defmodule RetroHexChatWeb.ChatLive do
 
     {:noreply,
      socket
-     |> assign(session: session, unread_channels: unread, highlight_channels: highlight)
+     |> assign(
+       session: session,
+       unread_channels: unread,
+       highlight_channels: highlight,
+       show_status_tab: false
+     )
      |> load_channel_users(channel)
      |> load_channel_messages_with_pagination(channel)}
   end
@@ -160,8 +168,45 @@ defmodule RetroHexChatWeb.ChatLive do
 
     {:noreply,
      socket
-     |> assign(session: session, unread_channels: unread)
+     |> assign(
+       session: session,
+       unread_channels: unread,
+       current_topic: nil,
+       current_modes: nil,
+       show_status_tab: false
+     )
      |> stream(:chat_messages, messages, reset: true)}
+  end
+
+  def handle_event("switch_to_status", _params, socket) do
+    {:noreply, assign(socket, show_status_tab: true)}
+  end
+
+  def handle_event("close_channel_tab", %{"channel" => channel}, socket) do
+    {:noreply, part_channel(socket, channel)}
+  end
+
+  def handle_event("close_pm_tab", %{"nickname" => nickname}, socket) do
+    session = Session.remove_pm_conversation(socket.assigns.session, nickname)
+    socket = assign(socket, session: session)
+
+    socket =
+      if session.active_pm do
+        messages = load_pm_messages(session.nickname, session.active_pm)
+        stream(socket, :chat_messages, messages, reset: true)
+      else
+        if session.active_channel do
+          socket
+          |> load_channel_users(session.active_channel)
+          |> load_channel_messages_with_pagination(session.active_channel)
+        else
+          socket
+          |> assign(current_topic: nil, current_modes: nil)
+          |> stream(:chat_messages, [], reset: true)
+        end
+      end
+
+    {:noreply, socket}
   end
 
   def handle_event("close_dialog", _params, socket) do
@@ -1007,21 +1052,30 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   def handle_info(
-        {:mode_changed, %{nickname: nick, mode_string: mode_string, params: params}},
+        {:mode_changed, %{nickname: nick, mode_string: mode_string, params: params} = payload},
         socket
       ) do
     msg = "#{nick} sets mode #{mode_string}"
     users = apply_mode_to_users(socket.assigns.channel_users, mode_string, params)
 
-    {:noreply,
-     socket
-     |> assign(channel_users: users)
-     |> stream_insert(:chat_messages, system_message(msg))}
+    socket =
+      socket
+      |> assign(channel_users: users)
+      |> maybe_update_current_modes(payload)
+      |> stream_insert(:chat_messages, system_message(msg))
+
+    {:noreply, socket}
   end
 
-  def handle_info({:mode_changed, %{nickname: nick, mode_string: mode_string}}, socket) do
+  def handle_info({:mode_changed, %{nickname: nick, mode_string: mode_string} = payload}, socket) do
     msg = "#{nick} sets mode #{mode_string}"
-    {:noreply, stream_insert(socket, :chat_messages, system_message(msg))}
+
+    socket =
+      socket
+      |> maybe_update_current_modes(payload)
+      |> stream_insert(:chat_messages, system_message(msg))
+
+    {:noreply, socket}
   end
 
   def handle_info({:user_kicked, %{operator: op, target: target, reason: reason}}, socket) do
@@ -1049,8 +1103,17 @@ defmodule RetroHexChatWeb.ChatLive do
     {:noreply, stream_insert(socket, :chat_messages, system_message(msg))}
   end
 
-  def handle_info({:topic_changed, %{nickname: nick, topic: topic}}, socket) do
+  def handle_info({:topic_changed, %{nickname: nick, topic: topic} = payload}, socket) do
     msg = "#{nick} changed the topic to: #{topic}"
+    channel = Map.get(payload, :channel)
+
+    socket =
+      if channel && channel == socket.assigns.session.active_channel do
+        assign(socket, current_topic: topic)
+      else
+        socket
+      end
+
     {:noreply, stream_insert(socket, :chat_messages, system_message(msg))}
   end
 
@@ -1600,7 +1663,13 @@ defmodule RetroHexChatWeb.ChatLive do
       |> load_channel_messages_with_pagination(new_session.active_channel)
     else
       socket
-      |> assign(oldest_message_id: nil, has_more: false, channel_users: [])
+      |> assign(
+        oldest_message_id: nil,
+        has_more: false,
+        channel_users: [],
+        current_topic: nil,
+        current_modes: nil
+      )
       |> stream(:chat_messages, [], reset: true)
     end
   end
@@ -1613,10 +1682,12 @@ defmodule RetroHexChatWeb.ChatLive do
     socket = assign(socket, session: new_session)
 
     if new_session.active_channel do
-      load_channel_messages_with_pagination(socket, new_session.active_channel)
+      socket
+      |> load_channel_users(new_session.active_channel)
+      |> load_channel_messages_with_pagination(new_session.active_channel)
     else
       socket
-      |> assign(oldest_message_id: nil, has_more: false)
+      |> assign(oldest_message_id: nil, has_more: false, current_topic: nil, current_modes: nil)
       |> stream(:chat_messages, [], reset: true)
     end
   end
@@ -1629,10 +1700,27 @@ defmodule RetroHexChatWeb.ChatLive do
             %{nickname: nick, role: role, away: false}
           end)
 
-        assign(socket, channel_users: users)
+        assign(socket,
+          channel_users: users,
+          current_topic: state.topic,
+          current_modes: state.modes
+        )
 
       {:error, _} ->
-        assign(socket, channel_users: [])
+        assign(socket, channel_users: [], current_topic: nil, current_modes: nil)
+    end
+  end
+
+  defp maybe_update_current_modes(socket, payload) do
+    channel = Map.get(payload, :channel)
+
+    if channel && channel == socket.assigns.session.active_channel do
+      case Server.get_state(channel) do
+        {:ok, state} -> assign(socket, current_modes: state.modes)
+        {:error, _} -> socket
+      end
+    else
+      socket
     end
   end
 
@@ -1678,6 +1766,9 @@ defmodule RetroHexChatWeb.ChatLive do
 
   defp send_plain_message(socket, session, text) do
     cond do
+      socket.assigns.show_status_tab ->
+        push_status_message(socket, "Cannot send text to status window. Use /commands.", :error)
+
       session.active_pm ->
         handle_pm_send(socket, session.active_pm, text)
 
@@ -2283,6 +2374,24 @@ defmodule RetroHexChatWeb.ChatLive do
         />
 
         <div class="chat-area" style="position: relative;">
+          <RetroHexChatWeb.Components.TabBar.tab_bar
+            channels={@session.channels}
+            pm_conversations={@session.pm_conversations}
+            active_channel={@session.active_channel}
+            active_pm={@session.active_pm}
+            show_status_tab={@show_status_tab}
+            unread_channels={MapSet.to_list(@unread_channels)}
+            highlight_channels={MapSet.to_list(@highlight_channels)}
+          />
+
+          <RetroHexChatWeb.Components.TopicBar.topic_bar
+            channel={@session.active_channel}
+            pm_target={@session.active_pm}
+            topic={@current_topic}
+            modes={@current_modes}
+            show_status_tab={@show_status_tab}
+          />
+
           <RetroHexChatWeb.Components.SearchBar.search_bar
             visible={@search_visible}
             query={@search_query}
@@ -2292,7 +2401,13 @@ defmodule RetroHexChatWeb.ChatLive do
 
           <RetroHexChatWeb.Components.ScrollLoader.scroll_loader loading={@loading_more} />
 
-          <div class="chat-messages" id="chat-messages" phx-update="stream" phx-hook="ScrollHook">
+          <div
+            class="chat-messages"
+            id="chat-messages"
+            phx-update="stream"
+            phx-hook="ScrollHook"
+            style={if @show_status_tab, do: "display: none;", else: nil}
+          >
             <div
               :for={{dom_id, msg} <- @streams.chat_messages}
               id={dom_id}
@@ -2331,9 +2446,24 @@ defmodule RetroHexChatWeb.ChatLive do
             </div>
           </div>
 
-          <RetroHexChatWeb.Components.FormattingToolbar.formatting_toolbar strip_formatting={
-            @session.strip_formatting
-          } />
+          <div
+            class="chat-messages status-messages-view"
+            id="status-messages"
+            phx-update="stream"
+            style={if @show_status_tab, do: nil, else: "display: none;"}
+            data-testid="status-messages"
+          >
+            <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
+              <span class="chat-timestamp">[{format_status_time(msg.timestamp)}]</span>
+              <span class={"chat-status chat-status--#{msg.type}"}>{msg.content}</span>
+            </div>
+          </div>
+
+          <div style={if @show_status_tab, do: "display: none;", else: nil}>
+            <RetroHexChatWeb.Components.FormattingToolbar.formatting_toolbar strip_formatting={
+              @session.strip_formatting
+            } />
+          </div>
 
           <div class="chat-input-area" style="position: relative;">
             <RetroHexChatWeb.Components.CommandPalette.command_palette
@@ -2358,7 +2488,7 @@ defmodule RetroHexChatWeb.ChatLive do
         </div>
 
         <RetroHexChatWeb.Components.Nicklist.nicklist
-          :if={@show_nicklist && !@session.active_pm}
+          :if={@show_nicklist && !@session.active_pm && !@show_status_tab}
           users={@channel_users}
           nick_color_fn={@nick_color_fn}
         />
@@ -2432,22 +2562,6 @@ defmodule RetroHexChatWeb.ChatLive do
         entry_count={length(@url_catcher_entries)}
       />
 
-      <div class="status-panel" style="height: 120px; border-top: 1px solid #808080;">
-        <RetroHexChatWeb.Components.StatusWindow.status_window>
-          <div
-            id="status-messages"
-            phx-update="stream"
-            style="font-size: 12px; font-family: monospace;"
-          >
-            <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
-              <span style={RetroHexChatWeb.Components.StatusWindow.status_message_style(msg.type)}>
-                [{RetroHexChatWeb.Components.StatusWindow.format_time(msg.timestamp)}] {msg.content}
-              </span>
-            </div>
-          </div>
-        </RetroHexChatWeb.Components.StatusWindow.status_window>
-      </div>
-
       <RetroHexChatWeb.Components.StatusBar.status_bar
         nickname={@session.nickname}
         channel={@session.active_pm || @session.active_channel}
@@ -2511,6 +2625,9 @@ defmodule RetroHexChatWeb.ChatLive do
 
   defp format_time(%DateTime{} = dt), do: Calendar.strftime(dt, "%H:%M")
   defp format_time(_), do: "--:--"
+
+  defp format_status_time(%DateTime{} = dt), do: Calendar.strftime(dt, "%H:%M")
+  defp format_status_time(_), do: "--:--"
 
   defp nick_color(nickname) do
     index = :erlang.phash2(nickname, length(@nick_colors))

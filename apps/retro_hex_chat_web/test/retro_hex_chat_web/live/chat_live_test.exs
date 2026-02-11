@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       # Switch back to #lobby via treebar
       html =
         view
-        |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+        |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
         |> render_click()
 
       assert html =~ "#lobby"
@@ -317,7 +317,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       # Switch back to #lobby
       html =
         view
-        |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+        |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
         |> render_click()
 
       # Should show the user in #lobby's nicklist
@@ -502,7 +502,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       # Switch back to #lobby channel
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       # Receive a PM from Alice while viewing #lobby
@@ -531,7 +531,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       render_click(view, "context_query", %{"nick" => "Bob"})
 
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       # Receive PM from Bob to create unread
@@ -554,7 +554,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       # Switch to Bob's PM — should clear unread
       html =
         view
-        |> element(~s([phx-click="switch_pm"][phx-value-nickname="Bob"]))
+        |> element(~s(li[phx-click="switch_pm"][phx-value-nickname="Bob"]))
         |> render_click()
 
       refute html =~ "tree-unread"
@@ -571,7 +571,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       # Switch back to #lobby — #unread_ch is now inactive
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       # Send a message to the non-active channel
@@ -599,7 +599,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       # Switch to #lobby
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       # Send a message to #unread_clr
@@ -622,7 +622,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       # Switch to #unread_clr — should clear unread
       html =
         view
-        |> element(~s([phx-click="switch_channel"][phx-value-channel="#unread_clr"]))
+        |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#unread_clr"]))
         |> render_click()
 
       refute html =~ "tree-unread"
@@ -1001,12 +1001,12 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       # Switch away and back to reload messages with pagination state
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       html =
         view
-        |> element(~s([phx-click="switch_channel"][phx-value-channel="#load_more_ch"]))
+        |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#load_more_ch"]))
         |> render_click()
 
       assert html =~ "chat-input-form"
@@ -1491,13 +1491,13 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       # Switch back to channel
       view
-      |> element(~s([phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       # Now switch to PM via treebar
       html =
         view
-        |> element(~s([phx-click="switch_pm"][phx-value-nickname="PmPal"]))
+        |> element(~s(li[phx-click="switch_pm"][phx-value-nickname="PmPal"]))
         |> render_click()
 
       # Nicklist should be hidden in PM view
@@ -1522,7 +1522,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       # Switch back to channel
       html =
         view
-        |> element(~s([phx-click="switch_channel"][phx-value-channel="#pm_back"]))
+        |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#pm_back"]))
         |> render_click()
 
       # Channel view restored: nicklist visible, user shown as operator

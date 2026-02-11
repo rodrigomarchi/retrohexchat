@@ -314,10 +314,10 @@ defmodule RetroHexChatWeb.AddressBookTest do
       assert html =~ "Mike"
       assert html =~ "Zara"
 
-      # Verify alphabetical order by checking position in HTML
-      alpha_pos = :binary.match(html, "Alpha") |> elem(0)
-      mike_pos = :binary.match(html, "Mike") |> elem(0)
-      zara_pos = :binary.match(html, "Zara") |> elem(0)
+      # Verify alphabetical order by checking contact table row positions
+      alpha_pos = :binary.match(html, "contact-entry-Alpha") |> elem(0)
+      mike_pos = :binary.match(html, "contact-entry-Mike") |> elem(0)
+      zara_pos = :binary.match(html, "contact-entry-Zara") |> elem(0)
 
       assert alpha_pos < mike_pos
       assert mike_pos < zara_pos

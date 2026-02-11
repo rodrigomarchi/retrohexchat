@@ -218,14 +218,15 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
     end
   end
 
-  # ── E2E: Status Window ────────────────────────────────────────
+  # ── E2E: Status Tab ──────────────────────────────────────────
 
-  describe "Status Window" do
-    test "status window always present on chat page", %{conn: conn} do
+  describe "Status Tab" do
+    test "status tab always present in tab bar", %{conn: conn} do
       nick = "E2EStat#{System.unique_integer([:positive])}"
       {:ok, _view, html} = live(conn, "/chat?nickname=#{nick}")
 
-      assert html =~ "status-window"
+      assert html =~ "tab-status"
+      assert html =~ "status-messages"
     end
   end
 

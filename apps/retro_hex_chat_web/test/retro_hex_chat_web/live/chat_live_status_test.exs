@@ -3,42 +3,219 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
   @moduletag :liveview
 
-  alias RetroHexChat.Channels.{Registry, Supervisor}
+  alias RetroHexChat.Channels.{Registry, Server, Supervisor}
 
   setup do
     ensure_channel("#lobby")
     :ok
   end
 
-  # ── Status window (T043) ────────────────────────────────────
+  # ── Status tab ────────────────────────────────────────────
 
-  describe "Status window" do
-    test "status window renders on mount", %{conn: conn} do
+  describe "Status tab" do
+    test "status messages stream is present on mount", %{conn: conn} do
       unique = System.unique_integer([:positive])
       {:ok, view, _html} = live(conn, ~p"/chat?nickname=StatusUser#{unique}")
 
       html = render(view)
-      assert html =~ "status-window"
+      assert html =~ "status-messages"
     end
 
-    test "status window has no close button", %{conn: conn} do
+    test "status tab always rendered in tab bar", %{conn: conn} do
       unique = System.unique_integer([:positive])
       {:ok, view, _html} = live(conn, ~p"/chat?nickname=NoClose#{unique}")
 
       html = render(view)
-      # The status window title bar should contain the title "Status"
+      assert html =~ "tab-status"
       assert html =~ "Status"
-      # The status window must not have a close button (no title-bar-controls)
-      refute html =~ "status-window-close"
     end
 
-    test "system messages appear in status stream", %{conn: conn} do
+    test "status messages stream exists and hidden by default", %{conn: conn} do
       unique = System.unique_integer([:positive])
       {:ok, view, _html} = live(conn, ~p"/chat?nickname=StatusMsg#{unique}")
 
-      # On mount, system messages (e.g. welcome or connect) should appear in status
       html = render(view)
-      assert html =~ "status-window"
+      assert html =~ "status-messages"
+    end
+
+    test "switching to status tab hides chat and shows status", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StSwitch#{unique}")
+
+      # Click the status tab
+      render_click(view, "switch_to_status")
+      html = render(view)
+
+      # Status messages should be visible (no display:none)
+      assert html =~ ~s(id="status-messages")
+      # Chat messages should be hidden
+      assert html =~ ~s(id="chat-messages")
+      # The status tab should be active
+      assert html =~ "tab-active"
+    end
+
+    test "switching back to channel from status tab", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StBack#{unique}")
+
+      render_click(view, "switch_to_status")
+      render_click(view, "switch_channel", %{"channel" => "#lobby"})
+      html = render(view)
+
+      # Chat messages should now be visible
+      refute html =~
+               ~s(id="chat-messages" phx-update="stream" phx-hook="ScrollHook" style="display: none;")
+    end
+
+    test "nicklist hidden on status tab", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StNick#{unique}")
+
+      # Nicklist should be visible initially
+      html = render(view)
+      assert html =~ "nicklist"
+
+      # Switch to status tab — nicklist should be hidden
+      render_click(view, "switch_to_status")
+      html = render(view)
+      refute html =~ "nicklist-list"
+    end
+
+    test "plain text on status tab shows error", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StText#{unique}")
+
+      render_click(view, "switch_to_status")
+      render_submit(view, "send_input", %{"input" => "hello world"})
+      html = render(view)
+
+      assert html =~ "Cannot send text to status window"
+    end
+
+    test "commands work on status tab", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StCmd#{unique}")
+
+      render_click(view, "switch_to_status")
+      render_submit(view, "send_input", %{"input" => "/help"})
+      html = render(view)
+
+      assert html =~ "Available commands"
+    end
+
+    test "topic bar shows status text", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StTopic#{unique}")
+
+      render_click(view, "switch_to_status")
+      html = render(view)
+
+      assert html =~ "RetroHexChat Status"
+    end
+  end
+
+  # ── Tab bar behaviour ─────────────────────────────────────────
+
+  describe "Tab bar" do
+    test "Status tab is always first in the tab bar", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=TabFirst#{unique}")
+
+      html = render(view)
+      tab_bar = Floki.find(Floki.parse_document!(html), "[data-testid=tab-bar]")
+      children = Floki.children(hd(tab_bar))
+      first_child = hd(children)
+      assert Floki.attribute(first_child, "data-testid") == ["tab-status"]
+    end
+
+    test "active channel tab has tab-active class", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=TabAct#{unique}")
+
+      html = render(view)
+      tab = Floki.find(Floki.parse_document!(html), ~s([data-testid="tab-#lobby"]))
+      assert length(tab) == 1
+      [class] = Floki.attribute(hd(tab), "class")
+      assert class =~ "tab-active"
+    end
+
+    test "close_channel_tab parts the channel and removes tab", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      ch = "#closetab#{unique}"
+      ensure_channel(ch)
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=CloseTab#{unique}")
+
+      # Join the unique channel
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
+      html = render(view)
+      assert html =~ "tab-#{ch}"
+
+      # Close the channel tab
+      render_click(view, "close_channel_tab", %{"channel" => ch})
+      html = render(view)
+
+      # Tab should be gone
+      refute html =~ "tab-#{ch}"
+      # But #lobby tab should remain
+      assert html =~ "tab-#lobby"
+    end
+
+    test "close_pm_tab removes the PM tab", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=ClosePm#{unique}")
+
+      # Open a PM conversation
+      render_click(view, "nick_right_click", %{"nick" => "SomePal", "x" => 0, "y" => 0})
+      render_click(view, "context_query", %{"nick" => "SomePal"})
+      html = render(view)
+      assert html =~ "tab-pm-SomePal"
+
+      # Close the PM tab
+      render_click(view, "close_pm_tab", %{"nickname" => "SomePal"})
+      html = render(view)
+      refute html =~ "tab-pm-SomePal"
+    end
+  end
+
+  # ── Topic bar behaviour ──────────────────────────────────────
+
+  describe "Topic bar" do
+    test "shows channel topic after join", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      ch = "#topicbar#{unique}"
+      ensure_channel(ch)
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=TopicBr#{unique}")
+
+      # Join channel and set a topic
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
+      Server.set_topic(ch, "TopicBr#{unique}", "Test Topic Here")
+
+      # Switch away and back to refresh topic from server state
+      render_click(view, "switch_channel", %{"channel" => "#lobby"})
+      render_click(view, "switch_channel", %{"channel" => ch})
+      html = render(view)
+
+      assert html =~ "Test Topic Here"
+    end
+
+    test "shows '(no topic set)' when no topic exists", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=NoTopic#{unique}")
+
+      html = render(view)
+      assert html =~ "(no topic set)"
+    end
+
+    test "shows PM target for PM view", %{conn: conn} do
+      unique = System.unique_integer([:positive])
+      {:ok, view, _html} = live(conn, ~p"/chat?nickname=PmTopic#{unique}")
+
+      # Open PM
+      render_click(view, "nick_right_click", %{"nick" => "PmPeer", "x" => 0, "y" => 0})
+      render_click(view, "context_query", %{"nick" => "PmPeer"})
+      html = render(view)
+
+      assert html =~ "Private conversation with PmPeer"
     end
   end
 

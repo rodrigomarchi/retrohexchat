@@ -39,7 +39,9 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
         data-testid="format-btn-bold"
         title="Bold (Ctrl+B)"
       >
-        <strong>B</strong>
+        <svg viewBox="0 0 14 14" fill="currentColor">
+          <path d="M3 1h5a3 3 0 0 1 2.1 5.1A3.5 3.5 0 0 1 8.5 13H3V1zm2 5h3a1 1 0 1 0 0-2H5v2zm0 2v3h3.5a1.5 1.5 0 0 0 0-3H5z" />
+        </svg>
       </button>
       <button
         type="button"
@@ -48,7 +50,9 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
         data-testid="format-btn-italic"
         title="Italic (Ctrl+I)"
       >
-        <em>I</em>
+        <svg viewBox="0 0 14 14" fill="currentColor">
+          <path d="M5 1h6v2H9.2L7.3 11H9v2H3v-2h1.8L6.7 3H5V1z" />
+        </svg>
       </button>
       <button
         type="button"
@@ -57,7 +61,9 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
         data-testid="format-btn-underline"
         title="Underline (Ctrl+U)"
       >
-        <u>U</u>
+        <svg viewBox="0 0 14 14" fill="currentColor">
+          <path d="M3 1v5.5a4 4 0 0 0 8 0V1h-2v5.5a2 2 0 0 1-4 0V1H3zm-1 11h10v2H2v-2z" />
+        </svg>
       </button>
       <div class="format-color-picker-wrapper">
         <button
@@ -67,7 +73,15 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
           data-testid="format-btn-color"
           title="Color (Ctrl+K)"
         >
-          C
+          <svg viewBox="0 0 14 14" fill="currentColor">
+            <rect x="1" y="1" width="4" height="4" fill="#ff0000" />
+            <rect x="5" y="1" width="4" height="4" fill="#00ff00" />
+            <rect x="9" y="1" width="4" height="4" fill="#0000ff" />
+            <rect x="1" y="5" width="4" height="4" fill="#ffff00" />
+            <rect x="5" y="5" width="4" height="4" fill="#ff00ff" />
+            <rect x="9" y="5" width="4" height="4" fill="#00ffff" />
+            <rect x="1" y="9" width="12" height="4" fill="#808080" />
+          </svg>
         </button>
         <div class="format-color-dropdown" style="display: none;">
           <button
@@ -89,7 +103,10 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
         data-testid="strip-formatting-toggle"
         title="Strip Colors"
       >
-        S
+        <svg viewBox="0 0 14 14" fill="currentColor">
+          <circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.5" />
+          <line x1="3" y1="11" x2="11" y2="3" stroke="currentColor" stroke-width="1.5" />
+        </svg>
       </button>
     </div>
     """

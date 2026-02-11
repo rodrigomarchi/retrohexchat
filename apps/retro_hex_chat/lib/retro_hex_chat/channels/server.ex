@@ -210,7 +210,8 @@ defmodule RetroHexChat.Channels.Server do
 
       broadcast(
         state.name,
-        {:mode_changed, %{nickname: nickname, mode_string: mode_string, params: params}}
+        {:mode_changed,
+         %{channel: state.name, nickname: nickname, mode_string: mode_string, params: params}}
       )
 
       {:reply, :ok, new_state}
@@ -302,6 +303,7 @@ defmodule RetroHexChat.Channels.Server do
           state.name,
           {:topic_changed,
            %{
+             channel: state.name,
              nickname: nickname,
              topic: topic
            }}
