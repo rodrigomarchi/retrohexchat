@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
   attr :channels, :list, default: []
   attr :active_channel, :string, default: nil
   attr :unread_channels, :list, default: []
+  attr :highlight_channels, :list, default: []
   attr :pm_conversations, :list, default: []
   attr :active_pm, :string, default: nil
 
@@ -22,7 +23,9 @@ defmodule RetroHexChatWeb.Components.Treebar do
             <ul>
               <li
                 :for={channel <- @channels}
-                class={treebar_item_class(channel, @active_channel, @unread_channels)}
+                class={
+                  treebar_item_class(channel, @active_channel, @unread_channels, @highlight_channels)
+                }
                 data-testid={"channel-#{channel}"}
                 phx-click="switch_channel"
                 phx-value-channel={channel}
@@ -53,11 +56,13 @@ defmodule RetroHexChatWeb.Components.Treebar do
     """
   end
 
-  @spec treebar_item_class(String.t(), String.t() | nil, list(String.t())) :: String.t()
-  defp treebar_item_class(channel, active, unread) do
+  @spec treebar_item_class(String.t(), String.t() | nil, list(String.t()), list(String.t())) ::
+          String.t()
+  defp treebar_item_class(channel, active, unread, highlight) do
     classes = []
     classes = if channel == active, do: ["tree-active" | classes], else: classes
     classes = if channel in unread, do: ["tree-unread" | classes], else: classes
+    classes = if channel in highlight, do: ["tree-highlight" | classes], else: classes
     Enum.join(classes, " ")
   end
 

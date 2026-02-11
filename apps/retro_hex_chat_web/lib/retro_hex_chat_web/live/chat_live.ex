@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
   alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, Session}
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
-  alias RetroHexChat.Chat.{Formatter, Queries, Search, Service}
+  alias RetroHexChat.Chat.{Formatter, Highlight, HighlightWords, Queries, Search, Service}
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChat.Commands.Registry, as: CmdRegistry
   alias RetroHexChat.Presence.{NotifyList, Tracker}
@@ -41,10 +41,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
           {:ok, socket}
         else
-          {:ok,
-           socket
-           |> assign_defaults(session)
-           |> stream(:chat_messages, [])}
+          {:ok, assign_defaults(socket, session)}
         end
 
       {:error, _} ->
@@ -91,11 +88,17 @@ defmodule RetroHexChatWeb.ChatLive do
       show_notify_add_dialog: false,
       show_notify_edit_dialog: false,
       show_notify_list: false,
+      highlight_channels: MapSet.new(),
+      highlight_selected: nil,
+      show_highlight_add_dialog: false,
+      show_highlight_dialog: false,
+      show_highlight_edit_dialog: false,
       show_treebar: true,
       show_whois: false,
       unread_channels: MapSet.new(),
       whois_target: nil
     )
+    |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
   end
 
@@ -122,10 +125,11 @@ defmodule RetroHexChatWeb.ChatLive do
   def handle_event("switch_channel", %{"channel" => channel}, socket) do
     session = Session.set_active_channel(socket.assigns.session, channel)
     unread = MapSet.delete(socket.assigns.unread_channels, channel)
+    highlight = MapSet.delete(socket.assigns.highlight_channels, channel)
 
     {:noreply,
      socket
-     |> assign(session: session, unread_channels: unread)
+     |> assign(session: session, unread_channels: unread, highlight_channels: highlight)
      |> load_channel_users(channel)
      |> load_channel_messages_with_pagination(channel)}
   end
@@ -216,6 +220,20 @@ defmodule RetroHexChatWeb.ChatLive do
        )}
     else
       {:noreply, assign(socket, show_address_book: true)}
+    end
+  end
+
+  def handle_event("window_keydown", %{"key" => "h", "altKey" => true}, socket) do
+    if socket.assigns.show_highlight_dialog do
+      {:noreply,
+       assign(socket,
+         show_highlight_dialog: false,
+         show_highlight_add_dialog: false,
+         show_highlight_edit_dialog: false,
+         highlight_selected: nil
+       )}
+    else
+      {:noreply, assign(socket, show_highlight_dialog: true)}
     end
   end
 
@@ -683,6 +701,99 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  # Highlight dialog events
+  def handle_event("open_highlight_dialog", _params, socket) do
+    {:noreply, assign(socket, show_highlight_dialog: true)}
+  end
+
+  def handle_event("close_highlight_dialog", _params, socket) do
+    {:noreply,
+     assign(socket,
+       show_highlight_dialog: false,
+       show_highlight_add_dialog: false,
+       show_highlight_edit_dialog: false,
+       highlight_selected: nil
+     )}
+  end
+
+  def handle_event("highlight_select", %{"word" => word}, socket) do
+    {:noreply, assign(socket, highlight_selected: word)}
+  end
+
+  def handle_event("open_highlight_add_dialog", _params, socket) do
+    {:noreply, assign(socket, show_highlight_add_dialog: true)}
+  end
+
+  def handle_event("close_highlight_add_dialog", _params, socket) do
+    {:noreply, assign(socket, show_highlight_add_dialog: false)}
+  end
+
+  def handle_event("open_highlight_edit_dialog", _params, socket) do
+    {:noreply, assign(socket, show_highlight_edit_dialog: true)}
+  end
+
+  def handle_event("close_highlight_edit_dialog", _params, socket) do
+    {:noreply, assign(socket, show_highlight_edit_dialog: false)}
+  end
+
+  def handle_event("highlight_color_pick", %{"color" => color}, socket) do
+    {:noreply, assign(socket, highlight_selected_color: color)}
+  end
+
+  # Highlight word CRUD events
+  def handle_event("highlight_add", %{"word" => word} = params, socket) do
+    session = socket.assigns.session
+    bg_color = parse_optional_color(params["bg_color"])
+
+    case HighlightWords.add_entry(session.highlight_words, word, bg_color) do
+      {:ok, updated} ->
+        new_session = Session.set_highlight_words(session, updated)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_highlight_add_dialog: false)
+         |> maybe_persist_highlight_words(new_session)}
+
+      {:error, reason} ->
+        {:noreply, push_status_message(socket, "Cannot add highlight: #{reason}", :error)}
+    end
+  end
+
+  def handle_event("highlight_remove", %{"word" => word}, socket) do
+    session = socket.assigns.session
+
+    case HighlightWords.remove_entry(session.highlight_words, word) do
+      {:ok, updated} ->
+        new_session = Session.set_highlight_words(session, updated)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, highlight_selected: nil)
+         |> maybe_persist_highlight_words(new_session)}
+
+      {:error, :not_found} ->
+        {:noreply, push_status_message(socket, "Word not in highlight list", :error)}
+    end
+  end
+
+  def handle_event("highlight_edit", %{"word" => word} = params, socket) do
+    session = socket.assigns.session
+    bg_color = parse_optional_color(params["bg_color"])
+
+    case HighlightWords.update_entry(session.highlight_words, word, bg_color) do
+      {:ok, updated} ->
+        new_session = Session.set_highlight_words(session, updated)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_highlight_edit_dialog: false)
+         |> maybe_persist_highlight_words(new_session)}
+
+      {:error, reason} ->
+        {:noreply, push_status_message(socket, "Cannot update highlight: #{reason}", :error)}
+    end
+  end
+
   # Notify list events (US1/US3)
   def handle_event("toggle_notify_list", _params, socket) do
     {:noreply, assign(socket, show_notify_list: !socket.assigns.show_notify_list)}
@@ -807,11 +918,22 @@ defmodule RetroHexChatWeb.ChatLive do
 
   @impl true
   def handle_info(%{event: "new_message", payload: payload}, socket) do
-    if payload.channel == socket.assigns.session.active_channel do
-      {:noreply, stream_insert(socket, :chat_messages, payload)}
+    session = socket.assigns.session
+    decorated = maybe_highlight(payload, session)
+
+    socket = maybe_play_highlight_sound(socket, decorated, payload.channel)
+
+    if payload.channel == session.active_channel do
+      {:noreply, stream_insert(socket, :chat_messages, decorated)}
     else
       unread = MapSet.put(socket.assigns.unread_channels, payload.channel)
-      {:noreply, assign(socket, unread_channels: unread)}
+
+      highlight =
+        if Map.get(decorated, :highlighted),
+          do: MapSet.put(socket.assigns.highlight_channels, payload.channel),
+          else: socket.assigns.highlight_channels
+
+      {:noreply, assign(socket, unread_channels: unread, highlight_channels: highlight)}
     end
   end
 
@@ -964,25 +1086,10 @@ defmodule RetroHexChatWeb.ChatLive do
     session = socket.assigns.session
 
     if nick == session.nickname do
-      new_session = Session.set_identified(session, true)
-
       new_session =
-        case NotifyList.load(nick) do
-          {:ok, loaded_list} -> Session.set_notify_list(new_session, loaded_list)
-          {:error, :not_found} -> new_session
-        end
-
-      new_session =
-        case ContactList.load(nick) do
-          {:ok, loaded_contacts} -> Session.set_contacts(new_session, loaded_contacts)
-          {:error, :not_found} -> new_session
-        end
-
-      new_session =
-        case NickColors.load(nick) do
-          {:ok, loaded_colors} -> Session.set_nick_colors(new_session, loaded_colors)
-          {:error, :not_found} -> new_session
-        end
+        session
+        |> Session.set_identified(true)
+        |> load_persisted_data(nick)
 
       {:noreply,
        socket
@@ -1875,6 +1982,29 @@ defmodule RetroHexChatWeb.ChatLive do
     socket
   end
 
+  defp maybe_persist_highlight_words(socket, session) do
+    if session.identified do
+      Task.start(fn -> HighlightWords.save(session.nickname, session.highlight_words) end)
+    end
+
+    socket
+  end
+
+  @spec load_persisted_data(Session.t(), String.t()) :: Session.t()
+  defp load_persisted_data(session, nick) do
+    session
+    |> load_if_found(NotifyList.load(nick), &Session.set_notify_list/2)
+    |> load_if_found(ContactList.load(nick), &Session.set_contacts/2)
+    |> load_if_found(NickColors.load(nick), &Session.set_nick_colors/2)
+    |> load_if_found(HighlightWords.load(nick), &Session.set_highlight_words/2)
+  end
+
+  @spec load_if_found(Session.t(), {:ok, term()} | {:error, term()}, (Session.t(), term() ->
+                                                                        Session.t())) ::
+          Session.t()
+  defp load_if_found(session, {:ok, data}, setter), do: setter.(session, data)
+  defp load_if_found(session, {:error, _}, _setter), do: session
+
   @spec build_nick_color_fn(Session.t()) :: (String.t() -> String.t())
   defp build_nick_color_fn(session) do
     fn nickname ->
@@ -1999,6 +2129,7 @@ defmodule RetroHexChatWeb.ChatLive do
           channels={@session.channels}
           active_channel={@session.active_channel}
           unread_channels={MapSet.to_list(@unread_channels)}
+          highlight_channels={MapSet.to_list(@highlight_channels)}
           pm_conversations={@session.pm_conversations}
           active_pm={@session.active_pm}
         />
@@ -2017,7 +2148,17 @@ defmodule RetroHexChatWeb.ChatLive do
             <div
               :for={{dom_id, msg} <- @streams.chat_messages}
               id={dom_id}
-              class={"chat-message chat-message--#{msg.type}"}
+              class={
+                "chat-message chat-message--#{msg.type}" <>
+                  if(Map.get(msg, :highlighted), do: " chat-message--highlighted", else: "")
+              }
+              style={
+                if(Map.get(msg, :highlighted) && Map.get(msg, :highlight_color),
+                  do: "background-color: #{msg.highlight_color}",
+                  else: nil
+                )
+              }
+              data-testid={if(Map.get(msg, :highlighted), do: "highlighted-message", else: nil)}
             >
               <span class="chat-timestamp">[{format_time(msg.timestamp)}]</span>
               <%= case msg.type do %>
@@ -2123,6 +2264,15 @@ defmodule RetroHexChatWeb.ChatLive do
         show_nick_color_edit_dialog={@show_nick_color_edit_dialog}
       />
 
+      <RetroHexChatWeb.Components.HighlightDialog.highlight_dialog
+        visible={@show_highlight_dialog}
+        highlight_entries={HighlightWords.entries(@session.highlight_words)}
+        highlight_selected={@highlight_selected}
+        own_nick={@session.nickname}
+        show_highlight_add_dialog={@show_highlight_add_dialog}
+        show_highlight_edit_dialog={@show_highlight_edit_dialog}
+      />
+
       <div class="status-panel" style="height: 120px; border-top: 1px solid #808080;">
         <RetroHexChatWeb.Components.StatusWindow.status_window>
           <div
@@ -2149,6 +2299,46 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   @nick_colors ~w(#e74c3c #3498db #2ecc71 #e67e22 #9b59b6 #1abc9c #f39c12 #e91e63 #00bcd4 #8bc34a #ff5722 #607d8b)
+
+  @spec maybe_highlight(map(), Session.t()) :: map()
+  defp maybe_highlight(%{type: type} = payload, session)
+       when type in [:message, :action] do
+    words = Session.get_highlight_words(session).entries
+
+    case Highlight.check(payload.content, session.nickname, words, payload.author) do
+      {:highlight, color} ->
+        Map.merge(payload, %{highlighted: true, highlight_color: color})
+
+      :no_highlight ->
+        payload
+    end
+  end
+
+  defp maybe_highlight(payload, _session), do: payload
+
+  @spec maybe_play_highlight_sound(Phoenix.LiveView.Socket.t(), map(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  defp maybe_play_highlight_sound(socket, %{highlighted: true}, channel) do
+    if channel_muted?(channel),
+      do: socket,
+      else: push_event(socket, "play_sound", %{type: "mention"})
+  end
+
+  defp maybe_play_highlight_sound(socket, _payload, _channel), do: socket
+
+  @spec channel_muted?(String.t()) :: boolean()
+  defp channel_muted?(_channel), do: false
+
+  @spec parse_optional_color(String.t() | nil) :: non_neg_integer() | nil
+  defp parse_optional_color(nil), do: nil
+  defp parse_optional_color(""), do: nil
+
+  defp parse_optional_color(str) when is_binary(str) do
+    case Integer.parse(str) do
+      {n, ""} -> n
+      _ -> nil
+    end
+  end
 
   @spec format_content(String.t(), boolean()) :: String.t()
   defp format_content(content, strip_formatting) do

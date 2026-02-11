@@ -49,6 +49,13 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           >
             Address Book
           </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-highlight"
+            phx-click="open_highlight_dialog"
+          >
+            Highlight Words
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">
