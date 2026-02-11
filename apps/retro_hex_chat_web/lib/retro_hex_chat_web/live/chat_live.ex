@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.ChatLive do
   alias RetroHexChat.Chat.{
     CapturedURL,
     Formatter,
+    HelpTopics,
     Highlight,
     HighlightWords,
     LinkPreview,
@@ -102,8 +103,14 @@ defmodule RetroHexChatWeb.ChatLive do
       show_notify_add_dialog: false,
       show_notify_edit_dialog: false,
       show_notify_list: false,
+      help_active_tab: "contents",
+      help_index_filter: "",
+      help_search_query: "",
+      help_search_results: [],
+      help_selected_topic: nil,
       highlight_channels: MapSet.new(),
       highlight_selected: nil,
+      show_help_dialog: false,
       show_highlight_add_dialog: false,
       show_highlight_dialog: false,
       show_highlight_edit_dialog: false,
@@ -305,6 +312,10 @@ defmodule RetroHexChatWeb.ChatLive do
     {:noreply, assign(socket, show_url_catcher: !socket.assigns.show_url_catcher)}
   end
 
+  def handle_event("window_keydown", %{"key" => "F1"}, socket) do
+    {:noreply, open_help_dialog(socket)}
+  end
+
   def handle_event("window_keydown", %{"key" => "Escape"}, socket) do
     if socket.assigns.search_visible do
       {:noreply, clear_search_state(socket)}
@@ -488,6 +499,52 @@ defmodule RetroHexChatWeb.ChatLive do
 
   def handle_event("show_about", _params, socket) do
     {:noreply, assign(socket, show_about: true)}
+  end
+
+  # Help dialog events
+  def handle_event("toggle_help_dialog", _params, socket) do
+    if socket.assigns.show_help_dialog do
+      {:noreply, close_help_dialog(socket)}
+    else
+      {:noreply, open_help_dialog(socket)}
+    end
+  end
+
+  def handle_event("close_help", _params, socket) do
+    {:noreply, close_help_dialog(socket)}
+  end
+
+  def handle_event("help_tab", %{"tab" => tab}, socket) do
+    {:noreply, assign(socket, help_active_tab: tab)}
+  end
+
+  def handle_event("help_select_topic", %{"id" => id}, socket) do
+    {:noreply, assign(socket, help_selected_topic: HelpTopics.get_topic(id))}
+  end
+
+  def handle_event("help_index_filter", %{"value" => filter}, socket) do
+    {:noreply, assign(socket, help_index_filter: filter)}
+  end
+
+  def handle_event("help_search_input", %{"key" => "Enter", "value" => query}, socket) do
+    {:noreply,
+     assign(socket, help_search_query: query, help_search_results: HelpTopics.search(query))}
+  end
+
+  def handle_event("help_search_input", %{"value" => query}, socket) do
+    {:noreply, assign(socket, help_search_query: query)}
+  end
+
+  def handle_event("help_search", %{"query" => query}, socket) do
+    {:noreply, assign(socket, help_search_results: HelpTopics.search(query))}
+  end
+
+  def handle_event("help_content_click", %{"data-help-topic" => topic_id}, socket) do
+    {:noreply, assign(socket, help_selected_topic: HelpTopics.get_topic(topic_id))}
+  end
+
+  def handle_event("help_content_click", _params, socket) do
+    {:noreply, socket}
   end
 
   # Command palette events
@@ -1887,6 +1944,20 @@ defmodule RetroHexChatWeb.ChatLive do
     |> CapturedURL.sort_by(assigns.url_catcher_sort_column, assigns.url_catcher_sort_direction)
   end
 
+  defp filtered_help_keywords(assigns) do
+    all = HelpTopics.all_keywords()
+
+    case assigns.help_index_filter do
+      "" ->
+        all
+
+      filter ->
+        Enum.filter(all, fn {kw, _id} ->
+          String.contains?(String.downcase(kw), String.downcase(filter))
+        end)
+    end
+  end
+
   defp url_catcher_channels(assigns) do
     assigns.url_catcher_entries
     |> Enum.map(& &1.source)
@@ -2149,13 +2220,38 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   defp show_help_message(socket, commands) do
-    text = "Available commands: " <> Enum.join(Enum.map(commands, &"/#{&1}"), ", ")
+    text =
+      "Available commands: " <>
+        Enum.join(Enum.map(commands, &"/#{&1}"), ", ") <>
+        "\nType /help <command> for details, or press F1 for the full help system."
+
     stream_insert(socket, :chat_messages, system_message(text))
   end
 
   defp show_command_help_message(socket, help) do
     text = "#{help.syntax} - #{help.description}"
     stream_insert(socket, :chat_messages, system_message(text))
+  end
+
+  defp open_help_dialog(socket) do
+    assign(socket,
+      show_help_dialog: true,
+      help_active_tab: "contents",
+      help_selected_topic: nil,
+      help_index_filter: "",
+      help_search_query: "",
+      help_search_results: []
+    )
+  end
+
+  defp close_help_dialog(socket) do
+    assign(socket,
+      show_help_dialog: false,
+      help_selected_topic: nil,
+      help_index_filter: "",
+      help_search_query: "",
+      help_search_results: []
+    )
   end
 
   defp safe_track_user(topic, nickname) do
@@ -2560,6 +2656,17 @@ defmodule RetroHexChatWeb.ChatLive do
         search_query={@url_catcher_search_query}
         channels={url_catcher_channels(assigns)}
         entry_count={length(@url_catcher_entries)}
+      />
+
+      <RetroHexChatWeb.Components.HelpDialog.help_dialog
+        visible={@show_help_dialog}
+        active_tab={@help_active_tab}
+        selected_topic={@help_selected_topic}
+        topics_by_category={RetroHexChat.Chat.HelpTopics.topics_by_category()}
+        index_keywords={filtered_help_keywords(assigns)}
+        index_filter={@help_index_filter}
+        search_query={@help_search_query}
+        search_results={@help_search_results}
       />
 
       <RetroHexChatWeb.Components.StatusBar.status_bar

@@ -54,6 +54,17 @@ make precommit                # compile + format + test
 - PubSub topics: "channel:#{name}", "pm:#{sorted_ids}", "user:#{nickname}"
 - Test tags: @tag :unit, @tag :integration, @tag :liveview, @tag :e2e
 
+## Help System (mandatory)
+
+Every new feature MUST include corresponding help documentation:
+- Add topics to `RetroHexChat.Chat.HelpTopics` (`apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex`)
+- New commands → add a topic in the "Commands" category
+- New features → add a topic in the "Features" category
+- New UI elements → add a topic in the "User Interface" category
+- New keyboard shortcuts → update the "Keyboard Shortcuts" topic
+- Update "See Also" cross-references in related existing topics
+- The Help system is accessible via F1, Help menu > Help Topics, and `/help`
+
 ## Constitution
 
 See `.specify/memory/constitution.md` for 10 governing principles.
