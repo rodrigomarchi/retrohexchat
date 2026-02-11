@@ -74,4 +74,52 @@ defmodule RetroHexChatWeb.Components.TreebarTest do
       assert html =~ "tree-active"
     end
   end
+
+  describe "treebar/1 highlight_channels" do
+    @tag :unit
+    test "applies tree-highlight class to highlighted channel" do
+      html =
+        render_component(&Treebar.treebar/1,
+          channels: ["#lobby", "#general"],
+          active_channel: "#lobby",
+          unread_channels: [],
+          highlight_channels: ["#general"],
+          pm_conversations: [],
+          active_pm: nil
+        )
+
+      assert html =~ "tree-highlight"
+    end
+
+    @tag :unit
+    test "does not apply tree-highlight to non-highlighted channels" do
+      html =
+        render_component(&Treebar.treebar/1,
+          channels: ["#lobby"],
+          active_channel: "#lobby",
+          unread_channels: [],
+          highlight_channels: [],
+          pm_conversations: [],
+          active_pm: nil
+        )
+
+      refute html =~ "tree-highlight"
+    end
+
+    @tag :unit
+    test "highlight and unread can coexist on same channel" do
+      html =
+        render_component(&Treebar.treebar/1,
+          channels: ["#lobby", "#general"],
+          active_channel: "#lobby",
+          unread_channels: ["#general"],
+          highlight_channels: ["#general"],
+          pm_conversations: [],
+          active_pm: nil
+        )
+
+      assert html =~ "tree-highlight"
+      assert html =~ "tree-unread"
+    end
+  end
 end

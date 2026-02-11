@@ -741,3 +741,22 @@ legend {
   background: var(--highlight-bg);
   color: var(--highlight-text);
 }
+
+/* ── Highlight / Mentions ────────────────────────────────────────────── */
+
+.chat-message--highlighted {
+  background-color: #3a3500;
+}
+
+.tree-highlight {
+  animation: tree-flash 0.8s ease-in-out infinite;
+}
+
+@keyframes tree-flash {
+  0%, 100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #3a3500;
+  }
+}

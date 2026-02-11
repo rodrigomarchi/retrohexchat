@@ -6,6 +6,7 @@
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css (002-notify-list)
 - PostgreSQL 16+ (new `notify_list_entries` table) + in-memory Session state for guests (002-notify-list)
 - PostgreSQL 16+ (new `contacts` + `nick_color_overrides` tables) + in-memory Session state for guests (003-address-book)
+- PostgreSQL 16+ (new `highlight_words` table) + in-memory Session state for guests (004-highlight-mentions)
 
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x
 - PostgreSQL 16+ with cursor-based pagination and GIN/trigram indexes
@@ -58,6 +59,6 @@ Key non-negotiables: TDD, umbrella separation, OTP process architecture,
 static analysis from day one, 98.css design fidelity.
 
 ## Recent Changes
+- 004-highlight-mentions: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
 - 003-address-book: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
 - 002-notify-list: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
-- 001-text-formatting-colors: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, 98.css

@@ -6,6 +6,7 @@ defmodule RetroHexChat.Accounts.Session do
 
   alias RetroHexChat.Accounts.ContactList
   alias RetroHexChat.Accounts.NickColors
+  alias RetroHexChat.Chat.HighlightWords
   alias RetroHexChat.Presence.NotifyList
 
   @type t :: %__MODULE__{
@@ -21,7 +22,8 @@ defmodule RetroHexChat.Accounts.Session do
           strip_formatting: boolean(),
           notify_list: map(),
           contacts: map(),
-          nick_colors: map()
+          nick_colors: map(),
+          highlight_words: map()
         }
 
   @enforce_keys [:nickname]
@@ -38,7 +40,8 @@ defmodule RetroHexChat.Accounts.Session do
     strip_formatting: false,
     notify_list: nil,
     contacts: nil,
-    nick_colors: nil
+    nick_colors: nil,
+    highlight_words: nil
   ]
 
   @spec new(String.t()) :: t()
@@ -48,7 +51,8 @@ defmodule RetroHexChat.Accounts.Session do
       connected_at: DateTime.utc_now(),
       notify_list: NotifyList.new(),
       contacts: ContactList.new(),
-      nick_colors: NickColors.new()
+      nick_colors: NickColors.new(),
+      highlight_words: HighlightWords.new()
     }
   end
 
@@ -152,5 +156,15 @@ defmodule RetroHexChat.Accounts.Session do
   @spec get_nick_colors(t()) :: map()
   def get_nick_colors(%__MODULE__{nick_colors: nick_colors}) do
     nick_colors
+  end
+
+  @spec set_highlight_words(t(), map()) :: t()
+  def set_highlight_words(%__MODULE__{} = session, highlight_words) do
+    %{session | highlight_words: highlight_words}
+  end
+
+  @spec get_highlight_words(t()) :: map()
+  def get_highlight_words(%__MODULE__{highlight_words: highlight_words}) do
+    highlight_words
   end
 end
