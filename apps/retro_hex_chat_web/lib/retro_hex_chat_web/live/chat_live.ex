@@ -8,7 +8,19 @@ defmodule RetroHexChatWeb.ChatLive do
 
   alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, Session}
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
-  alias RetroHexChat.Chat.{Formatter, Highlight, HighlightWords, Queries, Search, Service}
+
+  alias RetroHexChat.Chat.{
+    CapturedURL,
+    Formatter,
+    Highlight,
+    HighlightWords,
+    LinkPreview,
+    Queries,
+    Search,
+    Service,
+    URLDetector
+  }
+
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChat.Commands.Registry, as: CmdRegistry
   alias RetroHexChat.Presence.{NotifyList, Tracker}
@@ -63,6 +75,7 @@ defmodule RetroHexChatWeb.ChatLive do
       has_more: true,
       history_index: -1,
       input: "",
+      link_previews: %{},
       loading_more: false,
       messages: %{},
       new_messages_indicator: false,
@@ -94,8 +107,14 @@ defmodule RetroHexChatWeb.ChatLive do
       show_highlight_dialog: false,
       show_highlight_edit_dialog: false,
       show_treebar: true,
+      show_url_catcher: false,
       show_whois: false,
       unread_channels: MapSet.new(),
+      url_catcher_entries: [],
+      url_catcher_filter_channel: nil,
+      url_catcher_search_query: "",
+      url_catcher_sort_column: :timestamp,
+      url_catcher_sort_direction: :desc,
       whois_target: nil
     )
     |> stream(:chat_messages, [])
@@ -235,6 +254,10 @@ defmodule RetroHexChatWeb.ChatLive do
     else
       {:noreply, assign(socket, show_highlight_dialog: true)}
     end
+  end
+
+  def handle_event("window_keydown", %{"key" => "u", "altKey" => true}, socket) do
+    {:noreply, assign(socket, show_url_catcher: !socket.assigns.show_url_catcher)}
   end
 
   def handle_event("window_keydown", %{"key" => "Escape"}, socket) do
@@ -914,6 +937,36 @@ defmodule RetroHexChatWeb.ChatLive do
     {:noreply, socket}
   end
 
+  # ── URL Catcher events ────────────────────────────────────
+
+  def handle_event("toggle_url_catcher", _params, socket) do
+    {:noreply, assign(socket, show_url_catcher: !socket.assigns.show_url_catcher)}
+  end
+
+  def handle_event("url_catcher_sort", %{"column" => column}, socket) do
+    col = String.to_existing_atom(column)
+
+    direction =
+      if socket.assigns.url_catcher_sort_column == col,
+        do: toggle_direction(socket.assigns.url_catcher_sort_direction),
+        else: :asc
+
+    {:noreply,
+     assign(socket, url_catcher_sort_column: col, url_catcher_sort_direction: direction)}
+  end
+
+  def handle_event("url_catcher_filter", %{"channel" => ""}, socket) do
+    {:noreply, assign(socket, url_catcher_filter_channel: nil)}
+  end
+
+  def handle_event("url_catcher_filter", %{"channel" => channel}, socket) do
+    {:noreply, assign(socket, url_catcher_filter_channel: channel)}
+  end
+
+  def handle_event("url_catcher_search", %{"query" => query}, socket) do
+    {:noreply, assign(socket, url_catcher_search_query: query)}
+  end
+
   # ── PubSub handlers ────────────────────────────────────────
 
   @impl true
@@ -921,7 +974,10 @@ defmodule RetroHexChatWeb.ChatLive do
     session = socket.assigns.session
     decorated = maybe_highlight(payload, session)
 
-    socket = maybe_play_highlight_sound(socket, decorated, payload.channel)
+    socket =
+      socket
+      |> maybe_play_highlight_sound(decorated, payload.channel)
+      |> capture_urls(payload.content, payload.channel, :channel, payload.author)
 
     if payload.channel == session.active_channel do
       {:noreply, stream_insert(socket, :chat_messages, decorated)}
@@ -940,6 +996,7 @@ defmodule RetroHexChatWeb.ChatLive do
   def handle_info(%{event: "new_pm", payload: payload}, socket) do
     session = socket.assigns.session
     other_nick = pm_other_nick(payload, session.nickname)
+    socket = capture_urls(socket, payload.content, other_nick, :pm, payload.sender)
 
     if session.active_pm == other_nick do
       {:noreply, stream_insert(socket, :chat_messages, pm_to_stream_item(payload))}
@@ -1160,6 +1217,32 @@ defmodule RetroHexChatWeb.ChatLive do
     {:noreply, socket}
   end
 
+  def handle_info({:link_preview_result, url, {:ok, title}}, socket) do
+    LinkPreview.Cache.put(url, title)
+
+    updated_entries =
+      Enum.map(socket.assigns.url_catcher_entries, fn entry ->
+        if entry.url == url, do: CapturedURL.set_preview_title(entry, title), else: entry
+      end)
+
+    socket =
+      socket
+      |> assign(
+        link_previews: Map.put(socket.assigns.link_previews, url, title),
+        url_catcher_entries: updated_entries
+      )
+      |> push_event("link_preview", %{url: url, title: title})
+
+    {:noreply, socket}
+  end
+
+  def handle_info({:link_preview_result, url, {:error, _}}, socket) do
+    LinkPreview.Cache.put_error(url)
+    {:noreply, socket}
+  end
+
+  def handle_info({_ref, _result}, socket), do: {:noreply, socket}
+  def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket), do: {:noreply, socket}
   def handle_info(_, socket), do: {:noreply, socket}
 
   @impl true
@@ -1653,6 +1736,71 @@ defmodule RetroHexChatWeb.ChatLive do
 
   defp pm_other_nick(payload, my_nick) do
     if payload.sender == my_nick, do: payload.recipient, else: payload.sender
+  end
+
+  defp capture_urls(socket, content, source, source_type, author) do
+    urls = URLDetector.extract_urls(content)
+
+    if urls == [] do
+      socket
+    else
+      new_entries =
+        Enum.map(urls, fn url ->
+          CapturedURL.new(%{
+            url: url,
+            source: source,
+            source_type: source_type,
+            posted_by: author,
+            timestamp: DateTime.utc_now()
+          })
+        end)
+
+      socket
+      |> assign(url_catcher_entries: new_entries ++ socket.assigns.url_catcher_entries)
+      |> maybe_fetch_previews(urls)
+    end
+  end
+
+  defp maybe_fetch_previews(socket, urls) do
+    lv_pid = self()
+    Enum.each(urls, &fetch_preview_for_url(&1, lv_pid))
+    socket
+  end
+
+  defp fetch_preview_for_url(url, lv_pid) do
+    case LinkPreview.Cache.get(url) do
+      {:ok, :error} -> :ok
+      {:ok, title} -> send(lv_pid, {:link_preview_result, url, {:ok, title}})
+      :miss -> spawn_preview_fetch(url, lv_pid)
+    end
+  end
+
+  defp spawn_preview_fetch(url, lv_pid) do
+    unless LinkPreview.Cache.pending?(url) do
+      LinkPreview.Cache.mark_pending(url)
+
+      Task.Supervisor.async_nolink(RetroHexChat.LinkPreviewTasks, fn ->
+        result = LinkPreview.HTTP.fetch_title(url)
+        send(lv_pid, {:link_preview_result, url, result})
+      end)
+    end
+  end
+
+  defp toggle_direction(:asc), do: :desc
+  defp toggle_direction(:desc), do: :asc
+
+  defp filtered_url_catcher_entries(assigns) do
+    assigns.url_catcher_entries
+    |> CapturedURL.filter_by_source(assigns.url_catcher_filter_channel)
+    |> CapturedURL.filter_by_url(assigns.url_catcher_search_query)
+    |> CapturedURL.sort_by(assigns.url_catcher_sort_column, assigns.url_catcher_sort_direction)
+  end
+
+  defp url_catcher_channels(assigns) do
+    assigns.url_catcher_entries
+    |> Enum.map(& &1.source)
+    |> Enum.uniq()
+    |> Enum.sort()
   end
 
   defp load_pm_messages(my_nick, other_nick) do
@@ -2273,6 +2421,17 @@ defmodule RetroHexChatWeb.ChatLive do
         show_highlight_edit_dialog={@show_highlight_edit_dialog}
       />
 
+      <RetroHexChatWeb.Components.URLCatcherWindow.url_catcher_window
+        visible={@show_url_catcher}
+        entries={filtered_url_catcher_entries(assigns)}
+        sort_column={@url_catcher_sort_column}
+        sort_direction={@url_catcher_sort_direction}
+        filter_channel={@url_catcher_filter_channel}
+        search_query={@url_catcher_search_query}
+        channels={url_catcher_channels(assigns)}
+        entry_count={length(@url_catcher_entries)}
+      />
+
       <div class="status-panel" style="height: 120px; border-top: 1px solid #808080;">
         <RetroHexChatWeb.Components.StatusWindow.status_window>
           <div
@@ -2343,10 +2502,10 @@ defmodule RetroHexChatWeb.ChatLive do
   @spec format_content(String.t(), boolean()) :: String.t()
   defp format_content(content, strip_formatting) do
     if strip_formatting do
-      content |> Formatter.strip() |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string()
+      content |> Formatter.strip() |> URLDetector.linkify()
     else
       {:safe, html} = Formatter.to_safe_html(content)
-      html
+      URLDetector.linkify_html(html)
     end
   end
 

@@ -27,6 +27,19 @@ const ScrollHook = {
       this.hideNewMessagesButton();
     });
 
+    // Listen for link preview results
+    this.handleEvent("link_preview", ({ url, title }) => {
+      const links = this.chatEl.querySelectorAll(`a.chat-link[href="${CSS.escape(url)}"]`);
+      links.forEach((link) => {
+        if (!link.nextElementSibling || !link.nextElementSibling.classList.contains("chat-link-preview")) {
+          const preview = document.createElement("span");
+          preview.className = "chat-link-preview";
+          preview.textContent = title;
+          link.after(preview);
+        }
+      });
+    });
+
     // Listen for prepend start (before DOM update)
     this.handleEvent("prepend_start", () => {
       this.pendingPrepend = true;

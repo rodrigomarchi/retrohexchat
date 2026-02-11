@@ -56,6 +56,13 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           >
             Highlight Words
           </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-url-catcher"
+            phx-click="toggle_url_catcher"
+          >
+            URL Catcher
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">

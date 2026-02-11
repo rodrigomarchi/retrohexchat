@@ -666,6 +666,30 @@ legend {
 .irc-bg-14 { background-color: #7f7f7f; }
 .irc-bg-15 { background-color: #d2d2d2; }
 
+/* ── Chat links ────────────────────────────────────────── */
+
+.chat-link {
+  color: #5b9bd5;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.chat-link:hover {
+  color: #7bb8ea;
+}
+
+.chat-link:visited {
+  color: #8b6fbf;
+}
+
+.chat-link-preview {
+  display: block;
+  font-size: 11px;
+  color: #999;
+  margin-left: 2px;
+  font-style: italic;
+}
+
 /* ── Formatting toolbar ──────────────────────────────────── */
 
 .formatting-toolbar {
