@@ -13,7 +13,8 @@ defmodule RetroHexChat.Accounts.Session do
           identified: boolean(),
           connected_at: DateTime.t(),
           away: boolean(),
-          away_message: String.t() | nil
+          away_message: String.t() | nil,
+          strip_formatting: boolean()
         }
 
   @enforce_keys [:nickname]
@@ -26,7 +27,8 @@ defmodule RetroHexChat.Accounts.Session do
     identified: false,
     connected_at: nil,
     away: false,
-    away_message: nil
+    away_message: nil,
+    strip_formatting: false
   ]
 
   @spec new(String.t()) :: t()
@@ -90,6 +92,11 @@ defmodule RetroHexChat.Accounts.Session do
   @spec set_active_pm(t(), String.t() | nil) :: t()
   def set_active_pm(%__MODULE__{} = session, nickname) do
     %{session | active_pm: nickname, active_channel: nil}
+  end
+
+  @spec toggle_strip_formatting(t()) :: t()
+  def toggle_strip_formatting(%__MODULE__{strip_formatting: current} = session) do
+    %{session | strip_formatting: !current}
   end
 
   @spec set_away(t(), String.t() | nil) :: t()

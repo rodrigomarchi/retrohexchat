@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
   alias RetroHexChat.Accounts.{NicknameValidator, Session}
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
-  alias RetroHexChat.Chat.{Queries, Search, Service}
+  alias RetroHexChat.Chat.{Formatter, Queries, Search, Service}
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChat.Commands.Registry, as: CmdRegistry
   alias RetroHexChat.Presence.Tracker
@@ -274,6 +274,20 @@ defmodule RetroHexChatWeb.ChatLive do
 
   def handle_event("toggle_nicklist", _params, socket) do
     {:noreply, assign(socket, show_nicklist: !socket.assigns.show_nicklist)}
+  end
+
+  def handle_event("toggle_strip_formatting", _params, socket) do
+    session = Session.toggle_strip_formatting(socket.assigns.session)
+    socket = assign(socket, session: session)
+
+    socket =
+      if session.active_channel do
+        load_channel_messages_with_pagination(socket, session.active_channel)
+      else
+        socket
+      end
+
+    {:noreply, socket}
   end
 
   def handle_event("show_about", _params, socket) do
@@ -1260,7 +1274,9 @@ defmodule RetroHexChatWeb.ChatLive do
               <span class="chat-timestamp">[{format_time(msg.timestamp)}]</span>
               <%= case msg.type do %>
                 <% :action -> %>
-                  <span class="chat-action">* {msg.author} {msg.content}</span>
+                  <span class="chat-action">
+                    * {msg.author} {raw(format_content(msg.content, @session.strip_formatting))}
+                  </span>
                 <% :system -> %>
                   <span class="chat-system">* {msg.content}</span>
                 <% :service -> %>
@@ -1271,10 +1287,16 @@ defmodule RetroHexChatWeb.ChatLive do
                   <span class="chat-nick" style={"color: #{nick_color(msg.author)}"}>
                     &lt;{msg.author}&gt;
                   </span>
-                  <span class="chat-content">{msg.content}</span>
+                  <span class="chat-content">
+                    {raw(format_content(msg.content, @session.strip_formatting))}
+                  </span>
               <% end %>
             </div>
           </div>
+
+          <RetroHexChatWeb.Components.FormattingToolbar.formatting_toolbar strip_formatting={
+            @session.strip_formatting
+          } />
 
           <div class="chat-input-area" style="position: relative;">
             <RetroHexChatWeb.Components.CommandPalette.command_palette
@@ -1332,6 +1354,16 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   @nick_colors ~w(#e74c3c #3498db #2ecc71 #e67e22 #9b59b6 #1abc9c #f39c12 #e91e63 #00bcd4 #8bc34a #ff5722 #607d8b)
+
+  @spec format_content(String.t(), boolean()) :: String.t()
+  defp format_content(content, strip_formatting) do
+    if strip_formatting do
+      content |> Formatter.strip() |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string()
+    else
+      {:safe, html} = Formatter.to_safe_html(content)
+      html
+    end
+  end
 
   defp format_time(%DateTime{} = dt), do: Calendar.strftime(dt, "%H:%M")
   defp format_time(_), do: "--:--"

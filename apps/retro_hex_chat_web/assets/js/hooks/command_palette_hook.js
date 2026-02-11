@@ -59,8 +59,37 @@ const CommandPaletteHook = {
       if (e.key === "Tab") {
         e.preventDefault();
         this.pushEvent("tab_complete", { partial: this.inputEl.value });
+        return;
+      }
+
+      // IRC formatting shortcuts (Ctrl+key)
+      if (e.ctrlKey && !e.altKey && !e.metaKey) {
+        const formatCodes = {
+          b: "\x02", // Bold
+          i: "\x1D", // Italic
+          u: "\x1F", // Underline
+          k: "\x03", // Color
+          r: "\x16", // Reverse
+          o: "\x0F", // Reset
+        };
+
+        const code = formatCodes[e.key.toLowerCase()];
+        if (code) {
+          e.preventDefault();
+          this.insertAtCursor(code);
+        }
       }
     });
+  },
+
+  insertAtCursor(text) {
+    const el = this.inputEl;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const value = el.value;
+    el.value = value.slice(0, start) + text + value.slice(end);
+    el.selectionStart = el.selectionEnd = start + text.length;
+    el.dispatchEvent(new Event("input", { bubbles: true }));
   },
 };
 

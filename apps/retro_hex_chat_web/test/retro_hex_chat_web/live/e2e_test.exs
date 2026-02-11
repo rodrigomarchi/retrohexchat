@@ -1618,6 +1618,101 @@ defmodule RetroHexChatWeb.E2ETest do
     Process.sleep(50)
   end
 
+  # ══════════════════════════════════════════════════════════
+  # Screen 21: Text Formatting & Colors
+  # ══════════════════════════════════════════════════════════
+
+  describe "Screen 21: Text Formatting" do
+    test "21.1 bold+color message renders correctly for sender", %{conn: conn} do
+      chan = unique_channel("e2e_fmt")
+      ensure_channel(chan)
+      {:ok, view, _html} = live(conn, "/chat?nickname=E2eFmt")
+      send_command(view, "/join #{chan}")
+
+      msg = <<0x02>> <> <<0x03>> <> "4Bold red text" <> <<0x0F>>
+      send_command(view, msg)
+
+      Process.sleep(50)
+      html = render(view)
+      assert html =~ "irc-bold"
+      assert html =~ "irc-fg-4"
+      assert html =~ "Bold red text"
+    end
+
+    test "21.2 bold+color message renders correctly for receiver", %{conn: conn} do
+      chan = unique_channel("e2e_fmtr")
+      ensure_channel(chan)
+      {:ok, sender, _html} = live(conn, "/chat?nickname=E2eFmtS")
+      {:ok, receiver, _html} = live(new_conn(), "/chat?nickname=E2eFmtR")
+
+      send_command(sender, "/join #{chan}")
+      send_command(receiver, "/join #{chan}")
+
+      msg = <<0x02>> <> "Bold for receiver" <> <<0x02>>
+      send_command(sender, msg)
+
+      Process.sleep(50)
+      html = render(receiver)
+      assert html =~ "irc-bold"
+      assert html =~ "Bold for receiver"
+    end
+
+    test "21.3 formatting toolbar buttons are visible", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/chat?nickname=E2eTbar")
+      assert html =~ ~s(data-testid="format-btn-bold")
+      assert html =~ ~s(data-testid="format-btn-italic")
+      assert html =~ ~s(data-testid="format-btn-underline")
+      assert html =~ ~s(data-testid="format-btn-color")
+    end
+
+    test "21.4 strip formatting toggle hides formatting", %{conn: conn} do
+      chan = unique_channel("e2e_strip")
+      ensure_channel(chan)
+      {:ok, view, _html} = live(conn, "/chat?nickname=E2eStrip")
+      send_command(view, "/join #{chan}")
+
+      msg = <<0x02>> <> "Bold text" <> <<0x02>>
+      send_command(view, msg)
+
+      Process.sleep(50)
+      assert render(view) =~ "irc-bold"
+
+      render_click(view, "toggle_strip_formatting")
+      html = render(view)
+      assert html =~ "Bold text"
+      refute html =~ "irc-bold"
+    end
+
+    test "21.5 format-only message is rejected", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=E2eFmtOnly")
+
+      # Send message with only format codes (no visible text)
+      msg = <<0x02>> <> <<0x02>>
+      send_command(view, msg)
+
+      Process.sleep(50)
+      html = render(view)
+      # Should show error or be a no-op (message not sent)
+      refute html =~ ~s(class="chat-message chat-message--message")
+    end
+
+    test "21.6 color picker has 16 swatches", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/chat?nickname=E2eCpick")
+
+      for i <- 0..15 do
+        assert html =~ ~s(data-color-code="#{i}")
+      end
+    end
+
+    test "21.7 strip toggle button has active state after click", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=E2eStAct")
+      refute render(view) =~ "format-btn-active"
+
+      render_click(view, "toggle_strip_formatting")
+      assert render(view) =~ "format-btn-active"
+    end
+  end
+
   defp send_command(view, cmd) do
     view |> element("form.chat-input-form") |> render_submit(%{"input" => cmd})
   end

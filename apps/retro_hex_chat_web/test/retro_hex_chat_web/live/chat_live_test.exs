@@ -1895,6 +1895,285 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
   end
 
+  # ── T012: Inline formatting rendering (US1) ──────────────
+
+  describe "inline formatting rendering" do
+    test "bold control codes render irc-bold span", %{conn: conn} do
+      ensure_channel("#fmt_bold")
+      {:ok, view, _html} = live(conn, "/chat?nickname=FmtBold")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #fmt_bold"})
+
+      # Send message with bold control codes
+      bold_msg = <<0x02>> <> "Hello" <> <<0x02>> <> " world"
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => bold_msg})
+
+      Process.sleep(50)
+      html = render(view)
+      assert html =~ ~s(class="irc-bold")
+      assert html =~ "Hello"
+    end
+
+    test "italic control codes render irc-italic span", %{conn: conn} do
+      ensure_channel("#fmt_italic")
+      {:ok, view, _html} = live(conn, "/chat?nickname=FmtItalic")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #fmt_italic"})
+
+      italic_msg = <<0x1D>> <> "styled" <> <<0x1D>>
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => italic_msg})
+
+      Process.sleep(50)
+      html = render(view)
+      assert html =~ ~s(class="irc-italic")
+      assert html =~ "styled"
+    end
+
+    test "underline control codes render irc-underline span", %{conn: conn} do
+      ensure_channel("#fmt_uline")
+      {:ok, view, _html} = live(conn, "/chat?nickname=FmtUline")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #fmt_uline"})
+
+      underline_msg = <<0x1F>> <> "link" <> <<0x1F>>
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => underline_msg})
+
+      Process.sleep(50)
+      html = render(view)
+      assert html =~ ~s(class="irc-underline")
+      assert html =~ "link"
+    end
+
+    test "system messages are NOT parsed for format codes", %{conn: conn} do
+      ensure_channel("#fmt_sys")
+      {:ok, view, _html} = live(conn, "/chat?nickname=FmtSys")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #fmt_sys"})
+
+      # System messages (like join notifications) should not contain irc-* spans
+      html = render(view)
+      # Join messages are system type — they should not have formatting spans
+      refute html =~ ~s(class="irc-bold")
+      refute html =~ ~s(class="irc-italic")
+    end
+
+    test "service messages are NOT parsed for format codes", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=FmtSvc")
+
+      # NickServ messages are service type — trigger one
+      view
+      |> element("form.chat-input-form")
+      |> render_submit(%{"input" => "/ns help"})
+
+      Process.sleep(50)
+      html = render(view)
+      # Service messages should render without irc-* formatting spans
+      refute html =~ ~s(class="irc-bold")
+    end
+
+    test "error messages are NOT parsed for format codes", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=FmtErr")
+
+      # Trigger an error message (e.g., invalid command)
+      view
+      |> element("form.chat-input-form")
+      |> render_submit(%{"input" => "/kick"})
+
+      Process.sleep(50)
+      html = render(view)
+      # Error messages should not have formatting spans
+      refute html =~ ~s(class="irc-fg-)
+    end
+  end
+
+  # ── T013: Color code rendering (US2) ────────────────────
+
+  describe "color code rendering" do
+    test "foreground color renders irc-fg span", %{conn: conn} do
+      ensure_channel("#clr_fg")
+      {:ok, view, _html} = live(conn, "/chat?nickname=ClrFg")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #clr_fg"})
+
+      # Color code: \x03 4 = red foreground
+      color_msg = <<0x03>> <> "4Red text" <> <<0x03>>
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => color_msg})
+
+      Process.sleep(50)
+      html = render(view)
+      assert html =~ "irc-fg-4"
+      assert html =~ "Red text"
+    end
+
+    test "foreground + background color renders both irc-fg and irc-bg spans", %{conn: conn} do
+      ensure_channel("#clr_fgbg")
+      {:ok, view, _html} = live(conn, "/chat?nickname=ClrFgBg")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #clr_fgbg"})
+
+      # Color code: \x03 4,1 = red fg, black bg
+      color_msg = <<0x03>> <> "4,1Red on black" <> <<0x03>>
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => color_msg})
+
+      Process.sleep(50)
+      html = render(view)
+      assert html =~ "irc-fg-4"
+      assert html =~ "irc-bg-1"
+      assert html =~ "Red on black"
+    end
+
+    test "combined bold + color renders both irc-bold and irc-fg classes", %{conn: conn} do
+      ensure_channel("#clr_combo")
+      {:ok, view, _html} = live(conn, "/chat?nickname=ClrCombo")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #clr_combo"})
+
+      # Bold + color 4 (red)
+      combo_msg = <<0x02>> <> <<0x03>> <> "4Bold red" <> <<0x0F>>
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => combo_msg})
+
+      Process.sleep(50)
+      html = render(view)
+      assert html =~ "irc-bold"
+      assert html =~ "irc-fg-4"
+      assert html =~ "Bold red"
+    end
+  end
+
+  # ── T019: Formatting toolbar rendering (US3) ─────────────
+
+  describe "formatting toolbar" do
+    test "toolbar renders B, I, U, and Color buttons", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/chat?nickname=TbRender")
+      assert html =~ ~s(data-testid="format-btn-bold")
+      assert html =~ ~s(data-testid="format-btn-italic")
+      assert html =~ ~s(data-testid="format-btn-underline")
+      assert html =~ ~s(data-testid="format-btn-color")
+    end
+
+    test "toolbar has correct 98.css button styling", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/chat?nickname=TbStyle")
+      assert html =~ "formatting-toolbar"
+      assert html =~ "format-btn"
+    end
+  end
+
+  # ── T020: Color picker dropdown (US3) ───────────────────
+
+  describe "color picker dropdown" do
+    test "color picker contains 16 color swatches", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/chat?nickname=CpSwatches")
+
+      for i <- 0..15 do
+        assert html =~ ~s(data-color-code="#{i}")
+      end
+    end
+
+    test "color picker swatches are in a grid container", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/chat?nickname=CpGrid")
+      assert html =~ "format-color-dropdown"
+      assert html =~ "color-swatch"
+    end
+  end
+
+  # ── T026: Strip formatting toggle (US4) ──────────────────
+
+  describe "strip formatting toggle" do
+    test "default: formatted messages render with irc-* spans", %{conn: conn} do
+      ensure_channel("#strip_dflt")
+      {:ok, view, _html} = live(conn, "/chat?nickname=StripDflt")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #strip_dflt"})
+
+      bold_msg = <<0x02>> <> "Bold text" <> <<0x02>>
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => bold_msg})
+
+      Process.sleep(50)
+      html = render(view)
+      assert html =~ "irc-bold"
+      assert html =~ "Bold text"
+    end
+
+    test "after toggle: formatted messages render as plain text", %{conn: conn} do
+      ensure_channel("#strip_on")
+      {:ok, view, _html} = live(conn, "/chat?nickname=StripOn")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #strip_on"})
+
+      bold_msg = <<0x02>> <> "Bold text" <> <<0x02>>
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => bold_msg})
+
+      Process.sleep(50)
+      # Toggle strip formatting on
+      render_click(view, "toggle_strip_formatting")
+
+      html = render(view)
+      assert html =~ "Bold text"
+      refute html =~ "irc-bold"
+    end
+
+    test "toggle event flips preference back", %{conn: conn} do
+      ensure_channel("#strip_flip")
+      {:ok, view, _html} = live(conn, "/chat?nickname=StripFlip")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #strip_flip"})
+
+      bold_msg = <<0x02>> <> "Toggled" <> <<0x02>>
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => bold_msg})
+
+      Process.sleep(50)
+
+      # Toggle on (strip)
+      render_click(view, "toggle_strip_formatting")
+      html = render(view)
+      refute html =~ "irc-bold"
+
+      # Toggle off (restore formatting)
+      render_click(view, "toggle_strip_formatting")
+      html = render(view)
+      assert html =~ "irc-bold"
+    end
+
+    test "strip toggle UI control is visible", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/chat?nickname=StripUI")
+      assert html =~ "data-testid=\"strip-formatting-toggle\""
+    end
+  end
+
+  # ── T031: PM formatting verification ─────────────────────
+
+  describe "PM formatting" do
+    test "formatted PM renders with irc-* spans", %{conn: conn} do
+      # Set up two users
+      {:ok, sender, _html} = live(conn, "/chat?nickname=PmFmtSend")
+      {:ok, receiver, _html} = live(build_conn(), "/chat?nickname=PmFmtRecv")
+
+      # Sender opens PM to receiver
+      sender
+      |> element("form.chat-input-form")
+      |> render_submit(%{"input" => "/msg PmFmtRecv " <> <<0x02>> <> "bold PM" <> <<0x02>>})
+
+      Process.sleep(50)
+
+      # Switch receiver to PM conversation
+      render_click(receiver, "switch_pm", %{"nickname" => "PmFmtSend"})
+      Process.sleep(50)
+      html = render(receiver)
+      assert html =~ "irc-bold"
+      assert html =~ "bold PM"
+    end
+
+    test "strip formatting applies to PMs", %{conn: conn} do
+      {:ok, sender, _html} = live(conn, "/chat?nickname=PmStripS")
+      {:ok, receiver, _html} = live(build_conn(), "/chat?nickname=PmStripR")
+
+      sender
+      |> element("form.chat-input-form")
+      |> render_submit(%{"input" => "/msg PmStripR " <> <<0x02>> <> "bold PM" <> <<0x02>>})
+
+      Process.sleep(50)
+
+      # Toggle strip formatting on receiver
+      render_click(receiver, "toggle_strip_formatting")
+
+      render_click(receiver, "switch_pm", %{"nickname" => "PmStripS"})
+      Process.sleep(50)
+      html = render(receiver)
+      assert html =~ "bold PM"
+      refute html =~ "irc-bold"
+    end
+  end
+
   # ── Helpers ───────────────────────────────────────────────
 
   defp ensure_channel(name) do

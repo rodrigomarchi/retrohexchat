@@ -3,6 +3,7 @@ defmodule RetroHexChat.Chat.Policy do
   Content validation and authorization for chat messages.
   """
 
+  alias RetroHexChat.Chat.Formatter
   alias RetroHexChat.RateLimit.Limiter
 
   @max_content_length 1000
@@ -15,6 +16,9 @@ defmodule RetroHexChat.Chat.Policy do
 
       String.length(content) > @max_content_length ->
         {:error, "Message exceeds maximum length of #{@max_content_length} characters"}
+
+      not Formatter.has_visible_text?(content) ->
+        {:error, "Message cannot be empty"}
 
       true ->
         :ok

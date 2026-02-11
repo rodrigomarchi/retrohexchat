@@ -241,6 +241,40 @@ defmodule RetroHexChat.Accounts.SessionTest do
     end
   end
 
+  describe "toggle_strip_formatting/1" do
+    test "defaults to false" do
+      session = Session.new("Rodrigo")
+      assert session.strip_formatting == false
+    end
+
+    test "toggles from false to true" do
+      session = Session.new("Rodrigo")
+      updated = Session.toggle_strip_formatting(session)
+      assert updated.strip_formatting == true
+    end
+
+    test "toggles from true back to false" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.toggle_strip_formatting()
+        |> Session.toggle_strip_formatting()
+
+      assert session.strip_formatting == false
+    end
+
+    test "preserves other fields" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.add_channel("#general")
+        |> Session.set_identified(true)
+        |> Session.toggle_strip_formatting()
+
+      assert session.strip_formatting == true
+      assert session.channels == ["#general"]
+      assert session.identified == true
+    end
+  end
+
   describe "set_active_channel/2 clears active_pm" do
     test "setting active_channel clears active_pm" do
       session =

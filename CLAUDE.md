@@ -1,6 +1,8 @@
 # retro_hex_chat Development Guidelines
 
 ## Active Technologies
+- Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, 98.css (001-text-formatting-colors)
+- PostgreSQL 16+ (existing schema, no migrations) (001-text-formatting-colors)
 
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x
 - PostgreSQL 16+ with cursor-based pagination and GIN/trigram indexes
@@ -51,3 +53,6 @@ make precommit                # compile + format + test
 See `.specify/memory/constitution.md` for 10 governing principles.
 Key non-negotiables: TDD, umbrella separation, OTP process architecture,
 static analysis from day one, 98.css design fidelity.
+
+## Recent Changes
+- 001-text-formatting-colors: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, 98.css

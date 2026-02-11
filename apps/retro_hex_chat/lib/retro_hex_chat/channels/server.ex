@@ -170,27 +170,27 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   def handle_call({:send_message, nickname, content, type}, _from, state) do
-    case Policy.can_speak?(state.modes, state.membership, nickname) do
-      :ok ->
-        {id, timestamp} = persist_and_get_id(state.name, nickname, content, type)
+    with :ok <- RetroHexChat.Chat.Policy.validate_content(content),
+         :ok <- Policy.can_speak?(state.modes, state.membership, nickname) do
+      {id, timestamp} = persist_and_get_id(state.name, nickname, content, type)
 
-        broadcast(
-          state.name,
-          %{
-            event: "new_message",
-            payload: %{
-              id: id,
-              channel: state.name,
-              author: nickname,
-              content: content,
-              type: type,
-              timestamp: timestamp
-            }
+      broadcast(
+        state.name,
+        %{
+          event: "new_message",
+          payload: %{
+            id: id,
+            channel: state.name,
+            author: nickname,
+            content: content,
+            type: type,
+            timestamp: timestamp
           }
-        )
+        }
+      )
 
-        {:reply, :ok, state}
-
+      {:reply, :ok, state}
+    else
       {:error, _} = err ->
         {:reply, err, state}
     end
