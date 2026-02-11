@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive do
   alias RetroHexChat.Chat.{Formatter, Queries, Search, Service}
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChat.Commands.Registry, as: CmdRegistry
-  alias RetroHexChat.Presence.Tracker
+  alias RetroHexChat.Presence.{NotifyList, Tracker}
   alias RetroHexChat.Services.NickServ
 
   @impl true
@@ -24,6 +24,13 @@ defmodule RetroHexChatWeb.ChatLive do
 
         if connected?(socket) do
           Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
+          Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "presence:global")
+
+          Phoenix.PubSub.broadcast(
+            RetroHexChat.PubSub,
+            "presence:global",
+            {:user_connected, %{nickname: nickname}}
+          )
 
           socket =
             socket
@@ -46,7 +53,8 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   defp assign_defaults(socket, session) do
-    assign(socket,
+    socket
+    |> assign(
       channel_users: [],
       command_history: [],
       command_palette_filter: "",
@@ -58,6 +66,8 @@ defmodule RetroHexChatWeb.ChatLive do
       loading_more: false,
       messages: %{},
       new_messages_indicator: false,
+      notify_debounce_timers: %{},
+      notify_selected: nil,
       oldest_message_id: nil,
       page_title: "RetroHexChat",
       search_current_index: 0,
@@ -68,11 +78,15 @@ defmodule RetroHexChatWeb.ChatLive do
       session: session,
       show_about: false,
       show_nicklist: true,
+      show_notify_add_dialog: false,
+      show_notify_edit_dialog: false,
+      show_notify_list: false,
       show_treebar: true,
       show_whois: false,
       unread_channels: MapSet.new(),
       whois_target: nil
     )
+    |> stream(:status_messages, [])
   end
 
   # ── Event handlers ──────────────────────────────────────────
@@ -365,6 +379,126 @@ defmodule RetroHexChatWeb.ChatLive do
     {:noreply, push_navigate(socket, to: ~p"/channels")}
   end
 
+  # Notify list events (US1/US3)
+  def handle_event("toggle_notify_list", _params, socket) do
+    {:noreply, assign(socket, show_notify_list: !socket.assigns.show_notify_list)}
+  end
+
+  def handle_event("notify_add", %{"nickname" => nick} = params, socket) do
+    session = socket.assigns.session
+    note = params["note"]
+    note = if note == "", do: nil, else: note
+
+    case NotifyList.add_entry(session.notify_list, session.nickname, nick, note) do
+      {:ok, updated_list} ->
+        new_session = Session.set_notify_list(session, updated_list)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_notify_add_dialog: false)
+         |> maybe_persist_notify_list(new_session)
+         |> push_status_message("Added #{nick} to notify list", :system)}
+
+      {:error, :self_add} ->
+        {:noreply, push_status_message(socket, "Cannot add yourself to the notify list", :system)}
+
+      {:error, :duplicate} ->
+        {:noreply, push_status_message(socket, "#{nick} is already in your notify list", :system)}
+
+      {:error, :list_full} ->
+        {:noreply, push_status_message(socket, "Notify list is full (max 50 entries)", :system)}
+    end
+  end
+
+  def handle_event("notify_remove", %{"nickname" => nick}, socket) do
+    session = socket.assigns.session
+
+    case NotifyList.remove_entry(session.notify_list, nick) do
+      {:ok, updated_list} ->
+        new_session = Session.set_notify_list(session, updated_list)
+
+        # Cancel any pending debounce timer for this buddy
+        socket = cancel_notify_timer(socket, nick)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, notify_selected: nil)
+         |> maybe_persist_notify_list(new_session)
+         |> push_status_message("Removed #{nick} from notify list", :system)}
+
+      {:error, :not_found} ->
+        {:noreply, push_status_message(socket, "#{nick} is not in your notify list", :system)}
+    end
+  end
+
+  def handle_event("notify_edit", %{"nickname" => nick, "note" => note}, socket) do
+    session = socket.assigns.session
+    note = if note == "", do: nil, else: note
+
+    case NotifyList.update_note(session.notify_list, nick, note) do
+      {:ok, updated_list} ->
+        new_session = Session.set_notify_list(session, updated_list)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_notify_edit_dialog: false)
+         |> maybe_persist_notify_list(new_session)
+         |> push_status_message("Updated note for #{nick}", :system)}
+
+      {:error, :not_found} ->
+        {:noreply, push_status_message(socket, "#{nick} is not in your notify list", :system)}
+    end
+  end
+
+  def handle_event("notify_select", %{"nickname" => nick}, socket) do
+    {:noreply, assign(socket, notify_selected: nick)}
+  end
+
+  def handle_event("notify_add_dialog", _params, socket) do
+    {:noreply, assign(socket, show_notify_add_dialog: true)}
+  end
+
+  def handle_event("notify_add_cancel", _params, socket) do
+    {:noreply, assign(socket, show_notify_add_dialog: false)}
+  end
+
+  def handle_event("notify_edit_dialog", _params, socket) do
+    {:noreply, assign(socket, show_notify_edit_dialog: true)}
+  end
+
+  def handle_event("notify_edit_cancel", _params, socket) do
+    {:noreply, assign(socket, show_notify_edit_dialog: false)}
+  end
+
+  def handle_event("notify_dblclick", %{"nickname" => nick}, socket) do
+    session = socket.assigns.session
+
+    entry =
+      Enum.find(session.notify_list.entries, fn e ->
+        String.downcase(e.tracked_nickname) == String.downcase(nick)
+      end)
+
+    if entry && entry.online do
+      {:noreply, open_pm_conversation(socket, nick)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("toggle_auto_whois", _params, socket) do
+    session = socket.assigns.session
+    current = session.notify_list.settings.auto_whois
+    updated_list = NotifyList.set_auto_whois(session.notify_list, !current)
+    new_session = Session.set_notify_list(session, updated_list)
+
+    socket =
+      socket
+      |> assign(session: new_session)
+      |> maybe_persist_notify_list(new_session)
+
+    {:noreply, socket}
+  end
+
   # ── PubSub handlers ────────────────────────────────────────
 
   @impl true
@@ -468,6 +602,28 @@ defmodule RetroHexChatWeb.ChatLive do
 
     msg = "#{old_nick} is now known as #{new_nick}"
 
+    # Update notify list if old_nick is tracked (T025)
+    # NOTE (T047): Renames are only detected when users share a channel. If a tracked
+    # buddy renames in a channel the user hasn't joined, the :nick_changed broadcast
+    # won't reach here. This mirrors real IRC behavior. A global rename broadcast
+    # would be needed to fully solve this; documented as a known limitation.
+    socket =
+      if NotifyList.tracking?(socket.assigns.session.notify_list, old_nick) do
+        session = socket.assigns.session
+        updated_list = NotifyList.update_nickname(session.notify_list, old_nick, new_nick)
+        new_session = Session.set_notify_list(session, updated_list)
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_notify_list(new_session)
+        |> push_status_message(
+          "* Your notify list buddy #{old_nick} is now known as #{new_nick}",
+          :notify_rename
+        )
+      else
+        socket
+      end
+
     {:noreply,
      socket
      |> assign(channel_users: users)
@@ -499,12 +655,103 @@ defmodule RetroHexChatWeb.ChatLive do
      |> stream_insert(:chat_messages, system_message(msg))}
   end
 
+  # Notify list: NickServ identify → load saved list (T017)
+  def handle_info({:nickserv_identified, %{nickname: nick}}, socket) do
+    session = socket.assigns.session
+
+    if nick == session.nickname do
+      new_session = Session.set_identified(session, true)
+
+      new_session =
+        case NotifyList.load(nick) do
+          {:ok, loaded_list} -> Session.set_notify_list(new_session, loaded_list)
+          {:error, :not_found} -> new_session
+        end
+
+      {:noreply,
+       socket
+       |> assign(session: new_session)
+       |> push_status_message("You are now identified as #{nick}", :system)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  # Notify list: Global presence events (T023)
+  def handle_info({:user_connected, %{nickname: nick}}, socket) do
+    session = socket.assigns.session
+
+    # Ignore our own connect event
+    if nick == session.nickname do
+      {:noreply, socket}
+    else
+      if NotifyList.tracking?(session.notify_list, nick) do
+        {:noreply, start_notify_debounce(socket, nick, :online)}
+      else
+        {:noreply, socket}
+      end
+    end
+  end
+
+  def handle_info({:user_disconnected, %{nickname: nick}}, socket) do
+    session = socket.assigns.session
+
+    if NotifyList.tracking?(session.notify_list, nick) do
+      {:noreply, start_notify_debounce(socket, nick, :offline)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  # Notify list: Debounce timer fires (T024)
+  def handle_info({:notify_debounce, nickname, status}, socket) do
+    session = socket.assigns.session
+    timers = Map.delete(socket.assigns.notify_debounce_timers, String.downcase(nickname))
+
+    online? = status == :online
+    updated_list = NotifyList.set_online(session.notify_list, nickname, online?)
+    new_session = Session.set_notify_list(session, updated_list)
+
+    msg =
+      if online?,
+        do: "* #{nickname} is now online",
+        else: "* #{nickname} has gone offline"
+
+    type = if online?, do: :notify_online, else: :notify_offline
+
+    socket =
+      socket
+      |> assign(session: new_session, notify_debounce_timers: timers)
+      |> maybe_persist_notify_list(new_session)
+      |> push_status_message(msg, type)
+
+    # Auto-whois on connect
+    socket =
+      if online? && new_session.notify_list.settings.auto_whois do
+        push_whois_info(socket, nickname)
+      else
+        socket
+      end
+
+    {:noreply, socket}
+  end
+
   def handle_info(_, socket), do: {:noreply, socket}
 
   @impl true
   def terminate(_reason, socket) do
     session = connected?(socket) && socket.assigns[:session]
-    if session, do: cleanup_channels(session)
+
+    if session do
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "presence:global",
+        {:user_disconnected, %{nickname: session.nickname}}
+      )
+
+      cleanup_channels(session)
+    end
+
     :ok
   end
 
@@ -705,6 +952,80 @@ defmodule RetroHexChatWeb.ChatLive do
     case Server.ban(channel, socket.assigns.session.nickname, target, reason) do
       :ok -> socket
       {:error, msg} -> stream_insert(socket, :chat_messages, error_message(msg))
+    end
+  end
+
+  defp handle_ui_action(socket, :open_notify_list, _payload) do
+    assign(socket, show_notify_list: true)
+  end
+
+  defp handle_ui_action(socket, :notify_add, %{nickname: nick, note: note}) do
+    session = socket.assigns.session
+
+    case NotifyList.add_entry(session.notify_list, session.nickname, nick, note) do
+      {:ok, updated_list} ->
+        new_session = Session.set_notify_list(session, updated_list)
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_notify_list(new_session)
+        |> push_status_message("Added #{nick} to notify list", :system)
+
+      {:error, :self_add} ->
+        push_status_message(socket, "Cannot add yourself to the notify list", :system)
+
+      {:error, :duplicate} ->
+        push_status_message(socket, "#{nick} is already in your notify list", :system)
+
+      {:error, :list_full} ->
+        push_status_message(socket, "Notify list is full (max 50 entries)", :system)
+    end
+  end
+
+  defp handle_ui_action(socket, :notify_remove, %{nickname: nick}) do
+    session = socket.assigns.session
+
+    case NotifyList.remove_entry(session.notify_list, nick) do
+      {:ok, updated_list} ->
+        new_session = Session.set_notify_list(session, updated_list)
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_notify_list(new_session)
+        |> push_status_message("Removed #{nick} from notify list", :system)
+
+      {:error, :not_found} ->
+        push_status_message(socket, "#{nick} is not in your notify list", :system)
+    end
+  end
+
+  defp handle_ui_action(socket, :notify_edit, %{nickname: nick, note: note}) do
+    session = socket.assigns.session
+
+    case NotifyList.update_note(session.notify_list, nick, note) do
+      {:ok, updated_list} ->
+        new_session = Session.set_notify_list(session, updated_list)
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_notify_list(new_session)
+        |> push_status_message("Updated note for #{nick}", :system)
+
+      {:error, :not_found} ->
+        push_status_message(socket, "#{nick} is not in your notify list", :system)
+    end
+  end
+
+  defp handle_ui_action(socket, :notify_list_display, _payload) do
+    session = socket.assigns.session
+    entries = NotifyList.sorted_entries(session.notify_list)
+
+    if entries == [] do
+      push_status_message(socket, "Your notify list is empty", :system)
+    else
+      Enum.reduce(entries, socket, fn entry, acc ->
+        push_status_message(acc, format_notify_entry(entry), :system)
+      end)
     end
   end
 
@@ -1197,6 +1518,86 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  # -- Notify list helpers --
+
+  defp push_status_message(socket, content, type) do
+    msg = %{
+      id: "status-#{System.unique_integer([:positive])}",
+      content: content,
+      type: type,
+      timestamp: DateTime.utc_now()
+    }
+
+    stream_insert(socket, :status_messages, msg)
+  end
+
+  defp maybe_persist_notify_list(socket, session) do
+    if session.identified do
+      Task.start(fn -> NotifyList.save(session.nickname, session.notify_list) end)
+    end
+
+    socket
+  end
+
+  defp start_notify_debounce(socket, nickname, status) do
+    key = String.downcase(nickname)
+    timers = socket.assigns.notify_debounce_timers
+
+    # Cancel existing timer for this nick if any
+    timers =
+      case Map.get(timers, key) do
+        nil ->
+          timers
+
+        {old_ref, _old_status} ->
+          Process.cancel_timer(old_ref)
+          Map.delete(timers, key)
+      end
+
+    # Start new timer (10 second debounce)
+    ref = Process.send_after(self(), {:notify_debounce, nickname, status}, 10_000)
+    new_timers = Map.put(timers, key, {ref, status})
+    assign(socket, notify_debounce_timers: new_timers)
+  end
+
+  defp cancel_notify_timer(socket, nickname) do
+    key = String.downcase(nickname)
+    timers = socket.assigns.notify_debounce_timers
+
+    case Map.pop(timers, key) do
+      {nil, _} ->
+        socket
+
+      {{ref, _status}, new_timers} ->
+        Process.cancel_timer(ref)
+        assign(socket, notify_debounce_timers: new_timers)
+    end
+  end
+
+  defp push_whois_info(socket, nickname) do
+    {:ok, info} = NotifyList.whois_info(nickname)
+
+    info_lines = ["[Auto-Whois] #{nickname}:"]
+
+    info_lines =
+      if info.registered do
+        registered = if info.identified, do: "identified", else: "not identified"
+        info_lines ++ ["  Registered: yes (#{registered})"]
+      else
+        info_lines ++ ["  Registered: no"]
+      end
+
+    Enum.reduce(info_lines, socket, fn line, acc ->
+      push_status_message(acc, line, :system)
+    end)
+  end
+
+  defp format_notify_entry(entry) do
+    status = if entry.online, do: "online", else: "offline"
+    note = if entry.note, do: " - #{entry.note}", else: ""
+    "  #{entry.tracked_nickname} [#{status}]#{note}"
+  end
+
   defp system_message(content) do
     %{
       id: "system-#{System.unique_integer([:positive])}",
@@ -1343,6 +1744,31 @@ defmodule RetroHexChatWeb.ChatLive do
         <p>A retro IRC-style chat with Windows 98 aesthetics.</p>
         <p>Built with Elixir, Phoenix LiveView, and 98.css.</p>
       </RetroHexChatWeb.Components.Dialog.dialog>
+
+      <RetroHexChatWeb.Components.NotifyListWindow.notify_list_window
+        entries={NotifyList.sorted_entries(@session.notify_list)}
+        visible={@show_notify_list}
+        selected_entry={@notify_selected}
+        show_add_dialog={@show_notify_add_dialog}
+        show_edit_dialog={@show_notify_edit_dialog}
+        auto_whois={@session.notify_list.settings.auto_whois}
+      />
+
+      <div class="status-panel" style="height: 120px; border-top: 1px solid #808080;">
+        <RetroHexChatWeb.Components.StatusWindow.status_window>
+          <div
+            id="status-messages"
+            phx-update="stream"
+            style="font-size: 12px; font-family: monospace;"
+          >
+            <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
+              <span style={RetroHexChatWeb.Components.StatusWindow.status_message_style(msg.type)}>
+                [{RetroHexChatWeb.Components.StatusWindow.format_time(msg.timestamp)}] {msg.content}
+              </span>
+            </div>
+          </div>
+        </RetroHexChatWeb.Components.StatusWindow.status_window>
+      </div>
 
       <RetroHexChatWeb.Components.StatusBar.status_bar
         nickname={@session.nickname}

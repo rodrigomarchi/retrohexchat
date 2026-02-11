@@ -147,6 +147,30 @@ defmodule RetroHexChat.Services.NickServTest do
     end
   end
 
+  describe "identify broadcasts :nickserv_identified" do
+    test "identify broadcasts to user topic on success", %{server: server} do
+      {:ok, _} = NickServ.register("BcastNick", "secret123", server)
+
+      # New server to lose identified state
+      new_server = :"nickserv_bcast_#{System.unique_integer([:positive])}"
+      {:ok, _} = NickServ.start_link(name: new_server)
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:BcastNick")
+
+      {:ok, _} = NickServ.identify("BcastNick", "secret123", new_server)
+
+      assert_receive {:nickserv_identified, %{nickname: "BcastNick"}}
+    end
+
+    test "register does not broadcast :nickserv_identified", %{server: server} do
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:RegBcast")
+
+      {:ok, _} = NickServ.register("RegBcast", "secret123", server)
+
+      refute_receive {:nickserv_identified, _}, 100
+    end
+  end
+
   describe "identify timer expiry" do
     test "forces rename on timeout", _ctx do
       # Start a NickServ with a very short timeout for testing

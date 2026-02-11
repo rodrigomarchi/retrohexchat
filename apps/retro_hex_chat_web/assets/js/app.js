@@ -7,6 +7,7 @@ import topbar from "../vendor/topbar"
 import CommandPaletteHook from "./hooks/command_palette_hook"
 import FormatToolbarHook from "./hooks/format_toolbar_hook"
 import KeyboardHook from "./hooks/keyboard_hook"
+import NotifyListHook from "./hooks/notify_list_hook"
 import ScrollHook from "./hooks/scroll_hook"
 import SoundHook from "./hooks/sound_hook"
 
@@ -14,6 +15,7 @@ let Hooks = {
   CommandPaletteHook: CommandPaletteHook,
   FormatToolbarHook: FormatToolbarHook,
   KeyboardHook: KeyboardHook,
+  NotifyListHook: NotifyListHook,
   ScrollHook: ScrollHook,
   SoundHook: SoundHook,
 }
