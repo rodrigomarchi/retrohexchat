@@ -23,6 +23,33 @@ defmodule RetroHexChat.Chat.PolicyTest do
       content = String.duplicate("a", 1000)
       assert :ok = Policy.validate_content(content)
     end
+
+    test "rejects message with only format codes (no visible text)" do
+      # Bold toggle only — no visible text
+      assert {:error, "Message cannot be empty"} = Policy.validate_content(<<0x02, 0x02>>)
+    end
+
+    test "rejects message with format codes and whitespace only" do
+      assert {:error, "Message cannot be empty"} =
+               Policy.validate_content(<<0x02>> <> "   " <> <<0x02>>)
+    end
+
+    test "accepts message with format codes and visible text" do
+      assert :ok = Policy.validate_content(<<0x02>> <> "Hello" <> <<0x02>>)
+    end
+
+    test "rejects message with only color codes" do
+      assert {:error, "Message cannot be empty"} =
+               Policy.validate_content(<<0x03>> <> "4" <> <<0x03>>)
+    end
+
+    test "accepts message with color codes and visible text" do
+      assert :ok = Policy.validate_content(<<0x03>> <> "4Red text" <> <<0x03>>)
+    end
+
+    test "rejects message with reset code only" do
+      assert {:error, "Message cannot be empty"} = Policy.validate_content(<<0x0F>>)
+    end
   end
 
   describe "check_rate_limit/2" do

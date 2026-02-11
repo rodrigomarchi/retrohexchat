@@ -5,12 +5,14 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import CommandPaletteHook from "./hooks/command_palette_hook"
+import FormatToolbarHook from "./hooks/format_toolbar_hook"
 import KeyboardHook from "./hooks/keyboard_hook"
 import ScrollHook from "./hooks/scroll_hook"
 import SoundHook from "./hooks/sound_hook"
 
 let Hooks = {
   CommandPaletteHook: CommandPaletteHook,
+  FormatToolbarHook: FormatToolbarHook,
   KeyboardHook: KeyboardHook,
   ScrollHook: ScrollHook,
   SoundHook: SoundHook,
