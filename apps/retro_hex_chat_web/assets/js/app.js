@@ -10,6 +10,7 @@ import KeyboardHook from "./hooks/keyboard_hook"
 import NotifyListHook from "./hooks/notify_list_hook"
 import ScrollHook from "./hooks/scroll_hook"
 import SoundHook from "./hooks/sound_hook"
+import URLCatcherHook from "./hooks/url_catcher_hook"
 
 let Hooks = {
   CommandPaletteHook: CommandPaletteHook,
@@ -18,6 +19,7 @@ let Hooks = {
   NotifyListHook: NotifyListHook,
   ScrollHook: ScrollHook,
   SoundHook: SoundHook,
+  URLCatcherHook: URLCatcherHook,
 }
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")

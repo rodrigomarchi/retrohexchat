@@ -15,6 +15,8 @@ defmodule RetroHexChat.Application do
       RetroHexChat.Channels.Supervisor,
       RetroHexChat.Presence.Tracker,
       RetroHexChat.RateLimit.Table,
+      RetroHexChat.Chat.LinkPreview.Cache,
+      {Task.Supervisor, name: RetroHexChat.LinkPreviewTasks},
       RetroHexChat.Services.NickServ,
       RetroHexChat.Services.ChanServ
     ]
