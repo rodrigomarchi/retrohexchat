@@ -1,0 +1,130 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  MIX_ENV: test
+  PGHOST: localhost
+  PGPORT: "5432"
+  PGUSER: postgres
+  PGPASSWORD: postgres
+
+jobs:
+  ci:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: retro_hex_chat_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Elixir/OTP
+        id: beam
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: '28'
+          elixir-version: '1.19'
+
+      - name: Cache deps
+        uses: actions/cache@v4
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - name: Cache _build
+        uses: actions/cache@v4
+        with:
+          path: _build
+          key: build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - name: Install deps
+        run: mix deps.get
+
+      - name: Install npm deps
+        run: npm install --prefix apps/retro_hex_chat_web/assets
+
+      - name: Compile
+        id: compile
+        run: mix compile --warnings-as-errors
+        continue-on-error: true
+
+      - name: Format
+        id: format
+        run: mix format --check-formatted
+        continue-on-error: true
+
+      - name: Credo
+        id: credo
+        run: mix credo --strict
+        continue-on-error: true
+
+      - name: Setup DB
+        run: mix ecto.create --quiet && mix ecto.migrate --quiet
+
+      - name: Tests
+        id: tests
+        run: mix test
+        continue-on-error: true
+
+      - name: Dialyzer
+        id: dialyzer
+        run: mix dialyzer
+        continue-on-error: true
+
+      - name: PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: ci-results
+          message: |
+            ## CI Results
+
+            | Check | Status |
+            |-------|--------|
+            | Compile | ${{ steps.compile.outcome == 'success' && '✅' || '❌' }} |
+            | Format | ${{ steps.format.outcome == 'success' && '✅' || '❌' }} |
+            | Credo | ${{ steps.credo.outcome == 'success' && '✅' || '❌' }} |
+            | Tests | ${{ steps.tests.outcome == 'success' && '✅' || '❌' }} |
+            | Dialyzer | ${{ steps.dialyzer.outcome == 'success' && '✅' || '❌' }} |
+
+            📋 Run #${{ github.run_number }} • ${{ github.event.pull_request.head.sha }} • ${{ github.event.pull_request.updated_at }}
+
+      - name: Fail if any check failed
+        if: |
+          steps.compile.outcome == 'failure' ||
+          steps.format.outcome == 'failure' ||
+          steps.credo.outcome == 'failure' ||
+          steps.tests.outcome == 'failure' ||
+          steps.dialyzer.outcome == 'failure'
+        run: |
+          echo "::error::One or more checks failed"
+          echo "  Compile:  ${{ steps.compile.outcome }}"
+          echo "  Format:   ${{ steps.format.outcome }}"
+          echo "  Credo:    ${{ steps.credo.outcome }}"
+          echo "  Tests:    ${{ steps.tests.outcome }}"
+          echo "  Dialyzer: ${{ steps.dialyzer.outcome }}"
+          exit 1
