@@ -8,19 +8,19 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
   describe "toolbar/1" do
     test "shows Disconnect when connected" do
       html = render_component(&Toolbar.toolbar/1, connected: true)
-      assert html =~ "Disconnect"
-      refute html =~ ~s(phx-click="connect")
+      assert html =~ ~s(data-testid="toolbar-disconnect")
+      refute html =~ ~s(data-testid="toolbar-connect")
     end
 
     test "shows Connect when not connected" do
       html = render_component(&Toolbar.toolbar/1, connected: false)
-      assert html =~ ~s(phx-click="connect")
-      refute html =~ "Disconnect"
+      assert html =~ ~s(data-testid="toolbar-connect")
+      refute html =~ ~s(data-testid="toolbar-disconnect")
     end
 
     test "always shows Channel List" do
       html = render_component(&Toolbar.toolbar/1, connected: true)
-      assert html =~ "Channel List"
+      assert html =~ ~s(data-testid="toolbar-channel-list")
     end
   end
 end
