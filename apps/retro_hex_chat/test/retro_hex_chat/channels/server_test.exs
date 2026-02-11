@@ -762,4 +762,144 @@ defmodule RetroHexChat.Channels.ServerTest do
       assert state.modes =~ "l"
     end
   end
+
+  describe "state initialization (T008)" do
+    test "new channel has nil topic metadata and empty exception sets" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      {:ok, state} = Server.get_state(channel)
+
+      assert state.topic_set_by == nil
+      assert state.topic_set_at == nil
+      assert state.ban_exceptions == []
+      assert state.invite_exceptions == []
+    end
+  end
+
+  describe "set_topic metadata (T009)" do
+    test "stores topic_set_by and topic_set_at" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_topic(channel, "op", "Hello world")
+
+      {:ok, state} = Server.get_state(channel)
+      assert state.topic == "Hello world"
+      assert state.topic_set_by == "op"
+      assert %DateTime{} = state.topic_set_at
+    end
+
+    test "broadcasts set_at in topic_changed event" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      {:ok, _} = Server.join(channel, "op")
+      assert_receive {:user_joined, _}
+
+      :ok = Server.set_topic(channel, "op", "New topic")
+
+      assert_receive {:topic_changed,
+                      %{
+                        channel: ^channel,
+                        nickname: "op",
+                        topic: "New topic",
+                        set_at: %DateTime{}
+                      }}
+    end
+  end
+
+  describe "get_state extended fields (T010)" do
+    test "includes modes_detail map" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+m")
+      :ok = Server.set_mode(channel, "op", "+k", ["secret"])
+
+      {:ok, state} = Server.get_state(channel)
+
+      assert %{
+               moderated: true,
+               invite_only: false,
+               topic_lock: false,
+               key: "secret",
+               limit: nil
+             } = state.modes_detail
+    end
+
+    test "includes topic_set_by and topic_set_at" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_topic(channel, "op", "My topic")
+
+      {:ok, state} = Server.get_state(channel)
+      assert state.topic_set_by == "op"
+      assert %DateTime{} = state.topic_set_at
+    end
+
+    test "includes ban_exceptions and invite_exceptions" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      {:ok, state} = Server.get_state(channel)
+
+      assert is_list(state.ban_exceptions)
+      assert is_list(state.invite_exceptions)
+    end
+  end
+
+  describe "ban exceptions override bans (T036)" do
+    test "banned user with ban exception can join" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.ban(channel, "op", "excepted_user")
+      :ok = Server.add_ban_exception(channel, "op", "excepted_user")
+
+      assert {:ok, _} = Server.join(channel, "excepted_user")
+    end
+
+    test "banned user without exception still rejected" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.ban(channel, "op", "troll")
+
+      assert {:error, "You are banned from " <> _} = Server.join(channel, "troll")
+    end
+  end
+
+  describe "invite exceptions bypass invite-only (T041)" do
+    test "invite-only rejects user not in invite_exceptions" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+i", [])
+
+      assert {:error, "Channel is invite-only" <> _} = Server.join(channel, "outsider")
+    end
+
+    test "invite-only allows user in invite_exceptions" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+i", [])
+      :ok = Server.add_invite_exception(channel, "op", "vip_user")
+
+      assert {:ok, _} = Server.join(channel, "vip_user")
+    end
+  end
 end

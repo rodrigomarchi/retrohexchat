@@ -191,6 +191,18 @@ defmodule RetroHexChat.Services.ChanServ do
           )
       end
     end)
+
+    cleanup_exceptions(channel_name)
+  end
+
+  defp cleanup_exceptions(channel_name) do
+    Enum.each(Queries.list_ban_exceptions(channel_name), fn entry ->
+      Queries.remove_ban_exception(channel_name, entry.nickname)
+    end)
+
+    Enum.each(Queries.list_invite_exceptions(channel_name), fn entry ->
+      Queries.remove_invite_exception(channel_name, entry.nickname)
+    end)
   end
 
   defp check_hierarchy(channel_name, requester_nick, target_level) do

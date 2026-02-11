@@ -223,7 +223,8 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<h4>Examples</h4>" <>
           "<pre>/mode +m\n/mode -m\n/mode +o Alice\n/mode +k secretpass\n/mode +l 25</pre>" <>
           "<h4>See Also</h4>" <>
-          "<p><a href=\"#\" data-help-topic=\"channel-modes-overview\">Channel Modes Overview</a></p>"
+          "<p><a href=\"#\" data-help-topic=\"channel-modes-overview\">Channel Modes Overview</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-channel-central\">Channel Central</a></p>"
     },
     %{
       id: "cmd-kick",
@@ -255,7 +256,9 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<pre>/ban Spammer</pre>" <>
           "<h4>See Also</h4>" <>
           "<p><a href=\"#\" data-help-topic=\"cmd-kick\">Kick</a> · " <>
-          "<a href=\"#\" data-help-topic=\"cmd-mode\">Mode</a></p>"
+          "<a href=\"#\" data-help-topic=\"cmd-mode\">Mode</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-channel-central\">Channel Central</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-ban-exceptions\">Ban Exceptions</a></p>"
     },
     %{
       id: "cmd-whois",
@@ -701,6 +704,87 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<p><a href=\"#\" data-help-topic=\"cmd-ignore\">/ignore Command</a> · " <>
           "<a href=\"#\" data-help-topic=\"cmd-unignore\">/unignore Command</a> · " <>
           "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
+    },
+    %{
+      id: "feature-channel-central",
+      title: "Channel Central",
+      category: "Features",
+      keywords: [
+        "channel central",
+        "channel info",
+        "channel settings",
+        "modes",
+        "bans",
+        "ban exceptions",
+        "invite exceptions",
+        "tabs"
+      ],
+      content:
+        "<h3>Channel Central</h3>" <>
+          "<p>Channel Central provides a comprehensive tabbed dialog for viewing and managing all channel settings in one place.</p>" <>
+          "<h4>Tabs</h4>" <>
+          "<p><strong>General:</strong> Channel name, topic, and basic information.<br/>" <>
+          "<strong>Modes:</strong> View and toggle channel modes (+m, +i, +t, +k, +l).<br/>" <>
+          "<strong>Bans:</strong> View and manage the channel ban list.<br/>" <>
+          "<strong>Ban Exceptions:</strong> Manage ban exceptions (+e) that let specific users bypass bans.<br/>" <>
+          "<strong>Invite Exceptions:</strong> Manage invite exceptions (+I) that let specific users bypass invite-only mode.</p>" <>
+          "<h4>Opening</h4>" <>
+          "<p>Double-click a channel in the treebar, or go to <strong>Tools &gt; Channel Central</strong>.</p>" <>
+          "<h4>Permissions</h4>" <>
+          "<p>Channel operators see editable controls and can modify settings directly. " <>
+          "Non-operators see read-only views of the channel configuration.</p>" <>
+          "<h4>Real-Time Updates</h4>" <>
+          "<p>The dialog updates in real time when other users change channel settings, " <>
+          "so you always see the current state.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-mode\">/mode Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-ban\">/ban Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-topic\">/topic Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-ban-exceptions\">Ban Exceptions</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-invite-exceptions\">Invite Exceptions</a></p>"
+    },
+    %{
+      id: "feature-ban-exceptions",
+      title: "Ban Exceptions (+e)",
+      category: "Features",
+      keywords: ["ban exception", "ban exempt", "exception", "exempt", "bypass ban", "+e"],
+      content:
+        "<h3>Ban Exceptions (+e)</h3>" <>
+          "<p>Ban exceptions allow specific users to bypass channel bans. " <>
+          "If a user is both banned and has a ban exception, they can still join and participate in the channel.</p>" <>
+          "<h4>Managing Ban Exceptions</h4>" <>
+          "<p>Ban exceptions are managed through the <strong>Ban Exceptions</strong> tab in " <>
+          "<a href=\"#\" data-help-topic=\"feature-channel-central\">Channel Central</a>. " <>
+          "Only channel operators can add or remove ban exceptions.</p>" <>
+          "<h4>How It Works</h4>" <>
+          "<p>When a user attempts to join a channel where they are banned, the server checks " <>
+          "the ban exception list. If the user matches a ban exception entry, the ban is overridden " <>
+          "and they are allowed to join.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-ban\">/ban Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-channel-central\">Channel Central</a></p>"
+    },
+    %{
+      id: "feature-invite-exceptions",
+      title: "Invite Exceptions (+I)",
+      category: "Features",
+      keywords: ["invite exception", "invite exempt", "invite bypass", "+I", "invite-only bypass"],
+      content:
+        "<h3>Invite Exceptions (+I)</h3>" <>
+          "<p>Invite exceptions allow specific users to bypass invite-only (+i) mode. " <>
+          "When a channel has +i mode set, users in the invite exceptions list can still " <>
+          "join without an explicit invite from an operator.</p>" <>
+          "<h4>Managing Invite Exceptions</h4>" <>
+          "<p>Invite exceptions are managed through the <strong>Invite Exceptions</strong> tab in " <>
+          "<a href=\"#\" data-help-topic=\"feature-channel-central\">Channel Central</a>. " <>
+          "Only channel operators can add or remove invite exceptions.</p>" <>
+          "<h4>How It Works</h4>" <>
+          "<p>When a user attempts to join an invite-only channel, the server checks the " <>
+          "invite exception list. If the user matches an invite exception entry, " <>
+          "they are allowed to join without needing an invite.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-mode\">/mode Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-channel-central\">Channel Central</a></p>"
     },
     %{
       id: "feature-search",

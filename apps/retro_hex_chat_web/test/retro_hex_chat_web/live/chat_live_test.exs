@@ -2281,6 +2281,411 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
   end
 
+  # ── Channel Central ─────────────────────────────────────
+
+  describe "Channel Central dialog" do
+    test "open via menu shows dialog with channel info", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcMenu")
+
+      html = view |> element("[data-testid=menu-channel-central]") |> render_click()
+
+      assert html =~ "channel-central-dialog"
+      assert html =~ "Channel Central"
+      assert html =~ "#lobby"
+    end
+
+    test "close via close button hides dialog", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcClose")
+
+      view |> element("[data-testid=menu-channel-central]") |> render_click()
+      html = view |> element("[phx-click=close_channel_central]") |> render_click()
+
+      refute html =~ "channel-central-dialog"
+    end
+
+    test "Escape key closes dialog", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcEsc")
+
+      view |> element("[data-testid=menu-channel-central]") |> render_click()
+      html = render_keydown(view, "window_keydown", %{"key" => "Escape"})
+
+      refute html =~ "channel-central-dialog"
+    end
+
+    test "tab switching works", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcTabs")
+
+      view |> element("[data-testid=menu-channel-central]") |> render_click()
+
+      html = view |> element("[data-testid=cc-tab-modes]") |> render_click()
+      assert html =~ "cc-modes-panel"
+
+      html = view |> element("[data-testid=cc-tab-bans]") |> render_click()
+      assert html =~ "cc-bans-panel"
+
+      html = view |> element("[data-testid=cc-tab-ban-ex]") |> render_click()
+      assert html =~ "cc-ban-ex-panel"
+
+      html = view |> element("[data-testid=cc-tab-invite-ex]") |> render_click()
+      assert html =~ "cc-invite-ex-panel"
+
+      html = view |> element("[data-testid=cc-tab-general]") |> render_click()
+      assert html =~ "cc-general-panel"
+    end
+
+    test "all tabs display data for the channel", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcData")
+
+      view |> element("[data-testid=menu-channel-central]") |> render_click()
+
+      # General tab shows channel name and member count
+      html = render(view)
+      assert html =~ "#lobby"
+
+      # Modes tab shows mode checkboxes
+      html = view |> element("[data-testid=cc-tab-modes]") |> render_click()
+      assert html =~ "Moderated (+m)"
+      assert html =~ "Invite Only (+i)"
+
+      # Bans tab shows empty bans
+      html = view |> element("[data-testid=cc-tab-bans]") |> render_click()
+      assert html =~ "No bans"
+    end
+
+    test "non-operator sees disabled controls", %{conn: conn} do
+      # Create a channel with an existing operator
+      channel = "#ccro-#{System.unique_integer([:positive])}"
+      ensure_channel(channel)
+      {:ok, _} = Server.join(channel, "ExistingOp")
+
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcReadOnly")
+
+      # Join via /join command
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+
+      # Switch to the channel and open Channel Central directly (avoid # in CSS selectors)
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      html = render(view)
+
+      # Should NOT see Set Topic button (non-operator)
+      refute html =~ "cc-set-topic-btn"
+
+      # Check modes tab - should see disabled
+      html = view |> element("[data-testid=cc-tab-modes]") |> render_click()
+      assert html =~ "disabled"
+      refute html =~ "cc-apply-modes-btn"
+    end
+
+    test "operator sees editable controls", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcOp")
+
+      # User is operator of a new channel (first to join)
+      channel = "#ccop-#{System.unique_integer([:positive])}"
+
+      # Join via /join command (first user becomes operator)
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+
+      # Switch and open CC directly (avoid # in CSS selectors)
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      html = render(view)
+      assert html =~ "cc-set-topic-btn"
+      assert html =~ "cc-topic-input"
+
+      # Check modes tab - should see Apply button
+      html = view |> element("[data-testid=cc-tab-modes]") |> render_click()
+      assert html =~ "cc-apply-modes-btn"
+    end
+  end
+
+  # ── T027: Channel Central topic editing ───────────────────
+
+  describe "Channel Central topic editing" do
+    test "operator can set topic via Channel Central", %{conn: conn} do
+      channel = "#cctop-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcTopicOp")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      # Set a topic
+      view
+      |> element("form[phx-submit=cc_set_topic]")
+      |> render_submit(%{"topic" => "New test topic"})
+
+      html = render(view)
+      assert html =~ "New test topic"
+    end
+
+    test "clearing topic works", %{conn: conn} do
+      channel = "#ccclr-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcTopClr")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+
+      # Set topic first
+      Server.set_topic(channel, "CcTopClr", "Temp topic")
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      # Clear topic
+      view |> element("form[phx-submit=cc_set_topic]") |> render_submit(%{"topic" => ""})
+
+      # Verify server state has empty topic (can't use refute html =~ because
+      # "Temp topic" will appear in system messages in the chat area)
+      {:ok, state} = Server.get_state(channel)
+      assert state.topic == ""
+    end
+  end
+
+  # ── T030: Channel Central mode toggles ───────────────────
+
+  describe "Channel Central mode toggles" do
+    test "operator can set +m moderated mode", %{conn: conn} do
+      channel = "#ccmod-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcModeOp")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      # Switch to modes tab and apply +m
+      view |> element("[data-testid=cc-tab-modes]") |> render_click()
+
+      view
+      |> element("form[phx-submit=cc_apply_modes]")
+      |> render_submit(%{"moderated" => "true"})
+
+      # Verify mode is set on server
+      {:ok, state} = Server.get_state(channel)
+      assert state.modes =~ "m"
+    end
+
+    test "operator can set +k key mode", %{conn: conn} do
+      channel = "#cckey-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcKeyOp")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      view |> element("[data-testid=cc-tab-modes]") |> render_click()
+
+      view
+      |> element("form[phx-submit=cc_apply_modes]")
+      |> render_submit(%{"has_key" => "true", "key_value" => "secret123"})
+
+      {:ok, state} = Server.get_state(channel)
+      assert state.modes =~ "k"
+    end
+  end
+
+  # ── T034: Channel Central ban management ─────────────────
+
+  describe "Channel Central ban management" do
+    test "operator can add ban via dialog", %{conn: conn} do
+      channel = "#ccban-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcBanOp")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      # Switch to bans tab
+      view |> element("[data-testid=cc-tab-bans]") |> render_click()
+
+      # Open add ban dialog
+      view |> element("[data-testid=cc-add-ban-btn]") |> render_click()
+
+      html = render(view)
+      assert html =~ "cc-add-ban-dialog"
+
+      # Submit ban
+      view |> element("form[phx-submit=cc_add_ban]") |> render_submit(%{"nickname" => "BadUser"})
+
+      html = render(view)
+      assert html =~ "cc-ban-entry-BadUser"
+    end
+
+    test "operator can remove ban", %{conn: conn} do
+      channel = "#ccunb-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcUnBan")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+
+      # Ban someone first
+      Server.ban(channel, "CcUnBan", "Banned1")
+
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      view |> element("[data-testid=cc-tab-bans]") |> render_click()
+
+      html = render(view)
+      assert html =~ "cc-ban-entry-Banned1"
+
+      # Select the ban
+      render_click(view, "cc_ban_select", %{"nickname" => "Banned1"})
+
+      # Remove the ban
+      view |> element("[data-testid=cc-remove-ban-btn]") |> render_click()
+
+      html = render(view)
+      refute html =~ "cc-ban-entry-Banned1"
+    end
+  end
+
+  # ── T039: Channel Central ban exceptions ─────────────────
+
+  describe "Channel Central ban exceptions" do
+    test "operator can add ban exception via dialog", %{conn: conn} do
+      channel = "#ccbex-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcBExOp")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      view |> element("[data-testid=cc-tab-ban-ex]") |> render_click()
+      view |> element("[data-testid=cc-add-ban-ex-btn]") |> render_click()
+
+      html = render(view)
+      assert html =~ "cc-add-ban-ex-dialog"
+
+      view
+      |> element("form[phx-submit=cc_add_ban_exception]")
+      |> render_submit(%{"nickname" => "Exempt1"})
+
+      html = render(view)
+      assert html =~ "cc-ban-ex-entry-Exempt1"
+    end
+
+    test "operator can remove ban exception", %{conn: conn} do
+      channel = "#ccbrx-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcBRxOp")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+
+      # Add ban exception directly
+      Server.add_ban_exception(channel, "CcBRxOp", "ExUser")
+
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      view |> element("[data-testid=cc-tab-ban-ex]") |> render_click()
+
+      html = render(view)
+      assert html =~ "cc-ban-ex-entry-ExUser"
+
+      render_click(view, "cc_ban_ex_select", %{"nickname" => "ExUser"})
+      view |> element("[data-testid=cc-remove-ban-ex-btn]") |> render_click()
+
+      html = render(view)
+      refute html =~ "cc-ban-ex-entry-ExUser"
+    end
+  end
+
+  # ── T044: Channel Central invite exceptions ──────────────
+
+  describe "Channel Central invite exceptions" do
+    test "operator can add invite exception via dialog", %{conn: conn} do
+      channel = "#cciex-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcIExOp")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      view |> element("[data-testid=cc-tab-invite-ex]") |> render_click()
+      view |> element("[data-testid=cc-add-invite-ex-btn]") |> render_click()
+
+      html = render(view)
+      assert html =~ "cc-add-invite-ex-dialog"
+
+      view
+      |> element("form[phx-submit=cc_add_invite_exception]")
+      |> render_submit(%{"nickname" => "InvUser"})
+
+      html = render(view)
+      assert html =~ "cc-invite-ex-entry-InvUser"
+    end
+
+    test "operator can remove invite exception", %{conn: conn} do
+      channel = "#ccirx-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcIRxOp")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+
+      Server.add_invite_exception(channel, "CcIRxOp", "InvExUser")
+
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      view |> element("[data-testid=cc-tab-invite-ex]") |> render_click()
+
+      html = render(view)
+      assert html =~ "cc-invite-ex-entry-InvExUser"
+
+      render_click(view, "cc_invite_ex_select", %{"nickname" => "InvExUser"})
+      view |> element("[data-testid=cc-remove-invite-ex-btn]") |> render_click()
+
+      html = render(view)
+      refute html =~ "cc-invite-ex-entry-InvExUser"
+    end
+  end
+
+  # ── T048: Channel Central real-time updates ───────────────
+
+  describe "Channel Central real-time updates" do
+    test "topic change by another user updates dialog", %{conn: conn} do
+      channel = "#ccrt1-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcRtObs")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      # Another user changes the topic
+      Server.set_topic(channel, "CcRtObs", "New real-time topic")
+
+      html = render(view)
+      assert html =~ "New real-time topic"
+    end
+
+    test "mode change updates dialog", %{conn: conn} do
+      channel = "#ccrt2-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcRtMod")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      # Set moderated mode — triggers PubSub broadcast
+      Server.set_mode(channel, "CcRtMod", "+m", [])
+
+      # Render to process the PubSub message, then switch to modes tab
+      render(view)
+      html = view |> element("[data-testid=cc-tab-modes]") |> render_click()
+      assert html =~ "Moderated (+m)"
+    end
+
+    test "ban change updates dialog ban list", %{conn: conn} do
+      channel = "#ccrt3-#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(conn, "/chat?nickname=CcRtBan")
+
+      render_click(view, "send_input", %{"input" => "/join #{channel}"})
+      render_click(view, "switch_channel", %{"channel" => channel})
+      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      # Ban someone from server side
+      Server.ban(channel, "CcRtBan", "BannedRt")
+
+      html = view |> element("[data-testid=cc-tab-bans]") |> render_click()
+      assert html =~ "cc-ban-entry-BannedRt"
+    end
+  end
+
   # ── Helpers ───────────────────────────────────────────────
 
   defp ensure_channel(name) do

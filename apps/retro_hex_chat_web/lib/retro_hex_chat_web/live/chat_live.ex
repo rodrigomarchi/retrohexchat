@@ -130,7 +130,19 @@ defmodule RetroHexChatWeb.ChatLive do
       ignore_timers: %{},
       show_ignore_dialog: false,
       ignore_selected: nil,
-      show_ignore_add_dialog: false
+      show_ignore_add_dialog: false,
+      show_channel_central: false,
+      channel_central_tab: "general",
+      channel_central_state: nil,
+      channel_central_channel: nil,
+      channel_central_operator: false,
+      channel_central_ban_selected: nil,
+      channel_central_ban_ex_selected: nil,
+      channel_central_invite_ex_selected: nil,
+      channel_central_modes_form: %{},
+      show_cc_add_ban_dialog: false,
+      show_cc_add_ban_ex_dialog: false,
+      show_cc_add_invite_ex_dialog: false
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -335,10 +347,15 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   def handle_event("window_keydown", %{"key" => "Escape"}, socket) do
-    if socket.assigns.search_visible do
-      {:noreply, clear_search_state(socket)}
-    else
-      {:noreply, socket}
+    cond do
+      socket.assigns.show_channel_central ->
+        {:noreply, close_channel_central(socket)}
+
+      socket.assigns.search_visible ->
+        {:noreply, clear_search_state(socket)}
+
+      true ->
+        {:noreply, socket}
     end
   end
 
@@ -967,6 +984,212 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  # ── Channel Central dialog events ──────────────────────────
+
+  def handle_event("open_channel_central", params, socket) do
+    channel = params["cc_channel"] || socket.assigns.session.active_channel
+
+    if channel do
+      open_channel_central(socket, channel)
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("close_channel_central", _params, socket) do
+    {:noreply, close_channel_central(socket)}
+  end
+
+  def handle_event("channel_central_tab", %{"tab" => tab}, socket) do
+    {:noreply, assign(socket, channel_central_tab: tab)}
+  end
+
+  def handle_event("cc_ban_select", %{"nickname" => nick}, socket) do
+    {:noreply, assign(socket, channel_central_ban_selected: nick)}
+  end
+
+  def handle_event("cc_ban_ex_select", %{"nickname" => nick}, socket) do
+    {:noreply, assign(socket, channel_central_ban_ex_selected: nick)}
+  end
+
+  def handle_event("cc_invite_ex_select", %{"nickname" => nick}, socket) do
+    {:noreply, assign(socket, channel_central_invite_ex_selected: nick)}
+  end
+
+  def handle_event("cc_open_add_ban", _params, socket) do
+    {:noreply, assign(socket, show_cc_add_ban_dialog: true)}
+  end
+
+  def handle_event("cc_close_add_ban", _params, socket) do
+    {:noreply, assign(socket, show_cc_add_ban_dialog: false)}
+  end
+
+  def handle_event("cc_open_add_ban_ex", _params, socket) do
+    {:noreply, assign(socket, show_cc_add_ban_ex_dialog: true)}
+  end
+
+  def handle_event("cc_close_add_ban_ex", _params, socket) do
+    {:noreply, assign(socket, show_cc_add_ban_ex_dialog: false)}
+  end
+
+  def handle_event("cc_open_add_invite_ex", _params, socket) do
+    {:noreply, assign(socket, show_cc_add_invite_ex_dialog: true)}
+  end
+
+  def handle_event("cc_close_add_invite_ex", _params, socket) do
+    {:noreply, assign(socket, show_cc_add_invite_ex_dialog: false)}
+  end
+
+  def handle_event("cc_set_topic", %{"topic" => topic}, socket) do
+    channel = socket.assigns.channel_central_channel
+    nickname = socket.assigns.session.nickname
+
+    case Server.set_topic(channel, nickname, topic) do
+      :ok ->
+        {:noreply, refresh_channel_central(socket)}
+
+      {:error, msg} ->
+        {:noreply, stream_insert(socket, :chat_messages, error_message("Topic error: #{msg}"))}
+    end
+  end
+
+  def handle_event("cc_apply_modes", params, socket) do
+    channel = socket.assigns.channel_central_channel
+    nickname = socket.assigns.session.nickname
+    current = socket.assigns.channel_central_state.modes_detail
+
+    socket = apply_mode_changes(socket, channel, nickname, current, params)
+    {:noreply, refresh_channel_central(socket)}
+  end
+
+  def handle_event("cc_add_ban", %{"nickname" => nick}, socket) do
+    channel = socket.assigns.channel_central_channel
+    operator = socket.assigns.session.nickname
+
+    case Server.ban(channel, operator, nick) do
+      :ok ->
+        {:noreply,
+         socket
+         |> assign(show_cc_add_ban_dialog: false)
+         |> refresh_channel_central()}
+
+      {:error, msg} ->
+        {:noreply, stream_insert(socket, :chat_messages, error_message("Ban error: #{msg}"))}
+    end
+  end
+
+  def handle_event("cc_remove_ban", _params, socket) do
+    nick = socket.assigns.channel_central_ban_selected
+
+    if nick do
+      channel = socket.assigns.channel_central_channel
+      operator = socket.assigns.session.nickname
+
+      # Unban by setting -b mode (or via Server API if available)
+      # For now use the ban list approach: remove from server state
+      case remove_ban_via_server(channel, operator, nick) do
+        :ok ->
+          {:noreply,
+           socket
+           |> assign(channel_central_ban_selected: nil)
+           |> refresh_channel_central()}
+
+        {:error, msg} ->
+          {:noreply, stream_insert(socket, :chat_messages, error_message("Unban error: #{msg}"))}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("cc_add_ban_exception", %{"nickname" => nick}, socket) do
+    channel = socket.assigns.channel_central_channel
+    operator = socket.assigns.session.nickname
+
+    case Server.add_ban_exception(channel, operator, nick) do
+      :ok ->
+        {:noreply,
+         socket
+         |> assign(show_cc_add_ban_ex_dialog: false)
+         |> refresh_channel_central()}
+
+      {:error, msg} ->
+        {:noreply,
+         stream_insert(socket, :chat_messages, error_message("Ban exception error: #{msg}"))}
+    end
+  end
+
+  def handle_event("cc_remove_ban_exception", _params, socket) do
+    nick = socket.assigns.channel_central_ban_ex_selected
+
+    if nick do
+      channel = socket.assigns.channel_central_channel
+      operator = socket.assigns.session.nickname
+
+      case Server.remove_ban_exception(channel, operator, nick) do
+        :ok ->
+          {:noreply,
+           socket
+           |> assign(channel_central_ban_ex_selected: nil)
+           |> refresh_channel_central()}
+
+        {:error, msg} ->
+          {:noreply,
+           stream_insert(socket, :chat_messages, error_message("Remove exception error: #{msg}"))}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("cc_add_invite_exception", %{"nickname" => nick}, socket) do
+    channel = socket.assigns.channel_central_channel
+    operator = socket.assigns.session.nickname
+
+    case Server.add_invite_exception(channel, operator, nick) do
+      :ok ->
+        {:noreply,
+         socket
+         |> assign(show_cc_add_invite_ex_dialog: false)
+         |> refresh_channel_central()}
+
+      {:error, msg} ->
+        {:noreply,
+         stream_insert(
+           socket,
+           :chat_messages,
+           error_message("Invite exception error: #{msg}")
+         )}
+    end
+  end
+
+  def handle_event("cc_remove_invite_exception", _params, socket) do
+    nick = socket.assigns.channel_central_invite_ex_selected
+
+    if nick do
+      channel = socket.assigns.channel_central_channel
+      operator = socket.assigns.session.nickname
+
+      case Server.remove_invite_exception(channel, operator, nick) do
+        :ok ->
+          {:noreply,
+           socket
+           |> assign(channel_central_invite_ex_selected: nil)
+           |> refresh_channel_central()}
+
+        {:error, msg} ->
+          {:noreply,
+           stream_insert(
+             socket,
+             :chat_messages,
+             error_message("Remove exception error: #{msg}")
+           )}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
   # Highlight dialog events
   def handle_event("open_highlight_dialog", _params, socket) do
     {:noreply, assign(socket, show_highlight_dialog: true)}
@@ -1267,10 +1490,12 @@ defmodule RetroHexChatWeb.ChatLive do
 
   def handle_info({:mode_changed, %{nickname: nick, mode_string: mode_string} = payload}, socket) do
     msg = "#{nick} sets mode #{mode_string}"
+    channel = Map.get(payload, :channel)
 
     socket =
       socket
       |> maybe_update_current_modes(payload)
+      |> maybe_refresh_cc(channel)
       |> stream_insert(:chat_messages, system_message(msg))
 
     {:noreply, socket}
@@ -1296,9 +1521,44 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
-  def handle_info({:user_banned, %{operator: op, target: target, reason: reason}}, socket) do
+  def handle_info(
+        {:user_banned, %{operator: op, target: target, reason: reason} = payload},
+        socket
+      ) do
     msg = "#{target} was banned by #{op}" <> if(reason, do: " (#{reason})", else: "")
-    {:noreply, stream_insert(socket, :chat_messages, system_message(msg))}
+    channel = Map.get(payload, :channel)
+
+    {:noreply,
+     socket
+     |> maybe_refresh_cc(channel)
+     |> stream_insert(:chat_messages, system_message(msg))}
+  end
+
+  def handle_info({:user_unbanned, %{operator: op, target: target} = payload}, socket) do
+    msg = "#{target} was unbanned by #{op}"
+    channel = Map.get(payload, :channel)
+
+    {:noreply,
+     socket
+     |> maybe_refresh_cc(channel)
+     |> stream_insert(:chat_messages, system_message(msg))}
+  end
+
+  # T046: Exception broadcast handlers — refresh CC if open
+  def handle_info({:ban_exception_added, %{channel: channel}}, socket) do
+    {:noreply, maybe_refresh_cc(socket, channel)}
+  end
+
+  def handle_info({:ban_exception_removed, %{channel: channel}}, socket) do
+    {:noreply, maybe_refresh_cc(socket, channel)}
+  end
+
+  def handle_info({:invite_exception_added, %{channel: channel}}, socket) do
+    {:noreply, maybe_refresh_cc(socket, channel)}
+  end
+
+  def handle_info({:invite_exception_removed, %{channel: channel}}, socket) do
+    {:noreply, maybe_refresh_cc(socket, channel)}
   end
 
   def handle_info({:topic_changed, %{nickname: nick, topic: topic} = payload}, socket) do
@@ -1312,28 +1572,35 @@ defmodule RetroHexChatWeb.ChatLive do
         socket
       end
 
-    {:noreply, stream_insert(socket, :chat_messages, system_message(msg))}
+    {:noreply,
+     socket
+     |> maybe_refresh_cc(channel)
+     |> stream_insert(:chat_messages, system_message(msg))}
   end
 
   def handle_info({:user_joined, %{nickname: nick} = payload}, socket) do
     msg = "#{nick} has joined the channel"
     role = Map.get(payload, :role, :regular)
+    channel = Map.get(payload, :channel)
     user = %{nickname: nick, role: role, away: false}
     users = [user | socket.assigns.channel_users]
 
     {:noreply,
      socket
      |> assign(channel_users: users)
+     |> maybe_refresh_cc(channel)
      |> stream_insert(:chat_messages, system_message(msg))}
   end
 
-  def handle_info({:user_left, %{nickname: nick, reason: reason}}, socket) do
+  def handle_info({:user_left, %{nickname: nick, reason: reason} = payload}, socket) do
     msg = "#{nick} has left" <> if(reason, do: " (#{reason})", else: "")
+    channel = Map.get(payload, :channel)
     users = Enum.reject(socket.assigns.channel_users, &(&1.nickname == nick))
 
     {:noreply,
      socket
      |> assign(channel_users: users)
+     |> maybe_refresh_cc(channel)
      |> stream_insert(:chat_messages, system_message(msg))}
   end
 
@@ -2502,6 +2769,152 @@ defmodule RetroHexChatWeb.ChatLive do
     )
   end
 
+  # ── Channel Central helpers ─────────────────────────────────
+
+  defp open_channel_central(socket, channel) do
+    nickname = socket.assigns.session.nickname
+
+    # Validate membership
+    case Server.get_state(channel) do
+      {:ok, state} ->
+        member_nicks = Enum.map(state.members, fn {nick, _role} -> nick end)
+
+        if nickname in member_nicks do
+          operator = nickname in state.operators
+
+          {:noreply,
+           assign(socket,
+             show_channel_central: true,
+             channel_central_tab: "general",
+             channel_central_channel: channel,
+             channel_central_state: state,
+             channel_central_operator: operator,
+             channel_central_ban_selected: nil,
+             channel_central_ban_ex_selected: nil,
+             channel_central_invite_ex_selected: nil,
+             channel_central_modes_form: %{},
+             show_cc_add_ban_dialog: false,
+             show_cc_add_ban_ex_dialog: false,
+             show_cc_add_invite_ex_dialog: false
+           )}
+        else
+          {:noreply,
+           stream_insert(
+             socket,
+             :chat_messages,
+             error_message("You must be a member of #{channel} to open Channel Central")
+           )}
+        end
+
+      {:error, _} ->
+        {:noreply,
+         stream_insert(socket, :chat_messages, error_message("Channel #{channel} not found"))}
+    end
+  end
+
+  defp close_channel_central(socket) do
+    assign(socket,
+      show_channel_central: false,
+      channel_central_tab: "general",
+      channel_central_channel: nil,
+      channel_central_state: nil,
+      channel_central_operator: false,
+      channel_central_ban_selected: nil,
+      channel_central_ban_ex_selected: nil,
+      channel_central_invite_ex_selected: nil,
+      channel_central_modes_form: %{},
+      show_cc_add_ban_dialog: false,
+      show_cc_add_ban_ex_dialog: false,
+      show_cc_add_invite_ex_dialog: false
+    )
+  end
+
+  defp refresh_channel_central(socket) do
+    channel = socket.assigns.channel_central_channel
+
+    if channel do
+      case Server.get_state(channel) do
+        {:ok, state} ->
+          nickname = socket.assigns.session.nickname
+          operator = nickname in state.operators
+          assign(socket, channel_central_state: state, channel_central_operator: operator)
+
+        {:error, _} ->
+          close_channel_central(socket)
+      end
+    else
+      socket
+    end
+  end
+
+  defp apply_mode_changes(socket, channel, nickname, current, params) do
+    mode_ops = build_mode_ops(current, params)
+
+    Enum.reduce(mode_ops, socket, fn {mode_str, mode_params}, acc ->
+      case Server.set_mode(channel, nickname, mode_str, mode_params) do
+        :ok -> acc
+        {:error, msg} -> stream_insert(acc, :chat_messages, error_message("Mode error: #{msg}"))
+      end
+    end)
+  end
+
+  defp build_mode_ops(current, params) do
+    ops = []
+
+    ops = toggle_flag_op(ops, current.moderated, params["moderated"] == "true", "m")
+    ops = toggle_flag_op(ops, current.invite_only, params["invite_only"] == "true", "i")
+    ops = toggle_flag_op(ops, current.topic_lock, params["topic_lock"] == "true", "t")
+    ops = build_key_op(ops, current.key, params["has_key"] == "true", params["key_value"])
+    ops = build_limit_op(ops, current.limit, params["has_limit"] == "true", params["limit_value"])
+
+    ops
+  end
+
+  defp toggle_flag_op(ops, was_on, is_on, flag) do
+    cond do
+      !was_on and is_on -> [{"+#{flag}", []} | ops]
+      was_on and !is_on -> [{"-#{flag}", []} | ops]
+      true -> ops
+    end
+  end
+
+  defp build_key_op(ops, nil, true, key_value) when is_binary(key_value) and key_value != "",
+    do: [{"+k", [key_value]} | ops]
+
+  defp build_key_op(ops, old_key, false, _) when old_key != nil,
+    do: [{"-k", []} | ops]
+
+  defp build_key_op(ops, old_key, true, key_value)
+       when old_key != nil and is_binary(key_value) and key_value != "" and key_value != old_key,
+       do: [{"-k", []}, {"+k", [key_value]} | ops]
+
+  defp build_key_op(ops, _, _, _), do: ops
+
+  defp build_limit_op(ops, nil, true, val) when is_binary(val) and val != "",
+    do: [{"+l", [val]} | ops]
+
+  defp build_limit_op(ops, old, false, _) when old != nil,
+    do: [{"-l", []} | ops]
+
+  defp build_limit_op(ops, old, true, val) when old != nil and is_binary(val) and val != "" do
+    if val != to_string(old), do: [{"-l", []}, {"+l", [val]} | ops], else: ops
+  end
+
+  defp build_limit_op(ops, _, _, _), do: ops
+
+  defp remove_ban_via_server(channel, operator, nick) do
+    Server.unban(channel, operator, nick)
+  end
+
+  # T045: Refresh Channel Central dialog if open for the given channel
+  defp maybe_refresh_cc(socket, channel) do
+    if socket.assigns.show_channel_central and socket.assigns.channel_central_channel == channel do
+      refresh_channel_central(socket)
+    else
+      socket
+    end
+  end
+
   defp safe_track_user(topic, nickname) do
     case Tracker.track_user(topic, nickname) do
       {:ok, _} ->
@@ -2944,6 +3357,20 @@ defmodule RetroHexChatWeb.ChatLive do
         ignore_entries={IgnoreList.sorted_entries(@session.ignore_list)}
         ignore_selected={@ignore_selected}
         show_ignore_add_dialog={@show_ignore_add_dialog}
+      />
+
+      <RetroHexChatWeb.Components.ChannelCentralDialog.channel_central_dialog
+        visible={@show_channel_central}
+        active_tab={@channel_central_tab}
+        channel_state={@channel_central_state}
+        operator={@channel_central_operator}
+        ban_selected={@channel_central_ban_selected}
+        ban_ex_selected={@channel_central_ban_ex_selected}
+        invite_ex_selected={@channel_central_invite_ex_selected}
+        modes_form={@channel_central_modes_form}
+        show_add_ban_dialog={@show_cc_add_ban_dialog}
+        show_add_ban_ex_dialog={@show_cc_add_ban_ex_dialog}
+        show_add_invite_ex_dialog={@show_cc_add_invite_ex_dialog}
       />
 
       <RetroHexChatWeb.Components.HighlightDialog.highlight_dialog

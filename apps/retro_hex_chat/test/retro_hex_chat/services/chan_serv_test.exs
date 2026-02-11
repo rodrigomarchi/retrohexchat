@@ -111,6 +111,24 @@ defmodule RetroHexChat.Services.ChanServTest do
       # Bans should be removed
       assert Queries.list_bans("#banchan") == []
     end
+
+    test "dropping channel removes ban exceptions and invite exceptions", ctx do
+      register_and_identify("CsExcF", "pass123", ctx.nick_server)
+      {:ok, _} = ChanServ.register("#excchan", "CsExcF", ctx.server)
+
+      alias RetroHexChat.Services.Queries
+      {:ok, _} = Queries.add_ban_exception("#excchan", "Exempt1", "CsExcF")
+      {:ok, _} = Queries.add_ban_exception("#excchan", "Exempt2", "CsExcF")
+      {:ok, _} = Queries.add_invite_exception("#excchan", "Invited1", "CsExcF")
+
+      assert length(Queries.list_ban_exceptions("#excchan")) == 2
+      assert length(Queries.list_invite_exceptions("#excchan")) == 1
+
+      assert {:ok, _} = ChanServ.drop("#excchan", "CsExcF", ctx.server)
+
+      assert Queries.list_ban_exceptions("#excchan") == []
+      assert Queries.list_invite_exceptions("#excchan") == []
+    end
   end
 
   describe "info/2" do

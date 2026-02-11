@@ -11,6 +11,7 @@
 - In-memory only (socket assigns + ETS cache). No PostgreSQL changes. (005-url-catcher)
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css (006-ignore-system)
 - PostgreSQL 16+ (new `ignore_list_entries` table) + in-memory Session state for guests (006-ignore-system)
+- PostgreSQL 16+ (two new tables: `ban_exceptions`, `invite_exceptions`) + in-memory GenServer state extension (007-channel-central)
 
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x
 - PostgreSQL 16+ with cursor-based pagination and GIN/trigram indexes
@@ -74,6 +75,6 @@ Key non-negotiables: TDD, umbrella separation, OTP process architecture,
 static analysis from day one, 98.css design fidelity.
 
 ## Recent Changes
+- 007-channel-central: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
 - 006-ignore-system: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
 - 005-url-catcher: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css, Req 0.5+ (HTTP client, already in mix.lock)
-- 004-highlight-mentions: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
