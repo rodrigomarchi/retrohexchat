@@ -128,8 +128,7 @@ defmodule RetroHexChat.Commands.Handlers.NotifyTest do
 
     test "returns help map with examples list" do
       help = Notify.help()
-      assert is_list(help.examples)
-      assert help.examples != []
+      assert [_ | _] = help.examples
     end
   end
 end

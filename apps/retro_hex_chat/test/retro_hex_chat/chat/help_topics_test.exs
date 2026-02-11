@@ -7,9 +7,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
 
   describe "all_topics/0" do
     test "returns a non-empty list" do
-      topics = HelpTopics.all_topics()
-      assert is_list(topics)
-      assert topics != []
+      assert [_ | _] = HelpTopics.all_topics()
     end
 
     test "every topic has required fields" do
@@ -58,7 +56,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
 
     test "every category has at least one topic" do
       for {_name, topics} <- HelpTopics.topics_by_category() do
-        assert topics != []
+        assert [_ | _] = topics
       end
     end
 

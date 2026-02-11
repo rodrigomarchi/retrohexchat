@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
   """
   use Phoenix.Component
 
+  attr :is_ignored, :boolean, default: false
   attr :nick_color_fn, :any, default: nil
   attr :show_color_picker, :boolean, default: false
   attr :target_nick, :string, default: nil
@@ -43,6 +44,22 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-value-nick={@target_nick}
           >
             Set Nick Color
+          </li>
+          <li
+            :if={!@is_ignored}
+            data-testid="ctx-ignore"
+            phx-click="context_ignore"
+            phx-value-nick={@target_nick}
+          >
+            Ignore
+          </li>
+          <li
+            :if={@is_ignored}
+            data-testid="ctx-unignore"
+            phx-click="context_unignore"
+            phx-value-nick={@target_nick}
+          >
+            Unignore
           </li>
           <li
             :if={@viewer_is_op}

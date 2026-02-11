@@ -58,6 +58,13 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           </div>
           <div
             class="menu-dropdown-item"
+            data-testid="menu-ignore-list"
+            phx-click="open_ignore_dialog"
+          >
+            Ignore List
+          </div>
+          <div
+            class="menu-dropdown-item"
             data-testid="menu-url-catcher"
             phx-click="toggle_url_catcher"
           >
