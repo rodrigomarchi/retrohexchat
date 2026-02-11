@@ -6,6 +6,8 @@ defmodule RetroHexChat.Services.Queries do
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.AccessListEntry
   alias RetroHexChat.Services.Ban
+  alias RetroHexChat.Services.BanException
+  alias RetroHexChat.Services.InviteException
   alias RetroHexChat.Services.RegisteredChannel
   alias RetroHexChat.Services.RegisteredNick
 
@@ -132,6 +134,76 @@ defmodule RetroHexChat.Services.Queries do
   @spec list_bans(String.t()) :: [Ban.t()]
   def list_bans(channel_name) do
     from(b in Ban, where: b.channel_name == ^channel_name)
+    |> Repo.all()
+  end
+
+  # ── Ban exceptions ────────────────────────────────────────
+
+  @spec add_ban_exception(String.t(), String.t(), String.t()) ::
+          {:ok, BanException.t()} | {:error, Ecto.Changeset.t()}
+  def add_ban_exception(channel_name, nickname, added_by) do
+    %BanException{}
+    |> BanException.changeset(%{
+      channel_name: channel_name,
+      nickname: nickname,
+      added_by: added_by
+    })
+    |> Repo.insert()
+  end
+
+  @spec remove_ban_exception(String.t(), String.t()) :: :ok | {:error, :not_found}
+  def remove_ban_exception(channel_name, nickname) do
+    from(e in BanException,
+      where: e.channel_name == ^channel_name and e.nickname == ^nickname
+    )
+    |> Repo.delete_all()
+    |> case do
+      {1, _} -> :ok
+      {0, _} -> {:error, :not_found}
+    end
+  end
+
+  @spec list_ban_exceptions(String.t()) :: [BanException.t()]
+  def list_ban_exceptions(channel_name) do
+    from(e in BanException,
+      where: e.channel_name == ^channel_name,
+      order_by: e.inserted_at
+    )
+    |> Repo.all()
+  end
+
+  # ── Invite exceptions ─────────────────────────────────────
+
+  @spec add_invite_exception(String.t(), String.t(), String.t()) ::
+          {:ok, InviteException.t()} | {:error, Ecto.Changeset.t()}
+  def add_invite_exception(channel_name, nickname, added_by) do
+    %InviteException{}
+    |> InviteException.changeset(%{
+      channel_name: channel_name,
+      nickname: nickname,
+      added_by: added_by
+    })
+    |> Repo.insert()
+  end
+
+  @spec remove_invite_exception(String.t(), String.t()) :: :ok | {:error, :not_found}
+  def remove_invite_exception(channel_name, nickname) do
+    from(e in InviteException,
+      where: e.channel_name == ^channel_name and e.nickname == ^nickname
+    )
+    |> Repo.delete_all()
+    |> case do
+      {1, _} -> :ok
+      {0, _} -> {:error, :not_found}
+    end
+  end
+
+  @spec list_invite_exceptions(String.t()) :: [InviteException.t()]
+  def list_invite_exceptions(channel_name) do
+    from(e in InviteException,
+      where: e.channel_name == ^channel_name,
+      order_by: e.inserted_at
+    )
     |> Repo.all()
   end
 end

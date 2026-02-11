@@ -47,5 +47,30 @@ defmodule RetroHexChat.Channels.QueriesTest do
       state = Queries.load_persisted_state("#withtopic")
       assert state.topic == "Hello World"
     end
+
+    test "loads ban exceptions for registered channel" do
+      {:ok, _} = ServiceQueries.insert_registered_channel("#withbex", "founder1")
+      {:ok, _} = ServiceQueries.add_ban_exception("#withbex", "exempt1", "founder1")
+      {:ok, _} = ServiceQueries.add_ban_exception("#withbex", "exempt2", "founder1")
+
+      state = Queries.load_persisted_state("#withbex")
+      assert Enum.sort(state.ban_exceptions) == ["exempt1", "exempt2"]
+    end
+
+    test "loads invite exceptions for registered channel" do
+      {:ok, _} = ServiceQueries.insert_registered_channel("#withiex", "founder1")
+      {:ok, _} = ServiceQueries.add_invite_exception("#withiex", "invited1", "founder1")
+
+      state = Queries.load_persisted_state("#withiex")
+      assert state.invite_exceptions == ["invited1"]
+    end
+
+    test "returns empty exception lists for channel with no exceptions" do
+      {:ok, _} = ServiceQueries.insert_registered_channel("#noex", "founder1")
+
+      state = Queries.load_persisted_state("#noex")
+      assert state.ban_exceptions == []
+      assert state.invite_exceptions == []
+    end
   end
 end

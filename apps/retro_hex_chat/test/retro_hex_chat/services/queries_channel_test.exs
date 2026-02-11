@@ -126,4 +126,88 @@ defmodule RetroHexChat.Services.QueriesChannelTest do
       assert [] == Queries.list_bans("#nobans")
     end
   end
+
+  # ── Ban exceptions ────────────────────────────────────────
+
+  describe "add_ban_exception/3" do
+    test "creates a ban exception entry" do
+      assert {:ok, entry} = Queries.add_ban_exception("#bexchan", "nick1", "op1")
+      assert entry.channel_name == "#bexchan"
+      assert entry.nickname == "nick1"
+      assert entry.added_by == "op1"
+    end
+
+    test "returns error for duplicate channel+nickname" do
+      {:ok, _} = Queries.add_ban_exception("#bexdup", "nick1", "op1")
+      assert {:error, changeset} = Queries.add_ban_exception("#bexdup", "nick1", "op2")
+      assert errors_on(changeset) != %{}
+    end
+  end
+
+  describe "remove_ban_exception/2" do
+    test "removes a ban exception entry" do
+      {:ok, _} = Queries.add_ban_exception("#rmbex", "nick1", "op1")
+      assert :ok = Queries.remove_ban_exception("#rmbex", "nick1")
+    end
+
+    test "returns error when entry not found" do
+      assert {:error, :not_found} = Queries.remove_ban_exception("#nosuch", "nobody")
+    end
+  end
+
+  describe "list_ban_exceptions/1" do
+    test "returns all ban exceptions for a channel" do
+      {:ok, _} = Queries.add_ban_exception("#listbex", "nick1", "op1")
+      {:ok, _} = Queries.add_ban_exception("#listbex", "nick2", "op1")
+
+      entries = Queries.list_ban_exceptions("#listbex")
+      assert length(entries) == 2
+    end
+
+    test "returns empty list when no ban exceptions" do
+      assert [] == Queries.list_ban_exceptions("#nobex")
+    end
+  end
+
+  # ── Invite exceptions ─────────────────────────────────────
+
+  describe "add_invite_exception/3" do
+    test "creates an invite exception entry" do
+      assert {:ok, entry} = Queries.add_invite_exception("#iexchan", "nick1", "op1")
+      assert entry.channel_name == "#iexchan"
+      assert entry.nickname == "nick1"
+      assert entry.added_by == "op1"
+    end
+
+    test "returns error for duplicate channel+nickname" do
+      {:ok, _} = Queries.add_invite_exception("#iexdup", "nick1", "op1")
+      assert {:error, changeset} = Queries.add_invite_exception("#iexdup", "nick1", "op2")
+      assert errors_on(changeset) != %{}
+    end
+  end
+
+  describe "remove_invite_exception/2" do
+    test "removes an invite exception entry" do
+      {:ok, _} = Queries.add_invite_exception("#rmiex", "nick1", "op1")
+      assert :ok = Queries.remove_invite_exception("#rmiex", "nick1")
+    end
+
+    test "returns error when entry not found" do
+      assert {:error, :not_found} = Queries.remove_invite_exception("#nosuch", "nobody")
+    end
+  end
+
+  describe "list_invite_exceptions/1" do
+    test "returns all invite exceptions for a channel" do
+      {:ok, _} = Queries.add_invite_exception("#listiex", "nick1", "op1")
+      {:ok, _} = Queries.add_invite_exception("#listiex", "nick2", "op1")
+
+      entries = Queries.list_invite_exceptions("#listiex")
+      assert length(entries) == 2
+    end
+
+    test "returns empty list when no invite exceptions" do
+      assert [] == Queries.list_invite_exceptions("#noiex")
+    end
+  end
 end

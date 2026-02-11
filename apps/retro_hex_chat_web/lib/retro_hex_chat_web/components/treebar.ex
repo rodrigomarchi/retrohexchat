@@ -29,6 +29,8 @@ defmodule RetroHexChatWeb.Components.Treebar do
                 data-testid={"channel-#{channel}"}
                 phx-click="switch_channel"
                 phx-value-channel={channel}
+                phx-dblclick="open_channel_central"
+                phx-value-cc_channel={channel}
               >
                 {channel}
               </li>

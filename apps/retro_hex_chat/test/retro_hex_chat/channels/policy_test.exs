@@ -5,7 +5,7 @@ defmodule RetroHexChat.Channels.PolicyTest do
 
   alias RetroHexChat.Channels.{Membership, Modes, Policy}
 
-  describe "can_join?/4" do
+  describe "can_join?/5" do
     test "allows join with no restrictions" do
       modes = Modes.new()
       membership = Membership.new()
@@ -37,6 +37,30 @@ defmodule RetroHexChat.Channels.PolicyTest do
       {:ok, modes} = Modes.apply_changes(Modes.new(), "+k", ["secret"])
       membership = Membership.new()
       assert :ok = Policy.can_join?(modes, membership, "secret")
+    end
+  end
+
+  describe "can_join? with invite exceptions (T041)" do
+    test "invite-only rejects user not in invite_exceptions" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+i", [])
+      membership = Membership.new()
+      exceptions = MapSet.new()
+      assert {:error, msg} = Policy.can_join?(modes, membership, nil, "alice", exceptions)
+      assert msg =~ "invite-only"
+    end
+
+    test "invite-only allows user in invite_exceptions" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+i", [])
+      membership = Membership.new()
+      exceptions = MapSet.new(["alice"])
+      assert :ok = Policy.can_join?(modes, membership, nil, "alice", exceptions)
+    end
+
+    test "non-invite-only channel unaffected by invite_exceptions" do
+      modes = Modes.new()
+      membership = Membership.new()
+      exceptions = MapSet.new()
+      assert :ok = Policy.can_join?(modes, membership, nil, "alice", exceptions)
     end
   end
 

@@ -14,13 +14,18 @@ defmodule RetroHexChat.Channels.Server do
   alias RetroHexChat.Channels.{Events, Membership, Modes, Policy, Queries, Registry}
   alias RetroHexChat.Chat
   alias RetroHexChat.Services.ChanServ
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
 
   @type state :: %{
           name: String.t(),
           topic: String.t(),
+          topic_set_by: String.t() | nil,
+          topic_set_at: DateTime.t() | nil,
           membership: Membership.t(),
           modes: Modes.t(),
           bans: MapSet.t(String.t()),
+          ban_exceptions: MapSet.t(String.t()),
+          invite_exceptions: MapSet.t(String.t()),
           registered: boolean(),
           created_at: DateTime.t()
         }
@@ -116,6 +121,36 @@ defmodule RetroHexChat.Channels.Server do
     GenServer.call(via(channel_name), {:set_topic, nickname, topic})
   end
 
+  @doc "Add a ban exception. Requires operator privilege."
+  @spec add_ban_exception(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
+  def add_ban_exception(channel_name, operator_nick, target_nick) do
+    GenServer.call(via(channel_name), {:add_ban_exception, operator_nick, target_nick})
+  end
+
+  @doc "Remove a ban exception. Requires operator privilege."
+  @spec remove_ban_exception(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
+  def remove_ban_exception(channel_name, operator_nick, target_nick) do
+    GenServer.call(via(channel_name), {:remove_ban_exception, operator_nick, target_nick})
+  end
+
+  @doc "Add an invite exception. Requires operator privilege."
+  @spec add_invite_exception(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
+  def add_invite_exception(channel_name, operator_nick, target_nick) do
+    GenServer.call(via(channel_name), {:add_invite_exception, operator_nick, target_nick})
+  end
+
+  @doc "Remove an invite exception. Requires operator privilege."
+  @spec remove_invite_exception(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
+  def remove_invite_exception(channel_name, operator_nick, target_nick) do
+    GenServer.call(via(channel_name), {:remove_invite_exception, operator_nick, target_nick})
+  end
+
+  @doc "Remove a ban (unban). Requires operator privilege."
+  @spec unban(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
+  def unban(channel_name, operator_nick, target_nick) do
+    GenServer.call(via(channel_name), {:unban, operator_nick, target_nick})
+  end
+
   # ──────────────────────────────────────────────────────────────
   # GenServer Callbacks
   # ──────────────────────────────────────────────────────────────
@@ -125,9 +160,13 @@ defmodule RetroHexChat.Channels.Server do
     state = %{
       name: channel_name,
       topic: "",
+      topic_set_by: nil,
+      topic_set_at: nil,
       membership: Membership.new(),
       modes: Modes.new(),
       bans: MapSet.new(),
+      ban_exceptions: MapSet.new(),
+      invite_exceptions: MapSet.new(),
       registered: false,
       created_at: DateTime.utc_now()
     }
@@ -139,12 +178,22 @@ defmodule RetroHexChat.Channels.Server do
   def handle_call({:join, nickname, password}, _from, state) do
     with :ok <- check_not_banned(state, nickname),
          :ok <- check_not_member(state, nickname),
-         :ok <- Policy.can_join?(state.modes, state.membership, password) do
+         :ok <-
+           Policy.can_join?(
+             state.modes,
+             state.membership,
+             password,
+             nickname,
+             state.invite_exceptions
+           ) do
       role = determine_join_role(state, nickname)
       new_membership = Membership.add(state.membership, nickname, role)
       new_state = %{state | membership: new_membership}
 
-      broadcast(state.name, {:user_joined, %{nickname: nickname, role: role}})
+      broadcast(
+        state.name,
+        {:user_joined, %{channel: state.name, nickname: nickname, role: role}}
+      )
 
       {:reply, {:ok, state_to_map(new_state)}, new_state}
     else
@@ -157,7 +206,10 @@ defmodule RetroHexChat.Channels.Server do
       new_membership = Membership.remove(state.membership, nickname)
       new_state = %{state | membership: new_membership}
 
-      broadcast(state.name, {:user_left, %{nickname: nickname, reason: reason}})
+      broadcast(
+        state.name,
+        {:user_left, %{channel: state.name, nickname: nickname, reason: reason}}
+      )
 
       if Membership.count(new_membership) == 0 and not state.registered do
         {:stop, :normal, :ok, new_state}
@@ -260,6 +312,7 @@ defmodule RetroHexChat.Channels.Server do
         state.name,
         {:user_banned,
          %{
+           channel: state.name,
            operator: operator_nick,
            target: target_nick,
            reason: reason
@@ -295,7 +348,14 @@ defmodule RetroHexChat.Channels.Server do
   def handle_call({:set_topic, nickname, topic}, _from, state) do
     case Policy.can_change_topic?(state.modes, state.membership, nickname) do
       :ok ->
-        new_state = %{state | topic: topic}
+        now = DateTime.utc_now()
+
+        new_state = %{
+          state
+          | topic: topic,
+            topic_set_by: nickname,
+            topic_set_at: now
+        }
 
         Events.emit_topic_changed(state.name, topic, nickname)
 
@@ -305,7 +365,8 @@ defmodule RetroHexChat.Channels.Server do
            %{
              channel: state.name,
              nickname: nickname,
-             topic: topic
+             topic: topic,
+             set_at: now
            }}
         )
 
@@ -313,6 +374,119 @@ defmodule RetroHexChat.Channels.Server do
 
       {:error, _} = err ->
         {:reply, err, state}
+    end
+  end
+
+  def handle_call({:add_ban_exception, operator_nick, target_nick}, _from, state) do
+    if Policy.operator?(state.membership, operator_nick) do
+      new_exceptions = MapSet.put(state.ban_exceptions, target_nick)
+      new_state = %{state | ban_exceptions: new_exceptions}
+
+      maybe_persist_exception(:ban_exception, :add, state.name, target_nick, operator_nick, state)
+
+      broadcast(
+        state.name,
+        {:ban_exception_added,
+         %{channel: state.name, nickname: target_nick, added_by: operator_nick}}
+      )
+
+      {:reply, :ok, new_state}
+    else
+      {:reply, {:error, "You must be a channel operator"}, state}
+    end
+  end
+
+  def handle_call({:remove_ban_exception, operator_nick, target_nick}, _from, state) do
+    if Policy.operator?(state.membership, operator_nick) do
+      new_exceptions = MapSet.delete(state.ban_exceptions, target_nick)
+      new_state = %{state | ban_exceptions: new_exceptions}
+
+      maybe_persist_exception(
+        :ban_exception,
+        :remove,
+        state.name,
+        target_nick,
+        operator_nick,
+        state
+      )
+
+      broadcast(
+        state.name,
+        {:ban_exception_removed,
+         %{channel: state.name, nickname: target_nick, removed_by: operator_nick}}
+      )
+
+      {:reply, :ok, new_state}
+    else
+      {:reply, {:error, "You must be a channel operator"}, state}
+    end
+  end
+
+  def handle_call({:add_invite_exception, operator_nick, target_nick}, _from, state) do
+    if Policy.operator?(state.membership, operator_nick) do
+      new_exceptions = MapSet.put(state.invite_exceptions, target_nick)
+      new_state = %{state | invite_exceptions: new_exceptions}
+
+      maybe_persist_exception(
+        :invite_exception,
+        :add,
+        state.name,
+        target_nick,
+        operator_nick,
+        state
+      )
+
+      broadcast(
+        state.name,
+        {:invite_exception_added,
+         %{channel: state.name, nickname: target_nick, added_by: operator_nick}}
+      )
+
+      {:reply, :ok, new_state}
+    else
+      {:reply, {:error, "You must be a channel operator"}, state}
+    end
+  end
+
+  def handle_call({:remove_invite_exception, operator_nick, target_nick}, _from, state) do
+    if Policy.operator?(state.membership, operator_nick) do
+      new_exceptions = MapSet.delete(state.invite_exceptions, target_nick)
+      new_state = %{state | invite_exceptions: new_exceptions}
+
+      maybe_persist_exception(
+        :invite_exception,
+        :remove,
+        state.name,
+        target_nick,
+        operator_nick,
+        state
+      )
+
+      broadcast(
+        state.name,
+        {:invite_exception_removed,
+         %{channel: state.name, nickname: target_nick, removed_by: operator_nick}}
+      )
+
+      {:reply, :ok, new_state}
+    else
+      {:reply, {:error, "You must be a channel operator"}, state}
+    end
+  end
+
+  def handle_call({:unban, operator_nick, target_nick}, _from, state) do
+    if Policy.operator?(state.membership, operator_nick) do
+      new_bans = MapSet.delete(state.bans, target_nick)
+      new_state = %{state | bans: new_bans}
+
+      broadcast(
+        state.name,
+        {:user_unbanned, %{channel: state.name, operator: operator_nick, target: target_nick}}
+      )
+
+      {:reply, :ok, new_state}
+    else
+      {:reply, {:error, "You must be a channel operator to unban users"}, state}
     end
   end
 
@@ -376,17 +550,31 @@ defmodule RetroHexChat.Channels.Server do
     %{
       name: state.name,
       topic: state.topic,
+      topic_set_by: state.topic_set_by,
+      topic_set_at: state.topic_set_at,
       members: Membership.to_list(state.membership),
       member_count: Membership.count(state.membership),
       operators: Membership.operators(state.membership),
       modes: Modes.to_string(state.modes),
+      modes_detail: %{
+        moderated: Modes.moderated?(state.modes),
+        invite_only: Modes.invite_only?(state.modes),
+        topic_lock: Modes.topic_locked?(state.modes),
+        key: state.modes.key,
+        limit: state.modes.limit
+      },
       bans: MapSet.to_list(state.bans),
+      ban_exceptions: MapSet.to_list(state.ban_exceptions),
+      invite_exceptions: MapSet.to_list(state.invite_exceptions),
       created_at: state.created_at
     }
   end
 
   defp check_not_banned(state, nickname) do
-    if MapSet.member?(state.bans, nickname) do
+    banned = MapSet.member?(state.bans, nickname)
+    excepted = MapSet.member?(state.ban_exceptions, nickname)
+
+    if banned and not excepted do
       {:error, "You are banned from #{state.name}"}
     else
       :ok
@@ -421,6 +609,27 @@ defmodule RetroHexChat.Channels.Server do
       {"msg-#{System.unique_integer([:positive])}", DateTime.utc_now()}
   end
 
+  defp maybe_persist_exception(type, action, channel_name, nickname, added_by, state) do
+    if state.registered do
+      case {type, action} do
+        {:ban_exception, :add} ->
+          ServiceQueries.add_ban_exception(channel_name, nickname, added_by)
+
+        {:ban_exception, :remove} ->
+          ServiceQueries.remove_ban_exception(channel_name, nickname)
+
+        {:invite_exception, :add} ->
+          ServiceQueries.add_invite_exception(channel_name, nickname, added_by)
+
+        {:invite_exception, :remove} ->
+          ServiceQueries.remove_invite_exception(channel_name, nickname)
+      end
+    end
+  rescue
+    e ->
+      Logger.warning("Failed to persist #{type} #{action} for #{channel_name}: #{inspect(e)}")
+  end
+
   defp load_persisted_state(state) do
     case Queries.load_persisted_state(state.name) do
       nil ->
@@ -429,8 +638,18 @@ defmodule RetroHexChat.Channels.Server do
       persisted ->
         modes = apply_persisted_modes(state.modes, persisted)
         bans = persisted.bans |> MapSet.new()
+        ban_exceptions = Map.get(persisted, :ban_exceptions, []) |> MapSet.new()
+        invite_exceptions = Map.get(persisted, :invite_exceptions, []) |> MapSet.new()
 
-        %{state | topic: persisted.topic, modes: modes, bans: bans, registered: true}
+        %{
+          state
+          | topic: persisted.topic,
+            modes: modes,
+            bans: bans,
+            ban_exceptions: ban_exceptions,
+            invite_exceptions: invite_exceptions,
+            registered: true
+        }
     end
   rescue
     e ->

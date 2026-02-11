@@ -70,6 +70,13 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           >
             URL Catcher
           </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-channel-central"
+            phx-click="open_channel_central"
+          >
+            Channel Central
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">

@@ -99,6 +99,94 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     end
   end
 
+  describe "feature-channel-central topic" do
+    test "exists with correct id and category" do
+      topic = HelpTopics.get_topic("feature-channel-central")
+      assert topic != nil
+      assert topic.id == "feature-channel-central"
+      assert topic.category == "Features"
+    end
+
+    test "has correct title" do
+      topic = HelpTopics.get_topic("feature-channel-central")
+      assert topic.title == "Channel Central"
+    end
+
+    test "has non-empty content with key information" do
+      topic = HelpTopics.get_topic("feature-channel-central")
+      assert topic.content != ""
+      assert topic.content =~ "tabbed"
+      assert topic.content =~ "General"
+      assert topic.content =~ "Modes"
+      assert topic.content =~ "Bans"
+      assert topic.content =~ "Ban Exceptions"
+      assert topic.content =~ "Invite Exceptions"
+      assert topic.content =~ "Double-click"
+      assert topic.content =~ "Tools"
+    end
+
+    test "has non-empty keywords" do
+      topic = HelpTopics.get_topic("feature-channel-central")
+      assert topic.keywords != []
+    end
+  end
+
+  describe "feature-ban-exceptions topic" do
+    test "exists with correct id and category" do
+      topic = HelpTopics.get_topic("feature-ban-exceptions")
+      assert topic != nil
+      assert topic.id == "feature-ban-exceptions"
+      assert topic.category == "Features"
+    end
+
+    test "has correct title" do
+      topic = HelpTopics.get_topic("feature-ban-exceptions")
+      assert topic.title == "Ban Exceptions (+e)"
+    end
+
+    test "has non-empty content with key information" do
+      topic = HelpTopics.get_topic("feature-ban-exceptions")
+      assert topic.content != ""
+      assert topic.content =~ "bypass channel bans"
+      assert topic.content =~ "Ban Exceptions"
+      assert topic.content =~ "Channel Central"
+      assert topic.content =~ "operator"
+    end
+
+    test "has non-empty keywords" do
+      topic = HelpTopics.get_topic("feature-ban-exceptions")
+      assert topic.keywords != []
+    end
+  end
+
+  describe "feature-invite-exceptions topic" do
+    test "exists with correct id and category" do
+      topic = HelpTopics.get_topic("feature-invite-exceptions")
+      assert topic != nil
+      assert topic.id == "feature-invite-exceptions"
+      assert topic.category == "Features"
+    end
+
+    test "has correct title" do
+      topic = HelpTopics.get_topic("feature-invite-exceptions")
+      assert topic.title == "Invite Exceptions (+I)"
+    end
+
+    test "has non-empty content with key information" do
+      topic = HelpTopics.get_topic("feature-invite-exceptions")
+      assert topic.content != ""
+      assert topic.content =~ "invite-only"
+      assert topic.content =~ "Invite Exceptions"
+      assert topic.content =~ "Channel Central"
+      assert topic.content =~ "+i"
+    end
+
+    test "has non-empty keywords" do
+      topic = HelpTopics.get_topic("feature-invite-exceptions")
+      assert topic.keywords != []
+    end
+  end
+
   describe "all_keywords/0" do
     test "returns a sorted list of {keyword, topic_id}" do
       keywords = HelpTopics.all_keywords()

@@ -5,14 +5,20 @@ defmodule RetroHexChat.Channels.Policy do
 
   alias RetroHexChat.Channels.{Membership, Modes}
 
-  @spec can_join?(Modes.t(), Membership.t(), String.t() | nil, non_neg_integer()) ::
+  @spec can_join?(Modes.t(), Membership.t(), String.t() | nil, String.t() | nil, MapSet.t()) ::
           :ok | {:error, String.t()}
-  def can_join?(modes, membership, password \\ nil, _max_channels \\ 10) do
+  def can_join?(
+        modes,
+        membership,
+        password \\ nil,
+        nickname \\ nil,
+        invite_exceptions \\ MapSet.new()
+      ) do
     cond do
       Modes.has_limit?(modes) and Membership.count(membership) >= modes.limit ->
         {:error, "Channel is full (+l)"}
 
-      Modes.invite_only?(modes) ->
+      Modes.invite_only?(modes) and not MapSet.member?(invite_exceptions, nickname) ->
         {:error, "Channel is invite-only (+i)"}
 
       Modes.has_key?(modes) and password != modes.key ->
