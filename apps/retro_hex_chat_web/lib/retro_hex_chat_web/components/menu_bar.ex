@@ -40,6 +40,18 @@ defmodule RetroHexChatWeb.Components.MenuBar do
         </div>
       </div>
       <div class="menu-item-wrapper">
+        <div class="menu-item" role="menuitem" tabindex="0">Tools</div>
+        <div class="menu-dropdown">
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-address-book"
+            phx-click="toggle_address_book"
+          >
+            Address Book
+          </div>
+        </div>
+      </div>
+      <div class="menu-item-wrapper">
         <div class="menu-item" role="menuitem" tabindex="0">Help</div>
         <div class="menu-dropdown">
           <div class="menu-dropdown-item" data-testid="menu-about" phx-click="show_about">About</div>

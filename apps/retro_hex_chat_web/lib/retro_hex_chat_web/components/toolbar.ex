@@ -39,6 +39,14 @@ defmodule RetroHexChatWeb.Components.Toolbar do
       <button type="button" class="toolbar-btn" data-testid="toolbar-settings" phx-click="settings">
         Settings
       </button>
+      <button
+        type="button"
+        class="toolbar-btn"
+        data-testid="toolbar-address-book"
+        phx-click="toggle_address_book"
+      >
+        Address Book
+      </button>
     </div>
     """
   end

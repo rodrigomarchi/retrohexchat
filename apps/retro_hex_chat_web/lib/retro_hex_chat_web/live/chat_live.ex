@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
   require Logger
 
-  alias RetroHexChat.Accounts.{NicknameValidator, Session}
+  alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, Session}
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
   alias RetroHexChat.Chat.{Formatter, Queries, Search, Service}
   alias RetroHexChat.Commands.{Dispatcher, Parser}
@@ -59,7 +59,10 @@ defmodule RetroHexChatWeb.ChatLive do
       command_history: [],
       command_palette_filter: "",
       command_palette_visible: false,
+      contacts_selected: nil,
       context_menu: %{visible: false, x: 0, y: 0, target_nick: nil},
+      nick_color_fn: build_nick_color_fn(session),
+      nick_colors_selected: nil,
       has_more: true,
       history_index: -1,
       input: "",
@@ -77,6 +80,13 @@ defmodule RetroHexChatWeb.ChatLive do
       search_visible: false,
       session: session,
       show_about: false,
+      show_address_book: false,
+      show_context_color_picker: false,
+      show_contact_add_dialog: false,
+      show_contact_edit_dialog: false,
+      address_book_tab: "contacts",
+      show_nick_color_add_dialog: false,
+      show_nick_color_edit_dialog: false,
       show_nicklist: true,
       show_notify_add_dialog: false,
       show_notify_edit_dialog: false,
@@ -194,6 +204,21 @@ defmodule RetroHexChatWeb.ChatLive do
     {:noreply, assign(socket, search_visible: true)}
   end
 
+  def handle_event("window_keydown", %{"key" => "b", "altKey" => true}, socket) do
+    if socket.assigns.show_address_book do
+      {:noreply,
+       assign(socket,
+         show_address_book: false,
+         address_book_tab: "contacts",
+         contacts_selected: nil,
+         show_contact_add_dialog: false,
+         show_contact_edit_dialog: false
+       )}
+    else
+      {:noreply, assign(socket, show_address_book: true)}
+    end
+  end
+
   def handle_event("window_keydown", %{"key" => "Escape"}, socket) do
     if socket.assigns.search_visible do
       {:noreply, clear_search_state(socket)}
@@ -266,6 +291,77 @@ defmodule RetroHexChatWeb.ChatLive do
      socket
      |> close_context_menu()
      |> context_set_mode(channel, "+v", [nick])}
+  end
+
+  # Context menu Address Book actions (Phase 8)
+  def handle_event("context_add_contact", %{"nick" => nick}, socket) do
+    session = socket.assigns.session
+
+    case ContactList.add_entry(session.contacts, session.nickname, nick, nil) do
+      {:ok, updated_contacts} ->
+        new_session = Session.set_contacts(session, updated_contacts)
+
+        {:noreply,
+         socket
+         |> close_context_menu()
+         |> assign(session: new_session)
+         |> maybe_persist_contacts(new_session)
+         |> push_status_message("Added #{nick} to contacts", :system)}
+
+      {:error, :duplicate} ->
+        {:noreply,
+         socket
+         |> close_context_menu()
+         |> push_status_message("#{nick} is already in your contacts", :error)}
+
+      {:error, :self_add} ->
+        {:noreply,
+         socket
+         |> close_context_menu()
+         |> push_status_message("Cannot add yourself to contacts", :error)}
+
+      {:error, _reason} ->
+        {:noreply,
+         socket
+         |> close_context_menu()
+         |> push_status_message("Could not add #{nick} to contacts", :error)}
+    end
+  end
+
+  def handle_event("context_set_nick_color", _params, socket) do
+    {:noreply, assign(socket, show_context_color_picker: true)}
+  end
+
+  def handle_event("context_pick_color", %{"color_index" => color_str}, socket) do
+    session = socket.assigns.session
+    target = socket.assigns.context_menu.target_nick
+    color_index = String.to_integer(color_str)
+
+    case NickColors.add_or_update(session.nick_colors, target, color_index) do
+      {:ok, updated} ->
+        new_session = Session.set_nick_colors(session, updated)
+        color_name = NickColors.hex_for_index(color_index)
+
+        {:noreply,
+         socket
+         |> close_context_menu()
+         |> assign(session: new_session)
+         |> rebuild_nick_color_fn(new_session)
+         |> maybe_persist_nick_colors(new_session)
+         |> push_status_message("Set #{target}'s color to #{color_name}", :system)}
+
+      {:error, :list_full} ->
+        {:noreply,
+         socket
+         |> close_context_menu()
+         |> push_status_message("Nick color list is full (max 50)", :error)}
+
+      {:error, _reason} ->
+        {:noreply,
+         socket
+         |> close_context_menu()
+         |> push_status_message("Could not set color for #{target}", :error)}
+    end
   end
 
   # Menu bar events (Phase 14)
@@ -377,6 +473,214 @@ defmodule RetroHexChatWeb.ChatLive do
 
   def handle_event("channel_list", _params, socket) do
     {:noreply, push_navigate(socket, to: ~p"/channels")}
+  end
+
+  # Address Book events
+  def handle_event("toggle_address_book", _params, socket) do
+    if socket.assigns.show_address_book do
+      {:noreply,
+       assign(socket,
+         show_address_book: false,
+         address_book_tab: "contacts",
+         contacts_selected: nil,
+         show_contact_add_dialog: false,
+         show_contact_edit_dialog: false,
+         nick_colors_selected: nil,
+         show_nick_color_add_dialog: false,
+         show_nick_color_edit_dialog: false
+       )}
+    else
+      {:noreply, assign(socket, show_address_book: true)}
+    end
+  end
+
+  def handle_event("address_book_tab", %{"tab" => tab}, socket) do
+    {:noreply, assign(socket, address_book_tab: tab)}
+  end
+
+  # Contact CRUD events (Phase 4)
+  def handle_event("contact_select", %{"nickname" => nick}, socket) do
+    {:noreply, assign(socket, contacts_selected: nick)}
+  end
+
+  def handle_event("contact_add_dialog", _params, socket) do
+    {:noreply, assign(socket, show_contact_add_dialog: true)}
+  end
+
+  def handle_event("contact_add_cancel", _params, socket) do
+    {:noreply, assign(socket, show_contact_add_dialog: false)}
+  end
+
+  def handle_event("contact_add", %{"nickname" => nickname} = params, socket) do
+    session = socket.assigns.session
+    note = params["note"]
+    note = if note == "", do: nil, else: note
+
+    case ContactList.add_entry(session.contacts, session.nickname, nickname, note) do
+      {:ok, updated_contacts} ->
+        new_session = Session.set_contacts(session, updated_contacts)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_contact_add_dialog: false)
+         |> maybe_persist_contacts(new_session)
+         |> push_status_message("Added #{nickname} to contacts", :system)}
+
+      {:error, :self_add} ->
+        {:noreply, push_status_message(socket, "Cannot add yourself to contacts", :system)}
+
+      {:error, :duplicate} ->
+        {:noreply,
+         push_status_message(socket, "#{nickname} is already in your contacts", :system)}
+
+      {:error, :list_full} ->
+        {:noreply, push_status_message(socket, "Contact list is full (max 100 entries)", :system)}
+
+      {:error, :invalid_nickname} ->
+        {:noreply, push_status_message(socket, "Invalid nickname", :system)}
+    end
+  end
+
+  def handle_event("contact_edit_dialog", _params, socket) do
+    {:noreply, assign(socket, show_contact_edit_dialog: true)}
+  end
+
+  def handle_event("contact_edit_cancel", _params, socket) do
+    {:noreply, assign(socket, show_contact_edit_dialog: false)}
+  end
+
+  def handle_event("contact_edit", %{"note" => note} = params, socket) do
+    session = socket.assigns.session
+    nickname = params["nickname"] || socket.assigns.contacts_selected
+    note = if note == "", do: nil, else: note
+
+    case ContactList.update_note(session.contacts, nickname, note) do
+      {:ok, updated_contacts} ->
+        new_session = Session.set_contacts(session, updated_contacts)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_contact_edit_dialog: false)
+         |> maybe_persist_contacts(new_session)
+         |> push_status_message("Updated note for #{nickname}", :system)}
+
+      {:error, :not_found} ->
+        {:noreply, push_status_message(socket, "#{nickname} is not in your contacts", :system)}
+    end
+  end
+
+  def handle_event("contact_remove", %{"nickname" => nick}, socket) do
+    session = socket.assigns.session
+
+    case ContactList.remove_entry(session.contacts, nick) do
+      {:ok, updated_contacts} ->
+        new_session = Session.set_contacts(session, updated_contacts)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, contacts_selected: nil)
+         |> maybe_persist_contacts(new_session)
+         |> push_status_message("Removed #{nick} from contacts", :system)}
+
+      {:error, :not_found} ->
+        {:noreply, push_status_message(socket, "#{nick} is not in your contacts", :system)}
+    end
+  end
+
+  # Nick color CRUD events (Phase 6)
+  def handle_event("nick_color_select", %{"nickname" => nick}, socket) do
+    {:noreply, assign(socket, nick_colors_selected: nick)}
+  end
+
+  def handle_event("nick_color_add_dialog", _params, socket) do
+    {:noreply, assign(socket, show_nick_color_add_dialog: true)}
+  end
+
+  def handle_event("nick_color_add_cancel", _params, socket) do
+    {:noreply, assign(socket, show_nick_color_add_dialog: false)}
+  end
+
+  def handle_event(
+        "nick_color_add",
+        %{"nickname" => nickname, "color_index" => color_str},
+        socket
+      ) do
+    session = socket.assigns.session
+    nickname = String.trim(nickname)
+    color_index = String.to_integer(color_str)
+
+    case NickColors.add_entry(session.nick_colors, nickname, color_index) do
+      {:ok, updated} ->
+        new_session = Session.set_nick_colors(session, updated)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_nick_color_add_dialog: false)
+         |> rebuild_nick_color_fn(new_session)
+         |> maybe_persist_nick_colors(new_session)}
+
+      {:error, :duplicate} ->
+        {:noreply, push_status_message(socket, "#{nickname} already has a custom color", :error)}
+
+      {:error, :list_full} ->
+        {:noreply, push_status_message(socket, "Nick color list is full (max 50)", :error)}
+
+      {:error, :invalid_nickname} ->
+        {:noreply, push_status_message(socket, "Invalid nickname", :error)}
+
+      {:error, :invalid_color} ->
+        {:noreply, push_status_message(socket, "Invalid color", :error)}
+    end
+  end
+
+  def handle_event("nick_color_edit_dialog", _params, socket) do
+    {:noreply, assign(socket, show_nick_color_edit_dialog: true)}
+  end
+
+  def handle_event("nick_color_edit_cancel", _params, socket) do
+    {:noreply, assign(socket, show_nick_color_edit_dialog: false)}
+  end
+
+  def handle_event("nick_color_edit", %{"color_index" => color_str} = params, socket) do
+    session = socket.assigns.session
+    nickname = params["nickname"] || socket.assigns.nick_colors_selected
+    color_index = String.to_integer(color_str)
+
+    case NickColors.update_color(session.nick_colors, nickname, color_index) do
+      {:ok, updated} ->
+        new_session = Session.set_nick_colors(session, updated)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_nick_color_edit_dialog: false)
+         |> rebuild_nick_color_fn(new_session)
+         |> maybe_persist_nick_colors(new_session)}
+
+      {:error, :not_found} ->
+        {:noreply, push_status_message(socket, "Nick color entry not found", :error)}
+
+      {:error, :invalid_color} ->
+        {:noreply, push_status_message(socket, "Invalid color", :error)}
+    end
+  end
+
+  def handle_event("nick_color_remove", %{"nickname" => nick}, socket) do
+    session = socket.assigns.session
+
+    case NickColors.remove_entry(session.nick_colors, nick) do
+      {:ok, updated} ->
+        new_session = Session.set_nick_colors(session, updated)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, nick_colors_selected: nil)
+         |> rebuild_nick_color_fn(new_session)
+         |> maybe_persist_nick_colors(new_session)
+         |> push_status_message("Removed custom color for #{nick}", :system)}
+
+      {:error, :not_found} ->
+        {:noreply, push_status_message(socket, "#{nick} has no custom color", :system)}
+    end
   end
 
   # Notify list events (US1/US3)
@@ -668,9 +972,22 @@ defmodule RetroHexChatWeb.ChatLive do
           {:error, :not_found} -> new_session
         end
 
+      new_session =
+        case ContactList.load(nick) do
+          {:ok, loaded_contacts} -> Session.set_contacts(new_session, loaded_contacts)
+          {:error, :not_found} -> new_session
+        end
+
+      new_session =
+        case NickColors.load(nick) do
+          {:ok, loaded_colors} -> Session.set_nick_colors(new_session, loaded_colors)
+          {:error, :not_found} -> new_session
+        end
+
       {:noreply,
        socket
        |> assign(session: new_session)
+       |> rebuild_nick_color_fn(new_session)
        |> push_status_message("You are now identified as #{nick}", :system)}
     else
       {:noreply, socket}
@@ -799,7 +1116,10 @@ defmodule RetroHexChatWeb.ChatLive do
   defp apply_mode_to_users(users, _mode, _params), do: users
 
   defp close_context_menu(socket) do
-    assign(socket, context_menu: %{visible: false, x: 0, y: 0, target_nick: nil})
+    assign(socket,
+      context_menu: %{visible: false, x: 0, y: 0, target_nick: nil},
+      show_context_color_picker: false
+    )
   end
 
   defp context_ban(socket, nil, _nick), do: socket
@@ -1539,6 +1859,33 @@ defmodule RetroHexChatWeb.ChatLive do
     socket
   end
 
+  defp maybe_persist_contacts(socket, session) do
+    if session.identified do
+      Task.start(fn -> ContactList.save(session.nickname, session.contacts) end)
+    end
+
+    socket
+  end
+
+  defp maybe_persist_nick_colors(socket, session) do
+    if session.identified do
+      Task.start(fn -> NickColors.save(session.nickname, session.nick_colors) end)
+    end
+
+    socket
+  end
+
+  @spec build_nick_color_fn(Session.t()) :: (String.t() -> String.t())
+  defp build_nick_color_fn(session) do
+    fn nickname ->
+      NickColors.color_for(session.nick_colors, nickname) || nick_color(nickname)
+    end
+  end
+
+  defp rebuild_nick_color_fn(socket, session) do
+    assign(socket, nick_color_fn: build_nick_color_fn(session))
+  end
+
   defp start_notify_debounce(socket, nickname, status) do
     key = String.downcase(nickname)
     timers = socket.assigns.notify_debounce_timers
@@ -1685,7 +2032,7 @@ defmodule RetroHexChatWeb.ChatLive do
                 <% :error -> %>
                   <span class="chat-error">{msg.content}</span>
                 <% _ -> %>
-                  <span class="chat-nick" style={"color: #{nick_color(msg.author)}"}>
+                  <span class="chat-nick" style={"color: #{@nick_color_fn.(msg.author)}"}>
                     &lt;{msg.author}&gt;
                   </span>
                   <span class="chat-content">
@@ -1724,6 +2071,7 @@ defmodule RetroHexChatWeb.ChatLive do
         <RetroHexChatWeb.Components.Nicklist.nicklist
           :if={@show_nicklist && !@session.active_pm}
           users={@channel_users}
+          nick_color_fn={@nick_color_fn}
         />
       </div>
 
@@ -1733,6 +2081,8 @@ defmodule RetroHexChatWeb.ChatLive do
         y={@context_menu.y}
         target_nick={@context_menu.target_nick}
         viewer_is_op={viewer_is_op?(@session)}
+        nick_color_fn={@nick_color_fn}
+        show_color_picker={@show_context_color_picker}
       />
 
       <RetroHexChatWeb.Components.Dialog.dialog
@@ -1752,6 +2102,25 @@ defmodule RetroHexChatWeb.ChatLive do
         show_add_dialog={@show_notify_add_dialog}
         show_edit_dialog={@show_notify_edit_dialog}
         auto_whois={@session.notify_list.settings.auto_whois}
+        nick_color_fn={@nick_color_fn}
+      />
+
+      <RetroHexChatWeb.Components.AddressBookDialog.address_book_dialog
+        visible={@show_address_book}
+        active_tab={@address_book_tab}
+        contacts={ContactList.sorted_entries(@session.contacts)}
+        contacts_selected={@contacts_selected}
+        show_contact_add_dialog={@show_contact_add_dialog}
+        show_contact_edit_dialog={@show_contact_edit_dialog}
+        notify_entries={NotifyList.sorted_entries(@session.notify_list)}
+        notify_selected={@notify_selected}
+        show_notify_add_dialog={@show_notify_add_dialog}
+        show_notify_edit_dialog={@show_notify_edit_dialog}
+        auto_whois={@session.notify_list.settings.auto_whois}
+        nick_color_entries={NickColors.sorted_entries(@session.nick_colors)}
+        nick_colors_selected={@nick_colors_selected}
+        show_nick_color_add_dialog={@show_nick_color_add_dialog}
+        show_nick_color_edit_dialog={@show_nick_color_edit_dialog}
       />
 
       <div class="status-panel" style="height: 120px; border-top: 1px solid #808080;">

@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
   use Phoenix.Component
 
   attr :users, :list, default: []
+  attr :nick_color_fn, :any, default: nil
 
   @spec nicklist(map()) :: Phoenix.LiveView.Rendered.t()
   def nicklist(assigns) do
@@ -22,6 +23,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
           class={"nick-operator #{if user.away, do: "nick-away", else: ""}"}
           phx-click="nick_right_click"
           phx-value-nick={user.nickname}
+          style={nick_style(@nick_color_fn, user.nickname)}
         >
           @{user.nickname}
         </li>
@@ -31,6 +33,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
           class={"nick-voiced #{if user.away, do: "nick-away", else: ""}"}
           phx-click="nick_right_click"
           phx-value-nick={user.nickname}
+          style={nick_style(@nick_color_fn, user.nickname)}
         >
           +{user.nickname}
         </li>
@@ -40,6 +43,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
           class={"nick-regular #{if user.away, do: "nick-away", else: ""}"}
           phx-click="nick_right_click"
           phx-value-nick={user.nickname}
+          style={nick_style(@nick_color_fn, user.nickname)}
         >
           {user.nickname}
         </li>
@@ -47,6 +51,10 @@ defmodule RetroHexChatWeb.Components.Nicklist do
     </div>
     """
   end
+
+  @spec nick_style((String.t() -> String.t()) | nil, String.t()) :: String.t()
+  defp nick_style(nil, _nickname), do: ""
+  defp nick_style(color_fn, nickname), do: "color: #{color_fn.(nickname)};"
 
   @spec group_users(list(map())) :: %{
           operators: list(map()),

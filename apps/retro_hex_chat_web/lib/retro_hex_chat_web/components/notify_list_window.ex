@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
   attr :show_add_dialog, :boolean, default: false
   attr :show_edit_dialog, :boolean, default: false
   attr :auto_whois, :boolean, default: false
+  attr :nick_color_fn, :any, default: nil
 
   @spec notify_list_window(map()) :: Phoenix.LiveView.Rendered.t()
   def notify_list_window(assigns) do
@@ -101,7 +102,9 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
                 <td style="text-align: center; padding: 2px 4px;">
                   {status_dot(entry.online)}
                 </td>
-                <td style="padding: 2px 4px;">{entry.tracked_nickname}</td>
+                <td style={"padding: 2px 4px; #{notify_nick_style(@nick_color_fn, entry.tracked_nickname)}"}>
+                  {entry.tracked_nickname}
+                </td>
                 <td style="padding: 2px 4px;">{entry.note || ""}</td>
                 <td style="padding: 2px 4px; white-space: nowrap;">
                   {format_last_seen(entry.last_seen_at)}
@@ -271,6 +274,10 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
   @spec format_last_seen(DateTime.t() | nil) :: String.t()
   defp format_last_seen(nil), do: "Never"
   defp format_last_seen(%DateTime{} = dt), do: Calendar.strftime(dt, "%Y-%m-%d %H:%M")
+
+  @spec notify_nick_style((String.t() -> String.t()) | nil, String.t()) :: String.t()
+  defp notify_nick_style(nil, _nickname), do: ""
+  defp notify_nick_style(color_fn, nickname), do: "color: #{color_fn.(nickname)};"
 
   @spec row_style(String.t(), String.t() | nil) :: String.t()
   defp row_style(nickname, selected) when nickname == selected do
