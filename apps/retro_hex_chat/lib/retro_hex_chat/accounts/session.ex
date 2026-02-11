@@ -4,6 +4,8 @@ defmodule RetroHexChat.Accounts.Session do
   Lives in the LiveView socket assigns, not persisted to DB.
   """
 
+  alias RetroHexChat.Presence.NotifyList
+
   @type t :: %__MODULE__{
           nickname: String.t(),
           channels: [String.t()],
@@ -14,7 +16,8 @@ defmodule RetroHexChat.Accounts.Session do
           connected_at: DateTime.t(),
           away: boolean(),
           away_message: String.t() | nil,
-          strip_formatting: boolean()
+          strip_formatting: boolean(),
+          notify_list: map()
         }
 
   @enforce_keys [:nickname]
@@ -28,12 +31,17 @@ defmodule RetroHexChat.Accounts.Session do
     connected_at: nil,
     away: false,
     away_message: nil,
-    strip_formatting: false
+    strip_formatting: false,
+    notify_list: nil
   ]
 
   @spec new(String.t()) :: t()
   def new(nickname) do
-    %__MODULE__{nickname: nickname, connected_at: DateTime.utc_now()}
+    %__MODULE__{
+      nickname: nickname,
+      connected_at: DateTime.utc_now(),
+      notify_list: NotifyList.new()
+    }
   end
 
   @spec update_nickname(t(), String.t()) :: t()
@@ -106,5 +114,15 @@ defmodule RetroHexChat.Accounts.Session do
 
   def set_away(%__MODULE__{} = session, message) do
     %{session | away: true, away_message: message}
+  end
+
+  @spec set_notify_list(t(), map()) :: t()
+  def set_notify_list(%__MODULE__{} = session, notify_list) do
+    %{session | notify_list: notify_list}
+  end
+
+  @spec get_notify_list(t()) :: map()
+  def get_notify_list(%__MODULE__{notify_list: notify_list}) do
+    notify_list
   end
 end

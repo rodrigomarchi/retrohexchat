@@ -22,7 +22,7 @@ defmodule RetroHexChat.Commands.RegistryTest do
       assert "join" in commands
       assert "part" in commands
       assert "nick" in commands
-      assert length(commands) == 19
+      assert length(commands) == 20
     end
   end
 

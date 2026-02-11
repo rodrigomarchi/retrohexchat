@@ -211,18 +211,33 @@ defmodule RetroHexChat.Services.NickServ do
   # -- Private helpers --
 
   defp mark_identified(state, nickname) do
-    case Map.pop(state.timers, nickname) do
-      {nil, _} ->
-        %{state | identified: MapSet.put(state.identified, nickname)}
+    new_state =
+      case Map.pop(state.timers, nickname) do
+        {nil, _} ->
+          %{state | identified: MapSet.put(state.identified, nickname)}
 
-      {ref, new_timers} ->
-        Process.cancel_timer(ref)
+        {ref, new_timers} ->
+          Process.cancel_timer(ref)
 
-        %{
-          state
-          | identified: MapSet.put(state.identified, nickname),
-            timers: new_timers
-        }
+          %{
+            state
+            | identified: MapSet.put(state.identified, nickname),
+              timers: new_timers
+          }
+      end
+
+    broadcast_identified(nickname)
+    new_state
+  end
+
+  defp broadcast_identified(nickname) do
+    case Phoenix.PubSub.broadcast(
+           RetroHexChat.PubSub,
+           "user:#{nickname}",
+           {:nickserv_identified, %{nickname: nickname}}
+         ) do
+      :ok -> :ok
+      {:error, reason} -> Logger.warning("PubSub identify broadcast failed: #{inspect(reason)}")
     end
   end
 

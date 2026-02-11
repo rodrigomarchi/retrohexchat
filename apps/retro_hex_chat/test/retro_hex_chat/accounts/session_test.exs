@@ -287,4 +287,63 @@ defmodule RetroHexChat.Accounts.SessionTest do
       assert session.active_pm == nil
     end
   end
+
+  describe "notify_list" do
+    alias RetroHexChat.Presence.NotifyList
+
+    test "new/1 initializes with empty notify_list" do
+      session = Session.new("Rodrigo")
+      expected = NotifyList.new()
+      assert session.notify_list == expected
+    end
+
+    test "new/1 notify_list has empty entries and default settings" do
+      session = Session.new("Rodrigo")
+      assert session.notify_list.entries == []
+      assert session.notify_list.settings == %{auto_whois: false}
+    end
+
+    test "set_notify_list/2 replaces the notify list" do
+      session = Session.new("Rodrigo")
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "Rodrigo", "Alice", "A buddy")
+      list = NotifyList.set_auto_whois(list, true)
+
+      updated = Session.set_notify_list(session, list)
+      assert updated.notify_list == list
+      assert length(updated.notify_list.entries) == 1
+      assert updated.notify_list.settings.auto_whois == true
+    end
+
+    test "set_notify_list/2 preserves other session fields" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.add_channel("#general")
+        |> Session.set_identified(true)
+
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "Rodrigo", "Bob", nil)
+
+      updated = Session.set_notify_list(session, list)
+      assert updated.channels == ["#general"]
+      assert updated.identified == true
+      assert updated.nickname == "Rodrigo"
+    end
+
+    test "get_notify_list/1 returns the current notify list" do
+      session = Session.new("Rodrigo")
+      assert Session.get_notify_list(session) == NotifyList.new()
+    end
+
+    test "get_notify_list/1 returns updated list after set" do
+      session = Session.new("Rodrigo")
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "Rodrigo", "Alice", "Friend")
+
+      session = Session.set_notify_list(session, list)
+      result = Session.get_notify_list(session)
+      assert result == list
+      assert length(result.entries) == 1
+    end
+  end
 end
