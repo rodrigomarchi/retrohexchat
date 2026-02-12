@@ -1,4 +1,4 @@
-# Category S: Scripting & Aliases
+# Category R: Scripting & Aliases
 
 **Priority**: Green (Low impact)
 **Dependencies**: None (standalone)

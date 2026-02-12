@@ -1,4 +1,4 @@
-# Category V: Options Dialog
+# Category U: Options Dialog
 
 **Priority**: Red (High impact — central configuration hub)
 **Dependencies**: Aggregates settings from A, D, F, H, I, L, N, O, R, W

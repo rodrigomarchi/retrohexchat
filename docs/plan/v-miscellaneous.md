@@ -1,4 +1,4 @@
-# Category W: Miscellaneous / Polish
+# Category V: Miscellaneous / Polish
 
 **Priority**: Mixed (W7/W8/W14 are Red; others are Yellow/Green)
 **Dependencies**: M for W5 (finger reply)
@@ -22,21 +22,20 @@
 | W12 | Emoji/Emoticon support | New | Unicode emoji support in chat with optional picker |
 | W13 | Timestamp format options | New | Configure timestamp format: [HH:MM], [HH:MM:SS], etc. |
 | W14 | Nick column alignment | New | Align nicknames in a fixed column so all messages start at same position |
-| W15 | Image paste/preview in chat | New | Paste image directly in chat (auto-upload, shows thumbnail) |
 
 ## Dependencies Detail
 
 - W5 (finger reply) depends on M (CTCP)
 - W6 (away auto-reply) uses existing /away infrastructure
 - W7 (double-click) depends on E1 (URL detection) for URL double-click
-- W13 (timestamp format) integrates into V (Options Dialog)
+- W13 (timestamp format) integrates into U (Options Dialog)
 - Most W items are independent
 
 ## Internal Priority
 
 - **Red (High)**: W7 (double-click actions), W8 (right-click copy), W14 (nick column alignment)
 - **Yellow (Medium)**: W4 (quit message), W6 (away auto-reply), W10 (multi-line paste), W11 (char counter)
-- **Green (Low)**: W1 (about), W2 (commands ref), W3 (shortcuts ref), W5 (finger), W12 (emoji), W13 (timestamp format), W15 (image paste)
+- **Green (Low)**: W1 (about), W2 (commands ref), W3 (shortcuts ref), W5 (finger), W12 (emoji), W13 (timestamp format)
 
 ## Technical Notes (IRC/mIRC Reference)
 
@@ -47,7 +46,7 @@
 - mIRC multi-line paste: warns before sending multiple lines (prevents accidental flood)
 - mIRC character limit follows IRC protocol: 512 bytes per message including protocol overhead
 - Nick column alignment: common in HexChat and irssi (fixed-width nick column)
-- Emoji picker and image paste are modern features not in classic mIRC
+- Emoji picker is a modern feature not in classic mIRC
 
 ---
 
@@ -88,13 +87,11 @@ EMOJI SUPPORT: Unicode emojis are rendered properly in chat messages. An optiona
 
 TIMESTAMP FORMAT: Users can configure the timestamp format for chat messages: [HH:MM] (default), [HH:MM:SS], [DD/MM HH:MM], or no timestamps. Setting available in Options Dialog.
 
-IMAGE PASTE/PREVIEW: Users can paste an image from their clipboard directly into the chat. The image is uploaded to the server and a thumbnail preview appears inline in the chat. Other users see the thumbnail and can click to view full size.
-
 ACTORS: All features available to any connected user (guest or registered). Preferences persist for registered users.
 
-EDGE CASES: Double-clicking an offline user in a /whowas list should not attempt to open a PM (show 'user is offline'). Right-click copy with no text selected should show a disabled 'Copy' option. Pasting more than 50 lines should warn about potential flood even more strongly. Character counter should account for Unicode characters that may take multiple bytes. Image upload should enforce a maximum file size (e.g., 5MB) and accepted formats (PNG, JPG, GIF). Very wide nicknames (max 16 chars) should not break the nick column alignment layout. Emoji picker should be dismissable by clicking outside it or pressing Escape.
+EDGE CASES: Double-clicking an offline user in a /whowas list should not attempt to open a PM (show 'user is offline'). Right-click copy with no text selected should show a disabled 'Copy' option. Pasting more than 50 lines should warn about potential flood even more strongly. Character counter should account for Unicode characters that may take multiple bytes. Very wide nicknames (max 16 chars) should not break the nick column alignment layout. Emoji picker should be dismissable by clicking outside it or pressing Escape.
 
-NEGATIVE REQUIREMENTS: Away auto-reply must NOT respond to notices (per IRC convention). Away auto-reply must NOT respond to the same sender more than once per away session. Multi-line paste must NOT send lines without user confirmation. Image paste must NOT upload without user confirmation if the image is large.
+NEGATIVE REQUIREMENTS: Away auto-reply must NOT respond to notices (per IRC convention). Away auto-reply must NOT respond to the same sender more than once per away session. Multi-line paste must NOT send lines without user confirmation.
 
-SCOPE: In scope — all 14 new items listed above. Out of scope — custom double-click action configuration (fixed behavior only), rich text clipboard (copy as plain text only), animated GIF playback in thumbnails, image editing before paste."
+SCOPE: In scope — all 13 new items listed above. Out of scope — custom double-click action configuration (fixed behavior only), rich text clipboard (copy as plain text only)."
 ```

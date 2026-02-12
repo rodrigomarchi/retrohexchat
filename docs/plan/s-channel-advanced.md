@@ -1,4 +1,4 @@
-# Category T: Channel Features Advanced
+# Category S: Channel Features Advanced
 
 **Priority**: Green (Low impact)
 **Dependencies**: None for most; A for T7

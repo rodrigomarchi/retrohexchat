@@ -1,4 +1,4 @@
-# Category U: Special Messages
+# Category T: Special Messages
 
 **Priority**: Green (Low impact)
 **Dependencies**: R7 (Status Window) for U1/U3/U4
