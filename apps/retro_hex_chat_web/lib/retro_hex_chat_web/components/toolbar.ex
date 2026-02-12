@@ -71,6 +71,17 @@ defmodule RetroHexChatWeb.Components.Toolbar do
           <rect x="1" y="8" width="2" height="2" rx="0.5" />
         </svg>
       </button>
+      <button
+        type="button"
+        class="toolbar-btn"
+        title="Log Viewer"
+        data-testid="toolbar-log-viewer"
+        phx-click="open_log_viewer"
+      >
+        <svg viewBox="0 0 16 16" fill="currentColor">
+          <path d="M2 2h12v12H2V2zm1 1v10h10V3H3zm1 1h8v1H4V4zm0 2h8v1H4V6zm0 2h8v1H4V8zm0 2h5v1H4v-1z" />
+        </svg>
+      </button>
     </div>
     """
   end

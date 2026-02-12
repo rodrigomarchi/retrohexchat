@@ -77,6 +77,13 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           >
             Channel Central
           </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-log-viewer"
+            phx-click="open_log_viewer"
+          >
+            Log Viewer
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">

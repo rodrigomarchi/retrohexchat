@@ -11,12 +11,16 @@ defmodule RetroHexChatWeb.ChatLive do
 
   alias RetroHexChat.Chat.{
     CapturedURL,
+    DisplayPreferences,
     Formatter,
     HelpTopics,
     Highlight,
     HighlightWords,
     IgnoreList,
     LinkPreview,
+    LogExporter,
+    LogFilter,
+    LogQueries,
     Queries,
     Search,
     Service,
@@ -142,7 +146,15 @@ defmodule RetroHexChatWeb.ChatLive do
       channel_central_modes_form: %{},
       show_cc_add_ban_dialog: false,
       show_cc_add_ban_ex_dialog: false,
-      show_cc_add_invite_ex_dialog: false
+      show_cc_add_invite_ex_dialog: false,
+      show_log_viewer: false,
+      log_filter: LogFilter.new(),
+      log_source_options: [],
+      log_page: nil,
+      log_loading: false,
+      log_preferences: DisplayPreferences.new(),
+      log_exporting: false,
+      log_error: nil
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -342,12 +354,23 @@ defmodule RetroHexChatWeb.ChatLive do
     {:noreply, assign(socket, show_url_catcher: !socket.assigns.show_url_catcher)}
   end
 
+  def handle_event("window_keydown", %{"key" => "l", "altKey" => true}, socket) do
+    if socket.assigns.show_log_viewer do
+      {:noreply, close_log_viewer(socket)}
+    else
+      {:noreply, open_log_viewer(socket)}
+    end
+  end
+
   def handle_event("window_keydown", %{"key" => "F1"}, socket) do
     {:noreply, open_help_dialog(socket)}
   end
 
   def handle_event("window_keydown", %{"key" => "Escape"}, socket) do
     cond do
+      socket.assigns.show_log_viewer ->
+        {:noreply, close_log_viewer(socket)}
+
       socket.assigns.show_channel_central ->
         {:noreply, close_channel_central(socket)}
 
@@ -1431,6 +1454,142 @@ defmodule RetroHexChatWeb.ChatLive do
 
   def handle_event("url_catcher_search", %{"query" => query}, socket) do
     {:noreply, assign(socket, url_catcher_search_query: query)}
+  end
+
+  # ── Log Viewer events ─────────────────────────────────────
+
+  def handle_event("open_log_viewer", _params, socket) do
+    {:noreply, open_log_viewer(socket)}
+  end
+
+  def handle_event("close_log_viewer", _params, socket) do
+    {:noreply, close_log_viewer(socket)}
+  end
+
+  def handle_event("log_set_source", %{"source" => ""}, socket) do
+    filter = %{socket.assigns.log_filter | source: nil, source_type: nil}
+    {:noreply, assign(socket, log_filter: filter)}
+  end
+
+  def handle_event("log_set_source", %{"source" => "pm:" <> nick}, socket) do
+    filter = %{socket.assigns.log_filter | source: nick, source_type: :pm, page: 1}
+    {:noreply, run_log_search(assign(socket, log_filter: filter))}
+  end
+
+  def handle_event("log_set_source", %{"source" => channel}, socket) do
+    filter = %{socket.assigns.log_filter | source: channel, source_type: :channel, page: 1}
+    {:noreply, run_log_search(assign(socket, log_filter: filter))}
+  end
+
+  def handle_event("log_set_date_from", %{"date" => ""}, socket) do
+    filter = %{socket.assigns.log_filter | date_from: nil}
+    {:noreply, assign(socket, log_filter: filter)}
+  end
+
+  def handle_event("log_set_date_from", %{"date" => date_str}, socket) do
+    case Date.from_iso8601(date_str) do
+      {:ok, date} ->
+        filter = %{socket.assigns.log_filter | date_from: date}
+
+        case LogFilter.validate(filter) do
+          :ok -> {:noreply, assign(socket, log_filter: filter, log_error: nil)}
+          {:error, msg} -> {:noreply, assign(socket, log_error: msg)}
+        end
+
+      _ ->
+        {:noreply, assign(socket, log_error: "Invalid date format")}
+    end
+  end
+
+  def handle_event("log_set_date_to", %{"date" => ""}, socket) do
+    filter = %{socket.assigns.log_filter | date_to: nil}
+    {:noreply, assign(socket, log_filter: filter)}
+  end
+
+  def handle_event("log_set_date_to", %{"date" => date_str}, socket) do
+    case Date.from_iso8601(date_str) do
+      {:ok, date} ->
+        filter = %{socket.assigns.log_filter | date_to: date}
+
+        case LogFilter.validate(filter) do
+          :ok -> {:noreply, assign(socket, log_filter: filter, log_error: nil)}
+          {:error, msg} -> {:noreply, assign(socket, log_error: msg)}
+        end
+
+      _ ->
+        {:noreply, assign(socket, log_error: "Invalid date format")}
+    end
+  end
+
+  def handle_event("log_search", %{"nickname" => nick, "text" => text}, socket) do
+    filter = %{
+      socket.assigns.log_filter
+      | nickname: normalize_empty(nick),
+        text: normalize_empty(text),
+        page: 1
+    }
+
+    {:noreply, run_log_search(assign(socket, log_filter: filter))}
+  end
+
+  def handle_event("log_page", %{"page" => page_str}, socket) do
+    page = String.to_integer(page_str)
+    filter = %{socket.assigns.log_filter | page: page}
+    {:noreply, run_log_search(assign(socket, log_filter: filter))}
+  end
+
+  def handle_event("log_refresh", _params, socket) do
+    {:noreply, run_log_search(socket)}
+  end
+
+  def handle_event("log_toggle_event", %{"event_type" => event_type}, socket) do
+    session = socket.assigns.session
+    field = String.to_existing_atom(event_type)
+    prefs = DisplayPreferences.toggle_event(session.log_preferences, field)
+    new_session = Session.set_log_preferences(session, prefs)
+    {:noreply, assign(socket, session: new_session, log_preferences: prefs)}
+  end
+
+  def handle_event("log_set_timestamp_format", %{"format" => format}, socket) do
+    session = socket.assigns.session
+    fmt = String.to_existing_atom(format)
+    prefs = DisplayPreferences.set_timestamp_format(session.log_preferences, fmt)
+    new_session = Session.set_log_preferences(session, prefs)
+    {:noreply, assign(socket, session: new_session, log_preferences: prefs)}
+  end
+
+  def handle_event("log_export", %{"format" => format}, socket) do
+    page = socket.assigns.log_page
+
+    if page && page.entries != [] do
+      filter = socket.assigns.log_filter
+      prefs = socket.assigns.log_preferences
+
+      # Fetch ALL matching results (not just current page)
+      all_filter = %{filter | page: 1, per_page: 10_000}
+
+      entries = fetch_all_log_entries(socket, all_filter)
+
+      content = LogExporter.export(entries, format, prefs)
+
+      filename = LogExporter.generate_filename(filter, format)
+
+      mime =
+        if format == "html",
+          do: "text/html",
+          else: "text/plain"
+
+      {:noreply,
+       socket
+       |> assign(log_exporting: false)
+       |> push_event("download_file", %{
+         content: Base.encode64(content),
+         filename: filename,
+         mime_type: mime
+       })}
+    else
+      {:noreply, socket}
+    end
   end
 
   # ── PubSub handlers ────────────────────────────────────────
@@ -2829,6 +2988,98 @@ defmodule RetroHexChatWeb.ChatLive do
     )
   end
 
+  # ── Log Viewer helpers ────────────────────────────────────
+
+  defp open_log_viewer(socket) do
+    session = socket.assigns.session
+    source_options = build_log_source_options(session)
+    prefs = session.log_preferences
+
+    assign(socket,
+      show_log_viewer: true,
+      log_source_options: source_options,
+      log_preferences: prefs,
+      log_filter: LogFilter.new(),
+      log_page: nil,
+      log_loading: false,
+      log_exporting: false,
+      log_error: nil
+    )
+  end
+
+  defp close_log_viewer(socket) do
+    assign(socket,
+      show_log_viewer: false,
+      log_filter: LogFilter.new(),
+      log_source_options: [],
+      log_page: nil,
+      log_loading: false,
+      log_exporting: false,
+      log_error: nil
+    )
+  end
+
+  defp build_log_source_options(session) do
+    if session.identified do
+      channels =
+        LogQueries.list_user_channels(session.nickname)
+        |> Enum.map(fn ch -> %{type: :channel, label: ch, value: ch} end)
+
+      pms =
+        LogQueries.list_user_pm_partners(session.nickname)
+        |> Enum.map(fn nick -> %{type: :pm, label: nick, value: nick} end)
+
+      channels ++ pms
+    else
+      channels =
+        session.channels
+        |> Enum.sort()
+        |> Enum.map(fn ch -> %{type: :channel, label: ch, value: ch} end)
+
+      pms =
+        session.pm_conversations
+        |> Enum.sort()
+        |> Enum.map(fn nick -> %{type: :pm, label: nick, value: nick} end)
+
+      channels ++ pms
+    end
+  end
+
+  defp run_log_search(socket) do
+    filter = socket.assigns.log_filter
+
+    if filter.source == nil do
+      assign(socket, log_page: nil, log_error: nil)
+    else
+      case LogFilter.validate(filter) do
+        :ok ->
+          page = fetch_log_page(socket, filter)
+          assign(socket, log_page: page, log_loading: false, log_error: nil)
+
+        {:error, msg} ->
+          assign(socket, log_error: msg)
+      end
+    end
+  end
+
+  defp fetch_log_page(socket, filter) do
+    case filter.source_type do
+      :pm ->
+        LogQueries.search_pm_log(socket.assigns.session.nickname, filter)
+
+      _ ->
+        LogQueries.search_channel_log(filter)
+    end
+  end
+
+  defp fetch_all_log_entries(socket, filter) do
+    page = fetch_log_page(socket, filter)
+    page.entries
+  end
+
+  defp normalize_empty(""), do: nil
+  defp normalize_empty(s), do: s
+
   defp refresh_channel_central(socket) do
     channel = socket.assigns.channel_central_channel
 
@@ -3402,6 +3653,18 @@ defmodule RetroHexChatWeb.ChatLive do
         index_filter={@help_index_filter}
         search_query={@help_search_query}
         search_results={@help_search_results}
+      />
+
+      <RetroHexChatWeb.Components.LogViewerDialog.log_viewer_dialog
+        visible={@show_log_viewer}
+        filter={@log_filter}
+        page={@log_page}
+        preferences={@log_preferences}
+        source_options={@log_source_options}
+        loading={@log_loading}
+        exporting={@log_exporting}
+        error={@log_error}
+        nick_color_fn={@nick_color_fn}
       />
 
       <RetroHexChatWeb.Components.StatusBar.status_bar

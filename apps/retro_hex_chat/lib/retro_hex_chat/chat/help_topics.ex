@@ -902,6 +902,53 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<p>The Status tab shows system messages, service responses, and notify list alerts. It is always present and cannot be closed.</p>" <>
           "<p>Click the <strong>Status</strong> tab in the tab bar or treebar to view it.</p>"
     },
+    %{
+      id: "feature-log-viewer",
+      title: "Log Viewer",
+      category: "Features",
+      keywords: ["log", "viewer", "search", "history", "browse", "export", "logs"],
+      content:
+        "<h3>Log Viewer</h3>" <>
+          "<p>The Log Viewer lets you search and browse your chat history across channels and private messages.</p>" <>
+          "<h4>Opening</h4>" <>
+          "<p>Open via <strong>Alt+L</strong>, the <strong>Tools &gt; Log Viewer</strong> menu, or the toolbar button.</p>" <>
+          "<h4>Filtering</h4>" <>
+          "<p>Use the controls at the top to filter by:</p>" <>
+          "<ul><li><strong>Source</strong> — Select a channel or PM partner</li>" <>
+          "<li><strong>Date Range</strong> — Set From and To dates</li>" <>
+          "<li><strong>Nickname</strong> — Filter by message author (partial match)</li>" <>
+          "<li><strong>Text</strong> — Search message content (case-insensitive)</li></ul>" <>
+          "<p>Click <strong>Search</strong> to apply filters, or <strong>Refresh</strong> to re-run the current query.</p>" <>
+          "<h4>Pagination</h4>" <>
+          "<p>Results are paginated (50 per page). Use <strong>Prev</strong> / <strong>Next</strong> buttons to navigate.</p>" <>
+          "<h4>Display Options</h4>" <>
+          "<p>Toggle visibility of system events (Joins, Parts, Kicks, Modes, Topics) and choose timestamp format.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-log-export\">Log Export</a> · " <>
+          "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+    },
+    %{
+      id: "feature-log-export",
+      title: "Log Export",
+      category: "Features",
+      keywords: ["export", "download", "txt", "html", "log", "save"],
+      content:
+        "<h3>Log Export</h3>" <>
+          "<p>Export your filtered log results as a downloadable file.</p>" <>
+          "<h4>Export Formats</h4>" <>
+          "<ul><li><strong>.txt</strong> — Plain text with timestamps, one message per line</li>" <>
+          "<li><strong>.html</strong> — Styled HTML with IRC colors and formatting preserved</li></ul>" <>
+          "<h4>How to Export</h4>" <>
+          "<p>1. Open the <a href=\"#\" data-help-topic=\"feature-log-viewer\">Log Viewer</a> and apply your desired filters.</p>" <>
+          "<p>2. Click <strong>Export .txt</strong> or <strong>Export .html</strong> at the bottom of the dialog.</p>" <>
+          "<p>3. The file will download automatically with a descriptive filename.</p>" <>
+          "<h4>Filename Pattern</h4>" <>
+          "<p>Filenames include the source name and date range: <code>general_2026-01-01_to_2026-01-31.txt</code></p>" <>
+          "<h4>Notes</h4>" <>
+          "<p>Export includes <em>all</em> matching results, not just the current page. Display preferences (event filtering, timestamp format) are applied to the export.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-log-viewer\">Log Viewer</a></p>"
+    },
     # ── Keyboard Shortcuts ───────────────────────────────────
     %{
       id: "keyboard-shortcuts",
@@ -913,7 +960,7 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<h4>Navigation</h4>" <>
           "<pre>F1            — Open Help\nCtrl+F        — Find / Search\nEscape        — Close search bar</pre>" <>
           "<h4>Windows &amp; Dialogs</h4>" <>
-          "<pre>Alt+B         — Address Book\nAlt+H         — Highlight Words\nAlt+I         — Ignore List\nAlt+U         — URL Catcher</pre>" <>
+          "<pre>Alt+B         — Address Book\nAlt+H         — Highlight Words\nAlt+I         — Ignore List\nAlt+L         — Log Viewer\nAlt+U         — URL Catcher</pre>" <>
           "<h4>Text Formatting</h4>" <>
           "<pre>Ctrl+B        — Bold\nCtrl+I        — Italic\nCtrl+U        — Underline\nCtrl+K        — Color\nCtrl+R        — Reverse\nCtrl+O        — Reset formatting</pre>" <>
           "<h4>Input</h4>" <>

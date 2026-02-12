@@ -213,4 +213,65 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       end
     end
   end
+
+  describe "feature-log-viewer topic" do
+    test "exists with correct id and category" do
+      topic = HelpTopics.get_topic("feature-log-viewer")
+      assert topic != nil
+      assert topic.id == "feature-log-viewer"
+      assert topic.category == "Features"
+    end
+
+    test "has correct title" do
+      topic = HelpTopics.get_topic("feature-log-viewer")
+      assert topic.title == "Log Viewer"
+    end
+
+    test "content covers key functionality" do
+      topic = HelpTopics.get_topic("feature-log-viewer")
+      assert topic.content =~ "Alt+L"
+      assert topic.content =~ "Source"
+      assert topic.content =~ "Date Range"
+      assert topic.content =~ "Nickname"
+      assert topic.content =~ "Pagination"
+    end
+
+    test "cross-references log export topic" do
+      topic = HelpTopics.get_topic("feature-log-viewer")
+      assert topic.content =~ "feature-log-export"
+    end
+  end
+
+  describe "feature-log-export topic" do
+    test "exists with correct id and category" do
+      topic = HelpTopics.get_topic("feature-log-export")
+      assert topic != nil
+      assert topic.id == "feature-log-export"
+      assert topic.category == "Features"
+    end
+
+    test "has correct title" do
+      topic = HelpTopics.get_topic("feature-log-export")
+      assert topic.title == "Log Export"
+    end
+
+    test "content covers export formats" do
+      topic = HelpTopics.get_topic("feature-log-export")
+      assert topic.content =~ ".txt"
+      assert topic.content =~ ".html"
+    end
+
+    test "cross-references log viewer topic" do
+      topic = HelpTopics.get_topic("feature-log-export")
+      assert topic.content =~ "feature-log-viewer"
+    end
+  end
+
+  describe "keyboard shortcuts includes Alt+L" do
+    test "Alt+L is listed in keyboard shortcuts" do
+      topic = HelpTopics.get_topic("keyboard-shortcuts")
+      assert topic.content =~ "Alt+L"
+      assert topic.content =~ "Log Viewer"
+    end
+  end
 end

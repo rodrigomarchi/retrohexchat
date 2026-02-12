@@ -6,6 +6,7 @@ defmodule RetroHexChat.Accounts.Session do
 
   alias RetroHexChat.Accounts.ContactList
   alias RetroHexChat.Accounts.NickColors
+  alias RetroHexChat.Chat.DisplayPreferences
   alias RetroHexChat.Chat.HighlightWords
   alias RetroHexChat.Chat.IgnoreList
   alias RetroHexChat.Presence.NotifyList
@@ -25,7 +26,8 @@ defmodule RetroHexChat.Accounts.Session do
           contacts: map(),
           nick_colors: map(),
           highlight_words: map(),
-          ignore_list: map()
+          ignore_list: map(),
+          log_preferences: map()
         }
 
   @enforce_keys [:nickname]
@@ -44,7 +46,8 @@ defmodule RetroHexChat.Accounts.Session do
     contacts: nil,
     nick_colors: nil,
     highlight_words: nil,
-    ignore_list: nil
+    ignore_list: nil,
+    log_preferences: nil
   ]
 
   @spec new(String.t()) :: t()
@@ -56,7 +59,8 @@ defmodule RetroHexChat.Accounts.Session do
       contacts: ContactList.new(),
       nick_colors: NickColors.new(),
       highlight_words: HighlightWords.new(),
-      ignore_list: IgnoreList.new()
+      ignore_list: IgnoreList.new(),
+      log_preferences: DisplayPreferences.new()
     }
   end
 
@@ -180,5 +184,15 @@ defmodule RetroHexChat.Accounts.Session do
   @spec get_ignore_list(t()) :: map()
   def get_ignore_list(%__MODULE__{ignore_list: ignore_list}) do
     ignore_list
+  end
+
+  @spec set_log_preferences(t(), DisplayPreferences.t()) :: t()
+  def set_log_preferences(%__MODULE__{} = session, %DisplayPreferences{} = prefs) do
+    %{session | log_preferences: prefs}
+  end
+
+  @spec log_preferences(t()) :: DisplayPreferences.t()
+  def log_preferences(%__MODULE__{log_preferences: prefs}) do
+    prefs
   end
 end
