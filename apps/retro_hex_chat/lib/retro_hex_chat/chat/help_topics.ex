@@ -1569,6 +1569,239 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<h4>See Also</h4>" <>
           "<p><a href=\"#\" data-help-topic=\"feature-favorites\">Favorites</a></p>"
     },
+    # ── Scripting & Aliases Commands ─────────────────────────
+    %{
+      id: "cmd-alias",
+      title: "/alias",
+      category: "Commands",
+      keywords: ["alias", "shortcut", "macro", "expansion", "abbreviation"],
+      content:
+        "<h3>/alias</h3>" <>
+          "<p>Create command shortcuts that expand into longer commands or messages.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/alias\n/alias list\n/alias add &lt;name&gt; &lt;expansion&gt;\n/alias remove &lt;name&gt;</pre>" <>
+          "<h4>Parameters</h4>" <>
+          "<p><code>name</code> — Short name for the alias (letters, numbers, hyphens, underscores).<br/>" <>
+          "<code>expansion</code> — Command or text to expand to. Supports variables.</p>" <>
+          "<h4>Variables</h4>" <>
+          "<p><code>$1</code> through <code>$9</code> — Positional arguments passed after the alias.<br/>" <>
+          "<code>$nick</code> — Your current nickname.<br/>" <>
+          "<code>$chan</code> — Current channel name.<br/>" <>
+          "<code>$$</code> — Literal dollar sign.</p>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/alias add hi /me says hello everyone!\n/alias add greet /me waves at $1\n/alias remove hi\n/alias list</pre>" <>
+          "<h4>Notes</h4>" <>
+          "<p>- Type <code>/aliasname</code> to invoke (e.g., <code>/hi</code>, <code>/greet Alice</code>).<br/>" <>
+          "- Aliases that shadow built-in commands will override them (with a warning).<br/>" <>
+          "- Recursive aliases (A → B → A) are detected and rejected (max 5 levels).<br/>" <>
+          "- Command chaining (<code>|</code>, <code>&amp;&amp;</code>, <code>;</code>) is not allowed in expansions.<br/>" <>
+          "- Maximum 50 aliases per user. Persisted for registered users.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-aliases\">Aliases Feature</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-timer\">/timer</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-popups\">/popups</a></p>"
+    },
+    %{
+      id: "cmd-timer",
+      title: "/timer",
+      category: "Commands",
+      keywords: ["timer", "schedule", "delay", "repeat", "interval", "cron"],
+      content:
+        "<h3>/timer</h3>" <>
+          "<p>Schedule commands to run after a delay or on a repeating interval.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/timer &lt;name&gt; &lt;seconds&gt; &lt;command&gt;\n/timer &lt;name&gt; repeat &lt;seconds&gt; &lt;command&gt;\n/timer list\n/timer stop &lt;name&gt;</pre>" <>
+          "<h4>Parameters</h4>" <>
+          "<p><code>name</code> — Unique name for the timer (letters, numbers, hyphens, underscores).<br/>" <>
+          "<code>seconds</code> — Delay in seconds (1–86400 for one-shot, 10–86400 for repeat).<br/>" <>
+          "<code>command</code> — Command to execute when the timer fires.</p>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/timer remind 1800 /me standup in 30 minutes\n/timer heartbeat repeat 600 /me is still here\n/timer list\n/timer stop heartbeat</pre>" <>
+          "<h4>Notes</h4>" <>
+          "<p>- Timers are <strong>session-only</strong> — they do not survive page reload.<br/>" <>
+          "- Maximum 5 concurrent timers per session.<br/>" <>
+          "- Repeat timers have a minimum interval of 10 seconds.<br/>" <>
+          "- Timer commands support alias expansion (variables like <code>$nick</code>, <code>$chan</code>).<br/>" <>
+          "- Creating a timer with an existing name replaces the old timer.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-timers\">Timers Feature</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-alias\">/alias</a></p>"
+    },
+    %{
+      id: "cmd-popups",
+      title: "/popups",
+      category: "Commands",
+      keywords: ["popups", "popup", "context menu", "custom menu", "right-click"],
+      content:
+        "<h3>/popups</h3>" <>
+          "<p>Open the Custom Menus dialog to manage right-click context menu items.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/popups</pre>" <>
+          "<h4>Usage</h4>" <>
+          "<p>Opens the Custom Menus dialog where you can add, edit, and remove custom items " <>
+          "that appear in the nicklist and channel context menus.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-custom-menus\">Custom Menus Feature</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-alias\">/alias</a></p>"
+    },
+    %{
+      id: "cmd-autorespond",
+      title: "/autorespond",
+      category: "Commands",
+      keywords: ["autorespond", "auto", "respond", "trigger", "event", "greet"],
+      content:
+        "<h3>/autorespond</h3>" <>
+          "<p>Manage event-triggered auto-respond rules.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/autorespond\n/autorespond list\n/autorespond add &lt;trigger&gt; [#channel] &lt;command&gt;\n/autorespond remove &lt;position&gt;</pre>" <>
+          "<h4>Parameters</h4>" <>
+          "<p><code>trigger</code> — Event type: <code>on_join</code>, <code>on_part</code>, or <code>on_nick_change</code>.<br/>" <>
+          "<code>#channel</code> — Optional channel filter (omit to match all channels).<br/>" <>
+          "<code>command</code> — Command to execute when the event fires.<br/>" <>
+          "<code>position</code> — Rule position number (shown in <code>/autorespond list</code>).</p>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/autorespond add on_join #welcome /notice $nick Welcome!\n/autorespond add on_part /say $nick left\n/autorespond list\n/autorespond remove 0</pre>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-autorespond\">Auto-Respond Feature</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-alias\">/alias</a></p>"
+    },
+    # ── Scripting & Aliases Features ─────────────────────────
+    %{
+      id: "feature-aliases",
+      title: "Aliases",
+      category: "Features",
+      keywords: ["alias", "aliases", "shortcut", "macro", "expansion", "scripting"],
+      content:
+        "<h3>Aliases</h3>" <>
+          "<p>Aliases let you create custom command shortcuts. Type a short name and it expands " <>
+          "into a longer command or message, with optional variable substitution.</p>" <>
+          "<h4>Creating Aliases</h4>" <>
+          "<p>Use <code>/alias add &lt;name&gt; &lt;expansion&gt;</code> or open the " <>
+          "<strong>Alias Editor</strong> from <strong>Tools &gt; Alias Editor</strong>.</p>" <>
+          "<h4>Variable Expansion</h4>" <>
+          "<p><code>$1</code>–<code>$9</code> — Positional arguments (words typed after the alias).<br/>" <>
+          "<code>$nick</code> — Your current nickname.<br/>" <>
+          "<code>$chan</code> — Current channel name.<br/>" <>
+          "<code>$$</code> — Literal <code>$</code> character.</p>" <>
+          "<h4>Safety Features</h4>" <>
+          "<p>- <strong>No command chaining</strong>: Expansions cannot contain <code>|</code>, " <>
+          "<code>&amp;&amp;</code>, <code>;</code>, or newlines.<br/>" <>
+          "- <strong>Recursion detection</strong>: Alias chains (A → B → A) are caught at 5 levels.<br/>" <>
+          "- <strong>Shadowing warning</strong>: Creating an alias that matches a built-in command " <>
+          "shows a warning but is allowed.</p>" <>
+          "<h4>Limits</h4>" <>
+          "<p>Maximum 50 aliases per user. Names: 1–30 characters (alphanumeric, hyphens, underscores). " <>
+          "Expansions: up to 500 characters. Persisted for registered users.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-alias\">/alias Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-timers\">Timers</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-custom-menus\">Custom Menus</a></p>"
+    },
+    %{
+      id: "feature-timers",
+      title: "Timers",
+      category: "Features",
+      keywords: ["timer", "timers", "schedule", "delay", "repeat", "interval"],
+      content:
+        "<h3>Timers</h3>" <>
+          "<p>Timers let you schedule commands to run after a delay or on a repeating interval. " <>
+          "Useful for periodic reminders, heartbeat messages, or delayed actions.</p>" <>
+          "<h4>Timer Types</h4>" <>
+          "<p><strong>One-shot</strong>: Runs once after the specified delay.<br/>" <>
+          "<code>/timer remind 1800 /me standup in 30 minutes</code></p>" <>
+          "<p><strong>Repeating</strong>: Runs every N seconds until stopped.<br/>" <>
+          "<code>/timer hb repeat 600 /me is still here</code></p>" <>
+          "<h4>Managing Timers</h4>" <>
+          "<p><code>/timer list</code> — Show all active timers.<br/>" <>
+          "<code>/timer stop &lt;name&gt;</code> — Cancel a specific timer.</p>" <>
+          "<h4>Limits</h4>" <>
+          "<p>- Maximum 5 concurrent timers per session.<br/>" <>
+          "- One-shot: minimum 1 second, maximum 86,400 seconds (24 hours).<br/>" <>
+          "- Repeat: minimum 10 seconds, maximum 86,400 seconds.<br/>" <>
+          "- <strong>Session-only</strong>: Timers do NOT survive page reload or disconnection.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-timer\">/timer Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-aliases\">Aliases</a></p>"
+    },
+    %{
+      id: "feature-custom-menus",
+      title: "Custom Menus",
+      category: "Features",
+      keywords: [
+        "custom menu",
+        "popup",
+        "context menu",
+        "right-click",
+        "nicklist menu",
+        "channel menu"
+      ],
+      content:
+        "<h3>Custom Menus</h3>" <>
+          "<p>Add custom items to the nicklist and channel right-click context menus. " <>
+          "Each item executes a command with variable expansion when clicked.</p>" <>
+          "<h4>Menu Types</h4>" <>
+          "<p><strong>Nicklist</strong>: Items appear when right-clicking a nickname. " <>
+          "Use <code>$1</code> for the target nickname.</p>" <>
+          "<p><strong>Channel</strong>: Items appear when right-clicking a channel in the treebar. " <>
+          "Use <code>$1</code> for the target channel name.</p>" <>
+          "<h4>Managing Items</h4>" <>
+          "<p>Use <code>/popups</code> or open <strong>Tools &gt; Custom Menus</strong>. " <>
+          "Switch between Nicklist and Channel tabs. Each item has a label (display text) " <>
+          "and a command (what runs on click).</p>" <>
+          "<h4>Variables</h4>" <>
+          "<p><code>$1</code> — Target nickname or channel name.<br/>" <>
+          "<code>$nick</code> — Your nickname.<br/>" <>
+          "<code>$chan</code> — Current channel.</p>" <>
+          "<h4>Limits</h4>" <>
+          "<p>Maximum 10 custom items per menu type. Labels: up to 50 characters. " <>
+          "Commands: up to 500 characters. Custom items append to (not replace) built-in menu items. " <>
+          "Persisted for registered users.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-popups\">/popups Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-aliases\">Aliases</a></p>"
+    },
+    %{
+      id: "feature-autorespond",
+      title: "Auto-Respond",
+      category: "Features",
+      keywords: [
+        "auto-respond",
+        "autorespond",
+        "auto greet",
+        "trigger",
+        "event",
+        "join greet",
+        "welcome"
+      ],
+      content:
+        "<h3>Auto-Respond</h3>" <>
+          "<p>Auto-respond rules automatically execute commands when specific events occur, " <>
+          "such as when a user joins or leaves a channel.</p>" <>
+          "<h4>Trigger Events</h4>" <>
+          "<p><code>on_join</code> — Fires when a user joins a channel.<br/>" <>
+          "<code>on_part</code> — Fires when a user leaves a channel.<br/>" <>
+          "<code>on_nick_change</code> — Fires when a user changes their nickname.</p>" <>
+          "<h4>Channel Filtering</h4>" <>
+          "<p>Each rule can optionally filter by channel. Leave the channel field empty " <>
+          "to match all channels, or specify a channel (e.g., <code>#welcome</code>) to " <>
+          "only trigger in that channel.</p>" <>
+          "<h4>Safety Features</h4>" <>
+          "<p>- <strong>Own-action exclusion</strong>: Your own joins/parts/nick changes " <>
+          "never trigger your auto-respond rules.<br/>" <>
+          "- <strong>Rate limiting</strong>: 60-second cooldown per rule per triggering user " <>
+          "to prevent spam.<br/>" <>
+          "- <strong>No cascading</strong>: Auto-respond commands are dispatched normally " <>
+          "but cannot trigger other auto-respond rules recursively.</p>" <>
+          "<h4>Managing Rules</h4>" <>
+          "<p>Use <code>/autorespond</code> or open <strong>Tools &gt; Auto-Respond</strong>. " <>
+          "Rules can be enabled/disabled individually via the checkbox in the dialog.</p>" <>
+          "<h4>Limits</h4>" <>
+          "<p>Maximum 10 auto-respond rules per user. Commands: up to 500 characters. " <>
+          "Persisted for registered users.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-autorespond\">/autorespond Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-aliases\">Aliases</a></p>"
+    },
     # ── Keyboard Shortcuts ───────────────────────────────────
     %{
       id: "keyboard-shortcuts",
