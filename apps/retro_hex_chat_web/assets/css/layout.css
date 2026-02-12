@@ -753,3 +753,35 @@ body {
 .help-search-result:hover { background: #e0e0e0; }
 .help-search-title { font-weight: bold; font-size: 11px; }
 .help-search-snippet { font-size: 10px; color: #606060; }
+
+/* ── Reconnect Overlay ────────────────────────────────── */
+.reconnect-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reconnect-overlay .window {
+  width: 320px;
+}
+
+.reconnect-overlay .window-body {
+  text-align: center;
+  padding: 16px;
+}
+
+.reconnect-overlay .countdown {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+.reconnect-overlay .attempt-info {
+  color: #808080;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
