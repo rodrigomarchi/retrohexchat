@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive do
     CtcpSettings,
     DisplayPreferences,
     DuplicateTracker,
+    Favorites,
     FloodProtection,
     FloodTracker,
     Formatter,
@@ -187,9 +188,17 @@ defmodule RetroHexChatWeb.ChatLive do
       show_sound_settings_dialog: false,
       sound_settings_draft: nil,
       muted: false,
+      favorite_dialog_channel: nil,
+      favorite_dialog_data: nil,
+      favorite_dialog_is_duplicate: false,
+      favorite_dialog_mode: :add,
       flash_channels: MapSet.new(),
+      organize_favorites_selected: nil,
       pm_typing_from: nil,
-      pm_typing_timer: nil
+      pm_typing_timer: nil,
+      show_favorite_dialog: false,
+      show_organize_favorites: false,
+      treebar_context_menu: %{visible: false, x: 0, y: 0, channel: nil}
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -463,6 +472,214 @@ defmodule RetroHexChatWeb.ChatLive do
 
   def handle_event("close_context_menu", _params, socket) do
     {:noreply, close_context_menu(socket)}
+  end
+
+  # ── Favorites Events ────────────────────────────────────────
+
+  def handle_event("channel_right_click", %{"channel" => channel} = params, socket) do
+    x = params["x"] || 0
+    y = params["y"] || 0
+
+    {:noreply,
+     assign(socket,
+       treebar_context_menu: %{visible: true, x: x, y: y, channel: channel}
+     )}
+  end
+
+  def handle_event("close_treebar_context_menu", _params, socket) do
+    {:noreply, assign(socket, treebar_context_menu: %{visible: false, x: 0, y: 0, channel: nil})}
+  end
+
+  def handle_event("add_to_favorites", %{"channel" => channel}, socket) do
+    session = socket.assigns.session
+    favorites = Session.get_favorites(session)
+
+    if Favorites.has_entry?(favorites, channel) do
+      existing = Favorites.find_entry(favorites, channel)
+
+      {:noreply,
+       assign(socket,
+         treebar_context_menu: %{visible: false, x: 0, y: 0, channel: nil},
+         show_favorite_dialog: true,
+         favorite_dialog_mode: :edit,
+         favorite_dialog_channel: channel,
+         favorite_dialog_is_duplicate: true,
+         favorite_dialog_data: %{
+           description: existing.description,
+           auto_join: existing.auto_join,
+           has_password: existing.password != nil and existing.password != ""
+         }
+       )}
+    else
+      {:noreply,
+       assign(socket,
+         treebar_context_menu: %{visible: false, x: 0, y: 0, channel: nil},
+         show_favorite_dialog: true,
+         favorite_dialog_mode: :add,
+         favorite_dialog_channel: channel,
+         favorite_dialog_is_duplicate: false,
+         favorite_dialog_data: nil
+       )}
+    end
+  end
+
+  def handle_event("save_favorite", params, socket) do
+    session = socket.assigns.session
+    favorites = Session.get_favorites(session)
+    channel = params["channel_name"]
+    password = if params["password"] != "", do: params["password"]
+    auto_join = params["auto_join"] == "true"
+
+    attrs = %{
+      channel_name: channel,
+      description: params["description"] || "",
+      password: password,
+      auto_join: auto_join
+    }
+
+    updated_favorites =
+      if Favorites.has_entry?(favorites, channel) do
+        case Favorites.update_entry(favorites, channel, attrs) do
+          {:ok, updated} -> updated
+          {:error, _} -> favorites
+        end
+      else
+        case Favorites.add_entry(favorites, attrs) do
+          {:ok, updated} -> updated
+          {:error, _} -> favorites
+        end
+      end
+
+    new_session = Session.set_favorites(session, updated_favorites)
+    maybe_persist_favorites(socket, new_session)
+
+    {:noreply,
+     assign(socket,
+       session: new_session,
+       show_favorite_dialog: false,
+       favorite_dialog_channel: nil,
+       favorite_dialog_data: nil,
+       favorite_dialog_is_duplicate: false
+     )}
+  end
+
+  def handle_event("close_favorite_dialog", _params, socket) do
+    {:noreply,
+     assign(socket,
+       show_favorite_dialog: false,
+       favorite_dialog_channel: nil,
+       favorite_dialog_data: nil,
+       favorite_dialog_is_duplicate: false
+     )}
+  end
+
+  def handle_event("join_favorite", %{"channel" => channel}, socket) do
+    session = socket.assigns.session
+    favorites = Session.get_favorites(session)
+
+    if channel in session.channels do
+      # Already joined — just switch
+      new_session = Session.set_active_channel(session, channel)
+      {:noreply, assign(socket, session: new_session)}
+    else
+      # Join using saved password if available
+      entry = Favorites.find_entry(favorites, channel)
+      password = if entry, do: entry.password
+
+      {:noreply, join_channel(socket, channel, session, password)}
+    end
+  end
+
+  def handle_event("open_organize_favorites", _params, socket) do
+    {:noreply, assign(socket, show_organize_favorites: true, organize_favorites_selected: nil)}
+  end
+
+  def handle_event("close_organize_favorites", _params, socket) do
+    {:noreply, assign(socket, show_organize_favorites: false, organize_favorites_selected: nil)}
+  end
+
+  def handle_event("favorite_select", %{"channel" => channel}, socket) do
+    {:noreply, assign(socket, organize_favorites_selected: channel)}
+  end
+
+  def handle_event("favorite_move_up", _params, socket) do
+    selected = socket.assigns.organize_favorites_selected
+
+    if selected do
+      session = socket.assigns.session
+      favorites = Session.get_favorites(session)
+      updated = Favorites.move_up(favorites, selected)
+      new_session = Session.set_favorites(session, updated)
+      maybe_persist_favorites(socket, new_session)
+      {:noreply, assign(socket, session: new_session)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("favorite_move_down", _params, socket) do
+    selected = socket.assigns.organize_favorites_selected
+
+    if selected do
+      session = socket.assigns.session
+      favorites = Session.get_favorites(session)
+      updated = Favorites.move_down(favorites, selected)
+      new_session = Session.set_favorites(session, updated)
+      maybe_persist_favorites(socket, new_session)
+      {:noreply, assign(socket, session: new_session)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("favorite_edit", _params, socket) do
+    selected = socket.assigns.organize_favorites_selected
+
+    if selected do
+      session = socket.assigns.session
+      favorites = Session.get_favorites(session)
+      entry = Favorites.find_entry(favorites, selected)
+
+      if entry do
+        {:noreply,
+         assign(socket,
+           show_favorite_dialog: true,
+           favorite_dialog_mode: :edit,
+           favorite_dialog_channel: entry.channel_name,
+           favorite_dialog_is_duplicate: false,
+           favorite_dialog_data: %{
+             description: entry.description,
+             auto_join: entry.auto_join,
+             has_password: entry.password != nil and entry.password != ""
+           }
+         )}
+      else
+        {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("favorite_remove", _params, socket) do
+    selected = socket.assigns.organize_favorites_selected
+
+    if selected do
+      session = socket.assigns.session
+      favorites = Session.get_favorites(session)
+
+      case Favorites.remove_entry(favorites, selected) do
+        {:ok, updated} ->
+          new_session = Session.set_favorites(session, updated)
+          maybe_persist_favorites(socket, new_session)
+          {:noreply, assign(socket, session: new_session, organize_favorites_selected: nil)}
+
+        {:error, _} ->
+          {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
+    end
   end
 
   def handle_event("context_query", %{"nick" => nick}, socket) do
@@ -2830,6 +3047,34 @@ defmodule RetroHexChatWeb.ChatLive do
       Process.send_after(self(), {:execute_autojoin, index + 1}, 100)
       {:noreply, socket}
     else
+      send(self(), {:execute_favorites_autojoin, 0})
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info({:execute_favorites_autojoin, index}, socket) do
+    session = socket.assigns.session
+    entries = Favorites.auto_join_entries(session.favorites)
+
+    if index < length(entries) do
+      entry = Enum.at(entries, index)
+      channel = entry.channel_name
+
+      socket =
+        if channel in session.channels do
+          socket
+        else
+          socket
+          |> stream_insert(
+            :chat_messages,
+            system_message("* Auto-joining favorite #{channel}...")
+          )
+          |> join_channel(channel, session, entry.password)
+        end
+
+      Process.send_after(self(), {:execute_favorites_autojoin, index + 1}, 100)
+      {:noreply, socket}
+    else
       {:noreply, socket}
     end
   end
@@ -2977,7 +3222,8 @@ defmodule RetroHexChatWeb.ChatLive do
   defp close_context_menu(socket) do
     assign(socket,
       context_menu: %{visible: false, x: 0, y: 0, target_nick: nil},
-      show_context_color_picker: false
+      show_context_color_picker: false,
+      treebar_context_menu: %{visible: false, x: 0, y: 0, channel: nil}
     )
   end
 
@@ -4782,6 +5028,12 @@ defmodule RetroHexChatWeb.ChatLive do
     socket
   end
 
+  defp maybe_persist_favorites(_socket, session) do
+    if session.identified do
+      Task.start(fn -> Favorites.save(session.nickname, session.favorites) end)
+    end
+  end
+
   defp maybe_persist_nick_colors(socket, session) do
     if session.identified do
       Task.start(fn -> NickColors.save(session.nickname, session.nick_colors) end)
@@ -4836,6 +5088,7 @@ defmodule RetroHexChatWeb.ChatLive do
       Session.set_notice_routing(session, routing)
     end)
     |> load_if_found(CtcpSettings.load(nick), &Session.set_ctcp_settings/2)
+    |> load_if_found(Favorites.load(nick), &Session.set_favorites/2)
     |> load_if_found(FloodProtection.load(nick), &Session.set_flood_protection/2)
     |> load_if_found(SoundSettings.load(nick), &Session.set_sound_settings/2)
   end
@@ -5039,7 +5292,10 @@ defmodule RetroHexChatWeb.ChatLive do
       phx-hook="SoundHook"
     >
       <RetroHexChatWeb.Components.TitleBar.title_bar />
-      <RetroHexChatWeb.Components.MenuBar.menu_bar />
+      <RetroHexChatWeb.Components.MenuBar.menu_bar
+        favorites={Favorites.entries(@session.favorites)}
+        joined_channels={@session.channels}
+      />
       <RetroHexChatWeb.Components.Toolbar.toolbar connected={true} />
 
       <div class="mdi-layout">
@@ -5196,6 +5452,27 @@ defmodule RetroHexChatWeb.ChatLive do
         nick_color_fn={@nick_color_fn}
         show_color_picker={@show_context_color_picker}
         is_ignored={context_target_ignored?(@session, @context_menu.target_nick)}
+      />
+
+      <RetroHexChatWeb.Components.TreebarContextMenu.treebar_context_menu
+        visible={@treebar_context_menu.visible}
+        x={@treebar_context_menu.x}
+        y={@treebar_context_menu.y}
+        channel={@treebar_context_menu.channel}
+      />
+
+      <RetroHexChatWeb.Components.FavoriteDialog.favorite_dialog
+        visible={@show_favorite_dialog}
+        mode={@favorite_dialog_mode}
+        channel={@favorite_dialog_channel}
+        data={@favorite_dialog_data}
+        is_duplicate={@favorite_dialog_is_duplicate}
+      />
+
+      <RetroHexChatWeb.Components.OrganizeFavoritesDialog.organize_favorites_dialog
+        visible={@show_organize_favorites}
+        favorites={Favorites.entries(@session.favorites)}
+        selected={@organize_favorites_selected}
       />
 
       <RetroHexChatWeb.Components.Dialog.dialog

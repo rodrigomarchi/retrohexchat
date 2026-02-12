@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
   @spec treebar(map()) :: Phoenix.LiveView.Rendered.t()
   def treebar(assigns) do
     ~H"""
-    <div class="treebar">
+    <div class="treebar" id="treebar" phx-hook="TreebarHook">
       <ul class="tree-view">
         <li>
           <details open>
@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
                   )
                 }
                 data-testid={"channel-#{channel}"}
+                data-channel={channel}
                 phx-click="switch_channel"
                 phx-value-channel={channel}
                 phx-dblclick="open_channel_central"

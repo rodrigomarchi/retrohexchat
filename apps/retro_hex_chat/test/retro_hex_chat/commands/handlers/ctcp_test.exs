@@ -91,7 +91,7 @@ defmodule RetroHexChat.Commands.Handlers.CtcpTest do
       assert help.syntax =~ "/ctcp"
       assert help.description =~ "CTCP"
       assert is_list(help.examples)
-      assert length(help.examples) > 0
+      assert [_ | _] = help.examples
     end
   end
 end

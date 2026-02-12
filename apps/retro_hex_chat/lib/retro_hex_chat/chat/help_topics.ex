@@ -1442,6 +1442,81 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<a href=\"#\" data-help-topic=\"feature-mute\">Mute</a> · " <>
           "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
     },
+    %{
+      id: "feature-favorites",
+      title: "Favorites",
+      category: "Features",
+      keywords: [
+        "favorites",
+        "bookmarks",
+        "channels",
+        "auto-join",
+        "autojoin",
+        "quick",
+        "access"
+      ],
+      content:
+        "<h3>Favorites</h3>" <>
+          "<p>Favorites let you bookmark channels for quick access, similar to " <>
+          "browser bookmarks. Access them from the <strong>Favorites</strong> " <>
+          "menu in the menu bar.</p>" <>
+          "<h4>Adding a Favorite</h4>" <>
+          "<p>Right-click a channel in the treebar and select " <>
+          "<strong>Add to Favorites</strong>. A dialog lets you set:</p>" <>
+          "<p>- <strong>Channel name</strong> (pre-filled from the channel)<br/>" <>
+          "- <strong>Description</strong> (optional, shown in the Favorites menu)<br/>" <>
+          "- <strong>Password</strong> (for +k channels, stored encrypted)<br/>" <>
+          "- <strong>Auto-join on connect</strong> (join automatically after identification)</p>" <>
+          "<h4>Using Favorites</h4>" <>
+          "<p>Click a favorite in the <strong>Favorites</strong> menu to join " <>
+          "the channel (or switch to it if already joined). Channels you are " <>
+          "currently in are marked with a checkmark.</p>" <>
+          "<h4>Auto-Join</h4>" <>
+          "<p>Favorites marked with <em>Auto-join on connect</em> are automatically " <>
+          "joined after you identify with NickServ. This runs after any " <>
+          "Perform auto-join commands.</p>" <>
+          "<h4>Duplicate Detection</h4>" <>
+          "<p>Adding a channel that is already in your favorites opens the " <>
+          "existing entry for editing instead of creating a duplicate.</p>" <>
+          "<h4>Persistence</h4>" <>
+          "<p>Favorites are saved to the database for registered users. " <>
+          "Guest users lose their favorites when they disconnect.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-organize-favorites\">Organize Favorites</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-join\">/join Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-perform\">Perform</a></p>"
+    },
+    %{
+      id: "feature-organize-favorites",
+      title: "Organize Favorites",
+      category: "Features",
+      keywords: [
+        "organize",
+        "favorites",
+        "reorder",
+        "edit",
+        "remove",
+        "manage",
+        "bookmarks"
+      ],
+      content:
+        "<h3>Organize Favorites</h3>" <>
+          "<p>The Organize Favorites dialog lets you manage your favorites list. " <>
+          "Open it from <strong>Favorites &gt; Organize Favorites...</strong>.</p>" <>
+          "<h4>Features</h4>" <>
+          "<p>- <strong>Reorder</strong>: Select a favorite and use " <>
+          "<strong>Move Up</strong> / <strong>Move Down</strong> to change its " <>
+          "position in the Favorites menu.<br/>" <>
+          "- <strong>Edit</strong>: Modify a favorite's description, password, " <>
+          "or auto-join setting.<br/>" <>
+          "- <strong>Remove</strong>: Delete a favorite from the list.</p>" <>
+          "<h4>Display Columns</h4>" <>
+          "<p>The dialog shows each favorite's channel name, description, " <>
+          "password status (\"Password set\" if configured), and auto-join " <>
+          "setting (\"Yes\" if enabled).</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-favorites\">Favorites</a></p>"
+    },
     # ── Keyboard Shortcuts ───────────────────────────────────
     %{
       id: "keyboard-shortcuts",
