@@ -7,6 +7,7 @@ defmodule RetroHexChat.Accounts.Session do
   alias RetroHexChat.Accounts.ContactList
   alias RetroHexChat.Accounts.NickColors
   alias RetroHexChat.Chat.AutoJoinList
+  alias RetroHexChat.Chat.CtcpSettings
   alias RetroHexChat.Chat.DisplayPreferences
   alias RetroHexChat.Chat.HighlightWords
   alias RetroHexChat.Chat.IgnoreList
@@ -33,7 +34,9 @@ defmodule RetroHexChat.Accounts.Session do
           perform_list: map(),
           autojoin_list: map(),
           auto_join_on_invite: boolean(),
-          notice_routing: :active | :status | :sender
+          notice_routing: :active | :status | :sender,
+          ctcp_settings: map(),
+          last_message_at: DateTime.t()
         }
 
   @enforce_keys [:nickname]
@@ -57,7 +60,9 @@ defmodule RetroHexChat.Accounts.Session do
     perform_list: nil,
     autojoin_list: nil,
     auto_join_on_invite: false,
-    notice_routing: :active
+    notice_routing: :active,
+    ctcp_settings: nil,
+    last_message_at: nil
   ]
 
   @spec new(String.t()) :: t()
@@ -72,7 +77,9 @@ defmodule RetroHexChat.Accounts.Session do
       ignore_list: IgnoreList.new(),
       log_preferences: DisplayPreferences.new(),
       perform_list: PerformList.new(),
-      autojoin_list: AutoJoinList.new()
+      autojoin_list: AutoJoinList.new(),
+      ctcp_settings: CtcpSettings.new(),
+      last_message_at: DateTime.utc_now()
     }
   end
 
@@ -248,5 +255,21 @@ defmodule RetroHexChat.Accounts.Session do
   def set_notice_routing(%__MODULE__{} = session, routing)
       when routing in [:active, :status, :sender] do
     %{session | notice_routing: routing}
+  end
+
+  @spec get_ctcp_settings(t()) :: map()
+  def get_ctcp_settings(%__MODULE__{ctcp_settings: settings}), do: settings
+
+  @spec set_ctcp_settings(t(), map()) :: t()
+  def set_ctcp_settings(%__MODULE__{} = session, settings) do
+    %{session | ctcp_settings: settings}
+  end
+
+  @spec get_last_message_at(t()) :: DateTime.t()
+  def get_last_message_at(%__MODULE__{last_message_at: value}), do: value
+
+  @spec set_last_message_at(t(), DateTime.t()) :: t()
+  def set_last_message_at(%__MODULE__{} = session, %DateTime{} = timestamp) do
+    %{session | last_message_at: timestamp}
   end
 end

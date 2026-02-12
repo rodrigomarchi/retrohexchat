@@ -1186,6 +1186,36 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<a href=\"#\" data-help-topic=\"feature-notices\">Notices</a></p>"
     },
     %{
+      id: "cmd-ctcp",
+      title: "/ctcp",
+      category: "Commands",
+      keywords: ["ctcp", "ping", "version", "time", "finger", "client-to-client"],
+      content:
+        "<h3>/ctcp</h3>" <>
+          "<p>Send a CTCP (Client-to-Client Protocol) request to another user.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/ctcp &lt;target&gt; &lt;type&gt;</pre>" <>
+          "<h4>Parameters</h4>" <>
+          "<p><code>target</code> — The nickname of the user to query.<br/>" <>
+          "<code>type</code> — One of: <code>ping</code>, <code>version</code>, <code>time</code>, <code>finger</code>.</p>" <>
+          "<h4>CTCP Types</h4>" <>
+          "<p><code>ping</code> — Measure round-trip latency in milliseconds.<br/>" <>
+          "<code>version</code> — Query the target's client version string.<br/>" <>
+          "<code>time</code> — Query the server's current UTC time.<br/>" <>
+          "<code>finger</code> — Query the target's profile text or idle time.</p>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/ctcp Alice ping\n/ctcp Bob version\n/ctcp Alice time\n/ctcp Bob finger</pre>" <>
+          "<h4>Notes</h4>" <>
+          "<p>- CTCP requests are private between sender and target<br/>" <>
+          "- Self-CTCP (targeting yourself) returns instant responses<br/>" <>
+          "- Requests time out after 10 seconds if the target has CTCP disabled<br/>" <>
+          "- Rate limited to 3 requests per target per 30 seconds<br/>" <>
+          "- CTCP exchanges do NOT create PM windows or treebar entries</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-ctcp\">CTCP Feature</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-msg\">/msg</a></p>"
+    },
+    %{
       id: "feature-notices",
       title: "Notices",
       category: "Features",
@@ -1212,7 +1242,42 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<p><a href=\"#\" data-help-topic=\"cmd-notice\">/notice Command</a> · " <>
           "<a href=\"#\" data-help-topic=\"cmd-notice-routing\">/notice_routing Command</a> · " <>
           "<a href=\"#\" data-help-topic=\"private-messages\">Private Messages</a> · " <>
-          "<a href=\"#\" data-help-topic=\"cmd-ignore\">/ignore Command</a></p>"
+          "<a href=\"#\" data-help-topic=\"cmd-ignore\">/ignore Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-ctcp\">CTCP</a></p>"
+    },
+    %{
+      id: "feature-ctcp",
+      title: "CTCP (Client-to-Client Protocol)",
+      category: "Features",
+      keywords: ["ctcp", "ping", "version", "time", "finger", "client-to-client", "latency"],
+      content:
+        "<h3>CTCP (Client-to-Client Protocol)</h3>" <>
+          "<p>CTCP allows users to query information about other users' clients and " <>
+          "measure connection latency. Since RetroHexChat is web-based, CTCP is simulated " <>
+          "between users within the application.</p>" <>
+          "<h4>Available CTCP Types</h4>" <>
+          "<p><code>PING</code> — Measures round-trip latency in milliseconds.<br/>" <>
+          "<code>VERSION</code> — Returns the target's client version string (default: \"RetroHexChat v1.0\").<br/>" <>
+          "<code>TIME</code> — Returns the server's current UTC date and time.<br/>" <>
+          "<code>FINGER</code> — Returns the target's profile text or idle time.</p>" <>
+          "<h4>Usage</h4>" <>
+          "<pre>/ctcp &lt;nickname&gt; ping\n/ctcp &lt;nickname&gt; version\n/ctcp &lt;nickname&gt; time\n/ctcp &lt;nickname&gt; finger</pre>" <>
+          "<h4>Customizing Responses</h4>" <>
+          "<p>Access <strong>Tools &gt; CTCP Settings</strong> to:<br/>" <>
+          "- Enable or disable CTCP responses entirely<br/>" <>
+          "- Set a custom VERSION string<br/>" <>
+          "- Set a custom FINGER reply text</p>" <>
+          "<h4>Key Behaviors</h4>" <>
+          "<p>- CTCP exchanges are private between sender and target<br/>" <>
+          "- Self-CTCP returns instant responses (useful for testing)<br/>" <>
+          "- Unanswered requests time out after 10 seconds<br/>" <>
+          "- Rate limited to 3 requests per target per 30 seconds<br/>" <>
+          "- CTCP does NOT create PM windows or treebar entries<br/>" <>
+          "- Settings persist for registered (identified) users</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-ctcp\">/ctcp Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-notices\">Notices</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-msg\">/msg Command</a></p>"
     },
     # ── Keyboard Shortcuts ───────────────────────────────────
     %{
