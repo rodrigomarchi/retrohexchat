@@ -42,6 +42,9 @@ defmodule RetroHexChat.Accounts.Session do
           favorites: map(),
           flood_protection: map(),
           sound_settings: map(),
+          aliases: map(),
+          custom_menus: map(),
+          autorespond_rules: map(),
           bio: String.t() | nil,
           last_message_at: DateTime.t()
         }
@@ -72,6 +75,9 @@ defmodule RetroHexChat.Accounts.Session do
     favorites: nil,
     flood_protection: nil,
     sound_settings: nil,
+    aliases: nil,
+    custom_menus: nil,
+    autorespond_rules: nil,
     bio: nil,
     last_message_at: nil
   ]
@@ -93,6 +99,9 @@ defmodule RetroHexChat.Accounts.Session do
       favorites: Favorites.new(),
       flood_protection: FloodProtection.new(),
       sound_settings: SoundSettings.new(),
+      aliases: %{entries: []},
+      custom_menus: %{entries: []},
+      autorespond_rules: %{entries: []},
       last_message_at: DateTime.utc_now()
     }
   end
@@ -301,6 +310,30 @@ defmodule RetroHexChat.Accounts.Session do
   @spec set_sound_settings(t(), map()) :: t()
   def set_sound_settings(%__MODULE__{} = session, settings) do
     %{session | sound_settings: settings}
+  end
+
+  @spec get_aliases(t()) :: map()
+  def get_aliases(%__MODULE__{aliases: aliases}), do: aliases
+
+  @spec set_aliases(t(), map()) :: t()
+  def set_aliases(%__MODULE__{} = session, aliases) do
+    %{session | aliases: aliases}
+  end
+
+  @spec get_custom_menus(t()) :: map()
+  def get_custom_menus(%__MODULE__{custom_menus: custom_menus}), do: custom_menus
+
+  @spec set_custom_menus(t(), map()) :: t()
+  def set_custom_menus(%__MODULE__{} = session, custom_menus) do
+    %{session | custom_menus: custom_menus}
+  end
+
+  @spec get_autorespond_rules(t()) :: map()
+  def get_autorespond_rules(%__MODULE__{autorespond_rules: rules}), do: rules
+
+  @spec set_autorespond_rules(t(), map()) :: t()
+  def set_autorespond_rules(%__MODULE__{} = session, rules) do
+    %{session | autorespond_rules: rules}
   end
 
   @spec get_bio(t()) :: String.t() | nil

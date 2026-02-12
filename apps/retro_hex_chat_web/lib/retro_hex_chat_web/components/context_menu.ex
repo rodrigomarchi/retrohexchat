@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
   """
   use Phoenix.Component
 
+  attr :custom_nicklist_items, :list, default: []
   attr :is_ignored, :boolean, default: false
   attr :nick_color_fn, :any, default: nil
   attr :show_color_picker, :boolean, default: false
@@ -98,6 +99,21 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-value-nick={@target_nick}
           >
             Give Voice
+          </li>
+          <li
+            :if={@custom_nicklist_items != []}
+            class="separator"
+            style="border-top: 1px solid #666; margin: 2px 0;"
+          >
+          </li>
+          <li
+            :for={item <- @custom_nicklist_items}
+            data-testid={"ctx-custom-#{item.label}"}
+            phx-click="custom_menu_execute"
+            phx-value-command={item.command}
+            phx-value-target={@target_nick}
+          >
+            {item.label}
           </li>
         </ul>
       </div>

@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.Components.TreebarContextMenu do
   """
   use Phoenix.Component
 
+  attr :custom_channel_items, :list, default: []
   attr :visible, :boolean, default: false
   attr :x, :integer, default: 0
   attr :y, :integer, default: 0
@@ -27,6 +28,21 @@ defmodule RetroHexChatWeb.Components.TreebarContextMenu do
             phx-value-channel={@channel}
           >
             Add to Favorites
+          </li>
+          <li
+            :if={@custom_channel_items != []}
+            class="separator"
+            style="border-top: 1px solid #666; margin: 2px 0;"
+          >
+          </li>
+          <li
+            :for={item <- @custom_channel_items}
+            data-testid={"ctx-custom-#{item.label}"}
+            phx-click="custom_menu_execute"
+            phx-value-command={item.command}
+            phx-value-target={@channel}
+          >
+            {item.label}
           </li>
         </ul>
       </div>

@@ -162,6 +162,28 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           >
             Flood Protection
           </div>
+          <div class="menu-dropdown-separator"></div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-alias-editor"
+            phx-click="open_alias_dialog"
+          >
+            Alias Editor
+          </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-custom-menus"
+            phx-click="open_custom_menus_dialog"
+          >
+            Custom Menus
+          </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-autorespond"
+            phx-click="open_autorespond_dialog"
+          >
+            Auto-Respond
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">

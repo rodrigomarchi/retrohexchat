@@ -10,9 +10,13 @@ defmodule RetroHexChatWeb.ChatLive do
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
 
   alias RetroHexChat.Chat.{
+    AliasExpander,
+    AliasList,
     AutoJoinList,
+    AutoRespondRules,
     CapturedURL,
     CtcpSettings,
+    CustomMenus,
     DisplayPreferences,
     DuplicateTracker,
     Favorites,
@@ -34,6 +38,7 @@ defmodule RetroHexChatWeb.ChatLive do
     Service,
     SoundSettings,
     TimeFormatter,
+    TimerManager,
     URLDetector,
     UserBio
   }
@@ -202,7 +207,30 @@ defmodule RetroHexChatWeb.ChatLive do
       show_organize_favorites: false,
       treebar_context_menu: %{visible: false, x: 0, y: 0, channel: nil},
       last_activity_at: DateTime.utc_now(),
-      last_nick_click: nil
+      last_nick_click: nil,
+      show_alias_dialog: false,
+      alias_dialog_selected: nil,
+      alias_dialog_editing: false,
+      alias_dialog_draft_name: "",
+      alias_dialog_draft_expansion: "",
+      alias_dialog_warning: nil,
+      alias_dialog_error: nil,
+      user_timers: %{},
+      autorespond_cooldowns: %{},
+      show_custom_menus_dialog: false,
+      custom_menus_dialog_tab: :nicklist,
+      custom_menus_dialog_selected: nil,
+      custom_menus_dialog_editing: false,
+      custom_menus_dialog_draft_label: "",
+      custom_menus_dialog_draft_command: "",
+      custom_menus_dialog_error: nil,
+      show_autorespond_dialog: false,
+      autorespond_dialog_selected: nil,
+      autorespond_dialog_editing: false,
+      autorespond_dialog_draft_trigger: "on_join",
+      autorespond_dialog_draft_channel: "",
+      autorespond_dialog_draft_command: "",
+      autorespond_dialog_error: nil
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -1738,6 +1766,446 @@ defmodule RetroHexChatWeb.ChatLive do
      |> maybe_persist_perform_list(new_session)}
   end
 
+  # ── Alias Dialog Events ──────────────────────────────────────────
+
+  def handle_event("open_alias_dialog", _params, socket) do
+    {:noreply, assign(socket, show_alias_dialog: true)}
+  end
+
+  def handle_event("close_alias_dialog", _params, socket) do
+    {:noreply,
+     assign(socket,
+       show_alias_dialog: false,
+       alias_dialog_selected: nil,
+       alias_dialog_editing: false,
+       alias_dialog_draft_name: "",
+       alias_dialog_draft_expansion: "",
+       alias_dialog_warning: nil,
+       alias_dialog_error: nil
+     )}
+  end
+
+  def handle_event("alias_select", %{"name" => name}, socket) do
+    {:noreply, assign(socket, alias_dialog_selected: name, alias_dialog_editing: false)}
+  end
+
+  def handle_event("alias_dialog_add", _params, socket) do
+    {:noreply,
+     assign(socket,
+       alias_dialog_editing: true,
+       alias_dialog_selected: nil,
+       alias_dialog_draft_name: "",
+       alias_dialog_draft_expansion: "",
+       alias_dialog_warning: nil,
+       alias_dialog_error: nil
+     )}
+  end
+
+  def handle_event("alias_dialog_edit", _params, socket) do
+    selected = socket.assigns.alias_dialog_selected
+
+    if selected do
+      session = socket.assigns.session
+      entry = AliasList.find_entry(session.aliases, selected)
+
+      if entry do
+        {:noreply,
+         assign(socket,
+           alias_dialog_editing: true,
+           alias_dialog_draft_name: entry.name,
+           alias_dialog_draft_expansion: entry.expansion,
+           alias_dialog_error: nil
+         )}
+      else
+        {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event(
+        "alias_dialog_save",
+        %{"name" => name, "expansion" => expansion},
+        socket
+      ) do
+    session = socket.assigns.session
+    selected = socket.assigns.alias_dialog_selected
+
+    result =
+      if selected do
+        AliasList.update_entry(session.aliases, selected, expansion)
+      else
+        AliasList.add_entry(session.aliases, name, expansion)
+      end
+
+    case result do
+      {:ok, updated_list} ->
+        new_session = Session.set_aliases(session, updated_list)
+        warning = if AliasList.shadows_builtin?(name), do: "Warning: shadows built-in /#{name}"
+
+        {:noreply,
+         socket
+         |> assign(
+           session: new_session,
+           alias_dialog_editing: false,
+           alias_dialog_selected: name,
+           alias_dialog_draft_name: "",
+           alias_dialog_draft_expansion: "",
+           alias_dialog_warning: warning,
+           alias_dialog_error: nil
+         )
+         |> maybe_persist_aliases(new_session)}
+
+      {:error, reason} ->
+        {:noreply, assign(socket, alias_dialog_error: alias_error_msg(reason, name))}
+    end
+  end
+
+  def handle_event("alias_dialog_delete", _params, socket) do
+    selected = socket.assigns.alias_dialog_selected
+
+    if selected do
+      session = socket.assigns.session
+
+      case AliasList.remove_entry(session.aliases, selected) do
+        {:ok, updated_list} ->
+          new_session = Session.set_aliases(session, updated_list)
+
+          {:noreply,
+           socket
+           |> assign(
+             session: new_session,
+             alias_dialog_selected: nil,
+             alias_dialog_editing: false,
+             alias_dialog_warning: nil,
+             alias_dialog_error: nil
+           )
+           |> maybe_persist_aliases(new_session)}
+
+        {:error, _} ->
+          {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("alias_dialog_cancel_edit", _params, socket) do
+    {:noreply,
+     assign(socket,
+       alias_dialog_editing: false,
+       alias_dialog_draft_name: "",
+       alias_dialog_draft_expansion: "",
+       alias_dialog_error: nil
+     )}
+  end
+
+  # ── Custom Menus Dialog Events ──────────────────────────────────
+
+  def handle_event("open_custom_menus_dialog", _params, socket) do
+    {:noreply, assign(socket, show_custom_menus_dialog: true)}
+  end
+
+  def handle_event("close_custom_menus_dialog", _params, socket) do
+    {:noreply,
+     assign(socket,
+       show_custom_menus_dialog: false,
+       custom_menus_dialog_selected: nil,
+       custom_menus_dialog_editing: false,
+       custom_menus_dialog_draft_label: "",
+       custom_menus_dialog_draft_command: "",
+       custom_menus_dialog_error: nil
+     )}
+  end
+
+  def handle_event("custom_menus_tab", %{"tab" => tab}, socket) do
+    {:noreply,
+     assign(socket,
+       custom_menus_dialog_tab: String.to_existing_atom(tab),
+       custom_menus_dialog_selected: nil,
+       custom_menus_dialog_editing: false
+     )}
+  end
+
+  def handle_event("custom_menu_select", %{"label" => label}, socket) do
+    {:noreply,
+     assign(socket, custom_menus_dialog_selected: label, custom_menus_dialog_editing: false)}
+  end
+
+  def handle_event("custom_menu_dialog_add", _params, socket) do
+    {:noreply,
+     assign(socket,
+       custom_menus_dialog_editing: true,
+       custom_menus_dialog_selected: nil,
+       custom_menus_dialog_draft_label: "",
+       custom_menus_dialog_draft_command: "",
+       custom_menus_dialog_error: nil
+     )}
+  end
+
+  def handle_event("custom_menu_dialog_edit", _params, socket) do
+    selected = socket.assigns.custom_menus_dialog_selected
+    tab = socket.assigns.custom_menus_dialog_tab
+
+    if selected do
+      session = socket.assigns.session
+
+      entry =
+        CustomMenus.entries_for(session.custom_menus, tab)
+        |> Enum.find(&(&1.label == selected))
+
+      if entry do
+        {:noreply,
+         assign(socket,
+           custom_menus_dialog_editing: true,
+           custom_menus_dialog_draft_label: entry.label,
+           custom_menus_dialog_draft_command: entry.command,
+           custom_menus_dialog_error: nil
+         )}
+      else
+        {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("custom_menu_dialog_save", %{"label" => label, "command" => command}, socket) do
+    session = socket.assigns.session
+    tab = socket.assigns.custom_menus_dialog_tab
+    selected = socket.assigns.custom_menus_dialog_selected
+
+    result =
+      if selected do
+        CustomMenus.update_entry(session.custom_menus, tab, selected, label, command)
+      else
+        CustomMenus.add_entry(session.custom_menus, tab, label, command)
+      end
+
+    case result do
+      {:ok, updated} ->
+        new_session = Session.set_custom_menus(session, updated)
+
+        {:noreply,
+         socket
+         |> assign(
+           session: new_session,
+           custom_menus_dialog_editing: false,
+           custom_menus_dialog_selected: label,
+           custom_menus_dialog_error: nil
+         )
+         |> maybe_persist_custom_menus(new_session)}
+
+      {:error, reason} ->
+        {:noreply, assign(socket, custom_menus_dialog_error: custom_menu_error_msg(reason))}
+    end
+  end
+
+  def handle_event("custom_menu_dialog_delete", _params, socket) do
+    selected = socket.assigns.custom_menus_dialog_selected
+    tab = socket.assigns.custom_menus_dialog_tab
+
+    if selected do
+      session = socket.assigns.session
+
+      case CustomMenus.remove_entry(session.custom_menus, tab, selected) do
+        {:ok, updated} ->
+          new_session = Session.set_custom_menus(session, updated)
+
+          {:noreply,
+           socket
+           |> assign(
+             session: new_session,
+             custom_menus_dialog_selected: nil,
+             custom_menus_dialog_editing: false,
+             custom_menus_dialog_error: nil
+           )
+           |> maybe_persist_custom_menus(new_session)}
+
+        {:error, _} ->
+          {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("custom_menu_dialog_cancel_edit", _params, socket) do
+    {:noreply,
+     assign(socket,
+       custom_menus_dialog_editing: false,
+       custom_menus_dialog_draft_label: "",
+       custom_menus_dialog_draft_command: "",
+       custom_menus_dialog_error: nil
+     )}
+  end
+
+  def handle_event("custom_menu_execute", %{"command" => command, "target" => target}, socket) do
+    session = socket.assigns.session
+    expand_context = %{nick: session.nickname, chan: session.active_channel}
+    expanded = AliasExpander.expand(command, [target], expand_context)
+
+    socket =
+      case Parser.parse(expanded) do
+        {:command, cmd_name, cmd_args} ->
+          dispatch_command(socket, session, cmd_name, cmd_args)
+
+        {:message, text} ->
+          send_plain_message(socket, session, text)
+      end
+
+    {:noreply, assign(socket, context_menu: %{visible: false, x: 0, y: 0, target_nick: nil})}
+  end
+
+  # ---------------------------------------------------------------------------
+  # Auto-Respond Dialog Events
+  # ---------------------------------------------------------------------------
+
+  def handle_event("open_autorespond_dialog", _params, socket) do
+    {:noreply, assign(socket, show_autorespond_dialog: true)}
+  end
+
+  def handle_event("close_autorespond_dialog", _params, socket) do
+    {:noreply,
+     assign(socket,
+       show_autorespond_dialog: false,
+       autorespond_dialog_selected: nil,
+       autorespond_dialog_editing: false,
+       autorespond_dialog_draft_trigger: "on_join",
+       autorespond_dialog_draft_channel: "",
+       autorespond_dialog_draft_command: "",
+       autorespond_dialog_error: nil
+     )}
+  end
+
+  def handle_event("autorespond_select", %{"position" => pos_str}, socket) do
+    {pos, _} = Integer.parse(pos_str)
+    {:noreply, assign(socket, autorespond_dialog_selected: pos)}
+  end
+
+  def handle_event("autorespond_toggle", %{"position" => pos_str}, socket) do
+    {pos, _} = Integer.parse(pos_str)
+    session = socket.assigns.session
+
+    case AutoRespondRules.toggle_entry(session.autorespond_rules, pos) do
+      {:ok, updated} ->
+        new_session = Session.set_autorespond_rules(session, updated)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session)
+         |> maybe_persist_autorespond_rules(new_session)}
+
+      {:error, _} ->
+        {:noreply, socket}
+    end
+  end
+
+  def handle_event("autorespond_dialog_add", _params, socket) do
+    {:noreply,
+     assign(socket,
+       autorespond_dialog_editing: true,
+       autorespond_dialog_selected: nil,
+       autorespond_dialog_draft_trigger: "on_join",
+       autorespond_dialog_draft_channel: "",
+       autorespond_dialog_draft_command: "",
+       autorespond_dialog_error: nil
+     )}
+  end
+
+  def handle_event("autorespond_dialog_edit", _params, socket) do
+    selected = socket.assigns.autorespond_dialog_selected
+    session = socket.assigns.session
+
+    case Enum.find(
+           AutoRespondRules.entries(session.autorespond_rules),
+           &(&1.position == selected)
+         ) do
+      nil ->
+        {:noreply, socket}
+
+      entry ->
+        {:noreply,
+         assign(socket,
+           autorespond_dialog_editing: true,
+           autorespond_dialog_draft_trigger: Atom.to_string(entry.trigger_event),
+           autorespond_dialog_draft_channel: entry.channel_filter || "",
+           autorespond_dialog_draft_command: entry.command,
+           autorespond_dialog_error: nil
+         )}
+    end
+  end
+
+  def handle_event("autorespond_dialog_save", params, socket) do
+    session = socket.assigns.session
+    selected = socket.assigns.autorespond_dialog_selected
+    trigger = String.to_existing_atom(params["trigger"])
+    channel = params["channel"]
+    channel = if channel == "", do: nil, else: channel
+    command = params["command"] || ""
+
+    result =
+      if selected != nil do
+        AutoRespondRules.update_entry(session.autorespond_rules, selected, %{
+          trigger_event: trigger,
+          channel_filter: channel,
+          command: command
+        })
+      else
+        AutoRespondRules.add_entry(session.autorespond_rules, trigger, channel, command)
+      end
+
+    case result do
+      {:ok, updated} ->
+        new_session = Session.set_autorespond_rules(session, updated)
+
+        {:noreply,
+         socket
+         |> assign(
+           session: new_session,
+           autorespond_dialog_editing: false,
+           autorespond_dialog_selected: nil,
+           autorespond_dialog_error: nil
+         )
+         |> maybe_persist_autorespond_rules(new_session)}
+
+      {:error, reason} ->
+        msg = autorespond_error_msg(reason)
+        {:noreply, assign(socket, autorespond_dialog_error: msg)}
+    end
+  end
+
+  def handle_event("autorespond_dialog_delete", _params, socket) do
+    selected = socket.assigns.autorespond_dialog_selected
+    session = socket.assigns.session
+
+    case AutoRespondRules.remove_entry(session.autorespond_rules, selected) do
+      {:ok, updated} ->
+        new_session = Session.set_autorespond_rules(session, updated)
+
+        {:noreply,
+         socket
+         |> assign(
+           session: new_session,
+           autorespond_dialog_selected: nil,
+           autorespond_dialog_editing: false
+         )
+         |> maybe_persist_autorespond_rules(new_session)}
+
+      {:error, _} ->
+        {:noreply, socket}
+    end
+  end
+
+  def handle_event("autorespond_dialog_cancel_edit", _params, socket) do
+    {:noreply,
+     assign(socket,
+       autorespond_dialog_editing: false,
+       autorespond_dialog_error: nil
+     )}
+  end
+
   def handle_event("autojoin_select", %{"channel" => channel}, socket) do
     {:noreply, assign(socket, autojoin_selected: channel)}
   end
@@ -2454,6 +2922,27 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  # ── handle_event helper functions ───────────────────────────
+
+  defp alias_error_msg(:duplicate_name, name), do: "Alias /#{name} already exists"
+
+  defp alias_error_msg(:invalid_name, _),
+    do: "Invalid name. Use letters, numbers, hyphens, underscores."
+
+  defp alias_error_msg(:expansion_too_long, _), do: "Expansion too long (max 500 characters)"
+
+  defp alias_error_msg(:command_chaining, _),
+    do: "Expansion must not contain chaining (|, &&, ;, newlines)"
+
+  defp alias_error_msg(:list_full, _), do: "Alias list is full (max 50)"
+  defp alias_error_msg(:not_found, _), do: "Alias not found"
+
+  defp custom_menu_error_msg(:duplicate_label), do: "An item with that label already exists"
+  defp custom_menu_error_msg(:invalid_label), do: "Invalid label (1-50 characters)"
+  defp custom_menu_error_msg(:command_too_long), do: "Command too long (max 500 characters)"
+  defp custom_menu_error_msg(:menu_full), do: "Menu is full (max 10 items per type)"
+  defp custom_menu_error_msg(:not_found), do: "Item not found"
+
   # ── PubSub handlers ────────────────────────────────────────
 
   @impl true
@@ -2773,6 +3262,51 @@ defmodule RetroHexChatWeb.ChatLive do
      |> stream_insert(:chat_messages, system_message(msg))}
   end
 
+  def handle_info({:user_timer_fired, name}, socket) do
+    timers = socket.assigns.user_timers
+
+    case Map.get(timers, name) do
+      nil ->
+        # Timer was already cancelled
+        {:noreply, socket}
+
+      %{type: type, interval: interval, command: command} ->
+        session = socket.assigns.session
+        expand_context = %{nick: session.nickname, chan: session.active_channel}
+        expanded = AliasExpander.expand(command, [], expand_context)
+
+        socket =
+          case Parser.parse(expanded) do
+            {:command, cmd_name, cmd_args} ->
+              dispatch_command(socket, session, cmd_name, cmd_args)
+
+            {:message, text} ->
+              send_plain_message(socket, session, text)
+          end
+
+        socket =
+          case type do
+            :repeat ->
+              ref = Process.send_after(self(), {:user_timer_fired, name}, interval * 1000)
+
+              new_timers =
+                Map.put(timers, name, %{
+                  type: :repeat,
+                  interval: interval,
+                  command: command,
+                  ref: ref
+                })
+
+              assign(socket, user_timers: new_timers)
+
+            :once ->
+              assign(socket, user_timers: Map.delete(timers, name))
+          end
+
+        {:noreply, socket}
+    end
+  end
+
   def handle_info({:user_joined, %{nickname: nick} = payload}, socket) do
     msg = "#{nick} has joined the channel"
     role = Map.get(payload, :role, :regular)
@@ -2785,7 +3319,8 @@ defmodule RetroHexChatWeb.ChatLive do
      |> assign(channel_users: users)
      |> maybe_refresh_cc(channel)
      |> play_event_sound(:join, socket.assigns.session)
-     |> stream_insert(:chat_messages, system_message(msg))}
+     |> stream_insert(:chat_messages, system_message(msg))
+     |> maybe_fire_autorespond(:on_join, channel, nick)}
   end
 
   def handle_info({:user_left, %{nickname: nick, reason: reason} = payload}, socket) do
@@ -2798,7 +3333,8 @@ defmodule RetroHexChatWeb.ChatLive do
      |> assign(channel_users: users)
      |> maybe_refresh_cc(channel)
      |> play_event_sound(:part, socket.assigns.session)
-     |> stream_insert(:chat_messages, system_message(msg))}
+     |> stream_insert(:chat_messages, system_message(msg))
+     |> maybe_fire_autorespond(:on_part, channel, nick)}
   end
 
   def handle_info({:nick_changed, %{old_nick: old_nick, new_nick: new_nick}}, socket) do
@@ -2846,7 +3382,8 @@ defmodule RetroHexChatWeb.ChatLive do
     {:noreply,
      socket
      |> assign(channel_users: users)
-     |> stream_insert(:chat_messages, system_message(msg))}
+     |> stream_insert(:chat_messages, system_message(msg))
+     |> maybe_fire_autorespond(:on_nick_change, socket.assigns.session.active_channel, new_nick)}
   end
 
   def handle_info({:ignore_expired, nickname}, socket) do
@@ -3300,7 +3837,7 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
-  defp dispatch_command(socket, session, name, args) do
+  defp dispatch_command(socket, session, name, args, alias_depth \\ 0) do
     context = %{
       nickname: session.nickname,
       active_channel: session.active_channel,
@@ -3309,8 +3846,39 @@ defmodule RetroHexChatWeb.ChatLive do
       operator_in: channels_where_operator(session)
     }
 
-    result = Dispatcher.dispatch(name, args, context)
-    handle_dispatch_result(socket, session, result)
+    case try_alias_expansion(session, name, args, context, alias_depth) do
+      {:expanded, expanded_input} ->
+        case Parser.parse(expanded_input) do
+          {:command, new_name, new_args} ->
+            dispatch_command(socket, session, new_name, new_args, alias_depth + 1)
+
+          {:message, text} ->
+            send_plain_message(socket, session, text)
+        end
+
+      :not_alias ->
+        result = Dispatcher.dispatch(name, args, context)
+        handle_dispatch_result(socket, session, result)
+
+      {:error, msg} ->
+        stream_insert(socket, :chat_messages, error_message(msg))
+    end
+  end
+
+  defp try_alias_expansion(session, name, args, context, alias_depth) do
+    if alias_depth >= 5 do
+      {:error, "Alias recursion limit reached (max 5 levels)"}
+    else
+      case AliasList.find_entry(session.aliases, name) do
+        nil ->
+          :not_alias
+
+        entry ->
+          expand_context = %{nick: context.nickname, chan: context.active_channel}
+          expanded = AliasExpander.expand(entry.expansion, args, expand_context)
+          {:expanded, expanded}
+      end
+    end
   end
 
   defp handle_dispatch_result(socket, session, {:ok, :join, channel_name, password}),
@@ -3695,6 +4263,247 @@ defmodule RetroHexChatWeb.ChatLive do
     |> stream_insert(:chat_messages, system_message("* Perform list cleared"))
   end
 
+  # ── Alias UI Actions ──────────────────────────────────────────
+
+  defp handle_ui_action(socket, :open_alias_dialog, _payload) do
+    assign(socket, show_alias_dialog: true)
+  end
+
+  defp handle_ui_action(socket, :alias_added, %{name: name, expansion: expansion}) do
+    session = socket.assigns.session
+
+    case AliasList.add_entry(session.aliases, name, expansion) do
+      {:ok, updated_list} ->
+        new_session = Session.set_aliases(session, updated_list)
+        warning = if AliasList.shadows_builtin?(name), do: " (warning: shadows built-in /#{name})"
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_aliases(new_session)
+        |> stream_insert(
+          :chat_messages,
+          system_message("* Alias /#{name} created#{warning || ""}")
+        )
+
+      {:error, :duplicate_name} ->
+        stream_insert(socket, :chat_messages, error_message("Alias /#{name} already exists"))
+
+      {:error, :invalid_name} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("Invalid alias name. Use only letters, numbers, hyphens, underscores.")
+        )
+
+      {:error, :expansion_too_long} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("Expansion too long (max 500 characters)")
+        )
+
+      {:error, :command_chaining} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("Expansion must not contain command chaining (|, &&, ;, newlines)")
+        )
+
+      {:error, :list_full} ->
+        stream_insert(socket, :chat_messages, error_message("Alias list is full (max 50)"))
+    end
+  end
+
+  defp handle_ui_action(socket, :alias_removed, %{name: name}) do
+    session = socket.assigns.session
+
+    case AliasList.remove_entry(session.aliases, name) do
+      {:ok, updated_list} ->
+        new_session = Session.set_aliases(session, updated_list)
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_aliases(new_session)
+        |> stream_insert(:chat_messages, system_message("* Alias /#{name} removed"))
+
+      {:error, :not_found} ->
+        stream_insert(socket, :chat_messages, error_message("Alias /#{name} not found"))
+    end
+  end
+
+  defp handle_ui_action(socket, :alias_list_display, _payload) do
+    session = socket.assigns.session
+    entries = AliasList.entries(session.aliases)
+
+    if entries == [] do
+      stream_insert(socket, :chat_messages, system_message("Your alias list is empty"))
+    else
+      Enum.reduce(entries, socket, fn entry, acc ->
+        stream_insert(
+          acc,
+          :chat_messages,
+          system_message("  /#{entry.name} → #{entry.expansion}")
+        )
+      end)
+    end
+  end
+
+  # ── Custom Menus UI Actions ──────────────────────────────────────
+
+  defp handle_ui_action(socket, :open_custom_menus_dialog, _payload) do
+    assign(socket, show_custom_menus_dialog: true)
+  end
+
+  # ── Auto-Respond UI Actions ──────────────────────────────────────
+
+  defp handle_ui_action(socket, :open_autorespond_dialog, _payload) do
+    assign(socket, show_autorespond_dialog: true)
+  end
+
+  defp handle_ui_action(socket, :autorespond_added, %{
+         trigger_event: trigger,
+         channel_filter: channel,
+         command: command
+       }) do
+    session = socket.assigns.session
+
+    case AutoRespondRules.add_entry(session.autorespond_rules, trigger, channel, command) do
+      {:ok, updated} ->
+        new_session = Session.set_autorespond_rules(session, updated)
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_autorespond_rules(new_session)
+        |> stream_insert(
+          :chat_messages,
+          system_message("Auto-respond rule added: #{trigger} → #{command}")
+        )
+
+      {:error, reason} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          system_message("Error adding auto-respond rule: #{autorespond_error_msg(reason)}")
+        )
+    end
+  end
+
+  defp handle_ui_action(socket, :autorespond_removed, %{position: position}) do
+    session = socket.assigns.session
+
+    case AutoRespondRules.remove_entry(session.autorespond_rules, position) do
+      {:ok, updated} ->
+        new_session = Session.set_autorespond_rules(session, updated)
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_autorespond_rules(new_session)
+        |> stream_insert(:chat_messages, system_message("Auto-respond rule removed."))
+
+      {:error, :not_found} ->
+        stream_insert(socket, :chat_messages, system_message("Auto-respond rule not found."))
+    end
+  end
+
+  defp handle_ui_action(socket, :autorespond_list_display, _payload) do
+    session = socket.assigns.session
+    entries = AutoRespondRules.entries(session.autorespond_rules)
+
+    if entries == [] do
+      stream_insert(socket, :chat_messages, system_message("No auto-respond rules configured."))
+    else
+      lines = Enum.map(entries, &format_autorespond_entry/1)
+      msg = ["Auto-respond rules:" | lines] |> Enum.join("\n")
+      stream_insert(socket, :chat_messages, system_message(msg))
+    end
+  end
+
+  # ── Timer UI Actions ──────────────────────────────────────────
+
+  defp handle_ui_action(socket, :timer_create, %{
+         name: name,
+         type: type,
+         interval: interval,
+         command: command
+       }) do
+    timers = socket.assigns.user_timers
+
+    case TimerManager.validate_create(timers, name, type, interval, command) do
+      :ok ->
+        {clamped_interval, notice} = TimerManager.clamp_interval(type, interval)
+
+        # Cancel existing timer with same name if present
+        socket =
+          case Map.get(timers, name) do
+            %{ref: ref} ->
+              Process.cancel_timer(ref)
+              socket
+
+            nil ->
+              socket
+          end
+
+        ref = Process.send_after(self(), {:user_timer_fired, name}, clamped_interval * 1000)
+
+        new_timers =
+          Map.put(timers, name, %{
+            type: type,
+            interval: clamped_interval,
+            command: command,
+            ref: ref
+          })
+
+        socket = assign(socket, user_timers: new_timers)
+
+        socket =
+          if notice do
+            stream_insert(socket, :chat_messages, system_message("* #{notice}"))
+          else
+            socket
+          end
+
+        type_label = if type == :repeat, do: "repeat", else: "one-shot"
+
+        stream_insert(
+          socket,
+          :chat_messages,
+          system_message(
+            "* Timer '#{name}' set: #{type_label}, #{clamped_interval}s → #{command}"
+          )
+        )
+
+      {:error, msg} ->
+        stream_insert(socket, :chat_messages, error_message(msg))
+    end
+  end
+
+  defp handle_ui_action(socket, :timer_stop, %{name: name}) do
+    timers = socket.assigns.user_timers
+
+    case Map.get(timers, name) do
+      %{ref: ref} ->
+        Process.cancel_timer(ref)
+        new_timers = Map.delete(timers, name)
+
+        socket
+        |> assign(user_timers: new_timers)
+        |> stream_insert(:chat_messages, system_message("* Timer '#{name}' stopped"))
+
+      nil ->
+        stream_insert(socket, :chat_messages, error_message("Timer '#{name}' not found"))
+    end
+  end
+
+  defp handle_ui_action(socket, :timer_list, _payload) do
+    text = TimerManager.format_timer_list(socket.assigns.user_timers)
+
+    text
+    |> String.split("\n")
+    |> Enum.reduce(socket, fn line, acc ->
+      stream_insert(acc, :chat_messages, system_message(line))
+    end)
+  end
+
   defp handle_ui_action(socket, :autojoin_list_display, _payload) do
     session = socket.assigns.session
     entries = AutoJoinList.entries(session.autojoin_list)
@@ -3891,6 +4700,12 @@ defmodule RetroHexChatWeb.ChatLive do
   defp format_autojoin_entry(entry) do
     key_part = if entry.channel_key, do: " (key: ****)", else: ""
     "  #{entry.channel_name}#{key_part}"
+  end
+
+  defp format_autorespond_entry(entry) do
+    status = if entry.enabled, do: "[ON]", else: "[OFF]"
+    channel = entry.channel_filter || "(all)"
+    "  #{entry.position}: #{status} #{entry.trigger_event} #{channel} → #{entry.command}"
   end
 
   defp maybe_join_from_params(socket, %{"join" => channel_name})
@@ -5162,6 +5977,87 @@ defmodule RetroHexChatWeb.ChatLive do
     socket
   end
 
+  defp maybe_persist_aliases(socket, session) do
+    if session.identified do
+      Task.start(fn -> AliasList.save(session.nickname, session.aliases) end)
+    end
+
+    socket
+  end
+
+  defp maybe_persist_custom_menus(socket, session) do
+    if session.identified do
+      Task.start(fn -> CustomMenus.save(session.nickname, session.custom_menus) end)
+    end
+
+    socket
+  end
+
+  defp maybe_persist_autorespond_rules(socket, session) do
+    if session.identified do
+      Task.start(fn ->
+        AutoRespondRules.save(session.nickname, session.autorespond_rules)
+      end)
+    end
+
+    socket
+  end
+
+  defp autorespond_error_msg(:list_full), do: "Maximum 10 auto-respond rules"
+  defp autorespond_error_msg(:invalid_trigger), do: "Invalid trigger event"
+  defp autorespond_error_msg(:invalid_channel), do: "Channel filter must start with #"
+  defp autorespond_error_msg(:command_too_long), do: "Command too long (max 500 characters)"
+
+  defp autorespond_error_msg(:command_chaining),
+    do: "Command must not contain chaining (|, &&, ;)"
+
+  defp autorespond_error_msg(:not_found), do: "Rule not found"
+
+  defp maybe_fire_autorespond(socket, _event_type, _channel, nil), do: socket
+
+  defp maybe_fire_autorespond(socket, event_type, channel, triggering_nick) do
+    session = socket.assigns.session
+
+    # FR-029: Don't trigger on own actions
+    if triggering_nick == session.nickname do
+      socket
+    else
+      rules = AutoRespondRules.matching_rules(session.autorespond_rules, event_type, channel)
+      now = System.monotonic_time(:second)
+      Enum.reduce(rules, socket, &fire_rule(&1, &2, triggering_nick, channel, now))
+    end
+  end
+
+  defp fire_rule(rule, socket, triggering_nick, channel, now) do
+    cooldown_key = {rule.id, triggering_nick}
+    cooldowns = socket.assigns.autorespond_cooldowns
+    last_fired = Map.get(cooldowns, cooldown_key, 0)
+
+    # FR-030: 60-second rate limit per rule+nick combo
+    if now - last_fired < 60 do
+      socket
+    else
+      execute_autorespond(socket, rule, triggering_nick, channel, cooldown_key, now)
+    end
+  end
+
+  defp execute_autorespond(socket, rule, triggering_nick, channel, cooldown_key, now) do
+    context = %{nick: triggering_nick, chan: channel || ""}
+    expanded = AliasExpander.expand(rule.command, [], context)
+
+    case Parser.parse(expanded) do
+      {:command, cmd_name, args} ->
+        socket
+        |> assign(
+          autorespond_cooldowns: Map.put(socket.assigns.autorespond_cooldowns, cooldown_key, now)
+        )
+        |> dispatch_command(socket.assigns.session, cmd_name, args)
+
+      _ ->
+        socket
+    end
+  end
+
   @spec load_persisted_data(Session.t(), String.t()) :: Session.t()
   defp load_persisted_data(session, nick) do
     session
@@ -5180,6 +6076,9 @@ defmodule RetroHexChatWeb.ChatLive do
     |> load_if_found(FloodProtection.load(nick), &Session.set_flood_protection/2)
     |> load_if_found(SoundSettings.load(nick), &Session.set_sound_settings/2)
     |> load_if_found(UserBio.load(nick), &Session.set_bio/2)
+    |> load_if_found(AliasList.load(nick), &Session.set_aliases/2)
+    |> load_if_found(CustomMenus.load(nick), &Session.set_custom_menus/2)
+    |> load_if_found(AutoRespondRules.load(nick), &Session.set_autorespond_rules/2)
   end
 
   @spec load_if_found(Session.t(), {:ok, term()} | {:error, term()}, (Session.t(), term() ->
@@ -5748,6 +6647,7 @@ defmodule RetroHexChatWeb.ChatLive do
         nick_color_fn={@nick_color_fn}
         show_color_picker={@show_context_color_picker}
         is_ignored={context_target_ignored?(@session, @context_menu.target_nick)}
+        custom_nicklist_items={CustomMenus.entries_for(@session.custom_menus, :nicklist)}
       />
 
       <RetroHexChatWeb.Components.TreebarContextMenu.treebar_context_menu
@@ -5755,6 +6655,7 @@ defmodule RetroHexChatWeb.ChatLive do
         x={@treebar_context_menu.x}
         y={@treebar_context_menu.y}
         channel={@treebar_context_menu.channel}
+        custom_channel_items={CustomMenus.entries_for(@session.custom_menus, :channel)}
       />
 
       <RetroHexChatWeb.Components.FavoriteDialog.favorite_dialog
@@ -5843,6 +6744,39 @@ defmodule RetroHexChatWeb.ChatLive do
         show_perform_edit_dialog={@show_perform_edit_dialog}
         show_autojoin_add_dialog={@show_autojoin_add_dialog}
         show_autojoin_edit_dialog={@show_autojoin_edit_dialog}
+      />
+
+      <RetroHexChatWeb.Components.AliasDialog.alias_dialog
+        visible={@show_alias_dialog}
+        aliases={AliasList.entries(@session.aliases)}
+        selected_alias={@alias_dialog_selected}
+        editing={@alias_dialog_editing}
+        draft_name={@alias_dialog_draft_name}
+        draft_expansion={@alias_dialog_draft_expansion}
+        warning_message={@alias_dialog_warning}
+        error_message={@alias_dialog_error}
+      />
+
+      <RetroHexChatWeb.Components.CustomMenusDialog.custom_menus_dialog
+        visible={@show_custom_menus_dialog}
+        custom_menus={@session.custom_menus}
+        active_tab={@custom_menus_dialog_tab}
+        selected_item={@custom_menus_dialog_selected}
+        editing={@custom_menus_dialog_editing}
+        draft_label={@custom_menus_dialog_draft_label}
+        draft_command={@custom_menus_dialog_draft_command}
+        error_message={@custom_menus_dialog_error}
+      />
+
+      <RetroHexChatWeb.Components.AutoRespondDialog.auto_respond_dialog
+        visible={@show_autorespond_dialog}
+        rules={AutoRespondRules.entries(@session.autorespond_rules)}
+        selected_position={@autorespond_dialog_selected}
+        editing={@autorespond_dialog_editing}
+        draft_trigger={@autorespond_dialog_draft_trigger}
+        draft_channel={@autorespond_dialog_draft_channel}
+        draft_command={@autorespond_dialog_draft_command}
+        error_message={@autorespond_dialog_error}
       />
 
       <RetroHexChatWeb.Components.ChannelCentralDialog.channel_central_dialog
