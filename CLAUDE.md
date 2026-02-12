@@ -17,6 +17,7 @@
 - In-memory only (socket assigns for pending invites, Session struct for auto-join preference). No PostgreSQL changes. The existing `invite_exceptions` MapSet in Channel.Server is used transiently to authorize the join. (010-channel-invite-system)
 - PostgreSQL 16+ (1 new table: `notice_routing_settings`) + in-memory Session state for guests (011-notice-system)
 - PostgreSQL 16+ (new `ctcp_settings` table) + in-memory Session state for guests (012-ctcp-system)
+- PostgreSQL 16+ (1 new table: `flood_protection_settings`) + in-memory socket assigns for trackers (013-flood-protection)
 
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x
 - PostgreSQL 16+ with cursor-based pagination and GIN/trigram indexes
@@ -53,6 +54,23 @@ make lint                     # All static analysis (format + credo + dialyzer)
 make precommit                # compile + format + test
 ```
 
+## CI-Equivalent Validation (MANDATORY before declaring any task complete)
+
+The CI pipeline (`.github/workflows/ci.yml`) runs 5 checks. You MUST run ALL of them
+locally before considering implementation complete. No exceptions.
+
+**Execution strategy — compile first, then parallelize**:
+
+1. Run `mix compile --warnings-as-errors` FIRST (all other checks depend on compilation).
+2. If compilation passes, run the remaining 4 checks IN PARALLEL (use parallel Bash tool calls):
+   - `mix format --check-formatted`
+   - `mix credo --strict`
+   - `mix test --include e2e`
+   - `mix dialyzer`
+
+**NEVER** skip dialyzer or E2E tests (E2E tests do NOT use a browser — no reason to skip).
+If any of these 5 checks fail, the task is NOT complete.
+
 ## Code Style
 
 - Elixir: Follow standard conventions, `mix format` enforced
@@ -80,6 +98,6 @@ Key non-negotiables: TDD, umbrella separation, OTP process architecture,
 static analysis from day one, 98.css design fidelity.
 
 ## Recent Changes
+- 013-flood-protection: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
 - 012-ctcp-system: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
 - 011-notice-system: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
-- 010-channel-invite-system: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css
