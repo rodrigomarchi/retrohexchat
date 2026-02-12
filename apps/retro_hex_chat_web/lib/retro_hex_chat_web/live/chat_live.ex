@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive do
     Queries,
     Search,
     Service,
+    SoundSettings,
     URLDetector
   }
 
@@ -64,6 +65,7 @@ defmodule RetroHexChatWeb.ChatLive do
             |> maybe_join_from_params(params)
             |> maybe_start_nickserv_timer(nickname)
             |> maybe_trigger_perform()
+            |> play_event_sound(:connect, session)
 
           {:ok, socket}
         else
@@ -181,7 +183,13 @@ defmodule RetroHexChatWeb.ChatLive do
       flood_tracker: FloodTracker.new(),
       auto_ignore_state: %{active: %{}, cooldowns: %{}},
       ctcp_reply_tracker: %{timestamps: []},
-      show_flood_protection_dialog: false
+      show_flood_protection_dialog: false,
+      show_sound_settings_dialog: false,
+      sound_settings_draft: nil,
+      muted: false,
+      flash_channels: MapSet.new(),
+      pm_typing_from: nil,
+      pm_typing_timer: nil
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -212,6 +220,8 @@ defmodule RetroHexChatWeb.ChatLive do
     session = Session.set_active_channel(socket.assigns.session, channel)
     unread = MapSet.delete(socket.assigns.unread_channels, channel)
     highlight = MapSet.delete(socket.assigns.highlight_channels, channel)
+    flash = MapSet.delete(socket.assigns.flash_channels, channel)
+    if socket.assigns.pm_typing_timer, do: Process.cancel_timer(socket.assigns.pm_typing_timer)
 
     {:noreply,
      socket
@@ -219,7 +229,10 @@ defmodule RetroHexChatWeb.ChatLive do
        session: session,
        unread_channels: unread,
        highlight_channels: highlight,
-       show_status_tab: false
+       flash_channels: flash,
+       show_status_tab: false,
+       pm_typing_from: nil,
+       pm_typing_timer: nil
      )
      |> load_channel_users(channel)
      |> load_channel_messages_with_pagination(channel)
@@ -230,15 +243,20 @@ defmodule RetroHexChatWeb.ChatLive do
     session = Session.set_active_pm(socket.assigns.session, nickname)
     messages = load_pm_messages(session.nickname, nickname)
     unread = MapSet.delete(socket.assigns.unread_channels, "pm:#{nickname}")
+    flash = MapSet.delete(socket.assigns.flash_channels, "pm:#{nickname}")
+    if socket.assigns.pm_typing_timer, do: Process.cancel_timer(socket.assigns.pm_typing_timer)
 
     {:noreply,
      socket
      |> assign(
        session: session,
        unread_channels: unread,
+       flash_channels: flash,
        current_topic: nil,
        current_modes: nil,
-       show_status_tab: false
+       show_status_tab: false,
+       pm_typing_from: nil,
+       pm_typing_timer: nil
      )
      |> stream(:chat_messages, messages, reset: true)
      |> push_reconnect_state()}
@@ -1170,6 +1188,154 @@ defmodule RetroHexChatWeb.ChatLive do
      )}
   end
 
+  # ── Sound Settings Dialog ──────────────────────────────────
+
+  def handle_event("open_sound_settings_dialog", _params, socket) do
+    draft = socket.assigns.session.sound_settings
+
+    {:noreply,
+     assign(socket,
+       show_sound_settings_dialog: true,
+       sound_settings_draft: draft
+     )}
+  end
+
+  def handle_event("close_sound_settings_dialog", _params, socket) do
+    {:noreply,
+     assign(socket,
+       show_sound_settings_dialog: false,
+       sound_settings_draft: nil
+     )}
+  end
+
+  def handle_event("sound_settings_change", params, socket) do
+    draft = socket.assigns.sound_settings_draft
+
+    updated_draft =
+      Enum.reduce(SoundSettings.event_types(), draft, fn event, acc ->
+        key = "event_#{event}"
+
+        case Map.get(params, key) do
+          nil -> acc
+          sound_name -> SoundSettings.set_sound(acc, event, sound_name)
+        end
+      end)
+
+    {:noreply, assign(socket, sound_settings_draft: updated_draft)}
+  end
+
+  def handle_event("sound_flash_toggle", %{"event" => event_str}, socket) do
+    event = String.to_existing_atom(event_str)
+    draft = socket.assigns.sound_settings_draft
+    current = SoundSettings.get_flash(draft, event)
+    updated_draft = SoundSettings.set_flash(draft, event, not current)
+
+    {:noreply, assign(socket, sound_settings_draft: updated_draft)}
+  end
+
+  def handle_event("sound_preview", %{"event" => event_str}, socket) do
+    event = String.to_existing_atom(event_str)
+    draft = socket.assigns.sound_settings_draft
+    sound = SoundSettings.get_sound(draft, event)
+
+    if sound == "none" do
+      {:noreply, socket}
+    else
+      {:noreply, push_event(socket, "play_sound", %{type: sound})}
+    end
+  end
+
+  def handle_event("sound_settings_apply", _params, socket) do
+    draft = socket.assigns.sound_settings_draft
+    session = socket.assigns.session
+    new_session = Session.set_sound_settings(session, draft)
+
+    if new_session.identified do
+      Task.start(fn -> SoundSettings.save(new_session.nickname, draft) end)
+    end
+
+    {:noreply,
+     socket
+     |> assign(session: new_session)
+     |> stream_insert(
+       :chat_messages,
+       system_message("* Sound settings applied")
+     )}
+  end
+
+  def handle_event("sound_settings_ok", _params, socket) do
+    draft = socket.assigns.sound_settings_draft
+    session = socket.assigns.session
+    new_session = Session.set_sound_settings(session, draft)
+
+    if new_session.identified do
+      Task.start(fn -> SoundSettings.save(new_session.nickname, draft) end)
+    end
+
+    {:noreply,
+     socket
+     |> assign(
+       session: new_session,
+       show_sound_settings_dialog: false,
+       sound_settings_draft: nil
+     )
+     |> stream_insert(
+       :chat_messages,
+       system_message("* Sound settings saved")
+     )}
+  end
+
+  def handle_event("toggle_mute", _params, socket) do
+    new_muted = not socket.assigns.muted
+
+    {:noreply,
+     socket
+     |> assign(muted: new_muted)
+     |> push_event("toggle_mute", %{})}
+  end
+
+  def handle_event("mute_state_sync", %{"muted" => muted}, socket) do
+    {:noreply, assign(socket, muted: muted)}
+  end
+
+  def handle_event("tab_focused", _params, socket) do
+    {:noreply, push_event(socket, "title_flash_stop", %{})}
+  end
+
+  # ── PM Typing Indicator ──────────────────────────────────
+
+  def handle_event("pm_typing", _params, socket) do
+    session = socket.assigns.session
+
+    if session.active_pm do
+      topic = "pm:#{pm_topic(session.nickname, session.active_pm)}"
+
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        topic,
+        %{event: "typing", payload: %{nickname: session.nickname}}
+      )
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_event("pm_stop_typing", _params, socket) do
+    session = socket.assigns.session
+
+    if session.active_pm do
+      topic = "pm:#{pm_topic(session.nickname, session.active_pm)}"
+
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        topic,
+        %{event: "stop_typing", payload: %{nickname: session.nickname}}
+      )
+    end
+
+    {:noreply, socket}
+  end
+
   def handle_event("open_perform_dialog", _params, socket) do
     {:noreply, assign(socket, show_perform_dialog: true)}
   end
@@ -2070,7 +2236,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
         socket =
           socket
-          |> maybe_play_highlight_sound(decorated, payload.channel)
+          |> maybe_play_highlight_sound(decorated, session)
           |> capture_urls(payload.content, payload.channel, :channel, payload.author)
 
         {:noreply, apply_new_message(socket, decorated, payload.channel, session)}
@@ -2099,6 +2265,43 @@ defmodule RetroHexChatWeb.ChatLive do
         {:noreply, apply_new_pm(socket, payload, session)}
       end
     end
+  end
+
+  # ── PM Typing PubSub Handlers ─────────────────────────────
+
+  def handle_info(%{event: "typing", payload: %{nickname: nick}}, socket) do
+    session = socket.assigns.session
+
+    if nick != session.nickname and
+         session.active_pm == nick and
+         not IgnoreList.ignored?(session.ignore_list, nick, :pm) do
+      # Cancel existing timer
+      if socket.assigns.pm_typing_timer do
+        Process.cancel_timer(socket.assigns.pm_typing_timer)
+      end
+
+      timer = Process.send_after(self(), :clear_typing_indicator, 5_000)
+
+      {:noreply, assign(socket, pm_typing_from: nick, pm_typing_timer: timer)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(%{event: "stop_typing", payload: %{nickname: nick}}, socket) do
+    if socket.assigns.pm_typing_from == nick do
+      if socket.assigns.pm_typing_timer do
+        Process.cancel_timer(socket.assigns.pm_typing_timer)
+      end
+
+      {:noreply, assign(socket, pm_typing_from: nil, pm_typing_timer: nil)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(:clear_typing_indicator, socket) do
+    {:noreply, assign(socket, pm_typing_from: nil, pm_typing_timer: nil)}
   end
 
   def handle_info({:new_notice, %{sender: sender, content: content}}, socket) do
@@ -2253,6 +2456,7 @@ defmodule RetroHexChatWeb.ChatLive do
       socket =
         socket
         |> assign(channel_users: users)
+        |> play_event_sound(:kick, socket.assigns.session)
         |> part_channel_after_kick(socket.assigns.session.active_channel)
         |> stream_insert(:chat_messages, system_message(msg))
 
@@ -2261,6 +2465,7 @@ defmodule RetroHexChatWeb.ChatLive do
       {:noreply,
        socket
        |> assign(channel_users: users)
+       |> play_event_sound(:kick, socket.assigns.session)
        |> stream_insert(:chat_messages, system_message(msg))}
     end
   end
@@ -2333,6 +2538,7 @@ defmodule RetroHexChatWeb.ChatLive do
      socket
      |> assign(channel_users: users)
      |> maybe_refresh_cc(channel)
+     |> play_event_sound(:join, socket.assigns.session)
      |> stream_insert(:chat_messages, system_message(msg))}
   end
 
@@ -2345,6 +2551,7 @@ defmodule RetroHexChatWeb.ChatLive do
      socket
      |> assign(channel_users: users)
      |> maybe_refresh_cc(channel)
+     |> play_event_sound(:part, socket.assigns.session)
      |> stream_insert(:chat_messages, system_message(msg))}
   end
 
@@ -2541,11 +2748,14 @@ defmodule RetroHexChatWeb.ChatLive do
 
     type = if online?, do: :notify_online, else: :notify_offline
 
+    buddy_sound = if online?, do: :buddy_online, else: :buddy_offline
+
     socket =
       socket
       |> assign(session: new_session, notify_debounce_timers: timers)
       |> maybe_persist_notify_list(new_session)
       |> push_status_message(msg, type)
+      |> play_event_sound(buddy_sound, new_session)
 
     # Auto-whois on connect
     socket =
@@ -4627,6 +4837,7 @@ defmodule RetroHexChatWeb.ChatLive do
     end)
     |> load_if_found(CtcpSettings.load(nick), &Session.set_ctcp_settings/2)
     |> load_if_found(FloodProtection.load(nick), &Session.set_flood_protection/2)
+    |> load_if_found(SoundSettings.load(nick), &Session.set_sound_settings/2)
   end
 
   @spec load_if_found(Session.t(), {:ok, term()} | {:error, term()}, (Session.t(), term() ->
@@ -4819,6 +5030,7 @@ defmodule RetroHexChatWeb.ChatLive do
   def render(assigns) do
     ~H"""
     <div id="reconnect-hook" phx-hook="ReconnectHook" style="display: none;"></div>
+    <div id="title-flash" phx-hook="TitleFlashHook" style="display: none;"></div>
     <div
       class="app-container"
       phx-click="close_context_menu"
@@ -4837,6 +5049,7 @@ defmodule RetroHexChatWeb.ChatLive do
           active_channel={@session.active_channel}
           unread_channels={MapSet.to_list(@unread_channels)}
           highlight_channels={MapSet.to_list(@highlight_channels)}
+          flash_channels={MapSet.to_list(@flash_channels)}
           pm_conversations={@session.pm_conversations}
           active_pm={@session.active_pm}
         />
@@ -4937,6 +5150,14 @@ defmodule RetroHexChatWeb.ChatLive do
             } />
           </div>
 
+          <div
+            :if={@pm_typing_from && @session.active_pm}
+            class="typing-indicator"
+            data-testid="typing-indicator"
+          >
+            {@pm_typing_from} is typing...
+          </div>
+
           <div class="chat-input-area" style="position: relative;">
             <RetroHexChatWeb.Components.CommandPalette.command_palette
               visible={@command_palette_visible}
@@ -5032,6 +5253,11 @@ defmodule RetroHexChatWeb.ChatLive do
         flood_protection={@session.flood_protection}
       />
 
+      <RetroHexChatWeb.Components.SoundSettingsDialog.sound_settings_dialog
+        visible={@show_sound_settings_dialog}
+        sound_settings_draft={@sound_settings_draft}
+      />
+
       <RetroHexChatWeb.Components.PerformDialog.perform_dialog
         visible={@show_perform_dialog}
         active_tab={@perform_dialog_tab}
@@ -5109,6 +5335,7 @@ defmodule RetroHexChatWeb.ChatLive do
         nickname={@session.nickname}
         channel={@session.active_pm || @session.active_channel}
         user_count={length(@channel_users)}
+        muted={@muted}
       />
     </div>
     """
@@ -5122,7 +5349,19 @@ defmodule RetroHexChatWeb.ChatLive do
     else
       unread = MapSet.put(socket.assigns.unread_channels, channel)
       highlight = maybe_add_highlight_channel(socket, decorated, channel)
-      assign(socket, unread_channels: unread, highlight_channels: highlight)
+      is_highlighted = Map.get(decorated, :highlighted, false)
+      flash_type = if is_highlighted, do: :highlight, else: :message
+
+      socket =
+        if not is_highlighted do
+          play_event_sound(socket, :message, session)
+        else
+          socket
+        end
+
+      socket
+      |> maybe_flash_channel(channel, flash_type, session)
+      |> assign(unread_channels: unread, highlight_channels: highlight)
     end
   end
 
@@ -5155,11 +5394,26 @@ defmodule RetroHexChatWeb.ChatLive do
     other_nick = pm_other_nick(payload, session.nickname)
     socket = capture_urls(socket, payload.content, other_nick, :pm, payload.sender)
 
+    # Clear typing indicator if the sender was typing
+    socket =
+      if socket.assigns.pm_typing_from == payload.sender do
+        if socket.assigns.pm_typing_timer,
+          do: Process.cancel_timer(socket.assigns.pm_typing_timer)
+
+        assign(socket, pm_typing_from: nil, pm_typing_timer: nil)
+      else
+        socket
+      end
+
     if session.active_pm == other_nick do
       stream_insert(socket, :chat_messages, pm_to_stream_item(payload))
     else
       unread = MapSet.put(socket.assigns.unread_channels, "pm:#{other_nick}")
-      assign(socket, unread_channels: unread)
+
+      socket
+      |> play_event_sound(:pm, session)
+      |> maybe_flash_channel("pm:#{other_nick}", :pm, session)
+      |> assign(unread_channels: unread)
     end
   end
 
@@ -5413,18 +5667,39 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
-  @spec maybe_play_highlight_sound(Phoenix.LiveView.Socket.t(), map(), String.t()) ::
+  @spec play_event_sound(Phoenix.LiveView.Socket.t(), atom(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
-  defp maybe_play_highlight_sound(socket, %{highlighted: true}, channel) do
-    if channel_muted?(channel),
-      do: socket,
-      else: push_event(socket, "play_sound", %{type: "mention"})
+  defp play_event_sound(socket, event_type, session) do
+    sound = SoundSettings.get_sound(session.sound_settings, event_type)
+
+    if sound == "none" do
+      socket
+    else
+      push_event(socket, "play_sound", %{type: sound})
+    end
   end
 
-  defp maybe_play_highlight_sound(socket, _payload, _channel), do: socket
+  @spec maybe_play_highlight_sound(Phoenix.LiveView.Socket.t(), map(), Session.t()) ::
+          Phoenix.LiveView.Socket.t()
+  defp maybe_play_highlight_sound(socket, %{highlighted: true}, session) do
+    play_event_sound(socket, :highlight, session)
+  end
 
-  @spec channel_muted?(String.t()) :: boolean()
-  defp channel_muted?(_channel), do: false
+  defp maybe_play_highlight_sound(socket, _payload, _session), do: socket
+
+  @spec maybe_flash_channel(Phoenix.LiveView.Socket.t(), String.t(), atom(), Session.t()) ::
+          Phoenix.LiveView.Socket.t()
+  defp maybe_flash_channel(socket, channel_key, event_type, session) do
+    if SoundSettings.get_flash(session.sound_settings, event_type) do
+      flash = MapSet.put(socket.assigns.flash_channels, channel_key)
+
+      socket
+      |> assign(flash_channels: flash)
+      |> push_event("title_flash_start", %{message: "* New activity"})
+    else
+      socket
+    end
+  end
 
   @spec parse_optional_color(String.t() | nil) :: non_neg_integer() | nil
   defp parse_optional_color(nil), do: nil

@@ -93,6 +93,8 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
     test "notice does NOT trigger play_sound event", %{conn: conn} do
       nick = "NtcSnd2#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      # Consume connect sound event
+      assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       send_notice(view, "Bob", "quiet notice")
 
@@ -180,6 +182,8 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
     test "channel notice does NOT trigger play_sound event", %{conn: conn} do
       nick = "ChSnd#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      # Consume connect sound event
+      assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       send_channel_notice(view, "Alice", "quiet channel notice", "#lobby")
 

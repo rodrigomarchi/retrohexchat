@@ -7,6 +7,26 @@
 const CommandPaletteHook = {
   mounted() {
     this.inputEl = this.el;
+    this.typingTimeout = null;
+    this.isTyping = false;
+
+    // PM typing indicator — debounce input events
+    this.inputEl.addEventListener("input", () => {
+      const value = this.inputEl.value;
+      // Don't send typing for commands or empty input
+      if (!value || value.startsWith("/")) return;
+
+      if (!this.isTyping) {
+        this.isTyping = true;
+        this.pushEvent("pm_typing", {});
+      }
+
+      clearTimeout(this.typingTimeout);
+      this.typingTimeout = setTimeout(() => {
+        this.isTyping = false;
+        this.pushEvent("pm_stop_typing", {});
+      }, 3000);
+    });
 
     this.inputEl.addEventListener("keyup", (e) => {
       const value = this.inputEl.value;
@@ -34,6 +54,13 @@ const CommandPaletteHook = {
       }
 
       if (e.key === "Enter") {
+        // Clear typing indicator on submit
+        if (this.isTyping) {
+          this.isTyping = false;
+          clearTimeout(this.typingTimeout);
+          this.pushEvent("pm_stop_typing", {});
+        }
+
         const value = this.inputEl.value;
         if (value.startsWith("/") && !value.includes(" ")) {
           const filter = value.slice(1);

@@ -124,7 +124,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightE2ETest do
 
       send_message(view, "OtherUser", "hey #{nick}!", "#lobby")
 
-      assert_push_event(view, "play_sound", %{type: "mention"})
+      assert_push_event(view, "play_sound", %{type: "alert"})
     end
   end
 
