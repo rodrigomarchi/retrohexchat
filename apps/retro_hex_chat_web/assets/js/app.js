@@ -12,6 +12,7 @@ import ReconnectHook from "./hooks/reconnect_hook"
 import ScrollHook from "./hooks/scroll_hook"
 import SoundHook from "./hooks/sound_hook"
 import TitleFlashHook from "./hooks/title_flash_hook"
+import TreebarHook from "./hooks/treebar_hook"
 import URLCatcherHook from "./hooks/url_catcher_hook"
 
 let Hooks = {
@@ -23,6 +24,7 @@ let Hooks = {
   ScrollHook: ScrollHook,
   SoundHook: SoundHook,
   TitleFlashHook: TitleFlashHook,
+  TreebarHook: TreebarHook,
   URLCatcherHook: URLCatcherHook,
 }
 

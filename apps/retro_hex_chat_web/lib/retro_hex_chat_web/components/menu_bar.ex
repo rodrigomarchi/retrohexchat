@@ -1,8 +1,11 @@
 defmodule RetroHexChatWeb.Components.MenuBar do
   @moduledoc """
-  Menu bar with File, Edit, View, Help dropdowns and phx-click handlers.
+  Menu bar with File, Edit, View, Favorites, Tools, Help dropdowns and phx-click handlers.
   """
   use Phoenix.Component
+
+  attr :favorites, :list, default: []
+  attr :joined_channels, :list, default: []
 
   @spec menu_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def menu_bar(assigns) do
@@ -36,6 +39,53 @@ defmodule RetroHexChatWeb.Components.MenuBar do
             phx-click="toggle_nicklist"
           >
             Toggle Nicklist
+          </div>
+        </div>
+      </div>
+      <div class="menu-item-wrapper">
+        <div class="menu-item" role="menuitem" tabindex="0">Favorites</div>
+        <div class="menu-dropdown">
+          <%= if @favorites == [] do %>
+            <div
+              class="menu-dropdown-item"
+              style="color: #808080; pointer-events: none;"
+              data-testid="menu-no-favorites"
+            >
+              No favorites
+            </div>
+          <% else %>
+            <div
+              :for={fav <- @favorites}
+              class="menu-dropdown-item"
+              data-testid={"menu-fav-#{fav.channel_name}"}
+              phx-click="join_favorite"
+              phx-value-channel={fav.channel_name}
+            >
+              <span
+                :if={fav.channel_name in @joined_channels}
+                class="fav-check"
+                data-testid={"fav-check-#{fav.channel_name}"}
+              >
+                &#10003;&nbsp;
+              </span>
+              <span :if={fav.channel_name not in @joined_channels}>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              {fav.channel_name}
+              <span
+                :if={fav.description != "" and fav.description != nil}
+                style="color: #808080; margin-left: 8px;"
+              >
+                - {fav.description}
+              </span>
+            </div>
+          <% end %>
+          <div class="menu-dropdown-separator" style="border-top: 1px solid #808080; margin: 2px 0;">
+          </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-organize-favorites"
+            phx-click="open_organize_favorites"
+          >
+            Organize Favorites...
           </div>
         </div>
       </div>

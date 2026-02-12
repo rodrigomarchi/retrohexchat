@@ -9,6 +9,7 @@ defmodule RetroHexChat.Accounts.Session do
   alias RetroHexChat.Chat.AutoJoinList
   alias RetroHexChat.Chat.CtcpSettings
   alias RetroHexChat.Chat.DisplayPreferences
+  alias RetroHexChat.Chat.Favorites
   alias RetroHexChat.Chat.FloodProtection
   alias RetroHexChat.Chat.HighlightWords
   alias RetroHexChat.Chat.IgnoreList
@@ -38,6 +39,7 @@ defmodule RetroHexChat.Accounts.Session do
           auto_join_on_invite: boolean(),
           notice_routing: :active | :status | :sender,
           ctcp_settings: map(),
+          favorites: map(),
           flood_protection: map(),
           sound_settings: map(),
           last_message_at: DateTime.t()
@@ -66,6 +68,7 @@ defmodule RetroHexChat.Accounts.Session do
     auto_join_on_invite: false,
     notice_routing: :active,
     ctcp_settings: nil,
+    favorites: nil,
     flood_protection: nil,
     sound_settings: nil,
     last_message_at: nil
@@ -85,6 +88,7 @@ defmodule RetroHexChat.Accounts.Session do
       perform_list: PerformList.new(),
       autojoin_list: AutoJoinList.new(),
       ctcp_settings: CtcpSettings.new(),
+      favorites: Favorites.new(),
       flood_protection: FloodProtection.new(),
       sound_settings: SoundSettings.new(),
       last_message_at: DateTime.utc_now()
@@ -271,6 +275,14 @@ defmodule RetroHexChat.Accounts.Session do
   @spec set_ctcp_settings(t(), map()) :: t()
   def set_ctcp_settings(%__MODULE__{} = session, settings) do
     %{session | ctcp_settings: settings}
+  end
+
+  @spec get_favorites(t()) :: map()
+  def get_favorites(%__MODULE__{favorites: favorites}), do: favorites
+
+  @spec set_favorites(t(), map()) :: t()
+  def set_favorites(%__MODULE__{} = session, favorites) do
+    %{session | favorites: favorites}
   end
 
   @spec get_flood_protection(t()) :: map()

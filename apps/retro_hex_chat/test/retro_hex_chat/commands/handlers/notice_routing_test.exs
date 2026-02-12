@@ -65,7 +65,7 @@ defmodule RetroHexChat.Commands.Handlers.NoticeRoutingTest do
       assert help.syntax =~ "/notice_routing"
       assert help.description =~ "notices"
       assert is_list(help.examples)
-      assert length(help.examples) > 0
+      assert [_ | _] = help.examples
     end
   end
 end
