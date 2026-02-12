@@ -12,6 +12,7 @@ defmodule RetroHexChat.Commands.Registry do
     "cs" => RetroHexChat.Commands.Handlers.Cs,
     "help" => RetroHexChat.Commands.Handlers.Help,
     "ignore" => RetroHexChat.Commands.Handlers.Ignore,
+    "invite" => RetroHexChat.Commands.Handlers.Invite,
     "join" => RetroHexChat.Commands.Handlers.Join,
     "kick" => RetroHexChat.Commands.Handlers.Kick,
     "leave" => RetroHexChat.Commands.Handlers.Part,

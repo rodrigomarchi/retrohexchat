@@ -166,6 +166,7 @@ defmodule RetroHexChatWeb.ChatLive do
       log_preferences: DisplayPreferences.new(),
       log_exporting: false,
       log_error: nil,
+      pending_invites: [],
       reconnect_active_channel: nil,
       reconnect_active_pm: nil
     )
@@ -391,6 +392,14 @@ defmodule RetroHexChatWeb.ChatLive do
 
   def handle_event("window_keydown", %{"key" => "Escape"}, socket) do
     cond do
+      socket.assigns.pending_invites != [] ->
+        # Dismiss the most recent invite (last in list)
+        last = List.last(socket.assigns.pending_invites)
+        Process.cancel_timer(last.timer_ref)
+        remaining = List.delete_at(socket.assigns.pending_invites, -1)
+        try_remove_invite_exception(last.channel, socket.assigns.session.nickname)
+        {:noreply, assign(socket, pending_invites: remaining)}
+
       socket.assigns.show_perform_dialog ->
         {:noreply, close_perform_dialog(socket)}
 
@@ -1738,6 +1747,47 @@ defmodule RetroHexChatWeb.ChatLive do
     {:noreply, assign(socket, url_catcher_search_query: query)}
   end
 
+  # ── Invite dialog events ──────────────────────────────────
+
+  def handle_event("invite_accept", %{"channel" => channel}, socket) do
+    pending = socket.assigns.pending_invites
+    session = socket.assigns.session
+
+    case find_invite(pending, channel) do
+      nil ->
+        {:noreply,
+         stream_insert(socket, :chat_messages, error_message("This invitation has expired"))}
+
+      invite ->
+        Process.cancel_timer(invite.timer_ref)
+        remaining = Enum.reject(pending, &(&1.channel == channel))
+        try_remove_invite_exception(channel, session.nickname)
+
+        socket =
+          socket
+          |> assign(pending_invites: remaining)
+          |> join_channel(channel, session)
+
+        {:noreply, socket}
+    end
+  end
+
+  def handle_event("invite_ignore", %{"channel" => channel}, socket) do
+    pending = socket.assigns.pending_invites
+    session = socket.assigns.session
+
+    case find_invite(pending, channel) do
+      nil ->
+        {:noreply, assign(socket, pending_invites: pending)}
+
+      invite ->
+        Process.cancel_timer(invite.timer_ref)
+        remaining = Enum.reject(pending, &(&1.channel == channel))
+        try_remove_invite_exception(channel, session.nickname)
+        {:noreply, assign(socket, pending_invites: remaining)}
+    end
+  end
+
   # ── Log Viewer events ─────────────────────────────────────
 
   def handle_event("open_log_viewer", _params, socket) do
@@ -2308,6 +2358,60 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  # ── Channel Invite System ─────────────────────────────────
+
+  def handle_info({:channel_invite, %{channel: channel, inviter: inviter}}, socket) do
+    session = socket.assigns.session
+
+    if Session.get_auto_join_on_invite(session) do
+      # Auto-join path
+      socket =
+        socket
+        |> join_channel(channel, session)
+        |> stream_insert(
+          :chat_messages,
+          system_message("* You have been invited to #{channel} by #{inviter} (auto-joined)")
+        )
+
+      {:noreply, socket}
+    else
+      # Dialog path — add to pending_invites with expiration timer
+      pending = socket.assigns.pending_invites
+
+      # Cancel existing timer for same channel (FR-020 dedup)
+      {pending, _old} = cancel_existing_invite(pending, channel)
+
+      timer_ref = Process.send_after(self(), {:invite_expired, channel}, 300_000)
+
+      invite = %{
+        channel: channel,
+        inviter: inviter,
+        invited_at: DateTime.utc_now(),
+        timer_ref: timer_ref
+      }
+
+      {:noreply, assign(socket, pending_invites: pending ++ [invite])}
+    end
+  end
+
+  def handle_info({:invite_expired, channel}, socket) do
+    {pending, expired} = cancel_existing_invite(socket.assigns.pending_invites, channel)
+
+    socket = assign(socket, pending_invites: pending)
+
+    # Clean up invite_exception
+    socket =
+      if expired do
+        nickname = socket.assigns.session.nickname
+        try_remove_invite_exception(channel, nickname)
+        socket
+      else
+        socket
+      end
+
+    {:noreply, socket}
+  end
+
   def handle_info({_ref, _result}, socket), do: {:noreply, socket}
   def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket), do: {:noreply, socket}
   def handle_info(_, socket), do: {:noreply, socket}
@@ -2811,11 +2915,6 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
-  defp format_autojoin_entry(entry) do
-    key_part = if entry.channel_key, do: " (key: ****)", else: ""
-    "  #{entry.channel_name}#{key_part}"
-  end
-
   defp handle_ui_action(socket, :autojoin_add, %{channel: channel} = payload) do
     session = socket.assigns.session
     key = Map.get(payload, :key)
@@ -2876,7 +2975,45 @@ defmodule RetroHexChatWeb.ChatLive do
     |> stream_insert(:chat_messages, system_message("* Auto-join list cleared"))
   end
 
+  defp handle_ui_action(socket, :send_invite, %{target: target, channel: channel}) do
+    nickname = socket.assigns.session.nickname
+
+    with {:ok, state} <- Server.get_state(channel),
+         :ok <- validate_operator(nickname, state),
+         :ok <- validate_invite_only(channel, state),
+         :ok <- validate_target_not_in_channel(target, state),
+         :ok <- validate_target_online(target) do
+      Server.add_invite_exception(channel, nickname, target)
+
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "user:#{target}",
+        {:channel_invite, %{channel: channel, inviter: nickname}}
+      )
+
+      stream_insert(socket, :chat_messages, system_message("* Inviting #{target} to #{channel}"))
+    else
+      {:error, msg} ->
+        stream_insert(socket, :chat_messages, error_message(msg))
+    end
+  end
+
+  defp handle_ui_action(socket, :toggle_auto_join_on_invite, _payload) do
+    session = socket.assigns.session
+    new_session = Session.toggle_auto_join_on_invite(session)
+    status = if new_session.auto_join_on_invite, do: "enabled", else: "disabled"
+
+    socket
+    |> assign(session: new_session)
+    |> stream_insert(:chat_messages, system_message("* Auto-join on invite: #{status}"))
+  end
+
   defp handle_ui_action(socket, _action, _payload), do: socket
+
+  defp format_autojoin_entry(entry) do
+    key_part = if entry.channel_key, do: " (key: ****)", else: ""
+    "  #{entry.channel_name}#{key_part}"
+  end
 
   defp maybe_join_from_params(socket, %{"join" => channel_name})
        when is_binary(channel_name) and channel_name != "" do
@@ -3023,6 +3160,74 @@ defmodule RetroHexChatWeb.ChatLive do
         {:error, _} -> false
       end
     end)
+  end
+
+  # ── Invite validation helpers ─────────────────────────────
+
+  defp validate_operator(nickname, state) do
+    if nickname in state.operators do
+      :ok
+    else
+      {:error, "* You are not a channel operator"}
+    end
+  end
+
+  defp validate_invite_only(channel, state) do
+    if state.modes_detail.invite_only do
+      :ok
+    else
+      {:error, "* #{channel} is not invite-only — anyone can join"}
+    end
+  end
+
+  defp validate_target_not_in_channel(target, state) do
+    member_nicks = Enum.map(state.members, fn {nick, _role} -> nick end)
+
+    if target in member_nicks do
+      {:error, "* #{target} is already in the channel"}
+    else
+      :ok
+    end
+  end
+
+  defp validate_target_online(target) do
+    # Check if target is in #lobby (all connected users auto-join #lobby)
+    case Server.get_state("#lobby") do
+      {:ok, state} ->
+        member_nicks = Enum.map(state.members, fn {nick, _role} -> nick end)
+
+        if target in member_nicks do
+          :ok
+        else
+          {:error, "* User '#{target}' not found"}
+        end
+
+      {:error, _} ->
+        {:error, "* User '#{target}' not found"}
+    end
+  end
+
+  defp find_invite(pending, channel) do
+    Enum.find(pending, &(&1.channel == channel))
+  end
+
+  defp cancel_existing_invite(pending, channel) do
+    case Enum.split_with(pending, &(&1.channel == channel)) do
+      {[existing], rest} ->
+        Process.cancel_timer(existing.timer_ref)
+        {rest, existing}
+
+      {[], _} ->
+        {pending, nil}
+    end
+  end
+
+  defp try_remove_invite_exception(channel, nickname) do
+    Server.remove_invite_exception(channel, nickname, nickname)
+  rescue
+    _ -> :ok
+  catch
+    :exit, _ -> :ok
   end
 
   defp context_target_ignored?(_session, nil), do: false
@@ -4325,6 +4530,8 @@ defmodule RetroHexChatWeb.ChatLive do
         error={@log_error}
         nick_color_fn={@nick_color_fn}
       />
+
+      <RetroHexChatWeb.Components.InviteDialog.invite_dialog pending_invites={@pending_invites} />
 
       <RetroHexChatWeb.Components.StatusBar.status_bar
         nickname={@session.nickname}

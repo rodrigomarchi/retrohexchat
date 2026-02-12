@@ -31,7 +31,8 @@ defmodule RetroHexChat.Accounts.Session do
           ignore_list: map(),
           log_preferences: map(),
           perform_list: map(),
-          autojoin_list: map()
+          autojoin_list: map(),
+          auto_join_on_invite: boolean()
         }
 
   @enforce_keys [:nickname]
@@ -53,7 +54,8 @@ defmodule RetroHexChat.Accounts.Session do
     ignore_list: nil,
     log_preferences: nil,
     perform_list: nil,
-    autojoin_list: nil
+    autojoin_list: nil,
+    auto_join_on_invite: false
   ]
 
   @spec new(String.t()) :: t()
@@ -222,5 +224,18 @@ defmodule RetroHexChat.Accounts.Session do
   @spec get_autojoin_list(t()) :: map()
   def get_autojoin_list(%__MODULE__{autojoin_list: autojoin_list}) do
     autojoin_list
+  end
+
+  @spec get_auto_join_on_invite(t()) :: boolean()
+  def get_auto_join_on_invite(%__MODULE__{auto_join_on_invite: value}), do: value
+
+  @spec set_auto_join_on_invite(t(), boolean()) :: t()
+  def set_auto_join_on_invite(%__MODULE__{} = session, value) when is_boolean(value) do
+    %{session | auto_join_on_invite: value}
+  end
+
+  @spec toggle_auto_join_on_invite(t()) :: t()
+  def toggle_auto_join_on_invite(%__MODULE__{auto_join_on_invite: current} = session) do
+    %{session | auto_join_on_invite: not current}
   end
 end
