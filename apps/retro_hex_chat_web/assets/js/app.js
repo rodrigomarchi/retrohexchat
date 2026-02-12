@@ -8,6 +8,7 @@ import CommandPaletteHook from "./hooks/command_palette_hook"
 import FormatToolbarHook from "./hooks/format_toolbar_hook"
 import KeyboardHook from "./hooks/keyboard_hook"
 import NotifyListHook from "./hooks/notify_list_hook"
+import ReconnectHook from "./hooks/reconnect_hook"
 import ScrollHook from "./hooks/scroll_hook"
 import SoundHook from "./hooks/sound_hook"
 import URLCatcherHook from "./hooks/url_catcher_hook"
@@ -17,6 +18,7 @@ let Hooks = {
   FormatToolbarHook: FormatToolbarHook,
   KeyboardHook: KeyboardHook,
   NotifyListHook: NotifyListHook,
+  ReconnectHook: ReconnectHook,
   ScrollHook: ScrollHook,
   SoundHook: SoundHook,
   URLCatcherHook: URLCatcherHook,

@@ -187,6 +187,153 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     end
   end
 
+  describe "cmd-perform topic" do
+    test "exists with correct id and category" do
+      topic = HelpTopics.get_topic("cmd-perform")
+      assert topic != nil
+      assert topic.id == "cmd-perform"
+      assert topic.category == "Commands"
+    end
+
+    test "has correct title" do
+      topic = HelpTopics.get_topic("cmd-perform")
+      assert topic.title == "/perform"
+    end
+
+    test "content covers key functionality" do
+      topic = HelpTopics.get_topic("cmd-perform")
+      assert topic.content =~ "list"
+      assert topic.content =~ "add"
+      assert topic.content =~ "remove"
+      assert topic.content =~ "move"
+      assert topic.content =~ "clear"
+      assert topic.content =~ "sequentially"
+      assert topic.content =~ "masked"
+    end
+
+    test "cross-references related topics" do
+      topic = HelpTopics.get_topic("cmd-perform")
+      assert topic.content =~ "cmd-autojoin"
+      assert topic.content =~ "feature-perform"
+    end
+
+    test "has non-empty keywords" do
+      topic = HelpTopics.get_topic("cmd-perform")
+      assert topic.keywords != []
+    end
+  end
+
+  describe "cmd-autojoin topic" do
+    test "exists with correct id and category" do
+      topic = HelpTopics.get_topic("cmd-autojoin")
+      assert topic != nil
+      assert topic.id == "cmd-autojoin"
+      assert topic.category == "Commands"
+    end
+
+    test "has correct title" do
+      topic = HelpTopics.get_topic("cmd-autojoin")
+      assert topic.title == "/autojoin"
+    end
+
+    test "content covers key functionality" do
+      topic = HelpTopics.get_topic("cmd-autojoin")
+      assert topic.content =~ "list"
+      assert topic.content =~ "add"
+      assert topic.content =~ "remove"
+      assert topic.content =~ "clear"
+      assert topic.content =~ "#channel"
+      assert topic.content =~ "key"
+    end
+
+    test "cross-references related topics" do
+      topic = HelpTopics.get_topic("cmd-autojoin")
+      assert topic.content =~ "cmd-perform"
+      assert topic.content =~ "feature-perform"
+    end
+
+    test "has non-empty keywords" do
+      topic = HelpTopics.get_topic("cmd-autojoin")
+      assert topic.keywords != []
+    end
+  end
+
+  describe "feature-perform topic" do
+    test "exists with correct id and category" do
+      topic = HelpTopics.get_topic("feature-perform")
+      assert topic != nil
+      assert topic.id == "feature-perform"
+      assert topic.category == "Features"
+    end
+
+    test "has correct title" do
+      topic = HelpTopics.get_topic("feature-perform")
+      assert topic.title == "Perform / Auto-Commands"
+    end
+
+    test "content covers key functionality" do
+      topic = HelpTopics.get_topic("feature-perform")
+      assert topic.content =~ "Perform"
+      assert topic.content =~ "auto-join"
+      assert topic.content =~ "Alt+P"
+      assert topic.content =~ "Enable"
+      assert topic.content =~ "Execution Order"
+    end
+
+    test "cross-references related topics" do
+      topic = HelpTopics.get_topic("feature-perform")
+      assert topic.content =~ "cmd-perform"
+      assert topic.content =~ "cmd-autojoin"
+      assert topic.content =~ "feature-auto-reconnect"
+    end
+
+    test "has non-empty keywords" do
+      topic = HelpTopics.get_topic("feature-perform")
+      assert topic.keywords != []
+    end
+  end
+
+  describe "feature-auto-reconnect topic" do
+    test "exists with correct id and category" do
+      topic = HelpTopics.get_topic("feature-auto-reconnect")
+      assert topic != nil
+      assert topic.id == "feature-auto-reconnect"
+      assert topic.category == "Features"
+    end
+
+    test "has correct title" do
+      topic = HelpTopics.get_topic("feature-auto-reconnect")
+      assert topic.title == "Auto-Reconnect"
+    end
+
+    test "content covers key functionality" do
+      topic = HelpTopics.get_topic("feature-auto-reconnect")
+      assert topic.content =~ "exponential backoff"
+      assert topic.content =~ "10 attempts"
+      assert topic.content =~ "Cancel"
+      assert topic.content =~ "/quit"
+      assert topic.content =~ "Session Restoration"
+    end
+
+    test "cross-references related topics" do
+      topic = HelpTopics.get_topic("feature-auto-reconnect")
+      assert topic.content =~ "feature-perform"
+    end
+
+    test "has non-empty keywords" do
+      topic = HelpTopics.get_topic("feature-auto-reconnect")
+      assert topic.keywords != []
+    end
+  end
+
+  describe "keyboard shortcuts includes Alt+P" do
+    test "Alt+P is listed in keyboard shortcuts" do
+      topic = HelpTopics.get_topic("keyboard-shortcuts")
+      assert topic.content =~ "Alt+P"
+      assert topic.content =~ "Perform Dialog"
+    end
+  end
+
   describe "all_keywords/0" do
     test "returns a sorted list of {keyword, topic_id}" do
       keywords = HelpTopics.all_keywords()

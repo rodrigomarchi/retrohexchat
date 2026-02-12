@@ -84,6 +84,13 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           >
             Log Viewer
           </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-perform"
+            phx-click="open_perform_dialog"
+          >
+            Perform
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">

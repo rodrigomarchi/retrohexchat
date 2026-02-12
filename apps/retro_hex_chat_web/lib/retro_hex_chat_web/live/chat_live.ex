@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.ChatLive do
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
 
   alias RetroHexChat.Chat.{
+    AutoJoinList,
     CapturedURL,
     DisplayPreferences,
     Formatter,
@@ -21,6 +22,7 @@ defmodule RetroHexChatWeb.ChatLive do
     LogExporter,
     LogFilter,
     LogQueries,
+    PerformList,
     Queries,
     Search,
     Service,
@@ -56,6 +58,7 @@ defmodule RetroHexChatWeb.ChatLive do
             |> join_channel("#lobby", session)
             |> maybe_join_from_params(params)
             |> maybe_start_nickserv_timer(nickname)
+            |> maybe_trigger_perform()
 
           {:ok, socket}
         else
@@ -147,6 +150,14 @@ defmodule RetroHexChatWeb.ChatLive do
       show_cc_add_ban_dialog: false,
       show_cc_add_ban_ex_dialog: false,
       show_cc_add_invite_ex_dialog: false,
+      show_perform_dialog: false,
+      perform_dialog_tab: "commands",
+      perform_selected: nil,
+      show_perform_add_dialog: false,
+      show_perform_edit_dialog: false,
+      autojoin_selected: nil,
+      show_autojoin_add_dialog: false,
+      show_autojoin_edit_dialog: false,
       show_log_viewer: false,
       log_filter: LogFilter.new(),
       log_source_options: [],
@@ -154,7 +165,9 @@ defmodule RetroHexChatWeb.ChatLive do
       log_loading: false,
       log_preferences: DisplayPreferences.new(),
       log_exporting: false,
-      log_error: nil
+      log_error: nil,
+      reconnect_active_channel: nil,
+      reconnect_active_pm: nil
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -194,7 +207,8 @@ defmodule RetroHexChatWeb.ChatLive do
        show_status_tab: false
      )
      |> load_channel_users(channel)
-     |> load_channel_messages_with_pagination(channel)}
+     |> load_channel_messages_with_pagination(channel)
+     |> push_reconnect_state()}
   end
 
   def handle_event("switch_pm", %{"nickname" => nickname}, socket) do
@@ -211,7 +225,8 @@ defmodule RetroHexChatWeb.ChatLive do
        current_modes: nil,
        show_status_tab: false
      )
-     |> stream(:chat_messages, messages, reset: true)}
+     |> stream(:chat_messages, messages, reset: true)
+     |> push_reconnect_state()}
   end
 
   def handle_event("switch_to_status", _params, socket) do
@@ -362,12 +377,23 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  def handle_event("window_keydown", %{"key" => "p", "altKey" => true}, socket) do
+    if socket.assigns.show_perform_dialog do
+      {:noreply, close_perform_dialog(socket)}
+    else
+      {:noreply, assign(socket, show_perform_dialog: true)}
+    end
+  end
+
   def handle_event("window_keydown", %{"key" => "F1"}, socket) do
     {:noreply, open_help_dialog(socket)}
   end
 
   def handle_event("window_keydown", %{"key" => "Escape"}, socket) do
     cond do
+      socket.assigns.show_perform_dialog ->
+        {:noreply, close_perform_dialog(socket)}
+
       socket.assigns.show_log_viewer ->
         {:noreply, close_log_viewer(socket)}
 
@@ -567,7 +593,15 @@ defmodule RetroHexChatWeb.ChatLive do
   # Menu bar events (Phase 14)
   def handle_event("quit_chat", _params, socket) do
     cleanup_channels(socket.assigns.session)
-    {:noreply, push_navigate(socket, to: ~p"/")}
+
+    {:noreply,
+     socket
+     |> push_event("intentional_disconnect", %{})
+     |> push_navigate(to: ~p"/")}
+  end
+
+  def handle_event("restore_session", params, socket) do
+    {:noreply, restore_session(socket, params)}
   end
 
   def handle_event("open_search", _params, socket) do
@@ -1000,6 +1034,254 @@ defmodule RetroHexChatWeb.ChatLive do
            |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))}
 
         {:error, :not_found} ->
+          {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
+  # ── Perform dialog events ─────────────────────────────────
+
+  def handle_event("open_perform_dialog", _params, socket) do
+    {:noreply, assign(socket, show_perform_dialog: true)}
+  end
+
+  def handle_event("close_perform_dialog", _params, socket) do
+    {:noreply, close_perform_dialog(socket)}
+  end
+
+  def handle_event("perform_dialog_tab", %{"tab" => tab}, socket) do
+    {:noreply, assign(socket, perform_dialog_tab: tab)}
+  end
+
+  def handle_event("perform_select", %{"position" => pos}, socket) do
+    {:noreply, assign(socket, perform_selected: String.to_integer(pos))}
+  end
+
+  def handle_event("perform_dialog_add", _params, socket) do
+    {:noreply, assign(socket, show_perform_add_dialog: true)}
+  end
+
+  def handle_event("close_perform_add_dialog", _params, socket) do
+    {:noreply, assign(socket, show_perform_add_dialog: false)}
+  end
+
+  def handle_event("perform_dialog_add_confirm", %{"command" => command}, socket) do
+    session = socket.assigns.session
+
+    case PerformList.add_entry(session.perform_list, command) do
+      {:ok, updated_list} ->
+        new_session = Session.set_perform_list(session, updated_list)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_perform_add_dialog: false)
+         |> maybe_persist_perform_list(new_session)}
+
+      {:error, reason} ->
+        {:noreply,
+         stream_insert(
+           socket,
+           :chat_messages,
+           error_message("Failed to add perform command: #{reason}")
+         )}
+    end
+  end
+
+  def handle_event("perform_dialog_edit", _params, socket) do
+    if socket.assigns.perform_selected do
+      {:noreply, assign(socket, show_perform_edit_dialog: true)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("close_perform_edit_dialog", _params, socket) do
+    {:noreply, assign(socket, show_perform_edit_dialog: false)}
+  end
+
+  def handle_event("perform_dialog_edit_confirm", %{"command" => command}, socket) do
+    session = socket.assigns.session
+    position = socket.assigns.perform_selected
+
+    if position do
+      updated_list = PerformList.update_entry(session.perform_list, position, command)
+      new_session = Session.set_perform_list(session, updated_list)
+
+      {:noreply,
+       socket
+       |> assign(session: new_session, show_perform_edit_dialog: false)
+       |> maybe_persist_perform_list(new_session)}
+    else
+      {:noreply, assign(socket, show_perform_edit_dialog: false)}
+    end
+  end
+
+  def handle_event("perform_dialog_remove", _params, socket) do
+    position = socket.assigns.perform_selected
+
+    if position do
+      session = socket.assigns.session
+
+      case PerformList.remove_entry(session.perform_list, position) do
+        {:ok, updated_list} ->
+          new_session = Session.set_perform_list(session, updated_list)
+
+          {:noreply,
+           socket
+           |> assign(session: new_session, perform_selected: nil)
+           |> maybe_persist_perform_list(new_session)}
+
+        {:error, _} ->
+          {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("perform_dialog_move_up", _params, socket) do
+    position = socket.assigns.perform_selected
+
+    if position && position > 0 do
+      session = socket.assigns.session
+
+      case PerformList.move_entry(session.perform_list, position, position - 1) do
+        {:ok, updated_list} ->
+          new_session = Session.set_perform_list(session, updated_list)
+
+          {:noreply,
+           socket
+           |> assign(session: new_session, perform_selected: position - 1)
+           |> maybe_persist_perform_list(new_session)}
+
+        {:error, _} ->
+          {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("perform_dialog_move_down", _params, socket) do
+    position = socket.assigns.perform_selected
+    session = socket.assigns.session
+    max_pos = PerformList.count(session.perform_list) - 1
+
+    if position && position < max_pos do
+      case PerformList.move_entry(session.perform_list, position, position + 1) do
+        {:ok, updated_list} ->
+          new_session = Session.set_perform_list(session, updated_list)
+
+          {:noreply,
+           socket
+           |> assign(session: new_session, perform_selected: position + 1)
+           |> maybe_persist_perform_list(new_session)}
+
+        {:error, _} ->
+          {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("perform_toggle_enabled", _params, socket) do
+    session = socket.assigns.session
+    current = PerformList.enabled?(session.perform_list)
+    updated_list = PerformList.set_enabled(session.perform_list, !current)
+    new_session = Session.set_perform_list(session, updated_list)
+
+    {:noreply,
+     socket
+     |> assign(session: new_session)
+     |> maybe_persist_perform_list(new_session)}
+  end
+
+  def handle_event("autojoin_select", %{"channel" => channel}, socket) do
+    {:noreply, assign(socket, autojoin_selected: channel)}
+  end
+
+  def handle_event("autojoin_dialog_add", _params, socket) do
+    {:noreply, assign(socket, show_autojoin_add_dialog: true)}
+  end
+
+  def handle_event("close_autojoin_add_dialog", _params, socket) do
+    {:noreply, assign(socket, show_autojoin_add_dialog: false)}
+  end
+
+  def handle_event("autojoin_dialog_add_confirm", %{"channel" => channel} = params, socket) do
+    session = socket.assigns.session
+    key = params["key"]
+    key = if key == "", do: nil, else: key
+
+    case AutoJoinList.add_entry(session.autojoin_list, channel, key) do
+      {:ok, updated_list} ->
+        new_session = Session.set_autojoin_list(session, updated_list)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_autojoin_add_dialog: false)
+         |> maybe_persist_autojoin_list(new_session)}
+
+      {:error, reason} ->
+        {:noreply,
+         stream_insert(
+           socket,
+           :chat_messages,
+           error_message("Failed to add auto-join channel: #{reason}")
+         )}
+    end
+  end
+
+  def handle_event("autojoin_dialog_edit", _params, socket) do
+    if socket.assigns.autojoin_selected do
+      {:noreply, assign(socket, show_autojoin_edit_dialog: true)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("close_autojoin_edit_dialog", _params, socket) do
+    {:noreply, assign(socket, show_autojoin_edit_dialog: false)}
+  end
+
+  def handle_event("autojoin_dialog_edit_confirm", %{"channel" => channel} = params, socket) do
+    session = socket.assigns.session
+    key = params["key"]
+    key = if key == "", do: nil, else: key
+
+    case AutoJoinList.update_entry(session.autojoin_list, channel, key) do
+      {:ok, updated_list} ->
+        new_session = Session.set_autojoin_list(session, updated_list)
+
+        {:noreply,
+         socket
+         |> assign(session: new_session, show_autojoin_edit_dialog: false)
+         |> maybe_persist_autojoin_list(new_session)}
+
+      {:error, _} ->
+        {:noreply, assign(socket, show_autojoin_edit_dialog: false)}
+    end
+  end
+
+  def handle_event("autojoin_dialog_remove", _params, socket) do
+    channel = socket.assigns.autojoin_selected
+
+    if channel do
+      session = socket.assigns.session
+
+      case AutoJoinList.remove_entry(session.autojoin_list, channel) do
+        {:ok, updated_list} ->
+          new_session = Session.set_autojoin_list(session, updated_list)
+
+          {:noreply,
+           socket
+           |> assign(session: new_session, autojoin_selected: nil)
+           |> maybe_persist_autojoin_list(new_session)}
+
+        {:error, _} ->
           {:noreply, socket}
       end
     else
@@ -1962,6 +2244,70 @@ defmodule RetroHexChatWeb.ChatLive do
     {:noreply, socket}
   end
 
+  def handle_info({:execute_perform, index}, socket) do
+    session = socket.assigns.session
+    entries = PerformList.entries(session.perform_list)
+
+    if index < length(entries) do
+      entry = Enum.at(entries, index)
+      masked = PerformList.mask_command(entry.command)
+
+      socket =
+        socket
+        |> stream_insert(:chat_messages, system_message("* Performing: #{masked}"))
+        |> execute_perform_command(session, entry.command)
+
+      Process.send_after(self(), {:execute_perform, index + 1}, 100)
+      {:noreply, socket}
+    else
+      send(self(), {:execute_autojoin, 0})
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info({:execute_autojoin, index}, socket) do
+    session = socket.assigns.session
+    entries = AutoJoinList.entries(session.autojoin_list)
+
+    if index < length(entries) do
+      entry = Enum.at(entries, index)
+      channel = entry.channel_name
+      key = entry.channel_key
+
+      socket =
+        socket
+        |> stream_insert(:chat_messages, system_message("* Auto-joining #{channel}..."))
+        |> join_channel(channel, session, key)
+
+      Process.send_after(self(), {:execute_autojoin, index + 1}, 100)
+      {:noreply, socket}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info({:execute_rejoin, index, channels}, socket) do
+    session = socket.assigns.session
+
+    if index < length(channels) do
+      channel = Enum.at(channels, index)
+
+      socket =
+        if channel in session.channels do
+          socket
+        else
+          socket
+          |> stream_insert(:chat_messages, system_message("* Rejoining #{channel}..."))
+          |> join_channel(channel, session, nil)
+        end
+
+      Process.send_after(self(), {:execute_rejoin, index + 1, channels}, 100)
+      {:noreply, socket}
+    else
+      {:noreply, maybe_restore_active_tab(socket)}
+    end
+  end
+
   def handle_info({_ref, _result}, socket), do: {:noreply, socket}
   def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket), do: {:noreply, socket}
   def handle_info(_, socket), do: {:noreply, socket}
@@ -2327,6 +2673,209 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  defp handle_ui_action(socket, :open_perform_dialog, payload) do
+    tab = Map.get(payload, :tab, "commands")
+    assign(socket, show_perform_dialog: true, perform_dialog_tab: tab)
+  end
+
+  defp handle_ui_action(socket, :perform_list_display, _payload) do
+    session = socket.assigns.session
+    entries = PerformList.entries(session.perform_list)
+
+    if entries == [] do
+      stream_insert(socket, :chat_messages, system_message("Your perform list is empty"))
+    else
+      Enum.with_index(entries)
+      |> Enum.reduce(socket, fn {entry, idx}, acc ->
+        masked = PerformList.mask_command(entry.command)
+        stream_insert(acc, :chat_messages, system_message("  #{idx}: #{masked}"))
+      end)
+    end
+  end
+
+  defp handle_ui_action(socket, :perform_add, %{command: command}) do
+    session = socket.assigns.session
+
+    case PerformList.add_entry(session.perform_list, command) do
+      {:ok, updated_list} ->
+        new_session = Session.set_perform_list(session, updated_list)
+        masked = PerformList.mask_command(String.trim(command))
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_perform_list(new_session)
+        |> stream_insert(:chat_messages, system_message("* Added to perform list: #{masked}"))
+
+      {:error, :invalid_command} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("Invalid command. Commands must start with /")
+        )
+
+      {:error, :disallowed_command} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("That command cannot be added to the perform list")
+        )
+
+      {:error, :command_too_long} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("Command too long (max 500 characters)")
+        )
+
+      {:error, :list_full} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("Perform list is full (max 50 commands)")
+        )
+    end
+  end
+
+  defp handle_ui_action(socket, :perform_remove, %{position: position}) do
+    session = socket.assigns.session
+
+    case PerformList.remove_entry(session.perform_list, position) do
+      {:ok, updated_list} ->
+        new_session = Session.set_perform_list(session, updated_list)
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_perform_list(new_session)
+        |> stream_insert(
+          :chat_messages,
+          system_message("* Removed command at position #{position}")
+        )
+
+      {:error, :not_found} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("No command at position #{position}")
+        )
+    end
+  end
+
+  defp handle_ui_action(socket, :perform_move, %{from: from, to: to}) do
+    session = socket.assigns.session
+
+    case PerformList.move_entry(session.perform_list, from, to) do
+      {:ok, updated_list} ->
+        new_session = Session.set_perform_list(session, updated_list)
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_perform_list(new_session)
+        |> stream_insert(
+          :chat_messages,
+          system_message("* Moved command from position #{from} to #{to}")
+        )
+
+      {:error, :same_position} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("Source and destination are the same")
+        )
+
+      {:error, :invalid_position} ->
+        stream_insert(socket, :chat_messages, error_message("Invalid position"))
+    end
+  end
+
+  defp handle_ui_action(socket, :perform_clear, _payload) do
+    session = socket.assigns.session
+    {:ok, updated_list} = PerformList.clear(session.perform_list)
+    new_session = Session.set_perform_list(session, updated_list)
+
+    socket
+    |> assign(session: new_session)
+    |> maybe_persist_perform_list(new_session)
+    |> stream_insert(:chat_messages, system_message("* Perform list cleared"))
+  end
+
+  defp handle_ui_action(socket, :autojoin_list_display, _payload) do
+    session = socket.assigns.session
+    entries = AutoJoinList.entries(session.autojoin_list)
+
+    if entries == [] do
+      stream_insert(socket, :chat_messages, system_message("Your auto-join list is empty"))
+    else
+      Enum.reduce(entries, socket, fn entry, acc ->
+        stream_insert(acc, :chat_messages, system_message(format_autojoin_entry(entry)))
+      end)
+    end
+  end
+
+  defp format_autojoin_entry(entry) do
+    key_part = if entry.channel_key, do: " (key: ****)", else: ""
+    "  #{entry.channel_name}#{key_part}"
+  end
+
+  defp handle_ui_action(socket, :autojoin_add, %{channel: channel} = payload) do
+    session = socket.assigns.session
+    key = Map.get(payload, :key)
+
+    case AutoJoinList.add_entry(session.autojoin_list, channel, key) do
+      {:ok, updated_list} ->
+        new_session = Session.set_autojoin_list(session, updated_list)
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_autojoin_list(new_session)
+        |> stream_insert(
+          :chat_messages,
+          system_message("* Added to auto-join list: #{channel}")
+        )
+
+      {:error, reason} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("Failed to add auto-join channel: #{reason}")
+        )
+    end
+  end
+
+  defp handle_ui_action(socket, :autojoin_remove, %{channel: channel}) do
+    session = socket.assigns.session
+
+    case AutoJoinList.remove_entry(session.autojoin_list, channel) do
+      {:ok, updated_list} ->
+        new_session = Session.set_autojoin_list(session, updated_list)
+
+        socket
+        |> assign(session: new_session)
+        |> maybe_persist_autojoin_list(new_session)
+        |> stream_insert(
+          :chat_messages,
+          system_message("* Removed #{channel} from auto-join list")
+        )
+
+      {:error, :not_found} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("#{channel} is not in your auto-join list")
+        )
+    end
+  end
+
+  defp handle_ui_action(socket, :autojoin_clear, _payload) do
+    session = socket.assigns.session
+    {:ok, updated_list} = AutoJoinList.clear(session.autojoin_list)
+    new_session = Session.set_autojoin_list(session, updated_list)
+
+    socket
+    |> assign(session: new_session)
+    |> maybe_persist_autojoin_list(new_session)
+    |> stream_insert(:chat_messages, system_message("* Auto-join list cleared"))
+  end
+
   defp handle_ui_action(socket, _action, _payload), do: socket
 
   defp maybe_join_from_params(socket, %{"join" => channel_name})
@@ -2359,6 +2908,7 @@ defmodule RetroHexChatWeb.ChatLive do
         |> assign(session: new_session, input: "")
         |> load_channel_users(channel_name)
         |> load_channel_messages_with_pagination(channel_name)
+        |> push_reconnect_state()
 
       {:error, reason} ->
         stream_insert(socket, :chat_messages, error_message(reason))
@@ -2382,21 +2932,24 @@ defmodule RetroHexChatWeb.ChatLive do
 
     socket = assign(socket, session: new_session)
 
-    if new_session.active_channel do
-      socket
-      |> load_channel_users(new_session.active_channel)
-      |> load_channel_messages_with_pagination(new_session.active_channel)
-    else
-      socket
-      |> assign(
-        oldest_message_id: nil,
-        has_more: false,
-        channel_users: [],
-        current_topic: nil,
-        current_modes: nil
-      )
-      |> stream(:chat_messages, [], reset: true)
-    end
+    socket =
+      if new_session.active_channel do
+        socket
+        |> load_channel_users(new_session.active_channel)
+        |> load_channel_messages_with_pagination(new_session.active_channel)
+      else
+        socket
+        |> assign(
+          oldest_message_id: nil,
+          has_more: false,
+          channel_users: [],
+          current_topic: nil,
+          current_modes: nil
+        )
+        |> stream(:chat_messages, [], reset: true)
+      end
+
+    push_reconnect_state(socket)
   end
 
   defp part_channel_after_kick(socket, channel_name) do
@@ -2839,7 +3392,10 @@ defmodule RetroHexChatWeb.ChatLive do
 
   defp handle_quit(socket, _reason) do
     cleanup_channels(socket.assigns.session)
-    push_navigate(socket, to: ~p"/")
+
+    socket
+    |> push_event("intentional_disconnect", %{})
+    |> push_navigate(to: ~p"/")
   end
 
   defp handle_set_away(socket, message) do
@@ -3005,6 +3561,76 @@ defmodule RetroHexChatWeb.ChatLive do
       log_exporting: false,
       log_error: nil
     )
+  end
+
+  defp close_perform_dialog(socket) do
+    assign(socket,
+      show_perform_dialog: false,
+      perform_dialog_tab: "commands",
+      perform_selected: nil,
+      show_perform_add_dialog: false,
+      show_perform_edit_dialog: false,
+      autojoin_selected: nil,
+      show_autojoin_add_dialog: false,
+      show_autojoin_edit_dialog: false
+    )
+  end
+
+  defp push_reconnect_state(socket) do
+    session = socket.assigns.session
+
+    push_event(socket, "save_reconnect_state", %{
+      nickname: session.nickname,
+      channels: session.channels,
+      active_channel: session.active_channel,
+      active_pm: session.active_pm
+    })
+  end
+
+  defp restore_session(socket, params) do
+    channels = Map.get(params, "channels", [])
+    active_channel = Map.get(params, "active_channel")
+    active_pm = Map.get(params, "active_pm")
+
+    socket =
+      socket
+      |> assign(reconnect_active_channel: active_channel, reconnect_active_pm: active_pm)
+      |> stream_insert(:chat_messages, system_message("* Restoring session..."))
+
+    if channels != [] do
+      Process.send_after(self(), {:execute_rejoin, 0, channels}, 200)
+    end
+
+    socket
+  end
+
+  defp maybe_restore_active_tab(socket) do
+    target_channel = socket.assigns[:reconnect_active_channel]
+    target_pm = socket.assigns[:reconnect_active_pm]
+    session = socket.assigns.session
+
+    socket = assign(socket, reconnect_active_channel: nil, reconnect_active_pm: nil)
+
+    cond do
+      target_pm && target_pm in session.pm_conversations ->
+        new_session = Session.set_active_pm(session, target_pm)
+        messages = load_pm_messages(new_session.nickname, target_pm)
+
+        socket
+        |> assign(session: new_session, show_status_tab: false)
+        |> stream(:chat_messages, messages, reset: true)
+
+      target_channel && target_channel in session.channels ->
+        new_session = Session.set_active_channel(session, target_channel)
+
+        socket
+        |> assign(session: new_session, show_status_tab: false)
+        |> load_channel_users(target_channel)
+        |> load_channel_messages_with_pagination(target_channel)
+
+      true ->
+        socket
+    end
   end
 
   defp close_log_viewer(socket) do
@@ -3245,6 +3871,22 @@ defmodule RetroHexChatWeb.ChatLive do
     socket
   end
 
+  defp maybe_persist_perform_list(socket, session) do
+    if session.identified do
+      Task.start(fn -> PerformList.save(session.nickname, session.perform_list) end)
+    end
+
+    socket
+  end
+
+  defp maybe_persist_autojoin_list(socket, session) do
+    if session.identified do
+      Task.start(fn -> AutoJoinList.save(session.nickname, session.autojoin_list) end)
+    end
+
+    socket
+  end
+
   @spec load_persisted_data(Session.t(), String.t()) :: Session.t()
   defp load_persisted_data(session, nick) do
     session
@@ -3253,6 +3895,8 @@ defmodule RetroHexChatWeb.ChatLive do
     |> load_if_found(NickColors.load(nick), &Session.set_nick_colors/2)
     |> load_if_found(HighlightWords.load(nick), &Session.set_highlight_words/2)
     |> load_if_found(IgnoreList.load(nick), &Session.set_ignore_list/2)
+    |> load_if_found(PerformList.load(nick), &Session.set_perform_list/2)
+    |> load_if_found(AutoJoinList.load(nick), &Session.set_autojoin_list/2)
   end
 
   @spec load_if_found(Session.t(), {:ok, term()} | {:error, term()}, (Session.t(), term() ->
@@ -3411,6 +4055,7 @@ defmodule RetroHexChatWeb.ChatLive do
   @impl true
   def render(assigns) do
     ~H"""
+    <div id="reconnect-hook" phx-hook="ReconnectHook" style="display: none;"></div>
     <div
       class="app-container"
       phx-click="close_context_menu"
@@ -3610,6 +4255,20 @@ defmodule RetroHexChatWeb.ChatLive do
         show_ignore_add_dialog={@show_ignore_add_dialog}
       />
 
+      <RetroHexChatWeb.Components.PerformDialog.perform_dialog
+        visible={@show_perform_dialog}
+        active_tab={@perform_dialog_tab}
+        perform_entries={PerformList.entries(@session.perform_list)}
+        perform_selected={@perform_selected}
+        perform_enabled={PerformList.enabled?(@session.perform_list)}
+        autojoin_entries={AutoJoinList.entries(@session.autojoin_list)}
+        autojoin_selected={@autojoin_selected}
+        show_perform_add_dialog={@show_perform_add_dialog}
+        show_perform_edit_dialog={@show_perform_edit_dialog}
+        show_autojoin_add_dialog={@show_autojoin_add_dialog}
+        show_autojoin_edit_dialog={@show_autojoin_edit_dialog}
+      />
+
       <RetroHexChatWeb.Components.ChannelCentralDialog.channel_central_dialog
         visible={@show_channel_central}
         active_tab={@channel_central_tab}
@@ -3753,5 +4412,32 @@ defmodule RetroHexChatWeb.ChatLive do
   defp nick_color(nickname) do
     index = :erlang.phash2(nickname, length(@nick_colors))
     Enum.at(@nick_colors, index)
+  end
+
+  # -- Perform helpers --
+
+  defp maybe_trigger_perform(socket) do
+    session = socket.assigns.session
+
+    if PerformList.enabled?(session.perform_list) and
+         PerformList.count(session.perform_list) > 0 do
+      send(self(), {:execute_perform, 0})
+    end
+
+    socket
+  end
+
+  defp execute_perform_command(socket, session, command) do
+    case Parser.parse(command) do
+      {:command, name, args} ->
+        dispatch_command(socket, session, name, args)
+
+      {:message, _text} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          error_message("Perform: invalid command format: #{PerformList.mask_command(command)}")
+        )
+    end
   end
 end

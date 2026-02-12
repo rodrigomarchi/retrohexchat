@@ -6,9 +6,11 @@ defmodule RetroHexChat.Accounts.Session do
 
   alias RetroHexChat.Accounts.ContactList
   alias RetroHexChat.Accounts.NickColors
+  alias RetroHexChat.Chat.AutoJoinList
   alias RetroHexChat.Chat.DisplayPreferences
   alias RetroHexChat.Chat.HighlightWords
   alias RetroHexChat.Chat.IgnoreList
+  alias RetroHexChat.Chat.PerformList
   alias RetroHexChat.Presence.NotifyList
 
   @type t :: %__MODULE__{
@@ -27,7 +29,9 @@ defmodule RetroHexChat.Accounts.Session do
           nick_colors: map(),
           highlight_words: map(),
           ignore_list: map(),
-          log_preferences: map()
+          log_preferences: map(),
+          perform_list: map(),
+          autojoin_list: map()
         }
 
   @enforce_keys [:nickname]
@@ -47,7 +51,9 @@ defmodule RetroHexChat.Accounts.Session do
     nick_colors: nil,
     highlight_words: nil,
     ignore_list: nil,
-    log_preferences: nil
+    log_preferences: nil,
+    perform_list: nil,
+    autojoin_list: nil
   ]
 
   @spec new(String.t()) :: t()
@@ -60,7 +66,9 @@ defmodule RetroHexChat.Accounts.Session do
       nick_colors: NickColors.new(),
       highlight_words: HighlightWords.new(),
       ignore_list: IgnoreList.new(),
-      log_preferences: DisplayPreferences.new()
+      log_preferences: DisplayPreferences.new(),
+      perform_list: PerformList.new(),
+      autojoin_list: AutoJoinList.new()
     }
   end
 
@@ -194,5 +202,25 @@ defmodule RetroHexChat.Accounts.Session do
   @spec log_preferences(t()) :: DisplayPreferences.t()
   def log_preferences(%__MODULE__{log_preferences: prefs}) do
     prefs
+  end
+
+  @spec set_perform_list(t(), map()) :: t()
+  def set_perform_list(%__MODULE__{} = session, perform_list) do
+    %{session | perform_list: perform_list}
+  end
+
+  @spec get_perform_list(t()) :: map()
+  def get_perform_list(%__MODULE__{perform_list: perform_list}) do
+    perform_list
+  end
+
+  @spec set_autojoin_list(t(), map()) :: t()
+  def set_autojoin_list(%__MODULE__{} = session, autojoin_list) do
+    %{session | autojoin_list: autojoin_list}
+  end
+
+  @spec get_autojoin_list(t()) :: map()
+  def get_autojoin_list(%__MODULE__{autojoin_list: autojoin_list}) do
+    autojoin_list
   end
 end

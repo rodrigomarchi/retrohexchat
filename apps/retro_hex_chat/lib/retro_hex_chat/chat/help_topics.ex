@@ -387,6 +387,55 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<p>You can also press <strong>F1</strong> at any time to open this Help window.</p>"
     },
     %{
+      id: "cmd-perform",
+      title: "/perform",
+      category: "Commands",
+      keywords: ["perform", "auto", "on connect", "execute", "autorun"],
+      content:
+        "<h3>/perform</h3>" <>
+          "<p>Manage your perform list — commands that auto-execute when you connect.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/perform [list|add|remove|move|clear] [args]</pre>" <>
+          "<h4>Subcommands</h4>" <>
+          "<pre>list              — Show all perform commands\n" <>
+          "add &lt;command&gt;      — Append a command to the perform list\n" <>
+          "remove &lt;position&gt;  — Remove command at the given position\n" <>
+          "move &lt;from&gt; &lt;to&gt;   — Reorder a command from one position to another\n" <>
+          "clear             — Remove all perform commands</pre>" <>
+          "<h4>Notes</h4>" <>
+          "<p>Commands execute sequentially on connect when the perform list is enabled. " <>
+          "Passwords in <code>/ns identify</code> commands are masked in the list display for security.</p>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/perform list\n/perform add /ns identify mypassword\n/perform remove 2\n/perform move 3 1\n/perform clear</pre>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-autojoin\">/autojoin</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-perform\">Perform / Auto-Commands</a></p>"
+    },
+    %{
+      id: "cmd-autojoin",
+      title: "/autojoin",
+      category: "Commands",
+      keywords: ["autojoin", "auto join", "auto-join", "channel", "on connect"],
+      content:
+        "<h3>/autojoin</h3>" <>
+          "<p>Manage your auto-join channel list — channels that are joined automatically after perform commands complete.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/autojoin [list|add|remove|clear] [args]</pre>" <>
+          "<h4>Subcommands</h4>" <>
+          "<pre>list                    — Show all auto-join channels\n" <>
+          "add &lt;#channel&gt; [key]    — Add a channel (with optional key for +k channels)\n" <>
+          "remove &lt;#channel&gt;       — Remove a channel from the auto-join list\n" <>
+          "clear                   — Remove all auto-join channels</pre>" <>
+          "<h4>Notes</h4>" <>
+          "<p>Channels are joined automatically after all perform commands complete. " <>
+          "This ensures that NickServ identification and other setup happens before joining channels.</p>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/autojoin list\n/autojoin add #elixir\n/autojoin add #secret mykey\n/autojoin remove #elixir\n/autojoin clear</pre>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-perform\">/perform</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-perform\">Perform / Auto-Commands</a></p>"
+    },
+    %{
       id: "cmd-ignore",
       title: "/ignore",
       category: "Commands",
@@ -949,6 +998,77 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<h4>See Also</h4>" <>
           "<p><a href=\"#\" data-help-topic=\"feature-log-viewer\">Log Viewer</a></p>"
     },
+    %{
+      id: "feature-perform",
+      title: "Perform / Auto-Commands",
+      category: "Features",
+      keywords: [
+        "perform",
+        "auto-commands",
+        "auto commands",
+        "on connect",
+        "autojoin",
+        "auto-join",
+        "perform list",
+        "auto execute"
+      ],
+      content:
+        "<h3>Perform / Auto-Commands</h3>" <>
+          "<p>The Perform system lets you define commands that execute automatically every time you connect, " <>
+          "followed by a list of channels to join.</p>" <>
+          "<h4>Perform List</h4>" <>
+          "<p>The perform list contains commands (e.g., <code>/ns identify</code>, <code>/mode +x</code>) " <>
+          "that run sequentially on connect. Use <code>/perform add &lt;command&gt;</code> to add commands, " <>
+          "or manage them visually in the Perform Dialog.</p>" <>
+          "<h4>Auto-Join Channels</h4>" <>
+          "<p>Auto-join channels are separate from perform commands. They are joined after all perform commands " <>
+          "complete, ensuring that NickServ identification and other setup happens first.</p>" <>
+          "<h4>Perform Dialog</h4>" <>
+          "<p>Press <strong>Alt+P</strong> to open the Perform Dialog, which provides a visual interface " <>
+          "for managing both the perform list and auto-join channels.</p>" <>
+          "<h4>Enable / Disable</h4>" <>
+          "<p>The perform system can be toggled on or off. When disabled, no commands execute and no channels " <>
+          "are auto-joined on connect.</p>" <>
+          "<h4>Execution Order</h4>" <>
+          "<p>1. Perform commands execute sequentially.<br/>" <>
+          "2. Auto-join channels are joined after all perform commands complete.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-perform\">/perform Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-autojoin\">/autojoin Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-auto-reconnect\">Auto-Reconnect</a></p>"
+    },
+    %{
+      id: "feature-auto-reconnect",
+      title: "Auto-Reconnect",
+      category: "Features",
+      keywords: [
+        "reconnect",
+        "auto-reconnect",
+        "auto reconnect",
+        "disconnect",
+        "connection lost",
+        "retry",
+        "backoff"
+      ],
+      content:
+        "<h3>Auto-Reconnect</h3>" <>
+          "<p>RetroHexChat automatically attempts to reconnect when an unexpected disconnection occurs.</p>" <>
+          "<h4>How It Works</h4>" <>
+          "<p>When the connection drops unexpectedly, the client retries with exponential backoff:</p>" <>
+          "<pre>Attempt 1:  1 second\nAttempt 2:  2 seconds\nAttempt 3:  4 seconds\nAttempt 4:  8 seconds\nAttempt 5:  16 seconds\nAttempt 6+: 30 seconds (cap)</pre>" <>
+          "<p>A maximum of <strong>10 attempts</strong> are made before giving up.</p>" <>
+          "<h4>Cancel &amp; Refresh</h4>" <>
+          "<p>During reconnection attempts, a <strong>Cancel</strong> button is available to stop retrying. " <>
+          "You can also refresh the page to start a fresh connection.</p>" <>
+          "<h4>Intentional Disconnect</h4>" <>
+          "<p>Auto-reconnect does <strong>not</strong> trigger on intentional disconnects via <code>/quit</code>. " <>
+          "It only activates on unexpected connection loss.</p>" <>
+          "<h4>Session Restoration</h4>" <>
+          "<p>On successful reconnection, your previous session is restored: channels are rejoined " <>
+          "and the active tab is restored to its previous state.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-perform\">Perform / Auto-Commands</a></p>"
+    },
     # ── Keyboard Shortcuts ───────────────────────────────────
     %{
       id: "keyboard-shortcuts",
@@ -960,7 +1080,7 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<h4>Navigation</h4>" <>
           "<pre>F1            — Open Help\nCtrl+F        — Find / Search\nEscape        — Close search bar</pre>" <>
           "<h4>Windows &amp; Dialogs</h4>" <>
-          "<pre>Alt+B         — Address Book\nAlt+H         — Highlight Words\nAlt+I         — Ignore List\nAlt+L         — Log Viewer\nAlt+U         — URL Catcher</pre>" <>
+          "<pre>Alt+B         — Address Book\nAlt+H         — Highlight Words\nAlt+I         — Ignore List\nAlt+L         — Log Viewer\nAlt+P         — Perform Dialog\nAlt+U         — URL Catcher</pre>" <>
           "<h4>Text Formatting</h4>" <>
           "<pre>Ctrl+B        — Bold\nCtrl+I        — Italic\nCtrl+U        — Underline\nCtrl+K        — Color\nCtrl+R        — Reverse\nCtrl+O        — Reset formatting</pre>" <>
           "<h4>Input</h4>" <>
