@@ -21,6 +21,7 @@
 - PostgreSQL 16+ (1 new table: `sound_settings` with JSONB columns) + in-memory Session state for guests + localStorage for mute state (014-sounds-notifications)
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css, Plug.Crypto (transitive, for password encryption) (015-favorites)
 - PostgreSQL 16+ (new `favorites` table) + in-memory Session state for guests (015-favorites)
+- PostgreSQL 16+ (1 new table: `user_bios`) + in-memory ETS for whowas cache + socket assigns for idle tracking (016-user-information)
 
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x
 - PostgreSQL 16+ with cursor-based pagination and GIN/trigram indexes
@@ -101,6 +102,6 @@ Key non-negotiables: TDD, umbrella separation, OTP process architecture,
 static analysis from day one, 98.css design fidelity.
 
 ## Recent Changes
+- 016-user-information: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
 - 015-favorites: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css, Plug.Crypto (transitive, for password encryption)
 - 014-sounds-notifications: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
-- 013-flood-protection: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css

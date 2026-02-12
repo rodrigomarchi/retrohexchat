@@ -23,7 +23,7 @@ defmodule RetroHexChat.Commands.RegistryTest do
       assert "part" in commands
       assert "nick" in commands
       assert "invite" in commands
-      assert length(commands) == 28
+      assert length(commands) == 30
     end
   end
 
