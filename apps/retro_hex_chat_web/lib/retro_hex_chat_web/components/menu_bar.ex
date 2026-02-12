@@ -93,6 +93,13 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           </div>
           <div
             class="menu-dropdown-item"
+            data-testid="menu-sounds"
+            phx-click="open_sound_settings_dialog"
+          >
+            Sounds
+          </div>
+          <div
+            class="menu-dropdown-item"
             data-testid="menu-ctcp-settings"
             phx-click="open_ctcp_settings_dialog"
           >

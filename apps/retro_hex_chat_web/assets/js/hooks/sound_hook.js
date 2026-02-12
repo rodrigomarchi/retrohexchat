@@ -1,17 +1,39 @@
 /**
  * LiveView hook for notification sounds.
  *
- * Uses the Web Audio API to generate short beep tones.
+ * Uses the Web Audio API to generate short synthesized tones.
+ * Supports a catalog of 14 named sounds plus "none".
  * Respects a mute setting stored in localStorage.
  */
+
+const SOUND_CATALOG = {
+  none:        null,
+  beep:        { frequency: 520, duration: 0.1, volume: 0.2, waveType: "sine" },
+  ding_low:    { frequency: 440, duration: 0.15, volume: 0.2, waveType: "sine" },
+  ding_high:   { frequency: 880, duration: 0.15, volume: 0.25, waveType: "sine" },
+  chime_short: { frequency: 660, duration: 0.12, volume: 0.2, waveType: "sine" },
+  chime_long:  { frequency: 660, duration: 0.3, volume: 0.2, waveType: "sine" },
+  chime_high:  { frequency: 880, duration: 0.25, volume: 0.25, waveType: "sine" },
+  chime_low:   { frequency: 330, duration: 0.25, volume: 0.2, waveType: "sine" },
+  alert:       { frequency: 880, duration: 0.3, volume: 0.35, waveType: "square" },
+  buzz:        { frequency: 220, duration: 0.2, volume: 0.2, waveType: "sawtooth" },
+  click:       { frequency: 1200, duration: 0.05, volume: 0.15, waveType: "square" },
+  ring:        { frequency: 740, duration: 0.4, volume: 0.25, waveType: "sine" },
+  notify:      { frequency: 600, duration: 0.15, volume: 0.2, waveType: "triangle" },
+  blip:        { frequency: 480, duration: 0.08, volume: 0.15, waveType: "sine" },
+  whoosh:      { frequency: 300, duration: 0.25, volume: 0.15, waveType: "triangle" },
+};
+
 const SoundHook = {
   mounted() {
     this.audioCtx = null;
     this.muted = localStorage.getItem("retro_hex_chat_mute") === "true";
 
+    this.pushEvent("mute_state_sync", { muted: this.muted });
+
     this.handleEvent("play_sound", ({ type }) => {
       if (!this.muted) {
-        this.playBeep(type);
+        this.playSound(type);
       }
     });
 
@@ -28,7 +50,10 @@ const SoundHook = {
     return this.audioCtx;
   },
 
-  playBeep(type) {
+  playSound(name) {
+    const config = SOUND_CATALOG[name];
+    if (!config) return;
+
     try {
       const ctx = this.getAudioContext();
       const oscillator = ctx.createOscillator();
@@ -36,8 +61,6 @@ const SoundHook = {
 
       oscillator.connect(gainNode);
       gainNode.connect(ctx.destination);
-
-      const config = this.getSoundConfig(type);
 
       oscillator.type = config.waveType;
       oscillator.frequency.setValueAtTime(config.frequency, ctx.currentTime);
@@ -48,21 +71,6 @@ const SoundHook = {
       oscillator.stop(ctx.currentTime + config.duration);
     } catch (_e) {
       // Audio not available, silently ignore
-    }
-  },
-
-  getSoundConfig(type) {
-    switch (type) {
-      case "mention":
-        return { frequency: 880, duration: 0.15, volume: 0.3, waveType: "sine" };
-      case "pm":
-        return { frequency: 660, duration: 0.2, volume: 0.25, waveType: "sine" };
-      case "join":
-        return { frequency: 440, duration: 0.1, volume: 0.15, waveType: "triangle" };
-      case "error":
-        return { frequency: 220, duration: 0.3, volume: 0.2, waveType: "square" };
-      default:
-        return { frequency: 520, duration: 0.1, volume: 0.2, waveType: "sine" };
     }
   },
 };

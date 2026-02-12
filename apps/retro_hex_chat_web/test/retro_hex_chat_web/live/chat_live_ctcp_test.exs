@@ -173,6 +173,8 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
     test "CTCP reply does NOT trigger play_sound event", %{conn: conn} do
       nick = "CtNoSnd#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      # Consume connect sound event
+      assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       send_ctcp_request(view, "Alice", :ping)
 

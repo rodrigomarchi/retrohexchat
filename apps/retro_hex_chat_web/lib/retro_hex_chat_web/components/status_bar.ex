@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Components.StatusBar do
   attr :channel, :string, default: nil
   attr :user_count, :integer, default: 0
   attr :connected, :boolean, default: true
+  attr :muted, :boolean, default: false
 
   @spec status_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def status_bar(assigns) do
@@ -18,6 +19,14 @@ defmodule RetroHexChatWeb.Components.StatusBar do
       <p class="status-bar-field" data-testid="status-users">Users: {@user_count}</p>
       <p class="status-bar-field" data-testid="status-connection">
         {if @connected, do: "Connected", else: "Disconnected"}
+      </p>
+      <p
+        class="status-bar-field mute-toggle"
+        data-testid="mute-toggle"
+        phx-click="toggle_mute"
+        style="cursor: pointer; user-select: none;"
+      >
+        {if @muted, do: "[MUTE]", else: "[SND]"}
       </p>
     </div>
     """

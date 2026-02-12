@@ -13,6 +13,7 @@ defmodule RetroHexChat.Accounts.Session do
   alias RetroHexChat.Chat.HighlightWords
   alias RetroHexChat.Chat.IgnoreList
   alias RetroHexChat.Chat.PerformList
+  alias RetroHexChat.Chat.SoundSettings
   alias RetroHexChat.Presence.NotifyList
 
   @type t :: %__MODULE__{
@@ -38,6 +39,7 @@ defmodule RetroHexChat.Accounts.Session do
           notice_routing: :active | :status | :sender,
           ctcp_settings: map(),
           flood_protection: map(),
+          sound_settings: map(),
           last_message_at: DateTime.t()
         }
 
@@ -65,6 +67,7 @@ defmodule RetroHexChat.Accounts.Session do
     notice_routing: :active,
     ctcp_settings: nil,
     flood_protection: nil,
+    sound_settings: nil,
     last_message_at: nil
   ]
 
@@ -83,6 +86,7 @@ defmodule RetroHexChat.Accounts.Session do
       autojoin_list: AutoJoinList.new(),
       ctcp_settings: CtcpSettings.new(),
       flood_protection: FloodProtection.new(),
+      sound_settings: SoundSettings.new(),
       last_message_at: DateTime.utc_now()
     }
   end
@@ -275,6 +279,14 @@ defmodule RetroHexChat.Accounts.Session do
   @spec set_flood_protection(t(), map()) :: t()
   def set_flood_protection(%__MODULE__{} = session, settings) do
     %{session | flood_protection: settings}
+  end
+
+  @spec get_sound_settings(t()) :: map()
+  def get_sound_settings(%__MODULE__{sound_settings: settings}), do: settings
+
+  @spec set_sound_settings(t(), map()) :: t()
+  def set_sound_settings(%__MODULE__{} = session, settings) do
+    %{session | sound_settings: settings}
   end
 
   @spec get_last_message_at(t()) :: DateTime.t()

@@ -1326,6 +1326,122 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<p><a href=\"#\" data-help-topic=\"feature-ignore-list\">Ignore List</a> · " <>
           "<a href=\"#\" data-help-topic=\"feature-ctcp\">CTCP</a></p>"
     },
+    # ── Sounds & Notifications ─────────────────────────────────
+    %{
+      id: "feature-sounds",
+      title: "Sounds",
+      category: "Features",
+      keywords: [
+        "sounds",
+        "sound",
+        "audio",
+        "beep",
+        "ding",
+        "alert",
+        "chime",
+        "notification sound"
+      ],
+      content:
+        "<h3>Sounds</h3>" <>
+          "<p>RetroHexChat plays configurable sounds for various events. Access the " <>
+          "Sounds dialog from <strong>Tools &gt; Sounds</strong> to customize which " <>
+          "sound plays for each event type.</p>" <>
+          "<h4>Event Types</h4>" <>
+          "<p><code>Message</code> — New message in a background channel<br/>" <>
+          "<code>PM</code> — New private message<br/>" <>
+          "<code>Highlight</code> — Your nickname mentioned<br/>" <>
+          "<code>Join</code> — User joins a channel<br/>" <>
+          "<code>Part</code> — User leaves a channel<br/>" <>
+          "<code>Kick</code> — User is kicked from a channel<br/>" <>
+          "<code>Connect</code> — You connect to the chat<br/>" <>
+          "<code>Disconnect</code> — Connection lost<br/>" <>
+          "<code>Buddy Online</code> — A notify list contact comes online<br/>" <>
+          "<code>Buddy Offline</code> — A notify list contact goes offline</p>" <>
+          "<h4>Sound Catalog</h4>" <>
+          "<p>Choose from 14 built-in sounds (ding, alert, chime, click, etc.) " <>
+          "or select <code>None</code> to disable sound for an event.</p>" <>
+          "<h4>Dialog Controls</h4>" <>
+          "<p><strong>OK</strong> — Save changes and close<br/>" <>
+          "<strong>Cancel</strong> — Discard changes and close<br/>" <>
+          "<strong>Apply</strong> — Save changes and keep dialog open<br/>" <>
+          "<strong>Preview</strong> — Play the selected sound</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-mute\">Mute</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-visual-notifications\">Visual Notifications</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
+    },
+    %{
+      id: "feature-mute",
+      title: "Mute",
+      category: "Features",
+      keywords: ["mute", "unmute", "silence", "sound off", "quiet"],
+      content:
+        "<h3>Mute</h3>" <>
+          "<p>The global mute toggle silences all sounds with one click.</p>" <>
+          "<h4>Usage</h4>" <>
+          "<p>Click <strong>[SND]</strong> in the status bar to mute. " <>
+          "The indicator changes to <strong>[MUTE]</strong> when muted. " <>
+          "Click again to unmute.</p>" <>
+          "<h4>Key Behaviors</h4>" <>
+          "<p>- Mute state persists across page reloads (stored in browser)<br/>" <>
+          "- Muting does not affect visual notifications (treebar flash, title flash)<br/>" <>
+          "- Muting does not affect the typing indicator</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-sounds\">Sounds</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-visual-notifications\">Visual Notifications</a></p>"
+    },
+    %{
+      id: "feature-typing-indicator",
+      title: "Typing Indicator",
+      category: "Features",
+      keywords: ["typing", "indicator", "is typing", "pm typing"],
+      content:
+        "<h3>Typing Indicator</h3>" <>
+          "<p>When someone is typing a message in a PM conversation, " <>
+          "a subtle indicator appears showing \"<em>NickName is typing...</em>\".</p>" <>
+          "<h4>Key Behaviors</h4>" <>
+          "<p>- Only appears in private message conversations (not channels)<br/>" <>
+          "- Disappears after 5 seconds of inactivity<br/>" <>
+          "- Disappears immediately when the other user sends their message<br/>" <>
+          "- Both users can see each other's typing indicators simultaneously<br/>" <>
+          "- Ignored users' typing indicators are not shown</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-msg\">/msg Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-ignore-list\">Ignore List</a></p>"
+    },
+    %{
+      id: "feature-visual-notifications",
+      title: "Visual Notifications",
+      category: "Features",
+      keywords: [
+        "visual",
+        "notifications",
+        "flash",
+        "blink",
+        "treebar",
+        "title",
+        "activity",
+        "indicator"
+      ],
+      content:
+        "<h3>Visual Notifications</h3>" <>
+          "<p>When activity occurs in a channel or PM you are not currently viewing, " <>
+          "visual indicators alert you.</p>" <>
+          "<h4>Treebar Flash</h4>" <>
+          "<p>The channel or PM entry in the treebar highlights when new activity " <>
+          "arrives. The highlight clears when you switch to that channel or PM.</p>" <>
+          "<h4>Title Bar Flash</h4>" <>
+          "<p>When the browser tab is not focused, the page title alternates " <>
+          "between the normal title and \"* New activity\" to draw your attention.</p>" <>
+          "<h4>Per-Event Flash Toggle</h4>" <>
+          "<p>In the Sounds dialog (<strong>Tools &gt; Sounds</strong>), each event " <>
+          "type has a <strong>Flash</strong> checkbox. Uncheck it to disable visual " <>
+          "notifications for that event type while keeping sounds enabled.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-sounds\">Sounds</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-mute\">Mute</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
+    },
     # ── Keyboard Shortcuts ───────────────────────────────────
     %{
       id: "keyboard-shortcuts",

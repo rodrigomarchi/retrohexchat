@@ -18,6 +18,7 @@
 - PostgreSQL 16+ (1 new table: `notice_routing_settings`) + in-memory Session state for guests (011-notice-system)
 - PostgreSQL 16+ (new `ctcp_settings` table) + in-memory Session state for guests (012-ctcp-system)
 - PostgreSQL 16+ (1 new table: `flood_protection_settings`) + in-memory socket assigns for trackers (013-flood-protection)
+- PostgreSQL 16+ (1 new table: `sound_settings` with JSONB columns) + in-memory Session state for guests + localStorage for mute state (014-sounds-notifications)
 
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x
 - PostgreSQL 16+ with cursor-based pagination and GIN/trigram indexes
@@ -98,6 +99,6 @@ Key non-negotiables: TDD, umbrella separation, OTP process architecture,
 static analysis from day one, 98.css design fidelity.
 
 ## Recent Changes
+- 014-sounds-notifications: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
 - 013-flood-protection: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
 - 012-ctcp-system: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
-- 011-notice-system: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css

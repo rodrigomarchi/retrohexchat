@@ -200,7 +200,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
       send_new_message(view, "OtherUser", "hey #{nick}!", "#lobby")
 
-      assert_push_event(view, "play_sound", %{type: "mention"})
+      assert_push_event(view, "play_sound", %{type: "alert"})
     end
 
     test "no push_event on non-highlight message", %{conn: conn} do
@@ -211,7 +211,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
       # Render to process the message
       render(view)
-      refute_push_event(view, "play_sound", %{type: "mention"})
+      refute_push_event(view, "play_sound", %{type: "alert"})
     end
 
     test "push_event sent for highlight in non-active channel too", %{conn: conn} do
@@ -229,7 +229,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
       send_new_message(view, "OtherUser", "hey #{nick}!", ch)
 
-      assert_push_event(view, "play_sound", %{type: "mention"})
+      assert_push_event(view, "play_sound", %{type: "alert"})
     end
   end
 
