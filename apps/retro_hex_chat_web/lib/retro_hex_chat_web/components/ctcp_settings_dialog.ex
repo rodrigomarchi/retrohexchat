@@ -26,7 +26,10 @@ defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
             </button>
           </div>
         </div>
-        <div class="window-body" style="padding: 8px; display: flex; flex-direction: column; gap: 8px;">
+        <div
+          class="window-body"
+          style="padding: 8px; display: flex; flex-direction: column; gap: 8px;"
+        >
           <fieldset>
             <legend>General</legend>
             <div style="padding: 4px;">
@@ -38,8 +41,7 @@ defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
                   form="ctcp-settings-form"
                   name="enabled"
                   value="true"
-                />
-                Enable CTCP responses
+                /> Enable CTCP responses
               </label>
               <p style="margin: 4px 0 0 20px; font-size: 11px; color: #999;">
                 When disabled, other users will see a timeout when sending you CTCP requests.

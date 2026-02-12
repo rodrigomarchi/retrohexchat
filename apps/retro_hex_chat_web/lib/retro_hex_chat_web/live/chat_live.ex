@@ -14,6 +14,9 @@ defmodule RetroHexChatWeb.ChatLive do
     CapturedURL,
     CtcpSettings,
     DisplayPreferences,
+    DuplicateTracker,
+    FloodProtection,
+    FloodTracker,
     Formatter,
     HelpTopics,
     Highlight,
@@ -173,7 +176,12 @@ defmodule RetroHexChatWeb.ChatLive do
       reconnect_active_pm: nil,
       ctcp_pending: %{},
       ctcp_rate_limits: %{},
-      show_ctcp_settings_dialog: false
+      show_ctcp_settings_dialog: false,
+      duplicate_tracker: DuplicateTracker.new(),
+      flood_tracker: FloodTracker.new(),
+      auto_ignore_state: %{active: %{}, cooldowns: %{}},
+      ctcp_reply_tracker: %{timestamps: []},
+      show_flood_protection_dialog: false
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -565,6 +573,7 @@ defmodule RetroHexChatWeb.ChatLive do
          |> close_context_menu()
          |> assign(session: new_session)
          |> cancel_ignore_timer(nick)
+         |> cancel_auto_ignore_with_cooldown(nick)
          |> maybe_persist_ignore_list(new_session)
          |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))}
 
@@ -1045,6 +1054,7 @@ defmodule RetroHexChatWeb.ChatLive do
            socket
            |> assign(session: new_session, ignore_selected: nil)
            |> cancel_ignore_timer(nick)
+           |> cancel_auto_ignore_with_cooldown(nick)
            |> maybe_persist_ignore_list(new_session)
            |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))}
 
@@ -1096,6 +1106,67 @@ defmodule RetroHexChatWeb.ChatLive do
      |> stream_insert(
        :chat_messages,
        system_message("* CTCP settings saved")
+     )}
+  end
+
+  def handle_event("open_flood_protection_dialog", _params, socket) do
+    {:noreply, assign(socket, show_flood_protection_dialog: true)}
+  end
+
+  def handle_event("close_flood_protection_dialog", _params, socket) do
+    {:noreply, assign(socket, show_flood_protection_dialog: false)}
+  end
+
+  def handle_event("flood_save_settings", params, socket) do
+    session = socket.assigns.session
+    settings = session.flood_protection
+
+    settings =
+      settings
+      |> try_set(&FloodProtection.set_flood_threshold/2, params["flood_threshold"])
+      |> try_set(&FloodProtection.set_flood_window_seconds/2, params["flood_window_seconds"])
+      |> try_set(
+        &FloodProtection.set_auto_ignore_duration_seconds/2,
+        params["auto_ignore_duration_seconds"]
+      )
+      |> try_set(&FloodProtection.set_spam_threshold/2, params["spam_threshold"])
+      |> try_set(&FloodProtection.set_spam_window_seconds/2, params["spam_window_seconds"])
+      |> try_set(&FloodProtection.set_ctcp_reply_limit/2, params["ctcp_reply_limit"])
+      |> try_set(
+        &FloodProtection.set_ctcp_reply_window_seconds/2,
+        params["ctcp_reply_window_seconds"]
+      )
+
+    new_session = Session.set_flood_protection(session, settings)
+
+    if new_session.identified do
+      Task.start(fn -> FloodProtection.save(new_session.nickname, settings) end)
+    end
+
+    {:noreply,
+     socket
+     |> assign(session: new_session, show_flood_protection_dialog: false)
+     |> stream_insert(
+       :chat_messages,
+       system_message("* Flood protection settings saved")
+     )}
+  end
+
+  def handle_event("flood_reset_defaults", _params, socket) do
+    session = socket.assigns.session
+    defaults = FloodProtection.new()
+    new_session = Session.set_flood_protection(session, defaults)
+
+    if new_session.identified do
+      Task.start(fn -> FloodProtection.save(new_session.nickname, defaults) end)
+    end
+
+    {:noreply,
+     socket
+     |> assign(session: new_session, show_flood_protection_dialog: false)
+     |> stream_insert(
+       :chat_messages,
+       system_message("* Flood protection settings reset to defaults")
      )}
   end
 
@@ -1981,14 +2052,29 @@ defmodule RetroHexChatWeb.ChatLive do
     if IgnoreList.ignored?(session.ignore_list, payload.author, msg_type) do
       {:noreply, socket}
     else
-      decorated = maybe_highlight(payload, session)
+      socket = check_channel_duplicate(socket, payload)
 
-      socket =
-        socket
-        |> maybe_play_highlight_sound(decorated, payload.channel)
-        |> capture_urls(payload.content, payload.channel, :channel, payload.author)
+      if payload.type != :system and
+           DuplicateTracker.duplicate?(
+             socket.assigns.duplicate_tracker,
+             payload.author,
+             {:channel, payload.channel},
+             payload.content,
+             FloodProtection.get_spam_threshold(session.flood_protection),
+             FloodProtection.get_spam_window_seconds(session.flood_protection)
+           ) do
+        {:noreply, socket}
+      else
+        socket = check_flood_and_auto_ignore(socket, payload.author, payload.type, session)
+        decorated = maybe_highlight(payload, session)
 
-      {:noreply, apply_new_message(socket, decorated, payload.channel, session)}
+        socket =
+          socket
+          |> maybe_play_highlight_sound(decorated, payload.channel)
+          |> capture_urls(payload.content, payload.channel, :channel, payload.author)
+
+        {:noreply, apply_new_message(socket, decorated, payload.channel, session)}
+      end
     end
   end
 
@@ -1998,14 +2084,19 @@ defmodule RetroHexChatWeb.ChatLive do
     if IgnoreList.ignored?(session.ignore_list, payload.sender, :pm) do
       {:noreply, socket}
     else
-      other_nick = pm_other_nick(payload, session.nickname)
-      socket = capture_urls(socket, payload.content, other_nick, :pm, payload.sender)
+      socket = check_pm_duplicate(socket, payload)
 
-      if session.active_pm == other_nick do
-        {:noreply, stream_insert(socket, :chat_messages, pm_to_stream_item(payload))}
+      if DuplicateTracker.duplicate?(
+           socket.assigns.duplicate_tracker,
+           payload.sender,
+           {:pm, payload.sender},
+           payload.content,
+           FloodProtection.get_spam_threshold(session.flood_protection),
+           FloodProtection.get_spam_window_seconds(session.flood_protection)
+         ) do
+        {:noreply, socket}
       else
-        unread = MapSet.put(socket.assigns.unread_channels, "pm:#{other_nick}")
-        {:noreply, assign(socket, unread_channels: unread)}
+        {:noreply, apply_new_pm(socket, payload, session)}
       end
     end
   end
@@ -2039,7 +2130,10 @@ defmodule RetroHexChatWeb.ChatLive do
 
   # ── CTCP handle_info ──────────────────────────────────────────
 
-  def handle_info({:ctcp_request, %{type: type, sender: sender, request_id: req_id, sent_at: sent_at}}, socket) do
+  def handle_info(
+        {:ctcp_request, %{type: type, sender: sender, request_id: req_id, sent_at: sent_at}},
+        socket
+      ) do
     session = socket.assigns.session
     settings = Session.get_ctcp_settings(session)
     type_upper = type |> Atom.to_string() |> String.upcase()
@@ -2051,26 +2145,15 @@ defmodule RetroHexChatWeb.ChatLive do
         system_message("* CTCP #{type_upper} request from #{sender}")
       )
 
-    if CtcpSettings.get_enabled(settings) do
-      value = generate_ctcp_reply_value(session, type)
-
-      Phoenix.PubSub.broadcast(
-        RetroHexChat.PubSub,
-        "user:#{sender}",
-        {:ctcp_reply, %{
-          type: type,
-          replier: session.nickname,
-          request_id: req_id,
-          value: value,
-          sent_at: sent_at
-        }}
-      )
-    end
-
+    socket = maybe_send_ctcp_reply(socket, session, settings, type, sender, req_id, sent_at)
     {:noreply, socket}
   end
 
-  def handle_info({:ctcp_reply, %{type: type, replier: replier, request_id: req_id, value: value, sent_at: sent_at}}, socket) do
+  def handle_info(
+        {:ctcp_reply,
+         %{type: type, replier: replier, request_id: req_id, value: value, sent_at: sent_at}},
+        socket
+      ) do
     pending = socket.assigns.ctcp_pending
 
     case Map.pop(pending, req_id) do
@@ -2333,6 +2416,41 @@ defmodule RetroHexChatWeb.ChatLive do
 
       {:error, :not_found} ->
         {:noreply, socket}
+    end
+  end
+
+  def handle_info({:auto_ignore_expired, nickname}, socket) do
+    session = socket.assigns.session
+    sender_key = String.downcase(nickname)
+    auto_state = socket.assigns.auto_ignore_state
+
+    case IgnoreList.remove_entry(session.ignore_list, nickname) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+        new_active = Map.delete(auto_state.active, sender_key)
+        new_auto_state = %{auto_state | active: new_active}
+
+        # Reset flood tracker for sender so they start fresh
+        new_tracker = FloodTracker.reset_sender(socket.assigns.flood_tracker, nickname)
+
+        {:noreply,
+         socket
+         |> assign(
+           session: new_session,
+           auto_ignore_state: new_auto_state,
+           flood_tracker: new_tracker
+         )
+         |> maybe_persist_ignore_list(new_session)
+         |> stream_insert(
+           :chat_messages,
+           system_message("* #{nickname} is no longer auto-ignored")
+         )}
+
+      {:error, :not_found} ->
+        # Already removed (maybe manually un-ignored)
+        new_active = Map.delete(auto_state.active, sender_key)
+        new_auto_state = %{auto_state | active: new_active}
+        {:noreply, assign(socket, auto_ignore_state: new_auto_state)}
     end
   end
 
@@ -2955,6 +3073,7 @@ defmodule RetroHexChatWeb.ChatLive do
         socket
         |> assign(session: new_session)
         |> cancel_ignore_timer(nick)
+        |> cancel_auto_ignore_with_cooldown(nick)
         |> maybe_persist_ignore_list(new_session)
         |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))
 
@@ -3580,22 +3699,24 @@ defmodule RetroHexChatWeb.ChatLive do
         sent_at = System.monotonic_time(:millisecond)
         timer_ref = Process.send_after(self(), {:ctcp_timeout, request_id}, 10_000)
 
-        pending = Map.put(socket.assigns.ctcp_pending, request_id, %{
-          target: target,
-          type: type,
-          sent_at: sent_at,
-          timer_ref: timer_ref
-        })
+        pending =
+          Map.put(socket.assigns.ctcp_pending, request_id, %{
+            target: target,
+            type: type,
+            sent_at: sent_at,
+            timer_ref: timer_ref
+          })
 
         Phoenix.PubSub.broadcast(
           RetroHexChat.PubSub,
           "user:#{target}",
-          {:ctcp_request, %{
-            type: type,
-            sender: session.nickname,
-            request_id: request_id,
-            sent_at: sent_at
-          }}
+          {:ctcp_request,
+           %{
+             type: type,
+             sender: session.nickname,
+             request_id: request_id,
+             sent_at: sent_at
+           }}
         )
 
         assign(socket, ctcp_pending: pending)
@@ -3658,14 +3779,17 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   defp format_idle_time(seconds) when seconds < 60, do: "#{seconds} seconds"
+
   defp format_idle_time(seconds) when seconds < 3600 do
     minutes = div(seconds, 60)
     if minutes == 1, do: "1 minute", else: "#{minutes} minutes"
   end
+
   defp format_idle_time(seconds) when seconds < 86_400 do
     hours = div(seconds, 3600)
     if hours == 1, do: "1 hour", else: "#{hours} hours"
   end
+
   defp format_idle_time(seconds) do
     days = div(seconds, 86_400)
     if days == 1, do: "1 day", else: "#{days} days"
@@ -4502,6 +4626,7 @@ defmodule RetroHexChatWeb.ChatLive do
       Session.set_notice_routing(session, routing)
     end)
     |> load_if_found(CtcpSettings.load(nick), &Session.set_ctcp_settings/2)
+    |> load_if_found(FloodProtection.load(nick), &Session.set_flood_protection/2)
   end
 
   @spec load_if_found(Session.t(), {:ok, term()} | {:error, term()}, (Session.t(), term() ->
@@ -4902,6 +5027,11 @@ defmodule RetroHexChatWeb.ChatLive do
         ctcp_settings={@session.ctcp_settings}
       />
 
+      <RetroHexChatWeb.Components.FloodProtectionDialog.flood_protection_dialog
+        visible={@show_flood_protection_dialog}
+        flood_protection={@session.flood_protection}
+      />
+
       <RetroHexChatWeb.Components.PerformDialog.perform_dialog
         visible={@show_perform_dialog}
         active_tab={@perform_dialog_tab}
@@ -5017,6 +5147,271 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   defp maybe_highlight(payload, _session), do: payload
+
+  @spec apply_new_pm(Phoenix.LiveView.Socket.t(), map(), Session.t()) ::
+          Phoenix.LiveView.Socket.t()
+  defp apply_new_pm(socket, payload, session) do
+    socket = check_flood_and_auto_ignore(socket, payload.sender, :message, session)
+    other_nick = pm_other_nick(payload, session.nickname)
+    socket = capture_urls(socket, payload.content, other_nick, :pm, payload.sender)
+
+    if session.active_pm == other_nick do
+      stream_insert(socket, :chat_messages, pm_to_stream_item(payload))
+    else
+      unread = MapSet.put(socket.assigns.unread_channels, "pm:#{other_nick}")
+      assign(socket, unread_channels: unread)
+    end
+  end
+
+  @spec check_channel_duplicate(Phoenix.LiveView.Socket.t(), map()) ::
+          Phoenix.LiveView.Socket.t()
+  defp check_channel_duplicate(socket, %{type: :system}), do: socket
+
+  defp check_channel_duplicate(socket, payload) do
+    tracker =
+      DuplicateTracker.record_message(
+        socket.assigns.duplicate_tracker,
+        payload.author,
+        {:channel, payload.channel},
+        payload.content
+      )
+
+    assign(socket, duplicate_tracker: tracker)
+  end
+
+  @spec check_pm_duplicate(Phoenix.LiveView.Socket.t(), map()) ::
+          Phoenix.LiveView.Socket.t()
+  defp check_pm_duplicate(socket, payload) do
+    tracker =
+      DuplicateTracker.record_message(
+        socket.assigns.duplicate_tracker,
+        payload.sender,
+        {:pm, payload.sender},
+        payload.content
+      )
+
+    assign(socket, duplicate_tracker: tracker)
+  end
+
+  @spec check_flood_and_auto_ignore(
+          Phoenix.LiveView.Socket.t(),
+          String.t(),
+          atom(),
+          Session.t()
+        ) :: Phoenix.LiveView.Socket.t()
+  defp check_flood_and_auto_ignore(socket, _sender, :system, _session), do: socket
+
+  defp check_flood_and_auto_ignore(socket, sender, _msg_type, session) do
+    # Don't track the user's own messages
+    if String.downcase(sender) == String.downcase(session.nickname) do
+      socket
+    else
+      flood_settings = session.flood_protection
+      tracker = FloodTracker.record_message(socket.assigns.flood_tracker, sender)
+      socket = assign(socket, flood_tracker: tracker)
+
+      if FloodTracker.flooded?(
+           tracker,
+           sender,
+           FloodProtection.get_flood_threshold(flood_settings),
+           FloodProtection.get_flood_window_seconds(flood_settings)
+         ) do
+        maybe_trigger_auto_ignore(socket, sender, session)
+      else
+        socket
+      end
+    end
+  end
+
+  @spec maybe_trigger_auto_ignore(Phoenix.LiveView.Socket.t(), String.t(), Session.t()) ::
+          Phoenix.LiveView.Socket.t()
+  defp maybe_trigger_auto_ignore(socket, sender, session) do
+    sender_key = String.downcase(sender)
+    auto_state = socket.assigns.auto_ignore_state
+
+    # Don't trigger if already auto-ignored
+    already_active = Map.has_key?(auto_state.active, sender_key)
+    # Don't trigger if in cooldown
+    in_cooldown = cooldown_active?(auto_state, sender_key)
+    # Don't trigger if already permanently ignored
+    already_ignored = IgnoreList.ignored?(session.ignore_list, sender, :all)
+
+    if already_active or in_cooldown or already_ignored do
+      socket
+    else
+      duration = FloodProtection.get_auto_ignore_duration_seconds(session.flood_protection)
+      expires_at = DateTime.add(DateTime.utc_now(), duration, :second)
+
+      case IgnoreList.add_entry(session.ignore_list, sender, :all, expires_at) do
+        {:ok, updated_list} ->
+          new_session = Session.set_ignore_list(session, updated_list)
+
+          # Schedule auto-ignore expiry timer
+          timer_ref =
+            Process.send_after(self(), {:auto_ignore_expired, sender}, duration * 1000)
+
+          # Update auto-ignore state
+          new_active = Map.put(auto_state.active, sender_key, timer_ref)
+          new_auto_state = %{auto_state | active: new_active}
+
+          duration_str = format_duration(duration)
+
+          socket
+          |> assign(
+            session: new_session,
+            auto_ignore_state: new_auto_state
+          )
+          |> maybe_persist_ignore_list(new_session)
+          |> stream_insert(
+            :chat_messages,
+            system_message("* #{sender} has been auto-ignored for flooding (#{duration_str})")
+          )
+
+        {:error, _} ->
+          socket
+      end
+    end
+  end
+
+  @spec cooldown_active?(map(), String.t()) :: boolean()
+  defp cooldown_active?(auto_state, sender_key) do
+    case Map.get(auto_state.cooldowns, sender_key) do
+      nil ->
+        false
+
+      cooldown_until ->
+        System.monotonic_time(:millisecond) < cooldown_until
+    end
+  end
+
+  @spec format_duration(integer()) :: String.t()
+  defp format_duration(seconds) when seconds >= 3600 do
+    hours = div(seconds, 3600)
+    "#{hours} hour#{if hours > 1, do: "s", else: ""}"
+  end
+
+  defp format_duration(seconds) when seconds >= 60 do
+    minutes = div(seconds, 60)
+    "#{minutes} minute#{if minutes > 1, do: "s", else: ""}"
+  end
+
+  defp format_duration(seconds), do: "#{seconds} seconds"
+
+  @spec try_set(map(), (map(), integer() -> map() | {:error, atom()}), String.t() | nil) ::
+          map()
+  defp try_set(settings, _setter, nil), do: settings
+
+  defp try_set(settings, setter, value_str) do
+    case Integer.parse(value_str) do
+      {value, _} ->
+        case setter.(settings, value) do
+          {:error, _} -> settings
+          updated -> updated
+        end
+
+      :error ->
+        settings
+    end
+  end
+
+  @spec maybe_send_ctcp_reply(
+          Phoenix.LiveView.Socket.t(),
+          Session.t(),
+          map(),
+          atom(),
+          String.t(),
+          String.t(),
+          integer()
+        ) :: Phoenix.LiveView.Socket.t()
+  defp maybe_send_ctcp_reply(
+         socket,
+         _session,
+         %{enabled: false},
+         _type,
+         _sender,
+         _req_id,
+         _sent_at
+       ),
+       do: socket
+
+  defp maybe_send_ctcp_reply(socket, session, _settings, type, sender, req_id, sent_at) do
+    flood_settings = session.flood_protection
+    reply_limit = FloodProtection.get_ctcp_reply_limit(flood_settings)
+    reply_window = FloodProtection.get_ctcp_reply_window_seconds(flood_settings)
+
+    if ctcp_reply_allowed?(socket.assigns.ctcp_reply_tracker, reply_limit, reply_window) do
+      socket = record_ctcp_reply(socket)
+      value = generate_ctcp_reply_value(session, type)
+
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "user:#{sender}",
+        {:ctcp_reply,
+         %{
+           type: type,
+           replier: session.nickname,
+           request_id: req_id,
+           value: value,
+           sent_at: sent_at
+         }}
+      )
+
+      socket
+    else
+      socket
+    end
+  end
+
+  @spec ctcp_reply_allowed?(map(), integer(), integer()) :: boolean()
+  defp ctcp_reply_allowed?(tracker, limit, window_seconds) do
+    now = System.monotonic_time(:millisecond)
+    cutoff = now - window_seconds * 1000
+
+    recent =
+      Enum.count(tracker.timestamps, fn ts -> ts > cutoff end)
+
+    recent < limit
+  end
+
+  @spec record_ctcp_reply(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  defp record_ctcp_reply(socket) do
+    tracker = socket.assigns.ctcp_reply_tracker
+    now = System.monotonic_time(:millisecond)
+    new_tracker = %{tracker | timestamps: [now | tracker.timestamps]}
+    assign(socket, ctcp_reply_tracker: new_tracker)
+  end
+
+  @cooldown_duration_ms 60_000
+
+  @spec cancel_auto_ignore_with_cooldown(Phoenix.LiveView.Socket.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  defp cancel_auto_ignore_with_cooldown(socket, nick) do
+    sender_key = String.downcase(nick)
+    auto_state = socket.assigns.auto_ignore_state
+
+    case Map.get(auto_state.active, sender_key) do
+      nil ->
+        socket
+
+      timer_ref ->
+        Process.cancel_timer(timer_ref)
+
+        # Remove from active, add cooldown
+        new_active = Map.delete(auto_state.active, sender_key)
+        cooldown_until = System.monotonic_time(:millisecond) + @cooldown_duration_ms
+        new_cooldowns = Map.put(auto_state.cooldowns, sender_key, cooldown_until)
+
+        new_auto_state = %{active: new_active, cooldowns: new_cooldowns}
+
+        # Reset flood tracker for sender
+        new_tracker = FloodTracker.reset_sender(socket.assigns.flood_tracker, nick)
+
+        assign(socket,
+          auto_ignore_state: new_auto_state,
+          flood_tracker: new_tracker
+        )
+    end
+  end
 
   @spec maybe_play_highlight_sound(Phoenix.LiveView.Socket.t(), map(), String.t()) ::
           Phoenix.LiveView.Socket.t()
