@@ -6,12 +6,12 @@ defmodule RetroHexChat.Chat.IgnoreEntry do
 
   @type t :: %__MODULE__{
           nickname: String.t(),
-          ignore_type: :all | :messages | :pms | :invites | :actions,
+          ignore_type: :all | :messages | :pms | :invites | :actions | :notices,
           expires_at: DateTime.t() | nil,
           created_at: DateTime.t()
         }
 
-  @valid_types [:all, :messages, :pms, :invites, :actions]
+  @valid_types [:all, :messages, :pms, :invites, :actions, :notices]
 
   @enforce_keys [:nickname, :ignore_type, :created_at]
   defstruct [

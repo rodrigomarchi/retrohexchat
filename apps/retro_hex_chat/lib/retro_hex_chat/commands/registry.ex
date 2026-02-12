@@ -21,6 +21,8 @@ defmodule RetroHexChat.Commands.Registry do
     "mode" => RetroHexChat.Commands.Handlers.Mode,
     "msg" => RetroHexChat.Commands.Handlers.Msg,
     "nick" => RetroHexChat.Commands.Handlers.Nick,
+    "notice" => RetroHexChat.Commands.Handlers.Notice,
+    "notice_routing" => RetroHexChat.Commands.Handlers.NoticeRouting,
     "notify" => RetroHexChat.Commands.Handlers.Notify,
     "ns" => RetroHexChat.Commands.Handlers.Ns,
     "part" => RetroHexChat.Commands.Handlers.Part,

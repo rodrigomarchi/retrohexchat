@@ -210,5 +210,6 @@ defmodule RetroHexChat.Chat.IgnoreList do
   defp type_matches?(:pms, :pm), do: true
   defp type_matches?(:actions, :action), do: true
   defp type_matches?(:invites, :invite), do: true
+  defp type_matches?(:notices, :notice), do: true
   defp type_matches?(_ignore_type, _message_type), do: false
 end
