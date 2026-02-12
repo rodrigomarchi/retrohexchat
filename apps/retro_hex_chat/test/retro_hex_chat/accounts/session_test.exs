@@ -346,4 +346,56 @@ defmodule RetroHexChat.Accounts.SessionTest do
       assert length(result.entries) == 1
     end
   end
+
+  describe "log_preferences" do
+    alias RetroHexChat.Chat.DisplayPreferences
+
+    test "new/1 initializes with default DisplayPreferences" do
+      session = Session.new("Rodrigo")
+      assert session.log_preferences == DisplayPreferences.new()
+    end
+
+    test "set_log_preferences/2 updates the preferences" do
+      session = Session.new("Rodrigo")
+      prefs = DisplayPreferences.new() |> DisplayPreferences.toggle_event(:show_joins)
+
+      updated = Session.set_log_preferences(session, prefs)
+      assert updated.log_preferences.show_joins == false
+    end
+
+    test "set_log_preferences/2 preserves other session fields" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.add_channel("#general")
+        |> Session.set_identified(true)
+
+      prefs =
+        DisplayPreferences.new()
+        |> DisplayPreferences.set_timestamp_format(:hh_mm)
+
+      updated = Session.set_log_preferences(session, prefs)
+      assert updated.channels == ["#general"]
+      assert updated.identified == true
+      assert updated.nickname == "Rodrigo"
+    end
+
+    test "log_preferences/1 returns the current preferences" do
+      session = Session.new("Rodrigo")
+      assert Session.log_preferences(session) == DisplayPreferences.new()
+    end
+
+    test "log_preferences/1 returns updated prefs after set" do
+      session = Session.new("Rodrigo")
+
+      prefs =
+        DisplayPreferences.new()
+        |> DisplayPreferences.toggle_event(:show_kicks)
+        |> DisplayPreferences.set_timestamp_format(:dd_mm_hh_mm)
+
+      session = Session.set_log_preferences(session, prefs)
+      result = Session.log_preferences(session)
+      assert result.show_kicks == false
+      assert result.timestamp_format == :dd_mm_hh_mm
+    end
+  end
 end
