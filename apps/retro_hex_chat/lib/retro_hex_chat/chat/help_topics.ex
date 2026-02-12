@@ -112,6 +112,7 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<pre>/join #elixir\n/join #secret mykey</pre>" <>
           "<h4>See Also</h4>" <>
           "<p><a href=\"#\" data-help-topic=\"cmd-part\">Part</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-invite\">/invite</a> · " <>
           "<a href=\"#\" data-help-topic=\"channels\">Channels</a></p>"
     },
     %{
@@ -479,6 +480,31 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<p><a href=\"#\" data-help-topic=\"cmd-ignore\">/ignore</a> · " <>
           "<a href=\"#\" data-help-topic=\"feature-ignore-list\">Ignore List</a></p>"
     },
+    %{
+      id: "cmd-invite",
+      title: "/invite",
+      category: "Commands",
+      keywords: ["invite", "invite user", "channel invite", "invite-only", "auto-join"],
+      content:
+        "<h3>/invite</h3>" <>
+          "<p>Invite a user to an invite-only (+i) channel. Only channel operators can send invites.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/invite &lt;nickname&gt; [#channel]\n" <>
+          "/invite auto</pre>" <>
+          "<h4>Parameters</h4>" <>
+          "<p><code>nickname</code> — The user to invite.<br/>" <>
+          "<code>#channel</code> — Target channel (defaults to active channel).<br/>" <>
+          "<code>auto</code> — Toggle auto-join on invite preference.</p>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/invite Alice\n/invite Alice #private\n/invite auto</pre>" <>
+          "<h4>Notes</h4>" <>
+          "<p>The invited user receives a dialog popup to Join or Ignore the invitation. " <>
+          "Invitations expire after 5 minutes. The channel must have +i mode set.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-channel-invites\">Channel Invites</a> · " <>
+          "<a href=\"#\" data-help-topic=\"mode-i\">+i Invite Only</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-join\">/join</a></p>"
+    },
     # ── Services ─────────────────────────────────────────────
     %{
       id: "nickserv",
@@ -560,7 +586,11 @@ defmodule RetroHexChat.Chat.HelpTopics do
         "<h3>+i Invite Only</h3>" <>
           "<p>When invite-only is set, users cannot join unless they are invited by an operator.</p>" <>
           "<h4>Usage</h4>" <>
-          "<pre>/mode +i    — Enable invite only\n/mode -i    — Disable invite only</pre>"
+          "<pre>/mode +i    — Enable invite only\n/mode -i    — Disable invite only</pre>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-invite\">/invite Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-channel-invites\">Channel Invites</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-invite-exceptions\">Invite Exceptions</a></p>"
     },
     %{
       id: "mode-t",
@@ -834,6 +864,40 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<h4>See Also</h4>" <>
           "<p><a href=\"#\" data-help-topic=\"cmd-mode\">/mode Command</a> · " <>
           "<a href=\"#\" data-help-topic=\"feature-channel-central\">Channel Central</a></p>"
+    },
+    %{
+      id: "feature-channel-invites",
+      title: "Channel Invites",
+      category: "Features",
+      keywords: [
+        "invite",
+        "channel invite",
+        "invite dialog",
+        "auto-join on invite",
+        "invite expiration",
+        "invite-only"
+      ],
+      content:
+        "<h3>Channel Invites</h3>" <>
+          "<p>The channel invite system allows operators of invite-only (+i) channels to " <>
+          "invite specific users to join. Invited users receive a Windows 98-style dialog " <>
+          "with Join and Ignore options.</p>" <>
+          "<h4>How It Works</h4>" <>
+          "<p>1. An operator uses <code>/invite &lt;nickname&gt;</code> to invite a user.<br/>" <>
+          "2. The invited user sees a popup dialog with the inviter's name and channel.<br/>" <>
+          "3. Clicking <strong>Join</strong> joins the channel. Clicking <strong>Ignore</strong> dismisses the dialog.<br/>" <>
+          "4. Invitations expire after 5 minutes if not accepted.</p>" <>
+          "<h4>Auto-Join on Invite</h4>" <>
+          "<p>Users can enable auto-join with <code>/invite auto</code>. When enabled, " <>
+          "incoming invitations are accepted automatically without showing a dialog. " <>
+          "This is disabled by default for security.</p>" <>
+          "<h4>Requirements</h4>" <>
+          "<p>Only channel operators can send invites. The channel must have +i (invite-only) " <>
+          "mode set. The target user must be online and not already in the channel.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-invite\">/invite Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"mode-i\">+i Invite Only</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-invite-exceptions\">Invite Exceptions</a></p>"
     },
     %{
       id: "feature-search",

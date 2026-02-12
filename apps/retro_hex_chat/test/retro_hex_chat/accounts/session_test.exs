@@ -347,6 +347,60 @@ defmodule RetroHexChat.Accounts.SessionTest do
     end
   end
 
+  describe "auto_join_on_invite" do
+    test "defaults to false" do
+      session = Session.new("Rodrigo")
+      assert session.auto_join_on_invite == false
+    end
+
+    test "get_auto_join_on_invite/1 returns the current value" do
+      session = Session.new("Rodrigo")
+      assert Session.get_auto_join_on_invite(session) == false
+    end
+
+    test "set_auto_join_on_invite/2 sets to true" do
+      session = Session.new("Rodrigo")
+      updated = Session.set_auto_join_on_invite(session, true)
+      assert updated.auto_join_on_invite == true
+    end
+
+    test "set_auto_join_on_invite/2 sets to false" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.set_auto_join_on_invite(true)
+        |> Session.set_auto_join_on_invite(false)
+
+      assert session.auto_join_on_invite == false
+    end
+
+    test "toggle_auto_join_on_invite/1 toggles from false to true" do
+      session = Session.new("Rodrigo")
+      updated = Session.toggle_auto_join_on_invite(session)
+      assert updated.auto_join_on_invite == true
+    end
+
+    test "toggle_auto_join_on_invite/1 toggles from true back to false" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.toggle_auto_join_on_invite()
+        |> Session.toggle_auto_join_on_invite()
+
+      assert session.auto_join_on_invite == false
+    end
+
+    test "toggle preserves other fields" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.add_channel("#general")
+        |> Session.set_identified(true)
+        |> Session.toggle_auto_join_on_invite()
+
+      assert session.auto_join_on_invite == true
+      assert session.channels == ["#general"]
+      assert session.identified == true
+    end
+  end
+
   describe "log_preferences" do
     alias RetroHexChat.Chat.DisplayPreferences
 
