@@ -91,6 +91,13 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           >
             Perform
           </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-ctcp-settings"
+            phx-click="open_ctcp_settings_dialog"
+          >
+            CTCP Settings
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">

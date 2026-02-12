@@ -9,6 +9,7 @@ defmodule RetroHexChat.Commands.Registry do
     "away" => RetroHexChat.Commands.Handlers.Away,
     "ban" => RetroHexChat.Commands.Handlers.Ban,
     "clear" => RetroHexChat.Commands.Handlers.Clear,
+    "ctcp" => RetroHexChat.Commands.Handlers.Ctcp,
     "cs" => RetroHexChat.Commands.Handlers.Cs,
     "help" => RetroHexChat.Commands.Handlers.Help,
     "ignore" => RetroHexChat.Commands.Handlers.Ignore,

@@ -17,6 +17,7 @@ defmodule RetroHexChat.Commands.Handler do
           | {:ok, :action, map()}
           | {:ok, :system, map()}
           | {:ok, :notice, map()}
+          | {:ok, :ctcp, map()}
           | {:ok, :join, String.t()}
           | {:ok, :join, String.t(), String.t() | nil}
           | {:ok, :part, String.t(), String.t() | nil}

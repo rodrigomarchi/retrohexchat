@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.ChatLive do
   alias RetroHexChat.Chat.{
     AutoJoinList,
     CapturedURL,
+    CtcpSettings,
     DisplayPreferences,
     Formatter,
     HelpTopics,
@@ -169,7 +170,10 @@ defmodule RetroHexChatWeb.ChatLive do
       log_error: nil,
       pending_invites: [],
       reconnect_active_channel: nil,
-      reconnect_active_pm: nil
+      reconnect_active_pm: nil,
+      ctcp_pending: %{},
+      ctcp_rate_limits: %{},
+      show_ctcp_settings_dialog: false
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -186,7 +190,8 @@ defmodule RetroHexChatWeb.ChatLive do
 
     case Parser.parse(input) do
       {:message, text} ->
-        socket = send_plain_message(socket, session, text)
+        new_session = Session.set_last_message_at(session, DateTime.utc_now())
+        socket = socket |> assign(session: new_session) |> send_plain_message(new_session, text)
         {:noreply, assign(socket, input: "", command_history: history, history_index: -1)}
 
       {:command, name, args} ->
@@ -1052,6 +1057,47 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   # ── Perform dialog events ─────────────────────────────────
+
+  def handle_event("open_ctcp_settings_dialog", _params, socket) do
+    {:noreply, assign(socket, show_ctcp_settings_dialog: true)}
+  end
+
+  def handle_event("close_ctcp_settings_dialog", _params, socket) do
+    {:noreply, assign(socket, show_ctcp_settings_dialog: false)}
+  end
+
+  def handle_event("ctcp_save_settings", params, socket) do
+    session = socket.assigns.session
+    settings = session.ctcp_settings
+
+    settings =
+      settings
+      |> CtcpSettings.set_enabled(params["enabled"] == "true")
+      |> CtcpSettings.set_version_string(params["version_string"] || "RetroHexChat v1.0")
+      |> CtcpSettings.set_finger_text(
+        case params["finger_text"] do
+          "" -> nil
+          nil -> nil
+          text -> text
+        end
+      )
+
+    new_session = Session.set_ctcp_settings(session, settings)
+
+    if new_session.identified do
+      Task.start(fn ->
+        CtcpSettings.save(new_session.nickname, settings)
+      end)
+    end
+
+    {:noreply,
+     socket
+     |> assign(session: new_session, show_ctcp_settings_dialog: false)
+     |> stream_insert(
+       :chat_messages,
+       system_message("* CTCP settings saved")
+     )}
+  end
 
   def handle_event("open_perform_dialog", _params, socket) do
     {:noreply, assign(socket, show_perform_dialog: true)}
@@ -1991,6 +2037,102 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  # ── CTCP handle_info ──────────────────────────────────────────
+
+  def handle_info({:ctcp_request, %{type: type, sender: sender, request_id: req_id, sent_at: sent_at}}, socket) do
+    session = socket.assigns.session
+    settings = Session.get_ctcp_settings(session)
+    type_upper = type |> Atom.to_string() |> String.upcase()
+
+    socket =
+      stream_insert(
+        socket,
+        :chat_messages,
+        system_message("* CTCP #{type_upper} request from #{sender}")
+      )
+
+    if CtcpSettings.get_enabled(settings) do
+      value = generate_ctcp_reply_value(session, type)
+
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "user:#{sender}",
+        {:ctcp_reply, %{
+          type: type,
+          replier: session.nickname,
+          request_id: req_id,
+          value: value,
+          sent_at: sent_at
+        }}
+      )
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_info({:ctcp_reply, %{type: type, replier: replier, request_id: req_id, value: value, sent_at: sent_at}}, socket) do
+    pending = socket.assigns.ctcp_pending
+
+    case Map.pop(pending, req_id) do
+      {nil, _} ->
+        # Unknown or already expired request — ignore
+        {:noreply, socket}
+
+      {%{timer_ref: timer_ref}, remaining} ->
+        Process.cancel_timer(timer_ref)
+        type_upper = type |> Atom.to_string() |> String.upcase()
+
+        display_value =
+          case type do
+            :ping ->
+              latency = System.monotonic_time(:millisecond) - sent_at
+              "#{latency}ms"
+
+            _ ->
+              value
+          end
+
+        {:noreply,
+         socket
+         |> assign(ctcp_pending: remaining)
+         |> stream_insert(
+           :chat_messages,
+           system_message("* CTCP #{type_upper} reply from #{replier}: #{display_value}")
+         )}
+    end
+  end
+
+  def handle_info({:ctcp_timeout, request_id}, socket) do
+    pending = socket.assigns.ctcp_pending
+
+    case Map.pop(pending, request_id) do
+      {nil, _} ->
+        {:noreply, socket}
+
+      {%{target: target}, remaining} ->
+        {:noreply,
+         socket
+         |> assign(ctcp_pending: remaining)
+         |> stream_insert(
+           :chat_messages,
+           system_message("* No CTCP reply from #{target} (timed out)")
+         )}
+    end
+  end
+
+  # Test helpers for CTCP
+  def handle_info({:_test_add_ctcp_pending, request_id, data}, socket) do
+    pending = Map.put(socket.assigns.ctcp_pending, request_id, data)
+    {:noreply, assign(socket, ctcp_pending: pending)}
+  end
+
+  def handle_info({:_test_set_ctcp_enabled, enabled}, socket) do
+    session = socket.assigns.session
+    settings = CtcpSettings.set_enabled(session.ctcp_settings, enabled)
+    new_session = Session.set_ctcp_settings(session, settings)
+    {:noreply, assign(socket, session: new_session)}
+  end
+
   def handle_info(
         {:mode_changed, %{nickname: nick, mode_string: mode_string, params: params} = payload},
         socket
@@ -2599,6 +2741,14 @@ defmodule RetroHexChatWeb.ChatLive do
          {:ok, :notice, %{target: target, content: content}}
        ) do
     handle_notice_send(socket, session, target, content)
+  end
+
+  defp handle_dispatch_result(
+         socket,
+         session,
+         {:ok, :ctcp, %{target: target, type: type}}
+       ) do
+    handle_ctcp_send(socket, session, target, type)
   end
 
   defp handle_dispatch_result(socket, _session, {:ok, :system, %{content: text}}),
@@ -3381,6 +3531,144 @@ defmodule RetroHexChatWeb.ChatLive do
       {:error, msg} ->
         stream_insert(socket, :chat_messages, error_message(msg))
     end
+  end
+
+  # ── CTCP Send ─────────────────────────────────────────────────
+
+  defp handle_ctcp_send(socket, session, target, type) do
+    # Self-CTCP: handle locally without PubSub
+    if target == session.nickname do
+      handle_self_ctcp(socket, session, type)
+    else
+      # Rate limit check
+      case check_ctcp_rate_limit(socket, target) do
+        {:ok, updated_socket} ->
+          handle_remote_ctcp(updated_socket, session, target, type)
+
+        {:error, socket_with_error} ->
+          socket_with_error
+      end
+    end
+  end
+
+  defp handle_self_ctcp(socket, session, type) do
+    value = generate_ctcp_reply_value(session, type)
+
+    case type do
+      :ping ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          system_message("* CTCP PING reply from #{session.nickname}: 0ms")
+        )
+
+      _ ->
+        type_upper = type |> Atom.to_string() |> String.upcase()
+
+        stream_insert(
+          socket,
+          :chat_messages,
+          system_message("* CTCP #{type_upper} reply from #{session.nickname}: #{value}")
+        )
+    end
+  end
+
+  defp handle_remote_ctcp(socket, session, target, type) do
+    case validate_target_online(target) do
+      :ok ->
+        request_id = "ctcp_#{System.unique_integer([:positive])}"
+        sent_at = System.monotonic_time(:millisecond)
+        timer_ref = Process.send_after(self(), {:ctcp_timeout, request_id}, 10_000)
+
+        pending = Map.put(socket.assigns.ctcp_pending, request_id, %{
+          target: target,
+          type: type,
+          sent_at: sent_at,
+          timer_ref: timer_ref
+        })
+
+        Phoenix.PubSub.broadcast(
+          RetroHexChat.PubSub,
+          "user:#{target}",
+          {:ctcp_request, %{
+            type: type,
+            sender: session.nickname,
+            request_id: request_id,
+            sent_at: sent_at
+          }}
+        )
+
+        assign(socket, ctcp_pending: pending)
+
+      {:error, msg} ->
+        stream_insert(socket, :chat_messages, error_message(msg))
+    end
+  end
+
+  defp check_ctcp_rate_limit(socket, target) do
+    key = String.downcase(target)
+    now = System.monotonic_time(:millisecond)
+    window = 30_000
+    max_requests = 3
+
+    rate_limits = socket.assigns.ctcp_rate_limits
+    timestamps = Map.get(rate_limits, key, [])
+
+    # Prune timestamps older than window
+    active = Enum.filter(timestamps, fn ts -> now - ts < window end)
+
+    if length(active) < max_requests do
+      updated = Map.put(rate_limits, key, [now | active])
+      {:ok, assign(socket, ctcp_rate_limits: updated)}
+    else
+      {:error,
+       stream_insert(
+         socket,
+         :chat_messages,
+         system_message(
+           "* CTCP rate limit reached for #{target}. Please wait before sending another request."
+         )
+       )}
+    end
+  end
+
+  defp generate_ctcp_reply_value(session, type) do
+    settings = Session.get_ctcp_settings(session)
+
+    case type do
+      :ping ->
+        ""
+
+      :version ->
+        CtcpSettings.get_version_string(settings)
+
+      :time ->
+        Calendar.strftime(DateTime.utc_now(), "%Y-%m-%d %H:%M:%S UTC")
+
+      :finger ->
+        case CtcpSettings.get_finger_text(settings) do
+          nil ->
+            idle_seconds = DateTime.diff(DateTime.utc_now(), session.last_message_at, :second)
+            "#{session.nickname} - idle #{format_idle_time(idle_seconds)}"
+
+          custom ->
+            custom
+        end
+    end
+  end
+
+  defp format_idle_time(seconds) when seconds < 60, do: "#{seconds} seconds"
+  defp format_idle_time(seconds) when seconds < 3600 do
+    minutes = div(seconds, 60)
+    if minutes == 1, do: "1 minute", else: "#{minutes} minutes"
+  end
+  defp format_idle_time(seconds) when seconds < 86_400 do
+    hours = div(seconds, 3600)
+    if hours == 1, do: "1 hour", else: "#{hours} hours"
+  end
+  defp format_idle_time(seconds) do
+    days = div(seconds, 86_400)
+    if days == 1, do: "1 day", else: "#{days} days"
   end
 
   defp handle_pm_send(socket, target, content) do
@@ -4213,6 +4501,7 @@ defmodule RetroHexChatWeb.ChatLive do
     |> load_if_found(NoticeRouting.load(nick), fn session, %{routing: routing} ->
       Session.set_notice_routing(session, routing)
     end)
+    |> load_if_found(CtcpSettings.load(nick), &Session.set_ctcp_settings/2)
   end
 
   @spec load_if_found(Session.t(), {:ok, term()} | {:error, term()}, (Session.t(), term() ->
@@ -4606,6 +4895,11 @@ defmodule RetroHexChatWeb.ChatLive do
         ignore_entries={IgnoreList.sorted_entries(@session.ignore_list)}
         ignore_selected={@ignore_selected}
         show_ignore_add_dialog={@show_ignore_add_dialog}
+      />
+
+      <RetroHexChatWeb.Components.CtcpSettingsDialog.ctcp_settings_dialog
+        visible={@show_ctcp_settings_dialog}
+        ctcp_settings={@session.ctcp_settings}
       />
 
       <RetroHexChatWeb.Components.PerformDialog.perform_dialog
