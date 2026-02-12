@@ -13,7 +13,8 @@ defmodule RetroHexChat.Presence.Tracker do
       nickname: nickname,
       away: false,
       away_message: nil,
-      joined_at: DateTime.utc_now()
+      joined_at: DateTime.utc_now(),
+      last_activity_at: DateTime.utc_now()
     }
 
     track(self(), topic, nickname, Map.merge(default_meta, meta))
@@ -38,6 +39,21 @@ defmodule RetroHexChat.Presence.Tracker do
   def update_away(topic, nickname, away, message \\ nil) do
     update(self(), topic, nickname, fn meta ->
       %{meta | away: away, away_message: message}
+    end)
+  end
+
+  @spec update_activity(String.t(), String.t()) :: {:ok, binary()} | {:error, any()}
+  def update_activity(topic, nickname) do
+    update(self(), topic, nickname, fn meta ->
+      Map.put(meta, :last_activity_at, DateTime.utc_now())
+    end)
+  end
+
+  @spec update_bio(String.t(), String.t(), String.t() | nil) ::
+          {:ok, binary()} | {:error, any()}
+  def update_bio(topic, nickname, bio) do
+    update(self(), topic, nickname, fn meta ->
+      Map.put(meta, :bio, bio)
     end)
   end
 end

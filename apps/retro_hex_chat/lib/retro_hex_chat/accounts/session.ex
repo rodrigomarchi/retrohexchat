@@ -42,6 +42,7 @@ defmodule RetroHexChat.Accounts.Session do
           favorites: map(),
           flood_protection: map(),
           sound_settings: map(),
+          bio: String.t() | nil,
           last_message_at: DateTime.t()
         }
 
@@ -71,6 +72,7 @@ defmodule RetroHexChat.Accounts.Session do
     favorites: nil,
     flood_protection: nil,
     sound_settings: nil,
+    bio: nil,
     last_message_at: nil
   ]
 
@@ -299,6 +301,14 @@ defmodule RetroHexChat.Accounts.Session do
   @spec set_sound_settings(t(), map()) :: t()
   def set_sound_settings(%__MODULE__{} = session, settings) do
     %{session | sound_settings: settings}
+  end
+
+  @spec get_bio(t()) :: String.t() | nil
+  def get_bio(%__MODULE__{bio: bio}), do: bio
+
+  @spec set_bio(t(), String.t() | nil) :: t()
+  def set_bio(%__MODULE__{} = session, bio) do
+    %{session | bio: bio}
   end
 
   @spec get_last_message_at(t()) :: DateTime.t()

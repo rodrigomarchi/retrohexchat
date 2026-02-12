@@ -33,12 +33,14 @@ defmodule RetroHexChatWeb.ChatLive do
     Search,
     Service,
     SoundSettings,
-    URLDetector
+    TimeFormatter,
+    URLDetector,
+    UserBio
   }
 
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChat.Commands.Registry, as: CmdRegistry
-  alias RetroHexChat.Presence.{NotifyList, Tracker}
+  alias RetroHexChat.Presence.{NotifyList, Tracker, WhowasCache}
   alias RetroHexChat.Services.NickServ
 
   @impl true
@@ -198,7 +200,9 @@ defmodule RetroHexChatWeb.ChatLive do
       pm_typing_timer: nil,
       show_favorite_dialog: false,
       show_organize_favorites: false,
-      treebar_context_menu: %{visible: false, x: 0, y: 0, channel: nil}
+      treebar_context_menu: %{visible: false, x: 0, y: 0, channel: nil},
+      last_activity_at: DateTime.utc_now(),
+      last_nick_click: nil
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -216,11 +220,21 @@ defmodule RetroHexChatWeb.ChatLive do
     case Parser.parse(input) do
       {:message, text} ->
         new_session = Session.set_last_message_at(session, DateTime.utc_now())
-        socket = socket |> assign(session: new_session) |> send_plain_message(new_session, text)
+
+        socket =
+          socket
+          |> assign(session: new_session)
+          |> send_plain_message(new_session, text)
+          |> reset_activity()
+
         {:noreply, assign(socket, input: "", command_history: history, history_index: -1)}
 
       {:command, name, args} ->
-        socket = dispatch_command(socket, session, name, args)
+        socket =
+          socket
+          |> dispatch_command(session, name, args)
+          |> reset_activity()
+
         {:noreply, assign(socket, input: "", command_history: history, history_index: -1)}
     end
   end
@@ -464,10 +478,25 @@ defmodule RetroHexChatWeb.ChatLive do
 
   # Context menu events (Phase 12)
   def handle_event("nick_right_click", %{"nick" => nick} = params, socket) do
-    x = params["x"] || 0
-    y = params["y"] || 0
+    now = System.monotonic_time(:millisecond)
+    last = socket.assigns.last_nick_click
 
-    {:noreply, assign(socket, context_menu: %{visible: true, x: x, y: y, target_nick: nick})}
+    if last != nil and last.nick == nick and now - last.at < 300 do
+      # Double-click detected — trigger whois
+      {:noreply,
+       socket
+       |> assign(last_nick_click: nil)
+       |> show_whois_text(nick)}
+    else
+      x = params["x"] || 0
+      y = params["y"] || 0
+
+      {:noreply,
+       assign(socket,
+         context_menu: %{visible: true, x: x, y: y, target_nick: nick},
+         last_nick_click: %{nick: nick, at: now}
+       )}
+    end
   end
 
   def handle_event("close_context_menu", _params, socket) do
@@ -693,7 +722,7 @@ defmodule RetroHexChatWeb.ChatLive do
     {:noreply,
      socket
      |> close_context_menu()
-     |> assign(show_whois: true, whois_target: nick)}
+     |> show_whois_text(nick)}
   end
 
   def handle_event("context_kick", %{"nick" => nick}, socket) do
@@ -3170,6 +3199,9 @@ defmodule RetroHexChatWeb.ChatLive do
         {:user_disconnected, %{nickname: session.nickname}}
       )
 
+      # Record whowas entry for recently disconnected users
+      WhowasCache.record(session.nickname, session.channels)
+
       cleanup_channels(session)
     end
 
@@ -3354,8 +3386,8 @@ defmodule RetroHexChatWeb.ChatLive do
   defp handle_ui_action(socket, :view_topic, %{channel: channel}),
     do: handle_view_topic(socket, channel)
 
-  defp handle_ui_action(socket, :open_whois, %{nickname: target}),
-    do: assign(socket, show_whois: true, whois_target: target)
+  defp handle_ui_action(socket, :show_whois_info, %{nickname: target}),
+    do: show_whois_text(socket, target)
 
   defp handle_ui_action(socket, :show_help, %{commands: commands}),
     do: show_help_message(socket, commands)
@@ -3796,6 +3828,62 @@ defmodule RetroHexChatWeb.ChatLive do
       :chat_messages,
       system_message("* Notice routing set to: #{routing}")
     )
+  end
+
+  defp handle_ui_action(socket, :show_whowas_info, %{nickname: target}),
+    do: show_whowas_text(socket, target)
+
+  defp handle_ui_action(socket, :set_bio, %{text: text, truncated: truncated}) do
+    session = socket.assigns.session
+    new_session = Session.set_bio(session, text)
+
+    if session.identified do
+      UserBio.save(session.nickname, text)
+    end
+
+    # Update bio in Presence metadata so other users can see it via /whois
+    Enum.each(session.channels, fn channel ->
+      safe_update_bio("channel:#{channel}", session.nickname, text)
+    end)
+
+    msg =
+      if truncated,
+        do: "Bio truncated to 200 characters and set.",
+        else: "Bio set: #{text}"
+
+    socket
+    |> assign(session: new_session)
+    |> stream_insert(:chat_messages, system_message("* #{msg}"))
+  end
+
+  defp handle_ui_action(socket, :view_bio, _payload) do
+    session = socket.assigns.session
+
+    msg =
+      case Session.get_bio(session) do
+        nil -> "No bio set. Use /bio <text> to set one."
+        bio -> "Your bio: #{bio}"
+      end
+
+    stream_insert(socket, :chat_messages, system_message("* #{msg}"))
+  end
+
+  defp handle_ui_action(socket, :clear_bio, _payload) do
+    session = socket.assigns.session
+    new_session = Session.set_bio(session, nil)
+
+    if session.identified do
+      UserBio.delete(session.nickname)
+    end
+
+    # Clear bio in Presence metadata
+    Enum.each(session.channels, fn channel ->
+      safe_update_bio("channel:#{channel}", session.nickname, nil)
+    end)
+
+    socket
+    |> assign(session: new_session)
+    |> stream_insert(:chat_messages, system_message("* Bio cleared."))
   end
 
   defp handle_ui_action(socket, _action, _payload), do: socket
@@ -4973,8 +5061,8 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
-  defp safe_track_user(topic, nickname) do
-    case Tracker.track_user(topic, nickname) do
+  defp safe_track_user(topic, nickname, extra_meta \\ %{}) do
+    case Tracker.track_user(topic, nickname, extra_meta) do
       {:ok, _} ->
         :ok
 
@@ -5091,6 +5179,7 @@ defmodule RetroHexChatWeb.ChatLive do
     |> load_if_found(Favorites.load(nick), &Session.set_favorites/2)
     |> load_if_found(FloodProtection.load(nick), &Session.set_flood_protection/2)
     |> load_if_found(SoundSettings.load(nick), &Session.set_sound_settings/2)
+    |> load_if_found(UserBio.load(nick), &Session.set_bio/2)
   end
 
   @spec load_if_found(Session.t(), {:ok, term()} | {:error, term()}, (Session.t(), term() ->
@@ -5209,6 +5298,213 @@ defmodule RetroHexChatWeb.ChatLive do
       ref ->
         Process.cancel_timer(ref)
         assign(socket, ignore_timers: Map.delete(socket.assigns.ignore_timers, key))
+    end
+  end
+
+  # ── Whois/Whowas text output ────────────────────────────────
+
+  @spec show_whois_text(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  defp show_whois_text(socket, target) do
+    session = socket.assigns.session
+
+    # Find the target in Presence across channels
+    target_meta = find_user_presence(target, session.channels)
+
+    if target_meta == nil and target != session.nickname do
+      stream_insert(socket, :chat_messages, system_message("* #{target} is not online."))
+    else
+      lines = build_whois_lines(socket, session, target, target_meta)
+
+      Enum.reduce(lines, socket, fn line, acc ->
+        stream_insert(acc, :chat_messages, system_message(line))
+      end)
+    end
+  end
+
+  @spec build_whois_lines(
+          Phoenix.LiveView.Socket.t(),
+          Session.t(),
+          String.t(),
+          map() | nil
+        ) :: [String.t()]
+  defp build_whois_lines(socket, session, target, target_meta) do
+    data = gather_whois_data(socket, session, target, target_meta)
+    format_whois_lines(data, target, session.nickname)
+  end
+
+  defp gather_whois_data(socket, session, target, target_meta) do
+    is_self = target == session.nickname
+    target_channels = get_user_channels(target)
+
+    %{
+      target_channels: target_channels,
+      shared_channels: Enum.filter(target_channels, &(&1 in session.channels)),
+      online_seconds: whois_online_seconds(is_self, session, target_meta),
+      idle_seconds: whois_idle_seconds(is_self, socket, target_meta),
+      registered: NickServ.registered?(target),
+      away: target_meta && target_meta[:away],
+      away_message: target_meta && target_meta[:away_message],
+      bio: whois_bio(is_self, session, target_meta, target)
+    }
+  end
+
+  defp whois_online_seconds(true, session, _meta) do
+    seconds_since(session.connected_at)
+  end
+
+  defp whois_online_seconds(false, _session, meta) do
+    seconds_since(meta && meta[:joined_at])
+  end
+
+  defp whois_idle_seconds(true, socket, _meta) do
+    seconds_since(socket.assigns.last_activity_at)
+  end
+
+  defp whois_idle_seconds(false, _socket, meta) do
+    seconds_since(meta && meta[:last_activity_at])
+  end
+
+  defp seconds_since(nil), do: 0
+  defp seconds_since(dt), do: DateTime.diff(DateTime.utc_now(), dt, :second)
+
+  defp whois_bio(true, session, _meta, _target), do: Session.get_bio(session)
+
+  defp whois_bio(false, _session, meta, target) do
+    presence_bio = meta && meta[:bio]
+
+    presence_bio ||
+      case UserBio.load(target) do
+        {:ok, text} -> text
+        _ -> nil
+      end
+  end
+
+  defp format_whois_lines(data, target, my_nick) do
+    lines = ["----- Whois: #{target} -----"]
+
+    lines =
+      maybe_append(
+        lines,
+        data.target_channels != [],
+        "Channels: #{Enum.join(data.target_channels, ", ")}"
+      )
+
+    lines =
+      maybe_append(
+        lines,
+        data.shared_channels != [] and target != my_nick,
+        "Shared channels: #{Enum.join(data.shared_channels, ", ")}"
+      )
+
+    lines = lines ++ ["Online for: #{TimeFormatter.format_duration(data.online_seconds)}"]
+    lines = lines ++ ["Idle for: #{TimeFormatter.format_duration(data.idle_seconds)}"]
+    lines = lines ++ ["Registered: #{if data.registered, do: "Yes", else: "No"}"]
+    lines = maybe_append(lines, data.away, "Away: #{data.away_message || ""}")
+    lines = maybe_append(lines, data.bio != nil, "Bio: #{data.bio}")
+    lines ++ ["-----------------------------"]
+  end
+
+  defp maybe_append(lines, true, line), do: lines ++ [line]
+  defp maybe_append(lines, _, _line), do: lines
+
+  @spec find_user_presence(String.t(), [String.t()]) :: map() | nil
+  defp find_user_presence(target, channels) do
+    Enum.find_value(channels, fn channel ->
+      users = Tracker.list_users("channel:#{channel}")
+
+      Enum.find(users, fn user ->
+        String.downcase(user.nickname) == String.downcase(target)
+      end)
+    end)
+  end
+
+  @spec get_user_channels(String.t()) :: [String.t()]
+  defp get_user_channels(target) do
+    target_lower = String.downcase(target)
+
+    Elixir.Registry.select(RetroHexChat.Channels.ChannelRegistry, [
+      {{:"$1", :_, :_}, [], [:"$1"]}
+    ])
+    |> Enum.filter(&channel_has_member?(&1, target_lower))
+    |> Enum.sort()
+  end
+
+  defp channel_has_member?(channel_name, target_lower) do
+    case Server.get_state(channel_name) do
+      {:ok, state} ->
+        Enum.any?(state.members, fn {nick, _role} ->
+          String.downcase(nick) == target_lower
+        end)
+
+      _ ->
+        false
+    end
+  end
+
+  @spec show_whowas_text(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  defp show_whowas_text(socket, target) do
+    case WhowasCache.lookup(target) do
+      {:ok, entry} ->
+        lines = [
+          "----- Whowas: #{entry.nickname} -----",
+          "Last seen: #{TimeFormatter.format_relative(entry.disconnected_at)}",
+          "Channels: #{Enum.join(entry.channels, ", ")}"
+        ]
+
+        lines =
+          if entry.quit_message do
+            lines ++ ["Quit message: #{entry.quit_message}"]
+          else
+            lines
+          end
+
+        lines = lines ++ ["-----------------------------"]
+
+        Enum.reduce(lines, socket, fn line, acc ->
+          stream_insert(acc, :chat_messages, system_message(line))
+        end)
+
+      {:error, :not_found} ->
+        stream_insert(
+          socket,
+          :chat_messages,
+          system_message("* No whowas information available for #{target}.")
+        )
+    end
+  end
+
+  @spec reset_activity(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  defp reset_activity(socket) do
+    session = socket.assigns.session
+    now = DateTime.utc_now()
+
+    Enum.each(session.channels, fn channel ->
+      safe_update_activity("channel:#{channel}", session.nickname)
+    end)
+
+    assign(socket, last_activity_at: now)
+  end
+
+  defp safe_update_activity(topic, nickname) do
+    case Tracker.update_activity(topic, nickname) do
+      {:ok, _} ->
+        :ok
+
+      {:error, :nopresence} ->
+        :ok
+
+      {:error, reason} ->
+        Logger.debug("Tracker.update_activity(#{topic}, #{nickname}): #{inspect(reason)}")
+    end
+  end
+
+  defp safe_update_bio(topic, nickname, bio) do
+    case Tracker.update_bio(topic, nickname, bio) do
+      {:ok, _} ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("Tracker.update_bio(#{topic}, #{nickname}): #{inspect(reason)}")
     end
   end
 

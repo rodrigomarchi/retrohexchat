@@ -8,6 +8,7 @@ defmodule RetroHexChat.Commands.Registry do
     "autojoin" => RetroHexChat.Commands.Handlers.AutoJoin,
     "away" => RetroHexChat.Commands.Handlers.Away,
     "ban" => RetroHexChat.Commands.Handlers.Ban,
+    "bio" => RetroHexChat.Commands.Handlers.Bio,
     "clear" => RetroHexChat.Commands.Handlers.Clear,
     "ctcp" => RetroHexChat.Commands.Handlers.Ctcp,
     "cs" => RetroHexChat.Commands.Handlers.Cs,
@@ -32,7 +33,8 @@ defmodule RetroHexChat.Commands.Registry do
     "quit" => RetroHexChat.Commands.Handlers.Quit,
     "topic" => RetroHexChat.Commands.Handlers.Topic,
     "unignore" => RetroHexChat.Commands.Handlers.Unignore,
-    "whois" => RetroHexChat.Commands.Handlers.Whois
+    "whois" => RetroHexChat.Commands.Handlers.Whois,
+    "whowas" => RetroHexChat.Commands.Handlers.Whowas
   }
 
   @spec lookup(String.t()) :: {:ok, module()} | {:error, :unknown_command}

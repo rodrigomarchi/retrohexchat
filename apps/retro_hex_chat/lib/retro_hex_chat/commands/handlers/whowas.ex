@@ -1,20 +1,20 @@
-defmodule RetroHexChat.Commands.Handlers.Whois do
-  @moduledoc "Handler for /whois <nickname>"
+defmodule RetroHexChat.Commands.Handlers.Whowas do
+  @moduledoc "Handler for /whowas <nickname>"
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Usage: /whois <nickname>"}
+  def validate(""), do: {:error, "Usage: /whowas <nickname>"}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /whois <nickname>"}
+  def execute([], _context), do: {:error, "Usage: /whowas <nickname>"}
 
   def execute([target | _rest], _context) do
-    {:ok, :ui_action, :show_whois_info, %{nickname: target}}
+    {:ok, :ui_action, :show_whowas_info, %{nickname: target}}
   end
 
   @impl true
@@ -26,10 +26,11 @@ defmodule RetroHexChat.Commands.Handlers.Whois do
         }
   def help do
     %{
-      name: "whois",
-      syntax: "/whois <nickname>",
-      description: "Display information about a user.",
-      examples: ["/whois SomeUser"]
+      name: "whowas",
+      syntax: "/whowas <nickname>",
+      description:
+        "Display information about a recently disconnected user. Shows last seen time, channels, and quit message.",
+      examples: ["/whowas SomeUser"]
     }
   end
 end

@@ -266,16 +266,23 @@ defmodule RetroHexChat.Chat.HelpTopics do
       id: "cmd-whois",
       title: "/whois",
       category: "Commands",
-      keywords: ["whois", "info", "user info", "lookup"],
+      keywords: ["whois", "info", "user info", "lookup", "profile", "idle", "bio"],
       content:
         "<h3>/whois</h3>" <>
-          "<p>Look up information about a user.</p>" <>
+          "<p>Look up detailed information about an online user. Also triggered by double-clicking a nickname in the nicklist.</p>" <>
           "<h4>Syntax</h4>" <>
           "<pre>/whois &lt;nickname&gt;</pre>" <>
+          "<h4>Information Shown</h4>" <>
+          "<p>Channels, shared channels, online time, idle time, registration status, away message (if set), and bio (if set).</p>" <>
           "<h4>Examples</h4>" <>
-          "<pre>/whois Alice</pre>" <>
+          "<pre>/whois Alice\n/whois YourOwnNick</pre>" <>
+          "<h4>Notes</h4>" <>
+          "<p>You can /whois yourself. If the user is not online, a 'not online' message is shown. " <>
+          "Double-clicking a nick in the nicklist also triggers /whois.</p>" <>
           "<h4>See Also</h4>" <>
-          "<p><a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
+          "<p><a href=\"#\" data-help-topic=\"cmd-whowas\">/whowas</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-bio\">/bio</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
     },
     %{
       id: "cmd-away",
@@ -505,6 +512,51 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<p><a href=\"#\" data-help-topic=\"feature-channel-invites\">Channel Invites</a> · " <>
           "<a href=\"#\" data-help-topic=\"mode-i\">+i Invite Only</a> · " <>
           "<a href=\"#\" data-help-topic=\"cmd-join\">/join</a></p>"
+    },
+    %{
+      id: "cmd-bio",
+      title: "/bio",
+      category: "Commands",
+      keywords: ["bio", "profile", "about me", "description"],
+      content:
+        "<h3>/bio</h3>" <>
+          "<p>Set, view, or clear your profile bio. Your bio appears in /whois output when other users look you up.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/bio &lt;text&gt;    — Set your bio\n" <>
+          "/bio             — View your current bio\n" <>
+          "/bio clear       — Clear your bio</pre>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/bio Elixir enthusiast from Brazil\n/bio\n/bio clear</pre>" <>
+          "<h4>Notes</h4>" <>
+          "<p>Maximum 200 characters. Longer text is automatically truncated with a warning. " <>
+          "Bios persist across sessions for registered users (via NickServ). " <>
+          "Guest bios last only for the current session. " <>
+          "If no bio is set, the bio field does not appear in /whois output.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-whois\">/whois</a> · " <>
+          "<a href=\"#\" data-help-topic=\"nickserv\">NickServ</a></p>"
+    },
+    %{
+      id: "cmd-whowas",
+      title: "/whowas",
+      category: "Commands",
+      keywords: ["whowas", "recently", "disconnected", "last seen", "offline"],
+      content:
+        "<h3>/whowas</h3>" <>
+          "<p>Look up information about a recently disconnected user.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/whowas &lt;nickname&gt;</pre>" <>
+          "<h4>Information Shown</h4>" <>
+          "<p>Last seen time, channels they were in, and quit message (if any).</p>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/whowas Bob</pre>" <>
+          "<h4>Notes</h4>" <>
+          "<p>Information is cached for up to 1 hour after disconnection. " <>
+          "If no record exists, a 'no whowas information available' message is shown. " <>
+          "Lookups are case-insensitive.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-whois\">/whois</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
     },
     # ── Services ─────────────────────────────────────────────
     %{
