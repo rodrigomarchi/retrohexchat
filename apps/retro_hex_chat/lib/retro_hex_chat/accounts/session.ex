@@ -32,7 +32,8 @@ defmodule RetroHexChat.Accounts.Session do
           log_preferences: map(),
           perform_list: map(),
           autojoin_list: map(),
-          auto_join_on_invite: boolean()
+          auto_join_on_invite: boolean(),
+          notice_routing: :active | :status | :sender
         }
 
   @enforce_keys [:nickname]
@@ -55,7 +56,8 @@ defmodule RetroHexChat.Accounts.Session do
     log_preferences: nil,
     perform_list: nil,
     autojoin_list: nil,
-    auto_join_on_invite: false
+    auto_join_on_invite: false,
+    notice_routing: :active
   ]
 
   @spec new(String.t()) :: t()
@@ -237,5 +239,14 @@ defmodule RetroHexChat.Accounts.Session do
   @spec toggle_auto_join_on_invite(t()) :: t()
   def toggle_auto_join_on_invite(%__MODULE__{auto_join_on_invite: current} = session) do
     %{session | auto_join_on_invite: not current}
+  end
+
+  @spec get_notice_routing(t()) :: :active | :status | :sender
+  def get_notice_routing(%__MODULE__{notice_routing: value}), do: value
+
+  @spec set_notice_routing(t(), :active | :status | :sender) :: t()
+  def set_notice_routing(%__MODULE__{} = session, routing)
+      when routing in [:active, :status, :sender] do
+    %{session | notice_routing: routing}
   end
 end

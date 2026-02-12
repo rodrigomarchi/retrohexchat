@@ -160,6 +160,7 @@ defmodule RetroHexChat.Chat.IgnoreEntryTest do
       assert IgnoreEntry.valid_type?(:pms)
       assert IgnoreEntry.valid_type?(:invites)
       assert IgnoreEntry.valid_type?(:actions)
+      assert IgnoreEntry.valid_type?(:notices)
     end
 
     test "returns false for invalid types" do

@@ -452,4 +452,41 @@ defmodule RetroHexChat.Accounts.SessionTest do
       assert result.timestamp_format == :dd_mm_hh_mm
     end
   end
+
+  describe "notice_routing" do
+    test "default routing is :active" do
+      session = Session.new("Rodrigo")
+      assert session.notice_routing == :active
+    end
+
+    test "get_notice_routing/1 returns current routing" do
+      session = Session.new("Rodrigo")
+      assert Session.get_notice_routing(session) == :active
+    end
+
+    test "set_notice_routing/2 updates routing to :status" do
+      session = Session.new("Rodrigo")
+      updated = Session.set_notice_routing(session, :status)
+      assert updated.notice_routing == :status
+      assert Session.get_notice_routing(updated) == :status
+    end
+
+    test "set_notice_routing/2 updates routing to :sender" do
+      session = Session.new("Rodrigo")
+      updated = Session.set_notice_routing(session, :sender)
+      assert updated.notice_routing == :sender
+    end
+
+    test "set_notice_routing/2 preserves other fields" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.add_channel("#general")
+        |> Session.set_identified(true)
+
+      updated = Session.set_notice_routing(session, :status)
+      assert updated.channels == ["#general"]
+      assert updated.identified == true
+      assert updated.nickname == "Rodrigo"
+    end
+  end
 end

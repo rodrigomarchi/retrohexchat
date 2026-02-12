@@ -144,6 +144,30 @@ defmodule RetroHexChat.Chat.IgnoreListTest do
       assert IgnoreList.ignored?(list, "SpamBot", :invite)
     end
 
+    test ":notices type matches only :notice" do
+      list = IgnoreList.new()
+      {:ok, list} = IgnoreList.add_entry(list, "SpamBot", :notices, nil)
+
+      refute IgnoreList.ignored?(list, "SpamBot", :message)
+      refute IgnoreList.ignored?(list, "SpamBot", :pm)
+      refute IgnoreList.ignored?(list, "SpamBot", :action)
+      assert IgnoreList.ignored?(list, "SpamBot", :notice)
+    end
+
+    test ":all type also matches :notice" do
+      list = IgnoreList.new()
+      {:ok, list} = IgnoreList.add_entry(list, "SpamBot", :all, nil)
+
+      assert IgnoreList.ignored?(list, "SpamBot", :notice)
+    end
+
+    test ":messages type does not match :notice" do
+      list = IgnoreList.new()
+      {:ok, list} = IgnoreList.add_entry(list, "SpamBot", :messages, nil)
+
+      refute IgnoreList.ignored?(list, "SpamBot", :notice)
+    end
+
     test "matches case-insensitively" do
       list = IgnoreList.new()
       {:ok, list} = IgnoreList.add_entry(list, "SpamBot", :all, nil)

@@ -92,7 +92,8 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<p>Right-click a nickname in the nicklist and select <strong>Query</strong> to open a PM tab.</p>" <>
           "<h4>See Also</h4>" <>
           "<p><a href=\"#\" data-help-topic=\"cmd-msg\">Msg Command</a> · " <>
-          "<a href=\"#\" data-help-topic=\"cmd-query\">Query Command</a></p>"
+          "<a href=\"#\" data-help-topic=\"cmd-query\">Query Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-notices\">Notices</a></p>"
     },
     # ── Commands ─────────────────────────────────────────────
     %{
@@ -1132,6 +1133,86 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "and the active tab is restored to its previous state.</p>" <>
           "<h4>See Also</h4>" <>
           "<p><a href=\"#\" data-help-topic=\"feature-perform\">Perform / Auto-Commands</a></p>"
+    },
+    # ── Notices ────────────────────────────────────────────────
+    %{
+      id: "cmd-notice",
+      title: "/notice",
+      category: "Commands",
+      keywords: ["notice", "notification", "announce"],
+      content:
+        "<h3>/notice</h3>" <>
+          "<p>Send a notice to a user or channel. Notices use <code>-Nick-</code> formatting " <>
+          "and do not open PM windows.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/notice &lt;target&gt; &lt;message&gt;</pre>" <>
+          "<h4>Parameters</h4>" <>
+          "<p><code>target</code> — A nickname or #channel.<br/>" <>
+          "<code>message</code> — The notice text to send.</p>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/notice Alice Check out #project\n/notice #elixir Server maintenance in 30 minutes</pre>" <>
+          "<h4>Notes</h4>" <>
+          "<p>Notices are lightweight messages that:<br/>" <>
+          "- Do NOT create PM windows or treebar entries<br/>" <>
+          "- Do NOT trigger notification sounds or highlights<br/>" <>
+          "- Display with <code>-Nick-</code> prefix (distinct from regular &lt;Nick&gt; messages)<br/>" <>
+          "- Channel notices always appear in the channel window</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-notice-routing\">/notice_routing</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-notices\">Notices</a> · " <>
+          "<a href=\"#\" data-help-topic=\"private-messages\">Private Messages</a></p>"
+    },
+    %{
+      id: "cmd-notice-routing",
+      title: "/notice_routing",
+      category: "Commands",
+      keywords: ["notice", "routing", "preference", "setting"],
+      content:
+        "<h3>/notice_routing</h3>" <>
+          "<p>Configure where incoming user-targeted notices appear.</p>" <>
+          "<h4>Syntax</h4>" <>
+          "<pre>/notice_routing [active|status|sender]</pre>" <>
+          "<h4>Options</h4>" <>
+          "<p><code>active</code> — Show in the currently active window (default).<br/>" <>
+          "<code>status</code> — Show in the Status Window (falls back to active if no Status tab).<br/>" <>
+          "<code>sender</code> — Show in the sender's PM window (falls back to active if no PM window open).</p>" <>
+          "<h4>Examples</h4>" <>
+          "<pre>/notice_routing\n/notice_routing status\n/notice_routing sender</pre>" <>
+          "<h4>Notes</h4>" <>
+          "<p>Without arguments, displays the current routing preference. " <>
+          "This setting is persisted for registered (identified) users.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-notice\">/notice</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-notices\">Notices</a></p>"
+    },
+    %{
+      id: "feature-notices",
+      title: "Notices",
+      category: "Features",
+      keywords: ["notice", "notification", "announce", "lightweight message"],
+      content:
+        "<h3>Notices</h3>" <>
+          "<p>Notices are a lightweight message type inspired by IRC's NOTICE command. " <>
+          "They are used for announcements, service messages, and bot responses.</p>" <>
+          "<h4>Key Characteristics</h4>" <>
+          "<p>- Display with <code>-Nick-</code> prefix (distinct from regular &lt;Nick&gt; messages)<br/>" <>
+          "- Shown in a distinct color for easy identification<br/>" <>
+          "- Do NOT create PM windows or treebar entries<br/>" <>
+          "- Do NOT trigger notification sounds or highlights<br/>" <>
+          "- The system must NEVER send automatic replies to notices (prevents bot loops)</p>" <>
+          "<h4>Sending Notices</h4>" <>
+          "<pre>/notice &lt;nickname&gt; &lt;message&gt;\n/notice &lt;#channel&gt; &lt;message&gt;</pre>" <>
+          "<h4>Routing Preferences</h4>" <>
+          "<p>Use <code>/notice_routing</code> to configure where user-targeted notices appear. " <>
+          "Channel notices always appear in the channel window regardless of routing settings.</p>" <>
+          "<h4>Ignore Integration</h4>" <>
+          "<p>Notices respect the ignore system. Use <code>/ignore &lt;nick&gt; notices</code> " <>
+          "to filter notices from a specific user, or <code>/ignore &lt;nick&gt;</code> to filter all message types.</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"cmd-notice\">/notice Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-notice-routing\">/notice_routing Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"private-messages\">Private Messages</a> · " <>
+          "<a href=\"#\" data-help-topic=\"cmd-ignore\">/ignore Command</a></p>"
     },
     # ── Keyboard Shortcuts ───────────────────────────────────
     %{

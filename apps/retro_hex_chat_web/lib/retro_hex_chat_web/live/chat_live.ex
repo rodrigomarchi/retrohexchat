@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.ChatLive do
     LogExporter,
     LogFilter,
     LogQueries,
+    NoticeRouting,
     PerformList,
     Queries,
     Search,
@@ -1963,6 +1964,33 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  def handle_info({:new_notice, %{sender: sender, content: content}}, socket) do
+    session = socket.assigns.session
+
+    if IgnoreList.ignored?(session.ignore_list, sender, :notice) do
+      {:noreply, socket}
+    else
+      {:noreply, route_notice(socket, session, sender, content)}
+    end
+  end
+
+  def handle_info(
+        %{event: "new_notice", payload: %{author: author, content: content, channel: channel}},
+        socket
+      ) do
+    session = socket.assigns.session
+
+    if IgnoreList.ignored?(session.ignore_list, author, :notice) do
+      {:noreply, socket}
+    else
+      if channel == session.active_channel do
+        {:noreply, stream_insert(socket, :chat_messages, notice_message(author, content))}
+      else
+        {:noreply, socket}
+      end
+    end
+  end
+
   def handle_info(
         {:mode_changed, %{nickname: nick, mode_string: mode_string, params: params} = payload},
         socket
@@ -2565,6 +2593,14 @@ defmodule RetroHexChatWeb.ChatLive do
   defp handle_dispatch_result(socket, _session, {:ok, :ui_action, action, payload}),
     do: handle_ui_action(socket, action, payload)
 
+  defp handle_dispatch_result(
+         socket,
+         session,
+         {:ok, :notice, %{target: target, content: content}}
+       ) do
+    handle_notice_send(socket, session, target, content)
+  end
+
   defp handle_dispatch_result(socket, _session, {:ok, :system, %{content: text}}),
     do: stream_insert(socket, :chat_messages, service_message(detect_service_author(text), text))
 
@@ -3008,6 +3044,35 @@ defmodule RetroHexChatWeb.ChatLive do
     |> stream_insert(:chat_messages, system_message("* Auto-join on invite: #{status}"))
   end
 
+  defp handle_ui_action(socket, :notice_routing_show, _payload) do
+    session = socket.assigns.session
+    routing = Session.get_notice_routing(session)
+
+    stream_insert(
+      socket,
+      :chat_messages,
+      system_message("* Notice routing is set to: #{routing}")
+    )
+  end
+
+  defp handle_ui_action(socket, :notice_routing_set, %{routing: routing}) do
+    session = socket.assigns.session
+    new_session = Session.set_notice_routing(session, routing)
+
+    if new_session.identified do
+      Task.start(fn ->
+        NoticeRouting.save(new_session.nickname, %{routing: routing})
+      end)
+    end
+
+    socket
+    |> assign(session: new_session)
+    |> stream_insert(
+      :chat_messages,
+      system_message("* Notice routing set to: #{routing}")
+    )
+  end
+
   defp handle_ui_action(socket, _action, _payload), do: socket
 
   defp format_autojoin_entry(entry) do
@@ -3272,6 +3337,49 @@ defmodule RetroHexChatWeb.ChatLive do
 
       true ->
         socket
+    end
+  end
+
+  defp handle_notice_send(socket, session, "#" <> _ = channel, content) do
+    if channel in session.channels do
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "channel:#{channel}",
+        %{
+          event: "new_notice",
+          payload: %{
+            author: session.nickname,
+            content: content,
+            channel: channel,
+            timestamp: DateTime.utc_now()
+          }
+        }
+      )
+
+      socket
+    else
+      stream_insert(
+        socket,
+        :chat_messages,
+        error_message("You must be a member of #{channel} to send notices there")
+      )
+    end
+  end
+
+  defp handle_notice_send(socket, session, target, content) do
+    case validate_target_online(target) do
+      :ok ->
+        Phoenix.PubSub.broadcast(
+          RetroHexChat.PubSub,
+          "user:#{target}",
+          {:new_notice,
+           %{sender: session.nickname, content: content, timestamp: DateTime.utc_now()}}
+        )
+
+        socket
+
+      {:error, msg} ->
+        stream_insert(socket, :chat_messages, error_message(msg))
     end
   end
 
@@ -4102,6 +4210,9 @@ defmodule RetroHexChatWeb.ChatLive do
     |> load_if_found(IgnoreList.load(nick), &Session.set_ignore_list/2)
     |> load_if_found(PerformList.load(nick), &Session.set_perform_list/2)
     |> load_if_found(AutoJoinList.load(nick), &Session.set_autojoin_list/2)
+    |> load_if_found(NoticeRouting.load(nick), fn session, %{routing: routing} ->
+      Session.set_notice_routing(session, routing)
+    end)
   end
 
   @spec load_if_found(Session.t(), {:ok, term()} | {:error, term()}, (Session.t(), term() ->
@@ -4257,6 +4368,39 @@ defmodule RetroHexChatWeb.ChatLive do
     }
   end
 
+  defp notice_message(author, content) do
+    %{
+      id: "notice-#{System.unique_integer([:positive])}",
+      author: author,
+      content: content,
+      type: :notice,
+      timestamp: DateTime.utc_now()
+    }
+  end
+
+  defp route_notice(socket, session, sender, content) do
+    notice = notice_message(sender, content)
+
+    case Session.get_notice_routing(session) do
+      :active ->
+        stream_insert(socket, :chat_messages, notice)
+
+      :status ->
+        if socket.assigns.show_status_tab do
+          push_status_message(socket, "-#{sender}- #{content}", :notice)
+        else
+          stream_insert(socket, :chat_messages, notice)
+        end
+
+      :sender ->
+        if sender in session.pm_conversations do
+          stream_insert(socket, :chat_messages, notice)
+        else
+          stream_insert(socket, :chat_messages, notice)
+        end
+    end
+  end
+
   @impl true
   def render(assigns) do
     ~H"""
@@ -4345,6 +4489,10 @@ defmodule RetroHexChatWeb.ChatLive do
                   <span class="chat-service">{msg.content}</span>
                 <% :error -> %>
                   <span class="chat-error">{msg.content}</span>
+                <% :notice -> %>
+                  <span class="chat-notice">
+                    <span class="chat-notice-nick">-{msg.author}-</span> {msg.content}
+                  </span>
                 <% _ -> %>
                   <span class="chat-nick" style={"color: #{@nick_color_fn.(msg.author)}"}>
                     &lt;{msg.author}&gt;

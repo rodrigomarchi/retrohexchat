@@ -46,6 +46,14 @@ defmodule RetroHexChatWeb.Components.ChatMessage do
     """
   end
 
+  defp render_message_body(%{message: %{type: :notice}} = assigns) do
+    ~H"""
+    <span class="chat-notice">
+      <span class="chat-notice-nick">-{@message.author}-</span> {@message.content}
+    </span>
+    """
+  end
+
   defp render_message_body(assigns) do
     ~H"""
     <span class="chat-nick" style={"color: #{@nick_color_value}"}>&lt;{@message.author}&gt;</span>
