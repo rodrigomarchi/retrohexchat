@@ -98,6 +98,13 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           >
             CTCP Settings
           </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-flood-protection"
+            phx-click="open_flood_protection_dialog"
+          >
+            Flood Protection
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">

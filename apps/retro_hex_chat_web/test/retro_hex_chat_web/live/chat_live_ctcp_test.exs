@@ -413,35 +413,47 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
   # ── Helpers ──────────────────────────────────────────────────
 
   defp send_ctcp_request(view, sender, type) do
-    send(view.pid, {:ctcp_request, %{
-      type: type,
-      sender: sender,
-      request_id: "req_#{System.unique_integer([:positive])}",
-      sent_at: System.monotonic_time(:millisecond)
-    }})
+    send(
+      view.pid,
+      {:ctcp_request,
+       %{
+         type: type,
+         sender: sender,
+         request_id: "req_#{System.unique_integer([:positive])}",
+         sent_at: System.monotonic_time(:millisecond)
+       }}
+    )
 
     Process.sleep(50)
   end
 
   defp send_ctcp_reply(view, replier, type, request_id, value, sent_at) do
-    send(view.pid, {:ctcp_reply, %{
-      type: type,
-      replier: replier,
-      request_id: request_id,
-      value: value,
-      sent_at: sent_at
-    }})
+    send(
+      view.pid,
+      {:ctcp_reply,
+       %{
+         type: type,
+         replier: replier,
+         request_id: request_id,
+         value: value,
+         sent_at: sent_at
+       }}
+    )
 
     Process.sleep(50)
   end
 
   defp add_pending_request(view, request_id, target, type, sent_at) do
-    send(view.pid, {:_test_add_ctcp_pending, request_id, %{
-      target: target,
-      type: type,
-      sent_at: sent_at,
-      timer_ref: make_ref()
-    }})
+    send(
+      view.pid,
+      {:_test_add_ctcp_pending, request_id,
+       %{
+         target: target,
+         type: type,
+         sent_at: sent_at,
+         timer_ref: make_ref()
+       }}
+    )
 
     Process.sleep(50)
   end

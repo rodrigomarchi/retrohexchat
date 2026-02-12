@@ -783,7 +783,8 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<h4>See Also</h4>" <>
           "<p><a href=\"#\" data-help-topic=\"cmd-ignore\">/ignore Command</a> · " <>
           "<a href=\"#\" data-help-topic=\"cmd-unignore\">/unignore Command</a> · " <>
-          "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
+          "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-flood-protection\">Flood Protection</a></p>"
     },
     %{
       id: "feature-channel-central",
@@ -1277,7 +1278,53 @@ defmodule RetroHexChat.Chat.HelpTopics do
           "<h4>See Also</h4>" <>
           "<p><a href=\"#\" data-help-topic=\"cmd-ctcp\">/ctcp Command</a> · " <>
           "<a href=\"#\" data-help-topic=\"feature-notices\">Notices</a> · " <>
-          "<a href=\"#\" data-help-topic=\"cmd-msg\">/msg Command</a></p>"
+          "<a href=\"#\" data-help-topic=\"cmd-msg\">/msg Command</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-flood-protection\">Flood Protection</a></p>"
+    },
+    # ── Flood Protection ──────────────────────────────────────
+    %{
+      id: "feature-flood-protection",
+      title: "Flood Protection",
+      category: "Features",
+      keywords: [
+        "flood",
+        "spam",
+        "duplicate",
+        "auto-ignore",
+        "protection",
+        "anti-spam",
+        "rate limit"
+      ],
+      content:
+        "<h3>Flood Protection</h3>" <>
+          "<p>Flood Protection automatically detects and handles various types of abuse, " <>
+          "including message flooding, duplicate spam, and CTCP request flooding. " <>
+          "All detection runs on your side — other users are not affected.</p>" <>
+          "<h4>Features</h4>" <>
+          "<p><strong>Duplicate Detection:</strong> Detects repeated identical messages from the same sender. " <>
+          "Default: 3 identical messages in 10 seconds triggers blocking.<br/>" <>
+          "<strong>Auto-Ignore:</strong> Users who exceed the message flood threshold are automatically added " <>
+          "to your ignore list for a configurable duration (default: 5 minutes). The ignore is automatically " <>
+          "removed when the timer expires.<br/>" <>
+          "<strong>CTCP Reply Limiting:</strong> Limits outgoing CTCP replies to prevent your client from " <>
+          "being used as a flood amplifier. Default: 2 replies per 10 seconds.<br/>" <>
+          "<strong>Cooldown:</strong> If you manually un-ignore an auto-ignored user, a 60-second cooldown " <>
+          "prevents the auto-ignore from re-triggering immediately.</p>" <>
+          "<h4>Default Thresholds</h4>" <>
+          "<pre>Flood Threshold:    10 messages in 15 seconds\n" <>
+          "Spam Threshold:      3 duplicates in 10 seconds\n" <>
+          "Auto-Ignore Duration: 5 minutes\n" <>
+          "CTCP Reply Limit:    2 replies per 10 seconds</pre>" <>
+          "<h4>Customizing Settings</h4>" <>
+          "<p>Go to <strong>Tools &gt; Flood Protection</strong> to customize all thresholds. " <>
+          "Settings persist for registered (identified) users.</p>" <>
+          "<h4>Exemptions</h4>" <>
+          "<p>- System messages (joins, parts, kicks) are never filtered<br/>" <>
+          "- Your own messages do not trigger flood tracking<br/>" <>
+          "- Different channels/PM targets are tracked independently</p>" <>
+          "<h4>See Also</h4>" <>
+          "<p><a href=\"#\" data-help-topic=\"feature-ignore-list\">Ignore List</a> · " <>
+          "<a href=\"#\" data-help-topic=\"feature-ctcp\">CTCP</a></p>"
     },
     # ── Keyboard Shortcuts ───────────────────────────────────
     %{

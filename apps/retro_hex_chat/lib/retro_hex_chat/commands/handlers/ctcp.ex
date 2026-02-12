@@ -38,8 +38,7 @@ defmodule RetroHexChat.Commands.Handlers.Ctcp do
         {:ok, :ctcp, %{target: target, type: type_atom}}
 
       :error ->
-        {:error,
-         "Unknown CTCP type: #{raw_type}. Valid types: #{Enum.join(@valid_types, ", ")}"}
+        {:error, "Unknown CTCP type: #{raw_type}. Valid types: #{Enum.join(@valid_types, ", ")}"}
     end
   end
 
