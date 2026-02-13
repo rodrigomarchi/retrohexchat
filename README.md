@@ -35,11 +35,19 @@ RetroHexChat recreates the experience of classic IRC clients like mIRC, complete
 - **Full-text search** — PostgreSQL trigram search across message history
 - **Unread indicators** — Visual badges on channels with unread messages
 
+### Text & Formatting
+- **mIRC color codes** — 16 foreground/background colors with `Ctrl+K` color picker
+- **Rich text** — Bold (`Ctrl+B`), italic (`Ctrl+I`), underline (`Ctrl+U`), reverse (`Ctrl+R`)
+- **Formatting toolbar** — SVG icon buttons with 4x4 color picker dropdown
+- **Strip formatting** — Toggle to view messages as plain text
+
 ### Channels
 - **Channel modes** — `+i` (invite-only), `+m` (moderated), `+t` (topic lock), `+k` (key/password), `+l` (user limit)
-- **Role system** — Operators (`@`), Voiced (`+`), and regular users
+- **Role system** — Owner (`~`), Operators (`@`), Half-ops (`%`), Voiced (`+`), and regular users
 - **Topic management** — Set and view channel topics with permission control
 - **Channel list** — Browse active channels with topic, user count, and search/filter
+- **Channel Central** — 5-tab dialog (General, Modes, Bans, Ban Exceptions, Invite Exceptions)
+- **Advanced modes** — 7 additional channel modes, join throttle, `/knock` for invite-only channels
 
 ### Services
 - **NickServ** — Register nicknames, identify, ghost sessions, 60-second enforce timer
@@ -47,16 +55,64 @@ RetroHexChat recreates the experience of classic IRC clients like mIRC, complete
 
 ### Moderation
 - **Kick** — Remove users from channels with optional reason
-- **Ban** — Persistent bans stored in PostgreSQL
+- **Ban** — Persistent bans stored in PostgreSQL, ban exceptions (`+e`)
+- **Invite exceptions** — `+I` mode to bypass invite-only restriction
 - **Rate limiting** — Flood control with mute enforcement via ETS counters
+- **Flood protection** — Duplicate detection, auto-ignore, CTCP rate limiting
+
+### Buddy List & Contacts
+- **Notify list** — Track friends' online/away status with 10-second debounce notifications
+- **Address book** — 4-tab dialog (Contacts, Notify, Nick Colors, Control)
+- **Nick colors** — Per-user color overrides in chat, nicklist, and notify list
+- **Ignore system** — Per-type ignores (messages/PMs/invites/actions), timed expiry, persistent list
+
+### Highlight & Mentions
+- **Custom highlight words** — Up to 50 words with per-word color configuration
+- **TreeBar flash** — Visual indicator on channels with unread highlights
+- **Sound notifications** — Configurable per-event sounds with global mute toggle
+
+### URL Handling
+- **Clickable URLs** — Auto-detected with long URL truncation (>100 chars)
+- **URL Catcher** — Window with sort/filter/search across all captured URLs
+- **Link previews** — Async HTTP fetch with ETS cache (1h success/5min error TTL)
+
+### Automation
+- **Perform commands** — Auto-execute commands on connect (NickServ identify, join channels)
+- **Auto-join** — Automatically join channels on connect with optional keys
+- **Auto-reconnect** — Exponential backoff (1-30s) with Win98-style overlay
+- **Aliases** — Custom commands with `$1`-`$9` variable expansion
+- **Timers** — Recurring/one-shot command execution
+- **Auto-respond** — Pattern-matched automatic replies
+
+### Communication
+- **Channel invites** — `/invite` with Win98 dialog, 5-minute expiry
+- **Notices** — `/notice` with configurable routing (channel/status/active window)
+- **CTCP** — PING/VERSION/TIME/FINGER with configurable responses
+- **Special messages** — MOTD, channel welcome messages, `/wallops`, `/announce`
+
+### User Information
+- **Expanded whois** — Detailed user info with idle time, channels, registration
+- **Whowas** — ETS-cached history of recently disconnected users
+- **Bio** — `/bio` command for personal descriptions
+- **Idle tracking** — Per-user idle time visible in whois
+
+### Favorites & Preferences
+- **Favorites** — Bookmark channels/PMs with encrypted passwords (Plug.Crypto)
+- **Options dialog** — Centralized 6-panel preferences hub with real-time CSS custom properties
+- **Log viewer** — Search/filter/export (TXT/HTML) with display preferences
+- **Help system** — CHM-style dialog with Contents/Index/Search tabs, F1 shortcut
 
 ### UI
 - **Windows 98 aesthetic** — 98.css with a custom dark theme
-- **MDI layout** — Treebar (channels/PMs) | Chat area | Nicklist
-- **Context menus** — Right-click users for Query, Whois, Kick, Ban, Op, Voice
+- **MDI layout** — TreeBar (channels/PMs) | Tab bar | Topic bar | Chat area | Nicklist
+- **Context menus** — Right-click users for Query, Whois, Kick, Ban, Op, Voice, Ignore, Nick Color, Add to Contacts
 - **Command palette** — `Ctrl+/` to browse all slash commands
-- **Keyboard shortcuts** — `↑`/`↓` history, `Tab` completion, `Ctrl+F` search
+- **Keyboard shortcuts** — `↑`/`↓` history, `Tab` completion, `Ctrl+F` search, `F1` help
 - **Real-time presence** — Online/away status tracking across channels
+- **Emoji picker** — 300+ emojis with category browsing
+- **Character counter** — Real-time count in message input
+- **Multi-line paste** — Dialog for pasting multi-line content
+- **Sounds & notifications** — Per-event configurable sounds, PM typing indicator
 
 ---
 
@@ -68,7 +124,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
 ┌─────────────────────────────────────────────────────────┐
 │                    Browser (LiveView)                    │
 │  ConnectLive ──→ ChatLive ──→ ChannelListLive           │
-│  15 function components · 4 JS hooks · 98.css dark theme│
+│  41 function components · 16 JS hooks · 98.css dark     │
 └─────────────────────┬───────────────────────────────────┘
                       │ Phoenix.PubSub
 ┌─────────────────────▼───────────────────────────────────┐
@@ -77,7 +133,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌───────────┐  │
 │  │ Accounts │ │   Chat   │ │ Channels │ │  Commands  │  │
 │  │          │ │          │ │          │ │            │  │
-│  │ Sessions │ │ Messages │ │ Server   │ │ 18 Handlers│  │
+│  │ Sessions │ │ Messages │ │ Server   │ │ 45 Handlers│  │
 │  │ NickValid│ │ History  │ │ Modes    │ │ Parser     │  │
 │  │ Policy   │ │ Search   │ │ Policy   │ │ Dispatcher │  │
 │  └──────────┘ └──────────┘ └──────────┘ └───────────┘  │
@@ -94,9 +150,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
         ┌─────────────▼──────────────┐
         │       PostgreSQL 16+       │
         │                            │
-        │  messages · private_msgs   │
-        │  registered_nicks/channels │
-        │  access_list · bans        │
+        │  28 migrations · 29 schemas│
         │  GIN trigram indexes       │
         └────────────────────────────┘
 ```
@@ -106,9 +160,10 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
 | Layer | Storage | Data | Access Pattern |
 |-------|---------|------|----------------|
 | **Hot** | GenServer (per channel) | Topic, modes, bans, membership | Sub-millisecond reads |
-| **Hot** | ETS | Rate-limit counters, mute state | Concurrent reads |
+| **Hot** | ETS | Rate-limit counters, mute state, link preview cache, whowas cache | Concurrent reads |
 | **Hot** | Phoenix.Presence | Online/away users per channel | Real-time tracking |
-| **Cold** | PostgreSQL | Message history, registered nicks/channels | Cursor-based pagination |
+| **Hot** | Socket assigns | Session state, pending invites, timers, idle tracking | Per-connection |
+| **Cold** | PostgreSQL | Messages, registrations, preferences, favorites, user data | Cursor-based pagination |
 
 ---
 
@@ -123,7 +178,9 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
 | Design System | **98.css** + custom dark theme | Windows 98 aesthetic |
 | Assets | **esbuild** | JS/CSS bundling |
 | HTTP Server | **Bandit** | HTTP/1.1 + WebSocket |
+| HTTP Client | **Req 0.5+** | Link preview fetching |
 | Auth | **bcrypt_elixir** | Password hashing for NickServ |
+| Encryption | **Plug.Crypto** | Favorites password encryption |
 | Testing | **ExUnit, Mox, ExMachina, StreamData, Floki** | Full test pyramid |
 | Static Analysis | **Credo, Dialyxir** | Lint + type checking |
 
@@ -139,12 +196,13 @@ retro_hex_chat/
 │   │   │   ├── application.ex           # OTP supervision tree
 │   │   │   ├── accounts/               # Nickname validation, sessions
 │   │   │   ├── channels/               # GenServer per channel, modes, policy
-│   │   │   ├── chat/                   # Messages, history, search
-│   │   │   ├── commands/               # Parser, dispatcher, 18 handlers
+│   │   │   ├── chat/                   # Messages, history, search, formatter,
+│   │   │   │                           # highlight, help topics, URL detector
+│   │   │   ├── commands/               # Parser, dispatcher, 45 handlers
 │   │   │   ├── presence/               # Phoenix.Presence tracker
 │   │   │   ├── rate_limit/             # ETS-backed flood control
 │   │   │   └── services/               # NickServ + ChanServ bots
-│   │   ├── priv/repo/migrations/       # Database migrations
+│   │   ├── priv/repo/migrations/       # 28 database migrations
 │   │   └── test/                       # Domain tests (unit + integration)
 │   │
 │   └── retro_hex_chat_web/             # Web app (Phoenix + LiveView)
@@ -153,32 +211,44 @@ retro_hex_chat/
 │       │   │   ├── connect_live.ex      # Nickname entry screen
 │       │   │   ├── chat_live.ex         # Main chat MDI screen
 │       │   │   └── channel_list_live.ex # Channel browser screen
-│       │   └── components/             # 15 function components
+│       │   └── components/             # ~40 function components
 │       │       ├── window.ex            # Win98 window chrome
 │       │       ├── title_bar.ex         # Blue gradient title bar
 │       │       ├── menu_bar.ex          # File/Edit/View/Help menus
 │       │       ├── toolbar.ex           # Icon button toolbar
+│       │       ├── tab_bar.ex           # Status/Channel/PM tabs
+│       │       ├── topic_bar.ex         # Channel name+modes+topic
 │       │       ├── treebar.ex           # Channel/PM tree sidebar
-│       │       ├── chat_message.ex      # Message rendering
-│       │       ├── nicklist.ex          # User list (@ops, +voiced)
+│       │       ├── chat_message.ex      # Message rendering (formatted)
+│       │       ├── nicklist.ex          # User list (~/@ /%/+/regular)
+│       │       ├── formatting_toolbar.ex # B/I/U/Color/Strip buttons
 │       │       ├── status_bar.ex        # Bottom status bar
 │       │       ├── command_palette.ex   # Ctrl+/ command picker
 │       │       ├── context_menu.ex      # Right-click user menu
 │       │       ├── search_bar.ex        # In-chat search
 │       │       ├── scroll_loader.ex     # Infinite scroll loader
-│       │       └── dialog.ex            # Modal dialogs
+│       │       ├── dialog.ex            # Modal dialogs
+│       │       ├── help_dialog.ex       # CHM-style help viewer
+│       │       ├── options_dialog.ex    # 6-panel preferences hub
+│       │       ├── address_book_dialog.ex # Contacts/Notify/Colors/Control
+│       │       ├── highlight_dialog.ex  # Highlight words config
+│       │       ├── ignore_list_dialog.ex # Ignore list management
+│       │       ├── channel_central_dialog.ex # Channel settings (5 tabs)
+│       │       ├── log_viewer_dialog.ex # Log search/export
+│       │       ├── perform_dialog.ex    # Perform/Auto-join config
+│       │       ├── favorites_dialog.ex  # Bookmark management
+│       │       ├── notify_list_window.ex # Buddy list window
+│       │       └── url_catcher_window.ex # URL capture/search
 │       ├── assets/
-│       │   ├── css/dark-theme.css       # Win98 dark theme
-│       │   └── js/hooks/               # 4 LiveView hooks
-│       │       ├── scroll_hook.js       # Infinite scroll + auto-scroll
-│       │       ├── command_palette_hook.js # Ctrl+/ + keyboard shortcuts
-│       │       ├── keyboard_hook.js     # ↑/↓ history, Tab completion
-│       │       └── sound_hook.js        # Web Audio API notifications
+│       │   ├── css/
+│       │   │   ├── dark-theme.css       # Win98 dark theme
+│       │   │   └── layout.css           # Component layout styles
+│       │   └── js/hooks/               # 16 LiveView hooks
 │       └── test/                        # Web tests (LiveView + E2E)
 │
 ├── config/                              # Environment configs (dev/test/prod)
 ├── .specify/                            # Speckit design artifacts
-│   └── memory/constitution.md           # 10 governing principles
+│   └── memory/constitution.md           # 11 governing principles
 └── CLAUDE.md                            # Development guidelines
 ```
 
@@ -209,8 +279,9 @@ RetroHexChat.Supervisor (:one_for_one)
 │     Spawns/terminates channel processes on demand
 │     │
 │     ├── Channels.Server "#lobby"     ← GenServer holding channel state
-│     ├── Channels.Server "#general"      (topic, modes, bans, members)
-│     └── Channels.Server "#random"       Transient restart: empty
+│     ├── Channels.Server "#general"      (topic, modes, bans, members,
+│     └── Channels.Server "#random"        ban/invite exceptions, join throttle)
+│                                         Transient restart: empty
 │                                         unregistered channels stop gracefully
 │
 ├── Presence.Tracker
@@ -222,8 +293,14 @@ RetroHexChat.Supervisor (:one_for_one)
 ├── Services.NickServ
 │     GenServer — nickname registration, identify, ghost, 60s enforce timer
 │
-└── Services.ChanServ
-      GenServer — channel registration, access lists (founder/sop/aop/vop)
+├── Services.ChanServ
+│     GenServer — channel registration, access lists (founder/sop/aop/vop)
+│
+├── Chat.LinkPreview.Cache
+│     GenServer + ETS — URL metadata cache (1h success/5min error TTL)
+│
+└── Task.Supervisor (RetroHexChat.TaskSupervisor)
+      Async tasks for HTTP fetches (link previews)
 ```
 
 ### Channel Process Lifecycle
@@ -267,14 +344,16 @@ Manages user identity within a session. No persistent user accounts — nickname
 
 ```
 Accounts
-├── Session         — In-memory user state: channels, PMs, away status
+├── Session         — In-memory user state: channels, PMs, away, preferences,
+│                     notify list, contacts, nick colors, highlights, ignores,
+│                     favorites, perform/autojoin, sound settings, CTCP settings
 ├── NicknameValidator — 1-16 chars, alphanumeric + _-[]{}^
 └── Policy          — Authorization checks (can user perform action?)
 ```
 
 ### Chat
 
-Handles message persistence, retrieval, and search.
+Handles message persistence, retrieval, search, formatting, and content analysis.
 
 ```
 Chat
@@ -282,7 +361,12 @@ Chat
 ├── PrivateMessage   — Ecto schema: direct messages between users
 ├── Queries         — Cursor-based pagination (before_id), batch inserts
 ├── Service         — High-level operations: send, history, search
-└── Search          — PostgreSQL pg_trgm trigram full-text search
+├── Search          — PostgreSQL pg_trgm trigram full-text search
+├── Formatter       — mIRC color/bold/italic/underline parser → safe HTML
+├── Highlight       — Mention detection engine (nick + custom words)
+├── HelpTopics      — 90+ help topics across 8 categories
+├── URLDetector     — URL extraction, linkify, HTML linkification
+└── LinkPreview     — Behaviour + Cache + HTTP fetcher for URL metadata
 ```
 
 ### Channels
@@ -291,11 +375,12 @@ The core real-time engine. Each active channel is a GenServer process.
 
 ```
 Channels
-├── Server          — GenServer: topic, modes, bans, members, message dispatch
+├── Server          — GenServer: topic, modes, bans, members, ban/invite exceptions,
+│                     join throttle, message dispatch
 ├── Supervisor      — DynamicSupervisor: process lifecycle management
 ├── Registry        — via_tuple named process lookup
-├── Membership      — Roles: :operator, :voiced, :regular
-├── Modes           — +i (invite) +m (moderated) +t (topic-lock) +k (key) +l (limit)
+├── Membership      — Roles: :owner, :operator, :halfop, :voiced, :regular
+├── Modes           — +i +m +t +k +l +e +I and 7 advanced modes
 ├── Policy          — can_join? can_speak? can_kick? can_change_topic?
 ├── Queries         — DB queries for registered channels
 └── Events          — PubSub event definitions
@@ -309,28 +394,10 @@ IRC slash-command system with a clean `Handler` behaviour contract.
 Commands
 ├── Parser          — Splits "/command args" from plain messages
 ├── Dispatcher      — Routes command name → handler module
-├── Registry        — Command lookup table
+├── Registry        — Command lookup table (45 commands)
 ├── Policy          — Permission checks before execution
 ├── Handler         — @behaviour: execute/2, validate/1, help/0
-└── Handlers/
-    ├── Join        /join #channel [key]
-    ├── Part        /part [#channel] [reason]
-    ├── Msg         /msg <nick> <message>
-    ├── Query       /query <nick>
-    ├── Me          /me <action>
-    ├── Nick        /nick <newnick>
-    ├── Topic       /topic [new topic]
-    ├── Away        /away [message]
-    ├── Whois       /whois <nick>
-    ├── Kick        /kick <nick> [reason]
-    ├── Ban         /ban <nick> [reason]
-    ├── Mode        /mode <+/-flags> [params]
-    ├── Help        /help [command]
-    ├── Clear       /clear
-    ├── Quit        /quit [reason]
-    ├── List        /list
-    ├── Ns          /ns <register|identify|ghost|info|drop> [args]
-    └── Cs          /cs <register|drop|info|sop|aop|vop> [args]
+└── Handlers/       — 45 handler modules (see Command System section)
 ```
 
 ### Services
@@ -356,6 +423,8 @@ Services
 ├── RegisteredChannel   — Ecto schema
 ├── AccessListEntry     — Ecto schema
 ├── Ban                 — Ecto schema
+├── BanException        — Ecto schema
+├── InviteException     — Ecto schema
 └── Queries             — DB operations
 ```
 
@@ -403,21 +472,45 @@ Every slash command implements the `Handler` behaviour:
 | `/topic` | `/topic [new topic]` | View or set channel topic |
 | `/away` | `/away [message]` | Toggle away status |
 | `/whois` | `/whois <nick>` | View user information |
+| `/whowas` | `/whowas <nick>` | View info on recently disconnected user |
 | `/kick` | `/kick <nick> [reason]` | Kick a user (operators only) |
 | `/ban` | `/ban <nick> [reason]` | Ban a user (operators only) |
 | `/mode` | `/mode <+/-flags> [params]` | Set channel modes (operators only) |
+| `/umode` | `/umode <+/-flags>` | Set user modes |
 | `/help` | `/help [command]` | Show help for commands |
 | `/clear` | `/clear` | Clear chat display |
 | `/quit` | `/quit [reason]` | Disconnect from chat |
 | `/list` | `/list` | Browse active channels |
 | `/ns` | `/ns <subcommand> [args]` | NickServ operations |
 | `/cs` | `/cs <subcommand> [args]` | ChanServ operations |
+| `/ignore` | `/ignore <nick> [type] [duration]` | Ignore a user |
+| `/unignore` | `/unignore <nick>` | Remove user from ignore list |
+| `/notify` | `/notify <add\|remove\|edit\|list> [args]` | Manage notify list |
+| `/invite` | `/invite <nick> [#channel]` | Invite user to channel |
+| `/knock` | `/knock #channel [message]` | Request entry to invite-only channel |
+| `/notice` | `/notice <target> <message>` | Send a notice |
+| `/notice_routing` | `/notice_routing [setting]` | Configure notice display |
+| `/ctcp` | `/ctcp <nick> <type>` | Send CTCP request |
+| `/perform` | `/perform <add\|remove\|move\|list\|clear> [args]` | Manage perform commands |
+| `/autojoin` | `/autojoin <add\|remove\|list\|clear> [args]` | Manage auto-join channels |
+| `/bio` | `/bio [text]` | Set or view your bio |
+| `/alias` | `/alias <name> <command>` | Create command alias |
+| `/timer` | `/timer <interval> <command>` | Set recurring/one-shot timer |
+| `/popups` | `/popups <add\|remove\|list>` | Manage custom popup menus |
+| `/auto_respond` | `/auto_respond <add\|remove\|list>` | Manage auto-respond rules |
+| `/wallops` | `/wallops <message>` | Send message to all operators |
+| `/announce` | `/announce <message>` | Send global announcement |
+| `/setmotd` | `/setmotd <text>` | Set Message of the Day |
+| `/clearmotd` | `/clearmotd` | Clear Message of the Day |
+| `/motd` | `/motd` | View Message of the Day |
+| `/setwelcome` | `/setwelcome [#channel] <text>` | Set channel welcome message |
+| `/clearwelcome` | `/clearwelcome [#channel]` | Clear channel welcome message |
 
 ---
 
 ## UI Components
 
-The interface is built with 15 function components rendering semantic HTML styled by 98.css and a custom dark theme.
+The interface is built with ~40 function components rendering semantic HTML styled by 98.css and a custom dark theme.
 
 ### Screen Flow
 
@@ -441,19 +534,20 @@ The interface is built with 15 function components rendering semantic HTML style
 ┌──────────────────────────────────────────────────────────────────┐
 │  ChatLive (/chat)                                                │
 │  ┌────────────────────────────────────────────────────────────┐  │
-│  │  File  Edit  View  Help                          [—][□][×] │  │
+│  │  File  Edit  View  Tools  Help                    [—][□][×] │  │
 │  ├────────────────────────────────────────────────────────────┤  │
-│  │  [Disconnect] [Channel List] [Away]                        │  │
+│  │  [🔌Disconnect] [📋List] [⚙Settings] [📖Book] [📝Logs]   │  │
+│  ├────────────────────────────────────────────────────────────┤  │
+│  │  [Status] [#lobby] [#help] [Alice ×]        ← Tab Bar     │  │
 │  ├──────────┬─────────────────────────────────┬───────────────┤  │
-│  │ Channels │  #lobby — Welcome to the lobby  │  @CoolOp     │  │
-│  │          │─────────────────────────────────│  +VoicedNick  │  │
-│  │ ▾ Chans  │  [12:00] * User joined #lobby  │   RegularGuy  │  │
-│  │   #lobby │  [12:01] <Alice> Hello!         │   AnotherOne  │  │
-│  │   #help  │  [12:02] <Bob> Hey Alice!       │               │  │
-│  │          │  [12:03] * Alice sets topic...  │               │  │
+│  │ Channels │  #lobby (+nt) — Welcome!        │  ~Owner       │  │
+│  │          │─────────────────────────────────│  @CoolOp      │  │
+│  │ ▾ Chans  │  [B][I][U][🎨][S]  ← Format   │  %HalfOp      │  │
+│  │   #lobby │  [12:00] * User joined #lobby  │  +VoicedNick  │  │
+│  │   #help  │  [12:01] <Alice> Hello!         │   RegularGuy  │  │
+│  │          │  [12:02] <Bob> Hey Alice!       │               │  │
 │  │ ▾ PMs    │                                 │               │  │
 │  │   Alice  │                                 │               │  │
-│  │          │                                 │               │  │
 │  │          ├─────────────────────────────────┤               │  │
 │  │          │  [____________________________] │               │  │
 │  ├──────────┴─────────────────────────────────┴───────────────┤  │
@@ -484,37 +578,63 @@ The interface is built with 15 function components rendering semantic HTML style
 ChatLive
 ├── Window
 │   ├── TitleBar            — "RetroHexChat" + window controls
-│   ├── MenuBar             — File / Edit / View / Help dropdowns
-│   ├── Toolbar             — Disconnect, Channel List, Away buttons
+│   ├── MenuBar             — File / Edit / View / Tools / Help dropdowns
+│   ├── Toolbar             — Disconnect, Channel List, Settings, Address Book, Logs (SVG icons)
+│   ├── TabBar              — Status / Channel / PM tabs with close buttons + unread/highlight states
 │   └── MDI Layout
 │       ├── Treebar         — Channel tree + PM list + unread badges
 │       ├── Chat Area
-│       │   ├── Topic Bar
+│       │   ├── TopicBar    — Channel name + modes + topic (or PM target / status text)
+│       │   ├── FormattingToolbar — B/I/U/Color/Strip SVG buttons + color picker
 │       │   ├── SearchBar   — Ctrl+F search with prev/next navigation
 │       │   ├── Messages    — LiveView stream of ChatMessage components
-│       │   │   └── ChatMessage — Timestamp + author + content (typed)
-│       │   └── Input       — Message input + history + tab-complete
-│       └── Nicklist        — Users grouped: @operators, +voiced, regular
+│       │   │   └── ChatMessage — Timestamp + author + formatted content (colors, URLs, highlights)
+│       │   └── Input       — Message input + history + tab-complete + emoji picker + char counter
+│       └── Nicklist        — Users grouped: ~owner, @operators, %halfops, +voiced, regular
 ├── StatusBar               — Nickname, channel, user count, connection time
 ├── CommandPalette          — Ctrl+/ overlay with all slash commands
-├── ContextMenu             — Right-click: Query, Whois, Kick, Ban, Op, Voice
-└── Dialog                  — Modal dialogs (About, etc.)
+├── ContextMenu             — Right-click: Query, Whois, Kick, Ban, Op, Voice, Ignore, Nick Color, Contacts
+├── HelpDialog              — F1: CHM-style viewer (Contents/Index/Search tabs)
+├── OptionsDialog           — 6-panel centralized preferences hub
+├── AddressBookDialog       — Contacts / Notify / Nick Colors / Control tabs
+├── HighlightDialog         — Custom highlight words + 16-color picker
+├── IgnoreListDialog        — Ignore list management with add/remove
+├── ChannelCentralDialog    — General / Modes / Bans / Ban Exceptions / Invite Exceptions
+├── LogViewerDialog         — Log search/filter/export (TXT/HTML)
+├── PerformDialog           — Perform commands / Auto-join management
+├── FavoritesDialog         — Bookmark management with encrypted passwords
+├── NotifyListWindow        — Buddy list with presence status
+└── URLCatcherWindow        — Captured URL list with sort/filter/search
 ```
 
-### JavaScript Hooks (Minimal)
+### JavaScript Hooks
 
-Only 4 hooks — all UI logic lives in the server via LiveView:
+16 hooks — all core UI logic lives in the server via LiveView:
 
 | Hook | Purpose |
 |------|---------|
-| `ScrollHook` | Infinite scroll, auto-scroll to bottom, preserve position on prepend |
+| `ScrollHook` | Infinite scroll, auto-scroll to bottom, preserve position on prepend, link preview injection |
 | `CommandPaletteHook` | `Ctrl+/` trigger, focus management |
-| `KeyboardHook` | `↑`/`↓` history, `Tab` nick completion |
-| `SoundHook` | Web Audio API notification beeps |
+| `KeyboardHook` | `↑`/`↓` history, `Tab` nick completion, keyboard shortcuts |
+| `SoundHook` | Web Audio API notification sounds, per-event configuration |
+| `FormatToolbarHook` | Formatting toolbar interactions, color picker, insert format codes |
+| `NotifyListHook` | Double-click to open PM from buddy list |
+| `URLCatcherHook` | Double-click to open URL in new tab |
+| `DownloadHook` | Base64 decode + Blob download for log exports |
+| `ReconnectHook` | Auto-reconnect overlay, exponential backoff, session restore |
+| `EmojiPickerHook` | Emoji category browsing and insertion |
+| `PasteDialogHook` | Multi-line paste detection and dialog |
+| `CharCounterHook` | Real-time character count in input |
+| `ContextMenuHook` | Right-click menu positioning |
+| `ColorPickerHook` | Nick color picker interactions |
+| `TimerHook` | Client-side timer display updates |
+| `DragHook` | Dialog window dragging |
 
 ---
 
 ## Database Schema
+
+28 migrations, 29 Ecto schemas. Core tables:
 
 ```
 ┌──────────────────────┐     ┌──────────────────────────┐
@@ -541,6 +661,7 @@ Only 4 hooks — all UI logic lives in the server via LiveView:
 │ last_seen_at (utc)       │     │ modes (text)             │
 └──────────────────────────┘     │ mode_key (text)          │
                                  │ mode_limit (integer)     │
+                                 │ mode_join_throttle (int) │
                                  │ registered_at (utc)      │
                                  └────────────┬─────────────┘
                                               │ 1:N
@@ -554,20 +675,35 @@ Only 4 hooks — all UI logic lives in the server via LiveView:
                            │ granted_by (text)                   │
                            │ granted_at (utc)                    │
                            └─────────────────────────────────────┘
-
-                           ┌─────────────────────────────────────┐
-                           │            bans                      │
-                           ├─────────────────────────────────────┤
-                           │ id (bigserial)                      │
-                           │ channel_name (text, FK)             │
-                           │ banned_nickname (text)              │
-                           │ banned_by (text)                    │
-                           │ reason (text)                       │
-                           │ inserted_at (utc)                   │
-                           └─────────────────────────────────────┘
 ```
 
-7 migrations total, including `pg_trgm` extension enablement for full-text search.
+### Additional Tables
+
+| Table | Feature | Key Columns |
+|-------|---------|-------------|
+| `bans` | Moderation | channel_name, banned_nickname, reason |
+| `ban_exceptions` | Channel Central | channel_name, mask |
+| `invite_exceptions` | Channel Central | channel_name, mask |
+| `notify_list_entries` | Buddy List | user_nickname, target_nickname, notes |
+| `contacts` | Address Book | user_nickname, contact_nickname, notes, group |
+| `nick_color_overrides` | Nick Colors | user_nickname, target_nickname, color |
+| `highlight_words` | Highlights | user_nickname, word, color |
+| `ignore_list_entries` | Ignore System | user_nickname, target_nickname, ignore_type |
+| `perform_entries` | Automation | user_nickname, command, position |
+| `autojoin_entries` | Automation | user_nickname, channel, key |
+| `perform_settings` | Automation | user_nickname, enabled |
+| `favorites` | Favorites | user_nickname, target, type, password_encrypted |
+| `user_bios` | User Info | nickname, bio_text |
+| `aliases` | Scripting | user_nickname, name, command |
+| `custom_menu_items` | Scripting | user_nickname, label, command |
+| `autorespond_rules` | Scripting | user_nickname, pattern, response |
+| `server_settings` | Special Messages | key, value (MOTD, etc.) |
+| `channel_welcome_messages` | Special Messages | channel_name, message |
+| `notice_routing_settings` | Notices | user_nickname, routing config |
+| `ctcp_settings` | CTCP | user_nickname, response config |
+| `flood_protection_settings` | Protection | user_nickname, thresholds |
+| `sound_settings` | Sounds | user_nickname, event sounds (JSONB) |
+| `user_preferences` | Options | user_nickname, 6 JSONB columns (display, chat, etc.) |
 
 ---
 
@@ -692,7 +828,7 @@ make precommit
 
 ## Design Principles
 
-This project is governed by a [Constitution](.specify/memory/constitution.md) — 10 non-negotiable principles ratified at project inception:
+This project is governed by a [Constitution](.specify/memory/constitution.md) — 11 non-negotiable principles ratified at project inception:
 
 | # | Principle | Summary |
 |---|-----------|---------|
@@ -706,6 +842,7 @@ This project is governed by a [Constitution](.specify/memory/constitution.md) �
 | VIII | **Windows 98 Design Fidelity** | 98.css, dark theme, 3D bevels, monospace fonts |
 | IX | **Hot/Cold Data Separation** | GenServer/ETS for runtime. PostgreSQL for persistence. |
 | X | **Scalable Architecture** | Process-per-channel scales via distributed Erlang |
+| XI | **User-Facing Documentation** | Every feature must include help topics and keyboard shortcut updates |
 
 ### Development Workflow
 

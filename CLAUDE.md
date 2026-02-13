@@ -1,37 +1,12 @@
 # retro_hex_chat Development Guidelines
 
 ## Active Technologies
-- Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, 98.css (001-text-formatting-colors)
-- PostgreSQL 16+ (existing schema, no migrations) (001-text-formatting-colors)
-- Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css (002-notify-list)
-- PostgreSQL 16+ (new `notify_list_entries` table) + in-memory Session state for guests (002-notify-list)
-- PostgreSQL 16+ (new `contacts` + `nick_color_overrides` tables) + in-memory Session state for guests (003-address-book)
-- PostgreSQL 16+ (new `highlight_words` table) + in-memory Session state for guests (004-highlight-mentions)
-- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css, Req 0.5+ (HTTP client, already in mix.lock) (005-url-catcher)
-- In-memory only (socket assigns + ETS cache). No PostgreSQL changes. (005-url-catcher)
-- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css (006-ignore-system)
-- PostgreSQL 16+ (new `ignore_list_entries` table) + in-memory Session state for guests (006-ignore-system)
-- PostgreSQL 16+ (two new tables: `ban_exceptions`, `invite_exceptions`) + in-memory GenServer state extension (007-channel-central)
-- PostgreSQL 16+ (existing `messages` and `private_messages` tables, read-only — no new migrations) (008-log-viewer)
-- PostgreSQL 16+ (3 new tables: `perform_entries`, `autojoin_entries`, `perform_settings`) + in-memory Session state for guests + browser localStorage for reconnection (009-perform-auto-commands)
-- In-memory only (socket assigns for pending invites, Session struct for auto-join preference). No PostgreSQL changes. The existing `invite_exceptions` MapSet in Channel.Server is used transiently to authorize the join. (010-channel-invite-system)
-- PostgreSQL 16+ (1 new table: `notice_routing_settings`) + in-memory Session state for guests (011-notice-system)
-- PostgreSQL 16+ (new `ctcp_settings` table) + in-memory Session state for guests (012-ctcp-system)
-- PostgreSQL 16+ (1 new table: `flood_protection_settings`) + in-memory socket assigns for trackers (013-flood-protection)
-- PostgreSQL 16+ (1 new table: `sound_settings` with JSONB columns) + in-memory Session state for guests + localStorage for mute state (014-sounds-notifications)
-- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css, Plug.Crypto (transitive, for password encryption) (015-favorites)
-- PostgreSQL 16+ (new `favorites` table) + in-memory Session state for guests (015-favorites)
-- PostgreSQL 16+ (1 new table: `user_bios`) + in-memory ETS for whowas cache + socket assigns for idle tracking (016-user-information)
-- PostgreSQL 16+ (3 new tables: `aliases`, `custom_menu_items`, `autorespond_rules`) + in-memory Session state for guests + socket assigns for timers and rate limit cooldowns (018-scripting-aliases)
-- PostgreSQL 16+ (1 migration: add `mode_join_throttle` column to `registered_channels` table) + in-memory GenServer state for channel modes, membership, join throttle timestamps (019-channel-features-advanced)
-- PostgreSQL 16+ (2 new tables: `server_settings`, `channel_welcome_messages`) + in-memory Session state for user modes and welcome tracking + in-memory cache for MOTD (020-special-messages)
-- PostgreSQL 16+ (1 new table: `user_preferences` with 6 JSONB columns) + in-memory Session state for guests (021-options-dialog)
-- PostgreSQL 16+ (existing `user_preferences` table, `display_settings` JSONB column extended with `timestamp_format` and `quit_message` keys) + in-memory socket assigns for runtime state (022-misc-polish)
-
-- Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x
-- PostgreSQL 16+ with cursor-based pagination and GIN/trigram indexes
+- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x
+- PostgreSQL 16+ (28 migrations, 29 schemas) with cursor-based pagination and GIN/trigram indexes
 - 98.css (npm) for Windows 98 UI, esbuild for asset bundling
-- bcrypt_elixir for password hashing
+- bcrypt_elixir for password hashing, Plug.Crypto for encryption
+- Req 0.5+ (HTTP client for link previews)
+- In-memory: GenServer/ETS for runtime, Session structs for guests, localStorage for client state
 
 ## Project Structure
 
@@ -46,7 +21,7 @@ apps/
 └── retro_hex_chat_web/       # Web layer (Phoenix + LiveView)
     ├── lib/retro_hex_chat_web/
     │   ├── live/             # ConnectLive, ChatLive, ChannelListLive
-    │   └── components/       # ~15 function components (98.css-based)
+    │   └── components/       # ~40 function components (98.css-based)
     ├── assets/               # CSS (dark-theme.css), JS hooks, static
     └── test/
 ```
@@ -102,11 +77,6 @@ Every new feature MUST include corresponding help documentation:
 
 ## Constitution
 
-See `.specify/memory/constitution.md` for 10 governing principles.
+See `.specify/memory/constitution.md` for 11 governing principles.
 Key non-negotiables: TDD, umbrella separation, OTP process architecture,
-static analysis from day one, 98.css design fidelity.
-
-## Recent Changes
-- 022-misc-polish: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
-- 021-options-dialog: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
-- 020-special-messages: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+static analysis from day one, 98.css design fidelity, mandatory help documentation.

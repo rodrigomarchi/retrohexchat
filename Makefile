@@ -99,16 +99,16 @@ routes: ## List all application routes
 test: ## Run full test suite -- excludes E2E
 	mix test
 
-test.unit: ## Run unit tests only (~390 tests)
+test.unit: ## Run unit tests only
 	cd $(DOMAIN_APP) && mix test --only unit
 
-test.integration: ## Run integration tests only (~229 tests)
+test.integration: ## Run integration tests only
 	cd $(DOMAIN_APP) && mix test --only integration
 
-test.liveview: ## Run LiveView tests only (145 tests)
+test.liveview: ## Run LiveView tests only
 	cd $(WEB_APP) && mix test --only liveview
 
-test.e2e: ## Run E2E tests only (137 tests)
+test.e2e: ## Run E2E tests only
 	cd $(WEB_APP) && mix test --only e2e
 
 test.all: ## Run ALL tests including E2E
@@ -120,10 +120,10 @@ test.cover: ## Run tests with coverage report
 test.cover.all: ## Run ALL tests with coverage (including E2E)
 	mix test --include e2e --cover
 
-test.domain: ## Run domain app tests only (621 tests)
+test.domain: ## Run domain app tests only
 	cd $(DOMAIN_APP) && mix test
 
-test.web: ## Run web app tests only (201 tests, excludes E2E)
+test.web: ## Run web app tests only (excludes E2E)
 	cd $(WEB_APP) && mix test
 
 test.failed: ## Re-run only previously failed tests
