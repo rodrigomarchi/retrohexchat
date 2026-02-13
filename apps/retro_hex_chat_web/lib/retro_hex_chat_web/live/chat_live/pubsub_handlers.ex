@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   Attached as `attach_hook(:pubsub_handlers, :handle_info, ...)` in ChatLive.mount/3.
   """
 
-  alias __MODULE__.{ChannelState, Ctcp, Membership, Messages, Presence}
+  alias __MODULE__.{ChannelState, Ctcp, Membership, Messages, Presence, ServerMessages}
 
   # ── Messages: channel messages, PMs, typing, notices ──────
 
@@ -116,6 +116,20 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
   def handle_info({:channel_invite, _} = msg, socket),
     do: Presence.handle_info(msg, socket)
+
+  # ── Server messages: announcements, wallops, MOTD, welcome ─
+
+  def handle_info({:announcement, _} = msg, socket),
+    do: ServerMessages.handle_info(msg, socket)
+
+  def handle_info({:wallops, _} = msg, socket),
+    do: ServerMessages.handle_info(msg, socket)
+
+  def handle_info({:motd_updated, _} = msg, socket),
+    do: ServerMessages.handle_info(msg, socket)
+
+  def handle_info({:welcome_changed, _} = msg, socket),
+    do: ServerMessages.handle_info(msg, socket)
 
   # ── Task/DOWN catch-all ───────────────────────────────────
 

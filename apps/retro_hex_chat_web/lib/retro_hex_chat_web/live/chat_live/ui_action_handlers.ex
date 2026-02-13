@@ -56,6 +56,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
     set_bio view_bio clear_bio
   )a
 
+  @server_message_actions ~w(show_motd set_welcome clear_welcome set_user_mode)a
+
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
 
@@ -85,6 +87,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
 
   def handle_ui_action(socket, action, payload) when action in @settings_actions,
     do: UiActions.Settings.handle_ui_action(socket, action, payload)
+
+  def handle_ui_action(socket, action, payload) when action in @server_message_actions,
+    do: UiActions.ServerMessages.handle_ui_action(socket, action, payload)
 
   def handle_ui_action(socket, _action, _payload), do: socket
 end

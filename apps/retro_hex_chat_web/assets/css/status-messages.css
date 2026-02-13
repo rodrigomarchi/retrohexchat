@@ -6,3 +6,25 @@
 .chat-status--notify_rename { color: #009393; }
 .chat-status--system { color: #808080; font-style: italic; }
 .chat-status--error { color: #cc0000; font-weight: bold; }
+
+/* MOTD — bordered container in Status Window */
+.chat-status--motd {
+  border: 2px solid var(--text-color, #000);
+  padding: 8px;
+  margin: 4px 0;
+  background: var(--surface, #fff);
+  white-space: pre-wrap;
+}
+.chat-status--motd::before {
+  content: "— Message of the Day —";
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+/* Wallops — italic status message */
+.chat-status--wallops {
+  color: var(--highlight-color, #9b59b6);
+  font-style: italic;
+}

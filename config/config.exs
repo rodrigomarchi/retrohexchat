@@ -11,7 +11,9 @@ import Config
 
 # Configure Mix tasks and generators
 config :retro_hex_chat,
-  ecto_repos: [RetroHexChat.Repo]
+  ecto_repos: [RetroHexChat.Repo],
+  admins: [],
+  server_operators: []
 
 config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],

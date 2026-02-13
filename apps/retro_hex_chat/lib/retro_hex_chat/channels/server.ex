@@ -161,6 +161,24 @@ defmodule RetroHexChat.Channels.Server do
     GenServer.call(via(channel_name), {:knock, nickname, message})
   end
 
+  @doc "Set the welcome message for a channel."
+  @spec set_welcome(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
+  def set_welcome(channel_name, message, set_by) do
+    GenServer.call(via(channel_name), {:set_welcome, message, set_by})
+  end
+
+  @doc "Clear the welcome message for a channel."
+  @spec clear_welcome(String.t(), String.t()) :: :ok | {:error, String.t()}
+  def clear_welcome(channel_name, cleared_by) do
+    GenServer.call(via(channel_name), {:clear_welcome, cleared_by})
+  end
+
+  @doc "Get the welcome message for a channel."
+  @spec get_welcome(String.t()) :: {:ok, %{message: String.t(), set_by: String.t()}} | {:ok, nil}
+  def get_welcome(channel_name) do
+    GenServer.call(via(channel_name), :get_welcome)
+  end
+
   # ──────────────────────────────────────────────────────────────
   # GenServer Callbacks
   # ──────────────────────────────────────────────────────────────
@@ -179,10 +197,11 @@ defmodule RetroHexChat.Channels.Server do
       invite_exceptions: MapSet.new(),
       registered: false,
       created_at: DateTime.utc_now(),
-      join_timestamps: []
+      join_timestamps: [],
+      welcome_message: nil
     }
 
-    {:ok, load_persisted_state(state)}
+    {:ok, load_persisted_state(state) |> load_welcome_message()}
   end
 
   @impl true
@@ -514,6 +533,45 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
+  def handle_call({:set_welcome, message, set_by}, _from, state) do
+    welcome = %{message: message, set_by: set_by}
+    new_state = %{state | welcome_message: welcome}
+
+    try do
+      ServiceQueries.upsert_welcome_message(state.name, message, set_by)
+    rescue
+      e -> Logger.warning("Failed to persist welcome for #{state.name}: #{inspect(e)}")
+    end
+
+    broadcast(
+      state.name,
+      {:welcome_changed, %{channel: state.name, message: message, set_by: set_by}}
+    )
+
+    {:reply, :ok, new_state}
+  end
+
+  def handle_call({:clear_welcome, _cleared_by}, _from, state) do
+    new_state = %{state | welcome_message: nil}
+
+    try do
+      ServiceQueries.delete_welcome_message(state.name)
+    rescue
+      e -> Logger.warning("Failed to clear welcome for #{state.name}: #{inspect(e)}")
+    end
+
+    broadcast(
+      state.name,
+      {:welcome_changed, %{channel: state.name, message: nil, set_by: nil}}
+    )
+
+    {:reply, :ok, new_state}
+  end
+
+  def handle_call(:get_welcome, _from, state) do
+    {:reply, {:ok, state.welcome_message}, state}
+  end
+
   def handle_call({:knock, nickname, message}, _from, state) do
     cond do
       not Modes.invite_only?(state.modes) ->
@@ -820,6 +878,20 @@ defmodule RetroHexChat.Channels.Server do
       _ ->
         modes
     end
+  end
+
+  defp load_welcome_message(state) do
+    case ServiceQueries.get_welcome_message(state.name) do
+      nil ->
+        state
+
+      welcome ->
+        %{state | welcome_message: %{message: welcome.message, set_by: welcome.set_by}}
+    end
+  rescue
+    e ->
+      Logger.warning("Failed to load welcome message for #{state.name}: #{inspect(e)}")
+      state
   end
 
   defp determine_join_role(state, nickname) do

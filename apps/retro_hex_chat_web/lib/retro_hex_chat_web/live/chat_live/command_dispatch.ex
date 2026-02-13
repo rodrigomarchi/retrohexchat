@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       safe_untrack_user: 2
     ]
 
-  alias RetroHexChat.Accounts.Session
+  alias RetroHexChat.Accounts.{ServerRoles, Session}
 
   alias RetroHexChat.Chat.{
     AliasExpander,
@@ -59,7 +59,9 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       channels: session.channels,
       identified: session.identified,
       operator_in: channels_where_operator(session),
-      half_operator_in: channels_where_half_operator(session)
+      half_operator_in: channels_where_half_operator(session),
+      is_admin: ServerRoles.admin?(session.nickname, session.identified),
+      is_server_operator: ServerRoles.server_operator?(session.nickname, session.identified)
     }
 
     case try_alias_expansion(session, name, args, context, alias_depth) do

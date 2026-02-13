@@ -7,9 +7,11 @@ defmodule RetroHexChat.Services.Queries do
   alias RetroHexChat.Services.AccessListEntry
   alias RetroHexChat.Services.Ban
   alias RetroHexChat.Services.BanException
+  alias RetroHexChat.Services.ChannelWelcomeMessage
   alias RetroHexChat.Services.InviteException
   alias RetroHexChat.Services.RegisteredChannel
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.Services.ServerSetting
 
   # ── Nick functions ──────────────────────────────────────────
 
@@ -205,5 +207,74 @@ defmodule RetroHexChat.Services.Queries do
       order_by: e.inserted_at
     )
     |> Repo.all()
+  end
+
+  # ── Server settings ──────────────────────────────────────
+
+  @spec get_setting(String.t()) :: String.t() | nil
+  def get_setting(key) do
+    case Repo.get_by(ServerSetting, key: key) do
+      nil -> nil
+      setting -> setting.value
+    end
+  end
+
+  @spec upsert_setting(String.t(), String.t() | nil, String.t()) ::
+          {:ok, ServerSetting.t()} | {:error, Ecto.Changeset.t()}
+  def upsert_setting(key, value, updated_by) do
+    case Repo.get_by(ServerSetting, key: key) do
+      nil ->
+        %ServerSetting{}
+        |> ServerSetting.changeset(%{key: key, value: value, updated_by: updated_by})
+        |> Repo.insert()
+
+      existing ->
+        existing
+        |> ServerSetting.changeset(%{value: value, updated_by: updated_by})
+        |> Repo.update()
+    end
+  end
+
+  @spec delete_setting(String.t()) :: :ok
+  def delete_setting(key) do
+    from(s in ServerSetting, where: s.key == ^key)
+    |> Repo.delete_all()
+
+    :ok
+  end
+
+  # ── Channel welcome messages ─────────────────────────────
+
+  @spec get_welcome_message(String.t()) :: ChannelWelcomeMessage.t() | nil
+  def get_welcome_message(channel_name) do
+    Repo.get_by(ChannelWelcomeMessage, channel_name: channel_name)
+  end
+
+  @spec upsert_welcome_message(String.t(), String.t(), String.t()) ::
+          {:ok, ChannelWelcomeMessage.t()} | {:error, Ecto.Changeset.t()}
+  def upsert_welcome_message(channel_name, message, set_by) do
+    case Repo.get_by(ChannelWelcomeMessage, channel_name: channel_name) do
+      nil ->
+        %ChannelWelcomeMessage{}
+        |> ChannelWelcomeMessage.changeset(%{
+          channel_name: channel_name,
+          message: message,
+          set_by: set_by
+        })
+        |> Repo.insert()
+
+      existing ->
+        existing
+        |> ChannelWelcomeMessage.changeset(%{message: message, set_by: set_by})
+        |> Repo.update()
+    end
+  end
+
+  @spec delete_welcome_message(String.t()) :: :ok
+  def delete_welcome_message(channel_name) do
+    from(w in ChannelWelcomeMessage, where: w.channel_name == ^channel_name)
+    |> Repo.delete_all()
+
+    :ok
   end
 end

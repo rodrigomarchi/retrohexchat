@@ -120,6 +120,15 @@
 .chat-message--highlighted {
   background-color: #ffffd0;
 }
+
+/* Announcement — bold, colored background */
+.chat-message--announcement {
+  background: #cc7700;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 4px 8px;
+  border: 1px solid #ff9900;
+}
 .tree-highlight {
   animation: tree-flash 0.8s ease-in-out infinite;
 }

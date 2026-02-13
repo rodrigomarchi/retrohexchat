@@ -453,6 +453,84 @@ defmodule RetroHexChat.Accounts.SessionTest do
     end
   end
 
+  describe "user_modes" do
+    test "new/1 initializes with empty user_modes MapSet" do
+      session = Session.new("Rodrigo")
+      assert session.user_modes == MapSet.new()
+    end
+
+    test "has_mode?/2 returns false for unset mode" do
+      session = Session.new("Rodrigo")
+      refute Session.has_mode?(session, :wallops)
+    end
+
+    test "set_mode/2 enables a user mode" do
+      session = Session.new("Rodrigo") |> Session.set_mode(:wallops)
+      assert Session.has_mode?(session, :wallops)
+    end
+
+    test "unset_mode/2 disables a user mode" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.set_mode(:wallops)
+        |> Session.unset_mode(:wallops)
+
+      refute Session.has_mode?(session, :wallops)
+    end
+
+    test "set_mode/2 is idempotent" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.set_mode(:wallops)
+        |> Session.set_mode(:wallops)
+
+      assert Session.has_mode?(session, :wallops)
+      assert MapSet.size(session.user_modes) == 1
+    end
+
+    test "unset_mode/2 on unset mode is noop" do
+      session = Session.new("Rodrigo") |> Session.unset_mode(:wallops)
+      refute Session.has_mode?(session, :wallops)
+    end
+  end
+
+  describe "welcomed_channels" do
+    test "new/1 initializes with empty welcomed_channels MapSet" do
+      session = Session.new("Rodrigo")
+      assert session.welcomed_channels == MapSet.new()
+    end
+
+    test "welcomed_channel?/2 returns false for unwelcomed channel" do
+      session = Session.new("Rodrigo")
+      refute Session.welcomed_channel?(session, "#test")
+    end
+
+    test "add_welcomed_channel/2 marks a channel as welcomed" do
+      session = Session.new("Rodrigo") |> Session.add_welcomed_channel("#test")
+      assert Session.welcomed_channel?(session, "#test")
+    end
+
+    test "add_welcomed_channel/2 is idempotent" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.add_welcomed_channel("#test")
+        |> Session.add_welcomed_channel("#test")
+
+      assert Session.welcomed_channel?(session, "#test")
+      assert MapSet.size(session.welcomed_channels) == 1
+    end
+
+    test "add_welcomed_channel/2 preserves other channels" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.add_welcomed_channel("#one")
+        |> Session.add_welcomed_channel("#two")
+
+      assert Session.welcomed_channel?(session, "#one")
+      assert Session.welcomed_channel?(session, "#two")
+    end
+  end
+
   describe "notice_routing" do
     test "default routing is :active" do
       session = Session.new("Rodrigo")

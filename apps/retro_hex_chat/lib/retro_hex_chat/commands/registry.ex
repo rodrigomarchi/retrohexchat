@@ -6,12 +6,15 @@ defmodule RetroHexChat.Commands.Registry do
 
   @commands %{
     "alias" => RetroHexChat.Commands.Handlers.Alias,
+    "announce" => RetroHexChat.Commands.Handlers.Announce,
     "autorespond" => RetroHexChat.Commands.Handlers.AutoRespond,
     "autojoin" => RetroHexChat.Commands.Handlers.AutoJoin,
     "away" => RetroHexChat.Commands.Handlers.Away,
     "ban" => RetroHexChat.Commands.Handlers.Ban,
     "bio" => RetroHexChat.Commands.Handlers.Bio,
     "clear" => RetroHexChat.Commands.Handlers.Clear,
+    "clearmotd" => RetroHexChat.Commands.Handlers.ClearMotd,
+    "clearwelcome" => RetroHexChat.Commands.Handlers.ClearWelcome,
     "ctcp" => RetroHexChat.Commands.Handlers.Ctcp,
     "cs" => RetroHexChat.Commands.Handlers.Cs,
     "help" => RetroHexChat.Commands.Handlers.Help,
@@ -24,6 +27,7 @@ defmodule RetroHexChat.Commands.Registry do
     "list" => RetroHexChat.Commands.Handlers.List,
     "me" => RetroHexChat.Commands.Handlers.Me,
     "mode" => RetroHexChat.Commands.Handlers.Mode,
+    "motd" => RetroHexChat.Commands.Handlers.Motd,
     "msg" => RetroHexChat.Commands.Handlers.Msg,
     "nick" => RetroHexChat.Commands.Handlers.Nick,
     "notice" => RetroHexChat.Commands.Handlers.Notice,
@@ -35,9 +39,13 @@ defmodule RetroHexChat.Commands.Registry do
     "perform" => RetroHexChat.Commands.Handlers.Perform,
     "query" => RetroHexChat.Commands.Handlers.Query,
     "quit" => RetroHexChat.Commands.Handlers.Quit,
+    "setmotd" => RetroHexChat.Commands.Handlers.SetMotd,
+    "setwelcome" => RetroHexChat.Commands.Handlers.SetWelcome,
     "timer" => RetroHexChat.Commands.Handlers.Timer,
     "topic" => RetroHexChat.Commands.Handlers.Topic,
+    "umode" => RetroHexChat.Commands.Handlers.Umode,
     "unignore" => RetroHexChat.Commands.Handlers.Unignore,
+    "wallops" => RetroHexChat.Commands.Handlers.Wallops,
     "whois" => RetroHexChat.Commands.Handlers.Whois,
     "whowas" => RetroHexChat.Commands.Handlers.Whowas
   }
