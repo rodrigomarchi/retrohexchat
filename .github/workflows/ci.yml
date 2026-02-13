@@ -144,7 +144,7 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          mix test --include e2e 2>&1 | tee /tmp/tests_output.txt
+          mix test --include e2e --cover 2>&1 | tee /tmp/tests_output.txt
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -284,6 +284,15 @@ jobs:
             fi
           fi
 
+          # Extract coverage totals (domain app first, web app second)
+          COVERAGE_DOMAIN=""
+          COVERAGE_WEB=""
+          if [ -f /tmp/ci-outputs/tests_output.txt ]; then
+            COVERAGE_LINES=$(grep -E '^\s+[0-9]+\.[0-9]+% \| Total' /tmp/ci-outputs/tests_output.txt || true)
+            COVERAGE_DOMAIN=$(echo "$COVERAGE_LINES" | head -1 | grep -oE '[0-9]+\.[0-9]+%' || true)
+            COVERAGE_WEB=$(echo "$COVERAGE_LINES" | sed -n '2p' | grep -oE '[0-9]+\.[0-9]+%' || true)
+          fi
+
           SHORT_SHA="${GITHUB_SHA:0:7}"
 
           {
@@ -296,7 +305,26 @@ jobs:
             echo "| **Credo** | $(icon "$STATUS_CREDO") ${CREDO_SUMMARY} |"
             echo "| **Tests** | $(icon "$STATUS_TESTS") ${TEST_SUMMARY} |"
             echo "| **Dialyzer** | $(icon "$STATUS_DIALYZER") ${DIALYZER_SUMMARY} |"
+            if [ -n "$COVERAGE_DOMAIN" ]; then
+              echo "| **Coverage** | domain: ${COVERAGE_DOMAIN} · web: ${COVERAGE_WEB} |"
+            fi
             echo ""
+
+            # Coverage report (collapsible)
+            if [ -f /tmp/ci-outputs/tests_output.txt ]; then
+              COVER_OUTPUT=$(sed -n '/Generating cover results/,/Coverage threshold/p' /tmp/ci-outputs/tests_output.txt)
+              if [ -n "$COVER_OUTPUT" ]; then
+                echo "<details>"
+                echo "<summary>📊 <strong>Coverage Report</strong> — click to expand</summary>"
+                echo ""
+                echo '```'
+                echo "$COVER_OUTPUT"
+                echo '```'
+                echo ""
+                echo "</details>"
+                echo ""
+              fi
+            fi
 
             # Detailed output for each failed check
             for check in compile format credo tests dialyzer; do

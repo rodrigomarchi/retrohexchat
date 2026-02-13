@@ -13,6 +13,7 @@ defmodule RetroHexChat.Channels.Server do
 
   alias RetroHexChat.Channels.{Events, Membership, Modes, Policy, Queries, Registry}
   alias RetroHexChat.Chat
+  alias RetroHexChat.Chat.Formatter
   alias RetroHexChat.Services.ChanServ
   alias RetroHexChat.Services.Queries, as: ServiceQueries
 
@@ -27,7 +28,8 @@ defmodule RetroHexChat.Channels.Server do
           ban_exceptions: MapSet.t(String.t()),
           invite_exceptions: MapSet.t(String.t()),
           registered: boolean(),
-          created_at: DateTime.t()
+          created_at: DateTime.t(),
+          join_timestamps: [DateTime.t()]
         }
 
   @pubsub RetroHexChat.PubSub
@@ -42,12 +44,14 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   @doc """
-  Join a channel. The first user to join becomes operator.
+  Join a channel. The first user to join becomes owner.
   Returns `{:ok, state_map}` on success.
   """
-  @spec join(String.t(), String.t(), String.t() | nil) :: {:ok, map()} | {:error, String.t()}
-  def join(channel_name, nickname, password \\ nil) do
-    GenServer.call(via(channel_name), {:join, nickname, password})
+  @spec join(String.t(), String.t(), String.t() | nil, keyword()) ::
+          {:ok, map()} | {:error, String.t()}
+  def join(channel_name, nickname, password \\ nil, opts \\ []) do
+    identified = Keyword.get(opts, :identified, false)
+    GenServer.call(via(channel_name), {:join, nickname, password, identified})
   end
 
   @doc """
@@ -79,7 +83,7 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   @doc """
-  Set channel modes. Requires operator privilege.
+  Set channel modes. Requires appropriate privilege level.
   """
   @spec set_mode(String.t(), String.t(), String.t(), [String.t()]) ::
           :ok | {:error, String.t()}
@@ -88,7 +92,7 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   @doc """
-  Kick a user from the channel. Requires operator privilege.
+  Kick a user from the channel. Requires sufficient rank.
   """
   @spec kick(String.t(), String.t(), String.t(), String.t() | nil) ::
           :ok | {:error, String.t()}
@@ -97,7 +101,7 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   @doc """
-  Ban a user from the channel. Requires operator privilege.
+  Ban a user from the channel. Requires operator or owner.
   """
   @spec ban(String.t(), String.t(), String.t(), String.t() | nil) ::
           :ok | {:error, String.t()}
@@ -151,6 +155,12 @@ defmodule RetroHexChat.Channels.Server do
     GenServer.call(via(channel_name), {:unban, operator_nick, target_nick})
   end
 
+  @doc "Knock on an invite-only channel. Channel must be +i and not +K."
+  @spec knock(String.t(), String.t(), String.t() | nil) :: :ok | {:error, String.t()}
+  def knock(channel_name, nickname, message \\ nil) do
+    GenServer.call(via(channel_name), {:knock, nickname, message})
+  end
+
   # ──────────────────────────────────────────────────────────────
   # GenServer Callbacks
   # ──────────────────────────────────────────────────────────────
@@ -168,14 +178,15 @@ defmodule RetroHexChat.Channels.Server do
       ban_exceptions: MapSet.new(),
       invite_exceptions: MapSet.new(),
       registered: false,
-      created_at: DateTime.utc_now()
+      created_at: DateTime.utc_now(),
+      join_timestamps: []
     }
 
     {:ok, load_persisted_state(state)}
   end
 
   @impl true
-  def handle_call({:join, nickname, password}, _from, state) do
+  def handle_call({:join, nickname, password, identified}, _from, state) do
     with :ok <- check_not_banned(state, nickname),
          :ok <- check_not_member(state, nickname),
          :ok <-
@@ -184,11 +195,14 @@ defmodule RetroHexChat.Channels.Server do
              state.membership,
              password,
              nickname,
-             state.invite_exceptions
-           ) do
+             state.invite_exceptions,
+             identified
+           ),
+         :ok <- check_join_throttle(state, nickname) do
       role = determine_join_role(state, nickname)
       new_membership = Membership.add(state.membership, nickname, role)
-      new_state = %{state | membership: new_membership}
+      new_timestamps = [DateTime.utc_now() | state.join_timestamps]
+      new_state = %{state | membership: new_membership, join_timestamps: new_timestamps}
 
       broadcast(
         state.name,
@@ -199,6 +213,11 @@ defmodule RetroHexChat.Channels.Server do
     else
       {:error, _} = err -> {:reply, err, state}
     end
+  end
+
+  # Backwards-compatible 3-arg join (no identified flag)
+  def handle_call({:join, nickname, password}, _from, state) do
+    handle_call({:join, nickname, password, false}, {:join_compat, nil}, state)
   end
 
   def handle_call({:part, nickname, reason}, _from, state) do
@@ -224,7 +243,14 @@ defmodule RetroHexChat.Channels.Server do
   def handle_call({:send_message, nickname, content, type}, _from, state) do
     with :ok <- RetroHexChat.Chat.Policy.validate_content(content),
          :ok <- Policy.can_speak?(state.modes, state.membership, nickname) do
-      {id, timestamp} = persist_and_get_id(state.name, nickname, content, type)
+      final_content =
+        if Modes.strip_colors?(state.modes) do
+          Formatter.strip(content)
+        else
+          content
+        end
+
+      {id, timestamp} = persist_and_get_id(state.name, nickname, final_content, type)
 
       broadcast(
         state.name,
@@ -234,7 +260,7 @@ defmodule RetroHexChat.Channels.Server do
             id: id,
             channel: state.name,
             author: nickname,
-            content: content,
+            content: final_content,
             type: type,
             timestamp: timestamp
           }
@@ -253,7 +279,7 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   def handle_call({:set_mode, nickname, mode_string, params}, _from, state) do
-    with true <- Policy.operator?(state.membership, nickname),
+    with :ok <- check_mode_permissions(state.membership, nickname, mode_string, params),
          {:ok, new_membership} <- apply_user_modes(state.membership, mode_string, params),
          {:ok, new_modes} <- Modes.apply_changes(state.modes, mode_string, params) do
       new_state = %{state | modes: new_modes, membership: new_membership}
@@ -268,20 +294,13 @@ defmodule RetroHexChat.Channels.Server do
 
       {:reply, :ok, new_state}
     else
-      false -> {:reply, {:error, "You must be a channel operator to change modes"}, state}
       {:error, _} = err -> {:reply, err, state}
     end
   end
 
-  def handle_call({:kick, operator_nick, target_nick, reason}, _from, state) do
-    cond do
-      not Policy.operator?(state.membership, operator_nick) ->
-        {:reply, {:error, "You must be a channel operator to kick users"}, state}
-
-      not Membership.member?(state.membership, target_nick) ->
-        {:reply, {:error, "User #{target_nick} is not in channel"}, state}
-
-      true ->
+  def handle_call({:kick, actor_nick, target_nick, reason}, _from, state) do
+    case Policy.can_kick?(state.membership, actor_nick, target_nick) do
+      :ok ->
         new_membership = Membership.remove(state.membership, target_nick)
         new_state = %{state | membership: new_membership}
 
@@ -289,7 +308,7 @@ defmodule RetroHexChat.Channels.Server do
           state.name,
           {:user_kicked,
            %{
-             operator: operator_nick,
+             operator: actor_nick,
              target: target_nick,
              reason: reason
            }}
@@ -300,43 +319,48 @@ defmodule RetroHexChat.Channels.Server do
         else
           {:reply, :ok, new_state}
         end
+
+      {:error, _} = err ->
+        {:reply, err, state}
     end
   end
 
-  def handle_call({:ban, operator_nick, target_nick, reason}, _from, state) do
-    if Policy.operator?(state.membership, operator_nick) do
-      new_bans = MapSet.put(state.bans, target_nick)
-      new_state = %{state | bans: new_bans}
+  def handle_call({:ban, actor_nick, target_nick, reason}, _from, state) do
+    case Policy.can_ban?(state.membership, actor_nick) do
+      :ok ->
+        new_bans = MapSet.put(state.bans, target_nick)
+        new_state = %{state | bans: new_bans}
 
-      broadcast(
-        state.name,
-        {:user_banned,
-         %{
-           channel: state.name,
-           operator: operator_nick,
-           target: target_nick,
-           reason: reason
-         }}
-      )
+        broadcast(
+          state.name,
+          {:user_banned,
+           %{
+             channel: state.name,
+             operator: actor_nick,
+             target: target_nick,
+             reason: reason
+           }}
+        )
 
-      # Eject banned user from channel if currently a member
-      new_state =
-        if Membership.member?(new_state.membership, target_nick) do
-          new_membership = Membership.remove(new_state.membership, target_nick)
+        # Eject banned user from channel if currently a member
+        new_state =
+          if Membership.member?(new_state.membership, target_nick) do
+            new_membership = Membership.remove(new_state.membership, target_nick)
 
-          broadcast(
-            state.name,
-            {:user_kicked, %{operator: operator_nick, target: target_nick, reason: "Banned"}}
-          )
+            broadcast(
+              state.name,
+              {:user_kicked, %{operator: actor_nick, target: target_nick, reason: "Banned"}}
+            )
 
-          %{new_state | membership: new_membership}
-        else
-          new_state
-        end
+            %{new_state | membership: new_membership}
+          else
+            new_state
+          end
 
-      {:reply, :ok, new_state}
-    else
-      {:reply, {:error, "You must be a channel operator to ban users"}, state}
+        {:reply, :ok, new_state}
+
+      {:error, _} = err ->
+        {:reply, err, state}
     end
   end
 
@@ -490,9 +514,58 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
+  def handle_call({:knock, nickname, message}, _from, state) do
+    cond do
+      not Modes.invite_only?(state.modes) ->
+        {:reply, {:error, "Channel is not invite-only"}, state}
+
+      Modes.no_knock?(state.modes) ->
+        {:reply, {:error, "Knocking is disabled for this channel"}, state}
+
+      MapSet.member?(state.bans, nickname) and
+          not MapSet.member?(state.ban_exceptions, nickname) ->
+        {:reply, {:error, "You are banned from that channel"}, state}
+
+      Membership.member?(state.membership, nickname) ->
+        {:reply, {:error, "You are already in that channel"}, state}
+
+      true ->
+        broadcast(
+          state.name,
+          {:knock, %{nickname: nickname, channel: state.name, message: message}}
+        )
+
+        {:reply, :ok, state}
+    end
+  end
+
   # ──────────────────────────────────────────────────────────────
   # Private Helpers
   # ──────────────────────────────────────────────────────────────
+
+  defp check_mode_permissions(membership, nickname, mode_string, params) do
+    flags = extract_mode_flags(mode_string, params)
+
+    Enum.reduce_while(flags, :ok, fn flag, _acc ->
+      case Policy.can_set_mode?(membership, nickname, flag) do
+        :ok -> {:cont, :ok}
+        {:error, _} = err -> {:halt, err}
+      end
+    end)
+  end
+
+  defp extract_mode_flags(mode_string, params) do
+    case String.split(mode_string, "", trim: true) do
+      ["+" | flags] -> extract_flags_with_params(flags, params)
+      ["-" | flags] -> extract_flags_with_params(flags, params)
+      _ -> []
+    end
+  end
+
+  defp extract_flags_with_params(flags, _params) do
+    # Return all flag characters for permission checking
+    flags
+  end
 
   defp apply_user_modes(membership, mode_string, params) do
     mode_string
@@ -525,13 +598,24 @@ defmodule RetroHexChat.Channels.Server do
     Enum.reverse(changes)
   end
 
+  defp process_user_flag(:add, "q", acc, [nick | rest]), do: {[{nick, :owner} | acc], rest}
+  defp process_user_flag(:remove, "q", acc, [nick | rest]), do: {[{nick, :regular} | acc], rest}
   defp process_user_flag(:add, "o", acc, [nick | rest]), do: {[{nick, :operator} | acc], rest}
   defp process_user_flag(:remove, "o", acc, [nick | rest]), do: {[{nick, :regular} | acc], rest}
+
+  defp process_user_flag(:add, "h", acc, [nick | rest]),
+    do: {[{nick, :half_operator} | acc], rest}
+
+  defp process_user_flag(:remove, "h", acc, [nick | rest]),
+    do: {[{nick, :regular} | acc], rest}
+
   defp process_user_flag(:add, "v", acc, [nick | rest]), do: {[{nick, :voiced} | acc], rest}
   defp process_user_flag(:remove, "v", acc, [nick | rest]), do: {[{nick, :regular} | acc], rest}
   defp process_user_flag(:add, "k", acc, [_ | rest]), do: {acc, rest}
   defp process_user_flag(:add, "l", acc, [_ | rest]), do: {acc, rest}
-  defp process_user_flag(_, flag, acc, []) when flag in ~w(o v k l), do: {acc, []}
+  defp process_user_flag(:add, "j", acc, [_ | rest]), do: {acc, rest}
+
+  defp process_user_flag(_, flag, acc, []) when flag in ~w(o v k l q h j), do: {acc, []}
   defp process_user_flag(_, _, acc, remaining), do: {acc, remaining}
 
   defp via(channel_name), do: Registry.via_tuple(channel_name)
@@ -554,14 +638,23 @@ defmodule RetroHexChat.Channels.Server do
       topic_set_at: state.topic_set_at,
       members: Membership.to_list(state.membership),
       member_count: Membership.count(state.membership),
+      owners: Membership.owners(state.membership),
       operators: Membership.operators(state.membership),
+      half_operators: Membership.half_operators(state.membership),
       modes: Modes.to_string(state.modes),
       modes_detail: %{
         moderated: Modes.moderated?(state.modes),
         invite_only: Modes.invite_only?(state.modes),
         topic_lock: Modes.topic_locked?(state.modes),
         key: state.modes.key,
-        limit: state.modes.limit
+        limit: state.modes.limit,
+        no_external: Modes.no_external?(state.modes),
+        secret: Modes.secret?(state.modes),
+        private: Modes.private?(state.modes),
+        strip_colors: Modes.strip_colors?(state.modes),
+        registered_only: Modes.registered_only?(state.modes),
+        no_knock: Modes.no_knock?(state.modes),
+        join_throttle: state.modes.join_throttle
       },
       bans: MapSet.to_list(state.bans),
       ban_exceptions: MapSet.to_list(state.ban_exceptions),
@@ -587,6 +680,28 @@ defmodule RetroHexChat.Channels.Server do
     else
       :ok
     end
+  end
+
+  defp check_join_throttle(state, nickname) do
+    cond do
+      not Modes.has_join_throttle?(state.modes) -> :ok
+      Policy.operator?(state.membership, nickname) -> :ok
+      true -> enforce_throttle(state)
+    end
+  end
+
+  defp enforce_throttle(state) do
+    {count, seconds} = state.modes.join_throttle
+    cutoff = DateTime.add(DateTime.utc_now(), -seconds, :second)
+
+    recent =
+      Enum.count(state.join_timestamps, fn ts ->
+        DateTime.compare(ts, cutoff) != :lt
+      end)
+
+    if recent >= count,
+      do: {:error, "Channel join throttle active, please try again shortly"},
+      else: :ok
   end
 
   defp persist_and_get_id(channel_name, nickname, content, type) do
@@ -669,6 +784,7 @@ defmodule RetroHexChat.Channels.Server do
     |> maybe_apply_mode_string(persisted.modes)
     |> maybe_set_key(persisted.mode_key)
     |> maybe_set_limit(persisted.mode_limit)
+    |> maybe_set_join_throttle(Map.get(persisted, :mode_join_throttle))
   end
 
   defp maybe_apply_mode_string(modes, nil), do: modes
@@ -687,10 +803,29 @@ defmodule RetroHexChat.Channels.Server do
   defp maybe_set_limit(modes, nil), do: modes
   defp maybe_set_limit(modes, limit), do: %{modes | limit: limit}
 
+  defp maybe_set_join_throttle(modes, nil), do: modes
+  defp maybe_set_join_throttle(modes, ""), do: modes
+
+  defp maybe_set_join_throttle(modes, throttle_str) when is_binary(throttle_str) do
+    case String.split(throttle_str, ":") do
+      [count_str, seconds_str] ->
+        with {count, ""} <- Integer.parse(count_str),
+             {seconds, ""} <- Integer.parse(seconds_str),
+             true <- count > 0 and seconds > 0 do
+          %{modes | join_throttle: {count, seconds}}
+        else
+          _ -> modes
+        end
+
+      _ ->
+        modes
+    end
+  end
+
   defp determine_join_role(state, nickname) do
     cond do
       Membership.count(state.membership) == 0 and not state.registered ->
-        :operator
+        :owner
 
       state.registered ->
         access_level_to_role(state.name, nickname)
@@ -702,7 +837,7 @@ defmodule RetroHexChat.Channels.Server do
 
   defp access_level_to_role(channel_name, nickname) do
     case ChanServ.check_access(channel_name, nickname) do
-      {:ok, level} when level in ["founder", "sop"] -> :operator
+      {:ok, level} when level in ["founder", "sop"] -> :owner
       {:ok, "aop"} -> :operator
       {:ok, "vop"} -> :voiced
       _ -> :regular

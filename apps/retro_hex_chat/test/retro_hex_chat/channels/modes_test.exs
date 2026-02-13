@@ -244,4 +244,115 @@ defmodule RetroHexChat.Channels.ModesTest do
       assert Modes.to_string(modes) == "+l"
     end
   end
+
+  describe "new channel flags" do
+    test "+n sets no_external flag" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+n")
+      assert Modes.no_external?(modes)
+    end
+
+    test "-n removes no_external flag" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+n")
+      {:ok, modes} = Modes.apply_changes(modes, "-n")
+      refute Modes.no_external?(modes)
+    end
+
+    test "+s sets secret flag" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+s")
+      assert Modes.secret?(modes)
+    end
+
+    test "+p sets private flag" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+p")
+      assert Modes.private?(modes)
+    end
+
+    test "+c sets strip_colors flag" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+c")
+      assert Modes.strip_colors?(modes)
+    end
+
+    test "+R sets registered_only flag" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+R")
+      assert Modes.registered_only?(modes)
+    end
+
+    test "+K sets no_knock flag" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+K")
+      assert Modes.no_knock?(modes)
+    end
+  end
+
+  describe "+j join throttle" do
+    test "+j sets join_throttle tuple" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+j", ["5:10"])
+      assert Modes.has_join_throttle?(modes)
+      assert modes.join_throttle == {5, 10}
+    end
+
+    test "-j removes join_throttle" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+j", ["5:10"])
+      {:ok, modes} = Modes.apply_changes(modes, "-j")
+      refute Modes.has_join_throttle?(modes)
+      assert modes.join_throttle == nil
+    end
+
+    test "+j with invalid format is ignored" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+j", ["invalid"])
+      refute Modes.has_join_throttle?(modes)
+      assert modes.join_throttle == nil
+    end
+
+    test "+j with zero count is ignored" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+j", ["0:10"])
+      refute Modes.has_join_throttle?(modes)
+    end
+
+    test "+j with zero seconds is ignored" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+j", ["5:0"])
+      refute Modes.has_join_throttle?(modes)
+    end
+  end
+
+  describe "+s/+p mutual exclusivity" do
+    test "setting +p when +s is active fails" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+s")
+      assert {:error, _} = Modes.apply_changes(modes, "+p")
+    end
+
+    test "setting +s when +p is active fails" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+p")
+      assert {:error, _} = Modes.apply_changes(modes, "+s")
+    end
+
+    test "can set +s after removing +p" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+p")
+      {:ok, modes} = Modes.apply_changes(modes, "-p")
+      assert {:ok, _} = Modes.apply_changes(modes, "+s")
+    end
+  end
+
+  describe "to_string/1 with new flags" do
+    test "includes n for no_external" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+n")
+      assert Modes.to_string(modes) =~ "n"
+    end
+
+    test "includes s for secret" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+s")
+      assert Modes.to_string(modes) =~ "s"
+    end
+
+    test "includes j for join_throttle" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+j", ["5:10"])
+      assert Modes.to_string(modes) =~ "j"
+    end
+
+    test "includes multiple new flags" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+nc")
+      result = Modes.to_string(modes)
+      assert result =~ "n"
+      assert result =~ "c"
+    end
+  end
 end

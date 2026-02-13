@@ -16,7 +16,7 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
 
   def execute([target | rest], context) do
     with {:ok, channel} <- require_channel(context),
-         :ok <- require_operator(context, channel) do
+         :ok <- require_kick_privilege(context, channel) do
       reason = if rest == [], do: nil, else: Enum.join(rest, " ")
 
       {:ok, :ui_action, :kick_user, %{channel: channel, target: target, reason: reason}}
@@ -34,7 +34,7 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
     %{
       name: "kick",
       syntax: "/kick <nickname> [reason]",
-      description: "Kick a user from the channel. Requires operator privilege.",
+      description: "Kick a user from the channel. Requires half-operator or higher.",
       examples: ["/kick troll", "/kick troll Spamming the channel"]
     }
   end
@@ -42,8 +42,11 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
   defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
   defp require_channel(%{active_channel: channel}), do: {:ok, channel}
 
-  defp require_operator(%{operator_in: operator_in}, channel) do
-    if channel in operator_in do
+  defp require_kick_privilege(context, channel) do
+    is_operator = channel in context.operator_in
+    is_half_op = channel in Map.get(context, :half_operator_in, [])
+
+    if is_operator or is_half_op do
       :ok
     else
       {:error, "You must be a channel operator to kick users"}

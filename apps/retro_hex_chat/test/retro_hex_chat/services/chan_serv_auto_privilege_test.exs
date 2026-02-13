@@ -68,7 +68,7 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
       assert {user, :regular} in state.members
     end
 
-    test "user with 'founder' access level gets :operator role" do
+    test "user with 'founder' access level gets :owner role" do
       channel = unique_channel()
       founder = "Founder#{System.unique_integer([:positive])}"
 
@@ -82,10 +82,10 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
       )
 
       {:ok, state} = Server.join(channel, founder)
-      assert {founder, :operator} in state.members
+      assert {founder, :owner} in state.members
     end
 
-    test "user with 'sop' access level gets :operator role" do
+    test "user with 'sop' access level gets :owner role" do
       channel = unique_channel()
       founder = "Founder#{System.unique_integer([:positive])}"
       sop_user = "SopUser#{System.unique_integer([:positive])}"
@@ -100,7 +100,7 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
       )
 
       {:ok, state} = Server.join(channel, sop_user)
-      assert {sop_user, :operator} in state.members
+      assert {sop_user, :owner} in state.members
     end
 
     test "first user in registered channel with no access gets :regular (not :operator)" do

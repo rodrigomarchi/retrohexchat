@@ -133,4 +133,31 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
       {:error, msg} -> stream_insert(socket, :chat_messages, error_message(msg))
     end
   end
+
+  def handle_ui_action(socket, :knock_channel, %{channel: channel} = payload) do
+    message = Map.get(payload, :message)
+    knock_timestamps = Map.get(socket.assigns, :knock_timestamps, %{})
+    now = System.monotonic_time(:millisecond)
+    last_knock = Map.get(knock_timestamps, channel, 0)
+
+    if now - last_knock < 60_000 do
+      stream_insert(
+        socket,
+        :chat_messages,
+        error_message("Please wait before knocking on #{channel} again")
+      )
+    else
+      case Server.knock(channel, socket.assigns.session.nickname, message) do
+        :ok ->
+          updated_timestamps = Map.put(knock_timestamps, channel, now)
+
+          socket
+          |> assign(knock_timestamps: updated_timestamps)
+          |> stream_insert(:chat_messages, system_message("Knock sent to #{channel}"))
+
+        {:error, msg} ->
+          stream_insert(socket, :chat_messages, error_message(msg))
+      end
+    end
+  end
 end

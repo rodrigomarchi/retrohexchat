@@ -548,7 +548,7 @@ defmodule RetroHexChatWeb.E2ETest do
       # Mode change broadcast should update nicklist
       Process.sleep(50)
       html = render(view)
-      assert html =~ "@OpRecv" or html =~ "nick-operator"
+      assert html =~ "@OpRecv" or html =~ "nick-operator" or html =~ "nick-owner"
     end
 
     test "6.6 give voice via context menu shows +prefix", %{conn: conn} do
@@ -635,7 +635,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
       send(view.pid, {:user_joined, %{nickname: "VoUser", role: :voiced}})
       html = render(view)
-      assert html =~ "@PrefixOp"
+      assert html =~ "~PrefixOp"
       assert html =~ "+VoUser"
     end
 

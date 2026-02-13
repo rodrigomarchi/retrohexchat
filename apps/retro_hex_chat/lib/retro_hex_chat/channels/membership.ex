@@ -4,7 +4,7 @@ defmodule RetroHexChat.Channels.Membership do
   Maps nicknames to their role and join time.
   """
 
-  @type role :: :operator | :voiced | :regular
+  @type role :: :owner | :operator | :half_operator | :voiced | :regular
   @type member_info :: %{role: role(), joined_at: DateTime.t()}
   @type t :: %__MODULE__{members: %{String.t() => member_info()}}
 
@@ -53,10 +53,33 @@ defmodule RetroHexChat.Channels.Membership do
     end
   end
 
+  @spec rank(role()) :: non_neg_integer()
+  def rank(:owner), do: 4
+  def rank(:operator), do: 3
+  def rank(:half_operator), do: 2
+  def rank(:voiced), do: 1
+  def rank(:regular), do: 0
+
+  @spec owners(t()) :: [String.t()]
+  def owners(%__MODULE__{members: members}) do
+    members
+    |> Enum.filter(fn {_, %{role: role}} -> role == :owner end)
+    |> Enum.map(fn {nick, _} -> nick end)
+    |> Enum.sort()
+  end
+
   @spec operators(t()) :: [String.t()]
   def operators(%__MODULE__{members: members}) do
     members
     |> Enum.filter(fn {_, %{role: role}} -> role == :operator end)
+    |> Enum.map(fn {nick, _} -> nick end)
+    |> Enum.sort()
+  end
+
+  @spec half_operators(t()) :: [String.t()]
+  def half_operators(%__MODULE__{members: members}) do
+    members
+    |> Enum.filter(fn {_, %{role: role}} -> role == :half_operator end)
     |> Enum.map(fn {nick, _} -> nick end)
     |> Enum.sort()
   end
@@ -67,6 +90,16 @@ defmodule RetroHexChat.Channels.Membership do
     |> Enum.filter(fn {_, %{role: role}} -> role == :voiced end)
     |> Enum.map(fn {nick, _} -> nick end)
     |> Enum.sort()
+  end
+
+  @spec outranks?(t(), String.t(), String.t()) :: boolean()
+  def outranks?(%__MODULE__{} = m, actor, target) do
+    with {:ok, actor_role} <- role(m, actor),
+         {:ok, target_role} <- role(m, target) do
+      rank(actor_role) > rank(target_role)
+    else
+      _ -> false
+    end
   end
 
   @spec count(t()) :: non_neg_integer()

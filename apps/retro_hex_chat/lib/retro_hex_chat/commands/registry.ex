@@ -19,6 +19,7 @@ defmodule RetroHexChat.Commands.Registry do
     "invite" => RetroHexChat.Commands.Handlers.Invite,
     "join" => RetroHexChat.Commands.Handlers.Join,
     "kick" => RetroHexChat.Commands.Handlers.Kick,
+    "knock" => RetroHexChat.Commands.Handlers.Knock,
     "leave" => RetroHexChat.Commands.Handlers.Part,
     "list" => RetroHexChat.Commands.Handlers.List,
     "me" => RetroHexChat.Commands.Handlers.Me,

@@ -212,6 +212,7 @@ defmodule RetroHexChatWeb.ChatLive do
       reconnect_active_pm: nil,
       ctcp_pending: %{},
       ctcp_rate_limits: %{},
+      knock_timestamps: %{},
       show_ctcp_settings_dialog: false,
       duplicate_tracker: DuplicateTracker.new(),
       flood_tracker: FloodTracker.new(),
@@ -300,8 +301,12 @@ defmodule RetroHexChatWeb.ChatLive do
 
       channel ->
         case Server.get_state(channel) do
-          {:ok, state} -> session.nickname in state.operators
-          {:error, _} -> false
+          {:ok, state} ->
+            session.nickname in state.operators or
+              session.nickname in Map.get(state, :owners, [])
+
+          {:error, _} ->
+            false
         end
     end
   rescue

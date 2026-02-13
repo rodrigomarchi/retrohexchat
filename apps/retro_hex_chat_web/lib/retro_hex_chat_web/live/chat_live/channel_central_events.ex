@@ -249,7 +249,8 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
         member_nicks = Enum.map(state.members, fn {nick, _role} -> nick end)
 
         if nickname in member_nicks do
-          operator = nickname in state.operators
+          operator =
+            nickname in state.operators or nickname in Map.get(state, :owners, [])
 
           {:halt,
            assign(socket,
@@ -305,7 +306,10 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
       case Server.get_state(channel) do
         {:ok, state} ->
           nickname = socket.assigns.session.nickname
-          operator = nickname in state.operators
+
+          operator =
+            nickname in state.operators or nickname in Map.get(state, :owners, [])
+
           assign(socket, channel_central_state: state, channel_central_operator: operator)
 
         {:error, _} ->

@@ -352,4 +352,110 @@ defmodule RetroHexChat.Channels.MembershipTest do
       assert Membership.to_list(m) == [{"bob", :regular}]
     end
   end
+
+  describe "owner role" do
+    test "add member as owner" do
+      m = Membership.new() |> Membership.add("alice", :owner)
+      assert {:ok, :owner} = Membership.role(m, "alice")
+    end
+
+    test "owners/1 returns sorted list of owners" do
+      m =
+        Membership.new()
+        |> Membership.add("charlie", :owner)
+        |> Membership.add("alice", :owner)
+        |> Membership.add("bob", :operator)
+
+      assert Membership.owners(m) == ["alice", "charlie"]
+    end
+  end
+
+  describe "half_operator role" do
+    test "add member as half_operator" do
+      m = Membership.new() |> Membership.add("alice", :half_operator)
+      assert {:ok, :half_operator} = Membership.role(m, "alice")
+    end
+
+    test "half_operators/1 returns sorted list of half-operators" do
+      m =
+        Membership.new()
+        |> Membership.add("charlie", :half_operator)
+        |> Membership.add("alice", :half_operator)
+        |> Membership.add("bob", :operator)
+
+      assert Membership.half_operators(m) == ["alice", "charlie"]
+    end
+  end
+
+  describe "rank/1" do
+    test "owner has highest rank" do
+      assert Membership.rank(:owner) == 4
+    end
+
+    test "operator ranks below owner" do
+      assert Membership.rank(:operator) == 3
+    end
+
+    test "half_operator ranks below operator" do
+      assert Membership.rank(:half_operator) == 2
+    end
+
+    test "voiced ranks below half_operator" do
+      assert Membership.rank(:voiced) == 1
+    end
+
+    test "regular has lowest rank" do
+      assert Membership.rank(:regular) == 0
+    end
+
+    test "rank ordering is strictly hierarchical" do
+      assert Membership.rank(:owner) > Membership.rank(:operator)
+      assert Membership.rank(:operator) > Membership.rank(:half_operator)
+      assert Membership.rank(:half_operator) > Membership.rank(:voiced)
+      assert Membership.rank(:voiced) > Membership.rank(:regular)
+    end
+  end
+
+  describe "outranks?/3" do
+    test "owner outranks operator" do
+      m =
+        Membership.new()
+        |> Membership.add("owner", :owner)
+        |> Membership.add("op", :operator)
+
+      assert Membership.outranks?(m, "owner", "op")
+    end
+
+    test "operator does not outrank owner" do
+      m =
+        Membership.new()
+        |> Membership.add("owner", :owner)
+        |> Membership.add("op", :operator)
+
+      refute Membership.outranks?(m, "op", "owner")
+    end
+
+    test "half_operator outranks regular" do
+      m =
+        Membership.new()
+        |> Membership.add("halfop", :half_operator)
+        |> Membership.add("user", :regular)
+
+      assert Membership.outranks?(m, "halfop", "user")
+    end
+
+    test "equal rank does not outrank" do
+      m =
+        Membership.new()
+        |> Membership.add("op1", :operator)
+        |> Membership.add("op2", :operator)
+
+      refute Membership.outranks?(m, "op1", "op2")
+    end
+
+    test "returns false for non-member" do
+      m = Membership.new() |> Membership.add("alice", :operator)
+      refute Membership.outranks?(m, "alice", "ghost")
+    end
+  end
 end

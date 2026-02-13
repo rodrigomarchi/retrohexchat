@@ -1,7 +1,8 @@
 defmodule RetroHexChatWeb.Components.Nicklist do
   @moduledoc """
-  User list grouped by role: operators (@), voiced (+), regular users.
-  Sorted alphabetically within groups. Shows away status and group counts.
+  User list grouped by role: owners (~), operators (@), half-operators (%),
+  voiced (+), regular users. Sorted alphabetically within groups.
+  Shows away status and group counts.
   """
   use Phoenix.Component
 
@@ -17,6 +18,16 @@ defmodule RetroHexChatWeb.Components.Nicklist do
     <div class="nicklist">
       <div class="nicklist-header">Users ({length(@users)})</div>
       <ul class="nicklist-list">
+        <li class="nicklist-group-header">Owners ({length(@grouped.owners)})</li>
+        <li
+          :for={user <- @grouped.owners}
+          class={"nick-owner #{if user.away, do: "nick-away", else: ""}"}
+          phx-click="nick_right_click"
+          phx-value-nick={user.nickname}
+          style={nick_style(@nick_color_fn, user.nickname)}
+        >
+          ~{user.nickname}
+        </li>
         <li class="nicklist-group-header">Operators ({length(@grouped.operators)})</li>
         <li
           :for={user <- @grouped.operators}
@@ -26,6 +37,16 @@ defmodule RetroHexChatWeb.Components.Nicklist do
           style={nick_style(@nick_color_fn, user.nickname)}
         >
           @{user.nickname}
+        </li>
+        <li class="nicklist-group-header">Half-Operators ({length(@grouped.half_operators)})</li>
+        <li
+          :for={user <- @grouped.half_operators}
+          class={"nick-halfop #{if user.away, do: "nick-away", else: ""}"}
+          phx-click="nick_right_click"
+          phx-value-nick={user.nickname}
+          style={nick_style(@nick_color_fn, user.nickname)}
+        >
+          %{user.nickname}
         </li>
         <li class="nicklist-group-header">Voiced ({length(@grouped.voiced)})</li>
         <li
@@ -57,15 +78,25 @@ defmodule RetroHexChatWeb.Components.Nicklist do
   defp nick_style(color_fn, nickname), do: "color: #{color_fn.(nickname)};"
 
   @spec group_users(list(map())) :: %{
+          owners: list(map()),
           operators: list(map()),
+          half_operators: list(map()),
           regular: list(map()),
           voiced: list(map())
         }
   defp group_users(users) do
     %{
+      owners:
+        users
+        |> Enum.filter(&(&1.role == :owner))
+        |> Enum.sort_by(& &1.nickname),
       operators:
         users
         |> Enum.filter(&(&1.role == :operator))
+        |> Enum.sort_by(& &1.nickname),
+      half_operators:
+        users
+        |> Enum.filter(&(&1.role == :half_operator))
         |> Enum.sort_by(& &1.nickname),
       voiced:
         users

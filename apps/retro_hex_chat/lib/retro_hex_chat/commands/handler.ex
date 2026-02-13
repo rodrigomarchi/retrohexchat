@@ -8,7 +8,8 @@ defmodule RetroHexChat.Commands.Handler do
           active_channel: String.t() | nil,
           channels: [String.t()],
           identified: boolean(),
-          operator_in: [String.t()]
+          operator_in: [String.t()],
+          half_operator_in: [String.t()]
         }
 
   @type result ::

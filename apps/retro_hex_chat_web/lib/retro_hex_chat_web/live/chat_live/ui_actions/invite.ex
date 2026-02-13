@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Invite do
   # Private helpers
 
   defp validate_operator(nickname, state) do
-    if nickname in state.operators do
+    if nickname in state.operators or nickname in Map.get(state, :owners, []) do
       :ok
     else
       {:error, "* You are not a channel operator"}

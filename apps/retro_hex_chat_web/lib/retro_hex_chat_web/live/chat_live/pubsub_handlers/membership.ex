@@ -178,7 +178,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       case Server.get_state(channel) do
         {:ok, state} ->
           nickname = socket.assigns.session.nickname
-          operator = nickname in state.operators
+
+          operator =
+            nickname in state.operators or nickname in Map.get(state, :owners, [])
+
           assign(socket, channel_central_state: state, channel_central_operator: operator)
 
         {:error, _} ->
