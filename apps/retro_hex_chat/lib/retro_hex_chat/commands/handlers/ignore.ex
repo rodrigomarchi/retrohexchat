@@ -99,4 +99,7 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
   defp unit_multiplier("m"), do: 60
   defp unit_multiplier("h"), do: 3600
   defp unit_multiplier("d"), do: 86_400
+
+  @impl true
+  def category, do: :user
 end

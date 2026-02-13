@@ -48,4 +48,7 @@ defmodule RetroHexChat.Commands.Handlers.Bio do
       examples: ["/bio Elixir enthusiast from Brazil", "/bio", "/bio clear"]
     }
   end
+
+  @impl true
+  def category, do: :basics
 end

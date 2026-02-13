@@ -4,7 +4,8 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   Covers: quit_chat, restore_session, open_search, settings,
   toggle_treebar, toggle_nicklist, toggle_strip_formatting, show_about,
-  open/close_command_palette, filter_command_palette, select_command,
+  autocomplete_query, autocomplete_close, autocomplete_select,
+  autocomplete_navigate, autocomplete_select_current, recent_commands_loaded,
   disconnect, channel_list.
 
   Attached as `attach_hook(:menu_toolbar_events, :handle_event, ...)` in ChatLive.mount/3.
@@ -22,6 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.UserPreferences
+  alias RetroHexChat.Commands.Autocomplete
 
   use Phoenix.VerifiedRoutes, endpoint: RetroHexChatWeb.Endpoint, router: RetroHexChatWeb.Router
 
@@ -80,25 +82,215 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     {:halt, assign(socket, show_about: true)}
   end
 
-  def handle_event("open_command_palette", _params, socket) do
-    {:halt, assign(socket, command_palette_visible: true, command_palette_filter: "")}
+  def handle_event("autocomplete_query", %{"type" => "command", "partial" => partial}, socket) do
+    results =
+      Autocomplete.search_commands(
+        partial,
+        socket.assigns.recent_commands
+      )
+
+    {:halt,
+     assign(socket,
+       autocomplete_visible: true,
+       autocomplete_mode: :command,
+       autocomplete_results: results,
+       autocomplete_filter: partial,
+       autocomplete_selected: 0
+     )}
   end
 
-  def handle_event("close_command_palette", _params, socket) do
-    {:halt, assign(socket, command_palette_visible: false, command_palette_filter: "")}
+  def handle_event("autocomplete_query", %{"type" => "nick", "partial" => partial}, socket) do
+    session = socket.assigns.session
+
+    if session.active_channel && !socket.assigns.show_status_tab do
+      channel_users = socket.assigns.channel_users
+
+      results =
+        Autocomplete.search_nicks(partial, channel_users, session.nickname)
+
+      {:halt,
+       assign(socket,
+         autocomplete_visible: true,
+         autocomplete_mode: :nick,
+         autocomplete_results: results,
+         autocomplete_filter: partial,
+         autocomplete_selected: 0
+       )}
+    else
+      {:halt, socket}
+    end
   end
 
-  def handle_event("filter_command_palette", %{"filter" => filter}, socket) do
-    {:halt, assign(socket, command_palette_filter: filter)}
+  def handle_event("autocomplete_query", %{"type" => "channel", "partial" => partial}, socket) do
+    session = socket.assigns.session
+
+    results =
+      Autocomplete.search_channels(partial, session.channels)
+
+    {:halt,
+     assign(socket,
+       autocomplete_visible: true,
+       autocomplete_mode: :channel,
+       autocomplete_results: results,
+       autocomplete_filter: partial,
+       autocomplete_selected: 0
+     )}
   end
 
-  def handle_event("select_command", %{"command" => command}, socket) do
+  def handle_event(
+        "autocomplete_query",
+        %{"type" => "arg_nick", "partial" => partial, "command" => command},
+        socket
+      ) do
+    session = socket.assigns.session
+
+    case Autocomplete.argument_context(command) do
+      {:nick, :current_channel} ->
+        channel_users = socket.assigns.channel_users
+        results = Autocomplete.search_nicks(partial, channel_users, session.nickname)
+
+        {:halt,
+         assign(socket,
+           autocomplete_visible: true,
+           autocomplete_mode: :nick,
+           autocomplete_results: results,
+           autocomplete_filter: partial,
+           autocomplete_selected: 0
+         )}
+
+      {:nick, :all_channels} ->
+        channel_users = socket.assigns.channel_users
+        results = Autocomplete.search_nicks(partial, channel_users, session.nickname)
+
+        {:halt,
+         assign(socket,
+           autocomplete_visible: true,
+           autocomplete_mode: :nick,
+           autocomplete_results: results,
+           autocomplete_filter: partial,
+           autocomplete_selected: 0
+         )}
+
+      _ ->
+        {:halt, socket}
+    end
+  end
+
+  def handle_event(
+        "autocomplete_query",
+        %{"type" => "arg_channel", "partial" => partial},
+        socket
+      ) do
+    session = socket.assigns.session
+    results = Autocomplete.search_channels(partial, session.channels)
+
+    {:halt,
+     assign(socket,
+       autocomplete_visible: true,
+       autocomplete_mode: :channel,
+       autocomplete_results: results,
+       autocomplete_filter: partial,
+       autocomplete_selected: 0
+     )}
+  end
+
+  def handle_event("autocomplete_query", _params, socket) do
+    {:halt, socket}
+  end
+
+  def handle_event("autocomplete_close", _params, socket) do
+    {:halt,
+     socket
+     |> assign(
+       autocomplete_visible: false,
+       autocomplete_mode: nil,
+       autocomplete_results: [],
+       autocomplete_filter: "",
+       autocomplete_selected: 0
+     )
+     |> push_event("autocomplete_closed", %{})}
+  end
+
+  def handle_event("autocomplete_select", %{"type" => "command", "value" => command}, socket) do
     {:halt,
      assign(socket,
        input: "/#{command} ",
-       command_palette_visible: false,
-       command_palette_filter: ""
+       autocomplete_visible: false,
+       autocomplete_mode: nil,
+       autocomplete_results: [],
+       autocomplete_filter: "",
+       autocomplete_selected: 0
      )}
+  end
+
+  def handle_event("autocomplete_select", %{"type" => "nick", "value" => nickname}, socket) do
+    {:halt,
+     socket
+     |> assign(
+       autocomplete_visible: false,
+       autocomplete_mode: nil,
+       autocomplete_results: [],
+       autocomplete_filter: "",
+       autocomplete_selected: 0
+     )
+     |> push_event("set_input", %{value: "@#{nickname} "})}
+  end
+
+  def handle_event("autocomplete_select", %{"type" => "channel", "value" => channel_name}, socket) do
+    {:halt,
+     socket
+     |> assign(
+       autocomplete_visible: false,
+       autocomplete_mode: nil,
+       autocomplete_results: [],
+       autocomplete_filter: "",
+       autocomplete_selected: 0
+     )
+     |> push_event("set_input", %{value: channel_name <> " "})}
+  end
+
+  def handle_event("autocomplete_select", _params, socket) do
+    {:halt, socket}
+  end
+
+  def handle_event("autocomplete_select_current", _params, socket) do
+    results = socket.assigns.autocomplete_results
+    selected = socket.assigns.autocomplete_selected
+    mode = socket.assigns.autocomplete_mode
+
+    selectable = Enum.reject(results, &is_binary/1)
+
+    case Enum.at(selectable, selected) do
+      nil ->
+        {:halt, socket}
+
+      item ->
+        {type, value} = select_item_params(mode, item)
+
+        handle_event(
+          "autocomplete_select",
+          %{"type" => type, "value" => value},
+          socket
+        )
+    end
+  end
+
+  def handle_event("autocomplete_navigate", %{"direction" => direction}, socket) do
+    results = socket.assigns.autocomplete_results
+    selectable_count = Enum.count(results, &(not is_binary(&1)))
+    current = socket.assigns.autocomplete_selected
+
+    new_selected =
+      case direction do
+        "up" -> rem(current - 1 + selectable_count, max(selectable_count, 1))
+        "down" -> rem(current + 1, max(selectable_count, 1))
+      end
+
+    {:halt, assign(socket, autocomplete_selected: new_selected)}
+  end
+
+  def handle_event("recent_commands_loaded", %{"commands" => commands}, socket) do
+    {:halt, assign(socket, recent_commands: commands)}
   end
 
   def handle_event("disconnect", _params, socket) do
@@ -113,4 +305,9 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
+
+  defp select_item_params(:command, %{name: name}), do: {"command", name}
+  defp select_item_params(:nick, %{nickname: nick}), do: {"nick", nick}
+  defp select_item_params(:channel, %{name: name}), do: {"channel", name}
+  defp select_item_params(_, %{name: name}), do: {"command", name}
 end

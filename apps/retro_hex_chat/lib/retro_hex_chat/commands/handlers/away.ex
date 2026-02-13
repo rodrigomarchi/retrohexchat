@@ -34,4 +34,7 @@ defmodule RetroHexChat.Commands.Handlers.Away do
       examples: ["/away Gone to lunch", "/away"]
     }
   end
+
+  @impl true
+  def category, do: :basics
 end

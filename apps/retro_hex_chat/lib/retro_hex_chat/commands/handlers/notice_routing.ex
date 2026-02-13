@@ -54,4 +54,7 @@ defmodule RetroHexChat.Commands.Handlers.NoticeRouting do
       ]
     }
   end
+
+  @impl true
+  def category, do: :user
 end

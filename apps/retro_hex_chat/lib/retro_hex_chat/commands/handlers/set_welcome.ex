@@ -50,4 +50,7 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
   defp operator_or_owner?(channel, context) do
     channel in context.operator_in
   end
+
+  @impl true
+  def category, do: :advanced
 end

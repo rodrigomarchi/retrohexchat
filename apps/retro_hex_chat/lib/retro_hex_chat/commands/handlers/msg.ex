@@ -36,4 +36,7 @@ defmodule RetroHexChat.Commands.Handlers.Msg do
       examples: ["/msg Nick Hello there!", "/msg Nick How are you?"]
     }
   end
+
+  @impl true
+  def category, do: :user
 end

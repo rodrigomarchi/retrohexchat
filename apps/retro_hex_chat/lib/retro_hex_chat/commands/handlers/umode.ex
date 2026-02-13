@@ -54,4 +54,7 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
       :error -> {:error, "Unknown user mode: #{flag}"}
     end
   end
+
+  @impl true
+  def category, do: :config
 end

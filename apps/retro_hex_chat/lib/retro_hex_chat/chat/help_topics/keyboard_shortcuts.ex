@@ -21,13 +21,15 @@ defmodule RetroHexChat.Chat.HelpTopics.KeyboardShortcuts do
             "<pre>Ctrl+C        — Copy selected text</pre>" <>
             "<h4>Text Formatting</h4>" <>
             "<pre>Ctrl+Shift+B  — Bold\nCtrl+Shift+Y  — Italic\nCtrl+Shift+U  — Underline\nCtrl+Shift+D  — Color\nCtrl+Shift+V  — Reverse\nCtrl+Shift+X  — Reset formatting</pre>" <>
-            "<h4>Input</h4>" <>
-            "<pre>Enter         — Send message\nUp / Down     — Command history\nTab           — Tab-complete nicknames</pre>" <>
+            "<h4>Input &amp; Autocomplete</h4>" <>
+            "<pre>Enter         — Send message / select autocomplete item\nUp / Down     — Command history / navigate autocomplete dropdown\nTab           — Select autocomplete item / cycle nick completion\nEscape        — Dismiss autocomplete dropdown\n/             — Open command autocomplete (at start of input)\n@             — Open nick autocomplete (at word boundary)\n#             — Open channel autocomplete (at word boundary)</pre>" <>
             "<h4>Emoji</h4>" <>
             "<pre>Emoji Picker  — Click smiley button in formatting toolbar</pre>" <>
             "<h4>Customization</h4>" <>
             "<p>All keyboard shortcuts (except Escape) can be customized in <strong>Options &gt; Key Bindings</strong> (Ctrl+Shift+O). " <>
-            "See <a href=\"#\" data-help-topic=\"feature-key-bindings\">Key Bindings</a> for details.</p>"
+            "See <a href=\"#\" data-help-topic=\"feature-key-bindings\">Key Bindings</a> for details.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-autocomplete\">Autocomplete</a></p>"
       }
     ]
   end

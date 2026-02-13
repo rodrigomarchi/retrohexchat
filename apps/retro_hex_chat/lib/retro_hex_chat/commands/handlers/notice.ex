@@ -44,4 +44,7 @@ defmodule RetroHexChat.Commands.Handlers.Notice do
       ]
     }
   end
+
+  @impl true
+  def category, do: :user
 end

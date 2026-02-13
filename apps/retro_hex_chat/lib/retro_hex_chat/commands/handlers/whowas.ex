@@ -33,4 +33,7 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
       examples: ["/whowas SomeUser"]
     }
   end
+
+  @impl true
+  def category, do: :user
 end

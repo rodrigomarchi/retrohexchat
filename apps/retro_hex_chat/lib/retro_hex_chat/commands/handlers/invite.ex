@@ -47,4 +47,7 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
   @spec require_channel(Handler.context()) :: {:ok, String.t()} | {:error, String.t()}
   defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
   defp require_channel(%{active_channel: channel}), do: {:ok, channel}
+
+  @impl true
+  def category, do: :channel
 end

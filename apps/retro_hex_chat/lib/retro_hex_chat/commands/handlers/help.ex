@@ -41,4 +41,7 @@ defmodule RetroHexChat.Commands.Handlers.Help do
       examples: ["/help", "/help join"]
     }
   end
+
+  @impl true
+  def category, do: :basics
 end

@@ -73,4 +73,7 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
       ]
     }
   end
+
+  @impl true
+  def category, do: :config
 end

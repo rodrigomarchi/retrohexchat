@@ -54,4 +54,7 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
       examples: ["/announce Server will restart at midnight"]
     }
   end
+
+  @impl true
+  def category, do: :advanced
 end

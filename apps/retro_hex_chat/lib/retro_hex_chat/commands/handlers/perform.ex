@@ -109,4 +109,7 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
         {:error, "Usage: /perform move <from> <to>"}
     end
   end
+
+  @impl true
+  def category, do: :config
 end

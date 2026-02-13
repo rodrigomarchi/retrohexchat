@@ -32,4 +32,7 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
       ]
     }
   end
+
+  @impl true
+  def category, do: :user
 end

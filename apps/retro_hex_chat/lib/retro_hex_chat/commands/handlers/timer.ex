@@ -64,4 +64,7 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
       ]
     }
   end
+
+  @impl true
+  def category, do: :config
 end

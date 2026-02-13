@@ -36,4 +36,7 @@ defmodule RetroHexChat.Commands.Handlers.Popups do
       ]
     }
   end
+
+  @impl true
+  def category, do: :config
 end

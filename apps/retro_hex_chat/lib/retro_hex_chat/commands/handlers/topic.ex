@@ -43,4 +43,7 @@ defmodule RetroHexChat.Commands.Handlers.Topic do
       examples: ["/topic", "/topic Welcome to #elixir!"]
     }
   end
+
+  @impl true
+  def category, do: :channel
 end

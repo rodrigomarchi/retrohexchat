@@ -70,4 +70,7 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
       _ -> []
     end
   end
+
+  @impl true
+  def category, do: :channel
 end

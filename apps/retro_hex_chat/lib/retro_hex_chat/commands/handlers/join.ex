@@ -52,4 +52,7 @@ defmodule RetroHexChat.Commands.Handlers.Join do
       examples: ["/join #elixir", "/join #secret mypassword"]
     }
   end
+
+  @impl true
+  def category, do: :channel
 end

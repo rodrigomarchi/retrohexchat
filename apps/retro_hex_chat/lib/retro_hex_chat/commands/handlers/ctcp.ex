@@ -63,4 +63,7 @@ defmodule RetroHexChat.Commands.Handlers.Ctcp do
       ]
     }
   end
+
+  @impl true
+  def category, do: :user
 end

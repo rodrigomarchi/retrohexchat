@@ -135,4 +135,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
       {:error, msg} -> {:error, "[NickServ] #{msg}"}
     end
   end
+
+  @impl true
+  def category, do: :advanced
 end

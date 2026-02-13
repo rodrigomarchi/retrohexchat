@@ -80,3 +80,4 @@ Every new feature MUST include corresponding help documentation:
 See `.specify/memory/constitution.md` for 11 governing principles.
 Key non-negotiables: TDD, umbrella separation, OTP process architecture,
 static analysis from day one, 98.css design fidelity, mandatory help documentation.
+

@@ -34,4 +34,7 @@ defmodule RetroHexChat.Commands.Handlers.Quit do
       examples: ["/quit", "/quit Goodbye!"]
     }
   end
+
+  @impl true
+  def category, do: :basics
 end

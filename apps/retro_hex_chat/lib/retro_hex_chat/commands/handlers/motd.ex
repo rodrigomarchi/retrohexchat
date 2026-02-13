@@ -33,4 +33,7 @@ defmodule RetroHexChat.Commands.Handlers.Motd do
       examples: ["/motd"]
     }
   end
+
+  @impl true
+  def category, do: :advanced
 end

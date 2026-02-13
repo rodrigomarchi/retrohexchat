@@ -50,4 +50,7 @@ defmodule RetroHexChat.Commands.Handlers.Part do
       examples: ["/part", "/part #elixir", "/part #elixir Goodbye!"]
     }
   end
+
+  @impl true
+  def category, do: :channel
 end
