@@ -1,0 +1,368 @@
+<div id="reconnect-hook" phx-hook="ReconnectHook" style="display: none;"></div>
+<div id="title-flash" phx-hook="TitleFlashHook" style="display: none;"></div>
+<div
+  class="app-container"
+  phx-click="close_context_menu"
+  phx-window-keydown="window_keydown"
+  id="app-container"
+  phx-hook="SoundHook"
+>
+  <RetroHexChatWeb.Components.TitleBar.title_bar />
+  <RetroHexChatWeb.Components.MenuBar.menu_bar
+    favorites={Favorites.entries(@session.favorites)}
+    joined_channels={@session.channels}
+  />
+  <RetroHexChatWeb.Components.Toolbar.toolbar connected={true} />
+
+  <div class="mdi-layout">
+    <RetroHexChatWeb.Components.Treebar.treebar
+      :if={@show_treebar}
+      channels={@session.channels}
+      active_channel={@session.active_channel}
+      unread_channels={MapSet.to_list(@unread_channels)}
+      highlight_channels={MapSet.to_list(@highlight_channels)}
+      flash_channels={MapSet.to_list(@flash_channels)}
+      pm_conversations={@session.pm_conversations}
+      active_pm={@session.active_pm}
+    />
+
+    <div class="chat-area" style="position: relative;">
+      <RetroHexChatWeb.Components.TabBar.tab_bar
+        channels={@session.channels}
+        pm_conversations={@session.pm_conversations}
+        active_channel={@session.active_channel}
+        active_pm={@session.active_pm}
+        show_status_tab={@show_status_tab}
+        unread_channels={MapSet.to_list(@unread_channels)}
+        highlight_channels={MapSet.to_list(@highlight_channels)}
+      />
+
+      <RetroHexChatWeb.Components.TopicBar.topic_bar
+        channel={@session.active_channel}
+        pm_target={@session.active_pm}
+        topic={@current_topic}
+        modes={@current_modes}
+        show_status_tab={@show_status_tab}
+      />
+
+      <RetroHexChatWeb.Components.SearchBar.search_bar
+        visible={@search_visible}
+        query={@search_query}
+        result_count={@search_result_count}
+        current_index={@search_current_index}
+      />
+
+      <RetroHexChatWeb.Components.ScrollLoader.scroll_loader loading={@loading_more} />
+
+      <div
+        class="chat-messages"
+        id="chat-messages"
+        phx-update="stream"
+        phx-hook="ScrollHook"
+        style={if @show_status_tab, do: "display: none;", else: nil}
+      >
+        <div
+          :for={{dom_id, msg} <- @streams.chat_messages}
+          id={dom_id}
+          class={
+            "chat-message chat-message--#{msg.type}" <>
+              if(Map.get(msg, :highlighted), do: " chat-message--highlighted", else: "")
+          }
+          style={
+            if(Map.get(msg, :highlighted) && Map.get(msg, :highlight_color),
+              do: "background-color: #{msg.highlight_color}",
+              else: nil
+            )
+          }
+          data-testid={if(Map.get(msg, :highlighted), do: "highlighted-message", else: nil)}
+        >
+          <span class="chat-timestamp">[{format_time(msg.timestamp)}]</span>
+          <%= case msg.type do %>
+            <% :action -> %>
+              <span class="chat-action">
+                * {msg.author} {raw(format_content(msg.content, @session.strip_formatting))}
+              </span>
+            <% :system -> %>
+              <span class="chat-system">* {msg.content}</span>
+            <% :service -> %>
+              <span class="chat-service">{msg.content}</span>
+            <% :error -> %>
+              <span class="chat-error">{msg.content}</span>
+            <% :notice -> %>
+              <span class="chat-notice">
+                <span class="chat-notice-nick">-{msg.author}-</span> {msg.content}
+              </span>
+            <% _ -> %>
+              <span class="chat-nick" style={"color: #{@nick_color_fn.(msg.author)}"}>
+                &lt;{msg.author}&gt;
+              </span>
+              <span class="chat-content">
+                {raw(format_content(msg.content, @session.strip_formatting))}
+              </span>
+          <% end %>
+        </div>
+      </div>
+
+      <div
+        class="chat-messages status-messages-view"
+        id="status-messages"
+        phx-update="stream"
+        style={if @show_status_tab, do: nil, else: "display: none;"}
+        data-testid="status-messages"
+      >
+        <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
+          <span class="chat-timestamp">[{format_status_time(msg.timestamp)}]</span>
+          <span class={"chat-status chat-status--#{msg.type}"}>{msg.content}</span>
+        </div>
+      </div>
+
+      <div style={if @show_status_tab, do: "display: none;", else: nil}>
+        <RetroHexChatWeb.Components.FormattingToolbar.formatting_toolbar strip_formatting={
+          @session.strip_formatting
+        } />
+      </div>
+
+      <div
+        :if={@pm_typing_from && @session.active_pm}
+        class="typing-indicator"
+        data-testid="typing-indicator"
+      >
+        {@pm_typing_from} is typing...
+      </div>
+
+      <div class="chat-input-area" style="position: relative;">
+        <RetroHexChatWeb.Components.CommandPalette.command_palette
+          visible={@command_palette_visible}
+          commands={CmdRegistry.list_commands()}
+          filter={@command_palette_filter}
+        />
+        <form phx-submit="send_input" class="chat-input-form">
+          <input
+            type="text"
+            name="input"
+            id="chat-input"
+            value={@input}
+            placeholder="Type a message or /command..."
+            autocomplete="off"
+            autofocus
+            phx-hook="CommandPaletteHook"
+          />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+
+    <RetroHexChatWeb.Components.Nicklist.nicklist
+      :if={@show_nicklist && !@session.active_pm && !@show_status_tab}
+      users={@channel_users}
+      nick_color_fn={@nick_color_fn}
+    />
+  </div>
+
+  <RetroHexChatWeb.Components.ContextMenu.context_menu
+    visible={@context_menu.visible}
+    x={@context_menu.x}
+    y={@context_menu.y}
+    target_nick={@context_menu.target_nick}
+    viewer_is_op={viewer_is_op?(@session)}
+    nick_color_fn={@nick_color_fn}
+    show_color_picker={@show_context_color_picker}
+    is_ignored={context_target_ignored?(@session, @context_menu.target_nick)}
+    custom_nicklist_items={CustomMenus.entries_for(@session.custom_menus, :nicklist)}
+  />
+
+  <RetroHexChatWeb.Components.TreebarContextMenu.treebar_context_menu
+    visible={@treebar_context_menu.visible}
+    x={@treebar_context_menu.x}
+    y={@treebar_context_menu.y}
+    channel={@treebar_context_menu.channel}
+    custom_channel_items={CustomMenus.entries_for(@session.custom_menus, :channel)}
+  />
+
+  <RetroHexChatWeb.Components.FavoriteDialog.favorite_dialog
+    visible={@show_favorite_dialog}
+    mode={@favorite_dialog_mode}
+    channel={@favorite_dialog_channel}
+    data={@favorite_dialog_data}
+    is_duplicate={@favorite_dialog_is_duplicate}
+  />
+
+  <RetroHexChatWeb.Components.OrganizeFavoritesDialog.organize_favorites_dialog
+    visible={@show_organize_favorites}
+    favorites={Favorites.entries(@session.favorites)}
+    selected={@organize_favorites_selected}
+  />
+
+  <RetroHexChatWeb.Components.Dialog.dialog
+    title="About RetroHexChat"
+    visible={@show_about}
+    on_close="close_dialog"
+  >
+    <p>RetroHexChat v1.0</p>
+    <p>A retro IRC-style chat with Windows 98 aesthetics.</p>
+    <p>Built with Elixir, Phoenix LiveView, and 98.css.</p>
+  </RetroHexChatWeb.Components.Dialog.dialog>
+
+  <RetroHexChatWeb.Components.NotifyListWindow.notify_list_window
+    entries={NotifyList.sorted_entries(@session.notify_list)}
+    visible={@show_notify_list}
+    selected_entry={@notify_selected}
+    show_add_dialog={@show_notify_add_dialog}
+    show_edit_dialog={@show_notify_edit_dialog}
+    auto_whois={@session.notify_list.settings.auto_whois}
+    nick_color_fn={@nick_color_fn}
+  />
+
+  <RetroHexChatWeb.Components.AddressBookDialog.address_book_dialog
+    visible={@show_address_book}
+    active_tab={@address_book_tab}
+    contacts={ContactList.sorted_entries(@session.contacts)}
+    contacts_selected={@contacts_selected}
+    show_contact_add_dialog={@show_contact_add_dialog}
+    show_contact_edit_dialog={@show_contact_edit_dialog}
+    notify_entries={NotifyList.sorted_entries(@session.notify_list)}
+    notify_selected={@notify_selected}
+    show_notify_add_dialog={@show_notify_add_dialog}
+    show_notify_edit_dialog={@show_notify_edit_dialog}
+    auto_whois={@session.notify_list.settings.auto_whois}
+    nick_color_entries={NickColors.sorted_entries(@session.nick_colors)}
+    nick_colors_selected={@nick_colors_selected}
+    show_nick_color_add_dialog={@show_nick_color_add_dialog}
+    show_nick_color_edit_dialog={@show_nick_color_edit_dialog}
+  />
+
+  <RetroHexChatWeb.Components.IgnoreListDialog.ignore_list_dialog
+    visible={@show_ignore_dialog}
+    ignore_entries={IgnoreList.sorted_entries(@session.ignore_list)}
+    ignore_selected={@ignore_selected}
+    show_ignore_add_dialog={@show_ignore_add_dialog}
+  />
+
+  <RetroHexChatWeb.Components.CtcpSettingsDialog.ctcp_settings_dialog
+    visible={@show_ctcp_settings_dialog}
+    ctcp_settings={@session.ctcp_settings}
+  />
+
+  <RetroHexChatWeb.Components.FloodProtectionDialog.flood_protection_dialog
+    visible={@show_flood_protection_dialog}
+    flood_protection={@session.flood_protection}
+  />
+
+  <RetroHexChatWeb.Components.SoundSettingsDialog.sound_settings_dialog
+    visible={@show_sound_settings_dialog}
+    sound_settings_draft={@sound_settings_draft}
+  />
+
+  <RetroHexChatWeb.Components.PerformDialog.perform_dialog
+    visible={@show_perform_dialog}
+    active_tab={@perform_dialog_tab}
+    perform_entries={PerformList.entries(@session.perform_list)}
+    perform_selected={@perform_selected}
+    perform_enabled={PerformList.enabled?(@session.perform_list)}
+    autojoin_entries={AutoJoinList.entries(@session.autojoin_list)}
+    autojoin_selected={@autojoin_selected}
+    show_perform_add_dialog={@show_perform_add_dialog}
+    show_perform_edit_dialog={@show_perform_edit_dialog}
+    show_autojoin_add_dialog={@show_autojoin_add_dialog}
+    show_autojoin_edit_dialog={@show_autojoin_edit_dialog}
+  />
+
+  <RetroHexChatWeb.Components.AliasDialog.alias_dialog
+    visible={@show_alias_dialog}
+    aliases={AliasList.entries(@session.aliases)}
+    selected_alias={@alias_dialog_selected}
+    editing={@alias_dialog_editing}
+    draft_name={@alias_dialog_draft_name}
+    draft_expansion={@alias_dialog_draft_expansion}
+    warning_message={@alias_dialog_warning}
+    error_message={@alias_dialog_error}
+  />
+
+  <RetroHexChatWeb.Components.CustomMenusDialog.custom_menus_dialog
+    visible={@show_custom_menus_dialog}
+    custom_menus={@session.custom_menus}
+    active_tab={@custom_menus_dialog_tab}
+    selected_item={@custom_menus_dialog_selected}
+    editing={@custom_menus_dialog_editing}
+    draft_label={@custom_menus_dialog_draft_label}
+    draft_command={@custom_menus_dialog_draft_command}
+    error_message={@custom_menus_dialog_error}
+  />
+
+  <RetroHexChatWeb.Components.AutoRespondDialog.auto_respond_dialog
+    visible={@show_autorespond_dialog}
+    rules={AutoRespondRules.entries(@session.autorespond_rules)}
+    selected_position={@autorespond_dialog_selected}
+    editing={@autorespond_dialog_editing}
+    draft_trigger={@autorespond_dialog_draft_trigger}
+    draft_channel={@autorespond_dialog_draft_channel}
+    draft_command={@autorespond_dialog_draft_command}
+    error_message={@autorespond_dialog_error}
+  />
+
+  <RetroHexChatWeb.Components.ChannelCentralDialog.channel_central_dialog
+    visible={@show_channel_central}
+    active_tab={@channel_central_tab}
+    channel_state={@channel_central_state}
+    operator={@channel_central_operator}
+    ban_selected={@channel_central_ban_selected}
+    ban_ex_selected={@channel_central_ban_ex_selected}
+    invite_ex_selected={@channel_central_invite_ex_selected}
+    modes_form={@channel_central_modes_form}
+    show_add_ban_dialog={@show_cc_add_ban_dialog}
+    show_add_ban_ex_dialog={@show_cc_add_ban_ex_dialog}
+    show_add_invite_ex_dialog={@show_cc_add_invite_ex_dialog}
+  />
+
+  <RetroHexChatWeb.Components.HighlightDialog.highlight_dialog
+    visible={@show_highlight_dialog}
+    highlight_entries={HighlightWords.entries(@session.highlight_words)}
+    highlight_selected={@highlight_selected}
+    own_nick={@session.nickname}
+    show_highlight_add_dialog={@show_highlight_add_dialog}
+    show_highlight_edit_dialog={@show_highlight_edit_dialog}
+  />
+
+  <RetroHexChatWeb.Components.URLCatcherWindow.url_catcher_window
+    visible={@show_url_catcher}
+    entries={filtered_url_catcher_entries(assigns)}
+    sort_column={@url_catcher_sort_column}
+    sort_direction={@url_catcher_sort_direction}
+    filter_channel={@url_catcher_filter_channel}
+    search_query={@url_catcher_search_query}
+    channels={url_catcher_channels(assigns)}
+    entry_count={length(@url_catcher_entries)}
+  />
+
+  <RetroHexChatWeb.Components.HelpDialog.help_dialog
+    visible={@show_help_dialog}
+    active_tab={@help_active_tab}
+    selected_topic={@help_selected_topic}
+    topics_by_category={RetroHexChat.Chat.HelpTopics.topics_by_category()}
+    index_keywords={filtered_help_keywords(assigns)}
+    index_filter={@help_index_filter}
+    search_query={@help_search_query}
+    search_results={@help_search_results}
+  />
+
+  <RetroHexChatWeb.Components.LogViewerDialog.log_viewer_dialog
+    visible={@show_log_viewer}
+    filter={@log_filter}
+    page={@log_page}
+    preferences={@log_preferences}
+    source_options={@log_source_options}
+    loading={@log_loading}
+    exporting={@log_exporting}
+    error={@log_error}
+    nick_color_fn={@nick_color_fn}
+  />
+
+  <RetroHexChatWeb.Components.InviteDialog.invite_dialog pending_invites={@pending_invites} />
+
+  <RetroHexChatWeb.Components.StatusBar.status_bar
+    nickname={@session.nickname}
+    channel={@session.active_pm || @session.active_channel}
+    user_count={length(@channel_users)}
+    muted={@muted}
+  />
+</div>
