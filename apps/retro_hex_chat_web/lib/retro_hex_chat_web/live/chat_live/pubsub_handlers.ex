@@ -1,0 +1,128 @@
+defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
+  @moduledoc """
+  Route PubSub broadcast messages to focused sub-modules.
+
+  Delegates to:
+  - `Messages` — new_message, new_pm, typing/stop_typing, notices
+  - `Ctcp` — ctcp_request, ctcp_reply, ctcp_timeout, test helpers
+  - `ChannelState` — mode_changed, kicked/banned/unbanned, ban/invite exceptions, topic
+  - `Membership` — user_joined/left, nick_changed, force_disconnect/rename, nickserv
+  - `Presence` — user_connected/disconnected, notify_debounce, link_preview, invite
+
+  Attached as `attach_hook(:pubsub_handlers, :handle_info, ...)` in ChatLive.mount/3.
+  """
+
+  alias __MODULE__.{ChannelState, Ctcp, Membership, Messages, Presence}
+
+  # ── Messages: channel messages, PMs, typing, notices ──────
+
+  def handle_info(%{event: "new_message"} = msg, socket),
+    do: Messages.handle_info(msg, socket)
+
+  def handle_info(%{event: "new_pm"} = msg, socket),
+    do: Messages.handle_info(msg, socket)
+
+  def handle_info(%{event: "typing"} = msg, socket),
+    do: Messages.handle_info(msg, socket)
+
+  def handle_info(%{event: "stop_typing"} = msg, socket),
+    do: Messages.handle_info(msg, socket)
+
+  def handle_info({:new_notice, _} = msg, socket),
+    do: Messages.handle_info(msg, socket)
+
+  def handle_info(%{event: "new_notice"} = msg, socket),
+    do: Messages.handle_info(msg, socket)
+
+  # ── CTCP ──────────────────────────────────────────────────
+
+  def handle_info({:ctcp_request, _} = msg, socket),
+    do: Ctcp.handle_info(msg, socket)
+
+  def handle_info({:ctcp_reply, _} = msg, socket),
+    do: Ctcp.handle_info(msg, socket)
+
+  def handle_info({:ctcp_timeout, _} = msg, socket),
+    do: Ctcp.handle_info(msg, socket)
+
+  def handle_info({:_test_add_ctcp_pending, _, _} = msg, socket),
+    do: Ctcp.handle_info(msg, socket)
+
+  def handle_info({:_test_set_ctcp_enabled, _} = msg, socket),
+    do: Ctcp.handle_info(msg, socket)
+
+  # ── Channel state: modes, kicks, bans, exceptions, topic ─
+
+  def handle_info({:mode_changed, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:user_kicked, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:user_banned, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:user_unbanned, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:ban_exception_added, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:ban_exception_removed, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:invite_exception_added, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:invite_exception_removed, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:topic_changed, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  # ── Membership: join/leave, nick change, disconnect ───────
+
+  def handle_info({:user_joined, _} = msg, socket),
+    do: Membership.handle_info(msg, socket)
+
+  def handle_info({:user_left, _} = msg, socket),
+    do: Membership.handle_info(msg, socket)
+
+  def handle_info({:nick_changed, _} = msg, socket),
+    do: Membership.handle_info(msg, socket)
+
+  def handle_info({:force_disconnect, _} = msg, socket),
+    do: Membership.handle_info(msg, socket)
+
+  def handle_info({:force_rename, _} = msg, socket),
+    do: Membership.handle_info(msg, socket)
+
+  def handle_info({:nickserv_identified, _} = msg, socket),
+    do: Membership.handle_info(msg, socket)
+
+  # ── Presence: connect/disconnect, notify, previews, invite
+
+  def handle_info({:user_connected, _} = msg, socket),
+    do: Presence.handle_info(msg, socket)
+
+  def handle_info({:user_disconnected, _} = msg, socket),
+    do: Presence.handle_info(msg, socket)
+
+  def handle_info({:notify_debounce, _, _} = msg, socket),
+    do: Presence.handle_info(msg, socket)
+
+  def handle_info({:link_preview_result, _, _} = msg, socket),
+    do: Presence.handle_info(msg, socket)
+
+  def handle_info({:channel_invite, _} = msg, socket),
+    do: Presence.handle_info(msg, socket)
+
+  # ── Task/DOWN catch-all ───────────────────────────────────
+
+  def handle_info({_ref, _result}, socket), do: {:halt, socket}
+  def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket), do: {:halt, socket}
+
+  # ── Catch-all: pass unhandled to next hook ────────────────
+
+  def handle_info(_, socket), do: {:cont, socket}
+end

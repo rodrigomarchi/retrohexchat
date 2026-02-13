@@ -1,0 +1,8 @@
+/* RetroHexChat — Status message types (notify, system, error) */
+
+.chat-status { padding: 1px 0; }
+.chat-status--notify_online { color: #009300; }
+.chat-status--notify_offline { color: #808080; font-style: italic; }
+.chat-status--notify_rename { color: #009393; }
+.chat-status--system { color: #808080; font-style: italic; }
+.chat-status--error { color: #cc0000; font-weight: bold; }

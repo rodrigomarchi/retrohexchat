@@ -1,0 +1,277 @@
+defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
+  @moduledoc """
+  Handle nick context menu events.
+
+  Covers: nick_right_click, close_context_menu, context_query, context_whois,
+  context_kick, context_ban, context_op, context_voice, context_add_contact,
+  context_set_nick_color, context_ignore, context_unignore, context_pick_color.
+
+  Attached as `attach_hook(:context_menu_events, :handle_event, ...)` in ChatLive.mount/3.
+  """
+
+  import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [stream_insert: 3]
+
+  import RetroHexChatWeb.ChatLive.Helpers,
+    only: [
+      show_whois_text: 2,
+      open_pm_conversation: 2,
+      maybe_persist_contacts: 2,
+      push_status_message: 3,
+      maybe_persist_ignore_list: 2,
+      system_message: 1,
+      error_message: 1,
+      cancel_ignore_timer: 2,
+      rebuild_nick_color_fn: 2,
+      maybe_persist_nick_colors: 2
+    ]
+
+  alias RetroHexChat.Accounts.{ContactList, NickColors, Session}
+  alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Chat.IgnoreList
+
+  def handle_event("nick_right_click", %{"nick" => nick} = params, socket) do
+    now = System.monotonic_time(:millisecond)
+    last = socket.assigns.last_nick_click
+
+    if last != nil and last.nick == nick and now - last.at < 300 do
+      # Double-click detected — trigger whois
+      {:halt,
+       socket
+       |> assign(last_nick_click: nil)
+       |> show_whois_text(nick)}
+    else
+      x = params["x"] || 0
+      y = params["y"] || 0
+
+      {:halt,
+       assign(socket,
+         context_menu: %{visible: true, x: x, y: y, target_nick: nick},
+         last_nick_click: %{nick: nick, at: now}
+       )}
+    end
+  end
+
+  def handle_event("close_context_menu", _params, socket) do
+    {:halt, close_context_menu(socket)}
+  end
+
+  def handle_event("context_query", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> open_pm_conversation(nick)}
+  end
+
+  def handle_event("context_whois", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> show_whois_text(nick)}
+  end
+
+  def handle_event("context_kick", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> context_kick(channel, nick)}
+  end
+
+  def handle_event("context_ban", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> context_ban(channel, nick)}
+  end
+
+  def handle_event("context_op", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> context_set_mode(channel, "+o", [nick])}
+  end
+
+  def handle_event("context_voice", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> context_set_mode(channel, "+v", [nick])}
+  end
+
+  def handle_event("context_add_contact", %{"nick" => nick}, socket) do
+    session = socket.assigns.session
+
+    case ContactList.add_entry(session.contacts, session.nickname, nick, nil) do
+      {:ok, updated_contacts} ->
+        new_session = Session.set_contacts(session, updated_contacts)
+
+        {:halt,
+         socket
+         |> close_context_menu()
+         |> assign(session: new_session)
+         |> maybe_persist_contacts(new_session)
+         |> push_status_message("Added #{nick} to contacts", :system)}
+
+      {:error, :duplicate} ->
+        {:halt,
+         socket
+         |> close_context_menu()
+         |> push_status_message("#{nick} is already in your contacts", :error)}
+
+      {:error, :self_add} ->
+        {:halt,
+         socket
+         |> close_context_menu()
+         |> push_status_message("Cannot add yourself to contacts", :error)}
+
+      {:error, _reason} ->
+        {:halt,
+         socket
+         |> close_context_menu()
+         |> push_status_message("Could not add #{nick} to contacts", :error)}
+    end
+  end
+
+  def handle_event("context_set_nick_color", _params, socket) do
+    {:halt, assign(socket, show_context_color_picker: true)}
+  end
+
+  def handle_event("context_ignore", %{"nick" => nick}, socket) do
+    session = socket.assigns.session
+
+    case IgnoreList.add_entry(session.ignore_list, nick, :all, nil) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        {:halt,
+         socket
+         |> close_context_menu()
+         |> assign(session: new_session)
+         |> maybe_persist_ignore_list(new_session)
+         |> stream_insert(:chat_messages, system_message("* #{nick} is now ignored"))}
+
+      {:error, :list_full} ->
+        {:halt,
+         socket
+         |> close_context_menu()
+         |> stream_insert(:chat_messages, error_message("Ignore list is full (max 100 entries)"))}
+
+      {:error, _reason} ->
+        {:halt, close_context_menu(socket)}
+    end
+  end
+
+  def handle_event("context_unignore", %{"nick" => nick}, socket) do
+    session = socket.assigns.session
+
+    case IgnoreList.remove_entry(session.ignore_list, nick) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        {:halt,
+         socket
+         |> close_context_menu()
+         |> assign(session: new_session)
+         |> cancel_ignore_timer(nick)
+         |> cancel_auto_ignore_with_cooldown(nick)
+         |> maybe_persist_ignore_list(new_session)
+         |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))}
+
+      {:error, :not_found} ->
+        {:halt, close_context_menu(socket)}
+    end
+  end
+
+  def handle_event("context_pick_color", %{"color_index" => color_str}, socket) do
+    session = socket.assigns.session
+    target = socket.assigns.context_menu.target_nick
+    color_index = String.to_integer(color_str)
+
+    case NickColors.add_or_update(session.nick_colors, target, color_index) do
+      {:ok, updated} ->
+        new_session = Session.set_nick_colors(session, updated)
+        color_name = NickColors.hex_for_index(color_index)
+
+        {:halt,
+         socket
+         |> close_context_menu()
+         |> assign(session: new_session)
+         |> rebuild_nick_color_fn(new_session)
+         |> maybe_persist_nick_colors(new_session)
+         |> push_status_message("Set #{target}'s color to #{color_name}", :system)}
+
+      {:error, :list_full} ->
+        {:halt,
+         socket
+         |> close_context_menu()
+         |> push_status_message("Nick color list is full (max 50)", :error)}
+
+      {:error, _reason} ->
+        {:halt,
+         socket
+         |> close_context_menu()
+         |> push_status_message("Could not set color for #{target}", :error)}
+    end
+  end
+
+  # Catch-all: not our event, pass it along
+  def handle_event(_event, _params, socket), do: {:cont, socket}
+
+  # ---------------------------------------------------------------------------
+  # Private helpers (local copies)
+  # ---------------------------------------------------------------------------
+
+  defp close_context_menu(socket) do
+    assign(socket,
+      context_menu: %{visible: false, x: 0, y: 0, target_nick: nil},
+      show_context_color_picker: false
+    )
+  end
+
+  defp context_kick(socket, nil, _nick), do: socket
+
+  defp context_kick(socket, channel, nick) do
+    operator = socket.assigns.session.nickname
+    Server.kick(channel, operator, nick, "Kicked")
+    socket
+  end
+
+  defp context_ban(socket, nil, _nick), do: socket
+
+  defp context_ban(socket, channel, nick) do
+    operator = socket.assigns.session.nickname
+    Server.ban(channel, operator, "#{nick}!*@*")
+    socket
+  end
+
+  defp context_set_mode(socket, nil, _mode, _params), do: socket
+
+  defp context_set_mode(socket, channel, mode, params) do
+    Server.set_mode(channel, socket.assigns.session.nickname, mode, params)
+    socket
+  end
+
+  defp cancel_auto_ignore_with_cooldown(socket, nick) do
+    auto_state = socket.assigns.auto_ignore_state
+    key = String.downcase(nick)
+
+    case Map.get(auto_state.active, key) do
+      nil ->
+        socket
+
+      _ref ->
+        new_active = Map.delete(auto_state.active, key)
+        new_cooldowns = Map.delete(auto_state.cooldowns, key)
+        new_auto_state = %{active: new_active, cooldowns: new_cooldowns}
+        assign(socket, auto_ignore_state: new_auto_state)
+    end
+  end
+end
