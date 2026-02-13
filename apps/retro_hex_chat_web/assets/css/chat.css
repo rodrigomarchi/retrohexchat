@@ -15,11 +15,11 @@
   flex: 1;
   overflow-y: auto;
   padding: 4px 8px;
-  font-size: 13px;
+  font-size: var(--chat-font-size, 13px);
   line-height: 1.4;
-  font-family: Fixedsys, "Courier New", monospace;
-  background-color: white;
-  color: black;
+  font-family: var(--chat-font-family, Fixedsys, "Courier New", monospace);
+  background-color: var(--chat-bg-color, white);
+  color: var(--default-text-color, black);
   box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
 }
 
@@ -29,23 +29,23 @@
 }
 
 .chat-timestamp {
-  color: #808080;
+  color: var(--timestamps-color, #808080);
   margin-right: 4px;
-  font-family: Fixedsys, "Courier New", monospace;
+  font-family: var(--chat-font-family, Fixedsys, "Courier New", monospace);
 }
 
 .chat-nick {
   font-weight: bold;
   margin-right: 4px;
-  font-family: Fixedsys, "Courier New", monospace;
+  font-family: var(--chat-font-family, Fixedsys, "Courier New", monospace);
 }
 
 .chat-content {
-  font-family: Fixedsys, "Courier New", monospace;
+  font-family: var(--chat-font-family, Fixedsys, "Courier New", monospace);
 }
 
 .chat-system {
-  color: #808080;
+  color: var(--system-messages-color, #808080);
   font-style: italic;
 }
 
@@ -54,7 +54,7 @@
 }
 
 .chat-error {
-  color: #cc0000;
+  color: var(--error-messages-color, #cc0000);
   font-weight: bold;
 }
 
@@ -85,8 +85,8 @@
 
 .chat-input-area input {
   flex: 1;
-  font-family: Fixedsys, "Courier New", monospace;
-  font-size: 13px;
+  font-family: var(--input-font-family, Fixedsys, "Courier New", monospace);
+  font-size: var(--input-font-size, 13px);
   padding: 4px 6px;
 }
 
@@ -135,6 +135,12 @@
 @keyframes tree-flash {
   0%, 100% { background-color: transparent; }
   50% { background-color: #ffffd0; }
+}
+
+/* ─── Line Shading ─── */
+
+.chat-line-shading .chat-message:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
 /* ─── Typing Indicator ─── */

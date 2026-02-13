@@ -6,8 +6,10 @@ import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import CommandPaletteHook from "./hooks/command_palette_hook"
 import FormatToolbarHook from "./hooks/format_toolbar_hook"
+import KeyBindingCaptureHook from "./hooks/key_binding_capture_hook"
 import KeyboardHook from "./hooks/keyboard_hook"
 import NotifyListHook from "./hooks/notify_list_hook"
+import OptionsHook from "./hooks/options_hook"
 import ReconnectHook from "./hooks/reconnect_hook"
 import ScrollHook from "./hooks/scroll_hook"
 import SoundHook from "./hooks/sound_hook"
@@ -18,8 +20,10 @@ import URLCatcherHook from "./hooks/url_catcher_hook"
 let Hooks = {
   CommandPaletteHook: CommandPaletteHook,
   FormatToolbarHook: FormatToolbarHook,
+  KeyBindingCaptureHook: KeyBindingCaptureHook,
   KeyboardHook: KeyboardHook,
   NotifyListHook: NotifyListHook,
+  OptionsHook: OptionsHook,
   ReconnectHook: ReconnectHook,
   ScrollHook: ScrollHook,
   SoundHook: SoundHook,

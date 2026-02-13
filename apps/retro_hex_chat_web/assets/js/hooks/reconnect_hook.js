@@ -10,6 +10,8 @@ const ReconnectHook = {
   mounted() {
     this.attempt = 0;
     this.maxAttempts = 10;
+    this.maxDelay = 30;
+    this.enabled = true;
     this.overlay = null;
     this.countdownTimer = null;
     this.cancelled = false;
@@ -23,6 +25,13 @@ const ReconnectHook = {
     // Listen for reconnect state to save
     this.handleEvent("save_reconnect_state", (data) => {
       localStorage.setItem("rhc_reconnect_state", JSON.stringify(data));
+    });
+
+    // Listen for dynamic reconnect configuration from Options dialog
+    this.handleEvent("reconnect_config", (config) => {
+      if (config.enabled !== undefined) this.enabled = config.enabled;
+      if (config.max_attempts !== undefined) this.maxAttempts = config.max_attempts;
+      if (config.max_delay !== undefined) this.maxDelay = config.max_delay;
     });
 
     // On full remount, check if there's saved reconnect state to restore
@@ -75,6 +84,9 @@ const ReconnectHook = {
       return;
     }
 
+    // Check if auto-reconnect is enabled
+    if (!this.enabled) return;
+
     this.wasDisconnected = true;
     this.cancelled = false;
     this.attempt = 0;
@@ -118,9 +130,9 @@ const ReconnectHook = {
   },
 
   getBackoffDelay(attempt) {
-    // Exponential backoff: 1, 2, 4, 8, 16, 30 (capped)
+    // Exponential backoff: 1, 2, 4, 8, 16, capped at maxDelay
     const base = Math.pow(2, attempt - 1);
-    return Math.min(base, 30);
+    return Math.min(base, this.maxDelay);
   },
 
   showCountdownOverlay(delaySecs) {

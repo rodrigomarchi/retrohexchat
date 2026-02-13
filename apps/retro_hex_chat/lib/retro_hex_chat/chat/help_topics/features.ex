@@ -753,6 +753,100 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<a href=\"#\" data-help-topic=\"feature-aliases\">Aliases</a></p>"
       },
       %{
+        id: "feature-options-dialog",
+        title: "Options Dialog",
+        category: "Features",
+        keywords: [
+          "options",
+          "preferences",
+          "settings",
+          "configure",
+          "customize",
+          "Alt+O"
+        ],
+        content:
+          "<h3>Options Dialog</h3>" <>
+            "<p>The Options dialog (<strong>Alt+O</strong>) is the central hub for all user preferences. " <>
+            "It provides a tree-view navigation with 6 settings panels.</p>" <>
+            "<h4>Panels</h4>" <>
+            "<p><strong>Connect:</strong> Auto-reconnect behavior (enable/disable, retry interval, max retries, timeout).<br/>" <>
+            "<strong>IRC Messages:</strong> Configure where whois results, notices, and PMs are displayed.<br/>" <>
+            "<strong>Display:</strong> Toggle toolbar, treebar, switchbar, status bar, compact mode, and line shading.<br/>" <>
+            "<strong>Fonts:</strong> Customize font family and size for chat messages, input box, nicklist, and treebar.<br/>" <>
+            "<strong>Colors:</strong> Customize chat background, text, system, timestamp, and error colors plus nick palette.<br/>" <>
+            "<strong>Key Bindings:</strong> View and customize all keyboard shortcuts.</p>" <>
+            "<h4>Apply / OK / Cancel</h4>" <>
+            "<p><strong>OK</strong> applies changes and closes the dialog. <strong>Apply</strong> applies changes " <>
+            "and keeps the dialog open. <strong>Cancel</strong> discards unsaved changes.</p>" <>
+            "<h4>Persistence</h4>" <>
+            "<p>Registered users' preferences persist across sessions. Guest preferences last for the current session only.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-display-settings\">Display Settings</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-key-bindings\">Key Bindings</a> · " <>
+            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+      },
+      %{
+        id: "feature-display-settings",
+        title: "Display Settings",
+        category: "Features",
+        keywords: [
+          "display",
+          "toolbar",
+          "treebar",
+          "switchbar",
+          "status bar",
+          "compact mode",
+          "line shading"
+        ],
+        content:
+          "<h3>Display Settings</h3>" <>
+            "<p>Customize the visibility and density of the RetroHexChat interface from " <>
+            "<strong>Options &gt; Display</strong> (Alt+O).</p>" <>
+            "<h4>UI Element Toggles</h4>" <>
+            "<p><strong>Show Toolbar:</strong> Toggle the top toolbar with action buttons.<br/>" <>
+            "<strong>Show Treebar:</strong> Toggle the left-side channel/PM tree.<br/>" <>
+            "<strong>Show Switchbar:</strong> Toggle the tab bar above the chat area.<br/>" <>
+            "<strong>Show Status Bar:</strong> Toggle the bottom status bar.</p>" <>
+            "<h4>Appearance</h4>" <>
+            "<p><strong>Compact Mode:</strong> Reduces padding and margins throughout the UI for a denser layout.<br/>" <>
+            "<strong>Line Shading:</strong> Adds subtle alternating row backgrounds in the chat area " <>
+            "for easier reading of long conversations.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-options-dialog\">Options Dialog</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-key-bindings\">Key Bindings</a></p>"
+      },
+      %{
+        id: "feature-key-bindings",
+        title: "Key Bindings",
+        category: "Features",
+        keywords: [
+          "key bindings",
+          "keybindings",
+          "keyboard shortcuts",
+          "customize shortcuts",
+          "rebind",
+          "shortcut"
+        ],
+        content:
+          "<h3>Key Bindings</h3>" <>
+            "<p>Customize all keyboard shortcuts from <strong>Options &gt; Key Bindings</strong> (Alt+O).</p>" <>
+            "<h4>How to Rebind</h4>" <>
+            "<p>1. Open Options (Alt+O) and select the <strong>Key Bindings</strong> panel.<br/>" <>
+            "2. Click on an action in the list.<br/>" <>
+            "3. Press your desired key combination.<br/>" <>
+            "4. Click <strong>Apply</strong> or <strong>OK</strong> to save.</p>" <>
+            "<h4>Conflict Detection</h4>" <>
+            "<p>If the key combination is already assigned to another action, a warning is shown. " <>
+            "Browser-reserved shortcuts (Ctrl+W, Ctrl+T, etc.) cannot be assigned.</p>" <>
+            "<h4>Reset to Defaults</h4>" <>
+            "<p>Click <strong>Reset to Defaults</strong> to restore all original keyboard shortcuts.</p>" <>
+            "<h4>Clearing a Binding</h4>" <>
+            "<p>Use the clear button next to an action to unbind a shortcut without assigning a new one.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-options-dialog\">Options Dialog</a></p>"
+      },
+      %{
         id: "feature-autorespond",
         title: "Auto-Respond",
         category: "Features",

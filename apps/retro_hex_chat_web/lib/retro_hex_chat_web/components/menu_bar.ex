@@ -184,6 +184,14 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           >
             Auto-Respond
           </div>
+          <div class="menu-dropdown-separator"></div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-options"
+            phx-click="open_options_dialog"
+          >
+            Options...
+          </div>
         </div>
       </div>
       <div class="menu-item-wrapper">

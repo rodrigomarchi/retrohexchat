@@ -42,7 +42,13 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   end
 
   def handle_event("settings", _params, socket) do
-    {:halt, socket}
+    draft = socket.assigns.session.user_preferences
+
+    {:halt,
+     assign(socket,
+       show_options_dialog: true,
+       options_draft: draft
+     )}
   end
 
   def handle_event("toggle_treebar", _params, socket) do
