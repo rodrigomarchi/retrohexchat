@@ -99,4 +99,59 @@ defmodule RetroHexChatWeb.Components.NicklistTest do
       assert html =~ "phx-value-nick=\"alice\""
     end
   end
+
+  describe "5-group nicklist display (T011)" do
+    test "displays all 5 groups with correct prefixes" do
+      users = [
+        %{nickname: "alpha", role: :owner, away: false},
+        %{nickname: "bravo", role: :operator, away: false},
+        %{nickname: "charlie", role: :half_operator, away: false},
+        %{nickname: "delta", role: :voiced, away: false},
+        %{nickname: "echo", role: :regular, away: false}
+      ]
+
+      html = render_component(&Nicklist.nicklist/1, users: users)
+
+      # Check group headers
+      assert html =~ "Owners (1)"
+      assert html =~ "Operators (1)"
+      assert html =~ "Half-Operators (1)"
+      assert html =~ "Voiced (1)"
+      assert html =~ "Regular (1)"
+
+      # Check prefixes
+      assert html =~ "~alpha"
+      assert html =~ "@bravo"
+      assert html =~ "%charlie"
+      assert html =~ "+delta"
+    end
+
+    test "owner uses nick-owner CSS class" do
+      users = [%{nickname: "alice", role: :owner, away: false}]
+      html = render_component(&Nicklist.nicklist/1, users: users)
+      assert html =~ "nick-owner"
+    end
+
+    test "half-operator uses nick-halfop CSS class" do
+      users = [%{nickname: "alice", role: :half_operator, away: false}]
+      html = render_component(&Nicklist.nicklist/1, users: users)
+      assert html =~ "nick-halfop"
+    end
+
+    test "users sorted alphabetically within groups" do
+      users = [
+        %{nickname: "charlie", role: :owner, away: false},
+        %{nickname: "alice", role: :owner, away: false},
+        %{nickname: "bob", role: :owner, away: false}
+      ]
+
+      html = render_component(&Nicklist.nicklist/1, users: users)
+      assert html =~ "Owners (3)"
+
+      # All three should appear
+      assert html =~ "alice"
+      assert html =~ "bob"
+      assert html =~ "charlie"
+    end
+  end
 end

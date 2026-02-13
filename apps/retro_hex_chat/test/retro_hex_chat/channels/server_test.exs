@@ -33,14 +33,14 @@ defmodule RetroHexChat.Channels.ServerTest do
   end
 
   describe "join/3" do
-    test "first user becomes operator" do
+    test "first user becomes owner" do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)
 
       assert {:ok, state} = Server.join(channel, "founder")
       assert state.member_count == 1
-      assert "founder" in state.operators
-      assert {"founder", :operator} in state.members
+      assert "founder" in state.owners
+      assert {"founder", :owner} in state.members
     end
 
     test "second user gets regular role" do
@@ -51,7 +51,7 @@ defmodule RetroHexChat.Channels.ServerTest do
       {:ok, state} = Server.join(channel, "user2")
 
       assert state.member_count == 2
-      assert {"founder", :operator} in state.members
+      assert {"founder", :owner} in state.members
       assert {"user2", :regular} in state.members
     end
 
@@ -180,7 +180,7 @@ defmodule RetroHexChat.Channels.ServerTest do
       {:ok, _} = Server.join(channel, "regular")
       {:ok, _} = Server.join(channel, "target")
 
-      assert {:error, "You must be a channel operator to kick users"} =
+      assert {:error, "Insufficient privileges"} =
                Server.kick(channel, "regular", "target")
     end
 
@@ -290,7 +290,7 @@ defmodule RetroHexChat.Channels.ServerTest do
       {:ok, _} = Server.join(channel, "op")
       {:ok, _} = Server.join(channel, "regular")
 
-      assert {:error, "You must be a channel operator to change modes"} =
+      assert {:error, "Insufficient privileges to set channel modes"} =
                Server.set_mode(channel, "regular", "+t")
     end
 
@@ -393,7 +393,7 @@ defmodule RetroHexChat.Channels.ServerTest do
       {:ok, _} = Server.join(channel, "op")
       {:ok, _} = Server.join(channel, "regular")
 
-      assert {:error, "You must be a channel operator to ban users"} =
+      assert {:error, "Insufficient privileges"} =
                Server.ban(channel, "regular", "someone")
     end
 
@@ -499,15 +499,15 @@ defmodule RetroHexChat.Channels.ServerTest do
 
       {:ok, _} = Server.join(channel, "op_user")
 
-      # First user is operator
+      # First user is owner
       {:ok, state} = Server.get_state(channel)
-      assert "op_user" in state.operators
+      assert "op_user" in state.owners
 
       :ok = Server.rename_user(channel, "op_user", "op_renamed")
 
       {:ok, state} = Server.get_state(channel)
-      assert "op_renamed" in state.operators
-      refute "op_user" in state.operators
+      assert "op_renamed" in state.owners
+      refute "op_user" in state.owners
     end
   end
 
@@ -726,13 +726,15 @@ defmodule RetroHexChat.Channels.ServerTest do
       channel = unique_channel()
       {:ok, pid} = start_channel(channel)
 
-      # First user is operator
-      {:ok, _} = Server.join(channel, "op")
+      # Owner joins, then a regular user joins
+      {:ok, _} = Server.join(channel, "owner")
+      {:ok, _} = Server.join(channel, "target")
 
       ref = Process.monitor(pid)
 
-      # Op self-kicks: removes only member → channel shuts down
-      assert :ok = Server.kick(channel, "op", "op", "self-kick")
+      # Owner kicks target, then parts — channel empties and shuts down
+      assert :ok = Server.kick(channel, "owner", "target", "bye")
+      assert :ok = Server.part(channel, "owner", nil)
 
       assert_receive {:DOWN, ^ref, :process, ^pid, :normal}, 1000
       wait_until(fn -> Registry.lookup(channel) == {:error, :not_found} end, 100, 20)
@@ -900,6 +902,327 @@ defmodule RetroHexChat.Channels.ServerTest do
       :ok = Server.add_invite_exception(channel, "op", "vip_user")
 
       assert {:ok, _} = Server.join(channel, "vip_user")
+    end
+  end
+
+  # ── US1: Extended User Hierarchy ────────────────────────────
+
+  describe "first joiner becomes owner (T010)" do
+    test "first joiner of unregistered channel gets :owner role" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, state} = Server.join(channel, "founder")
+      assert {"founder", :owner} in state.members
+    end
+
+    test "second joiner gets :regular role" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "founder")
+      {:ok, state} = Server.join(channel, "user")
+      assert {"user", :regular} in state.members
+    end
+  end
+
+  describe "set_mode +q/+h owner and half-operator (T010)" do
+    test "owner can set +q on another user" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      {:ok, _} = Server.join(channel, "alice")
+
+      assert :ok = Server.set_mode(channel, "owner", "+q", ["alice"])
+      {:ok, state} = Server.get_state(channel)
+      assert "alice" in state.owners
+    end
+
+    test "operator cannot set +q" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      {:ok, _} = Server.join(channel, "op")
+      {:ok, _} = Server.join(channel, "alice")
+
+      :ok = Server.set_mode(channel, "owner", "+o", ["op"])
+
+      assert {:error, _} = Server.set_mode(channel, "op", "+q", ["alice"])
+    end
+
+    test "operator can set +h on a user" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      {:ok, _} = Server.join(channel, "op")
+      {:ok, _} = Server.join(channel, "alice")
+
+      :ok = Server.set_mode(channel, "owner", "+o", ["op"])
+      assert :ok = Server.set_mode(channel, "op", "+h", ["alice"])
+      {:ok, state} = Server.get_state(channel)
+      assert "alice" in state.half_operators
+    end
+  end
+
+  describe "kick rank enforcement (T010)" do
+    test "half-operator can kick regular user" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      {:ok, _} = Server.join(channel, "halfop")
+      {:ok, _} = Server.join(channel, "user")
+
+      :ok = Server.set_mode(channel, "owner", "+h", ["halfop"])
+
+      assert :ok = Server.kick(channel, "halfop", "user", "bye")
+    end
+
+    test "half-operator cannot kick operator" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      {:ok, _} = Server.join(channel, "halfop")
+      {:ok, _} = Server.join(channel, "op")
+
+      :ok = Server.set_mode(channel, "owner", "+h", ["halfop"])
+      :ok = Server.set_mode(channel, "owner", "+o", ["op"])
+
+      assert {:error, _} = Server.kick(channel, "halfop", "op", "nope")
+    end
+
+    test "operator cannot kick owner" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      {:ok, _} = Server.join(channel, "op")
+
+      :ok = Server.set_mode(channel, "owner", "+o", ["op"])
+
+      assert {:error, _} = Server.kick(channel, "op", "owner", "nope")
+    end
+
+    test "owner can kick operator" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      {:ok, _} = Server.join(channel, "op")
+
+      :ok = Server.set_mode(channel, "owner", "+o", ["op"])
+
+      assert :ok = Server.kick(channel, "owner", "op", "bye")
+    end
+  end
+
+  describe "half-operator mode permission enforcement (T010)" do
+    test "half-operator can set +v" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      {:ok, _} = Server.join(channel, "halfop")
+      {:ok, _} = Server.join(channel, "user")
+
+      :ok = Server.set_mode(channel, "owner", "+h", ["halfop"])
+
+      assert :ok = Server.set_mode(channel, "halfop", "+v", ["user"])
+    end
+
+    test "half-operator cannot set +m" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      {:ok, _} = Server.join(channel, "halfop")
+
+      :ok = Server.set_mode(channel, "owner", "+h", ["halfop"])
+
+      assert {:error, _} = Server.set_mode(channel, "halfop", "+m", [])
+    end
+  end
+
+  # ── US2: +n No External Messages ────────────────────────────
+
+  describe "server +n mode (T019)" do
+    test "non-member message blocked with +n" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      :ok = Server.set_mode(channel, "owner", "+n", [])
+
+      # Non-member tries to send (not joined)
+      assert {:error, _} = Server.send_message(channel, "outsider", "hello")
+    end
+
+    test "member message succeeds with +n" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      :ok = Server.set_mode(channel, "owner", "+n", [])
+
+      assert :ok = Server.send_message(channel, "owner", "hello members")
+    end
+  end
+
+  # ── US3: Knock ──────────────────────────────────────────────
+
+  describe "server knock/3 (T025)" do
+    test "knock on invite-only channel succeeds" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+i", [])
+
+      assert :ok = Server.knock(channel, "visitor", "Let me in!")
+    end
+
+    test "knock on non-invite-only channel fails" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+
+      assert {:error, "Channel is not invite-only"} = Server.knock(channel, "visitor", nil)
+    end
+
+    test "knock when +K is set fails" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+iK", [])
+
+      assert {:error, "Knocking is disabled" <> _} = Server.knock(channel, "visitor", nil)
+    end
+
+    test "knock when user is banned fails" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      :ok = Server.set_mode(channel, "op", "+i", [])
+      :ok = Server.ban(channel, "op", "baduser", nil)
+
+      assert {:error, "You are banned" <> _} = Server.knock(channel, "baduser", nil)
+    end
+
+    test "knock when already a member fails" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+      {:ok, _} = Server.join(channel, "member")
+      :ok = Server.set_mode(channel, "op", "+i", [])
+
+      assert {:error, "You are already in that channel"} =
+               Server.knock(channel, "member", nil)
+    end
+  end
+
+  # ── US4: Strip Colors and Registered Only ───────────────────
+
+  describe "server +c strip colors (T031)" do
+    test "message with color codes arrives stripped" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      :ok = Server.set_mode(channel, "owner", "+c", [])
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      :ok = Server.send_message(channel, "owner", "\x03Hello\x03 \x02bold\x02")
+
+      assert_receive %{event: "new_message", payload: payload}
+      refute payload.content =~ "\x03"
+      refute payload.content =~ "\x02"
+    end
+
+    test "message without +c is not stripped" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      :ok = Server.send_message(channel, "owner", "\x02bold\x02")
+
+      assert_receive %{event: "new_message", payload: payload}
+      assert payload.content =~ "\x02"
+    end
+  end
+
+  describe "server +R registered only (T032)" do
+    test "unregistered user join blocked with +R" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      :ok = Server.set_mode(channel, "owner", "+R", [])
+
+      assert {:error, "You must be registered" <> _} =
+               Server.join(channel, "unregistered", nil, identified: false)
+    end
+
+    test "registered user join succeeds with +R" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      :ok = Server.set_mode(channel, "owner", "+R", [])
+
+      assert {:ok, _} = Server.join(channel, "registered", nil, identified: true)
+    end
+  end
+
+  # ── US5: Join Throttle ──────────────────────────────────────
+
+  describe "server +j join throttle (T036)" do
+    test "joins within limit succeed" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      :ok = Server.set_mode(channel, "owner", "+j", ["3:60"])
+
+      assert {:ok, _} = Server.join(channel, "user1")
+      assert {:ok, _} = Server.join(channel, "user2")
+    end
+
+    test "join exceeding limit blocked" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      :ok = Server.set_mode(channel, "owner", "+j", ["2:60"])
+
+      # owner join counts + 2 more = 3 total timestamps, limit is 2
+      {:ok, _} = Server.join(channel, "user1")
+
+      assert {:error, "Channel join throttle active" <> _} =
+               Server.join(channel, "user2")
+    end
+
+    test "invalid +j params ignored gracefully" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+
+      # Invalid params are silently ignored (no throttle set)
+      assert :ok = Server.set_mode(channel, "owner", "+j", ["invalid"])
+      {:ok, state} = Server.get_state(channel)
+      refute state.modes_detail.join_throttle
     end
   end
 end

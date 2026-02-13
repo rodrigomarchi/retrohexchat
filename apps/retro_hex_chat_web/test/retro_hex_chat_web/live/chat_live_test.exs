@@ -236,7 +236,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       html = render_click(view, "toggle_nicklist")
       # After toggling off, nicklist should not be rendered
-      refute html =~ "nick-operator" and html =~ "nick-regular"
+      refute html =~ "nick-owner" and html =~ "nick-regular"
     end
   end
 
@@ -259,12 +259,12 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   # ── F1: nicklist integration ────────────────────────────
 
   describe "nicklist integration" do
-    test "after mount in isolated channel, nicklist shows the user as operator", %{conn: conn} do
+    test "after mount in isolated channel, nicklist shows the user as owner", %{conn: conn} do
       ensure_channel("#nick_iso1")
       {:ok, view, _html} = live(conn, "/chat?nickname=NickOp")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso1"})
       html = render(view)
-      assert html =~ "nick-operator"
+      assert html =~ "nick-owner"
       assert html =~ "NickOp"
       assert html =~ "Users (1)"
     end
@@ -330,7 +330,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso5"})
       render_click(view, "nick_right_click", %{"nick" => "pmpal", "x" => 0, "y" => 0})
       html = render_click(view, "context_query", %{"nick" => "pmpal"})
-      refute html =~ "nick-operator"
+      refute html =~ "nick-owner"
     end
 
     test "user_kicked removes user from nicklist", %{conn: conn} do
@@ -945,9 +945,9 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   # ── G3: context menu error paths ──────────────────────
 
   describe "context menu error paths" do
-    test "context_kick shows error when not operator", %{conn: conn} do
+    test "context_kick by non-operator closes context menu silently", %{conn: conn} do
       ensure_channel("#ctx_kick_err")
-      # Create channel with someone else as operator
+      # Create channel with someone else as owner (first joiner)
       Server.join("#ctx_kick_err", "CtxFounder", nil)
 
       {:ok, view, _html} = live(conn, "/chat?nickname=CtxNonOp")
@@ -958,10 +958,11 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       render_click(view, "nick_right_click", %{"nick" => "CtxFounder", "x" => 0, "y" => 0})
       html = render_click(view, "context_kick", %{"nick" => "CtxFounder"})
-      assert html =~ "chat-error" or html =~ "operator"
+      # Context menu closes; kick silently fails (non-operator cannot kick)
+      refute html =~ "context-menu"
     end
 
-    test "context_ban shows error when not operator", %{conn: conn} do
+    test "context_ban by non-operator closes context menu silently", %{conn: conn} do
       ensure_channel("#ctx_ban_err")
       Server.join("#ctx_ban_err", "BanFounder", nil)
 
@@ -970,7 +971,8 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       render_click(view, "nick_right_click", %{"nick" => "BanFounder", "x" => 0, "y" => 0})
       html = render_click(view, "context_ban", %{"nick" => "BanFounder"})
-      assert html =~ "chat-error" or html =~ "operator"
+      # Context menu closes; ban silently fails (non-operator cannot ban)
+      refute html =~ "context-menu"
     end
   end
 
@@ -1117,7 +1119,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       refute html =~ "context-menu"
     end
 
-    test "non-operator context_op shows error", %{conn: conn} do
+    test "non-operator context_op closes context menu silently", %{conn: conn} do
       ensure_channel("#ctx_op_err")
       Server.join("#ctx_op_err", "CtxOpFounder", nil)
 
@@ -1126,7 +1128,8 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       render_click(view, "nick_right_click", %{"nick" => "CtxOpFounder", "x" => 0, "y" => 0})
       html = render_click(view, "context_op", %{"nick" => "CtxOpFounder"})
-      assert html =~ "chat-error" or html =~ "operator"
+      # Context menu closes; set_mode silently fails (non-operator cannot op)
+      refute html =~ "context-menu"
     end
   end
 
@@ -1146,7 +1149,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       refute html =~ "context-menu"
     end
 
-    test "non-operator context_voice shows error", %{conn: conn} do
+    test "non-operator context_voice closes context menu silently", %{conn: conn} do
       ensure_channel("#ctx_v_err")
       Server.join("#ctx_v_err", "CtxVFounder", nil)
 
@@ -1155,7 +1158,8 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       render_click(view, "nick_right_click", %{"nick" => "CtxVFounder", "x" => 0, "y" => 0})
       html = render_click(view, "context_voice", %{"nick" => "CtxVFounder"})
-      assert html =~ "chat-error" or html =~ "operator"
+      # Context menu closes; set_mode silently fails (non-operator cannot voice)
+      refute html =~ "context-menu"
     end
   end
 
@@ -1501,7 +1505,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
         |> render_click()
 
       # Nicklist should be hidden in PM view
-      refute html =~ "nick-operator"
+      refute html =~ "nick-owner"
       # PM target should be shown as active
       assert html =~ "PmPal"
     end
@@ -1517,7 +1521,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       # Verify we're in PM view (no nicklist)
       html = render(view)
-      refute html =~ "nick-operator"
+      refute html =~ "nick-owner"
 
       # Switch back to channel
       html =
@@ -1525,8 +1529,8 @@ defmodule RetroHexChatWeb.ChatLiveTest do
         |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#pm_back"]))
         |> render_click()
 
-      # Channel view restored: nicklist visible, user shown as operator
-      assert html =~ "nick-operator"
+      # Channel view restored: nicklist visible, user shown as owner
+      assert html =~ "nick-owner"
       assert html =~ "PmBack"
     end
   end

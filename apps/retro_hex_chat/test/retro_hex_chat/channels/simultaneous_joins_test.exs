@@ -38,8 +38,8 @@ defmodule RetroHexChat.Channels.SimultaneousJoinsTest do
     {:ok, state} = Server.get_state(channel)
     assert state.member_count == 100
 
-    # First joiner should be operator (the one that found 0 members)
-    assert state.operators != []
+    # First joiner should be owner (the one that found 0 members)
+    assert state.owners != []
 
     # All users should be in members list
     member_nicks = Enum.map(state.members, &elem(&1, 0))

@@ -14,6 +14,7 @@ defmodule RetroHexChat.Services.RegisteredChannel do
     field :modes, :string, default: ""
     field :mode_key, :string
     field :mode_limit, :integer
+    field :mode_join_throttle, :string
     field :registered_at, :utc_datetime_usec
 
     timestamps(type: :utc_datetime_usec)
@@ -22,7 +23,15 @@ defmodule RetroHexChat.Services.RegisteredChannel do
   @spec changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def changeset(channel, attrs) do
     channel
-    |> cast(attrs, [:name, :founder_nickname, :topic, :modes, :mode_key, :mode_limit])
+    |> cast(attrs, [
+      :name,
+      :founder_nickname,
+      :topic,
+      :modes,
+      :mode_key,
+      :mode_limit,
+      :mode_join_throttle
+    ])
     |> validate_required([:name, :founder_nickname])
     |> validate_length(:name, max: 50)
     |> validate_length(:founder_nickname, max: 16)

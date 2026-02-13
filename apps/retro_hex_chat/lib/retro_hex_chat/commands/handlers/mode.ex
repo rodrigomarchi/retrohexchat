@@ -16,7 +16,7 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
 
   def execute([mode_string | params], context) do
     with {:ok, channel} <- require_channel(context),
-         :ok <- require_operator(context, channel) do
+         :ok <- require_mode_privilege(context, channel, mode_string) do
       {:ok, :ui_action, :set_mode, %{channel: channel, mode_string: mode_string, params: params}}
     end
   end
@@ -40,11 +40,34 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
   defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
   defp require_channel(%{active_channel: channel}), do: {:ok, channel}
 
-  defp require_operator(%{operator_in: operator_in}, channel) do
-    if channel in operator_in do
-      :ok
-    else
-      {:error, "You must be a channel operator to change modes"}
+  defp require_mode_privilege(context, channel, mode_string) do
+    is_operator = channel in context.operator_in
+    is_half_op = channel in Map.get(context, :half_operator_in, [])
+
+    cond do
+      is_operator ->
+        :ok
+
+      is_half_op ->
+        # Half-ops can only set +v/-v
+        flags = extract_flags(mode_string)
+
+        if Enum.all?(flags, &(&1 == "v")) do
+          :ok
+        else
+          {:error, "Insufficient privileges to set channel modes"}
+        end
+
+      true ->
+        {:error, "You must be a channel operator to change modes"}
+    end
+  end
+
+  defp extract_flags(mode_string) do
+    case String.split(mode_string, "", trim: true) do
+      ["+" | flags] -> flags
+      ["-" | flags] -> flags
+      _ -> []
     end
   end
 end

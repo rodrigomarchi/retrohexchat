@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         Logger.error("Failed to start channel #{channel_name}: #{inspect(reason)}")
     end
 
-    case Server.join(channel_name, session.nickname, password) do
+    case Server.join(channel_name, session.nickname, password, identified: session.identified) do
       {:ok, _state} ->
         Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
         PresenceHelpers.safe_track_user("channel:#{channel_name}", session.nickname)
@@ -177,8 +177,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   def channels_where_operator(session) do
     Enum.filter(session.channels, fn channel_name ->
       case Server.get_state(channel_name) do
-        {:ok, state} -> session.nickname in state.operators
-        {:error, _} -> false
+        {:ok, state} ->
+          session.nickname in state.operators or
+            session.nickname in Map.get(state, :owners, [])
+
+        {:error, _} ->
+          false
       end
     end)
   end

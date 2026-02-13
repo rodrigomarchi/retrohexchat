@@ -58,7 +58,8 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       active_channel: session.active_channel,
       channels: session.channels,
       identified: session.identified,
-      operator_in: channels_where_operator(session)
+      operator_in: channels_where_operator(session),
+      half_operator_in: channels_where_half_operator(session)
     }
 
     case try_alias_expansion(session, name, args, context, alias_depth) do
@@ -421,7 +422,20 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   defp channels_where_operator(session) do
     Enum.filter(session.channels, fn channel_name ->
       case Server.get_state(channel_name) do
-        {:ok, state} -> session.nickname in state.operators
+        {:ok, state} ->
+          session.nickname in state.operators or
+            session.nickname in Map.get(state, :owners, [])
+
+        {:error, _} ->
+          false
+      end
+    end)
+  end
+
+  defp channels_where_half_operator(session) do
+    Enum.filter(session.channels, fn channel_name ->
+      case Server.get_state(channel_name) do
+        {:ok, state} -> session.nickname in Map.get(state, :half_operators, [])
         {:error, _} -> false
       end
     end)

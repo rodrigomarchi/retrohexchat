@@ -127,11 +127,48 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
      |> stream_insert(:chat_messages, system_message(msg))}
   end
 
+  # ── Knock notification ────────────────────────────────────
+
+  def handle_info({:knock, %{nickname: nick, channel: channel, message: message}}, socket) do
+    # Only show knock notifications to operators and owners
+    my_nick = socket.assigns.session.nickname
+
+    is_privileged =
+      Enum.any?(socket.assigns.channel_users, fn user ->
+        user.nickname == my_nick and user.role in [:owner, :operator]
+      end)
+
+    if is_privileged do
+      msg =
+        if message && message != "" do
+          "* #{nick} has knocked on #{channel} (#{message})"
+        else
+          "* #{nick} has knocked on #{channel}"
+        end
+
+      {:halt, stream_insert(socket, :chat_messages, system_message(msg))}
+    else
+      {:halt, socket}
+    end
+  end
+
   # ── Catch-all: pass unhandled to next hook ────────────────
 
   def handle_info(_, socket), do: {:cont, socket}
 
   # ── Private helpers ───────────────────────────────────────
+
+  defp apply_mode_to_users(users, "+q", params) do
+    Enum.map(users, fn user ->
+      if user.nickname in params, do: %{user | role: :owner}, else: user
+    end)
+  end
+
+  defp apply_mode_to_users(users, "-q", params) do
+    Enum.map(users, fn user ->
+      if user.nickname in params, do: %{user | role: :regular}, else: user
+    end)
+  end
 
   defp apply_mode_to_users(users, "+o", params) do
     Enum.map(users, fn user ->
@@ -140,6 +177,18 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   defp apply_mode_to_users(users, "-o", params) do
+    Enum.map(users, fn user ->
+      if user.nickname in params, do: %{user | role: :regular}, else: user
+    end)
+  end
+
+  defp apply_mode_to_users(users, "+h", params) do
+    Enum.map(users, fn user ->
+      if user.nickname in params, do: %{user | role: :half_operator}, else: user
+    end)
+  end
+
+  defp apply_mode_to_users(users, "-h", params) do
     Enum.map(users, fn user ->
       if user.nickname in params, do: %{user | role: :regular}, else: user
     end)
@@ -187,7 +236,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       case Server.get_state(channel) do
         {:ok, state} ->
           nickname = socket.assigns.session.nickname
-          operator = nickname in state.operators
+
+          operator =
+            nickname in state.operators or nickname in Map.get(state, :owners, [])
 
           assign(socket, channel_central_state: state, channel_central_operator: operator)
 

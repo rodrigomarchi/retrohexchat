@@ -24,6 +24,7 @@ defmodule RetroHexChat.Channels.Queries do
           modes: channel.modes || "",
           mode_key: channel.mode_key,
           mode_limit: channel.mode_limit,
+          mode_join_throttle: channel.mode_join_throttle,
           bans: Enum.map(bans, & &1.banned_nickname),
           ban_exceptions: Enum.map(ban_exceptions, & &1.nickname),
           invite_exceptions: Enum.map(invite_exceptions, & &1.nickname)
