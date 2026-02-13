@@ -161,20 +161,24 @@
           results={@autocomplete_results}
           selected={@autocomplete_selected}
         />
+        <RetroHexChatWeb.Components.SyntaxTooltip.syntax_tooltip
+          tooltip={@syntax_tooltip}
+          detail_level={@command_help_level}
+        />
         <form phx-submit="send_input" class="chat-input-form">
-          <input
-            type="text"
+          <textarea
             name="input"
             id="chat-input"
-            value={@input}
-            placeholder="Type a message or /command..."
+            rows="1"
+            placeholder={input_placeholder(assigns)}
             autocomplete="off"
             autofocus
             maxlength="1000"
             phx-hook="AutocompleteHook"
-          />
+          >{@input}</textarea>
           <button type="submit">Send</button>
         </form>
+        <RetroHexChatWeb.Components.HistorySearch.history_search />
         <span class="char-counter" data-testid="char-counter">0/1000</span>
       </div>
     </div>

@@ -32,4 +32,19 @@ defmodule RetroHexChat.Commands.Handlers.Clear do
 
   @impl true
   def category, do: :basics
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+
+    %CommandSyntax{
+      command: "clear",
+      syntax: "/clear",
+      description: "Clear the chat window.",
+      category: :basics,
+      parameters: [],
+      examples: ["/clear"]
+    }
+  end
 end

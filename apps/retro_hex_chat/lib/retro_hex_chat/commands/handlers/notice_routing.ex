@@ -57,4 +57,36 @@ defmodule RetroHexChat.Commands.Handlers.NoticeRouting do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "notice_routing",
+      syntax: "/notice_routing [active|status|sender]",
+      description:
+        "Configure where incoming notices appear. 'active' shows in current window (default), " <>
+          "'status' shows in Status Window, 'sender' shows in sender's PM window. " <>
+          "Without arguments, shows current setting.",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "routing",
+          required: false,
+          type: :text,
+          position: 0,
+          description: "Destino: active, status, sender"
+        }
+      ],
+      examples: [
+        "/notice_routing",
+        "/notice_routing active",
+        "/notice_routing status",
+        "/notice_routing sender"
+      ]
+    }
+  end
 end

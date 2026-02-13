@@ -57,4 +57,29 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
 
   @impl true
   def category, do: :advanced
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "announce",
+      syntax: "/announce <message>",
+      description:
+        "Send a global announcement to all connected users. Requires server administrator.",
+      category: :advanced,
+      parameters: [
+        %Parameter{
+          name: "message",
+          required: true,
+          type: :text,
+          position: 0,
+          description: "Mensagem de anúncio global"
+        }
+      ],
+      examples: ["/announce Server will restart at midnight"]
+    }
+  end
 end

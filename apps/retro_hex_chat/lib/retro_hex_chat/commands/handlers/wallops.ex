@@ -56,4 +56,28 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "wallops",
+      syntax: "/wallops <message>",
+      description: "Send a wallops message to all users with +w mode. Requires server operator.",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "message",
+          required: true,
+          type: :text,
+          position: 0,
+          description: "Mensagem para todos com +w"
+        }
+      ],
+      examples: ["/wallops Server maintenance in 10 minutes"]
+    }
+  end
 end

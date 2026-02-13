@@ -98,4 +98,42 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
 
   @impl true
   def category, do: :config
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "autojoin",
+      syntax: "/autojoin [list|add|remove|clear]",
+      description: "Manage channels that are automatically joined on connect.",
+      category: :config,
+      parameters: [
+        %Parameter{
+          name: "subcommand",
+          required: false,
+          type: :text,
+          position: 0,
+          description: "Subcomando: list, add, remove, clear"
+        },
+        %Parameter{
+          name: "args",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Argumentos do subcomando"
+        }
+      ],
+      examples: [
+        "/autojoin",
+        "/autojoin list",
+        "/autojoin add #elixir",
+        "/autojoin add #secret mykey",
+        "/autojoin remove #elixir",
+        "/autojoin clear"
+      ]
+    }
+  end
 end

@@ -66,4 +66,41 @@ defmodule RetroHexChat.Commands.Handlers.Ctcp do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "ctcp",
+      syntax: "/ctcp <target> <ping|version|time|finger>",
+      description:
+        "Send a CTCP request to query information about another user's client or measure latency.",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "target",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Destinatário"
+        },
+        %Parameter{
+          name: "type",
+          required: true,
+          type: :text,
+          position: 1,
+          description: "Tipo: ping, version, time, finger"
+        }
+      ],
+      examples: [
+        "/ctcp Alice ping",
+        "/ctcp Bob version",
+        "/ctcp Alice time",
+        "/ctcp Bob finger"
+      ]
+    }
+  end
 end

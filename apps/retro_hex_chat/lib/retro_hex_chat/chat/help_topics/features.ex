@@ -1066,7 +1066,111 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<code>Tab</code> (no dropdown) — Cycle through nick matches.</p>" <>
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-command-syntax-tooltip\">Command Syntax Tooltip</a> · " <>
             "<a href=\"#\" data-help-topic=\"getting-started\">Getting Started</a></p>"
+      },
+      %{
+        id: "feature-command-syntax-tooltip",
+        title: "Command Syntax Tooltip",
+        category: "Features",
+        keywords: [
+          "syntax",
+          "tooltip",
+          "command help",
+          "parameter",
+          "hint",
+          "inline help",
+          "mode helper"
+        ],
+        content:
+          "<h3>Command Syntax Tooltip</h3>" <>
+            "<p>When typing a command (e.g., <code>/mode #general +o</code>), a tooltip appears " <>
+            "above the input showing the command syntax with the current parameter highlighted in bold.</p>" <>
+            "<h4>How It Works</h4>" <>
+            "<p>1. Type a command followed by a space (e.g., <code>/mode </code>).<br/>" <>
+            "2. The tooltip shows the full syntax with parameter names.<br/>" <>
+            "3. As you type arguments, the next expected parameter is highlighted.<br/>" <>
+            "4. For <code>/mode</code>, available mode flags are listed below the syntax line.</p>" <>
+            "<h4>Detail Levels</h4>" <>
+            "<p>Configure in <strong>Options &gt; Display &gt; Command Help</strong>:<br/>" <>
+            "<strong>Beginner:</strong> Full descriptions, sub-options, context messages, and examples.<br/>" <>
+            "<strong>Expert:</strong> Syntax line only — compact and unobtrusive.<br/>" <>
+            "<strong>Off:</strong> Disable the tooltip entirely.</p>" <>
+            "<h4>Interaction</h4>" <>
+            "<p>Press <strong>Escape</strong> to dismiss the tooltip. " <>
+            "The tooltip automatically hides when the autocomplete dropdown is open.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-autocomplete\">Autocomplete</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-smart-input\">Smart Input</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-options-dialog\">Options Dialog</a></p>"
+      },
+      %{
+        id: "feature-smart-input",
+        title: "Smart Input",
+        category: "Features",
+        keywords: [
+          "smart input",
+          "textarea",
+          "multiline",
+          "placeholder",
+          "expand",
+          "input box"
+        ],
+        content:
+          "<h3>Smart Input</h3>" <>
+            "<p>The chat input provides contextual hints and adapts to your content.</p>" <>
+            "<h4>Contextual Placeholder</h4>" <>
+            "<p>The placeholder text changes based on your current context:<br/>" <>
+            "In a channel: <em>Mensagem para #channel — / para comandos</em><br/>" <>
+            "In a PM: <em>Mensagem para NickName — / para comandos</em><br/>" <>
+            "In Status: <em>Digite um comando — / para lista</em></p>" <>
+            "<h4>Multi-Line Expansion</h4>" <>
+            "<p>The input grows vertically as you type or paste multi-line text, " <>
+            "up to 5 visible lines. Beyond that, a scrollbar appears. " <>
+            "The chat messages area compresses above to make room.</p>" <>
+            "<h4>Keyboard</h4>" <>
+            "<p><strong>Enter</strong> — Send message.<br/>" <>
+            "<strong>Shift+Enter</strong> — Insert a new line.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-enhanced-history\">Enhanced History</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-command-syntax-tooltip\">Command Syntax Tooltip</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-char-counter\">Character Counter</a></p>"
+      },
+      %{
+        id: "feature-enhanced-history",
+        title: "Enhanced History",
+        category: "Features",
+        keywords: [
+          "history",
+          "ctrl+up",
+          "ctrl+down",
+          "ctrl+r",
+          "reverse search",
+          "draft",
+          "persistence",
+          "localStorage"
+        ],
+        content:
+          "<h3>Enhanced History</h3>" <>
+            "<p>Navigate your command and message history with draft preservation " <>
+            "and reverse search. History persists across page reloads.</p>" <>
+            "<h4>Draft-Preserving Navigation</h4>" <>
+            "<p><strong>Ctrl+Up</strong> — Save current text as draft and show previous history entry.<br/>" <>
+            "<strong>Ctrl+Down</strong> — Show next entry, or restore your draft when past the newest entry.<br/>" <>
+            "Regular <strong>Up/Down</strong> in an empty input works as before (server-side history).</p>" <>
+            "<h4>Reverse Search (Ctrl+R)</h4>" <>
+            "<p>Press <strong>Ctrl+R</strong> to open an inline search bar. " <>
+            "Type to filter history entries by substring match. " <>
+            "Press <strong>Enter</strong> to accept the match, or <strong>Escape</strong> to cancel.</p>" <>
+            "<h4>Persistence</h4>" <>
+            "<p>The last 100 entries are stored in your browser's localStorage. " <>
+            "History survives page reloads and browser restarts.</p>" <>
+            "<h4>Privacy</h4>" <>
+            "<p>Sensitive commands (<code>/identify</code>, <code>/nickserv</code>, <code>/ns</code>) " <>
+            "are never saved to localStorage.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-smart-input\">Smart Input</a> · " <>
+            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
       }
     ]
   end

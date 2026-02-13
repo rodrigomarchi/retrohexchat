@@ -150,4 +150,42 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
 
   @impl true
   def category, do: :advanced
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "cs",
+      syntax: "/cs <subcommand> [args]",
+      description: "ChanServ commands for channel registration and access management.",
+      category: :advanced,
+      parameters: [
+        %Parameter{
+          name: "subcommand",
+          required: true,
+          type: :text,
+          position: 0,
+          description: "Subcomando: register, drop, info, sop, aop, vop"
+        },
+        %Parameter{
+          name: "args",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Argumentos do subcomando"
+        }
+      ],
+      examples: [
+        "/cs register",
+        "/cs drop",
+        "/cs info",
+        "/cs sop add nick",
+        "/cs aop del nick",
+        "/cs vop list"
+      ]
+    }
+  end
 end

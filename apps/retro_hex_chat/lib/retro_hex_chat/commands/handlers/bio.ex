@@ -51,4 +51,29 @@ defmodule RetroHexChat.Commands.Handlers.Bio do
 
   @impl true
   def category, do: :basics
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "bio",
+      syntax: "/bio [<text>|clear]",
+      description:
+        "Set, view, or clear your bio. Your bio appears in /whois output. Maximum 200 characters.",
+      category: :basics,
+      parameters: [
+        %Parameter{
+          name: "text",
+          required: false,
+          type: :text,
+          position: 0,
+          description: "Texto do bio (ou 'clear' para limpar)"
+        }
+      ],
+      examples: ["/bio Elixir enthusiast from Brazil", "/bio", "/bio clear"]
+    }
+  end
 end

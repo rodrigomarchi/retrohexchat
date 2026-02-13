@@ -36,4 +36,29 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "whowas",
+      syntax: "/whowas <nickname>",
+      description:
+        "Display information about a recently disconnected user. Shows last seen time, channels, and quit message.",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Usuário desconectado recentemente"
+        }
+      ],
+      examples: ["/whowas SomeUser"]
+    }
+  end
 end

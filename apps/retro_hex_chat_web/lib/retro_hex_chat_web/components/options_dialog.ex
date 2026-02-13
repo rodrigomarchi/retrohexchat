@@ -177,6 +177,51 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
           />
         </div>
       </fieldset>
+      <fieldset>
+        <legend>Command Help</legend>
+        <div class="field-row">
+          <label>Detail level for command syntax tooltip:</label>
+        </div>
+        <div class="field-row">
+          <input
+            type="radio"
+            id="opt-help-beginner"
+            name="command_help_level"
+            value="beginner"
+            checked={Map.get(@draft.display, :command_help_level, :beginner) == :beginner}
+            phx-click="update_command_help_level"
+            phx-value-level="beginner"
+            data-testid="options-help-beginner"
+          />
+          <label for="opt-help-beginner">Beginner (full descriptions and examples)</label>
+        </div>
+        <div class="field-row">
+          <input
+            type="radio"
+            id="opt-help-expert"
+            name="command_help_level"
+            value="expert"
+            checked={Map.get(@draft.display, :command_help_level, :beginner) == :expert}
+            phx-click="update_command_help_level"
+            phx-value-level="expert"
+            data-testid="options-help-expert"
+          />
+          <label for="opt-help-expert">Expert (syntax line only)</label>
+        </div>
+        <div class="field-row">
+          <input
+            type="radio"
+            id="opt-help-off"
+            name="command_help_level"
+            value="off"
+            checked={Map.get(@draft.display, :command_help_level, :beginner) == :off}
+            phx-click="update_command_help_level"
+            phx-value-level="off"
+            data-testid="options-help-off"
+          />
+          <label for="opt-help-off">Off (disable tooltip)</label>
+        </div>
+      </fieldset>
     </div>
     """
   end

@@ -37,4 +37,28 @@ defmodule RetroHexChat.Commands.Handlers.Quit do
 
   @impl true
   def category, do: :basics
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "quit",
+      syntax: "/quit [message]",
+      description: "Disconnect from the chat.",
+      category: :basics,
+      parameters: [
+        %Parameter{
+          name: "message",
+          required: false,
+          type: :text,
+          position: 0,
+          description: "Mensagem de saída"
+        }
+      ],
+      examples: ["/quit", "/quit Goodbye!"]
+    }
+  end
 end

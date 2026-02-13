@@ -67,4 +67,40 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
 
   @impl true
   def category, do: :config
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "timer",
+      syntax: "/timer <name> [repeat] <seconds> <command>",
+      description: "Schedule a command to run after a delay. Timers are session-only.",
+      category: :config,
+      parameters: [
+        %Parameter{
+          name: "name",
+          required: true,
+          type: :text,
+          position: 0,
+          description: "Nome do timer"
+        },
+        %Parameter{
+          name: "args",
+          required: true,
+          type: :text,
+          position: 1,
+          description: "Configuração: [repeat] <segundos> <comando>"
+        }
+      ],
+      examples: [
+        "/timer remind 1800 /me reminds everyone: standup in 30 minutes",
+        "/timer heartbeat repeat 600 /me is still here",
+        "/timer list",
+        "/timer stop heartbeat"
+      ]
+    }
+  end
 end

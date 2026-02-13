@@ -36,4 +36,19 @@ defmodule RetroHexChat.Commands.Handlers.Motd do
 
   @impl true
   def category, do: :advanced
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+
+    %CommandSyntax{
+      command: "motd",
+      syntax: "/motd",
+      description: "Display the server Message of the Day.",
+      category: :advanced,
+      parameters: [],
+      examples: ["/motd"]
+    }
+  end
 end

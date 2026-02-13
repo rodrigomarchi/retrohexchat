@@ -112,4 +112,43 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
 
   @impl true
   def category, do: :config
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "perform",
+      syntax: "/perform [list|add|remove|move|clear]",
+      description: "Manage commands that auto-execute on connect.",
+      category: :config,
+      parameters: [
+        %Parameter{
+          name: "subcommand",
+          required: false,
+          type: :text,
+          position: 0,
+          description: "Subcomando: list, add, remove, move, clear"
+        },
+        %Parameter{
+          name: "args",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Argumentos do subcomando"
+        }
+      ],
+      examples: [
+        "/perform",
+        "/perform list",
+        "/perform add /join #elixir",
+        "/perform add /ns identify mypassword",
+        "/perform remove 0",
+        "/perform move 0 2",
+        "/perform clear"
+      ]
+    }
+  end
 end

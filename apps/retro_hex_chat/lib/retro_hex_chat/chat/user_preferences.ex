@@ -12,6 +12,7 @@ defmodule RetroHexChat.Chat.UserPreferences do
 
   @valid_display_keys ~w(show_toolbar show_treebar show_switchbar show_statusbar compact_mode line_shading)a
   @valid_timestamp_formats [:hh_mm, :hh_mm_ss, :dd_mm_hh_mm, :none]
+  @valid_command_help_levels [:beginner, :expert, :off]
 
   @valid_font_areas ~w(chat_messages input_box nicklist treebar)a
 
@@ -144,6 +145,16 @@ defmodule RetroHexChat.Chat.UserPreferences do
     Map.get(display, :timestamp_format, :hh_mm)
   end
 
+  @spec get_command_help_level(map()) :: atom()
+  def get_command_help_level(%{display: display}) do
+    Map.get(display, :command_help_level, :beginner)
+  end
+
+  @spec set_command_help_level(map(), atom()) :: map()
+  def set_command_help_level(prefs, level) when level in @valid_command_help_levels do
+    put_in(prefs, [:display, :command_help_level], level)
+  end
+
   @spec set_timestamp_format(map(), atom()) :: map()
   def set_timestamp_format(prefs, format) when format in @valid_timestamp_formats do
     put_in(prefs, [:display, :timestamp_format], format)
@@ -249,7 +260,8 @@ defmodule RetroHexChat.Chat.UserPreferences do
       show_statusbar: true,
       compact_mode: false,
       line_shading: false,
-      timestamp_format: :hh_mm
+      timestamp_format: :hh_mm,
+      command_help_level: :beginner
     }
   end
 
@@ -365,9 +377,28 @@ defmodule RetroHexChat.Chat.UserPreferences do
 
     Map.new(defaults, fn {key, default_val} ->
       str_key = Atom.to_string(key)
-      {key, Map.get(data, str_key, default_val)}
+      raw = Map.get(data, str_key, default_val)
+
+      value =
+        case key do
+          :command_help_level when is_binary(raw) ->
+            atomize_command_help_level(raw)
+
+          :timestamp_format when is_binary(raw) ->
+            String.to_existing_atom(raw)
+
+          _ ->
+            raw
+        end
+
+      {key, value}
     end)
   end
+
+  defp atomize_command_help_level("beginner"), do: :beginner
+  defp atomize_command_help_level("expert"), do: :expert
+  defp atomize_command_help_level("off"), do: :off
+  defp atomize_command_help_level(_), do: :beginner
 
   defp atomize_fonts(data) when data == %{}, do: default_fonts()
 

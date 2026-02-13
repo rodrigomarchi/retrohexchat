@@ -39,4 +39,35 @@ defmodule RetroHexChat.Commands.Handlers.Msg do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "msg",
+      syntax: "/msg <nickname> <message>",
+      description: "Send a private message to a user.",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Destinatário da mensagem"
+        },
+        %Parameter{
+          name: "message",
+          required: true,
+          type: :text,
+          position: 1,
+          description: "Conteúdo da mensagem"
+        }
+      ],
+      examples: ["/msg Nick Hello there!", "/msg Nick How are you?"]
+    }
+  end
 end

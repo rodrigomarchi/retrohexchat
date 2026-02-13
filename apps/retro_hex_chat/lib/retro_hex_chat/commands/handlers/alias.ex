@@ -76,4 +76,41 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
 
   @impl true
   def category, do: :config
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "alias",
+      syntax: "/alias [list|add|remove]",
+      description: "Manage command aliases. Type a short alias to expand into longer commands.",
+      category: :config,
+      parameters: [
+        %Parameter{
+          name: "subcommand",
+          required: false,
+          type: :text,
+          position: 0,
+          description: "Subcomando: list, add, remove"
+        },
+        %Parameter{
+          name: "args",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Argumentos do subcomando"
+        }
+      ],
+      examples: [
+        "/alias",
+        "/alias list",
+        "/alias add hi /me says hello everyone!",
+        "/alias add greet /me waves at $1",
+        "/alias remove hi"
+      ]
+    }
+  end
 end

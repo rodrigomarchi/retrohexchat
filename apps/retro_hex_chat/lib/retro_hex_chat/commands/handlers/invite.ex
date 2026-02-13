@@ -50,4 +50,35 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
 
   @impl true
   def category, do: :channel
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "invite",
+      syntax: "/invite <nickname> [#channel]",
+      description: "Invite a user to an invite-only (+i) channel",
+      category: :channel,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Usuário a convidar"
+        },
+        %Parameter{
+          name: "#channel",
+          required: false,
+          type: :channel,
+          position: 1,
+          description: "Canal destino (padrão: canal atual)"
+        }
+      ],
+      examples: ["/invite Alice", "/invite Alice #private", "/invite auto"]
+    }
+  end
 end

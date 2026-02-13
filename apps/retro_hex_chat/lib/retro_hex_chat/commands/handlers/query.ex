@@ -35,4 +35,28 @@ defmodule RetroHexChat.Commands.Handlers.Query do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "query",
+      syntax: "/query <nickname>",
+      description: "Open a private message window with a user.",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Abrir janela de PM com este usuário"
+        }
+      ],
+      examples: ["/query Nick"]
+    }
+  end
 end

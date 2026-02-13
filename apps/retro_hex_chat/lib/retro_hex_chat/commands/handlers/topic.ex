@@ -46,4 +46,28 @@ defmodule RetroHexChat.Commands.Handlers.Topic do
 
   @impl true
   def category, do: :channel
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "topic",
+      syntax: "/topic [new topic]",
+      description: "View or set the channel topic.",
+      category: :channel,
+      parameters: [
+        %Parameter{
+          name: "new topic",
+          required: false,
+          type: :text,
+          position: 0,
+          description: "Novo tópico do canal"
+        }
+      ],
+      examples: ["/topic", "/topic Welcome to #elixir!"]
+    }
+  end
 end

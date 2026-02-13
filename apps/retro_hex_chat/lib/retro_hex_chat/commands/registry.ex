@@ -104,6 +104,33 @@ defmodule RetroHexChat.Commands.Registry do
         ]
   def command_metadata, do: @command_metadata
 
+  @syntax_definitions (for {name, module} <- @commands do
+                         syntax =
+                           if function_exported?(module, :syntax_definition, 0) do
+                             module.syntax_definition()
+                           else
+                             nil
+                           end
+
+                         {name, syntax}
+                       end)
+                      |> Enum.reject(fn {_name, syntax} -> is_nil(syntax) end)
+                      |> Map.new()
+
+  @doc """
+  Returns the syntax definition for a given command name, or nil if not available.
+  """
+  @spec get_syntax(String.t()) :: RetroHexChat.Commands.CommandSyntax.t() | nil
+  def get_syntax(name) do
+    Map.get(@syntax_definitions, name)
+  end
+
+  @doc """
+  Returns all available syntax definitions as a map of command name to CommandSyntax.
+  """
+  @spec all_syntax_definitions() :: %{String.t() => RetroHexChat.Commands.CommandSyntax.t()}
+  def all_syntax_definitions, do: @syntax_definitions
+
   @doc """
   Returns commands grouped by category in display order.
   Each group is `{category_label, [%{name, description}]}`.

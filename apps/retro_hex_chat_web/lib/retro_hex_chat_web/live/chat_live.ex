@@ -290,6 +290,8 @@ defmodule RetroHexChatWeb.ChatLive do
       emoji_search: "",
       emoji_category: "Smileys & Emotion",
       emoji_emojis: EmojiData.by_category("Smileys & Emotion"),
+      syntax_tooltip: nil,
+      command_help_level: UserPreferences.get_command_help_level(session.user_preferences),
       timestamp_format: UserPreferences.get_timestamp_format(session.user_preferences)
     )
     |> stream(:chat_messages, [])
@@ -372,6 +374,23 @@ defmodule RetroHexChatWeb.ChatLive do
     e ->
       Logger.warning("Failed to check operator status: #{inspect(e)}")
       false
+  end
+
+  @spec input_placeholder(map()) :: String.t()
+  defp input_placeholder(assigns) do
+    cond do
+      assigns.show_status_tab ->
+        "Digite um comando — / para lista"
+
+      assigns.session.active_pm != nil ->
+        "Mensagem para #{assigns.session.active_pm} — / para comandos"
+
+      assigns.session.active_channel != nil ->
+        "Mensagem para #{assigns.session.active_channel} — / para comandos"
+
+      true ->
+        "Digite um comando — / para lista"
+    end
   end
 
   defp filtered_url_catcher_entries(assigns) do
