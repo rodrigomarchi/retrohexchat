@@ -356,14 +356,26 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       refute render(view) =~ "highlight-edit-dialog"
     end
 
-    test "Alt+H toggles dialog", %{conn: conn} do
+    test "Ctrl+Shift+H toggles dialog", %{conn: conn} do
       nick = "AltH#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      html = render_keydown(view, "window_keydown", %{"key" => "h", "altKey" => true})
+      html =
+        render_keydown(view, "window_keydown", %{
+          "key" => "h",
+          "ctrlKey" => true,
+          "shiftKey" => true
+        })
+
       assert html =~ "Highlight Words"
 
-      html = render_keydown(view, "window_keydown", %{"key" => "h", "altKey" => true})
+      html =
+        render_keydown(view, "window_keydown", %{
+          "key" => "h",
+          "ctrlKey" => true,
+          "shiftKey" => true
+        })
+
       refute html =~ "highlight-dialog"
     end
 

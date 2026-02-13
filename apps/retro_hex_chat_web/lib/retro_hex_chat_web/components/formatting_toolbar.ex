@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
         class="format-btn"
         data-format-code="bold"
         data-testid="format-btn-bold"
-        title="Bold (Ctrl+B)"
+        title="Bold (Ctrl+Shift+B)"
       >
         <svg viewBox="0 0 14 14" fill="currentColor">
           <path d="M3 1h5a3 3 0 0 1 2.1 5.1A3.5 3.5 0 0 1 8.5 13H3V1zm2 5h3a1 1 0 1 0 0-2H5v2zm0 2v3h3.5a1.5 1.5 0 0 0 0-3H5z" />
@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
         class="format-btn"
         data-format-code="italic"
         data-testid="format-btn-italic"
-        title="Italic (Ctrl+I)"
+        title="Italic (Ctrl+Shift+Y)"
       >
         <svg viewBox="0 0 14 14" fill="currentColor">
           <path d="M5 1h6v2H9.2L7.3 11H9v2H3v-2h1.8L6.7 3H5V1z" />
@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
         class="format-btn"
         data-format-code="underline"
         data-testid="format-btn-underline"
-        title="Underline (Ctrl+U)"
+        title="Underline (Ctrl+Shift+U)"
       >
         <svg viewBox="0 0 14 14" fill="currentColor">
           <path d="M3 1v5.5a4 4 0 0 0 8 0V1h-2v5.5a2 2 0 0 1-4 0V1H3zm-1 11h10v2H2v-2z" />
@@ -71,7 +71,7 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
           class="format-btn format-btn-color"
           data-format-code="color"
           data-testid="format-btn-color"
-          title="Color (Ctrl+K)"
+          title="Color (Ctrl+Shift+D)"
         >
           <svg viewBox="0 0 14 14" fill="currentColor">
             <rect x="1" y="1" width="4" height="4" fill="#ff0000" />

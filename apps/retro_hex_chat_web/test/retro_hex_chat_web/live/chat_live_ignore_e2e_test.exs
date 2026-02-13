@@ -171,10 +171,15 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreE2ETest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US4: ignore list dialog" do
-    test "Alt+I opens and close button closes", %{conn: conn} do
+    test "Ctrl+Shift+G opens and close button closes", %{conn: conn} do
       view = connect_user(conn, "E2EDlg#{uid()}")
 
-      render_keydown(view, "window_keydown", %{"key" => "i", "altKey" => true})
+      render_keydown(view, "window_keydown", %{
+        "key" => "g",
+        "ctrlKey" => true,
+        "shiftKey" => true
+      })
+
       html = render(view)
       assert html =~ "ignore-list-dialog"
 

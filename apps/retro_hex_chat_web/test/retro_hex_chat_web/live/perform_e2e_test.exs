@@ -107,14 +107,24 @@ defmodule RetroHexChatWeb.PerformE2ETest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US2: perform dialog" do
-    test "Alt+P opens and closes dialog", %{conn: conn} do
+    test "Ctrl+Shift+E opens and closes dialog", %{conn: conn} do
       view = connect_user(conn, "E2EDlg#{uid()}")
 
-      render_keydown(view, "window_keydown", %{"key" => "p", "altKey" => true})
+      render_keydown(view, "window_keydown", %{
+        "key" => "e",
+        "ctrlKey" => true,
+        "shiftKey" => true
+      })
+
       html = render(view)
       assert html =~ "data-testid=\"perform-dialog\""
 
-      render_keydown(view, "window_keydown", %{"key" => "p", "altKey" => true})
+      render_keydown(view, "window_keydown", %{
+        "key" => "e",
+        "ctrlKey" => true,
+        "shiftKey" => true
+      })
+
       html = render(view)
       refute html =~ "data-testid=\"perform-dialog\""
     end

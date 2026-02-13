@@ -19,7 +19,13 @@ defmodule RetroHexChatWeb.HelpSystemE2ETest do
       view = connect_user(conn, "E2EHelp#{uid()}")
       refute render(view) =~ "help-dialog"
 
-      html = render_keydown(view, "window_keydown", %{"key" => "F1"})
+      html =
+        render_keydown(view, "window_keydown", %{
+          "key" => "/",
+          "ctrlKey" => true,
+          "shiftKey" => true
+        })
+
       assert html =~ "help-dialog"
       assert html =~ "RetroHexChat Help"
     end

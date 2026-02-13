@@ -281,11 +281,15 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
   # ── US4: Ignore List Dialog ──────────────────────────────────
 
   describe "US4: ignore list dialog" do
-    test "Alt+I opens dialog", %{conn: conn} do
+    test "Ctrl+Shift+G opens dialog", %{conn: conn} do
       nick = "AltI#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      render_keydown(view, "window_keydown", %{"key" => "i", "altKey" => true})
+      render_keydown(view, "window_keydown", %{
+        "key" => "g",
+        "ctrlKey" => true,
+        "shiftKey" => true
+      })
 
       html = render(view)
       assert html =~ "ignore-list-dialog"

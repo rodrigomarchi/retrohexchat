@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.PerformDialog do
   @moduledoc """
-  Perform / Auto-Commands dialog (Alt+P).
+  Perform / Auto-Commands dialog (Ctrl+Shift+E).
   Manages perform commands and auto-join channels with tabbed interface.
   """
   use Phoenix.Component

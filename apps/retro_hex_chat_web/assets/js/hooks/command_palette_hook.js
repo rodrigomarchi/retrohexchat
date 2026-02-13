@@ -89,20 +89,21 @@ const CommandPaletteHook = {
         return;
       }
 
-      // IRC formatting shortcuts (Ctrl+key)
-      if (e.ctrlKey && !e.altKey && !e.metaKey) {
+      // IRC formatting shortcuts (Ctrl+Shift+key)
+      if (e.ctrlKey && e.shiftKey && !e.altKey && !e.metaKey) {
         const formatCodes = {
           b: "\x02", // Bold
-          i: "\x1D", // Italic
+          y: "\x1D", // Italic (stYle)
           u: "\x1F", // Underline
-          k: "\x03", // Color
-          r: "\x16", // Reverse
-          o: "\x0F", // Reset
+          d: "\x03", // Color (Dye)
+          v: "\x16", // Reverse (reVerse)
+          x: "\x0F", // Reset (Xclear)
         };
 
         const code = formatCodes[e.key.toLowerCase()];
         if (code) {
           e.preventDefault();
+          e.stopPropagation();
           this.insertAtCursor(code);
         }
       }

@@ -34,14 +34,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         keywords: ["address book", "contacts", "nick colors", "color override"],
         content:
           "<h3>Address Book</h3>" <>
-            "<p>The Address Book (Alt+B) organizes your contacts, notify list, nick color overrides, and future ignore management in one window.</p>" <>
+            "<p>The Address Book (Ctrl+Shift+A) organizes your contacts, notify list, nick color overrides, and future ignore management in one window.</p>" <>
             "<h4>Tabs</h4>" <>
             "<p><strong>Contacts:</strong> Store notes about users with add/edit/remove.<br/>" <>
             "<strong>Notify:</strong> Manage your buddy list (synced with Notify List window).<br/>" <>
             "<strong>Nick Colors:</strong> Override display colors for specific nicks across the UI.<br/>" <>
             "<strong>Control:</strong> Ignore management (coming in a future update).</p>" <>
             "<h4>Opening</h4>" <>
-            "<p>Press <strong>Alt+B</strong>, use the toolbar button, or go to <strong>Tools &gt; Address Book</strong>.</p>" <>
+            "<p>Press <strong>Ctrl+Shift+A</strong>, use the toolbar button, or go to <strong>Tools &gt; Address Book</strong>.</p>" <>
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-highlight-words\">Highlight Words</a></p>"
@@ -57,7 +57,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<h4>Default Behavior</h4>" <>
             "<p>Your own nickname is always highlighted (case-insensitive, whole-word match).</p>" <>
             "<h4>Custom Words</h4>" <>
-            "<p>Open the Highlight Words dialog (<strong>Alt+H</strong> or <strong>Tools &gt; Highlight Words</strong>) to add custom trigger words with optional background colors.</p>" <>
+            "<p>Open the Highlight Words dialog (<strong>Ctrl+Shift+H</strong> or <strong>Tools &gt; Highlight Words</strong>) to add custom trigger words with optional background colors.</p>" <>
             "<h4>Sound Notifications</h4>" <>
             "<p>A notification sound plays when a highlight match occurs.</p>" <>
             "<h4>See Also</h4>" <>
@@ -73,7 +73,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "<h3>URL Catcher</h3>" <>
             "<p>The URL Catcher captures all URLs shared in channels and PMs. URLs in messages are automatically made clickable with link previews.</p>" <>
             "<h4>Opening</h4>" <>
-            "<p>Press <strong>Alt+U</strong> or go to <strong>Tools &gt; URL Catcher</strong>.</p>" <>
+            "<p>Press <strong>Ctrl+Shift+S</strong> or go to <strong>Tools &gt; URL Catcher</strong>.</p>" <>
             "<h4>Features</h4>" <>
             "<p><strong>Clickable Links:</strong> URLs in messages become clickable, opening in a new tab.<br/>" <>
             "<strong>Link Previews:</strong> Page titles are fetched and shown below the URL.<br/>" <>
@@ -91,7 +91,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<p>The Ignore List lets you hide messages from specific users without moderator intervention. " <>
             "Ignored users are not notified — filtering happens entirely on your side.</p>" <>
             "<h4>Opening the Ignore List Dialog</h4>" <>
-            "<p>Press <strong>Alt+I</strong> or go to <strong>Tools &gt; Ignore List</strong>.</p>" <>
+            "<p>Press <strong>Ctrl+Shift+G</strong> or go to <strong>Tools &gt; Ignore List</strong>.</p>" <>
             "<h4>Features</h4>" <>
             "<p><strong>Per-Type Filtering:</strong> Ignore all content, or just messages, PMs, actions, or invites.<br/>" <>
             "<strong>Timed Ignores:</strong> Set a duration (e.g., 5m, 2h, 1d) — the ignore automatically expires.<br/>" <>
@@ -237,7 +237,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "<h3>Search</h3>" <>
             "<p>Search through messages in the current channel or PM.</p>" <>
             "<h4>Opening</h4>" <>
-            "<p>Press <strong>Ctrl+F</strong> or go to <strong>Edit &gt; Find...</strong>.</p>" <>
+            "<p>Press <strong>Ctrl+Shift+F</strong> or go to <strong>Edit &gt; Find...</strong>.</p>" <>
             "<h4>Usage</h4>" <>
             "<p>Type your search term and press Enter. Use the arrow buttons to navigate between matches. The current match count is displayed. Press <strong>Escape</strong> to close the search bar.</p>"
       },
@@ -250,7 +250,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "<h3>Log Viewer</h3>" <>
             "<p>The Log Viewer lets you search and browse your chat history across channels and private messages.</p>" <>
             "<h4>Opening</h4>" <>
-            "<p>Open via <strong>Alt+L</strong>, the <strong>Tools &gt; Log Viewer</strong> menu, or the toolbar button.</p>" <>
+            "<p>Open via <strong>Ctrl+Shift+L</strong>, the <strong>Tools &gt; Log Viewer</strong> menu, or the toolbar button.</p>" <>
             "<h4>Filtering</h4>" <>
             "<p>Use the controls at the top to filter by:</p>" <>
             "<ul><li><strong>Source</strong> — Select a channel or PM partner</li>" <>
@@ -314,7 +314,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<p>Auto-join channels are separate from perform commands. They are joined after all perform commands " <>
             "complete, ensuring that NickServ identification and other setup happens first.</p>" <>
             "<h4>Perform Dialog</h4>" <>
-            "<p>Press <strong>Alt+P</strong> to open the Perform Dialog, which provides a visual interface " <>
+            "<p>Press <strong>Ctrl+Shift+E</strong> to open the Perform Dialog, which provides a visual interface " <>
             "for managing both the perform list and auto-join channels.</p>" <>
             "<h4>Enable / Disable</h4>" <>
             "<p>The perform system can be toggled on or off. When disabled, no commands execute and no channels " <>
@@ -762,11 +762,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "settings",
           "configure",
           "customize",
-          "Alt+O"
+          "Ctrl+Shift+O"
         ],
         content:
           "<h3>Options Dialog</h3>" <>
-            "<p>The Options dialog (<strong>Alt+O</strong>) is the central hub for all user preferences. " <>
+            "<p>The Options dialog (<strong>Ctrl+Shift+O</strong>) is the central hub for all user preferences. " <>
             "It provides a tree-view navigation with 6 settings panels.</p>" <>
             "<h4>Panels</h4>" <>
             "<p><strong>Connect:</strong> Auto-reconnect behavior (enable/disable, retry interval, max retries, timeout).<br/>" <>
@@ -801,7 +801,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         content:
           "<h3>Display Settings</h3>" <>
             "<p>Customize the visibility and density of the RetroHexChat interface from " <>
-            "<strong>Options &gt; Display</strong> (Alt+O).</p>" <>
+            "<strong>Options &gt; Display</strong> (Ctrl+Shift+O).</p>" <>
             "<h4>UI Element Toggles</h4>" <>
             "<p><strong>Show Toolbar:</strong> Toggle the top toolbar with action buttons.<br/>" <>
             "<strong>Show Treebar:</strong> Toggle the left-side channel/PM tree.<br/>" <>
@@ -829,9 +829,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         content:
           "<h3>Key Bindings</h3>" <>
-            "<p>Customize all keyboard shortcuts from <strong>Options &gt; Key Bindings</strong> (Alt+O).</p>" <>
+            "<p>Customize all keyboard shortcuts from <strong>Options &gt; Key Bindings</strong> (Ctrl+Shift+O).</p>" <>
             "<h4>How to Rebind</h4>" <>
-            "<p>1. Open Options (Alt+O) and select the <strong>Key Bindings</strong> panel.<br/>" <>
+            "<p>1. Open Options (Ctrl+Shift+O) and select the <strong>Key Bindings</strong> panel.<br/>" <>
             "2. Click on an action in the list.<br/>" <>
             "3. Press your desired key combination.<br/>" <>
             "4. Click <strong>Apply</strong> or <strong>OK</strong> to save.</p>" <>

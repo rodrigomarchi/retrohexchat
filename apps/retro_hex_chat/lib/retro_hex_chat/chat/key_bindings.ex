@@ -11,15 +11,15 @@ defmodule RetroHexChat.Chat.KeyBindings do
   @type bindings_map :: %{atom() => binding()}
 
   @default_bindings %{
-    toggle_search: %{key: "f", modifiers: [:ctrl]},
-    toggle_address_book: %{key: "b", modifiers: [:alt]},
-    toggle_ignore_dialog: %{key: "i", modifiers: [:alt]},
-    toggle_highlight_dialog: %{key: "h", modifiers: [:alt]},
-    toggle_url_catcher: %{key: "u", modifiers: [:alt]},
-    toggle_log_viewer: %{key: "l", modifiers: [:alt]},
-    toggle_perform_dialog: %{key: "p", modifiers: [:alt]},
-    toggle_options_dialog: %{key: "o", modifiers: [:alt]},
-    open_help: %{key: "F1", modifiers: []}
+    toggle_search: %{key: "f", modifiers: [:ctrl, :shift]},
+    toggle_address_book: %{key: "a", modifiers: [:ctrl, :shift]},
+    toggle_ignore_dialog: %{key: "g", modifiers: [:ctrl, :shift]},
+    toggle_highlight_dialog: %{key: "h", modifiers: [:ctrl, :shift]},
+    toggle_url_catcher: %{key: "s", modifiers: [:ctrl, :shift]},
+    toggle_log_viewer: %{key: "l", modifiers: [:ctrl, :shift]},
+    toggle_perform_dialog: %{key: "e", modifiers: [:ctrl, :shift]},
+    toggle_options_dialog: %{key: "o", modifiers: [:ctrl, :shift]},
+    open_help: %{key: "/", modifiers: [:ctrl, :shift]}
   }
 
   @action_labels %{
@@ -34,17 +34,30 @@ defmodule RetroHexChat.Chat.KeyBindings do
     open_help: "Open Help"
   }
 
-  @reserved_combos [
-    %{key: "w", modifiers: [:ctrl]},
-    %{key: "t", modifiers: [:ctrl]},
-    %{key: "n", modifiers: [:ctrl]},
-    %{key: "l", modifiers: [:ctrl]},
-    %{key: "h", modifiers: [:ctrl]},
-    %{key: "j", modifiers: [:ctrl]},
-    %{key: "d", modifiers: [:ctrl]},
-    %{key: "Tab", modifiers: [:ctrl]},
-    %{key: "Tab", modifiers: [:ctrl, :shift]}
-  ]
+  # Browser-reserved Ctrl+key combos
+  @reserved_ctrl_combos ~w(w t n l h j d r o s p f g e a c v x z)
+
+  # Browser-reserved Ctrl+Shift+key combos (DevTools, bookmarks, etc.)
+  @reserved_ctrl_shift_combos ~w(i j c n t w k r p m)
+
+  # Formatting shortcut keys (reserved so users can't rebind dialogs to them)
+  @formatting_keys ~w(b y u d v x)
+
+  # Function keys reserved by browsers
+  @reserved_fkeys ~w(F1 F3 F5 F6 F11 F12)
+
+  @reserved_combos for(key <- @reserved_ctrl_combos, do: %{key: key, modifiers: [:ctrl]}) ++
+                     for(
+                       key <- @reserved_ctrl_shift_combos,
+                       do: %{key: key, modifiers: [:ctrl, :shift]}
+                     ) ++
+                     for(key <- @formatting_keys, do: %{key: key, modifiers: [:ctrl, :shift]}) ++
+                     for(key <- @reserved_fkeys, do: %{key: key, modifiers: []}) ++
+                     [
+                       %{key: "Tab", modifiers: [:ctrl]},
+                       %{key: "Tab", modifiers: [:ctrl, :shift]},
+                       %{key: "Delete", modifiers: [:ctrl, :shift]}
+                     ]
 
   @spec defaults() :: bindings_map()
   def defaults, do: @default_bindings
@@ -81,10 +94,16 @@ defmodule RetroHexChat.Chat.KeyBindings do
   def reserved?(%{key: key, modifiers: modifiers}) do
     target_mods = MapSet.new(modifiers)
 
-    Enum.any?(@reserved_combos, fn combo ->
-      normalize_key(combo.key) == normalize_key(key) and
-        MapSet.equal?(MapSet.new(combo.modifiers), target_mods)
-    end)
+    # Block ALL Alt+single-letter combos (macOS produces special chars, Linux opens menus)
+    alt_single_letter? =
+      MapSet.equal?(target_mods, MapSet.new([:alt])) and
+        byte_size(key) == 1 and key =~ ~r/^[a-zA-Z]$/
+
+    alt_single_letter? or
+      Enum.any?(@reserved_combos, fn combo ->
+        normalize_key(combo.key) == normalize_key(key) and
+          MapSet.equal?(MapSet.new(combo.modifiers), target_mods)
+      end)
   end
 
   @spec to_display_string(binding()) :: String.t()

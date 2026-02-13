@@ -1020,7 +1020,14 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "window keyboard shortcuts" do
     test "Ctrl+F opens search", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/chat?nickname=CtrlF")
-      html = render_click(view, "window_keydown", %{"key" => "f", "ctrlKey" => true})
+
+      html =
+        render_click(view, "window_keydown", %{
+          "key" => "f",
+          "ctrlKey" => true,
+          "shiftKey" => true
+        })
+
       assert html =~ "search-bar"
     end
 
@@ -2183,7 +2190,14 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "help dialog" do
     test "F1 opens help dialog", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser1")
-      html = render_keydown(view, "window_keydown", %{"key" => "F1"})
+
+      html =
+        render_keydown(view, "window_keydown", %{
+          "key" => "/",
+          "ctrlKey" => true,
+          "shiftKey" => true
+        })
+
       assert html =~ "help-dialog"
       assert html =~ "RetroHexChat Help"
     end

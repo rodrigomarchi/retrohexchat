@@ -43,20 +43,37 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
       assert html =~ "No URLs captured"
     end
 
-    test "Alt+U opens URL Catcher window", %{conn: conn} do
+    test "Ctrl+Shift+S opens URL Catcher window", %{conn: conn} do
       nick = "UCAltU#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      html = render_keydown(view, "window_keydown", %{"key" => "u", "altKey" => true})
+      html =
+        render_keydown(view, "window_keydown", %{
+          "key" => "s",
+          "ctrlKey" => true,
+          "shiftKey" => true
+        })
+
       assert html =~ "url-catcher-window"
     end
 
-    test "Alt+U toggles URL Catcher window", %{conn: conn} do
+    test "Ctrl+Shift+S toggles URL Catcher window", %{conn: conn} do
       nick = "UCToggle#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      render_keydown(view, "window_keydown", %{"key" => "u", "altKey" => true})
-      html = render_keydown(view, "window_keydown", %{"key" => "u", "altKey" => true})
+      render_keydown(view, "window_keydown", %{
+        "key" => "s",
+        "ctrlKey" => true,
+        "shiftKey" => true
+      })
+
+      html =
+        render_keydown(view, "window_keydown", %{
+          "key" => "s",
+          "ctrlKey" => true,
+          "shiftKey" => true
+        })
+
       refute html =~ "url-catcher-window"
     end
 

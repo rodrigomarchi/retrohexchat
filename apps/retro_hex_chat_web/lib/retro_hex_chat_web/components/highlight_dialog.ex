@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.HighlightDialog do
   @moduledoc """
-  Highlight Words configuration dialog (Alt+H).
+  Highlight Words configuration dialog (Ctrl+Shift+H).
   Shows the user's own nick (non-removable) and custom highlight words
   with optional per-word color from the 16-color IRC palette.
   """

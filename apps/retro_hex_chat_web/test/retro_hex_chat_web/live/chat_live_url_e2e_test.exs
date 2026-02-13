@@ -92,12 +92,18 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
   # ── E2E: URL Catcher Window ──────────────────────────────
 
   describe "E2E: URL Catcher window" do
-    test "open via Alt+U, see captured URLs", %{conn: conn} do
+    test "open via Ctrl+Shift+S, see captured URLs", %{conn: conn} do
       nick = "E2ECatcher#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
       send_channel_msg(view, "Alice", "link https://catcher-test.com", "#lobby")
-      html = render_keydown(view, "window_keydown", %{"key" => "u", "altKey" => true})
+
+      html =
+        render_keydown(view, "window_keydown", %{
+          "key" => "s",
+          "ctrlKey" => true,
+          "shiftKey" => true
+        })
 
       assert html =~ "url-catcher-window"
       assert html =~ "catcher-test.com"

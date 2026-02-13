@@ -17,7 +17,7 @@ defmodule RetroHexChat.Chat.HelpTopics.TextFormatting do
             "<h4>Methods</h4>" <>
             "<p><strong>Toolbar:</strong> Use the formatting toolbar below the chat area (B, I, U, Color, Strip buttons).</p>" <>
             "<p><strong>Keyboard Shortcuts:</strong></p>" <>
-            "<pre>Ctrl+B — Bold\nCtrl+I — Italic\nCtrl+U — Underline\nCtrl+K — Color (opens color picker)\nCtrl+R — Reverse\nCtrl+O — Reset all formatting</pre>" <>
+            "<pre>Ctrl+Shift+B — Bold\nCtrl+Shift+Y — Italic\nCtrl+Shift+U — Underline\nCtrl+Shift+D — Color (opens color picker)\nCtrl+Shift+V — Reverse\nCtrl+Shift+X — Reset all formatting</pre>" <>
             "<h4>Strip Formatting</h4>" <>
             "<p>Click the <strong>S</strong> button in the formatting toolbar to strip all formatting from incoming messages.</p>" <>
             "<h4>See Also</h4>" <>
@@ -32,7 +32,7 @@ defmodule RetroHexChat.Chat.HelpTopics.TextFormatting do
           "<h3>Colors</h3>" <>
             "<p>RetroHexChat supports the standard 16-color IRC palette for both foreground and background text.</p>" <>
             "<h4>Using Colors</h4>" <>
-            "<p>Press <strong>Ctrl+K</strong> or click the <strong>Color</strong> button in the formatting toolbar, then select a color from the 4×4 picker grid.</p>" <>
+            "<p>Press <strong>Ctrl+Shift+D</strong> or click the <strong>Color</strong> button in the formatting toolbar, then select a color from the 4×4 picker grid.</p>" <>
             "<h4>Color Palette</h4>" <>
             "<pre>0  White      8  Yellow\n1  Black      9  Light Green\n2  Navy       10 Teal\n3  Green      11 Cyan\n4  Red        12 Blue\n5  Maroon     13 Magenta\n6  Purple     14 Grey\n7  Orange     15 Light Grey</pre>"
       }
