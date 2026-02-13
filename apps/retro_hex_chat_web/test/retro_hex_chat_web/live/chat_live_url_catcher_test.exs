@@ -243,7 +243,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
     end
 
     test "empty search shows all URLs", %{conn: conn} do
-      nick = "UCSearchAll#{System.unique_integer([:positive])}"
+      nick = "UCSrchAll#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
       send_new_message(view, "Alice", "https://elixir-lang.org here", "#lobby")

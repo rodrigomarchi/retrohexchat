@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
   alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, Session}
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Services.Motd
 
   alias RetroHexChat.Chat.{
     AliasList,
@@ -44,6 +45,9 @@ defmodule RetroHexChatWeb.ChatLive do
         if connected?(socket) do
           Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
           Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "presence:global")
+          Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
+          Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:wallops")
+          Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:settings")
 
           Phoenix.PubSub.broadcast(
             RetroHexChat.PubSub,
@@ -60,6 +64,7 @@ defmodule RetroHexChatWeb.ChatLive do
             |> Helpers.maybe_start_nickserv_timer(nickname)
             |> Helpers.maybe_trigger_perform()
             |> Helpers.play_event_sound(:connect, session)
+            |> maybe_show_motd()
 
           {:ok, socket}
         else
@@ -286,6 +291,13 @@ defmodule RetroHexChatWeb.ChatLive do
     end
 
     :ok
+  end
+
+  defp maybe_show_motd(socket) do
+    case Motd.get() do
+      nil -> socket
+      content -> Helpers.push_status_message(socket, content, :motd)
+    end
   end
 
   defp context_target_ignored?(_session, nil), do: false

@@ -89,3 +89,8 @@ config :phoenix_live_view,
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
+
+# Server roles — admin and operator nicknames
+config :retro_hex_chat,
+  admins: ["Admin"],
+  server_operators: ["Oper"]

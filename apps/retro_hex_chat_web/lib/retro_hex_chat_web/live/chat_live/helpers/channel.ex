@@ -40,6 +40,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         |> assign(session: new_session, input: "")
         |> load_channel_users(channel_name)
         |> load_channel_messages_with_pagination(channel_name)
+        |> maybe_show_welcome(channel_name, new_session)
         |> SessionHelpers.push_reconnect_state()
 
       {:error, reason} ->
@@ -154,6 +155,29 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       new_messages_indicator: false
     )
     |> stream(:chat_messages, stream_items, reset: true)
+  end
+
+  defp maybe_show_welcome(socket, channel_name, session) do
+    case Server.get_welcome(channel_name) do
+      {:ok, nil} ->
+        socket
+
+      {:ok, %{message: message, set_by: set_by}} ->
+        if session.nickname != set_by and not Session.welcomed_channel?(session, channel_name) do
+          new_session = Session.add_welcomed_channel(session, channel_name)
+
+          socket
+          |> assign(session: new_session)
+          |> Phoenix.LiveView.stream_insert(
+            :chat_messages,
+            Messages.system_message("[Welcome] #{message}")
+          )
+        else
+          socket
+        end
+    end
+  rescue
+    _ -> socket
   end
 
   @spec ensure_channel_exists(String.t()) :: :ok | {:error, term()}

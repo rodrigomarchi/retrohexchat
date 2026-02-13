@@ -14,6 +14,7 @@ defmodule RetroHexChat.Chat.HelpTopics do
     GettingStarted,
     KeyboardShortcuts,
     Services,
+    SpecialMessages,
     TextFormatting,
     UserInterface
   }
@@ -43,6 +44,7 @@ defmodule RetroHexChat.Chat.HelpTopics do
             ChannelModes.topics() ++
             TextFormatting.topics() ++
             Features.topics() ++
+            SpecialMessages.topics() ++
             UserInterface.topics() ++
             KeyboardShortcuts.topics()
 

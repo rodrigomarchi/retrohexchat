@@ -1225,4 +1225,123 @@ defmodule RetroHexChat.Channels.ServerTest do
       refute state.modes_detail.join_throttle
     end
   end
+
+  # ── US6: Welcome Messages ────────────────────────────────────────
+
+  describe "set_welcome/3" do
+    test "sets welcome message" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+
+      assert :ok = Server.set_welcome(channel, "Welcome to our channel!", "owner")
+
+      {:ok, result} = Server.get_welcome(channel)
+      assert result.message == "Welcome to our channel!"
+      assert result.set_by == "owner"
+    end
+
+    test "broadcasts {:welcome_changed, ...}" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      {:ok, _} = Server.join(channel, "owner")
+      assert_receive {:user_joined, _}
+
+      :ok = Server.set_welcome(channel, "New welcome", "owner")
+
+      assert_receive {:welcome_changed,
+                      %{channel: ^channel, message: "New welcome", set_by: "owner"}}
+    end
+
+    test "overwrites existing welcome" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+
+      :ok = Server.set_welcome(channel, "First welcome", "owner")
+      {:ok, result1} = Server.get_welcome(channel)
+      assert result1.message == "First welcome"
+
+      :ok = Server.set_welcome(channel, "Second welcome", "op")
+      {:ok, result2} = Server.get_welcome(channel)
+      assert result2.message == "Second welcome"
+      assert result2.set_by == "op"
+    end
+  end
+
+  describe "get_welcome/1" do
+    test "returns nil when no welcome set" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+
+      assert {:ok, nil} = Server.get_welcome(channel)
+    end
+
+    test "returns welcome after set" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+
+      :ok = Server.set_welcome(channel, "Test welcome", "owner")
+
+      {:ok, result} = Server.get_welcome(channel)
+      assert result.message == "Test welcome"
+      assert result.set_by == "owner"
+    end
+  end
+
+  describe "clear_welcome/2" do
+    test "clears the welcome" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+
+      :ok = Server.set_welcome(channel, "Temporary welcome", "owner")
+      {:ok, result} = Server.get_welcome(channel)
+      assert result.message == "Temporary welcome"
+
+      assert :ok = Server.clear_welcome(channel, "owner")
+
+      assert {:ok, nil} = Server.get_welcome(channel)
+    end
+
+    test "broadcasts {:welcome_changed, ...} with nil message" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      {:ok, _} = Server.join(channel, "owner")
+      assert_receive {:user_joined, _}
+
+      :ok = Server.set_welcome(channel, "Welcome", "owner")
+      assert_receive {:welcome_changed, _}
+
+      :ok = Server.clear_welcome(channel, "owner")
+
+      assert_receive {:welcome_changed, %{channel: ^channel, message: nil}}
+    end
+
+    test "clearing when no welcome is set is idempotent" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+
+      assert {:ok, nil} = Server.get_welcome(channel)
+
+      assert :ok = Server.clear_welcome(channel, "owner")
+
+      assert {:ok, nil} = Server.get_welcome(channel)
+    end
+  end
 end

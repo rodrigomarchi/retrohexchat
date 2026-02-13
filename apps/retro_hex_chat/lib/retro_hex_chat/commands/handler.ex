@@ -9,7 +9,9 @@ defmodule RetroHexChat.Commands.Handler do
           channels: [String.t()],
           identified: boolean(),
           operator_in: [String.t()],
-          half_operator_in: [String.t()]
+          half_operator_in: [String.t()],
+          is_admin: boolean(),
+          is_server_operator: boolean()
         }
 
   @type result ::

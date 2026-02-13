@@ -46,7 +46,9 @@ defmodule RetroHexChat.Accounts.Session do
           custom_menus: map(),
           autorespond_rules: map(),
           bio: String.t() | nil,
-          last_message_at: DateTime.t()
+          last_message_at: DateTime.t(),
+          user_modes: map(),
+          welcomed_channels: map()
         }
 
   @enforce_keys [:nickname]
@@ -79,7 +81,9 @@ defmodule RetroHexChat.Accounts.Session do
     custom_menus: nil,
     autorespond_rules: nil,
     bio: nil,
-    last_message_at: nil
+    last_message_at: nil,
+    user_modes: nil,
+    welcomed_channels: nil
   ]
 
   @spec new(String.t()) :: t()
@@ -102,7 +106,9 @@ defmodule RetroHexChat.Accounts.Session do
       aliases: %{entries: []},
       custom_menus: %{entries: []},
       autorespond_rules: %{entries: []},
-      last_message_at: DateTime.utc_now()
+      last_message_at: DateTime.utc_now(),
+      user_modes: MapSet.new(),
+      welcomed_channels: MapSet.new()
     }
   end
 
@@ -350,5 +356,30 @@ defmodule RetroHexChat.Accounts.Session do
   @spec set_last_message_at(t(), DateTime.t()) :: t()
   def set_last_message_at(%__MODULE__{} = session, %DateTime{} = timestamp) do
     %{session | last_message_at: timestamp}
+  end
+
+  @spec has_mode?(t(), atom()) :: boolean()
+  def has_mode?(%__MODULE__{user_modes: modes}, mode) do
+    MapSet.member?(modes, mode)
+  end
+
+  @spec set_mode(t(), atom()) :: t()
+  def set_mode(%__MODULE__{user_modes: modes} = session, mode) do
+    %{session | user_modes: MapSet.put(modes, mode)}
+  end
+
+  @spec unset_mode(t(), atom()) :: t()
+  def unset_mode(%__MODULE__{user_modes: modes} = session, mode) do
+    %{session | user_modes: MapSet.delete(modes, mode)}
+  end
+
+  @spec add_welcomed_channel(t(), String.t()) :: t()
+  def add_welcomed_channel(%__MODULE__{welcomed_channels: channels} = session, channel_name) do
+    %{session | welcomed_channels: MapSet.put(channels, channel_name)}
+  end
+
+  @spec welcomed_channel?(t(), String.t()) :: boolean()
+  def welcomed_channel?(%__MODULE__{welcomed_channels: channels}, channel_name) do
+    MapSet.member?(channels, channel_name)
   end
 end
