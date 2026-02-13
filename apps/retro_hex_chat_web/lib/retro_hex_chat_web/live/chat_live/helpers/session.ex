@@ -10,7 +10,16 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   alias RetroHexChat.Accounts.{NickColors, Session}
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{CapturedURL, Highlight, LinkPreview, PerformList, SoundSettings, URLDetector}
+
+  alias RetroHexChat.Chat.{
+    CapturedURL,
+    Highlight,
+    LinkPreview,
+    PerformList,
+    SoundSettings,
+    URLDetector
+  }
+
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
