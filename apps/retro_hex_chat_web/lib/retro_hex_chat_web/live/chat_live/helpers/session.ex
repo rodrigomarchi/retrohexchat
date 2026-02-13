@@ -17,7 +17,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     LinkPreview,
     PerformList,
     SoundSettings,
-    URLDetector
+    URLDetector,
+    UserPreferences
   }
 
   alias RetroHexChat.Services.NickServ
@@ -351,10 +352,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   end
 
   @spec handle_quit(Phoenix.LiveView.Socket.t(), String.t() | nil) :: Phoenix.LiveView.Socket.t()
-  def handle_quit(socket, _reason) do
-    ChannelHelpers.cleanup_channels(socket.assigns.session)
+  def handle_quit(socket, reason) do
+    session = socket.assigns.session
+    quit_reason = reason || UserPreferences.get_quit_message(session.user_preferences)
+    ChannelHelpers.cleanup_channels(session, quit_reason)
 
     socket
+    |> assign(quit_reason: quit_reason)
     |> push_event("intentional_disconnect", %{})
     |> push_navigate(to: "/")
   end

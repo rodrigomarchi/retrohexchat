@@ -35,7 +35,8 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     AliasExpander,
     AliasList,
     CtcpSettings,
-    Service
+    Service,
+    UserPreferences
   }
 
   alias RetroHexChat.Channels.Server
@@ -256,21 +257,26 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   # ── Private: quit ─────────────────────────────────────────
 
-  defp handle_quit(socket, _reason) do
-    cleanup_channels(socket.assigns.session)
+  defp handle_quit(socket, reason) do
+    session = socket.assigns.session
+    quit_reason = reason || UserPreferences.get_quit_message(session.user_preferences)
+    cleanup_channels(session, quit_reason)
 
     socket
+    |> assign(quit_reason: quit_reason)
     |> Phoenix.LiveView.push_event("intentional_disconnect", %{})
     |> push_navigate(to: ~p"/")
   end
 
-  defp cleanup_channels(session) do
+  defp cleanup_channels(session, reason) do
     NickServ.cancel_identify_timer(session.nickname)
+
+    truncated = String.slice(reason, 0, 200)
 
     Enum.each(session.channels, fn channel ->
       try do
         safe_untrack_user("channel:#{channel}", session.nickname)
-        Server.part(channel, session.nickname, "Connection lost")
+        Server.part(channel, session.nickname, truncated)
       rescue
         e ->
           Logger.warning("Failed to part #{channel} during cleanup: #{inspect(e)}")

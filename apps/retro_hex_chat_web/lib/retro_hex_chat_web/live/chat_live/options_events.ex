@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3]
+  import Phoenix.LiveView, only: [push_event: 3, stream: 4]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{KeyBindings, UserPreferences}
@@ -59,6 +59,20 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
     draft = socket.assigns.options_draft
     current = Map.get(draft.display, setting)
     updated_draft = UserPreferences.set_display(draft, setting, !current)
+    {:halt, assign(socket, options_draft: updated_draft)}
+  end
+
+  def handle_event("options_change_quit_message", %{"value" => value}, socket) do
+    draft = socket.assigns.options_draft
+    message = if String.trim(value) == "", do: "Leaving", else: value
+    updated_draft = UserPreferences.set_quit_message(draft, message)
+    {:halt, assign(socket, options_draft: updated_draft)}
+  end
+
+  def handle_event("options_change_timestamp_format", %{"timestamp_format" => value}, socket) do
+    draft = socket.assigns.options_draft
+    format = String.to_existing_atom(value)
+    updated_draft = UserPreferences.set_timestamp_format(draft, format)
     {:halt, assign(socket, options_draft: updated_draft)}
   end
 
@@ -233,6 +247,9 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
       end
 
     # Apply display settings to live assigns
+    new_format = Map.get(draft.display, :timestamp_format, :hh_mm)
+    old_format = socket.assigns.timestamp_format
+
     socket
     |> assign(
       session: updated_session,
@@ -242,8 +259,10 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
       show_switchbar: draft.display.show_switchbar,
       show_statusbar: draft.display.show_statusbar,
       compact_mode: draft.display.compact_mode,
-      line_shading: draft.display.line_shading
+      line_shading: draft.display.line_shading,
+      timestamp_format: new_format
     )
+    |> maybe_reset_streams_for_timestamp(old_format, new_format)
     |> push_event("apply_preferences", %{styles: UserPreferences.to_css_styles(draft)})
     |> push_event("reconnect_config", %{
       enabled: draft.connect.auto_reconnect_enabled,
@@ -251,6 +270,14 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
       max_delay: draft.connect.retry_interval
     })
     |> Persistence.maybe_persist_user_preferences(updated_session)
+  end
+
+  defp maybe_reset_streams_for_timestamp(socket, same, same), do: socket
+
+  defp maybe_reset_streams_for_timestamp(socket, _old, _new) do
+    socket
+    |> stream(:chat_messages, [], reset: true)
+    |> stream(:status_messages, [], reset: true)
   end
 
   # ---------------------------------------------------------------------------

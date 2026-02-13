@@ -15,17 +15,20 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
-      cleanup_channels: 1,
+      cleanup_channels: 2,
       restore_session: 2,
       load_channel_messages_with_pagination: 2
     ]
 
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChat.Chat.UserPreferences
 
   use Phoenix.VerifiedRoutes, endpoint: RetroHexChatWeb.Endpoint, router: RetroHexChatWeb.Router
 
   def handle_event("quit_chat", _params, socket) do
-    cleanup_channels(socket.assigns.session)
+    session = socket.assigns.session
+    reason = UserPreferences.get_quit_message(session.user_preferences)
+    cleanup_channels(session, reason)
 
     {:halt,
      socket
@@ -99,7 +102,9 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   end
 
   def handle_event("disconnect", _params, socket) do
-    cleanup_channels(socket.assigns.session)
+    session = socket.assigns.session
+    reason = UserPreferences.get_quit_message(session.user_preferences)
+    cleanup_channels(session, reason)
     {:halt, push_navigate(socket, to: ~p"/")}
   end
 

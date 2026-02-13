@@ -4,12 +4,16 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
+import CharCounterHook from "./hooks/char_counter_hook"
 import CommandPaletteHook from "./hooks/command_palette_hook"
+import EmojiPickerHook from "./hooks/emoji_picker_hook"
 import FormatToolbarHook from "./hooks/format_toolbar_hook"
 import KeyBindingCaptureHook from "./hooks/key_binding_capture_hook"
 import KeyboardHook from "./hooks/keyboard_hook"
+import NicklistHook from "./hooks/nicklist_hook"
 import NotifyListHook from "./hooks/notify_list_hook"
 import OptionsHook from "./hooks/options_hook"
+import PasteHook from "./hooks/paste_hook"
 import ReconnectHook from "./hooks/reconnect_hook"
 import ScrollHook from "./hooks/scroll_hook"
 import SoundHook from "./hooks/sound_hook"
@@ -18,12 +22,16 @@ import TreebarHook from "./hooks/treebar_hook"
 import URLCatcherHook from "./hooks/url_catcher_hook"
 
 let Hooks = {
+  CharCounterHook: CharCounterHook,
   CommandPaletteHook: CommandPaletteHook,
+  EmojiPickerHook: EmojiPickerHook,
   FormatToolbarHook: FormatToolbarHook,
   KeyBindingCaptureHook: KeyBindingCaptureHook,
   KeyboardHook: KeyboardHook,
+  NicklistHook: NicklistHook,
   NotifyListHook: NotifyListHook,
   OptionsHook: OptionsHook,
+  PasteHook: PasteHook,
   ReconnectHook: ReconnectHook,
   ScrollHook: ScrollHook,
   SoundHook: SoundHook,

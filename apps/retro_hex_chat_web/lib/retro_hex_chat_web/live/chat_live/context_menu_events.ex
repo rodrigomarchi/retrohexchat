@@ -2,9 +2,10 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   @moduledoc """
   Handle nick context menu events.
 
-  Covers: nick_right_click, close_context_menu, context_query, context_whois,
-  context_kick, context_ban, context_op, context_voice, context_add_contact,
-  context_set_nick_color, context_ignore, context_unignore, context_pick_color.
+  Covers: nick_right_click, nicklist_dblclick, close_context_menu, context_query,
+  context_whois, context_kick, context_ban, context_op, context_voice,
+  context_add_contact, context_set_nick_color, context_ignore, context_unignore,
+  context_pick_color.
 
   Attached as `attach_hook(:context_menu_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -31,25 +32,20 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChat.Chat.IgnoreList
 
   def handle_event("nick_right_click", %{"nick" => nick} = params, socket) do
-    now = System.monotonic_time(:millisecond)
-    last = socket.assigns.last_nick_click
+    x = params["x"] || 0
+    y = params["y"] || 0
 
-    if last != nil and last.nick == nick and now - last.at < 300 do
-      # Double-click detected — trigger whois
-      {:halt,
-       socket
-       |> assign(last_nick_click: nil)
-       |> show_whois_text(nick)}
-    else
-      x = params["x"] || 0
-      y = params["y"] || 0
+    {:halt,
+     assign(socket,
+       context_menu: %{visible: true, x: x, y: y, target_nick: nick}
+     )}
+  end
 
-      {:halt,
-       assign(socket,
-         context_menu: %{visible: true, x: x, y: y, target_nick: nick},
-         last_nick_click: %{nick: nick, at: now}
-       )}
-    end
+  def handle_event("nicklist_dblclick", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> open_pm_conversation(nick)}
   end
 
   def handle_event("close_context_menu", _params, socket) do

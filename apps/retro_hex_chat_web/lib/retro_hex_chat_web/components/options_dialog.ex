@@ -122,6 +122,61 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
           setting="line_shading"
         />
       </fieldset>
+      <fieldset>
+        <legend>Timestamps</legend>
+        <div class="field-row">
+          <label for="opt-timestamp-format">Format:</label>
+          <select
+            id="opt-timestamp-format"
+            phx-change="options_change_timestamp_format"
+            name="timestamp_format"
+            data-testid="options-display-timestamp-format"
+          >
+            <option
+              value="hh_mm"
+              selected={Map.get(@draft.display, :timestamp_format, :hh_mm) == :hh_mm}
+            >
+              [HH:MM]
+            </option>
+            <option
+              value="hh_mm_ss"
+              selected={Map.get(@draft.display, :timestamp_format, :hh_mm) == :hh_mm_ss}
+            >
+              [HH:MM:SS]
+            </option>
+            <option
+              value="dd_mm_hh_mm"
+              selected={Map.get(@draft.display, :timestamp_format, :hh_mm) == :dd_mm_hh_mm}
+            >
+              [DD/MM HH:MM]
+            </option>
+            <option
+              value="none"
+              selected={Map.get(@draft.display, :timestamp_format, :hh_mm) == :none}
+            >
+              None
+            </option>
+          </select>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Disconnect</legend>
+        <div class="field-row">
+          <label for="opt-quit-message">Default quit message:</label>
+          <input
+            type="text"
+            id="opt-quit-message"
+            value={Map.get(@draft.display, :quit_message, "Leaving")}
+            maxlength="200"
+            phx-blur="options_change_quit_message"
+            phx-keyup="options_change_quit_message"
+            phx-key="Enter"
+            name="quit_message"
+            style="width: 200px;"
+            data-testid="options-display-quit-message"
+          />
+        </div>
+      </fieldset>
     </div>
     """
   end

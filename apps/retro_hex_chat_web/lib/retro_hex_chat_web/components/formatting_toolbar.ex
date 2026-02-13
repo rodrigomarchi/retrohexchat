@@ -108,6 +108,22 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
           <line x1="3" y1="11" x2="11" y2="3" stroke="currentColor" stroke-width="1.5" />
         </svg>
       </button>
+      <span class="format-separator"></span>
+      <button
+        type="button"
+        class="format-btn"
+        phx-click="toggle_emoji_picker"
+        data-emoji-toggle="true"
+        data-testid="emoji-picker-toggle"
+        title="Emoji Picker"
+      >
+        <svg viewBox="0 0 14 14" fill="currentColor">
+          <circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.5" />
+          <circle cx="5" cy="5.5" r="0.8" />
+          <circle cx="9" cy="5.5" r="0.8" />
+          <path d="M4.5 8.5 Q7 11 9.5 8.5" fill="none" stroke="currentColor" stroke-width="1" />
+        </svg>
+      </button>
     </div>
     """
   end

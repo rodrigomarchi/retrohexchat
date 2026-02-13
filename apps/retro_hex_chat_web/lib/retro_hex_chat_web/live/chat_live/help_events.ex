@@ -60,6 +60,18 @@ defmodule RetroHexChatWeb.ChatLive.HelpEvents do
     {:halt, socket}
   end
 
+  def handle_event("open_help_at_topic", %{"topic" => topic_id}, socket) do
+    {:halt,
+     assign(socket,
+       show_help_dialog: true,
+       help_active_tab: "contents",
+       help_selected_topic: HelpTopics.get_topic(topic_id),
+       help_index_filter: "",
+       help_search_query: "",
+       help_search_results: []
+     )}
+  end
+
   # ── Catch-all: pass unhandled events to next hook ──────────
 
   def handle_event(_event, _params, socket), do: {:cont, socket}

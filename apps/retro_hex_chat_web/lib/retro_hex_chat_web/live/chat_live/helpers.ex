@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   defdelegate ensure_channel_exists(channel_name), to: __MODULE__.Channel
   defdelegate channels_where_operator(session), to: __MODULE__.Channel
   defdelegate handle_set_topic(socket, channel, topic), to: __MODULE__.Channel
-  defdelegate cleanup_channels(session), to: __MODULE__.Channel
+  defdelegate cleanup_channels(session, reason \\ "Connection lost"), to: __MODULE__.Channel
   defdelegate validate_target_online(target), to: __MODULE__.Channel
 
   # ── PM ───────────────────────────────────────────────────────

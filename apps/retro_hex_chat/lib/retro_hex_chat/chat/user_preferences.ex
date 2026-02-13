@@ -11,6 +11,7 @@ defmodule RetroHexChat.Chat.UserPreferences do
   alias RetroHexChat.Repo
 
   @valid_display_keys ~w(show_toolbar show_treebar show_switchbar show_statusbar compact_mode line_shading)a
+  @valid_timestamp_formats [:hh_mm, :hh_mm_ss, :dd_mm_hh_mm, :none]
 
   @valid_font_areas ~w(chat_messages input_box nicklist treebar)a
 
@@ -138,6 +139,27 @@ defmodule RetroHexChat.Chat.UserPreferences do
     put_in(prefs, [:messages, :pm_routing], value)
   end
 
+  @spec get_timestamp_format(map()) :: atom()
+  def get_timestamp_format(%{display: display}) do
+    Map.get(display, :timestamp_format, :hh_mm)
+  end
+
+  @spec set_timestamp_format(map(), atom()) :: map()
+  def set_timestamp_format(prefs, format) when format in @valid_timestamp_formats do
+    put_in(prefs, [:display, :timestamp_format], format)
+  end
+
+  @spec get_quit_message(map()) :: String.t()
+  def get_quit_message(%{display: display}) do
+    Map.get(display, :quit_message, "Leaving")
+  end
+
+  @spec set_quit_message(map(), String.t()) :: map()
+  def set_quit_message(prefs, message) when is_binary(message) and byte_size(message) > 0 do
+    truncated = String.slice(message, 0, 200)
+    put_in(prefs, [:display, :quit_message], truncated)
+  end
+
   @spec set_key_binding(map(), atom(), KeyBindings.binding() | nil) :: map()
   def set_key_binding(prefs, action, binding) do
     put_in(prefs, [:key_bindings, action], binding)
@@ -226,7 +248,8 @@ defmodule RetroHexChat.Chat.UserPreferences do
       show_switchbar: true,
       show_statusbar: true,
       compact_mode: false,
-      line_shading: false
+      line_shading: false,
+      timestamp_format: :hh_mm
     }
   end
 

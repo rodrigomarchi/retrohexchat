@@ -223,15 +223,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     end
   end
 
-  @spec cleanup_channels(Session.t()) :: :ok
-  def cleanup_channels(session) do
+  @spec cleanup_channels(Session.t(), String.t()) :: :ok
+  def cleanup_channels(session, reason \\ "Connection lost") do
     alias RetroHexChat.Services.NickServ
     NickServ.cancel_identify_timer(session.nickname)
+
+    truncated = String.slice(reason, 0, 200)
 
     Enum.each(session.channels, fn channel ->
       try do
         PresenceHelpers.safe_untrack_user("channel:#{channel}", session.nickname)
-        Server.part(channel, session.nickname, "Connection lost")
+        Server.part(channel, session.nickname, truncated)
       rescue
         e ->
           Logger.warning("Failed to part #{channel} during cleanup: #{inspect(e)}")

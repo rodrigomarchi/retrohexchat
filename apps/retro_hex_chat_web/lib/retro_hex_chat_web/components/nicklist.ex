@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
     assigns = assign(assigns, :grouped, grouped)
 
     ~H"""
-    <div class="nicklist">
+    <div class="nicklist" id="nicklist-container" phx-hook="NicklistHook">
       <div class="nicklist-header">Users ({length(@users)})</div>
       <ul class="nicklist-list">
         <li class="nicklist-group-header">Owners ({length(@grouped.owners)})</li>

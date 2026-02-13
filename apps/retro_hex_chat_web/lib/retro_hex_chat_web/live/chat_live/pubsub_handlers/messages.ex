@@ -140,6 +140,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
+  # ── Incoming PM notification (for away auto-reply) ────────
+
+  def handle_info({:incoming_pm_notify, %{sender: sender}}, socket) do
+    session = socket.assigns.session
+    {:halt, maybe_away_auto_reply(socket, sender, session)}
+  end
+
   # ── Catch-all: pass unhandled to next hook ────────────────
 
   def handle_info(_, socket), do: {:cont, socket}
@@ -222,6 +229,37 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       |> maybe_flash_channel("pm:#{other_nick}", :pm, session)
       |> assign(unread_channels: unread)
     end
+  end
+
+  defp maybe_away_auto_reply(socket, sender, session) do
+    replied_to = socket.assigns.away_replied_to
+
+    if session.away && sender != session.nickname &&
+         not MapSet.member?(replied_to, sender) do
+      away_msg = session.away_message
+      reply = "#{session.nickname} is away: #{away_msg}"
+      topic = "pm:#{pm_topic(session.nickname, sender)}"
+
+      Phoenix.PubSub.broadcast(RetroHexChat.PubSub, topic, %{
+        event: "new_pm",
+        payload: %{
+          id: System.unique_integer([:positive]),
+          sender: session.nickname,
+          recipient: sender,
+          content: reply,
+          type: :system,
+          timestamp: DateTime.utc_now()
+        }
+      })
+
+      assign(socket, away_replied_to: MapSet.put(replied_to, sender))
+    else
+      socket
+    end
+  end
+
+  defp pm_topic(nick_a, nick_b) do
+    [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
   end
 
   defp pm_other_nick(payload, my_nick) do
