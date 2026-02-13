@@ -1,0 +1,397 @@
+defmodule RetroHexChat.Chat.EmojiData do
+  @moduledoc """
+  Static emoji data organized by category with search support.
+
+  Provides ~300 curated Unicode emojis across 8 categories for the
+  emoji picker component.
+  """
+
+  @type emoji :: %{char: String.t(), name: String.t(), keywords: [String.t()]}
+
+  @categories [
+    "Smileys & Emotion",
+    "People & Body",
+    "Animals & Nature",
+    "Food & Drink",
+    "Travel & Places",
+    "Activities",
+    "Objects",
+    "Symbols"
+  ]
+
+  @emojis %{
+    "Smileys & Emotion" => [
+      %{char: "\u{1F600}", name: "grinning face", keywords: ["smile", "happy", "grin"]},
+      %{
+        char: "\u{1F601}",
+        name: "beaming face with smiling eyes",
+        keywords: ["smile", "happy", "grin"]
+      },
+      %{char: "\u{1F602}", name: "face with tears of joy", keywords: ["laugh", "cry", "lol"]},
+      %{char: "\u{1F603}", name: "grinning face with big eyes", keywords: ["smile", "happy"]},
+      %{char: "\u{1F604}", name: "grinning face with smiling eyes", keywords: ["smile", "happy"]},
+      %{char: "\u{1F605}", name: "grinning face with sweat", keywords: ["smile", "nervous"]},
+      %{char: "\u{1F606}", name: "grinning squinting face", keywords: ["laugh", "happy"]},
+      %{char: "\u{1F609}", name: "winking face", keywords: ["wink", "flirt"]},
+      %{char: "\u{1F60A}", name: "smiling face with smiling eyes", keywords: ["blush", "happy"]},
+      %{char: "\u{1F60B}", name: "face savoring food", keywords: ["yummy", "delicious"]},
+      %{char: "\u{1F60C}", name: "relieved face", keywords: ["relieved", "relaxed"]},
+      %{char: "\u{1F60D}", name: "smiling face with heart-eyes", keywords: ["love", "heart"]},
+      %{
+        char: "\u{1F60E}",
+        name: "smiling face with sunglasses",
+        keywords: ["cool", "sunglasses"]
+      },
+      %{char: "\u{1F60F}", name: "smirking face", keywords: ["smirk", "sly"]},
+      %{char: "\u{1F610}", name: "neutral face", keywords: ["neutral", "blank"]},
+      %{char: "\u{1F612}", name: "unamused face", keywords: ["unamused", "annoyed"]},
+      %{char: "\u{1F613}", name: "downcast face with sweat", keywords: ["cold", "sweat"]},
+      %{char: "\u{1F614}", name: "pensive face", keywords: ["sad", "pensive"]},
+      %{char: "\u{1F616}", name: "confounded face", keywords: ["confused", "frustrated"]},
+      %{char: "\u{1F618}", name: "face blowing a kiss", keywords: ["kiss", "love"]},
+      %{char: "\u{1F61A}", name: "kissing face with closed eyes", keywords: ["kiss", "love"]},
+      %{char: "\u{1F61C}", name: "winking face with tongue", keywords: ["tongue", "silly"]},
+      %{char: "\u{1F61D}", name: "squinting face with tongue", keywords: ["tongue", "silly"]},
+      %{char: "\u{1F61E}", name: "disappointed face", keywords: ["sad", "disappointed"]},
+      %{char: "\u{1F620}", name: "angry face", keywords: ["angry", "mad"]},
+      %{char: "\u{1F621}", name: "pouting face", keywords: ["angry", "rage"]},
+      %{char: "\u{1F622}", name: "crying face", keywords: ["cry", "sad", "tear"]},
+      %{char: "\u{1F623}", name: "persevering face", keywords: ["struggle", "frustrated"]},
+      %{char: "\u{1F624}", name: "face with steam from nose", keywords: ["triumph", "proud"]},
+      %{char: "\u{1F625}", name: "sad but relieved face", keywords: ["sad", "relieved"]},
+      %{char: "\u{1F628}", name: "fearful face", keywords: ["fear", "scared"]},
+      %{char: "\u{1F629}", name: "weary face", keywords: ["weary", "tired"]},
+      %{char: "\u{1F62B}", name: "tired face", keywords: ["tired", "exhausted"]},
+      %{char: "\u{1F62D}", name: "loudly crying face", keywords: ["cry", "sob", "sad"]},
+      %{char: "\u{1F631}", name: "face screaming in fear", keywords: ["scream", "horror"]},
+      %{char: "\u{1F633}", name: "flushed face", keywords: ["blush", "embarrassed"]},
+      %{char: "\u{1F634}", name: "sleeping face", keywords: ["sleep", "zzz"]},
+      %{char: "\u{1F635}", name: "face with crossed-out eyes", keywords: ["dizzy", "dead"]},
+      %{char: "\u{1F637}", name: "face with medical mask", keywords: ["sick", "mask"]},
+      %{char: "\u{1F642}", name: "slightly smiling face", keywords: ["smile", "happy"]},
+      %{char: "\u{1F643}", name: "upside-down face", keywords: ["silly", "sarcasm"]},
+      %{char: "\u{1F644}", name: "face with rolling eyes", keywords: ["eyeroll", "annoyed"]},
+      %{char: "\u{1F910}", name: "zipper-mouth face", keywords: ["quiet", "secret"]},
+      %{char: "\u{1F911}", name: "money-mouth face", keywords: ["money", "rich"]},
+      %{char: "\u{1F913}", name: "nerd face", keywords: ["nerd", "geek"]},
+      %{char: "\u{1F914}", name: "thinking face", keywords: ["think", "hmm"]},
+      %{char: "\u{1F917}", name: "hugging face", keywords: ["hug", "love"]},
+      %{char: "\u{1F923}", name: "rolling on the floor laughing", keywords: ["laugh", "rofl"]},
+      %{char: "\u{1F92A}", name: "zany face", keywords: ["crazy", "wild"]},
+      %{char: "\u{1F92B}", name: "shushing face", keywords: ["quiet", "shh"]},
+      %{char: "\u{1F92D}", name: "face with hand over mouth", keywords: ["oops", "giggle"]},
+      %{char: "\u{1F92E}", name: "face vomiting", keywords: ["sick", "puke"]},
+      %{char: "\u{1F970}", name: "smiling face with hearts", keywords: ["love", "adore"]},
+      %{char: "\u{1F973}", name: "partying face", keywords: ["party", "celebrate"]},
+      %{char: "\u{1F974}", name: "woozy face", keywords: ["drunk", "dizzy"]},
+      %{char: "\u{1F975}", name: "hot face", keywords: ["hot", "heat"]},
+      %{char: "\u{1F976}", name: "cold face", keywords: ["cold", "freezing"]},
+      %{char: "\u{2764}\u{FE0F}", name: "red heart", keywords: ["love", "heart"]},
+      %{char: "\u{1F494}", name: "broken heart", keywords: ["heartbreak", "sad"]},
+      %{char: "\u{1F495}", name: "two hearts", keywords: ["love", "hearts"]},
+      %{char: "\u{1F496}", name: "sparkling heart", keywords: ["love", "sparkle"]},
+      %{char: "\u{1F497}", name: "growing heart", keywords: ["love", "growing"]},
+      %{char: "\u{1F498}", name: "heart with arrow", keywords: ["love", "cupid"]},
+      %{char: "\u{1F499}", name: "blue heart", keywords: ["love", "blue"]},
+      %{char: "\u{1F49A}", name: "green heart", keywords: ["love", "green"]},
+      %{char: "\u{1F49B}", name: "yellow heart", keywords: ["love", "yellow"]},
+      %{char: "\u{1F49C}", name: "purple heart", keywords: ["love", "purple"]},
+      %{char: "\u{1F4AF}", name: "hundred points", keywords: ["100", "perfect", "score"]}
+    ],
+    "People & Body" => [
+      %{char: "\u{1F44D}", name: "thumbs up", keywords: ["yes", "good", "like"]},
+      %{char: "\u{1F44E}", name: "thumbs down", keywords: ["no", "bad", "dislike"]},
+      %{char: "\u{1F44B}", name: "waving hand", keywords: ["wave", "hello", "bye"]},
+      %{char: "\u{1F44F}", name: "clapping hands", keywords: ["clap", "applause"]},
+      %{char: "\u{1F450}", name: "open hands", keywords: ["hands", "open"]},
+      %{char: "\u{1F64C}", name: "raising hands", keywords: ["celebrate", "hooray"]},
+      %{char: "\u{1F64F}", name: "folded hands", keywords: ["pray", "please", "thanks"]},
+      %{char: "\u{1F91D}", name: "handshake", keywords: ["agreement", "deal"]},
+      %{char: "\u{270C}\u{FE0F}", name: "victory hand", keywords: ["peace", "victory"]},
+      %{char: "\u{1F918}", name: "sign of the horns", keywords: ["rock", "metal"]},
+      %{char: "\u{1F919}", name: "call me hand", keywords: ["call", "shaka"]},
+      %{char: "\u{1F91E}", name: "crossed fingers", keywords: ["luck", "hope"]},
+      %{char: "\u{1F91F}", name: "love-you gesture", keywords: ["love", "ily"]},
+      %{char: "\u{1F448}", name: "backhand index pointing left", keywords: ["left", "point"]},
+      %{char: "\u{1F449}", name: "backhand index pointing right", keywords: ["right", "point"]},
+      %{char: "\u{1F446}", name: "backhand index pointing up", keywords: ["up", "point"]},
+      %{char: "\u{1F447}", name: "backhand index pointing down", keywords: ["down", "point"]},
+      %{char: "\u{261D}\u{FE0F}", name: "index pointing up", keywords: ["point", "one"]},
+      %{char: "\u{270B}", name: "raised hand", keywords: ["stop", "high five"]},
+      %{char: "\u{1F44A}", name: "oncoming fist", keywords: ["punch", "fist bump"]},
+      %{char: "\u{1F4AA}", name: "flexed biceps", keywords: ["strong", "muscle"]},
+      %{char: "\u{1F596}", name: "vulcan salute", keywords: ["spock", "trek"]},
+      %{char: "\u{1F590}\u{FE0F}", name: "hand with fingers splayed", keywords: ["hand", "five"]},
+      %{char: "\u{1F937}", name: "person shrugging", keywords: ["shrug", "dunno"]},
+      %{char: "\u{1F926}", name: "person facepalming", keywords: ["facepalm", "smh"]},
+      %{char: "\u{1F645}", name: "person gesturing NO", keywords: ["no", "stop"]},
+      %{char: "\u{1F646}", name: "person gesturing OK", keywords: ["ok", "yes"]},
+      %{char: "\u{1F647}", name: "person bowing", keywords: ["bow", "respect"]},
+      %{char: "\u{1F471}", name: "person: blond hair", keywords: ["blonde", "person"]},
+      %{char: "\u{1F474}", name: "old man", keywords: ["elder", "grandpa"]},
+      %{char: "\u{1F475}", name: "old woman", keywords: ["elder", "grandma"]},
+      %{char: "\u{1F476}", name: "baby", keywords: ["baby", "infant"]},
+      %{char: "\u{1F466}", name: "boy", keywords: ["boy", "child"]},
+      %{char: "\u{1F467}", name: "girl", keywords: ["girl", "child"]},
+      %{char: "\u{1F468}", name: "man", keywords: ["man", "adult"]},
+      %{char: "\u{1F469}", name: "woman", keywords: ["woman", "adult"]}
+    ],
+    "Animals & Nature" => [
+      %{char: "\u{1F436}", name: "dog face", keywords: ["dog", "pet", "puppy"]},
+      %{char: "\u{1F431}", name: "cat face", keywords: ["cat", "pet", "kitty"]},
+      %{char: "\u{1F42D}", name: "mouse face", keywords: ["mouse", "rodent"]},
+      %{char: "\u{1F439}", name: "hamster", keywords: ["hamster", "pet"]},
+      %{char: "\u{1F430}", name: "rabbit face", keywords: ["rabbit", "bunny"]},
+      %{char: "\u{1F43B}", name: "bear", keywords: ["bear", "animal"]},
+      %{char: "\u{1F43C}", name: "panda", keywords: ["panda", "bear"]},
+      %{char: "\u{1F428}", name: "koala", keywords: ["koala", "animal"]},
+      %{char: "\u{1F42F}", name: "tiger face", keywords: ["tiger", "cat"]},
+      %{char: "\u{1F981}", name: "lion", keywords: ["lion", "king"]},
+      %{char: "\u{1F42E}", name: "cow face", keywords: ["cow", "moo"]},
+      %{char: "\u{1F437}", name: "pig face", keywords: ["pig", "oink"]},
+      %{char: "\u{1F438}", name: "frog", keywords: ["frog", "toad"]},
+      %{char: "\u{1F435}", name: "monkey face", keywords: ["monkey", "ape"]},
+      %{char: "\u{1F412}", name: "monkey", keywords: ["monkey", "primate"]},
+      %{char: "\u{1F414}", name: "chicken", keywords: ["chicken", "hen"]},
+      %{char: "\u{1F427}", name: "penguin", keywords: ["penguin", "cold"]},
+      %{char: "\u{1F426}", name: "bird", keywords: ["bird", "fly"]},
+      %{char: "\u{1F40D}", name: "snake", keywords: ["snake", "reptile"]},
+      %{char: "\u{1F422}", name: "turtle", keywords: ["turtle", "slow"]},
+      %{char: "\u{1F41D}", name: "honeybee", keywords: ["bee", "honey"]},
+      %{char: "\u{1F41B}", name: "bug", keywords: ["bug", "insect"]},
+      %{char: "\u{1F40C}", name: "snail", keywords: ["snail", "slow"]},
+      %{char: "\u{1F419}", name: "octopus", keywords: ["octopus", "sea"]},
+      %{char: "\u{1F420}", name: "tropical fish", keywords: ["fish", "tropical"]},
+      %{char: "\u{1F421}", name: "blowfish", keywords: ["fish", "puffer"]},
+      %{char: "\u{1F42C}", name: "dolphin", keywords: ["dolphin", "sea"]},
+      %{char: "\u{1F433}", name: "whale", keywords: ["whale", "sea"]},
+      %{char: "\u{1F332}", name: "evergreen tree", keywords: ["tree", "nature"]},
+      %{char: "\u{1F333}", name: "deciduous tree", keywords: ["tree", "nature"]},
+      %{char: "\u{1F334}", name: "palm tree", keywords: ["palm", "tropical"]},
+      %{char: "\u{1F335}", name: "cactus", keywords: ["cactus", "desert"]},
+      %{char: "\u{1F337}", name: "tulip", keywords: ["flower", "spring"]},
+      %{char: "\u{1F339}", name: "rose", keywords: ["flower", "love"]},
+      %{char: "\u{1F33B}", name: "sunflower", keywords: ["flower", "sun"]},
+      %{char: "\u{1F33C}", name: "blossom", keywords: ["flower", "bloom"]},
+      %{char: "\u{1F33F}", name: "herb", keywords: ["herb", "plant"]},
+      %{char: "\u{2B50}", name: "star", keywords: ["star", "gold"]},
+      %{char: "\u{2600}\u{FE0F}", name: "sun", keywords: ["sun", "bright"]},
+      %{char: "\u{1F319}", name: "crescent moon", keywords: ["moon", "night"]},
+      %{char: "\u{26A1}", name: "high voltage", keywords: ["lightning", "zap"]},
+      %{char: "\u{1F525}", name: "fire", keywords: ["fire", "hot", "lit"]},
+      %{char: "\u{1F4A7}", name: "droplet", keywords: ["water", "drop"]},
+      %{char: "\u{2744}\u{FE0F}", name: "snowflake", keywords: ["snow", "cold", "winter"]},
+      %{char: "\u{1F308}", name: "rainbow", keywords: ["rainbow", "colorful"]}
+    ],
+    "Food & Drink" => [
+      %{char: "\u{1F34E}", name: "red apple", keywords: ["apple", "fruit"]},
+      %{char: "\u{1F34F}", name: "green apple", keywords: ["apple", "fruit"]},
+      %{char: "\u{1F34A}", name: "tangerine", keywords: ["orange", "fruit"]},
+      %{char: "\u{1F34B}", name: "lemon", keywords: ["lemon", "citrus"]},
+      %{char: "\u{1F34C}", name: "banana", keywords: ["banana", "fruit"]},
+      %{char: "\u{1F34D}", name: "pineapple", keywords: ["pineapple", "fruit"]},
+      %{char: "\u{1F347}", name: "grapes", keywords: ["grape", "wine"]},
+      %{char: "\u{1F348}", name: "melon", keywords: ["melon", "fruit"]},
+      %{char: "\u{1F349}", name: "watermelon", keywords: ["watermelon", "summer"]},
+      %{char: "\u{1F353}", name: "strawberry", keywords: ["strawberry", "berry"]},
+      %{char: "\u{1F352}", name: "cherries", keywords: ["cherry", "fruit"]},
+      %{char: "\u{1F351}", name: "peach", keywords: ["peach", "fruit"]},
+      %{char: "\u{1F354}", name: "hamburger", keywords: ["burger", "food"]},
+      %{char: "\u{1F355}", name: "pizza", keywords: ["pizza", "food"]},
+      %{char: "\u{1F35F}", name: "french fries", keywords: ["fries", "food"]},
+      %{char: "\u{1F32D}", name: "hot dog", keywords: ["hotdog", "food"]},
+      %{char: "\u{1F32E}", name: "taco", keywords: ["taco", "food"]},
+      %{char: "\u{1F32F}", name: "burrito", keywords: ["burrito", "food"]},
+      %{char: "\u{1F363}", name: "sushi", keywords: ["sushi", "japanese"]},
+      %{char: "\u{1F359}", name: "rice ball", keywords: ["rice", "japanese"]},
+      %{char: "\u{1F35C}", name: "steaming bowl", keywords: ["noodles", "ramen"]},
+      %{char: "\u{1F370}", name: "shortcake", keywords: ["cake", "dessert"]},
+      %{char: "\u{1F36A}", name: "cookie", keywords: ["cookie", "sweet"]},
+      %{char: "\u{1F36B}", name: "chocolate bar", keywords: ["chocolate", "sweet"]},
+      %{char: "\u{1F36C}", name: "candy", keywords: ["candy", "sweet"]},
+      %{char: "\u{1F36D}", name: "lollipop", keywords: ["lollipop", "sweet"]},
+      %{char: "\u{1F36E}", name: "custard", keywords: ["pudding", "dessert"]},
+      %{char: "\u{1F36F}", name: "honey pot", keywords: ["honey", "sweet"]},
+      %{char: "\u{2615}", name: "hot beverage", keywords: ["coffee", "tea"]},
+      %{char: "\u{1F37A}", name: "beer mug", keywords: ["beer", "drink"]},
+      %{char: "\u{1F37B}", name: "clinking beer mugs", keywords: ["beer", "cheers"]},
+      %{char: "\u{1F377}", name: "wine glass", keywords: ["wine", "drink"]},
+      %{char: "\u{1F378}", name: "cocktail glass", keywords: ["cocktail", "drink"]},
+      %{char: "\u{1F379}", name: "tropical drink", keywords: ["drink", "tropical"]},
+      %{
+        char: "\u{1F37D}\u{FE0F}",
+        name: "fork and knife with plate",
+        keywords: ["food", "dining"]
+      }
+    ],
+    "Travel & Places" => [
+      %{char: "\u{1F697}", name: "automobile", keywords: ["car", "drive"]},
+      %{char: "\u{1F695}", name: "taxi", keywords: ["taxi", "cab"]},
+      %{char: "\u{1F68C}", name: "bus", keywords: ["bus", "transit"]},
+      %{char: "\u{1F693}", name: "police car", keywords: ["police", "cop"]},
+      %{char: "\u{1F691}", name: "ambulance", keywords: ["ambulance", "emergency"]},
+      %{char: "\u{1F692}", name: "fire engine", keywords: ["fire", "truck"]},
+      %{char: "\u{1F6B2}", name: "bicycle", keywords: ["bike", "cycling"]},
+      %{char: "\u{2708}\u{FE0F}", name: "airplane", keywords: ["plane", "fly", "travel"]},
+      %{char: "\u{1F680}", name: "rocket", keywords: ["rocket", "space"]},
+      %{char: "\u{1F6F8}", name: "flying saucer", keywords: ["ufo", "alien"]},
+      %{char: "\u{1F6A2}", name: "ship", keywords: ["ship", "boat"]},
+      %{char: "\u{26F5}", name: "sailboat", keywords: ["sail", "boat"]},
+      %{char: "\u{1F3E0}", name: "house", keywords: ["home", "house"]},
+      %{char: "\u{1F3E2}", name: "office building", keywords: ["office", "work"]},
+      %{char: "\u{1F3E5}", name: "hospital", keywords: ["hospital", "medical"]},
+      %{char: "\u{1F3EB}", name: "school", keywords: ["school", "education"]},
+      %{char: "\u{1F3ED}", name: "factory", keywords: ["factory", "industry"]},
+      %{char: "\u{1F3F0}", name: "castle", keywords: ["castle", "kingdom"]},
+      %{char: "\u{26EA}", name: "church", keywords: ["church", "religion"]},
+      %{char: "\u{1F5FC}", name: "Tokyo Tower", keywords: ["tower", "japan"]},
+      %{char: "\u{1F5FD}", name: "Statue of Liberty", keywords: ["liberty", "usa"]},
+      %{char: "\u{1F30D}", name: "globe showing Europe-Africa", keywords: ["earth", "world"]},
+      %{char: "\u{1F30E}", name: "globe showing Americas", keywords: ["earth", "world"]},
+      %{char: "\u{1F30F}", name: "globe showing Asia-Australia", keywords: ["earth", "world"]},
+      %{char: "\u{1F3D4}\u{FE0F}", name: "snow-capped mountain", keywords: ["mountain", "snow"]},
+      %{char: "\u{1F3D6}\u{FE0F}", name: "beach with umbrella", keywords: ["beach", "vacation"]},
+      %{char: "\u{1F3DD}\u{FE0F}", name: "desert island", keywords: ["island", "tropical"]}
+    ],
+    "Activities" => [
+      %{char: "\u{26BD}", name: "soccer ball", keywords: ["soccer", "football"]},
+      %{char: "\u{1F3C0}", name: "basketball", keywords: ["basketball", "sport"]},
+      %{char: "\u{1F3C8}", name: "american football", keywords: ["football", "nfl"]},
+      %{char: "\u{26BE}", name: "baseball", keywords: ["baseball", "sport"]},
+      %{char: "\u{1F3BE}", name: "tennis", keywords: ["tennis", "sport"]},
+      %{char: "\u{1F3D0}", name: "volleyball", keywords: ["volleyball", "sport"]},
+      %{char: "\u{1F3B1}", name: "pool 8 ball", keywords: ["billiards", "pool"]},
+      %{char: "\u{1F3D3}", name: "ping pong", keywords: ["table tennis", "sport"]},
+      %{char: "\u{1F3C6}", name: "trophy", keywords: ["trophy", "winner", "award"]},
+      %{char: "\u{1F3C5}", name: "sports medal", keywords: ["medal", "award"]},
+      %{char: "\u{1F947}", name: "1st place medal", keywords: ["gold", "first"]},
+      %{char: "\u{1F948}", name: "2nd place medal", keywords: ["silver", "second"]},
+      %{char: "\u{1F949}", name: "3rd place medal", keywords: ["bronze", "third"]},
+      %{char: "\u{1F3AE}", name: "video game", keywords: ["game", "controller"]},
+      %{char: "\u{1F3AF}", name: "bullseye", keywords: ["target", "dart"]},
+      %{char: "\u{1F3B0}", name: "slot machine", keywords: ["casino", "gamble"]},
+      %{char: "\u{1F3B2}", name: "game die", keywords: ["dice", "game"]},
+      %{char: "\u{265F}\u{FE0F}", name: "chess pawn", keywords: ["chess", "strategy"]},
+      %{char: "\u{1F3B5}", name: "musical note", keywords: ["music", "note"]},
+      %{char: "\u{1F3B6}", name: "musical notes", keywords: ["music", "notes"]},
+      %{char: "\u{1F3B8}", name: "guitar", keywords: ["guitar", "music"]},
+      %{char: "\u{1F3B9}", name: "musical keyboard", keywords: ["piano", "keyboard"]},
+      %{char: "\u{1F3BA}", name: "trumpet", keywords: ["trumpet", "music"]},
+      %{char: "\u{1F3BB}", name: "violin", keywords: ["violin", "music"]},
+      %{char: "\u{1F3AC}", name: "clapper board", keywords: ["movie", "film"]},
+      %{char: "\u{1F3A8}", name: "artist palette", keywords: ["art", "paint"]},
+      %{char: "\u{1F3AD}", name: "performing arts", keywords: ["theater", "drama"]}
+    ],
+    "Objects" => [
+      %{char: "\u{1F4F1}", name: "mobile phone", keywords: ["phone", "cell"]},
+      %{char: "\u{1F4BB}", name: "laptop", keywords: ["computer", "laptop"]},
+      %{char: "\u{1F5A5}\u{FE0F}", name: "desktop computer", keywords: ["computer", "desktop"]},
+      %{char: "\u{2328}\u{FE0F}", name: "keyboard", keywords: ["keyboard", "type"]},
+      %{char: "\u{1F4BE}", name: "floppy disk", keywords: ["floppy", "save"]},
+      %{char: "\u{1F4BF}", name: "optical disk", keywords: ["cd", "disc"]},
+      %{char: "\u{1F4C0}", name: "dvd", keywords: ["dvd", "disc"]},
+      %{char: "\u{1F4BD}", name: "minidisc", keywords: ["disc", "data"]},
+      %{char: "\u{1F4F7}", name: "camera", keywords: ["camera", "photo"]},
+      %{char: "\u{1F4FA}", name: "television", keywords: ["tv", "screen"]},
+      %{char: "\u{1F4FB}", name: "radio", keywords: ["radio", "broadcast"]},
+      %{char: "\u{1F50B}", name: "battery", keywords: ["battery", "power"]},
+      %{char: "\u{1F50C}", name: "electric plug", keywords: ["plug", "power"]},
+      %{char: "\u{1F4A1}", name: "light bulb", keywords: ["idea", "light"]},
+      %{char: "\u{1F50D}", name: "magnifying glass left", keywords: ["search", "find"]},
+      %{char: "\u{1F50E}", name: "magnifying glass right", keywords: ["search", "find"]},
+      %{char: "\u{1F512}", name: "locked", keywords: ["lock", "security"]},
+      %{char: "\u{1F513}", name: "unlocked", keywords: ["unlock", "open"]},
+      %{char: "\u{1F511}", name: "key", keywords: ["key", "lock"]},
+      %{char: "\u{1F528}", name: "hammer", keywords: ["hammer", "tool"]},
+      %{char: "\u{1F527}", name: "wrench", keywords: ["wrench", "tool"]},
+      %{char: "\u{1F529}", name: "nut and bolt", keywords: ["nut", "bolt"]},
+      %{char: "\u{2699}\u{FE0F}", name: "gear", keywords: ["gear", "settings"]},
+      %{char: "\u{1F4E7}", name: "email", keywords: ["email", "mail"]},
+      %{char: "\u{1F4E8}", name: "incoming envelope", keywords: ["email", "inbox"]},
+      %{char: "\u{1F4DD}", name: "memo", keywords: ["note", "write"]},
+      %{char: "\u{1F4D6}", name: "open book", keywords: ["book", "read"]},
+      %{char: "\u{1F4DA}", name: "books", keywords: ["books", "library"]},
+      %{char: "\u{1F4CB}", name: "clipboard", keywords: ["clipboard", "list"]},
+      %{char: "\u{1F4CC}", name: "pushpin", keywords: ["pin", "mark"]},
+      %{char: "\u{1F4CE}", name: "paperclip", keywords: ["paperclip", "attach"]},
+      %{char: "\u{2702}\u{FE0F}", name: "scissors", keywords: ["scissors", "cut"]},
+      %{char: "\u{1F4B0}", name: "money bag", keywords: ["money", "rich"]},
+      %{char: "\u{1F4B3}", name: "credit card", keywords: ["card", "payment"]},
+      %{char: "\u{1F48E}", name: "gem stone", keywords: ["gem", "diamond"]}
+    ],
+    "Symbols" => [
+      %{char: "\u{2705}", name: "check mark button", keywords: ["check", "yes", "done"]},
+      %{char: "\u{274C}", name: "cross mark", keywords: ["no", "wrong", "delete"]},
+      %{char: "\u{274E}", name: "cross mark button", keywords: ["no", "wrong"]},
+      %{char: "\u{2B55}", name: "hollow red circle", keywords: ["circle", "zero"]},
+      %{char: "\u{2757}", name: "red exclamation mark", keywords: ["exclamation", "warning"]},
+      %{char: "\u{2753}", name: "red question mark", keywords: ["question", "help"]},
+      %{
+        char: "\u{2049}\u{FE0F}",
+        name: "exclamation question mark",
+        keywords: ["surprise", "what"]
+      },
+      %{
+        char: "\u{203C}\u{FE0F}",
+        name: "double exclamation mark",
+        keywords: ["exclamation", "urgent"]
+      },
+      %{char: "\u{1F4F2}", name: "mobile phone with arrow", keywords: ["call", "phone"]},
+      %{char: "\u{1F6AB}", name: "prohibited", keywords: ["no", "forbidden"]},
+      %{char: "\u{1F4A4}", name: "zzz", keywords: ["sleep", "tired"]},
+      %{char: "\u{1F4A2}", name: "anger symbol", keywords: ["angry", "rage"]},
+      %{char: "\u{1F4A3}", name: "bomb", keywords: ["bomb", "explode"]},
+      %{char: "\u{1F4A5}", name: "collision", keywords: ["boom", "crash"]},
+      %{char: "\u{1F4A8}", name: "dashing away", keywords: ["wind", "fast"]},
+      %{char: "\u{1F4AC}", name: "speech balloon", keywords: ["chat", "talk"]},
+      %{char: "\u{1F4AD}", name: "thought balloon", keywords: ["think", "thought"]},
+      %{char: "\u{1F440}", name: "eyes", keywords: ["eyes", "look"]},
+      %{char: "\u{1F648}", name: "see-no-evil monkey", keywords: ["monkey", "blind"]},
+      %{char: "\u{1F649}", name: "hear-no-evil monkey", keywords: ["monkey", "deaf"]},
+      %{char: "\u{1F64A}", name: "speak-no-evil monkey", keywords: ["monkey", "mute"]},
+      %{char: "\u{2B06}\u{FE0F}", name: "up arrow", keywords: ["up", "arrow"]},
+      %{char: "\u{2B07}\u{FE0F}", name: "down arrow", keywords: ["down", "arrow"]},
+      %{char: "\u{27A1}\u{FE0F}", name: "right arrow", keywords: ["right", "arrow"]},
+      %{char: "\u{2B05}\u{FE0F}", name: "left arrow", keywords: ["left", "arrow"]},
+      %{char: "\u{1F504}", name: "counterclockwise arrows", keywords: ["refresh", "reload"]},
+      %{char: "\u{2139}\u{FE0F}", name: "information", keywords: ["info", "help"]},
+      %{char: "\u{1F195}", name: "NEW button", keywords: ["new", "badge"]},
+      %{char: "\u{1F197}", name: "OK button", keywords: ["ok", "accept"]},
+      %{char: "\u{1F199}", name: "UP! button", keywords: ["up", "update"]}
+    ]
+  }
+
+  @all_emojis @emojis
+              |> Map.values()
+              |> List.flatten()
+
+  @doc "Returns all emojis grouped by category."
+  @spec all() :: %{String.t() => [emoji()]}
+  def all, do: @emojis
+
+  @doc "Returns the list of category names in display order."
+  @spec categories() :: [String.t()]
+  def categories, do: @categories
+
+  @doc "Returns emojis for a given category."
+  @spec by_category(String.t()) :: [emoji()]
+  def by_category(category), do: Map.get(@emojis, category, [])
+
+  @doc """
+  Searches emojis by name and keywords.
+
+  Returns empty list for queries shorter than 2 characters.
+  Case-insensitive matching on name and keywords.
+  """
+  @spec search(String.t()) :: [emoji()]
+  def search(query) when byte_size(query) < 2, do: []
+
+  def search(query) do
+    downcased = String.downcase(query)
+
+    Enum.filter(@all_emojis, fn emoji ->
+      String.contains?(String.downcase(emoji.name), downcased) or
+        Enum.any?(emoji.keywords, &String.contains?(&1, downcased))
+    end)
+  end
+end

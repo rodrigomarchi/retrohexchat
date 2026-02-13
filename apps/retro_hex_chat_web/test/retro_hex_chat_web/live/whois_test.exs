@@ -137,20 +137,18 @@ defmodule RetroHexChatWeb.WhoisTest do
       assert html =~ "OfflineUser12345 is not online"
     end
 
-    test "double-click on nicklist triggers whois", %{conn: conn} do
+    test "double-click on nicklist triggers PM (nicklist_dblclick)", %{conn: conn} do
       nick = "DblClk#{System.unique_integer([:positive])}"
 
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      # First click
-      render_click(view, "nick_right_click", %{"nick" => nick, "x" => 0, "y" => 0})
-      # Second click within 300ms — double-click
-      render_click(view, "nick_right_click", %{"nick" => nick, "x" => 0, "y" => 0})
+      # Double-click opens PM query window via nicklist_dblclick event
+      render_click(view, "nicklist_dblclick", %{"nick" => nick})
 
-      Process.sleep(50)
       html = render(view)
 
-      assert html =~ "Whois: #{nick}"
+      # Double-click on nicklist now opens a PM — check for switch_pm link
+      assert html =~ "switch_pm"
     end
   end
 end

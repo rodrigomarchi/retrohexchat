@@ -398,6 +398,71 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
     end
   end
 
+  describe "get_timestamp_format/1 and set_timestamp_format/2" do
+    @tag :unit
+    test "get_timestamp_format/1 returns :hh_mm default" do
+      prefs = UserPreferences.new()
+      assert UserPreferences.get_timestamp_format(prefs) == :hh_mm
+    end
+
+    @tag :unit
+    test "set_timestamp_format/2 with :hh_mm_ss" do
+      prefs = UserPreferences.new() |> UserPreferences.set_timestamp_format(:hh_mm_ss)
+      assert UserPreferences.get_timestamp_format(prefs) == :hh_mm_ss
+    end
+
+    @tag :unit
+    test "set_timestamp_format/2 with :dd_mm_hh_mm" do
+      prefs = UserPreferences.new() |> UserPreferences.set_timestamp_format(:dd_mm_hh_mm)
+      assert UserPreferences.get_timestamp_format(prefs) == :dd_mm_hh_mm
+    end
+
+    @tag :unit
+    test "set_timestamp_format/2 with :none" do
+      prefs = UserPreferences.new() |> UserPreferences.set_timestamp_format(:none)
+      assert UserPreferences.get_timestamp_format(prefs) == :none
+    end
+
+    @tag :unit
+    test "set_timestamp_format/2 rejects invalid atom" do
+      prefs = UserPreferences.new()
+
+      assert_raise FunctionClauseError, fn ->
+        UserPreferences.set_timestamp_format(prefs, :invalid)
+      end
+    end
+  end
+
+  describe "get_quit_message/1 and set_quit_message/2" do
+    @tag :unit
+    test "get_quit_message/1 returns 'Leaving' default" do
+      prefs = UserPreferences.new()
+      assert UserPreferences.get_quit_message(prefs) == "Leaving"
+    end
+
+    @tag :unit
+    test "set_quit_message/2 with valid string" do
+      prefs = UserPreferences.new() |> UserPreferences.set_quit_message("Goodbye everyone!")
+      assert UserPreferences.get_quit_message(prefs) == "Goodbye everyone!"
+    end
+
+    @tag :unit
+    test "set_quit_message/2 truncates to 200 characters" do
+      long_msg = String.duplicate("a", 250)
+      prefs = UserPreferences.new() |> UserPreferences.set_quit_message(long_msg)
+      assert String.length(UserPreferences.get_quit_message(prefs)) == 200
+    end
+
+    @tag :unit
+    test "set_quit_message/2 rejects empty string" do
+      prefs = UserPreferences.new()
+
+      assert_raise FunctionClauseError, fn ->
+        UserPreferences.set_quit_message(prefs, "")
+      end
+    end
+  end
+
   defp register_nick(nickname) do
     RetroHexChat.Repo.insert_all("registered_nicks", [
       %{

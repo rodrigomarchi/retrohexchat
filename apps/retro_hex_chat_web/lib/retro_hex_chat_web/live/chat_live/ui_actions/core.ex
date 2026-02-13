@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
 
     socket
     |> stream_insert(:chat_messages, system_message("You are now away: #{message}"))
-    |> assign(session: session)
+    |> assign(session: session, away_replied_to: MapSet.new())
   end
 
   def handle_ui_action(socket, :clear_away, _) do
@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
 
     socket
     |> stream_insert(:chat_messages, system_message("You are no longer away"))
-    |> assign(session: new_session)
+    |> assign(session: new_session, away_replied_to: MapSet.new())
   end
 
   def handle_ui_action(socket, :set_topic, %{channel: channel, topic: topic}) do

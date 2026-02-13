@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive do
     CustomMenus,
     DisplayPreferences,
     DuplicateTracker,
+    EmojiData,
     Favorites,
     FloodTracker,
     Formatter,
@@ -80,6 +81,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
   defp attach_all_hooks(socket) do
     event_hooks = [
+      {:emoji_events, &ChatLive.EmojiEvents.handle_event/3},
       {:options_events, &ChatLive.OptionsEvents.handle_event/3},
       {:help_events, &ChatLive.HelpEvents.handle_event/3},
       {:url_catcher_events, &ChatLive.UrlCatcherEvents.handle_event/3},
@@ -253,7 +255,6 @@ defmodule RetroHexChatWeb.ChatLive do
       show_organize_favorites: false,
       treebar_context_menu: %{visible: false, x: 0, y: 0, channel: nil},
       last_activity_at: DateTime.utc_now(),
-      last_nick_click: nil,
       show_alias_dialog: false,
       alias_dialog_selected: nil,
       alias_dialog_editing: false,
@@ -276,7 +277,17 @@ defmodule RetroHexChatWeb.ChatLive do
       autorespond_dialog_draft_trigger: "on_join",
       autorespond_dialog_draft_channel: "",
       autorespond_dialog_draft_command: "",
-      autorespond_dialog_error: nil
+      autorespond_dialog_error: nil,
+      away_replied_to: MapSet.new(),
+      paste_lines: nil,
+      paste_flood_warning: false,
+      paste_send_disabled: false,
+      quit_reason: nil,
+      show_emoji_picker: false,
+      emoji_search: "",
+      emoji_category: "Smileys & Emotion",
+      emoji_emojis: EmojiData.by_category("Smileys & Emotion"),
+      timestamp_format: UserPreferences.get_timestamp_format(session.user_preferences)
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -292,19 +303,25 @@ defmodule RetroHexChatWeb.ChatLive do
     session = connected?(socket) && socket.assigns[:session]
 
     if session do
+      quit_reason = quit_reason_for(socket, session)
+
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,
         "presence:global",
         {:user_disconnected, %{nickname: session.nickname}}
       )
 
-      # Record whowas entry for recently disconnected users
-      WhowasCache.record(session.nickname, session.channels)
+      WhowasCache.record(session.nickname, session.channels, quit_reason)
 
-      ChatLive.Helpers.cleanup_channels(session)
+      ChatLive.Helpers.cleanup_channels(session, quit_reason)
     end
 
     :ok
+  end
+
+  defp quit_reason_for(socket, session) do
+    socket.assigns[:quit_reason] ||
+      UserPreferences.get_quit_message(session.user_preferences)
   end
 
   defp maybe_show_motd(socket) do
@@ -393,19 +410,41 @@ defmodule RetroHexChatWeb.ChatLive do
 
   @spec format_content(String.t(), boolean()) :: String.t()
   defp format_content(content, strip_formatting) do
-    if strip_formatting do
-      content |> Formatter.strip() |> URLDetector.linkify()
-    else
-      {:safe, html} = Formatter.to_safe_html(content)
-      URLDetector.linkify_html(html)
-    end
+    html =
+      if strip_formatting do
+        content |> Formatter.strip() |> URLDetector.linkify()
+      else
+        {:safe, raw} = Formatter.to_safe_html(content)
+        URLDetector.linkify_html(raw)
+      end
+
+    linkify_channels(html)
   end
 
-  defp format_time(%DateTime{} = dt), do: Calendar.strftime(dt, "%H:%M")
-  defp format_time(_), do: "--:--"
+  @channel_name_regex ~r/#[a-zA-Z][a-zA-Z0-9_-]{0,49}/
+  defp linkify_channels(html) do
+    ~r/(<[^>]+>)/
+    |> Regex.split(html, include_captures: true)
+    |> Enum.map_join(&linkify_channel_part/1)
+  end
 
-  defp format_status_time(%DateTime{} = dt), do: Calendar.strftime(dt, "%H:%M")
-  defp format_status_time(_), do: "--:--"
+  defp linkify_channel_part("<" <> _ = tag), do: tag
+
+  defp linkify_channel_part(text) do
+    Regex.replace(@channel_name_regex, text, fn match ->
+      ~s(<span class="chat-channel-link" data-channel="#{match}">#{match}</span>)
+    end)
+  end
+
+  defp format_time(%DateTime{} = dt, :hh_mm), do: "[#{Calendar.strftime(dt, "%H:%M")}]"
+  defp format_time(%DateTime{} = dt, :hh_mm_ss), do: "[#{Calendar.strftime(dt, "%H:%M:%S")}]"
+
+  defp format_time(%DateTime{} = dt, :dd_mm_hh_mm),
+    do: "[#{Calendar.strftime(dt, "%d/%m %H:%M")}]"
+
+  defp format_time(_, :none), do: ""
+  defp format_time(%DateTime{} = dt, _), do: "[#{Calendar.strftime(dt, "%H:%M")}]"
+  defp format_time(_, _), do: "[--:--]"
 
   defp nick_color(nickname) do
     index = :erlang.phash2(nickname, length(@nick_colors))

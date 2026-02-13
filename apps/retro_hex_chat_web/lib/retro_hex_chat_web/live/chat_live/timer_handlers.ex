@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
 
   Covers: clear_typing_indicator, user_timer_fired, ignore_expired, auto_ignore_expired,
   execute_perform, execute_autojoin, execute_favorites_autojoin, execute_rejoin,
-  invite_expired.
+  invite_expired, paste_next.
 
   Attached as `attach_hook(:timer_handlers, :handle_info, ...)` in ChatLive.mount/3.
   """
@@ -266,6 +266,17 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
         socket
       end
 
+    {:halt, socket}
+  end
+
+  # ── Paste pacing ─────────────────────────────────────────
+
+  def handle_info({:paste_next, []}, socket), do: {:halt, socket}
+
+  def handle_info({:paste_next, [line | rest]}, socket) do
+    session = socket.assigns.session
+    socket = send_plain_message(socket, session, line)
+    if rest != [], do: Process.send_after(self(), {:paste_next, rest}, 300)
     {:halt, socket}
   end
 

@@ -54,6 +54,37 @@ const ScrollHook = {
       URL.revokeObjectURL(url);
     });
 
+    // Double-click on channel names in chat → join/switch channel
+    this.chatEl.addEventListener("dblclick", (e) => {
+      const channelEl = e.target.closest(".chat-channel-link");
+      if (channelEl) {
+        const channel = channelEl.dataset.channel;
+        if (channel) {
+          this.pushEvent("channel_dblclick", { channel });
+        }
+      }
+    });
+
+    // Right-click copy context menu
+    this.copyMenu = null;
+    this.chatEl.addEventListener("contextmenu", (e) => {
+      // Only show custom copy menu inside chat messages
+      if (e.target.closest(".chat-message") || e.target.closest(".chat-msg-grid")) {
+        e.preventDefault();
+        this.showCopyMenu(e.clientX, e.clientY);
+      }
+    });
+    document.addEventListener("mousedown", (e) => {
+      if (this.copyMenu && !this.copyMenu.contains(e.target)) {
+        this.hideCopyMenu();
+      }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && this.copyMenu) {
+        this.hideCopyMenu();
+      }
+    });
+
     // Listen for prepend start (before DOM update)
     this.handleEvent("prepend_start", () => {
       this.pendingPrepend = true;
@@ -132,6 +163,38 @@ const ScrollHook = {
     const btn = this.chatEl.parentElement.querySelector(".new-messages-btn");
     if (btn) {
       btn.style.display = "none";
+    }
+  },
+
+  showCopyMenu(x, y) {
+    this.hideCopyMenu();
+    const selection = window.getSelection().toString();
+    const menu = document.createElement("div");
+    menu.className = "copy-context-menu";
+    menu.style.left = x + "px";
+    menu.style.top = y + "px";
+
+    const item = document.createElement("div");
+    if (selection) {
+      item.className = "copy-menu-item";
+      item.textContent = "Copy";
+      item.addEventListener("click", () => {
+        navigator.clipboard.writeText(selection);
+        this.hideCopyMenu();
+      });
+    } else {
+      item.className = "copy-menu-item copy-menu-item--disabled";
+      item.textContent = "Copy";
+    }
+    menu.appendChild(item);
+    document.body.appendChild(menu);
+    this.copyMenu = menu;
+  },
+
+  hideCopyMenu() {
+    if (this.copyMenu) {
+      this.copyMenu.remove();
+      this.copyMenu = null;
     }
   },
 };

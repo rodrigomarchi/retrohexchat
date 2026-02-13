@@ -5,7 +5,7 @@ defmodule RetroHexChat.Chat.DisplayPreferences do
   in the Log Viewer window.
   """
 
-  @type timestamp_format :: :hh_mm | :hh_mm_ss | :dd_mm_hh_mm
+  @type timestamp_format :: :hh_mm | :hh_mm_ss | :dd_mm_hh_mm | :none
 
   @type t :: %__MODULE__{
           show_joins: boolean(),
@@ -16,7 +16,7 @@ defmodule RetroHexChat.Chat.DisplayPreferences do
           timestamp_format: timestamp_format()
         }
 
-  @valid_timestamp_formats [:hh_mm, :hh_mm_ss, :dd_mm_hh_mm]
+  @valid_timestamp_formats [:hh_mm, :hh_mm_ss, :dd_mm_hh_mm, :none]
 
   @toggleable_fields [
     :show_joins,
@@ -79,6 +79,8 @@ defmodule RetroHexChat.Chat.DisplayPreferences do
   def format_timestamp(%__MODULE__{timestamp_format: :dd_mm_hh_mm}, %DateTime{} = dt) do
     "[#{pad(dt.day)}/#{pad(dt.month)} #{pad(dt.hour)}:#{pad(dt.minute)}]"
   end
+
+  def format_timestamp(%__MODULE__{timestamp_format: :none}, %DateTime{}), do: ""
 
   @doc """
   Returns true if the given message type should be displayed.

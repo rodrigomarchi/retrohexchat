@@ -204,6 +204,22 @@ defmodule RetroHexChatWeb.Components.MenuBar do
           >
             Help Topics
           </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-help-commands"
+            phx-click="open_help_at_topic"
+            phx-value-topic="commands-overview"
+          >
+            IRC Commands
+          </div>
+          <div
+            class="menu-dropdown-item"
+            data-testid="menu-help-shortcuts"
+            phx-click="open_help_at_topic"
+            phx-value-topic="keyboard-shortcuts"
+          >
+            Keyboard Shortcuts
+          </div>
           <div class="menu-dropdown-item" data-testid="menu-about" phx-click="show_about">About</div>
         </div>
       </div>

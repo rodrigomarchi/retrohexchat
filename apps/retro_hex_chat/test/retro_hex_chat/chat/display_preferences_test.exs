@@ -183,6 +183,20 @@ defmodule RetroHexChat.Chat.DisplayPreferencesTest do
     end
   end
 
+  describe "format_timestamp/2 with :none format" do
+    test "returns empty string for :none format" do
+      prefs = %DisplayPreferences{timestamp_format: :none}
+
+      assert DisplayPreferences.format_timestamp(prefs, @test_datetime) == ""
+    end
+
+    test "set_timestamp_format/2 accepts :none" do
+      prefs = DisplayPreferences.new() |> DisplayPreferences.set_timestamp_format(:none)
+
+      assert prefs.timestamp_format == :none
+    end
+  end
+
   describe "visible_type?/2 for always-visible types" do
     test "message type is always visible" do
       prefs = DisplayPreferences.new()

@@ -4,7 +4,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   Covers: send_input, switch_channel, switch_pm, switch_to_status,
   close_channel_tab, close_pm_tab, close_dialog, load_more,
-  scroll_to_bottom, history_navigate, tab_complete.
+  scroll_to_bottom, history_navigate, tab_complete, channel_dblclick,
+  paste_lines, paste_cancel, paste_send.
 
   Attached as `attach_hook(:core_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -14,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
+      join_channel: 3,
       load_channel_users: 2,
       load_channel_messages_with_pagination: 2,
       push_reconnect_state: 1,
@@ -79,6 +81,27 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
      |> load_channel_users(channel)
      |> load_channel_messages_with_pagination(channel)
      |> push_reconnect_state()}
+  end
+
+  # -- channel_dblclick --
+
+  def handle_event("channel_dblclick", %{"channel" => channel}, socket) do
+    session = socket.assigns.session
+
+    if channel in session.channels do
+      # Already joined — switch to it
+      new_session = Session.set_active_channel(session, channel)
+
+      {:halt,
+       socket
+       |> assign(session: new_session, show_status_tab: false)
+       |> load_channel_users(channel)
+       |> load_channel_messages_with_pagination(channel)
+       |> push_reconnect_state()}
+    else
+      # Not joined — join it
+      {:halt, join_channel(socket, channel, session)}
+    end
   end
 
   # -- switch_pm --
@@ -208,6 +231,30 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       [match] -> {:halt, assign(socket, input: match.nickname <> ": ")}
       _ -> {:halt, socket}
     end
+  end
+
+  # -- paste_lines / paste_cancel / paste_send --
+
+  def handle_event("paste_lines", %{"lines" => lines}, socket) do
+    filtered = Enum.filter(lines, &(String.trim(&1) != ""))
+    count = length(filtered)
+
+    {:halt,
+     assign(socket,
+       paste_lines: filtered,
+       paste_flood_warning: count > 50,
+       paste_send_disabled: count > 100
+     )}
+  end
+
+  def handle_event("paste_cancel", _params, socket) do
+    {:halt, assign(socket, paste_lines: nil)}
+  end
+
+  def handle_event("paste_send", _params, socket) do
+    lines = socket.assigns.paste_lines || []
+    Process.send_after(self(), {:paste_next, lines}, 0)
+    {:halt, assign(socket, paste_lines: nil)}
   end
 
   # -- Catch-all: pass unhandled events to the next hook --

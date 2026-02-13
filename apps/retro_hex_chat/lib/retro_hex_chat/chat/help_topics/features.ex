@@ -887,6 +887,145 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"cmd-autorespond\">/autorespond Command</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-aliases\">Aliases</a></p>"
+      },
+      %{
+        id: "feature-nick-alignment",
+        title: "Nick Column Alignment",
+        category: "Features",
+        keywords: ["nick", "alignment", "column", "grid", "layout", "readability"],
+        content:
+          "<h3>Nick Column Alignment</h3>" <>
+            "<p>Nicknames in channel messages are rendered in a fixed-width column. " <>
+            "Whether the nick is 3 characters or 15, all message text starts at the same horizontal position.</p>" <>
+            "<h4>How It Works</h4>" <>
+            "<p>Messages use a CSS grid layout (<code>chat-msg-grid</code>) with the nick column set to a fixed width. " <>
+            "This dramatically improves readability in busy channels.</p>" <>
+            "<h4>Notes</h4>" <>
+            "<p>Action messages (<code>/me</code>), notices, and system messages are not grid-aligned as they use different formatting.</p>"
+      },
+      %{
+        id: "feature-copy",
+        title: "Right-Click Copy",
+        category: "Features",
+        keywords: ["copy", "clipboard", "right-click", "context menu", "select", "text"],
+        content:
+          "<h3>Right-Click Copy</h3>" <>
+            "<p>Select text in the chat area by clicking and dragging. " <>
+            "Right-click to see a context menu with <strong>Copy</strong>, or use <kbd>Ctrl+C</kbd>.</p>" <>
+            "<h4>Usage</h4>" <>
+            "<p>1. Click and drag to select text in the chat area.<br/>" <>
+            "2. Right-click and choose <strong>Copy</strong>, or press <kbd>Ctrl+C</kbd>.<br/>" <>
+            "3. The selected text is copied to your clipboard as plain text.</p>" <>
+            "<h4>Notes</h4>" <>
+            "<p>If no text is selected, the Copy option appears disabled. " <>
+            "Rich formatting is stripped — only plain text is copied.</p>"
+      },
+      %{
+        id: "feature-paste-dialog",
+        title: "Multi-Line Paste Dialog",
+        category: "Features",
+        keywords: ["paste", "multiline", "flood", "confirmation", "send"],
+        content:
+          "<h3>Multi-Line Paste Dialog</h3>" <>
+            "<p>When you paste text containing multiple lines into the chat input, " <>
+            "a confirmation dialog appears before sending.</p>" <>
+            "<h4>Dialog Options</h4>" <>
+            "<p><strong>Send All</strong> — Sends each line as a separate message.<br/>" <>
+            "<strong>Cancel</strong> — Cancels the paste operation.</p>" <>
+            "<h4>Flood Warning</h4>" <>
+            "<p>Pasting more than 50 lines shows an additional flood warning. " <>
+            "This prevents accidentally flooding a channel.</p>"
+      },
+      %{
+        id: "feature-char-counter",
+        title: "Character Counter",
+        category: "Features",
+        keywords: ["character", "counter", "limit", "length", "input"],
+        content:
+          "<h3>Character Counter</h3>" <>
+            "<p>A real-time character counter appears near the input box showing " <>
+            "<code>current/maximum</code> (e.g., <code>127/1000</code>).</p>" <>
+            "<h4>Color Indicators</h4>" <>
+            "<p>The counter changes color as you approach the limit:<br/>" <>
+            "<strong>Green</strong> — under 80% used<br/>" <>
+            "<strong>Orange</strong> — 80-95% used<br/>" <>
+            "<strong>Red</strong> — over 95% used</p>"
+      },
+      %{
+        id: "feature-quit-message",
+        title: "Quit Messages",
+        category: "Features",
+        keywords: ["quit", "disconnect", "message", "goodbye", "leaving"],
+        content:
+          "<h3>Quit Messages</h3>" <>
+            "<p>When you disconnect, a quit message is shown to other users. " <>
+            "You can customize this message.</p>" <>
+            "<h4>Setting a Quit Message</h4>" <>
+            "<p>Use <code>/quit Your message here</code> to disconnect with a custom message, " <>
+            "or configure a default quit message in the Options dialog.</p>" <>
+            "<h4>Default</h4>" <>
+            "<p>If no custom message is set, the default message is \"Leaving\".</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"cmd-quit\">/quit Command</a></p>"
+      },
+      %{
+        id: "feature-away-reply",
+        title: "Away Auto-Reply",
+        category: "Features",
+        keywords: ["away", "auto-reply", "automatic", "reply", "pm", "message"],
+        content:
+          "<h3>Away Auto-Reply</h3>" <>
+            "<p>When you are <code>/away</code> and someone sends you a private message, " <>
+            "the system automatically replies with your away message.</p>" <>
+            "<h4>How It Works</h4>" <>
+            "<p>1. Set yourself away: <code>/away Gone for lunch</code><br/>" <>
+            "2. When someone PMs you, they see: <em>* YourNick is away: Gone for lunch</em><br/>" <>
+            "3. The auto-reply is sent only <strong>once per unique sender</strong> until you return.</p>" <>
+            "<h4>Notes</h4>" <>
+            "<p>Auto-replies are NOT sent for notices (per IRC convention). " <>
+            "The replied-to set resets when you clear your away status.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"cmd-away\">/away Command</a></p>"
+      },
+      %{
+        id: "feature-emoji",
+        title: "Emoji Picker",
+        category: "Features",
+        keywords: ["emoji", "smiley", "picker", "unicode", "emoticon"],
+        content:
+          "<h3>Emoji Picker</h3>" <>
+            "<p>Access a popup emoji picker with 300+ Unicode emojis organized in 8 categories.</p>" <>
+            "<h4>Opening the Picker</h4>" <>
+            "<p>Click the smiley face button in the formatting toolbar.</p>" <>
+            "<h4>Categories</h4>" <>
+            "<p>Smileys &amp; Emotion, People &amp; Body, Animals &amp; Nature, Food &amp; Drink, " <>
+            "Travel &amp; Places, Activities, Objects, Symbols.</p>" <>
+            "<h4>Search</h4>" <>
+            "<p>Type in the search box to filter emojis by name or keyword (minimum 2 characters).</p>" <>
+            "<h4>Inserting</h4>" <>
+            "<p>Click an emoji to insert it at the cursor position in the chat input. " <>
+            "The picker closes automatically after selection.</p>" <>
+            "<h4>Closing</h4>" <>
+            "<p>Click outside the picker, press <kbd>Escape</kbd>, or click the close button.</p>"
+      },
+      %{
+        id: "feature-timestamp-format",
+        title: "Timestamp Configuration",
+        category: "Features",
+        keywords: ["timestamp", "time", "format", "clock", "date"],
+        content:
+          "<h3>Timestamp Configuration</h3>" <>
+            "<p>Configure how timestamps appear in chat messages via the Options dialog.</p>" <>
+            "<h4>Available Formats</h4>" <>
+            "<p><code>[HH:MM]</code> — Default, shows hours and minutes.<br/>" <>
+            "<code>[HH:MM:SS]</code> — Includes seconds.<br/>" <>
+            "<code>[DD/MM HH:MM]</code> — Includes date and time.<br/>" <>
+            "<code>None</code> — Hides timestamps entirely.</p>" <>
+            "<h4>Changing the Format</h4>" <>
+            "<p>Open <strong>Tools &gt; Options</strong>, go to the <strong>Display</strong> panel, " <>
+            "and select your preferred format from the Timestamps dropdown. Click <strong>Apply</strong>.</p>" <>
+            "<h4>Notes</h4>" <>
+            "<p>Changing the format resets the chat stream. Previous messages are cleared from view.</p>"
       }
     ]
   end

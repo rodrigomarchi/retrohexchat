@@ -79,29 +79,38 @@
           }
           data-testid={if(Map.get(msg, :highlighted), do: "highlighted-message", else: nil)}
         >
-          <span class="chat-timestamp">[{format_time(msg.timestamp)}]</span>
           <%= case msg.type do %>
             <% :action -> %>
+              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
               <span class="chat-action">
                 * {msg.author} {raw(format_content(msg.content, @session.strip_formatting))}
               </span>
             <% :system -> %>
+              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
               <span class="chat-system">* {msg.content}</span>
             <% :service -> %>
+              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
               <span class="chat-service">{msg.content}</span>
             <% :error -> %>
+              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
               <span class="chat-error">{msg.content}</span>
             <% :notice -> %>
+              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
               <span class="chat-notice">
                 <span class="chat-notice-nick">-{msg.author}-</span> {msg.content}
               </span>
             <% _ -> %>
-              <span class="chat-nick" style={"color: #{@nick_color_fn.(msg.author)}"}>
-                &lt;{msg.author}&gt;
-              </span>
-              <span class="chat-content">
-                {raw(format_content(msg.content, @session.strip_formatting))}
-              </span>
+              <div class="chat-msg-grid">
+                <span class="chat-timestamp">
+                  {format_time(msg.timestamp, @timestamp_format)}
+                </span>
+                <span class="chat-nick" style={"color: #{@nick_color_fn.(msg.author)}"}>
+                  &lt;{msg.author}&gt;
+                </span>
+                <span class="chat-content">
+                  {raw(format_content(msg.content, @session.strip_formatting))}
+                </span>
+              </div>
           <% end %>
         </div>
       </div>
@@ -114,7 +123,7 @@
         data-testid="status-messages"
       >
         <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
-          <span class="chat-timestamp">[{format_status_time(msg.timestamp)}]</span>
+          <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
           <span class={"chat-status chat-status--#{msg.type}"}>{msg.content}</span>
         </div>
       </div>
@@ -133,7 +142,19 @@
         {@pm_typing_from} is typing...
       </div>
 
-      <div class="chat-input-area" style="position: relative;">
+      <div
+        class="chat-input-area"
+        style="position: relative;"
+        id="chat-input-area"
+        phx-hook="CharCounterHook"
+      >
+        <RetroHexChatWeb.Components.EmojiPicker.emoji_picker
+          visible={@show_emoji_picker}
+          categories={EmojiData.categories()}
+          active_category={@emoji_category}
+          emojis={@emoji_emojis}
+          search_query={@emoji_search}
+        />
         <RetroHexChatWeb.Components.CommandPalette.command_palette
           visible={@command_palette_visible}
           commands={CmdRegistry.list_commands()}
@@ -148,10 +169,12 @@
             placeholder="Type a message or /command..."
             autocomplete="off"
             autofocus
+            maxlength="1000"
             phx-hook="CommandPaletteHook"
           />
           <button type="submit">Send</button>
         </form>
+        <span class="char-counter" data-testid="char-counter">0/1000</span>
       </div>
     </div>
 
@@ -196,15 +219,7 @@
     selected={@organize_favorites_selected}
   />
 
-  <RetroHexChatWeb.Components.Dialog.dialog
-    title="About RetroHexChat"
-    visible={@show_about}
-    on_close="close_dialog"
-  >
-    <p>RetroHexChat v1.0</p>
-    <p>A retro IRC-style chat with Windows 98 aesthetics.</p>
-    <p>Built with Elixir, Phoenix LiveView, and 98.css.</p>
-  </RetroHexChatWeb.Components.Dialog.dialog>
+  <RetroHexChatWeb.Components.AboutDialog.about_dialog visible={@show_about} />
 
   <RetroHexChatWeb.Components.NotifyListWindow.notify_list_window
     entries={NotifyList.sorted_entries(@session.notify_list)}
@@ -365,6 +380,15 @@
     error={@log_error}
     nick_color_fn={@nick_color_fn}
   />
+
+  <RetroHexChatWeb.Components.PasteConfirmDialog.paste_confirm_dialog
+    visible={@paste_lines != nil}
+    line_count={if @paste_lines, do: length(@paste_lines), else: 0}
+    flood_warning={@paste_flood_warning}
+    send_disabled={@paste_send_disabled}
+  />
+
+  <div id="paste-hook" phx-hook="PasteHook" style="display: none;"></div>
 
   <RetroHexChatWeb.Components.InviteDialog.invite_dialog pending_invites={@pending_invites} />
 
