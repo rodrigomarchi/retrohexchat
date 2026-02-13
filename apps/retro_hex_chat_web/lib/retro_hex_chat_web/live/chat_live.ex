@@ -26,7 +26,8 @@ defmodule RetroHexChatWeb.ChatLive do
     IgnoreList,
     LogFilter,
     PerformList,
-    URLDetector
+    URLDetector,
+    UserPreferences
   }
 
   alias RetroHexChat.Commands.Registry, as: CmdRegistry
@@ -65,6 +66,7 @@ defmodule RetroHexChatWeb.ChatLive do
             |> Helpers.maybe_trigger_perform()
             |> Helpers.play_event_sound(:connect, session)
             |> maybe_show_motd()
+            |> push_initial_preferences()
 
           {:ok, socket}
         else
@@ -78,6 +80,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
   defp attach_all_hooks(socket) do
     event_hooks = [
+      {:options_events, &ChatLive.OptionsEvents.handle_event/3},
       {:help_events, &ChatLive.HelpEvents.handle_event/3},
       {:url_catcher_events, &ChatLive.UrlCatcherEvents.handle_event/3},
       {:invite_events, &ChatLive.InviteEvents.handle_event/3},
@@ -226,6 +229,17 @@ defmodule RetroHexChatWeb.ChatLive do
       show_flood_protection_dialog: false,
       show_sound_settings_dialog: false,
       sound_settings_draft: nil,
+      show_options_dialog: false,
+      options_panel: "display",
+      options_draft: nil,
+      show_toolbar: true,
+      show_switchbar: true,
+      show_statusbar: true,
+      compact_mode: false,
+      line_shading: false,
+      nick_palette_editing_index: nil,
+      keybinding_editing: nil,
+      keybinding_warning: nil,
       muted: false,
       favorite_dialog_channel: nil,
       favorite_dialog_data: nil,
@@ -298,6 +312,19 @@ defmodule RetroHexChatWeb.ChatLive do
       nil -> socket
       content -> Helpers.push_status_message(socket, content, :motd)
     end
+  end
+
+  defp push_initial_preferences(socket) do
+    prefs = socket.assigns.session.user_preferences
+    styles = UserPreferences.to_css_styles(prefs)
+
+    socket
+    |> push_event("apply_preferences", %{styles: styles})
+    |> push_event("reconnect_config", %{
+      enabled: prefs.connect.auto_reconnect_enabled,
+      max_attempts: prefs.connect.max_retries,
+      max_delay: prefs.connect.retry_interval
+    })
   end
 
   defp context_target_ignored?(_session, nil), do: false

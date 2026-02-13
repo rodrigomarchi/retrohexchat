@@ -1,7 +1,9 @@
 <div id="reconnect-hook" phx-hook="ReconnectHook" style="display: none;"></div>
 <div id="title-flash" phx-hook="TitleFlashHook" style="display: none;"></div>
+<div id="options-hook" phx-hook="OptionsHook" style="display: none;"></div>
+<div id="key-capture-hook" phx-hook="KeyBindingCaptureHook" style="display: none;"></div>
 <div
-  class="app-container"
+  class={"app-container#{if @compact_mode, do: " compact-mode", else: ""}"}
   phx-click="close_context_menu"
   phx-window-keydown="window_keydown"
   id="app-container"
@@ -12,7 +14,7 @@
     favorites={Favorites.entries(@session.favorites)}
     joined_channels={@session.channels}
   />
-  <RetroHexChatWeb.Components.Toolbar.toolbar connected={true} />
+  <RetroHexChatWeb.Components.Toolbar.toolbar :if={@show_toolbar} connected={true} />
 
   <div class="mdi-layout">
     <RetroHexChatWeb.Components.Treebar.treebar
@@ -28,6 +30,7 @@
 
     <div class="chat-area" style="position: relative;">
       <RetroHexChatWeb.Components.TabBar.tab_bar
+        :if={@show_switchbar}
         channels={@session.channels}
         pm_conversations={@session.pm_conversations}
         active_channel={@session.active_channel}
@@ -55,7 +58,7 @@
       <RetroHexChatWeb.Components.ScrollLoader.scroll_loader loading={@loading_more} />
 
       <div
-        class="chat-messages"
+        class={"chat-messages#{if @line_shading, do: " chat-line-shading", else: ""}"}
         id="chat-messages"
         phx-update="stream"
         phx-hook="ScrollHook"
@@ -253,6 +256,12 @@
     sound_settings_draft={@sound_settings_draft}
   />
 
+  <RetroHexChatWeb.Components.OptionsDialog.options_dialog
+    visible={@show_options_dialog}
+    active_panel={@options_panel}
+    options_draft={@options_draft}
+  />
+
   <RetroHexChatWeb.Components.PerformDialog.perform_dialog
     visible={@show_perform_dialog}
     active_tab={@perform_dialog_tab}
@@ -360,6 +369,7 @@
   <RetroHexChatWeb.Components.InviteDialog.invite_dialog pending_invites={@pending_invites} />
 
   <RetroHexChatWeb.Components.StatusBar.status_bar
+    :if={@show_statusbar}
     nickname={@session.nickname}
     channel={@session.active_pm || @session.active_channel}
     user_count={length(@channel_users)}

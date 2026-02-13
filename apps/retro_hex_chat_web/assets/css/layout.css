@@ -111,7 +111,8 @@ body {
 }
 
 .treebar .tree-view {
-  font-size: 12px;
+  font-size: var(--treebar-font-size, 12px);
+  font-family: var(--treebar-font-family, "MS Sans Serif", Tahoma, sans-serif);
 }
 
 .treebar li {
@@ -139,4 +140,57 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 0;
+}
+
+/* ─── Compact Mode ─── */
+
+.compact-mode .menu-bar {
+  padding: 1px 2px;
+}
+
+.compact-mode .toolbar {
+  padding: 1px 2px;
+  gap: 2px;
+}
+
+.compact-mode .treebar {
+  width: 130px;
+  min-width: 100px;
+  padding: 2px;
+}
+
+.compact-mode .treebar li {
+  padding: 1px 4px;
+}
+
+.compact-mode .chat-messages {
+  padding: 2px 4px;
+  line-height: 1.2;
+}
+
+.compact-mode .chat-message {
+  padding: 0;
+}
+
+.compact-mode .chat-input-area {
+  padding: 2px;
+}
+
+.compact-mode .tab-bar {
+  padding: 1px 2px 0 2px;
+  min-height: 20px;
+}
+
+.compact-mode .tab-item {
+  padding: 1px 6px;
+  font-size: 10px;
+}
+
+.compact-mode .topic-bar {
+  padding: 1px 4px;
+  min-height: 14px;
+}
+
+.compact-mode .status-bar {
+  padding: 1px 4px;
 }

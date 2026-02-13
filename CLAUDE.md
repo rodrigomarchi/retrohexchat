@@ -25,6 +25,7 @@
 - PostgreSQL 16+ (3 new tables: `aliases`, `custom_menu_items`, `autorespond_rules`) + in-memory Session state for guests + socket assigns for timers and rate limit cooldowns (018-scripting-aliases)
 - PostgreSQL 16+ (1 migration: add `mode_join_throttle` column to `registered_channels` table) + in-memory GenServer state for channel modes, membership, join throttle timestamps (019-channel-features-advanced)
 - PostgreSQL 16+ (2 new tables: `server_settings`, `channel_welcome_messages`) + in-memory Session state for user modes and welcome tracking + in-memory cache for MOTD (020-special-messages)
+- PostgreSQL 16+ (1 new table: `user_preferences` with 6 JSONB columns) + in-memory Session state for guests (021-options-dialog)
 
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x
 - PostgreSQL 16+ with cursor-based pagination and GIN/trigram indexes
@@ -105,6 +106,6 @@ Key non-negotiables: TDD, umbrella separation, OTP process architecture,
 static analysis from day one, 98.css design fidelity.
 
 ## Recent Changes
+- 021-options-dialog: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
 - 020-special-messages: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
 - 019-channel-features-advanced: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
-- 018-scripting-aliases: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css

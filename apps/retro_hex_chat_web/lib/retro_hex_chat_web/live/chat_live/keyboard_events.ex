@@ -2,9 +2,10 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   @moduledoc """
   Handle keyboard shortcut events (window_keydown).
 
-  Covers: Ctrl+F (search), Alt+B (address book), Alt+I (ignore),
-  Alt+H (highlight), Alt+U (URL catcher), Alt+L (log viewer),
-  Alt+P (perform), F1 (help), Escape (dismiss).
+  Uses dynamic key binding lookup via KeyBindings.find_action/2 so users
+  can customize shortcuts via Options > Key Bindings.
+
+  Escape is always hardcoded to dismiss the topmost dialog/overlay.
 
   Attached as `attach_hook(:keyboard_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -12,132 +13,150 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   import Phoenix.Component, only: [assign: 2]
 
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.LogFilter
+  alias RetroHexChat.Chat.{KeyBindings, LogFilter}
 
-  # Ctrl+F — toggle search
-  def handle_event("window_keydown", %{"key" => "f", "ctrlKey" => true}, socket) do
-    {:halt, assign(socket, search_visible: true)}
-  end
-
-  # Alt+B — toggle address book
-  def handle_event("window_keydown", %{"key" => "b", "altKey" => true}, socket) do
-    if socket.assigns.show_address_book do
-      {:halt,
-       assign(socket,
-         show_address_book: false,
-         address_book_tab: "contacts",
-         contacts_selected: nil,
-         show_contact_add_dialog: false,
-         show_contact_edit_dialog: false
-       )}
-    else
-      {:halt, assign(socket, show_address_book: true)}
-    end
-  end
-
-  # Alt+I — toggle ignore dialog
-  def handle_event("window_keydown", %{"key" => "i", "altKey" => true}, socket) do
-    if socket.assigns.show_ignore_dialog do
-      {:halt,
-       assign(socket,
-         show_ignore_dialog: false,
-         ignore_selected: nil,
-         show_ignore_add_dialog: false
-       )}
-    else
-      {:halt, assign(socket, show_ignore_dialog: true)}
-    end
-  end
-
-  # Alt+H — toggle highlight dialog
-  def handle_event("window_keydown", %{"key" => "h", "altKey" => true}, socket) do
-    if socket.assigns.show_highlight_dialog do
-      {:halt,
-       assign(socket,
-         show_highlight_dialog: false,
-         show_highlight_add_dialog: false,
-         show_highlight_edit_dialog: false,
-         highlight_selected: nil
-       )}
-    else
-      {:halt, assign(socket, show_highlight_dialog: true)}
-    end
-  end
-
-  # Alt+U — toggle URL catcher
-  def handle_event("window_keydown", %{"key" => "u", "altKey" => true}, socket) do
-    {:halt, assign(socket, show_url_catcher: !socket.assigns.show_url_catcher)}
-  end
-
-  # Alt+L — toggle log viewer
-  def handle_event("window_keydown", %{"key" => "l", "altKey" => true}, socket) do
-    if socket.assigns.show_log_viewer do
-      {:halt, close_log_viewer(socket)}
-    else
-      {:halt, open_log_viewer(socket)}
-    end
-  end
-
-  # Alt+P — toggle perform dialog
-  def handle_event("window_keydown", %{"key" => "p", "altKey" => true}, socket) do
-    if socket.assigns.show_perform_dialog do
-      {:halt, close_perform_dialog(socket)}
-    else
-      {:halt, assign(socket, show_perform_dialog: true)}
-    end
-  end
-
-  # F1 — open help dialog
-  def handle_event("window_keydown", %{"key" => "F1"}, socket) do
-    {:halt,
-     assign(socket,
-       show_help_dialog: true,
-       help_active_tab: "contents",
-       help_selected_topic: nil,
-       help_index_filter: "",
-       help_search_query: "",
-       help_search_results: []
-     )}
-  end
-
-  # Escape — dismiss topmost dialog/overlay
+  # Escape — always hardcoded to dismiss topmost dialog/overlay
   def handle_event("window_keydown", %{"key" => "Escape"}, socket) do
-    cond do
-      socket.assigns.pending_invites != [] ->
-        # Dismiss the most recent invite (last in list)
-        last = List.last(socket.assigns.pending_invites)
-        Process.cancel_timer(last.timer_ref)
-        remaining = List.delete_at(socket.assigns.pending_invites, -1)
-        try_remove_invite_exception(last.channel, socket.assigns.session.nickname)
-        {:halt, assign(socket, pending_invites: remaining)}
-
-      socket.assigns.show_perform_dialog ->
-        {:halt, close_perform_dialog(socket)}
-
-      socket.assigns.show_log_viewer ->
-        {:halt, close_log_viewer(socket)}
-
-      socket.assigns.show_channel_central ->
-        {:halt, close_channel_central(socket)}
-
-      socket.assigns.search_visible ->
-        {:halt, clear_search_state(socket)}
-
-      true ->
-        {:halt, socket}
-    end
+    {:halt, dismiss_topmost(socket)}
   end
 
-  # Catch-all for unhandled window_keydown
-  def handle_event("window_keydown", _params, socket) do
-    {:halt, socket}
+  # Dynamic key binding lookup for all other shortcuts
+  def handle_event("window_keydown", params, socket) do
+    bindings = socket.assigns.session.user_preferences.key_bindings
+
+    case KeyBindings.find_action(bindings, params) do
+      nil -> {:halt, socket}
+      action -> {:halt, dispatch_action(action, socket)}
+    end
   end
 
   # Catch-all — pass through all non-keyboard events
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
   # ---------------------------------------------------------------------------
-  # Private helpers (local copies)
+  # Action dispatchers
+  # ---------------------------------------------------------------------------
+
+  defp dispatch_action(:toggle_search, socket) do
+    assign(socket, search_visible: true)
+  end
+
+  defp dispatch_action(:toggle_address_book, socket) do
+    if socket.assigns.show_address_book do
+      assign(socket,
+        show_address_book: false,
+        address_book_tab: "contacts",
+        contacts_selected: nil,
+        show_contact_add_dialog: false,
+        show_contact_edit_dialog: false
+      )
+    else
+      assign(socket, show_address_book: true)
+    end
+  end
+
+  defp dispatch_action(:toggle_ignore_dialog, socket) do
+    if socket.assigns.show_ignore_dialog do
+      assign(socket,
+        show_ignore_dialog: false,
+        ignore_selected: nil,
+        show_ignore_add_dialog: false
+      )
+    else
+      assign(socket, show_ignore_dialog: true)
+    end
+  end
+
+  defp dispatch_action(:toggle_highlight_dialog, socket) do
+    if socket.assigns.show_highlight_dialog do
+      assign(socket,
+        show_highlight_dialog: false,
+        show_highlight_add_dialog: false,
+        show_highlight_edit_dialog: false,
+        highlight_selected: nil
+      )
+    else
+      assign(socket, show_highlight_dialog: true)
+    end
+  end
+
+  defp dispatch_action(:toggle_url_catcher, socket) do
+    assign(socket, show_url_catcher: !socket.assigns.show_url_catcher)
+  end
+
+  defp dispatch_action(:toggle_log_viewer, socket) do
+    if socket.assigns.show_log_viewer do
+      close_log_viewer(socket)
+    else
+      open_log_viewer(socket)
+    end
+  end
+
+  defp dispatch_action(:toggle_perform_dialog, socket) do
+    if socket.assigns.show_perform_dialog do
+      close_perform_dialog(socket)
+    else
+      assign(socket, show_perform_dialog: true)
+    end
+  end
+
+  defp dispatch_action(:toggle_options_dialog, socket) do
+    if socket.assigns.show_options_dialog do
+      assign(socket, show_options_dialog: false, options_draft: nil)
+    else
+      draft = socket.assigns.session.user_preferences
+      assign(socket, show_options_dialog: true, options_draft: draft)
+    end
+  end
+
+  defp dispatch_action(:open_help, socket) do
+    assign(socket,
+      show_help_dialog: true,
+      help_active_tab: "contents",
+      help_selected_topic: nil,
+      help_index_filter: "",
+      help_search_query: "",
+      help_search_results: []
+    )
+  end
+
+  defp dispatch_action(_unknown, socket), do: socket
+
+  # ---------------------------------------------------------------------------
+  # Escape handler — dismiss topmost dialog/overlay
+  # ---------------------------------------------------------------------------
+
+  defp dismiss_topmost(socket) do
+    cond do
+      socket.assigns.pending_invites != [] ->
+        last = List.last(socket.assigns.pending_invites)
+        Process.cancel_timer(last.timer_ref)
+        remaining = List.delete_at(socket.assigns.pending_invites, -1)
+        try_remove_invite_exception(last.channel, socket.assigns.session.nickname)
+        assign(socket, pending_invites: remaining)
+
+      socket.assigns.show_options_dialog ->
+        assign(socket, show_options_dialog: false, options_draft: nil)
+
+      socket.assigns.show_perform_dialog ->
+        close_perform_dialog(socket)
+
+      socket.assigns.show_log_viewer ->
+        close_log_viewer(socket)
+
+      socket.assigns.show_channel_central ->
+        close_channel_central(socket)
+
+      socket.assigns.search_visible ->
+        clear_search_state(socket)
+
+      true ->
+        socket
+    end
+  end
+
+  # ---------------------------------------------------------------------------
+  # Private helpers
   # ---------------------------------------------------------------------------
 
   defp open_log_viewer(socket) do
