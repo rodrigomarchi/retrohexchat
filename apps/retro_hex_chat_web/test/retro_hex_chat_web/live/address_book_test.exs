@@ -22,28 +22,34 @@ defmodule RetroHexChatWeb.AddressBookTest do
   # ── Phase 3: US1 — Dialog Shell ──────────────────────────
 
   describe "dialog open/close" do
-    test "Alt+B opens the dialog", %{conn: conn} do
+    test "Ctrl+Shift+A opens the dialog", %{conn: conn} do
       view = connect_user(conn, "AltBUser")
       refute render(view) =~ "address-book-dialog"
 
       html =
         view
         |> element("#app-container")
-        |> render_keydown(%{"key" => "b", "altKey" => true})
+        |> render_keydown(%{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
 
       assert html =~ "address-book-dialog"
       assert html =~ "title-bar-text\">Address Book</div>"
     end
 
-    test "Alt+B toggles dialog closed", %{conn: conn} do
+    test "Ctrl+Shift+A toggles dialog closed", %{conn: conn} do
       view = connect_user(conn, "AltBToggle")
 
       # Open
-      view |> element("#app-container") |> render_keydown(%{"key" => "b", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
+
       assert render(view) =~ "address-book-dialog"
 
       # Close
-      view |> element("#app-container") |> render_keydown(%{"key" => "b", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
+
       refute render(view) =~ "address-book-dialog"
     end
 

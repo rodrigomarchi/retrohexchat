@@ -26,15 +26,15 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     end
 
     @tag :unit
-    test "search is Ctrl+F" do
+    test "search is Ctrl+Shift+F" do
       bindings = KeyBindings.defaults()
-      assert bindings.toggle_search == %{key: "f", modifiers: [:ctrl]}
+      assert bindings.toggle_search == %{key: "f", modifiers: [:ctrl, :shift]}
     end
 
     @tag :unit
-    test "help is F1 with no modifiers" do
+    test "help is Ctrl+Shift+/" do
       bindings = KeyBindings.defaults()
-      assert bindings.open_help == %{key: "F1", modifiers: []}
+      assert bindings.open_help == %{key: "/", modifiers: [:ctrl, :shift]}
     end
   end
 
@@ -55,15 +55,15 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     test "finds action by matching key and modifiers" do
       bindings = KeyBindings.defaults()
 
-      params = %{"key" => "b", "altKey" => true, "ctrlKey" => false, "shiftKey" => false}
+      params = %{"key" => "a", "altKey" => false, "ctrlKey" => true, "shiftKey" => true}
       assert KeyBindings.find_action(bindings, params) == :toggle_address_book
     end
 
     @tag :unit
-    test "finds F1 action with no modifiers" do
+    test "finds Ctrl+Shift+/ action for help" do
       bindings = KeyBindings.defaults()
 
-      params = %{"key" => "F1", "altKey" => false, "ctrlKey" => false, "shiftKey" => false}
+      params = %{"key" => "/", "altKey" => false, "ctrlKey" => true, "shiftKey" => true}
       assert KeyBindings.find_action(bindings, params) == :open_help
     end
 
@@ -71,7 +71,7 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     test "returns nil for unbound combination" do
       bindings = KeyBindings.defaults()
 
-      params = %{"key" => "z", "altKey" => true, "ctrlKey" => false, "shiftKey" => false}
+      params = %{"key" => "z", "altKey" => false, "ctrlKey" => true, "shiftKey" => true}
       assert KeyBindings.find_action(bindings, params) == nil
     end
 
@@ -79,7 +79,7 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     test "is case-insensitive for single letter keys" do
       bindings = KeyBindings.defaults()
 
-      params = %{"key" => "B", "altKey" => true, "ctrlKey" => false, "shiftKey" => false}
+      params = %{"key" => "A", "altKey" => false, "ctrlKey" => true, "shiftKey" => true}
       assert KeyBindings.find_action(bindings, params) == :toggle_address_book
     end
 
@@ -87,8 +87,8 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     test "does not match when extra modifiers are present" do
       bindings = KeyBindings.defaults()
 
-      # Alt+Shift+B should NOT match Alt+B
-      params = %{"key" => "b", "altKey" => true, "ctrlKey" => false, "shiftKey" => true}
+      # Alt+Ctrl+Shift+A should NOT match Ctrl+Shift+A
+      params = %{"key" => "a", "altKey" => true, "ctrlKey" => true, "shiftKey" => true}
       assert KeyBindings.find_action(bindings, params) == nil
     end
   end
@@ -97,22 +97,22 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     @tag :unit
     test "detects conflict with another action" do
       bindings = KeyBindings.defaults()
-      # Try to bind toggle_search to Alt+B (already toggle_address_book)
-      new_binding = %{key: "b", modifiers: [:alt]}
+      # Try to bind toggle_search to Ctrl+Shift+A (already toggle_address_book)
+      new_binding = %{key: "a", modifiers: [:ctrl, :shift]}
       assert KeyBindings.conflict?(bindings, :toggle_search, new_binding) == :toggle_address_book
     end
 
     @tag :unit
     test "returns nil when binding the same action (no conflict with self)" do
       bindings = KeyBindings.defaults()
-      same_binding = %{key: "b", modifiers: [:alt]}
+      same_binding = %{key: "a", modifiers: [:ctrl, :shift]}
       assert KeyBindings.conflict?(bindings, :toggle_address_book, same_binding) == nil
     end
 
     @tag :unit
     test "returns nil for a free combination" do
       bindings = KeyBindings.defaults()
-      new_binding = %{key: "z", modifiers: [:alt]}
+      new_binding = %{key: "z", modifiers: [:ctrl, :shift]}
       assert KeyBindings.conflict?(bindings, :toggle_search, new_binding) == nil
     end
   end
@@ -149,25 +149,42 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     end
 
     @tag :unit
-    test "Alt+B is NOT reserved" do
-      refute KeyBindings.reserved?(%{key: "b", modifiers: [:alt]})
+    test "Alt+B IS reserved (all Alt+letter combos are reserved)" do
+      assert KeyBindings.reserved?(%{key: "b", modifiers: [:alt]})
     end
 
     @tag :unit
-    test "F1 with no modifiers is NOT reserved" do
-      refute KeyBindings.reserved?(%{key: "F1", modifiers: []})
+    test "F1 with no modifiers IS reserved" do
+      assert KeyBindings.reserved?(%{key: "F1", modifiers: []})
+    end
+
+    @tag :unit
+    test "Ctrl+Shift+I is reserved (DevTools)" do
+      assert KeyBindings.reserved?(%{key: "i", modifiers: [:ctrl, :shift]})
+    end
+
+    @tag :unit
+    test "formatting key Ctrl+Shift+B is reserved" do
+      assert KeyBindings.reserved?(%{key: "b", modifiers: [:ctrl, :shift]})
+    end
+
+    @tag :unit
+    test "Ctrl+Shift+Q is NOT reserved" do
+      refute KeyBindings.reserved?(%{key: "q", modifiers: [:ctrl, :shift]})
     end
   end
 
   describe "to_display_string/1" do
     @tag :unit
-    test "formats Alt+B" do
-      assert KeyBindings.to_display_string(%{key: "b", modifiers: [:alt]}) == "Alt+B"
+    test "formats Ctrl+Shift+A" do
+      assert KeyBindings.to_display_string(%{key: "a", modifiers: [:ctrl, :shift]}) ==
+               "Ctrl+Shift+A"
     end
 
     @tag :unit
-    test "formats Ctrl+F" do
-      assert KeyBindings.to_display_string(%{key: "f", modifiers: [:ctrl]}) == "Ctrl+F"
+    test "formats Ctrl+Shift+F" do
+      assert KeyBindings.to_display_string(%{key: "f", modifiers: [:ctrl, :shift]}) ==
+               "Ctrl+Shift+F"
     end
 
     @tag :unit
@@ -177,8 +194,9 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     end
 
     @tag :unit
-    test "formats F1 with no modifiers" do
-      assert KeyBindings.to_display_string(%{key: "F1", modifiers: []}) == "F1"
+    test "formats Ctrl+Shift+/" do
+      assert KeyBindings.to_display_string(%{key: "/", modifiers: [:ctrl, :shift]}) ==
+               "Ctrl+Shift+/"
     end
   end
 
@@ -192,7 +210,7 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     test "fails for conflicting bindings" do
       bindings =
         KeyBindings.defaults()
-        |> Map.put(:toggle_search, %{key: "b", modifiers: [:alt]})
+        |> Map.put(:toggle_search, %{key: "a", modifiers: [:ctrl, :shift]})
 
       assert {:error, message} = KeyBindings.validate(bindings)
       assert message =~ "Conflict"

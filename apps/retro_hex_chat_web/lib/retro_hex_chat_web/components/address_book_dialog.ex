@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.AddressBookDialog do
   @moduledoc """
-  Address Book tabbed dialog (Alt+B) with four tabs:
+  Address Book tabbed dialog (Ctrl+Shift+A) with four tabs:
   Contacts, Notify, Nick Colors, Control.
   Uses native 98.css tab controls.
   """

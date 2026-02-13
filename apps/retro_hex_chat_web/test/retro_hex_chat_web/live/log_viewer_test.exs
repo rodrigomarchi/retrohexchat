@@ -57,27 +57,35 @@ defmodule RetroHexChatWeb.LogViewerTest do
   # ── US1: Open/Close Dialog ─────────────────────────────────
 
   describe "open/close dialog" do
-    test "Alt+L opens the log viewer dialog", %{conn: conn} do
+    test "Ctrl+Shift+L opens the log viewer dialog", %{conn: conn} do
       nick = "LogOpen#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
 
       html = render(view)
       assert html =~ "log-viewer-dialog"
       assert html =~ "Log Viewer"
     end
 
-    test "Alt+L toggles the log viewer closed", %{conn: conn} do
+    test "Ctrl+Shift+L toggles the log viewer closed", %{conn: conn} do
       nick = "LogTog#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
       # Open
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       assert render(view) =~ "log-viewer-dialog"
 
       # Close
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       refute render(view) =~ "log-viewer-dialog"
     end
 
@@ -85,7 +93,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
       nick = "LogEsc#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       assert render(view) =~ "log-viewer-dialog"
 
       view |> element("#app-container") |> render_keydown(%{"key" => "Escape"})
@@ -96,7 +107,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
       nick = "LogCls#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       assert render(view) =~ "log-viewer-dialog"
 
       view
@@ -130,7 +144,9 @@ defmodule RetroHexChatWeb.LogViewerTest do
       nick = "LogInit#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
 
       html = render(view)
       assert html =~ "Select a source and click Search to view logs"
@@ -147,7 +163,9 @@ defmodule RetroHexChatWeb.LogViewerTest do
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
 
       # Open log viewer
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
 
       html = render(view)
       assert html =~ ch
@@ -175,7 +193,9 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
 
       # Select the channel source
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
@@ -202,7 +222,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       # Search with text filter
@@ -233,7 +256,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       # Search with nick filter
@@ -261,7 +287,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       html = render(view)
@@ -293,7 +322,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       html = render(view)
@@ -321,7 +353,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       # Navigate to page 2
@@ -356,7 +391,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       # Set date_from to Feb 1
@@ -374,7 +412,9 @@ defmodule RetroHexChatWeb.LogViewerTest do
       nick = "LogBad#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
 
       view |> element("[data-testid=log-date-from]") |> render_change(%{"date" => "not-a-date"})
 
@@ -403,7 +443,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       html = render(view)
@@ -433,7 +476,9 @@ defmodule RetroHexChatWeb.LogViewerTest do
       # Join a channel (guest, not identified)
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
 
       html = render(view)
       assert html =~ ch
@@ -447,7 +492,9 @@ defmodule RetroHexChatWeb.LogViewerTest do
       nick = "LogPrf#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
 
       # Toggle joins off
       view
@@ -463,7 +510,9 @@ defmodule RetroHexChatWeb.LogViewerTest do
       nick = "LogTs#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
 
       view
       |> element("[data-testid=log-timestamp-format]")
@@ -495,7 +544,9 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
 
       # Select PM source
       view
@@ -515,7 +566,9 @@ defmodule RetroHexChatWeb.LogViewerTest do
       nick = "LogRst#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
 
       # Select empty source
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ""})
@@ -545,7 +598,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       # Click export txt
@@ -573,7 +629,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       # Click export html
@@ -587,7 +646,9 @@ defmodule RetroHexChatWeb.LogViewerTest do
       nick = "LogExD#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
 
       html = render(view)
       # Export buttons should be disabled (no results yet)
@@ -610,7 +671,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
       Process.sleep(100)
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       # Results are empty, export should be disabled

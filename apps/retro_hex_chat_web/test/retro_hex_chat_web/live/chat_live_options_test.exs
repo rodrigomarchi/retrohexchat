@@ -32,12 +32,12 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
     end
 
     @tag :liveview
-    test "opens via Alt+O keyboard shortcut", %{conn: conn} do
+    test "opens via Ctrl+Shift+O keyboard shortcut", %{conn: conn} do
       view = connect_user(conn)
 
       view
       |> element("#app-container")
-      |> render_keydown(%{"key" => "o", "altKey" => true})
+      |> render_keydown(%{"key" => "o", "ctrlKey" => true, "shiftKey" => true})
 
       html = render(view)
       assert html =~ ~s(data-testid="options-dialog")
@@ -91,13 +91,13 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
     end
 
     @tag :liveview
-    test "Alt+O toggles dialog closed when open", %{conn: conn} do
+    test "Ctrl+Shift+O toggles dialog closed when open", %{conn: conn} do
       view = connect_user(conn) |> open_options()
       assert render(view) =~ ~s(data-testid="options-dialog")
 
       view
       |> element("#app-container")
-      |> render_keydown(%{"key" => "o", "altKey" => true})
+      |> render_keydown(%{"key" => "o", "ctrlKey" => true, "shiftKey" => true})
 
       refute render(view) =~ ~s(data-testid="options-dialog")
     end
@@ -640,8 +640,8 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
 
       html = render(view)
       # Should still show the default bindings
-      assert html =~ "Alt+O"
-      assert html =~ "F1"
+      assert html =~ "Ctrl+Shift+O"
+      assert html =~ "Ctrl+Shift+/"
     end
 
     @tag :liveview
@@ -666,18 +666,18 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
       view
       |> render_click("options_select_binding", %{"action" => "toggle_search"})
 
-      # Simulate capturing a key
+      # Simulate capturing a key (Ctrl+Shift+Q is not reserved)
       view
       |> render_click("options_capture_key", %{
         "action" => "toggle_search",
-        "key" => "g",
+        "key" => "q",
         "ctrlKey" => true,
         "altKey" => false,
-        "shiftKey" => false
+        "shiftKey" => true
       })
 
       html = render(view)
-      assert html =~ "Ctrl+G"
+      assert html =~ "Ctrl+Shift+Q"
     end
 
     @tag :liveview
@@ -701,7 +701,7 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
       # Should have a warning assign set (keybinding_warning)
       # The binding should NOT be changed
       html = render(view)
-      assert html =~ "Ctrl+F"
+      assert html =~ "Ctrl+Shift+F"
     end
 
     @tag :liveview
@@ -721,22 +721,22 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
       view = connect_user(conn) |> open_options()
       view |> element(~s([data-testid="options-tree-keybindings"])) |> render_click()
 
-      # Change the search shortcut to Ctrl+G
+      # Change the search shortcut to Ctrl+Shift+Q
       view
       |> render_click("options_capture_key", %{
         "action" => "toggle_search",
-        "key" => "g",
+        "key" => "q",
         "ctrlKey" => true,
         "altKey" => false,
-        "shiftKey" => false
+        "shiftKey" => true
       })
 
       view |> element(~s([data-testid="options-ok"])) |> render_click()
 
-      # Now Ctrl+G should open search
+      # Now Ctrl+Shift+Q should open search
       view
       |> element("#app-container")
-      |> render_keydown(%{"key" => "g", "ctrlKey" => true})
+      |> render_keydown(%{"key" => "q", "ctrlKey" => true, "shiftKey" => true})
 
       html = render(view)
       assert html =~ ~s(class="search-bar)

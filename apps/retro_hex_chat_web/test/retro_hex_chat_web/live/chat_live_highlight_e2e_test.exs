@@ -190,13 +190,25 @@ defmodule RetroHexChatWeb.ChatLiveHighlightE2ETest do
       refute html =~ "highlight-dialog"
     end
 
-    test "Alt+H toggles dialog", %{conn: conn} do
+    test "Ctrl+Shift+H toggles dialog", %{conn: conn} do
       view = connect_user(conn, "E2EAltH#{uid()}")
 
-      html = render_keydown(view, "window_keydown", %{"key" => "h", "altKey" => true})
+      html =
+        render_keydown(view, "window_keydown", %{
+          "key" => "h",
+          "ctrlKey" => true,
+          "shiftKey" => true
+        })
+
       assert html =~ "highlight-dialog"
 
-      html = render_keydown(view, "window_keydown", %{"key" => "h", "altKey" => true})
+      html =
+        render_keydown(view, "window_keydown", %{
+          "key" => "h",
+          "ctrlKey" => true,
+          "shiftKey" => true
+        })
+
       refute html =~ "highlight-dialog"
     end
 

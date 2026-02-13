@@ -72,21 +72,21 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
       refute render(view) =~ "address-book-dialog"
     end
 
-    test "Alt+B toggle opens and closes dialog", %{conn: conn} do
+    test "Ctrl+Shift+A toggle opens and closes dialog", %{conn: conn} do
       view = connect_user(conn, "E2EAltB#{uid()}")
       refute render(view) =~ "address-book-dialog"
 
       # Open
       view
       |> element("#app-container")
-      |> render_keydown(%{"key" => "b", "altKey" => true})
+      |> render_keydown(%{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
 
       assert render(view) =~ "address-book-dialog"
 
       # Close
       view
       |> element("#app-container")
-      |> render_keydown(%{"key" => "b", "altKey" => true})
+      |> render_keydown(%{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
 
       refute render(view) =~ "address-book-dialog"
     end

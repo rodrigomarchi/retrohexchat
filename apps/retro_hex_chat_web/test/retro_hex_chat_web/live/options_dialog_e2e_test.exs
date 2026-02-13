@@ -19,14 +19,14 @@ defmodule RetroHexChatWeb.OptionsDialogE2ETest do
   # ---------------------------------------------------------------------------
 
   describe "Dialog open/close" do
-    test "1.1 Alt+O opens options dialog", %{conn: conn} do
+    test "1.1 Ctrl+Shift+O opens options dialog", %{conn: conn} do
       view = connect_user(conn, "E2EOpt#{uid()}")
       refute render(view) =~ "options-dialog-overlay"
 
       html =
         view
         |> element("#app-container")
-        |> render_keydown(%{"key" => "o", "altKey" => true})
+        |> render_keydown(%{"key" => "o", "ctrlKey" => true, "shiftKey" => true})
 
       assert html =~ "options-dialog-overlay"
       assert html =~ "Options"
@@ -294,9 +294,9 @@ defmodule RetroHexChatWeb.OptionsDialogE2ETest do
         "shiftKey" => false
       })
 
-      # Binding should remain as Ctrl+F (not changed to Ctrl+W)
+      # Binding should remain as Ctrl+Shift+F (not changed to Ctrl+W)
       html = render(view)
-      assert html =~ "Ctrl+F"
+      assert html =~ "Ctrl+Shift+F"
     end
   end
 

@@ -6,17 +6,27 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   # ── Open / Close ──────────────────────────────────────────
 
   describe "perform dialog open/close" do
-    test "Alt+P opens and closes dialog", %{conn: conn} do
+    test "Ctrl+Shift+E opens and closes dialog", %{conn: conn} do
       nick = "PDlgAP#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
 
       # Open
-      render_keydown(view, "window_keydown", %{"key" => "p", "altKey" => true})
+      render_keydown(view, "window_keydown", %{
+        "key" => "e",
+        "ctrlKey" => true,
+        "shiftKey" => true
+      })
+
       html = render(view)
       assert html =~ "Perform / Auto-Commands"
 
       # Close
-      render_keydown(view, "window_keydown", %{"key" => "p", "altKey" => true})
+      render_keydown(view, "window_keydown", %{
+        "key" => "e",
+        "ctrlKey" => true,
+        "shiftKey" => true
+      })
+
       html = render(view)
       refute html =~ "Perform / Auto-Commands"
     end

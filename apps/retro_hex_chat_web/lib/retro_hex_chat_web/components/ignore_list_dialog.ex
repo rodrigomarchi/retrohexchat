@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.IgnoreListDialog do
   @moduledoc """
-  Ignore List management dialog (Alt+I).
+  Ignore List management dialog (Ctrl+Shift+G).
   Shows ignored users with type and expiration, Add/Remove buttons.
   """
   use Phoenix.Component

@@ -275,7 +275,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-perform")
       assert topic.content =~ "Perform"
       assert topic.content =~ "auto-join"
-      assert topic.content =~ "Alt+P"
+      assert topic.content =~ "Ctrl+Shift+E"
       assert topic.content =~ "Enable"
       assert topic.content =~ "Execution Order"
     end
@@ -326,10 +326,10 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     end
   end
 
-  describe "keyboard shortcuts includes Alt+P" do
-    test "Alt+P is listed in keyboard shortcuts" do
+  describe "keyboard shortcuts includes Ctrl+Shift+E for Perform" do
+    test "Ctrl+Shift+E is listed in keyboard shortcuts" do
       topic = HelpTopics.get_topic("keyboard-shortcuts")
-      assert topic.content =~ "Alt+P"
+      assert topic.content =~ "Ctrl+Shift+E"
       assert topic.content =~ "Perform Dialog"
     end
   end
@@ -376,7 +376,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
 
     test "content covers key functionality" do
       topic = HelpTopics.get_topic("feature-log-viewer")
-      assert topic.content =~ "Alt+L"
+      assert topic.content =~ "Ctrl+Shift+L"
       assert topic.content =~ "Source"
       assert topic.content =~ "Date Range"
       assert topic.content =~ "Nickname"
@@ -414,10 +414,10 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     end
   end
 
-  describe "keyboard shortcuts includes Alt+L" do
-    test "Alt+L is listed in keyboard shortcuts" do
+  describe "keyboard shortcuts includes Ctrl+Shift+L for Log Viewer" do
+    test "Ctrl+Shift+L is listed in keyboard shortcuts" do
       topic = HelpTopics.get_topic("keyboard-shortcuts")
-      assert topic.content =~ "Alt+L"
+      assert topic.content =~ "Ctrl+Shift+L"
       assert topic.content =~ "Log Viewer"
     end
   end

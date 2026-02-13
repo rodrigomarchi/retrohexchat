@@ -55,14 +55,20 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
   # ── US1: Open/Close ────────────────────────────────────────
 
   describe "E2E: open/close log viewer" do
-    test "Alt+L opens and closes", %{conn: conn} do
+    test "Ctrl+Shift+L opens and closes", %{conn: conn} do
       nick = "E2eLv#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       assert render(view) =~ "log-viewer-dialog"
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       refute render(view) =~ "log-viewer-dialog"
     end
 
@@ -70,7 +76,10 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
       nick = "E2eEsc#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
 
-      view |> element("#app-container") |> render_keydown(%{"key" => "l", "altKey" => true})
+      view
+      |> element("#app-container")
+      |> render_keydown(%{"key" => "l", "ctrlKey" => true, "shiftKey" => true})
+
       view |> element("#app-container") |> render_keydown(%{"key" => "Escape"})
       refute render(view) =~ "log-viewer-dialog"
     end
