@@ -50,6 +50,31 @@ defmodule RetroHexChat.Commands.Registry do
     "whowas" => RetroHexChat.Commands.Handlers.Whowas
   }
 
+  @category_order [:basics, :channel, :user, :config, :advanced]
+  @category_labels %{
+    basics: "Básicos",
+    channel: "Canal",
+    user: "Usuário",
+    config: "Configuração",
+    advanced: "Avançado"
+  }
+
+  @command_metadata (for {name, module} <- @commands do
+                       help = module.help()
+
+                       category =
+                         if function_exported?(module, :category, 0),
+                           do: module.category(),
+                           else: :basics
+
+                       %{
+                         name: name,
+                         description: help.description,
+                         category: Map.fetch!(@category_labels, category),
+                         category_atom: category
+                       }
+                     end)
+
   @spec lookup(String.t()) :: {:ok, module()} | {:error, :unknown_command}
   def lookup(name) do
     case Map.fetch(@commands, name) do
@@ -65,4 +90,34 @@ defmodule RetroHexChat.Commands.Registry do
 
   @spec known?(String.t()) :: boolean()
   def known?(name), do: Map.has_key?(@commands, name)
+
+  @doc """
+  Returns metadata for all commands: name, description, category label.
+  """
+  @spec command_metadata() :: [
+          %{
+            name: String.t(),
+            description: String.t(),
+            category: String.t(),
+            category_atom: atom()
+          }
+        ]
+  def command_metadata, do: @command_metadata
+
+  @doc """
+  Returns commands grouped by category in display order.
+  Each group is `{category_label, [%{name, description}]}`.
+  """
+  @spec commands_by_category() :: [{String.t(), [%{name: String.t(), description: String.t()}]}]
+  def commands_by_category do
+    grouped =
+      @command_metadata
+      |> Enum.group_by(& &1.category_atom)
+
+    for cat <- @category_order, commands = Map.get(grouped, cat, []), commands != [] do
+      label = Map.fetch!(@category_labels, cat)
+      sorted = Enum.sort_by(commands, & &1.name)
+      {label, Enum.map(sorted, &Map.take(&1, [:name, :description]))}
+    end
+  end
 end

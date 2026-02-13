@@ -38,4 +38,7 @@ defmodule RetroHexChat.Commands.Handlers.ClearWelcome do
       examples: ["/clearwelcome"]
     }
   end
+
+  @impl true
+  def category, do: :advanced
 end

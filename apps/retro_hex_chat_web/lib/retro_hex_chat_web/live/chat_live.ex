@@ -31,7 +31,6 @@ defmodule RetroHexChatWeb.ChatLive do
     UserPreferences
   }
 
-  alias RetroHexChat.Commands.Registry, as: CmdRegistry
   alias RetroHexChat.Presence.{NotifyList, WhowasCache}
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.Helpers
@@ -126,8 +125,12 @@ defmodule RetroHexChatWeb.ChatLive do
     |> assign(
       channel_users: [],
       command_history: [],
-      command_palette_filter: "",
-      command_palette_visible: false,
+      autocomplete_filter: "",
+      autocomplete_mode: nil,
+      autocomplete_results: [],
+      autocomplete_selected: 0,
+      autocomplete_visible: false,
+      recent_commands: [],
       contacts_selected: nil,
       context_menu: %{visible: false, x: 0, y: 0, target_nick: nil},
       nick_color_fn: build_nick_color_fn(session),

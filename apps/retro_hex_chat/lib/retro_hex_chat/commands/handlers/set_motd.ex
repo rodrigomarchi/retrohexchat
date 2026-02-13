@@ -43,4 +43,7 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
       examples: ["/setmotd Welcome to RetroHexChat!"]
     }
   end
+
+  @impl true
+  def category, do: :advanced
 end

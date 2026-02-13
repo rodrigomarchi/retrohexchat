@@ -5,7 +5,7 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import CharCounterHook from "./hooks/char_counter_hook"
-import CommandPaletteHook from "./hooks/command_palette_hook"
+import AutocompleteHook from "./hooks/autocomplete_hook"
 import EmojiPickerHook from "./hooks/emoji_picker_hook"
 import FormatToolbarHook from "./hooks/format_toolbar_hook"
 import KeyBindingCaptureHook from "./hooks/key_binding_capture_hook"
@@ -23,7 +23,7 @@ import URLCatcherHook from "./hooks/url_catcher_hook"
 
 let Hooks = {
   CharCounterHook: CharCounterHook,
-  CommandPaletteHook: CommandPaletteHook,
+  AutocompleteHook: AutocompleteHook,
   EmojiPickerHook: EmojiPickerHook,
   FormatToolbarHook: FormatToolbarHook,
   KeyBindingCaptureHook: KeyBindingCaptureHook,

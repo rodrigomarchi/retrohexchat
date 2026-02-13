@@ -130,4 +130,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
     """
     |> String.trim()
   end
+
+  @impl true
+  def category, do: :config
 end

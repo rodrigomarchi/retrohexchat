@@ -36,4 +36,57 @@ defmodule RetroHexChat.Commands.RegistryTest do
       refute Registry.known?("nonexistent")
     end
   end
+
+  describe "command_metadata/0" do
+    test "returns all commands with metadata" do
+      metadata = Registry.command_metadata()
+      assert is_list(metadata)
+      assert length(metadata) == 43
+
+      join = Enum.find(metadata, &(&1.name == "join"))
+      assert join.description =~ "Join"
+      assert join.category == "Canal"
+      assert join.category_atom == :channel
+    end
+
+    test "each command has required fields" do
+      for cmd <- Registry.command_metadata() do
+        assert is_binary(cmd.name)
+        assert is_binary(cmd.description)
+        assert is_binary(cmd.category)
+        assert cmd.category_atom in [:basics, :channel, :user, :config, :advanced]
+      end
+    end
+  end
+
+  describe "commands_by_category/0" do
+    test "returns commands grouped in display order" do
+      categories = Registry.commands_by_category()
+      labels = Enum.map(categories, &elem(&1, 0))
+
+      assert labels == ["Básicos", "Canal", "Usuário", "Configuração", "Avançado"]
+    end
+
+    test "each group contains sorted commands with name and description" do
+      for {_label, commands} <- Registry.commands_by_category() do
+        assert commands != []
+        names = Enum.map(commands, & &1.name)
+        assert names == Enum.sort(names)
+
+        for cmd <- commands do
+          assert Map.has_key?(cmd, :name)
+          assert Map.has_key?(cmd, :description)
+        end
+      end
+    end
+
+    test "all commands are covered across categories" do
+      all_names =
+        Registry.commands_by_category()
+        |> Enum.flat_map(fn {_label, cmds} -> Enum.map(cmds, & &1.name) end)
+
+      # 43 unique commands (leave is alias for part, both in registry but Part handler covers both)
+      assert length(all_names) == 43
+    end
+  end
 end

@@ -37,4 +37,7 @@ defmodule RetroHexChat.Commands.Handlers.Me do
       examples: ["/me waves hello", "/me is away"]
     }
   end
+
+  @impl true
+  def category, do: :basics
 end

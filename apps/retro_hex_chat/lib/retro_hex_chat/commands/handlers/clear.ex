@@ -29,4 +29,7 @@ defmodule RetroHexChat.Commands.Handlers.Clear do
       examples: ["/clear"]
     }
   end
+
+  @impl true
+  def category, do: :basics
 end

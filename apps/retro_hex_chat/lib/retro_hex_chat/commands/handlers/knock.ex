@@ -42,4 +42,7 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
       ]
     }
   end
+
+  @impl true
+  def category, do: :channel
 end

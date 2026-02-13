@@ -49,4 +49,7 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
       {:error, "You must be a channel operator to ban users"}
     end
   end
+
+  @impl true
+  def category, do: :channel
 end

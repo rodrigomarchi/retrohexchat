@@ -4,12 +4,12 @@ defmodule RetroHexChatWeb.ChannelListLive do
   """
   use RetroHexChatWeb, :live_view
 
-  alias RetroHexChat.Channels.{Registry, Server}
+  alias RetroHexChat.Commands.Autocomplete
 
   @impl true
   def mount(_params, session, socket) do
     viewer_channels = Map.get(session, "channels", [])
-    channels = list_active_channels(viewer_channels)
+    channels = Autocomplete.list_visible_channels(viewer_channels)
 
     {:ok,
      assign(socket,
@@ -109,40 +109,5 @@ defmodule RetroHexChatWeb.ChannelListLive do
       </div>
     </div>
     """
-  end
-
-  @spec list_active_channels([String.t()]) :: [map()]
-  defp list_active_channels(viewer_channels) do
-    Registry.registry_name()
-    |> Elixir.Registry.select([{{:"$1", :"$2", :"$3"}, [], [{{:"$1", :"$2"}}]}])
-    |> Enum.map(fn {channel_name, _pid} ->
-      channel_to_list_entry(channel_name, viewer_channels)
-    end)
-    |> Enum.reject(&is_nil/1)
-    |> Enum.sort_by(& &1.name)
-  end
-
-  defp channel_to_list_entry(channel_name, viewer_channels) do
-    case Server.get_state(channel_name) do
-      {:ok, state} -> apply_visibility(channel_name, state, channel_name in viewer_channels)
-      {:error, _} -> nil
-    end
-  end
-
-  defp apply_visibility(_channel_name, state, false = _is_member) do
-    cond do
-      Map.get(state.modes_detail, :secret, false) ->
-        nil
-
-      Map.get(state.modes_detail, :private, false) ->
-        %{name: "Prv", topic: nil, user_count: state.member_count}
-
-      true ->
-        %{name: state.name, topic: state.topic, user_count: state.member_count}
-    end
-  end
-
-  defp apply_visibility(channel_name, state, true = _is_member) do
-    %{name: channel_name, topic: state.topic, user_count: state.member_count}
   end
 end

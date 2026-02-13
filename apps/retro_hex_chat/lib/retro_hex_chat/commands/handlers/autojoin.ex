@@ -95,4 +95,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
       {:error, "Channel name must start with #"}
     end
   end
+
+  @impl true
+  def category, do: :config
 end

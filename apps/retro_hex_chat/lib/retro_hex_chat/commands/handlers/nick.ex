@@ -56,4 +56,7 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
       examples: ["/nick NewNick", "/nick [Bot]"]
     }
   end
+
+  @impl true
+  def category, do: :basics
 end

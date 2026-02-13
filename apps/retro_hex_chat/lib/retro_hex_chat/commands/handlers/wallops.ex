@@ -53,4 +53,7 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
       examples: ["/wallops Server maintenance in 10 minutes"]
     }
   end
+
+  @impl true
+  def category, do: :user
 end

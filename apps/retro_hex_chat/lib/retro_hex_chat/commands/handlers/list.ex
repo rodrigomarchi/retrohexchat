@@ -29,4 +29,7 @@ defmodule RetroHexChat.Commands.Handlers.List do
       examples: ["/list"]
     }
   end
+
+  @impl true
+  def category, do: :channel
 end

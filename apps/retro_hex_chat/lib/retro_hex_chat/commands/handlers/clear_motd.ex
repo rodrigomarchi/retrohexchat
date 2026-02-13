@@ -36,4 +36,7 @@ defmodule RetroHexChat.Commands.Handlers.ClearMotd do
       examples: ["/clearmotd"]
     }
   end
+
+  @impl true
+  def category, do: :advanced
 end

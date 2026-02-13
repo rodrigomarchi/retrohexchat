@@ -147,4 +147,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         {:error, "[ChanServ] #{msg}"}
     end
   end
+
+  @impl true
+  def category, do: :advanced
 end

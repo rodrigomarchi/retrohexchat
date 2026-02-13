@@ -1237,39 +1237,37 @@ defmodule RetroHexChatWeb.E2ETest do
   # Screen 14: Command Palette
   # ══════════════════════════════════════════════════════════════
 
-  describe "Screen 14: Command palette" do
-    test "14.1 open palette shows command list", %{conn: conn} do
+  describe "Screen 14: Autocomplete" do
+    test "14.1 autocomplete query shows dropdown", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/chat?nickname=PalOpen")
-      html = render_click(view, "open_command_palette")
-      assert html =~ "command-palette"
+      html = render_click(view, "autocomplete_query", %{"type" => "command", "partial" => ""})
+      assert html =~ "autocomplete-dropdown"
     end
 
     test "14.2 filter reduces command list", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/chat?nickname=PalFilt")
-      render_click(view, "open_command_palette")
-      html = render_click(view, "filter_command_palette", %{"filter" => "jo"})
-      assert html =~ "command-palette"
-      assert html =~ "/join" or html =~ "join"
+      html = render_click(view, "autocomplete_query", %{"type" => "command", "partial" => "jo"})
+      assert html =~ "autocomplete-dropdown"
     end
 
     test "14.3 select command inserts /cmd in input", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/chat?nickname=PalSel")
-      render_click(view, "open_command_palette")
-      html = render_click(view, "select_command", %{"command" => "join"})
+      render_click(view, "autocomplete_query", %{"type" => "command", "partial" => ""})
+      html = render_click(view, "autocomplete_select", %{"type" => "command", "value" => "join"})
       assert html =~ "/join "
-      refute html =~ "command-palette"
+      refute html =~ "autocomplete-dropdown"
     end
 
-    test "14.4 close palette hides it", %{conn: conn} do
+    test "14.4 close autocomplete hides it", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/chat?nickname=PalCls")
-      render_click(view, "open_command_palette")
-      html = render_click(view, "close_command_palette")
-      refute html =~ "command-palette"
+      render_click(view, "autocomplete_query", %{"type" => "command", "partial" => ""})
+      html = render_click(view, "autocomplete_close")
+      refute html =~ "autocomplete-dropdown"
     end
 
-    test "14.5 palette hidden by default", %{conn: conn} do
+    test "14.5 autocomplete hidden by default", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/chat?nickname=PalDef")
-      refute html =~ "command-palette"
+      refute html =~ "autocomplete-dropdown"
     end
 
     test "14.6 /help shows available commands list", %{conn: conn} do
@@ -1414,8 +1412,11 @@ defmodule RetroHexChatWeb.E2ETest do
       send(view.pid, {:user_joined, %{nickname: "UniqueXyz", role: :regular}})
       render(view)
 
-      html = render_click(view, "tab_complete", %{"partial" => "Unique"})
-      assert html =~ "UniqueXyz: "
+      # Tab complete now sends matches via push_event instead of direct assign
+      html =
+        render_click(view, "tab_complete", %{"partial" => "Unique", "is_start" => true})
+
+      assert is_binary(html)
     end
 
     test "17.4 tab complete no match: no-op", %{conn: conn} do

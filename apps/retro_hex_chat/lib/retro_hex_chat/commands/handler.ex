@@ -29,6 +29,8 @@ defmodule RetroHexChat.Commands.Handler do
           | {:ok, :ui_action, atom(), map()}
           | {:error, String.t()}
 
+  @type category :: :basics | :channel | :user | :config | :advanced
+
   @callback execute(args :: [String.t()], context :: context()) :: result()
   @callback validate(raw_args :: String.t()) :: :ok | {:error, String.t()}
   @callback help() :: %{
@@ -37,4 +39,7 @@ defmodule RetroHexChat.Commands.Handler do
               description: String.t(),
               examples: [String.t()]
             }
+  @callback category() :: category()
+
+  @optional_callbacks [category: 0]
 end

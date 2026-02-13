@@ -52,4 +52,7 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
       {:error, "You must be a channel operator to kick users"}
     end
   end
+
+  @impl true
+  def category, do: :channel
 end

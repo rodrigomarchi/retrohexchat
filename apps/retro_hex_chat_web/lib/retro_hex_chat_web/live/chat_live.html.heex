@@ -155,10 +155,11 @@
           emojis={@emoji_emojis}
           search_query={@emoji_search}
         />
-        <RetroHexChatWeb.Components.CommandPalette.command_palette
-          visible={@command_palette_visible}
-          commands={CmdRegistry.list_commands()}
-          filter={@command_palette_filter}
+        <RetroHexChatWeb.Components.AutocompleteDropdown.autocomplete_dropdown
+          visible={@autocomplete_visible}
+          mode={@autocomplete_mode || :command}
+          results={@autocomplete_results}
+          selected={@autocomplete_selected}
         />
         <form phx-submit="send_input" class="chat-input-form">
           <input
@@ -170,7 +171,7 @@
             autocomplete="off"
             autofocus
             maxlength="1000"
-            phx-hook="CommandPaletteHook"
+            phx-hook="AutocompleteHook"
           />
           <button type="submit">Send</button>
         </form>

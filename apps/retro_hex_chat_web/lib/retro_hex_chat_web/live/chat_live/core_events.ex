@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.Queries
-  alias RetroHexChat.Commands.Parser
+  alias RetroHexChat.Commands.{Autocomplete, Parser}
   alias RetroHexChatWeb.ChatLive
 
   # -- send_input --
@@ -223,14 +223,24 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   # -- tab_complete --
 
-  def handle_event("tab_complete", %{"partial" => partial}, socket) do
+  def handle_event("tab_complete", %{"partial" => partial, "is_start" => is_start}, socket) do
     users = socket.assigns.channel_users
-    matches = Enum.filter(users, &String.starts_with?(&1.nickname, partial))
+    own_nick = socket.assigns.session.nickname
+
+    matches =
+      Autocomplete.tab_complete_matches(partial, users, own_nick)
 
     case matches do
-      [match] -> {:halt, assign(socket, input: match.nickname <> ": ")}
-      _ -> {:halt, socket}
+      [] ->
+        {:halt, socket}
+
+      _ ->
+        {:halt, push_event(socket, "tab_matches", %{matches: matches, is_start: is_start})}
     end
+  end
+
+  def handle_event("tab_complete", %{"partial" => partial}, socket) do
+    handle_event("tab_complete", %{"partial" => partial, "is_start" => true}, socket)
   end
 
   # -- paste_lines / paste_cancel / paste_send --

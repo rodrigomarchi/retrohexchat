@@ -81,4 +81,7 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
       ]
     }
   end
+
+  @impl true
+  def category, do: :config
 end

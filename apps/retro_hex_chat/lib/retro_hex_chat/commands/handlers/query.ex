@@ -32,4 +32,7 @@ defmodule RetroHexChat.Commands.Handlers.Query do
       examples: ["/query Nick"]
     }
   end
+
+  @impl true
+  def category, do: :user
 end
