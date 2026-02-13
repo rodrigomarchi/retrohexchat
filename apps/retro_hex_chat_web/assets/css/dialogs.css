@@ -1,0 +1,99 @@
+/* RetroHexChat — Dialogs: connect, help, reconnect overlay */
+
+/* Connect dialog */
+.connect-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 350px;
+}
+
+.connect-dialog .window-body {
+  padding: 16px;
+}
+
+.connect-dialog fieldset {
+  margin-bottom: 12px;
+}
+
+.connect-dialog label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.connect-dialog input {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.connect-dialog .button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.connect-dialog .error-text {
+  color: #cc0000;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+/* Dialog buttons */
+.dialog-buttons button {
+  min-width: 75px;
+}
+
+/* ── Help Dialog (CHM-style) ────────────────────────────── */
+.help-dialog { width: 700px; height: 500px; display: flex; flex-direction: column; }
+.help-split { display: flex; flex: 1; overflow: hidden; }
+.help-nav { width: 240px; min-width: 240px; display: flex; flex-direction: column; border-right: 2px groove; }
+.help-nav-tabs { margin: 0; }
+.help-nav-content { flex: 1; overflow-y: auto; padding: 4px; }
+.help-content { flex: 1; overflow-y: auto; padding: 16px; background: white; color: black; font-size: 12px; }
+.help-content h3 { font-size: 14px; margin: 0 0 8px; border-bottom: 1px solid #808080; padding-bottom: 4px; }
+.help-content h4 { font-size: 12px; font-weight: bold; margin: 12px 0 4px; }
+.help-content pre { background: #f0f0f0; border: 1px solid #808080; padding: 6px; font-family: "Courier New", monospace; font-size: 11px; margin: 4px 0 8px; overflow-x: auto; }
+.help-content code { background: #f0f0f0; padding: 1px 3px; font-family: "Courier New", monospace; font-size: 11px; }
+.help-content p { margin: 4px 0; }
+.help-tree-active { background: navy; color: white; }
+.help-index-item { padding: 1px 4px; cursor: pointer; }
+.help-index-item:hover { background: navy; color: white; }
+.help-search-result { padding: 4px; cursor: pointer; border-bottom: 1px dotted #c0c0c0; }
+.help-search-result:hover { background: #e0e0e0; }
+.help-search-title { font-weight: bold; font-size: 11px; }
+.help-search-snippet { font-size: 10px; color: #606060; }
+
+/* ── Reconnect Overlay ────────────────────────────────── */
+.reconnect-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reconnect-overlay .window {
+  width: 320px;
+}
+
+.reconnect-overlay .window-body {
+  text-align: center;
+  padding: 16px;
+}
+
+.reconnect-overlay .countdown {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+.reconnect-overlay .attempt-info {
+  color: #808080;
+  font-size: 11px;
+  margin-bottom: 8px;
+}

@@ -1,6 +1,12 @@
 /* RetroHexChat - main CSS entry point */
 @import "../vendor/98.css/98.css";
+
 @import "./layout.css";
+@import "./chat.css";
+@import "./components.css";
+@import "./dialogs.css";
+@import "./formatting.css";
+@import "./status-messages.css";
 
 /* Phoenix LiveView visibility helpers */
 [data-phx-session],

@@ -1,0 +1,128 @@
+/* RetroHexChat — Formatting toolbar, color picker, IRC format codes, mIRC palette */
+
+/* ── Formatting toolbar ──────────────────────────────────── */
+
+.formatting-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 1px 4px;
+  flex-shrink: 0;
+  border-top: 1px solid #dfdfdf;
+  border-bottom: 1px solid #808080;
+}
+
+.format-btn {
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  min-height: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  cursor: pointer;
+  border: 1px outset #dfdfdf;
+  background-color: #d4d0c8;
+  color: #222;
+  user-select: none;
+}
+
+.format-btn:hover {
+  background-color: #e8e4dc;
+}
+
+.format-btn:active {
+  border-style: inset;
+}
+
+.format-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.format-separator {
+  width: 1px;
+  height: 16px;
+  background: #808080;
+  margin: 0 2px;
+}
+
+.format-btn-active {
+  border-style: inset;
+  background-color: #b0b0b0;
+}
+
+.format-color-picker-wrapper {
+  position: relative;
+}
+
+.format-color-dropdown {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  padding: 4px;
+  background: silver;
+  border: 2px outset #dfdfdf;
+  z-index: 100;
+}
+
+.color-swatch {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 1px solid #808080;
+  cursor: pointer;
+}
+
+.color-swatch:hover {
+  border: 2px solid #000000;
+}
+
+/* ── IRC format code styles ──────────────────────────────── */
+.irc-bold { font-weight: bold; }
+.irc-italic { font-style: italic; }
+.irc-underline { text-decoration: underline; }
+.irc-strikethrough { text-decoration: line-through; }
+.irc-underline.irc-strikethrough { text-decoration: underline line-through; }
+.irc-reverse { filter: invert(1); }
+
+/* ── mIRC color palette: 16 foreground colors ────────────── */
+.irc-fg-0  { color: #ffffff; }
+.irc-fg-1  { color: #000000; }
+.irc-fg-2  { color: #00007f; }
+.irc-fg-3  { color: #009300; }
+.irc-fg-4  { color: #ff0000; }
+.irc-fg-5  { color: #7f0000; }
+.irc-fg-6  { color: #9c009c; }
+.irc-fg-7  { color: #fc7f00; }
+.irc-fg-8  { color: #ffff00; }
+.irc-fg-9  { color: #00fc00; }
+.irc-fg-10 { color: #009393; }
+.irc-fg-11 { color: #00ffff; }
+.irc-fg-12 { color: #0000fc; }
+.irc-fg-13 { color: #ff00ff; }
+.irc-fg-14 { color: #7f7f7f; }
+.irc-fg-15 { color: #d2d2d2; }
+
+/* ── mIRC color palette: 16 background colors ────────────── */
+.irc-bg-0  { background-color: #ffffff; }
+.irc-bg-1  { background-color: #000000; }
+.irc-bg-2  { background-color: #00007f; }
+.irc-bg-3  { background-color: #009300; }
+.irc-bg-4  { background-color: #ff0000; }
+.irc-bg-5  { background-color: #7f0000; }
+.irc-bg-6  { background-color: #9c009c; }
+.irc-bg-7  { background-color: #fc7f00; }
+.irc-bg-8  { background-color: #ffff00; }
+.irc-bg-9  { background-color: #00fc00; }
+.irc-bg-10 { background-color: #009393; }
+.irc-bg-11 { background-color: #00ffff; }
+.irc-bg-12 { background-color: #0000fc; }
+.irc-bg-13 { background-color: #ff00ff; }
+.irc-bg-14 { background-color: #7f7f7f; }
+.irc-bg-15 { background-color: #d2d2d2; }
