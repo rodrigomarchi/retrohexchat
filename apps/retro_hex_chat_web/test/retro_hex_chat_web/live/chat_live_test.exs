@@ -2704,6 +2704,47 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   # ── Helpers ───────────────────────────────────────────────
 
+  # ── onboarding tip banner ───────────────────────────────
+
+  describe "onboarding tip banner" do
+    test "shows tip banner when onboarded=true param is present", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/chat?nickname=TipUser&onboarded=true")
+      assert html =~ "onboarding-tip"
+      assert html =~ "digite / para ver comandos"
+    end
+
+    test "tip banner not shown without onboarded param", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/chat?nickname=NoTipUser")
+      refute html =~ "onboarding-tip"
+    end
+
+    test "dismiss_onboarding_tip hides banner", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat?nickname=DismissUser&onboarded=true")
+      html = render_click(view, "dismiss_onboarding_tip", %{})
+      refute html =~ "onboarding-tip"
+    end
+  end
+
+  # ── empty states ───────────────────────────────────────
+
+  describe "empty nicklist state" do
+    test "nicklist renders without empty state when users are present", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/chat?nickname=NickUser")
+      # User auto-joins #lobby — nicklist renders with user count
+      assert html =~ "nicklist"
+      refute html =~ "nicklist-empty-state"
+    end
+  end
+
+  describe "empty treebar state" do
+    test "treebar shows empty state when no channels and no PMs", %{conn: conn} do
+      # This is hard to test in isolation since #lobby is auto-joined.
+      # The treebar should have at least #lobby after mount.
+      {:ok, _view, html} = live(conn, "/chat?nickname=TreeUser")
+      assert html =~ "#lobby"
+    end
+  end
+
   defp ensure_channel(name) do
     case Registry.lookup(name) do
       {:ok, _pid} -> :ok

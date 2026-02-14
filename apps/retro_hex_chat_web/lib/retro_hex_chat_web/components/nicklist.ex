@@ -17,7 +17,14 @@ defmodule RetroHexChatWeb.Components.Nicklist do
     ~H"""
     <div class="nicklist" id="nicklist-container" phx-hook="NicklistHook">
       <div class="nicklist-header">Users ({length(@users)})</div>
-      <ul class="nicklist-list">
+      <div
+        :if={@users == []}
+        class="empty-state nicklist-empty-state"
+        data-testid="nicklist-empty-state"
+      >
+        <p>Ninguém aqui — Você é o(a) primeiro(a)!</p>
+      </div>
+      <ul :if={@users != []} class="nicklist-list">
         <li class="nicklist-group-header">Owners ({length(@grouped.owners)})</li>
         <li
           :for={user <- @grouped.owners}

@@ -19,12 +19,12 @@
 
 **Purpose**: CSS files, JS lib/hook, and app.css/app.js wiring shared by multiple stories
 
-- [ ] T001 [P] Create empty-state CSS in `apps/retro_hex_chat_web/assets/css/empty-state.css` — shared `.empty-state` base class with `user-select: none`, centered text, muted color, `.empty-state-action` button, `.empty-state-tip` italic style (see contracts/components.md)
-- [ ] T002 [P] Create wizard-dialog CSS in `apps/retro_hex_chat_web/assets/css/wizard-dialog.css` — `.wizard-dialog` window sizing, `.wizard-step-indicator`, `.wizard-content`, `.wizard-logo` (ASCII art), `.wizard-tip`, `.wizard-channel-list`, `.wizard-button-bar`, `.onboarding-tip-banner` (see contracts/components.md)
-- [ ] T003 [P] Create onboarding JS lib in `apps/retro_hex_chat_web/assets/js/lib/onboarding.js` — export `isOnboardingComplete()` (reads `retro_hex_chat_onboarding_complete` from localStorage), `markOnboardingComplete()` (sets flag). Pure functions, no DOM.
-- [ ] T004 [P] Create OnboardingHook in `apps/retro_hex_chat_web/assets/js/hooks/onboarding_hook.js` — on `mounted()`: call `isOnboardingComplete()` from lib, `pushEvent("check_onboarding", {first_visit: !complete})`. `handleEvent("mark_onboarding_complete")`: call `markOnboardingComplete()` from lib. (see contracts/liveview-events.md)
-- [ ] T005 Import new CSS files in `apps/retro_hex_chat_web/assets/css/app.css` — add `@import "./empty-state.css"` in Components layer (alphabetical) and `@import "./wizard-dialog.css"` in Dialogs layer (alphabetical)
-- [ ] T006 Register OnboardingHook in `apps/retro_hex_chat_web/assets/js/app.js` — import and add `OnboardingHook` to the `Hooks` object
+- [X] T001 [P] Create empty-state CSS in `apps/retro_hex_chat_web/assets/css/empty-state.css` — shared `.empty-state` base class with `user-select: none`, centered text, muted color, `.empty-state-action` button, `.empty-state-tip` italic style (see contracts/components.md)
+- [X] T002 [P] Create wizard-dialog CSS in `apps/retro_hex_chat_web/assets/css/wizard-dialog.css` — `.wizard-dialog` window sizing, `.wizard-step-indicator`, `.wizard-content`, `.wizard-logo` (ASCII art), `.wizard-tip`, `.wizard-channel-list`, `.wizard-button-bar`, `.onboarding-tip-banner` (see contracts/components.md)
+- [X] T003 [P] Create onboarding JS lib in `apps/retro_hex_chat_web/assets/js/lib/onboarding.js` — export `isOnboardingComplete()` (reads `retro_hex_chat_onboarding_complete` from localStorage), `markOnboardingComplete()` (sets flag). Pure functions, no DOM.
+- [X] T004 [P] Create OnboardingHook in `apps/retro_hex_chat_web/assets/js/hooks/onboarding_hook.js` — on `mounted()`: call `isOnboardingComplete()` from lib, `pushEvent("check_onboarding", {first_visit: !complete})`. `handleEvent("mark_onboarding_complete")`: call `markOnboardingComplete()` from lib. (see contracts/liveview-events.md)
+- [X] T005 Import new CSS files in `apps/retro_hex_chat_web/assets/css/app.css` — add `@import "./empty-state.css"` in Components layer (alphabetical) and `@import "./wizard-dialog.css"` in Dialogs layer (alphabetical)
+- [X] T006 Register OnboardingHook in `apps/retro_hex_chat_web/assets/js/app.js` — import and add `OnboardingHook` to the `Hooks` object
 
 ---
 
@@ -34,8 +34,8 @@
 
 **⚠️ CRITICAL**: JS lib tests validate the localStorage logic all stories depend on
 
-- [ ] T007 [P] Write JS lib tests in `apps/retro_hex_chat_web/assets/test/lib/onboarding.test.js` — test `isOnboardingComplete()` returns false when no key, true when key is "true"; test `markOnboardingComplete()` sets the key. Mock localStorage via jsdom.
-- [ ] T008 [P] Write JS hook tests in `apps/retro_hex_chat_web/assets/test/hooks/onboarding_hook.test.js` — test `mounted()` calls `pushEvent("check_onboarding", {first_visit: true})` when localStorage empty; test `handleEvent("mark_onboarding_complete")` sets localStorage flag. Follow existing hook test patterns.
+- [X] T007 [P] Write JS lib tests in `apps/retro_hex_chat_web/assets/test/lib/onboarding.test.js` — test `isOnboardingComplete()` returns false when no key, true when key is "true"; test `markOnboardingComplete()` sets the key. Mock localStorage via jsdom.
+- [X] T008 [P] Write JS hook tests in `apps/retro_hex_chat_web/assets/test/hooks/onboarding_hook.test.js` — test `mounted()` calls `pushEvent("check_onboarding", {first_visit: true})` when localStorage empty; test `handleEvent("mark_onboarding_complete")` sets localStorage flag. Follow existing hook test patterns.
 
 **Checkpoint**: JS lib + hook tests green. Foundation ready for user stories.
 
@@ -51,17 +51,17 @@
 
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T009 [P] [US1] Write LiveView tests for wizard flow in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/connect_live_test.exs` — test: wizard renders Step 1 when `wizard_mode: true`; Step 1 shows logo, nickname input, tip text; "wizard_validate_nickname" validates input; "wizard_next" from step "welcome" moves to `:server`; "wizard_next" from step "server" moves to `:channels`; "wizard_back" navigates backward; "wizard_dismiss" triggers `mark_onboarding_complete` push; "wizard_skip" navigates to `/chat?onboarded=true`; "wizard_complete" navigates to `/chat?nickname=X&join=ch1,ch2&onboarded=true`; `wizard_mode: false` shows normal connect form
-- [ ] T010 [P] [US1] Write LiveView tests for tip banner in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs` — test: when `onboarded=true` query param is present, `show_onboarding_tip` is true and banner renders with expected text; `dismiss_onboarding_tip` event hides banner; banner not shown when `onboarded` param is absent
+- [X] T009 [P] [US1] Write LiveView tests for wizard flow in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/connect_live_test.exs` — test: wizard renders Step 1 when `wizard_mode: true`; Step 1 shows logo, nickname input, tip text; "wizard_validate_nickname" validates input; "wizard_next" from step "welcome" moves to `:server`; "wizard_next" from step "server" moves to `:channels`; "wizard_back" navigates backward; "wizard_dismiss" triggers `mark_onboarding_complete` push; "wizard_skip" navigates to `/chat?onboarded=true`; "wizard_complete" navigates to `/chat?nickname=X&join=ch1,ch2&onboarded=true`; `wizard_mode: false` shows normal connect form
+- [X] T010 [P] [US1] Write LiveView tests for tip banner in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs` — test: when `onboarded=true` query param is present, `show_onboarding_tip` is true and banner renders with expected text; `dismiss_onboarding_tip` event hides banner; banner not shown when `onboarded` param is absent
 
 ### Implementation for User Story 1
 
-- [ ] T011 [P] [US1] Create WizardDialog component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/wizard_dialog.ex` — function component with attrs per contracts/components.md (visible, step, nickname, nickname_error, server, port, ssl, connecting, connect_error, channels, selected_channels, custom_channel). Render: dialog overlay + window + title bar ("Assistente de Configuração — RetroHexChat") + step indicator + conditional step content (`:welcome`, `:server`, `:channels`) + button bar (Voltar/Próximo/Conectar/Entrar!/Pular/Cancelar per step). Step 1: ASCII logo + nickname input + tip. Step 2: server/port/ssl fields with defaults + tip. Step 3: channel checkboxes + custom channel input. All with @spec and data-testid attributes.
-- [ ] T012 [US1] Create wizard event handler in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/connect_live/wizard_events.ex` — module with `handle_event/3` function matching: `"check_onboarding"` (sets wizard_mode), `"wizard_validate_nickname"` (validates via NicknameValidator), `"wizard_next"` (step transitions + connection attempt for server step), `"wizard_back"` (step regression), `"wizard_toggle_channel"` (add/remove from selected), `"wizard_update_custom_channel"` (updates assign), `"wizard_complete"` (push mark_onboarding_complete + navigate to /chat with join params), `"wizard_skip"` (push mark_onboarding_complete + navigate to /chat without channels), `"wizard_dismiss"` (push mark_onboarding_complete + return to normal form). Follow attach_hook pattern returning `{:halt, socket}`. Add @spec.
-- [ ] T013 [US1] Modify ConnectLive in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/connect_live.ex` — add wizard assigns to mount (wizard_mode: false, wizard_step: :welcome, wizard_nickname: "", wizard_server: "irc.retro.chat", wizard_port: 6697, wizard_ssl: true, wizard_connecting: false, wizard_connect_error: nil, wizard_channels: [], wizard_selected_channels: [], wizard_custom_channel: ""). Attach OnboardingHook to root element. Attach wizard_events via `attach_hook/4`. Import WizardDialog component.
-- [ ] T014 [US1] Modify ConnectLive template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/connect_live.html.heex` — add `phx-hook="OnboardingHook"` to root element. Conditionally render: `<.wizard_dialog :if={@wizard_mode} ... />` when wizard_mode is true, else show existing connect form. Pass all wizard assigns to component. Add `phx-window-keydown="wizard_dismiss"` with `phx-key="Escape"` when wizard is visible.
-- [ ] T015 [US1] Modify ChatLive in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — add `show_onboarding_tip` assign, set to `true` when `params["onboarded"] == "true"` in mount/handle_params. Add `handle_event("dismiss_onboarding_tip", _, socket)` that sets assign to false.
-- [ ] T016 [US1] Modify ChatLive template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.html.heex` — add onboarding tip banner div (`:if={@show_onboarding_tip}`) above message area: "Dica: digite / para ver comandos disponíveis. Use ↑↓ para navegar o histórico." with dismiss button. Use `.onboarding-tip-banner` CSS class and `data-testid="onboarding-tip"`.
+- [X] T011 [P] [US1] Create WizardDialog component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/wizard_dialog.ex` — function component with attrs per contracts/components.md (visible, step, nickname, nickname_error, server, port, ssl, connecting, connect_error, channels, selected_channels, custom_channel). Render: dialog overlay + window + title bar ("Assistente de Configuração — RetroHexChat") + step indicator + conditional step content (`:welcome`, `:server`, `:channels`) + button bar (Voltar/Próximo/Conectar/Entrar!/Pular/Cancelar per step). Step 1: ASCII logo + nickname input + tip. Step 2: server/port/ssl fields with defaults + tip. Step 3: channel checkboxes + custom channel input. All with @spec and data-testid attributes.
+- [X] T012 [US1] Create wizard event handler in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/connect_live/wizard_events.ex` — module with `handle_event/3` function matching: `"check_onboarding"` (sets wizard_mode), `"wizard_validate_nickname"` (validates via NicknameValidator), `"wizard_next"` (step transitions + connection attempt for server step), `"wizard_back"` (step regression), `"wizard_toggle_channel"` (add/remove from selected), `"wizard_update_custom_channel"` (updates assign), `"wizard_complete"` (push mark_onboarding_complete + navigate to /chat with join params), `"wizard_skip"` (push mark_onboarding_complete + navigate to /chat without channels), `"wizard_dismiss"` (push mark_onboarding_complete + return to normal form). Follow attach_hook pattern returning `{:halt, socket}`. Add @spec.
+- [X] T013 [US1] Modify ConnectLive in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/connect_live.ex` — add wizard assigns to mount (wizard_mode: false, wizard_step: :welcome, wizard_nickname: "", wizard_server: "irc.retro.chat", wizard_port: 6697, wizard_ssl: true, wizard_connecting: false, wizard_connect_error: nil, wizard_channels: [], wizard_selected_channels: [], wizard_custom_channel: ""). Attach OnboardingHook to root element. Attach wizard_events via `attach_hook/4`. Import WizardDialog component.
+- [X] T014 [US1] Modify ConnectLive template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/connect_live.html.heex` — add `phx-hook="OnboardingHook"` to root element. Conditionally render: `<.wizard_dialog :if={@wizard_mode} ... />` when wizard_mode is true, else show existing connect form. Pass all wizard assigns to component. Add `phx-window-keydown="wizard_dismiss"` with `phx-key="Escape"` when wizard is visible.
+- [X] T015 [US1] Modify ChatLive in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — add `show_onboarding_tip` assign, set to `true` when `params["onboarded"] == "true"` in mount/handle_params. Add `handle_event("dismiss_onboarding_tip", _, socket)` that sets assign to false.
+- [X] T016 [US1] Modify ChatLive template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.html.heex` — add onboarding tip banner div (`:if={@show_onboarding_tip}`) above message area: "Dica: digite / para ver comandos disponíveis. Use ↑↓ para navegar o histórico." with dismiss button. Use `.onboarding-tip-banner` CSS class and `data-testid="onboarding-tip"`.
 
 **Checkpoint**: Wizard flow complete. First-time → wizard → chat with tip. Returning → direct connect form.
 
@@ -75,11 +75,11 @@
 
 ### Tests for User Story 2
 
-- [ ] T017 [P] [US2] Write LiveView tests for empty channel state in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs` — test: when channel has no messages, empty state renders with "Bem-vindo ao #channel-name!" text and data-testid; when a message arrives, empty state element is no longer present; empty state text has `.empty-state` CSS class (user-select: none)
+- [X] T017 [P] [US2] Write LiveView tests for empty channel state in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs` — test: when channel has no messages, empty state renders with "Bem-vindo ao #channel-name!" text and data-testid; when a message arrives, empty state element is no longer present; empty state text has `.empty-state` CSS class (user-select: none)
 
 ### Implementation for User Story 2
 
-- [ ] T018 [US2] Add empty channel state to ChatLive template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.html.heex` — inside the message container, add conditional block: `<div :if={...empty condition...} class="empty-state channel-empty-state" data-testid="channel-empty-state">` with "Bem-vindo ao #[channel-name]!" + "Este é o início do canal. Diga oi!" + tip "/topic para ver o tópico". Condition should check if message stream/list is empty for the active channel.
+- [X] T018 [US2] Add empty channel state to ChatLive template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.html.heex` — inside the message container, add conditional block: `<div :if={...empty condition...} class="empty-state channel-empty-state" data-testid="channel-empty-state">` with "Bem-vindo ao #[channel-name]!" + "Este é o início do canal. Diga oi!" + tip "/topic para ver o tópico". Condition should check if message stream/list is empty for the active channel.
 
 **Checkpoint**: Empty channels show welcome message. Message arrival removes it instantly.
 
@@ -93,11 +93,11 @@
 
 ### Tests for User Story 3
 
-- [ ] T019 [P] [US3] Write LiveView test for empty nicklist in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs` — test: when `channel_users` is empty, nicklist renders empty state with expected text and data-testid; when users are present, empty state is absent
+- [X] T019 [P] [US3] Write LiveView test for empty nicklist in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs` — test: when `channel_users` is empty, nicklist renders empty state with expected text and data-testid; when users are present, empty state is absent
 
 ### Implementation for User Story 3
 
-- [ ] T020 [US3] Add empty state to nicklist component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/nicklist.ex` — add conditional block: `<div :if={@users == []} class="empty-state nicklist-empty-state" data-testid="nicklist-empty-state">` with "Ninguém aqui — Você é o(a) primeiro(a)!" before the existing user list rendering.
+- [X] T020 [US3] Add empty state to nicklist component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/nicklist.ex` — add conditional block: `<div :if={@users == []} class="empty-state nicklist-empty-state" data-testid="nicklist-empty-state">` with "Ninguém aqui — Você é o(a) primeiro(a)!" before the existing user list rendering.
 
 **Checkpoint**: Empty nicklist shows friendly message. User joining removes it.
 
@@ -111,11 +111,11 @@
 
 ### Tests for User Story 4
 
-- [ ] T021 [P] [US4] Write LiveView test for empty treebar in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs` — test: when `channels == []` and `pm_conversations == []`, treebar renders empty state with expected text, "Explorar canais" button, and data-testid; clicking "Explorar canais" triggers channel list event; when channels exist, empty state is absent
+- [X] T021 [P] [US4] Write LiveView test for empty treebar in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs` — test: when `channels == []` and `pm_conversations == []`, treebar renders empty state with expected text, "Explorar canais" button, and data-testid; clicking "Explorar canais" triggers channel list event; when channels exist, empty state is absent
 
 ### Implementation for User Story 4
 
-- [ ] T022 [US4] Add empty state to treebar component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/treebar.ex` — add conditional block at top of component: `<div :if={@channels == [] and @pm_conversations == []} class="empty-state treebar-empty-state" data-testid="treebar-empty-state">` with "Nenhum canal — /join #canal para começar" and `<button type="button" class="empty-state-action" phx-click="open_channel_list">Explorar canais</button>`. Place before the existing tree-view sections.
+- [X] T022 [US4] Add empty state to treebar component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/treebar.ex` — add conditional block at top of component: `<div :if={@channels == [] and @pm_conversations == []} class="empty-state treebar-empty-state" data-testid="treebar-empty-state">` with "Nenhum canal — /join #canal para começar" and `<button type="button" class="empty-state-action" phx-click="open_channel_list">Explorar canais</button>`. Place before the existing tree-view sections.
 
 **Checkpoint**: Empty treebar shows message + button. Channel list opens on click.
 
@@ -129,11 +129,11 @@
 
 ### Tests for User Story 5
 
-- [ ] T023 [P] [US5] Write LiveView test for empty URL catcher in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs` — test: when URL list is empty, URL catcher renders empty state with "Nenhuma URL capturada" text and data-testid; when URLs exist, empty state is absent
+- [X] T023 [P] [US5] Write LiveView test for empty URL catcher in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs` — test: when URL list is empty, URL catcher renders empty state with "Nenhuma URL capturada" text and data-testid; when URLs exist, empty state is absent
 
 ### Implementation for User Story 5
 
-- [ ] T024 [US5] Add empty state to URL catcher component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/url_catcher_window.ex` — add conditional block inside the table area: `<div :if={@urls == []} class="empty-state url-catcher-empty-state" data-testid="url-catcher-empty-state">` with "Nenhuma URL capturada." + "URLs mencionadas no chat aparecerão aqui." Replace the empty table body when no URLs are present.
+- [X] T024 [US5] Add empty state to URL catcher component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/url_catcher_window.ex` — add conditional block inside the table area: `<div :if={@urls == []} class="empty-state url-catcher-empty-state" data-testid="url-catcher-empty-state">` with "Nenhuma URL capturada." + "URLs mencionadas no chat aparecerão aqui." Replace the empty table body when no URLs are present.
 
 **Checkpoint**: Empty URL catcher shows explanatory message.
 
@@ -143,9 +143,9 @@
 
 **Purpose**: Help documentation, E2E tests, final validation
 
-- [ ] T025 [P] Add onboarding help topics to `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/` — add a "Welcome Wizard" topic in the "Getting Started" category covering the 3-step wizard flow. Add an "Empty States" topic in the "User Interface" category describing the 4 empty states and their behavior. Update "See Also" cross-references in related existing topics. Follow existing topic structure (id, title, category, keywords, content).
-- [ ] T026 [P] Write E2E tests for wizard + empty states in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/connect_live_test.exs` and `chat_live_test.exs` — tag `@tag :e2e`. Test full wizard flow end-to-end: mount ConnectLive with wizard_mode → complete all 3 steps → verify navigation to ChatLive with tip banner. Test returning user bypass (wizard_mode: false → normal form). Test empty state lifecycle in ChatLive: empty channel → send message → empty state gone.
-- [ ] T027 Run full CI-equivalent validation pipeline (see CLAUDE.md "CI-Equivalent Validation") — compile first (`mix compile --warnings-as-errors`), then in parallel: `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`. All 8 checks must pass.
+- [X] T025 [P] Add onboarding help topics to `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/` — add a "Welcome Wizard" topic in the "Getting Started" category covering the 3-step wizard flow. Add an "Empty States" topic in the "User Interface" category describing the 4 empty states and their behavior. Update "See Also" cross-references in related existing topics. Follow existing topic structure (id, title, category, keywords, content).
+- [X] T026 [P] Write E2E tests for wizard + empty states in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/connect_live_test.exs` and `chat_live_test.exs` — tag `@tag :e2e`. Test full wizard flow end-to-end: mount ConnectLive with wizard_mode → complete all 3 steps → verify navigation to ChatLive with tip banner. Test returning user bypass (wizard_mode: false → normal form). Test empty state lifecycle in ChatLive: empty channel → send message → empty state gone.
+- [X] T027 Run full CI-equivalent validation pipeline (see CLAUDE.md "CI-Equivalent Validation") — compile first (`mix compile --warnings-as-errors`), then in parallel: `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`. All 8 checks must pass.
 
 ---
 

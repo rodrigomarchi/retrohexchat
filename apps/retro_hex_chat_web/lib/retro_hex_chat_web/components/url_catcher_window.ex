@@ -134,12 +134,14 @@ defmodule RetroHexChatWeb.Components.URLCatcherWindow do
                 <td class="table-cell--nowrap">{format_time(entry.timestamp)}</td>
               </tr>
               <tr :if={@entries == []}>
-                <td
-                  colspan="4"
-                  class="table-empty"
-                  data-testid="url-catcher-empty"
-                >
-                  No URLs captured.
+                <td colspan="4" class="table-empty" data-testid="url-catcher-empty">
+                  <div
+                    class="empty-state url-catcher-empty-state"
+                    data-testid="url-catcher-empty-state"
+                  >
+                    <p>Nenhuma URL capturada.</p>
+                    <p>URLs mencionadas no chat aparecerão aqui.</p>
+                  </div>
                 </td>
               </tr>
             </tbody>

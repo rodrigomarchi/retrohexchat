@@ -62,6 +62,17 @@
         history={@search_history}
       />
 
+      <div
+        :if={@show_onboarding_tip}
+        class="onboarding-tip-banner"
+        data-testid="onboarding-tip"
+      >
+        <span>
+          Dica: digite / para ver comandos disponíveis. Use ↑↓ para navegar o histórico.
+        </span>
+        <button phx-click="dismiss_onboarding_tip" aria-label="Fechar dica">✕</button>
+      </div>
+
       <RetroHexChatWeb.Components.ScrollLoader.scroll_loader loading={@loading_more} />
 
       <div
