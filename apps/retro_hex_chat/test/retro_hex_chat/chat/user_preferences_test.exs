@@ -516,6 +516,79 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
     end
   end
 
+  describe "muted_channels" do
+    @tag :unit
+    test "get_muted_channels/1 returns empty list by default" do
+      prefs = UserPreferences.new()
+      assert UserPreferences.get_muted_channels(prefs) == []
+    end
+
+    @tag :unit
+    test "set_muted_channels/2 replaces the list" do
+      prefs =
+        UserPreferences.new()
+        |> UserPreferences.set_muted_channels(["#general", "#random"])
+
+      assert UserPreferences.get_muted_channels(prefs) == ["#general", "#random"]
+    end
+
+    @tag :unit
+    test "toggle_mute_channel/2 adds channel when not muted" do
+      prefs =
+        UserPreferences.new()
+        |> UserPreferences.toggle_mute_channel("#general")
+
+      assert "#general" in UserPreferences.get_muted_channels(prefs)
+    end
+
+    @tag :unit
+    test "toggle_mute_channel/2 removes channel when already muted" do
+      prefs =
+        UserPreferences.new()
+        |> UserPreferences.set_muted_channels(["#general", "#random"])
+        |> UserPreferences.toggle_mute_channel("#general")
+
+      muted = UserPreferences.get_muted_channels(prefs)
+      refute "#general" in muted
+      assert "#random" in muted
+    end
+
+    @tag :unit
+    test "default messages include muted_channels key" do
+      prefs = UserPreferences.new()
+      assert Map.has_key?(prefs.messages, :muted_channels)
+    end
+  end
+
+  describe "muted_channels persistence" do
+    setup do
+      register_nick("TestMutePrefs")
+      :ok
+    end
+
+    @tag :integration
+    test "save/2 and load/1 round-trip preserves muted_channels" do
+      prefs =
+        UserPreferences.new()
+        |> UserPreferences.set_muted_channels(["#general", "#random"])
+
+      assert :ok == UserPreferences.save("TestMutePrefs", prefs)
+      assert {:ok, loaded} = UserPreferences.load("TestMutePrefs")
+
+      assert loaded.messages.muted_channels == ["#general", "#random"]
+    end
+
+    @tag :integration
+    test "save/2 and load/1 round-trip preserves empty muted_channels" do
+      prefs = UserPreferences.new()
+
+      assert :ok == UserPreferences.save("TestMutePrefs", prefs)
+      assert {:ok, loaded} = UserPreferences.load("TestMutePrefs")
+
+      assert loaded.messages.muted_channels == []
+    end
+  end
+
   defp register_nick(nickname) do
     RetroHexChat.Repo.insert_all("registered_nicks", [
       %{

@@ -175,9 +175,10 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
       render_click(view, "toggle_url_catcher")
       html = render_click(view, "url_catcher_sort", %{"column" => "url"})
 
-      # Use data-url positions in HTML to check order within URL catcher table
-      apple_pos = :binary.match(html, ~s(data-url="https://apple.com")) |> elem(0)
-      banana_pos = :binary.match(html, ~s(data-url="https://banana.com")) |> elem(0)
+      # Extract URL catcher table section and check order within it
+      table_html = extract_url_catcher_table(html)
+      apple_pos = :binary.match(table_html, "apple.com") |> elem(0)
+      banana_pos = :binary.match(table_html, "banana.com") |> elem(0)
       assert apple_pos < banana_pos
     end
 
@@ -196,8 +197,9 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
       html = render_click(view, "url_catcher_sort", %{"column" => "url"})
 
       # In descending order, banana should come before apple
-      banana_pos = :binary.match(html, ~s(data-url="https://banana.com")) |> elem(0)
-      apple_pos = :binary.match(html, ~s(data-url="https://apple.com")) |> elem(0)
+      table_html = extract_url_catcher_table(html)
+      banana_pos = :binary.match(table_html, "banana.com") |> elem(0)
+      apple_pos = :binary.match(table_html, "apple.com") |> elem(0)
       assert banana_pos < apple_pos
     end
 
@@ -229,9 +231,10 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
     test "filter by channel shows only that channel's URLs", %{view: view} do
       html = render_change(view, "url_catcher_filter", %{"channel" => "#lobby"})
 
-      # Use data-url attribute to check URL catcher table specifically (not chat area)
-      assert html =~ ~s(data-url="https://lobby-url.com")
-      refute html =~ ~s(data-url="https://filter-url.com")
+      # Use url-catcher-entry testid to check URL catcher table specifically (not chat links)
+      assert html =~ "lobby-url.com"
+      assert url_catcher_has_url?(html, "lobby-url.com")
+      refute url_catcher_has_url?(html, "filter-url.com")
     end
 
     test "filter All Channels shows all URLs", %{view: view} do
@@ -254,9 +257,9 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
       render_click(view, "toggle_url_catcher")
       html = render_change(view, "url_catcher_search", %{"query" => "elixir"})
 
-      # Use data-url to check URL catcher table specifically
-      assert html =~ ~s(data-url="https://elixir-lang.org")
-      refute html =~ ~s(data-url="https://phoenixframework.org")
+      # Check URL catcher table entries specifically (not chat area links)
+      assert url_catcher_has_url?(html, "elixir-lang.org")
+      refute url_catcher_has_url?(html, "phoenixframework.org")
     end
 
     test "empty search shows all URLs", %{conn: conn} do
@@ -291,5 +294,24 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
     }
 
     send(view.pid, msg)
+  end
+
+  defp url_catcher_has_url?(html, url_fragment) do
+    # Match data-url on <tr> rows in URL catcher table (data-testid="url-catcher-entry-*")
+    Regex.match?(
+      ~r/data-testid="url-catcher-entry-[^"]*"[^>]*data-url="[^"]*#{Regex.escape(url_fragment)}/,
+      html
+    ) or
+      Regex.match?(
+        ~r/data-url="[^"]*#{Regex.escape(url_fragment)}[^"]*"[^>]*data-testid="url-catcher-entry-/,
+        html
+      )
+  end
+
+  defp extract_url_catcher_table(html) do
+    case Regex.run(~r/data-testid="url-catcher-window".*$/s, html) do
+      [match] -> match
+      nil -> html
+    end
   end
 end

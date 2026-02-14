@@ -168,7 +168,7 @@ defmodule RetroHexChat.Chat.URLDetector do
     display = truncate_display(url)
     escaped_href = html_escape_attr(url)
 
-    ~s(<a href="#{escaped_href}" target="_blank" rel="noopener noreferrer" class="chat-link" title="#{escaped_href}">#{display}</a>)
+    ~s(<a href="#{escaped_href}" target="_blank" rel="noopener noreferrer" class="chat-link" title="#{escaped_href}" data-url="#{escaped_href}">#{display}</a>)
   end
 
   @spec truncate_display(String.t()) :: String.t()

@@ -103,6 +103,42 @@
   cursor: default;
 }
 
+.context-menu li.separator:hover {
+  background-color: transparent;
+  color: inherit;
+}
+
+.context-menu li.disabled {
+  color: #808080;
+  cursor: default;
+}
+
+.context-menu li.disabled:hover {
+  background-color: transparent;
+  color: #808080;
+}
+
+.context-menu li.focused {
+  background-color: navy;
+  color: white;
+}
+
+.context-menu .shortcut-hint {
+  float: right;
+  margin-left: 24px;
+  color: #808080;
+  font-size: 11px;
+}
+
+.context-menu li:hover .shortcut-hint,
+.context-menu li.focused .shortcut-hint {
+  color: #c0c0c0;
+}
+
+.context-menu li.disabled .shortcut-hint {
+  color: #a0a0a0;
+}
+
 /* Status bar */
 .status-bar-field {
   font-size: 11px;

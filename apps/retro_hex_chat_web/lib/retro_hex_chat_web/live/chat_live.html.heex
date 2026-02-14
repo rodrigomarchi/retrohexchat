@@ -85,6 +85,9 @@
             )
           }
           data-testid={if(Map.get(msg, :highlighted), do: "highlighted-message", else: nil)}
+          data-author={Map.get(msg, :author)}
+          data-message-id={dom_id}
+          data-system-message={if(msg.type in [:system, :service], do: "true", else: nil)}
         >
           <%= case msg.type do %>
             <% :action -> %>
@@ -111,7 +114,11 @@
                 <span class="chat-timestamp">
                   {format_time(msg.timestamp, @timestamp_format)}
                 </span>
-                <span class="chat-nick" style={"color: #{@nick_color_fn.(msg.author)}"}>
+                <span
+                  class="chat-nick"
+                  style={"color: #{@nick_color_fn.(msg.author)}"}
+                  data-nick={msg.author}
+                >
                   &lt;{msg.author}&gt;
                 </span>
                 <span class="chat-content">
@@ -206,7 +213,18 @@
     nick_color_fn={@nick_color_fn}
     show_color_picker={@show_context_color_picker}
     is_ignored={context_target_ignored?(@session, @context_menu.target_nick)}
+    key_bindings={@session.user_preferences.key_bindings}
     custom_nicklist_items={CustomMenus.entries_for(@session.custom_menus, :nicklist)}
+  />
+
+  <RetroHexChatWeb.Components.ChatContextMenu.chat_context_menu
+    menu={@chat_context_menu}
+    viewer_nick={@session.nickname}
+    viewer_is_op={viewer_is_op?(@session)}
+    is_target_ignored={chat_context_target_ignored?(@session, @chat_context_menu)}
+    is_target_self={@chat_context_menu.target_nick == @session.nickname}
+    is_already_joined={@chat_context_menu.target_channel in (@session.channels || [])}
+    key_bindings={@session.user_preferences.key_bindings}
   />
 
   <RetroHexChatWeb.Components.TreebarContextMenu.treebar_context_menu
@@ -214,6 +232,8 @@
     x={@treebar_context_menu.x}
     y={@treebar_context_menu.y}
     channel={@treebar_context_menu.channel}
+    is_muted={MapSet.member?(@muted_channels, @treebar_context_menu.channel)}
+    has_unread={MapSet.member?(@unread_channels, @treebar_context_menu.channel)}
     custom_channel_items={CustomMenus.entries_for(@session.custom_menus, :channel)}
   />
 

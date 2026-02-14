@@ -171,6 +171,30 @@ defmodule RetroHexChat.Chat.UserPreferences do
     put_in(prefs, [:display, :quit_message], truncated)
   end
 
+  @spec get_muted_channels(map()) :: [String.t()]
+  def get_muted_channels(%{messages: messages}) do
+    Map.get(messages, :muted_channels, [])
+  end
+
+  @spec set_muted_channels(map(), [String.t()]) :: map()
+  def set_muted_channels(prefs, channels) when is_list(channels) do
+    put_in(prefs, [:messages, :muted_channels], channels)
+  end
+
+  @spec toggle_mute_channel(map(), String.t()) :: map()
+  def toggle_mute_channel(prefs, channel) when is_binary(channel) do
+    current = get_muted_channels(prefs)
+
+    updated =
+      if channel in current do
+        List.delete(current, channel)
+      else
+        [channel | current]
+      end
+
+    set_muted_channels(prefs, updated)
+  end
+
   @spec set_key_binding(map(), atom(), KeyBindings.binding() | nil) :: map()
   def set_key_binding(prefs, action, binding) do
     put_in(prefs, [:key_bindings, action], binding)
@@ -299,7 +323,8 @@ defmodule RetroHexChat.Chat.UserPreferences do
     %{
       whois_routing: :active,
       notice_routing: :active,
-      pm_routing: :new_tab
+      pm_routing: :new_tab,
+      muted_channels: []
     }
   end
 
@@ -455,15 +480,17 @@ defmodule RetroHexChat.Chat.UserPreferences do
     Map.new(defaults, fn {key, default_val} ->
       str_key = Atom.to_string(key)
       raw = Map.get(data, str_key)
-
-      value =
-        if is_binary(raw) do
-          String.to_existing_atom(raw)
-        else
-          raw || default_val
-        end
-
-      {key, value}
+      {key, atomize_message_value(key, raw, default_val)}
     end)
   end
+
+  defp atomize_message_value(:muted_channels, raw, default_val) do
+    if is_list(raw), do: raw, else: default_val
+  end
+
+  defp atomize_message_value(_key, raw, _default_val) when is_binary(raw) do
+    String.to_existing_atom(raw)
+  end
+
+  defp atomize_message_value(_key, raw, default_val), do: raw || default_val
 end

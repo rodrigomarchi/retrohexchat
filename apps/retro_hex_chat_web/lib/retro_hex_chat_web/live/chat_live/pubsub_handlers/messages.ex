@@ -180,22 +180,37 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     if channel == session.active_channel do
       stream_insert(socket, :chat_messages, decorated)
     else
-      unread = MapSet.put(socket.assigns.unread_channels, channel)
-      highlight = maybe_add_highlight_channel(socket, decorated, channel)
-      is_highlighted = Map.get(decorated, :highlighted, false)
-      flash_type = if is_highlighted, do: :highlight, else: :message
-
-      socket =
-        if not is_highlighted do
-          play_event_sound(socket, :message, session)
-        else
-          socket
-        end
-
-      socket
-      |> maybe_flash_channel(channel, flash_type, session)
-      |> assign(unread_channels: unread, highlight_channels: highlight)
+      apply_background_message(socket, decorated, channel, session)
     end
+  end
+
+  defp apply_background_message(socket, decorated, channel, session) do
+    unread = MapSet.put(socket.assigns.unread_channels, channel)
+    highlight = maybe_add_highlight_channel(socket, decorated, channel)
+
+    socket
+    |> maybe_notify_unmuted(decorated, channel, session)
+    |> assign(unread_channels: unread, highlight_channels: highlight)
+  end
+
+  defp maybe_notify_unmuted(socket, decorated, channel, session) do
+    is_muted = MapSet.member?(socket.assigns.muted_channels, channel)
+    if is_muted, do: socket, else: notify_channel(socket, decorated, channel, session)
+  end
+
+  defp notify_channel(socket, decorated, channel, session) do
+    is_highlighted = Map.get(decorated, :highlighted, false)
+    flash_type = if is_highlighted, do: :highlight, else: :message
+
+    socket
+    |> maybe_play_sound(is_highlighted, session)
+    |> maybe_flash_channel(channel, flash_type, session)
+  end
+
+  defp maybe_play_sound(socket, true = _is_highlighted, _session), do: socket
+
+  defp maybe_play_sound(socket, false = _is_highlighted, session) do
+    play_event_sound(socket, :message, session)
   end
 
   defp maybe_add_highlight_channel(socket, decorated, channel) do

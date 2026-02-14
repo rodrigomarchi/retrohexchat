@@ -946,7 +946,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "3. The selected text is copied to your clipboard as plain text.</p>" <>
             "<h4>Notes</h4>" <>
             "<p>If no text is selected, the Copy option appears disabled. " <>
-            "Rich formatting is stripped — only plain text is copied.</p>"
+            "Rich formatting is stripped — only plain text is copied.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-context-menus\">Context Menus</a></p>"
       },
       %{
         id: "feature-paste-dialog",
@@ -1193,6 +1195,53 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-key-bindings\">Key Bindings</a></p>"
+      },
+      %{
+        id: "feature-context-menus",
+        title: "Context Menus",
+        category: "Features",
+        keywords: [
+          "context menu",
+          "right-click",
+          "right click",
+          "popup menu",
+          "nick menu",
+          "url menu",
+          "channel menu",
+          "message menu",
+          "treebar menu",
+          "mute channel"
+        ],
+        content:
+          "<h3>Context Menus</h3>" <>
+            "<p>Right-click on elements in the chat area and treebar to access context-specific actions.</p>" <>
+            "<h4>Nick Menu (Chat Area)</h4>" <>
+            "<p>Right-click a nickname in a chat message to see: Private Message, Whois, Copy Nick, " <>
+            "Ignore/Unignore, Add to Address Book, Set Nick Color. Channel operators also see: " <>
+            "Kick, Ban, Give Voice (+v), Give Op (+o).</p>" <>
+            "<h4>URL Menu</h4>" <>
+            "<p>Right-click a URL in a chat message to see: Open Link, Copy URL, Save to URL List.</p>" <>
+            "<h4>Channel Menu</h4>" <>
+            "<p>Right-click a #channel reference in a chat message to see: Join Channel " <>
+            "(disabled if already joined), Add to Favorites, Copy Channel Name, Channel Info.</p>" <>
+            "<h4>Message Menu</h4>" <>
+            "<p>Right-click the general chat area to see: Copy Message, Copy Selected Text, " <>
+            "Quote/Reply (disabled), Ignore Sender. If the message contains URLs, " <>
+            "Open Link and Copy URL also appear.</p>" <>
+            "<h4>Treebar Menu</h4>" <>
+            "<p>Right-click a channel in the treebar to see: Mark as Read, Mute/Unmute Channel, " <>
+            "Add to Favorites, Copy Name, Leave Channel, Channel Settings.</p>" <>
+            "<h4>Keyboard Navigation</h4>" <>
+            "<p>Use <strong>Arrow Up/Down</strong> to navigate menu items, " <>
+            "<strong>Enter</strong> to select, and <strong>Escape</strong> to close.</p>" <>
+            "<h4>Notes</h4>" <>
+            "<p>Menus automatically reposition if they would go off-screen. " <>
+            "The browser's default right-click menu is preserved in the input field. " <>
+            "Self-targeting actions (Kick, Ban, Ignore on yourself) appear disabled.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-custom-menus\">Custom Menus</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-favorites\">Favorites</a> · " <>
+            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
       },
       %{
         id: "feature-enhanced-history",

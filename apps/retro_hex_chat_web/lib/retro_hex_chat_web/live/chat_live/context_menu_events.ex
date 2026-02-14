@@ -1,17 +1,24 @@
 defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   @moduledoc """
-  Handle nick context menu events.
+  Handle context menu events for nicklist and chat area.
 
-  Covers: nick_right_click, nicklist_dblclick, close_context_menu, context_query,
-  context_whois, context_kick, context_ban, context_op, context_voice,
-  context_add_contact, context_set_nick_color, context_ignore, context_unignore,
-  context_pick_color.
+  Covers nicklist: nick_right_click, nicklist_dblclick, close_context_menu,
+  context_query, context_whois, context_kick, context_ban, context_op,
+  context_voice, context_add_contact, context_set_nick_color, context_ignore,
+  context_unignore, context_pick_color.
+
+  Covers chat area: chat_context_menu, close_chat_context_menu, ctx_chat_pm,
+  ctx_chat_whois, ctx_chat_copy_nick, ctx_chat_ignore, ctx_chat_add_contact,
+  ctx_chat_set_color, ctx_chat_kick, ctx_chat_ban, ctx_chat_voice, ctx_chat_op,
+  ctx_chat_open_url, ctx_chat_copy_url, ctx_chat_save_url, ctx_chat_join,
+  ctx_chat_fav, ctx_chat_copy_channel, ctx_chat_channel_info,
+  ctx_chat_copy_message, ctx_chat_copy_selection, ctx_chat_ignore_sender.
 
   Attached as `attach_hook(:context_menu_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
+  import Phoenix.LiveView, only: [push_event: 3, stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
@@ -29,7 +36,8 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
 
   alias RetroHexChat.Accounts.{ContactList, NickColors, Session}
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.IgnoreList
+  alias RetroHexChat.Chat.{CapturedURL, Favorites, IgnoreList}
+  alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
 
   def handle_event("nick_right_click", %{"nick" => nick} = params, socket) do
     x = params["x"] || 0
@@ -218,12 +226,331 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     end
   end
 
+  # ---------------------------------------------------------------------------
+  # Chat Area Context Menu Events
+  # ---------------------------------------------------------------------------
+
+  def handle_event("chat_context_menu", params, socket) do
+    {:halt, open_chat_context_menu(socket, params)}
+  end
+
+  def handle_event("close_chat_context_menu", _params, socket) do
+    {:halt, close_chat_context_menu(socket)}
+  end
+
+  def handle_event("ctx_chat_pm", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> open_pm_conversation(nick)}
+  end
+
+  def handle_event("ctx_chat_whois", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> show_whois_text(nick)}
+  end
+
+  def handle_event("ctx_chat_copy_nick", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> push_event("clipboard_copy", %{text: nick})}
+  end
+
+  def handle_event("ctx_chat_ignore", %{"nick" => nick}, socket) do
+    session = socket.assigns.session
+
+    if IgnoreList.get_entry(session.ignore_list, nick) != nil do
+      # Already ignored — toggle off (unignore)
+      {:halt,
+       socket
+       |> close_chat_context_menu()
+       |> ctx_chat_unignore(nick)}
+    else
+      case IgnoreList.add_entry(session.ignore_list, nick, :all, nil) do
+        {:ok, updated_list} ->
+          new_session = Session.set_ignore_list(session, updated_list)
+
+          {:halt,
+           socket
+           |> close_chat_context_menu()
+           |> assign(session: new_session)
+           |> maybe_persist_ignore_list(new_session)
+           |> stream_insert(:chat_messages, system_message("* #{nick} is now ignored"))}
+
+        {:error, _reason} ->
+          {:halt, close_chat_context_menu(socket)}
+      end
+    end
+  end
+
+  def handle_event("ctx_chat_add_contact", %{"nick" => nick}, socket) do
+    session = socket.assigns.session
+
+    case ContactList.add_entry(session.contacts, session.nickname, nick, nil) do
+      {:ok, updated_contacts} ->
+        new_session = Session.set_contacts(session, updated_contacts)
+
+        {:halt,
+         socket
+         |> close_chat_context_menu()
+         |> assign(session: new_session)
+         |> maybe_persist_contacts(new_session)
+         |> push_status_message("Added #{nick} to contacts", :system)}
+
+      {:error, _reason} ->
+        {:halt,
+         socket
+         |> close_chat_context_menu()
+         |> push_status_message("Could not add #{nick} to contacts", :error)}
+    end
+  end
+
+  def handle_event("ctx_chat_set_color", %{"nick" => nick}, socket) do
+    # Reuse the nicklist color picker by opening it with the target nick
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> assign(
+       context_menu: %{
+         visible: true,
+         x: socket.assigns.chat_context_menu.x,
+         y: socket.assigns.chat_context_menu.y,
+         target_nick: nick
+       },
+       show_context_color_picker: true
+     )}
+  end
+
+  def handle_event("ctx_chat_kick", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> context_kick(channel, nick)}
+  end
+
+  def handle_event("ctx_chat_ban", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> context_ban(channel, nick)}
+  end
+
+  def handle_event("ctx_chat_voice", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> context_set_mode(channel, "+v", [nick])}
+  end
+
+  def handle_event("ctx_chat_op", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> context_set_mode(channel, "+o", [nick])}
+  end
+
+  def handle_event("ctx_chat_open_url", %{"url" => url}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> push_event("open_url", %{url: url})}
+  end
+
+  def handle_event("ctx_chat_copy_url", %{"url" => url}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> push_event("clipboard_copy", %{text: url})}
+  end
+
+  def handle_event("ctx_chat_save_url", %{"url" => url} = params, socket) do
+    author = params["author"] || "Unknown"
+    channel = socket.assigns.session.active_channel || "unknown"
+
+    entry =
+      CapturedURL.new(%{
+        url: url,
+        source: channel,
+        source_type: :channel,
+        posted_by: author,
+        timestamp: DateTime.utc_now()
+      })
+
+    entries = [entry | socket.assigns.url_catcher_entries]
+
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> assign(url_catcher_entries: entries)
+     |> push_status_message("URL saved to URL Catcher", :system)}
+  end
+
+  def handle_event("ctx_chat_join", %{"channel" => channel}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> ChannelHelper.join_channel(channel, socket.assigns.session)}
+  end
+
+  def handle_event("ctx_chat_fav", %{"channel" => channel}, socket) do
+    session = socket.assigns.session
+    favorites = Session.get_favorites(session)
+
+    if Favorites.has_entry?(favorites, channel) do
+      existing = Favorites.find_entry(favorites, channel)
+
+      {:halt,
+       socket
+       |> close_chat_context_menu()
+       |> assign(
+         show_favorite_dialog: true,
+         favorite_dialog_mode: :edit,
+         favorite_dialog_channel: channel,
+         favorite_dialog_is_duplicate: true,
+         favorite_dialog_data: %{
+           description: existing.description,
+           auto_join: existing.auto_join,
+           has_password: existing.password != nil and existing.password != ""
+         }
+       )}
+    else
+      {:halt,
+       socket
+       |> close_chat_context_menu()
+       |> assign(
+         show_favorite_dialog: true,
+         favorite_dialog_mode: :add,
+         favorite_dialog_channel: channel,
+         favorite_dialog_is_duplicate: false,
+         favorite_dialog_data: nil
+       )}
+    end
+  end
+
+  def handle_event("ctx_chat_copy_channel", %{"channel" => channel}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> push_event("clipboard_copy", %{text: channel})}
+  end
+
+  def handle_event("ctx_chat_channel_info", %{"channel" => _channel}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> assign(show_channel_central: true)}
+  end
+
+  def handle_event("ctx_chat_copy_message", %{"text" => text}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> push_event("clipboard_copy", %{text: text})}
+  end
+
+  def handle_event("ctx_chat_copy_selection", _params, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> push_event("clipboard_copy_selection", %{})}
+  end
+
+  def handle_event("ctx_chat_ignore_sender", %{"nick" => nick}, socket) do
+    session = socket.assigns.session
+
+    case IgnoreList.add_entry(session.ignore_list, nick, :all, nil) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        {:halt,
+         socket
+         |> close_chat_context_menu()
+         |> assign(session: new_session)
+         |> maybe_persist_ignore_list(new_session)
+         |> stream_insert(:chat_messages, system_message("* #{nick} is now ignored"))}
+
+      {:error, _reason} ->
+        {:halt, close_chat_context_menu(socket)}
+    end
+  end
+
   # Catch-all: not our event, pass it along
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
   # ---------------------------------------------------------------------------
   # Private helpers (local copies)
   # ---------------------------------------------------------------------------
+
+  defp open_chat_context_menu(socket, params) do
+    type = String.to_existing_atom(params["type"])
+    urls = params["message_urls"] || []
+
+    target_message = %{
+      author: params["author"],
+      text: params["message_text"],
+      is_system: params["is_system"] == true,
+      urls: urls
+    }
+
+    assign(socket,
+      chat_context_menu: %{
+        visible: true,
+        type: type,
+        x: params["x"] || 0,
+        y: params["y"] || 0,
+        target_nick: params["nick"],
+        target_url: params["url"],
+        target_channel: params["channel"],
+        target_message: target_message,
+        has_selection: params["has_selection"] == true
+      }
+    )
+  end
+
+  defp close_chat_context_menu(socket) do
+    assign(socket,
+      chat_context_menu: %{
+        visible: false,
+        type: nil,
+        x: 0,
+        y: 0,
+        target_nick: nil,
+        target_url: nil,
+        target_channel: nil,
+        target_message: nil,
+        has_selection: false
+      }
+    )
+  end
+
+  defp ctx_chat_unignore(socket, nick) do
+    session = socket.assigns.session
+
+    case IgnoreList.remove_entry(session.ignore_list, nick) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        socket
+        |> assign(session: new_session)
+        |> cancel_ignore_timer(nick)
+        |> maybe_persist_ignore_list(new_session)
+        |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))
+
+      {:error, :not_found} ->
+        socket
+    end
+  end
 
   defp close_context_menu(socket) do
     assign(socket,
