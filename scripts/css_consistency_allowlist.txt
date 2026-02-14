@@ -1,0 +1,30 @@
+# CSS Consistency Allowlist
+# Three sections: [unused], [missing], [dynamic-prefixes]
+# Lines starting with # are comments, blank lines are ignored.
+# Entries ending with * are glob patterns (prefix match).
+# Dynamic prefixes suppress matches in both directions.
+
+[unused]
+# IRC format classes — generated dynamically by formatter.ex (irc-fg-0..15, irc-bg-0..15)
+irc-fg-*
+irc-bg-*
+# Utility classes — predefined library, may not all be used yet
+u-*
+# JS-hook only — classes added dynamically via classList in JS hooks
+attempt-info
+char-counter--warning
+char-counter--danger
+
+[missing]
+# False positive — "system" is a comparison value inside class={...} expression
+system
+# Semantic container classes with no visual styling needed
+cheatsheet-dialog
+context-color-picker
+# JS-hook only — buttons created in innerHTML, class used for querySelector targeting
+reconnect-cancel-btn
+reconnect-refresh-btn
+
+[dynamic-prefixes]
+# Prefixes with dynamic suffixes (e.g. chat-message--#{type})
+chat-message--

@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.Components.AboutDialog do
           </div>
         </div>
         <div class="window-body about-body">
-          <div class="about-content">
+          <div>
             <pre class="about-logo" data-testid="about-logo">
     ╔══════════════════════╗
     ║   ╦═╗╦ ╦╔═╗          ║

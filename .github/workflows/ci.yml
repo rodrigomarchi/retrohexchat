@@ -91,7 +91,7 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          mix lint.inline_styles 2>&1 | tee /tmp/css_lint_output.txt
+          make lint.css 2>&1 | tee /tmp/css_lint_output.txt
 
       - uses: actions/upload-artifact@v4
         if: always()

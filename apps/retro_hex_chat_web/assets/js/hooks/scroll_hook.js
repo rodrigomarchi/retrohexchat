@@ -141,7 +141,7 @@ const ScrollHook = {
         const nick = nickEl.dataset.nick;
         if (nick) {
           cancelNickHoverTimer();
-          const inputEl = document.querySelector("textarea.chat-input");
+          const inputEl = document.querySelector("#chat-input");
           if (inputEl) {
             insertAtCursor(inputEl, nick + ": ");
             inputEl.focus();

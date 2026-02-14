@@ -19,12 +19,6 @@
   margin-bottom: 2px;
 }
 
-.form-label--inline {
-  display: inline;
-  margin-bottom: 0;
-  min-width: 80px;
-}
-
 .form-label--w80 {
   width: 80px;
   flex-shrink: 0;
@@ -58,18 +52,6 @@
   display: flex;
   gap: 4px;
 }
-
-.toolbar-row--end {
-  justify-content: flex-end;
-}
-
-.toolbar-row--between {
-  justify-content: space-between;
-}
-
-/* ── Button standard width ── */
-.btn-w-60 { min-width: 60px; }
-.btn-w-80 { min-width: 80px; }
 
 /* ── Edit Panel (inset bordered section) ── */
 .edit-panel {

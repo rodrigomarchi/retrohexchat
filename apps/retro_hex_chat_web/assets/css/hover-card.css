@@ -62,13 +62,20 @@
   word-break: break-word;
 }
 
-.nick-hover-card-channels {
-  margin-top: 4px;
+.nick-hover-card-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.nick-hover-card-channel-list {
-  color: #0066cc;
-  word-break: break-word;
+.nick-hover-card-registered {
+  color: var(--color-success);
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+.nick-hover-card-channels {
+  margin-top: 4px;
 }
 
 .nick-hover-card-hints {
@@ -81,6 +88,10 @@
 }
 
 /* ── Loading state ─── */
+
+.nick-hover-card--loading {
+  /* BEM modifier on container — currently no additional container styles needed */
+}
 
 .nick-hover-card-loading {
   color: var(--color-muted);

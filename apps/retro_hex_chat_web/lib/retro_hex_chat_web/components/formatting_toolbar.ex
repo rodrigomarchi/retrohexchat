@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
       <div class="format-color-picker-wrapper">
         <button
           type="button"
-          class="format-btn format-btn-color"
+          class="format-btn"
           data-format-code="color"
           data-testid="format-btn-color"
           title="Color (Ctrl+Shift+D)"
@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
       <span class="format-separator"></span>
       <button
         type="button"
-        class={"format-btn format-btn-strip #{if @strip_formatting, do: "format-btn-active"}"}
+        class={"format-btn #{if @strip_formatting, do: "format-btn-active"}"}
         phx-click="toggle_strip_formatting"
         data-testid="strip-formatting-toggle"
         title="Strip Colors"

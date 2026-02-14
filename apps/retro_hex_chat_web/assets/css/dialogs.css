@@ -21,10 +21,6 @@
   background: var(--color-overlay-bg-light);
 }
 
-.dialog-overlay--transparent {
-  background: transparent;
-}
-
 .dialog-overlay--above {
   z-index: var(--z-modal-above);
   background: var(--color-overlay-bg-dark);
@@ -33,8 +29,6 @@
 /* Dialog window sizes */
 .dialog-window--sm { width: 300px; }
 .dialog-window--md { width: 400px; }
-.dialog-window--lg { width: 560px; }
-.dialog-window--xl { width: 700px; }
 
 .dialog-window--narrow {
   min-width: 280px;
@@ -85,10 +79,6 @@
   margin-top: -2px;
 }
 
-.dialog-tab-panel--no-pad {
-  padding: 0;
-}
-
 /* Channel list scrollable area */
 .channel-list-scroll {
   max-height: 300px;
@@ -109,15 +99,6 @@
 
 .dialog-body--p16 {
   padding: 16px;
-}
-
-/* Dialog section */
-.dialog-section {
-  margin-bottom: 8px;
-}
-
-.dialog-section:last-child {
-  margin-bottom: 0;
 }
 
 /* Dialog button bar */

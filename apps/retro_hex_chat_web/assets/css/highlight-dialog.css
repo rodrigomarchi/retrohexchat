@@ -32,6 +32,10 @@
   color: var(--color-selection-fg);
 }
 
+.highlight-entry--own {
+  opacity: 0.8;
+}
+
 .highlight-color-grid {
   display: grid;
   grid-template-columns: repeat(8, 24px);
