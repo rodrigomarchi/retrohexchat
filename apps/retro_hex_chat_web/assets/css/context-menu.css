@@ -1,0 +1,69 @@
+/* RetroHexChat — Context menu: items, states, shortcut hints */
+
+.context-menu {
+  font-size: 12px;
+}
+
+.context-menu .window {
+  min-width: 140px;
+}
+
+.context-menu .tree-view {
+  list-style: none;
+  margin: 0;
+  padding: 2px;
+}
+
+.context-menu li {
+  padding: 4px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.context-menu li:hover {
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
+}
+
+.context-menu li.separator {
+  padding: 0;
+  cursor: default;
+  border-top: 1px solid var(--color-separator);
+  margin: 2px 0;
+}
+
+.context-menu li.separator:hover {
+  background-color: transparent;
+  color: inherit;
+}
+
+.context-menu li.disabled {
+  color: var(--color-muted);
+  cursor: default;
+}
+
+.context-menu li.disabled:hover {
+  background-color: transparent;
+  color: var(--color-muted);
+}
+
+.context-menu li.focused {
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
+}
+
+.context-menu .shortcut-hint {
+  float: right;
+  margin-left: 24px;
+  color: var(--color-muted);
+  font-size: 11px;
+}
+
+.context-menu li:hover .shortcut-hint,
+.context-menu li.focused .shortcut-hint {
+  color: var(--color-surface);
+}
+
+.context-menu li.disabled .shortcut-hint {
+  color: #a0a0a0;
+}

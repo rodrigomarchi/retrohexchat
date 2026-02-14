@@ -28,8 +28,7 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
     <div
       :if={@visible}
       data-testid="notify-list-window"
-      class="window"
-      style="position: absolute; top: 40px; right: 10px; width: 300px; height: 400px; z-index: 150; display: flex; flex-direction: column;"
+      class="window u-flex-col notify-list-window"
     >
       <div class="title-bar">
         <div class="title-bar-text">Notify List</div>
@@ -37,40 +36,37 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
           <button aria-label="Close" phx-click="toggle_notify_list"></button>
         </div>
       </div>
-      <div
-        class="window-body"
-        style="padding: 4px; display: flex; flex-direction: column; flex: 1; overflow: hidden;"
-      >
+      <div class="window-body u-p-4 u-flex-col u-flex-1 u-overflow-hidden">
         <%!-- Toolbar --%>
-        <div style="display: flex; gap: 4px; margin-bottom: 4px; align-items: center;">
+        <div class="u-flex u-gap-4 u-mb-4 u-items-center">
           <button
             type="button"
+            class="btn-sm"
             phx-click="notify_add_dialog"
             data-testid="notify-btn-add"
-            style="font-size: 11px; padding: 1px 8px;"
           >
             Add
           </button>
           <button
             type="button"
+            class="btn-sm"
             phx-click="notify_remove"
             phx-value-nickname={@selected_entry}
             disabled={is_nil(@selected_entry)}
             data-testid="notify-btn-remove"
-            style="font-size: 11px; padding: 1px 8px;"
           >
             Remove
           </button>
           <button
             type="button"
+            class="btn-sm"
             phx-click="notify_edit_dialog"
             disabled={is_nil(@selected_entry)}
             data-testid="notify-btn-edit"
-            style="font-size: 11px; padding: 1px 8px;"
           >
             Edit
           </button>
-          <label style="font-size: 11px; margin-left: auto; display: flex; align-items: center; gap: 2px;">
+          <label class="u-text-sm u-ml-auto u-flex u-items-center u-gap-2">
             <input
               type="checkbox"
               checked={@auto_whois}
@@ -80,14 +76,14 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
           </label>
         </div>
         <%!-- Table --%>
-        <div class="sunken-panel" style="flex: 1; overflow-y: auto;">
-          <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+        <div class="table-container">
+          <table class="table-standard">
             <thead>
-              <tr style="background: #c0c0c0; position: sticky; top: 0;">
-                <th style="text-align: left; padding: 2px 4px; width: 24px;"></th>
-                <th style="text-align: left; padding: 2px 4px;">Nickname</th>
-                <th style="text-align: left; padding: 2px 4px;">Notes</th>
-                <th style="text-align: left; padding: 2px 4px;">Last Seen</th>
+              <tr class="u-sticky-top">
+                <th class="notify-status-col"></th>
+                <th>Nickname</th>
+                <th>Notes</th>
+                <th>Last Seen</th>
               </tr>
             </thead>
             <tbody>
@@ -97,24 +93,24 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
                 phx-value-nickname={entry.tracked_nickname}
                 data-nickname={entry.tracked_nickname}
                 data-testid={"notify-entry-#{entry.tracked_nickname}"}
-                style={row_style(entry.tracked_nickname, @selected_entry)}
+                class={[
+                  "table-row--selectable",
+                  entry.tracked_nickname == @selected_entry && "table-row--selected"
+                ]}
               >
-                <td style="text-align: center; padding: 2px 4px;">
+                <td class="u-text-center">
                   {status_dot(entry.online)}
                 </td>
-                <td style={"padding: 2px 4px; #{notify_nick_style(@nick_color_fn, entry.tracked_nickname)}"}>
+                <td style={notify_nick_style(@nick_color_fn, entry.tracked_nickname)}>
                   {entry.tracked_nickname}
                 </td>
-                <td style="padding: 2px 4px;">{entry.note || ""}</td>
-                <td style="padding: 2px 4px; white-space: nowrap;">
+                <td>{entry.note || ""}</td>
+                <td class="table-cell--nowrap">
                   {format_last_seen(entry.last_seen_at)}
                 </td>
               </tr>
               <tr :if={@entries == []}>
-                <td
-                  colspan="4"
-                  style="text-align: center; padding: 8px; color: #808080; font-size: 11px;"
-                >
+                <td colspan="4" class="table-empty">
                   No entries. Click Add to track a nickname.
                 </td>
               </tr>
@@ -124,56 +120,46 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
       </div>
     </div>
     <%!-- Add Dialog --%>
-    <div
-      :if={@show_add_dialog}
-      class="dialog-overlay"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.5);"
-    >
-      <div class="window" style="min-width: 280px; max-width: 340px;">
+    <div :if={@show_add_dialog} class="dialog-overlay dialog-overlay--dark">
+      <div class="window dialog-window--narrow">
         <div class="title-bar">
           <div class="title-bar-text">Add to Notify List</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="notify_add_cancel"></button>
           </div>
         </div>
-        <div class="window-body" style="padding: 12px;">
+        <div class="window-body dialog-body">
           <form phx-submit="notify_add" data-testid="notify-add-form">
-            <div style="margin-bottom: 8px;">
-              <label
-                for="notify-add-nickname"
-                style="font-size: 11px; display: block; margin-bottom: 2px;"
-              >
+            <div class="u-mb-8">
+              <label for="notify-add-nickname" class="form-label">
                 Nickname:
               </label>
               <input
                 type="text"
                 id="notify-add-nickname"
                 name="nickname"
+                class="u-w-full"
                 required
                 maxlength="16"
                 autocomplete="off"
-                style="width: 100%;"
                 data-testid="notify-add-nickname"
               />
             </div>
-            <div style="margin-bottom: 12px;">
-              <label
-                for="notify-add-note"
-                style="font-size: 11px; display: block; margin-bottom: 2px;"
-              >
+            <div class="u-mb-12">
+              <label for="notify-add-note" class="form-label">
                 Notes:
               </label>
               <input
                 type="text"
                 id="notify-add-note"
                 name="note"
+                class="u-w-full"
                 maxlength="200"
                 autocomplete="off"
-                style="width: 100%;"
                 data-testid="notify-add-note"
               />
             </div>
-            <div style="display: flex; justify-content: flex-end; gap: 8px;">
+            <div class="dialog-buttons dialog-buttons--gap-8">
               <button type="submit" data-testid="notify-add-ok">OK</button>
               <button type="button" phx-click="notify_add_cancel" data-testid="notify-add-cancel">
                 Cancel
@@ -184,56 +170,47 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
       </div>
     </div>
     <%!-- Edit Dialog --%>
-    <div
-      :if={@show_edit_dialog}
-      class="dialog-overlay"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.5);"
-    >
-      <div class="window" style="min-width: 280px; max-width: 340px;">
+    <div :if={@show_edit_dialog} class="dialog-overlay dialog-overlay--dark">
+      <div class="window dialog-window--narrow">
         <div class="title-bar">
           <div class="title-bar-text">Edit Notify Entry</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="notify_edit_cancel"></button>
           </div>
         </div>
-        <div class="window-body" style="padding: 12px;">
+        <div class="window-body dialog-body">
           <form phx-submit="notify_edit" data-testid="notify-edit-form">
-            <div style="margin-bottom: 8px;">
-              <label
-                for="notify-edit-nickname"
-                style="font-size: 11px; display: block; margin-bottom: 2px;"
-              >
+            <div class="u-mb-8">
+              <label for="notify-edit-nickname" class="form-label">
                 Nickname:
               </label>
               <input
                 type="text"
                 id="notify-edit-nickname"
                 name="nickname"
+                class="u-w-full"
                 value={@selected_entry}
                 readonly
-                style="width: 100%; background: #c0c0c0;"
+                class="input-readonly"
                 data-testid="notify-edit-nickname"
               />
             </div>
-            <div style="margin-bottom: 12px;">
-              <label
-                for="notify-edit-note"
-                style="font-size: 11px; display: block; margin-bottom: 2px;"
-              >
+            <div class="u-mb-12">
+              <label for="notify-edit-note" class="form-label">
                 Notes:
               </label>
               <input
                 type="text"
                 id="notify-edit-note"
                 name="note"
+                class="u-w-full"
                 value={@selected_note}
                 maxlength="200"
                 autocomplete="off"
-                style="width: 100%;"
                 data-testid="notify-edit-note"
               />
             </div>
-            <div style="display: flex; justify-content: flex-end; gap: 8px;">
+            <div class="dialog-buttons dialog-buttons--gap-8">
               <button type="submit" data-testid="notify-edit-ok">OK</button>
               <button type="button" phx-click="notify_edit_cancel" data-testid="notify-edit-cancel">
                 Cancel
@@ -251,11 +228,7 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
     assigns = %{}
 
     ~H"""
-    <span
-      style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #00a000;"
-      title="Online"
-    >
-    </span>
+    <span class="u-status-dot u-status-dot--online" title="Online"></span>
     """
   end
 
@@ -263,11 +236,7 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
     assigns = %{}
 
     ~H"""
-    <span
-      style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #808080;"
-      title="Offline"
-    >
-    </span>
+    <span class="u-status-dot u-status-dot--offline" title="Offline"></span>
     """
   end
 
@@ -278,13 +247,4 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
   @spec notify_nick_style((String.t() -> String.t()) | nil, String.t()) :: String.t()
   defp notify_nick_style(nil, _nickname), do: ""
   defp notify_nick_style(color_fn, nickname), do: "color: #{color_fn.(nickname)};"
-
-  @spec row_style(String.t(), String.t() | nil) :: String.t()
-  defp row_style(nickname, selected) when nickname == selected do
-    "background: #000080; color: #ffffff; cursor: pointer;"
-  end
-
-  defp row_style(_nickname, _selected) do
-    "cursor: pointer;"
-  end
 end

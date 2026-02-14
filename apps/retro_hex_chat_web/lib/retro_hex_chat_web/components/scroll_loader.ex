@@ -9,11 +9,11 @@ defmodule RetroHexChatWeb.Components.ScrollLoader do
   @spec scroll_loader(map()) :: Phoenix.LiveView.Rendered.t()
   def scroll_loader(assigns) do
     ~H"""
-    <div :if={@loading} class="scroll-loader" style="text-align: center; padding: 8px;">
+    <div :if={@loading} class="scroll-loader">
       <div role="progressbar" class="animate">
         <div></div>
       </div>
-      <span style="font-size: 11px; color: #808080;">Loading messages...</span>
+      <span>Loading messages...</span>
     </div>
     """
   end

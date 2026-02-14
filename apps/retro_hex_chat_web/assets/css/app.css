@@ -1,12 +1,41 @@
 /* RetroHexChat - main CSS entry point */
 @import "../vendor/98.css/98.css";
 
+/* Layer 1: Foundation */
+@import "./tokens.css";
+@import "./utilities.css";
+
+/* Layer 2: Layout & Shell */
 @import "./layout.css";
+@import "./shell.css";
+
+/* Layer 3: Shared Patterns */
+@import "./tables.css";
+@import "./forms.css";
+
+/* Layer 4: Components */
+@import "./autocomplete.css";
+@import "./context-menu.css";
+@import "./emoji-picker.css";
+@import "./nicklist.css";
+@import "./search.css";
+@import "./tab-bar.css";
+@import "./topic-bar.css";
+
+/* Layer 5: Chat */
 @import "./chat.css";
-@import "./components.css";
-@import "./dialogs.css";
+@import "./syntax-tooltip.css";
 @import "./formatting.css";
 @import "./status-messages.css";
+
+/* Layer 6: Dialogs */
+@import "./dialogs.css";
+@import "./about-dialog.css";
+@import "./connect-dialog.css";
+@import "./help-dialog.css";
+@import "./highlight-dialog.css";
+@import "./options-dialog.css";
+@import "./reconnect-overlay.css";
 
 /* Phoenix LiveView visibility helpers */
 [data-phx-session],

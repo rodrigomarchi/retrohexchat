@@ -99,8 +99,8 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
       render_click(view, "toggle_notify_list")
 
       html = render_click(view, "notify_select", %{"nickname" => "SelBud"})
-      # Navy background for selected row
-      assert html =~ "#000080"
+      # Selected row has CSS class for highlight
+      assert html =~ "table-row--selected"
     end
   end
 

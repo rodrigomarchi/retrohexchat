@@ -26,15 +26,15 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
       class="context-menu"
       style={"position: fixed; left: #{@x}px; top: #{@y}px; z-index: 300;"}
     >
-      <div class="window" style="padding: 2px;">
-        <ul class="tree-view" style="margin: 0; padding: 2px;">
+      <div class="window u-p-2">
+        <ul class="tree-view">
           <li data-testid="ctx-query" phx-click="context_query" phx-value-nick={@target_nick}>
             Query (PM) <.shortcut_hint bindings={@key_bindings} action={:open_pm} />
           </li>
           <li data-testid="ctx-whois" phx-click="context_whois" phx-value-nick={@target_nick}>
             Whois
           </li>
-          <li class="separator" style="border-top: 1px solid #666; margin: 2px 0;"></li>
+          <li class="separator"></li>
           <li
             data-testid="ctx-add-contact"
             phx-click="context_add_contact"
@@ -68,7 +68,6 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
           <li
             :if={@viewer_is_op}
             class="separator"
-            style="border-top: 1px solid #666; margin: 2px 0;"
           >
           </li>
           <li
@@ -106,7 +105,6 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
           <li
             :if={@custom_nicklist_items != []}
             class="separator"
-            style="border-top: 1px solid #666; margin: 2px 0;"
           >
           </li>
           <li
@@ -127,18 +125,19 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
       data-testid="ctx-color-picker"
       style={"position: fixed; left: #{@x}px; top: #{@y + 30}px; z-index: 310;"}
     >
-      <div class="window" style="padding: 4px;">
-        <div style="font-size: 11px; margin-bottom: 4px; font-weight: bold;">
+      <div class="window u-p-4">
+        <div class="u-text-sm u-mb-4 u-text-bold">
           Pick color for {@target_nick}
         </div>
-        <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px;">
+        <div class="ab-color-grid">
           <button
             :for={{idx, hex} <- irc_color_list()}
             type="button"
             phx-click="context_pick_color"
             phx-value-color_index={idx}
             data-testid={"ctx-color-swatch-#{idx}"}
-            style={"display: inline-block; width: 20px; height: 20px; border: 1px solid #808080; cursor: pointer; background: #{hex}; padding: 0;"}
+            class="nick-palette-swatch"
+            style={"background: #{hex};"}
           >
           </button>
         </div>

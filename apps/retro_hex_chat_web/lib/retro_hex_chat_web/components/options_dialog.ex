@@ -172,7 +172,7 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
             phx-keyup="options_change_quit_message"
             phx-key="Enter"
             name="quit_message"
-            style="width: 200px;"
+            class="options-quit-input"
             data-testid="options-display-quit-message"
           />
         </div>

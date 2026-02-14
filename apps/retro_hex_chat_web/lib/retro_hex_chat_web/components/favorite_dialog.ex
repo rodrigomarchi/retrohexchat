@@ -33,11 +33,10 @@ defmodule RetroHexChatWeb.Components.FavoriteDialog do
     ~H"""
     <div
       :if={@visible}
-      class="dialog-overlay"
+      class="dialog-overlay dialog-overlay--light"
       data-testid="favorite-dialog"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 210; background: rgba(0,0,0,0.2);"
     >
-      <div class="window" style="width: 340px;">
+      <div class="window dialog-window--narrow">
         <div class="title-bar">
           <div class="title-bar-text">{@title}</div>
           <div class="title-bar-controls">
@@ -49,16 +48,16 @@ defmodule RetroHexChatWeb.Components.FavoriteDialog do
             </button>
           </div>
         </div>
-        <div class="window-body" style="padding: 8px;">
+        <div class="window-body dialog-body--p8">
           <p
             :if={@is_duplicate}
-            style="color: #800000; font-size: 11px; margin: 0 0 8px 0;"
+            class="u-text-sm u-mb-8 favorite-duplicate-notice"
             data-testid="favorite-duplicate-notice"
           >
             This channel is already in your favorites. Saving will update the existing entry.
           </p>
           <form phx-submit="save_favorite">
-            <div class="field-row-stacked" style="margin-bottom: 8px;">
+            <div class="field-row-stacked u-mb-8">
               <label for="favorite-channel-input">Channel:</label>
               <input
                 type="text"
@@ -71,7 +70,7 @@ defmodule RetroHexChatWeb.Components.FavoriteDialog do
                 required
               />
             </div>
-            <div class="field-row-stacked" style="margin-bottom: 8px;">
+            <div class="field-row-stacked u-mb-8">
               <label for="favorite-description-input">Description:</label>
               <input
                 type="text"
@@ -83,7 +82,7 @@ defmodule RetroHexChatWeb.Components.FavoriteDialog do
                 placeholder="Optional description"
               />
             </div>
-            <div class="field-row-stacked" style="margin-bottom: 8px;">
+            <div class="field-row-stacked u-mb-8">
               <label for="favorite-password-input">Password:</label>
               <input
                 type="password"
@@ -94,8 +93,8 @@ defmodule RetroHexChatWeb.Components.FavoriteDialog do
                 placeholder={if @has_password, do: "Password set", else: "Leave empty if no key"}
               />
             </div>
-            <div style="margin-bottom: 8px;">
-              <label style="display: flex; align-items: center; gap: 4px; font-size: 11px;">
+            <div class="u-mb-8">
+              <label class="form-row u-text-sm">
                 <input
                   type="checkbox"
                   name="auto_join"
@@ -105,7 +104,7 @@ defmodule RetroHexChatWeb.Components.FavoriteDialog do
                 /> Auto-join on connect
               </label>
             </div>
-            <div style="display: flex; gap: 4px; justify-content: flex-end;">
+            <div class="dialog-buttons">
               <button type="submit" data-testid="favorite-save-btn">OK</button>
               <button
                 type="button"

@@ -26,8 +26,8 @@ defmodule RetroHexChatWeb.Components.TreebarContextMenu do
       phx-hook="ContextMenuHook"
       id="treebar-context-menu"
     >
-      <div class="window" style="padding: 2px;">
-        <ul class="tree-view" style="margin: 0; padding: 2px;">
+      <div class="window u-p-2">
+        <ul class="tree-view">
           <li
             class={unless @has_unread, do: "disabled"}
             data-testid="ctx-treebar-mark-read"
@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.Components.TreebarContextMenu do
           >
             Copy Name
           </li>
-          <li class="separator" style="border-top: 1px solid #666; margin: 2px 0;"></li>
+          <li class="separator"></li>
           <li
             data-testid="ctx-treebar-leave"
             phx-click="ctx_treebar_leave"
@@ -75,7 +75,6 @@ defmodule RetroHexChatWeb.Components.TreebarContextMenu do
           <li
             :if={@custom_channel_items != []}
             class="separator"
-            style="border-top: 1px solid #666; margin: 2px 0;"
           >
           </li>
           <li

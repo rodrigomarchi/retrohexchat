@@ -47,8 +47,7 @@ defmodule RetroHexChatWeb.Components.MenuBar do
         <div class="menu-dropdown">
           <%= if @favorites == [] do %>
             <div
-              class="menu-dropdown-item"
-              style="color: #808080; pointer-events: none;"
+              class="menu-dropdown-item menu-item--disabled"
               data-testid="menu-no-favorites"
             >
               No favorites
@@ -72,14 +71,13 @@ defmodule RetroHexChatWeb.Components.MenuBar do
               {fav.channel_name}
               <span
                 :if={fav.description != "" and fav.description != nil}
-                style="color: #808080; margin-left: 8px;"
+                class="menu-shortcut-hint"
               >
                 - {fav.description}
               </span>
             </div>
           <% end %>
-          <div class="menu-dropdown-separator" style="border-top: 1px solid #808080; margin: 2px 0;">
-          </div>
+          <div class="menu-dropdown-separator"></div>
           <div
             class="menu-dropdown-item"
             data-testid="menu-organize-favorites"

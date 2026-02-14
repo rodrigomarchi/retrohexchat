@@ -1,0 +1,39 @@
+/* RetroHexChat — Topic bar: channel name, modes, topic text */
+
+.topic-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 8px;
+  font-size: 11px;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  flex-shrink: 0;
+  min-height: 18px;
+}
+
+.topic-channel {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.topic-modes {
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.topic-separator {
+  color: var(--color-muted);
+}
+
+.topic-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-gray-700);
+}
+
+.topic-no-topic {
+  color: var(--color-muted);
+  font-style: italic;
+}

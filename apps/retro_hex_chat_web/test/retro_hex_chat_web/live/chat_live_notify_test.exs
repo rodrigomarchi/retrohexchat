@@ -261,8 +261,8 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
       html = render_click(view, "notify_select", %{"nickname" => "SelectMe"})
       assert html =~ "SelectMe"
-      # The selected entry row has highlighted styling (navy background)
-      assert html =~ "#000080"
+      # The selected entry row has CSS class for highlight
+      assert html =~ "table-row--selected"
     end
   end
 

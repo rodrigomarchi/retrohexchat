@@ -324,7 +324,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
       render_click(view, "perform_select", %{"position" => "0"})
       html = render(view)
       # Selected row has highlight style
-      assert html =~ "background: #000080"
+      assert html =~ "table-row--selected"
     end
 
     test "autojoin_select highlights row", %{conn: conn} do
@@ -340,7 +340,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
       render_click(view, "autojoin_select", %{"channel" => "#ajsel"})
       html = render(view)
-      assert html =~ "background: #000080"
+      assert html =~ "table-row--selected"
     end
   end
 

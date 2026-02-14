@@ -19,11 +19,9 @@ defmodule RetroHexChatWeb.Components.AliasDialog do
     <div
       :if={@visible}
       class="dialog-overlay"
-      style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 200; display: flex; align-items: center; justify-content: center;"
     >
       <div
-        class="window"
-        style="width: 440px; max-height: 80vh; display: flex; flex-direction: column;"
+        class="window u-flex-col dialog-window--alias"
         data-testid="alias-dialog"
       >
         <div class="title-bar">
@@ -32,28 +30,21 @@ defmodule RetroHexChatWeb.Components.AliasDialog do
             <button aria-label="Close" phx-click="close_alias_dialog"></button>
           </div>
         </div>
-        <div
-          class="window-body"
-          style="padding: 8px; display: flex; flex-direction: column; gap: 8px; overflow: hidden;"
-        >
-          <fieldset style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+        <div class="window-body dialog-body--p8 u-flex-col u-gap-8 u-overflow-hidden">
+          <fieldset class="u-flex-1 u-overflow-hidden u-flex-col">
             <legend>Aliases</legend>
-            <div style="overflow-y: auto; max-height: 200px; border: 1px inset;">
-              <table style="width: 100%; border-collapse: collapse;">
+            <div class="list-container crud-list">
+              <table class="table-standard">
                 <thead>
                   <tr>
-                    <th style="text-align: left; padding: 2px 4px; background: #c0c0c0; border-bottom: 1px solid #808080;">
-                      Name
-                    </th>
-                    <th style="text-align: left; padding: 2px 4px; background: #c0c0c0; border-bottom: 1px solid #808080;">
-                      Expansion
-                    </th>
+                    <th>Name</th>
+                    <th>Expansion</th>
                   </tr>
                 </thead>
                 <tbody>
                   <%= if @aliases == [] do %>
                     <tr>
-                      <td colspan="2" style="padding: 8px; text-align: center; color: #808080;">
+                      <td colspan="2" class="table-empty">
                         No aliases configured. Click "Add" to create one.
                       </td>
                     </tr>
@@ -63,10 +54,13 @@ defmodule RetroHexChatWeb.Components.AliasDialog do
                       phx-click="alias_select"
                       phx-value-name={entry.name}
                       data-testid={"alias-entry-#{entry.name}"}
-                      style={row_style(entry.name, @selected_alias)}
+                      class={[
+                        "table-row--selectable",
+                        entry.name == @selected_alias && "table-row--selected"
+                      ]}
                     >
-                      <td style="padding: 2px 4px;">/{entry.name}</td>
-                      <td style="padding: 2px 4px; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                      <td>/{entry.name}</td>
+                      <td class="table-cell--ellipsis alias-expansion-cell">
                         {entry.expansion}
                       </td>
                     </tr>
@@ -76,49 +70,49 @@ defmodule RetroHexChatWeb.Components.AliasDialog do
             </div>
           </fieldset>
 
-          <div :if={@warning_message} style="color: #808000; font-size: 11px; padding: 2px 4px;">
+          <div :if={@warning_message} class="form-warning">
             {raw_warning(@warning_message)}
           </div>
 
-          <div :if={@editing} style="border: 1px inset; padding: 8px;">
+          <div :if={@editing} class="edit-panel">
             <form phx-submit="alias_dialog_save" data-testid="alias-edit-form">
-              <div style="display: flex; flex-direction: column; gap: 4px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <label style="width: 80px;">Name:</label>
+              <div class="u-flex-col u-gap-4">
+                <div class="form-row form-row--gap-8">
+                  <label class="form-label--w80">Name:</label>
                   <input
                     type="text"
                     name="name"
                     value={@draft_name}
                     maxlength="30"
                     placeholder="e.g. hi"
-                    style="flex: 1;"
+                    class="u-flex-1"
                     data-testid="alias-name-input"
                     disabled={@selected_alias != nil}
                   />
                 </div>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <label style="width: 80px;">Expansion:</label>
+                <div class="form-row form-row--gap-8">
+                  <label class="form-label--w80">Expansion:</label>
                   <input
                     type="text"
                     name="expansion"
                     value={@draft_expansion}
                     maxlength="500"
                     placeholder="e.g. /me says hello!"
-                    style="flex: 1;"
+                    class="u-flex-1"
                     data-testid="alias-expansion-input"
                   />
                 </div>
-                <div style="font-size: 10px; color: #808080; padding-left: 88px;">
+                <div class="form-hint form-hint--indented">
                   Variables: $1-$9 (args), $nick (your nick), $chan (channel)
                 </div>
                 <div
                   :if={@error_message}
-                  style="color: red; font-size: 11px; padding-left: 88px;"
+                  class="form-error form-hint--indented"
                   data-testid="alias-error"
                 >
                   {@error_message}
                 </div>
-                <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 4px;">
+                <div class="dialog-buttons u-mt-4">
                   <button type="submit" data-testid="alias-save-btn">Save</button>
                   <button type="button" phx-click="alias_dialog_cancel_edit">Cancel</button>
                 </div>
@@ -126,7 +120,7 @@ defmodule RetroHexChatWeb.Components.AliasDialog do
             </form>
           </div>
 
-          <div style="display: flex; justify-content: flex-end; gap: 4px;">
+          <div class="dialog-buttons">
             <button phx-click="alias_dialog_add" data-testid="alias-add-btn">Add</button>
             <button
               phx-click="alias_dialog_edit"
@@ -148,14 +142,6 @@ defmodule RetroHexChatWeb.Components.AliasDialog do
       </div>
     </div>
     """
-  end
-
-  defp row_style(name, selected) when name == selected do
-    "background: #000080; color: #ffffff; cursor: pointer;"
-  end
-
-  defp row_style(_name, _selected) do
-    "cursor: pointer;"
   end
 
   defp raw_warning(msg), do: msg

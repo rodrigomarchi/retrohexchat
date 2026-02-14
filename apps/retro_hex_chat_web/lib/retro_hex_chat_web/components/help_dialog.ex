@@ -23,7 +23,6 @@ defmodule RetroHexChatWeb.Components.HelpDialog do
       :if={@visible}
       class="dialog-overlay"
       data-testid="help-dialog"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.3);"
     >
       <div class="window help-dialog">
         <div class="title-bar">
@@ -33,7 +32,7 @@ defmodule RetroHexChatWeb.Components.HelpDialog do
             </button>
           </div>
         </div>
-        <div class="window-body help-split" style="margin: 0; padding: 0;">
+        <div class="window-body help-split">
           <%!-- Navigation pane --%>
           <div class="help-nav" data-testid="help-nav-pane">
             <menu role="tablist" class="help-nav-tabs">
@@ -84,7 +83,7 @@ defmodule RetroHexChatWeb.Components.HelpDialog do
                           }
                           phx-click="help_select_topic"
                           phx-value-id={topic.id}
-                          style="cursor: pointer;"
+                          class="u-cursor-pointer"
                         >
                           {topic.title}
                         </li>
@@ -102,9 +101,9 @@ defmodule RetroHexChatWeb.Components.HelpDialog do
                   value={@index_filter}
                   phx-keyup="help_index_filter"
                   data-testid="help-index-filter"
-                  style="width: 100%; margin-bottom: 4px; font-size: 11px;"
+                  class="help-search-input"
                 />
-                <div style="overflow-y: auto; max-height: 380px;">
+                <div class="help-search-scroll">
                   <div
                     :for={{keyword, topic_id} <- @index_keywords}
                     class="help-index-item"
@@ -119,7 +118,7 @@ defmodule RetroHexChatWeb.Components.HelpDialog do
 
               <%!-- Search tab --%>
               <div :if={@active_tab == "search"}>
-                <div style="display: flex; gap: 4px; margin-bottom: 4px;">
+                <div class="help-search-row">
                   <input
                     type="text"
                     placeholder="Search help..."
@@ -127,19 +126,19 @@ defmodule RetroHexChatWeb.Components.HelpDialog do
                     phx-keyup="help_search_input"
                     phx-key="Enter"
                     data-testid="help-search-input"
-                    style="flex: 1; font-size: 11px;"
+                    class="help-search-field"
                   />
                   <button
                     type="button"
                     data-testid="help-search-btn"
                     phx-click="help_search"
                     phx-value-query={@search_query}
-                    style="font-size: 11px;"
+                    class="help-search-btn"
                   >
                     Go
                   </button>
                 </div>
-                <div style="overflow-y: auto; max-height: 370px;">
+                <div class="help-index-scroll">
                   <div
                     :for={result <- @search_results}
                     class="help-search-result"
@@ -152,7 +151,7 @@ defmodule RetroHexChatWeb.Components.HelpDialog do
                   </div>
                   <div
                     :if={@search_results == [] && @search_query != ""}
-                    style="color: #808080; padding: 8px; font-size: 11px;"
+                    class="help-no-results"
                   >
                     No results found.
                   </div>
@@ -166,7 +165,7 @@ defmodule RetroHexChatWeb.Components.HelpDialog do
             <%= if @selected_topic do %>
               {raw(@selected_topic.content)}
             <% else %>
-              <p style="color: #808080; padding: 16px;">
+              <p class="help-no-topic">
                 Select a topic from the navigation pane to get started.
               </p>
             <% end %>

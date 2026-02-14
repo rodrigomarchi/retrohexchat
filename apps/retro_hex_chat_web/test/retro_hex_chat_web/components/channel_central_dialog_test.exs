@@ -285,17 +285,17 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialogTest do
   describe "row selection highlighting" do
     test "selected ban row has highlight style" do
       html = render_dialog(%{active_tab: "bans", ban_selected: "troll1"})
-      assert html =~ "background: #000080"
+      assert html =~ "table-row--selected"
     end
 
     test "selected ban exception row has highlight style" do
       html = render_dialog(%{active_tab: "ban_exceptions", ban_ex_selected: "exempt1"})
-      assert html =~ "background: #000080"
+      assert html =~ "table-row--selected"
     end
 
     test "selected invite exception row has highlight style" do
       html = render_dialog(%{active_tab: "invite_exceptions", invite_ex_selected: "invited1"})
-      assert html =~ "background: #000080"
+      assert html =~ "table-row--selected"
     end
   end
 end

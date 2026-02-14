@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.Components.PasteConfirmDialog do
           <button aria-label="Close" phx-click="paste_cancel"></button>
         </div>
       </div>
-      <div class="window-body" style="padding: 12px;">
+      <div class="window-body dialog-body">
         <p>You are about to send <strong>{@line_count} lines</strong>.</p>
 
         <p :if={@flood_warning && !@send_disabled} class="paste-flood-warning">
@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.Components.PasteConfirmDialog do
           Too many lines (max 100). Please use a pastebin service instead.
         </p>
 
-        <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 12px;">
+        <div class="dialog-buttons u-mt-12">
           <button phx-click="paste_send" disabled={@send_disabled} data-testid="paste-send-btn">
             Send All
           </button>

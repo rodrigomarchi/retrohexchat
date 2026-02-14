@@ -24,26 +24,22 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
     <div
       :if={@visible}
       class="dialog-overlay"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.3);"
       data-testid="log-viewer-dialog"
     >
-      <div class="window" style="width: 750px; height: 550px; display: flex; flex-direction: column;">
+      <div class="window u-flex-col dialog-window--log-viewer">
         <div class="title-bar">
           <div class="title-bar-text">Log Viewer</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="close_log_viewer"></button>
           </div>
         </div>
-        <div
-          class="window-body"
-          style="flex: 1; display: flex; flex-direction: column; padding: 4px; overflow: hidden;"
-        >
+        <div class="window-body u-flex-1 u-flex-col u-p-4 u-overflow-hidden">
           <%!-- Filter bar --%>
-          <div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 4px;">
-            <div style="display: flex; gap: 4px; align-items: center;">
-              <label style="font-size: 11px; min-width: 50px;">Source:</label>
+          <div class="u-flex-col u-gap-4 u-mb-4">
+            <div class="u-flex u-gap-4 u-items-center">
+              <label class="u-text-sm u-min-w-50">Source:</label>
               <select
-                style="flex: 1; font-size: 11px;"
+                class="u-flex-1 u-text-sm"
                 phx-change="log_set_source"
                 name="source"
                 data-testid="log-source-select"
@@ -70,47 +66,47 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
                   </option>
                 </optgroup>
               </select>
-              <label style="font-size: 11px;">From:</label>
+              <label class="u-text-sm">From:</label>
               <input
                 type="date"
                 name="date"
-                style="font-size: 11px; width: 130px;"
+                class="u-text-sm log-date-input"
                 phx-change="log_set_date_from"
                 value={@filter && @filter.date_from && Date.to_iso8601(@filter.date_from)}
                 data-testid="log-date-from"
               />
-              <label style="font-size: 11px;">To:</label>
+              <label class="u-text-sm">To:</label>
               <input
                 type="date"
                 name="date"
-                style="font-size: 11px; width: 130px;"
+                class="u-text-sm log-date-input"
                 phx-change="log_set_date_to"
                 value={@filter && @filter.date_to && Date.to_iso8601(@filter.date_to)}
                 data-testid="log-date-to"
               />
             </div>
-            <form phx-submit="log_search" style="display: flex; gap: 4px; align-items: center;">
-              <label style="font-size: 11px; min-width: 50px;">Nick:</label>
+            <form phx-submit="log_search" class="u-flex u-gap-4 u-items-center">
+              <label class="u-text-sm u-min-w-50">Nick:</label>
               <input
                 type="text"
                 name="nickname"
                 placeholder="Filter by nickname..."
-                style="width: 120px; font-size: 11px;"
+                class="u-text-sm log-nick-input"
                 value={@filter && @filter.nickname}
                 data-testid="log-nickname-input"
               />
-              <label style="font-size: 11px;">Text:</label>
+              <label class="u-text-sm">Text:</label>
               <input
                 type="text"
                 name="text"
                 placeholder="Search text..."
-                style="flex: 1; font-size: 11px;"
+                class="u-flex-1 u-text-sm"
                 value={@filter && @filter.text}
                 data-testid="log-text-input"
               />
               <button
                 type="submit"
-                style="font-size: 11px; padding: 1px 8px;"
+                class="btn-sm"
                 data-testid="log-search-btn"
               >
                 Search
@@ -118,7 +114,7 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
               <button
                 type="button"
                 phx-click="log_refresh"
-                style="font-size: 11px; padding: 1px 8px;"
+                class="btn-sm"
                 data-testid="log-refresh-btn"
               >
                 Refresh
@@ -126,30 +122,27 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
             </form>
             <div
               :if={@error}
-              style="color: red; font-size: 11px; padding: 2px 4px;"
+              class="form-error u-p-4"
               data-testid="log-error"
             >
               {@error}
             </div>
           </div>
           <%!-- Results area --%>
-          <div
-            style="flex: 1; overflow-y: auto; border: 1px solid #808080; background: #fff; padding: 2px; font-family: 'Courier New', Courier, monospace; font-size: 11px;"
-            data-testid="log-results-area"
-          >
-            <div :if={@loading} style="padding: 8px; color: #808080;" data-testid="log-loading">
+          <div class="log-results-area" data-testid="log-results-area">
+            <div :if={@loading} class="u-p-8 u-text-muted" data-testid="log-loading">
               Searching...
             </div>
             <div
               :if={!@loading && @page == nil}
-              style="padding: 8px; color: #808080;"
+              class="u-p-8 u-text-muted"
               data-testid="log-initial-state"
             >
               Select a source and click Search to view logs.
             </div>
             <div
               :if={!@loading && @page != nil && @page.entries == []}
-              style="padding: 8px; color: #808080;"
+              class="u-p-8 u-text-muted"
               data-testid="log-empty-state"
             >
               No results found — try broadening your search criteria.
@@ -157,9 +150,13 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
             <div :if={!@loading && @page != nil && @page.entries != []}>
               <div
                 :for={entry <- visible_entries(@page.entries, @preferences)}
-                style={entry_style(entry)}
+                class={
+                  if Map.get(entry, :type) == "system",
+                    do: "log-entry--system",
+                    else: "log-entry--message"
+                }
               >
-                <span style="color: #808080;">
+                <span class="u-text-muted">
                   {format_entry_timestamp(entry, @preferences)}
                 </span>
                 {render_entry(entry, @nick_color_fn)}
@@ -167,23 +164,23 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
             </div>
           </div>
           <%!-- Bottom bar: pagination + preferences + export --%>
-          <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px; flex-wrap: wrap;">
+          <div class="u-flex u-gap-8 u-items-center u-mt-4 u-flex-wrap">
             <%!-- Pagination --%>
             <div
               :if={@page != nil && @page.total_pages > 0}
-              style="display: flex; gap: 4px; align-items: center;"
+              class="u-flex u-gap-4 u-items-center"
             >
               <button
                 type="button"
                 phx-click="log_page"
                 phx-value-page={@page.page - 1}
                 disabled={@page.page <= 1}
-                style="font-size: 11px; padding: 1px 6px;"
+                class="btn-sm"
                 data-testid="log-prev-btn"
               >
                 « Prev
               </button>
-              <span style="font-size: 11px;" data-testid="log-page-indicator">
+              <span class="u-text-sm" data-testid="log-page-indicator">
                 Page {@page.page} of {@page.total_pages}
               </span>
               <button
@@ -191,21 +188,21 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
                 phx-click="log_page"
                 phx-value-page={@page.page + 1}
                 disabled={@page.page >= @page.total_pages}
-                style="font-size: 11px; padding: 1px 6px;"
+                class="btn-sm"
                 data-testid="log-next-btn"
               >
                 Next »
               </button>
             </div>
             <%!-- Export --%>
-            <div style="display: flex; gap: 4px; align-items: center; margin-left: auto;">
-              <span :if={@exporting} style="font-size: 11px; color: #808080;">Exporting...</span>
+            <div class="u-flex u-gap-4 u-items-center u-ml-auto">
+              <span :if={@exporting} class="u-text-sm u-text-muted">Exporting...</span>
               <button
                 type="button"
                 phx-click="log_export"
                 phx-value-format="txt"
                 disabled={export_disabled?(@page)}
-                style="font-size: 11px; padding: 1px 8px;"
+                class="btn-sm"
                 data-testid="log-export-txt"
               >
                 Export .txt
@@ -215,7 +212,7 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
                 phx-click="log_export"
                 phx-value-format="html"
                 disabled={export_disabled?(@page)}
-                style="font-size: 11px; padding: 1px 8px;"
+                class="btn-sm"
                 data-testid="log-export-html"
               >
                 Export .html
@@ -223,9 +220,9 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
             </div>
           </div>
           <%!-- Display preferences --%>
-          <fieldset style="margin-top: 4px; padding: 2px 4px;">
-            <legend style="font-size: 11px;">Display Options</legend>
-            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 11px;">
+          <fieldset class="u-mt-4 u-py-2 u-px-4">
+            <legend class="u-text-sm">Display Options</legend>
+            <div class="u-flex u-gap-8 u-items-center u-flex-wrap u-text-sm">
               <label data-testid="log-toggle-joins">
                 <input
                   type="checkbox"
@@ -266,11 +263,11 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
                   phx-value-event_type="show_topic_changes"
                 /> Topics
               </label>
-              <span style="margin-left: 8px;">Time:</span>
+              <span class="u-ml-8">Time:</span>
               <select
                 name="format"
                 phx-change="log_set_timestamp_format"
-                style="font-size: 11px;"
+                class="u-text-sm"
                 data-testid="log-timestamp-format"
               >
                 <option
@@ -316,14 +313,6 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
       content = Map.get(entry, :content, "")
       DisplayPreferences.visible_type?(prefs, type, content)
     end)
-  end
-
-  defp entry_style(entry) do
-    if Map.get(entry, :type) == "system" do
-      "padding: 1px 0; color: #808080; font-style: italic;"
-    else
-      "padding: 1px 0;"
-    end
   end
 
   defp format_entry_timestamp(entry, prefs) do

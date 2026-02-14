@@ -1,0 +1,67 @@
+/* RetroHexChat — Design Tokens
+   Central source of truth for colors, spacing, typography, and z-index scale.
+   All hardcoded values in components should reference these variables. */
+
+:root {
+  /* ── Colors: Neutrals ── */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-gray-900: #0a0a0a;
+  --color-gray-700: #444444;
+  --color-gray-600: #606060;
+  --color-gray-500: #808080;
+  --color-gray-400: #c0c0c0;
+  --color-gray-300: #d4d0c8;
+  --color-gray-200: #dfdfdf;
+  --color-gray-100: #f0f0f0;
+
+  /* ── Colors: Semantic ── */
+  --color-selection-bg: #000080;
+  --color-selection-fg: #ffffff;
+  --color-error: #cc0000;
+  --color-warning: #808000;
+  --color-warning-alt: #cc8800;
+  --color-success: #009300;
+  --color-muted: #808080;
+  --color-disabled: #999999;
+  --color-link: #0000cc;
+  --color-maroon: #800000;
+
+  /* ── Colors: Status ── */
+  --color-online: #00a000;
+  --color-offline: #808080;
+
+  /* ── Colors: UI ── */
+  --color-overlay-bg: rgba(0, 0, 0, 0.3);
+  --color-overlay-bg-dark: rgba(0, 0, 0, 0.5);
+  --color-overlay-bg-light: rgba(0, 0, 0, 0.2);
+  --color-border: #808080;
+  --color-separator: #666666;
+  --color-surface: #c0c0c0;
+
+  /* ── Spacing ── */
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+
+  /* ── Typography ── */
+  --text-xs: 10px;
+  --text-sm: 11px;
+  --text-base: 12px;
+  --text-lg: 14px;
+  --text-xl: 18px;
+  --font-system: "MS Sans Serif", Tahoma, sans-serif;
+  --font-mono: Fixedsys, "Courier New", monospace;
+
+  /* ── Z-Index Scale ── */
+  --z-dropdown: 100;
+  --z-floating: 150;
+  --z-modal: 200;
+  --z-modal-above: 210;
+  --z-context-menu: 300;
+  --z-toast: 10000;
+}

@@ -26,11 +26,9 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
     <div
       :if={@visible}
       class="dialog-overlay"
-      style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 200; display: flex; align-items: center; justify-content: center;"
     >
       <div
-        class="window"
-        style="width: 460px; max-height: 80vh; display: flex; flex-direction: column;"
+        class="window u-flex-col dialog-window--custom-menus"
         data-testid="custom-menus-dialog"
       >
         <div class="title-bar">
@@ -39,11 +37,8 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
             <button aria-label="Close" phx-click="close_custom_menus_dialog"></button>
           </div>
         </div>
-        <div
-          class="window-body"
-          style="padding: 8px; display: flex; flex-direction: column; gap: 8px; overflow: hidden;"
-        >
-          <div style="display: flex; gap: 0;">
+        <div class="dialog-body--p8 u-flex-col u-gap-8 u-overflow-hidden">
+          <div class="u-flex">
             <button
               phx-click="custom_menus_tab"
               phx-value-tab="nicklist"
@@ -62,24 +57,20 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
             </button>
           </div>
 
-          <fieldset style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+          <fieldset class="u-flex-1 u-overflow-hidden u-flex-col">
             <legend>{tab_label(@active_tab)} Menu Items</legend>
-            <div style="overflow-y: auto; max-height: 180px; border: 1px inset;">
-              <table style="width: 100%; border-collapse: collapse;">
+            <div class="list-container custom-menus-list">
+              <table class="table-standard">
                 <thead>
                   <tr>
-                    <th style="text-align: left; padding: 2px 4px; background: #c0c0c0; border-bottom: 1px solid #808080;">
-                      Label
-                    </th>
-                    <th style="text-align: left; padding: 2px 4px; background: #c0c0c0; border-bottom: 1px solid #808080;">
-                      Command
-                    </th>
+                    <th>Label</th>
+                    <th>Command</th>
                   </tr>
                 </thead>
                 <tbody>
                   <%= if @filtered_entries == [] do %>
-                    <tr>
-                      <td colspan="2" style="padding: 8px; text-align: center; color: #808080;">
+                    <tr class="table-empty">
+                      <td colspan="2">
                         No custom menu items. Click "Add" to create one.
                       </td>
                     </tr>
@@ -89,10 +80,13 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
                       phx-click="custom_menu_select"
                       phx-value-label={entry.label}
                       data-testid={"custom-menu-entry-#{entry.label}"}
-                      style={row_style(entry.label, @selected_item)}
+                      class={[
+                        "table-row--selectable",
+                        entry.label == @selected_item && "table-row--selected"
+                      ]}
                     >
-                      <td style="padding: 2px 4px;">{entry.label}</td>
-                      <td style="padding: 2px 4px; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                      <td>{entry.label}</td>
+                      <td class="table-cell--ellipsis custom-menus-cmd-cell">
                         {entry.command}
                       </td>
                     </tr>
@@ -102,44 +96,44 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
             </div>
           </fieldset>
 
-          <div :if={@editing} style="border: 1px inset; padding: 8px;">
+          <div :if={@editing} class="edit-panel">
             <form phx-submit="custom_menu_dialog_save" data-testid="custom-menu-edit-form">
-              <div style="display: flex; flex-direction: column; gap: 4px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <label style="width: 80px;">Label:</label>
+              <div class="u-flex-col u-gap-4">
+                <div class="form-row form-row--gap-8">
+                  <label class="form-label--w80">Label:</label>
                   <input
                     type="text"
                     name="label"
                     value={@draft_label}
                     maxlength="50"
                     placeholder="e.g. Send greeting"
-                    style="flex: 1;"
+                    class="u-flex-1"
                     data-testid="custom-menu-label-input"
                   />
                 </div>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <label style="width: 80px;">Command:</label>
+                <div class="form-row form-row--gap-8">
+                  <label class="form-label--w80">Command:</label>
                   <input
                     type="text"
                     name="command"
                     value={@draft_command}
                     maxlength="500"
                     placeholder="e.g. /notice $1 Welcome!"
-                    style="flex: 1;"
+                    class="u-flex-1"
                     data-testid="custom-menu-command-input"
                   />
                 </div>
-                <div style="font-size: 10px; color: #808080; padding-left: 88px;">
+                <div class="form-hint form-hint--indented">
                   Variables: $1 (target nick/channel), $nick (your nick), $chan (channel)
                 </div>
                 <div
                   :if={@error_message}
-                  style="color: red; font-size: 11px; padding-left: 88px;"
+                  class="form-error form-hint--indented"
                   data-testid="custom-menu-error"
                 >
                   {@error_message}
                 </div>
-                <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 4px;">
+                <div class="dialog-buttons u-mt-4">
                   <button type="submit">Save</button>
                   <button type="button" phx-click="custom_menu_dialog_cancel_edit">Cancel</button>
                 </div>
@@ -147,7 +141,7 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
             </form>
           </div>
 
-          <div style="display: flex; justify-content: flex-end; gap: 4px;">
+          <div class="dialog-buttons">
             <button phx-click="custom_menu_dialog_add" data-testid="custom-menu-add-btn">Add</button>
             <button
               phx-click="custom_menu_dialog_edit"
@@ -170,11 +164,6 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
     </div>
     """
   end
-
-  defp row_style(label, selected) when label == selected,
-    do: "background: #000080; color: #ffffff; cursor: pointer;"
-
-  defp row_style(_label, _selected), do: "cursor: pointer;"
 
   defp tab_label(:nicklist), do: "Nicklist"
   defp tab_label(:channel), do: "Channel"
