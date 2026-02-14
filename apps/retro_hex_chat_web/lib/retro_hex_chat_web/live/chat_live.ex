@@ -102,6 +102,7 @@ defmodule RetroHexChatWeb.ChatLive do
       {:search_events, &ChatLive.SearchEvents.handle_event/3},
       {:perform_autojoin_events, &ChatLive.PerformAutojoinEvents.handle_event/3},
       {:menu_toolbar_events, &ChatLive.MenuToolbarEvents.handle_event/3},
+      {:hover_events, &ChatLive.HoverEvents.handle_event/3},
       {:context_menu_events, &ChatLive.ContextMenuEvents.handle_event/3},
       {:keyboard_events, &ChatLive.KeyboardEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
@@ -150,6 +151,7 @@ defmodule RetroHexChatWeb.ChatLive do
       nick_colors_selected: nil,
       has_more: true,
       history_index: -1,
+      hover_card: ChatLive.HoverEvents.default_hover_card(),
       input: "",
       link_previews: %{},
       loading_more: false,

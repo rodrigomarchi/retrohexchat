@@ -5,6 +5,7 @@
  * - Auto-scrolls to bottom when at bottom and new message arrives
  * - Shows "New messages" button when scrolled up and new message arrives
  * - Preserves scroll position during prepend of older messages
+ * - Interactive elements: channel tooltips, nick hover cards, click actions
  */
 import {
   isAtBottom as checkIsAtBottom,
@@ -13,6 +14,18 @@ import {
   buildMessageText,
   collectUrls,
 } from "../lib/chat.js";
+import { insertAtCursor } from "../lib/input.js";
+import {
+  isClickNotDrag,
+  createTooltip,
+  removeTooltip,
+  isContextMenuOpen,
+  setContextMenuOpen,
+  formatChannelTooltip,
+  startNickHoverTimer,
+  resetNickHoverTimer,
+  cancelNickHoverTimer,
+} from "../lib/interactive.js";
 
 const ScrollHook = {
   mounted() {
@@ -20,6 +33,7 @@ const ScrollHook = {
     this.isAtBottom = true;
     this.pendingPrepend = false;
     this.prevScrollHeight = this.chatEl.scrollHeight;
+    this.mouseDownPos = null;
 
     // Scroll to bottom on mount
     this.scrollToBottom();
@@ -39,6 +53,11 @@ const ScrollHook = {
     this.handleEvent("link_preview", ({ url, title }) => {
       const links = this.chatEl.querySelectorAll(`a.chat-link[href="${CSS.escape(url)}"]`);
       links.forEach((link) => {
+        // Update title attribute so native tooltip shows page title
+        if (title) {
+          link.title = title;
+        }
+
         if (
           !link.nextElementSibling ||
           !link.nextElementSibling.classList.contains("chat-link-preview")
@@ -65,16 +84,157 @@ const ScrollHook = {
       URL.revokeObjectURL(url);
     });
 
-    // Double-click on channel names in chat → join/switch channel
+    // ── Interactive elements: Channel hover/click ───────────────
+
+    // Channel tooltip response from server
+    this.handleEvent("channel_tooltip", ({ channel, count, joined }) => {
+      const el = this.chatEl.querySelector(
+        `.chat-channel-link[data-channel="${CSS.escape(channel)}"]`,
+      );
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        createTooltip(formatChannelTooltip(channel, count, joined), rect.left, rect.top);
+      }
+    });
+
+    // Channel hover — request tooltip data from server
+    this.chatEl.addEventListener("mouseover", (e) => {
+      const channelEl = e.target.closest(".chat-channel-link[data-channel]");
+      if (channelEl && !isContextMenuOpen()) {
+        const channel = channelEl.dataset.channel;
+        if (channel) {
+          this.pushEvent("channel_hover", { channel });
+        }
+      }
+    });
+
+    // Channel/tooltip mouseleave — remove tooltip
+    this.chatEl.addEventListener("mouseout", (e) => {
+      const channelEl = e.target.closest(".chat-channel-link[data-channel]");
+      if (channelEl) {
+        removeTooltip();
+      }
+    });
+
+    // Channel single-click — join or switch
+    this.chatEl.addEventListener("click", (e) => {
+      if (isContextMenuOpen()) {
+        setContextMenuOpen(false);
+        return;
+      }
+
+      const channelEl = e.target.closest(".chat-channel-link[data-channel]");
+      if (channelEl) {
+        if (!isClickNotDrag(this.mouseDownPos, { x: e.clientX, y: e.clientY })) return;
+        const channel = channelEl.dataset.channel;
+        if (channel) {
+          removeTooltip();
+          this.pushEvent("channel_click", { channel });
+        }
+        return;
+      }
+
+      // Nick single-click — insert "Nick: " into input (client-only)
+      const nickEl = e.target.closest(".chat-nick[data-nick]");
+      if (nickEl) {
+        if (!isClickNotDrag(this.mouseDownPos, { x: e.clientX, y: e.clientY })) return;
+        const nick = nickEl.dataset.nick;
+        if (nick) {
+          cancelNickHoverTimer();
+          const inputEl = document.querySelector("textarea.chat-input");
+          if (inputEl) {
+            insertAtCursor(inputEl, nick + ": ");
+            inputEl.focus();
+          }
+        }
+      }
+    });
+
+    // Track mousedown position for click-vs-drag detection (FR-020)
+    this.chatEl.addEventListener("mousedown", (e) => {
+      this.mouseDownPos = { x: e.clientX, y: e.clientY };
+      // Cancel nick hover timer on mousedown (FR-015 — text selection suppression)
+      cancelNickHoverTimer();
+    });
+
+    // Double-click on channel names in chat → join/switch channel (legacy, keep for compat)
     this.chatEl.addEventListener("dblclick", (e) => {
+      if (isContextMenuOpen()) return;
+
       const channelEl = e.target.closest(".chat-channel-link");
       if (channelEl) {
         const channel = channelEl.dataset.channel;
         if (channel) {
           this.pushEvent("channel_dblclick", { channel });
         }
+        return;
+      }
+
+      // Nick double-click — open PM conversation
+      const nickEl = e.target.closest(".chat-nick[data-nick]");
+      if (nickEl) {
+        const nick = nickEl.dataset.nick;
+        if (nick) {
+          cancelNickHoverTimer();
+          this.pushEvent("nick_dblclick", { nick });
+        }
       }
     });
+
+    // ── Interactive elements: Nick hover card ───────────────────
+
+    // Nick mouseenter — start 500ms idle timer
+    this.chatEl.addEventListener(
+      "mouseenter",
+      (e) => {
+        if (isContextMenuOpen()) return;
+        const nickEl = e.target.closest(".chat-nick[data-nick]");
+        if (!nickEl) return;
+
+        const nick = nickEl.dataset.nick;
+        if (!nick) return;
+
+        const rect = nickEl.getBoundingClientRect();
+        startNickHoverTimer(nick, () => {
+          this.pushEvent("nick_hover", {
+            nick,
+            x: rect.left,
+            y: rect.bottom + 4,
+          });
+        });
+      },
+      true,
+    );
+
+    // Nick mousemove — reset timer (only fires after 500ms of no movement)
+    this.chatEl.addEventListener("mousemove", (e) => {
+      const nickEl = e.target.closest(".chat-nick[data-nick]");
+      if (!nickEl) return;
+
+      const rect = nickEl.getBoundingClientRect();
+      resetNickHoverTimer(() => {
+        this.pushEvent("nick_hover", {
+          nick: nickEl.dataset.nick,
+          x: rect.left,
+          y: rect.bottom + 4,
+        });
+      });
+    });
+
+    // Nick mouseleave — cancel timer and dismiss hover card
+    this.chatEl.addEventListener(
+      "mouseleave",
+      (e) => {
+        const nickEl = e.target.closest(".chat-nick[data-nick]");
+        if (nickEl) {
+          cancelNickHoverTimer();
+          this.pushEvent("nick_hover_dismiss", {});
+        }
+      },
+      true,
+    );
+
+    // ── Context menu coordination ──────────────────────────────
 
     // Smart right-click context menu detection
     this.chatEl.addEventListener("contextmenu", (e) => {
@@ -84,7 +244,15 @@ const ScrollHook = {
       if (!msgEl) return;
 
       e.preventDefault();
+      setContextMenuOpen(true);
+      cancelNickHoverTimer();
+      removeTooltip();
       this.detectAndPushContextMenu(e, msgEl);
+    });
+
+    // Dismiss hover card from server (e.g., nick change)
+    this.handleEvent("dismiss_hover_card", () => {
+      cancelNickHoverTimer();
     });
 
     // Clipboard copy handler (server → client)
@@ -110,6 +278,13 @@ const ScrollHook = {
       this.pendingPrepend = true;
       this.prevScrollHeight = this.chatEl.scrollHeight;
     });
+
+    // ── Viewport mouseleave cleanup (FR-019) ───────────────────
+    this._viewportLeaveHandler = () => {
+      removeTooltip();
+      cancelNickHoverTimer();
+    };
+    document.documentElement.addEventListener("mouseleave", this._viewportLeaveHandler);
 
     // Observe DOM mutations for auto-scroll and prepend handling
     this.observer = new MutationObserver(() => {
@@ -138,6 +313,11 @@ const ScrollHook = {
     if (this.observer) {
       this.observer.disconnect();
     }
+    if (this._viewportLeaveHandler) {
+      document.documentElement.removeEventListener("mouseleave", this._viewportLeaveHandler);
+    }
+    removeTooltip();
+    cancelNickHoverTimer();
   },
 
   handleScroll() {

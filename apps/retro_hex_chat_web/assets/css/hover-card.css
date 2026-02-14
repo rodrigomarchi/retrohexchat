@@ -1,0 +1,97 @@
+/* RetroHexChat — Interactive element tooltips and nick hover card */
+
+/* ── Lightweight tooltip (channel, URL) ──────────────── */
+
+.interactive-tooltip {
+  position: fixed;
+  z-index: var(--z-tooltip, 9000);
+  padding: 3px 6px;
+  font-size: 11px;
+  font-family: "MS Sans Serif", Geneva, sans-serif;
+  background: var(--tooltip-bg, #ffffe1);
+  color: var(--tooltip-fg, #000000);
+  border: 1px solid #000000;
+  white-space: nowrap;
+  pointer-events: none;
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Nick hover card (mini whois) ────────────────────── */
+
+.nick-hover-card {
+  position: fixed;
+  z-index: var(--z-tooltip, 9000);
+  font-size: 12px;
+  font-family: "MS Sans Serif", Geneva, sans-serif;
+  min-width: 200px;
+  max-width: 300px;
+  pointer-events: none;
+}
+
+.nick-hover-card .window {
+  margin: 0;
+}
+
+.nick-hover-card .title-bar {
+  padding: 2px 4px;
+}
+
+.nick-hover-card .title-bar-text {
+  font-size: 11px;
+}
+
+.nick-hover-card .window-body {
+  padding: 6px 8px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.nick-hover-card-field {
+  display: flex;
+  gap: 4px;
+}
+
+.nick-hover-card-label {
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.nick-hover-card-value {
+  word-break: break-word;
+}
+
+.nick-hover-card-channels {
+  margin-top: 4px;
+}
+
+.nick-hover-card-channel-list {
+  color: #0066cc;
+  word-break: break-word;
+}
+
+.nick-hover-card-hints {
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 1px solid var(--color-border, #808080);
+  font-size: 10px;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+/* ── Loading state ─── */
+
+.nick-hover-card-loading {
+  color: var(--color-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 8px;
+}
+
+/* ── Away badge ─── */
+
+.nick-hover-card-away {
+  color: var(--color-warning-alt, #996600);
+  font-style: italic;
+}
