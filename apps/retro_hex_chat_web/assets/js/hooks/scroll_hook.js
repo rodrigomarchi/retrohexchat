@@ -26,6 +26,7 @@ import {
   resetNickHoverTimer,
   cancelNickHoverTimer,
 } from "../lib/interactive.js";
+import { showFeedbackToast } from "../lib/feedback_toast.js";
 
 const ScrollHook = {
   mounted() {
@@ -257,20 +258,44 @@ const ScrollHook = {
 
     // Clipboard copy handler (server → client)
     this.handleEvent("clipboard_copy", ({ text }) => {
-      navigator.clipboard.writeText(text);
+      navigator.clipboard.writeText(text).then(() => {
+        showFeedbackToast(this.el, "Copiado!", 2000);
+      });
     });
 
     // Copy selection handler (server → client)
     this.handleEvent("clipboard_copy_selection", () => {
       const selection = window.getSelection().toString();
       if (selection) {
-        navigator.clipboard.writeText(selection);
+        navigator.clipboard.writeText(selection).then(() => {
+          showFeedbackToast(this.el, "Copiado!", 2000);
+        });
       }
     });
 
     // Open URL handler (server → client)
     this.handleEvent("open_url", ({ url }) => {
       window.open(url, "_blank", "noopener,noreferrer");
+    });
+
+    // Optimistic send: message confirmed by server
+    this.handleEvent("message_confirmed", ({ temp_id }) => {
+      const el = this.chatEl.querySelector(`[data-temp-id="${temp_id}"]`);
+      if (el) {
+        el.classList.remove("chat-message--pending");
+        el.removeAttribute("data-temp-id");
+        el.removeAttribute("data-msg-status");
+      }
+    });
+
+    // Optimistic send: message failed
+    this.handleEvent("message_failed", ({ temp_id }) => {
+      const el = this.chatEl.querySelector(`[data-temp-id="${temp_id}"]`);
+      if (el) {
+        el.classList.remove("chat-message--pending");
+        el.classList.add("chat-message--failed");
+        el.dataset.msgStatus = "failed";
+      }
     });
 
     // Listen for prepend start (before DOM update)

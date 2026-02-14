@@ -95,12 +95,26 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         handle_pm_send(socket, session.active_pm, text)
 
       session.active_channel ->
+        temp_id = "pending_#{System.unique_integer([:positive])}"
+
+        pending_msg = %{
+          id: temp_id,
+          author: session.nickname,
+          content: text,
+          type: :message,
+          timestamp: DateTime.utc_now(),
+          status: :pending,
+          target: session.active_channel
+        }
+
+        socket = stream_insert(socket, :chat_messages, pending_msg)
+
         case Server.send_message(session.active_channel, session.nickname, text) do
           :ok ->
-            socket
+            push_event(socket, "message_confirmed", %{temp_id: temp_id})
 
           {:error, reason} ->
-            stream_insert(socket, :chat_messages, error_message(reason))
+            push_event(socket, "message_failed", %{temp_id: temp_id, reason: reason})
         end
 
       true ->

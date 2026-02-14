@@ -50,9 +50,15 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     users = Enum.reject(socket.assigns.channel_users, &(&1.nickname == target))
 
     if target == socket.assigns.session.nickname do
+      kick_event = %{
+        channel: socket.assigns.session.active_channel,
+        operator: op,
+        reason: reason
+      }
+
       socket =
         socket
-        |> assign(channel_users: users)
+        |> assign(channel_users: users, kick_queue: socket.assigns.kick_queue ++ [kick_event])
         |> play_event_sound(:kick, socket.assigns.session)
         |> part_channel_after_kick(socket.assigns.session.active_channel)
         |> stream_insert(:chat_messages, system_message(msg))

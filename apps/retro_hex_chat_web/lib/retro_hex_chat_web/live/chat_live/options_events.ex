@@ -289,6 +289,7 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
     |> push_event("update_bindings", %{
       bindings: KeyBindings.to_persistable(draft.key_bindings)
     })
+    |> push_event("feedback_toast", %{message: "Configurações salvas", duration: 2000})
     |> Persistence.maybe_persist_user_preferences(updated_session)
   end
 

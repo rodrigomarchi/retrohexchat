@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     ]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{DuplicateTracker, FloodProtection, IgnoreList}
+  alias RetroHexChat.Chat.{DuplicateTracker, FloodProtection, IgnoreList, UnreadTracker}
 
   # ── Channel messages ──────────────────────────────────────
 
@@ -194,12 +194,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   end
 
   defp apply_background_message(socket, decorated, channel, session) do
-    unread = MapSet.put(socket.assigns.unread_channels, channel)
+    unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, channel)
     highlight = maybe_add_highlight_channel(socket, decorated, channel)
 
     socket
     |> maybe_notify_unmuted(decorated, channel, session)
-    |> assign(unread_channels: unread, highlight_channels: highlight)
+    |> assign(unread_counts: unread_counts, highlight_channels: highlight)
   end
 
   defp maybe_notify_unmuted(socket, decorated, channel, session) do
@@ -246,12 +246,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     if session.active_pm == other_nick do
       stream_insert(socket, :chat_messages, pm_to_stream_item(payload))
     else
-      unread = MapSet.put(socket.assigns.unread_channels, "pm:#{other_nick}")
+      unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, "pm:#{other_nick}")
 
       socket
       |> play_event_sound(:pm, session)
       |> maybe_flash_channel("pm:#{other_nick}", :pm, session)
-      |> assign(unread_channels: unread)
+      |> assign(unread_counts: unread_counts)
     end
   end
 
