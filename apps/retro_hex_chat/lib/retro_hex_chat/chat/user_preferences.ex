@@ -10,7 +10,7 @@ defmodule RetroHexChat.Chat.UserPreferences do
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.Repo
 
-  @valid_display_keys ~w(show_toolbar show_treebar show_switchbar show_statusbar compact_mode line_shading)a
+  @valid_display_keys ~w(show_toolbar show_treebar show_switchbar show_statusbar compact_mode line_shading show_contextual_tips)a
   @valid_timestamp_formats [:hh_mm, :hh_mm_ss, :dd_mm_hh_mm, :none]
   @valid_command_help_levels [:beginner, :expert, :off]
 
@@ -284,6 +284,7 @@ defmodule RetroHexChat.Chat.UserPreferences do
       show_statusbar: true,
       compact_mode: false,
       line_shading: false,
+      show_contextual_tips: true,
       timestamp_format: :hh_mm,
       command_help_level: :beginner
     }

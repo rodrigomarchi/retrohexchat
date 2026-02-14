@@ -23,11 +23,13 @@ import SoundHook from "./hooks/sound_hook";
 import TitleFlashHook from "./hooks/title_flash_hook";
 import TreebarHook from "./hooks/treebar_hook";
 import OnboardingHook from "./hooks/onboarding_hook";
+import ContextualTipsHook from "./hooks/contextual_tips_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
 
 const Hooks = {
   CharCounterHook: CharCounterHook,
   ContextMenuHook: ContextMenuHook,
+  ContextualTipsHook: ContextualTipsHook,
   AutocompleteHook: AutocompleteHook,
   EmojiPickerHook: EmojiPickerHook,
   FormatToolbarHook: FormatToolbarHook,

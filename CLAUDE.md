@@ -14,6 +14,8 @@
 - Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild (027-interactive-chat-elements)
 - PostgreSQL 16+ (link preview cache via ETS, channel state via GenServer — no new migrations) (027-interactive-chat-elements)
 - localStorage (client-side onboarding flag) — no PostgreSQL changes (028-onboarding-empty-states)
+- Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild (029-contextual-tips)
+- localStorage (tip seen state + global suppression) — no PostgreSQL changes (029-contextual-tips)
 
 ## Project Structure
 
@@ -136,6 +138,6 @@ static analysis from day one, 98.css design fidelity, mandatory help documentati
 
 
 ## Recent Changes
+- 029-contextual-tips: Added Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
 - 028-onboarding-empty-states: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
 - 027-interactive-chat-elements: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
-- 026-context-menus: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild

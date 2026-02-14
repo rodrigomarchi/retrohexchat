@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_navigate: 2, stream_insert: 3]
+  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2, stream_insert: 3]
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -152,6 +152,13 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp handle_dispatch_result(socket, _session, {:ok, :quit, reason}),
     do: handle_quit(socket, reason)
+
+  defp handle_dispatch_result(socket, _session, {:ok, :ui_action, action, payload})
+       when action in [:show_help, :show_command_help] do
+    socket
+    |> push_event("tip_trigger", %{tip: "help_used"})
+    |> UiActionHandlers.handle_ui_action(action, payload)
+  end
 
   defp handle_dispatch_result(socket, _session, {:ok, :ui_action, action, payload}),
     do: UiActionHandlers.handle_ui_action(socket, action, payload)

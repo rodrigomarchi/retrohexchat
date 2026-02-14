@@ -44,6 +44,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
           socket
           |> assign(session: new_session)
           |> ChatLive.CommandDispatch.send_plain_message(new_session, text)
+          |> push_event("tip_trigger", %{tip: "first_message"})
           |> reset_activity()
 
         {:halt, assign(socket, input: "", command_history: history, history_index: -1)}
