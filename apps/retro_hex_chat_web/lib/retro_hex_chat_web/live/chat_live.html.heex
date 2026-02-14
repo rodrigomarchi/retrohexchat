@@ -4,6 +4,7 @@
 <div id="key-capture-hook" phx-hook="KeyBindingCaptureHook" style="display: none;"></div>
 <div id="search-highlight-hook" phx-hook="SearchHighlightHook" style="display: none;"></div>
 <div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" style="display: none;"></div>
+<RetroHexChatWeb.Components.Toast.toast_container />
 <div
   class={"app-container#{if @compact_mode, do: " compact-mode", else: ""}"}
   phx-click="close_context_menu"

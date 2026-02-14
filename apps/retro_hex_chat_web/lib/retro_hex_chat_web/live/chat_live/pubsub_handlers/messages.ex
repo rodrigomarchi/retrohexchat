@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
+  import Phoenix.LiveView, only: [push_event: 3, stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
@@ -50,6 +50,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
           socket
           |> maybe_play_highlight_sound(decorated, session)
           |> capture_urls(payload.content, payload.channel, :channel, payload.author)
+          |> maybe_push_highlight_tip(decorated)
 
         {:halt, apply_new_message(socket, decorated, payload.channel, session)}
       end
@@ -74,7 +75,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
          ) do
         {:halt, socket}
       else
-        {:halt, apply_new_pm(socket, payload, session)}
+        {:halt,
+         socket
+         |> push_event("tip_trigger", %{tip: "first_pm"})
+         |> apply_new_pm(payload, session)}
       end
     end
   end
@@ -175,6 +179,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
         end
     end
   end
+
+  defp maybe_push_highlight_tip(socket, %{highlighted: true}),
+    do: push_event(socket, "tip_trigger", %{tip: "first_highlight"})
+
+  defp maybe_push_highlight_tip(socket, _decorated), do: socket
 
   defp apply_new_message(socket, decorated, channel, session) do
     if channel == session.active_channel do

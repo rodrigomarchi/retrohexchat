@@ -275,10 +275,12 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
       show_statusbar: draft.display.show_statusbar,
       compact_mode: draft.display.compact_mode,
       line_shading: draft.display.line_shading,
+      show_contextual_tips: draft.display.show_contextual_tips,
       timestamp_format: new_format
     )
     |> maybe_reset_streams_for_timestamp(old_format, new_format)
     |> push_event("apply_preferences", %{styles: UserPreferences.to_css_styles(draft)})
+    |> push_event("tips_toggle", %{enabled: draft.display.show_contextual_tips})
     |> push_event("reconnect_config", %{
       enabled: draft.connect.auto_reconnect_enabled,
       max_attempts: draft.connect.max_retries,

@@ -107,6 +107,7 @@ defmodule RetroHexChatWeb.ChatLive do
       {:menu_toolbar_events, &ChatLive.MenuToolbarEvents.handle_event/3},
       {:hover_events, &ChatLive.HoverEvents.handle_event/3},
       {:context_menu_events, &ChatLive.ContextMenuEvents.handle_event/3},
+      {:tip_events, &ChatLive.TipEvents.handle_event/3},
       {:keyboard_events, &ChatLive.KeyboardEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
     ]
@@ -177,6 +178,8 @@ defmodule RetroHexChatWeb.ChatLive do
       search_results: [],
       search_visible: false,
       session: session,
+      show_contextual_tips: true,
+      tips_suppressed: false,
       cheatsheet_visible: false,
       show_about: false,
       show_address_book: false,

@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream: 4]
+  import Phoenix.LiveView, only: [push_event: 3, stream: 4]
 
   require Logger
 
@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         |> load_channel_users(channel_name)
         |> load_channel_messages_with_pagination(channel_name)
         |> maybe_show_welcome(channel_name, new_session)
+        |> push_event("tip_trigger", %{tip: "first_join"})
         |> SessionHelpers.push_reconnect_state()
 
       {:error, reason} ->

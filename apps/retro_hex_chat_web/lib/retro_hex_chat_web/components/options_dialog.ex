@@ -121,6 +121,12 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
           checked={@draft.display.line_shading}
           setting="line_shading"
         />
+        <.display_checkbox
+          id="opt-show-contextual-tips"
+          label="Mostrar dicas contextuais"
+          checked={@draft.display.show_contextual_tips}
+          setting="show_contextual_tips"
+        />
       </fieldset>
       <fieldset>
         <legend>Timestamps</legend>

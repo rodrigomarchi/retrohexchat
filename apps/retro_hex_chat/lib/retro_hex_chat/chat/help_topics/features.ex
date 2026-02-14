@@ -1323,6 +1323,39 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"feature-smart-input\">Smart Input</a> · " <>
             "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+      },
+      %{
+        id: "feature-contextual-tips",
+        title: "Contextual Tips",
+        category: "Features",
+        keywords: [
+          "tips",
+          "dicas",
+          "contextual",
+          "toast",
+          "hint",
+          "progressive disclosure",
+          "onboarding"
+        ],
+        content:
+          "<h3>Contextual Tips</h3>" <>
+            "<p>Contextual tips show helpful hints at the right moment — when you first encounter " <>
+            "a feature. Each tip appears at most once.</p>" <>
+            "<h4>Tip Triggers</h4>" <>
+            "<p><strong>First message:</strong> \"Use ↑ para editar sua última mensagem\"<br/>" <>
+            "<strong>First join:</strong> \"Canais que você entra aparecem no painel esquerdo\"<br/>" <>
+            "<strong>First PM:</strong> \"PMs aparecem como janelas separadas no treebar\"<br/>" <>
+            "<strong>First highlight:</strong> \"Seu nick foi mencionado! Configure alertas em Settings\"<br/>" <>
+            "<strong>Idle (30s):</strong> \"Digite /help para ver todos os comandos\"</p>" <>
+            "<h4>Disabling Tips</h4>" <>
+            "<p>Check \"Não mostrar mais dicas\" on any tip toast to suppress all future tips. " <>
+            "You can re-enable tips in <strong>Options &gt; Display &gt; Mostrar dicas contextuais</strong>.</p>" <>
+            "<h4>Behavior</h4>" <>
+            "<p>Tips queue if multiple triggers fire at once (2-second gap between toasts). " <>
+            "Tips do not appear while a dialog is open. Tips auto-dismiss after 8 seconds.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"getting-started\">Getting Started</a> · " <>
+            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
       }
     ]
   end
