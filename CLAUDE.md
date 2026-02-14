@@ -11,6 +11,8 @@
 - PostgreSQL 16+ (user_preferences JSON column — no migration needed), localStorage (client-side history) (024-smart-input-command-help)
 - PostgreSQL 16+ (user_preferences.key_bindings JSON column — no new migration needed) (025-shortcuts-chat-search)
 - PostgreSQL 16+ (user_preferences.message_settings JSON column — no new migration needed) (026-context-menus)
+- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild (027-interactive-chat-elements)
+- PostgreSQL 16+ (link preview cache via ETS, channel state via GenServer — no new migrations) (027-interactive-chat-elements)
 
 ## Project Structure
 
@@ -133,6 +135,6 @@ static analysis from day one, 98.css design fidelity, mandatory help documentati
 
 
 ## Recent Changes
+- 027-interactive-chat-elements: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
 - 026-context-menus: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
 - 025-shortcuts-chat-search: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
-- 024-smart-input-command-help: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild

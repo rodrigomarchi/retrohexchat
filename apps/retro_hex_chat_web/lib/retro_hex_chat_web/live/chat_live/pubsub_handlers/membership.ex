@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_navigate: 2, stream_insert: 3]
+  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2, stream_insert: 3]
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   alias RetroHexChat.Chat.IgnoreList
   alias RetroHexChat.Presence.{NotifyList, Tracker}
   alias RetroHexChat.Services.NickServ
-  alias RetroHexChatWeb.ChatLive.CommandDispatch
+  alias RetroHexChatWeb.ChatLive.{CommandDispatch, HoverEvents}
 
   # ── User joined/left/nick_changed ─────────────────────────
 
@@ -103,6 +103,16 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
         updated_list = IgnoreList.update_nickname(session.ignore_list, old_nick, new_nick)
         new_session = Session.set_ignore_list(session, updated_list)
         assign(socket, session: new_session)
+      else
+        socket
+      end
+
+    # Dismiss nick hover card if it's showing the old nick (T023)
+    socket =
+      if socket.assigns.hover_card.nick == old_nick do
+        socket
+        |> assign(hover_card: HoverEvents.default_hover_card())
+        |> push_event("dismiss_hover_card", %{})
       else
         socket
       end
