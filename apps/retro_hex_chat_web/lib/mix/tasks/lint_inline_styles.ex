@@ -16,9 +16,8 @@ defmodule Mix.Tasks.Lint.InlineStyles do
 
   use Mix.Task
 
-  # Dialyzer cannot see Mix.Task callbacks or Mix.raise/1 at analysis time,
-  # and reports false positives on MapSet opaque type usage.
-  @dialyzer [:no_return, :no_undefined_callbacks, :no_opaque]
+  # Dialyzer cannot see Mix.Task callbacks or Mix.raise/1 at analysis time.
+  @dialyzer [:no_return, :no_undefined_callbacks]
 
   @web_lib "apps/retro_hex_chat_web/lib"
   @allowlist_path "scripts/inline_style_allowlist.txt"
@@ -66,10 +65,9 @@ defmodule Mix.Tasks.Lint.InlineStyles do
         end)
         |> Enum.map(&String.trim/1)
 
-      {inline, helper} = split_sections(lines)
-      {MapSet.new(inline), MapSet.new(helper)}
+      split_sections(lines)
     else
-      {MapSet.new(), MapSet.new()}
+      {[], []}
     end
   end
 
@@ -104,15 +102,26 @@ defmodule Mix.Tasks.Lint.InlineStyles do
       {static, dynamic + 1, allowed, violations}
     else
       short_file = String.replace_prefix(file, "#{@web_lib}/", "")
-      pattern = "#{short_file}:#{line_num}"
+      trimmed = String.trim(line)
 
-      if MapSet.member?(allowlist, pattern) do
+      if content_allowed?(short_file, trimmed, allowlist) do
         {static, dynamic, allowed + 1, violations}
       else
-        trimmed = String.trim(line)
         {static + 1, dynamic, allowed, [{short_file, line_num, trimmed} | violations]}
       end
     end
+  end
+
+  defp content_allowed?(file, trimmed_line, allowlist) do
+    Enum.any?(allowlist, fn entry ->
+      case String.split(entry, ":", parts: 2) do
+        [entry_file, snippet] ->
+          entry_file == file and String.contains?(trimmed_line, String.trim(snippet))
+
+        _ ->
+          false
+      end
+    end)
   end
 
   defp scan_style_helpers(files, helper_allowlist) do
@@ -125,9 +134,9 @@ defmodule Mix.Tasks.Lint.InlineStyles do
       |> String.split("\n")
       |> Enum.with_index(1)
       |> Enum.filter(fn {line, _num} -> Regex.match?(style_helper_regex, line) end)
-      |> Enum.reject(fn {_line, line_num} ->
+      |> Enum.reject(fn {line, _line_num} ->
         short_file = String.replace_prefix(file, "#{@web_lib}/", "")
-        MapSet.member?(helper_allowlist, "#{short_file}:#{line_num}")
+        content_allowed?(short_file, String.trim(line), helper_allowlist)
       end)
       |> Enum.map(fn {line, line_num} ->
         short_file = String.replace_prefix(file, "#{@web_lib}/", "")

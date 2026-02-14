@@ -14,6 +14,29 @@
   color: var(--color-muted);
 }
 
+/* ── Scroll loader animation ───────────────────────────── */
+.scroll-loader .animate > div {
+  height: 14px;
+  width: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-link) 0,
+    var(--color-link) 8px,
+    transparent 8px,
+    transparent 12px
+  );
+  animation: progress-scroll 1s linear infinite;
+}
+@keyframes progress-scroll {
+  from { background-position: 0 0; }
+  to { background-position: 20px 0; }
+}
+
+/* ── Favorite checkmark ────────────────────────────────── */
+.fav-check {
+  color: var(--color-success);
+}
+
 /* ── Toolbar icons ─────────────────────────────────────── */
 
 .toolbar-btn {

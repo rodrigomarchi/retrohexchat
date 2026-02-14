@@ -44,6 +44,8 @@ defmodule RetroHexChatWeb.ChatLive do
       :ok ->
         session = Session.new(nickname)
 
+        onboarded = params["onboarded"] == "true"
+
         if connected?(socket) do
           Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
           Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "presence:global")
@@ -61,6 +63,7 @@ defmodule RetroHexChatWeb.ChatLive do
             socket
             |> attach_all_hooks()
             |> assign_defaults(session)
+            |> assign(show_onboarding_tip: onboarded)
             |> Helpers.join_channel("#lobby", session)
             |> Helpers.maybe_join_from_params(params)
             |> Helpers.maybe_start_nickserv_timer(nickname)
@@ -71,7 +74,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
           {:ok, socket}
         else
-          {:ok, assign_defaults(socket, session)}
+          {:ok, assign_defaults(socket, session) |> assign(show_onboarding_tip: onboarded)}
         end
 
       {:error, _} ->

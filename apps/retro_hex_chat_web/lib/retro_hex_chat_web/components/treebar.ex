@@ -17,7 +17,17 @@ defmodule RetroHexChatWeb.Components.Treebar do
   def treebar(assigns) do
     ~H"""
     <div class="treebar" id="treebar" phx-hook="TreebarHook">
-      <ul class="tree-view">
+      <div
+        :if={@channels == [] and @pm_conversations == []}
+        class="empty-state treebar-empty-state"
+        data-testid="treebar-empty-state"
+      >
+        <p>Nenhum canal — /join #canal para começar</p>
+        <button type="button" class="empty-state-action" phx-click="open_channel_list">
+          Explorar canais
+        </button>
+      </div>
+      <ul :if={@channels != [] or @pm_conversations != []} class="tree-view">
         <li>
           <details open>
             <summary>Channels</summary>

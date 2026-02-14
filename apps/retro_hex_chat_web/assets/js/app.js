@@ -22,6 +22,7 @@ import ShortcutDispatcherHook from "./hooks/shortcut_dispatcher_hook";
 import SoundHook from "./hooks/sound_hook";
 import TitleFlashHook from "./hooks/title_flash_hook";
 import TreebarHook from "./hooks/treebar_hook";
+import OnboardingHook from "./hooks/onboarding_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
 
 const Hooks = {
@@ -34,6 +35,7 @@ const Hooks = {
   KeyboardHook: KeyboardHook,
   NicklistHook: NicklistHook,
   NotifyListHook: NotifyListHook,
+  OnboardingHook: OnboardingHook,
   OptionsHook: OptionsHook,
   PasteHook: PasteHook,
   ReconnectHook: ReconnectHook,

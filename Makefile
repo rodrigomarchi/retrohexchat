@@ -172,8 +172,9 @@ lint.js.fix: ## Auto-fix ESLint + Prettier issues
 dialyzer: ## Run Dialyzer type checker
 	mix dialyzer
 
-lint.css: ## Audit inline styles in LiveView (zero static styles allowed)
+lint.css: ## Audit inline styles and CSS class consistency
 	@mix lint.inline_styles
+	@mix lint.css_consistency
 
 precommit: ## Run pre-commit pipeline (compile + format + test)
 	mix precommit

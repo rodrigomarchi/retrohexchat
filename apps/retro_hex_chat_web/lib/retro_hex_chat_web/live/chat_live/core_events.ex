@@ -308,6 +308,12 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     {:halt, assign(socket, syntax_tooltip: nil)}
   end
 
+  # -- dismiss_onboarding_tip --
+
+  def handle_event("dismiss_onboarding_tip", _params, socket) do
+    {:halt, assign(socket, show_onboarding_tip: false)}
+  end
+
   # -- Catch-all: pass unhandled events to the next hook --
 
   def handle_event(_event, _params, socket), do: {:cont, socket}

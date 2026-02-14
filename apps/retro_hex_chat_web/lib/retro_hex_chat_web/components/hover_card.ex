@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.Components.HoverCard do
           {hover_card_title(@hover_card)}
         </div>
       </div>
-      <div class="window-body nick-hover-card-body">
+      <div class="window-body">
         <%= if @hover_card.loading do %>
           <p class="nick-hover-card-loading">Loading...</p>
         <% else %>

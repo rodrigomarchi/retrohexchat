@@ -1,15 +1,5 @@
 /* RetroHexChat — Chat messages, types, input, links, highlights, typing */
 
-/* Chat topic (inside chat area) */
-.chat-topic {
-  padding: 4px 8px;
-  font-size: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-shrink: 0;
-}
-
 /* Chat messages - sunken panel for text areas */
 .chat-messages {
   flex: 1;
@@ -160,34 +150,6 @@
   text-decoration: underline;
 }
 
-/* ── Copy Context Menu ─────────────────────────────────── */
-.copy-context-menu {
-  position: fixed;
-  background: var(--chat-bg-color, #c0c0c0);
-  border: 2px outset var(--color-gray-200);
-  box-shadow: 2px 2px 4px var(--color-overlay-bg);
-  z-index: 10000;
-  min-width: 100px;
-  padding: 2px;
-}
-.copy-menu-item {
-  padding: 4px 20px;
-  cursor: pointer;
-  font-size: 12px;
-  font-family: "MS Sans Serif", Geneva, sans-serif;
-}
-.copy-menu-item:hover {
-  background: var(--color-selection-bg);
-  color: var(--color-selection-fg);
-}
-.copy-menu-item--disabled {
-  padding: 4px 20px;
-  color: var(--color-muted);
-  cursor: default;
-  font-size: 12px;
-  font-family: "MS Sans Serif", Geneva, sans-serif;
-}
-
 /* ── Paste Dialog ──────────────────────────────────────── */
 .paste-dialog {
   position: fixed;
@@ -255,6 +217,17 @@
   color: var(--color-error);
   font-size: 11px;
   white-space: nowrap;
+}
+
+/* ── New Messages Button ──────────────────────────────── */
+.new-messages-btn {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-size: 11px;
+  cursor: pointer;
 }
 
 /* ─── Typing Indicator ─── */

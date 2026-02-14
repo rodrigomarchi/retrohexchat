@@ -107,6 +107,36 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "<h3>Status Tab</h3>" <>
             "<p>The Status tab shows system messages, service responses, and notify list alerts. It is always present and cannot be closed.</p>" <>
             "<p>Click the <strong>Status</strong> tab in the tab bar or treebar to view it.</p>"
+      },
+      %{
+        id: "empty-states",
+        title: "Empty States",
+        category: "User Interface",
+        keywords: [
+          "empty",
+          "empty state",
+          "placeholder",
+          "no messages",
+          "no users",
+          "no channels",
+          "no urls"
+        ],
+        content:
+          "<h3>Empty States</h3>" <>
+            "<p>When a UI container has no content, a friendly placeholder message appears with guidance:</p>" <>
+            "<h4>Channel Messages</h4>" <>
+            "<p>An empty channel shows a welcome message and tips for getting started.</p>" <>
+            "<h4>Nicklist</h4>" <>
+            "<p>Shows \"Ninguém aqui\" when you are the only user (or the channel is truly empty).</p>" <>
+            "<h4>Treebar</h4>" <>
+            "<p>When no channels are joined, shows a hint to use <code>/join</code> and an \"Explorar canais\" button.</p>" <>
+            "<h4>URL Catcher</h4>" <>
+            "<p>Shows \"Nenhuma URL capturada\" until URLs appear in chat.</p>" <>
+            "<h4>Notes</h4>" <>
+            "<p>Empty state messages disappear automatically when content arrives. The text is not selectable.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"welcome-wizard\">Welcome Wizard</a> · " <>
+            "<a href=\"#\" data-help-topic=\"ui-overview\">UI Overview</a></p>"
       }
     ]
   end
