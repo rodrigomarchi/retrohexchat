@@ -102,4 +102,47 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "ignore",
+      syntax: "/ignore [nickname] [type] [duration]",
+      description: "Ignore a user. Types: all (default), messages, pms, invites, actions.",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: false,
+          type: :nick,
+          position: 0,
+          description: "Usuário a ignorar"
+        },
+        %Parameter{
+          name: "type",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Tipo: all, messages, pms, invites, actions"
+        },
+        %Parameter{
+          name: "duration",
+          required: false,
+          type: :text,
+          position: 2,
+          description: "Duração: 5m, 1h, 2d"
+        }
+      ],
+      examples: [
+        "/ignore SpamBot",
+        "/ignore AnnoyingGuy pms",
+        "/ignore LoudPerson all 5m",
+        "/ignore"
+      ]
+    }
+  end
 end

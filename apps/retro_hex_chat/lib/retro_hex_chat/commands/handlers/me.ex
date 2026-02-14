@@ -40,4 +40,28 @@ defmodule RetroHexChat.Commands.Handlers.Me do
 
   @impl true
   def category, do: :basics
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "me",
+      syntax: "/me <action>",
+      description: "Sends an action message.",
+      category: :basics,
+      parameters: [
+        %Parameter{
+          name: "action",
+          required: true,
+          type: :text,
+          position: 0,
+          description: "Texto da ação"
+        }
+      ],
+      examples: ["/me waves hello", "/me is away"]
+    }
+  end
 end

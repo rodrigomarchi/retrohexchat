@@ -41,4 +41,20 @@ defmodule RetroHexChat.Commands.Handlers.ClearWelcome do
 
   @impl true
   def category, do: :advanced
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+
+    %CommandSyntax{
+      command: "clearwelcome",
+      syntax: "/clearwelcome",
+      description:
+        "Clear the welcome message for the current channel. Requires operator privileges.",
+      category: :advanced,
+      parameters: [],
+      examples: ["/clearwelcome"]
+    }
+  end
 end

@@ -53,4 +53,28 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
 
   @impl true
   def category, do: :advanced
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "setwelcome",
+      syntax: "/setwelcome <message>",
+      description: "Set a welcome message for the current channel. Requires operator privileges.",
+      category: :advanced,
+      parameters: [
+        %Parameter{
+          name: "message",
+          required: true,
+          type: :text,
+          position: 0,
+          description: "Mensagem de boas-vindas do canal"
+        }
+      ],
+      examples: ["/setwelcome Welcome to our channel!"]
+    }
+  end
 end

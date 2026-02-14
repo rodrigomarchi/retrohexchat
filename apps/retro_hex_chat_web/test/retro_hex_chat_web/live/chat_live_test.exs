@@ -1067,11 +1067,12 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       assert html =~ "search-bar"
     end
 
-    test "search empty query clears state", %{conn: conn} do
+    test "search empty query clears results but keeps bar open", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/chat?nickname=SearchEmpty")
       render_click(view, "toggle_search")
-      html = render_click(view, "search_input", %{"query" => ""})
-      refute html =~ "search-bar"
+      html = render_change(view, "search_input", %{"query" => ""})
+      assert html =~ "search-bar"
+      assert html =~ "No results"
     end
 
     test "search_next cycles through results", %{conn: conn} do
@@ -2190,15 +2191,10 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   # ── Help Dialog ────────────────────────────────────────────
 
   describe "help dialog" do
-    test "F1 opens help dialog", %{conn: conn} do
+    test "menu opens help dialog", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser1")
 
-      html =
-        render_keydown(view, "window_keydown", %{
-          "key" => "/",
-          "ctrlKey" => true,
-          "shiftKey" => true
-        })
+      html = render_click(view, "toggle_help_dialog")
 
       assert html =~ "help-dialog"
       assert html =~ "RetroHexChat Help"

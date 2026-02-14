@@ -16,6 +16,8 @@ import OptionsHook from "./hooks/options_hook"
 import PasteHook from "./hooks/paste_hook"
 import ReconnectHook from "./hooks/reconnect_hook"
 import ScrollHook from "./hooks/scroll_hook"
+import SearchHighlightHook from "./hooks/search_highlight_hook"
+import ShortcutDispatcherHook from "./hooks/shortcut_dispatcher_hook"
 import SoundHook from "./hooks/sound_hook"
 import TitleFlashHook from "./hooks/title_flash_hook"
 import TreebarHook from "./hooks/treebar_hook"
@@ -34,6 +36,8 @@ let Hooks = {
   PasteHook: PasteHook,
   ReconnectHook: ReconnectHook,
   ScrollHook: ScrollHook,
+  SearchHighlightHook: SearchHighlightHook,
+  ShortcutDispatcherHook: ShortcutDispatcherHook,
   SoundHook: SoundHook,
   TitleFlashHook: TitleFlashHook,
   TreebarHook: TreebarHook,

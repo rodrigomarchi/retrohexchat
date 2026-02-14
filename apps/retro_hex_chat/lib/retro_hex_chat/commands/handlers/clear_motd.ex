@@ -39,4 +39,20 @@ defmodule RetroHexChat.Commands.Handlers.ClearMotd do
 
   @impl true
   def category, do: :advanced
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+
+    %CommandSyntax{
+      command: "clearmotd",
+      syntax: "/clearmotd",
+      description:
+        "Clear the server Message of the Day. Requires server administrator privileges.",
+      category: :advanced,
+      parameters: [],
+      examples: ["/clearmotd"]
+    }
+  end
 end

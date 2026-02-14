@@ -35,4 +35,30 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "unignore",
+      syntax: "/unignore <nickname>",
+      description: "Remove a user from your ignore list.",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Remover usuário da lista de ignorados"
+        }
+      ],
+      examples: [
+        "/unignore SpamBot"
+      ]
+    }
+  end
 end

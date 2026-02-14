@@ -59,4 +59,28 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
 
   @impl true
   def category, do: :basics
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "nick",
+      syntax: "/nick <newnick>",
+      description: "Change your nickname.",
+      category: :basics,
+      parameters: [
+        %Parameter{
+          name: "newnick",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Novo nickname (máx 16 caracteres)"
+        }
+      ],
+      examples: ["/nick NewNick", "/nick [Bot]"]
+    }
+  end
 end

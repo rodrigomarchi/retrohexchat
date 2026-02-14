@@ -35,4 +35,28 @@ defmodule RetroHexChat.Commands.Handlers.Whois do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "whois",
+      syntax: "/whois <nickname>",
+      description: "Display information about a user.",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Usuário para consultar informações"
+        }
+      ],
+      examples: ["/whois SomeUser"]
+    }
+  end
 end

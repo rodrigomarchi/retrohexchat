@@ -45,4 +45,39 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
 
   @impl true
   def category, do: :channel
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "knock",
+      syntax: "/knock #channel [message]",
+      description:
+        "Request access to an invite-only channel. Channel operators will see your knock.",
+      category: :channel,
+      parameters: [
+        %Parameter{
+          name: "#channel",
+          required: true,
+          type: :channel,
+          position: 0,
+          description: "Canal para solicitar acesso"
+        },
+        %Parameter{
+          name: "message",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Mensagem para os operadores"
+        }
+      ],
+      examples: [
+        "/knock #private",
+        "/knock #private Hey, can I join?"
+      ]
+    }
+  end
 end

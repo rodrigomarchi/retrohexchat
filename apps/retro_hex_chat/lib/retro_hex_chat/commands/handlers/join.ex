@@ -55,4 +55,35 @@ defmodule RetroHexChat.Commands.Handlers.Join do
 
   @impl true
   def category, do: :channel
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "join",
+      syntax: "/join #channel [password]",
+      description: "Join a channel. Creates it if it doesn't exist.",
+      category: :channel,
+      parameters: [
+        %Parameter{
+          name: "#channel",
+          required: true,
+          type: :channel,
+          position: 0,
+          description: "Nome do canal"
+        },
+        %Parameter{
+          name: "password",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Senha do canal (se protegido)"
+        }
+      ],
+      examples: ["/join #elixir", "/join #secret mypassword"]
+    }
+  end
 end

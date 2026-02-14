@@ -73,4 +73,79 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
 
   @impl true
   def category, do: :channel
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.{Parameter, SubOption}
+
+    %CommandSyntax{
+      command: "mode",
+      syntax: "/mode <+/-modos> [nick]",
+      description: "Set or unset channel modes. Requires operator privilege.",
+      category: :channel,
+      parameters: [
+        %Parameter{
+          name: "+/-modos",
+          required: true,
+          type: :mode_flags,
+          position: 0,
+          description: "Mode flags to set or unset"
+        },
+        %Parameter{
+          name: "nick",
+          required: false,
+          type: :nick,
+          position: 1,
+          description: "Target nickname (for +o, +v, +b)"
+        }
+      ],
+      examples: ["/mode +m", "/mode +k secret", "/mode -t", "/mode +o nickname"],
+      sub_options: [
+        %SubOption{
+          flag: "+o",
+          label: "Operador",
+          description: "Dar status de operador",
+          requires_param: true
+        },
+        %SubOption{
+          flag: "+v",
+          label: "Voz",
+          description: "Dar voz ao usuário",
+          requires_param: true
+        },
+        %SubOption{
+          flag: "+b",
+          label: "Ban",
+          description: "Banir usuário do canal",
+          requires_param: true
+        },
+        %SubOption{
+          flag: "+i",
+          label: "Somente convite",
+          description: "Canal acessível apenas por convite",
+          requires_param: false
+        },
+        %SubOption{
+          flag: "+m",
+          label: "Moderado",
+          description: "Somente +v e +o podem falar",
+          requires_param: false
+        },
+        %SubOption{
+          flag: "+t",
+          label: "Tópico protegido",
+          description: "Somente operadores alteram o tópico",
+          requires_param: false
+        },
+        %SubOption{
+          flag: "+k",
+          label: "Senha",
+          description: "Definir senha do canal",
+          requires_param: true
+        }
+      ]
+    }
+  end
 end

@@ -76,6 +76,21 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
     {:halt, assign(socket, options_draft: updated_draft)}
   end
 
+  def handle_event("update_command_help_level", %{"level" => level_str}, socket) do
+    level = String.to_existing_atom(level_str)
+
+    if socket.assigns.options_draft do
+      draft = socket.assigns.options_draft
+      updated_draft = UserPreferences.set_command_help_level(draft, level)
+      {:halt, assign(socket, options_draft: updated_draft, command_help_level: level)}
+    else
+      session = socket.assigns.session
+      updated_prefs = UserPreferences.set_command_help_level(session.user_preferences, level)
+      updated_session = %{session | user_preferences: updated_prefs}
+      {:halt, assign(socket, session: updated_session, command_help_level: level)}
+    end
+  end
+
   # ---------------------------------------------------------------------------
   # Fonts Panel
   # ---------------------------------------------------------------------------
@@ -268,6 +283,9 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
       enabled: draft.connect.auto_reconnect_enabled,
       max_attempts: draft.connect.max_retries,
       max_delay: draft.connect.retry_interval
+    })
+    |> push_event("update_bindings", %{
+      bindings: KeyBindings.to_persistable(draft.key_bindings)
     })
     |> Persistence.maybe_persist_user_preferences(updated_session)
   end

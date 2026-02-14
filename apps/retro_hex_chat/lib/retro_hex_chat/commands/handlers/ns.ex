@@ -138,4 +138,41 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
 
   @impl true
   def category, do: :advanced
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "ns",
+      syntax: "/ns <subcommand> [args]",
+      description: "NickServ commands for nickname registration and protection.",
+      category: :advanced,
+      parameters: [
+        %Parameter{
+          name: "subcommand",
+          required: true,
+          type: :text,
+          position: 0,
+          description: "Subcomando: register, identify, ghost, info, drop"
+        },
+        %Parameter{
+          name: "args",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Argumentos do subcomando"
+        }
+      ],
+      examples: [
+        "/ns register mypassword",
+        "/ns identify mypassword",
+        "/ns ghost othernick",
+        "/ns info",
+        "/ns drop mypassword"
+      ]
+    }
+  end
 end

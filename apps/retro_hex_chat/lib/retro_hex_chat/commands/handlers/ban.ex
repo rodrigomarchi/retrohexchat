@@ -52,4 +52,35 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
 
   @impl true
   def category, do: :channel
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "ban",
+      syntax: "/ban <nickname> [reason]",
+      description: "Ban a user from the channel. Requires operator privilege.",
+      category: :channel,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Usuário a ser banido"
+        },
+        %Parameter{
+          name: "reason",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Motivo do ban"
+        }
+      ],
+      examples: ["/ban troll", "/ban troll Repeated violations"]
+    }
+  end
 end

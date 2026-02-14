@@ -24,8 +24,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     ]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.Queries
-  alias RetroHexChat.Commands.{Autocomplete, Parser}
+  alias RetroHexChat.Chat.{Queries, UserPreferences}
+  alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Parser, Registry}
   alias RetroHexChatWeb.ChatLive
 
   # -- send_input --
@@ -78,6 +78,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
        pm_typing_from: nil,
        pm_typing_timer: nil
      )
+     |> clear_search_on_switch()
      |> load_channel_users(channel)
      |> load_channel_messages_with_pagination(channel)
      |> push_reconnect_state()}
@@ -125,6 +126,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
        pm_typing_from: nil,
        pm_typing_timer: nil
      )
+     |> clear_search_on_switch()
      |> stream(:chat_messages, messages, reset: true)
      |> push_reconnect_state()}
   end
@@ -169,7 +171,13 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- close_dialog --
 
   def handle_event("close_dialog", _params, socket) do
-    {:halt, assign(socket, show_about: false, show_whois: false, whois_target: nil)}
+    {:halt,
+     assign(socket,
+       show_about: false,
+       show_whois: false,
+       whois_target: nil,
+       cheatsheet_visible: false
+     )}
   end
 
   # -- load_more --
@@ -267,6 +275,39 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     {:halt, assign(socket, paste_lines: nil)}
   end
 
+  # -- syntax_tooltip_query --
+
+  def handle_event("syntax_tooltip_query", %{"command" => command, "args" => args}, socket) do
+    help_level = UserPreferences.get_command_help_level(socket.assigns.session.user_preferences)
+
+    if help_level == :off do
+      {:halt, assign(socket, syntax_tooltip: nil)}
+    else
+      case Registry.get_syntax(command) do
+        nil ->
+          {:halt, assign(socket, syntax_tooltip: nil)}
+
+        %CommandSyntax{} = syntax ->
+          current_index = CommandSyntax.compute_current_param_index(syntax.parameters, args)
+          payload = CommandSyntax.to_client_payload(syntax)
+
+          tooltip_data =
+            Map.merge(payload, %{
+              current_param_index: current_index,
+              context_message: build_context_message(syntax, args, current_index)
+            })
+
+          {:halt, assign(socket, syntax_tooltip: tooltip_data)}
+      end
+    end
+  end
+
+  # -- syntax_tooltip_dismiss --
+
+  def handle_event("syntax_tooltip_dismiss", _params, socket) do
+    {:halt, assign(socket, syntax_tooltip: nil)}
+  end
+
   # -- Catch-all: pass unhandled events to the next hook --
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
@@ -344,5 +385,51 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       type: String.to_existing_atom(msg.type),
       timestamp: msg.inserted_at
     }
+  end
+
+  defp build_context_message(%CommandSyntax{} = syntax, args, current_index) do
+    trimmed = String.trim(args)
+
+    cond do
+      trimmed == "" or current_index == nil ->
+        nil
+
+      syntax.sub_options not in [nil, []] ->
+        build_sub_option_context(syntax.sub_options, trimmed)
+
+      true ->
+        case Enum.at(syntax.parameters, current_index) do
+          nil -> nil
+          param -> "Próximo: #{param.name}"
+        end
+    end
+  end
+
+  defp build_sub_option_context(sub_options, trimmed) do
+    first_arg = trimmed |> String.split(~r/\s+/) |> hd()
+
+    case Enum.find(sub_options, &String.starts_with?(first_arg, &1.flag)) do
+      nil -> nil
+      opt -> "Você está definindo: #{opt.flag} (#{opt.label})"
+    end
+  end
+
+  defp clear_search_on_switch(socket) do
+    if socket.assigns.search_visible do
+      socket
+      |> assign(
+        search_visible: false,
+        search_last_query: socket.assigns.search_query,
+        search_query: "",
+        search_results: [],
+        search_result_count: 0,
+        search_history_count: 0,
+        search_current_index: 0,
+        search_error: nil
+      )
+      |> push_event("search_clear_highlights", %{})
+    else
+      socket
+    end
   end
 end

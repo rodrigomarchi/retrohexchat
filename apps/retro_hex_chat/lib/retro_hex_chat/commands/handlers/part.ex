@@ -53,4 +53,35 @@ defmodule RetroHexChat.Commands.Handlers.Part do
 
   @impl true
   def category, do: :channel
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "part",
+      syntax: "/part [#channel] [message]",
+      description: "Leave a channel. Defaults to active channel if none specified.",
+      category: :channel,
+      parameters: [
+        %Parameter{
+          name: "#channel",
+          required: false,
+          type: :channel,
+          position: 0,
+          description: "Canal a sair (padrão: canal atual)"
+        },
+        %Parameter{
+          name: "message",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Mensagem de saída"
+        }
+      ],
+      examples: ["/part", "/part #elixir", "/part #elixir Goodbye!"]
+    }
+  end
 end

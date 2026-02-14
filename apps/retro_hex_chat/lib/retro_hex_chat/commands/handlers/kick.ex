@@ -55,4 +55,35 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
 
   @impl true
   def category, do: :channel
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "kick",
+      syntax: "/kick <nickname> [reason]",
+      description: "Kick a user from the channel. Requires half-operator or higher.",
+      category: :channel,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Usuário a ser expulso"
+        },
+        %Parameter{
+          name: "reason",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Motivo da expulsão"
+        }
+      ],
+      examples: ["/kick troll", "/kick troll Spamming the channel"]
+    }
+  end
 end

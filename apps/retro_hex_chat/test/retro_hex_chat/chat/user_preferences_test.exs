@@ -383,6 +383,18 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
     end
 
     @tag :integration
+    test "save/2 and load/1 round-trip preserves command_help_level" do
+      prefs =
+        UserPreferences.new()
+        |> UserPreferences.set_command_help_level(:expert)
+
+      assert :ok == UserPreferences.save("TestPrefs", prefs)
+      assert {:ok, loaded} = UserPreferences.load("TestPrefs")
+
+      assert loaded.display.command_help_level == :expert
+    end
+
+    @tag :integration
     test "load/1 returns defaults for empty JSONB columns" do
       # Insert a row with empty maps
       %Schemas.UserPreference{}
@@ -430,6 +442,47 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
       assert_raise FunctionClauseError, fn ->
         UserPreferences.set_timestamp_format(prefs, :invalid)
       end
+    end
+  end
+
+  describe "command_help_level" do
+    @tag :unit
+    test "default is :beginner" do
+      prefs = UserPreferences.new()
+      assert prefs.display.command_help_level == :beginner
+    end
+
+    @tag :unit
+    test "set_command_help_level/2 accepts :beginner" do
+      prefs = UserPreferences.new() |> UserPreferences.set_command_help_level(:beginner)
+      assert prefs.display.command_help_level == :beginner
+    end
+
+    @tag :unit
+    test "set_command_help_level/2 accepts :expert" do
+      prefs = UserPreferences.new() |> UserPreferences.set_command_help_level(:expert)
+      assert prefs.display.command_help_level == :expert
+    end
+
+    @tag :unit
+    test "set_command_help_level/2 accepts :off" do
+      prefs = UserPreferences.new() |> UserPreferences.set_command_help_level(:off)
+      assert prefs.display.command_help_level == :off
+    end
+
+    @tag :unit
+    test "set_command_help_level/2 rejects invalid values" do
+      prefs = UserPreferences.new()
+
+      assert_raise FunctionClauseError, fn ->
+        UserPreferences.set_command_help_level(prefs, :invalid)
+      end
+    end
+
+    @tag :unit
+    test "get_command_help_level/1 returns current value" do
+      prefs = UserPreferences.new() |> UserPreferences.set_command_help_level(:expert)
+      assert UserPreferences.get_command_help_level(prefs) == :expert
     end
   end
 

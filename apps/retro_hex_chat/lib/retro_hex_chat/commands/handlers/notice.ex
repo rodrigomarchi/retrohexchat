@@ -47,4 +47,39 @@ defmodule RetroHexChat.Commands.Handlers.Notice do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "notice",
+      syntax: "/notice <target> <message>",
+      description:
+        "Send a notice to a user or channel. Notices use -Nick- formatting and do not open PM windows.",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "target",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Destinatário (nick ou canal)"
+        },
+        %Parameter{
+          name: "message",
+          required: true,
+          type: :text,
+          position: 1,
+          description: "Conteúdo do aviso"
+        }
+      ],
+      examples: [
+        "/notice Alice Check out #project",
+        "/notice #elixir Server maintenance in 30 minutes"
+      ]
+    }
+  end
 end

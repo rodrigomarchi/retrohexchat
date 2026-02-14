@@ -84,4 +84,41 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
 
   @impl true
   def category, do: :config
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "notify",
+      syntax: "/notify [add|remove|edit|list] [args]",
+      description: "Manage your notify (buddy) list.",
+      category: :config,
+      parameters: [
+        %Parameter{
+          name: "subcommand",
+          required: false,
+          type: :text,
+          position: 0,
+          description: "Subcomando: add, remove, edit, list"
+        },
+        %Parameter{
+          name: "args",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Argumentos do subcomando"
+        }
+      ],
+      examples: [
+        "/notify add Alice Works on Elixir",
+        "/notify remove Alice",
+        "/notify edit Alice New note",
+        "/notify list",
+        "/notify"
+      ]
+    }
+  end
 end

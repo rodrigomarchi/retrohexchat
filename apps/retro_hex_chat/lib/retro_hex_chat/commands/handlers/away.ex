@@ -37,4 +37,28 @@ defmodule RetroHexChat.Commands.Handlers.Away do
 
   @impl true
   def category, do: :basics
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "away",
+      syntax: "/away [message]",
+      description: "Set or clear your away status.",
+      category: :basics,
+      parameters: [
+        %Parameter{
+          name: "message",
+          required: false,
+          type: :text,
+          position: 0,
+          description: "Mensagem de ausência (vazio para voltar)"
+        }
+      ],
+      examples: ["/away Gone to lunch", "/away"]
+    }
+  end
 end

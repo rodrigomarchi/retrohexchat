@@ -46,4 +46,28 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
 
   @impl true
   def category, do: :advanced
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "setmotd",
+      syntax: "/setmotd <text>",
+      description: "Set the server Message of the Day. Requires server administrator privileges.",
+      category: :advanced,
+      parameters: [
+        %Parameter{
+          name: "text",
+          required: true,
+          type: :text,
+          position: 0,
+          description: "Texto da mensagem do dia"
+        }
+      ],
+      examples: ["/setmotd Welcome to RetroHexChat!"]
+    }
+  end
 end

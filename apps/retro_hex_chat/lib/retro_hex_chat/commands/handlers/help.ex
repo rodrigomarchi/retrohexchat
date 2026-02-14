@@ -44,4 +44,28 @@ defmodule RetroHexChat.Commands.Handlers.Help do
 
   @impl true
   def category, do: :basics
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "help",
+      syntax: "/help [command]",
+      description: "Show available commands or help for a specific command.",
+      category: :basics,
+      parameters: [
+        %Parameter{
+          name: "command",
+          required: false,
+          type: :command,
+          position: 0,
+          description: "Comando para ver ajuda detalhada"
+        }
+      ],
+      examples: ["/help", "/help join"]
+    }
+  end
 end

@@ -133,4 +133,42 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
 
   @impl true
   def category, do: :config
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "autorespond",
+      syntax: "/autorespond [list|add|remove]",
+      description:
+        "Manage event-triggered auto-respond rules. Rules fire when users join, part, or change nicks.",
+      category: :config,
+      parameters: [
+        %Parameter{
+          name: "subcommand",
+          required: false,
+          type: :text,
+          position: 0,
+          description: "Subcomando: list, add, remove"
+        },
+        %Parameter{
+          name: "args",
+          required: false,
+          type: :text,
+          position: 1,
+          description: "Argumentos do subcomando"
+        }
+      ],
+      examples: [
+        "/autorespond",
+        "/autorespond list",
+        "/autorespond add on_join #welcome /notice $nick Welcome!",
+        "/autorespond add on_part /say $nick left",
+        "/autorespond remove 0"
+      ]
+    }
+  end
 end

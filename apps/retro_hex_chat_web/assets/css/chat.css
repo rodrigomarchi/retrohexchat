@@ -97,11 +97,17 @@
   flex: 1;
 }
 
-.chat-input-area input {
+.chat-input-area textarea {
   flex: 1;
   font-family: var(--input-font-family, Fixedsys, "Courier New", monospace);
   font-size: var(--input-font-size, 13px);
   padding: 4px 6px;
+  resize: none;
+  overflow-y: hidden;
+  line-height: 1.4;
+  box-sizing: border-box;
+  min-height: calc(1.4em + 8px + 4px);
+  transition: height 0.1s ease;
 }
 
 .chat-input-area button {
@@ -125,6 +131,75 @@
 .char-counter--danger {
   color: #cc0000;
   font-weight: bold;
+}
+
+/* ── Syntax Tooltip ────────────────────────────────────── */
+.syntax-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background: var(--surface, #c0c0c0);
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 4px 6px;
+  font-size: 12px;
+  z-index: 5;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.syntax-tooltip-header {
+  font-family: var(--input-font-family, Fixedsys, "Courier New", monospace);
+  margin-bottom: 2px;
+}
+.syntax-tooltip-command {
+  font-weight: bold;
+  color: #000080;
+}
+.syntax-param {
+  color: #808080;
+  margin-left: 4px;
+}
+.syntax-param-active {
+  color: #000000;
+  font-weight: bold;
+}
+.syntax-tooltip-description {
+  color: #404040;
+  font-size: 11px;
+  margin-top: 2px;
+}
+.syntax-suboptions {
+  margin-top: 3px;
+  padding-top: 3px;
+  border-top: 1px solid #808080;
+}
+.syntax-suboption {
+  font-size: 11px;
+  color: #404040;
+  line-height: 1.4;
+}
+.syntax-suboption-flag {
+  font-weight: bold;
+  color: #000080;
+}
+.syntax-suboption-param {
+  color: #808080;
+  font-style: italic;
+}
+.syntax-context {
+  margin-top: 3px;
+  font-size: 11px;
+  color: #006600;
+  font-style: italic;
+}
+.syntax-examples {
+  margin-top: 3px;
+  font-size: 10px;
+  color: #808080;
+}
+.syntax-example {
+  margin-right: 8px;
 }
 
 /* ── Chat links ────────────────────────────────────────── */
@@ -221,6 +296,34 @@
 
 .chat-line-shading .chat-message:nth-child(even) {
   background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* ─── History Search Bar ─── */
+
+.hist-search-panel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 4px;
+  font-size: 12px;
+  font-family: "MS Sans Serif", Geneva, sans-serif;
+  background: var(--surface, #c0c0c0);
+  border-top: 1px solid #808080;
+}
+.history-search-label {
+  white-space: nowrap;
+  color: #000000;
+}
+.history-search-input {
+  flex: 1;
+  font-size: 12px;
+  padding: 1px 4px;
+  font-family: var(--input-font-family, Fixedsys, "Courier New", monospace);
+}
+.history-no-match {
+  color: #cc0000;
+  font-size: 11px;
+  white-space: nowrap;
 }
 
 /* ─── Typing Indicator ─── */

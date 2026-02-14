@@ -232,14 +232,42 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         id: "feature-search",
         title: "Search",
         category: "Features",
-        keywords: ["search", "find", "ctrl+f", "text search"],
+        keywords: [
+          "search",
+          "find",
+          "ctrl+f",
+          "text search",
+          "highlight",
+          "regex",
+          "case sensitive",
+          "history search"
+        ],
         content:
           "<h3>Search</h3>" <>
-            "<p>Search through messages in the current channel or PM.</p>" <>
+            "<p>Search through messages in the current channel or PM with real-time highlighting.</p>" <>
             "<h4>Opening</h4>" <>
             "<p>Press <strong>Ctrl+Shift+F</strong> or go to <strong>Edit &gt; Find...</strong>.</p>" <>
-            "<h4>Usage</h4>" <>
-            "<p>Type your search term and press Enter. Use the arrow buttons to navigate between matches. The current match count is displayed. Press <strong>Escape</strong> to close the search bar.</p>"
+            "<h4>Highlighting</h4>" <>
+            "<p>As you type, all matching occurrences in the chat are highlighted with a yellow background. " <>
+            "The active match is highlighted in orange. The counter shows your position (e.g., \"3 of 17\").</p>" <>
+            "<h4>Navigation</h4>" <>
+            "<p>Use <strong>Prev</strong>/<strong>Next</strong> buttons, or press " <>
+            "<strong>Arrow Down</strong>/<strong>Arrow Up</strong> in the search input to jump between matches. " <>
+            "The chat scrolls to each match automatically.</p>" <>
+            "<h4>Search Filters</h4>" <>
+            "<p><strong>Case:</strong> Case-sensitive matching (default: case-insensitive).<br/>" <>
+            "<strong>Regex:</strong> Regular expression matching (e.g., <code>error|warn</code>). " <>
+            "Invalid regex patterns show an inline error.<br/>" <>
+            "<strong>My nick:</strong> Only search messages that mention your nickname.<br/>" <>
+            "<strong>History:</strong> Extend search into the database beyond currently loaded messages.</p>" <>
+            "<h4>Session Memory</h4>" <>
+            "<p>The search bar remembers your last search term. When you reopen it, " <>
+            "the previous query is restored and matches are re-highlighted.</p>" <>
+            "<h4>Closing</h4>" <>
+            "<p>Press <strong>Escape</strong> or click the close button. All highlights are removed.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-cheatsheet\">Shortcut Cheatsheet</a></p>"
       },
       %{
         id: "feature-log-viewer",
@@ -1066,7 +1094,141 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<code>Tab</code> (no dropdown) — Cycle through nick matches.</p>" <>
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-command-syntax-tooltip\">Command Syntax Tooltip</a> · " <>
             "<a href=\"#\" data-help-topic=\"getting-started\">Getting Started</a></p>"
+      },
+      %{
+        id: "feature-command-syntax-tooltip",
+        title: "Command Syntax Tooltip",
+        category: "Features",
+        keywords: [
+          "syntax",
+          "tooltip",
+          "command help",
+          "parameter",
+          "hint",
+          "inline help",
+          "mode helper"
+        ],
+        content:
+          "<h3>Command Syntax Tooltip</h3>" <>
+            "<p>When typing a command (e.g., <code>/mode #general +o</code>), a tooltip appears " <>
+            "above the input showing the command syntax with the current parameter highlighted in bold.</p>" <>
+            "<h4>How It Works</h4>" <>
+            "<p>1. Type a command followed by a space (e.g., <code>/mode </code>).<br/>" <>
+            "2. The tooltip shows the full syntax with parameter names.<br/>" <>
+            "3. As you type arguments, the next expected parameter is highlighted.<br/>" <>
+            "4. For <code>/mode</code>, available mode flags are listed below the syntax line.</p>" <>
+            "<h4>Detail Levels</h4>" <>
+            "<p>Configure in <strong>Options &gt; Display &gt; Command Help</strong>:<br/>" <>
+            "<strong>Beginner:</strong> Full descriptions, sub-options, context messages, and examples.<br/>" <>
+            "<strong>Expert:</strong> Syntax line only — compact and unobtrusive.<br/>" <>
+            "<strong>Off:</strong> Disable the tooltip entirely.</p>" <>
+            "<h4>Interaction</h4>" <>
+            "<p>Press <strong>Escape</strong> to dismiss the tooltip. " <>
+            "The tooltip automatically hides when the autocomplete dropdown is open.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-autocomplete\">Autocomplete</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-smart-input\">Smart Input</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-options-dialog\">Options Dialog</a></p>"
+      },
+      %{
+        id: "feature-smart-input",
+        title: "Smart Input",
+        category: "Features",
+        keywords: [
+          "smart input",
+          "textarea",
+          "multiline",
+          "placeholder",
+          "expand",
+          "input box"
+        ],
+        content:
+          "<h3>Smart Input</h3>" <>
+            "<p>The chat input provides contextual hints and adapts to your content.</p>" <>
+            "<h4>Contextual Placeholder</h4>" <>
+            "<p>The placeholder text changes based on your current context:<br/>" <>
+            "In a channel: <em>Mensagem para #channel — / para comandos</em><br/>" <>
+            "In a PM: <em>Mensagem para NickName — / para comandos</em><br/>" <>
+            "In Status: <em>Digite um comando — / para lista</em></p>" <>
+            "<h4>Multi-Line Expansion</h4>" <>
+            "<p>The input grows vertically as you type or paste multi-line text, " <>
+            "up to 5 visible lines. Beyond that, a scrollbar appears. " <>
+            "The chat messages area compresses above to make room.</p>" <>
+            "<h4>Keyboard</h4>" <>
+            "<p><strong>Enter</strong> — Send message.<br/>" <>
+            "<strong>Shift+Enter</strong> — Insert a new line.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-enhanced-history\">Enhanced History</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-command-syntax-tooltip\">Command Syntax Tooltip</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-char-counter\">Character Counter</a></p>"
+      },
+      %{
+        id: "feature-cheatsheet",
+        title: "Shortcut Cheatsheet",
+        category: "Features",
+        keywords: [
+          "cheatsheet",
+          "cheat sheet",
+          "shortcut list",
+          "keyboard reference",
+          "quick reference"
+        ],
+        content:
+          "<h3>Shortcut Cheatsheet</h3>" <>
+            "<p>The Shortcut Cheatsheet displays all available keyboard shortcuts organized by category " <>
+            "in a read-only 98.css-styled dialog.</p>" <>
+            "<h4>Opening</h4>" <>
+            "<p>Press <strong>Ctrl+Shift+/</strong> to toggle the cheatsheet dialog.</p>" <>
+            "<h4>Categories</h4>" <>
+            "<p>Shortcuts are grouped into categories: Navigation, Windows &amp; Dialogs, " <>
+            "and Text Formatting. Each category shows a table with Action and Binding columns.</p>" <>
+            "<h4>Custom Bindings</h4>" <>
+            "<p>The cheatsheet reflects your current key bindings. If you have customized " <>
+            "shortcuts in <strong>Options &gt; Key Bindings</strong>, the cheatsheet shows " <>
+            "your custom bindings. Unbound actions show an em dash (&mdash;).</p>" <>
+            "<h4>Closing</h4>" <>
+            "<p>Press <strong>Escape</strong>, <strong>Ctrl+Shift+/</strong>, or click the close button.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-key-bindings\">Key Bindings</a></p>"
+      },
+      %{
+        id: "feature-enhanced-history",
+        title: "Enhanced History",
+        category: "Features",
+        keywords: [
+          "history",
+          "ctrl+up",
+          "ctrl+down",
+          "ctrl+r",
+          "reverse search",
+          "draft",
+          "persistence",
+          "localStorage"
+        ],
+        content:
+          "<h3>Enhanced History</h3>" <>
+            "<p>Navigate your command and message history with draft preservation " <>
+            "and reverse search. History persists across page reloads.</p>" <>
+            "<h4>Draft-Preserving Navigation</h4>" <>
+            "<p><strong>Ctrl+Up</strong> — Save current text as draft and show previous history entry.<br/>" <>
+            "<strong>Ctrl+Down</strong> — Show next entry, or restore your draft when past the newest entry.<br/>" <>
+            "Regular <strong>Up/Down</strong> in an empty input works as before (server-side history).</p>" <>
+            "<h4>Reverse Search (Ctrl+R)</h4>" <>
+            "<p>Press <strong>Ctrl+R</strong> to open an inline search bar. " <>
+            "Type to filter history entries by substring match. " <>
+            "Press <strong>Enter</strong> to accept the match, or <strong>Escape</strong> to cancel.</p>" <>
+            "<h4>Persistence</h4>" <>
+            "<p>The last 100 entries are stored in your browser's localStorage. " <>
+            "History survives page reloads and browser restarts.</p>" <>
+            "<h4>Privacy</h4>" <>
+            "<p>Sensitive commands (<code>/identify</code>, <code>/nickserv</code>, <code>/ns</code>) " <>
+            "are never saved to localStorage.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-smart-input\">Smart Input</a> · " <>
+            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
       }
     ]
   end

@@ -32,4 +32,19 @@ defmodule RetroHexChat.Commands.Handlers.List do
 
   @impl true
   def category, do: :channel
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+
+    %CommandSyntax{
+      command: "list",
+      syntax: "/list",
+      description: "Show the channel list dialog.",
+      category: :channel,
+      parameters: [],
+      examples: ["/list"]
+    }
+  end
 end

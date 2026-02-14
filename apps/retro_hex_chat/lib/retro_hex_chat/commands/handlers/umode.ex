@@ -57,4 +57,28 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
 
   @impl true
   def category, do: :config
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "umode",
+      syntax: "/umode <+/-mode>",
+      description: "Set or unset a user mode. Available modes: +w (receive wallops messages).",
+      category: :config,
+      parameters: [
+        %Parameter{
+          name: "mode",
+          required: true,
+          type: :text,
+          position: 0,
+          description: "Modo de usuário: +w (wallops), -w"
+        }
+      ],
+      examples: ["/umode +w", "/umode -w"]
+    }
+  end
 end

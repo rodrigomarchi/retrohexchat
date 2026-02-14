@@ -40,6 +40,7 @@ defmodule RetroHexChat.Commands.Handler do
               examples: [String.t()]
             }
   @callback category() :: category()
+  @callback syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t() | nil
 
-  @optional_callbacks [category: 0]
+  @optional_callbacks [category: 0, syntax_definition: 0]
 end

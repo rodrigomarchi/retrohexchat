@@ -39,4 +39,22 @@ defmodule RetroHexChat.Commands.Handlers.Popups do
 
   @impl true
   def category, do: :config
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+
+    %CommandSyntax{
+      command: "popups",
+      syntax: "/popups",
+      description:
+        "Open the Custom Menus dialog to manage nicklist and channel popup menu items.",
+      category: :config,
+      parameters: [],
+      examples: [
+        "/popups"
+      ]
+    }
+  end
 end

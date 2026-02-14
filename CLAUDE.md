@@ -7,6 +7,9 @@
 - bcrypt_elixir for password hashing, Plug.Crypto for encryption
 - Req 0.5+ (HTTP client for link previews)
 - In-memory: GenServer/ETS for runtime, Session structs for guests, localStorage for client state
+- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild (024-smart-input-command-help)
+- PostgreSQL 16+ (user_preferences JSON column — no migration needed), localStorage (client-side history) (024-smart-input-command-help)
+- PostgreSQL 16+ (user_preferences.key_bindings JSON column — no new migration needed) (025-shortcuts-chat-search)
 
 ## Project Structure
 
@@ -81,3 +84,7 @@ See `.specify/memory/constitution.md` for 11 governing principles.
 Key non-negotiables: TDD, umbrella separation, OTP process architecture,
 static analysis from day one, 98.css design fidelity, mandatory help documentation.
 
+
+## Recent Changes
+- 025-shortcuts-chat-search: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
+- 024-smart-input-command-help: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
