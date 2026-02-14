@@ -26,6 +26,7 @@ jobs:
       format: ${{ steps.format.outcome }}
       credo: ${{ steps.credo.outcome }}
       js_lint: ${{ steps.js_lint.outcome }}
+      css_lint: ${{ steps.css_lint.outcome }}
     steps:
       - uses: actions/checkout@v4
 
@@ -84,6 +85,13 @@ jobs:
         run: |
           set -o pipefail
           (npm run lint --prefix apps/retro_hex_chat_web/assets && npm run format:check --prefix apps/retro_hex_chat_web/assets) 2>&1 | tee /tmp/js_lint_output.txt
+
+      - name: CSS Lint
+        id: css_lint
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          mix lint.inline_styles 2>&1 | tee /tmp/css_lint_output.txt
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -260,6 +268,7 @@ jobs:
           STATUS_FORMAT: ${{ needs.lint.outputs.format }}
           STATUS_CREDO: ${{ needs.lint.outputs.credo }}
           STATUS_JS_LINT: ${{ needs.lint.outputs.js_lint }}
+          STATUS_CSS_LINT: ${{ needs.lint.outputs.css_lint }}
           STATUS_TESTS: ${{ needs.test.outputs.tests }}
           STATUS_JS_TESTS: ${{ needs.test.outputs.js_tests }}
           STATUS_DIALYZER: ${{ needs.dialyzer.outputs.dialyzer }}
@@ -309,6 +318,14 @@ jobs:
             JS_LINT_SUMMARY="no issues"
           else
             JS_LINT_SUMMARY="linting issues found"
+          fi
+
+          # Extract CSS lint summary
+          CSS_LINT_SUMMARY=""
+          if [ "$STATUS_CSS_LINT" = "success" ]; then
+            CSS_LINT_SUMMARY="no violations"
+          else
+            CSS_LINT_SUMMARY="inline style violations found"
           fi
 
           # Extract JS tests summary
@@ -362,6 +379,7 @@ jobs:
             echo "| **Format** | $(icon "$STATUS_FORMAT") ${FORMAT_SUMMARY} |"
             echo "| **Credo** | $(icon "$STATUS_CREDO") ${CREDO_SUMMARY} |"
             echo "| **JS Lint** | $(icon "$STATUS_JS_LINT") ${JS_LINT_SUMMARY} |"
+            echo "| **CSS Lint** | $(icon "$STATUS_CSS_LINT") ${CSS_LINT_SUMMARY} |"
             echo "| **JS Tests** | $(icon "$STATUS_JS_TESTS") ${JS_TESTS_SUMMARY} |"
             echo "| **Tests** | $(icon "$STATUS_TESTS") ${TEST_SUMMARY} |"
             echo "| **Dialyzer** | $(icon "$STATUS_DIALYZER") ${DIALYZER_SUMMARY} |"
@@ -387,7 +405,7 @@ jobs:
             fi
 
             # Detailed output for each failed check
-            for check in compile format credo js_lint js_tests tests dialyzer; do
+            for check in compile format credo js_lint css_lint js_tests tests dialyzer; do
               status_var="STATUS_$(echo "$check" | tr '[:lower:]' '[:upper:]')"
               status="${!status_var}"
 
@@ -433,6 +451,7 @@ jobs:
                 "${{ needs.lint.outputs.format }}" == "failure" || \
                 "${{ needs.lint.outputs.credo }}" == "failure" || \
                 "${{ needs.lint.outputs.js_lint }}" == "failure" || \
+                "${{ needs.lint.outputs.css_lint }}" == "failure" || \
                 "${{ needs.test.outputs.tests }}" == "failure" || \
                 "${{ needs.test.outputs.js_tests }}" == "failure" || \
                 "${{ needs.dialyzer.outputs.dialyzer }}" == "failure" ]]; then

@@ -20,12 +20,12 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: silver;
+  background-color: var(--color-surface);
   box-shadow:
-    inset 1px 1px #ffffff,
-    inset 2px 2px #dfdfdf,
-    inset -1px -1px #000000,
-    inset -2px -2px #808080,
+    inset 1px 1px var(--color-white),
+    inset 2px 2px var(--color-gray-200),
+    inset -1px -1px var(--color-black),
+    inset -2px -2px var(--color-gray-500),
     2px 2px 8px rgba(0, 0, 0, 0.4);
 }
 
@@ -52,8 +52,8 @@ body {
 }
 
 .menu-item:hover {
-  background-color: navy;
-  color: white;
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
 }
 
 /* Menu dropdowns (show on hover) */
@@ -64,8 +64,8 @@ body {
   left: 0;
   min-width: 160px;
   z-index: 250;
-  background-color: silver;
-  border: 2px outset #dfdfdf;
+  background-color: var(--color-surface);
+  border: 2px outset var(--color-gray-200);
   padding: 2px;
 }
 
@@ -81,8 +81,8 @@ body {
 }
 
 .menu-dropdown-item:hover {
-  background-color: navy;
-  color: white;
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
 }
 
 /* Toolbar - raised panel */
@@ -121,13 +121,13 @@ body {
 }
 
 .treebar li:hover {
-  background-color: navy;
-  color: white;
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
 }
 
 .tree-active {
-  background-color: navy;
-  color: white;
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
 }
 
 .tree-unread {

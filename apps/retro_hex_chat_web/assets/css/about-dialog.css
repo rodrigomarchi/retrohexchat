@@ -1,0 +1,45 @@
+/* RetroHexChat — About dialog: logo, title, credits, buttons */
+
+.about-dialog {
+  width: 360px;
+}
+
+.about-body {
+  padding: 16px;
+  text-align: center;
+}
+
+.about-logo {
+  font-family: Fixedsys, "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.3;
+  text-align: center;
+  margin: 0 auto 12px;
+  white-space: pre;
+}
+
+.about-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+
+.about-description {
+  margin: 0 0 8px;
+  font-size: 12px;
+}
+
+.about-credits {
+  font-size: 11px;
+  color: var(--color-gray-700);
+  margin: 4px 0;
+}
+
+.about-buttons {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.about-ok-btn {
+  min-width: 75px;
+}

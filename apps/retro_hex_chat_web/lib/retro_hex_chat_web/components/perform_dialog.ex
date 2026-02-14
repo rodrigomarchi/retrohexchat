@@ -26,9 +26,8 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
       :if={@visible}
       class="dialog-overlay"
       data-testid="perform-dialog"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.3);"
     >
-      <div class="window" style="width: 460px; min-height: 340px;">
+      <div class="window dialog-window--perform">
         <div class="title-bar">
           <div class="title-bar-text">Perform / Auto-Commands</div>
           <div class="title-bar-controls">
@@ -40,8 +39,8 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
             </button>
           </div>
         </div>
-        <div class="window-body" style="padding: 8px; display: flex; flex-direction: column;">
-          <menu role="tablist" style="margin-bottom: 0;">
+        <div class="window-body dialog-body--p8 u-flex-col">
+          <menu role="tablist" class="u-mb-0">
             <li role="tab" aria-selected={@active_tab == "commands"}>
               <a
                 href="#"
@@ -63,8 +62,8 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
               </a>
             </li>
           </menu>
-          <div class="window" role="tabpanel" style="min-height: 220px;">
-            <div class="window-body" style="padding: 8px;">
+          <div class="window perform-tab-panel" role="tabpanel">
+            <div class="window-body dialog-body--p8">
               <%= if @active_tab == "commands" do %>
                 <.commands_tab
                   entries={@perform_entries}
@@ -100,13 +99,13 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
 
   defp commands_tab(assigns) do
     ~H"""
-    <div style="display: flex; flex-direction: column; height: 100%;">
-      <div class="sunken-panel" style="flex: 1; overflow-y: auto; min-height: 120px;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+    <div class="u-flex-col perform-tab-content">
+      <div class="table-container perform-cmd-list">
+        <table class="table-standard">
           <thead>
-            <tr style="background: #c0c0c0; position: sticky; top: 0;">
-              <th style="text-align: left; padding: 2px 4px; width: 30px;">#</th>
-              <th style="text-align: left; padding: 2px 4px;">Command</th>
+            <tr class="u-sticky-top">
+              <th class="perform-num-col">#</th>
+              <th>Command</th>
             </tr>
           </thead>
           <tbody>
@@ -114,7 +113,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
               <tr>
                 <td
                   colspan="2"
-                  style="text-align: center; padding: 16px; color: #808080;"
+                  class="table-empty u-p-16"
                   data-testid="perform-empty"
                 >
                   No perform commands configured
@@ -126,64 +125,64 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
                 phx-click="perform_select"
                 phx-value-position={entry.position}
                 data-testid={"perform-entry-#{entry.position}"}
-                style={row_style(entry.position, @selected)}
+                class={["table-row--selectable", entry.position == @selected && "table-row--selected"]}
               >
-                <td style="padding: 2px 4px;">{entry.position}</td>
-                <td style="padding: 2px 4px;">{PerformList.mask_command(entry.command)}</td>
+                <td>{entry.position}</td>
+                <td>{PerformList.mask_command(entry.command)}</td>
               </tr>
             <% end %>
           </tbody>
         </table>
       </div>
-      <div style="margin-top: 8px; display: flex; gap: 4px; align-items: center;">
+      <div class="u-flex u-gap-4 u-items-center u-mt-8">
         <button
           type="button"
+          class="btn-sm"
           data-testid="perform-add-btn"
           phx-click="perform_dialog_add"
-          style="font-size: 11px; padding: 1px 8px;"
         >
           Add...
         </button>
         <button
           type="button"
+          class="btn-sm"
           data-testid="perform-edit-btn"
           phx-click="perform_dialog_edit"
           disabled={is_nil(@selected)}
-          style="font-size: 11px; padding: 1px 8px;"
         >
           Edit...
         </button>
         <button
           type="button"
+          class="btn-sm"
           data-testid="perform-remove-btn"
           phx-click="perform_dialog_remove"
           disabled={is_nil(@selected)}
-          style="font-size: 11px; padding: 1px 8px;"
         >
           Remove
         </button>
-        <div style="width: 1px; height: 16px; background: #808080; margin: 0 4px;"></div>
+        <div class="vertical-separator"></div>
         <button
           type="button"
+          class="btn-sm"
           data-testid="perform-move-up-btn"
           phx-click="perform_dialog_move_up"
           disabled={is_nil(@selected) or @selected == 0}
-          style="font-size: 11px; padding: 1px 8px;"
         >
           Move Up
         </button>
         <button
           type="button"
+          class="btn-sm"
           data-testid="perform-move-down-btn"
           phx-click="perform_dialog_move_down"
           disabled={is_nil(@selected) or @selected == length(@entries) - 1}
-          style="font-size: 11px; padding: 1px 8px;"
         >
           Move Down
         </button>
       </div>
-      <div style="margin-top: 8px;">
-        <label style="display: flex; align-items: center; gap: 4px; font-size: 11px;">
+      <div class="u-mt-8">
+        <label class="form-row u-text-sm">
           <input
             type="checkbox"
             checked={@enabled}
@@ -198,13 +197,13 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
 
   defp autojoin_tab(assigns) do
     ~H"""
-    <div style="display: flex; flex-direction: column; height: 100%;">
-      <div class="sunken-panel" style="flex: 1; overflow-y: auto; min-height: 120px;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+    <div class="u-flex-col perform-tab-content">
+      <div class="table-container perform-cmd-list">
+        <table class="table-standard">
           <thead>
-            <tr style="background: #c0c0c0; position: sticky; top: 0;">
-              <th style="text-align: left; padding: 2px 4px;">Channel</th>
-              <th style="text-align: left; padding: 2px 4px;">Key</th>
+            <tr class="u-sticky-top">
+              <th>Channel</th>
+              <th>Key</th>
             </tr>
           </thead>
           <tbody>
@@ -212,7 +211,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
               <tr>
                 <td
                   colspan="2"
-                  style="text-align: center; padding: 16px; color: #808080;"
+                  class="table-empty u-p-16"
                   data-testid="autojoin-empty"
                 >
                   No auto-join channels configured
@@ -224,39 +223,42 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
                 phx-click="autojoin_select"
                 phx-value-channel={entry.channel_name}
                 data-testid={"autojoin-entry-#{entry.channel_name}"}
-                style={autojoin_row_style(entry.channel_name, @selected)}
+                class={[
+                  "table-row--selectable",
+                  entry.channel_name == @selected && "table-row--selected"
+                ]}
               >
-                <td style="padding: 2px 4px;">{entry.channel_name}</td>
-                <td style="padding: 2px 4px;">{if entry.channel_key, do: "****", else: ""}</td>
+                <td>{entry.channel_name}</td>
+                <td>{if entry.channel_key, do: "****", else: ""}</td>
               </tr>
             <% end %>
           </tbody>
         </table>
       </div>
-      <div style="margin-top: 8px; display: flex; gap: 4px;">
+      <div class="dialog-buttons dialog-buttons--start u-mt-8">
         <button
           type="button"
+          class="btn-sm"
           data-testid="autojoin-add-btn"
           phx-click="autojoin_dialog_add"
-          style="font-size: 11px; padding: 1px 8px;"
         >
           Add...
         </button>
         <button
           type="button"
+          class="btn-sm"
           data-testid="autojoin-edit-btn"
           phx-click="autojoin_dialog_edit"
           disabled={is_nil(@selected)}
-          style="font-size: 11px; padding: 1px 8px;"
         >
           Edit...
         </button>
         <button
           type="button"
+          class="btn-sm"
           data-testid="autojoin-remove-btn"
           phx-click="autojoin_dialog_remove"
           disabled={is_nil(@selected)}
-          style="font-size: 11px; padding: 1px 8px;"
         >
           Remove
         </button>
@@ -268,17 +270,16 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
   defp perform_add_sub_dialog(assigns) do
     ~H"""
     <div
-      class="dialog-overlay"
+      class="dialog-overlay dialog-overlay--light dialog-overlay--above"
       data-testid="perform-add-dialog"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 210; background: rgba(0,0,0,0.2);"
     >
-      <div class="window" style="width: 360px;">
+      <div class="window dialog-window--360">
         <div class="title-bar">
           <div class="title-bar-text">Add Perform Command</div>
         </div>
-        <div class="window-body" style="padding: 8px;">
+        <div class="window-body dialog-body--p8">
           <form phx-submit="perform_dialog_add_confirm">
-            <div class="field-row-stacked" style="margin-bottom: 8px;">
+            <div class="field-row-stacked u-mb-8">
               <label for="perform-command-input">Command:</label>
               <input
                 type="text"
@@ -291,7 +292,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
                 autofocus
               />
             </div>
-            <div style="display: flex; gap: 4px; justify-content: flex-end;">
+            <div class="dialog-buttons">
               <button type="submit" data-testid="perform-add-confirm">OK</button>
               <button
                 type="button"
@@ -314,17 +315,16 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
 
     ~H"""
     <div
-      class="dialog-overlay"
+      class="dialog-overlay dialog-overlay--light dialog-overlay--above"
       data-testid="perform-edit-dialog"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 210; background: rgba(0,0,0,0.2);"
     >
-      <div class="window" style="width: 360px;">
+      <div class="window dialog-window--360">
         <div class="title-bar">
           <div class="title-bar-text">Edit Perform Command</div>
         </div>
-        <div class="window-body" style="padding: 8px;">
+        <div class="window-body dialog-body--p8">
           <form phx-submit="perform_dialog_edit_confirm">
-            <div class="field-row-stacked" style="margin-bottom: 8px;">
+            <div class="field-row-stacked u-mb-8">
               <label for="perform-edit-input">Command:</label>
               <input
                 type="text"
@@ -337,7 +337,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
                 autofocus
               />
             </div>
-            <div style="display: flex; gap: 4px; justify-content: flex-end;">
+            <div class="dialog-buttons">
               <button type="submit" data-testid="perform-edit-confirm">OK</button>
               <button
                 type="button"
@@ -357,17 +357,16 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
   defp autojoin_add_sub_dialog(assigns) do
     ~H"""
     <div
-      class="dialog-overlay"
+      class="dialog-overlay dialog-overlay--light dialog-overlay--above"
       data-testid="autojoin-add-dialog"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 210; background: rgba(0,0,0,0.2);"
     >
-      <div class="window" style="width: 320px;">
+      <div class="window dialog-window--320">
         <div class="title-bar">
           <div class="title-bar-text">Add Auto-Join Channel</div>
         </div>
-        <div class="window-body" style="padding: 8px;">
+        <div class="window-body dialog-body--p8">
           <form phx-submit="autojoin_dialog_add_confirm">
-            <div class="field-row-stacked" style="margin-bottom: 8px;">
+            <div class="field-row-stacked u-mb-8">
               <label for="autojoin-channel-input">Channel:</label>
               <input
                 type="text"
@@ -380,7 +379,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
                 autofocus
               />
             </div>
-            <div class="field-row-stacked" style="margin-bottom: 8px;">
+            <div class="field-row-stacked u-mb-8">
               <label for="autojoin-key-input">Key (optional):</label>
               <input
                 type="text"
@@ -391,7 +390,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
                 placeholder="Leave empty if no key"
               />
             </div>
-            <div style="display: flex; gap: 4px; justify-content: flex-end;">
+            <div class="dialog-buttons">
               <button type="submit" data-testid="autojoin-add-confirm">OK</button>
               <button
                 type="button"
@@ -418,17 +417,16 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
 
     ~H"""
     <div
-      class="dialog-overlay"
+      class="dialog-overlay dialog-overlay--light dialog-overlay--above"
       data-testid="autojoin-edit-dialog"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 210; background: rgba(0,0,0,0.2);"
     >
-      <div class="window" style="width: 320px;">
+      <div class="window dialog-window--320">
         <div class="title-bar">
           <div class="title-bar-text">Edit Auto-Join Channel</div>
         </div>
-        <div class="window-body" style="padding: 8px;">
+        <div class="window-body dialog-body--p8">
           <form phx-submit="autojoin_dialog_edit_confirm">
-            <div class="field-row-stacked" style="margin-bottom: 8px;">
+            <div class="field-row-stacked u-mb-8">
               <label for="autojoin-edit-channel">Channel:</label>
               <input
                 type="text"
@@ -439,7 +437,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
                 disabled
               />
             </div>
-            <div class="field-row-stacked" style="margin-bottom: 8px;">
+            <div class="field-row-stacked u-mb-8">
               <label for="autojoin-edit-key">Key (optional):</label>
               <input
                 type="text"
@@ -451,7 +449,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
                 autofocus
               />
             </div>
-            <div style="display: flex; gap: 4px; justify-content: flex-end;">
+            <div class="dialog-buttons">
               <button type="submit" data-testid="autojoin-edit-confirm">OK</button>
               <button
                 type="button"
@@ -466,22 +464,6 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
       </div>
     </div>
     """
-  end
-
-  defp row_style(position, selected) when position == selected do
-    "background: #000080; color: #ffffff; cursor: pointer;"
-  end
-
-  defp row_style(_position, _selected) do
-    "cursor: pointer;"
-  end
-
-  defp autojoin_row_style(channel, selected) when channel == selected do
-    "background: #000080; color: #ffffff; cursor: pointer;"
-  end
-
-  defp autojoin_row_style(_channel, _selected) do
-    "cursor: pointer;"
   end
 
   defp find_entry(entries, position) do

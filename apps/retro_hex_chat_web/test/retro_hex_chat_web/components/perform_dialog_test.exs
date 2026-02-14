@@ -184,7 +184,7 @@ defmodule RetroHexChatWeb.Components.PerformDialogTest do
         })
 
       # The selected row should have the highlight background
-      assert html =~ "background: #000080"
+      assert html =~ "table-row--selected"
     end
 
     @tag :unit
@@ -478,7 +478,7 @@ defmodule RetroHexChatWeb.Components.PerformDialogTest do
           autojoin_selected: "#elixir"
         })
 
-      assert html =~ "background: #000080"
+      assert html =~ "table-row--selected"
     end
 
     @tag :unit

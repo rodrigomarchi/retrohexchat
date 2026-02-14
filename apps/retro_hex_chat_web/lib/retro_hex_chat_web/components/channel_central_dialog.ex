@@ -33,10 +33,9 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
     <div
       :if={@visible and @channel_state != nil}
       class="dialog-overlay"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.3);"
       data-testid="channel-central-dialog"
     >
-      <div class="window" style="width: 520px; height: 440px; display: flex; flex-direction: column;">
+      <div class="window dialog-window--channel-central">
         <div class="title-bar">
           <div class="title-bar-text">
             Channel Central — {@channel_state.name}
@@ -45,11 +44,8 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
             <button aria-label="Close" phx-click="close_channel_central"></button>
           </div>
         </div>
-        <div
-          class="window-body"
-          style="flex: 1; display: flex; flex-direction: column; padding: 4px; overflow: hidden;"
-        >
-          <menu role="tablist" style="margin: 0 0 4px 0; padding: 0;">
+        <div class="window-body u-flex-1 u-flex-col u-p-4 u-overflow-hidden">
+          <menu role="tablist" class="u-mb-4 tab-menu-reset">
             <li
               role="tab"
               aria-selected={@active_tab == "general"}
@@ -97,7 +93,7 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
             </li>
           </menu>
 
-          <div role="tabpanel" style="flex: 1; overflow: auto;">
+          <div role="tabpanel" class="u-flex-1 u-overflow-y-auto">
             {render_tab(assigns)}
           </div>
         </div>
@@ -120,43 +116,43 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
 
   defp general_tab(assigns) do
     ~H"""
-    <div data-testid="cc-general-panel" style="padding: 4px;">
+    <div data-testid="cc-general-panel" class="u-p-4">
       <fieldset>
         <legend>Channel Info</legend>
-        <div style="font-size: 11px;">
+        <div class="u-text-sm">
           <div><strong>Name:</strong> {@channel_state.name}</div>
           <div><strong>Created:</strong> {format_datetime(@channel_state.created_at)}</div>
           <div><strong>Members:</strong> {@channel_state.member_count}</div>
         </div>
       </fieldset>
-      <fieldset style="margin-top: 8px;">
+      <fieldset class="u-mt-8">
         <legend>Topic</legend>
         <div :if={@operator}>
-          <form phx-submit="cc_set_topic" style="display: flex; flex-direction: column; gap: 4px;">
+          <form phx-submit="cc_set_topic" class="u-flex-col u-gap-4">
             <textarea
               name="topic"
               rows="3"
-              style="width: 100%; resize: vertical; font-size: 11px;"
+              class="textarea-resizable u-text-sm"
               data-testid="cc-topic-input"
             >{@channel_state.topic}</textarea>
-            <div style="display: flex; justify-content: flex-end; gap: 4px;">
-              <button type="submit" data-testid="cc-set-topic-btn" style="font-size: 11px;">
+            <div class="u-flex-end u-gap-4">
+              <button type="submit" data-testid="cc-set-topic-btn" class="btn-sm">
                 Set Topic
               </button>
             </div>
           </form>
         </div>
-        <div :if={!@operator} style="font-size: 11px;">
+        <div :if={!@operator} class="u-text-sm">
           <div :if={@channel_state.topic != ""}>
             {@channel_state.topic}
           </div>
-          <div :if={@channel_state.topic == ""} style="color: #666;">
+          <div :if={@channel_state.topic == ""} class="u-text-muted">
             No topic set
           </div>
         </div>
         <div
           :if={@channel_state.topic_set_by}
-          style="font-size: 10px; color: #666; margin-top: 4px;"
+          class="u-text-xs u-text-muted u-mt-4"
         >
           Set by {@channel_state.topic_set_by}
           <span :if={@channel_state.topic_set_at}>
@@ -180,11 +176,11 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
       |> assign(:form, form)
 
     ~H"""
-    <div data-testid="cc-modes-panel" style="padding: 4px;">
+    <div data-testid="cc-modes-panel" class="u-p-4">
       <form :if={@operator} phx-submit="cc_apply_modes">
         <fieldset>
           <legend>Channel Modes</legend>
-          <div style="display: flex; flex-direction: column; gap: 4px; font-size: 11px;">
+          <div class="u-flex-col u-gap-4 u-text-sm">
             <label>
               <input
                 type="checkbox"
@@ -209,7 +205,7 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
                 checked={Map.get(@form, "topic_lock", @md.topic_lock)}
               /> Topic Lock (+t)
             </label>
-            <div style="display: flex; align-items: center; gap: 4px;">
+            <div class="u-flex u-items-center u-gap-4">
               <label>
                 <input
                   type="checkbox"
@@ -222,11 +218,11 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
                 type="text"
                 name="key_value"
                 value={Map.get(@form, "key_value", @md.key || "")}
-                style="width: 120px;"
+                class="cc-key-input"
                 data-testid="cc-key-input"
               />
             </div>
-            <div style="display: flex; align-items: center; gap: 4px;">
+            <div class="u-flex u-items-center u-gap-4">
               <label>
                 <input
                   type="checkbox"
@@ -240,21 +236,21 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
                 name="limit_value"
                 min="1"
                 value={Map.get(@form, "limit_value", @md.limit || "")}
-                style="width: 80px;"
+                class="u-w-80"
                 data-testid="cc-limit-input"
               />
             </div>
           </div>
         </fieldset>
-        <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 8px;">
-          <button type="submit" data-testid="cc-apply-modes-btn" style="font-size: 11px;">
+        <div class="u-flex-end u-gap-4 u-mt-8">
+          <button type="submit" data-testid="cc-apply-modes-btn" class="btn-sm">
             Apply
           </button>
         </div>
       </form>
       <fieldset :if={!@operator}>
         <legend>Channel Modes</legend>
-        <div style="display: flex; flex-direction: column; gap: 4px; font-size: 11px;">
+        <div class="u-flex-col u-gap-4 u-text-sm">
           <label>
             <input type="checkbox" disabled checked={@md.moderated} /> Moderated (+m)
           </label>
@@ -284,13 +280,13 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
     ~H"""
     <div
       data-testid="cc-bans-panel"
-      style="padding: 4px; display: flex; flex-direction: column; height: 100%;"
+      class="list-tab-panel"
     >
-      <div class="sunken-panel" style="flex: 1; overflow: auto;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+      <div class="sunken-panel u-flex-1 u-overflow-y-auto">
+        <table class="table-standard">
           <thead>
-            <tr style="position: sticky; top: 0; background: #c0c0c0;">
-              <th style="text-align: left; padding: 2px 4px;">Nickname</th>
+            <tr class="u-sticky-top">
+              <th>Nickname</th>
             </tr>
           </thead>
           <tbody>
@@ -298,32 +294,29 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               :for={nick <- @channel_state.bans}
               phx-click="cc_ban_select"
               phx-value-nickname={nick}
-              style={row_style(nick, @ban_selected)}
+              class={["table-row--selectable", nick == @ban_selected && "table-row--selected"]}
               data-testid={"cc-ban-entry-#{nick}"}
             >
-              <td style="padding: 2px 4px;">{nick}</td>
+              <td>{nick}</td>
             </tr>
           </tbody>
         </table>
-        <div
-          :if={@channel_state.bans == []}
-          style="padding: 8px; text-align: center; color: #666; font-size: 11px;"
-        >
+        <div :if={@channel_state.bans == []} class="table-empty">
           No bans
         </div>
       </div>
-      <div :if={@operator} style="display: flex; gap: 4px; margin-top: 4px;">
+      <div :if={@operator} class="toolbar-row u-mt-4">
         <button
           phx-click="cc_open_add_ban"
           data-testid="cc-add-ban-btn"
-          style="font-size: 11px;"
+          class="btn-sm"
         >
           Add Ban
         </button>
         <button
           phx-click="cc_remove_ban"
           data-testid="cc-remove-ban-btn"
-          style="font-size: 11px;"
+          class="btn-sm"
           disabled={is_nil(@ban_selected)}
         >
           Remove Ban
@@ -338,26 +331,25 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
     ~H"""
     <div
       :if={@show_add_ban_dialog}
-      class="dialog-overlay"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 210; background: rgba(0,0,0,0.5);"
+      class="dialog-overlay dialog-overlay--above"
       data-testid="cc-add-ban-dialog"
     >
-      <div class="window" style="width: 300px;">
+      <div class="window dialog-window--sm">
         <div class="title-bar">
           <div class="title-bar-text">Add Ban</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="cc_close_add_ban"></button>
           </div>
         </div>
-        <div class="window-body" style="padding: 8px;">
+        <div class="window-body dialog-body--p8">
           <form phx-submit="cc_add_ban">
             <div class="field-row-stacked">
               <label for="cc-ban-nick">Nickname:</label>
               <input type="text" id="cc-ban-nick" name="nickname" data-testid="cc-ban-nick-input" />
             </div>
-            <div style="display: flex; gap: 4px; justify-content: flex-end; margin-top: 8px;">
-              <button type="submit" style="font-size: 11px;">OK</button>
-              <button type="button" phx-click="cc_close_add_ban" style="font-size: 11px;">
+            <div class="u-flex-end u-gap-4 u-mt-8">
+              <button type="submit" class="btn-sm">OK</button>
+              <button type="button" phx-click="cc_close_add_ban" class="btn-sm">
                 Cancel
               </button>
             </div>
@@ -374,13 +366,13 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
     ~H"""
     <div
       data-testid="cc-ban-ex-panel"
-      style="padding: 4px; display: flex; flex-direction: column; height: 100%;"
+      class="list-tab-panel"
     >
-      <div class="sunken-panel" style="flex: 1; overflow: auto;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+      <div class="sunken-panel u-flex-1 u-overflow-y-auto">
+        <table class="table-standard">
           <thead>
-            <tr style="position: sticky; top: 0; background: #c0c0c0;">
-              <th style="text-align: left; padding: 2px 4px;">Nickname</th>
+            <tr class="u-sticky-top">
+              <th>Nickname</th>
             </tr>
           </thead>
           <tbody>
@@ -388,32 +380,29 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               :for={nick <- @channel_state.ban_exceptions}
               phx-click="cc_ban_ex_select"
               phx-value-nickname={nick}
-              style={row_style(nick, @ban_ex_selected)}
+              class={["table-row--selectable", nick == @ban_ex_selected && "table-row--selected"]}
               data-testid={"cc-ban-ex-entry-#{nick}"}
             >
-              <td style="padding: 2px 4px;">{nick}</td>
+              <td>{nick}</td>
             </tr>
           </tbody>
         </table>
-        <div
-          :if={@channel_state.ban_exceptions == []}
-          style="padding: 8px; text-align: center; color: #666; font-size: 11px;"
-        >
+        <div :if={@channel_state.ban_exceptions == []} class="table-empty">
           No ban exceptions
         </div>
       </div>
-      <div :if={@operator} style="display: flex; gap: 4px; margin-top: 4px;">
+      <div :if={@operator} class="toolbar-row u-mt-4">
         <button
           phx-click="cc_open_add_ban_ex"
           data-testid="cc-add-ban-ex-btn"
-          style="font-size: 11px;"
+          class="btn-sm"
         >
           Add Exception
         </button>
         <button
           phx-click="cc_remove_ban_exception"
           data-testid="cc-remove-ban-ex-btn"
-          style="font-size: 11px;"
+          class="btn-sm"
           disabled={is_nil(@ban_ex_selected)}
         >
           Remove Exception
@@ -428,18 +417,17 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
     ~H"""
     <div
       :if={@show_add_ban_ex_dialog}
-      class="dialog-overlay"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 210; background: rgba(0,0,0,0.5);"
+      class="dialog-overlay dialog-overlay--above"
       data-testid="cc-add-ban-ex-dialog"
     >
-      <div class="window" style="width: 300px;">
+      <div class="window dialog-window--sm">
         <div class="title-bar">
           <div class="title-bar-text">Add Ban Exception</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="cc_close_add_ban_ex"></button>
           </div>
         </div>
-        <div class="window-body" style="padding: 8px;">
+        <div class="window-body dialog-body--p8">
           <form phx-submit="cc_add_ban_exception">
             <div class="field-row-stacked">
               <label for="cc-ban-ex-nick">Nickname:</label>
@@ -450,9 +438,9 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
                 data-testid="cc-ban-ex-nick-input"
               />
             </div>
-            <div style="display: flex; gap: 4px; justify-content: flex-end; margin-top: 8px;">
-              <button type="submit" style="font-size: 11px;">OK</button>
-              <button type="button" phx-click="cc_close_add_ban_ex" style="font-size: 11px;">
+            <div class="u-flex-end u-gap-4 u-mt-8">
+              <button type="submit" class="btn-sm">OK</button>
+              <button type="button" phx-click="cc_close_add_ban_ex" class="btn-sm">
                 Cancel
               </button>
             </div>
@@ -469,13 +457,13 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
     ~H"""
     <div
       data-testid="cc-invite-ex-panel"
-      style="padding: 4px; display: flex; flex-direction: column; height: 100%;"
+      class="list-tab-panel"
     >
-      <div class="sunken-panel" style="flex: 1; overflow: auto;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+      <div class="sunken-panel u-flex-1 u-overflow-y-auto">
+        <table class="table-standard">
           <thead>
-            <tr style="position: sticky; top: 0; background: #c0c0c0;">
-              <th style="text-align: left; padding: 2px 4px;">Nickname</th>
+            <tr class="u-sticky-top">
+              <th>Nickname</th>
             </tr>
           </thead>
           <tbody>
@@ -483,32 +471,29 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               :for={nick <- @channel_state.invite_exceptions}
               phx-click="cc_invite_ex_select"
               phx-value-nickname={nick}
-              style={row_style(nick, @invite_ex_selected)}
+              class={["table-row--selectable", nick == @invite_ex_selected && "table-row--selected"]}
               data-testid={"cc-invite-ex-entry-#{nick}"}
             >
-              <td style="padding: 2px 4px;">{nick}</td>
+              <td>{nick}</td>
             </tr>
           </tbody>
         </table>
-        <div
-          :if={@channel_state.invite_exceptions == []}
-          style="padding: 8px; text-align: center; color: #666; font-size: 11px;"
-        >
+        <div :if={@channel_state.invite_exceptions == []} class="table-empty">
           No invite exceptions
         </div>
       </div>
-      <div :if={@operator} style="display: flex; gap: 4px; margin-top: 4px;">
+      <div :if={@operator} class="toolbar-row u-mt-4">
         <button
           phx-click="cc_open_add_invite_ex"
           data-testid="cc-add-invite-ex-btn"
-          style="font-size: 11px;"
+          class="btn-sm"
         >
           Add Exception
         </button>
         <button
           phx-click="cc_remove_invite_exception"
           data-testid="cc-remove-invite-ex-btn"
-          style="font-size: 11px;"
+          class="btn-sm"
           disabled={is_nil(@invite_ex_selected)}
         >
           Remove Exception
@@ -523,18 +508,17 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
     ~H"""
     <div
       :if={@show_add_invite_ex_dialog}
-      class="dialog-overlay"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 210; background: rgba(0,0,0,0.5);"
+      class="dialog-overlay dialog-overlay--above"
       data-testid="cc-add-invite-ex-dialog"
     >
-      <div class="window" style="width: 300px;">
+      <div class="window dialog-window--sm">
         <div class="title-bar">
           <div class="title-bar-text">Add Invite Exception</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="cc_close_add_invite_ex"></button>
           </div>
         </div>
-        <div class="window-body" style="padding: 8px;">
+        <div class="window-body dialog-body--p8">
           <form phx-submit="cc_add_invite_exception">
             <div class="field-row-stacked">
               <label for="cc-invite-ex-nick">Nickname:</label>
@@ -545,9 +529,9 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
                 data-testid="cc-invite-ex-nick-input"
               />
             </div>
-            <div style="display: flex; gap: 4px; justify-content: flex-end; margin-top: 8px;">
-              <button type="submit" style="font-size: 11px;">OK</button>
-              <button type="button" phx-click="cc_close_add_invite_ex" style="font-size: 11px;">
+            <div class="u-flex-end u-gap-4 u-mt-8">
+              <button type="submit" class="btn-sm">OK</button>
+              <button type="button" phx-click="cc_close_add_invite_ex" class="btn-sm">
                 Cancel
               </button>
             </div>
@@ -559,14 +543,6 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
   end
 
   # ── Helpers ───────────────────────────────────────────────
-
-  defp row_style(nick, selected) do
-    if nick == selected do
-      "background: #000080; color: #ffffff; cursor: pointer;"
-    else
-      "cursor: pointer;"
-    end
-  end
 
   defp format_datetime(nil), do: "—"
 

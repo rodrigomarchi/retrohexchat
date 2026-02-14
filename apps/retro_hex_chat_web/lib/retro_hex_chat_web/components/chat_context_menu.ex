@@ -30,8 +30,8 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-hook="ContextMenuHook"
       id="chat-context-menu"
     >
-      <div class="window" style="padding: 2px;">
-        <ul class="tree-view" style="margin: 0; padding: 2px;">
+      <div class="window u-p-2">
+        <ul class="tree-view">
           <%= case @menu.type do %>
             <% :nick -> %>
               {nick_menu_items(assigns)}
@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
     >
       Copy Nick
     </li>
-    <li class="separator" style="border-top: 1px solid #666; margin: 2px 0;"></li>
+    <li class="separator"></li>
     <li
       :if={!@is_target_ignored && !@is_target_self}
       data-testid="ctx-chat-ignore"
@@ -105,7 +105,6 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
     <li
       :if={@viewer_is_op}
       class="separator"
-      style="border-top: 1px solid #666; margin: 2px 0;"
     >
     </li>
     <li
@@ -244,7 +243,6 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
     <li
       :if={@has_urls}
       class="separator"
-      style="border-top: 1px solid #666; margin: 2px 0;"
     >
     </li>
     <li

@@ -1,0 +1,52 @@
+/* RetroHexChat — Highlight dialog: word list, color grid, swatches */
+
+.highlight-dialog-window { min-height: 300px; }
+
+.highlight-color-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.highlight-word-list {
+  min-height: 100px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px inset;
+  background: var(--color-white);
+  padding: 2px;
+}
+
+.highlight-entry {
+  padding: 2px 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.highlight-entry--selected {
+  background: var(--color-selection-bg);
+  color: var(--color-selection-fg);
+}
+
+.highlight-color-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 24px);
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.highlight-color-btn {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  padding: 0;
+}
+
+.highlight-no-color {
+  background: repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 12px 12px;
+}

@@ -13,9 +13,8 @@ defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
     <div
       :if={@visible}
       class="dialog-overlay"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.3);"
     >
-      <div class="window" style="width: 380px; min-height: 250px;">
+      <div class="window dialog-window--md">
         <div class="title-bar">
           <div class="title-bar-text">CTCP Settings</div>
           <div class="title-bar-controls">
@@ -26,14 +25,11 @@ defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
             </button>
           </div>
         </div>
-        <div
-          class="window-body"
-          style="padding: 8px; display: flex; flex-direction: column; gap: 8px;"
-        >
+        <div class="window-body dialog-body--p8 u-flex-col u-gap-8">
           <fieldset>
             <legend>General</legend>
-            <div style="padding: 4px;">
-              <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+            <div class="u-p-4">
+              <label class="form-row u-cursor-pointer">
                 <input
                   type="checkbox"
                   id="ctcp-enabled"
@@ -43,7 +39,7 @@ defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
                   value="true"
                 /> Enable CTCP responses
               </label>
-              <p style="margin: 4px 0 0 20px; font-size: 11px; color: #999;">
+              <p class="form-hint ctcp-hint">
                 When disabled, other users will see a timeout when sending you CTCP requests.
               </p>
             </div>
@@ -54,7 +50,7 @@ defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
 
             <fieldset>
               <legend>VERSION Reply</legend>
-              <div style="padding: 4px;">
+              <div class="u-p-4">
                 <label for="ctcp-version">Version string:</label>
                 <input
                   type="text"
@@ -62,14 +58,14 @@ defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
                   name="version_string"
                   value={@ctcp_settings.version_string}
                   maxlength="200"
-                  style="width: 100%; box-sizing: border-box; margin-top: 2px;"
+                  class="u-w-full u-mt-2"
                 />
               </div>
             </fieldset>
 
-            <fieldset style="margin-top: 4px;">
+            <fieldset class="u-mt-4">
               <legend>FINGER Reply</legend>
-              <div style="padding: 4px;">
+              <div class="u-p-4">
                 <label for="ctcp-finger">Custom text (leave empty for auto-generated):</label>
                 <input
                   type="text"
@@ -77,13 +73,13 @@ defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
                   name="finger_text"
                   value={@ctcp_settings.finger_text || ""}
                   maxlength="200"
-                  style="width: 100%; box-sizing: border-box; margin-top: 2px;"
+                  class="u-w-full u-mt-2"
                   placeholder="e.g. Alice - Elixir developer from Brazil"
                 />
               </div>
             </fieldset>
 
-            <div style="margin-top: 8px; display: flex; justify-content: flex-end; gap: 4px;">
+            <div class="dialog-buttons u-mt-8">
               <button type="submit">Save</button>
               <button type="button" phx-click="close_ctcp_settings_dialog">Cancel</button>
             </div>

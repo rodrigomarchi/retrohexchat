@@ -3,7 +3,7 @@
        test test.unit test.integration test.liveview test.e2e test.all test.cover \
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
-       lint format format.check credo dialyzer lint.js lint.js.fix precommit compile \
+       lint format format.check credo dialyzer lint.js lint.js.fix lint.css precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
        deps.tree deps.update deps.unlock app.tree \
@@ -149,7 +149,7 @@ test.js.watch: ## Run JavaScript tests in watch mode
 # Static Analysis (Constitution Principle VI)
 # ---------------------------------------------------------------------
 
-lint: format.check credo dialyzer lint.js ## Run all static analysis checks
+lint: format.check credo dialyzer lint.js lint.css ## Run all static analysis checks
 
 format: ## Auto-format all source files
 	mix format
@@ -171,6 +171,9 @@ lint.js.fix: ## Auto-fix ESLint + Prettier issues
 
 dialyzer: ## Run Dialyzer type checker
 	mix dialyzer
+
+lint.css: ## Audit inline styles in LiveView (zero static styles allowed)
+	@mix lint.inline_styles
 
 precommit: ## Run pre-commit pipeline (compile + format + test)
 	mix precommit

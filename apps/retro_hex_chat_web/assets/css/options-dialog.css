@@ -1,0 +1,211 @@
+/* RetroHexChat — Options dialog: overlay, split nav/panel, colors, fonts, key bindings */
+
+.options-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.options-dialog {
+  width: 560px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.options-dialog-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.options-nav {
+  width: 150px;
+  min-width: 150px;
+  border-right: 2px groove;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.options-nav .tree-view {
+  font-size: 12px;
+}
+
+.options-nav li {
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+.options-nav li:hover {
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
+}
+
+.options-nav .tree-item-selected {
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
+}
+
+.options-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 12px;
+  min-height: 300px;
+}
+
+.options-panel fieldset {
+  margin-bottom: 8px;
+}
+
+.options-panel legend {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.options-panel label {
+  font-size: 12px;
+}
+
+.options-panel .field-row {
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.options-panel select {
+  font-size: 12px;
+}
+
+.options-panel input[type="number"] {
+  width: 60px;
+  font-size: 12px;
+}
+
+.options-quit-input {
+  width: 200px;
+}
+
+.options-button-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 6px 8px;
+  border-top: 1px solid var(--color-border);
+}
+
+.options-button-bar button {
+  min-width: 75px;
+}
+
+/* ── Options: Colors ── */
+
+.color-slot-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  padding: 2px 0;
+}
+
+.color-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.color-slot-label {
+  font-size: 12px;
+  min-width: 100px;
+}
+
+.color-picker-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
+
+.color-picker-cell {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+}
+
+.color-picker-cell:hover {
+  border-color: var(--color-white);
+  outline: 1px solid var(--color-black);
+}
+
+.nick-palette-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px 0;
+}
+
+.nick-palette-swatch {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+}
+
+.nick-palette-swatch:hover {
+  border-color: var(--color-white);
+  outline: 1px solid var(--color-black);
+}
+
+/* ── Options: Fonts ── */
+
+.font-preview {
+  padding: 8px;
+  background: var(--color-white);
+  color: var(--color-black);
+  border: 1px solid var(--color-border);
+  min-height: 40px;
+  box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
+}
+
+/* ── Options: Key Bindings ── */
+
+.keybindings-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
+}
+
+.keybinding-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 6px;
+  font-size: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.keybinding-row:last-child {
+  border-bottom: none;
+}
+
+.keybinding-action {
+  color: var(--color-black);
+}
+
+.keybinding-combo {
+  color: var(--color-link);
+  font-weight: bold;
+  font-family: Fixedsys, "Courier New", monospace;
+}
+
+.keybindings-actions {
+  margin-top: 8px;
+}

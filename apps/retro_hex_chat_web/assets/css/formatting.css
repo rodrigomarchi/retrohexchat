@@ -8,8 +8,8 @@
   gap: 1px;
   padding: 1px 4px;
   flex-shrink: 0;
-  border-top: 1px solid #dfdfdf;
-  border-bottom: 1px solid #808080;
+  border-top: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .format-btn {
@@ -23,8 +23,8 @@
   justify-content: center;
   font-size: 11px;
   cursor: pointer;
-  border: 1px outset #dfdfdf;
-  background-color: #d4d0c8;
+  border: 1px outset var(--color-gray-200);
+  background-color: var(--color-gray-300);
   color: #222;
   user-select: none;
 }
@@ -45,7 +45,7 @@
 .format-separator {
   width: 1px;
   height: 16px;
-  background: #808080;
+  background: var(--color-border);
   margin: 0 2px;
 }
 
@@ -66,8 +66,8 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 2px;
   padding: 4px;
-  background: silver;
-  border: 2px outset #dfdfdf;
+  background: var(--color-surface);
+  border: 2px outset var(--color-gray-200);
   z-index: 100;
 }
 
@@ -75,12 +75,12 @@
   width: 16px;
   height: 16px;
   padding: 0;
-  border: 1px solid #808080;
+  border: 1px solid var(--color-border);
   cursor: pointer;
 }
 
 .color-swatch:hover {
-  border: 2px solid #000000;
+  border: 2px solid var(--color-black);
 }
 
 /* ── IRC format code styles ──────────────────────────────── */

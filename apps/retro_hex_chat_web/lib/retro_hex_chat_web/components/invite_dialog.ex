@@ -31,12 +31,12 @@ defmodule RetroHexChatWeb.Components.InviteDialog do
               </button>
             </div>
           </div>
-          <div class="window-body" style="padding: 16px;">
+          <div class="window-body dialog-body--p16">
             <p>
               <strong>{invite.inviter}</strong>
               has invited you to join <strong>{invite.channel}</strong>
             </p>
-            <div style="display: flex; justify-content: center; gap: 8px; margin-top: 16px;">
+            <div class="dialog-buttons dialog-buttons--center dialog-buttons--gap-8 u-mt-16">
               <button phx-click="invite_accept" phx-value-channel={invite.channel}>
                 Join
               </button>

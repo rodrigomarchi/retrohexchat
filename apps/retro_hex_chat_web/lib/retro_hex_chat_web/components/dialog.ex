@@ -17,30 +17,27 @@ defmodule RetroHexChatWeb.Components.Dialog do
     ~H"""
     <div
       :if={@visible}
-      class="dialog-overlay"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.5);"
+      class="dialog-overlay dialog-overlay--dark"
     >
-      <div class="window" style="min-width: 300px; max-width: 500px;">
+      <div class="window dialog-window--generic">
         <div class="title-bar">
           <div class="title-bar-text">{@title}</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click={@on_close}></button>
           </div>
         </div>
-        <div class="window-body" style="padding: 12px;">
+        <div class="window-body dialog-body">
           {render_slot(@inner_block)}
           <div
             :if={@mode == "confirm"}
-            class="dialog-buttons"
-            style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px;"
+            class="dialog-buttons dialog-buttons--gap-8 u-mt-12"
           >
             <button type="button" phx-click={@on_confirm}>OK</button>
             <button type="button" phx-click={@on_close}>Cancel</button>
           </div>
           <div
             :if={@mode == "info"}
-            class="dialog-buttons"
-            style="display: flex; justify-content: flex-end; margin-top: 12px;"
+            class="dialog-buttons u-mt-12"
           >
             <button type="button" phx-click={@on_close}>OK</button>
           </div>

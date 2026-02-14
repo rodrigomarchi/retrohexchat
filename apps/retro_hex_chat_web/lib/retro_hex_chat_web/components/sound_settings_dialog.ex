@@ -23,9 +23,8 @@ defmodule RetroHexChatWeb.Components.SoundSettingsDialog do
       :if={@visible && @sound_settings_draft}
       class="dialog-overlay"
       data-testid="sound-settings-dialog"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.3);"
     >
-      <div class="window" style="width: 420px; min-height: 350px;">
+      <div class="window dialog-window--md">
         <div class="title-bar">
           <div class="title-bar-text">Sounds</div>
           <div class="title-bar-controls">
@@ -36,31 +35,28 @@ defmodule RetroHexChatWeb.Components.SoundSettingsDialog do
             </button>
           </div>
         </div>
-        <div
-          class="window-body"
-          style="padding: 8px; display: flex; flex-direction: column; gap: 8px;"
-        >
+        <div class="window-body dialog-body--p8 u-flex-col u-gap-8">
           <fieldset>
             <legend>Event Sounds</legend>
-            <div style="padding: 4px;">
-              <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+            <div class="u-p-4">
+              <table class="table-standard">
                 <thead>
                   <tr>
-                    <th style="text-align: left; padding: 2px 4px;">Event</th>
-                    <th style="text-align: left; padding: 2px 4px;">Sound</th>
-                    <th style="text-align: center; padding: 2px 4px;">Flash</th>
-                    <th style="text-align: center; padding: 2px 4px;"></th>
+                    <th>Event</th>
+                    <th>Sound</th>
+                    <th class="u-text-center">Flash</th>
+                    <th class="u-text-center"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr :for={{event, label} <- @event_labels}>
-                    <td style="padding: 2px 4px; white-space: nowrap;">{label}</td>
-                    <td style="padding: 2px 4px;">
+                    <td class="table-cell--nowrap">{label}</td>
+                    <td>
                       <select
                         data-testid={"sound-select-#{event}"}
                         phx-change="sound_settings_change"
                         name={"event_#{event}"}
-                        style="width: 100%; font-size: 11px;"
+                        class="u-w-full u-text-sm"
                       >
                         <option
                           :for={{name, sound_label} <- @available_sounds}
@@ -71,7 +67,7 @@ defmodule RetroHexChatWeb.Components.SoundSettingsDialog do
                         </option>
                       </select>
                     </td>
-                    <td style="padding: 2px 4px; text-align: center;">
+                    <td class="u-text-center">
                       <input
                         type="checkbox"
                         data-testid={"flash-toggle-#{event}"}
@@ -80,13 +76,13 @@ defmodule RetroHexChatWeb.Components.SoundSettingsDialog do
                         phx-value-event={event}
                       />
                     </td>
-                    <td style="padding: 2px 4px; text-align: center;">
+                    <td class="u-text-center">
                       <button
                         type="button"
                         data-testid={"sound-preview-#{event}"}
                         phx-click="sound_preview"
                         phx-value-event={event}
-                        style="font-size: 10px; padding: 1px 4px;"
+                        class="btn-xs"
                       >
                         &#9654;
                       </button>
@@ -97,7 +93,7 @@ defmodule RetroHexChatWeb.Components.SoundSettingsDialog do
             </div>
           </fieldset>
 
-          <div style="margin-top: 8px; display: flex; justify-content: flex-end; gap: 4px;">
+          <div class="dialog-buttons u-mt-8">
             <button type="button" phx-click="sound_settings_ok">OK</button>
             <button type="button" phx-click="close_sound_settings_dialog">Cancel</button>
             <button type="button" phx-click="sound_settings_apply">Apply</button>

@@ -1,0 +1,69 @@
+/* RetroHexChat — Syntax tooltip: command help popup, params, suboptions, examples */
+
+.syntax-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background: var(--surface, #c0c0c0);
+  border: 2px solid;
+  border-color: var(--color-gray-500) var(--color-white) var(--color-white) var(--color-gray-500);
+  padding: 4px 6px;
+  font-size: 12px;
+  z-index: 5;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.syntax-tooltip-header {
+  font-family: var(--input-font-family, Fixedsys, "Courier New", monospace);
+  margin-bottom: 2px;
+}
+.syntax-tooltip-command {
+  font-weight: bold;
+  color: var(--color-selection-bg);
+}
+.syntax-param {
+  color: var(--color-muted);
+  margin-left: 4px;
+}
+.syntax-param-active {
+  color: var(--color-black);
+  font-weight: bold;
+}
+.syntax-tooltip-description {
+  color: var(--color-gray-700);
+  font-size: 11px;
+  margin-top: 2px;
+}
+.syntax-suboptions {
+  margin-top: 3px;
+  padding-top: 3px;
+  border-top: 1px solid var(--color-border);
+}
+.syntax-suboption {
+  font-size: 11px;
+  color: var(--color-gray-700);
+  line-height: 1.4;
+}
+.syntax-suboption-flag {
+  font-weight: bold;
+  color: var(--color-selection-bg);
+}
+.syntax-suboption-param {
+  color: var(--color-muted);
+  font-style: italic;
+}
+.syntax-context {
+  margin-top: 3px;
+  font-size: 11px;
+  color: #006600;
+  font-style: italic;
+}
+.syntax-examples {
+  margin-top: 3px;
+  font-size: 10px;
+  color: var(--color-muted);
+}
+.syntax-example {
+  margin-right: 8px;
+}

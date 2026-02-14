@@ -14,9 +14,8 @@ defmodule RetroHexChatWeb.Components.FloodProtectionDialog do
       :if={@visible}
       class="dialog-overlay"
       data-testid="flood-protection-dialog"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.3);"
     >
-      <div class="window" style="width: 400px; min-height: 300px;">
+      <div class="window dialog-window--md">
         <div class="title-bar">
           <div class="title-bar-text">Flood Protection</div>
           <div class="title-bar-controls">
@@ -27,16 +26,13 @@ defmodule RetroHexChatWeb.Components.FloodProtectionDialog do
             </button>
           </div>
         </div>
-        <div
-          class="window-body"
-          style="padding: 8px; display: flex; flex-direction: column; gap: 8px;"
-        >
+        <div class="window-body dialog-body--p8 u-flex-col u-gap-8">
           <form id="flood-protection-form" phx-submit="flood_save_settings">
             <fieldset>
               <legend>Message Flood</legend>
-              <div style="padding: 4px; display: flex; flex-direction: column; gap: 4px;">
-                <div style="display: flex; align-items: center; gap: 4px;">
-                  <label for="fp-threshold" style="min-width: 120px;">Threshold:</label>
+              <div class="u-p-4 u-flex-col u-gap-4">
+                <div class="form-row">
+                  <label for="fp-threshold" class="u-min-w-120">Threshold:</label>
                   <input
                     type="number"
                     id="fp-threshold"
@@ -44,12 +40,12 @@ defmodule RetroHexChatWeb.Components.FloodProtectionDialog do
                     value={@flood_protection.flood_threshold}
                     min="1"
                     max="100"
-                    style="width: 60px;"
+                    class="u-w-60"
                   />
-                  <span style="font-size: 11px; color: #999;">messages</span>
+                  <span class="u-text-sm u-text-disabled">messages</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 4px;">
-                  <label for="fp-window" style="min-width: 120px;">Time window:</label>
+                <div class="form-row">
+                  <label for="fp-window" class="u-min-w-120">Time window:</label>
                   <input
                     type="number"
                     id="fp-window"
@@ -57,18 +53,18 @@ defmodule RetroHexChatWeb.Components.FloodProtectionDialog do
                     value={@flood_protection.flood_window_seconds}
                     min="1"
                     max="300"
-                    style="width: 60px;"
+                    class="u-w-60"
                   />
-                  <span style="font-size: 11px; color: #999;">seconds</span>
+                  <span class="u-text-sm u-text-disabled">seconds</span>
                 </div>
               </div>
             </fieldset>
 
-            <fieldset style="margin-top: 4px;">
+            <fieldset class="u-mt-4">
               <legend>Anti-Spam (Duplicate Detection)</legend>
-              <div style="padding: 4px; display: flex; flex-direction: column; gap: 4px;">
-                <div style="display: flex; align-items: center; gap: 4px;">
-                  <label for="fp-spam-threshold" style="min-width: 120px;">Duplicate limit:</label>
+              <div class="u-p-4 u-flex-col u-gap-4">
+                <div class="form-row">
+                  <label for="fp-spam-threshold" class="u-min-w-120">Duplicate limit:</label>
                   <input
                     type="number"
                     id="fp-spam-threshold"
@@ -76,12 +72,12 @@ defmodule RetroHexChatWeb.Components.FloodProtectionDialog do
                     value={@flood_protection.spam_threshold}
                     min="1"
                     max="50"
-                    style="width: 60px;"
+                    class="u-w-60"
                   />
-                  <span style="font-size: 11px; color: #999;">identical msgs</span>
+                  <span class="u-text-sm u-text-disabled">identical msgs</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 4px;">
-                  <label for="fp-spam-window" style="min-width: 120px;">Time window:</label>
+                <div class="form-row">
+                  <label for="fp-spam-window" class="u-min-w-120">Time window:</label>
                   <input
                     type="number"
                     id="fp-spam-window"
@@ -89,17 +85,17 @@ defmodule RetroHexChatWeb.Components.FloodProtectionDialog do
                     value={@flood_protection.spam_window_seconds}
                     min="1"
                     max="120"
-                    style="width: 60px;"
+                    class="u-w-60"
                   />
-                  <span style="font-size: 11px; color: #999;">seconds</span>
+                  <span class="u-text-sm u-text-disabled">seconds</span>
                 </div>
               </div>
             </fieldset>
 
-            <fieldset style="margin-top: 4px;">
+            <fieldset class="u-mt-4">
               <legend>Auto-Ignore</legend>
-              <div style="padding: 4px; display: flex; align-items: center; gap: 4px;">
-                <label for="fp-ignore-duration" style="min-width: 120px;">Duration:</label>
+              <div class="u-p-4 form-row">
+                <label for="fp-ignore-duration" class="u-min-w-120">Duration:</label>
                 <input
                   type="number"
                   id="fp-ignore-duration"
@@ -107,17 +103,17 @@ defmodule RetroHexChatWeb.Components.FloodProtectionDialog do
                   value={@flood_protection.auto_ignore_duration_seconds}
                   min="1"
                   max="86400"
-                  style="width: 80px;"
+                  class="u-w-80"
                 />
-                <span style="font-size: 11px; color: #999;">seconds</span>
+                <span class="u-text-sm u-text-disabled">seconds</span>
               </div>
             </fieldset>
 
-            <fieldset style="margin-top: 4px;">
+            <fieldset class="u-mt-4">
               <legend>CTCP Reply Limit</legend>
-              <div style="padding: 4px; display: flex; flex-direction: column; gap: 4px;">
-                <div style="display: flex; align-items: center; gap: 4px;">
-                  <label for="fp-ctcp-limit" style="min-width: 120px;">Reply limit:</label>
+              <div class="u-p-4 u-flex-col u-gap-4">
+                <div class="form-row">
+                  <label for="fp-ctcp-limit" class="u-min-w-120">Reply limit:</label>
                   <input
                     type="number"
                     id="fp-ctcp-limit"
@@ -125,12 +121,12 @@ defmodule RetroHexChatWeb.Components.FloodProtectionDialog do
                     value={@flood_protection.ctcp_reply_limit}
                     min="1"
                     max="20"
-                    style="width: 60px;"
+                    class="u-w-60"
                   />
-                  <span style="font-size: 11px; color: #999;">replies</span>
+                  <span class="u-text-sm u-text-disabled">replies</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 4px;">
-                  <label for="fp-ctcp-window" style="min-width: 120px;">Time window:</label>
+                <div class="form-row">
+                  <label for="fp-ctcp-window" class="u-min-w-120">Time window:</label>
                   <input
                     type="number"
                     id="fp-ctcp-window"
@@ -138,14 +134,14 @@ defmodule RetroHexChatWeb.Components.FloodProtectionDialog do
                     value={@flood_protection.ctcp_reply_window_seconds}
                     min="1"
                     max="120"
-                    style="width: 60px;"
+                    class="u-w-60"
                   />
-                  <span style="font-size: 11px; color: #999;">seconds</span>
+                  <span class="u-text-sm u-text-disabled">seconds</span>
                 </div>
               </div>
             </fieldset>
 
-            <div style="margin-top: 8px; display: flex; justify-content: flex-end; gap: 4px;">
+            <div class="dialog-buttons u-mt-8">
               <button type="submit">Save</button>
               <button type="button" phx-click="flood_reset_defaults">Reset Defaults</button>
               <button type="button" phx-click="close_flood_protection_dialog">Cancel</button>

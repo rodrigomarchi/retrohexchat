@@ -24,11 +24,10 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialog do
       phx-value-dialog="cheatsheet"
     >
       <div
-        class="window cheatsheet-dialog"
+        class="window cheatsheet-dialog dialog-window--cheatsheet"
         data-testid="cheatsheet-dialog"
         phx-click-away="close_dialog"
         phx-value-dialog="cheatsheet"
-        style="width: 460px;"
       >
         <div class="title-bar">
           <div class="title-bar-text">Keyboard Shortcuts</div>
@@ -41,26 +40,26 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialog do
             </button>
           </div>
         </div>
-        <div class="window-body" style="padding: 8px; max-height: 400px; overflow-y: auto;">
-          <div :for={{category, entries} <- @categories} style="margin-bottom: 12px;">
+        <div class="window-body dialog-body--p8 u-overflow-y-auto cheatsheet-body">
+          <div :for={{category, entries} <- @categories} class="u-mb-12">
             <h4
-              style="margin: 0 0 4px 0; font-size: 12px; border-bottom: 1px solid #808080; padding-bottom: 2px;"
+              class="cheatsheet-category-heading"
               data-testid={"cheatsheet-category-#{category}"}
             >
               {KeyBindings.category_label(category)}
             </h4>
-            <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+            <table class="cheatsheet-table">
               <tbody>
-                <tr :for={entry <- entries} style="border-bottom: 1px solid #dfdfdf;">
-                  <td style="padding: 2px 4px;">{entry.label}</td>
-                  <td style="padding: 2px 4px; text-align: right; color: #808080;">
+                <tr :for={entry <- entries}>
+                  <td>{entry.label}</td>
+                  <td class="u-text-muted u-text-right">
                     {format_binding(entry.binding)}
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p style="font-size: 10px; color: #808080; margin: 8px 0 0 0;">
+          <p class="u-text-xs u-text-muted u-mt-8">
             Customize shortcuts in Options &gt; Key Bindings
           </p>
         </div>

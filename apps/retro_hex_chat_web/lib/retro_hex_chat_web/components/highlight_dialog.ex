@@ -30,9 +30,8 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
       :if={@visible}
       class="dialog-overlay"
       data-testid="highlight-dialog"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.3);"
     >
-      <div class="window" style="width: 400px; min-height: 300px;">
+      <div class="window dialog-window--md highlight-dialog-window">
         <div class="title-bar">
           <div class="title-bar-text">Highlight Words</div>
           <div class="title-bar-controls">
@@ -44,30 +43,28 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
             </button>
           </div>
         </div>
-        <div class="window-body" style="padding: 8px;">
+        <div class="window-body dialog-body--p8">
           <fieldset>
             <legend>Own Nickname (always highlighted)</legend>
             <div
-              class="highlight-entry highlight-entry--own"
+              class="highlight-entry highlight-entry--own form-row--gap-8 u-p-4"
               data-testid="highlight-own-nick"
-              style="padding: 4px; display: flex; align-items: center; gap: 8px;"
             >
               <span
                 class="highlight-color-swatch"
-                style={"background-color: #{default_color()}; width: 16px; height: 16px; display: inline-block; border: 1px solid #808080;"}
+                style={"background-color: #{default_color()};"}
               >
               </span>
               <span>{@own_nick}</span>
-              <span style="color: #808080; margin-left: auto;">(default)</span>
+              <span class="u-text-muted u-ml-auto">(default)</span>
             </div>
           </fieldset>
 
-          <fieldset style="margin-top: 8px;">
+          <fieldset class="u-mt-8">
             <legend>Custom Words</legend>
             <div
               class="highlight-word-list"
               data-testid="highlight-word-list"
-              style="min-height: 100px; max-height: 200px; overflow-y: auto; border: 1px inset; background: white; padding: 2px;"
             >
               <div
                 :for={entry <- @highlight_entries}
@@ -75,7 +72,6 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
                 data-testid={"highlight-word-#{entry.word}"}
                 phx-click="highlight_select"
                 phx-value-word={entry.word}
-                style={"padding: 2px 4px; cursor: pointer; display: flex; align-items: center; gap: 8px;" <> if(entry.word == @highlight_selected, do: " background: #000080; color: white;", else: "")}
               >
                 <span
                   class="highlight-color-swatch"
@@ -86,12 +82,12 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
               </div>
               <div
                 :if={@highlight_entries == []}
-                style="color: #808080; padding: 8px; text-align: center;"
+                class="table-empty"
               >
                 No custom highlight words configured.
               </div>
             </div>
-            <div style="margin-top: 8px; display: flex; gap: 4px;">
+            <div class="dialog-buttons dialog-buttons--start u-mt-8">
               <button
                 type="button"
                 data-testid="highlight-add-btn"
@@ -123,15 +119,14 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
 
       <%= if @show_highlight_add_dialog do %>
         <div
-          class="dialog-overlay"
+          class="dialog-overlay dialog-overlay--light dialog-overlay--above"
           data-testid="highlight-add-dialog"
-          style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 210; background: rgba(0,0,0,0.2);"
         >
-          <div class="window" style="width: 300px;">
+          <div class="window dialog-window--sm">
             <div class="title-bar">
               <div class="title-bar-text">Add Highlight Word</div>
             </div>
-            <div class="window-body" style="padding: 8px;">
+            <div class="window-body dialog-body--p8">
               <form phx-submit="highlight_add">
                 <div class="field-row-stacked">
                   <label for="highlight-word-input">Word:</label>
@@ -145,11 +140,11 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
                     autofocus
                   />
                 </div>
-                <div class="field-row-stacked" style="margin-top: 8px;">
+                <div class="field-row-stacked u-mt-8">
                   <label>Background Color (optional):</label>
                   {color_picker_grid(assigns)}
                 </div>
-                <div class="field-row" style="margin-top: 12px; justify-content: flex-end; gap: 4px;">
+                <div class="field-row dialog-buttons u-mt-12">
                   <button type="submit" data-testid="highlight-add-submit">Add</button>
                   <button
                     type="button"
@@ -167,22 +162,21 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
 
       <%= if @show_highlight_edit_dialog do %>
         <div
-          class="dialog-overlay"
+          class="dialog-overlay dialog-overlay--light dialog-overlay--above"
           data-testid="highlight-edit-dialog"
-          style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 210; background: rgba(0,0,0,0.2);"
         >
-          <div class="window" style="width: 300px;">
+          <div class="window dialog-window--sm">
             <div class="title-bar">
               <div class="title-bar-text">Edit Highlight: {@highlight_selected}</div>
             </div>
-            <div class="window-body" style="padding: 8px;">
+            <div class="window-body dialog-body--p8">
               <form phx-submit="highlight_edit">
                 <input type="hidden" name="word" value={@highlight_selected} />
                 <div class="field-row-stacked">
                   <label>Background Color:</label>
                   {color_picker_grid(assigns)}
                 </div>
-                <div class="field-row" style="margin-top: 12px; justify-content: flex-end; gap: 4px;">
+                <div class="field-row dialog-buttons u-mt-12">
                   <button type="submit" data-testid="highlight-edit-submit">OK</button>
                   <button
                     type="button"
@@ -211,14 +205,14 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
 
     ~H"""
     <div
-      style="display: grid; grid-template-columns: repeat(8, 24px); gap: 2px; margin-top: 4px;"
+      class="highlight-color-grid"
       data-testid="highlight-color-grid"
     >
       <button
         :for={{idx, hex} <- @colors}
         type="button"
-        class="color-swatch-btn"
-        style={"width: 24px; height: 24px; background-color: #{hex}; border: 2px solid #808080; cursor: pointer; padding: 0;"}
+        class="highlight-color-btn"
+        style={"background-color: #{hex};"}
         phx-click="highlight_color_pick"
         phx-value-color={to_string(idx)}
         data-testid={"highlight-color-#{idx}"}
@@ -226,8 +220,7 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
       </button>
       <button
         type="button"
-        class="color-swatch-btn"
-        style="width: 24px; height: 24px; background: repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 12px 12px; border: 2px solid #808080; cursor: pointer; padding: 0;"
+        class="highlight-color-btn highlight-no-color"
         phx-click="highlight_color_pick"
         phx-value-color=""
         data-testid="highlight-color-none"
@@ -242,12 +235,12 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
   defp default_color, do: "#3a3500"
 
   defp color_swatch_style(nil) do
-    "background-color: #{default_color()}; width: 16px; height: 16px; display: inline-block; border: 1px solid #808080;"
+    "background-color: #{default_color()};"
   end
 
   defp color_swatch_style(color_index) do
     hex = NickColors.hex_for_index(color_index) || default_color()
 
-    "background-color: #{hex}; width: 16px; height: 16px; display: inline-block; border: 1px solid #808080;"
+    "background-color: #{hex};"
   end
 end

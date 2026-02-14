@@ -1,0 +1,73 @@
+/* RetroHexChat — Nicklist: sunken panel, nick groups, role colors */
+
+.nicklist {
+  width: 140px;
+  min-width: 100px;
+  overflow-y: auto;
+  flex-shrink: 0;
+  box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
+}
+
+.nicklist-header {
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--color-muted);
+  background-color: var(--color-surface);
+}
+
+.nicklist-group-header {
+  padding: 3px 4px;
+  font-size: 10px;
+  color: var(--color-muted);
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 4px;
+  list-style: none;
+}
+
+.nicklist-group-header:first-child {
+  margin-top: 0;
+}
+
+.nicklist-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  font-size: var(--nicklist-font-size, 12px);
+  font-family: var(--nicklist-font-family, Fixedsys, "Courier New", monospace);
+}
+
+.nicklist-list li {
+  padding: 1px 4px;
+  cursor: pointer;
+}
+
+.nicklist-list li:hover:not(.nicklist-group-header) {
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
+}
+
+.nick-owner {
+  color: #990099;
+  font-weight: bold;
+}
+
+.nick-operator {
+  color: var(--color-error);
+  font-weight: bold;
+}
+
+.nick-halfop {
+  color: var(--color-success);
+  font-weight: bold;
+}
+
+.nick-voiced {
+  color: var(--color-link);
+}
+
+.nick-away {
+  opacity: 0.5;
+  font-style: italic;
+}

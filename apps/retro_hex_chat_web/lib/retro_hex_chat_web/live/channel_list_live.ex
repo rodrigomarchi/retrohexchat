@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.ChannelListLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="connect-dialog" style="min-width: 450px;">
+    <div class="connect-dialog dialog-window--450">
       <div class="window">
         <div class="title-bar">
           <div class="title-bar-text">Channel List</div>
@@ -56,8 +56,8 @@ defmodule RetroHexChatWeb.ChannelListLive do
             <button aria-label="Close" phx-click="close"></button>
           </div>
         </div>
-        <div class="window-body" style="padding: 12px;">
-          <div style="margin-bottom: 8px;">
+        <div class="window-body dialog-body">
+          <div class="u-mb-8">
             <input
               type="text"
               placeholder="Search channels..."
@@ -65,44 +65,44 @@ defmodule RetroHexChatWeb.ChannelListLive do
               phx-keyup="filter"
               phx-debounce="200"
               name="search"
-              style="width: 100%;"
+              class="u-w-full"
             />
           </div>
-          <div style="max-height: 300px; overflow-y: auto;">
-            <table style="width: 100%; font-size: 12px;">
+          <div class="channel-list-scroll">
+            <table class="table-standard">
               <thead>
                 <tr>
-                  <th style="text-align: left;">Channel</th>
-                  <th style="text-align: left;">Topic</th>
-                  <th style="text-align: right;">Users</th>
+                  <th>Channel</th>
+                  <th>Topic</th>
+                  <th class="u-text-right">Users</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 <tr :for={ch <- @filtered}>
                   <td>{ch.name}</td>
-                  <td style="color: var(--text-dim);">{ch.topic || ""}</td>
-                  <td style="text-align: right;">{ch.user_count}</td>
+                  <td class="u-text-muted">{ch.topic || ""}</td>
+                  <td class="u-text-right">{ch.user_count}</td>
                   <td>
                     <button
                       type="button"
                       phx-click="join"
                       phx-value-channel={ch.name}
-                      style="font-size: 11px;"
+                      class="btn-sm"
                     >
                       Join
                     </button>
                   </td>
                 </tr>
                 <tr :if={@filtered == []}>
-                  <td colspan="4" style="text-align: center; color: var(--text-dim);">
+                  <td colspan="4" class="table-empty">
                     No channels found
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class="button-row" style="margin-top: 12px;">
+          <div class="button-row u-mt-12">
             <button type="button" phx-click="close">Close</button>
           </div>
         </div>

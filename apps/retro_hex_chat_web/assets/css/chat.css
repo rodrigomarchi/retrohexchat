@@ -20,7 +20,7 @@
   font-family: var(--chat-font-family, Fixedsys, "Courier New", monospace);
   background-color: var(--chat-bg-color, white);
   color: var(--default-text-color, black);
-  box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
+  box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
 }
 
 /* Chat message types */
@@ -119,87 +119,18 @@
 /* ── Character Counter ─── */
 .char-counter {
   font-size: 10px;
-  color: #808080;
+  color: var(--color-muted);
   position: absolute;
   right: 8px;
   bottom: 2px;
   pointer-events: none;
 }
 .char-counter--warning {
-  color: #cc8800;
+  color: var(--color-warning-alt);
 }
 .char-counter--danger {
-  color: #cc0000;
+  color: var(--color-error);
   font-weight: bold;
-}
-
-/* ── Syntax Tooltip ────────────────────────────────────── */
-.syntax-tooltip {
-  position: absolute;
-  bottom: 100%;
-  left: 0;
-  right: 0;
-  background: var(--surface, #c0c0c0);
-  border: 2px solid;
-  border-color: #808080 #ffffff #ffffff #808080;
-  padding: 4px 6px;
-  font-size: 12px;
-  z-index: 5;
-  max-height: 200px;
-  overflow-y: auto;
-}
-.syntax-tooltip-header {
-  font-family: var(--input-font-family, Fixedsys, "Courier New", monospace);
-  margin-bottom: 2px;
-}
-.syntax-tooltip-command {
-  font-weight: bold;
-  color: #000080;
-}
-.syntax-param {
-  color: #808080;
-  margin-left: 4px;
-}
-.syntax-param-active {
-  color: #000000;
-  font-weight: bold;
-}
-.syntax-tooltip-description {
-  color: #404040;
-  font-size: 11px;
-  margin-top: 2px;
-}
-.syntax-suboptions {
-  margin-top: 3px;
-  padding-top: 3px;
-  border-top: 1px solid #808080;
-}
-.syntax-suboption {
-  font-size: 11px;
-  color: #404040;
-  line-height: 1.4;
-}
-.syntax-suboption-flag {
-  font-weight: bold;
-  color: #000080;
-}
-.syntax-suboption-param {
-  color: #808080;
-  font-style: italic;
-}
-.syntax-context {
-  margin-top: 3px;
-  font-size: 11px;
-  color: #006600;
-  font-style: italic;
-}
-.syntax-examples {
-  margin-top: 3px;
-  font-size: 10px;
-  color: #808080;
-}
-.syntax-example {
-  margin-right: 8px;
 }
 
 /* ── Chat links ────────────────────────────────────────── */
@@ -217,7 +148,7 @@
 .chat-link-preview {
   display: block;
   font-size: 11px;
-  color: #808080;
+  color: var(--color-muted);
   margin-left: 2px;
   font-style: italic;
 }
@@ -233,8 +164,8 @@
 .copy-context-menu {
   position: fixed;
   background: var(--chat-bg-color, #c0c0c0);
-  border: 2px outset #dfdfdf;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  border: 2px outset var(--color-gray-200);
+  box-shadow: 2px 2px 4px var(--color-overlay-bg);
   z-index: 10000;
   min-width: 100px;
   padding: 2px;
@@ -246,12 +177,12 @@
   font-family: "MS Sans Serif", Geneva, sans-serif;
 }
 .copy-menu-item:hover {
-  background: #000080;
-  color: white;
+  background: var(--color-selection-bg);
+  color: var(--color-selection-fg);
 }
 .copy-menu-item--disabled {
   padding: 4px 20px;
-  color: #808080;
+  color: var(--color-muted);
   cursor: default;
   font-size: 12px;
   font-family: "MS Sans Serif", Geneva, sans-serif;
@@ -267,7 +198,7 @@
   min-width: 300px;
 }
 .paste-flood-warning {
-  color: #cc0000;
+  color: var(--color-error);
   font-weight: bold;
 }
 
@@ -308,11 +239,11 @@
   font-size: 12px;
   font-family: "MS Sans Serif", Geneva, sans-serif;
   background: var(--surface, #c0c0c0);
-  border-top: 1px solid #808080;
+  border-top: 1px solid var(--color-border);
 }
 .history-search-label {
   white-space: nowrap;
-  color: #000000;
+  color: var(--color-black);
 }
 .history-search-input {
   flex: 1;
@@ -321,7 +252,7 @@
   font-family: var(--input-font-family, Fixedsys, "Courier New", monospace);
 }
 .history-no-match {
-  color: #cc0000;
+  color: var(--color-error);
   font-size: 11px;
   white-space: nowrap;
 }
@@ -330,7 +261,7 @@
 
 .typing-indicator {
   font-size: 11px;
-  color: #808080;
+  color: var(--color-muted);
   font-style: italic;
   padding: 2px 6px;
   height: 16px;

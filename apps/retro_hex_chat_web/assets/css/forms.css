@@ -1,0 +1,146 @@
+/* RetroHexChat — Form patterns extracted from dialog components */
+
+/* ── Form Row ── */
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.form-row--gap-8 {
+  gap: 8px;
+}
+
+/* ── Form Label ── */
+.form-label {
+  font-size: var(--text-sm);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.form-label--inline {
+  display: inline;
+  margin-bottom: 0;
+  min-width: 80px;
+}
+
+.form-label--w80 {
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.form-hint--indented {
+  padding-left: 88px;
+}
+
+.form-warning {
+  color: var(--color-warning);
+  font-size: var(--text-sm);
+  padding: 2px 4px;
+}
+
+/* ── Form Hint ── */
+.form-hint {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+
+/* ── Form Error ── */
+.form-error {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  margin-top: 2px;
+}
+
+/* ── Toolbar Row (action buttons above/below content) ── */
+.toolbar-row {
+  display: flex;
+  gap: 4px;
+}
+
+.toolbar-row--end {
+  justify-content: flex-end;
+}
+
+.toolbar-row--between {
+  justify-content: space-between;
+}
+
+/* ── Button standard width ── */
+.btn-w-60 { min-width: 60px; }
+.btn-w-80 { min-width: 80px; }
+
+/* ── Edit Panel (inset bordered section) ── */
+.edit-panel {
+  border: 1px inset;
+  padding: 8px;
+}
+
+/* ── List Container (scrollable inset list) ── */
+.list-container {
+  overflow-y: auto;
+  border: 1px inset;
+}
+
+/* ── Vertical Separator (toolbar divider) ── */
+.vertical-separator {
+  width: 1px;
+  height: 16px;
+  background: var(--color-border);
+  margin: 0 4px;
+}
+
+/* ── Button sizes ── */
+.btn-sm {
+  font-size: var(--text-sm);
+  padding: 1px 8px;
+}
+
+.btn-xs {
+  font-size: var(--text-xs);
+  padding: 1px 4px;
+}
+
+/* ── Input Readonly ── */
+.input-readonly {
+  width: 100%;
+  background: var(--color-surface);
+}
+
+/* ── Textarea Resizable ── */
+.textarea-resizable {
+  width: 100%;
+  resize: vertical;
+}
+
+/* ── Color Picker Grid (Address Book) ── */
+.ab-color-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+}
+
+.ab-color-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ab-color-swatch {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* ── CRUD List (shared max-height for alias/auto-respond/etc. lists) ── */
+.crud-list { max-height: 200px; }
+
+/* ── List Panel Tab (flex column with full height) ── */
+.list-tab-panel {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}

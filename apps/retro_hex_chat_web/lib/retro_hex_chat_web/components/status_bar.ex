@@ -21,10 +21,9 @@ defmodule RetroHexChatWeb.Components.StatusBar do
         {if @connected, do: "Connected", else: "Disconnected"}
       </p>
       <p
-        class="status-bar-field mute-toggle"
+        class="status-bar-field mute-toggle status-bar-clickable"
         data-testid="mute-toggle"
         phx-click="toggle_mute"
-        style="cursor: pointer; user-select: none;"
       >
         {if @muted, do: "[MUTE]", else: "[SND]"}
       </p>

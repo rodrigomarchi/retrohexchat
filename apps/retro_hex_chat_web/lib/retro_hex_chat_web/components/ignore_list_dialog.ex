@@ -19,9 +19,8 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
       :if={@visible}
       class="dialog-overlay"
       data-testid="ignore-list-dialog"
-      style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 200; background: rgba(0,0,0,0.3);"
     >
-      <div class="window" style="width: 420px; min-height: 280px;">
+      <div class="window dialog-window--md ignore-dialog-window">
         <div class="title-bar">
           <div class="title-bar-text">Ignore List</div>
           <div class="title-bar-controls">
@@ -33,20 +32,20 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
             </button>
           </div>
         </div>
-        <div class="window-body" style="padding: 8px; display: flex; flex-direction: column;">
-          <div class="sunken-panel" style="flex: 1; overflow-y: auto; min-height: 150px;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+        <div class="window-body dialog-body--p8 u-flex-col">
+          <div class="sunken-panel table-container ignore-list-panel">
+            <table class="table-standard">
               <thead>
-                <tr style="background: #c0c0c0; position: sticky; top: 0;">
-                  <th style="text-align: left; padding: 2px 4px;">Nickname</th>
-                  <th style="text-align: left; padding: 2px 4px;">Type</th>
-                  <th style="text-align: left; padding: 2px 4px;">Expires</th>
+                <tr class="u-sticky-top">
+                  <th>Nickname</th>
+                  <th>Type</th>
+                  <th>Expires</th>
                 </tr>
               </thead>
               <tbody>
                 <%= if @ignore_entries == [] do %>
                   <tr>
-                    <td colspan="3" style="text-align: center; padding: 16px; color: #808080;">
+                    <td colspan="3" class="table-empty u-p-16">
                       No users ignored
                     </td>
                   </tr>
@@ -56,31 +55,34 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
                     phx-click="ignore_select"
                     phx-value-nickname={entry.nickname}
                     data-testid={"ignore-entry-#{entry.nickname}"}
-                    style={row_style(entry.nickname, @ignore_selected)}
+                    class={[
+                      "table-row--selectable",
+                      entry.nickname == @ignore_selected && "table-row--selected"
+                    ]}
                   >
-                    <td style="padding: 2px 4px;">{entry.nickname}</td>
-                    <td style="padding: 2px 4px;">{Atom.to_string(entry.ignore_type)}</td>
-                    <td style="padding: 2px 4px;">{format_expires(entry)}</td>
+                    <td>{entry.nickname}</td>
+                    <td>{Atom.to_string(entry.ignore_type)}</td>
+                    <td>{format_expires(entry)}</td>
                   </tr>
                 <% end %>
               </tbody>
             </table>
           </div>
-          <div style="margin-top: 8px; display: flex; gap: 4px;">
+          <div class="dialog-buttons dialog-buttons--start u-mt-8">
             <button
               type="button"
+              class="btn-sm"
               data-testid="ignore-add-btn"
               phx-click="ignore_dialog_add"
-              style="font-size: 11px; padding: 1px 8px;"
             >
               Add...
             </button>
             <button
               type="button"
+              class="btn-sm"
               data-testid="ignore-remove-btn"
               phx-click="ignore_dialog_remove"
               disabled={is_nil(@ignore_selected)}
-              style="font-size: 11px; padding: 1px 8px;"
             >
               Remove
             </button>
@@ -91,17 +93,16 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
 
     <%= if @show_ignore_add_dialog do %>
       <div
-        class="dialog-overlay"
+        class="dialog-overlay dialog-overlay--light dialog-overlay--above"
         data-testid="ignore-add-dialog"
-        style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 210; background: rgba(0,0,0,0.2);"
       >
-        <div class="window" style="width: 300px;">
+        <div class="window dialog-window--sm">
           <div class="title-bar">
             <div class="title-bar-text">Add Ignore</div>
           </div>
-          <div class="window-body" style="padding: 8px;">
+          <div class="window-body dialog-body--p8">
             <form phx-submit="ignore_dialog_add_confirm">
-              <div class="field-row-stacked" style="margin-bottom: 8px;">
+              <div class="field-row-stacked u-mb-8">
                 <label for="ignore-nick-input">Nickname:</label>
                 <input
                   type="text"
@@ -113,7 +114,7 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
                   autofocus
                 />
               </div>
-              <div class="field-row-stacked" style="margin-bottom: 8px;">
+              <div class="field-row-stacked u-mb-8">
                 <label for="ignore-type-select">Type:</label>
                 <select id="ignore-type-select" name="type" data-testid="ignore-type-select">
                   <option value="all" selected>all</option>
@@ -123,7 +124,7 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
                   <option value="actions">actions</option>
                 </select>
               </div>
-              <div class="field-row-stacked" style="margin-bottom: 8px;">
+              <div class="field-row-stacked u-mb-8">
                 <label for="ignore-duration-input">Duration (optional, e.g. 5m, 2h, 1d):</label>
                 <input
                   type="text"
@@ -133,7 +134,7 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
                   placeholder="Leave empty for permanent"
                 />
               </div>
-              <div style="display: flex; gap: 4px; justify-content: flex-end;">
+              <div class="dialog-buttons">
                 <button type="submit" data-testid="ignore-add-confirm">OK</button>
                 <button
                   type="button"
@@ -149,14 +150,6 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
       </div>
     <% end %>
     """
-  end
-
-  defp row_style(nickname, selected) when nickname == selected do
-    "background: #000080; color: #ffffff; cursor: pointer;"
-  end
-
-  defp row_style(_nickname, _selected) do
-    "cursor: pointer;"
   end
 
   defp format_expires(entry) do

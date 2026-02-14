@@ -12,10 +12,10 @@ defmodule RetroHexChatWeb.Components.HistorySearch do
   @spec history_search(map()) :: Phoenix.LiveView.Rendered.t()
   def history_search(assigns) do
     ~H"""
-    <div id="hist-search-panel" class="hist-search-panel" style="display: none;">
+    <div id="hist-search-panel" class="hist-search-panel u-hidden">
       <label class="history-search-label">Pesquisar histórico:</label>
       <input type="text" class="history-search-input" autocomplete="off" />
-      <span class="history-no-match" style="display: none;">Sem resultados</span>
+      <span class="history-no-match u-hidden">Sem resultados</span>
     </div>
     """
   end

@@ -20,25 +20,24 @@ defmodule RetroHexChatWeb.Components.SearchBar do
     ~H"""
     <div
       :if={@visible}
-      class="search-bar window"
-      style="position: absolute; top: 4px; right: 4px; z-index: 100; min-width: 320px;"
+      class="search-bar window search-bar-floating"
     >
-      <div class="title-bar" style="padding: 2px 4px;">
-        <div class="title-bar-text" style="font-size: 11px;">Find</div>
+      <div class="title-bar u-py-2 u-px-4">
+        <div class="title-bar-text u-text-sm">Find</div>
         <div class="title-bar-controls">
           <button aria-label="Close" phx-click="close_search"></button>
         </div>
       </div>
-      <div class="window-body" style="padding: 4px;">
-        <div style="display: flex; gap: 4px; align-items: center;">
-          <form phx-change="search_input" phx-submit="search_next" style="display: contents;">
+      <div class="window-body u-p-4">
+        <div class="u-flex u-gap-4 u-items-center">
+          <form phx-change="search_input" phx-submit="search_next" class="u-contents">
             <input
               type="text"
               name="query"
               value={@query}
               placeholder="Find..."
               autocomplete="off"
-              style="flex: 1; font-size: 11px;"
+              class="u-flex-1 u-text-sm"
               phx-debounce="300"
               phx-keydown="search_navigate"
             />
@@ -46,7 +45,7 @@ defmodule RetroHexChatWeb.Components.SearchBar do
           <span :if={@error} class="search-error">{@error}</span>
           <span
             :if={!@error}
-            style="font-size: 11px; white-space: nowrap; min-width: 50px; text-align: center;"
+            class="u-text-sm u-text-nowrap u-text-center u-min-w-50"
           >
             {search_counter(@current_index, @result_count)}
           </span>
@@ -54,7 +53,7 @@ defmodule RetroHexChatWeb.Components.SearchBar do
             type="button"
             phx-click="search_prev"
             disabled={@result_count == 0}
-            style="font-size: 11px; padding: 1px 6px;"
+            class="btn-sm"
           >
             Prev
           </button>
@@ -62,16 +61,13 @@ defmodule RetroHexChatWeb.Components.SearchBar do
             type="button"
             phx-click="search_next"
             disabled={@result_count == 0}
-            style="font-size: 11px; padding: 1px 6px;"
+            class="btn-sm"
           >
             Next
           </button>
         </div>
-        <div
-          class="search-filters"
-          style="display: flex; gap: 8px; margin-top: 4px; font-size: 11px;"
-        >
-          <label style="display: flex; align-items: center; gap: 2px;">
+        <div class="search-filters u-mt-4">
+          <label>
             <input
               type="checkbox"
               checked={@case_sensitive}
@@ -79,7 +75,7 @@ defmodule RetroHexChatWeb.Components.SearchBar do
               phx-value-filter="case_sensitive"
             /> Case
           </label>
-          <label style="display: flex; align-items: center; gap: 2px;">
+          <label>
             <input
               type="checkbox"
               checked={@regex}
@@ -87,7 +83,7 @@ defmodule RetroHexChatWeb.Components.SearchBar do
               phx-value-filter="regex"
             /> Regex
           </label>
-          <label style="display: flex; align-items: center; gap: 2px;">
+          <label>
             <input
               type="checkbox"
               checked={@my_mentions}
@@ -95,7 +91,7 @@ defmodule RetroHexChatWeb.Components.SearchBar do
               phx-value-filter="my_mentions"
             /> My nick
           </label>
-          <label style="display: flex; align-items: center; gap: 2px;">
+          <label>
             <input
               type="checkbox"
               checked={@history}

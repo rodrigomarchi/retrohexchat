@@ -14,15 +14,12 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdown do
   def autocomplete_dropdown(assigns) do
     ~H"""
     <div :if={@visible} class="autocomplete-dropdown" id="autocomplete-dropdown">
-      <div
-        class="window"
-        style="position: absolute; bottom: 100%; left: 0; width: 300px; z-index: 100;"
-      >
+      <div class="window">
         <div class="title-bar">
           <div class="title-bar-text">{mode_title(@mode)}</div>
         </div>
         <div class="window-body">
-          <ul class="tree-view" style="max-height: 250px; overflow-y: auto;">
+          <ul class="tree-view u-overflow-y-auto autocomplete-list">
             <li :if={@results == []} class="autocomplete-no-results">No results</li>
             {render_results(assigns)}
           </ul>

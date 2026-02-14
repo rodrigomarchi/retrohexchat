@@ -1,44 +1,142 @@
-/* RetroHexChat — Dialogs: connect, help, reconnect overlay */
+/* RetroHexChat — Dialogs: generic overlays, sizes, tabs, body, buttons,
+   plus small per-dialog tweaks (<5 lines each) */
 
-/* Connect dialog */
-.connect-dialog {
+/* ── Generic Dialog Patterns ─────────────────────────────── */
+
+.dialog-overlay {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 350px;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-overlay-bg);
 }
 
-.connect-dialog .window-body {
+.dialog-overlay--dark {
+  background: var(--color-overlay-bg-dark);
+}
+
+.dialog-overlay--light {
+  background: var(--color-overlay-bg-light);
+}
+
+.dialog-overlay--transparent {
+  background: transparent;
+}
+
+.dialog-overlay--above {
+  z-index: var(--z-modal-above);
+  background: var(--color-overlay-bg-dark);
+}
+
+/* Dialog window sizes */
+.dialog-window--sm { width: 300px; }
+.dialog-window--md { width: 400px; }
+.dialog-window--lg { width: 560px; }
+.dialog-window--xl { width: 700px; }
+
+.dialog-window--narrow {
+  min-width: 280px;
+  max-width: 340px;
+}
+
+/* Address book and channel central specific sizes */
+.dialog-window--address-book {
+  width: 480px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-window--channel-central {
+  width: 520px;
+  height: 440px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* More dialog sizes */
+.dialog-window--alias { width: 440px; max-height: 80vh; }
+.dialog-window--auto-respond { width: 500px; max-height: 80vh; }
+.dialog-window--custom-menus { width: 460px; max-height: 80vh; }
+.dialog-window--perform { width: 460px; min-height: 340px; }
+.dialog-window--cheatsheet { width: 460px; }
+.dialog-window--log-viewer { width: 750px; height: 550px; }
+.dialog-window--generic { min-width: 300px; max-width: 500px; }
+.dialog-window--360 { width: 360px; }
+.dialog-window--320 { width: 320px; }
+.dialog-window--450 { min-width: 450px; }
+
+/* Tabbed dialog body (flex column with tabs) */
+.dialog-tabbed-body {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Tab panel content area */
+.dialog-tab-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  margin-top: -2px;
+}
+
+.dialog-tab-panel--no-pad {
+  padding: 0;
+}
+
+/* Channel list scrollable area */
+.channel-list-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Dialog body */
+.dialog-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dialog-body--p8 {
+  padding: 8px;
+}
+
+.dialog-body--p16 {
   padding: 16px;
 }
 
-.connect-dialog fieldset {
-  margin-bottom: 12px;
-}
-
-.connect-dialog label {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 12px;
-}
-
-.connect-dialog input {
-  width: 100%;
+/* Dialog section */
+.dialog-section {
   margin-bottom: 8px;
 }
 
-.connect-dialog .button-row {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 12px;
+.dialog-section:last-child {
+  margin-bottom: 0;
 }
 
-.connect-dialog .error-text {
-  color: #cc0000;
-  font-size: 11px;
-  margin-top: 2px;
+/* Dialog button bar */
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.dialog-buttons--gap-8 {
+  gap: 8px;
+}
+
+.dialog-buttons--center {
+  justify-content: center;
+}
+
+.dialog-buttons--start {
+  justify-content: flex-start;
 }
 
 /* Dialog buttons */
@@ -46,307 +144,101 @@
   min-width: 75px;
 }
 
-/* ── Help Dialog (CHM-style) ────────────────────────────── */
-.help-dialog { width: 700px; height: 500px; display: flex; flex-direction: column; }
-.help-split { display: flex; flex: 1; overflow: hidden; }
-.help-nav { width: 240px; min-width: 240px; display: flex; flex-direction: column; border-right: 2px groove; }
-.help-nav-tabs { margin: 0; }
-.help-nav-content { flex: 1; overflow-y: auto; padding: 4px; }
-.help-content { flex: 1; overflow-y: auto; padding: 16px; background: white; color: black; font-size: 12px; }
-.help-content h3 { font-size: 14px; margin: 0 0 8px; border-bottom: 1px solid #808080; padding-bottom: 4px; }
-.help-content h4 { font-size: 12px; font-weight: bold; margin: 12px 0 4px; }
-.help-content pre { background: #f0f0f0; border: 1px solid #808080; padding: 6px; font-family: "Courier New", monospace; font-size: 11px; margin: 4px 0 8px; overflow-x: auto; }
-.help-content code { background: #f0f0f0; padding: 1px 3px; font-family: "Courier New", monospace; font-size: 11px; }
-.help-content p { margin: 4px 0; }
-.help-tree-active { background: navy; color: white; }
-.help-index-item { padding: 1px 4px; cursor: pointer; }
-.help-index-item:hover { background: navy; color: white; }
-.help-search-result { padding: 4px; cursor: pointer; border-bottom: 1px dotted #c0c0c0; }
-.help-search-result:hover { background: #e0e0e0; }
-.help-search-title { font-weight: bold; font-size: 11px; }
-.help-search-snippet { font-size: 10px; color: #606060; }
+/* ── Small Per-Dialog Tweaks ──────────────────────────────── */
 
-/* ── Reconnect Overlay ────────────────────────────────── */
-.reconnect-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Alias Dialog */
+.alias-expansion-cell { max-width: 280px; }
+
+/* Auto-Respond Dialog */
+.auto-respond-check-col { width: 20px; }
+.auto-respond-cmd-cell { max-width: 200px; }
+
+/* Custom Menus Dialog */
+.custom-menus-list { max-height: 180px; }
+.custom-menus-cmd-cell { max-width: 260px; }
+
+/* Favorite Dialog */
+.favorite-duplicate-notice {
+  color: var(--color-maroon);
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
-.reconnect-overlay .window {
-  width: 320px;
+/* Cheatsheet Dialog */
+.cheatsheet-category-heading {
+  margin: 0 0 4px 0;
+  font-size: var(--text-base);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 2px;
 }
 
-.reconnect-overlay .window-body {
-  text-align: center;
-  padding: 16px;
+.cheatsheet-table {
+  width: 100%;
+  font-size: var(--text-sm);
+  border-collapse: collapse;
 }
 
-.reconnect-overlay .countdown {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 12px 0;
+.cheatsheet-table tr {
+  border-bottom: 1px solid var(--color-gray-200);
 }
 
-.reconnect-overlay .attempt-info {
-  color: #808080;
-  font-size: 11px;
-  margin-bottom: 8px;
+.cheatsheet-table td {
+  padding: 2px 4px;
 }
 
-/* ── Options Dialog ─────────────────────────────────────── */
+.cheatsheet-body { max-height: 400px; }
 
-.options-dialog-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.25);
-}
-
-.options-dialog {
-  width: 560px;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.options-dialog-body {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.options-nav {
-  width: 150px;
-  min-width: 150px;
-  border-right: 2px groove;
-  overflow-y: auto;
-  padding: 4px;
-}
-
-.options-nav .tree-view {
-  font-size: 12px;
-}
-
-.options-nav li {
-  padding: 2px 6px;
-  cursor: pointer;
-}
-
-.options-nav li:hover {
-  background-color: navy;
-  color: white;
-}
-
-.options-nav .tree-item-selected {
-  background-color: navy;
-  color: white;
-}
-
-.options-panel {
+/* Log Viewer Dialog */
+.log-results-area {
   flex: 1;
   overflow-y: auto;
-  padding: 8px 12px;
-  min-height: 300px;
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  padding: 2px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: var(--text-sm);
 }
 
-.options-panel fieldset {
-  margin-bottom: 8px;
+.log-entry--system {
+  padding: 1px 0;
+  color: var(--color-muted);
+  font-style: italic;
 }
 
-.options-panel legend {
-  font-weight: bold;
-  font-size: 12px;
+.log-entry--message {
+  padding: 1px 0;
 }
 
-.options-panel label {
-  font-size: 12px;
-}
+.log-date-input { width: 130px; }
+.log-nick-input { width: 120px; }
 
-.options-panel .field-row {
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+/* Perform Dialog */
+.perform-tab-panel { min-height: 220px; }
+.perform-tab-content { height: 100%; }
+.perform-cmd-list { min-height: 120px; }
+.perform-num-col { width: 30px; }
 
-.options-panel select {
-  font-size: 12px;
-}
+/* Ignore Dialog */
+.ignore-dialog-window { min-height: 280px; }
+.ignore-list-panel { min-height: 150px; }
 
-.options-panel input[type="number"] {
-  width: 60px;
-  font-size: 12px;
-}
+/* Organize Favorites Dialog */
+.favorites-list { min-height: 160px; }
 
-.options-button-bar {
-  display: flex;
-  justify-content: flex-end;
-  gap: 6px;
-  padding: 6px 8px;
-  border-top: 1px solid #808080;
-}
+/* CTCP Settings Dialog */
+.ctcp-hint { margin: 4px 0 0 20px; }
 
-.options-button-bar button {
-  min-width: 75px;
-}
+/* Notify List Window */
+.notify-status-col { width: 24px; }
 
-/* ── Options: Colors ── */
+/* Address Book Placeholder */
+.address-book-placeholder { margin-top: 40px; }
 
-.color-slot-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
-  padding: 2px 0;
-}
+/* Channel Central Key Input */
+.cc-key-input { width: 120px; }
 
-.color-swatch {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 1px solid #808080;
-  flex-shrink: 0;
-}
-
-.color-slot-label {
-  font-size: 12px;
-  min-width: 100px;
-}
-
-.color-picker-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1px;
-}
-
-.color-picker-cell {
-  width: 14px;
-  height: 14px;
-  border: 1px solid #808080;
-  cursor: pointer;
-}
-
-.color-picker-cell:hover {
-  border-color: white;
-  outline: 1px solid black;
-}
-
-.nick-palette-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding: 4px 0;
-}
-
-.nick-palette-swatch {
-  width: 20px;
-  height: 20px;
-  border: 1px solid #808080;
-  cursor: pointer;
-}
-
-.nick-palette-swatch:hover {
-  border-color: white;
-  outline: 1px solid black;
-}
-
-/* ── Options: Fonts ── */
-
-.font-preview {
-  padding: 8px;
-  background: white;
-  color: black;
-  border: 1px solid #808080;
-  min-height: 40px;
-  box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
-}
-
-/* ── Options: Key Bindings ── */
-
-.keybindings-list {
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #808080;
-  background: white;
-  box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
-}
-
-.keybinding-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 2px 6px;
-  font-size: 12px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.keybinding-row:last-child {
-  border-bottom: none;
-}
-
-.keybinding-action {
-  color: black;
-}
-
-.keybinding-combo {
-  color: #0000cc;
-  font-weight: bold;
-  font-family: Fixedsys, "Courier New", monospace;
-}
-
-.keybindings-actions {
-  margin-top: 8px;
-}
-
-/* ── About Dialog ──────────────────────────────────────── */
-.about-dialog {
-  width: 360px;
-}
-
-.about-body {
-  padding: 16px;
-  text-align: center;
-}
-
-.about-logo {
-  font-family: Fixedsys, "Courier New", monospace;
-  font-size: 12px;
-  line-height: 1.3;
-  text-align: center;
-  margin: 0 auto 12px;
-  white-space: pre;
-}
-
-.about-title {
-  font-weight: bold;
-  font-size: 14px;
-  margin: 0 0 8px;
-}
-
-.about-description {
-  margin: 0 0 8px;
-  font-size: 12px;
-}
-
-.about-credits {
-  font-size: 11px;
-  color: #444;
-  margin: 4px 0;
-}
-
-.about-buttons {
-  margin-top: 12px;
-  text-align: center;
-}
-
-.about-ok-btn {
-  min-width: 75px;
-}
+/* URL Catcher Window */
+.url-col-90 { width: 90px; }
+.url-col-actions { width: 60px; }
+.url-cell-url { max-width: 0; }

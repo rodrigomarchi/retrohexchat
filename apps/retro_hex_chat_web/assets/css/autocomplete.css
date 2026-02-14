@@ -1,0 +1,59 @@
+/* RetroHexChat — Autocomplete dropdown: items, categories, status indicators */
+
+.autocomplete-item {
+  cursor: pointer;
+  padding: 4px 8px;
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.selected {
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
+}
+
+.autocomplete-category-header {
+  font-weight: bold;
+  font-size: 11px;
+  padding: 4px 8px 2px;
+  color: var(--color-muted);
+  cursor: default;
+  list-style: none;
+}
+
+.autocomplete-description {
+  font-size: 11px;
+  color: var(--color-muted);
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.autocomplete-item.selected .autocomplete-description {
+  color: var(--color-surface);
+}
+
+.autocomplete-list { max-height: 250px; }
+
+.autocomplete-no-results {
+  font-style: italic;
+  color: var(--color-muted);
+  padding: 8px;
+  text-align: center;
+  cursor: default;
+}
+
+.autocomplete-status-online::before {
+  content: "●";
+  color: #00a000;
+  margin-right: 4px;
+}
+
+.autocomplete-status-away::before {
+  content: "●";
+  color: #c0a000;
+  margin-right: 4px;
+}
