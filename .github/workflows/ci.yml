@@ -168,7 +168,7 @@ jobs:
         if: always()
         with:
           name: test-outputs
-          path: /tmp/tests_output.txt
+          path: /tmp/*_output.txt
           if-no-files-found: ignore
           retention-days: 1
 
@@ -276,10 +276,20 @@ jobs:
             esac
           }
 
-          # Extract test summary (e.g. "822 tests, 0 failures")
-          TEST_SUMMARY=""
-          if [ -f /tmp/ci-outputs/tests_output.txt ]; then
-            TEST_SUMMARY=$(grep -oE '[0-9]+ tests?, [0-9]+ failures?(, [0-9]+ excluded)?' /tmp/ci-outputs/tests_output.txt | tail -1)
+          # Extract compile summary
+          COMPILE_SUMMARY=""
+          if [ "$STATUS_COMPILE" = "success" ]; then
+            COMPILE_SUMMARY="no warnings"
+          else
+            COMPILE_SUMMARY="compilation failed"
+          fi
+
+          # Extract format summary
+          FORMAT_SUMMARY=""
+          if [ "$STATUS_FORMAT" = "success" ]; then
+            FORMAT_SUMMARY="all files formatted"
+          else
+            FORMAT_SUMMARY="formatting issues found"
           fi
 
           # Extract credo summary
@@ -291,6 +301,34 @@ jobs:
               CREDO_ISSUES=$(grep -cE '┃' /tmp/ci-outputs/credo_output.txt 2>/dev/null || echo "0")
               CREDO_SUMMARY="${CREDO_ISSUES} issue(s)"
             fi
+          fi
+
+          # Extract JS lint summary
+          JS_LINT_SUMMARY=""
+          if [ "$STATUS_JS_LINT" = "success" ]; then
+            JS_LINT_SUMMARY="no issues"
+          else
+            JS_LINT_SUMMARY="linting issues found"
+          fi
+
+          # Extract JS tests summary
+          JS_TESTS_SUMMARY=""
+          if [ -f /tmp/ci-outputs/js_tests_output.txt ]; then
+            JS_TESTS_SUMMARY=$(grep -oE '[0-9]+ tests? passed' /tmp/ci-outputs/js_tests_output.txt | tail -1)
+            if [ -z "$JS_TESTS_SUMMARY" ] && [ "$STATUS_JS_TESTS" = "success" ]; then
+              JS_TESTS_SUMMARY="all passed"
+            elif [ "$STATUS_JS_TESTS" = "failure" ]; then
+              JS_TESTS_SUMMARY=$(grep -oE '[0-9]+ tests? failed' /tmp/ci-outputs/js_tests_output.txt | tail -1)
+              [ -z "$JS_TESTS_SUMMARY" ] && JS_TESTS_SUMMARY="failures detected"
+            fi
+          elif [ "$STATUS_JS_TESTS" = "success" ]; then
+            JS_TESTS_SUMMARY="all passed"
+          fi
+
+          # Extract test summary (e.g. "822 tests, 0 failures")
+          TEST_SUMMARY=""
+          if [ -f /tmp/ci-outputs/tests_output.txt ]; then
+            TEST_SUMMARY=$(grep -oE '[0-9]+ tests?, [0-9]+ failures?(, [0-9]+ excluded)?' /tmp/ci-outputs/tests_output.txt | tail -1)
           fi
 
           # Extract dialyzer summary
@@ -320,11 +358,11 @@ jobs:
             echo ""
             echo "| Check | Result |"
             echo "|-------|--------|"
-            echo "| **Compile** | $(icon "$STATUS_COMPILE") |"
-            echo "| **Format** | $(icon "$STATUS_FORMAT") |"
+            echo "| **Compile** | $(icon "$STATUS_COMPILE") ${COMPILE_SUMMARY} |"
+            echo "| **Format** | $(icon "$STATUS_FORMAT") ${FORMAT_SUMMARY} |"
             echo "| **Credo** | $(icon "$STATUS_CREDO") ${CREDO_SUMMARY} |"
-            echo "| **JS Lint** | $(icon "$STATUS_JS_LINT") |"
-            echo "| **JS Tests** | $(icon "$STATUS_JS_TESTS") |"
+            echo "| **JS Lint** | $(icon "$STATUS_JS_LINT") ${JS_LINT_SUMMARY} |"
+            echo "| **JS Tests** | $(icon "$STATUS_JS_TESTS") ${JS_TESTS_SUMMARY} |"
             echo "| **Tests** | $(icon "$STATUS_TESTS") ${TEST_SUMMARY} |"
             echo "| **Dialyzer** | $(icon "$STATUS_DIALYZER") ${DIALYZER_SUMMARY} |"
             if [ -n "$COVERAGE_DOMAIN" ]; then
