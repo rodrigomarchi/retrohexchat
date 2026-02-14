@@ -121,8 +121,9 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
       render_click(view, "toggle_url_catcher")
       html = render_click(view, "url_catcher_sort", %{"column" => "url"})
 
-      apple_pos = :binary.match(html, ~s(data-url="https://apple.com")) |> elem(0)
-      zebra_pos = :binary.match(html, ~s(data-url="https://zebra.com")) |> elem(0)
+      table_html = extract_url_catcher_table(html)
+      apple_pos = :binary.match(table_html, "apple.com") |> elem(0)
+      zebra_pos = :binary.match(table_html, "zebra.com") |> elem(0)
       assert apple_pos < zebra_pos
     end
 
@@ -137,8 +138,8 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
       render_click(view, "toggle_url_catcher")
       html = render_change(view, "url_catcher_filter", %{"channel" => "#lobby"})
 
-      assert html =~ ~s(data-url="https://lobby-link.com")
-      refute html =~ ~s(data-url="https://filter-link.com")
+      assert url_catcher_has_url?(html, "lobby-link.com")
+      refute url_catcher_has_url?(html, "filter-link.com")
     end
 
     test "search by URL text", %{conn: conn} do
@@ -151,8 +152,8 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
       render_click(view, "toggle_url_catcher")
       html = render_change(view, "url_catcher_search", %{"query" => "elixir"})
 
-      assert html =~ ~s(data-url="https://elixir-search.com")
-      refute html =~ ~s(data-url="https://phoenix-search.com")
+      assert url_catcher_has_url?(html, "elixir-search.com")
+      refute url_catcher_has_url?(html, "phoenix-search.com")
     end
 
     test "close and reopen preserves entries", %{conn: conn} do
@@ -243,6 +244,24 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
   end
 
   # ── Helpers ──────────────────────────────────────────────
+
+  defp url_catcher_has_url?(html, url_fragment) do
+    Regex.match?(
+      ~r/data-testid="url-catcher-entry-[^"]*"[^>]*data-url="[^"]*#{Regex.escape(url_fragment)}/,
+      html
+    ) or
+      Regex.match?(
+        ~r/data-url="[^"]*#{Regex.escape(url_fragment)}[^"]*"[^>]*data-testid="url-catcher-entry-/,
+        html
+      )
+  end
+
+  defp extract_url_catcher_table(html) do
+    case Regex.run(~r/data-testid="url-catcher-window".*$/s, html) do
+      [match] -> match
+      nil -> html
+    end
+  end
 
   defp send_channel_msg(view, author, content, channel) do
     send(view.pid, %{

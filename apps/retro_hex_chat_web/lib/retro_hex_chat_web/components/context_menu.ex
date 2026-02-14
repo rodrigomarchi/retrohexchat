@@ -5,8 +5,11 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
   """
   use Phoenix.Component
 
+  alias RetroHexChat.Chat.KeyBindings
+
   attr :custom_nicklist_items, :list, default: []
   attr :is_ignored, :boolean, default: false
+  attr :key_bindings, :map, default: %{}
   attr :nick_color_fn, :any, default: nil
   attr :show_color_picker, :boolean, default: false
   attr :target_nick, :string, default: nil
@@ -26,7 +29,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
       <div class="window" style="padding: 2px;">
         <ul class="tree-view" style="margin: 0; padding: 2px;">
           <li data-testid="ctx-query" phx-click="context_query" phx-value-nick={@target_nick}>
-            Query (PM)
+            Query (PM) <.shortcut_hint bindings={@key_bindings} action={:open_pm} />
           </li>
           <li data-testid="ctx-whois" phx-click="context_whois" phx-value-nick={@target_nick}>
             Whois
@@ -166,5 +169,14 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
   @spec irc_color_list() :: [{non_neg_integer(), String.t()}]
   defp irc_color_list do
     for i <- 0..15, do: {i, Map.fetch!(@irc_colors, i)}
+  end
+
+  defp shortcut_hint(%{bindings: bindings, action: action} = assigns) do
+    binding = Map.get(bindings, action)
+    assigns = assign(assigns, :display, binding && KeyBindings.to_display_string(binding))
+
+    ~H"""
+    <span :if={@display} class="shortcut-hint">{@display}</span>
+    """
   end
 end

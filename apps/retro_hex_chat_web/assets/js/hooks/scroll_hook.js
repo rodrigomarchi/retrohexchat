@@ -65,24 +65,34 @@ const ScrollHook = {
       }
     });
 
-    // Right-click copy context menu
-    this.copyMenu = null;
+    // Smart right-click context menu detection
     this.chatEl.addEventListener("contextmenu", (e) => {
-      // Only show custom copy menu inside chat messages
-      if (e.target.closest(".chat-message") || e.target.closest(".chat-msg-grid")) {
-        e.preventDefault();
-        this.showCopyMenu(e.clientX, e.clientY);
+      // Skip if inside input field — preserve browser default menu
+      if (e.target.closest("textarea, input, [contenteditable]")) return;
+
+      const msgEl = e.target.closest(".chat-message");
+      if (!msgEl) return;
+
+      e.preventDefault();
+      this.detectAndPushContextMenu(e, msgEl);
+    });
+
+    // Clipboard copy handler (server → client)
+    this.handleEvent("clipboard_copy", ({ text }) => {
+      navigator.clipboard.writeText(text);
+    });
+
+    // Copy selection handler (server → client)
+    this.handleEvent("clipboard_copy_selection", () => {
+      const selection = window.getSelection().toString();
+      if (selection) {
+        navigator.clipboard.writeText(selection);
       }
     });
-    document.addEventListener("mousedown", (e) => {
-      if (this.copyMenu && !this.copyMenu.contains(e.target)) {
-        this.hideCopyMenu();
-      }
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.copyMenu) {
-        this.hideCopyMenu();
-      }
+
+    // Open URL handler (server → client)
+    this.handleEvent("open_url", ({ url }) => {
+      window.open(url, "_blank", "noopener,noreferrer");
     });
 
     // Listen for prepend start (before DOM update)
@@ -166,36 +176,84 @@ const ScrollHook = {
     }
   },
 
-  showCopyMenu(x, y) {
-    this.hideCopyMenu();
-    const selection = window.getSelection().toString();
-    const menu = document.createElement("div");
-    menu.className = "copy-context-menu";
-    menu.style.left = x + "px";
-    menu.style.top = y + "px";
+  /**
+   * Detect what was right-clicked and push context menu event.
+   * Priority: nick > URL > channel > message (most specific wins).
+   */
+  detectAndPushContextMenu(e, msgEl) {
+    const target = e.target;
+    const payload = {
+      x: e.clientX,
+      y: e.clientY,
+      author: msgEl.dataset.author || "",
+      message_id: msgEl.dataset.messageId || "",
+      is_system: msgEl.dataset.systemMessage === "true",
+      has_selection: window.getSelection().toString().length > 0,
+      message_text: this.buildMessageText(msgEl),
+      message_urls: this.collectUrls(msgEl),
+    };
 
-    const item = document.createElement("div");
-    if (selection) {
-      item.className = "copy-menu-item";
-      item.textContent = "Copy";
-      item.addEventListener("click", () => {
-        navigator.clipboard.writeText(selection);
-        this.hideCopyMenu();
-      });
-    } else {
-      item.className = "copy-menu-item copy-menu-item--disabled";
-      item.textContent = "Copy";
+    // Check nick first (most specific)
+    const nickEl = target.closest(".chat-nick[data-nick]");
+    if (nickEl) {
+      payload.type = "nick";
+      payload.nick = nickEl.dataset.nick;
+      this.pushEvent("chat_context_menu", payload);
+      return;
     }
-    menu.appendChild(item);
-    document.body.appendChild(menu);
-    this.copyMenu = menu;
+
+    // Check URL
+    const urlEl = target.closest(".chat-link[data-url]");
+    if (urlEl) {
+      payload.type = "url";
+      payload.url = urlEl.dataset.url;
+      this.pushEvent("chat_context_menu", payload);
+      return;
+    }
+
+    // Check channel link
+    const channelEl = target.closest(".chat-channel-link[data-channel]");
+    if (channelEl) {
+      payload.type = "channel";
+      payload.channel = channelEl.dataset.channel;
+      this.pushEvent("chat_context_menu", payload);
+      return;
+    }
+
+    // Default: message context menu
+    payload.type = "message";
+    if (payload.message_urls.length > 0) {
+      payload.url = payload.message_urls[0];
+    }
+    this.pushEvent("chat_context_menu", payload);
   },
 
-  hideCopyMenu() {
-    if (this.copyMenu) {
-      this.copyMenu.remove();
-      this.copyMenu = null;
+  /**
+   * Build formatted message text for "Copy Message": [HH:MM] <Nick> message
+   */
+  buildMessageText(msgEl) {
+    const timestampEl = msgEl.querySelector(".chat-timestamp");
+    const nickEl = msgEl.querySelector(".chat-nick");
+    const contentEl = msgEl.querySelector(".chat-content");
+
+    if (timestampEl && nickEl && contentEl) {
+      const time = timestampEl.textContent.trim();
+      const nick = (msgEl.dataset.author || "").trim();
+      const content = contentEl.textContent.trim();
+      return `[${time}] <${nick}> ${content}`;
     }
+
+    // Fallback for non-standard messages (action, system, etc.)
+    return msgEl.textContent.trim().replace(/\s+/g, " ");
+  },
+
+  /**
+   * Collect all URLs from data-url attributes in a message.
+   */
+  collectUrls(msgEl) {
+    return Array.from(msgEl.querySelectorAll(".chat-link[data-url]")).map(
+      (el) => el.dataset.url
+    );
   },
 };
 

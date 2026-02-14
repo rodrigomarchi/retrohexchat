@@ -134,6 +134,17 @@ defmodule RetroHexChatWeb.ChatLive do
       autocomplete_visible: false,
       recent_commands: [],
       contacts_selected: nil,
+      chat_context_menu: %{
+        visible: false,
+        type: nil,
+        x: 0,
+        y: 0,
+        target_nick: nil,
+        target_url: nil,
+        target_channel: nil,
+        target_message: nil,
+        has_selection: false
+      },
       context_menu: %{visible: false, x: 0, y: 0, target_nick: nil},
       nick_color_fn: build_nick_color_fn(session),
       nick_colors_selected: nil,
@@ -256,6 +267,7 @@ defmodule RetroHexChatWeb.ChatLive do
       keybinding_editing: nil,
       keybinding_warning: nil,
       muted: false,
+      muted_channels: load_muted_channels(session),
       favorite_dialog_channel: nil,
       favorite_dialog_data: nil,
       favorite_dialog_is_duplicate: false,
@@ -368,6 +380,12 @@ defmodule RetroHexChatWeb.ChatLive do
     IgnoreList.get_entry(session.ignore_list, target_nick) != nil
   end
 
+  defp chat_context_target_ignored?(_session, %{target_nick: nil}), do: false
+
+  defp chat_context_target_ignored?(session, %{target_nick: nick}) do
+    IgnoreList.get_entry(session.ignore_list, nick) != nil
+  end
+
   defp viewer_is_op?(session) do
     case session.active_channel do
       nil ->
@@ -439,6 +457,13 @@ defmodule RetroHexChatWeb.ChatLive do
     fn nickname ->
       NickColors.color_for(session.nick_colors, nickname) || nick_color(nickname)
     end
+  end
+
+  @spec load_muted_channels(Session.t()) :: MapSet.t()
+  defp load_muted_channels(session) do
+    session.user_preferences
+    |> UserPreferences.get_muted_channels()
+    |> MapSet.new()
   end
 
   @nick_colors ~w(#e74c3c #3498db #2ecc71 #e67e22 #9b59b6 #1abc9c #f39c12 #e91e63 #00bcd4 #8bc34a #ff5722 #607d8b)
