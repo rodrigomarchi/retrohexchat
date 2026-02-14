@@ -1,40 +1,32 @@
 # Inline Style Allowlist
-# Format: relative/path/from/web_lib:line_number
+# Format: relative/path/from/web_lib:content_snippet
 # Lines starting with # are comments, blank lines are ignored.
 #
 # Only add entries here for static inline styles that have a legitimate
 # reason to remain inline (e.g., one-off values with no reuse pattern).
+# The snippet is matched as a substring of the trimmed line content.
 
 # Nicklist: nick_style/2 returns dynamic color from nick_color_fn assign
-retro_hex_chat_web/components/nicklist.ex:34
-retro_hex_chat_web/components/nicklist.ex:44
-retro_hex_chat_web/components/nicklist.ex:54
-retro_hex_chat_web/components/nicklist.ex:64
-retro_hex_chat_web/components/nicklist.ex:74
+# Matches 5 lines: style={nick_style(@nick_color_fn, user.nickname)}
+retro_hex_chat_web/components/nicklist.ex:style={nick_style(
 
 # Highlight dialog: color_swatch_style/1 returns dynamic background-color by index
-retro_hex_chat_web/components/highlight_dialog.ex:78
+retro_hex_chat_web/components/highlight_dialog.ex:style={color_swatch_style(
 
 # Log viewer: @color assign is dynamic per-nick color from log parser
-retro_hex_chat_web/components/log_viewer_dialog.ex:346
-retro_hex_chat_web/components/log_viewer_dialog.ex:355
+# Matches 2 lines: style={@color}
+retro_hex_chat_web/components/log_viewer_dialog.ex:style={@color}
 
 # Notify list: notify_nick_style/2 returns dynamic color from nick_color_fn assign
-retro_hex_chat_web/components/notify_list_window.ex:104
+retro_hex_chat_web/components/notify_list_window.ex:style={notify_nick_style(
 
-# --- Style Helpers ---
-# Format: [style-helpers] marker followed by file:line entries.
-# These are defp.*_style functions that return dynamic CSS and are expected.
 [style-helpers]
 
-# Highlight dialog: color_swatch_style/1 returns dynamic background-color by index
-retro_hex_chat_web/components/highlight_dialog.ex:237
-retro_hex_chat_web/components/highlight_dialog.ex:241
+# Highlight dialog: two clauses of color_swatch_style/1
+retro_hex_chat_web/components/highlight_dialog.ex:defp color_swatch_style(
 
-# Nicklist: nick_style/2 returns dynamic color from nick_color_fn assign
-retro_hex_chat_web/components/nicklist.ex:84
-retro_hex_chat_web/components/nicklist.ex:85
+# Nicklist: two clauses of nick_style/2
+retro_hex_chat_web/components/nicklist.ex:defp nick_style(
 
-# Notify list: notify_nick_style/2 returns dynamic color from nick_color_fn assign
-retro_hex_chat_web/components/notify_list_window.ex:248
-retro_hex_chat_web/components/notify_list_window.ex:249
+# Notify list: two clauses of notify_nick_style/2
+retro_hex_chat_web/components/notify_list_window.ex:defp notify_nick_style(
