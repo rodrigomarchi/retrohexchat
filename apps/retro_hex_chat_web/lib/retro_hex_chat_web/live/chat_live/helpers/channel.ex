@@ -42,6 +42,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         |> load_channel_messages_with_pagination(channel_name)
         |> maybe_show_welcome(channel_name, new_session)
         |> push_event("tip_trigger", %{tip: "first_join"})
+        |> push_event("channel_joined_flash", %{channel: channel_name})
         |> SessionHelpers.push_reconnect_state()
 
       {:error, reason} ->

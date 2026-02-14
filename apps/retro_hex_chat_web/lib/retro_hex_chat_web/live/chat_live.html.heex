@@ -24,9 +24,13 @@
       :if={@show_treebar}
       channels={@session.channels}
       active_channel={@session.active_channel}
-      unread_channels={MapSet.to_list(@unread_channels)}
+      unread_counts={@unread_counts}
       highlight_channels={MapSet.to_list(@highlight_channels)}
       flash_channels={MapSet.to_list(@flash_channels)}
+      muted_channels={MapSet.to_list(@muted_channels)}
+      disconnected_channels={
+        MapSet.to_list(Map.get(assigns, :disconnected_channels, MapSet.new()))
+      }
       pm_conversations={@session.pm_conversations}
       active_pm={@session.active_pm}
     />
@@ -39,7 +43,7 @@
         active_channel={@session.active_channel}
         active_pm={@session.active_pm}
         show_status_tab={@show_status_tab}
-        unread_channels={MapSet.to_list(@unread_channels)}
+        unread_counts={@unread_counts}
         highlight_channels={MapSet.to_list(@highlight_channels)}
       />
 
@@ -88,7 +92,9 @@
           id={dom_id}
           class={
             "chat-message chat-message--#{msg.type}" <>
-              if(Map.get(msg, :highlighted), do: " chat-message--highlighted", else: "")
+              if(Map.get(msg, :highlighted), do: " chat-message--highlighted", else: "") <>
+              if(Map.get(msg, :status) == :pending, do: " chat-message--pending", else: "") <>
+              if(Map.get(msg, :status) == :failed, do: " chat-message--failed", else: "")
           }
           style={
             if(Map.get(msg, :highlighted) && Map.get(msg, :highlight_color),
@@ -99,6 +105,8 @@
           data-testid={if(Map.get(msg, :highlighted), do: "highlighted-message", else: nil)}
           data-author={Map.get(msg, :author)}
           data-message-id={dom_id}
+          data-temp-id={if(Map.get(msg, :status) in [:pending, :failed], do: msg.id, else: nil)}
+          data-msg-status={if(Map.get(msg, :status), do: Atom.to_string(msg.status), else: nil)}
           data-system-message={if(msg.type in [:system, :service], do: "true", else: nil)}
         >
           <%= case msg.type do %>
@@ -135,6 +143,18 @@
                 </span>
                 <span class="chat-content">
                   {raw(format_content(msg.content, @session.strip_formatting))}
+                  <button
+                    :if={Map.get(msg, :status) == :failed}
+                    class="chat-retry-btn"
+                    phx-click="retry_message"
+                    phx-value-temp_id={msg.id}
+                    phx-value-content={msg.content}
+                    phx-value-target={Map.get(msg, :target, "")}
+                    title="Falha ao enviar. Clique para reenviar"
+                    data-testid="retry-message"
+                  >
+                    ⚠️
+                  </button>
                 </span>
               </div>
           <% end %>
@@ -247,7 +267,9 @@
     y={@treebar_context_menu.y}
     channel={@treebar_context_menu.channel}
     is_muted={MapSet.member?(@muted_channels, @treebar_context_menu.channel)}
-    has_unread={MapSet.member?(@unread_channels, @treebar_context_menu.channel)}
+    has_unread={
+      RetroHexChat.Chat.UnreadTracker.unread?(@unread_counts, @treebar_context_menu.channel)
+    }
     custom_channel_items={CustomMenus.entries_for(@session.custom_menus, :channel)}
   />
 
@@ -442,6 +464,8 @@
   <div id="paste-hook" phx-hook="PasteHook" style="display: none;"></div>
 
   <RetroHexChatWeb.Components.InviteDialog.invite_dialog pending_invites={@pending_invites} />
+
+  <RetroHexChatWeb.Components.KickDialog.kick_dialog kick_queue={@kick_queue} />
 
   <RetroHexChatWeb.Components.StatusBar.status_bar
     :if={@show_statusbar}

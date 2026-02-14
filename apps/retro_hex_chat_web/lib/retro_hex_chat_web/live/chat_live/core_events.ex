@@ -24,7 +24,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     ]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{Queries, UserPreferences}
+  alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Chat.{Queries, UnreadTracker, UserPreferences}
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Parser, Registry}
   alias RetroHexChatWeb.ChatLive
 
@@ -59,11 +60,29 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     end
   end
 
+  # -- retry_message --
+
+  def handle_event(
+        "retry_message",
+        %{"temp_id" => temp_id, "content" => content, "target" => target},
+        socket
+      ) do
+    session = socket.assigns.session
+
+    case Server.send_message(target, session.nickname, content) do
+      :ok ->
+        {:halt, push_event(socket, "message_confirmed", %{temp_id: temp_id})}
+
+      {:error, reason} ->
+        {:halt, push_event(socket, "message_failed", %{temp_id: temp_id, reason: reason})}
+    end
+  end
+
   # -- switch_channel --
 
   def handle_event("switch_channel", %{"channel" => channel}, socket) do
     session = Session.set_active_channel(socket.assigns.session, channel)
-    unread = MapSet.delete(socket.assigns.unread_channels, channel)
+    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, channel)
     highlight = MapSet.delete(socket.assigns.highlight_channels, channel)
     flash = MapSet.delete(socket.assigns.flash_channels, channel)
     if socket.assigns.pm_typing_timer, do: Process.cancel_timer(socket.assigns.pm_typing_timer)
@@ -72,7 +91,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
      socket
      |> assign(
        session: session,
-       unread_channels: unread,
+       unread_counts: unread_counts,
        highlight_channels: highlight,
        flash_channels: flash,
        show_status_tab: false,
@@ -111,7 +130,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   def handle_event("switch_pm", %{"nickname" => nickname}, socket) do
     session = Session.set_active_pm(socket.assigns.session, nickname)
     messages = load_pm_messages(session.nickname, nickname)
-    unread = MapSet.delete(socket.assigns.unread_channels, "pm:#{nickname}")
+    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, "pm:#{nickname}")
     flash = MapSet.delete(socket.assigns.flash_channels, "pm:#{nickname}")
     if socket.assigns.pm_typing_timer, do: Process.cancel_timer(socket.assigns.pm_typing_timer)
 
@@ -119,7 +138,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
      socket
      |> assign(
        session: session,
-       unread_channels: unread,
+       unread_counts: unread_counts,
        flash_channels: flash,
        current_topic: nil,
        current_modes: nil,

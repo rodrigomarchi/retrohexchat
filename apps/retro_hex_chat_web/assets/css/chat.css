@@ -240,3 +240,24 @@
   height: 16px;
   line-height: 16px;
 }
+
+/* ─── Optimistic Send States ─── */
+
+.chat-message--pending {
+  opacity: 0.6;
+}
+
+.chat-message--failed {
+  opacity: 1;
+  background-color: #fff0f0;
+}
+
+.chat-retry-btn {
+  display: inline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 2px;
+  font-size: 13px;
+  vertical-align: baseline;
+}

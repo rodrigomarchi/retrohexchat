@@ -1,0 +1,57 @@
+/* Treebar — badge indicators, muted/disconnected states, join flash */
+
+/* ── Unread badge (numeric count) ────────────────────────── */
+
+.treebar-badge {
+  display: inline-block;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  margin-left: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 14px;
+  text-align: center;
+  color: #fff;
+  background-color: var(--color-badge, #808080);
+  border-radius: 7px;
+  vertical-align: middle;
+}
+
+/* ── Highlight badge (red dot for mentions) ──────────────── */
+
+.treebar-badge--highlight {
+  background-color: var(--color-badge-highlight, #c00);
+}
+
+/* ── Muted state — grayed-out, no visual emphasis ────────── */
+
+.tree-muted {
+  color: var(--color-muted, #999);
+}
+
+.tree-muted .treebar-badge {
+  display: none;
+}
+
+/* ── Disconnected state — lightning icon + gray text ─────── */
+
+.tree-disconnected {
+  color: var(--color-disconnected, #999);
+  font-style: italic;
+}
+
+.tree-disconnected .treebar-badge {
+  display: none;
+}
+
+/* ── Join flash animation (green highlight, 1s) ──────────── */
+
+.tree-join-flash {
+  animation: tree-join-flash 1s ease-in-out;
+}
+
+@keyframes tree-join-flash {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: #90ee90; }
+}

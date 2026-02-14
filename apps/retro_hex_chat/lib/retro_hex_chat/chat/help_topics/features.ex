@@ -1356,6 +1356,76 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"getting-started\">Getting Started</a> · " <>
             "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+      },
+      %{
+        id: "feature-unread-indicators",
+        title: "Unread Indicators",
+        category: "Features",
+        keywords: [
+          "unread",
+          "badge",
+          "indicator",
+          "treebar",
+          "count",
+          "mention",
+          "highlight",
+          "muted",
+          "disconnected"
+        ],
+        content:
+          "<h3>Unread Indicators</h3>" <>
+            "<p>The treebar shows visual indicators for channel activity.</p>" <>
+            "<h4>Visual States</h4>" <>
+            "<ul>" <>
+            "<li><strong>Bold text</strong> — channel has unread user messages</li>" <>
+            "<li><strong>Numeric badge</strong> — shows count of unread messages (e.g., \"3\")</li>" <>
+            "<li><strong>Red dot badge</strong> — your nickname was mentioned</li>" <>
+            "<li><strong>Selected background</strong> — currently active channel</li>" <>
+            "<li><strong>Grayed out</strong> — channel is muted (no badges shown)</li>" <>
+            "<li><strong>⚡ icon + gray</strong> — channel is disconnected</li>" <>
+            "</ul>" <>
+            "<h4>Behavior</h4>" <>
+            "<p>Switching to a channel resets its unread count and badges. " <>
+            "System messages (joins, parts, quits) do not increment the count — only user messages and mentions do. " <>
+            "Counts above 99 display as \"99+\". " <>
+            "Muted channels still track unread counts internally — unmuting reveals accumulated indicators.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-kick-notifications\">Kick Notifications</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-copy-feedback\">Copy Feedback</a></p>"
+      },
+      %{
+        id: "feature-kick-notifications",
+        title: "Kick Notifications",
+        category: "Features",
+        keywords: ["kick", "kicked", "expelled", "dialog", "notification"],
+        content:
+          "<h3>Kick Notifications</h3>" <>
+            "<p>When you are kicked from a channel, a dialog appears with the details.</p>" <>
+            "<h4>Dialog Contents</h4>" <>
+            "<p>The dialog shows: the channel name, who kicked you, and the reason (if provided). " <>
+            "Example: \"Você foi expulso de #general por AdminNick: spam\"</p>" <>
+            "<h4>Multiple Kicks</h4>" <>
+            "<p>If you are kicked from multiple channels simultaneously, the dialogs queue and display one at a time. " <>
+            "Click OK to dismiss each dialog.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-unread-indicators\">Unread Indicators</a></p>"
+      },
+      %{
+        id: "feature-copy-feedback",
+        title: "Copy Feedback",
+        category: "Features",
+        keywords: ["copy", "clipboard", "toast", "copied", "copiado", "settings", "saved"],
+        content:
+          "<h3>Copy & Settings Feedback</h3>" <>
+            "<p>Brief toast notifications confirm copy and settings save operations.</p>" <>
+            "<h4>Copy Confirmation</h4>" <>
+            "<p>When you copy text from the chat (via context menu or keyboard shortcut), " <>
+            "a \"Copiado!\" toast appears briefly at the bottom-right and fades after 2 seconds.</p>" <>
+            "<h4>Settings Confirmation</h4>" <>
+            "<p>When you save settings (OK or Apply in Options), a \"Configurações salvas\" toast confirms the save.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-unread-indicators\">Unread Indicators</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-contextual-tips\">Contextual Tips</a></p>"
       }
     ]
   end

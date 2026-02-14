@@ -108,6 +108,7 @@ defmodule RetroHexChatWeb.ChatLive do
       {:hover_events, &ChatLive.HoverEvents.handle_event/3},
       {:context_menu_events, &ChatLive.ContextMenuEvents.handle_event/3},
       {:tip_events, &ChatLive.TipEvents.handle_event/3},
+      {:kick_events, &ChatLive.KickEvents.handle_event/3},
       {:keyboard_events, &ChatLive.KeyboardEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
     ]
@@ -210,7 +211,8 @@ defmodule RetroHexChatWeb.ChatLive do
       show_treebar: true,
       show_url_catcher: false,
       show_whois: false,
-      unread_channels: MapSet.new(),
+      unread_counts: %{},
+      kick_queue: [],
       url_catcher_entries: [],
       url_catcher_filter_channel: nil,
       url_catcher_search_query: "",

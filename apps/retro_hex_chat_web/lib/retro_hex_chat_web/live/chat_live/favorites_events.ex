@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.FavoritesEvents do
     only: [maybe_persist_favorites: 2, join_channel: 4, part_channel: 2]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{Favorites, UserPreferences}
+  alias RetroHexChat.Chat.{Favorites, UnreadTracker, UserPreferences}
   alias RetroHexChatWeb.ChatLive.Helpers.Persistence
 
   # ── Context menu ─────────────────────────────────────────
@@ -43,14 +43,14 @@ defmodule RetroHexChatWeb.ChatLive.FavoritesEvents do
   # ── Extended treebar context menu actions ────────────────
 
   def handle_event("ctx_treebar_mark_read", %{"channel" => channel}, socket) do
-    unread = MapSet.delete(socket.assigns.unread_channels, channel)
+    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, channel)
     highlight = MapSet.delete(socket.assigns.highlight_channels, channel)
     flash = MapSet.delete(socket.assigns.flash_channels, channel)
 
     {:halt,
      socket
      |> close_treebar_menu()
-     |> assign(unread_channels: unread, highlight_channels: highlight, flash_channels: flash)}
+     |> assign(unread_counts: unread_counts, highlight_channels: highlight, flash_channels: flash)}
   end
 
   def handle_event("ctx_treebar_mute", %{"channel" => channel}, socket) do

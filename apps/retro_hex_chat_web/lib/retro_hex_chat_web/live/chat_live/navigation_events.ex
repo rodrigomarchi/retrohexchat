@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   import Phoenix.Component, only: [assign: 2]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.Queries
+  alias RetroHexChat.Chat.{Queries, UnreadTracker}
   alias RetroHexChatWeb.ChatLive.Helpers
 
   def handle_event("window_next", _params, socket) do
@@ -99,7 +99,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
 
   defp switch_channel(socket, channel) do
     session = Session.set_active_channel(socket.assigns.session, channel)
-    unread = MapSet.delete(socket.assigns.unread_channels, channel)
+    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, channel)
     highlight = MapSet.delete(socket.assigns.highlight_channels, channel)
     flash = MapSet.delete(socket.assigns.flash_channels, channel)
 
@@ -109,7 +109,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
     socket
     |> assign(
       session: session,
-      unread_channels: unread,
+      unread_counts: unread_counts,
       highlight_channels: highlight,
       flash_channels: flash,
       show_status_tab: false,
@@ -124,7 +124,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   defp switch_pm(socket, nickname) do
     session = Session.set_active_pm(socket.assigns.session, nickname)
     messages = load_pm_messages(session.nickname, nickname)
-    unread = MapSet.delete(socket.assigns.unread_channels, "pm:#{nickname}")
+    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, "pm:#{nickname}")
     flash = MapSet.delete(socket.assigns.flash_channels, "pm:#{nickname}")
 
     if socket.assigns.pm_typing_timer,
@@ -133,7 +133,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
     socket
     |> assign(
       session: session,
-      unread_channels: unread,
+      unread_counts: unread_counts,
       flash_channels: flash,
       current_topic: nil,
       current_modes: nil,
