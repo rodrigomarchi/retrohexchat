@@ -11,9 +11,11 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [push_event: 3]
 
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{KeyBindings, LogFilter}
+  alias RetroHexChatWeb.ChatLive.NavigationEvents
 
   # Escape — always hardcoded to dismiss topmost dialog/overlay
   def handle_event("window_keydown", %{"key" => "Escape"}, socket) do
@@ -27,6 +29,17 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     case KeyBindings.find_action(bindings, params) do
       nil -> {:halt, socket}
       action -> {:halt, dispatch_action(action, socket)}
+    end
+  end
+
+  # Shortcut action from ShortcutDispatcherHook (global JS dispatcher)
+  def handle_event("shortcut_action", %{"action" => action_string}, socket) do
+    action = safe_to_action(action_string)
+
+    if action do
+      {:halt, dispatch_action(action, socket)}
+    else
+      {:halt, socket}
     end
   end
 
@@ -109,6 +122,10 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     end
   end
 
+  defp dispatch_action(:toggle_cheatsheet, socket) do
+    assign(socket, cheatsheet_visible: !socket.assigns.cheatsheet_visible)
+  end
+
   defp dispatch_action(:open_help, socket) do
     assign(socket,
       show_help_dialog: true,
@@ -118,6 +135,25 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       help_search_query: "",
       help_search_results: []
     )
+  end
+
+  defp dispatch_action(:window_next, socket) do
+    {:halt, socket} = NavigationEvents.handle_event("window_next", %{}, socket)
+    socket
+  end
+
+  defp dispatch_action(:window_prev, socket) do
+    {:halt, socket} = NavigationEvents.handle_event("window_prev", %{}, socket)
+    socket
+  end
+
+  defp dispatch_action(action, socket) when action in ~w(
+    window_1 window_2 window_3 window_4 window_5
+    window_6 window_7 window_8 window_9
+  )a do
+    index = action |> Atom.to_string() |> String.split("_") |> List.last() |> String.to_integer()
+    {:halt, socket} = NavigationEvents.handle_event("window_select", %{"index" => index}, socket)
+    socket
   end
 
   defp dispatch_action(_unknown, socket), do: socket
@@ -134,6 +170,9 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
         remaining = List.delete_at(socket.assigns.pending_invites, -1)
         try_remove_invite_exception(last.channel, socket.assigns.session.nickname)
         assign(socket, pending_invites: remaining)
+
+      socket.assigns.cheatsheet_visible ->
+        assign(socket, cheatsheet_visible: false)
 
       socket.assigns.show_options_dialog ->
         assign(socket, show_options_dialog: false, options_draft: nil)
@@ -234,12 +273,24 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp clear_search_state(socket) do
-    assign(socket,
+    socket
+    |> assign(
       search_visible: false,
+      search_last_query: socket.assigns.search_query,
       search_query: "",
+      search_results: [],
       search_result_count: 0,
-      search_current_index: 0
+      search_history_count: 0,
+      search_current_index: 0,
+      search_error: nil
     )
+    |> push_event("search_clear_highlights", %{})
+  end
+
+  defp safe_to_action(action_string) do
+    String.to_existing_atom(action_string)
+  rescue
+    ArgumentError -> nil
   end
 
   defp try_remove_invite_exception(channel, nickname) do

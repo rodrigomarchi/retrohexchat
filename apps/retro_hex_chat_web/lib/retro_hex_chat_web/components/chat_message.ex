@@ -14,7 +14,11 @@ defmodule RetroHexChatWeb.Components.ChatMessage do
     assigns = assign(assigns, :nick_color_value, nick_color(assigns.message.author))
 
     ~H"""
-    <div class={"chat-message chat-message--#{@message.type}"} id={"msg-#{@message.id}"}>
+    <div
+      class={"chat-message chat-message--#{@message.type}"}
+      id={"msg-#{@message.id}"}
+      data-nick={@message.author}
+    >
       <span class="chat-timestamp">[{@formatted_time}]</span>
       {render_message_body(assigns)}
     </div>

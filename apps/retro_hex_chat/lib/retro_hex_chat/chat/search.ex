@@ -11,24 +11,58 @@ defmodule RetroHexChat.Chat.Search do
   @spec search_messages(String.t(), String.t(), keyword()) :: [Message.t()]
   def search_messages(channel_name, query, opts \\ []) do
     limit = Keyword.get(opts, :limit, @default_limit)
-    pattern = "%#{sanitize(query)}%"
 
     Message
     |> where([m], m.channel_name == ^channel_name)
-    |> where([m], ilike(m.content, ^pattern))
+    |> apply_content_filter(query, opts)
+    |> apply_nick_filter(opts)
     |> order_by([m], desc: m.id)
     |> limit(^limit)
     |> Repo.all()
   end
 
-  @spec count_matches(String.t(), String.t()) :: non_neg_integer()
-  def count_matches(channel_name, query) do
-    pattern = "%#{sanitize(query)}%"
-
+  @spec count_matches(String.t(), String.t(), keyword()) :: non_neg_integer()
+  def count_matches(channel_name, query, opts \\ []) do
     Message
     |> where([m], m.channel_name == ^channel_name)
-    |> where([m], ilike(m.content, ^pattern))
+    |> apply_content_filter(query, opts)
+    |> apply_nick_filter(opts)
     |> Repo.aggregate(:count)
+  end
+
+  @spec valid_regex?(String.t()) :: boolean()
+  def valid_regex?(pattern) do
+    case Regex.compile(pattern) do
+      {:ok, _} -> true
+      {:error, _} -> false
+    end
+  end
+
+  # -- Private helpers -------------------------------------------------------
+
+  defp apply_content_filter(queryable, query, opts) do
+    case {Keyword.get(opts, :regex, false), Keyword.get(opts, :case_sensitive, false)} do
+      {true, true} ->
+        where(queryable, [m], fragment("? ~ ?", m.content, ^query))
+
+      {true, false} ->
+        where(queryable, [m], fragment("? ~* ?", m.content, ^query))
+
+      {false, true} ->
+        pattern = "%#{sanitize(query)}%"
+        where(queryable, [m], like(m.content, ^pattern))
+
+      {false, false} ->
+        pattern = "%#{sanitize(query)}%"
+        where(queryable, [m], ilike(m.content, ^pattern))
+    end
+  end
+
+  defp apply_nick_filter(queryable, opts) do
+    case Keyword.get(opts, :nick_filter) do
+      nil -> queryable
+      nick -> where(queryable, [m], m.author_nickname == ^nick)
+    end
   end
 
   defp sanitize(query) do

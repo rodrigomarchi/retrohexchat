@@ -118,7 +118,89 @@ defmodule RetroHexChat.Chat.SearchTest do
     end
   end
 
-  describe "count_matches/2" do
+  describe "search_messages with case_sensitive option" do
+    test "case_sensitive: true matches exact case only" do
+      seed_messages()
+
+      results = Search.search_messages("#lobby", "GREAT", case_sensitive: true)
+      assert length(results) == 1
+      assert hd(results).content == "I am GREAT!"
+
+      assert Search.search_messages("#lobby", "great", case_sensitive: true) == []
+    end
+  end
+
+  describe "search_messages with regex option" do
+    test "regex: true uses PostgreSQL regex matching" do
+      seed_messages()
+
+      results = Search.search_messages("#lobby", "Hello|Hey", regex: true)
+      assert length(results) == 2
+    end
+
+    test "regex: true with case_sensitive: true" do
+      seed_messages()
+
+      results = Search.search_messages("#lobby", "hello", regex: true, case_sensitive: true)
+      assert results == []
+
+      results = Search.search_messages("#lobby", "Hello", regex: true, case_sensitive: true)
+      assert length(results) == 1
+    end
+  end
+
+  describe "search_messages with nick_filter option" do
+    test "nick_filter limits results to specific author" do
+      seed_messages()
+
+      results = Search.search_messages("#lobby", "a", nick_filter: "Alice")
+      assert Enum.all?(results, fn m -> m.author_nickname == "Alice" end)
+    end
+
+    test "nick_filter with no matching author returns empty" do
+      seed_messages()
+
+      assert Search.search_messages("#lobby", "Hello", nick_filter: "Nobody") == []
+    end
+  end
+
+  describe "valid_regex?/1" do
+    test "accepts valid regex patterns" do
+      assert Search.valid_regex?("hello")
+      assert Search.valid_regex?("error|warn")
+      assert Search.valid_regex?("\\d+\\.\\d+")
+      assert Search.valid_regex?("^start")
+    end
+
+    test "rejects invalid regex patterns" do
+      refute Search.valid_regex?("[invalid")
+      refute Search.valid_regex?("(unclosed")
+      refute Search.valid_regex?("*bad")
+    end
+  end
+
+  describe "search_messages history (limit/offset)" do
+    test "search returns results from DB beyond visible messages" do
+      for i <- 1..20 do
+        Queries.insert_message(%{
+          channel_name: "#lobby",
+          author_nickname: "HistUser",
+          content: "history test msg #{i}",
+          type: "message"
+        })
+      end
+
+      # Default limit 50 returns all 20
+      results = Search.search_messages("#lobby", "history test")
+      assert length(results) == 20
+
+      # With limit 5, returns only 5 most recent
+      results = Search.search_messages("#lobby", "history test", limit: 5)
+      assert length(results) == 5
+    end
+  end
+
+  describe "count_matches/3" do
     test "returns count of matching messages" do
       seed_messages()
 
@@ -136,6 +218,14 @@ defmodule RetroHexChat.Chat.SearchTest do
 
       assert Search.count_matches("#lobby", "Hello") == 1
       assert Search.count_matches("#other", "Hello") == 1
+    end
+
+    test "respects filter options" do
+      seed_messages()
+
+      # Alice wrote "Hello world!" and "How are you?" — only "How are you?" contains "a"
+      assert Search.count_matches("#lobby", "a", nick_filter: "Alice") == 1
+      assert Search.count_matches("#lobby", "GREAT", case_sensitive: true) == 1
     end
   end
 end

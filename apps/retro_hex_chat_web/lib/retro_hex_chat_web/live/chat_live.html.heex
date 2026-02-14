@@ -2,6 +2,8 @@
 <div id="title-flash" phx-hook="TitleFlashHook" style="display: none;"></div>
 <div id="options-hook" phx-hook="OptionsHook" style="display: none;"></div>
 <div id="key-capture-hook" phx-hook="KeyBindingCaptureHook" style="display: none;"></div>
+<div id="search-highlight-hook" phx-hook="SearchHighlightHook" style="display: none;"></div>
+<div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" style="display: none;"></div>
 <div
   class={"app-container#{if @compact_mode, do: " compact-mode", else: ""}"}
   phx-click="close_context_menu"
@@ -53,6 +55,11 @@
         query={@search_query}
         result_count={@search_result_count}
         current_index={@search_current_index}
+        error={@search_error}
+        case_sensitive={@search_case_sensitive}
+        regex={@search_regex}
+        my_mentions={@search_my_mentions}
+        history={@search_history}
       />
 
       <RetroHexChatWeb.Components.ScrollLoader.scroll_loader loading={@loading_more} />
@@ -361,6 +368,11 @@
     search_query={@url_catcher_search_query}
     channels={url_catcher_channels(assigns)}
     entry_count={length(@url_catcher_entries)}
+  />
+
+  <RetroHexChatWeb.Components.CheatsheetDialog.cheatsheet_dialog
+    visible={@cheatsheet_visible}
+    bindings={@session.user_preferences.key_bindings}
   />
 
   <RetroHexChatWeb.Components.HelpDialog.help_dialog

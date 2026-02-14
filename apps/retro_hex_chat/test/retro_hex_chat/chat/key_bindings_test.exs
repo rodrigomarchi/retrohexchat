@@ -5,13 +5,13 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
 
   describe "defaults/0" do
     @tag :unit
-    test "returns 9 default bindings" do
+    test "returns 21 default bindings (9 original + 12 new)" do
       bindings = KeyBindings.defaults()
-      assert map_size(bindings) == 9
+      assert map_size(bindings) == 21
     end
 
     @tag :unit
-    test "includes all expected actions" do
+    test "includes all original actions" do
       bindings = KeyBindings.defaults()
 
       assert Map.has_key?(bindings, :toggle_search)
@@ -26,27 +26,183 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     end
 
     @tag :unit
+    test "includes all new actions" do
+      bindings = KeyBindings.defaults()
+
+      assert Map.has_key?(bindings, :toggle_cheatsheet)
+      assert Map.has_key?(bindings, :window_next)
+      assert Map.has_key?(bindings, :window_prev)
+
+      for n <- 1..9 do
+        assert Map.has_key?(bindings, :"window_#{n}")
+      end
+    end
+
+    @tag :unit
     test "search is Ctrl+Shift+F" do
       bindings = KeyBindings.defaults()
       assert bindings.toggle_search == %{key: "f", modifiers: [:ctrl, :shift]}
     end
 
     @tag :unit
-    test "help is Ctrl+Shift+/" do
+    test "open_help has no keyboard binding (menu only)" do
       bindings = KeyBindings.defaults()
-      assert bindings.open_help == %{key: "/", modifiers: [:ctrl, :shift]}
+      assert bindings.open_help == nil
+    end
+
+    @tag :unit
+    test "cheatsheet is Ctrl+Shift+/ (replaces open_help)" do
+      bindings = KeyBindings.defaults()
+      assert bindings.toggle_cheatsheet == %{key: "/", modifiers: [:ctrl, :shift]}
+    end
+
+    @tag :unit
+    test "window_next is Ctrl+Shift+]" do
+      bindings = KeyBindings.defaults()
+      assert bindings.window_next == %{key: "]", modifiers: [:ctrl, :shift]}
+    end
+
+    @tag :unit
+    test "window_prev is Ctrl+Shift+[" do
+      bindings = KeyBindings.defaults()
+      assert bindings.window_prev == %{key: "[", modifiers: [:ctrl, :shift]}
+    end
+
+    @tag :unit
+    test "window_1..9 are Ctrl+Shift+1..9" do
+      bindings = KeyBindings.defaults()
+
+      for n <- 1..9 do
+        action = :"window_#{n}"
+        assert bindings[action] == %{key: "#{n}", modifiers: [:ctrl, :shift]}
+      end
     end
   end
 
   describe "actions/0" do
     @tag :unit
-    test "returns sorted list of action-label pairs" do
+    test "returns sorted list of action-label pairs for all 21 actions" do
       actions = KeyBindings.actions()
       assert is_list(actions)
-      assert length(actions) == 9
+      assert length(actions) == 21
 
       labels = Enum.map(actions, fn {_action, label} -> label end)
       assert labels == Enum.sort(labels)
+    end
+  end
+
+  describe "registry/1" do
+    @tag :unit
+    test "returns entries with all required fields" do
+      entries = KeyBindings.registry(KeyBindings.defaults())
+
+      for entry <- entries do
+        assert Map.has_key?(entry, :action)
+        assert Map.has_key?(entry, :category)
+        assert Map.has_key?(entry, :label)
+        assert Map.has_key?(entry, :description)
+        assert Map.has_key?(entry, :binding)
+        assert Map.has_key?(entry, :default_binding)
+        assert Map.has_key?(entry, :customizable)
+      end
+    end
+
+    @tag :unit
+    test "returns 21 entries for default bindings" do
+      entries = KeyBindings.registry(KeyBindings.defaults())
+      assert length(entries) == 21
+    end
+
+    @tag :unit
+    test "entries are sorted by category then label" do
+      entries = KeyBindings.registry(KeyBindings.defaults())
+      categories = Enum.map(entries, & &1.category)
+
+      # Navigation should come before Chat, Chat before Formatting, Formatting before System
+      nav_idx = Enum.find_index(categories, &(&1 == :navigation))
+      sys_idx = Enum.find_index(categories, &(&1 == :system))
+      assert nav_idx < sys_idx
+    end
+
+    @tag :unit
+    test "reflects custom bindings" do
+      custom =
+        Map.put(KeyBindings.defaults(), :toggle_search, %{key: "q", modifiers: [:ctrl, :shift]})
+
+      entries = KeyBindings.registry(custom)
+      search_entry = Enum.find(entries, &(&1.action == :toggle_search))
+
+      assert search_entry.binding == %{key: "q", modifiers: [:ctrl, :shift]}
+      assert search_entry.default_binding == %{key: "f", modifiers: [:ctrl, :shift]}
+    end
+
+    @tag :unit
+    test "open_help has nil binding and nil default_binding" do
+      entries = KeyBindings.registry(KeyBindings.defaults())
+      help_entry = Enum.find(entries, &(&1.action == :open_help))
+
+      assert help_entry.binding == nil
+      assert help_entry.default_binding == nil
+    end
+
+    @tag :unit
+    test "window_1..9 are not customizable" do
+      entries = KeyBindings.registry(KeyBindings.defaults())
+
+      for n <- 1..9 do
+        entry = Enum.find(entries, &(&1.action == :"window_#{n}"))
+        refute entry.customizable
+      end
+    end
+
+    @tag :unit
+    test "toggle_cheatsheet is customizable" do
+      entries = KeyBindings.registry(KeyBindings.defaults())
+      entry = Enum.find(entries, &(&1.action == :toggle_cheatsheet))
+      assert entry.customizable
+    end
+  end
+
+  describe "categories/1" do
+    @tag :unit
+    test "returns 4 categories" do
+      cats = KeyBindings.categories(KeyBindings.defaults())
+      cat_names = Enum.map(cats, fn {cat, _} -> cat end)
+
+      assert :navigation in cat_names
+      assert :system in cat_names
+    end
+
+    @tag :unit
+    test "categories are in display order" do
+      cats = KeyBindings.categories(KeyBindings.defaults())
+      cat_names = Enum.map(cats, fn {cat, _} -> cat end)
+
+      # Navigation first, system last
+      nav_idx = Enum.find_index(cat_names, &(&1 == :navigation))
+      sys_idx = Enum.find_index(cat_names, &(&1 == :system))
+      assert nav_idx < sys_idx
+    end
+
+    @tag :unit
+    test "navigation category includes window actions" do
+      cats = KeyBindings.categories(KeyBindings.defaults())
+      {_, nav_entries} = Enum.find(cats, fn {cat, _} -> cat == :navigation end)
+      nav_actions = Enum.map(nav_entries, & &1.action)
+
+      assert :window_next in nav_actions
+      assert :window_prev in nav_actions
+      assert :window_1 in nav_actions
+    end
+
+    @tag :unit
+    test "system category includes cheatsheet and search" do
+      cats = KeyBindings.categories(KeyBindings.defaults())
+      {_, sys_entries} = Enum.find(cats, fn {cat, _} -> cat == :system end)
+      sys_actions = Enum.map(sys_entries, & &1.action)
+
+      assert :toggle_cheatsheet in sys_actions
+      assert :toggle_search in sys_actions
     end
   end
 
@@ -60,11 +216,11 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     end
 
     @tag :unit
-    test "finds Ctrl+Shift+/ action for help" do
+    test "finds Ctrl+Shift+/ action for cheatsheet" do
       bindings = KeyBindings.defaults()
 
       params = %{"key" => "/", "altKey" => false, "ctrlKey" => true, "shiftKey" => true}
-      assert KeyBindings.find_action(bindings, params) == :open_help
+      assert KeyBindings.find_action(bindings, params) == :toggle_cheatsheet
     end
 
     @tag :unit
@@ -240,8 +396,29 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     end
 
     @tag :unit
+    test "to_persistable excludes nil bindings" do
+      persisted = KeyBindings.to_persistable(KeyBindings.defaults())
+      refute Map.has_key?(persisted, "open_help")
+    end
+
+    @tag :unit
     test "from_persisted with empty map returns defaults" do
       assert KeyBindings.from_persisted(%{}) == KeyBindings.defaults()
+    end
+
+    @tag :unit
+    test "from_persisted merges new actions into old persisted data" do
+      # Simulate old persisted data that doesn't have new actions
+      old_data = %{
+        "toggle_search" => %{"key" => "f", "modifiers" => ["ctrl", "shift"]}
+      }
+
+      restored = KeyBindings.from_persisted(old_data)
+      # Should have custom search binding
+      assert restored.toggle_search == %{key: "f", modifiers: [:ctrl, :shift]}
+      # Should also have new actions from defaults
+      assert Map.has_key?(restored, :toggle_cheatsheet)
+      assert Map.has_key?(restored, :window_next)
     end
   end
 end

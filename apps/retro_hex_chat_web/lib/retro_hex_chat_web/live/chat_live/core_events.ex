@@ -78,6 +78,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
        pm_typing_from: nil,
        pm_typing_timer: nil
      )
+     |> clear_search_on_switch()
      |> load_channel_users(channel)
      |> load_channel_messages_with_pagination(channel)
      |> push_reconnect_state()}
@@ -125,6 +126,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
        pm_typing_from: nil,
        pm_typing_timer: nil
      )
+     |> clear_search_on_switch()
      |> stream(:chat_messages, messages, reset: true)
      |> push_reconnect_state()}
   end
@@ -169,7 +171,13 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- close_dialog --
 
   def handle_event("close_dialog", _params, socket) do
-    {:halt, assign(socket, show_about: false, show_whois: false, whois_target: nil)}
+    {:halt,
+     assign(socket,
+       show_about: false,
+       show_whois: false,
+       whois_target: nil,
+       cheatsheet_visible: false
+     )}
   end
 
   # -- load_more --
@@ -403,6 +411,25 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     case Enum.find(sub_options, &String.starts_with?(first_arg, &1.flag)) do
       nil -> nil
       opt -> "Você está definindo: #{opt.flag} (#{opt.label})"
+    end
+  end
+
+  defp clear_search_on_switch(socket) do
+    if socket.assigns.search_visible do
+      socket
+      |> assign(
+        search_visible: false,
+        search_last_query: socket.assigns.search_query,
+        search_query: "",
+        search_results: [],
+        search_result_count: 0,
+        search_history_count: 0,
+        search_current_index: 0,
+        search_error: nil
+      )
+      |> push_event("search_clear_highlights", %{})
+    else
+      socket
     end
   end
 end

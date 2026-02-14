@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive do
     HelpTopics,
     HighlightWords,
     IgnoreList,
+    KeyBindings,
     LogFilter,
     PerformList,
     URLDetector,
@@ -97,6 +98,7 @@ defmodule RetroHexChatWeb.ChatLive do
       {:favorites_events, &ChatLive.FavoritesEvents.handle_event/3},
       {:channel_central_events, &ChatLive.ChannelCentralEvents.handle_event/3},
       {:log_viewer_events, &ChatLive.LogViewerEvents.handle_event/3},
+      {:navigation_events, &ChatLive.NavigationEvents.handle_event/3},
       {:search_events, &ChatLive.SearchEvents.handle_event/3},
       {:perform_autojoin_events, &ChatLive.PerformAutojoinEvents.handle_event/3},
       {:menu_toolbar_events, &ChatLive.MenuToolbarEvents.handle_event/3},
@@ -146,12 +148,20 @@ defmodule RetroHexChatWeb.ChatLive do
       notify_selected: nil,
       oldest_message_id: nil,
       page_title: "RetroHexChat",
+      search_case_sensitive: false,
       search_current_index: 0,
+      search_error: nil,
+      search_history: false,
+      search_history_count: 0,
+      search_last_query: "",
+      search_my_mentions: false,
       search_query: "",
+      search_regex: false,
       search_result_count: 0,
       search_results: [],
       search_visible: false,
       session: session,
+      cheatsheet_visible: false,
       show_about: false,
       show_address_book: false,
       show_context_color_picker: false,
@@ -346,6 +356,9 @@ defmodule RetroHexChatWeb.ChatLive do
       enabled: prefs.connect.auto_reconnect_enabled,
       max_attempts: prefs.connect.max_retries,
       max_delay: prefs.connect.retry_interval
+    })
+    |> push_event("update_bindings", %{
+      bindings: KeyBindings.to_persistable(prefs.key_bindings)
     })
   end
 

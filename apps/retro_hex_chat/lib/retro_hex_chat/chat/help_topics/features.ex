@@ -232,14 +232,42 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         id: "feature-search",
         title: "Search",
         category: "Features",
-        keywords: ["search", "find", "ctrl+f", "text search"],
+        keywords: [
+          "search",
+          "find",
+          "ctrl+f",
+          "text search",
+          "highlight",
+          "regex",
+          "case sensitive",
+          "history search"
+        ],
         content:
           "<h3>Search</h3>" <>
-            "<p>Search through messages in the current channel or PM.</p>" <>
+            "<p>Search through messages in the current channel or PM with real-time highlighting.</p>" <>
             "<h4>Opening</h4>" <>
             "<p>Press <strong>Ctrl+Shift+F</strong> or go to <strong>Edit &gt; Find...</strong>.</p>" <>
-            "<h4>Usage</h4>" <>
-            "<p>Type your search term and press Enter. Use the arrow buttons to navigate between matches. The current match count is displayed. Press <strong>Escape</strong> to close the search bar.</p>"
+            "<h4>Highlighting</h4>" <>
+            "<p>As you type, all matching occurrences in the chat are highlighted with a yellow background. " <>
+            "The active match is highlighted in orange. The counter shows your position (e.g., \"3 of 17\").</p>" <>
+            "<h4>Navigation</h4>" <>
+            "<p>Use <strong>Prev</strong>/<strong>Next</strong> buttons, or press " <>
+            "<strong>Arrow Down</strong>/<strong>Arrow Up</strong> in the search input to jump between matches. " <>
+            "The chat scrolls to each match automatically.</p>" <>
+            "<h4>Search Filters</h4>" <>
+            "<p><strong>Case:</strong> Case-sensitive matching (default: case-insensitive).<br/>" <>
+            "<strong>Regex:</strong> Regular expression matching (e.g., <code>error|warn</code>). " <>
+            "Invalid regex patterns show an inline error.<br/>" <>
+            "<strong>My nick:</strong> Only search messages that mention your nickname.<br/>" <>
+            "<strong>History:</strong> Extend search into the database beyond currently loaded messages.</p>" <>
+            "<h4>Session Memory</h4>" <>
+            "<p>The search bar remembers your last search term. When you reopen it, " <>
+            "the previous query is restored and matches are re-highlighted.</p>" <>
+            "<h4>Closing</h4>" <>
+            "<p>Press <strong>Escape</strong> or click the close button. All highlights are removed.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-cheatsheet\">Shortcut Cheatsheet</a></p>"
       },
       %{
         id: "feature-log-viewer",
@@ -1135,6 +1163,36 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<p><a href=\"#\" data-help-topic=\"feature-enhanced-history\">Enhanced History</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-command-syntax-tooltip\">Command Syntax Tooltip</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-char-counter\">Character Counter</a></p>"
+      },
+      %{
+        id: "feature-cheatsheet",
+        title: "Shortcut Cheatsheet",
+        category: "Features",
+        keywords: [
+          "cheatsheet",
+          "cheat sheet",
+          "shortcut list",
+          "keyboard reference",
+          "quick reference"
+        ],
+        content:
+          "<h3>Shortcut Cheatsheet</h3>" <>
+            "<p>The Shortcut Cheatsheet displays all available keyboard shortcuts organized by category " <>
+            "in a read-only 98.css-styled dialog.</p>" <>
+            "<h4>Opening</h4>" <>
+            "<p>Press <strong>Ctrl+Shift+/</strong> to toggle the cheatsheet dialog.</p>" <>
+            "<h4>Categories</h4>" <>
+            "<p>Shortcuts are grouped into categories: Navigation, Windows &amp; Dialogs, " <>
+            "and Text Formatting. Each category shows a table with Action and Binding columns.</p>" <>
+            "<h4>Custom Bindings</h4>" <>
+            "<p>The cheatsheet reflects your current key bindings. If you have customized " <>
+            "shortcuts in <strong>Options &gt; Key Bindings</strong>, the cheatsheet shows " <>
+            "your custom bindings. Unbound actions show an em dash (&mdash;).</p>" <>
+            "<h4>Closing</h4>" <>
+            "<p>Press <strong>Escape</strong>, <strong>Ctrl+Shift+/</strong>, or click the close button.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-key-bindings\">Key Bindings</a></p>"
       },
       %{
         id: "feature-enhanced-history",

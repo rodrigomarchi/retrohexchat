@@ -284,6 +284,9 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
       max_attempts: draft.connect.max_retries,
       max_delay: draft.connect.retry_interval
     })
+    |> push_event("update_bindings", %{
+      bindings: KeyBindings.to_persistable(draft.key_bindings)
+    })
     |> Persistence.maybe_persist_user_preferences(updated_session)
   end
 

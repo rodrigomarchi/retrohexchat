@@ -137,6 +137,39 @@
   white-space: nowrap;
 }
 
+.search-bar .search-error {
+  font-size: 11px;
+  color: #ff4444;
+  white-space: nowrap;
+}
+
+.search-bar .search-filters {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 11px;
+}
+
+.search-bar .search-filters label {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Search highlighting */
+.search-highlight {
+  background-color: #ffff00;
+  color: #000000;
+}
+
+.search-highlight-active {
+  background-color: #ff9632;
+  color: #000000;
+  outline: 2px solid #ff6400;
+}
+
 /* Autocomplete dropdown */
 .autocomplete-item {
   cursor: pointer;
