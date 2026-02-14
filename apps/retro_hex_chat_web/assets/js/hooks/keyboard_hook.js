@@ -4,26 +4,23 @@
  * - Arrow Up / Down: navigate command history
  * - Tab: nickname completion
  */
+import { classifyInputKey } from "../lib/keyboard.js";
+
 const KeyboardHook = {
   mounted() {
     this.inputEl = this.el;
 
     this.inputEl.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowUp") {
-        e.preventDefault();
-        this.pushEvent("history_navigate", { direction: "up" });
-        return;
-      }
+      const action = classifyInputKey(e.key);
+      if (!action) return;
 
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        this.pushEvent("history_navigate", { direction: "down" });
-        return;
-      }
+      e.preventDefault();
 
-      if (e.key === "Tab") {
-        e.preventDefault();
+      if (action === "tab_complete") {
         this.pushEvent("tab_complete", { partial: this.inputEl.value });
+      } else {
+        const direction = action === "history_up" ? "up" : "down";
+        this.pushEvent("history_navigate", { direction });
       }
     });
   },

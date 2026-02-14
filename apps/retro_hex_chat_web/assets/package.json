@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint js/ test/",
+    "lint:fix": "eslint js/ test/ --fix",
+    "format": "prettier --write js/ test/ eslint.config.mjs vitest.config.js",
+    "format:check": "prettier --check js/ test/ eslint.config.mjs vitest.config.js"
   },
   "keywords": [],
   "author": "",
@@ -12,5 +17,14 @@
   "type": "commonjs",
   "dependencies": {
     "98.css": "^0.1.21"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.3.0",
+    "jsdom": "^28.0.0",
+    "prettier": "^3.8.1",
+    "vitest": "^4.0.18"
   }
 }

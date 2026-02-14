@@ -1,12 +1,18 @@
+/**
+ * LiveView hook for notify list double-click → open PM query.
+ * Listens for dblclick on notification rows and pushes notify_dblclick event.
+ */
+import { findClosestWithData } from "../lib/dom.js";
+
 const NotifyListHook = {
   mounted() {
     this.el.addEventListener("dblclick", (e) => {
-      const row = e.target.closest("tr[data-nickname]")
-      if (row) {
-        this.pushEvent("notify_dblclick", { nickname: row.dataset.nickname })
+      const nickname = findClosestWithData(e.target, "tr[data-nickname]", "nickname");
+      if (nickname) {
+        this.pushEvent("notify_dblclick", { nickname });
       }
-    })
-  }
-}
+    });
+  },
+};
 
-export default NotifyListHook
+export default NotifyListHook;

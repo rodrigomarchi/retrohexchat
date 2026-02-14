@@ -6,6 +6,8 @@
  * that captures the key + modifiers and sends them back to the server
  * via "options_capture_key" push event.
  */
+import { isModifierKey } from "../lib/shortcuts.js";
+
 const KeyBindingCaptureHook = {
   mounted() {
     this.captureHandler = null;
@@ -27,8 +29,7 @@ const KeyBindingCaptureHook = {
     this.stopCapture();
 
     this.captureHandler = (e) => {
-      // Ignore standalone modifier keys
-      if (["Control", "Alt", "Shift", "Meta"].includes(e.key)) return;
+      if (isModifierKey(e.key)) return;
 
       e.preventDefault();
       e.stopPropagation();
@@ -38,7 +39,7 @@ const KeyBindingCaptureHook = {
         key: e.key,
         ctrlKey: e.ctrlKey,
         altKey: e.altKey,
-        shiftKey: e.shiftKey
+        shiftKey: e.shiftKey,
       });
 
       this.stopCapture();
@@ -52,7 +53,7 @@ const KeyBindingCaptureHook = {
       document.removeEventListener("keydown", this.captureHandler, true);
       this.captureHandler = null;
     }
-  }
+  },
 };
 
 export default KeyBindingCaptureHook;

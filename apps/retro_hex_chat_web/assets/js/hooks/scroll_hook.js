@@ -6,6 +6,14 @@
  * - Shows "New messages" button when scrolled up and new message arrives
  * - Preserves scroll position during prepend of older messages
  */
+import {
+  isAtBottom as checkIsAtBottom,
+  shouldLoadMore,
+  detectContextTarget,
+  buildMessageText,
+  collectUrls,
+} from "../lib/chat.js";
+
 const ScrollHook = {
   mounted() {
     this.chatEl = this.el;
@@ -31,7 +39,10 @@ const ScrollHook = {
     this.handleEvent("link_preview", ({ url, title }) => {
       const links = this.chatEl.querySelectorAll(`a.chat-link[href="${CSS.escape(url)}"]`);
       links.forEach((link) => {
-        if (!link.nextElementSibling || !link.nextElementSibling.classList.contains("chat-link-preview")) {
+        if (
+          !link.nextElementSibling ||
+          !link.nextElementSibling.classList.contains("chat-link-preview")
+        ) {
           const preview = document.createElement("span");
           preview.className = "chat-link-preview";
           preview.textContent = title;
@@ -42,7 +53,7 @@ const ScrollHook = {
 
     // Listen for file download (log export)
     this.handleEvent("download_file", ({ content, filename, mime_type }) => {
-      const bytes = Uint8Array.from(atob(content), c => c.charCodeAt(0));
+      const bytes = Uint8Array.from(atob(content), (c) => c.charCodeAt(0));
       const blob = new Blob([bytes], { type: mime_type });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -67,7 +78,6 @@ const ScrollHook = {
 
     // Smart right-click context menu detection
     this.chatEl.addEventListener("contextmenu", (e) => {
-      // Skip if inside input field — preserve browser default menu
       if (e.target.closest("textarea, input, [contenteditable]")) return;
 
       const msgEl = e.target.closest(".chat-message");
@@ -104,7 +114,6 @@ const ScrollHook = {
     // Observe DOM mutations for auto-scroll and prepend handling
     this.observer = new MutationObserver(() => {
       if (this.pendingPrepend) {
-        // Preserve scroll position after prepend
         const newScrollHeight = this.chatEl.scrollHeight;
         const heightDiff = newScrollHeight - this.prevScrollHeight;
         this.chatEl.scrollTop += heightDiff;
@@ -120,7 +129,6 @@ const ScrollHook = {
   },
 
   updated() {
-    // After LiveView DOM patch, check if we should scroll
     if (this.isAtBottom) {
       this.scrollToBottom();
     }
@@ -133,17 +141,13 @@ const ScrollHook = {
   },
 
   handleScroll() {
-    const { scrollTop, scrollHeight, clientHeight } = this.chatEl;
-
-    // Check if at bottom (within 50px threshold)
-    this.isAtBottom = scrollHeight - scrollTop - clientHeight < 50;
+    this.isAtBottom = checkIsAtBottom(this.chatEl);
 
     if (this.isAtBottom) {
       this.hideNewMessagesButton();
     }
 
-    // Check if at top (within 10px threshold) - trigger load more
-    if (scrollTop < 10) {
+    if (shouldLoadMore(this.chatEl.scrollTop)) {
       this.pushEvent("load_more", {});
     }
   },
@@ -176,84 +180,17 @@ const ScrollHook = {
     }
   },
 
-  /**
-   * Detect what was right-clicked and push context menu event.
-   * Priority: nick > URL > channel > message (most specific wins).
-   */
   detectAndPushContextMenu(e, msgEl) {
-    const target = e.target;
-    const payload = {
-      x: e.clientX,
-      y: e.clientY,
-      author: msgEl.dataset.author || "",
-      message_id: msgEl.dataset.messageId || "",
-      is_system: msgEl.dataset.systemMessage === "true",
-      has_selection: window.getSelection().toString().length > 0,
-      message_text: this.buildMessageText(msgEl),
-      message_urls: this.collectUrls(msgEl),
-    };
-
-    // Check nick first (most specific)
-    const nickEl = target.closest(".chat-nick[data-nick]");
-    if (nickEl) {
-      payload.type = "nick";
-      payload.nick = nickEl.dataset.nick;
-      this.pushEvent("chat_context_menu", payload);
-      return;
-    }
-
-    // Check URL
-    const urlEl = target.closest(".chat-link[data-url]");
-    if (urlEl) {
-      payload.type = "url";
-      payload.url = urlEl.dataset.url;
-      this.pushEvent("chat_context_menu", payload);
-      return;
-    }
-
-    // Check channel link
-    const channelEl = target.closest(".chat-channel-link[data-channel]");
-    if (channelEl) {
-      payload.type = "channel";
-      payload.channel = channelEl.dataset.channel;
-      this.pushEvent("chat_context_menu", payload);
-      return;
-    }
-
-    // Default: message context menu
-    payload.type = "message";
-    if (payload.message_urls.length > 0) {
-      payload.url = payload.message_urls[0];
-    }
+    const payload = detectContextTarget(e, msgEl);
     this.pushEvent("chat_context_menu", payload);
   },
 
-  /**
-   * Build formatted message text for "Copy Message": [HH:MM] <Nick> message
-   */
   buildMessageText(msgEl) {
-    const timestampEl = msgEl.querySelector(".chat-timestamp");
-    const nickEl = msgEl.querySelector(".chat-nick");
-    const contentEl = msgEl.querySelector(".chat-content");
-
-    if (timestampEl && nickEl && contentEl) {
-      const time = timestampEl.textContent.trim();
-      const nick = (msgEl.dataset.author || "").trim();
-      const content = contentEl.textContent.trim();
-      return `[${time}] <${nick}> ${content}`;
-    }
-
-    // Fallback for non-standard messages (action, system, etc.)
-    return msgEl.textContent.trim().replace(/\s+/g, " ");
+    return buildMessageText(msgEl);
   },
 
-  /**
-   * Collect all URLs from data-url attributes in a message.
-   */
   collectUrls(msgEl) {
-    return Array.from(msgEl.querySelectorAll(".chat-link[data-url]")).map(
-      (el) => el.dataset.url
-    );
+    return collectUrls(msgEl);
   },
 };
 

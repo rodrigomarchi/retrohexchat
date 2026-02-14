@@ -2,7 +2,8 @@
        db.gen.migration server iex routes \
        test test.unit test.integration test.liveview test.e2e test.all test.cover \
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
-       lint format format.check credo dialyzer precommit compile \
+       test.js test.js.watch \
+       lint format format.check credo dialyzer lint.js lint.js.fix precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
        deps.tree deps.update deps.unlock app.tree \
@@ -138,20 +139,35 @@ test.file: ## Run a specific test file (usage: make test.file FILE=path/to/test.
 test.line: ## Run a specific test by file:line (usage: make test.line TARGET=path/to/test.exs:42)
 	mix test $(TARGET)
 
+test.js: ## Run JavaScript tests (Vitest)
+	npm test --prefix $(WEB_APP)/assets
+
+test.js.watch: ## Run JavaScript tests in watch mode
+	npm run test:watch --prefix $(WEB_APP)/assets
+
 # ---------------------------------------------------------------------
 # Static Analysis (Constitution Principle VI)
 # ---------------------------------------------------------------------
 
-lint: format.check credo dialyzer ## Run all static analysis checks
+lint: format.check credo dialyzer lint.js ## Run all static analysis checks
 
 format: ## Auto-format all source files
 	mix format
+	npm run format --prefix $(WEB_APP)/assets
 
 format.check: ## Check formatting without modifying files
 	mix format --check-formatted
 
 credo: ## Run Credo linter (strict mode)
 	mix credo --strict
+
+lint.js: ## Run ESLint + Prettier check on JS
+	npm run lint --prefix $(WEB_APP)/assets
+	npm run format:check --prefix $(WEB_APP)/assets
+
+lint.js.fix: ## Auto-fix ESLint + Prettier issues
+	npm run lint:fix --prefix $(WEB_APP)/assets
+	npm run format --prefix $(WEB_APP)/assets
 
 dialyzer: ## Run Dialyzer type checker
 	mix dialyzer

@@ -6,38 +6,34 @@
  * overlay with countdown and attempt tracking. Phoenix LiveView handles
  * the actual reconnection logic — this hook is purely visual.
  */
+import { getBackoffDelay, RECONNECT_DEFAULTS } from "../lib/reconnect.js";
+
 const ReconnectHook = {
   mounted() {
     this.attempt = 0;
-    this.maxAttempts = 10;
-    this.maxDelay = 30;
+    this.maxAttempts = RECONNECT_DEFAULTS.maxAttempts;
+    this.maxDelay = RECONNECT_DEFAULTS.maxDelay;
     this.enabled = true;
     this.overlay = null;
     this.countdownTimer = null;
     this.cancelled = false;
     this.wasDisconnected = false;
 
-    // Listen for intentional disconnect (e.g. /quit command)
     this.handleEvent("intentional_disconnect", () => {
       localStorage.setItem("rhc_intentional_disconnect", "true");
     });
 
-    // Listen for reconnect state to save
     this.handleEvent("save_reconnect_state", (data) => {
       localStorage.setItem("rhc_reconnect_state", JSON.stringify(data));
     });
 
-    // Listen for dynamic reconnect configuration from Options dialog
     this.handleEvent("reconnect_config", (config) => {
       if (config.enabled !== undefined) this.enabled = config.enabled;
       if (config.max_attempts !== undefined) this.maxAttempts = config.max_attempts;
       if (config.max_delay !== undefined) this.maxDelay = config.max_delay;
     });
 
-    // On full remount, check if there's saved reconnect state to restore
     this.maybePushRestoreSession();
-
-    // Watch for phx-loading class on the LiveView container
     this.setupObserver();
   },
 
@@ -50,10 +46,8 @@ const ReconnectHook = {
   },
 
   setupObserver() {
-    // Find the closest LiveView root element (has data-phx-main or data-phx-session)
     const liveViewEl =
-      document.querySelector("[data-phx-main]") ||
-      document.querySelector("[data-phx-session]");
+      document.querySelector("[data-phx-main]") || document.querySelector("[data-phx-session]");
 
     if (!liveViewEl) return;
 
@@ -78,13 +72,11 @@ const ReconnectHook = {
   },
 
   handleDisconnect() {
-    // Check if this was an intentional disconnect
     if (localStorage.getItem("rhc_intentional_disconnect") === "true") {
       localStorage.removeItem("rhc_intentional_disconnect");
       return;
     }
 
-    // Check if auto-reconnect is enabled
     if (!this.enabled) return;
 
     this.wasDisconnected = true;
@@ -110,7 +102,7 @@ const ReconnectHook = {
       const state = JSON.parse(raw);
       localStorage.removeItem("rhc_reconnect_state");
       this.pushEvent("restore_session", state);
-    } catch (_e) {
+    } catch {
       localStorage.removeItem("rhc_reconnect_state");
     }
   },
@@ -130,9 +122,7 @@ const ReconnectHook = {
   },
 
   getBackoffDelay(attempt) {
-    // Exponential backoff: 1, 2, 4, 8, 16, capped at maxDelay
-    const base = Math.pow(2, attempt - 1);
-    return Math.min(base, this.maxDelay);
+    return getBackoffDelay(attempt, this.maxDelay);
   },
 
   showCountdownOverlay(delaySecs) {
@@ -170,9 +160,6 @@ const ReconnectHook = {
       remaining--;
       if (remaining <= 0) {
         this.clearCountdown();
-        // Start next cycle after this countdown ends
-        // Phoenix LiveView is already trying to reconnect on its own;
-        // we just show the visual feedback
         if (!this.cancelled && this.wasDisconnected) {
           this.startReconnectCycle();
         }

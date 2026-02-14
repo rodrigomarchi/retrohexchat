@@ -25,6 +25,7 @@ jobs:
       compile: ${{ steps.compile.outcome }}
       format: ${{ steps.format.outcome }}
       credo: ${{ steps.credo.outcome }}
+      js_lint: ${{ steps.js_lint.outcome }}
     steps:
       - uses: actions/checkout@v4
 
@@ -75,6 +76,15 @@ jobs:
           set -o pipefail
           mix credo --strict 2>&1 | tee /tmp/credo_output.txt
 
+      - run: npm install --prefix apps/retro_hex_chat_web/assets
+
+      - name: JS Lint
+        id: js_lint
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          (npm run lint --prefix apps/retro_hex_chat_web/assets && npm run format:check --prefix apps/retro_hex_chat_web/assets) 2>&1 | tee /tmp/js_lint_output.txt
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -88,6 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.tests.outcome }}
+      js_tests: ${{ steps.js_tests.outcome }}
     services:
       postgres:
         image: postgres:16-alpine
@@ -138,6 +149,13 @@ jobs:
       - run: npm install --prefix apps/retro_hex_chat_web/assets
       - run: mix compile
       - run: mix ecto.create --quiet && mix ecto.migrate --quiet
+
+      - name: JS Tests
+        id: js_tests
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm test --prefix apps/retro_hex_chat_web/assets 2>&1 | tee /tmp/js_tests_output.txt
 
       - name: Tests
         id: tests
@@ -241,7 +259,9 @@ jobs:
           STATUS_COMPILE: ${{ needs.lint.outputs.compile }}
           STATUS_FORMAT: ${{ needs.lint.outputs.format }}
           STATUS_CREDO: ${{ needs.lint.outputs.credo }}
+          STATUS_JS_LINT: ${{ needs.lint.outputs.js_lint }}
           STATUS_TESTS: ${{ needs.test.outputs.tests }}
+          STATUS_JS_TESTS: ${{ needs.test.outputs.js_tests }}
           STATUS_DIALYZER: ${{ needs.dialyzer.outputs.dialyzer }}
           RUN_NUMBER: ${{ github.run_number }}
           RUN_ID: ${{ github.run_id }}
@@ -303,6 +323,8 @@ jobs:
             echo "| **Compile** | $(icon "$STATUS_COMPILE") |"
             echo "| **Format** | $(icon "$STATUS_FORMAT") |"
             echo "| **Credo** | $(icon "$STATUS_CREDO") ${CREDO_SUMMARY} |"
+            echo "| **JS Lint** | $(icon "$STATUS_JS_LINT") |"
+            echo "| **JS Tests** | $(icon "$STATUS_JS_TESTS") |"
             echo "| **Tests** | $(icon "$STATUS_TESTS") ${TEST_SUMMARY} |"
             echo "| **Dialyzer** | $(icon "$STATUS_DIALYZER") ${DIALYZER_SUMMARY} |"
             if [ -n "$COVERAGE_DOMAIN" ]; then
@@ -327,7 +349,7 @@ jobs:
             fi
 
             # Detailed output for each failed check
-            for check in compile format credo tests dialyzer; do
+            for check in compile format credo js_lint js_tests tests dialyzer; do
               status_var="STATUS_$(echo "$check" | tr '[:lower:]' '[:upper:]')"
               status="${!status_var}"
 
@@ -372,7 +394,9 @@ jobs:
           if [[ "${{ needs.lint.outputs.compile }}" == "failure" || \
                 "${{ needs.lint.outputs.format }}" == "failure" || \
                 "${{ needs.lint.outputs.credo }}" == "failure" || \
+                "${{ needs.lint.outputs.js_lint }}" == "failure" || \
                 "${{ needs.test.outputs.tests }}" == "failure" || \
+                "${{ needs.test.outputs.js_tests }}" == "failure" || \
                 "${{ needs.dialyzer.outputs.dialyzer }}" == "failure" ]]; then
             echo "::error::One or more checks failed"
             exit 1

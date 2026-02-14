@@ -2,6 +2,13 @@
  * LiveView hook for real-time character counter on chat input.
  * Updates counter text and applies warning/danger color classes.
  */
+import { getCounterState } from "../lib/counter.js";
+
+const SEVERITY_CLASSES = {
+  warning: "char-counter--warning",
+  danger: "char-counter--danger",
+};
+
 const CharCounterHook = {
   mounted() {
     this.input = this.el.querySelector("#chat-input");
@@ -21,14 +28,12 @@ const CharCounterHook = {
   },
 
   updateCounter() {
-    const len = this.input.value.length;
-    this.counter.textContent = len + "/" + this.maxLength;
+    const { text, severity } = getCounterState(this.input.value.length, this.maxLength);
 
-    this.counter.classList.remove("char-counter--warning", "char-counter--danger");
-    if (len > 900) {
-      this.counter.classList.add("char-counter--danger");
-    } else if (len > 450) {
-      this.counter.classList.add("char-counter--warning");
+    this.counter.textContent = text;
+    this.counter.classList.remove(SEVERITY_CLASSES.warning, SEVERITY_CLASSES.danger);
+    if (severity !== "normal") {
+      this.counter.classList.add(SEVERITY_CLASSES[severity]);
     }
   },
 };

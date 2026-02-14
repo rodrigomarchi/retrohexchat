@@ -5,52 +5,30 @@
  * alternates between the original and an activity indicator.
  * Stops when the user focuses the tab.
  */
+import { createTitleFlasher } from "../lib/title_flash.js";
 
 const TitleFlashHook = {
   mounted() {
-    this.originalTitle = document.title;
-    this.flashInterval = null;
+    this.flasher = createTitleFlasher();
 
     this.handleEvent("title_flash_start", ({ message }) => {
-      this.startFlash(message || "* New activity");
+      this.flasher.start(message || "* New activity");
     });
 
     this.handleEvent("title_flash_stop", () => {
-      this.stopFlash();
+      this.flasher.stop();
     });
 
     document.addEventListener("visibilitychange", () => {
       if (!document.hidden) {
         this.pushEvent("tab_focused", {});
-        this.stopFlash();
+        this.flasher.stop();
       }
     });
   },
 
-  startFlash(message) {
-    if (this.flashInterval) return;
-
-    this.originalTitle = document.title;
-    let showActivity = true;
-
-    this.flashInterval = setInterval(() => {
-      document.title = showActivity
-        ? `${message} - RetroHexChat`
-        : this.originalTitle;
-      showActivity = !showActivity;
-    }, 1500);
-  },
-
-  stopFlash() {
-    if (this.flashInterval) {
-      clearInterval(this.flashInterval);
-      this.flashInterval = null;
-      document.title = this.originalTitle;
-    }
-  },
-
   destroyed() {
-    this.stopFlash();
+    this.flasher.stop();
   },
 };
 

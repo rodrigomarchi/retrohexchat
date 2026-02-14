@@ -6,22 +6,18 @@
  * - Click-outside to close the picker
  * - Escape key to close the picker
  */
+import { insertAtCursor } from "../lib/input.js";
+
 const EmojiPickerHook = {
   mounted() {
     this.handleEvent("insert_emoji", ({ char }) => {
       const input = document.getElementById("chat-input");
       if (!input) return;
 
-      const start = input.selectionStart;
-      const end = input.selectionEnd;
-      const value = input.value;
-      input.value = value.slice(0, start) + char + value.slice(end);
-      input.selectionStart = input.selectionEnd = start + char.length;
-      input.dispatchEvent(new Event("input", { bubbles: true }));
+      insertAtCursor(input, char);
       input.focus();
     });
 
-    // Close on click outside
     this._outsideClick = (e) => {
       if (!this.el.contains(e.target) && !e.target.closest("[data-emoji-toggle]")) {
         this.pushEvent("toggle_emoji_picker", {});
@@ -29,7 +25,6 @@ const EmojiPickerHook = {
     };
     document.addEventListener("mousedown", this._outsideClick);
 
-    // Close on Escape
     this._escapeKey = (e) => {
       if (e.key === "Escape") {
         this.pushEvent("toggle_emoji_picker", {});
