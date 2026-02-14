@@ -25,6 +25,7 @@ jobs:
       compile: ${{ steps.compile.outcome }}
       format: ${{ steps.format.outcome }}
       credo: ${{ steps.credo.outcome }}
+      js_lint: ${{ steps.js_lint.outcome }}
     steps:
       - uses: actions/checkout@v4
 
@@ -75,6 +76,15 @@ jobs:
           set -o pipefail
           mix credo --strict 2>&1 | tee /tmp/credo_output.txt
 
+      - run: npm install --prefix apps/retro_hex_chat_web/assets
+
+      - name: JS Lint
+        id: js_lint
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          (npm run lint --prefix apps/retro_hex_chat_web/assets && npm run format:check --prefix apps/retro_hex_chat_web/assets) 2>&1 | tee /tmp/js_lint_output.txt
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -88,6 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.tests.outcome }}
+      js_tests: ${{ steps.js_tests.outcome }}
     services:
       postgres:
         image: postgres:16-alpine
@@ -139,6 +150,13 @@ jobs:
       - run: mix compile
       - run: mix ecto.create --quiet && mix ecto.migrate --quiet
 
+      - name: JS Tests
+        id: js_tests
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm test --prefix apps/retro_hex_chat_web/assets 2>&1 | tee /tmp/js_tests_output.txt
+
       - name: Tests
         id: tests
         continue-on-error: true
@@ -150,7 +168,7 @@ jobs:
         if: always()
         with:
           name: test-outputs
-          path: /tmp/tests_output.txt
+          path: /tmp/*_output.txt
           if-no-files-found: ignore
           retention-days: 1
 
@@ -241,7 +259,9 @@ jobs:
           STATUS_COMPILE: ${{ needs.lint.outputs.compile }}
           STATUS_FORMAT: ${{ needs.lint.outputs.format }}
           STATUS_CREDO: ${{ needs.lint.outputs.credo }}
+          STATUS_JS_LINT: ${{ needs.lint.outputs.js_lint }}
           STATUS_TESTS: ${{ needs.test.outputs.tests }}
+          STATUS_JS_TESTS: ${{ needs.test.outputs.js_tests }}
           STATUS_DIALYZER: ${{ needs.dialyzer.outputs.dialyzer }}
           RUN_NUMBER: ${{ github.run_number }}
           RUN_ID: ${{ github.run_id }}
@@ -256,10 +276,20 @@ jobs:
             esac
           }
 
-          # Extract test summary (e.g. "822 tests, 0 failures")
-          TEST_SUMMARY=""
-          if [ -f /tmp/ci-outputs/tests_output.txt ]; then
-            TEST_SUMMARY=$(grep -oE '[0-9]+ tests?, [0-9]+ failures?(, [0-9]+ excluded)?' /tmp/ci-outputs/tests_output.txt | tail -1)
+          # Extract compile summary
+          COMPILE_SUMMARY=""
+          if [ "$STATUS_COMPILE" = "success" ]; then
+            COMPILE_SUMMARY="no warnings"
+          else
+            COMPILE_SUMMARY="compilation failed"
+          fi
+
+          # Extract format summary
+          FORMAT_SUMMARY=""
+          if [ "$STATUS_FORMAT" = "success" ]; then
+            FORMAT_SUMMARY="all files formatted"
+          else
+            FORMAT_SUMMARY="formatting issues found"
           fi
 
           # Extract credo summary
@@ -271,6 +301,34 @@ jobs:
               CREDO_ISSUES=$(grep -cE '┃' /tmp/ci-outputs/credo_output.txt 2>/dev/null || echo "0")
               CREDO_SUMMARY="${CREDO_ISSUES} issue(s)"
             fi
+          fi
+
+          # Extract JS lint summary
+          JS_LINT_SUMMARY=""
+          if [ "$STATUS_JS_LINT" = "success" ]; then
+            JS_LINT_SUMMARY="no issues"
+          else
+            JS_LINT_SUMMARY="linting issues found"
+          fi
+
+          # Extract JS tests summary
+          JS_TESTS_SUMMARY=""
+          if [ -f /tmp/ci-outputs/js_tests_output.txt ]; then
+            JS_TESTS_SUMMARY=$(grep -oE '[0-9]+ tests? passed' /tmp/ci-outputs/js_tests_output.txt | tail -1)
+            if [ -z "$JS_TESTS_SUMMARY" ] && [ "$STATUS_JS_TESTS" = "success" ]; then
+              JS_TESTS_SUMMARY="all passed"
+            elif [ "$STATUS_JS_TESTS" = "failure" ]; then
+              JS_TESTS_SUMMARY=$(grep -oE '[0-9]+ tests? failed' /tmp/ci-outputs/js_tests_output.txt | tail -1)
+              [ -z "$JS_TESTS_SUMMARY" ] && JS_TESTS_SUMMARY="failures detected"
+            fi
+          elif [ "$STATUS_JS_TESTS" = "success" ]; then
+            JS_TESTS_SUMMARY="all passed"
+          fi
+
+          # Extract test summary (e.g. "822 tests, 0 failures")
+          TEST_SUMMARY=""
+          if [ -f /tmp/ci-outputs/tests_output.txt ]; then
+            TEST_SUMMARY=$(grep -oE '[0-9]+ tests?, [0-9]+ failures?(, [0-9]+ excluded)?' /tmp/ci-outputs/tests_output.txt | tail -1)
           fi
 
           # Extract dialyzer summary
@@ -300,9 +358,11 @@ jobs:
             echo ""
             echo "| Check | Result |"
             echo "|-------|--------|"
-            echo "| **Compile** | $(icon "$STATUS_COMPILE") |"
-            echo "| **Format** | $(icon "$STATUS_FORMAT") |"
+            echo "| **Compile** | $(icon "$STATUS_COMPILE") ${COMPILE_SUMMARY} |"
+            echo "| **Format** | $(icon "$STATUS_FORMAT") ${FORMAT_SUMMARY} |"
             echo "| **Credo** | $(icon "$STATUS_CREDO") ${CREDO_SUMMARY} |"
+            echo "| **JS Lint** | $(icon "$STATUS_JS_LINT") ${JS_LINT_SUMMARY} |"
+            echo "| **JS Tests** | $(icon "$STATUS_JS_TESTS") ${JS_TESTS_SUMMARY} |"
             echo "| **Tests** | $(icon "$STATUS_TESTS") ${TEST_SUMMARY} |"
             echo "| **Dialyzer** | $(icon "$STATUS_DIALYZER") ${DIALYZER_SUMMARY} |"
             if [ -n "$COVERAGE_DOMAIN" ]; then
@@ -327,7 +387,7 @@ jobs:
             fi
 
             # Detailed output for each failed check
-            for check in compile format credo tests dialyzer; do
+            for check in compile format credo js_lint js_tests tests dialyzer; do
               status_var="STATUS_$(echo "$check" | tr '[:lower:]' '[:upper:]')"
               status="${!status_var}"
 
@@ -372,7 +432,9 @@ jobs:
           if [[ "${{ needs.lint.outputs.compile }}" == "failure" || \
                 "${{ needs.lint.outputs.format }}" == "failure" || \
                 "${{ needs.lint.outputs.credo }}" == "failure" || \
+                "${{ needs.lint.outputs.js_lint }}" == "failure" || \
                 "${{ needs.test.outputs.tests }}" == "failure" || \
+                "${{ needs.test.outputs.js_tests }}" == "failure" || \
                 "${{ needs.dialyzer.outputs.dialyzer }}" == "failure" ]]; then
             echo "::error::One or more checks failed"
             exit 1

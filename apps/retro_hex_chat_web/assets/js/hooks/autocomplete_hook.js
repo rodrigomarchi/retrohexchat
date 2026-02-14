@@ -5,6 +5,16 @@
  * (↑/↓ history, Tab completion, IRC formatting) into a single hook
  * since LiveView allows only one phx-hook per element.
  */
+import {
+  insertAtCursor,
+  detectTrigger,
+  getArgumentContext,
+  computeMaxHeight,
+  autoResize,
+} from "../lib/input.js";
+import { createHistoryManager, isSensitiveCommand } from "../lib/history.js";
+import { SHORTCUT_FORMAT_MAP } from "../lib/irc_format.js";
+
 const AutocompleteHook = {
   mounted() {
     this.inputEl = this.el;
@@ -14,30 +24,24 @@ const AutocompleteHook = {
     this.tooltipVisible = false;
     this.tabCycleState = null;
 
-    // Enhanced history state
-    this.historyDraft = null;
-    this.historyBrowsing = false;
-    this.historySearchActive = false;
-    this.historySearchQuery = "";
-    this.persistedHistory = this.loadPersistedHistory();
+    // Enhanced history via lib
+    this.historyManager = createHistoryManager({});
+    this.persistedHistory = this.historyManager.getHistory();
 
-    // Load recent commands from localStorage
-    this.recentCommands = this.loadRecentCommands();
-    this.pushEvent("recent_commands_loaded", { commands: this.recentCommands });
+    // Push recent commands to server
+    this.pushEvent("recent_commands_loaded", { commands: this.historyManager.getRecentCommands() });
 
     // Auto-resize: compute max height for 5 lines
-    this.computeMaxHeight();
+    this.maxLines = 5;
+    this.maxHeight = computeMaxHeight(this.inputEl, this.maxLines);
 
     // PM typing indicator — debounce input events + auto-resize
     this.inputEl.addEventListener("input", () => {
       const value = this.inputEl.value;
-      // Clear tab cycling state on any input change
       this.tabCycleState = null;
 
-      // Auto-resize textarea
-      this.autoResize();
+      autoResize(this.inputEl, this.maxHeight);
 
-      // Don't send typing for commands or empty input
       if (!value || value.startsWith("/")) return;
 
       if (!this.isTyping) {
@@ -52,7 +56,7 @@ const AutocompleteHook = {
       }, 3000);
     });
 
-    this.inputEl.addEventListener("keyup", (e) => {
+    this.inputEl.addEventListener("keyup", () => {
       const value = this.inputEl.value;
       const trigger = this.detectTrigger(value);
 
@@ -61,12 +65,10 @@ const AutocompleteHook = {
         return;
       }
 
-      // No trigger detected — close if open
       if (this.dropdownVisible) {
         this.pushEvent("autocomplete_close", {});
       }
 
-      // Syntax tooltip detection: /command followed by space
       if (!this.dropdownVisible) {
         this.checkSyntaxTooltip(value);
       }
@@ -91,47 +93,33 @@ const AutocompleteHook = {
       }
 
       if (e.key === "Enter") {
-        if (e.shiftKey) {
-          // Shift+Enter: allow default newline insertion in textarea
-          return;
-        }
+        if (e.shiftKey) return;
 
-        // Enter without Shift: submit the form
         e.preventDefault();
 
-        // Clear typing indicator on submit
         if (this.isTyping) {
           this.isTyping = false;
           clearTimeout(this.typingTimeout);
           this.pushEvent("pm_stop_typing", {});
         }
 
-        if (this.dropdownVisible) {
-          // Let the server handle the selection via autocomplete_select
-          // (the currently selected item is tracked server-side)
-          return;
-        }
+        if (this.dropdownVisible) return;
 
-        // Save to recent commands and persisted history
         const value = this.inputEl.value;
         if (value.trim()) {
-          this.saveToPersistedHistory(value);
+          this.historyManager.save(value);
+          this.persistedHistory = this.historyManager.getHistory();
         }
         if (value.startsWith("/")) {
           const cmdName = value.slice(1).split(" ")[0];
-          if (cmdName) this.saveRecentCommand(cmdName);
+          if (cmdName) this.historyManager.saveRecentCommand(cmdName);
         }
 
-        // Reset enhanced history state on send
-        this.historyDraft = null;
-        this.historyBrowsing = false;
+        this.historyManager.resetBrowsing();
 
-        // Programmatically submit the form
         const form = this.inputEl.closest("form");
         if (form) {
-          form.dispatchEvent(
-            new Event("submit", { bubbles: true, cancelable: true }),
-          );
+          form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
         }
       }
 
@@ -180,46 +168,33 @@ const AutocompleteHook = {
         e.preventDefault();
 
         if (this.dropdownVisible) {
-          // Select the currently highlighted item in dropdown
           this.pushEvent("autocomplete_select_current", {});
           return;
         }
 
-        // Tab cycling for nick completion (no dropdown)
         if (this.tabCycleState) {
-          // Cycle to next match
           this.tabCycleState.index =
             (this.tabCycleState.index + 1) % this.tabCycleState.matches.length;
           const match = this.tabCycleState.matches[this.tabCycleState.index];
           const suffix = this.tabCycleState.isStart ? ": " : " ";
           this.inputEl.value = match + suffix;
           this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
-          // Re-set tabCycleState since input event clears it
-          // We need to preserve it across the synthetic input event
           const state = this.tabCycleState;
-          setTimeout(() => { this.tabCycleState = state; }, 0);
+          setTimeout(() => {
+            this.tabCycleState = state;
+          }, 0);
           return;
         }
 
-        // Request tab completion from server
         const value = this.inputEl.value;
-        const isStart = true; // Tab complete is from start of input
+        const isStart = true;
         this.pushEvent("tab_complete", { partial: value, is_start: isStart });
         return;
       }
 
       // IRC formatting shortcuts (Ctrl+Shift+key)
       if (e.ctrlKey && e.shiftKey && !e.altKey && !e.metaKey) {
-        const formatCodes = {
-          b: "\x02", // Bold
-          y: "\x1D", // Italic (stYle)
-          u: "\x1F", // Underline
-          d: "\x03", // Color (Dye)
-          v: "\x16", // Reverse (reVerse)
-          x: "\x0F", // Reset (Xclear)
-        };
-
-        const code = formatCodes[e.key.toLowerCase()];
+        const code = SHORTCUT_FORMAT_MAP[e.key.toLowerCase()];
         if (code) {
           e.preventDefault();
           e.stopPropagation();
@@ -229,9 +204,8 @@ const AutocompleteHook = {
     });
 
     // Handle server events
-    this.handleEvent("autocomplete_results", ({ results, mode }) => {
+    this.handleEvent("autocomplete_results", ({ results }) => {
       this.dropdownVisible = results.length > 0;
-      // Dismiss tooltip when autocomplete dropdown opens
       if (this.dropdownVisible && this.tooltipVisible) {
         this.tooltipVisible = false;
       }
@@ -254,26 +228,25 @@ const AutocompleteHook = {
       const suffix = is_start ? ": " : " ";
       this.inputEl.value = matches[0] + suffix;
       this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
-      // Preserve tab cycle state after synthetic input
       const state = this.tabCycleState;
-      setTimeout(() => { this.tabCycleState = state; }, 0);
+      setTimeout(() => {
+        this.tabCycleState = state;
+      }, 0);
     });
 
     this.handleEvent("set_input", ({ value }) => {
       this.inputEl.value = value;
       this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
-      this.autoResize();
+      autoResize(this.inputEl, this.maxHeight);
     });
   },
 
   updated() {
-    // Viewport boundary detection for autocomplete dropdown
     const dropdown = document.getElementById("autocomplete-dropdown");
     if (!dropdown) return;
 
     const rect = dropdown.getBoundingClientRect();
     if (rect.top < 0) {
-      // Dropdown extends above viewport — constrain max-height
       const windowEl = dropdown.querySelector(".window");
       if (windowEl) {
         const available = rect.bottom;
@@ -284,232 +257,55 @@ const AutocompleteHook = {
     }
   },
 
+  // ── Delegated methods ──────────────────────────────────
+
   detectTrigger(value) {
-    if (!value) return null;
-
-    // Command trigger: "/" at position 0
-    if (value.startsWith("/") && !value.includes(" ")) {
-      const partial = value.slice(1);
-      return { type: "command", partial: partial };
-    }
-
-    // Command argument trigger: "/command " followed by partial arg
-    if (value.startsWith("/")) {
-      const spaceIdx = value.indexOf(" ");
-      if (spaceIdx > 1) {
-        const cmdName = value.slice(1, spaceIdx);
-        const argText = value.slice(spaceIdx + 1);
-        const argContext = this.getArgumentContext(cmdName);
-        if (argContext && argText.length >= 0) {
-          return { type: argContext, partial: argText, command: cmdName };
-        }
-      }
-    }
-
-    // Nick trigger: "@" at word boundary
-    const cursorPos = this.inputEl.selectionStart || value.length;
-    const textBeforeCursor = value.slice(0, cursorPos);
-
-    // Scan backward for @ at word boundary
-    for (let i = textBeforeCursor.length - 1; i >= 0; i--) {
-      const ch = textBeforeCursor[i];
-      if (ch === " " || ch === "\t") break;
-      if (ch === "@") {
-        const isWordBoundary = i === 0 || /\s/.test(textBeforeCursor[i - 1]);
-        if (isWordBoundary) {
-          const partial = textBeforeCursor.slice(i + 1);
-          if (partial.length >= 1) {
-            return { type: "nick", partial: partial };
-          }
-        }
-        break;
-      }
-    }
-
-    // Channel trigger: "#" at word boundary
-    for (let i = textBeforeCursor.length - 1; i >= 0; i--) {
-      const ch = textBeforeCursor[i];
-      if (ch === " " || ch === "\t") break;
-      if (ch === "#") {
-        const isWordBoundary = i === 0 || /\s/.test(textBeforeCursor[i - 1]);
-        if (isWordBoundary) {
-          const partial = textBeforeCursor.slice(i + 1);
-          if (partial.length >= 1) {
-            return { type: "channel", partial: partial };
-          }
-        }
-        break;
-      }
-    }
-
-    return null;
+    return detectTrigger(
+      value,
+      this.inputEl.selectionStart || (value ? value.length : 0),
+      getArgumentContext,
+    );
   },
 
   insertAtCursor(text) {
-    const el = this.inputEl;
-    const start = el.selectionStart;
-    const end = el.selectionEnd;
-    const value = el.value;
-    el.value = value.slice(0, start) + text + value.slice(end);
-    el.selectionStart = el.selectionEnd = start + text.length;
-    el.dispatchEvent(new Event("input", { bubbles: true }));
+    insertAtCursor(this.inputEl, text);
   },
 
   getArgumentContext(cmdName) {
-    const nickAll = ["msg", "query", "whois", "whowas", "notice", "ctcp", "invite"];
-    const nickCurrent = ["kick", "ban"];
-    const channel = ["join", "part", "topic", "mode"];
-
-    if (nickAll.includes(cmdName)) return "arg_nick";
-    if (nickCurrent.includes(cmdName)) return "arg_nick";
-    if (channel.includes(cmdName)) return "arg_channel";
-    return null;
-  },
-
-  loadRecentCommands() {
-    try {
-      const stored = localStorage.getItem("retro_hex_chat_recent_commands");
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  },
-
-  saveRecentCommand(cmdName) {
-    let recents = this.loadRecentCommands();
-    recents = recents.filter((c) => c !== cmdName);
-    recents.unshift(cmdName);
-    recents = recents.slice(0, 5);
-    this.recentCommands = recents;
-    try {
-      localStorage.setItem(
-        "retro_hex_chat_recent_commands",
-        JSON.stringify(recents),
-      );
-    } catch {
-      // localStorage might be full or unavailable
-    }
-  },
-
-  checkSyntaxTooltip(value) {
-    if (!value || !value.startsWith("/")) {
-      if (this.tooltipVisible) {
-        this.pushEvent("syntax_tooltip_dismiss", {});
-        this.tooltipVisible = false;
-      }
-      return;
-    }
-
-    // Only trigger after command has a space (user started typing args)
-    // or when command is complete (exactly matches a known pattern)
-    const spaceIdx = value.indexOf(" ");
-    if (spaceIdx <= 1) {
-      // Still typing the command name, no tooltip yet
-      return;
-    }
-
-    const cmdName = value.slice(1, spaceIdx);
-    const args = value.slice(spaceIdx + 1);
-
-    this.pushEvent("syntax_tooltip_query", { command: cmdName, args: args });
-    this.tooltipVisible = true;
-  },
-
-  // ── Enhanced History ─────────────────────────────────────
-
-  loadPersistedHistory() {
-    try {
-      const stored = localStorage.getItem("retro_hex_chat_history");
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  },
-
-  saveToPersistedHistory(text) {
-    if (!text.trim()) return;
-    // Filter sensitive commands
-    if (this.isSensitiveCommand(text)) return;
-
-    let history = this.loadPersistedHistory();
-    // Deduplicate: remove if already present
-    history = history.filter((h) => h !== text);
-    history.unshift(text);
-    // Max 100 entries
-    history = history.slice(0, 100);
-    this.persistedHistory = history;
-    try {
-      localStorage.setItem("retro_hex_chat_history", JSON.stringify(history));
-    } catch {
-      // localStorage full — drop oldest entries and retry
-      history = history.slice(0, 50);
-      this.persistedHistory = history;
-      try {
-        localStorage.setItem("retro_hex_chat_history", JSON.stringify(history));
-      } catch {
-        // Still full, give up silently
-      }
-    }
+    return getArgumentContext(cmdName);
   },
 
   isSensitiveCommand(text) {
-    const lower = text.toLowerCase().trimStart();
-    const sensitivePatterns = ["/identify ", "/identify\n", "/nickserv ", "/ns "];
-    return sensitivePatterns.some((p) => lower.startsWith(p)) ||
-      lower === "/identify" || lower === "/nickserv" || lower === "/ns";
+    return isSensitiveCommand(text);
   },
 
+  // ── History (delegated) ────────────────────────────────
+
   historyUp() {
-    const history = this.persistedHistory;
-    if (history.length === 0) return;
-
-    if (!this.historyBrowsing) {
-      // Save current text as draft
-      this.historyDraft = {
-        text: this.inputEl.value,
-        cursor: this.inputEl.selectionStart,
-      };
-      this.historyBrowsing = true;
-      this.historyIndex = -1;
-    }
-
-    const newIndex = Math.min(this.historyIndex + 1, history.length - 1);
-    if (newIndex !== this.historyIndex) {
-      this.historyIndex = newIndex;
-      this.inputEl.value = history[newIndex];
+    const result = this.historyManager.up(this.inputEl.value, this.inputEl.selectionStart);
+    if (result) {
+      this.inputEl.value = result.value;
       this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
-      this.autoResize();
+      autoResize(this.inputEl, this.maxHeight);
     }
   },
 
   historyDown() {
-    if (!this.historyBrowsing) return;
-
-    const history = this.persistedHistory;
-    const newIndex = this.historyIndex - 1;
-
-    if (newIndex < 0) {
-      // Restore draft
-      this.historyBrowsing = false;
-      this.historyIndex = -1;
-      if (this.historyDraft) {
-        this.inputEl.value = this.historyDraft.text;
-        this.inputEl.selectionStart = this.historyDraft.cursor;
-        this.inputEl.selectionEnd = this.historyDraft.cursor;
-        this.historyDraft = null;
-      } else {
-        this.inputEl.value = "";
+    const result = this.historyManager.down();
+    if (result) {
+      this.inputEl.value = result.value;
+      if (result.cursor !== undefined) {
+        this.inputEl.selectionStart = result.cursor;
+        this.inputEl.selectionEnd = result.cursor;
       }
       this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
-      this.autoResize();
-      return;
+      autoResize(this.inputEl, this.maxHeight);
     }
-
-    this.historyIndex = newIndex;
-    this.inputEl.value = history[newIndex];
-    this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
-    this.autoResize();
   },
+
+  // ── History search (DOM-coupled) ───────────────────────
+
+  historySearchActive: false,
 
   toggleHistorySearch() {
     if (this.historySearchActive) {
@@ -521,10 +317,8 @@ const AutocompleteHook = {
 
   openHistorySearch() {
     this.historySearchActive = true;
-    this.historySearchQuery = "";
     this.historySearchOriginal = this.inputEl.value;
 
-    // Show search bar via DOM
     const bar = document.getElementById("hist-search-panel");
     if (bar) {
       bar.style.display = "flex";
@@ -559,11 +353,10 @@ const AutocompleteHook = {
     }
     this.historySearchOriginal = undefined;
     this.inputEl.focus();
-    this.autoResize();
+    autoResize(this.inputEl, this.maxHeight);
   },
 
   onHistorySearchInput(query) {
-    this.historySearchQuery = query;
     const bar = document.getElementById("hist-search-panel");
     const noMatch = bar ? bar.querySelector(".history-no-match") : null;
 
@@ -572,42 +365,45 @@ const AutocompleteHook = {
       return;
     }
 
-    const lower = query.toLowerCase();
-    const match = this.persistedHistory.find((h) =>
-      h.toLowerCase().includes(lower),
-    );
+    const match = this.historyManager.search(query);
 
     if (match) {
       this.inputEl.value = match;
       this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
-      this.autoResize();
+      autoResize(this.inputEl, this.maxHeight);
       if (noMatch) noMatch.style.display = "none";
     } else {
       if (noMatch) noMatch.style.display = "inline";
     }
   },
 
-  // ── Auto-resize ─────────────────────────────────────────
+  // ── Compat aliases (used by tests) ─────────────────────
+
+  loadPersistedHistory() {
+    this.historyManager.load();
+    this.persistedHistory = this.historyManager.getHistory();
+    return this.persistedHistory;
+  },
+
+  saveToPersistedHistory(text) {
+    this.historyManager.save(text);
+    this.persistedHistory = this.historyManager.getHistory();
+  },
+
+  loadRecentCommands() {
+    return this.historyManager.getRecentCommands();
+  },
+
+  saveRecentCommand(cmdName) {
+    this.historyManager.saveRecentCommand(cmdName);
+  },
 
   computeMaxHeight() {
-    const style = getComputedStyle(this.inputEl);
-    const lineHeight = parseFloat(style.lineHeight) || 18.2;
-    const paddingTop = parseFloat(style.paddingTop) || 0;
-    const paddingBottom = parseFloat(style.paddingBottom) || 0;
-    const borderTop = parseFloat(style.borderTopWidth) || 0;
-    const borderBottom = parseFloat(style.borderBottomWidth) || 0;
-    this.maxLines = 5;
-    this.maxHeight =
-      lineHeight * this.maxLines + paddingTop + paddingBottom + borderTop + borderBottom;
+    this.maxHeight = computeMaxHeight(this.inputEl, this.maxLines || 5);
   },
 
   autoResize() {
-    const el = this.inputEl;
-    // Reset height to measure scrollHeight accurately
-    el.style.height = "auto";
-    const newHeight = Math.min(el.scrollHeight, this.maxHeight);
-    el.style.height = newHeight + "px";
-    el.style.overflowY = el.scrollHeight > this.maxHeight ? "auto" : "hidden";
+    autoResize(this.inputEl, this.maxHeight);
   },
 };
 

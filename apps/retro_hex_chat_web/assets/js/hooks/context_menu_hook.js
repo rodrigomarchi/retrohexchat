@@ -5,53 +5,33 @@
  * - Handles ArrowUp/ArrowDown/Enter/Escape for keyboard navigation
  * - Manages .focused class on menu items
  */
+import { repositionMenu, createMenuNavigator } from "../lib/menu.js";
+
 const ContextMenuHook = {
   mounted() {
     this.menuEl = this.el;
-    this.focusedIndex = -1;
     this.items = [];
 
-    this.reposition();
     this.collectItems();
+
+    this.navigator = createMenuNavigator(() => this.items);
+
+    repositionMenu(this.menuEl);
     this.setupKeyboard();
   },
 
   updated() {
-    this.reposition();
+    repositionMenu(this.menuEl);
     this.collectItems();
+    this.navigator.reset();
   },
 
   destroyed() {
     this.removeKeyboard();
   },
 
-  reposition() {
-    const rect = this.menuEl.getBoundingClientRect();
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-
-    // Flip left if overflows right
-    if (rect.right > vw) {
-      const overflow = rect.right - vw;
-      const currentLeft = parseInt(this.menuEl.style.left, 10) || rect.left;
-      this.menuEl.style.left = Math.max(0, currentLeft - overflow - 4) + "px";
-    }
-
-    // Flip up if overflows bottom
-    if (rect.bottom > vh) {
-      const overflow = rect.bottom - vh;
-      const currentTop = parseInt(this.menuEl.style.top, 10) || rect.top;
-      this.menuEl.style.top = Math.max(0, currentTop - overflow - 4) + "px";
-    }
-  },
-
   collectItems() {
-    // Collect non-disabled, non-separator menu items
-    this.items = Array.from(
-      this.menuEl.querySelectorAll("li:not(.separator):not(.disabled)")
-    );
-    this.focusedIndex = -1;
-    this.clearFocus();
+    this.items = Array.from(this.menuEl.querySelectorAll("li:not(.separator):not(.disabled)"));
   },
 
   setupKeyboard() {
@@ -72,15 +52,17 @@ const ContextMenuHook = {
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        this.moveFocus(1);
+        this.navigator.moveFocus(1);
+        this.focusedIndex = this.navigator.focusedIndex;
         break;
       case "ArrowUp":
         e.preventDefault();
-        this.moveFocus(-1);
+        this.navigator.moveFocus(-1);
+        this.focusedIndex = this.navigator.focusedIndex;
         break;
       case "Enter":
         e.preventDefault();
-        this.selectFocused();
+        this.navigator.selectFocused();
         break;
       case "Escape":
         e.preventDefault();
@@ -89,35 +71,7 @@ const ContextMenuHook = {
     }
   },
 
-  moveFocus(direction) {
-    this.clearFocus();
-
-    if (this.focusedIndex === -1 && direction === 1) {
-      this.focusedIndex = 0;
-    } else if (this.focusedIndex === -1 && direction === -1) {
-      this.focusedIndex = this.items.length - 1;
-    } else {
-      this.focusedIndex += direction;
-      if (this.focusedIndex < 0) this.focusedIndex = this.items.length - 1;
-      if (this.focusedIndex >= this.items.length) this.focusedIndex = 0;
-    }
-
-    this.items[this.focusedIndex].classList.add("focused");
-    this.items[this.focusedIndex].scrollIntoView({ block: "nearest" });
-  },
-
-  clearFocus() {
-    this.items.forEach((item) => item.classList.remove("focused"));
-  },
-
-  selectFocused() {
-    if (this.focusedIndex >= 0 && this.focusedIndex < this.items.length) {
-      this.items[this.focusedIndex].click();
-    }
-  },
-
   closeMenu() {
-    // Push close event to LiveView
     this.pushEvent("close_chat_context_menu", {});
     this.pushEvent("close_treebar_context_menu", {});
   },

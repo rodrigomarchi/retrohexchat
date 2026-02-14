@@ -2,6 +2,8 @@
  * LiveView hook for intercepting multi-line paste into chat input.
  * If pasted text has 2+ non-empty lines, prevents default and pushes event.
  */
+import { parseMultiLinePaste } from "../lib/paste.js";
+
 const PasteHook = {
   mounted() {
     const input = document.getElementById("chat-input");
@@ -9,9 +11,9 @@ const PasteHook = {
 
     input.addEventListener("paste", (e) => {
       const text = (e.clipboardData || window.clipboardData).getData("text/plain");
-      const lines = text.split("\n").filter((l) => l.trim().length > 0);
+      const lines = parseMultiLinePaste(text);
 
-      if (lines.length >= 2) {
+      if (lines) {
         e.preventDefault();
         this.pushEvent("paste_lines", { lines });
       }

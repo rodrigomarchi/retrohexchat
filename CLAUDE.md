@@ -38,30 +38,35 @@ make setup                    # First-time setup (docker + deps + db)
 make server                   # Dev server (localhost:4000)
 make test                     # Full suite (excludes E2E)
 make test.all                 # Full suite including E2E
-make lint                     # All static analysis (format + credo + dialyzer)
+make lint                     # All static analysis (format + credo + dialyzer + JS lint)
+make lint.js                  # ESLint + Prettier check on JS
+make lint.js.fix              # Auto-fix ESLint + Prettier issues
 make precommit                # compile + format + test
 ```
 
 ## CI-Equivalent Validation (MANDATORY before declaring any task complete)
 
-The CI pipeline (`.github/workflows/ci.yml`) runs 5 checks. You MUST run ALL of them
+The CI pipeline (`.github/workflows/ci.yml`) runs 8 checks. You MUST run ALL of them
 locally before considering implementation complete. No exceptions.
 
 **Execution strategy — compile first, then parallelize**:
 
 1. Run `mix compile --warnings-as-errors` FIRST (all other checks depend on compilation).
-2. If compilation passes, run the remaining 4 checks IN PARALLEL (use parallel Bash tool calls):
+2. If compilation passes, run the remaining 7 checks IN PARALLEL (use parallel Bash tool calls):
    - `mix format --check-formatted`
    - `mix credo --strict`
+   - `make lint.js` (ESLint + Prettier on JS/test files)
+   - `npm test --prefix apps/retro_hex_chat_web/assets` (JS tests)
    - `mix test --include e2e`
    - `mix dialyzer`
 
-**NEVER** skip dialyzer or E2E tests (E2E tests do NOT use a browser — no reason to skip).
-If any of these 5 checks fail, the task is NOT complete.
+**NEVER** skip dialyzer, E2E tests, JS tests, or JS lint.
+If any of these 8 checks fail, the task is NOT complete.
 
 ## Code Style
 
 - Elixir: Follow standard conventions, `mix format` enforced
+- JavaScript: ESLint + Prettier enforced (`make lint.js`), auto-fix with `make lint.js.fix`
 - Every public function MUST have @spec
 - LiveViews MUST be thin — delegate to domain contexts
 - Each "/" command is a separate Handler module

@@ -5,19 +5,14 @@
  * on document.documentElement, enabling real-time font and color changes
  * without page reload.
  */
+import { applyCSSProperties } from "../lib/dom.js";
+
 const OptionsHook = {
   mounted() {
     this.handleEvent("apply_preferences", (payload) => {
-      this.applyStyles(payload.styles || {});
+      applyCSSProperties(payload.styles || {});
     });
   },
-
-  applyStyles(styles) {
-    const root = document.documentElement;
-    for (const [prop, value] of Object.entries(styles)) {
-      root.style.setProperty(prop, value);
-    }
-  }
 };
 
 export default OptionsHook;
