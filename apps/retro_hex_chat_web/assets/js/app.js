@@ -5,12 +5,15 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import CharCounterHook from "./hooks/char_counter_hook";
+import ClockHook from "./hooks/clock_hook";
+import ConnectionBannerHook from "./hooks/connection_banner_hook";
 import ContextMenuHook from "./hooks/context_menu_hook";
 import AutocompleteHook from "./hooks/autocomplete_hook";
 import EmojiPickerHook from "./hooks/emoji_picker_hook";
 import FormatToolbarHook from "./hooks/format_toolbar_hook";
 import KeyBindingCaptureHook from "./hooks/key_binding_capture_hook";
 import KeyboardHook from "./hooks/keyboard_hook";
+import LagHook from "./hooks/lag_hook";
 import NicklistHook from "./hooks/nicklist_hook";
 import NotifyListHook from "./hooks/notify_list_hook";
 import OptionsHook from "./hooks/options_hook";
@@ -28,6 +31,8 @@ import URLCatcherHook from "./hooks/url_catcher_hook";
 
 const Hooks = {
   CharCounterHook: CharCounterHook,
+  ClockHook: ClockHook,
+  ConnectionBannerHook: ConnectionBannerHook,
   ContextMenuHook: ContextMenuHook,
   ContextualTipsHook: ContextualTipsHook,
   AutocompleteHook: AutocompleteHook,
@@ -35,6 +40,7 @@ const Hooks = {
   FormatToolbarHook: FormatToolbarHook,
   KeyBindingCaptureHook: KeyBindingCaptureHook,
   KeyboardHook: KeyboardHook,
+  LagHook: LagHook,
   NicklistHook: NicklistHook,
   NotifyListHook: NotifyListHook,
   OnboardingHook: OnboardingHook,

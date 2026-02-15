@@ -18,6 +18,7 @@
 - localStorage (tip seen state + global suppression) — no PostgreSQL changes (029-contextual-tips)
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild + Phoenix LiveView (streams, push_event), 98.css, existing toast component (Z2) (030-visual-feedback-unread)
 - No new PostgreSQL migrations — all state is ephemeral (socket assigns, client-side) (030-visual-feedback-unread)
+- No new PostgreSQL migrations — all state is ephemeral (socket assigns, client-side timers) (031-statusbar-loading-states)
 
 ## Project Structure
 
@@ -140,6 +141,6 @@ static analysis from day one, 98.css design fidelity, mandatory help documentati
 
 
 ## Recent Changes
+- 031-statusbar-loading-states: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
 - 030-visual-feedback-unread: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild + Phoenix LiveView (streams, push_event), 98.css, existing toast component (Z2)
 - 029-contextual-tips: Added Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
-- 028-onboarding-empty-states: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild

@@ -1,0 +1,35 @@
+/* RetroHexChat — Connection Banner: disconnection/reconnection notifications */
+
+.connection-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-floating);
+  padding: 4px 8px;
+  font-size: var(--text-sm);
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.connection-banner--visible {
+  opacity: 1;
+}
+
+.connection-banner--disconnected {
+  background: var(--color-error);
+  color: var(--color-white);
+  border-bottom: 1px solid #990000;
+}
+
+.connection-banner--reconnected {
+  background: var(--color-success);
+  color: var(--color-white);
+  border-bottom: 1px solid #006000;
+}
+
+.connection-banner--fade-out {
+  opacity: 0;
+}

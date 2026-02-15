@@ -421,4 +421,73 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.content =~ "Log Viewer"
     end
   end
+
+  describe "status bar help topic" do
+    test "topic exists" do
+      topic = HelpTopics.get_topic("feature-status-bar")
+      assert topic != nil
+      assert topic.title == "Status Bar"
+      assert topic.category == "Features"
+    end
+
+    test "content describes three sections" do
+      topic = HelpTopics.get_topic("feature-status-bar")
+      assert topic.content =~ "Left"
+      assert topic.content =~ "Center"
+      assert topic.content =~ "Right"
+    end
+
+    test "cross-references lag and connection topics" do
+      topic = HelpTopics.get_topic("feature-status-bar")
+      assert topic.content =~ "feature-lag-indicator"
+      assert topic.content =~ "feature-connection-states"
+    end
+  end
+
+  describe "lag indicator help topic" do
+    test "topic exists" do
+      topic = HelpTopics.get_topic("feature-lag-indicator")
+      assert topic != nil
+      assert topic.title == "Lag Indicator"
+    end
+
+    test "content describes color thresholds" do
+      topic = HelpTopics.get_topic("feature-lag-indicator")
+      assert topic.content =~ "200ms"
+      assert topic.content =~ "500ms"
+      assert topic.content =~ "Timeout"
+    end
+
+    test "cross-references status bar" do
+      topic = HelpTopics.get_topic("feature-lag-indicator")
+      assert topic.content =~ "feature-status-bar"
+    end
+  end
+
+  describe "connection states help topic" do
+    test "topic exists" do
+      topic = HelpTopics.get_topic("feature-connection-states")
+      assert topic != nil
+      assert topic.title == "Connection States"
+    end
+
+    test "content describes four states" do
+      topic = HelpTopics.get_topic("feature-connection-states")
+      assert topic.content =~ "Connected"
+      assert topic.content =~ "Connecting"
+      assert topic.content =~ "Disconnected"
+      assert topic.content =~ "Reconnecting"
+    end
+
+    test "content describes banners" do
+      topic = HelpTopics.get_topic("feature-connection-states")
+      assert topic.content =~ "banner"
+    end
+
+    test "cross-references status bar and lag" do
+      topic = HelpTopics.get_topic("feature-connection-states")
+      assert topic.content =~ "feature-status-bar"
+      assert topic.content =~ "feature-lag-indicator"
+    end
+  end
 end

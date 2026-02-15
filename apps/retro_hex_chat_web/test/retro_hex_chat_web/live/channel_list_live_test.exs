@@ -13,10 +13,17 @@ defmodule RetroHexChatWeb.ChannelListLiveTest do
   end
 
   describe "mount" do
-    test "renders channel list", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/channels")
+    test "renders channel list after loading", %{conn: conn} do
+      {:ok, view, html} = live(conn, "/channels")
       assert html =~ "Channel List"
+      # After async load completes, the channel should appear
+      html = render(view)
       assert html =~ "#list_test"
+    end
+
+    test "shows loading state initially", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/channels")
+      assert html =~ "Fetching channels"
     end
   end
 
