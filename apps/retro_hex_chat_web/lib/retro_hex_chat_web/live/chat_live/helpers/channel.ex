@@ -37,9 +37,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
           |> Session.set_active_channel(channel_name)
 
         socket
-        |> assign(session: new_session, input: "")
+        |> assign(session: new_session, input: "", loading_channel: channel_name)
         |> load_channel_users(channel_name)
         |> load_channel_messages_with_pagination(channel_name)
+        |> assign(loading_channel: nil)
         |> maybe_show_welcome(channel_name, new_session)
         |> push_event("tip_trigger", %{tip: "first_join"})
         |> push_event("channel_joined_flash", %{channel: channel_name})

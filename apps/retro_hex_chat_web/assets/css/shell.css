@@ -6,6 +6,47 @@
   font-size: 11px;
 }
 
+/* ── Status bar 3-section layout ── */
+.status-bar-section--left {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-bar-section--center {
+  flex: 0 0 auto;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.status-bar-section--right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+/* ── Connection state colors ── */
+.status-bar-connection--connected { color: var(--color-online); }
+.status-bar-connection--connecting { color: var(--color-warning-alt); }
+.status-bar-connection--disconnected { color: var(--color-error); }
+.status-bar-connection--reconnecting { color: var(--color-warning-alt); }
+
+/* ── Lag color thresholds ── */
+.status-bar-lag { min-width: 62px; display: inline-block; }
+.status-bar-lag--normal { color: inherit; }
+.status-bar-lag--warning { color: var(--color-warning-alt); }
+.status-bar-lag--critical { color: var(--color-error); }
+.status-bar-lag--timeout { color: var(--color-muted); }
+
+/* ── Status bar separator ── */
+.status-bar-separator {
+  color: var(--color-muted);
+  margin: 0 1px;
+}
+
 /* Scroll loader */
 .scroll-loader {
   text-align: center;

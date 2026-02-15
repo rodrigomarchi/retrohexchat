@@ -36,6 +36,12 @@
     />
 
     <div class="chat-area" style="position: relative;">
+      <RetroHexChatWeb.Components.ConnectionProgress.connection_progress
+        :if={!@connection_ready}
+        step={@connection_progress_step}
+        timeout={@connection_timeout}
+      />
+
       <RetroHexChatWeb.Components.TabBar.tab_bar
         :if={@show_switchbar}
         channels={@session.channels}
@@ -54,6 +60,8 @@
         modes={@current_modes}
         show_status_tab={@show_status_tab}
       />
+
+      <RetroHexChatWeb.Components.ConnectionBanner.connection_banner />
 
       <RetroHexChatWeb.Components.SearchBar.search_bar
         visible={@search_visible}
@@ -77,6 +85,12 @@
         </span>
         <button phx-click="dismiss_onboarding_tip" aria-label="Fechar dica">✕</button>
       </div>
+
+      <RetroHexChatWeb.Components.LoadingSpinner.loading_spinner
+        loading={@loading_channel != nil}
+        text={"Loading #{@loading_channel || "messages"}..."}
+        timeout={false}
+      />
 
       <RetroHexChatWeb.Components.ScrollLoader.scroll_loader loading={@loading_more} />
 
@@ -472,6 +486,9 @@
     nickname={@session.nickname}
     channel={@session.active_pm || @session.active_channel}
     user_count={length(@channel_users)}
+    connection_state={@connection_state}
+    lag_ms={@lag_ms}
+    lag_status={@lag_status}
     muted={@muted}
   />
 </div>

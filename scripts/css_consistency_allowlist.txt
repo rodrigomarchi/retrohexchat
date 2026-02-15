@@ -14,6 +14,9 @@ u-*
 attempt-info
 char-counter--warning
 char-counter--danger
+connection-banner--disconnected
+connection-banner--fade-out
+connection-banner--reconnected
 
 [missing]
 # False positive — "system" is a comparison value inside class={...} expression
@@ -24,6 +27,11 @@ context-color-picker
 # JS-hook only — buttons created in innerHTML, class used for querySelector targeting
 reconnect-cancel-btn
 reconnect-refresh-btn
+# Semantic container classes — no visual styling needed
+connection-progress__icon
+connection-progress__label
+# JS-hook only — queried via querySelector in connection_banner_hook.js
+reconnect-overlay--visible
 
 [dynamic-prefixes]
 # Prefixes with dynamic suffixes (e.g. chat-message--#{type})

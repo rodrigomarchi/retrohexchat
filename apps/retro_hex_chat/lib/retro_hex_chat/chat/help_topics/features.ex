@@ -1426,6 +1426,74 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"feature-unread-indicators\">Unread Indicators</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-contextual-tips\">Contextual Tips</a></p>"
+      },
+      %{
+        id: "feature-status-bar",
+        title: "Status Bar",
+        category: "Features",
+        keywords: ["status bar", "lag", "clock", "connection", "mute", "channel info"],
+        content:
+          "<h3>Status Bar</h3>" <>
+            "<p>The status bar at the bottom of the screen provides real-time information about your connection and current channel.</p>" <>
+            "<h4>Three Sections</h4>" <>
+            "<p><strong>Left:</strong> Current channel name and user count.<br/>" <>
+            "<strong>Center:</strong> Connection state with colored indicator (green = connected, red = disconnected).<br/>" <>
+            "<strong>Right:</strong> Lag indicator, local clock, and mute toggle.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-lag-indicator\">Lag Indicator</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-connection-states\">Connection States</a></p>"
+      },
+      %{
+        id: "feature-lag-indicator",
+        title: "Lag Indicator",
+        category: "Features",
+        keywords: ["lag", "latency", "ping", "pong", "network", "delay", "timeout"],
+        content:
+          "<h3>Lag Indicator</h3>" <>
+            "<p>The lag indicator in the status bar shows the round-trip latency between your browser and the server, measured every 30 seconds.</p>" <>
+            "<h4>Color Thresholds</h4>" <>
+            "<p><strong>Normal (green):</strong> Under 200ms — connection is good.<br/>" <>
+            "<strong>Warning (yellow):</strong> 200–499ms — noticeable delay.<br/>" <>
+            "<strong>Critical (red):</strong> 500ms or more — significant lag.<br/>" <>
+            "<strong>Timeout (?):</strong> No response received — connection may be lost.</p>" <>
+            "<h4>How It Works</h4>" <>
+            "<p>The client sends a ping to the server every 30 seconds. The server echoes the timestamp back, " <>
+            "and the client calculates the round-trip time. If no response arrives within 10 seconds, a timeout is shown.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-status-bar\">Status Bar</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-connection-states\">Connection States</a></p>"
+      },
+      %{
+        id: "feature-connection-states",
+        title: "Connection States",
+        category: "Features",
+        keywords: [
+          "connection",
+          "connected",
+          "disconnected",
+          "reconnecting",
+          "connecting",
+          "banner",
+          "overlay"
+        ],
+        content:
+          "<h3>Connection States</h3>" <>
+            "<p>The status bar shows four possible connection states with visual indicators.</p>" <>
+            "<h4>States</h4>" <>
+            "<p><strong>● Connected:</strong> Normal operation — you are connected to the server.<br/>" <>
+            "<strong>◌ Connecting:</strong> Initial connection in progress.<br/>" <>
+            "<strong>● Disconnected:</strong> Connection lost — shown in red.<br/>" <>
+            "<strong>↻ Reconnecting:</strong> Attempting to reconnect automatically.</p>" <>
+            "<h4>Connection Banners</h4>" <>
+            "<p>For brief disconnections (over 1 second), a red banner appears at the top of the chat area. " <>
+            "When reconnected, a green banner shows briefly and fades after 3 seconds. " <>
+            "Very brief disconnections (under 1 second) are suppressed to avoid flicker.</p>" <>
+            "<h4>Reconnect Overlay</h4>" <>
+            "<p>For extended disconnections, a full-screen overlay with countdown and retry appears. " <>
+            "The banner hides when the overlay is active to avoid duplication.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-status-bar\">Status Bar</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-lag-indicator\">Lag Indicator</a></p>"
       }
     ]
   end

@@ -1,0 +1,35 @@
+/* RetroHexChat — Loading Spinner: centered content loading indicator */
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  pointer-events: none;
+}
+
+.loading-spinner__bar {
+  width: 200px;
+  height: 14px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-link) 0,
+    var(--color-link) 8px,
+    transparent 8px,
+    transparent 12px
+  );
+  animation: progress-scroll 1s linear infinite;
+}
+
+.loading-spinner__text {
+  color: var(--color-muted);
+}
+
+.loading-spinner__retry {
+  pointer-events: auto;
+  margin-top: 4px;
+}

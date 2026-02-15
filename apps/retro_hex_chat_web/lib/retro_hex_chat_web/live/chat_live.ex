@@ -63,7 +63,7 @@ defmodule RetroHexChatWeb.ChatLive do
             socket
             |> attach_all_hooks()
             |> assign_defaults(session)
-            |> assign(show_onboarding_tip: onboarded)
+            |> assign(show_onboarding_tip: onboarded, connection_ready: true)
             |> Helpers.join_channel("#lobby", session)
             |> Helpers.maybe_join_from_params(params)
             |> Helpers.maybe_start_nickserv_timer(nickname)
@@ -74,7 +74,9 @@ defmodule RetroHexChatWeb.ChatLive do
 
           {:ok, socket}
         else
-          {:ok, assign_defaults(socket, session) |> assign(show_onboarding_tip: onboarded)}
+          {:ok,
+           assign_defaults(socket, session)
+           |> assign(show_onboarding_tip: onboarded, connection_progress_step: 1)}
         end
 
       {:error, _} ->
@@ -110,6 +112,7 @@ defmodule RetroHexChatWeb.ChatLive do
       {:tip_events, &ChatLive.TipEvents.handle_event/3},
       {:kick_events, &ChatLive.KickEvents.handle_event/3},
       {:keyboard_events, &ChatLive.KeyboardEvents.handle_event/3},
+      {:connection_events, &ChatLive.ConnectionEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
     ]
 
@@ -324,7 +327,14 @@ defmodule RetroHexChatWeb.ChatLive do
       emoji_emojis: EmojiData.by_category("Smileys & Emotion"),
       syntax_tooltip: nil,
       command_help_level: UserPreferences.get_command_help_level(session.user_preferences),
-      timestamp_format: UserPreferences.get_timestamp_format(session.user_preferences)
+      timestamp_format: UserPreferences.get_timestamp_format(session.user_preferences),
+      connection_ready: false,
+      connection_state: :connected,
+      connection_progress_step: 1,
+      connection_timeout: false,
+      lag_ms: nil,
+      lag_status: :normal,
+      loading_channel: nil
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])

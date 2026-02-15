@@ -9,14 +9,35 @@ defmodule RetroHexChatWeb.ChannelListLive do
   @impl true
   def mount(_params, session, socket) do
     viewer_channels = Map.get(session, "channels", [])
-    channels = Autocomplete.list_visible_channels(viewer_channels)
 
-    {:ok,
+    socket =
+      assign(socket,
+        channels: [],
+        filtered: [],
+        search: "",
+        loading: true,
+        channel_count: 0,
+        viewer_channels: viewer_channels,
+        page_title: "Channel List - RetroHexChat"
+      )
+
+    if connected?(socket) do
+      send(self(), :load_channels)
+    end
+
+    {:ok, socket}
+  end
+
+  @impl true
+  def handle_info(:load_channels, socket) do
+    channels = Autocomplete.list_visible_channels(socket.assigns.viewer_channels)
+
+    {:noreply,
      assign(socket,
        channels: channels,
        filtered: channels,
-       search: "",
-       page_title: "Channel List - RetroHexChat"
+       loading: false,
+       channel_count: length(channels)
      )}
   end
 
@@ -68,7 +89,13 @@ defmodule RetroHexChatWeb.ChannelListLive do
               class="u-w-full"
             />
           </div>
-          <div class="channel-list-scroll">
+          <div :if={@loading} class="loading-spinner" data-testid="channel-list-loading">
+            <div class="loading-spinner__bar" role="progressbar"></div>
+            <span class="loading-spinner__text">
+              Fetching channels... {@channel_count} found
+            </span>
+          </div>
+          <div :if={!@loading} class="channel-list-scroll">
             <table class="table-standard">
               <thead>
                 <tr>
