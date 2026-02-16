@@ -235,6 +235,9 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     |> UiActionHandlers.handle_ui_action(action, payload)
   end
 
+  defp handle_dispatch_result(socket, session, {:ok, :ui_action, :p2p_invite, payload}),
+    do: handle_p2p_invite(socket, session, payload)
+
   defp handle_dispatch_result(socket, _session, {:ok, :ui_action, action, payload}),
     do: UiActionHandlers.handle_ui_action(socket, action, payload)
 
@@ -457,6 +460,42 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     days = div(seconds, 86_400)
     if days == 1, do: "1 day", else: "#{days} days"
   end
+
+  # ── Private: P2P invite ─────────────────────────────────
+
+  defp handle_p2p_invite(socket, session, payload) do
+    %{target: target, session_type: session_type, token: token} = payload
+
+    pm_content = p2p_invite_content(session_type, token)
+
+    # Send PM invitation (persisted, appears in PM chat)
+    case Service.send_private_message(session.nickname, target, pm_content, "p2p_invite") do
+      {:ok, _pm} -> :ok
+      {:error, _} -> :ok
+    end
+
+    # Toast notification is sent by P2P.Service.notify_peer via "user:#{peer_nick}" PubSub
+    # The PubSub handler in ChatLive handles the "p2p_invite" event
+
+    # Show confirmation system message to initiator
+    confirm_msg = "Convite P2P enviado para #{target}. Aguardando resposta..."
+
+    socket
+    |> stream_insert(:chat_messages, system_message(confirm_msg))
+    |> push_event("scroll_to_bottom", %{})
+  end
+
+  defp p2p_invite_content("audio_call", token),
+    do: "Chamada de audio iniciada. Entre no lobby: /p2p/#{token}"
+
+  defp p2p_invite_content("video_call", token),
+    do: "Chamada de video iniciada. Entre no lobby: /p2p/#{token}"
+
+  defp p2p_invite_content("file_transfer", token),
+    do: "Transferencia de arquivo iniciada. Entre no lobby: /p2p/#{token}"
+
+  defp p2p_invite_content(_generic, token),
+    do: "Sessao P2P iniciada. Entre no lobby: /p2p/#{token}"
 
   # ── Private: helpers ──────────────────────────────────────
 

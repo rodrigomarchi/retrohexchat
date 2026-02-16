@@ -23,6 +23,7 @@
 - PostgreSQL 16+ (new columns on `messages` and `private_messages` tables — 1 migration) (033-message-interactions)
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, Phoenix.Token (already in use) (034-p2p-foundation)
 - PostgreSQL 16+ (1 new migration: `p2p_sessions` table) (034-p2p-foundation)
+- PostgreSQL 16+ (existing `p2p_sessions` table, existing `private_messages` table — no new migrations). GenServer state for ephemeral lobby data. (035-p2p-session-ui)
 
 ## Project Structure
 
@@ -145,6 +146,6 @@ static analysis from day one, 98.css design fidelity, mandatory help documentati
 
 
 ## Recent Changes
+- 035-p2p-session-ui: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
 - 034-p2p-foundation: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, Phoenix.Token (already in use)
 - 033-message-interactions: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
-- 032-notification-system: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild

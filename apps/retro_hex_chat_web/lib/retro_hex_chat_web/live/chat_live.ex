@@ -549,4 +549,20 @@ defmodule RetroHexChatWeb.ChatLive do
     index = :erlang.phash2(nickname, length(@nick_colors))
     Enum.at(@nick_colors, index)
   end
+
+  @spec extract_p2p_label(String.t()) :: String.t()
+  defp extract_p2p_label(content) when is_binary(content) do
+    case String.split(content, ". Entre no lobby:") do
+      [label | _] -> label
+      _ -> content
+    end
+  end
+
+  @spec extract_p2p_link(String.t()) :: String.t()
+  defp extract_p2p_link(content) when is_binary(content) do
+    case Regex.run(~r{(/p2p/[^\s]+)}, content) do
+      [_, path] -> path
+      _ -> "#"
+    end
+  end
 end

@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.Router do
     post "/chat/session", SessionController, :create
     live "/chat", ChatLive
     live "/channels", ChannelListLive
+    live "/p2p/:token", P2PSessionLive
   end
 
   # Enable LiveDashboard in development

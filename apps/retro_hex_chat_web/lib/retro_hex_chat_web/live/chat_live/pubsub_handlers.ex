@@ -134,6 +134,36 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:welcome_changed, _} = msg, socket),
     do: ServerMessages.handle_info(msg, socket)
 
+  # ── P2P: invite notification ─────────────────────────────
+
+  def handle_info(%{event: "p2p_invite"} = msg, socket) do
+    import Phoenix.LiveView, only: [push_event: 3]
+
+    %{payload: %{token: token, from: from, session_type: session_type}} = msg
+
+    body =
+      case session_type do
+        "audio_call" -> "#{from} quer iniciar uma chamada de audio"
+        "video_call" -> "#{from} quer iniciar uma chamada de video"
+        "file_transfer" -> "#{from} quer enviar um arquivo"
+        _ -> "#{from} quer iniciar uma sessao P2P"
+      end
+
+    socket =
+      push_event(socket, "notify", %{
+        id: "p2p_invite_#{token}",
+        title: "Convite P2P",
+        body: body,
+        type: "p2p_invite",
+        token: token,
+        from: from,
+        session_type: session_type,
+        persistent: true
+      })
+
+    {:halt, socket}
+  end
+
   # ── Task/DOWN catch-all ───────────────────────────────────
 
   def handle_info({_ref, _result}, socket), do: {:halt, socket}

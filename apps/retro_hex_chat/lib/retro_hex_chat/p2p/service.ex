@@ -59,6 +59,30 @@ defmodule RetroHexChat.P2P.Service do
     end
   end
 
+  @valid_action_types ~w(audio_call video_call file_transfer)
+
+  @spec send_lobby_message(String.t(), integer(), String.t()) :: :ok | {:error, atom()}
+  def send_lobby_message(token, user_id, content) do
+    nick = get_nickname(user_id)
+    SessionServer.send_message(token, user_id, nick || "unknown", content)
+  end
+
+  @spec request_action(String.t(), integer(), String.t()) :: :ok | {:error, atom()}
+  def request_action(token, user_id, action_type) do
+    if action_type in @valid_action_types do
+      nick = get_nickname(user_id)
+      SessionServer.request_action(token, user_id, nick || "unknown", action_type)
+    else
+      {:error, :invalid_action_type}
+    end
+  end
+
+  @spec respond_action(String.t(), integer(), boolean()) :: :ok | {:error, atom()}
+  def respond_action(token, user_id, accepted?) do
+    nick = get_nickname(user_id)
+    SessionServer.respond_action(token, user_id, nick || "unknown", accepted?)
+  end
+
   # --- Private Helpers ---
 
   defp insert_session(_signed_token, creator_id, peer_id, session_type) do

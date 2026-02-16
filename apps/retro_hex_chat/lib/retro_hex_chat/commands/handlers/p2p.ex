@@ -1,0 +1,75 @@
+defmodule RetroHexChat.Commands.Handlers.P2p do
+  @moduledoc "Handler for /p2p <nickname> — initiate a P2P session."
+  @behaviour RetroHexChat.Commands.Handler
+
+  alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Services.RegisteredNick
+
+  @impl true
+  @spec validate(String.t()) :: :ok | {:error, String.t()}
+  def validate(""), do: {:error, "Uso: /p2p <nickname>"}
+  def validate(_), do: :ok
+
+  @impl true
+  @spec execute([String.t()], Handler.context()) :: Handler.result()
+  def execute([], _context), do: {:error, "Uso: /p2p <nickname>"}
+
+  def execute([target | _rest], context) do
+    do_execute(target, "generic", context)
+  end
+
+  @impl true
+  @spec help() :: %{
+          name: String.t(),
+          syntax: String.t(),
+          description: String.t(),
+          examples: [String.t()]
+        }
+  def help do
+    %{
+      name: "p2p",
+      syntax: "/p2p <nickname>",
+      description: "Iniciar uma sessao P2P com outro usuario.",
+      examples: ["/p2p mario"]
+    }
+  end
+
+  @impl true
+  def category, do: :user
+
+  # Shared execution logic used by /p2p, /call, and /sendfile handlers
+  @doc false
+  @spec do_execute(String.t(), String.t(), Handler.context()) :: Handler.result()
+  def do_execute(target, session_type, context) do
+    with :ok <- validate_identified(context),
+         :ok <- validate_not_self(target, context),
+         {:ok, target_id} <- resolve_registered_nick(target),
+         {:ok, creator_id} <- resolve_registered_nick(context.nickname),
+         {:ok, result} <- create_session(creator_id, target_id, session_type) do
+      {:ok, :ui_action, :p2p_invite,
+       %{target: target, session_type: session_type, token: result.token, creator_id: creator_id}}
+    end
+  end
+
+  defp validate_identified(%{identified: true}), do: :ok
+  defp validate_identified(_), do: {:error, "Voce precisa estar identificado para usar /p2p."}
+
+  defp validate_not_self(target, %{nickname: nick}) do
+    if String.downcase(target) == String.downcase(nick) do
+      {:error, "Voce nao pode iniciar uma sessao P2P com voce mesmo."}
+    else
+      :ok
+    end
+  end
+
+  defp resolve_registered_nick(nickname) do
+    case RetroHexChat.Repo.get_by(RegisteredNick, nickname: nickname) do
+      nil -> {:error, "Usuario '#{nickname}' nao esta registrado."}
+      nick -> {:ok, nick.id}
+    end
+  end
+
+  defp create_session(creator_id, target_id, session_type) do
+    RetroHexChat.P2P.create_session(creator_id, target_id, session_type: session_type)
+  end
+end

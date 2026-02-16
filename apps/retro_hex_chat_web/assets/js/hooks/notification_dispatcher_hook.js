@@ -26,6 +26,13 @@ const NotificationDispatcherHook = {
           this.pushEvent("navigate_to_channel", { channel });
         }
       },
+      onP2pAction: ({ action, token, from }) => {
+        if (action === "accept") {
+          this.pushEvent("accept_p2p", { token });
+        } else if (action === "reject") {
+          this.pushEvent("reject_p2p", { token, from: from || "" });
+        }
+      },
     });
 
     this.faviconBadge = createFaviconBadge();
