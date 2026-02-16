@@ -1,16 +1,11 @@
 /* RetroHexChat — Syntax tooltip: command help popup, params, suboptions, examples */
 
 .syntax-tooltip {
-  position: absolute;
-  bottom: 100%;
-  left: 0;
-  right: 0;
   background: var(--surface, #c0c0c0);
   border: 2px solid;
   border-color: var(--color-gray-500) var(--color-white) var(--color-white) var(--color-gray-500);
   padding: 4px 6px;
   font-size: 12px;
-  z-index: 5;
   max-height: 200px;
   overflow-y: auto;
 }

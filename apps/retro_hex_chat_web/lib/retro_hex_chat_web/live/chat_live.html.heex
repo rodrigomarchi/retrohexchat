@@ -254,6 +254,19 @@
         </div>
       </div>
 
+      <div class="chat-popups-stack">
+        <RetroHexChatWeb.Components.AutocompleteDropdown.autocomplete_dropdown
+          visible={@autocomplete_visible}
+          mode={@autocomplete_mode || :command}
+          results={@autocomplete_results}
+          selected={@autocomplete_selected}
+        />
+        <RetroHexChatWeb.Components.SyntaxTooltip.syntax_tooltip
+          tooltip={@syntax_tooltip}
+          detail_level={@command_help_level}
+        />
+      </div>
+
       <div style={if @show_status_tab, do: "display: none;", else: nil}>
         <RetroHexChatWeb.Components.FormattingToolbar.formatting_toolbar strip_formatting={
           @session.strip_formatting
@@ -282,16 +295,6 @@
           active_category={@emoji_category}
           emojis={@emoji_emojis}
           search_query={@emoji_search}
-        />
-        <RetroHexChatWeb.Components.AutocompleteDropdown.autocomplete_dropdown
-          visible={@autocomplete_visible}
-          mode={@autocomplete_mode || :command}
-          results={@autocomplete_results}
-          selected={@autocomplete_selected}
-        />
-        <RetroHexChatWeb.Components.SyntaxTooltip.syntax_tooltip
-          tooltip={@syntax_tooltip}
-          detail_level={@command_help_level}
         />
         <form phx-submit="send_input" class="chat-input-form">
           <textarea

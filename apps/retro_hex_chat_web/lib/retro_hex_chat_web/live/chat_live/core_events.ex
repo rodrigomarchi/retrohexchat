@@ -64,7 +64,19 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
             |> push_event("tip_trigger", %{tip: "first_message"})
             |> reset_activity()
 
-          {:halt, assign(socket, input: "", command_history: history, history_index: -1)}
+          {:halt,
+           socket
+           |> assign(
+             input: "",
+             command_history: history,
+             history_index: -1,
+             autocomplete_visible: false,
+             autocomplete_results: [],
+             autocomplete_filter: "",
+             autocomplete_selected: 0,
+             syntax_tooltip: nil
+           )
+           |> push_event("clear_input", %{})}
 
         {:command, name, args} ->
           socket =
@@ -72,7 +84,19 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
             |> ChatLive.CommandDispatch.dispatch_command(session, name, args)
             |> reset_activity()
 
-          {:halt, assign(socket, input: "", command_history: history, history_index: -1)}
+          {:halt,
+           socket
+           |> assign(
+             input: "",
+             command_history: history,
+             history_index: -1,
+             autocomplete_visible: false,
+             autocomplete_results: [],
+             autocomplete_filter: "",
+             autocomplete_selected: 0,
+             syntax_tooltip: nil
+           )
+           |> push_event("clear_input", %{})}
       end
     end
   end
