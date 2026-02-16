@@ -33,7 +33,14 @@ import MessageInteractionsHook from "./hooks/message_interactions_hook";
 import NickChangeFormHook from "./hooks/nick_change_form_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
 
+const AutoFocusHook = {
+  mounted() {
+    requestAnimationFrame(() => this.el.focus());
+  },
+};
+
 const Hooks = {
+  AutoFocusHook: AutoFocusHook,
   ChannelListFormHook: ChannelListFormHook,
   CharCounterHook: CharCounterHook,
   ClockHook: ClockHook,

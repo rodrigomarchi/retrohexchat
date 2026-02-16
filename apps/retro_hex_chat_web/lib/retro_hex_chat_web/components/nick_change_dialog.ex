@@ -43,7 +43,12 @@ defmodule RetroHexChatWeb.Components.NickChangeDialog do
                 name="password"
                 value={@password}
                 phx-keyup="update_nick_change_password"
+                phx-keydown="confirm_nick_change"
+                phx-key="Enter"
+                phx-value-password={@password}
                 placeholder="Senha"
+                id="nick-change-password-input"
+                phx-hook="AutoFocusHook"
                 data-testid="nick-change-password"
               />
             </div>
