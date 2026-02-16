@@ -432,6 +432,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     if PerformList.enabled?(session.perform_list) and
          PerformList.count(session.perform_list) > 0 do
       send(self(), {:execute_perform, 0})
+    else
+      send(self(), {:execute_autojoin, 0})
     end
 
     socket
