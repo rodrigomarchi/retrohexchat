@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
   attr :webrtc_state, :string, default: nil
   attr :retry_attempt, :integer, default: nil
   attr :file_transfer, :map, default: nil
+  attr :call, :map, default: nil
 
   @spec p2p_lobby(map()) :: Phoenix.LiveView.Rendered.t()
   def p2p_lobby(assigns) do
@@ -52,6 +53,12 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
             :if={@file_transfer}
             file_transfer={@file_transfer}
             nickname={@nickname}
+            peer_nick={@peer_nick}
+          />
+
+          <.p2p_media_call
+            :if={@call}
+            call={@call}
             peer_nick={@peer_nick}
           />
 
@@ -127,6 +134,115 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     </div>
     """
   end
+
+  attr :call, :map, required: true
+  attr :peer_nick, :string, required: true
+
+  defp p2p_media_call(assigns) do
+    bars_active = quality_bars_active(assigns.call[:quality_level])
+    assigns = assign(assigns, bars_active: bars_active)
+
+    ~H"""
+    <div
+      id="media-call"
+      phx-hook="MediaHook"
+      class={"media-call #{if @call.type == "video", do: "media-call--video"}"}
+    >
+      <div :if={@call.type == "video"} class="media-call__video-area">
+        <video
+          :if={!@call.peer_camera_off}
+          id="remote-video"
+          class="media-call__remote"
+          autoplay
+          playsinline
+        >
+        </video>
+        <div :if={@call.peer_camera_off} class="media-call__placeholder">
+          {@peer_nick} — camera desligada
+        </div>
+        <video
+          id="local-video"
+          class="media-call__local"
+          autoplay
+          playsinline
+          muted
+        >
+        </video>
+      </div>
+
+      <audio id="remote-audio" autoplay></audio>
+
+      <div class="media-call__info">
+        <span>{@peer_nick}</span>
+        <span class="media-call__timer">{@call.duration}</span>
+        <div :if={@call.quality_level} class="media-call__quality">
+          <div class="media-call__quality-bars">
+            <div
+              :for={i <- 1..4}
+              class={"media-call__quality-bar #{if i <= @bars_active, do: "media-call__quality-bar--active media-call__quality-bar--#{@call.quality_level}"}"}
+            >
+            </div>
+          </div>
+          <span class="media-call__quality-label">{@call.quality_label}</span>
+        </div>
+      </div>
+
+      <div :if={@call.peer_muted} class="media-call__mute-indicator">
+        {@peer_nick} silenciou o microfone
+      </div>
+
+      <div :if={@call.upgrade_pending && !@call[:upgrade_from]} class="media-call__upgrade-consent">
+        <span>{@peer_nick} quer adicionar video</span>
+        <button phx-click="media_respond_upgrade" phx-value-accepted="true">Aceitar</button>
+        <button phx-click="media_respond_upgrade" phx-value-accepted="false">Recusar</button>
+      </div>
+
+      <div :if={@call.upgrade_pending && @call[:upgrade_from]} class="media-call__mute-indicator">
+        Aguardando resposta para adicionar video...
+      </div>
+
+      <div class="media-call__controls">
+        <button
+          data-media-action="mute"
+          class={"#{if @call[:local_muted], do: "media-call__btn--active"}"}
+        >
+          {if @call[:local_muted], do: "Ativar Mic", else: "Silenciar"}
+        </button>
+        <button
+          :if={@call.type == "video"}
+          data-media-action="camera"
+          class={"#{if @call[:local_camera_off], do: "media-call__btn--active"}"}
+        >
+          {if @call[:local_camera_off], do: "Ligar Camera", else: "Desligar Camera"}
+        </button>
+        <button :if={@call.type == "audio"} data-media-action="upgrade">
+          Adicionar Video
+        </button>
+        <button :if={@call.type == "video"} data-media-action="pip" class="media-call__pip-btn">
+          PiP
+        </button>
+        <button data-media-action="device-settings">
+          Dispositivos
+        </button>
+        <div class="media-call__preset-selector">
+          <button phx-click="media_select_preset" phx-value-preset="high">Alta</button>
+          <button phx-click="media_select_preset" phx-value-preset="medium">Media</button>
+          <button phx-click="media_select_preset" phx-value-preset="low">Baixa</button>
+        </div>
+        <button data-media-action="end-call">
+          Encerrar Chamada
+        </button>
+      </div>
+    </div>
+    """
+  end
+
+  @spec quality_bars_active(String.t() | nil) :: non_neg_integer()
+  defp quality_bars_active("excellent"), do: 4
+  defp quality_bars_active("good"), do: 3
+  defp quality_bars_active("fair"), do: 2
+  defp quality_bars_active("poor"), do: 1
+  defp quality_bars_active(_), do: 0
 
   attr :capabilities, :map, required: true
   attr :action_request, :map, default: nil

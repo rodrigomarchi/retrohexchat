@@ -53,6 +53,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         webrtc_state={@webrtc_state}
         retry_attempt={@retry_attempt}
         file_transfer={@file_transfer}
+        call={@call}
       />
     </div>
     """
@@ -112,8 +113,16 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   def handle_info(%{event: "p2p_action_response", payload: response}, socket) do
-    {:noreply,
-     assign(socket, action_request: Map.merge(socket.assigns.action_request || %{}, response))}
+    action_request = Map.merge(socket.assigns.action_request || %{}, response)
+    socket = assign(socket, action_request: action_request)
+
+    # If accepted and this is the requester, also start media
+    if response[:status] == "accepted" && response[:responder_id] != socket.assigns.user_id do
+      socket = start_media_if_call(socket)
+      {:noreply, socket}
+    else
+      {:noreply, socket}
+    end
   end
 
   def handle_info(%{event: "p2p_action_expired"}, socket) do
@@ -159,6 +168,100 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     end
   end
 
+  # --- Media PubSub Handlers ---
+
+  def handle_info(%{event: "media_mute", payload: %{muted: muted, from: from_id}}, socket) do
+    if from_id != socket.assigns.user_id do
+      call = Map.merge(socket.assigns.call || %{}, %{peer_muted: muted})
+
+      {:noreply,
+       socket
+       |> assign(call: call)
+       |> push_event("media_peer_muted", %{muted: muted})}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(%{event: "media_camera", payload: %{off: off, from: from_id}}, socket) do
+    if from_id != socket.assigns.user_id do
+      call = Map.merge(socket.assigns.call || %{}, %{peer_camera_off: off})
+
+      {:noreply,
+       socket
+       |> assign(call: call)
+       |> push_event("media_peer_camera", %{off: off})}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(%{event: "media_call_ended", payload: %{reason: reason}}, socket) do
+    if socket.assigns.call do
+      msg = %{
+        id: System.unique_integer([:positive]),
+        sender_nick: "Sistema",
+        content: "Chamada encerrada: #{reason}",
+        type: "system",
+        timestamp: DateTime.utc_now()
+      }
+
+      {:noreply,
+       socket
+       |> assign(call: nil)
+       |> assign(messages: socket.assigns.messages ++ [msg])
+       |> push_event("media_end_call", %{})}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(
+        %{event: "media_upgrade_request", payload: %{from: from_id}},
+        socket
+      ) do
+    if from_id != socket.assigns.user_id && socket.assigns.call do
+      call = Map.merge(socket.assigns.call, %{upgrade_pending: true})
+      {:noreply, assign(socket, call: call)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(
+        %{event: "media_upgrade_response", payload: %{accepted: accepted, from: from_id}},
+        socket
+      ) do
+    if from_id != socket.assigns.user_id && socket.assigns.call do
+      if accepted do
+        call = Map.merge(socket.assigns.call, %{upgrade_pending: false, type: "video"})
+
+        {:noreply,
+         socket
+         |> assign(call: call)
+         |> push_event("media_upgrade_accepted", %{})}
+      else
+        call = Map.merge(socket.assigns.call, %{upgrade_pending: false})
+
+        msg = %{
+          id: System.unique_integer([:positive]),
+          sender_nick: "Sistema",
+          content: "Pedido de video recusado.",
+          type: "system",
+          timestamp: DateTime.utc_now()
+        }
+
+        {:noreply,
+         socket
+         |> assign(call: call)
+         |> assign(messages: socket.assigns.messages ++ [msg])
+         |> push_event("media_upgrade_rejected", %{})}
+      end
+    else
+      {:noreply, socket}
+    end
+  end
+
   def handle_info(%{event: "p2p_peer_joined", payload: %{user_id: uid}}, socket) do
     if uid != socket.assigns.user_id do
       socket = assign(socket, peer_online: true)
@@ -188,7 +291,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     P2P.respond_action(socket.assigns.token, socket.assigns.user_id, accepted_bool)
 
     if accepted_bool do
-      {:noreply, push_event(socket, "p2p_request_permission", %{type: permission_type(socket)})}
+      socket = start_media_if_call(socket)
+      {:noreply, socket}
     else
       {:noreply, socket}
     end
@@ -417,6 +521,135 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     {:noreply, assign(socket, file_transfer: ft)}
   end
 
+  # --- Media Call Events ---
+
+  def handle_event("media_call_started", %{"type" => type}, socket) do
+    call = %{
+      status: "#{type}_active",
+      type: type,
+      duration: "00:00:00",
+      quality_level: nil,
+      quality_label: nil,
+      peer_muted: false,
+      peer_camera_off: false,
+      upgrade_pending: false
+    }
+
+    {:noreply, assign(socket, call: call)}
+  end
+
+  def handle_event("media_call_ended", %{"reason" => reason}, socket) do
+    msg = %{
+      id: System.unique_integer([:positive]),
+      sender_nick: "Sistema",
+      content: "Chamada encerrada: #{reason}",
+      type: "system",
+      timestamp: DateTime.utc_now()
+    }
+
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "p2p:#{socket.assigns.token}",
+      %{event: "media_call_ended", payload: %{reason: reason}}
+    )
+
+    {:noreply,
+     socket
+     |> assign(call: nil)
+     |> assign(messages: socket.assigns.messages ++ [msg])}
+  end
+
+  def handle_event("media_error", %{"code" => _code, "message" => message}, socket) do
+    msg = %{
+      id: System.unique_integer([:positive]),
+      sender_nick: "Sistema",
+      content: message,
+      type: "system",
+      timestamp: DateTime.utc_now()
+    }
+
+    {:noreply,
+     socket
+     |> assign(call: nil)
+     |> assign(messages: socket.assigns.messages ++ [msg])}
+  end
+
+  def handle_event("media_mute_changed", %{"muted" => muted}, socket) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "p2p:#{socket.assigns.token}",
+      %{event: "media_mute", payload: %{muted: muted, from: socket.assigns.user_id}}
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("media_camera_changed", %{"off" => off}, socket) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "p2p:#{socket.assigns.token}",
+      %{event: "media_camera", payload: %{off: off, from: socket.assigns.user_id}}
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("media_quality_update", %{"level" => level, "label" => label}, socket) do
+    call = Map.merge(socket.assigns.call || %{}, %{quality_level: level, quality_label: label})
+    {:noreply, assign(socket, call: call)}
+  end
+
+  def handle_event("media_duration_tick", %{"formatted" => formatted}, socket) do
+    call = Map.merge(socket.assigns.call || %{}, %{duration: formatted})
+    {:noreply, assign(socket, call: call)}
+  end
+
+  def handle_event("media_request_upgrade", _params, socket) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "p2p:#{socket.assigns.token}",
+      %{event: "media_upgrade_request", payload: %{from: socket.assigns.user_id}}
+    )
+
+    call = Map.merge(socket.assigns.call || %{}, %{upgrade_pending: true})
+    {:noreply, assign(socket, call: call)}
+  end
+
+  def handle_event("media_respond_upgrade", %{"accepted" => accepted}, socket) do
+    accepted_bool = accepted == "true" or accepted == true
+
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "p2p:#{socket.assigns.token}",
+      %{
+        event: "media_upgrade_response",
+        payload: %{accepted: accepted_bool, from: socket.assigns.user_id}
+      }
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("media_select_preset", %{"preset" => preset}, socket) do
+    {:noreply, push_event(socket, "media_set_preset", %{preset: preset})}
+  end
+
+  def handle_event("media_device_fallback", %{"message" => message}, socket) do
+    msg = %{
+      id: System.unique_integer([:positive]),
+      sender_nick: "Sistema",
+      content: message,
+      type: "system",
+      timestamp: DateTime.utc_now()
+    }
+
+    {:noreply, assign(socket, messages: socket.assigns.messages ++ [msg])}
+  end
+
+  def handle_event("media_devices_listed", _params, socket) do
+    {:noreply, socket}
+  end
+
   def handle_event("permission_result", %{"granted" => granted, "type" => type}, socket) do
     if granted do
       {:noreply,
@@ -501,7 +734,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         permission_granted: %{},
         webrtc_state: nil,
         retry_attempt: nil,
-        file_transfer: nil
+        file_transfer: nil,
+        call: nil
       )
 
     socket =
@@ -572,11 +806,16 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     {:noreply, socket}
   end
 
-  defp permission_type(socket) do
+  defp start_media_if_call(socket) do
     case socket.assigns[:action_request] do
-      %{action_type: "audio_call"} -> "microphone"
-      %{action_type: "video_call"} -> "camera"
-      _ -> "microphone"
+      %{action_type: "audio_call"} ->
+        push_event(socket, "media_start_audio", %{})
+
+      %{action_type: "video_call"} ->
+        push_event(socket, "media_start_video", %{})
+
+      _ ->
+        socket
     end
   end
 

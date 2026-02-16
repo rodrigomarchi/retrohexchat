@@ -121,6 +121,13 @@ const WebRTCHook = {
       this._handleConnectionStateChange(state);
     });
 
+    this.pc.onnegotiationneeded = async () => {
+      if (this.role === "initiator") {
+        const offer = await createOffer(this.pc);
+        this.pushEvent("p2p_signal", { type: "offer", sdp: offer.sdp });
+      }
+    };
+
     if (this.role === "initiator") {
       this.dataChannel = createDataChannel(this.pc, "filetransfer", {
         ordered: true,
@@ -150,6 +157,11 @@ const WebRTCHook = {
     this.el.dispatchEvent(event);
   },
 
+  _dispatchMediaEvent(type, detail) {
+    const event = new CustomEvent(type, { detail });
+    this.el.dispatchEvent(event);
+  },
+
   _handleConnectionStateChange(state) {
     this.pushEvent("p2p_state_change", { state });
 
@@ -158,6 +170,7 @@ const WebRTCHook = {
         this._clearDisconnectedTimer();
         this.retryCount = 0;
         this.pushEvent("p2p_connected", {});
+        this._dispatchMediaEvent("media_pc_ready", { pc: this.pc });
         break;
 
       case "disconnected":
@@ -218,6 +231,7 @@ const WebRTCHook = {
 
   _cleanup() {
     this._clearDisconnectedTimer();
+    this._dispatchMediaEvent("media_pc_closed", {});
     if (this.dataChannel) {
       this.dataChannel.onopen = null;
       this.dataChannel.onclose = null;

@@ -36,6 +36,7 @@ import P2PSessionHook from "./hooks/p2p_session_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
 import FileTransferHook from "./hooks/file_transfer_hook";
 import WebRTCHook from "./hooks/webrtc_hook";
+import MediaHook from "./hooks/media_hook";
 
 const AutoFocusHook = {
   mounted() {
@@ -59,6 +60,7 @@ const Hooks = {
   KeyBindingCaptureHook: KeyBindingCaptureHook,
   KeyboardHook: KeyboardHook,
   LagHook: LagHook,
+  MediaHook: MediaHook,
   MessageInteractionsHook: MessageInteractionsHook,
   NickChangeFormHook: NickChangeFormHook,
   NicklistHook: NicklistHook,

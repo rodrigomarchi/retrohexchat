@@ -17,6 +17,10 @@ char-counter--danger
 connection-banner--disconnected
 connection-banner--fade-out
 connection-banner--reconnected
+# Media call device panel — rendered dynamically by JS after enumerateDevices
+media-call__device-fallback
+media-call__device-label
+media-call__devices
 
 [missing]
 # False positive — "system" is a comparison value inside class={...} expression
@@ -39,6 +43,10 @@ connection-progress__icon
 connection-progress__label
 # JS-hook only — queried via querySelector in connection_banner_hook.js
 reconnect-overlay--visible
+# Media call — semantic container, no visual styling needed
+media-call__video-area
+# False positive — "video" parsed from dynamic class expression "media-call--video"
+video
 # False positives — Portuguese text parsed as class refs from p2p_lobby.ex connection_state_class
 Conectado
 Falha
