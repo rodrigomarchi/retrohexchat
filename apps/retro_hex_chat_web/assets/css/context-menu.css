@@ -1,7 +1,7 @@
 /* RetroHexChat — Context menu: items, states, shortcut hints */
 
 .context-menu {
-  font-size: 12px;
+  font-size: var(--text-base);
 }
 
 .context-menu .window {
@@ -56,7 +56,7 @@
   float: right;
   margin-left: 24px;
   color: var(--color-muted);
-  font-size: 11px;
+  font-size: var(--text-sm);
 }
 
 .context-menu li:hover .shortcut-hint,

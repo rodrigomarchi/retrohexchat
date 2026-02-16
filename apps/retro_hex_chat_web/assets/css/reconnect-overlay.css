@@ -20,13 +20,13 @@
 }
 
 .reconnect-overlay .countdown {
-  font-size: 18px;
+  font-size: var(--text-xl);
   font-weight: bold;
   margin: 12px 0;
 }
 
 .reconnect-overlay .attempt-info {
   color: var(--color-muted);
-  font-size: 11px;
+  font-size: var(--text-sm);
   margin-bottom: 8px;
 }

@@ -1,7 +1,7 @@
 /* RetroHexChat Layout — structural CSS for the MDI chat interface */
 
 body {
-  font-family: "MS Sans Serif", Tahoma, sans-serif;
+  font-family: var(--font-system);
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -48,7 +48,7 @@ body {
 .menu-item {
   padding: 2px 8px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: var(--text-base);
 }
 
 .menu-item:hover {
@@ -75,7 +75,7 @@ body {
 
 .menu-dropdown-item {
   padding: 4px 16px;
-  font-size: 12px;
+  font-size: var(--text-base);
   cursor: pointer;
   white-space: nowrap;
 }
@@ -111,8 +111,8 @@ body {
 }
 
 .treebar .tree-view {
-  font-size: var(--treebar-font-size, 12px);
-  font-family: var(--treebar-font-family, "MS Sans Serif", Tahoma, sans-serif);
+  font-size: var(--treebar-font-size, var(--text-base));
+  font-family: var(--treebar-font-family, var(--font-system));
 }
 
 .treebar li {
@@ -183,7 +183,7 @@ body {
 
 .compact-mode .tab-item {
   padding: 1px 6px;
-  font-size: 10px;
+  font-size: var(--text-xs);
 }
 
 .compact-mode .topic-bar {

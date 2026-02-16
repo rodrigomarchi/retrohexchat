@@ -3,7 +3,7 @@
 
 /* Status bar */
 .status-bar-field {
-  font-size: 11px;
+  font-size: var(--text-sm);
 }
 
 /* ── Status bar 3-section layout ── */
@@ -112,7 +112,7 @@
 /* ── Mute Toggle ────────────────────────────────────────── */
 .mute-toggle {
   font-weight: bold;
-  font-size: 11px;
+  font-size: var(--text-sm);
   letter-spacing: 0.5px;
 }
 

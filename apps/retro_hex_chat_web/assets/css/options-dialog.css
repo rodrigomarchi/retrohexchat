@@ -33,7 +33,7 @@
 }
 
 .options-nav .tree-view {
-  font-size: 12px;
+  font-size: var(--text-base);
 }
 
 .options-nav li {
@@ -64,11 +64,11 @@
 
 .options-panel legend {
   font-weight: bold;
-  font-size: 12px;
+  font-size: var(--text-base);
 }
 
 .options-panel label {
-  font-size: 12px;
+  font-size: var(--text-base);
 }
 
 .options-panel .field-row {
@@ -79,12 +79,12 @@
 }
 
 .options-panel select {
-  font-size: 12px;
+  font-size: var(--text-base);
 }
 
 .options-panel input[type="number"] {
   width: 60px;
-  font-size: 12px;
+  font-size: var(--text-base);
 }
 
 .options-quit-input {
@@ -122,7 +122,7 @@
 }
 
 .color-slot-label {
-  font-size: 12px;
+  font-size: var(--text-base);
   min-width: 100px;
 }
 
@@ -188,7 +188,7 @@
   display: flex;
   justify-content: space-between;
   padding: 2px 6px;
-  font-size: 12px;
+  font-size: var(--text-base);
   border-bottom: 1px solid #e0e0e0;
 }
 
@@ -203,7 +203,7 @@
 .keybinding-combo {
   color: var(--color-link);
   font-weight: bold;
-  font-family: Fixedsys, "Courier New", monospace;
+  font-family: var(--font-mono);
 }
 
 .keybindings-actions {

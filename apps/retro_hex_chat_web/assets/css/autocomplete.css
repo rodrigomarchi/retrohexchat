@@ -18,7 +18,7 @@
 
 .autocomplete-category-header {
   font-weight: bold;
-  font-size: 11px;
+  font-size: var(--text-sm);
   padding: 4px 8px 2px;
   color: var(--color-muted);
   cursor: default;
@@ -26,7 +26,7 @@
 }
 
 .autocomplete-description {
-  font-size: 11px;
+  font-size: var(--text-sm);
   color: var(--color-muted);
   margin-left: auto;
   overflow: hidden;

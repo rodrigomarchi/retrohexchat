@@ -10,12 +10,12 @@
 
 .search-bar input {
   flex: 1;
-  font-size: 12px;
+  font-size: var(--text-base);
   padding: 2px 4px;
 }
 
 .search-bar .search-error {
-  font-size: 11px;
+  font-size: var(--text-sm);
   color: #ff4444;
   white-space: nowrap;
 }
@@ -24,7 +24,7 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  font-size: 11px;
+  font-size: var(--text-sm);
 }
 
 .search-bar .search-filters label {
