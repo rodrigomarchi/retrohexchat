@@ -8,6 +8,8 @@ defmodule RetroHexChatWeb.ConnectLive do
   """
   use RetroHexChatWeb, :live_view
 
+  alias Phoenix.LiveView.JS
+
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Services.NickServ
 
@@ -107,6 +109,7 @@ defmodule RetroHexChatWeb.ConnectLive do
                   autofocus
                   autocomplete="off"
                   phx-debounce="300"
+                  phx-mounted={JS.focus()}
                 />
                 <p :if={@nickname_error} class="error-text">{@nickname_error}</p>
               </fieldset>
@@ -135,6 +138,7 @@ defmodule RetroHexChatWeb.ConnectLive do
                   value={@password}
                   autofocus
                   autocomplete="off"
+                  phx-mounted={JS.focus()}
                 />
                 <p :if={@password_error} class="error-text">{@password_error}</p>
               </fieldset>
