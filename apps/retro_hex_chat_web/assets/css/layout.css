@@ -1,5 +1,19 @@
 /* RetroHexChat Layout — structural CSS for the MDI chat interface */
 
+/* ─── 98.css font overrides ─── */
+body,
+.title-bar,
+li[role="tab"],
+.window,
+.tree-view,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-system);
+  -webkit-font-smoothing: auto;
+}
+
 body {
   font-family: var(--font-system);
   margin: 0;
