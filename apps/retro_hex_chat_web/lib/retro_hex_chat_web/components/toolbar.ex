@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.Components.Toolbar do
   use Phoenix.Component
 
   attr :connected, :boolean, default: false
+  attr :dnd_enabled, :boolean, default: false
+  attr :notification_count, :integer, default: 0
 
   @spec toolbar(map()) :: Phoenix.LiveView.Rendered.t()
   def toolbar(assigns) do
@@ -81,6 +83,37 @@ defmodule RetroHexChatWeb.Components.Toolbar do
         <svg viewBox="0 0 16 16" fill="currentColor">
           <path d="M2 2h12v12H2V2zm1 1v10h10V3H3zm1 1h8v1H4V4zm0 2h8v1H4V6zm0 2h8v1H4V8zm0 2h5v1H4v-1z" />
         </svg>
+      </button>
+      <span class="toolbar-separator"></span>
+      <button
+        type="button"
+        class={"toolbar-btn#{if @dnd_enabled, do: " toolbar-btn--active", else: ""}"}
+        title={if @dnd_enabled, do: "Disable Do Not Disturb", else: "Do Not Disturb"}
+        data-testid="toolbar-dnd"
+        phx-click="toggle_dnd"
+      >
+        <svg viewBox="0 0 16 16" fill="currentColor">
+          <path d="M12 2a5 5 0 0 1 0 10c-1.3 0-2.5-.5-3.4-1.3A6.9 6.9 0 0 0 10 6a6.9 6.9 0 0 0-1.4-4.7A5 5 0 0 1 12 2z" />
+          <path :if={@dnd_enabled} d="M1 14L14 1" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="toolbar-btn toolbar-btn--bell"
+        title="Notification Center"
+        data-testid="toolbar-bell"
+        phx-click="toggle_notification_center"
+      >
+        <svg viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 1a1 1 0 0 1 1 1v1a4 4 0 0 1 3 3.87V10l2 2H2l2-2V6.87A4 4 0 0 1 7 3V2a1 1 0 0 1 1-1zM6.5 13a1.5 1.5 0 0 0 3 0h-3z" />
+        </svg>
+        <span
+          :if={@notification_count > 0}
+          class="toolbar-badge"
+          data-testid="notification-badge"
+        >
+          {if @notification_count > 99, do: "99+", else: @notification_count}
+        </span>
       </button>
     </div>
     """

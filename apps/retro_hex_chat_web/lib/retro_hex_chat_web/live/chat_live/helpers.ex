@@ -114,6 +114,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
               ),
               to: __MODULE__.Autorespond
 
+  # ── Notifications ────────────────────────────────────────────
+
+  defdelegate maybe_push_notification(socket, event_type, attrs), to: __MODULE__.Notifications
+
   # ── Session / Nick colors / Sounds / Reconnect / Misc ────────
 
   defdelegate build_nick_color_fn(session), to: __MODULE__.Session

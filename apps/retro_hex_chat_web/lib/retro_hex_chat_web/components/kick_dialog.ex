@@ -35,11 +35,11 @@ defmodule RetroHexChatWeb.Components.KickDialog do
     """
   end
 
-  defp assign_kick_message(%{assigns: %{current: nil}} = assigns) do
+  defp assign_kick_message(%{current: nil} = assigns) do
     assign(assigns, :kick_message, "")
   end
 
-  defp assign_kick_message(%{assigns: %{current: kick}} = assigns) do
+  defp assign_kick_message(%{current: kick} = assigns) do
     assign(assigns, :kick_message, format_kick_message(kick))
   end
 

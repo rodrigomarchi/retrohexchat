@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
 
   alias RetroHexChat.Chat.KeyBindings
   alias RetroHexChat.Chat.UserPreferences
+  alias RetroHexChatWeb.Components.NotificationsPanel
 
   @panels [
     {"connect", "Connect"},
@@ -14,12 +15,14 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
     {"display", "Display"},
     {"fonts", "Fonts"},
     {"colors", "Colors"},
-    {"keybindings", "Key Bindings"}
+    {"keybindings", "Key Bindings"},
+    {"notifications", "Notifications"}
   ]
 
   attr :visible, :boolean, default: false
   attr :active_panel, :string, default: "display"
   attr :options_draft, :map, default: nil
+  attr :channels, :list, default: []
 
   @spec options_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def options_dialog(assigns) do
@@ -59,6 +62,11 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
             <.connect_panel :if={@active_panel == "connect"} draft={@options_draft} />
             <.messages_panel :if={@active_panel == "messages"} draft={@options_draft} />
             <.keybindings_panel :if={@active_panel == "keybindings"} draft={@options_draft} />
+            <NotificationsPanel.notifications_panel
+              :if={@active_panel == "notifications"}
+              draft={@options_draft}
+              channels={@channels}
+            />
           </div>
         </div>
         <div class="options-button-bar">

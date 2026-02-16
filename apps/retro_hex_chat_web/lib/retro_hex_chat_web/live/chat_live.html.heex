@@ -4,6 +4,14 @@
 <div id="key-capture-hook" phx-hook="KeyBindingCaptureHook" style="display: none;"></div>
 <div id="search-highlight-hook" phx-hook="SearchHighlightHook" style="display: none;"></div>
 <div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" style="display: none;"></div>
+<div
+  id="notification-dispatcher"
+  phx-hook="NotificationDispatcherHook"
+  data-active-channel={@session.active_channel}
+  style="display: none;"
+>
+</div>
+<div id="notification-toasts" class="notification-toast-container"></div>
 <RetroHexChatWeb.Components.Toast.toast_container />
 <div
   class={"app-container#{if @compact_mode, do: " compact-mode", else: ""}"}
@@ -17,7 +25,12 @@
     favorites={Favorites.entries(@session.favorites)}
     joined_channels={@session.channels}
   />
-  <RetroHexChatWeb.Components.Toolbar.toolbar :if={@show_toolbar} connected={true} />
+  <RetroHexChatWeb.Components.Toolbar.toolbar
+    :if={@show_toolbar}
+    connected={true}
+    dnd_enabled={@dnd_enabled}
+    notification_count={@notification_count}
+  />
 
   <div class="mdi-layout">
     <RetroHexChatWeb.Components.Treebar.treebar
@@ -357,6 +370,7 @@
     visible={@show_options_dialog}
     active_panel={@options_panel}
     options_draft={@options_draft}
+    channels={@session.channels}
   />
 
   <RetroHexChatWeb.Components.PerformDialog.perform_dialog
@@ -478,6 +492,12 @@
   <div id="paste-hook" phx-hook="PasteHook" style="display: none;"></div>
 
   <RetroHexChatWeb.Components.InviteDialog.invite_dialog pending_invites={@pending_invites} />
+
+  <RetroHexChatWeb.Components.NotificationCenter.notification_center
+    visible={@show_notification_center}
+    entries={@notification_entries}
+    count={@notification_count}
+  />
 
   <RetroHexChatWeb.Components.KickDialog.kick_dialog kick_queue={@kick_queue} />
 

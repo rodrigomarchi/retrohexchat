@@ -610,6 +610,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"feature-sounds\">Sounds</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-mute\">Mute</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-notifications\">Notifications</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
       },
       %{
@@ -796,14 +797,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         content:
           "<h3>Options Dialog</h3>" <>
             "<p>The Options dialog (<strong>Ctrl+Shift+O</strong>) is the central hub for all user preferences. " <>
-            "It provides a tree-view navigation with 6 settings panels.</p>" <>
+            "It provides a tree-view navigation with 7 settings panels.</p>" <>
             "<h4>Panels</h4>" <>
             "<p><strong>Connect:</strong> Auto-reconnect behavior (enable/disable, retry interval, max retries, timeout).<br/>" <>
             "<strong>IRC Messages:</strong> Configure where whois results, notices, and PMs are displayed.<br/>" <>
             "<strong>Display:</strong> Toggle toolbar, treebar, switchbar, status bar, compact mode, and line shading.<br/>" <>
             "<strong>Fonts:</strong> Customize font family and size for chat messages, input box, nicklist, and treebar.<br/>" <>
             "<strong>Colors:</strong> Customize chat background, text, system, timestamp, and error colors plus nick palette.<br/>" <>
-            "<strong>Key Bindings:</strong> View and customize all keyboard shortcuts.</p>" <>
+            "<strong>Key Bindings:</strong> View and customize all keyboard shortcuts.<br/>" <>
+            "<strong>Notifications:</strong> Global toggles, trigger rules, per-channel levels, DND, privacy mode.</p>" <>
             "<h4>Apply / OK / Cancel</h4>" <>
             "<p><strong>OK</strong> applies changes and closes the dialog. <strong>Apply</strong> applies changes " <>
             "and keeps the dialog open. <strong>Cancel</strong> discards unsaved changes.</p>" <>
@@ -1494,6 +1496,152 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"feature-status-bar\">Status Bar</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-lag-indicator\">Lag Indicator</a></p>"
+      },
+      %{
+        id: "feature-notifications",
+        title: "Notifications",
+        category: "Features",
+        keywords: [
+          "notifications",
+          "notification",
+          "toast",
+          "browser notification",
+          "favicon",
+          "badge",
+          "mention",
+          "alert"
+        ],
+        content:
+          "<h3>Notifications</h3>" <>
+            "<p>The notification system provides coordinated alerts when activity occurs in " <>
+            "channels or PMs you are not currently viewing.</p>" <>
+            "<h4>Notification Channels</h4>" <>
+            "<p>When a notification fires, multiple output channels activate simultaneously:</p>" <>
+            "<ul>" <>
+            "<li><strong>Toast popup</strong> — Bottom-right toast with sender and preview (max 3 visible, auto-dismiss 5s)</li>" <>
+            "<li><strong>Sound</strong> — Event-appropriate notification sound</li>" <>
+            "<li><strong>Title flash</strong> — Browser title alternates when tab is in background</li>" <>
+            "<li><strong>Browser notification</strong> — Native OS notification (if permission granted)</li>" <>
+            "<li><strong>Favicon badge</strong> — Red dot on browser tab icon</li>" <>
+            "<li><strong>Treebar badge</strong> — Unread count and highlight indicator</li>" <>
+            "</ul>" <>
+            "<h4>Trigger Rules</h4>" <>
+            "<p>Configure what triggers notifications in <strong>Options &gt; Notifications</strong>: " <>
+            "mentions, PMs, all channel messages, or joins/leaves.</p>" <>
+            "<h4>Per-Channel Levels</h4>" <>
+            "<p>Each channel can be set to <strong>Normal</strong> (all notifications), " <>
+            "<strong>Mentions only</strong> (only when your nick is mentioned), or " <>
+            "<strong>Mute</strong> (no notifications). PMs always notify.</p>" <>
+            "<h4>Active Channel Suppression</h4>" <>
+            "<p>If you are viewing a channel, notifications for that channel are suppressed — " <>
+            "you can already see the messages.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-dnd\">Do Not Disturb</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-notification-center\">Notification Center</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-notification-settings\">Notification Settings</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-sounds\">Sounds</a></p>"
+      },
+      %{
+        id: "feature-dnd",
+        title: "Do Not Disturb",
+        category: "Features",
+        keywords: [
+          "do not disturb",
+          "dnd",
+          "quiet",
+          "silence",
+          "suppress",
+          "moon"
+        ],
+        content:
+          "<h3>Do Not Disturb</h3>" <>
+            "<p>Do Not Disturb (DND) mode suppresses all audible and visual notifications " <>
+            "while still accumulating unread badges.</p>" <>
+            "<h4>Activating DND</h4>" <>
+            "<p>Click the moon icon in the toolbar, or enable it in " <>
+            "<strong>Options &gt; Notifications</strong>.</p>" <>
+            "<h4>What DND Suppresses</h4>" <>
+            "<p>Toast popups, notification sounds, title flash, and browser notifications " <>
+            "are all suppressed in DND mode.</p>" <>
+            "<h4>What Still Works</h4>" <>
+            "<p>Treebar unread badges and the favicon badge continue to accumulate. " <>
+            "The notification center still records entries. When you disable DND, " <>
+            "you can review everything you missed.</p>" <>
+            "<h4>Persistence</h4>" <>
+            "<p>DND state persists across page reloads for both registered users " <>
+            "and guests (via localStorage).</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-notifications\">Notifications</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-notification-settings\">Notification Settings</a></p>"
+      },
+      %{
+        id: "feature-notification-center",
+        title: "Notification Center",
+        category: "Features",
+        keywords: [
+          "notification center",
+          "bell",
+          "bell icon",
+          "recent notifications",
+          "mark all read"
+        ],
+        content:
+          "<h3>Notification Center</h3>" <>
+            "<p>The notification center is a dropdown panel showing recent notifications " <>
+            "in reverse chronological order.</p>" <>
+            "<h4>Opening</h4>" <>
+            "<p>Click the bell icon in the toolbar. A badge on the bell shows the " <>
+            "number of unread notifications.</p>" <>
+            "<h4>Entries</h4>" <>
+            "<p>Each entry shows the relative time (e.g., \"2 min ago\"), the sender, " <>
+            "the channel, and a content preview. Click an entry to navigate to " <>
+            "the relevant channel or PM.</p>" <>
+            "<h4>Mark All as Read</h4>" <>
+            "<p>Click \"Mark all as read\" to clear all notification entries, " <>
+            "reset treebar badges, and clear the favicon badge.</p>" <>
+            "<h4>Limits</h4>" <>
+            "<p>The notification center stores up to 50 entries (FIFO). " <>
+            "Entries are ephemeral — they do not persist across page reloads.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-notifications\">Notifications</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-dnd\">Do Not Disturb</a></p>"
+      },
+      %{
+        id: "feature-notification-settings",
+        title: "Notification Settings",
+        category: "Features",
+        keywords: [
+          "notification settings",
+          "notification preferences",
+          "per-channel",
+          "trigger rules",
+          "privacy mode"
+        ],
+        content:
+          "<h3>Notification Settings</h3>" <>
+            "<p>Configure all notification preferences from " <>
+            "<strong>Options &gt; Notifications</strong>.</p>" <>
+            "<h4>Global Toggles</h4>" <>
+            "<p><strong>Sound notifications</strong> — Enable/disable notification sounds.<br/>" <>
+            "<strong>Title flash</strong> — Enable/disable browser title flash.<br/>" <>
+            "<strong>Browser notifications</strong> — Enable native OS notifications. " <>
+            "Click \"Request Permission\" to grant browser permission.<br/>" <>
+            "<strong>Privacy mode</strong> — Hide message content in toasts and browser notifications.<br/>" <>
+            "<strong>Do Not Disturb</strong> — Suppress all interruptions.</p>" <>
+            "<h4>Trigger Rules</h4>" <>
+            "<p>Choose which events trigger notifications: mentions, PMs, " <>
+            "all channel messages, joins/leaves.</p>" <>
+            "<h4>Per-Channel Levels</h4>" <>
+            "<p>Set each channel to Normal, Mentions only, or Mute. " <>
+            "PMs are locked to \"Always\" and cannot be muted. " <>
+            "Channel settings are cleaned up when you leave a channel.</p>" <>
+            "<h4>Persistence</h4>" <>
+            "<p>Registered users' preferences persist in the database. " <>
+            "Guest preferences are saved to localStorage.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-notifications\">Notifications</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-dnd\">Do Not Disturb</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-options-dialog\">Options Dialog</a></p>"
       }
     ]
   end
