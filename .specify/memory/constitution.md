@@ -1,14 +1,15 @@
 <!--
   Sync Impact Report
   ==================
-  Version change: 1.1.0 → 1.2.0 (MINOR: existing principles expanded)
+  Version change: 1.2.0 → 1.3.0 (MINOR: new P2P bounded context + expanded principles)
 
   Modified principles:
-    - Principle IV: TDD now explicitly covers JavaScript (Vitest, jsdom,
-      hook=wiring/lib=logic pattern)
-    - Principle VI: Static Analysis now includes ESLint + Prettier for JS
+    - Principle II: Added 8th bounded context (RetroHexChat.P2P)
+    - Principle III: Added P2P session GenServer to OTP process architecture
+    - Principle VII: Added "p2p:#{token}" PubSub topic
 
-  Added sections: None
+  Added sections:
+    - Technology Stack: P2P Transport row (WebRTC browser-native API)
 
   Removed sections: None
 
@@ -20,10 +21,12 @@
     - .specify/templates/checklist-template.md: ✅ No update needed
 
   Runtime guidance updates:
-    - CLAUDE.md: ✅ Already updated (JS lint + test commands, 8 CI checks)
-    - MEMORY.md: ✅ Already updated
+    - CLAUDE.md: ⚠️ Update needed when P2P implementation begins
+    - MEMORY.md: ⚠️ Update needed when P2P implementation begins
 
-  Follow-up TODOs: None
+  Follow-up TODOs:
+    - Update CLAUDE.md Active Technologies when P2P plans are implemented
+    - Update MEMORY.md bounded contexts count (7 → 8)
 -->
 
 # RetroHexChat Constitution
@@ -64,6 +67,8 @@ Within `retro_hex_chat`, the following bounded contexts MUST exist:
 - `RetroHexChat.Commands` — Parser and dispatcher for "/" commands,
   validation, permissions.
 - `RetroHexChat.RateLimit` — Flood control.
+- `RetroHexChat.P2P` — Peer-to-peer sessions, file transfer, audio/video
+  calls via WebRTC.
 
 Each context MUST maintain internal layering: Schema, Queries,
 Service/UseCase, Policy, Events.
@@ -82,6 +87,8 @@ A well-defined supervision tree MUST exist from day zero:
   (spawn/terminate).
 - A dynamic Registry MUST track active channels via `via_tuple`.
 - Dedicated GenServers MUST back NickServ and ChanServ services.
+- One GenServer per active P2P session holding state (peers, status,
+  lobby messages).
 
 **Rationale**: OTP supervision is the core advantage of the BEAM. Explicit
 process architecture ensures fault isolation per channel and graceful
@@ -165,6 +172,7 @@ PubSub topics MUST follow a clear naming convention:
 - `"channel:#{name}"` for channel events.
 - `"user:#{nickname}"` for user-scoped events.
 - `"service:nickserv"`, `"service:chanserv"` for service events.
+- `"p2p:#{token}"` for P2P session events.
 
 LiveView streams MUST be used for long message lists to ensure performance.
 
@@ -260,6 +268,7 @@ remains comprehensive and trustworthy.
 | Testing (JS) | Vitest, jsdom | Hook + lib tests |
 | Static Analysis (Elixir) | Credo, Dialyxir, mix format | Enforced from day one |
 | Static Analysis (JS) | ESLint, Prettier | Enforced from day one |
+| P2P Transport | WebRTC (browser-native API) | No JS frameworks |
 | CSS Fonts | Fixedsys / Consolas / Courier New | Monospace in chat |
 
 **Forbidden technologies**: React, Vue, Svelte, Angular, or any
@@ -330,4 +339,4 @@ For day-to-day development guidance that supplements this constitution,
 refer to `CLAUDE.md` and project-level documentation. This constitution
 defines *what* is non-negotiable; runtime guidance addresses *how*.
 
-**Version**: 1.2.0 | **Ratified**: 2026-02-09 | **Last Amended**: 2026-02-14
+**Version**: 1.3.0 | **Ratified**: 2026-02-09 | **Last Amended**: 2026-02-16
