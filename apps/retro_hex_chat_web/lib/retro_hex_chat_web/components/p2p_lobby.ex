@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
   attr :role, :atom, required: true
   attr :webrtc_state, :string, default: nil
   attr :retry_attempt, :integer, default: nil
+  attr :file_transfer, :map, default: nil
 
   @spec p2p_lobby(map()) :: Phoenix.LiveView.Rendered.t()
   def p2p_lobby(assigns) do
@@ -46,6 +47,13 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
           <.p2p_presence nickname={@nickname} peer_nick={@peer_nick} peer_online={@peer_online} />
 
           <.p2p_chat messages={@messages} nickname={@nickname} />
+
+          <.p2p_file_transfer
+            :if={@file_transfer}
+            file_transfer={@file_transfer}
+            nickname={@nickname}
+            peer_nick={@peer_nick}
+          />
 
           <.p2p_actions
             capabilities={@capabilities}
@@ -189,6 +197,221 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
           Chamada de Video
         </button>
       </div>
+    </div>
+    """
+  end
+
+  attr :file_transfer, :map, required: true
+  attr :nickname, :string, required: true
+  attr :peer_nick, :string, required: true
+
+  defp p2p_file_transfer(assigns) do
+    ~H"""
+    <div class="file-transfer" id="p2p-file-transfer" phx-hook="FileTransferHook">
+      <input type="file" class="file-transfer-input u-hidden" />
+
+      <.ft_offer_received
+        :if={@file_transfer[:status] == "offer_received"}
+        file_transfer={@file_transfer}
+      />
+
+      <.ft_progress_bar
+        :if={@file_transfer[:status] in ["transferring", "verifying", "paused", "resuming"]}
+        file_transfer={@file_transfer}
+      />
+
+      <.ft_completed :if={@file_transfer[:status] == "completed"} file_transfer={@file_transfer} />
+
+      <.ft_cancelled
+        :if={@file_transfer[:status] == "cancelled"}
+        file_transfer={@file_transfer}
+      />
+
+      <.ft_failed
+        :if={@file_transfer[:status] == "failed"}
+        file_transfer={@file_transfer}
+      />
+
+      <.ft_rejected
+        :if={@file_transfer[:status] == "rejected"}
+        file_transfer={@file_transfer}
+        peer_nick={@peer_nick}
+      />
+
+      <.ft_queued :if={@file_transfer[:queued_file]} file_transfer={@file_transfer} />
+
+      <.ft_validation_error
+        :if={@file_transfer[:validation_error]}
+        error={@file_transfer.validation_error}
+      />
+
+      <.ft_offer_pending
+        :if={@file_transfer[:status] == "offering"}
+        file_transfer={@file_transfer}
+      />
+    </div>
+    """
+  end
+
+  attr :file_transfer, :map, required: true
+
+  defp ft_offer_received(assigns) do
+    ~H"""
+    <div class="file-transfer__offer">
+      <p class="file-transfer__offer-text">
+        {@file_transfer.sender_nick} quer enviar: {@file_transfer.file_name} ({@file_transfer.formatted_size})
+      </p>
+      <div class="file-transfer__offer-buttons">
+        <button
+          phx-click="ft_respond"
+          phx-value-accepted="true"
+          class="file-transfer__offer-btn file-transfer__offer-btn--accept"
+        >
+          Aceitar
+        </button>
+        <button
+          phx-click="ft_respond"
+          phx-value-accepted="false"
+          class="file-transfer__offer-btn file-transfer__offer-btn--reject"
+        >
+          Rejeitar
+        </button>
+      </div>
+    </div>
+    """
+  end
+
+  attr :file_transfer, :map, required: true
+
+  defp ft_progress_bar(assigns) do
+    percent = assigns.file_transfer[:percent] || 0
+
+    assigns =
+      assign(assigns,
+        percent: percent,
+        speed: assigns.file_transfer[:speed] || "0 B/s",
+        eta: assigns.file_transfer[:eta] || "--",
+        paused: assigns.file_transfer[:status] == "paused",
+        resuming: assigns.file_transfer[:status] == "resuming",
+        verifying: assigns.file_transfer[:status] == "verifying"
+      )
+
+    ~H"""
+    <div class="file-transfer__progress">
+      <div class="file-transfer__progress-header">
+        <span class="file-transfer__progress-filename">{@file_transfer.file_name}</span>
+        <span
+          :if={@paused}
+          class="file-transfer__progress-status file-transfer__progress-status--paused"
+        >
+          Reconectando...
+        </span>
+        <span
+          :if={@resuming}
+          class="file-transfer__progress-status file-transfer__progress-status--resuming"
+        >
+          Retomando transferencia...
+        </span>
+        <span :if={@verifying} class="file-transfer__progress-status">
+          Verificando integridade...
+        </span>
+      </div>
+      <div
+        role="progressbar"
+        class="file-transfer__bar"
+        aria-valuenow={@percent}
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        <div class="file-transfer__bar-fill" style={"width: #{@percent}%"}></div>
+      </div>
+      <div class="file-transfer__progress-info">
+        <span>{@percent}%</span>
+        <span :if={!@paused && !@verifying}>{@speed} — ETA: {@eta}</span>
+      </div>
+      <div :if={!@verifying} class="file-transfer__progress-actions">
+        <button phx-click="ft_cancel" class="file-transfer__cancel-btn">
+          Cancelar
+        </button>
+      </div>
+    </div>
+    """
+  end
+
+  attr :file_transfer, :map, required: true
+
+  defp ft_completed(assigns) do
+    ~H"""
+    <div class="file-transfer__status file-transfer__status--success">
+      <p>Transferencia concluida com sucesso: {@file_transfer.file_name}</p>
+    </div>
+    """
+  end
+
+  attr :file_transfer, :map, required: true
+
+  defp ft_cancelled(assigns) do
+    ~H"""
+    <div class="file-transfer__status file-transfer__status--cancelled">
+      <p>Transferencia cancelada por {@file_transfer.cancelled_by}</p>
+    </div>
+    """
+  end
+
+  attr :file_transfer, :map, required: true
+
+  defp ft_failed(assigns) do
+    ~H"""
+    <div class="file-transfer__status file-transfer__status--error">
+      <p>{@file_transfer.reason}</p>
+      <button
+        :if={@file_transfer[:can_retry]}
+        phx-click="ft_retry"
+        class="file-transfer__retry-btn"
+      >
+        Tentar novamente
+      </button>
+    </div>
+    """
+  end
+
+  attr :file_transfer, :map, required: true
+  attr :peer_nick, :string, required: true
+
+  defp ft_rejected(assigns) do
+    ~H"""
+    <div class="file-transfer__status file-transfer__status--rejected">
+      <p>{@peer_nick} rejeitou a transferencia de arquivo</p>
+    </div>
+    """
+  end
+
+  attr :file_transfer, :map, required: true
+
+  defp ft_queued(assigns) do
+    ~H"""
+    <div class="file-transfer__status file-transfer__status--queued">
+      <p>Transferencia em andamento, arquivo na fila: {@file_transfer.queued_file}</p>
+    </div>
+    """
+  end
+
+  attr :error, :string, required: true
+
+  defp ft_validation_error(assigns) do
+    ~H"""
+    <div class="file-transfer__status file-transfer__status--error">
+      <p>{@error}</p>
+    </div>
+    """
+  end
+
+  attr :file_transfer, :map, required: true
+
+  defp ft_offer_pending(assigns) do
+    ~H"""
+    <div class="file-transfer__status file-transfer__status--pending">
+      <p>Aguardando resposta para: {@file_transfer.file_name} ({@file_transfer.formatted_size})</p>
     </div>
     """
   end

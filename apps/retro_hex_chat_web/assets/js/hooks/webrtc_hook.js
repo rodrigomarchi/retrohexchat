@@ -14,6 +14,8 @@ import {
   close,
   onConnectionStateChange,
   onIceCandidate,
+  onDataChannel,
+  createDataChannel,
   RETRY_CONFIG,
 } from "../lib/webrtc.js";
 
@@ -24,6 +26,7 @@ const WebRTCHook = {
     this.retryCount = 0;
     this.disconnectedTimer = null;
     this.role = null;
+    this.dataChannel = null;
 
     this.handleEvent("p2p_start_offer", (data) => this._handleStartOffer(data));
     this.handleEvent("p2p_start_answer", (data) => this._handleStartAnswer(data));
@@ -117,6 +120,34 @@ const WebRTCHook = {
     onConnectionStateChange(this.pc, (state) => {
       this._handleConnectionStateChange(state);
     });
+
+    if (this.role === "initiator") {
+      this.dataChannel = createDataChannel(this.pc, "filetransfer", {
+        ordered: true,
+      });
+      this.dataChannel.binaryType = "arraybuffer";
+      this._setupDataChannel(this.dataChannel);
+    } else {
+      onDataChannel(this.pc, (channel) => {
+        this.dataChannel = channel;
+        this.dataChannel.binaryType = "arraybuffer";
+        this._setupDataChannel(this.dataChannel);
+      });
+    }
+  },
+
+  _setupDataChannel(channel) {
+    channel.onopen = () => {
+      this._dispatchDataChannelEvent("ft_channel_ready", channel);
+    };
+    channel.onclose = () => {
+      this._dispatchDataChannelEvent("ft_channel_closed", null);
+    };
+  },
+
+  _dispatchDataChannelEvent(type, channel) {
+    const event = new CustomEvent(type, { detail: { channel } });
+    this.el.dispatchEvent(event);
   },
 
   _handleConnectionStateChange(state) {
@@ -187,6 +218,12 @@ const WebRTCHook = {
 
   _cleanup() {
     this._clearDisconnectedTimer();
+    if (this.dataChannel) {
+      this.dataChannel.onopen = null;
+      this.dataChannel.onclose = null;
+      this.dataChannel.onmessage = null;
+      this.dataChannel = null;
+    }
     if (this.pc) {
       close(this.pc);
       this.pc = null;

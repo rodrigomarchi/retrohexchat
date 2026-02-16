@@ -1,6 +1,18 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import WebRTCHook from "../../js/hooks/webrtc_hook.js";
 
+class MockDataChannel {
+  constructor(label, options) {
+    this.label = label;
+    this.ordered = options?.ordered ?? true;
+    this.readyState = "connecting";
+    this.binaryType = "arraybuffer";
+    this.onopen = null;
+    this.onclose = null;
+    this.onmessage = null;
+  }
+}
+
 class MockRTCPeerConnection {
   constructor() {
     this.localDescription = null;
@@ -9,6 +21,10 @@ class MockRTCPeerConnection {
     this.onconnectionstatechange = null;
     this.onicecandidate = null;
     this.ondatachannel = null;
+  }
+
+  createDataChannel(label, options) {
+    return new MockDataChannel(label, options);
   }
 
   async createOffer() {
@@ -227,6 +243,96 @@ describe("WebRTCHook", () => {
       expect(hook.disconnectedTimer).not.toBeNull();
 
       vi.useRealTimers();
+    });
+  });
+
+  describe("DataChannel creation (T049)", () => {
+    it("initiator creates a filetransfer DataChannel", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(WebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+
+      const startOfferCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "p2p_start_offer");
+      await startOfferCall[1]({ ice_servers: [] });
+
+      expect(hook.dataChannel).not.toBeNull();
+      expect(hook.dataChannel.label).toBe("filetransfer");
+      expect(hook.dataChannel.ordered).toBe(true);
+      expect(hook.dataChannel.binaryType).toBe("arraybuffer");
+    });
+
+    it("answerer sets ondatachannel handler", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(WebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+
+      const startAnswerCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "p2p_start_answer");
+      startAnswerCall[1]({ ice_servers: [] });
+
+      // Receive offer to create connection
+      const signalCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "p2p_signal");
+      await signalCall[1]({ type: "offer", sdp: "remote-offer" });
+
+      expect(hook.pc.ondatachannel).toBeTypeOf("function");
+    });
+
+    it("dispatches ft_channel_ready on DataChannel open", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(WebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+
+      const startOfferCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "p2p_start_offer");
+      await startOfferCall[1]({ ice_servers: [] });
+
+      const events = [];
+      hook.el.addEventListener("ft_channel_ready", (e) => events.push(e));
+
+      // Simulate channel open
+      hook.dataChannel.onopen();
+
+      expect(events.length).toBe(1);
+      expect(events[0].detail.channel).toBe(hook.dataChannel);
+    });
+
+    it("dispatches ft_channel_closed on DataChannel close", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(WebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+
+      const startOfferCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "p2p_start_offer");
+      await startOfferCall[1]({ ice_servers: [] });
+
+      const events = [];
+      hook.el.addEventListener("ft_channel_closed", (e) => events.push(e));
+
+      hook.dataChannel.onclose();
+
+      expect(events.length).toBe(1);
+    });
+
+    it("cleans up DataChannel on destroy", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(WebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+
+      const startOfferCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "p2p_start_offer");
+      await startOfferCall[1]({ ice_servers: [] });
+
+      expect(hook.dataChannel).not.toBeNull();
+
+      hook.destroyed();
+
+      expect(hook.dataChannel).toBeNull();
     });
   });
 
