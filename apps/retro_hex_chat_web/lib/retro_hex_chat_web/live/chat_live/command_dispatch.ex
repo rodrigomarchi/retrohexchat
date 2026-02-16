@@ -92,34 +92,86 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         push_status_message(socket, "Cannot send text to status window. Use /commands.", :error)
 
       session.active_pm ->
-        handle_pm_send(socket, session.active_pm, text)
+        send_pm_message(socket, session, text)
 
       session.active_channel ->
-        temp_id = "pending_#{System.unique_integer([:positive])}"
-
-        pending_msg = %{
-          id: temp_id,
-          author: session.nickname,
-          content: text,
-          type: :message,
-          timestamp: DateTime.utc_now(),
-          status: :pending,
-          target: session.active_channel
-        }
-
-        socket = stream_insert(socket, :chat_messages, pending_msg)
-
-        case Server.send_message(session.active_channel, session.nickname, text) do
-          :ok ->
-            push_event(socket, "message_confirmed", %{temp_id: temp_id})
-
-          {:error, reason} ->
-            push_event(socket, "message_failed", %{temp_id: temp_id, reason: reason})
-        end
+        send_channel_message(socket, session, text)
 
       true ->
         socket
     end
+  end
+
+  # ── Private: message sending ─────────────────────────────
+
+  defp send_pm_message(socket, session, text) do
+    reply_to = socket.assigns[:reply_to]
+    opts = if reply_to, do: [reply_to_id: reply_to.id], else: []
+    target = session.active_pm
+
+    case Service.send_private_message(session.nickname, target, text, "message", opts) do
+      {:ok, _pm} ->
+        Phoenix.PubSub.broadcast(
+          RetroHexChat.PubSub,
+          "user:#{target}",
+          {:incoming_pm_notify, %{sender: session.nickname}}
+        )
+
+        assign(socket, reply_to: nil)
+
+      {:error, reason} ->
+        stream_insert(socket, :chat_messages, error_message(reason))
+    end
+  end
+
+  defp send_channel_message(socket, session, text) do
+    reply_to = socket.assigns[:reply_to]
+    temp_id = "pending_#{System.unique_integer([:positive])}"
+
+    pending_msg =
+      build_pending_msg(temp_id, session.nickname, text, session.active_channel, reply_to)
+
+    socket = stream_insert(socket, :chat_messages, pending_msg)
+    opts = if reply_to, do: [reply_to_id: reply_to.id], else: []
+
+    case Server.send_message(session.active_channel, session.nickname, text, opts) do
+      :ok ->
+        socket
+        |> push_event("message_confirmed", %{temp_id: temp_id})
+        |> assign(reply_to: nil)
+
+      {:error, reason} ->
+        socket
+        |> push_event("message_failed", %{temp_id: temp_id, reason: reason})
+        |> stream_insert(:chat_messages, error_message(reason))
+    end
+  end
+
+  defp build_pending_msg(temp_id, nickname, text, channel, nil) do
+    %{
+      id: temp_id,
+      author: nickname,
+      content: text,
+      type: :message,
+      timestamp: DateTime.utc_now(),
+      status: :pending,
+      target: channel
+    }
+  end
+
+  defp build_pending_msg(temp_id, nickname, text, channel, reply_to) do
+    %{
+      id: temp_id,
+      author: nickname,
+      content: text,
+      type: :message,
+      timestamp: DateTime.utc_now(),
+      status: :pending,
+      target: channel,
+      reply_to_id: reply_to.id,
+      reply_to_author: reply_to.author,
+      reply_to_preview: reply_to.preview
+    }
   end
 
   # ── Private: alias expansion ──────────────────────────────

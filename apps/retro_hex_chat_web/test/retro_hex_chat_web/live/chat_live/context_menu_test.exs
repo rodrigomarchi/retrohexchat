@@ -449,7 +449,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
       assert html =~ "Copy Message"
       assert html =~ "Copy Selected Text"
-      assert html =~ "Quote/Reply"
+      assert html =~ "Responder"
       assert html =~ "Ignore Sender"
       assert html =~ ~s(data-testid="ctx-chat-copy-message")
       assert html =~ ~s(data-testid="ctx-chat-copy-selection")
@@ -508,7 +508,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       assert html =~ ~s(data-testid="ctx-chat-msg-copy-url")
     end
 
-    test "Quote/Reply is always disabled", %{conn: conn, channel: channel} do
+    test "Responder is enabled for non-system messages", %{conn: conn, channel: channel} do
       nick = "CtxQR#{uid()}"
       {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
       join_channel(view, channel)
@@ -527,8 +527,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
       html = render(view)
 
-      # Quote/Reply should be disabled
-      assert Regex.match?(~r/disabled[^>]*ctx-chat-quote-reply/, html)
+      # Responder should NOT be disabled for regular messages
+      assert html =~ ~s(data-testid="ctx-chat-quote-reply")
+      refute Regex.match?(~r/disabled[^>]*ctx-chat-quote-reply/, html)
     end
   end
 

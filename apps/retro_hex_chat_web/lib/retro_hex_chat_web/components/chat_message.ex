@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.ChatMessage do
   @moduledoc """
   Individual chat message rendering with timestamp, color-coded nicks, and type-based styling.
+  Supports reply blocks, edited tags, and deleted message display.
   """
   use Phoenix.Component
 

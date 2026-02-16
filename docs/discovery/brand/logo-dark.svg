@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="facet-top-d" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00cccc"/>
+      <stop offset="100%" stop-color="#009999"/>
+    </linearGradient>
+    <linearGradient id="facet-left-d" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#007a7a"/>
+      <stop offset="100%" stop-color="#005c5c"/>
+    </linearGradient>
+    <linearGradient id="facet-right-d" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00b3b3"/>
+      <stop offset="100%" stop-color="#008c8c"/>
+    </linearGradient>
+    <linearGradient id="facet-bottom-d" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#006666"/>
+      <stop offset="100%" stop-color="#004040"/>
+    </linearGradient>
+    <linearGradient id="shine-d" x1="30%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feFlood flood-color="#00cccc" flood-opacity="0.3" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="dropshadow-d" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="2" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Dark background -->
+  <rect width="512" height="512" fill="#0a0a0a" rx="0"/>
+
+  <!-- === HEX GEM BODY === -->
+  <g filter="url(#dropshadow-d)">
+    <polygon
+      points="256,52 424,149 424,343 256,440 88,343 88,149"
+      fill="#003d3d"
+      stroke="#00cccc"
+      stroke-width="1"
+      stroke-opacity="0.3"
+    />
+    <polygon
+      points="256,52 424,149 256,196 88,149"
+      fill="url(#facet-top-d)"
+    />
+    <polygon
+      points="88,149 256,196 256,340 88,343"
+      fill="url(#facet-left-d)"
+    />
+    <polygon
+      points="424,149 256,196 256,340 424,343"
+      fill="url(#facet-right-d)"
+    />
+    <polygon
+      points="256,340 88,343 256,440 424,343"
+      fill="url(#facet-bottom-d)"
+    />
+    <polygon
+      points="256,196 340,246 256,340 172,246"
+      fill="#009999"
+      opacity="0.5"
+    />
+    <polygon
+      points="256,52 424,149 256,196 88,149"
+      fill="url(#shine-d)"
+    />
+    <line x1="256" y1="52" x2="256" y2="196" stroke="#00ffff" stroke-width="1" opacity="0.4"/>
+    <line x1="88" y1="149" x2="256" y2="196" stroke="#00ffff" stroke-width="1" opacity="0.25"/>
+    <line x1="424" y1="149" x2="256" y2="196" stroke="#00ffff" stroke-width="1" opacity="0.35"/>
+    <line x1="256" y1="196" x2="256" y2="340" stroke="#00ffff" stroke-width="1" opacity="0.25"/>
+    <line x1="256" y1="340" x2="88" y2="343" stroke="#00ffff" stroke-width="0.5" opacity="0.15"/>
+    <line x1="256" y1="340" x2="424" y2="343" stroke="#00ffff" stroke-width="0.5" opacity="0.15"/>
+  </g>
+
+  <!-- === CHAT BUBBLE ICON (inside gem) === -->
+  <g transform="translate(256, 230)" filter="url(#glow)">
+    <rect x="-52" y="-36" width="104" height="60" rx="4" ry="4"
+      fill="#c0c0c0" stroke="#808080" stroke-width="2"/>
+    <line x1="-50" y1="-34" x2="50" y2="-34" stroke="#ffffff" stroke-width="1.5"/>
+    <line x1="-50" y1="-34" x2="-50" y2="22" stroke="#ffffff" stroke-width="1.5"/>
+    <line x1="-50" y1="22" x2="50" y2="22" stroke="#404040" stroke-width="1.5"/>
+    <line x1="50" y1="-34" x2="50" y2="22" stroke="#404040" stroke-width="1.5"/>
+    <polygon points="-20,24 -8,24 -28,44" fill="#c0c0c0" stroke="#808080" stroke-width="2"/>
+    <line x1="-20" y1="24" x2="-8" y2="24" stroke="#c0c0c0" stroke-width="3"/>
+    <line x1="-36" y1="-18" x2="36" y2="-18" stroke="#000080" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-36" y1="-4" x2="20" y2="-4" stroke="#008080" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-36" y1="10" x2="28" y2="10" stroke="#808080" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- === PIXEL SPARKLES === -->
+  <rect x="380" y="100" width="4" height="4" fill="#00ffff" opacity="0.9"/>
+  <rect x="376" y="104" width="4" height="4" fill="#00ffff" opacity="0.4"/>
+  <rect x="384" y="104" width="4" height="4" fill="#00ffff" opacity="0.4"/>
+  <rect x="380" y="108" width="4" height="4" fill="#00ffff" opacity="0.9"/>
+  <rect x="310" y="80" width="3" height="3" fill="#00ffff" opacity="0.7"/>
+  <rect x="307" y="83" width="3" height="3" fill="#00ffff" opacity="0.3"/>
+  <rect x="313" y="83" width="3" height="3" fill="#00ffff" opacity="0.3"/>
+  <rect x="310" y="86" width="3" height="3" fill="#00ffff" opacity="0.7"/>
+</svg>

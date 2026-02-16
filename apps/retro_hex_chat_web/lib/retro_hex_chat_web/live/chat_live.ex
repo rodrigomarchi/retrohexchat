@@ -339,7 +339,11 @@ defmodule RetroHexChatWeb.ChatLive do
       notification_entries: [],
       notification_count: 0,
       show_notification_center: false,
-      dnd_enabled: session.user_preferences.notifications.dnd_enabled
+      dnd_enabled: session.user_preferences.notifications.dnd_enabled,
+      reply_to: nil,
+      edit_mode_message_id: nil,
+      edit_original_input: nil,
+      delete_confirm: nil
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -530,6 +534,13 @@ defmodule RetroHexChatWeb.ChatLive do
   defp format_time(_, :none), do: ""
   defp format_time(%DateTime{} = dt, _), do: "[#{Calendar.strftime(dt, "%H:%M")}]"
   defp format_time(_, _), do: "[--:--]"
+
+  @spec format_edit_timestamp(DateTime.t() | any()) :: String.t()
+  defp format_edit_timestamp(%DateTime{} = dt) do
+    Calendar.strftime(dt, "%H:%M %d/%m/%Y")
+  end
+
+  defp format_edit_timestamp(_), do: "--:--"
 
   defp nick_color(nickname) do
     index = :erlang.phash2(nickname, length(@nick_colors))

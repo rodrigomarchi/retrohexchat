@@ -16,8 +16,12 @@ defmodule RetroHexChatWeb.Components.StatusBar do
   def status_bar(assigns) do
     ~H"""
     <div class="status-bar">
-      <p class="status-bar-field status-bar-section--left" data-testid="status-channel">
-        {@channel || "No channel"} — {@user_count} users
+      <p class="status-bar-field status-bar-section--left">
+        <span data-testid="status-nick">{@nickname}</span>
+        <span class="status-bar-separator">|</span>
+        <span data-testid="status-channel">{@channel || "No channel"}</span>
+        <span class="status-bar-separator">|</span>
+        <span data-testid="status-users">Users: {@user_count}</span>
       </p>
       <p
         class={"status-bar-field status-bar-section--center status-bar-connection--#{@connection_state}"}

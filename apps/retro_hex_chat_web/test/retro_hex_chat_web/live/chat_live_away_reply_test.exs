@@ -28,7 +28,9 @@ defmodule RetroHexChatWeb.ChatLiveAwayReplyTest do
       # Nick2 sends a PM
       view2 |> render_submit("send_input", %{"input" => "Hello?"})
 
-      :timer.sleep(100)
+      # Force view1 to process {:incoming_pm_notify} and send auto-reply
+      _ = render(view1)
+      :timer.sleep(50)
       _ = render(view2)
       html2 = render(view2)
 
@@ -52,14 +54,16 @@ defmodule RetroHexChatWeb.ChatLiveAwayReplyTest do
 
       # First PM
       view2 |> render_submit("send_input", %{"input" => "First message"})
-      :timer.sleep(100)
+      _ = render(view1)
+      :timer.sleep(50)
       _ = render(view2)
       html_after_first = render(view2)
       first_count = count_occurrences(html_after_first, "is away")
 
       # Second PM
       view2 |> render_submit("send_input", %{"input" => "Second message"})
-      :timer.sleep(100)
+      _ = render(view1)
+      :timer.sleep(50)
       _ = render(view2)
       html_after_second = render(view2)
       second_count = count_occurrences(html_after_second, "is away")
@@ -82,7 +86,8 @@ defmodule RetroHexChatWeb.ChatLiveAwayReplyTest do
       # Set away, get a PM
       view1 |> render_submit("send_input", %{"input" => "/away BRB"})
       view2 |> render_submit("send_input", %{"input" => "Hello"})
-      :timer.sleep(100)
+      _ = render(view1)
+      :timer.sleep(50)
       _ = render(view2)
 
       # Clear away
@@ -93,7 +98,8 @@ defmodule RetroHexChatWeb.ChatLiveAwayReplyTest do
 
       # Same sender sends again — should get new auto-reply
       view2 |> render_submit("send_input", %{"input" => "Hello again"})
-      :timer.sleep(100)
+      _ = render(view1)
+      :timer.sleep(50)
       _ = render(view2)
       html = render(view2)
 
