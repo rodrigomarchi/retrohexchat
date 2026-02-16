@@ -135,8 +135,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
             "<h4>Notes</h4>" <>
             "<p>Empty state messages disappear automatically when content arrives. The text is not selectable.</p>" <>
             "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"welcome-wizard\">Welcome Wizard</a> · " <>
-            "<a href=\"#\" data-help-topic=\"ui-overview\">UI Overview</a></p>"
+            "<p><a href=\"#\" data-help-topic=\"ui-overview\">UI Overview</a></p>"
       }
     ]
   end

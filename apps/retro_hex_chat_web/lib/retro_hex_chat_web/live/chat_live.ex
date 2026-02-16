@@ -43,8 +43,7 @@ defmodule RetroHexChatWeb.ChatLive do
     case NicknameValidator.validate(nickname) do
       :ok ->
         session = Session.new(nickname)
-
-        onboarded = params["onboarded"] == "true"
+        pre_identified = verify_auth_token(params["auth_token"], nickname)
 
         if connected?(socket) do
           Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
@@ -63,10 +62,10 @@ defmodule RetroHexChatWeb.ChatLive do
             socket
             |> attach_all_hooks()
             |> assign_defaults(session)
-            |> assign(show_onboarding_tip: onboarded, connection_ready: true)
+            |> assign(connection_ready: true)
             |> Helpers.join_channel("#lobby", session)
             |> Helpers.maybe_join_from_params(params)
-            |> Helpers.maybe_start_nickserv_timer(nickname)
+            |> Helpers.maybe_start_nickserv_timer(nickname, pre_identified)
             |> Helpers.maybe_trigger_perform()
             |> Helpers.play_event_sound(:connect, session)
             |> maybe_show_motd()
@@ -76,11 +75,21 @@ defmodule RetroHexChatWeb.ChatLive do
         else
           {:ok,
            assign_defaults(socket, session)
-           |> assign(show_onboarding_tip: onboarded, connection_progress_step: 1)}
+           |> assign(connection_progress_step: 1)}
         end
 
       {:error, _} ->
         {:ok, push_navigate(socket, to: ~p"/")}
+    end
+  end
+
+  @spec verify_auth_token(String.t() | nil, String.t()) :: boolean()
+  defp verify_auth_token(nil, _nickname), do: false
+
+  defp verify_auth_token(token, nickname) do
+    case Phoenix.Token.verify(RetroHexChatWeb.Endpoint, "nickserv_identify", token, max_age: 30) do
+      {:ok, ^nickname} -> true
+      _ -> false
     end
   end
 

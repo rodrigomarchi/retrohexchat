@@ -383,19 +383,24 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   # ── Mount helpers ─────────────────────────────────────────
 
-  @spec maybe_start_nickserv_timer(Phoenix.LiveView.Socket.t(), String.t()) ::
+  @spec maybe_start_nickserv_timer(Phoenix.LiveView.Socket.t(), String.t(), boolean()) ::
           Phoenix.LiveView.Socket.t()
-  def maybe_start_nickserv_timer(socket, nickname) do
-    if NickServ.registered?(nickname) do
-      NickServ.start_identify_timer(nickname)
+  def maybe_start_nickserv_timer(socket, nickname, pre_identified \\ false) do
+    cond do
+      pre_identified or NickServ.identified?(nickname) ->
+        socket
 
-      notice =
-        "[NickServ] This nickname is registered. " <>
-          "You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+      NickServ.registered?(nickname) ->
+        NickServ.start_identify_timer(nickname)
 
-      stream_insert(socket, :chat_messages, Messages.service_message("NickServ", notice))
-    else
-      socket
+        notice =
+          "[NickServ] This nickname is registered. " <>
+            "You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+
+        stream_insert(socket, :chat_messages, Messages.service_message("NickServ", notice))
+
+      true ->
+        socket
     end
   end
 

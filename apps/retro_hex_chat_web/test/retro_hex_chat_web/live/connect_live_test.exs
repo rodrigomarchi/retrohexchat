@@ -3,6 +3,8 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
 
   import Phoenix.LiveViewTest
 
+  alias RetroHexChat.Services.NickServ
+
   @moduletag :liveview
 
   describe "mount" do
@@ -18,9 +20,10 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
       assert html =~ "Connect"
     end
 
-    test "renders OnboardingHook on root element", %{conn: conn} do
+    test "starts on nickname step", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/")
-      assert html =~ ~s(phx-hook="OnboardingHook")
+      assert html =~ "User Information"
+      refute html =~ "Authentication"
     end
   end
 
@@ -28,7 +31,6 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     test "shows error for empty nickname", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
       html = view |> element("form") |> render_change(%{"nickname" => ""})
-      # Empty nickname should either show error or keep button disabled
       assert html =~ "disabled" or html =~ "error"
     end
 
@@ -63,8 +65,8 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
   end
 
-  describe "connect" do
-    test "valid submit navigates to /chat", %{conn: conn} do
+  describe "connect with unregistered nick" do
+    test "navigates to /chat directly", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
       view |> element("form") |> render_change(%{"nickname" => "TestUser"})
       result = view |> element("form") |> render_submit(%{"nickname" => "TestUser"})
@@ -72,119 +74,57 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
   end
 
-  describe "wizard flow" do
-    test "wizard renders Step 1 when wizard_mode is true", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
-
-      # Simulate JS hook pushing check_onboarding with first_visit: true
-      html = render_click(view, "check_onboarding", %{"first_visit" => true})
-
-      assert html =~ "Assistente de Configuração"
-      assert html =~ "Passo 1 de 3"
-      assert html =~ "wizard-logo"
-      assert html =~ "wizard-nickname-input"
+  describe "connect with registered nick" do
+    setup do
+      NickServ.register("RegNick", "secret123")
+      :ok
     end
 
-    test "Step 1 shows nickname input and tip text", %{conn: conn} do
+    test "transitions to password step", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      render_click(view, "check_onboarding", %{"first_visit" => true})
-      html = render(view)
-
-      assert html =~ "Escolha seu nickname"
-      assert html =~ "Seu nick é como seu nome no chat"
+      view |> element("form") |> render_change(%{"nickname" => "RegNick"})
+      html = view |> element("form") |> render_submit(%{"nickname" => "RegNick"})
+      assert html =~ "Authentication"
+      assert html =~ "RegNick"
+      assert html =~ ~s(name="password")
     end
 
-    test "wizard_validate_nickname validates input", %{conn: conn} do
+    test "back button returns to nickname step", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      render_click(view, "check_onboarding", %{"first_visit" => true})
+      view |> element("form") |> render_change(%{"nickname" => "RegNick"})
+      view |> element("form") |> render_submit(%{"nickname" => "RegNick"})
 
-      # Invalid nickname
-      html = render_click(view, "wizard_validate_nickname", %{"nickname" => " bad"})
-      assert html =~ "wizard-nickname-error"
-
-      # Valid nickname
-      html = render_click(view, "wizard_validate_nickname", %{"nickname" => "GoodNick"})
-      refute html =~ "wizard-nickname-error"
+      html = render_click(view, "back", %{})
+      assert html =~ "User Information"
+      refute html =~ "Authentication"
     end
 
-    test "wizard_next from welcome moves to server step", %{conn: conn} do
+    test "wrong password shows error", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      render_click(view, "check_onboarding", %{"first_visit" => true})
-      render_click(view, "wizard_validate_nickname", %{"nickname" => "TestUser"})
+      view |> element("form") |> render_change(%{"nickname" => "RegNick"})
+      view |> element("form") |> render_submit(%{"nickname" => "RegNick"})
 
-      html = render_click(view, "wizard_next", %{"step" => "welcome"})
+      html =
+        view
+        |> element("form")
+        |> render_submit(%{"password" => "wrongpass"})
 
-      assert html =~ "Passo 2 de 3"
-      assert html =~ "Configuração do Servidor"
+      assert html =~ "Senha incorreta"
     end
 
-    test "wizard_next from server moves to channels step", %{conn: conn} do
+    test "correct password navigates with auth_token", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      render_click(view, "check_onboarding", %{"first_visit" => true})
-      render_click(view, "wizard_validate_nickname", %{"nickname" => "TestUser"})
-      render_click(view, "wizard_next", %{"step" => "welcome"})
+      view |> element("form") |> render_change(%{"nickname" => "RegNick"})
+      view |> element("form") |> render_submit(%{"nickname" => "RegNick"})
 
-      html = render_click(view, "wizard_next", %{"step" => "server"})
+      result =
+        view
+        |> element("form")
+        |> render_submit(%{"password" => "secret123"})
 
-      assert html =~ "Passo 3 de 3"
-      assert html =~ "Escolha canais"
-    end
-
-    test "wizard_back navigates backward", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
-      render_click(view, "check_onboarding", %{"first_visit" => true})
-      render_click(view, "wizard_validate_nickname", %{"nickname" => "TestUser"})
-      render_click(view, "wizard_next", %{"step" => "welcome"})
-
-      html = render_click(view, "wizard_back", %{"step" => "server"})
-
-      assert html =~ "Passo 1 de 3"
-    end
-
-    test "wizard_dismiss returns to normal form", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
-      render_click(view, "check_onboarding", %{"first_visit" => true})
-
-      html = render_click(view, "wizard_dismiss", %{})
-
-      assert html =~ "Connect to RetroHexChat"
-      refute html =~ "Assistente de Configuração"
-    end
-
-    test "wizard_skip navigates to /chat with onboarded param", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
-      render_click(view, "check_onboarding", %{"first_visit" => true})
-      render_click(view, "wizard_validate_nickname", %{"nickname" => "TestUser"})
-      render_click(view, "wizard_next", %{"step" => "welcome"})
-      render_click(view, "wizard_next", %{"step" => "server"})
-
-      result = render_click(view, "wizard_skip", %{})
       assert {:error, {:live_redirect, %{to: path}}} = result
-      assert path =~ "/chat"
-      assert path =~ "nickname=TestUser"
-      assert path =~ "onboarded=true"
-    end
-
-    test "wizard_complete navigates with selected channels", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
-      render_click(view, "check_onboarding", %{"first_visit" => true})
-      render_click(view, "wizard_validate_nickname", %{"nickname" => "TestUser"})
-      render_click(view, "wizard_next", %{"step" => "welcome"})
-      render_click(view, "wizard_next", %{"step" => "server"})
-      render_click(view, "wizard_toggle_channel", %{"channel" => "#general"})
-
-      result = render_click(view, "wizard_complete", %{})
-      assert {:error, {:live_redirect, %{to: path}}} = result
-      assert path =~ "join="
-      assert path =~ "onboarded=true"
-    end
-
-    test "wizard_mode false shows normal connect form", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
-      html = render_click(view, "check_onboarding", %{"first_visit" => false})
-
-      assert html =~ "Connect to RetroHexChat"
-      refute html =~ "Assistente de Configuração"
+      assert path =~ "/chat?nickname=RegNick"
+      assert path =~ "auth_token="
     end
   end
 end

@@ -52,6 +52,11 @@ defmodule RetroHexChat.Services.NickServ do
     GenServer.call(server, {:drop, nickname, password})
   end
 
+  @spec identified?(String.t(), GenServer.server()) :: boolean()
+  def identified?(nickname, server \\ __MODULE__) do
+    GenServer.call(server, {:identified?, nickname})
+  end
+
   @spec start_identify_timer(String.t(), GenServer.server()) :: :ok
   def start_identify_timer(nickname, server \\ __MODULE__) do
     GenServer.cast(server, {:start_identify_timer, nickname})
@@ -107,6 +112,10 @@ defmodule RetroHexChat.Services.NickServ do
 
   def handle_call({:registered?, nickname}, _from, state) do
     {:reply, Queries.find_by_nickname(nickname) != nil, state}
+  end
+
+  def handle_call({:identified?, nickname}, _from, state) do
+    {:reply, MapSet.member?(state.identified, nickname), state}
   end
 
   def handle_call({:info, nickname}, _from, state) do

@@ -27,12 +27,20 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       assert {:error, {:live_redirect, %{to: "/"}}} = result
     end
 
-    test "registered nick shows NickServ notice", %{conn: conn} do
-      # Register a nick first
-      NickServ.register("RegNotice", "pass123")
+    test "registered but unidentified nick shows NickServ notice", %{conn: conn} do
+      # Insert directly into DB to avoid NickServ marking it as identified
+      alias RetroHexChat.Services.Queries
+      {:ok, _} = Queries.insert_registered_nick("RegNotice", "pass123")
 
       {:ok, _view, html} = live(conn, "/chat?nickname=RegNotice")
       assert html =~ "NickServ" or html =~ "registered"
+    end
+
+    test "already-identified nick skips NickServ timer", %{conn: conn} do
+      NickServ.register("IdentNick", "pass123")
+
+      {:ok, _view, html} = live(conn, "/chat?nickname=IdentNick")
+      refute html =~ "60 seconds"
     end
   end
 
@@ -2703,27 +2711,6 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   end
 
   # ── Helpers ───────────────────────────────────────────────
-
-  # ── onboarding tip banner ───────────────────────────────
-
-  describe "onboarding tip banner" do
-    test "shows tip banner when onboarded=true param is present", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=TipUser&onboarded=true")
-      assert html =~ "onboarding-tip"
-      assert html =~ "digite / para ver comandos"
-    end
-
-    test "tip banner not shown without onboarded param", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=NoTipUser")
-      refute html =~ "onboarding-tip"
-    end
-
-    test "dismiss_onboarding_tip hides banner", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=DismissUser&onboarded=true")
-      html = render_click(view, "dismiss_onboarding_tip", %{})
-      refute html =~ "onboarding-tip"
-    end
-  end
 
   # ── empty states ───────────────────────────────────────
 

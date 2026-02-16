@@ -13,8 +13,6 @@ describe("ContextualTipsHook", () => {
 
   beforeEach(() => {
     storage = mockLocalStorage();
-    // Mark onboarding as complete (tips require this)
-    storage.store["retro_hex_chat_onboarding_complete"] = "true";
     vi.useFakeTimers();
   });
 
@@ -82,15 +80,6 @@ describe("ContextualTipsHook", () => {
 
     it("skips tip when globally suppressed", () => {
       storage.store[STORAGE_KEYS.SUPPRESSED] = "true";
-      const hook = mountTipsHook();
-      simulateEvent(hook, "tip_trigger", { tip: "first_message" });
-
-      const toast = hook.el.querySelector(".toast-notification");
-      expect(toast).toBeNull();
-    });
-
-    it("skips tip when onboarding not complete", () => {
-      delete storage.store["retro_hex_chat_onboarding_complete"];
       const hook = mountTipsHook();
       simulateEvent(hook, "tip_trigger", { tip: "first_message" });
 

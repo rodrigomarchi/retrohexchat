@@ -25,7 +25,6 @@ import ShortcutDispatcherHook from "./hooks/shortcut_dispatcher_hook";
 import SoundHook from "./hooks/sound_hook";
 import TitleFlashHook from "./hooks/title_flash_hook";
 import TreebarHook from "./hooks/treebar_hook";
-import OnboardingHook from "./hooks/onboarding_hook";
 import ContextualTipsHook from "./hooks/contextual_tips_hook";
 import NotificationDispatcherHook from "./hooks/notification_dispatcher_hook";
 import MessageInteractionsHook from "./hooks/message_interactions_hook";
@@ -47,7 +46,6 @@ const Hooks = {
   NicklistHook: NicklistHook,
   NotificationDispatcherHook: NotificationDispatcherHook,
   NotifyListHook: NotifyListHook,
-  OnboardingHook: OnboardingHook,
   OptionsHook: OptionsHook,
   PasteHook: PasteHook,
   ReconnectHook: ReconnectHook,

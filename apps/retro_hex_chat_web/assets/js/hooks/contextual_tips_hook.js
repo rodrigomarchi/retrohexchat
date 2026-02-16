@@ -18,7 +18,6 @@ import {
   TIP_IDS,
 } from "../lib/tips.js";
 import { createToastElement, animateIn, animateOut } from "../lib/toast.js";
-import { isOnboardingComplete } from "../lib/onboarding.js";
 
 const ContextualTipsHook = {
   mounted() {
@@ -58,7 +57,6 @@ const ContextualTipsHook = {
   },
 
   enqueueTip(tipId) {
-    if (!isOnboardingComplete()) return;
     if (isSuppressed()) return;
     if (!shouldShowTip(tipId)) return;
 
@@ -76,11 +74,6 @@ const ContextualTipsHook = {
 
     if (this.isDialogOpen()) {
       this.startDialogPolling();
-      return;
-    }
-
-    if (this.isOnboardingBannerVisible()) {
-      setTimeout(() => this.processQueue(), 5000);
       return;
     }
 
@@ -164,10 +157,6 @@ const ContextualTipsHook = {
 
   isDialogOpen() {
     return !!document.querySelector(".dialog-overlay");
-  },
-
-  isOnboardingBannerVisible() {
-    return !!document.querySelector(".onboarding-tip-banner");
   },
 
   startDialogPolling() {
