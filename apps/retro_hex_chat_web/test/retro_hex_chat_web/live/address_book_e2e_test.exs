@@ -410,5 +410,5 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
     end
   end
 
-  defp uid, do: rem(System.unique_integer([:positive]), 10000)
+  defp uid, do: rem(System.unique_integer([:positive]), 10_000)
 end
