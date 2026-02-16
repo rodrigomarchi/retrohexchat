@@ -622,11 +622,12 @@ defmodule RetroHexChatWeb.E2ETest do
   # ══════════════════════════════════════════════════════════════
 
   describe "Screen 7: Nicklist" do
-    test "7.1 groups: Operators, Voiced, Regular headers", %{conn: conn} do
+    test "7.1 nicklist shows group headers and hides empty groups", %{conn: conn} do
       {:ok, _view, html} = live(chat_conn(conn, "NickGrp"), "/chat")
-      assert html =~ "Operators"
-      assert html =~ "Voiced"
-      assert html =~ "Regular"
+      # User is owner of auto-joined #lobby — Owners group visible
+      assert html =~ "nicklist-group-header"
+      assert html =~ "Owners ("
+      # Empty groups are hidden — verified by unit tests in nicklist_test.exs
     end
 
     test "7.2 prefixes: @ for op, + for voiced", %{conn: conn} do

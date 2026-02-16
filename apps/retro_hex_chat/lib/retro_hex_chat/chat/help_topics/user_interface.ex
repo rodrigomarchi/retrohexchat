@@ -64,15 +64,19 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         keywords: ["nicklist", "user list", "nick list", "users", "right pane"],
         content:
           "<h3>Nicklist</h3>" <>
-            "<p>The nicklist (right pane) shows all users in the current channel, grouped by status.</p>" <>
+            "<p>The nicklist (right pane) shows all users in the current channel, grouped by role.</p>" <>
+            "<h4>Header</h4>" <>
+            "<p>The nicklist header shows \"Users (N)\" with the total count and a collapse button (◀) to hide the panel. " <>
+            "You can also toggle it via <strong>View &gt; Toggle Nicklist</strong>.</p>" <>
             "<h4>Groups</h4>" <>
-            "<p><strong>Operators (@):</strong> Red, bold. Can manage the channel.<br/>" <>
+            "<p>Only groups with members are displayed:<br/>" <>
+            "<strong>Owners (~):</strong> Purple, bold. Channel founders.<br/>" <>
+            "<strong>Operators (@):</strong> Red, bold. Can manage the channel.<br/>" <>
+            "<strong>Half-Ops (%):</strong> Green, bold. Limited moderation.<br/>" <>
             "<strong>Voiced (+):</strong> Blue. Can speak in moderated channels.<br/>" <>
             "<strong>Regular:</strong> Default color.</p>" <>
             "<h4>Context Menu</h4>" <>
-            "<p>Right-click a nickname to access Query, Whois, Kick, Ban, Mode, Add to Contacts, and Set Nick Color options.</p>" <>
-            "<h4>Toggle</h4>" <>
-            "<p>Go to <strong>View &gt; Toggle Nicklist</strong> to show or hide it.</p>"
+            "<p>Right-click a nickname to access Query, Whois, Kick, Ban, Mode, Add to Contacts, and Set Nick Color options.</p>"
       },
       %{
         id: "ui-topic-bar",
