@@ -119,12 +119,16 @@ body {
 .treebar {
   width: 160px;
   min-width: 120px;
-  overflow-y: auto;
   flex-shrink: 0;
-  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
 }
 
 .treebar .tree-view {
+  flex: 1;
+  overflow-y: auto;
+  margin: 0;
   font-size: var(--treebar-font-size, var(--text-base));
   font-family: var(--treebar-font-family, var(--font-system));
 }
@@ -170,7 +174,10 @@ body {
 .compact-mode .treebar {
   width: 130px;
   min-width: 100px;
-  padding: 2px;
+}
+
+.compact-mode .treebar-header {
+  padding: 1px 4px;
 }
 
 .compact-mode .treebar li {

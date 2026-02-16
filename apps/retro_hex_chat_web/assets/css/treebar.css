@@ -1,4 +1,69 @@
-/* Treebar — badge indicators, muted/disconnected states, join flash */
+/* Treebar — header, badge indicators, muted/disconnected states, join flash */
+
+/* ── Header ──────────────────────────────────────────────── */
+
+.treebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 6px;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.treebar-header-title {
+  font-size: var(--text-sm);
+  font-weight: bold;
+  color: var(--color-gray-700);
+}
+
+.treebar-close {
+  width: 16px;
+  min-width: 16px;
+  height: 14px;
+  min-height: 14px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--color-gray-700);
+}
+
+.treebar-close:hover {
+  color: var(--color-black, #000);
+}
+
+/* ── Section summaries ───────────────────────────────────── */
+
+.treebar summary {
+  font-size: var(--text-xs);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-muted);
+  padding: 2px 0;
+}
+
+/* ── Section separator ───────────────────────────────────── */
+
+.treebar .tree-view > li + li {
+  border-top: 1px solid var(--color-gray-200);
+  margin-top: 4px;
+  padding-top: 4px;
+}
+
+/* ── PM item icon ────────────────────────────────────────── */
+
+.treebar [data-testid^="pm-"]::before {
+  content: "\2709";
+  font-size: 9px;
+  margin-right: 3px;
+  color: var(--color-muted);
+}
 
 /* ── Unread badge (numeric count) ────────────────────────── */
 
