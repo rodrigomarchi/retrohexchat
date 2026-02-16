@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
   describe "US1: clickable URL rendering" do
     test "message with URL renders anchor tag with correct attributes", %{conn: conn} do
       nick = "URLUser#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Alice", "check https://example.com out", "#lobby")
 
@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
 
     test "surrounding text renders normally alongside URL", %{conn: conn} do
       nick = "URLSurr#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Alice", "visit https://example.com now", "#lobby")
 
@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
 
     test "URL with trailing period excludes the period from link", %{conn: conn} do
       nick = "URLDot#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Alice", "see https://example.com.", "#lobby")
 
@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
 
     test "URL with query params and fragment is fully clickable", %{conn: conn} do
       nick = "URLQuery#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(
         view,
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
 
     test "message with multiple URLs has multiple independent links", %{conn: conn} do
       nick = "URLMulti#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(
         view,
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
 
     test "PM message with URL also renders as clickable link", %{conn: conn} do
       nick = "URLPM#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Open PM conversation with Bob and stay on it
       render_click(view, "nick_right_click", %{"nick" => "Bob", "x" => 0, "y" => 0})
@@ -109,7 +109,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
   describe "US1: long URL truncation" do
     test "URL over 100 chars has truncated display with full href", %{conn: conn} do
       nick = "URLLong#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       long_path = String.duplicate("a", 90)
       url = "https://example.com/#{long_path}"
@@ -126,7 +126,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
 
     test "URL exactly 100 chars is NOT truncated", %{conn: conn} do
       nick = "URLExact#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       base = "https://example.com/"
       padding = String.duplicate("x", 100 - String.length(base))
@@ -144,7 +144,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
   describe "US1: URL + IRC formatting interaction" do
     test "bold-wrapped URL renders as clickable link", %{conn: conn} do
       nick = "URLBold#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Bold control code (0x02) around URL
       send_new_message(view, "Alice", "\x02https://example.com\x02", "#lobby")
@@ -156,7 +156,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
 
     test "URL in strip_formatting mode renders as plain clickable link", %{conn: conn} do
       nick = "URLStrip#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Toggle strip formatting
       view |> element("[data-testid=\"strip-formatting-toggle\"]") |> render_click()
@@ -172,7 +172,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
 
     test "action message with URL renders URL as clickable", %{conn: conn} do
       nick = "URLAction#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       msg = %{
         event: "new_message",
@@ -199,7 +199,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
   describe "US3: async link preview" do
     test "message renders immediately without preview", %{conn: conn} do
       nick = "LPNoBlock#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Alice", "check https://example.com out", "#lobby")
 
@@ -211,7 +211,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
 
     test "preview result pushes event to client", %{conn: conn} do
       nick = "LPPush#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send(view.pid, {:link_preview_result, "https://example.com", {:ok, "Example Domain"}})
 
@@ -223,7 +223,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
 
     test "error result does not push event", %{conn: conn} do
       nick = "LPError#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send(view.pid, {:link_preview_result, "https://broken.com", {:error, :fetch_failed}})
       render(view)
@@ -233,7 +233,7 @@ defmodule RetroHexChatWeb.ChatLiveURLTest do
 
     test "preview updates URL Catcher entry", %{conn: conn} do
       nick = "LPCatcher#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Alice", "see https://example.com/page", "#lobby")
       render(view)

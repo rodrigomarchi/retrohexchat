@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
   describe "E2E: open/close log viewer" do
     test "Ctrl+Shift+L opens and closes", %{conn: conn} do
       nick = "E2eLv#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("#app-container")
@@ -74,7 +74,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
     test "Escape closes dialog", %{conn: conn} do
       nick = "E2eEsc#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("#app-container")
@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
     test "menu bar opens log viewer", %{conn: conn} do
       nick = "E2eMnu#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=menu-log-viewer]") |> render_click()
       assert render(view) =~ "log-viewer-dialog"
@@ -94,7 +94,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
     test "toolbar button opens log viewer", %{conn: conn} do
       nick = "E2eTlb#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
       assert render(view) =~ "log-viewer-dialog"
@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
     test "close button closes dialog", %{conn: conn} do
       nick = "E2eCls#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=menu-log-viewer]") |> render_click()
 
@@ -126,7 +126,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       insert_msg!(ch, nick, "searchable content")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -150,7 +150,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
       insert_msg!(ch, nick, "important meeting")
       insert_msg!(ch, nick, "random chat")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -177,7 +177,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
       nick = "E2eEm#{System.unique_integer([:positive])}"
       NickServ.register(nick, "pass123")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -207,7 +207,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
         insert_msg!(ch, nick, "msg #{i}", inserted_at: dt)
       end
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -236,7 +236,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
       ensure_channel(ch)
 
       nick = "E2eGst#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
 
@@ -259,7 +259,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       insert_msg!(ch, nick, "export me")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -284,7 +284,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       insert_msg!(ch, nick, "export html")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -305,7 +305,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
   describe "E2E: display preferences" do
     test "toggle event type checkbox", %{conn: conn} do
       nick = "E2ePrf#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=menu-log-viewer]") |> render_click()
 
@@ -318,7 +318,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
     test "change timestamp format", %{conn: conn} do
       nick = "E2eTs#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=menu-log-viewer]") |> render_click()
 
@@ -342,7 +342,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
       insert_pm!(nick, peer, "sent to peer")
       insert_pm!(peer, nick, "from peer")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -378,7 +378,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
       insert_msg!(ch, nick, "old msg", inserted_at: old_dt)
       insert_msg!(ch, nick, "new msg", inserted_at: new_dt)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")

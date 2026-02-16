@@ -1,13 +1,13 @@
 defmodule RetroHexChatWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :retro_hex_chat_web
 
-  # The session will be stored in the cookie and signed,
-  # this means its contents can be read but not tampered with.
-  # Set :encryption_salt if you would also like to encrypt it.
+  # The session cookie is signed and encrypted to protect sensitive data
+  # like chat nicknames and authentication tokens from being read or tampered with.
   @session_options [
     store: :cookie,
     key: "_retro_hex_chat_web_key",
     signing_salt: "OLXEOjJq",
+    encryption_salt: "encrypted_cookie",
     same_site: "Lax"
   ]
 

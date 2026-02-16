@@ -404,14 +404,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     end
   end
 
-  @spec maybe_join_from_params(Phoenix.LiveView.Socket.t(), map()) ::
+  @spec maybe_join_channel(Phoenix.LiveView.Socket.t(), String.t() | nil) ::
           Phoenix.LiveView.Socket.t()
-  def maybe_join_from_params(socket, %{"join" => channel_name})
+  def maybe_join_channel(socket, channel_name)
       when is_binary(channel_name) and channel_name != "" do
     ChannelHelpers.join_channel(socket, channel_name, socket.assigns.session)
   end
 
-  def maybe_join_from_params(socket, _params), do: socket
+  def maybe_join_channel(socket, _channel_name), do: socket
 
   @spec maybe_trigger_perform(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   def maybe_trigger_perform(socket) do

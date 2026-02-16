@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.SyntaxTooltipTest do
 
   describe "syntax_tooltip_query" do
     test "returns tooltip data for known command", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=TooltipUser1")
+      {:ok, view, _html} = live(chat_conn(conn, "TooltipUser1"), "/chat")
 
       # Push syntax_tooltip_query event for "mode" command
       render_hook(view, "syntax_tooltip_query", %{
@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.ChatLive.SyntaxTooltipTest do
     end
 
     test "does not show tooltip for unknown command", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=TooltipUser2")
+      {:ok, view, _html} = live(chat_conn(conn, "TooltipUser2"), "/chat")
 
       render_hook(view, "syntax_tooltip_query", %{
         "command" => "nonexistent",
@@ -41,7 +41,7 @@ defmodule RetroHexChatWeb.ChatLive.SyntaxTooltipTest do
     end
 
     test "computes current param index from args", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=TooltipUser3")
+      {:ok, view, _html} = live(chat_conn(conn, "TooltipUser3"), "/chat")
 
       render_hook(view, "syntax_tooltip_query", %{
         "command" => "kick",
@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.ChatLive.SyntaxTooltipTest do
 
   describe "syntax_tooltip_dismiss" do
     test "hides the tooltip", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=DismissUser")
+      {:ok, view, _html} = live(chat_conn(conn, "DismissUser"), "/chat")
 
       # Show tooltip first
       render_hook(view, "syntax_tooltip_query", %{
@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.ChatLive.SyntaxTooltipTest do
 
   describe "detail level filtering" do
     test "off level suppresses tooltip entirely", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OffLevelUser")
+      {:ok, view, _html} = live(chat_conn(conn, "OffLevelUser"), "/chat")
 
       # Set help level to off
       render_hook(view, "update_command_help_level", %{"level" => "off"})

@@ -30,69 +30,71 @@ defmodule RetroHexChatWeb.E2ETest do
 
     test "1.2 empty nickname keeps button disabled", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      html = view |> element("form") |> render_change(%{"nickname" => ""})
+      html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => ""})
       assert html =~ "disabled"
     end
 
     test "1.3 nickname >16 chars shows error", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
       long = String.duplicate("A", 17)
-      html = view |> element("form") |> render_change(%{"nickname" => long})
+      html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => long})
       assert html =~ "error-text"
     end
 
     test "1.4 nickname with space shows error", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      html = view |> element("form") |> render_change(%{"nickname" => "bad nick"})
+      html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => "bad nick"})
       assert html =~ "error-text"
     end
 
     test "1.5 nickname starting with number shows error", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      html = view |> element("form") |> render_change(%{"nickname" => "1nick"})
+      html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => "1nick"})
       assert html =~ "error-text"
     end
 
     test "1.6 valid nickname clears error and enables button", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      html = view |> element("form") |> render_change(%{"nickname" => "ValidNick"})
+      html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => "ValidNick"})
       refute html =~ "error-text"
       refute html =~ ~s(disabled="disabled")
     end
 
     test "1.7 boundary: 1-char nickname accepted", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      view |> element("form") |> render_change(%{"nickname" => "A"})
-      result = view |> element("form") |> render_submit(%{"nickname" => "A"})
-      assert {:error, {:live_redirect, %{to: "/chat?nickname=A"}}} = result
+      view |> element("form[phx-submit]") |> render_change(%{"nickname" => "A"})
+      html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "A"})
+      assert html =~ ~s(value="A")
+      assert html =~ ~s(id="connect-session-form")
     end
 
     test "1.8 boundary: 16-char nickname accepted", %{conn: conn} do
       nick = String.duplicate("B", 16)
       {:ok, view, _html} = live(conn, "/")
-      view |> element("form") |> render_change(%{"nickname" => nick})
-      result = view |> element("form") |> render_submit(%{"nickname" => nick})
-      expected = "/chat?nickname=#{nick}"
-      assert {:error, {:live_redirect, %{to: ^expected}}} = result
+      view |> element("form[phx-submit]") |> render_change(%{"nickname" => nick})
+      html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => nick})
+      assert html =~ ~s(value="#{nick}")
+      assert html =~ ~s(id="connect-session-form")
     end
 
-    test "1.9 valid submit redirects to /chat", %{conn: conn} do
+    test "1.9 valid submit triggers form submission to /chat/session", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      view |> element("form") |> render_change(%{"nickname" => "TestUser"})
-      result = view |> element("form") |> render_submit(%{"nickname" => "TestUser"})
-      assert {:error, {:live_redirect, %{to: "/chat?nickname=TestUser"}}} = result
+      view |> element("form[phx-submit]") |> render_change(%{"nickname" => "TestUser"})
+      html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "TestUser"})
+      assert html =~ ~s(value="TestUser")
+      assert html =~ ~s(action="/chat/session")
     end
 
     test "1.10 IRC special chars [Nick] work", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      view |> element("form") |> render_change(%{"nickname" => "[Nick]"})
-      result = view |> element("form") |> render_submit(%{"nickname" => "[Nick]"})
-      assert {:error, {:live_redirect, _}} = result
+      view |> element("form[phx-submit]") |> render_change(%{"nickname" => "[Nick]"})
+      html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "[Nick]"})
+      assert html =~ ~s(id="connect-session-form")
     end
 
     test "1.11 invalid chars !!bad show error", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      html = view |> element("form") |> render_change(%{"nickname" => "!!bad"})
+      html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => "!!bad"})
       assert html =~ "error-text"
     end
   end
@@ -105,7 +107,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "2.1 mount shows complete layout (treebar, chat, nicklist, status, menu, toolbar)", %{
       conn: conn
     } do
-      {:ok, _view, html} = live(conn, "/chat?nickname=LayoutUser")
+      {:ok, _view, html} = live(chat_conn(conn, "LayoutUser"), "/chat")
       assert html =~ "treebar"
       assert html =~ "chat-area"
       assert html =~ "nicklist"
@@ -115,13 +117,13 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "2.2 auto-join #lobby, user appears in nicklist", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=LobbyJoin")
+      {:ok, _view, html} = live(chat_conn(conn, "LobbyJoin"), "/chat")
       assert html =~ "#lobby"
       assert html =~ "LobbyJoin"
     end
 
     test "2.3 status bar shows nick, channel, user count, Connected", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=StatusChk")
+      {:ok, _view, html} = live(chat_conn(conn, "StatusChk"), "/chat")
       assert html =~ ~s(data-testid="status-nick")
       assert html =~ "StatusChk"
       assert html =~ ~s(data-testid="status-channel")
@@ -132,12 +134,12 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "2.4 mount without nickname redirects to /", %{conn: conn} do
-      result = live(conn, "/chat?nickname=!!invalid!!")
+      result = live(chat_conn(conn, "!!invalid!!"), "/chat")
       assert {:error, {:live_redirect, %{to: "/"}}} = result
     end
 
     test "2.5 chat input and Send button present", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=InputChk")
+      {:ok, _view, html} = live(chat_conn(conn, "InputChk"), "/chat")
       assert html =~ "chat-input"
       assert html =~ "Send"
     end
@@ -149,7 +151,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 3: Messages" do
     test "3.1 regular message shows nick, timestamp, content", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=MsgUser")
+      {:ok, view, _html} = live(chat_conn(conn, "MsgUser"), "/chat")
       send_message_and_wait(view, "Hello E2E")
       html = render(view)
       assert html =~ "chat-nick"
@@ -160,7 +162,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "3.2 message doesn't leak to another channel", %{conn: conn} do
       ch = unique_channel("leak")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=LeakUser")
+      {:ok, view, _html} = live(chat_conn(conn, "LeakUser"), "/chat")
       send_command(view, "/join #{ch}")
       send_message_and_wait(view, "secret msg in #{ch}")
 
@@ -174,14 +176,14 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "3.3 /me action renders with chat-action class", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=ActionUser")
+      {:ok, view, _html} = live(chat_conn(conn, "ActionUser"), "/chat")
       send_message_and_wait(view, "/me waves hello")
       html = render(view)
       assert html =~ "chat-action"
     end
 
     test "3.4 system message (join) renders with chat-system class", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SysMsgUser")
+      {:ok, view, _html} = live(chat_conn(conn, "SysMsgUser"), "/chat")
       send(view.pid, {:user_joined, %{nickname: "NewPerson"}})
       html = render(view)
       assert html =~ "chat-system"
@@ -189,20 +191,20 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "3.5 error message renders with chat-error class", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=ErrMsgUser")
+      {:ok, view, _html} = live(chat_conn(conn, "ErrMsgUser"), "/chat")
       send_command(view, "/foobar")
       html = render(view)
       assert html =~ "chat-error"
     end
 
     test "3.6 empty message is no-op", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=EmptyMsg")
+      {:ok, view, _html} = live(chat_conn(conn, "EmptyMsg"), "/chat")
       html = view |> element("form.chat-input-form") |> render_submit(%{"input" => ""})
       assert html =~ "chat-input-form"
     end
 
     test "3.7 HTML entities escaped (anti-XSS)", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=XssUser")
+      {:ok, view, _html} = live(chat_conn(conn, "XssUser"), "/chat")
       send_message_and_wait(view, "<script>alert('xss')</script>")
       html = render(view)
       refute html =~ "<script>"
@@ -211,7 +213,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "3.8 /clear empties the message stream", %{conn: conn} do
       ch = unique_channel("clear")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=ClearE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "ClearE2E"), "/chat")
       send_command(view, "/join #{ch}")
       send_message_and_wait(view, "ClearMe message")
       html = render(view)
@@ -231,7 +233,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "4.1 /join creates channel, appears in treebar, switches to it", %{conn: conn} do
       ch = unique_channel("join")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=JoinE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "JoinE2E"), "/chat")
       send_command(view, "/join #{ch}")
       html = render(view)
       assert html =~ ch
@@ -243,7 +245,7 @@ defmodule RetroHexChatWeb.E2ETest do
       Server.join(ch, "PwFounder", nil)
       Server.set_mode(ch, "PwFounder", "+k", ["secret"])
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=PwJoin")
+      {:ok, view, _html} = live(chat_conn(conn, "PwJoin"), "/chat")
       send_command(view, "/join #{ch} secret")
       html = render(view)
       assert html =~ ch
@@ -255,7 +257,7 @@ defmodule RetroHexChatWeb.E2ETest do
       Server.join(ch, "PwfFounder", nil)
       Server.set_mode(ch, "PwfFounder", "+k", ["correct"])
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=PwFail")
+      {:ok, view, _html} = live(chat_conn(conn, "PwFail"), "/chat")
       send_command(view, "/join #{ch} wrong")
       html = render(view)
       assert html =~ "chat-error" or html =~ "key"
@@ -264,7 +266,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "4.4 /part leaves channel, switches to another", %{conn: conn} do
       ch = unique_channel("part")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=PartE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "PartE2E"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/part")
       html = render(view)
@@ -272,7 +274,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "4.5 /part last channel doesn't crash", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PartLastE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "PartLastE2E"), "/chat")
       send_command(view, "/part")
       html = render(view)
       assert html =~ "chat-input-form"
@@ -281,7 +283,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "4.6 click on treebar changes active channel", %{conn: conn} do
       ch = unique_channel("tree")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=TreeClick")
+      {:ok, view, _html} = live(chat_conn(conn, "TreeClick"), "/chat")
       send_command(view, "/join #{ch}")
 
       html =
@@ -295,7 +297,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "4.7 message in inactive channel marks tree-unread", %{conn: conn} do
       ch = unique_channel("unread")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=UnreadE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "UnreadE2E"), "/chat")
       send_command(view, "/join #{ch}")
 
       # Switch back to #lobby
@@ -323,7 +325,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "4.8 switching to unread channel clears indicator", %{conn: conn} do
       ch = unique_channel("clr")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=ClrE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "ClrE2E"), "/chat")
       send_command(view, "/join #{ch}")
 
       view
@@ -354,7 +356,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "4.9 limit of 10 channels shows error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=LimitE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "LimitE2E"), "/chat")
 
       # Already in #lobby (1). Join 9 more = 10 total
       for i <- 1..9 do
@@ -383,7 +385,7 @@ defmodule RetroHexChatWeb.E2ETest do
       Server.join(ch, "ModFounder", nil)
       Server.set_mode(ch, "ModFounder", "+m")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=ModReg")
+      {:ok, view, _html} = live(chat_conn(conn, "ModReg"), "/chat")
       send_command(view, "/join #{ch}")
       send_message_and_wait(view, "try to speak")
       html = render(view)
@@ -396,7 +398,7 @@ defmodule RetroHexChatWeb.E2ETest do
       Server.join(ch, "TlockOp", nil)
       Server.set_mode(ch, "TlockOp", "+t")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=TlockReg")
+      {:ok, view, _html} = live(chat_conn(conn, "TlockReg"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/topic Nope")
       html = render(view)
@@ -406,7 +408,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "5.3 +i invite-only reflected in state", %{conn: conn} do
       ch = unique_channel("inv")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=InvOp")
+      {:ok, view, _html} = live(chat_conn(conn, "InvOp"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/mode +i")
       Process.sleep(50)
@@ -418,7 +420,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "5.4 +k key reflected in state", %{conn: conn} do
       ch = unique_channel("key")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=KeyOp")
+      {:ok, view, _html} = live(chat_conn(conn, "KeyOp"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/mode +k secret123")
       Process.sleep(50)
@@ -430,7 +432,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "5.5 +l limit reflected in state", %{conn: conn} do
       ch = unique_channel("lim")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=LimOp")
+      {:ok, view, _html} = live(chat_conn(conn, "LimOp"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/mode +l 5")
       Process.sleep(50)
@@ -442,7 +444,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "5.6 -m removes moderated: regular can send again", %{conn: conn} do
       ch = unique_channel("unmod")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=UnmodOp")
+      {:ok, view, _html} = live(chat_conn(conn, "UnmodOp"), "/chat")
       send_command(view, "/join #{ch}")
 
       # Set +m, then -m
@@ -450,7 +452,7 @@ defmodule RetroHexChatWeb.E2ETest do
       Server.set_mode(ch, "UnmodOp", "-m")
 
       # Join a second user (regular)
-      {:ok, view2, _html} = live(new_conn(), "/chat?nickname=UnmodReg")
+      {:ok, view2, _html} = live(chat_conn(new_conn(), "UnmodReg"), "/chat")
       send_command(view2, "/join #{ch}")
       send_message_and_wait(view2, "can speak again")
       html = render(view2)
@@ -462,7 +464,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       Server.join(ch, "NoOpFounder", nil)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=NoOpMod")
+      {:ok, view, _html} = live(chat_conn(conn, "NoOpMod"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/mode +m")
       html = render(view)
@@ -478,7 +480,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "6.1 /kick shows system message", %{conn: conn} do
       ch = unique_channel("kick")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=KickOp")
+      {:ok, view, _html} = live(chat_conn(conn, "KickOp"), "/chat")
       send_command(view, "/join #{ch}")
 
       # Add target to channel
@@ -494,7 +496,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "6.2 kick via context menu works", %{conn: conn} do
       ch = unique_channel("ctxkick")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxKickOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxKickOp"), "/chat")
       send_command(view, "/join #{ch}")
 
       Server.join(ch, "CtxKickTgt", nil)
@@ -509,7 +511,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "6.3 /ban shows system message", %{conn: conn} do
       ch = unique_channel("ban")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=BanOpE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "BanOpE2E"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/ban BanVictim spambot")
       Process.sleep(50)
@@ -521,7 +523,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "6.4 ban via context menu works", %{conn: conn} do
       ch = unique_channel("ctxban")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxBanOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxBanOp"), "/chat")
       send_command(view, "/join #{ch}")
 
       Server.join(ch, "CtxBanTgt", nil)
@@ -536,7 +538,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "6.5 give op via context menu shows @prefix", %{conn: conn} do
       ch = unique_channel("giveop")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=GiveOpE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "GiveOpE2E"), "/chat")
       send_command(view, "/join #{ch}")
 
       send(view.pid, {:user_joined, %{nickname: "OpRecv", role: :regular}})
@@ -554,7 +556,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "6.6 give voice via context menu shows +prefix", %{conn: conn} do
       ch = unique_channel("givevoice")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=GiveVoice")
+      {:ok, view, _html} = live(chat_conn(conn, "GiveVoice"), "/chat")
       send_command(view, "/join #{ch}")
 
       # Also join the target in the server so set_mode works
@@ -576,7 +578,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       Server.join(ch, "RealOp", nil)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=NoOpKick")
+      {:ok, view, _html} = live(chat_conn(conn, "NoOpKick"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/kick RealOp test")
       html = render(view)
@@ -588,7 +590,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       Server.join(ch, "BanOp2", nil)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=NoOpBan")
+      {:ok, view, _html} = live(chat_conn(conn, "NoOpBan"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/ban BanOp2 test")
       html = render(view)
@@ -598,7 +600,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "6.9 kicked user removed from nicklist", %{conn: conn} do
       ch = unique_channel("kickremove")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=KickRmOp")
+      {:ok, view, _html} = live(chat_conn(conn, "KickRmOp"), "/chat")
       send_command(view, "/join #{ch}")
 
       send(view.pid, {:user_joined, %{nickname: "KickRmTgt", role: :regular}})
@@ -621,7 +623,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 7: Nicklist" do
     test "7.1 groups: Operators, Voiced, Regular headers", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=NickGrp")
+      {:ok, _view, html} = live(chat_conn(conn, "NickGrp"), "/chat")
       assert html =~ "Operators"
       assert html =~ "Voiced"
       assert html =~ "Regular"
@@ -630,7 +632,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "7.2 prefixes: @ for op, + for voiced", %{conn: conn} do
       ch = unique_channel("prefix")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=PrefixOp")
+      {:ok, view, _html} = live(chat_conn(conn, "PrefixOp"), "/chat")
       send_command(view, "/join #{ch}")
 
       send(view.pid, {:user_joined, %{nickname: "VoUser", role: :voiced}})
@@ -640,7 +642,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "7.3 away user has nick-away class", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AwayNick")
+      {:ok, view, _html} = live(chat_conn(conn, "AwayNick"), "/chat")
       # Set away via /away — this updates the Tracker and shows system message
       send_command(view, "/away Gone fishing")
       html = render(view)
@@ -648,7 +650,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "7.4 right-click opens context menu", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxOpen")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxOpen"), "/chat")
 
       html =
         render_click(view, "nick_right_click", %{"nick" => "someone", "x" => 100, "y" => 200})
@@ -659,7 +661,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "7.5 op sees extra context items (Kick, Ban, Give Op, Give Voice)", %{conn: conn} do
       ch = unique_channel("opctx")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=OpCtx")
+      {:ok, view, _html} = live(chat_conn(conn, "OpCtx"), "/chat")
       send_command(view, "/join #{ch}")
 
       # As the first user (operator), right-click should show op items
@@ -671,7 +673,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "7.6 click outside closes context menu", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxClose")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxClose"), "/chat")
       render_click(view, "nick_right_click", %{"nick" => "someone", "x" => 0, "y" => 0})
       html = render_click(view, "close_context_menu")
       refute html =~ "context-menu"
@@ -680,7 +682,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "7.7 user count is correct", %{conn: conn} do
       ch = unique_channel("count")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=CountE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "CountE2E"), "/chat")
       send_command(view, "/join #{ch}")
       html = render(view)
       assert html =~ "Users (1)"
@@ -691,7 +693,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "7.8 /whois sets whois assigns without crashing", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=WhoisE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "WhoisE2E"), "/chat")
       send_command(view, "/whois WhoisTarget")
       html = render(view)
       # View stays alive and functional (whois dialog may or may not render)
@@ -699,7 +701,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "7.9 context_whois closes menu and sets whois", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxWhois")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxWhois"), "/chat")
       render_click(view, "nick_right_click", %{"nick" => "WhoTgt", "x" => 0, "y" => 0})
       html = render_click(view, "context_whois", %{"nick" => "WhoTgt"})
       refute html =~ "context-menu"
@@ -713,7 +715,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 8: Private messages" do
     test "8.1 /msg opens PM, message appears", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmSnd")
+      {:ok, view, _html} = live(chat_conn(conn, "PmSnd"), "/chat")
       send_command(view, "/msg PmRecipient Hello PM!")
       Process.sleep(50)
       html = render(view)
@@ -721,7 +723,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "8.2 /query opens tab in treebar", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=QryUser")
+      {:ok, view, _html} = live(chat_conn(conn, "QryUser"), "/chat")
       send_command(view, "/query QryTarget")
       html = render(view)
       assert html =~ "QryTarget"
@@ -729,7 +731,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "8.3 PM via context menu Query (PM)", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxPm")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxPm"), "/chat")
       render_click(view, "nick_right_click", %{"nick" => "PmPal", "x" => 0, "y" => 0})
       html = render_click(view, "context_query", %{"nick" => "PmPal"})
       assert html =~ "PmPal"
@@ -739,7 +741,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "8.4 nicklist hides during PM, shows in channel", %{conn: conn} do
       ch = unique_channel("pmnick")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmNick")
+      {:ok, view, _html} = live(chat_conn(conn, "PmNick"), "/chat")
       send_command(view, "/join #{ch}")
 
       # Open PM — nicklist should hide
@@ -758,7 +760,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "8.5 unread indicator for PM", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmUnrdE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "PmUnrdE2E"), "/chat")
 
       # Open PM, then switch back to channel
       render_click(view, "nick_right_click", %{"nick" => "UnrdPal", "x" => 0, "y" => 0})
@@ -786,7 +788,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "8.6 switching to unread PM clears indicator", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmClrE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "PmClrE2E"), "/chat")
 
       render_click(view, "nick_right_click", %{"nick" => "ClrPal", "x" => 0, "y" => 0})
       render_click(view, "context_query", %{"nick" => "ClrPal"})
@@ -819,7 +821,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "8.7 PM arrives while PM is active (no unread)", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmActE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "PmActE2E"), "/chat")
 
       render_click(view, "nick_right_click", %{"nick" => "ActPal", "x" => 0, "y" => 0})
       render_click(view, "context_query", %{"nick" => "ActPal"})
@@ -843,7 +845,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "8.8 /msg without message shows error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmNoMsg")
+      {:ok, view, _html} = live(chat_conn(conn, "PmNoMsg"), "/chat")
       send_command(view, "/msg SomeTarget")
       html = render(view)
       assert html =~ "chat-error" or html =~ "No message"
@@ -856,7 +858,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 9: Nick changes" do
     test "9.1 /nick updates status bar and nicklist", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OldNickE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "OldNickE2E"), "/chat")
       send_command(view, "/nick NewNickE2E")
       html = render(view)
       assert html =~ "NewNickE2E"
@@ -864,7 +866,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "9.2 nick_changed broadcast shows system message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=NickObs")
+      {:ok, view, _html} = live(chat_conn(conn, "NickObs"), "/chat")
       send(view.pid, {:nick_changed, %{old_nick: "Alice", new_nick: "Bob"}})
       html = render(view)
       assert html =~ "now known as"
@@ -873,7 +875,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "9.3 /nick updates Tracker", %{conn: conn} do
       ch = unique_channel("nicktrack")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=TrackOld")
+      {:ok, view, _html} = live(chat_conn(conn, "TrackOld"), "/chat")
       send_command(view, "/join #{ch}")
       Process.sleep(50)
 
@@ -887,14 +889,14 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "9.4 /nick !!invalid shows error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=NickInv")
+      {:ok, view, _html} = live(chat_conn(conn, "NickInv"), "/chat")
       send_command(view, "/nick !!invalid")
       html = render(view)
       assert html =~ "chat-error"
     end
 
     test "9.5 /nick SameNick shows error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SameNick")
+      {:ok, view, _html} = live(chat_conn(conn, "SameNick"), "/chat")
       send_command(view, "/nick SameNick")
       html = render(view)
       assert html =~ "chat-error" or html =~ "already"
@@ -907,7 +909,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 10: NickServ" do
     test "10.1 /ns register registers nickname", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=NsReg")
+      {:ok, view, _html} = live(chat_conn(conn, "NsReg"), "/chat")
       send_command(view, "/ns register testpass")
       html = render(view)
       assert html =~ "registered" or html =~ "NickServ"
@@ -915,7 +917,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
     test "10.2 /ns identify identifies user", %{conn: conn} do
       NickServ.register("NsIdent", "mypass")
-      {:ok, view, _html} = live(conn, "/chat?nickname=NsIdent")
+      {:ok, view, _html} = live(chat_conn(conn, "NsIdent"), "/chat")
       send_command(view, "/ns identify mypass")
       html = render(view)
       assert html =~ "identified" or html =~ "NickServ"
@@ -923,7 +925,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
     test "10.3 /ns info shows registration info", %{conn: conn} do
       NickServ.register("NsInfo", "pass")
-      {:ok, view, _html} = live(conn, "/chat?nickname=NsInfo")
+      {:ok, view, _html} = live(chat_conn(conn, "NsInfo"), "/chat")
       send_command(view, "/ns info")
       html = render(view)
       assert html =~ "NsInfo" or html =~ "registered" or html =~ "NickServ"
@@ -931,7 +933,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
     test "10.4 /ns drop deregisters", %{conn: conn} do
       NickServ.register("NsDrop", "droppass")
-      {:ok, view, _html} = live(conn, "/chat?nickname=NsDrop")
+      {:ok, view, _html} = live(chat_conn(conn, "NsDrop"), "/chat")
       send_command(view, "/ns identify droppass")
       send_command(view, "/ns drop droppass")
       html = render(view)
@@ -939,7 +941,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "10.5 /ns help shows help", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=NsHelp")
+      {:ok, view, _html} = live(chat_conn(conn, "NsHelp"), "/chat")
       send_command(view, "/ns help")
       html = render(view)
       assert html =~ "register" or html =~ "NickServ" or html =~ "Available"
@@ -950,10 +952,10 @@ defmodule RetroHexChatWeb.E2ETest do
       NickServ.register("Ghoster", "gpass")
 
       # Target user connects
-      {:ok, tgt_view, _html} = live(new_conn(), "/chat?nickname=GhostTgt")
+      {:ok, tgt_view, _html} = live(chat_conn(new_conn(), "GhostTgt"), "/chat")
 
       # Ghoster connects and identifies
-      {:ok, view, _html} = live(conn, "/chat?nickname=Ghoster")
+      {:ok, view, _html} = live(chat_conn(conn, "Ghoster"), "/chat")
       send_command(view, "/ns identify gpass")
 
       # Ghost the target
@@ -977,7 +979,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       NickServ.register("CsReg", "pass")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsReg")
+      {:ok, view, _html} = live(chat_conn(conn, "CsReg"), "/chat")
       send_command(view, "/ns identify pass")
       send_command(view, "/join #{ch}")
       send_command(view, "/cs register")
@@ -990,7 +992,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       NickServ.register("CsDrop", "pass")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsDrop")
+      {:ok, view, _html} = live(chat_conn(conn, "CsDrop"), "/chat")
       send_command(view, "/ns identify pass")
       send_command(view, "/join #{ch}")
       send_command(view, "/cs register")
@@ -1002,7 +1004,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "11.3 /cs info shows channel info", %{conn: conn} do
       ch = unique_channel("csinfo")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsInfo")
+      {:ok, view, _html} = live(chat_conn(conn, "CsInfo"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/cs info")
       html = render(view)
@@ -1014,7 +1016,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       NickServ.register("CsSop", "pass")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsSop")
+      {:ok, view, _html} = live(chat_conn(conn, "CsSop"), "/chat")
       send_command(view, "/ns identify pass")
       send_command(view, "/join #{ch}")
       send_command(view, "/cs register")
@@ -1024,7 +1026,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "11.5 /cs help shows help", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsHelp")
+      {:ok, view, _html} = live(chat_conn(conn, "CsHelp"), "/chat")
       send_command(view, "/cs help")
       html = render(view)
       assert html =~ "ChanServ" or html =~ "register" or html =~ "Available"
@@ -1035,7 +1037,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       NickServ.register("CsAop", "pass")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsAop")
+      {:ok, view, _html} = live(chat_conn(conn, "CsAop"), "/chat")
       send_command(view, "/ns identify pass")
       send_command(view, "/join #{ch}")
       send_command(view, "/cs register")
@@ -1049,7 +1051,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       NickServ.register("CsVop", "pass")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsVop")
+      {:ok, view, _html} = live(chat_conn(conn, "CsVop"), "/chat")
       send_command(view, "/ns identify pass")
       send_command(view, "/join #{ch}")
       send_command(view, "/cs register")
@@ -1063,7 +1065,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       NickServ.register("CsSopDel", "pass")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsSopDel")
+      {:ok, view, _html} = live(chat_conn(conn, "CsSopDel"), "/chat")
       send_command(view, "/ns identify pass")
       send_command(view, "/join #{ch}")
       send_command(view, "/cs register")
@@ -1078,7 +1080,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       NickServ.register("CsAopDel", "pass")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsAopDel")
+      {:ok, view, _html} = live(chat_conn(conn, "CsAopDel"), "/chat")
       send_command(view, "/ns identify pass")
       send_command(view, "/join #{ch}")
       send_command(view, "/cs register")
@@ -1092,7 +1094,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       NickServ.register("CsSopLst", "pass")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsSopLst")
+      {:ok, view, _html} = live(chat_conn(conn, "CsSopLst"), "/chat")
       send_command(view, "/ns identify pass")
       send_command(view, "/join #{ch}")
       send_command(view, "/cs register")
@@ -1106,7 +1108,7 @@ defmodule RetroHexChatWeb.E2ETest do
       ensure_channel(ch)
       NickServ.register("CsVopDel", "pass")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsVopDel")
+      {:ok, view, _html} = live(chat_conn(conn, "CsVopDel"), "/chat")
       send_command(view, "/ns identify pass")
       send_command(view, "/join #{ch}")
       send_command(view, "/cs register")
@@ -1125,7 +1127,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "12.1 /topic sets topic (operator)", %{conn: conn} do
       ch = unique_channel("topicset")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=TopicOp")
+      {:ok, view, _html} = live(chat_conn(conn, "TopicOp"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/topic Welcome to #{ch}")
       Process.sleep(50)
@@ -1137,7 +1139,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "12.2 /topic without args shows current topic", %{conn: conn} do
       ch = unique_channel("topicview")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=TopicView")
+      {:ok, view, _html} = live(chat_conn(conn, "TopicView"), "/chat")
       send_command(view, "/join #{ch}")
       Server.set_topic(ch, "TopicView", "Hello World")
       send_command(view, "/topic")
@@ -1148,7 +1150,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "12.3 /topic on empty topic shows 'No topic set'", %{conn: conn} do
       ch = unique_channel("notopic")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=NoTopic")
+      {:ok, view, _html} = live(chat_conn(conn, "NoTopic"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/topic")
       html = render(view)
@@ -1161,7 +1163,7 @@ defmodule RetroHexChatWeb.E2ETest do
       Server.join(ch, "TopErrOp", nil)
       Server.set_mode(ch, "TopErrOp", "+t")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=TopErrReg")
+      {:ok, view, _html} = live(chat_conn(conn, "TopErrReg"), "/chat")
       send_command(view, "/join #{ch}")
       send_command(view, "/topic Nope")
       html = render(view)
@@ -1175,7 +1177,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 13: Search" do
     test "13.1 Edit > Find opens search bar", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=FindE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "FindE2E"), "/chat")
       html = render_click(view, "open_search")
       assert html =~ "search-bar"
     end
@@ -1183,7 +1185,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "13.2 typing query shows results counter", %{conn: conn} do
       ch = unique_channel("srch")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=SrchE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchE2E"), "/chat")
       send_command(view, "/join #{ch}")
 
       Server.send_message(ch, "SrchE2E", "findme one")
@@ -1198,7 +1200,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "13.3 prev/next navigate results", %{conn: conn} do
       ch = unique_channel("srchnav")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=SrchNav")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchNav"), "/chat")
       send_command(view, "/join #{ch}")
 
       Server.send_message(ch, "SrchNav", "navmatch one")
@@ -1214,21 +1216,21 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "13.4 close search hides bar", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SrchCls")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchCls"), "/chat")
       render_click(view, "toggle_search")
       html = render_click(view, "close_search")
       refute html =~ "search-bar"
     end
 
     test "13.5 no results shows indicator", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SrchNone")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchNone"), "/chat")
       render_click(view, "toggle_search")
       html = render_click(view, "search_input", %{"query" => "zzz_nomatch_ever"})
       assert html =~ "No results"
     end
 
     test "13.6 search bar hidden by default", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=SrchDef")
+      {:ok, _view, html} = live(chat_conn(conn, "SrchDef"), "/chat")
       refute html =~ "search-bar"
     end
   end
@@ -1239,19 +1241,19 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 14: Autocomplete" do
     test "14.1 autocomplete query shows dropdown", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PalOpen")
+      {:ok, view, _html} = live(chat_conn(conn, "PalOpen"), "/chat")
       html = render_click(view, "autocomplete_query", %{"type" => "command", "partial" => ""})
       assert html =~ "autocomplete-dropdown"
     end
 
     test "14.2 filter reduces command list", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PalFilt")
+      {:ok, view, _html} = live(chat_conn(conn, "PalFilt"), "/chat")
       html = render_click(view, "autocomplete_query", %{"type" => "command", "partial" => "jo"})
       assert html =~ "autocomplete-dropdown"
     end
 
     test "14.3 select command inserts /cmd in input", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PalSel")
+      {:ok, view, _html} = live(chat_conn(conn, "PalSel"), "/chat")
       render_click(view, "autocomplete_query", %{"type" => "command", "partial" => ""})
       html = render_click(view, "autocomplete_select", %{"type" => "command", "value" => "join"})
       assert html =~ "/join "
@@ -1259,26 +1261,26 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "14.4 close autocomplete hides it", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PalCls")
+      {:ok, view, _html} = live(chat_conn(conn, "PalCls"), "/chat")
       render_click(view, "autocomplete_query", %{"type" => "command", "partial" => ""})
       html = render_click(view, "autocomplete_close")
       refute html =~ "autocomplete-dropdown"
     end
 
     test "14.5 autocomplete hidden by default", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=PalDef")
+      {:ok, _view, html} = live(chat_conn(conn, "PalDef"), "/chat")
       refute html =~ "autocomplete-dropdown"
     end
 
     test "14.6 /help shows available commands list", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpE2E"), "/chat")
       send_command(view, "/help")
       html = render(view)
       assert html =~ "Available commands"
     end
 
     test "14.7 /help join shows specific command help", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpCmdE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpCmdE2E"), "/chat")
       send_command(view, "/help join")
       html = render(view)
       assert html =~ "/join"
@@ -1291,7 +1293,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 15: UI toggles" do
     test "15.1 toggle treebar hides/shows", %{conn: conn} do
-      {:ok, view, html} = live(conn, "/chat?nickname=TreeTgl")
+      {:ok, view, html} = live(chat_conn(conn, "TreeTgl"), "/chat")
       assert html =~ ~s(class="treebar")
 
       html = render_click(view, "toggle_treebar")
@@ -1302,7 +1304,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "15.2 toggle nicklist hides/shows", %{conn: conn} do
-      {:ok, view, html} = live(conn, "/chat?nickname=NickTgl")
+      {:ok, view, html} = live(chat_conn(conn, "NickTgl"), "/chat")
       assert html =~ "nicklist"
 
       html = render_click(view, "toggle_nicklist")
@@ -1313,32 +1315,32 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "15.3 show about opens dialog", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AboutE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "AboutE2E"), "/chat")
       html = render_click(view, "show_about")
       assert html =~ "About RetroHexChat"
     end
 
     test "15.4 close dialog closes about", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=ClsAbout")
+      {:ok, view, _html} = live(chat_conn(conn, "ClsAbout"), "/chat")
       render_click(view, "show_about")
       html = render_click(view, "close_dialog")
       refute html =~ "dialog-overlay"
     end
 
     test "15.5 quit chat redirects to /", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=QuitE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "QuitE2E"), "/chat")
       result = render_click(view, "quit_chat")
       assert {:error, {:live_redirect, %{to: "/"}}} = result
     end
 
     test "15.6 disconnect toolbar redirects to /", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=DiscE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "DiscE2E"), "/chat")
       result = render_click(view, "disconnect")
       assert {:error, {:live_redirect, %{to: "/"}}} = result
     end
 
     test "15.7 /quit command redirects to /", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=QuitCmdE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "QuitCmdE2E"), "/chat")
       result = send_command(view, "/quit leaving")
       assert {:error, {:live_redirect, %{to: "/"}}} = result
     end
@@ -1350,14 +1352,14 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 16: Away status" do
     test "16.1 /away sets away status", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AwayE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "AwayE2E"), "/chat")
       send_command(view, "/away Gone fishing")
       html = render(view)
       assert html =~ "now away"
     end
 
     test "16.2 /away without args clears away", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AwayClrE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "AwayClrE2E"), "/chat")
       send_command(view, "/away Busy")
       send_command(view, "/away")
       html = render(view)
@@ -1365,7 +1367,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "16.3 away updates Presence/Tracker", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AwayTrk")
+      {:ok, view, _html} = live(chat_conn(conn, "AwayTrk"), "/chat")
       send_command(view, "/away fishing")
       Process.sleep(50)
 
@@ -1384,7 +1386,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 17: History and keyboard" do
     test "17.1 arrow up navigates command history", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HistUp")
+      {:ok, view, _html} = live(chat_conn(conn, "HistUp"), "/chat")
       send_message(view, "First message")
       send_message(view, "Second message")
 
@@ -1393,7 +1395,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "17.2 arrow down navigates forward", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HistDn")
+      {:ok, view, _html} = live(chat_conn(conn, "HistDn"), "/chat")
       send_message(view, "First")
       send_message(view, "Second")
 
@@ -1406,7 +1408,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "17.3 tab complete with single match", %{conn: conn} do
       ch = unique_channel("tabcmp")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=TabCmp")
+      {:ok, view, _html} = live(chat_conn(conn, "TabCmp"), "/chat")
       send_command(view, "/join #{ch}")
 
       send(view.pid, {:user_joined, %{nickname: "UniqueXyz", role: :regular}})
@@ -1420,7 +1422,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "17.4 tab complete no match: no-op", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=TabNo")
+      {:ok, view, _html} = live(chat_conn(conn, "TabNo"), "/chat")
       html = render_click(view, "tab_complete", %{"partial" => "zzz_nomatch"})
       assert html =~ "chat-input-form"
     end
@@ -1428,7 +1430,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "17.5 tab complete multiple matches: no-op", %{conn: conn} do
       ch = unique_channel("tabmulti")
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, "/chat?nickname=TabMulti")
+      {:ok, view, _html} = live(chat_conn(conn, "TabMulti"), "/chat")
       send_command(view, "/join #{ch}")
 
       send(view.pid, {:user_joined, %{nickname: "TabAlphaA", role: :regular}})
@@ -1448,10 +1450,10 @@ defmodule RetroHexChatWeb.E2ETest do
     test "18.1 two users in same channel see messages", %{conn: conn} do
       ch = unique_channel("multi")
       ensure_channel(ch)
-      {:ok, view1, _html} = live(conn, "/chat?nickname=Multi1")
+      {:ok, view1, _html} = live(chat_conn(conn, "Multi1"), "/chat")
       send_command(view1, "/join #{ch}")
 
-      {:ok, view2, _html} = live(new_conn(), "/chat?nickname=Multi2")
+      {:ok, view2, _html} = live(chat_conn(new_conn(), "Multi2"), "/chat")
       send_command(view2, "/join #{ch}")
 
       send_message_and_wait(view1, "Hello from Multi1")
@@ -1461,28 +1463,28 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "18.2 user_joined broadcast shows 'has joined'", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=JoinBc")
+      {:ok, view, _html} = live(chat_conn(conn, "JoinBc"), "/chat")
       send(view.pid, {:user_joined, %{nickname: "newcomer"}})
       html = render(view)
       assert html =~ "joined"
     end
 
     test "18.3 user_left broadcast shows 'has left'", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=LeftBc")
+      {:ok, view, _html} = live(chat_conn(conn, "LeftBc"), "/chat")
       send(view.pid, {:user_left, %{nickname: "leaver", reason: nil}})
       html = render(view)
       assert html =~ "left"
     end
 
     test "18.4 nick_changed broadcast shows 'now known as'", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=NickBc")
+      {:ok, view, _html} = live(chat_conn(conn, "NickBc"), "/chat")
       send(view.pid, {:nick_changed, %{old_nick: "Alice", new_nick: "Bob"}})
       html = render(view)
       assert html =~ "now known as"
     end
 
     test "18.5 user_kicked broadcast shows 'kicked'", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=KickBc")
+      {:ok, view, _html} = live(chat_conn(conn, "KickBc"), "/chat")
 
       send(view.pid, {:user_joined, %{nickname: "BadGuy", role: :regular}})
 
@@ -1496,7 +1498,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "18.6 force_disconnect redirects to /", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=ForceE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "ForceE2E"), "/chat")
       send(view.pid, {:force_disconnect, %{reason: "Ghosted"}})
       flash = assert_redirect(view, "/")
       assert flash["error"] =~ "Disconnected"
@@ -1509,28 +1511,28 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 19: Error handling" do
     test "19.1 unknown command /foobar shows error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=UnkCmd")
+      {:ok, view, _html} = live(chat_conn(conn, "UnkCmd"), "/chat")
       send_command(view, "/foobar")
       html = render(view)
       assert html =~ "Unknown command" or html =~ "chat-error"
     end
 
     test "19.2 command without required args shows usage/error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=NoArgs")
+      {:ok, view, _html} = live(chat_conn(conn, "NoArgs"), "/chat")
       send_command(view, "/kick")
       html = render(view)
       assert html =~ "Usage" or html =~ "chat-error"
     end
 
     test "19.3 unknown handle_info doesn't crash", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=UnkInfo")
+      {:ok, view, _html} = live(chat_conn(conn, "UnkInfo"), "/chat")
       send(view.pid, {:completely_unknown_event, %{data: "test"}})
       html = render(view)
       assert html =~ "chat-input-form"
     end
 
     test "19.4 PM to self doesn't crash", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SelfPm")
+      {:ok, view, _html} = live(chat_conn(conn, "SelfPm"), "/chat")
       send_command(view, "/msg SelfPm hello self")
       Process.sleep(50)
       html = render(view)
@@ -1563,22 +1565,25 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ "Channel List"
     end
 
-    test "20.4 join from list redirects to /chat?join=", %{conn: conn} do
+    test "20.4 join from list renders hidden form with join_channel", %{conn: conn} do
       ensure_channel("#lobby")
       {:ok, view, _html} = live(conn, "/channels")
 
-      result =
+      html =
         view
         |> element(~s(button[phx-click="join"][phx-value-channel="#lobby"]))
         |> render_click()
 
-      assert {:error, {:live_redirect, %{to: "/chat?join=%23lobby"}}} = result
+      assert html =~ ~s(id="channel-join-form")
+      assert html =~ ~s(name="join_channel")
+      assert html =~ ~s(value="#lobby")
     end
 
-    test "20.5 close navigates to /chat", %{conn: conn} do
+    test "20.5 close renders hidden form without join_channel", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/channels")
-      result = view |> element(~s(button[type="button"][phx-click="close"])) |> render_click()
-      assert {:error, {:live_redirect, %{to: "/chat"}}} = result
+      html = view |> element(~s(button[type="button"][phx-click="close"])) |> render_click()
+      assert html =~ ~s(id="channel-join-form")
+      refute html =~ ~s(name="join_channel")
     end
 
     test "20.6 empty list shows 'No channels found'", %{conn: conn} do
@@ -1593,7 +1598,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "20.7 /list command redirects to /channels", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=ListCmdE2E")
+      {:ok, view, _html} = live(chat_conn(conn, "ListCmdE2E"), "/chat")
       result = send_command(view, "/list")
       assert {:error, {:live_redirect, %{to: "/channels"}}} = result
     end
@@ -1627,7 +1632,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "21.1 bold+color message renders correctly for sender", %{conn: conn} do
       chan = unique_channel("e2e_fmt")
       ensure_channel(chan)
-      {:ok, view, _html} = live(conn, "/chat?nickname=E2eFmt")
+      {:ok, view, _html} = live(chat_conn(conn, "E2eFmt"), "/chat")
       send_command(view, "/join #{chan}")
 
       msg = <<0x02>> <> <<0x03>> <> "4Bold red text" <> <<0x0F>>
@@ -1643,8 +1648,8 @@ defmodule RetroHexChatWeb.E2ETest do
     test "21.2 bold+color message renders correctly for receiver", %{conn: conn} do
       chan = unique_channel("e2e_fmtr")
       ensure_channel(chan)
-      {:ok, sender, _html} = live(conn, "/chat?nickname=E2eFmtS")
-      {:ok, receiver, _html} = live(new_conn(), "/chat?nickname=E2eFmtR")
+      {:ok, sender, _html} = live(chat_conn(conn, "E2eFmtS"), "/chat")
+      {:ok, receiver, _html} = live(chat_conn(new_conn(), "E2eFmtR"), "/chat")
 
       send_command(sender, "/join #{chan}")
       send_command(receiver, "/join #{chan}")
@@ -1659,7 +1664,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "21.3 formatting toolbar buttons are visible", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=E2eTbar")
+      {:ok, _view, html} = live(chat_conn(conn, "E2eTbar"), "/chat")
       assert html =~ ~s(data-testid="format-btn-bold")
       assert html =~ ~s(data-testid="format-btn-italic")
       assert html =~ ~s(data-testid="format-btn-underline")
@@ -1669,7 +1674,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "21.4 strip formatting toggle hides formatting", %{conn: conn} do
       chan = unique_channel("e2e_strip")
       ensure_channel(chan)
-      {:ok, view, _html} = live(conn, "/chat?nickname=E2eStrip")
+      {:ok, view, _html} = live(chat_conn(conn, "E2eStrip"), "/chat")
       send_command(view, "/join #{chan}")
 
       msg = <<0x02>> <> "Bold text" <> <<0x02>>
@@ -1685,7 +1690,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "21.5 format-only message is rejected", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=E2eFmtOnly")
+      {:ok, view, _html} = live(chat_conn(conn, "E2eFmtOnly"), "/chat")
 
       # Send message with only format codes (no visible text)
       msg = <<0x02>> <> <<0x02>>
@@ -1698,7 +1703,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "21.6 color picker has 16 swatches", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=E2eCpick")
+      {:ok, _view, html} = live(chat_conn(conn, "E2eCpick"), "/chat")
 
       for i <- 0..15 do
         assert html =~ ~s(data-color-code="#{i}")
@@ -1706,7 +1711,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "21.7 strip toggle button has active state after click", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=E2eStAct")
+      {:ok, view, _html} = live(chat_conn(conn, "E2eStAct"), "/chat")
       refute render(view) =~ "format-btn-active"
 
       render_click(view, "toggle_strip_formatting")

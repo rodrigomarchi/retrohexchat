@@ -21,10 +21,10 @@ defmodule RetroHexChatWeb.ChatLiveDblclickTest do
       nick1 = "DC1#{uid()}"
       nick2 = "DC2#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       join_channel(view1, channel)
 
-      {:ok, _view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, _view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view1, channel)
 
       # Simulate nicklist double-click event
@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.ChatLiveDblclickTest do
 
     test "nicklist_dblclick with self opens PM to self", %{conn: conn, channel: channel} do
       nick = "DCSf#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "nicklist_dblclick", %{"nick" => nick})
@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLiveDblclickTest do
       target_channel = "#dcjt-#{System.unique_integer([:positive])}"
       ensure_channel(target_channel)
 
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "channel_dblclick", %{"channel" => target_channel})
@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.ChatLiveDblclickTest do
       other = "#dcot-#{System.unique_integer([:positive])}"
       ensure_channel(other)
 
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
       join_channel(view, other)
 

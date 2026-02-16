@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.AboutE2ETest do
   describe "About Dialog E2E" do
     test "show_about renders AboutDialog with version and credits", %{conn: conn} do
       nick = "AB1#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "show_about", %{})
       assert html =~ "data-testid=\"about-dialog\""
@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.AboutE2ETest do
 
     test "close_dialog dismisses about", %{conn: conn} do
       nick = "AB2#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "show_about", %{})
       html = render_click(view, "close_dialog", %{"dialog" => "about"})

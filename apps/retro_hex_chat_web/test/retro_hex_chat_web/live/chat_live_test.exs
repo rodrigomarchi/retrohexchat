@@ -17,13 +17,13 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "mount" do
     test "valid nickname mounts successfully and joins #lobby", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=MountUser")
+      {:ok, _view, html} = live(chat_conn(conn, "MountUser"), "/chat")
       assert html =~ "MountUser"
       assert html =~ "#lobby"
     end
 
     test "invalid nickname redirects to /", %{conn: conn} do
-      result = live(conn, "/chat?nickname=!!invalid!!")
+      result = live(chat_conn(conn, "!!invalid!!"), "/chat")
       assert {:error, {:live_redirect, %{to: "/"}}} = result
     end
 
@@ -32,14 +32,14 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       alias RetroHexChat.Services.Queries
       {:ok, _} = Queries.insert_registered_nick("RegNotice", "pass123")
 
-      {:ok, _view, html} = live(conn, "/chat?nickname=RegNotice")
+      {:ok, _view, html} = live(chat_conn(conn, "RegNotice"), "/chat")
       assert html =~ "NickServ" or html =~ "registered"
     end
 
     test "already-identified nick skips NickServ timer", %{conn: conn} do
       NickServ.register("IdentNick", "pass123")
 
-      {:ok, _view, html} = live(conn, "/chat?nickname=IdentNick")
+      {:ok, _view, html} = live(chat_conn(conn, "IdentNick"), "/chat")
       refute html =~ "60 seconds"
     end
   end
@@ -48,14 +48,14 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "send_input" do
     test "empty input is a no-op", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=EmptyInput")
+      {:ok, view, _html} = live(chat_conn(conn, "EmptyInput"), "/chat")
       html = view |> element("form.chat-input-form") |> render_submit(%{"input" => ""})
       # Page should not crash, still shows the interface
       assert html =~ "EmptyInput" or html =~ "chat-input-form"
     end
 
     test "plain text in channel sends message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=Sender1")
+      {:ok, view, _html} = live(chat_conn(conn, "Sender1"), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Hello everyone"})
 
@@ -67,7 +67,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "/join command joins a new channel", %{conn: conn} do
       ensure_channel("#jointest")
-      {:ok, view, _html} = live(conn, "/chat?nickname=Joiner1")
+      {:ok, view, _html} = live(chat_conn(conn, "Joiner1"), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #jointest"})
       html = render(view)
@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "/part command leaves the current channel", %{conn: conn} do
       ensure_channel("#parttest")
-      {:ok, view, _html} = live(conn, "/chat?nickname=Parter1")
+      {:ok, view, _html} = live(chat_conn(conn, "Parter1"), "/chat")
 
       # Join a second channel first
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #parttest"})
@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "switch_channel" do
     test "clicking channel in treebar switches active channel", %{conn: conn} do
       ensure_channel("#switch_ch")
-      {:ok, view, _html} = live(conn, "/chat?nickname=Switcher")
+      {:ok, view, _html} = live(chat_conn(conn, "Switcher"), "/chat")
 
       # Join second channel
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #switch_ch"})
@@ -112,7 +112,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "search" do
     test "toggle_search shows and hides search bar", %{conn: conn} do
-      {:ok, view, html} = live(conn, "/chat?nickname=Searcher")
+      {:ok, view, html} = live(chat_conn(conn, "Searcher"), "/chat")
       refute html =~ "search-bar"
 
       html = render_click(view, "toggle_search")
@@ -123,7 +123,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "close_search clears search state", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SearchClose")
+      {:ok, view, _html} = live(chat_conn(conn, "SearchClose"), "/chat")
       render_click(view, "toggle_search")
       html = render_click(view, "close_search")
       refute html =~ "search-bar"
@@ -134,7 +134,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "context_menu" do
     test "nick_right_click shows context menu", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxUser")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxUser"), "/chat")
 
       html =
         render_click(view, "nick_right_click", %{"nick" => "someone", "x" => 100, "y" => 200})
@@ -143,14 +143,14 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "close_context_menu hides context menu", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxClose")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxClose"), "/chat")
       render_click(view, "nick_right_click", %{"nick" => "someone", "x" => 100, "y" => 200})
       html = render_click(view, "close_context_menu")
       refute html =~ "context-menu"
     end
 
     test "context_query opens PM conversation", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxQuery")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxQuery"), "/chat")
       render_click(view, "nick_right_click", %{"nick" => "pmtarget", "x" => 0, "y" => 0})
       html = render_click(view, "context_query", %{"nick" => "pmtarget"})
       assert html =~ "pmtarget"
@@ -161,7 +161,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "PubSub handlers" do
     test "new_message broadcast appears in stream", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PubUser1")
+      {:ok, view, _html} = live(chat_conn(conn, "PubUser1"), "/chat")
 
       msg = %{
         event: "new_message",
@@ -181,21 +181,21 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "user_joined broadcast shows system message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PubJoin")
+      {:ok, view, _html} = live(chat_conn(conn, "PubJoin"), "/chat")
       send(view.pid, {:user_joined, %{nickname: "newcomer"}})
       html = render(view)
       assert html =~ "newcomer" and html =~ "joined"
     end
 
     test "user_left broadcast shows system message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PubLeft")
+      {:ok, view, _html} = live(chat_conn(conn, "PubLeft"), "/chat")
       send(view.pid, {:user_left, %{nickname: "leaver", reason: nil}})
       html = render(view)
       assert html =~ "leaver" and html =~ "left"
     end
 
     test "force_disconnect redirects to /", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=ForceDisc")
+      {:ok, view, _html} = live(chat_conn(conn, "ForceDisc"), "/chat")
 
       result = render_click(view, "close_context_menu")
       assert is_binary(result)
@@ -207,7 +207,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "force_rename updates nickname", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=RenameMe")
+      {:ok, view, _html} = live(chat_conn(conn, "RenameMe"), "/chat")
       send(view.pid, {:force_rename, %{reason: "Identify timeout (60s)"}})
       html = render(view)
       assert html =~ "Guest_"
@@ -219,13 +219,13 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "menu and toolbar" do
     test "quit_chat redirects to /", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=Quitter")
+      {:ok, view, _html} = live(chat_conn(conn, "Quitter"), "/chat")
       result = render_click(view, "quit_chat")
       assert {:error, {:live_redirect, %{to: "/"}}} = result
     end
 
     test "toggle_treebar toggles visibility", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=TreeToggle")
+      {:ok, view, _html} = live(chat_conn(conn, "TreeToggle"), "/chat")
       # Treebar should be visible initially (has class="treebar")
       html = render(view)
       assert html =~ ~s(class="treebar")
@@ -238,7 +238,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "toggle_nicklist toggles visibility", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=NickToggle")
+      {:ok, view, _html} = live(chat_conn(conn, "NickToggle"), "/chat")
       html = render(view)
       assert html =~ "nick-" or html =~ "Users"
 
@@ -252,7 +252,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "about dialog" do
     test "show_about shows dialog, close_dialog hides it", %{conn: conn} do
-      {:ok, view, html} = live(conn, "/chat?nickname=AboutUser")
+      {:ok, view, html} = live(chat_conn(conn, "AboutUser"), "/chat")
       refute html =~ "About RetroHexChat"
 
       html = render_click(view, "show_about")
@@ -269,7 +269,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "nicklist integration" do
     test "after mount in isolated channel, nicklist shows the user as owner", %{conn: conn} do
       ensure_channel("#nick_iso1")
-      {:ok, view, _html} = live(conn, "/chat?nickname=NickOp")
+      {:ok, view, _html} = live(chat_conn(conn, "NickOp"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso1"})
       html = render(view)
       assert html =~ "nick-owner"
@@ -279,7 +279,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "after second user joins via PubSub, nicklist updates", %{conn: conn} do
       ensure_channel("#nick_iso2")
-      {:ok, view, _html} = live(conn, "/chat?nickname=NickHost")
+      {:ok, view, _html} = live(chat_conn(conn, "NickHost"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso2"})
 
       send(view.pid, {:user_joined, %{nickname: "NickGuest", role: :regular}})
@@ -291,7 +291,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "after user_left PubSub, user removed from nicklist", %{conn: conn} do
       ensure_channel("#nick_iso3")
-      {:ok, view, _html} = live(conn, "/chat?nickname=NickStay")
+      {:ok, view, _html} = live(chat_conn(conn, "NickStay"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso3"})
 
       send(view.pid, {:user_joined, %{nickname: "NickLeave", role: :regular}})
@@ -307,7 +307,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "statusbar shows correct user_count after joins", %{conn: conn} do
       ensure_channel("#nick_iso4")
-      {:ok, view, _html} = live(conn, "/chat?nickname=CountUser")
+      {:ok, view, _html} = live(chat_conn(conn, "CountUser"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso4"})
       html = render(view)
       assert html =~ "Users: 1"
@@ -319,7 +319,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "switching channel reloads nicklist for new channel", %{conn: conn} do
       ensure_channel("#nick_ch2")
-      {:ok, view, _html} = live(conn, "/chat?nickname=NickSwitch")
+      {:ok, view, _html} = live(chat_conn(conn, "NickSwitch"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_ch2"})
 
       # Switch back to #lobby
@@ -334,7 +334,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "switching to PM hides nicklist", %{conn: conn} do
       ensure_channel("#nick_iso5")
-      {:ok, view, _html} = live(conn, "/chat?nickname=NickPm")
+      {:ok, view, _html} = live(chat_conn(conn, "NickPm"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso5"})
       render_click(view, "nick_right_click", %{"nick" => "pmpal", "x" => 0, "y" => 0})
       html = render_click(view, "context_query", %{"nick" => "pmpal"})
@@ -343,7 +343,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "user_kicked removes user from nicklist", %{conn: conn} do
       ensure_channel("#nick_iso6")
-      {:ok, view, _html} = live(conn, "/chat?nickname=KickHost")
+      {:ok, view, _html} = live(chat_conn(conn, "KickHost"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso6"})
 
       send(view.pid, {:user_joined, %{nickname: "KickTarget", role: :regular}})
@@ -363,7 +363,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "presence cleanup on kick" do
     test "kicked user is untracked from Presence", %{conn: conn} do
       ensure_channel("#kick_pres")
-      {:ok, view, _html} = live(conn, "/chat?nickname=KickPres")
+      {:ok, view, _html} = live(chat_conn(conn, "KickPres"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #kick_pres"})
       Process.sleep(50)
 
@@ -385,7 +385,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "nick change broadcast" do
     test "/nick updates nickname locally", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OldNick1")
+      {:ok, view, _html} = live(chat_conn(conn, "OldNick1"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/nick NewNick1"})
       html = render(view)
       assert html =~ "NewNick1"
@@ -394,7 +394,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "/nick broadcasts system message to shared channels", %{conn: conn} do
       ensure_channel("#nick_bcast")
-      {:ok, view, _html} = live(conn, "/chat?nickname=NickBcast1")
+      {:ok, view, _html} = live(chat_conn(conn, "NickBcast1"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_bcast"})
 
       # Subscribe to the channel to observe broadcasts
@@ -407,7 +407,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "/nick updates Presence metadata", %{conn: conn} do
       ensure_channel("#nick_pres")
-      {:ok, view, _html} = live(conn, "/chat?nickname=PreNick")
+      {:ok, view, _html} = live(chat_conn(conn, "PreNick"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_pres"})
       Process.sleep(50)
 
@@ -424,7 +424,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "receiving nick_changed broadcast shows system message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=NickObserver")
+      {:ok, view, _html} = live(chat_conn(conn, "NickObserver"), "/chat")
 
       send(view.pid, {:nick_changed, %{old_nick: "Alice", new_nick: "Bob"}})
       html = render(view)
@@ -437,7 +437,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "mode_changed nicklist update" do
     test "mode_changed +o updates user role to operator in nicklist", %{conn: conn} do
       ensure_channel("#mode_op")
-      {:ok, view, _html} = live(conn, "/chat?nickname=ModeHost")
+      {:ok, view, _html} = live(chat_conn(conn, "ModeHost"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mode_op"})
 
       # Add a regular user
@@ -459,7 +459,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "mode_changed +v updates user role to voiced in nicklist", %{conn: conn} do
       ensure_channel("#mode_voice")
-      {:ok, view, _html} = live(conn, "/chat?nickname=VoiceHost")
+      {:ok, view, _html} = live(chat_conn(conn, "VoiceHost"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mode_voice"})
 
       send(view.pid, {:user_joined, %{nickname: "VoiceTarget", role: :regular}})
@@ -478,7 +478,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "mode_changed -o removes operator status in nicklist", %{conn: conn} do
       ensure_channel("#mode_deop")
-      {:ok, view, _html} = live(conn, "/chat?nickname=DeopHost")
+      {:ok, view, _html} = live(chat_conn(conn, "DeopHost"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mode_deop"})
 
       # Add an operator user
@@ -502,7 +502,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "PM unread tracking" do
     test "PM in non-active conversation marks as unread", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmUnread")
+      {:ok, view, _html} = live(chat_conn(conn, "PmUnread"), "/chat")
 
       # Open a PM conversation with Alice, then switch back to channel
       render_click(view, "nick_right_click", %{"nick" => "Alice", "x" => 0, "y" => 0})
@@ -532,7 +532,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "switch_pm clears unread for that PM", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmClr")
+      {:ok, view, _html} = live(chat_conn(conn, "PmClr"), "/chat")
 
       # Open PM with Bob, then switch back to channel
       render_click(view, "nick_right_click", %{"nick" => "Bob", "x" => 0, "y" => 0})
@@ -574,7 +574,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "unread indicators" do
     test "message in non-active channel marks channel as unread", %{conn: conn} do
       ensure_channel("#unread_ch")
-      {:ok, view, _html} = live(conn, "/chat?nickname=UnreadUser")
+      {:ok, view, _html} = live(chat_conn(conn, "UnreadUser"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #unread_ch"})
 
       # Switch back to #lobby — #unread_ch is now inactive
@@ -602,7 +602,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "switching to unread channel clears the indicator", %{conn: conn} do
       ensure_channel("#unread_clr")
-      {:ok, view, _html} = live(conn, "/chat?nickname=UnreadClr")
+      {:ok, view, _html} = live(chat_conn(conn, "UnreadClr"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #unread_clr"})
 
       # Switch to #lobby
@@ -637,7 +637,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "message in active channel does NOT mark as unread", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=UnreadActive")
+      {:ok, view, _html} = live(chat_conn(conn, "UnreadActive"), "/chat")
 
       msg = %{
         event: "new_message",
@@ -661,7 +661,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "presence tracking" do
     test "after mount, user is tracked in presence for #lobby", %{conn: conn} do
-      {:ok, _view, _html} = live(conn, "/chat?nickname=PresUser")
+      {:ok, _view, _html} = live(chat_conn(conn, "PresUser"), "/chat")
       Process.sleep(50)
 
       users = Tracker.list_users("channel:#lobby")
@@ -671,7 +671,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "after join second channel, user tracked in both", %{conn: conn} do
       ensure_channel("#pres_ch2")
-      {:ok, view, _html} = live(conn, "/chat?nickname=PresMulti")
+      {:ok, view, _html} = live(chat_conn(conn, "PresMulti"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #pres_ch2"})
       Process.sleep(50)
 
@@ -684,7 +684,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "after part channel, user untracked from that channel", %{conn: conn} do
       ensure_channel("#pres_part")
-      {:ok, view, _html} = live(conn, "/chat?nickname=PresPart")
+      {:ok, view, _html} = live(chat_conn(conn, "PresPart"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #pres_part"})
       Process.sleep(50)
 
@@ -704,7 +704,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "moderation enforcement" do
     test "in unmoderated channel, message is sent normally", %{conn: conn} do
       ensure_channel("#mod_normal")
-      {:ok, view, _html} = live(conn, "/chat?nickname=ModUser1")
+      {:ok, view, _html} = live(chat_conn(conn, "ModUser1"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mod_normal"})
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Hello world"})
@@ -715,7 +715,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "in +m channel, operator can send message", %{conn: conn} do
       ensure_channel("#mod_op")
-      {:ok, view, _html} = live(conn, "/chat?nickname=ModOp")
+      {:ok, view, _html} = live(chat_conn(conn, "ModOp"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mod_op"})
 
       # First user is operator — set +m
@@ -734,7 +734,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       Server.set_mode("#mod_reg", "Founder", "+m")
 
       # Second user joins as regular
-      {:ok, view, _html} = live(conn, "/chat?nickname=ModRegular")
+      {:ok, view, _html} = live(chat_conn(conn, "ModRegular"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mod_reg"})
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "I cannot speak"})
@@ -749,7 +749,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       Server.join("#mod_voiced", "Founder2", nil)
       Server.set_mode("#mod_voiced", "Founder2", "+m")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=VoicedUser")
+      {:ok, view, _html} = live(chat_conn(conn, "VoicedUser"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mod_voiced"})
 
       # Give voice
@@ -766,25 +766,25 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "autocomplete" do
     test "autocomplete dropdown hidden by default", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=PalUser")
+      {:ok, _view, html} = live(chat_conn(conn, "PalUser"), "/chat")
       refute html =~ "autocomplete-dropdown"
     end
 
     test "autocomplete_query shows dropdown", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PalOpen")
+      {:ok, view, _html} = live(chat_conn(conn, "PalOpen"), "/chat")
       html = render_click(view, "autocomplete_query", %{"type" => "command", "partial" => ""})
       assert html =~ "autocomplete-dropdown"
     end
 
     test "autocomplete_close hides dropdown", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PalClose")
+      {:ok, view, _html} = live(chat_conn(conn, "PalClose"), "/chat")
       render_click(view, "autocomplete_query", %{"type" => "command", "partial" => ""})
       html = render_click(view, "autocomplete_close")
       refute html =~ "autocomplete-dropdown"
     end
 
     test "autocomplete_select inserts command prefix into input", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PalSelect")
+      {:ok, view, _html} = live(chat_conn(conn, "PalSelect"), "/chat")
       render_click(view, "autocomplete_query", %{"type" => "command", "partial" => ""})
       html = render_click(view, "autocomplete_select", %{"type" => "command", "value" => "join"})
       assert html =~ "/join "
@@ -792,7 +792,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "autocomplete_query with partial filters the list", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PalFilter")
+      {:ok, view, _html} = live(chat_conn(conn, "PalFilter"), "/chat")
       html = render_click(view, "autocomplete_query", %{"type" => "command", "partial" => "jo"})
       assert html =~ "autocomplete-dropdown"
     end
@@ -800,13 +800,13 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "keyboard shortcuts" do
     test "history_navigate up with empty history does not crash", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HistUser")
+      {:ok, view, _html} = live(chat_conn(conn, "HistUser"), "/chat")
       html = render_click(view, "history_navigate", %{"direction" => "up"})
       assert html =~ "chat-input-form"
     end
 
     test "history_navigate returns previous command after sending", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HistNav")
+      {:ok, view, _html} = live(chat_conn(conn, "HistNav"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Hello world"})
       html = render_click(view, "history_navigate", %{"direction" => "up"})
       assert html =~ "Hello world"
@@ -814,7 +814,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "tab_complete with matching nick suggests completion", %{conn: conn} do
       ensure_channel("#tab_ch")
-      {:ok, view, _html} = live(conn, "/chat?nickname=TabUser")
+      {:ok, view, _html} = live(chat_conn(conn, "TabUser"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #tab_ch"})
 
       send(view.pid, {:user_joined, %{nickname: "TabTarget", role: :regular}})
@@ -825,7 +825,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "tab_complete with no match does not alter input", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=TabNone")
+      {:ok, view, _html} = live(chat_conn(conn, "TabNone"), "/chat")
       html = render_click(view, "tab_complete", %{"partial" => "zzz_nomatch"})
       assert html =~ "chat-input-form"
     end
@@ -835,13 +835,13 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "trivial handler fixes" do
     test "settings event does not crash", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SettingsUser")
+      {:ok, view, _html} = live(chat_conn(conn, "SettingsUser"), "/chat")
       html = render_click(view, "settings")
       assert html =~ "chat-input-form"
     end
 
     test "open_search shows search bar", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OpenSearchUser")
+      {:ok, view, _html} = live(chat_conn(conn, "OpenSearchUser"), "/chat")
       html = render_click(view, "open_search")
       assert html =~ "search-bar"
     end
@@ -856,7 +856,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       Server.join("#pw_ch", "PwFounder", nil)
       Server.set_mode("#pw_ch", "PwFounder", "+k", ["secret123"])
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=PwUser")
+      {:ok, view, _html} = live(chat_conn(conn, "PwUser"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -871,7 +871,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       Server.join("#pw_ch2", "PwFounder2", nil)
       Server.set_mode("#pw_ch2", "PwFounder2", "+k", ["correctpass"])
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=PwFail")
+      {:ok, view, _html} = live(chat_conn(conn, "PwFail"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -890,7 +890,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       Server.join("#ban_join", "BanOp", nil)
       Server.ban("#ban_join", "BanOp", "BanVictim", "not welcome")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=BanVictim")
+      {:ok, view, _html} = live(chat_conn(conn, "BanVictim"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -905,7 +905,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "PM send error handling" do
     test "PM send failure shows error message to user", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmErr1")
+      {:ok, view, _html} = live(chat_conn(conn, "PmErr1"), "/chat")
 
       # Open PM conversation with someone
       render_click(view, "nick_right_click", %{"nick" => "PmTarget", "x" => 0, "y" => 0})
@@ -919,7 +919,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "PM send via /msg with missing message shows error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmErr2")
+      {:ok, view, _html} = live(chat_conn(conn, "PmErr2"), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/msg PmTarget2"})
       Process.sleep(50)
@@ -938,7 +938,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       Server.set_mode("#act_mod", "ActFounder", "+m")
 
       # Second user joins as regular
-      {:ok, view, _html} = live(conn, "/chat?nickname=ActRegular")
+      {:ok, view, _html} = live(chat_conn(conn, "ActRegular"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #act_mod"})
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/me waves"})
@@ -956,7 +956,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       # Create channel with someone else as owner (first joiner)
       Server.join("#ctx_kick_err", "CtxFounder", nil)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxNonOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxNonOp"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -972,7 +972,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       ensure_channel("#ctx_ban_err")
       Server.join("#ctx_ban_err", "BanFounder", nil)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=BanNonOp")
+      {:ok, view, _html} = live(chat_conn(conn, "BanNonOp"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #ctx_ban_err"})
 
       render_click(view, "nick_right_click", %{"nick" => "BanFounder", "x" => 0, "y" => 0})
@@ -986,7 +986,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "pagination" do
     test "load_more is no-op when already loading", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=LoadNoop")
+      {:ok, view, _html} = live(chat_conn(conn, "LoadNoop"), "/chat")
       # First load_more should be no-op since there's no oldest_message_id set
       html = render_click(view, "load_more")
       assert html =~ "chat-input-form"
@@ -994,7 +994,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "load_more appends older messages when available", %{conn: conn} do
       ensure_channel("#load_more_ch")
-      {:ok, view, _html} = live(conn, "/chat?nickname=LoadMore")
+      {:ok, view, _html} = live(chat_conn(conn, "LoadMore"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -1025,7 +1025,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "window keyboard shortcuts" do
     test "Ctrl+F opens search", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtrlF")
+      {:ok, view, _html} = live(chat_conn(conn, "CtrlF"), "/chat")
 
       html =
         render_click(view, "window_keydown", %{
@@ -1038,20 +1038,20 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "Escape closes search", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=EscSearch")
+      {:ok, view, _html} = live(chat_conn(conn, "EscSearch"), "/chat")
       render_click(view, "toggle_search")
       html = render_click(view, "window_keydown", %{"key" => "Escape"})
       refute html =~ "search-bar"
     end
 
     test "Escape without search open is no-op", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=EscNoop")
+      {:ok, view, _html} = live(chat_conn(conn, "EscNoop"), "/chat")
       html = render_click(view, "window_keydown", %{"key" => "Escape"})
       assert html =~ "chat-input-form"
     end
 
     test "unhandled key is no-op", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=KeyNoop")
+      {:ok, view, _html} = live(chat_conn(conn, "KeyNoop"), "/chat")
       html = render_click(view, "window_keydown", %{"key" => "a"})
       assert html =~ "chat-input-form"
     end
@@ -1062,7 +1062,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "search functionality" do
     test "search_input returns matching messages", %{conn: conn} do
       ensure_channel("#search_fn")
-      {:ok, view, _html} = live(conn, "/chat?nickname=SearchFn")
+      {:ok, view, _html} = live(chat_conn(conn, "SearchFn"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #search_fn"})
 
       # Send some messages to create searchable content
@@ -1076,7 +1076,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "search empty query clears results but keeps bar open", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SearchEmpty")
+      {:ok, view, _html} = live(chat_conn(conn, "SearchEmpty"), "/chat")
       render_click(view, "toggle_search")
       html = render_change(view, "search_input", %{"query" => ""})
       assert html =~ "search-bar"
@@ -1084,7 +1084,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "search_next cycles through results", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SearchNext")
+      {:ok, view, _html} = live(chat_conn(conn, "SearchNext"), "/chat")
       render_click(view, "toggle_search")
       # Even without results, search_next should not crash
       html = render_click(view, "search_next")
@@ -1092,7 +1092,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "search_prev cycles backwards", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SearchPrev")
+      {:ok, view, _html} = live(chat_conn(conn, "SearchPrev"), "/chat")
       render_click(view, "toggle_search")
       # Even without results, search_prev should not crash
       html = render_click(view, "search_prev")
@@ -1104,7 +1104,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "context_whois" do
     test "context_whois closes context menu and does not crash", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=WhoisUser")
+      {:ok, view, _html} = live(chat_conn(conn, "WhoisUser"), "/chat")
       render_click(view, "nick_right_click", %{"nick" => "WhoisTarget", "x" => 0, "y" => 0})
       html = render_click(view, "context_whois", %{"nick" => "WhoisTarget"})
       # Context menu should be closed
@@ -1119,7 +1119,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "context_op" do
     test "operator can grant +o via context menu", %{conn: conn} do
       ensure_channel("#ctx_op_ch")
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxOpGiver")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxOpGiver"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #ctx_op_ch"})
 
       # Add a regular user
@@ -1137,7 +1137,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       ensure_channel("#ctx_op_err")
       Server.join("#ctx_op_err", "CtxOpFounder", nil)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxOpNoPerms")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxOpNoPerms"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #ctx_op_err"})
 
       render_click(view, "nick_right_click", %{"nick" => "CtxOpFounder", "x" => 0, "y" => 0})
@@ -1152,7 +1152,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "context_voice" do
     test "operator can grant +v via context menu", %{conn: conn} do
       ensure_channel("#ctx_v_ch")
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxVGiver")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxVGiver"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #ctx_v_ch"})
 
       send(view.pid, {:user_joined, %{nickname: "CtxVRecv", role: :regular}})
@@ -1167,7 +1167,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       ensure_channel("#ctx_v_err")
       Server.join("#ctx_v_err", "CtxVFounder", nil)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CtxVNoPerms")
+      {:ok, view, _html} = live(chat_conn(conn, "CtxVNoPerms"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #ctx_v_err"})
 
       render_click(view, "nick_right_click", %{"nick" => "CtxVFounder", "x" => 0, "y" => 0})
@@ -1181,7 +1181,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "disconnect toolbar" do
     test "disconnect cleans up and redirects to /", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=DiscUser")
+      {:ok, view, _html} = live(chat_conn(conn, "DiscUser"), "/chat")
       result = render_click(view, "disconnect")
       assert {:error, {:live_redirect, %{to: "/"}}} = result
     end
@@ -1191,7 +1191,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "channel_list navigation" do
     test "channel_list navigates to /channels", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=ChanListUser")
+      {:ok, view, _html} = live(chat_conn(conn, "ChanListUser"), "/chat")
       result = render_click(view, "channel_list")
       assert {:error, {:live_redirect, %{to: "/channels"}}} = result
     end
@@ -1201,7 +1201,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "user_banned broadcast" do
     test "user_banned shows banned message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=BanWatch")
+      {:ok, view, _html} = live(chat_conn(conn, "BanWatch"), "/chat")
 
       send(view.pid, {:user_banned, %{operator: "Admin", target: "BadUser", reason: "spam"}})
       html = render(view)
@@ -1212,7 +1212,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "user_banned without reason omits reason text", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=BanNoReason")
+      {:ok, view, _html} = live(chat_conn(conn, "BanNoReason"), "/chat")
 
       send(view.pid, {:user_banned, %{operator: "Mod", target: "Spammer", reason: nil}})
       html = render(view)
@@ -1226,7 +1226,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "topic_changed broadcast" do
     test "topic_changed shows topic change message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=TopicWatch")
+      {:ok, view, _html} = live(chat_conn(conn, "TopicWatch"), "/chat")
 
       send(view.pid, {:topic_changed, %{nickname: "TopicSetter", topic: "New Topic Here"}})
       html = render(view)
@@ -1240,7 +1240,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "mode_changed without params" do
     test "mode_changed without params shows mode message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=ModeNoParams")
+      {:ok, view, _html} = live(chat_conn(conn, "ModeNoParams"), "/chat")
 
       send(view.pid, {:mode_changed, %{nickname: "ModeOp", mode_string: "+m"}})
       html = render(view)
@@ -1254,7 +1254,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "PM to self" do
     test "sending /msg to own nick does not crash", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SelfPm")
+      {:ok, view, _html} = live(chat_conn(conn, "SelfPm"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -1272,7 +1272,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "tab complete multiple matches" do
     test "partial matching multiple nicks does not crash", %{conn: conn} do
       ensure_channel("#tab_multi")
-      {:ok, view, _html} = live(conn, "/chat?nickname=TabMulti")
+      {:ok, view, _html} = live(chat_conn(conn, "TabMulti"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #tab_multi"})
 
       # Add two users with same prefix
@@ -1289,14 +1289,14 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "search with special characters" do
     test "search_input with regex metacharacters does not crash", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SearchRegex")
+      {:ok, view, _html} = live(chat_conn(conn, "SearchRegex"), "/chat")
       render_click(view, "toggle_search")
       html = render_click(view, "search_input", %{"query" => "[test("})
       assert html =~ "search-bar" or html =~ "chat-input-form"
     end
 
     test "search_input with backslash does not crash", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SearchSlash")
+      {:ok, view, _html} = live(chat_conn(conn, "SearchSlash"), "/chat")
       render_click(view, "toggle_search")
       html = render_click(view, "search_input", %{"query" => "test\\value"})
       assert html =~ "search-bar" or html =~ "chat-input-form"
@@ -1308,7 +1308,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "/topic command via LiveView" do
     test "/topic with no args shows current topic", %{conn: conn} do
       ensure_channel("#topic_view")
-      {:ok, view, _html} = live(conn, "/chat?nickname=TopicViewer")
+      {:ok, view, _html} = live(chat_conn(conn, "TopicViewer"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #topic_view"})
 
       # Set a topic first
@@ -1321,7 +1321,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "/topic with no args and empty topic shows 'No topic set'", %{conn: conn} do
       ensure_channel("#topic_empty")
-      {:ok, view, _html} = live(conn, "/chat?nickname=TopicEmpty")
+      {:ok, view, _html} = live(chat_conn(conn, "TopicEmpty"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #topic_empty"})
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/topic"})
@@ -1331,7 +1331,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "/topic with text sets the topic", %{conn: conn} do
       ensure_channel("#topic_set")
-      {:ok, view, _html} = live(conn, "/chat?nickname=TopicSetter")
+      {:ok, view, _html} = live(chat_conn(conn, "TopicSetter"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #topic_set"})
 
       view
@@ -1348,7 +1348,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       Server.join("#topic_lock", "TopicLockOp", nil)
       Server.set_mode("#topic_lock", "TopicLockOp", "+t")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=TopicLockReg")
+      {:ok, view, _html} = live(chat_conn(conn, "TopicLockReg"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -1367,7 +1367,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "/away command via LiveView" do
     test "/away with message sets away status", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AwayUser")
+      {:ok, view, _html} = live(chat_conn(conn, "AwayUser"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -1379,7 +1379,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "/away without message clears away status", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AwayClr")
+      {:ok, view, _html} = live(chat_conn(conn, "AwayClr"), "/chat")
 
       # First set away
       view
@@ -1400,7 +1400,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "/clear command via LiveView" do
     test "/clear empties the chat messages stream", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=ClearUser")
+      {:ok, view, _html} = live(chat_conn(conn, "ClearUser"), "/chat")
 
       # Send some messages first
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Message 1"})
@@ -1419,7 +1419,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "/whois command via LiveView" do
     test "/whois opens whois dialog", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=WhoisCmd")
+      {:ok, view, _html} = live(chat_conn(conn, "WhoisCmd"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -1435,7 +1435,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "/help command via LiveView" do
     test "/help shows available commands", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUser"), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/help"})
       html = render(view)
@@ -1443,7 +1443,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "/help join shows specific command help", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpJoin")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpJoin"), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/help join"})
       html = render(view)
@@ -1455,7 +1455,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "/list command via LiveView" do
     test "/list navigates to channel list", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=ListUser")
+      {:ok, view, _html} = live(chat_conn(conn, "ListUser"), "/chat")
 
       result =
         view |> element("form.chat-input-form") |> render_submit(%{"input" => "/list"})
@@ -1468,14 +1468,14 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "handle_info catch-all" do
     test "unknown message does not crash the LiveView", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CatchAll")
+      {:ok, view, _html} = live(chat_conn(conn, "CatchAll"), "/chat")
       send(view.pid, {:completely_unknown_event, %{data: "test"}})
       html = render(view)
       assert html =~ "chat-input-form"
     end
 
     test "unknown map message does not crash the LiveView", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CatchAll2")
+      {:ok, view, _html} = live(chat_conn(conn, "CatchAll2"), "/chat")
       send(view.pid, %{event: "unknown_event", payload: %{foo: "bar"}})
       html = render(view)
       assert html =~ "chat-input-form"
@@ -1488,7 +1488,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     test "opening PM via context_query shows conversation in treebar Private section", %{
       conn: conn
     } do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmTree")
+      {:ok, view, _html} = live(chat_conn(conn, "PmTree"), "/chat")
 
       render_click(view, "nick_right_click", %{"nick" => "TreeTarget", "x" => 0, "y" => 0})
       html = render_click(view, "context_query", %{"nick" => "TreeTarget"})
@@ -1501,7 +1501,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "switching to PM hides channel content and shows PM view", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmSwitch")
+      {:ok, view, _html} = live(chat_conn(conn, "PmSwitch"), "/chat")
 
       # Open PM conversation
       render_click(view, "nick_right_click", %{"nick" => "PmPal", "x" => 0, "y" => 0})
@@ -1526,7 +1526,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "switching from PM back to channel restores channel view", %{conn: conn} do
       ensure_channel("#pm_back")
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmBack")
+      {:ok, view, _html} = live(chat_conn(conn, "PmBack"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #pm_back"})
 
       # Open PM conversation
@@ -1554,7 +1554,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "current user being kicked" do
     test "removes channel and switches to another", %{conn: conn} do
       ensure_channel("#kick_self")
-      {:ok, view, _html} = live(conn, "/chat?nickname=KickSelf")
+      {:ok, view, _html} = live(chat_conn(conn, "KickSelf"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #kick_self"})
       html = render(view)
       assert html =~ "#kick_self"
@@ -1576,7 +1576,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "PM message arriving while viewing active PM" do
     test "streams message directly into chat", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PmActive")
+      {:ok, view, _html} = live(chat_conn(conn, "PmActive"), "/chat")
 
       # Open PM conversation and stay in it
       render_click(view, "nick_right_click", %{"nick" => "PmSender", "x" => 0, "y" => 0})
@@ -1612,7 +1612,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "context_ban success" do
     test "operator banning removes user from nicklist", %{conn: conn} do
       ensure_channel("#ctx_ban_ok")
-      {:ok, view, _html} = live(conn, "/chat?nickname=BanOper")
+      {:ok, view, _html} = live(chat_conn(conn, "BanOper"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #ctx_ban_ok"})
 
       # Add a regular user to nicklist
@@ -1637,7 +1637,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "user_kicked reason display" do
     test "user_kicked with reason shows reason in system message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=KickReason")
+      {:ok, view, _html} = live(chat_conn(conn, "KickReason"), "/chat")
 
       send(
         view.pid,
@@ -1651,7 +1651,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "user_kicked without reason omits reason in system message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=KickNoReason")
+      {:ok, view, _html} = live(chat_conn(conn, "KickNoReason"), "/chat")
 
       send(
         view.pid,
@@ -1669,7 +1669,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "history_navigate multiple steps" do
     test "navigate up 3x then down 1x shows correct messages", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HistMulti")
+      {:ok, view, _html} = live(chat_conn(conn, "HistMulti"), "/chat")
 
       # Send 3 messages to populate history
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "First message"})
@@ -1698,7 +1698,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "scroll_to_bottom" do
     test "scroll_to_bottom clears new messages indicator", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=ScrollBot")
+      {:ok, view, _html} = live(chat_conn(conn, "ScrollBot"), "/chat")
       html = render_click(view, "scroll_to_bottom")
       assert html =~ "chat-input-form"
     end
@@ -1709,7 +1709,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "search navigation with results" do
     test "search_next cycles through results when results exist", %{conn: conn} do
       ensure_channel("#search_nav")
-      {:ok, view, _html} = live(conn, "/chat?nickname=SearchNav")
+      {:ok, view, _html} = live(chat_conn(conn, "SearchNav"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #search_nav"})
 
       # Create searchable messages
@@ -1734,7 +1734,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "tab complete single match" do
     test "single matching nick sends tab_matches push_event", %{conn: conn} do
       ensure_channel("#tab_single")
-      {:ok, view, _html} = live(conn, "/chat?nickname=TabSingle")
+      {:ok, view, _html} = live(chat_conn(conn, "TabSingle"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #tab_single"})
 
       # Add a user with unique prefix
@@ -1755,7 +1755,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "mode_changed -v" do
     test "-v removes voiced role and resets to regular", %{conn: conn} do
       ensure_channel("#mode_devoice")
-      {:ok, view, _html} = live(conn, "/chat?nickname=DevoiceHost")
+      {:ok, view, _html} = live(chat_conn(conn, "DevoiceHost"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -1782,7 +1782,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "/quit command" do
     test "/quit redirects to connect page", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=QuitUser")
+      {:ok, view, _html} = live(chat_conn(conn, "QuitUser"), "/chat")
 
       result =
         view |> element("form.chat-input-form") |> render_submit(%{"input" => "/quit bye"})
@@ -1795,13 +1795,13 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "history_navigate edge cases" do
     test "unknown direction is no-op", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HistUnk")
+      {:ok, view, _html} = live(chat_conn(conn, "HistUnk"), "/chat")
       html = render_click(view, "history_navigate", %{"direction" => "left"})
       assert html =~ "chat-input-form"
     end
 
     test "navigate down past beginning clears input", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HistDown")
+      {:ok, view, _html} = live(chat_conn(conn, "HistDown"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Hello"})
 
       # Navigate up then down past beginning
@@ -1817,7 +1817,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "/me action message type" do
     test "/me sends action type message in channel", %{conn: conn} do
       ensure_channel("#me_action")
-      {:ok, view, _html} = live(conn, "/chat?nickname=MeAction")
+      {:ok, view, _html} = live(chat_conn(conn, "MeAction"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #me_action"})
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/me dances"})
@@ -1832,7 +1832,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "part last channel" do
     test "parting only channel clears messages and shows empty state", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PartLast")
+      {:ok, view, _html} = live(chat_conn(conn, "PartLast"), "/chat")
 
       # Part #lobby (the only channel)
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/part"})
@@ -1845,7 +1845,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "/cs and /ns service message dispatch" do
     test "/cs help shows ChanServ service message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CsHelp")
+      {:ok, view, _html} = live(chat_conn(conn, "CsHelp"), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/cs help"})
       html = render(view)
@@ -1853,7 +1853,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "/ns help shows NickServ service message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=NsHelp")
+      {:ok, view, _html} = live(chat_conn(conn, "NsHelp"), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ns help"})
       html = render(view)
@@ -1866,7 +1866,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "/mode command via UI action" do
     test "/mode +m sets moderated mode via dispatch", %{conn: conn} do
       ensure_channel("#mode_cmd")
-      {:ok, view, _html} = live(conn, "/chat?nickname=ModeCmd")
+      {:ok, view, _html} = live(chat_conn(conn, "ModeCmd"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mode_cmd"})
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/mode +m"})
@@ -1882,7 +1882,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "/kick command via UI action" do
     test "/kick non-member shows error", %{conn: conn} do
       ensure_channel("#kick_cmd")
-      {:ok, view, _html} = live(conn, "/chat?nickname=KickCmd")
+      {:ok, view, _html} = live(chat_conn(conn, "KickCmd"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #kick_cmd"})
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/kick Ghost"})
@@ -1896,7 +1896,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "/ban command via UI action" do
     test "/ban via dispatch works for operator", %{conn: conn} do
       ensure_channel("#ban_cmd")
-      {:ok, view, _html} = live(conn, "/chat?nickname=BanCmd")
+      {:ok, view, _html} = live(chat_conn(conn, "BanCmd"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #ban_cmd"})
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ban Troll"})
@@ -1907,12 +1907,19 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
   end
 
-  # ── R6: join from params ────────────────────────────────────
+  # ── R6: join from session ────────────────────────────────────
 
-  describe "join from params" do
-    test "join param in URL joins additional channel on mount", %{conn: conn} do
+  describe "join from session" do
+    test "join_channel in session joins additional channel on mount", %{conn: conn} do
       ensure_channel("#param_join")
-      {:ok, _view, html} = live(conn, "/chat?nickname=ParamJoin&join=%23param_join")
+
+      join_conn =
+        Phoenix.ConnTest.init_test_session(conn, %{
+          "chat_nickname" => "ParamJoin",
+          "chat_join_channel" => "#param_join"
+        })
+
+      {:ok, _view, html} = live(join_conn, "/chat")
       assert html =~ "#param_join"
     end
   end
@@ -1922,7 +1929,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "inline formatting rendering" do
     test "bold control codes render irc-bold span", %{conn: conn} do
       ensure_channel("#fmt_bold")
-      {:ok, view, _html} = live(conn, "/chat?nickname=FmtBold")
+      {:ok, view, _html} = live(chat_conn(conn, "FmtBold"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #fmt_bold"})
 
       # Send message with bold control codes
@@ -1937,7 +1944,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "italic control codes render irc-italic span", %{conn: conn} do
       ensure_channel("#fmt_italic")
-      {:ok, view, _html} = live(conn, "/chat?nickname=FmtItalic")
+      {:ok, view, _html} = live(chat_conn(conn, "FmtItalic"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #fmt_italic"})
 
       italic_msg = <<0x1D>> <> "styled" <> <<0x1D>>
@@ -1951,7 +1958,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "underline control codes render irc-underline span", %{conn: conn} do
       ensure_channel("#fmt_uline")
-      {:ok, view, _html} = live(conn, "/chat?nickname=FmtUline")
+      {:ok, view, _html} = live(chat_conn(conn, "FmtUline"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #fmt_uline"})
 
       underline_msg = <<0x1F>> <> "link" <> <<0x1F>>
@@ -1965,7 +1972,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "system messages are NOT parsed for format codes", %{conn: conn} do
       ensure_channel("#fmt_sys")
-      {:ok, view, _html} = live(conn, "/chat?nickname=FmtSys")
+      {:ok, view, _html} = live(chat_conn(conn, "FmtSys"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #fmt_sys"})
 
       # System messages (like join notifications) should not contain irc-* spans
@@ -1976,7 +1983,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "service messages are NOT parsed for format codes", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=FmtSvc")
+      {:ok, view, _html} = live(chat_conn(conn, "FmtSvc"), "/chat")
 
       # NickServ messages are service type — trigger one
       view
@@ -1990,7 +1997,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "error messages are NOT parsed for format codes", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=FmtErr")
+      {:ok, view, _html} = live(chat_conn(conn, "FmtErr"), "/chat")
 
       # Trigger an error message (e.g., invalid command)
       view
@@ -2009,7 +2016,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "color code rendering" do
     test "foreground color renders irc-fg span", %{conn: conn} do
       ensure_channel("#clr_fg")
-      {:ok, view, _html} = live(conn, "/chat?nickname=ClrFg")
+      {:ok, view, _html} = live(chat_conn(conn, "ClrFg"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #clr_fg"})
 
       # Color code: \x03 4 = red foreground
@@ -2024,7 +2031,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "foreground + background color renders both irc-fg and irc-bg spans", %{conn: conn} do
       ensure_channel("#clr_fgbg")
-      {:ok, view, _html} = live(conn, "/chat?nickname=ClrFgBg")
+      {:ok, view, _html} = live(chat_conn(conn, "ClrFgBg"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #clr_fgbg"})
 
       # Color code: \x03 4,1 = red fg, black bg
@@ -2040,7 +2047,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "combined bold + color renders both irc-bold and irc-fg classes", %{conn: conn} do
       ensure_channel("#clr_combo")
-      {:ok, view, _html} = live(conn, "/chat?nickname=ClrCombo")
+      {:ok, view, _html} = live(chat_conn(conn, "ClrCombo"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #clr_combo"})
 
       # Bold + color 4 (red)
@@ -2059,7 +2066,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "formatting toolbar" do
     test "toolbar renders B, I, U, and Color buttons", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=TbRender")
+      {:ok, _view, html} = live(chat_conn(conn, "TbRender"), "/chat")
       assert html =~ ~s(data-testid="format-btn-bold")
       assert html =~ ~s(data-testid="format-btn-italic")
       assert html =~ ~s(data-testid="format-btn-underline")
@@ -2067,7 +2074,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "toolbar has correct 98.css button styling", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=TbStyle")
+      {:ok, _view, html} = live(chat_conn(conn, "TbStyle"), "/chat")
       assert html =~ "formatting-toolbar"
       assert html =~ "format-btn"
     end
@@ -2077,7 +2084,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "color picker dropdown" do
     test "color picker contains 16 color swatches", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=CpSwatches")
+      {:ok, _view, html} = live(chat_conn(conn, "CpSwatches"), "/chat")
 
       for i <- 0..15 do
         assert html =~ ~s(data-color-code="#{i}")
@@ -2085,7 +2092,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "color picker swatches are in a grid container", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=CpGrid")
+      {:ok, _view, html} = live(chat_conn(conn, "CpGrid"), "/chat")
       assert html =~ "format-color-dropdown"
       assert html =~ "color-swatch"
     end
@@ -2096,7 +2103,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "strip formatting toggle" do
     test "default: formatted messages render with irc-* spans", %{conn: conn} do
       ensure_channel("#strip_dflt")
-      {:ok, view, _html} = live(conn, "/chat?nickname=StripDflt")
+      {:ok, view, _html} = live(chat_conn(conn, "StripDflt"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #strip_dflt"})
 
       bold_msg = <<0x02>> <> "Bold text" <> <<0x02>>
@@ -2110,7 +2117,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "after toggle: formatted messages render as plain text", %{conn: conn} do
       ensure_channel("#strip_on")
-      {:ok, view, _html} = live(conn, "/chat?nickname=StripOn")
+      {:ok, view, _html} = live(chat_conn(conn, "StripOn"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #strip_on"})
 
       bold_msg = <<0x02>> <> "Bold text" <> <<0x02>>
@@ -2127,7 +2134,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "toggle event flips preference back", %{conn: conn} do
       ensure_channel("#strip_flip")
-      {:ok, view, _html} = live(conn, "/chat?nickname=StripFlip")
+      {:ok, view, _html} = live(chat_conn(conn, "StripFlip"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #strip_flip"})
 
       bold_msg = <<0x02>> <> "Toggled" <> <<0x02>>
@@ -2147,7 +2154,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "strip toggle UI control is visible", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=StripUI")
+      {:ok, _view, html} = live(chat_conn(conn, "StripUI"), "/chat")
       assert html =~ "data-testid=\"strip-formatting-toggle\""
     end
   end
@@ -2157,8 +2164,8 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "PM formatting" do
     test "formatted PM renders with irc-* spans", %{conn: conn} do
       # Set up two users
-      {:ok, sender, _html} = live(conn, "/chat?nickname=PmFmtSend")
-      {:ok, receiver, _html} = live(build_conn(), "/chat?nickname=PmFmtRecv")
+      {:ok, sender, _html} = live(chat_conn(conn, "PmFmtSend"), "/chat")
+      {:ok, receiver, _html} = live(chat_conn(build_conn(), "PmFmtRecv"), "/chat")
 
       # Sender opens PM to receiver
       sender
@@ -2176,8 +2183,8 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "strip formatting applies to PMs", %{conn: conn} do
-      {:ok, sender, _html} = live(conn, "/chat?nickname=PmStripS")
-      {:ok, receiver, _html} = live(build_conn(), "/chat?nickname=PmStripR")
+      {:ok, sender, _html} = live(chat_conn(conn, "PmStripS"), "/chat")
+      {:ok, receiver, _html} = live(chat_conn(build_conn(), "PmStripR"), "/chat")
 
       sender
       |> element("form.chat-input-form")
@@ -2200,7 +2207,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "help dialog" do
     test "menu opens help dialog", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser1")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUser1"), "/chat")
 
       html = render_click(view, "toggle_help_dialog")
 
@@ -2209,7 +2216,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "toggle_help_dialog opens and closes", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser2")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUser2"), "/chat")
 
       html = render_click(view, "toggle_help_dialog")
       assert html =~ "help-dialog"
@@ -2219,14 +2226,14 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "close_help closes the dialog", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser3")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUser3"), "/chat")
       render_click(view, "toggle_help_dialog")
       html = render_click(view, "close_help")
       refute html =~ "help-dialog"
     end
 
     test "help_tab switches tabs", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser4")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUser4"), "/chat")
       render_click(view, "toggle_help_dialog")
 
       html = render_click(view, "help_tab", %{"tab" => "index"})
@@ -2240,7 +2247,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "help_select_topic shows topic content", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser5")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUser5"), "/chat")
       render_click(view, "toggle_help_dialog")
 
       html = render_click(view, "help_select_topic", %{"id" => "welcome"})
@@ -2248,7 +2255,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "help_search finds topics", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser6")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUser6"), "/chat")
       render_click(view, "toggle_help_dialog")
       render_click(view, "help_tab", %{"tab" => "search"})
 
@@ -2257,7 +2264,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "help_index_filter filters keywords", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser7")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUser7"), "/chat")
       render_click(view, "toggle_help_dialog")
       render_click(view, "help_tab", %{"tab" => "index"})
 
@@ -2266,7 +2273,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "help_content_click navigates cross-references", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser8")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUser8"), "/chat")
       render_click(view, "toggle_help_dialog")
 
       html =
@@ -2276,7 +2283,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "help_content_click without topic is a no-op", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUser9")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUser9"), "/chat")
       render_click(view, "toggle_help_dialog")
 
       html = render_click(view, "help_content_click", %{})
@@ -2284,7 +2291,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "help_search_input with Enter triggers search", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUserA")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUserA"), "/chat")
       render_click(view, "toggle_help_dialog")
       render_click(view, "help_tab", %{"tab" => "search"})
 
@@ -2295,7 +2302,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "help_search_input without Enter just updates query", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HelpUserB")
+      {:ok, view, _html} = live(chat_conn(conn, "HelpUserB"), "/chat")
       render_click(view, "toggle_help_dialog")
       render_click(view, "help_tab", %{"tab" => "search"})
 
@@ -2309,7 +2316,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "Channel Central dialog" do
     test "open via menu shows dialog with channel info", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcMenu")
+      {:ok, view, _html} = live(chat_conn(conn, "CcMenu"), "/chat")
 
       html = view |> element("[data-testid=menu-channel-central]") |> render_click()
 
@@ -2319,7 +2326,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "close via close button hides dialog", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcClose")
+      {:ok, view, _html} = live(chat_conn(conn, "CcClose"), "/chat")
 
       view |> element("[data-testid=menu-channel-central]") |> render_click()
       html = view |> element("[phx-click=close_channel_central]") |> render_click()
@@ -2328,7 +2335,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "Escape key closes dialog", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcEsc")
+      {:ok, view, _html} = live(chat_conn(conn, "CcEsc"), "/chat")
 
       view |> element("[data-testid=menu-channel-central]") |> render_click()
       html = render_keydown(view, "window_keydown", %{"key" => "Escape"})
@@ -2337,7 +2344,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "tab switching works", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcTabs")
+      {:ok, view, _html} = live(chat_conn(conn, "CcTabs"), "/chat")
 
       view |> element("[data-testid=menu-channel-central]") |> render_click()
 
@@ -2358,7 +2365,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "all tabs display data for the channel", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcData")
+      {:ok, view, _html} = live(chat_conn(conn, "CcData"), "/chat")
 
       view |> element("[data-testid=menu-channel-central]") |> render_click()
 
@@ -2382,7 +2389,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       ensure_channel(channel)
       {:ok, _} = Server.join(channel, "ExistingOp")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcReadOnly")
+      {:ok, view, _html} = live(chat_conn(conn, "CcReadOnly"), "/chat")
 
       # Join via /join command
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2403,7 +2410,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "operator sees editable controls", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CcOp"), "/chat")
 
       # User is operator of a new channel (first to join)
       channel = "#ccop-#{System.unique_integer([:positive])}"
@@ -2430,7 +2437,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "Channel Central topic editing" do
     test "operator can set topic via Channel Central", %{conn: conn} do
       channel = "#cctop-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcTopicOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CcTopicOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2447,7 +2454,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "clearing topic works", %{conn: conn} do
       channel = "#ccclr-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcTopClr")
+      {:ok, view, _html} = live(chat_conn(conn, "CcTopClr"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2471,7 +2478,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "Channel Central mode toggles" do
     test "operator can set +m moderated mode", %{conn: conn} do
       channel = "#ccmod-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcModeOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CcModeOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2491,7 +2498,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "operator can set +k key mode", %{conn: conn} do
       channel = "#cckey-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcKeyOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CcKeyOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2513,7 +2520,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "Channel Central ban management" do
     test "operator can add ban via dialog", %{conn: conn} do
       channel = "#ccban-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcBanOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CcBanOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2537,7 +2544,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "operator can remove ban", %{conn: conn} do
       channel = "#ccunb-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcUnBan")
+      {:ok, view, _html} = live(chat_conn(conn, "CcUnBan"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2567,7 +2574,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "Channel Central ban exceptions" do
     test "operator can add ban exception via dialog", %{conn: conn} do
       channel = "#ccbex-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcBExOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CcBExOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2589,7 +2596,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "operator can remove ban exception", %{conn: conn} do
       channel = "#ccbrx-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcBRxOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CcBRxOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2616,7 +2623,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "Channel Central invite exceptions" do
     test "operator can add invite exception via dialog", %{conn: conn} do
       channel = "#cciex-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcIExOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CcIExOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2638,7 +2645,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "operator can remove invite exception", %{conn: conn} do
       channel = "#ccirx-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcIRxOp")
+      {:ok, view, _html} = live(chat_conn(conn, "CcIRxOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2664,7 +2671,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "Channel Central real-time updates" do
     test "topic change by another user updates dialog", %{conn: conn} do
       channel = "#ccrt1-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcRtObs")
+      {:ok, view, _html} = live(chat_conn(conn, "CcRtObs"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2679,7 +2686,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "mode change updates dialog", %{conn: conn} do
       channel = "#ccrt2-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcRtMod")
+      {:ok, view, _html} = live(chat_conn(conn, "CcRtMod"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2696,7 +2703,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "ban change updates dialog ban list", %{conn: conn} do
       channel = "#ccrt3-#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=CcRtBan")
+      {:ok, view, _html} = live(chat_conn(conn, "CcRtBan"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
       render_click(view, "switch_channel", %{"channel" => channel})
@@ -2716,7 +2723,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "empty nicklist state" do
     test "nicklist renders without empty state when users are present", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=NickUser")
+      {:ok, _view, html} = live(chat_conn(conn, "NickUser"), "/chat")
       # User auto-joins #lobby — nicklist renders with user count
       assert html =~ "nicklist"
       refute html =~ "nicklist-empty-state"
@@ -2727,7 +2734,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     test "treebar shows empty state when no channels and no PMs", %{conn: conn} do
       # This is hard to test in isolation since #lobby is auto-joined.
       # The treebar should have at least #lobby after mount.
-      {:ok, _view, html} = live(conn, "/chat?nickname=TreeUser")
+      {:ok, _view, html} = live(chat_conn(conn, "TreeUser"), "/chat")
       assert html =~ "#lobby"
     end
   end

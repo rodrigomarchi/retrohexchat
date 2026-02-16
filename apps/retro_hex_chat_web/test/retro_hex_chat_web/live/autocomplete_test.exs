@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
 
   describe "command autocomplete" do
     test "autocomplete_query with command type shows results", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AutoUser1")
+      {:ok, view, _html} = live(chat_conn(conn, "AutoUser1"), "/chat")
 
       html =
         render_click(view, "autocomplete_query", %{
@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "fuzzy filtering narrows command results", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AutoUser2")
+      {:ok, view, _html} = live(chat_conn(conn, "AutoUser2"), "/chat")
 
       html =
         render_click(view, "autocomplete_query", %{
@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "autocomplete_select inserts command into input", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AutoUser3")
+      {:ok, view, _html} = live(chat_conn(conn, "AutoUser3"), "/chat")
 
       # Open dropdown
       render_click(view, "autocomplete_query", %{
@@ -60,7 +60,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "autocomplete_close dismisses dropdown", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AutoUser4")
+      {:ok, view, _html} = live(chat_conn(conn, "AutoUser4"), "/chat")
 
       render_click(view, "autocomplete_query", %{
         "type" => "command",
@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "autocomplete_navigate changes selected index", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AutoUser5")
+      {:ok, view, _html} = live(chat_conn(conn, "AutoUser5"), "/chat")
 
       render_click(view, "autocomplete_query", %{
         "type" => "command",
@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "autocomplete_select_current selects highlighted item", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AutoUser6")
+      {:ok, view, _html} = live(chat_conn(conn, "AutoUser6"), "/chat")
 
       render_click(view, "autocomplete_query", %{
         "type" => "command",
@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "recent_commands_loaded stores recent commands", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=AutoUser7")
+      {:ok, view, _html} = live(chat_conn(conn, "AutoUser7"), "/chat")
 
       render_click(view, "recent_commands_loaded", %{
         "commands" => ["join", "msg"]
@@ -119,8 +119,8 @@ defmodule RetroHexChatWeb.AutocompleteTest do
 
   describe "nick autocomplete" do
     test "autocomplete_query with nick type shows results when in channel", %{conn: conn} do
-      {:ok, view1, _} = live(conn, "/chat?nickname=NickAuto1")
-      {:ok, _view2, _} = live(conn, "/chat?nickname=NickAuto2")
+      {:ok, view1, _} = live(chat_conn(conn, "NickAuto1"), "/chat")
+      {:ok, _view2, _} = live(chat_conn(conn, "NickAuto2"), "/chat")
 
       Process.sleep(50)
 
@@ -135,8 +135,8 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "own nick is deprioritized in nick results", %{conn: conn} do
-      {:ok, view, _} = live(conn, "/chat?nickname=NickOwn1")
-      {:ok, _view2, _} = live(conn, "/chat?nickname=NickOwn2")
+      {:ok, view, _} = live(chat_conn(conn, "NickOwn1"), "/chat")
+      {:ok, _view2, _} = live(chat_conn(conn, "NickOwn2"), "/chat")
 
       Process.sleep(50)
 
@@ -151,7 +151,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "nick autocomplete ignored when in Status window", %{conn: conn} do
-      {:ok, view, _} = live(conn, "/chat?nickname=NickStatus1")
+      {:ok, view, _} = live(chat_conn(conn, "NickStatus1"), "/chat")
 
       # Switch to status tab (no active channel context for nick query)
       render_click(view, "switch_to_status", %{})
@@ -167,7 +167,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "nick autocomplete_select inserts @nickname", %{conn: conn} do
-      {:ok, view, _} = live(conn, "/chat?nickname=NickSel1")
+      {:ok, view, _} = live(chat_conn(conn, "NickSel1"), "/chat")
 
       render_click(view, "autocomplete_query", %{
         "type" => "nick",
@@ -188,8 +188,8 @@ defmodule RetroHexChatWeb.AutocompleteTest do
 
   describe "argument completion" do
     test "arg_nick type triggers nick suggestions", %{conn: conn} do
-      {:ok, view, _} = live(conn, "/chat?nickname=ArgNick1")
-      {:ok, _view2, _} = live(conn, "/chat?nickname=ArgNick2")
+      {:ok, view, _} = live(chat_conn(conn, "ArgNick1"), "/chat")
+      {:ok, _view2, _} = live(chat_conn(conn, "ArgNick2"), "/chat")
 
       Process.sleep(50)
 
@@ -204,7 +204,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "arg_channel type triggers channel suggestions", %{conn: conn} do
-      {:ok, view, _} = live(conn, "/chat?nickname=ArgCh1")
+      {:ok, view, _} = live(chat_conn(conn, "ArgCh1"), "/chat")
 
       html =
         render_click(view, "autocomplete_query", %{
@@ -218,8 +218,8 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "kick arg_nick shows only current channel nicks", %{conn: conn} do
-      {:ok, view, _} = live(conn, "/chat?nickname=KickArg1")
-      {:ok, _view2, _} = live(conn, "/chat?nickname=KickArg2")
+      {:ok, view, _} = live(chat_conn(conn, "KickArg1"), "/chat")
+      {:ok, _view2, _} = live(chat_conn(conn, "KickArg2"), "/chat")
 
       Process.sleep(50)
 
@@ -240,7 +240,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
   describe "channel autocomplete" do
     test "autocomplete_query with channel type shows results", %{conn: conn} do
       ensure_channel("#chtest1")
-      {:ok, view, _} = live(conn, "/chat?nickname=ChAuto1")
+      {:ok, view, _} = live(chat_conn(conn, "ChAuto1"), "/chat")
 
       html =
         render_click(view, "autocomplete_query", %{
@@ -253,7 +253,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     end
 
     test "channel autocomplete_select closes dropdown", %{conn: conn} do
-      {:ok, view, _} = live(conn, "/chat?nickname=ChSel1")
+      {:ok, view, _} = live(chat_conn(conn, "ChSel1"), "/chat")
 
       render_click(view, "autocomplete_query", %{
         "type" => "channel",

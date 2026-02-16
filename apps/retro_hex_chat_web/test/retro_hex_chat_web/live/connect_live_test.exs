@@ -25,52 +25,65 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
       assert html =~ "User Information"
       refute html =~ "Authentication"
     end
+
+    test "renders hidden session form", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/")
+      assert html =~ ~s(id="connect-session-form")
+      assert html =~ ~s(action="/chat/session")
+      assert html =~ ~s(method="post")
+      assert html =~ ~s(name="_csrf_token")
+    end
   end
 
   describe "validate" do
     test "shows error for empty nickname", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      html = view |> element("form") |> render_change(%{"nickname" => ""})
+      html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => ""})
       assert html =~ "disabled" or html =~ "error"
     end
 
     test "shows error for invalid nickname", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      html = view |> element("form") |> render_change(%{"nickname" => " bad"})
+      html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => " bad"})
       assert html =~ "error-text"
     end
 
     test "clears error for valid nickname", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      html = view |> element("form") |> render_change(%{"nickname" => "ValidNick"})
+      html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => "ValidNick"})
       refute html =~ "error-text"
     end
   end
 
   describe "nickname boundary" do
-    test "connect with single-char nickname succeeds", %{conn: conn} do
+    test "connect with single-char nickname sets submit_connect and updates form", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      view |> element("form") |> render_change(%{"nickname" => "A"})
-      result = view |> element("form") |> render_submit(%{"nickname" => "A"})
-      assert {:error, {:live_redirect, %{to: "/chat?nickname=A"}}} = result
+      view |> element("form[phx-submit]") |> render_change(%{"nickname" => "A"})
+      html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "A"})
+      # Hidden form should have the nickname
+      assert html =~ ~s(name="nickname")
+      assert html =~ ~s(value="A")
     end
 
-    test "connect with 16-char nickname succeeds", %{conn: conn} do
+    test "connect with 16-char nickname sets submit_connect and updates form", %{conn: conn} do
       nick = String.duplicate("A", 16)
       {:ok, view, _html} = live(conn, "/")
-      view |> element("form") |> render_change(%{"nickname" => nick})
-      result = view |> element("form") |> render_submit(%{"nickname" => nick})
-      expected_path = "/chat?nickname=#{nick}"
-      assert {:error, {:live_redirect, %{to: ^expected_path}}} = result
+      view |> element("form[phx-submit]") |> render_change(%{"nickname" => nick})
+      html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => nick})
+      assert html =~ ~s(value="#{nick}")
     end
   end
 
   describe "connect with unregistered nick" do
-    test "navigates to /chat directly", %{conn: conn} do
+    test "triggers submit_connect push_event with nickname in hidden form", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      view |> element("form") |> render_change(%{"nickname" => "TestUser"})
-      result = view |> element("form") |> render_submit(%{"nickname" => "TestUser"})
-      assert {:error, {:live_redirect, %{to: "/chat?nickname=TestUser"}}} = result
+      view |> element("form[phx-submit]") |> render_change(%{"nickname" => "TestUser"})
+      html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "TestUser"})
+      # The hidden form should contain the nickname
+      assert html =~ ~s(value="TestUser")
+      assert html =~ ~s(id="connect-session-form")
+      # No auth_token should be rendered for unregistered nicks
+      refute html =~ ~s(name="auth_token")
     end
   end
 
@@ -82,8 +95,8 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
 
     test "transitions to password step", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      view |> element("form") |> render_change(%{"nickname" => "RegNick"})
-      html = view |> element("form") |> render_submit(%{"nickname" => "RegNick"})
+      view |> element("form[phx-submit]") |> render_change(%{"nickname" => "RegNick"})
+      html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "RegNick"})
       assert html =~ "Authentication"
       assert html =~ "RegNick"
       assert html =~ ~s(name="password")
@@ -91,8 +104,8 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
 
     test "back button returns to nickname step", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      view |> element("form") |> render_change(%{"nickname" => "RegNick"})
-      view |> element("form") |> render_submit(%{"nickname" => "RegNick"})
+      view |> element("form[phx-submit]") |> render_change(%{"nickname" => "RegNick"})
+      view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "RegNick"})
 
       html = render_click(view, "back", %{})
       assert html =~ "User Information"
@@ -101,30 +114,30 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
 
     test "wrong password shows error", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      view |> element("form") |> render_change(%{"nickname" => "RegNick"})
-      view |> element("form") |> render_submit(%{"nickname" => "RegNick"})
+      view |> element("form[phx-submit]") |> render_change(%{"nickname" => "RegNick"})
+      view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "RegNick"})
 
       html =
         view
-        |> element("form")
+        |> element("form[phx-submit]")
         |> render_submit(%{"password" => "wrongpass"})
 
       assert html =~ "Senha incorreta"
     end
 
-    test "correct password navigates with auth_token", %{conn: conn} do
+    test "correct password triggers submit_connect with auth_token", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
-      view |> element("form") |> render_change(%{"nickname" => "RegNick"})
-      view |> element("form") |> render_submit(%{"nickname" => "RegNick"})
+      view |> element("form[phx-submit]") |> render_change(%{"nickname" => "RegNick"})
+      view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "RegNick"})
 
-      result =
+      html =
         view
-        |> element("form")
+        |> element("form[phx-submit]")
         |> render_submit(%{"password" => "secret123"})
 
-      assert {:error, {:live_redirect, %{to: path}}} = result
-      assert path =~ "/chat?nickname=RegNick"
-      assert path =~ "auth_token="
+      # Hidden form should now include auth_token
+      assert html =~ ~s(name="auth_token")
+      assert html =~ ~s(id="connect-session-form")
     end
   end
 end

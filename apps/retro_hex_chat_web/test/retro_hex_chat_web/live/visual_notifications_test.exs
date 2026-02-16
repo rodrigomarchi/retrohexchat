@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
   describe "treebar flash for channels" do
     test "title_flash_start pushed for PM with flash enabled", %{conn: conn} do
       nick = "VNot#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       # Consume connect sound
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
@@ -67,7 +67,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
       ch = "#vn_clr_#{System.unique_integer([:positive])}"
       ensure_channel(ch)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Join second channel
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
@@ -99,7 +99,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
   describe "title flash events" do
     test "title_flash_start pushed on flash-enabled activity", %{conn: conn} do
       nick = "VTitle#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       # Consume connect sound
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
 
     test "title_flash_stop pushed on tab_focused", %{conn: conn} do
       nick = "VStop#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_hook(view, "tab_focused", %{})
 

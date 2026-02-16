@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Router do
     pipe_through :browser
 
     live "/", ConnectLive
+    post "/chat/session", SessionController, :create
     live "/chat", ChatLive
     live "/channels", ChannelListLive
   end

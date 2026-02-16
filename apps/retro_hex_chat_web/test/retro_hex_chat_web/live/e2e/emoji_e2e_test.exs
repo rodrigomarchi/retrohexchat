@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
     test "emoji picker toggle button is visible", %{conn: conn} do
       nick = "EE1#{uid()}"
       channel = "#ee1-#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       view |> render_submit("send_input", %{"input" => "/join #{channel}"})
       :timer.sleep(50)
       html = render(view)
@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
 
     test "clicking toggle opens emoji picker", %{conn: conn} do
       nick = "EE2#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_emoji_picker", %{})
       assert html =~ "data-testid=\"emoji-picker\""
@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
 
     test "category tabs render in picker", %{conn: conn} do
       nick = "EE3#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_emoji_picker", %{})
       assert html =~ "emoji-category-tabs"
@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
 
     test "emoji buttons render in grid", %{conn: conn} do
       nick = "EE4#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_emoji_picker", %{})
       assert html =~ "emoji-btn"
@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
 
     test "search field filters emojis", %{conn: conn} do
       nick = "EE5#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "toggle_emoji_picker", %{})
       html = render_click(view, "emoji_search", %{"value" => "heart"})
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
 
     test "selecting emoji closes picker", %{conn: conn} do
       nick = "EE6#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "toggle_emoji_picker", %{})
       html = render_click(view, "emoji_select", %{"emoji" => "\u{1F600}"})
@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
 
     test "switching category shows different emojis", %{conn: conn} do
       nick = "EE7#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "toggle_emoji_picker", %{})
       html = render_click(view, "emoji_category", %{"category" => "Food & Drink"})

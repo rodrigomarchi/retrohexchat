@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.EnhancedHistoryTest do
 
   describe "history_navigate event" do
     test "up/down navigates command history", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HistUser")
+      {:ok, view, _html} = live(chat_conn(conn, "HistUser"), "/chat")
 
       # Send a few messages to build history
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "first message"})
@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.ChatLive.EnhancedHistoryTest do
     end
 
     test "down past newest clears input", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=HistDown")
+      {:ok, view, _html} = live(chat_conn(conn, "HistDown"), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "some message"})
 
@@ -55,14 +55,14 @@ defmodule RetroHexChatWeb.ChatLive.EnhancedHistoryTest do
 
   describe "history search rendering" do
     test "history search bar is rendered but hidden by default", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=HistSearch")
+      {:ok, _view, html} = live(chat_conn(conn, "HistSearch"), "/chat")
 
       assert html =~ "hist-search-panel"
       assert html =~ ~s(style="display: none;")
     end
 
     test "history search bar contains search input and label", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=HistSearchDflt")
+      {:ok, _view, html} = live(chat_conn(conn, "HistSearchDflt"), "/chat")
 
       assert html =~ "history-search-input"
       assert html =~ "Pesquisar"

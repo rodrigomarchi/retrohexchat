@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.TimestampE2ETest do
       nick = "TSE1#{uid()}"
       channel = "#tse-#{uid()}"
 
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       view |> render_submit("send_input", %{"input" => "/join #{channel}"})
       :timer.sleep(50)
       view |> render_submit("send_input", %{"input" => "timestamp test"})
@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.TimestampE2ETest do
       nick = "TSE2#{uid()}"
       channel = "#tse2-#{uid()}"
 
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       # Change to HH:MM:SS format
       render_click(view, "open_options_dialog", %{})

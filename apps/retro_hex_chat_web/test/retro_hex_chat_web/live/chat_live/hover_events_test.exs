@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEventsTest do
   describe "channel_hover event" do
     test "returns channel tooltip data with member count", %{conn: conn, channel: channel} do
       nick = "HoverCh#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Push hover event
@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEventsTest do
 
     test "handles hover for non-existent channel gracefully", %{conn: conn, channel: channel} do
       nick = "HoverNx#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Should not crash — returns count=0, joined=false
@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEventsTest do
   describe "channel_click event" do
     test "switches to channel when already joined", %{conn: conn, channel: channel} do
       nick = "ClickSw#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Click the channel — should switch (already joined)
@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEventsTest do
       nick = "ClickJn#{uid()}"
       channel2 = "#hoverjoin#{uid()}"
       ensure_channel(channel2)
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Click a different channel — should join it
@@ -76,11 +76,11 @@ defmodule RetroHexChatWeb.ChatLive.HoverEventsTest do
     test "populates hover card with nick data", %{conn: conn, channel: channel} do
       nick = "HoverNk#{uid()}"
       nick2 = "Target#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Join a second user so they have presence
-      {:ok, view2, _html} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view2, _html} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view2, channel)
       Process.sleep(50)
 
@@ -95,7 +95,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEventsTest do
 
     test "suppresses hover card for own nick (FR-014)", %{conn: conn, channel: channel} do
       nick = "SelfHov#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Hover over own nick — should NOT show hover card
@@ -112,10 +112,10 @@ defmodule RetroHexChatWeb.ChatLive.HoverEventsTest do
     test "hides the hover card", %{conn: conn, channel: channel} do
       nick = "Dismiss#{uid()}"
       nick2 = "DismTgt#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
-      {:ok, view2, _html} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view2, _html} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view2, channel)
       Process.sleep(50)
 
@@ -137,10 +137,10 @@ defmodule RetroHexChatWeb.ChatLive.HoverEventsTest do
     test "opens PM conversation with target nick", %{conn: conn, channel: channel} do
       nick = "DblClk#{uid()}"
       nick2 = "DblTgt#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
-      {:ok, _view2, _html} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, _view2, _html} = live(chat_conn(conn, nick2), "/chat")
 
       # Double-click nick — should open PM
       render_click(view, "nick_dblclick", %{"nick" => nick2})

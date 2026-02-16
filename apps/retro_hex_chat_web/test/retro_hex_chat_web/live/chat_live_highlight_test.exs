@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
   describe "US1: own-nick highlight in active channel" do
     test "message mentioning user's nick is highlighted", %{conn: conn} do
       nick = "HiLite#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hey #{nick}, check this out", "#lobby")
 
@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "self-message is NOT highlighted", %{conn: conn} do
       nick = "SelfHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, nick, "I am #{nick} and I said my own name", "#lobby")
 
@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "system message is NOT highlighted", %{conn: conn} do
       nick = "SysHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       msg = %{
         event: "new_message",
@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "case-insensitive nick matching highlights", %{conn: conn} do
       nick = "CaseNick#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hey #{String.upcase(nick)}!", "#lobby")
 
@@ -67,7 +67,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "message NOT mentioning nick is NOT highlighted", %{conn: conn} do
       nick = "NoMatch#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hello world nothing special here", "#lobby")
 
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "highlight applies inline background-color style", %{conn: conn} do
       nick = "StyleHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hey #{nick}!", "#lobby")
 
@@ -88,7 +88,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "action type (/me) mentioning nick is highlighted", %{conn: conn} do
       nick = "ActHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       msg = %{
         event: "new_message",
@@ -117,7 +117,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       ch = "#hl_flash_#{System.unique_integer([:positive])}"
       ensure_channel(ch)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Join a second channel, then switch back to #lobby
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
@@ -135,7 +135,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "highlight in active channel does NOT flash treebar", %{conn: conn} do
       nick = "NoFlash#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hey #{nick}!", "#lobby")
 
@@ -149,7 +149,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       ch = "#hl_clear_#{System.unique_integer([:positive])}"
       ensure_channel(ch)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
 
@@ -176,7 +176,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       ch = "#hl_nofl_#{System.unique_integer([:positive])}"
       ensure_channel(ch)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
 
@@ -196,7 +196,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
   describe "US3: notification sound on highlight" do
     test "push_event play_sound sent on highlight", %{conn: conn} do
       nick = "SndHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hey #{nick}!", "#lobby")
 
@@ -205,7 +205,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "no push_event on non-highlight message", %{conn: conn} do
       nick = "NoSnd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hello world", "#lobby")
 
@@ -219,7 +219,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       ch = "#hl_snd_#{System.unique_integer([:positive])}"
       ensure_channel(ch)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
 
@@ -238,7 +238,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
   describe "US4: custom highlight words" do
     test "message matching custom word is highlighted", %{conn: conn} do
       nick = "CustHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add a custom highlight word
       render_click(view, "highlight_add", %{"word" => "phoenix", "bg_color" => ""})
@@ -252,7 +252,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "custom word with custom color applies that color", %{conn: conn} do
       nick = "ColorHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add word with color index 4 (red)
       render_click(view, "highlight_add", %{"word" => "deploy", "bg_color" => "4"})
@@ -267,7 +267,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "own nick takes priority over custom word", %{conn: conn} do
       nick = "PrioHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add custom word with a different color
       render_click(view, "highlight_add", %{"word" => nick, "bg_color" => "4"})
@@ -282,7 +282,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "removed highlight word no longer triggers", %{conn: conn} do
       nick = "RmHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "highlight_add", %{"word" => "deploy", "bg_color" => ""})
       render_click(view, "highlight_remove", %{"word" => "deploy"})
@@ -299,7 +299,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
   describe "US5: highlight dialog" do
     test "opens and closes via event", %{conn: conn} do
       nick = "DlgHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "open_highlight_dialog")
       assert html =~ "Highlight Words"
@@ -311,7 +311,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "add word via dialog", %{conn: conn} do
       nick = "AddWd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_highlight_dialog")
       render_click(view, "open_highlight_add_dialog")
@@ -327,7 +327,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "remove word via dialog", %{conn: conn} do
       nick = "RmWd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "highlight_add", %{"word" => "phoenix", "bg_color" => ""})
       render_click(view, "open_highlight_dialog")
@@ -341,7 +341,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "edit word color via dialog", %{conn: conn} do
       nick = "EdWd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "highlight_add", %{"word" => "deploy", "bg_color" => ""})
       render_click(view, "open_highlight_dialog")
@@ -358,7 +358,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "Ctrl+Shift+H toggles dialog", %{conn: conn} do
       nick = "AltH#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html =
         render_keydown(view, "window_keydown", %{
@@ -381,7 +381,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
     test "Highlight Words menu item opens dialog", %{conn: conn} do
       nick = "MenuHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "open_highlight_dialog")
       assert html =~ "Highlight Words"

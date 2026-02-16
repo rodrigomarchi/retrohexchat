@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
   describe "data attributes on chat messages" do
     test "regular messages have data-nick on .chat-nick span", %{conn: conn, channel: channel} do
       nick = "CtxNick#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Hello world"})
@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "messages have data-author attribute", %{conn: conn, channel: channel} do
       nick = "CtxAuth#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Test message"})
@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "messages have data-message-id attribute", %{conn: conn, channel: channel} do
       nick = "CtxMsgId#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "ID test"})
@@ -59,12 +59,12 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
     test "system messages have data-system-message attribute", %{conn: conn, channel: channel} do
       # First user joins channel
       nick1 = "CtxSys1#{uid()}"
-      {:ok, view1, _html} = live(conn, "/chat?nickname=#{nick1}")
+      {:ok, view1, _html} = live(chat_conn(conn, nick1), "/chat")
       join_channel(view1, channel)
 
       # Second user joins — first user sees the join system message
       nick2 = "CtxSys2#{uid()}"
-      {:ok, view2, _html} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view2, _html} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view2, channel)
       Process.sleep(100)
       html = render(view1)
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       channel: channel
     } do
       nick = "CtxNoSys#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Regular msg"})
@@ -100,7 +100,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "URLs in messages get data-url attribute", %{conn: conn, channel: channel} do
       nick = "CtxUrl#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       view
@@ -123,7 +123,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       channel: channel
     } do
       nick = "CtxNM1#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Simulate right-click on nick by pushing the event directly
@@ -155,7 +155,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "op user sees op actions in nick context menu", %{conn: conn, channel: channel} do
       nick = "CtxOp1#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Make user an operator
@@ -193,12 +193,12 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
       # First user joins and becomes op/owner
       owner = "CtxOwn#{uid()}"
-      {:ok, owner_view, _html} = live(conn, "/chat?nickname=#{owner}")
+      {:ok, owner_view, _html} = live(chat_conn(conn, owner), "/chat")
       join_channel(owner_view, nop_channel)
 
       # Second user joins (non-op)
       nick = "CtxNop1#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, nop_channel)
 
       render_click(view, "chat_context_menu", %{
@@ -228,7 +228,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       channel: channel
     } do
       nick = "CtxSelf#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -254,7 +254,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "Copy Nick dispatches clipboard_copy event", %{conn: conn, channel: channel} do
       nick = "CtxCpy1#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -280,7 +280,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "close_chat_context_menu closes the menu", %{conn: conn, channel: channel} do
       nick = "CtxCls1#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -311,7 +311,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
   describe "URL context menu in chat" do
     test "type=url opens URL menu with correct items", %{conn: conn, channel: channel} do
       nick = "CtxUrl1#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -339,7 +339,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "Save to URL List adds URL to url_catcher_entries", %{conn: conn, channel: channel} do
       nick = "CtxSave#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -371,7 +371,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
   describe "channel context menu in chat" do
     test "type=channel opens channel menu with correct items", %{conn: conn, channel: channel} do
       nick = "CtxCh1#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -402,7 +402,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       channel: channel
     } do
       nick = "CtxChJ#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -430,7 +430,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
   describe "message context menu in chat" do
     test "type=message opens message menu with correct items", %{conn: conn, channel: channel} do
       nick = "CtxMsg1#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -462,7 +462,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       channel: channel
     } do
       nick = "CtxMSys#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -485,7 +485,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "message with URL shows URL sub-items", %{conn: conn, channel: channel} do
       nick = "CtxMUrl#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -510,7 +510,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "Responder is enabled for non-system messages", %{conn: conn, channel: channel} do
       nick = "CtxQR#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -538,7 +538,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
   describe "extended treebar context menu" do
     test "right-click treebar channel shows extended menu items", %{conn: conn, channel: channel} do
       nick = "CtxTb1#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "channel_right_click", %{
@@ -566,7 +566,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "Mark as Read clears unread for that channel", %{conn: conn, channel: channel} do
       nick = "CtxTb2#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Switch to another channel so we can get unread on the first
@@ -590,7 +590,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "Mute Channel toggles mute state", %{conn: conn, channel: channel} do
       nick = "CtxTb3#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Open menu - should show "Mute Channel" since not muted
@@ -626,7 +626,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       channel: channel
     } do
       nick = "CtxHk1#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "chat_context_menu", %{
@@ -649,7 +649,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "treebar context menu has ContextMenuHook", %{conn: conn, channel: channel} do
       nick = "CtxHk2#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "channel_right_click", %{
@@ -665,7 +665,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
     test "nicklist context menu has shortcut hints", %{conn: conn, channel: channel} do
       nick = "CtxHk3#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # The nicklist context menu is opened via nick_right_click event

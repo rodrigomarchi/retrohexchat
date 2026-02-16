@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "perform dialog open/close" do
     test "Ctrl+Shift+E opens and closes dialog", %{conn: conn} do
       nick = "PDlgAP#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Open
       render_keydown(view, "window_keydown", %{
@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "menu bar opens dialog", %{conn: conn} do
       nick = "PDlgMn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       html = render(view)
@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "close button closes dialog", %{conn: conn} do
       nick = "PDlgCl#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       assert render(view) =~ "Perform / Auto-Commands"
@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "close resets tab to commands and clears selections", %{conn: conn} do
       nick = "PDlgRs#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       # Switch to autojoin tab
@@ -74,7 +74,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "tab switching" do
     test "switch from commands to autojoin tab", %{conn: conn} do
       nick = "PDlgTb#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       html = render(view)
@@ -87,7 +87,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "switch back to commands tab", %{conn: conn} do
       nick = "PDlgBk#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_tab", %{"tab" => "autojoin"})
@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "commands tab - add command" do
     test "add command via sub-dialog", %{conn: conn} do
       nick = "PDlgAd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       # Open add sub-dialog
@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "cancel add sub-dialog", %{conn: conn} do
       nick = "PDlgAC#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_add")
@@ -136,7 +136,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "commands tab - edit command" do
     test "edit command via sub-dialog", %{conn: conn} do
       nick = "PDlgEd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
 
@@ -161,7 +161,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "cancel edit sub-dialog", %{conn: conn} do
       nick = "PDlgEC#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_add")
@@ -181,7 +181,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "commands tab - remove command" do
     test "remove selected command", %{conn: conn} do
       nick = "PDlgRm#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_add")
@@ -200,7 +200,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "commands tab - move up/down" do
     test "move down reorders entries", %{conn: conn} do
       nick = "PDlgMD#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
 
@@ -222,7 +222,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "move up reorders entries", %{conn: conn} do
       nick = "PDlgMU#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
 
@@ -248,7 +248,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "enable/disable toggle" do
     test "toggle disables perform on connect", %{conn: conn} do
       nick = "PDlgTg#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       html = render(view)
@@ -264,7 +264,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "double toggle restores enabled state", %{conn: conn} do
       nick = "PDlgDT#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
 
@@ -282,7 +282,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "password masking" do
     test "/ns identify password is masked in dialog", %{conn: conn} do
       nick = "PDlgPw#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_add")
@@ -295,7 +295,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "/msg NickServ identify password is masked in dialog", %{conn: conn} do
       nick = "PDlgNs#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_add")
@@ -315,7 +315,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "selection highlighting" do
     test "perform_select highlights row", %{conn: conn} do
       nick = "PDlgSl#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_add")
@@ -329,7 +329,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "autojoin_select highlights row", %{conn: conn} do
       nick = "PDlgAS#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_tab", %{"tab" => "autojoin"})
@@ -349,7 +349,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "autojoin tab - add channel" do
     test "add channel via sub-dialog", %{conn: conn} do
       nick = "PDlgJA#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_tab", %{"tab" => "autojoin"})
@@ -366,7 +366,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "add channel with key masks key as ****", %{conn: conn} do
       nick = "PDlgJK#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_tab", %{"tab" => "autojoin"})
@@ -386,7 +386,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "cancel add autojoin sub-dialog", %{conn: conn} do
       nick = "PDlgJC#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_tab", %{"tab" => "autojoin"})
@@ -401,7 +401,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "autojoin tab - edit channel key" do
     test "edit channel key via sub-dialog", %{conn: conn} do
       nick = "PDlgJE#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_tab", %{"tab" => "autojoin"})
@@ -431,7 +431,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
 
     test "cancel edit autojoin sub-dialog", %{conn: conn} do
       nick = "PDlgJX#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_tab", %{"tab" => "autojoin"})
@@ -450,7 +450,7 @@ defmodule RetroHexChatWeb.ChatLivePerformDialogTest do
   describe "autojoin tab - remove channel" do
     test "remove selected channel", %{conn: conn} do
       nick = "PDlgJR#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_perform_dialog")
       render_click(view, "perform_dialog_tab", %{"tab" => "autojoin"})

@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
   describe "/perform command" do
     test "/perform list with empty list shows system message", %{conn: conn} do
       nick = "PerfLst#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/perform list"})
 
@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/perform add /join #test adds to list", %{conn: conn} do
       nick = "PerfAdd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/perform add /ns identify secret masks password", %{conn: conn} do
       nick = "PerfMsk#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/perform list shows entries after adding", %{conn: conn} do
       nick = "PerfEnt#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/perform remove 0 removes entry", %{conn: conn} do
       nick = "PerfRem#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/perform move 0 1 moves entry", %{conn: conn} do
       nick = "PerfMov#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -100,7 +100,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/perform clear clears all entries", %{conn: conn} do
       nick = "PerfClr#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/perform add with disallowed command shows error", %{conn: conn} do
       nick = "PerfDis#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -132,7 +132,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/perform remove with invalid position shows error", %{conn: conn} do
       nick = "PerfInv#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -148,7 +148,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
   describe "perform execution on connect" do
     test "handle_info {:execute_perform, 0} executes first command", %{conn: conn} do
       nick = "PerfExe#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add a command to the perform list first
       view
@@ -164,7 +164,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "{:execute_perform, index} past end is a no-op", %{conn: conn} do
       nick = "PerfEnd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # With empty perform list, send {:execute_perform, 0}
       # Should trigger {:execute_autojoin, 0} which is currently a no-op
@@ -181,7 +181,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
   describe "/autojoin command" do
     test "/autojoin list with empty list shows system message", %{conn: conn} do
       nick = "AJLst#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/autojoin list"})
 
@@ -191,7 +191,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/autojoin add #channel adds to list", %{conn: conn} do
       nick = "AJAdd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -203,7 +203,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/autojoin list shows entries after adding", %{conn: conn} do
       nick = "AJEnt#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -222,7 +222,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/autojoin remove #channel removes entry", %{conn: conn} do
       nick = "AJRem#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -238,7 +238,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/autojoin clear clears all entries", %{conn: conn} do
       nick = "AJClr#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -254,7 +254,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "/autojoin add with invalid channel shows error", %{conn: conn} do
       nick = "AJInv#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -270,7 +270,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
   describe "autojoin execution on connect" do
     test "handle_info {:execute_autojoin, 0} auto-joins first channel", %{conn: conn} do
       nick = "AJExe#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -284,7 +284,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "{:execute_autojoin, index} past end is a no-op", %{conn: conn} do
       nick = "AJEnd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send(view.pid, {:execute_autojoin, 0})
 
@@ -298,7 +298,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
   describe "reconnect push_events" do
     test "quit_chat pushes intentional_disconnect event", %{conn: conn} do
       nick = "RcnQui#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/quit"})
 
@@ -307,7 +307,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "joining a channel pushes save_reconnect_state", %{conn: conn} do
       nick = "RcnJoi#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -324,7 +324,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "parting a channel pushes save_reconnect_state", %{conn: conn} do
       nick = "RcnPar#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -344,7 +344,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "switching channel pushes save_reconnect_state", %{conn: conn} do
       nick = "RcnSwi#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -364,7 +364,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
   describe "session restoration on reconnect" do
     test "restore_session event shows restoring message", %{conn: conn} do
       nick = "RstMsg#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_hook(view, "restore_session", %{
         "channels" => ["#lobby"],
@@ -378,7 +378,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "execute_rejoin joins non-joined channels", %{conn: conn} do
       nick = "RstRej#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Send execute_rejoin with a channel not yet joined
       send(view.pid, {:execute_rejoin, 0, ["#rstrejoin"]})
@@ -389,7 +389,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "execute_rejoin skips channels already joined (deduplication)", %{conn: conn} do
       nick = "RstDed#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # #lobby is already joined on connect — send rejoin for just #lobby
       send(view.pid, {:execute_rejoin, 0, ["#lobby"]})
@@ -401,7 +401,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "execute_rejoin restores active channel after chain completes", %{conn: conn} do
       nick = "RstAct#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Join a second channel
       view
@@ -425,7 +425,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
 
     test "restore_session with empty channels is no-op", %{conn: conn} do
       nick = "RstEmp#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_hook(view, "restore_session", %{
         "channels" => [],
@@ -447,7 +447,7 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
     # provide the toggle UI. For now, verify the enabled default works.
     test "perform list is enabled by default", %{conn: conn} do
       nick = "PerfDef#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add a command and verify it can be listed (proves list is functional)
       view

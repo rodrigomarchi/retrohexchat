@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.FavoritesTest do
 
   describe "treebar context menu" do
     test "channel_right_click event opens context menu", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=FavCtx1")
+      {:ok, view, _html} = live(chat_conn(conn, "FavCtx1"), "/chat")
 
       html =
         view
@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.FavoritesTest do
     end
 
     test "clicking 'Add to Favorites' opens favorite dialog", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=FavCtx2")
+      {:ok, view, _html} = live(chat_conn(conn, "FavCtx2"), "/chat")
 
       view
       |> element("#treebar")
@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.FavoritesTest do
 
   describe "add favorite dialog" do
     test "saves a favorite with description", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=FavAdd1")
+      {:ok, view, _html} = live(chat_conn(conn, "FavAdd1"), "/chat")
 
       view
       |> element("#treebar")
@@ -60,7 +60,7 @@ defmodule RetroHexChatWeb.FavoritesTest do
     end
 
     test "closing dialog without saving", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=FavAdd2")
+      {:ok, view, _html} = live(chat_conn(conn, "FavAdd2"), "/chat")
 
       view
       |> element("#treebar")
@@ -75,7 +75,7 @@ defmodule RetroHexChatWeb.FavoritesTest do
 
   describe "favorites menu" do
     test "shows favorites in menu", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=FavMenu1")
+      {:ok, view, _html} = live(chat_conn(conn, "FavMenu1"), "/chat")
 
       # Add a favorite
       view
@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.FavoritesTest do
     end
 
     test "shows checkmark for joined channel", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=FavMenu2")
+      {:ok, view, _html} = live(chat_conn(conn, "FavMenu2"), "/chat")
 
       # Add favorite for #lobby (already joined)
       view
@@ -121,7 +121,7 @@ defmodule RetroHexChatWeb.FavoritesTest do
 
     test "clicking favorite joins channel", %{conn: conn} do
       ensure_channel("#favjoin")
-      {:ok, view, _html} = live(conn, "/chat?nickname=FavMenu3")
+      {:ok, view, _html} = live(chat_conn(conn, "FavMenu3"), "/chat")
 
       # Add #favjoin as favorite (not joined)
       view
@@ -144,7 +144,7 @@ defmodule RetroHexChatWeb.FavoritesTest do
 
     test "clicking already-joined favorite switches to it", %{conn: conn} do
       ensure_channel("#favsw")
-      {:ok, view, _html} = live(conn, "/chat?nickname=FavMenu4")
+      {:ok, view, _html} = live(chat_conn(conn, "FavMenu4"), "/chat")
 
       # Join a second channel
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #favsw"})
@@ -175,12 +175,12 @@ defmodule RetroHexChatWeb.FavoritesTest do
     end
 
     test "shows 'No favorites' when empty", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=FavEmpty1")
+      {:ok, _view, html} = live(chat_conn(conn, "FavEmpty1"), "/chat")
       assert html =~ "No favorites"
     end
 
     test "shows Organize Favorites menu item", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=FavOrg1")
+      {:ok, _view, html} = live(chat_conn(conn, "FavOrg1"), "/chat")
       assert html =~ "Organize Favorites"
     end
   end

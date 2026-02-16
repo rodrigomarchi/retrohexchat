@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
   describe "Status tab" do
     test "status messages stream is present on mount", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StatusUser#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "StatusUser#{unique}"), "/chat")
 
       html = render(view)
       assert html =~ "status-messages"
@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "status tab always rendered in tab bar", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=NoClose#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "NoClose#{unique}"), "/chat")
 
       html = render(view)
       assert html =~ "tab-status"
@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "status messages stream exists and hidden by default", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StatusMsg#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "StatusMsg#{unique}"), "/chat")
 
       html = render(view)
       assert html =~ "status-messages"
@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "switching to status tab hides chat and shows status", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StSwitch#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "StSwitch#{unique}"), "/chat")
 
       # Click the status tab
       render_click(view, "switch_to_status")
@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "switching back to channel from status tab", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StBack#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "StBack#{unique}"), "/chat")
 
       render_click(view, "switch_to_status")
       render_click(view, "switch_channel", %{"channel" => "#lobby"})
@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "nicklist hidden on status tab", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StNick#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "StNick#{unique}"), "/chat")
 
       # Nicklist should be visible initially
       html = render(view)
@@ -83,7 +83,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "plain text on status tab shows error", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StText#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "StText#{unique}"), "/chat")
 
       render_click(view, "switch_to_status")
       render_submit(view, "send_input", %{"input" => "hello world"})
@@ -94,7 +94,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "commands work on status tab", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StCmd#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "StCmd#{unique}"), "/chat")
 
       render_click(view, "switch_to_status")
       render_submit(view, "send_input", %{"input" => "/help"})
@@ -105,7 +105,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "topic bar shows status text", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=StTopic#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "StTopic#{unique}"), "/chat")
 
       render_click(view, "switch_to_status")
       html = render(view)
@@ -119,7 +119,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
   describe "Tab bar" do
     test "Status tab is always first in the tab bar", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=TabFirst#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "TabFirst#{unique}"), "/chat")
 
       html = render(view)
       tab_bar = Floki.find(Floki.parse_document!(html), "[data-testid=tab-bar]")
@@ -130,7 +130,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "active channel tab has tab-active class", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=TabAct#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "TabAct#{unique}"), "/chat")
 
       html = render(view)
       tab = Floki.find(Floki.parse_document!(html), ~s([data-testid="tab-#lobby"]))
@@ -143,7 +143,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
       unique = System.unique_integer([:positive])
       ch = "#closetab#{unique}"
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=CloseTab#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "CloseTab#{unique}"), "/chat")
 
       # Join the unique channel
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
@@ -162,7 +162,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "close_pm_tab removes the PM tab", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=ClosePm#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "ClosePm#{unique}"), "/chat")
 
       # Open a PM conversation
       render_click(view, "nick_right_click", %{"nick" => "SomePal", "x" => 0, "y" => 0})
@@ -184,7 +184,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
       unique = System.unique_integer([:positive])
       ch = "#topicbar#{unique}"
       ensure_channel(ch)
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=TopicBr#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "TopicBr#{unique}"), "/chat")
 
       # Join channel and set a topic
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
@@ -200,7 +200,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "shows '(no topic set)' when no topic exists", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=NoTopic#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "NoTopic#{unique}"), "/chat")
 
       html = render(view)
       assert html =~ "(no topic set)"
@@ -208,7 +208,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
     test "shows PM target for PM view", %{conn: conn} do
       unique = System.unique_integer([:positive])
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=PmTopic#{unique}")
+      {:ok, view, _html} = live(chat_conn(conn, "PmTopic#{unique}"), "/chat")
 
       # Open PM
       render_click(view, "nick_right_click", %{"nick" => "PmPeer", "x" => 0, "y" => 0})
@@ -229,7 +229,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
       # Subscribe before connecting so we can receive the broadcast
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "presence:global")
 
-      {:ok, _view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, _view, _html} = live(chat_conn(conn, nick), "/chat")
 
       assert_receive {:user_connected, %{nickname: ^nick}}, 1000
     end
@@ -240,7 +240,7 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "presence:global")
 
-      {:ok, view, _html} = live(conn, ~p"/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Confirm the connection broadcast first
       assert_receive {:user_connected, %{nickname: ^nick}}, 1000

@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLiveCopyTest do
       channel: channel
     } do
       nick = "Cpy#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
       html = render(view)
 
@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.ChatLiveCopyTest do
       channel: channel
     } do
       nick = "CpS#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
       html = render(view)
 

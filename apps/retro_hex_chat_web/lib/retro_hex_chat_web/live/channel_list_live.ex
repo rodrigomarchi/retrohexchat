@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ChannelListLive do
   @impl true
   def mount(_params, session, socket) do
     viewer_channels = Map.get(session, "channels", [])
+    nickname = Map.get(session, "chat_nickname", "")
 
     socket =
       assign(socket,
@@ -18,6 +19,8 @@ defmodule RetroHexChatWeb.ChannelListLive do
         loading: true,
         channel_count: 0,
         viewer_channels: viewer_channels,
+        nickname: nickname,
+        join_channel: nil,
         page_title: "Channel List - RetroHexChat"
       )
 
@@ -59,17 +62,23 @@ defmodule RetroHexChatWeb.ChannelListLive do
   end
 
   def handle_event("join", %{"channel" => channel_name}, socket) do
-    {:noreply, push_navigate(socket, to: ~p"/chat?join=#{channel_name}")}
+    {:noreply,
+     socket
+     |> assign(join_channel: channel_name)
+     |> push_event("submit_channel_join", %{})}
   end
 
   def handle_event("close", _params, socket) do
-    {:noreply, push_navigate(socket, to: ~p"/chat")}
+    {:noreply,
+     socket
+     |> assign(join_channel: nil)
+     |> push_event("submit_channel_join", %{})}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="connect-dialog dialog-window--450">
+    <div class="connect-dialog dialog-window--450" id="channel-list-root" phx-hook="ChannelListFormHook">
       <div class="window">
         <div class="title-bar">
           <div class="title-bar-text">Channel List</div>
@@ -134,6 +143,16 @@ defmodule RetroHexChatWeb.ChannelListLive do
           </div>
         </div>
       </div>
+      <form
+        id="channel-join-form"
+        action={~p"/chat/session"}
+        method="post"
+        class="u-hidden"
+      >
+        <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+        <input type="hidden" name="nickname" value={@nickname} />
+        <input :if={@join_channel} type="hidden" name="join_channel" value={@join_channel} />
+      </form>
     </div>
     """
   end

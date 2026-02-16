@@ -14,8 +14,8 @@ defmodule RetroHexChatWeb.ChatLiveAwayReplyTest do
       nick1 = "AR1#{uid()}"
       nick2 = "AR2#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
 
       # Nick1 sets away
       view1 |> render_submit("send_input", %{"input" => "/away Gone for lunch"})
@@ -42,8 +42,8 @@ defmodule RetroHexChatWeb.ChatLiveAwayReplyTest do
       nick1 = "AR3#{uid()}"
       nick2 = "AR4#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
 
       # Nick1 sets away
       view1 |> render_submit("send_input", %{"input" => "/away Busy"})
@@ -76,8 +76,8 @@ defmodule RetroHexChatWeb.ChatLiveAwayReplyTest do
       nick1 = "AR5#{uid()}"
       nick2 = "AR6#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
 
       # Nick2 opens PM to nick1
       view2 |> render_submit("send_input", %{"input" => "/query #{nick1}"})

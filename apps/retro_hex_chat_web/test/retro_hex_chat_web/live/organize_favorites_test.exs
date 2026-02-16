@@ -28,14 +28,14 @@ defmodule RetroHexChatWeb.OrganizeFavoritesTest do
 
   describe "organize favorites dialog" do
     test "opens from menu", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OrgFav1")
+      {:ok, view, _html} = live(chat_conn(conn, "OrgFav1"), "/chat")
 
       html = view |> render_click("open_organize_favorites", %{})
       assert html =~ "Organize Favorites"
     end
 
     test "shows favorites list", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OrgFav2")
+      {:ok, view, _html} = live(chat_conn(conn, "OrgFav2"), "/chat")
 
       add_favorite(view, "#alpha", "Alpha channel")
       add_favorite(view, "#beta", "Beta channel")
@@ -47,7 +47,7 @@ defmodule RetroHexChatWeb.OrganizeFavoritesTest do
     end
 
     test "move up reorders favorites", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OrgFav3")
+      {:ok, view, _html} = live(chat_conn(conn, "OrgFav3"), "/chat")
 
       add_favorite(view, "#first")
       add_favorite(view, "#second")
@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.OrganizeFavoritesTest do
     end
 
     test "move down reorders favorites", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OrgFav4")
+      {:ok, view, _html} = live(chat_conn(conn, "OrgFav4"), "/chat")
 
       add_favorite(view, "#first")
       add_favorite(view, "#second")
@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.OrganizeFavoritesTest do
     end
 
     test "edit opens favorite dialog in edit mode", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OrgFav5")
+      {:ok, view, _html} = live(chat_conn(conn, "OrgFav5"), "/chat")
 
       add_favorite(view, "#editable", "Original desc")
 
@@ -94,7 +94,7 @@ defmodule RetroHexChatWeb.OrganizeFavoritesTest do
     end
 
     test "remove deletes favorite", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OrgFav6")
+      {:ok, view, _html} = live(chat_conn(conn, "OrgFav6"), "/chat")
 
       add_favorite(view, "#removeme")
 
@@ -106,7 +106,7 @@ defmodule RetroHexChatWeb.OrganizeFavoritesTest do
     end
 
     test "close dialog", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OrgFav7")
+      {:ok, view, _html} = live(chat_conn(conn, "OrgFav7"), "/chat")
 
       view |> render_click("open_organize_favorites", %{})
 
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.OrganizeFavoritesTest do
     end
 
     test "shows Password set indicator", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=OrgFav8")
+      {:ok, view, _html} = live(chat_conn(conn, "OrgFav8"), "/chat")
 
       # Add favorite with password
       view

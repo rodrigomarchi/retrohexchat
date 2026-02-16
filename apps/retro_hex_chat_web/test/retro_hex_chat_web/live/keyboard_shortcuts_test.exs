@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
 
   describe "cheatsheet dialog" do
     test "Ctrl+Shift+/ opens cheatsheet", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CheatO")
+      {:ok, view, _html} = live(chat_conn(conn, "CheatO"), "/chat")
 
       html =
         render_click(view, "window_keydown", %{
@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
     end
 
     test "Escape closes cheatsheet", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CheatE")
+      {:ok, view, _html} = live(chat_conn(conn, "CheatE"), "/chat")
 
       render_click(view, "window_keydown", %{
         "key" => "/",
@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
     end
 
     test "Ctrl+Shift+/ toggles cheatsheet off", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CheatT")
+      {:ok, view, _html} = live(chat_conn(conn, "CheatT"), "/chat")
 
       params = %{
         "key" => "/",
@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
     end
 
     test "cheatsheet renders categories", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CheatC")
+      {:ok, view, _html} = live(chat_conn(conn, "CheatC"), "/chat")
 
       html =
         render_click(view, "window_keydown", %{
@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
     end
 
     test "close_dialog event closes cheatsheet", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=CheatX")
+      {:ok, view, _html} = live(chat_conn(conn, "CheatX"), "/chat")
 
       render_click(view, "window_keydown", %{
         "key" => "/",
@@ -82,35 +82,35 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
 
   describe "shortcut_action event dispatch" do
     test "toggle_search opens search", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SASearch")
+      {:ok, view, _html} = live(chat_conn(conn, "SASearch"), "/chat")
 
       html = render_click(view, "shortcut_action", %{"action" => "toggle_search"})
       assert html =~ "search-bar"
     end
 
     test "toggle_options_dialog opens options", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SAOpts")
+      {:ok, view, _html} = live(chat_conn(conn, "SAOpts"), "/chat")
 
       html = render_click(view, "shortcut_action", %{"action" => "toggle_options_dialog"})
       assert html =~ "options-dialog"
     end
 
     test "toggle_cheatsheet opens cheatsheet", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SACheat")
+      {:ok, view, _html} = live(chat_conn(conn, "SACheat"), "/chat")
 
       html = render_click(view, "shortcut_action", %{"action" => "toggle_cheatsheet"})
       assert html =~ "cheatsheet-dialog"
     end
 
     test "unknown action is no-op", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SAUnkn")
+      {:ok, view, _html} = live(chat_conn(conn, "SAUnkn"), "/chat")
 
       html = render_click(view, "shortcut_action", %{"action" => "nonexistent_action"})
       assert html =~ "chat-input-form"
     end
 
     test "open_help opens help dialog", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SAHelp")
+      {:ok, view, _html} = live(chat_conn(conn, "SAHelp"), "/chat")
 
       html = render_click(view, "shortcut_action", %{"action" => "open_help"})
       assert html =~ "help-dialog"

@@ -2,6 +2,9 @@ defmodule RetroHexChatWeb.ConnectLive do
   @moduledoc """
   Win98-style connection dialog. Users enter nickname and connect.
   If the nickname is registered, a password step is shown for inline authentication.
+
+  On successful validation, a hidden form is submitted via POST to `/chat/session`,
+  which stores credentials in the encrypted session cookie and redirects to `/chat`.
   """
   use RetroHexChatWeb, :live_view
 
@@ -17,6 +20,8 @@ defmodule RetroHexChatWeb.ConnectLive do
        password: "",
        password_error: nil,
        step: :nickname,
+       auth_token: nil,
+       submit_connect: false,
        page_title: "Connect - RetroHexChat"
      )}
   end
@@ -39,7 +44,10 @@ defmodule RetroHexChatWeb.ConnectLive do
           {:noreply,
            assign(socket, step: :password, nickname: nickname, password: "", password_error: nil)}
         else
-          {:noreply, push_navigate(socket, to: ~p"/chat?nickname=#{nickname}")}
+          {:noreply,
+           socket
+           |> assign(nickname: nickname, auth_token: nil, submit_connect: true)
+           |> push_event("submit_connect", %{})}
         end
 
       {:error, msg} ->
@@ -60,9 +68,9 @@ defmodule RetroHexChatWeb.ConnectLive do
           Phoenix.Token.sign(RetroHexChatWeb.Endpoint, "nickserv_identify", nickname)
 
         {:noreply,
-         push_navigate(socket,
-           to: ~p"/chat?nickname=#{nickname}&auth_token=#{token}"
-         )}
+         socket
+         |> assign(auth_token: token, submit_connect: true)
+         |> push_event("submit_connect", %{})}
 
       {:error, _msg} ->
         {:noreply, assign(socket, password_error: "Senha incorreta", password: "")}
@@ -76,7 +84,7 @@ defmodule RetroHexChatWeb.ConnectLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="connect-dialog" id="connect-root">
+    <div class="connect-dialog" id="connect-root" phx-hook="ConnectFormHook">
       <div class="window">
         <div class="title-bar">
           <div class="title-bar-text">Connect to RetroHexChat</div>
@@ -142,6 +150,11 @@ defmodule RetroHexChatWeb.ConnectLive do
           <% end %>
         </div>
       </div>
+      <form id="connect-session-form" action={~p"/chat/session"} method="post" class="u-hidden">
+        <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+        <input type="hidden" name="nickname" value={@nickname} />
+        <input :if={@auth_token} type="hidden" name="auth_token" value={@auth_token} />
+      </form>
     </div>
     """
   end

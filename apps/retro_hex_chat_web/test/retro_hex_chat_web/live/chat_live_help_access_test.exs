@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.ChatLiveHelpAccessTest do
   describe "US11: Help menu quick access" do
     test "open_help_at_topic with keyboard-shortcuts opens help at that topic", %{conn: conn} do
       nick = "HA1#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "open_help_at_topic", %{"topic" => "keyboard-shortcuts"})
 
@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLiveHelpAccessTest do
 
     test "open_help_at_topic with commands-overview opens help at commands", %{conn: conn} do
       nick = "HA2#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "open_help_at_topic", %{"topic" => "commands-overview"})
 
@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.ChatLiveHelpAccessTest do
 
     test "menu bar has IRC Commands item", %{conn: conn} do
       nick = "HA3#{uid()}"
-      {:ok, _view, html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
       assert html =~ "data-testid=\"menu-help-commands\""
       assert html =~ "IRC Commands"
@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.ChatLiveHelpAccessTest do
 
     test "menu bar has Keyboard Shortcuts item", %{conn: conn} do
       nick = "HA4#{uid()}"
-      {:ok, _view, html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
       assert html =~ "data-testid=\"menu-help-shortcuts\""
       assert html =~ "Keyboard Shortcuts"

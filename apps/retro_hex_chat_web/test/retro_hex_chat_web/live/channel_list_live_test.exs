@@ -68,23 +68,26 @@ defmodule RetroHexChatWeb.ChannelListLiveTest do
   end
 
   describe "join" do
-    test "navigates to /chat with join param", %{conn: conn} do
+    test "renders hidden form with join_channel", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/channels")
 
-      result =
+      html =
         view
         |> element(~s(button[phx-click="join"][phx-value-channel="#list_test"]))
         |> render_click()
 
-      assert {:error, {:live_redirect, %{to: "/chat?join=%23list_test"}}} = result
+      assert html =~ ~s(id="channel-join-form")
+      assert html =~ ~s(name="join_channel")
+      assert html =~ ~s(value="#list_test")
     end
   end
 
   describe "close" do
-    test "navigates to /chat", %{conn: conn} do
+    test "renders hidden form without join_channel", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/channels")
-      result = view |> element(~s(button[type="button"][phx-click="close"])) |> render_click()
-      assert {:error, {:live_redirect, %{to: "/chat"}}} = result
+      html = view |> element(~s(button[type="button"][phx-click="close"])) |> render_click()
+      assert html =~ ~s(id="channel-join-form")
+      refute html =~ ~s(name="join_channel")
     end
   end
 

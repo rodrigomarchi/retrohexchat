@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.HelpAccessE2ETest do
   describe "Help Menu Quick Access E2E" do
     test "IRC Commands menu item opens help at commands overview", %{conn: conn} do
       nick = "HE1#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "open_help_at_topic", %{"topic" => "commands-overview"})
 
@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.HelpAccessE2ETest do
 
     test "Keyboard Shortcuts menu item opens help at shortcuts topic", %{conn: conn} do
       nick = "HE2#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "open_help_at_topic", %{"topic" => "keyboard-shortcuts"})
 

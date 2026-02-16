@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.ChatLivePasteTest do
   describe "US5: Multi-Line Paste Dialog" do
     test "paste_lines event shows confirmation dialog", %{conn: conn, channel: channel} do
       nick = "Pst#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       lines = ["line1", "line2", "line3"]
@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.ChatLivePasteTest do
 
     test "paste_cancel clears dialog", %{conn: conn, channel: channel} do
       nick = "PsC#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "paste_lines", %{"lines" => ["a", "b"]})
@@ -41,7 +41,7 @@ defmodule RetroHexChatWeb.ChatLivePasteTest do
 
     test "paste_send dispatches messages", %{conn: conn, channel: channel} do
       nick = "PsS#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "paste_lines", %{"lines" => ["hello", "world"]})
@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLivePasteTest do
 
     test ">50 lines shows flood warning", %{conn: conn, channel: channel} do
       nick = "PsW#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       lines = Enum.map(1..55, &"line #{&1}")
@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.ChatLivePasteTest do
 
     test ">100 lines disables send", %{conn: conn, channel: channel} do
       nick = "PsD#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       lines = Enum.map(1..105, &"line #{&1}")
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.ChatLivePasteTest do
 
     test "empty lines are filtered out", %{conn: conn, channel: channel} do
       nick = "PsE#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       lines = ["hello", "", "  ", "world", ""]

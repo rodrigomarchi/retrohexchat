@@ -17,8 +17,8 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
       sender = "CtSnd#{System.unique_integer([:positive])}"
       receiver = "CtRcv#{System.unique_integer([:positive])}"
 
-      {:ok, _recv_view, _html} = live(conn, "/chat?nickname=#{receiver}")
-      {:ok, send_view, _html} = live(conn, "/chat?nickname=#{sender}")
+      {:ok, _recv_view, _html} = live(chat_conn(conn, receiver), "/chat")
+      {:ok, send_view, _html} = live(chat_conn(conn, sender), "/chat")
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{receiver}")
 
@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "shows error when target user is not online", %{conn: conn} do
       nick = "CtErr#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -47,7 +47,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "self-CTCP ping returns 0ms immediately", %{conn: conn} do
       nick = "CtSelf#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
   describe "US1: receiving a CTCP PING request" do
     test "auto-replies and shows request system message", %{conn: conn} do
       nick = "CtReq#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Subscribe to the SENDER's topic to catch the auto-reply
       # (the reply is broadcast to user:#{sender}, i.e., user:Bob)
@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "does not auto-reply when CTCP is disabled", %{conn: conn} do
       nick = "CtDis#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Disable CTCP via direct session manipulation
       disable_ctcp(view)
@@ -96,7 +96,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
   describe "US1: receiving a CTCP PING reply" do
     test "shows latency message", %{conn: conn} do
       nick = "CtRpl#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       request_id = "req_#{System.unique_integer([:positive])}"
       sent_at = System.monotonic_time(:millisecond)
@@ -116,7 +116,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
   describe "US1: CTCP timeout" do
     test "shows timeout message after timer fires", %{conn: conn} do
       nick = "CtTmo#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       request_id = "req_timeout_#{System.unique_integer([:positive])}"
 
@@ -137,8 +137,8 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
       sender = "CtRate#{System.unique_integer([:positive])}"
       receiver = "CtRcvR#{System.unique_integer([:positive])}"
 
-      {:ok, _recv_view, _html} = live(conn, "/chat?nickname=#{receiver}")
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{sender}")
+      {:ok, _recv_view, _html} = live(chat_conn(conn, receiver), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, sender), "/chat")
 
       # Send 3 requests (should succeed)
       for _ <- 1..3 do
@@ -162,7 +162,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
   describe "US1: no PM windows or notifications" do
     test "CTCP request does NOT create PM window", %{conn: conn} do
       nick = "CtNoPm#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_ctcp_request(view, "SomeUser", :ping)
 
@@ -172,7 +172,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "CTCP reply does NOT trigger play_sound event", %{conn: conn} do
       nick = "CtNoSnd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       # Consume connect sound event
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
@@ -185,7 +185,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
   describe "US1: usage errors" do
     test "shows usage when no args given", %{conn: conn} do
       nick = "CtUsg1#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -198,7 +198,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "shows usage when only target given", %{conn: conn} do
       nick = "CtUsg2#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -211,7 +211,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "shows error for invalid CTCP type", %{conn: conn} do
       nick = "CtInv#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -231,7 +231,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
   describe "US2: CTCP VERSION" do
     test "self-CTCP version returns client version string", %{conn: conn} do
       nick = "CtVer#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -243,7 +243,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "auto-replies with version string on request", %{conn: conn} do
       nick = "CtVRq#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:Bob")
 
@@ -261,7 +261,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
   describe "US2: CTCP TIME" do
     test "self-CTCP time returns server UTC time", %{conn: conn} do
       nick = "CtTim#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -274,7 +274,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "auto-replies with UTC time on request", %{conn: conn} do
       nick = "CtTRq#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:Bob")
 
@@ -289,7 +289,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
   describe "US2: CTCP FINGER" do
     test "self-CTCP finger returns idle time by default", %{conn: conn} do
       nick = "CtFng#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -302,7 +302,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "auto-replies with finger text on request", %{conn: conn} do
       nick = "CtFRq#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:Bob")
 
@@ -317,7 +317,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
   describe "US2: CTCP reply display" do
     test "VERSION reply is displayed as system message", %{conn: conn} do
       nick = "CtVDis#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       request_id = "req_v_#{System.unique_integer([:positive])}"
       sent_at = System.monotonic_time(:millisecond)
@@ -331,7 +331,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "TIME reply is displayed as system message", %{conn: conn} do
       nick = "CtTDis#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       request_id = "req_t_#{System.unique_integer([:positive])}"
       sent_at = System.monotonic_time(:millisecond)
@@ -345,7 +345,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "FINGER reply is displayed as system message", %{conn: conn} do
       nick = "CtFDis#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       request_id = "req_f_#{System.unique_integer([:positive])}"
       sent_at = System.monotonic_time(:millisecond)
@@ -371,7 +371,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
   describe "US3: CTCP settings dialog" do
     test "opens from Tools menu", %{conn: conn} do
       nick = "CtDlg#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_ctcp_settings_dialog")
 
@@ -381,7 +381,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "closes dialog", %{conn: conn} do
       nick = "CtDlgC#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_ctcp_settings_dialog")
       render_click(view, "close_ctcp_settings_dialog")
@@ -392,7 +392,7 @@ defmodule RetroHexChatWeb.ChatLiveCtcpTest do
 
     test "saves settings and reflects in CTCP replies", %{conn: conn} do
       nick = "CtDlgS#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_ctcp_settings_dialog")
 

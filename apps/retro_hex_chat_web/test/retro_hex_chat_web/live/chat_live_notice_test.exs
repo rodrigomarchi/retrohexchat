@@ -18,8 +18,8 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
       receiver = "NtcRcv#{System.unique_integer([:positive])}"
 
       # Connect both users
-      {:ok, _recv_view, _html} = live(conn, "/chat?nickname=#{receiver}")
-      {:ok, send_view, _html} = live(conn, "/chat?nickname=#{sender}")
+      {:ok, _recv_view, _html} = live(chat_conn(conn, receiver), "/chat")
+      {:ok, send_view, _html} = live(chat_conn(conn, sender), "/chat")
 
       # Subscribe to receiver's topic to verify broadcast
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{receiver}")
@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
 
     test "shows error when target user is not online", %{conn: conn} do
       nick = "NtcErr#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
   describe "US1: receiving a notice" do
     test "renders notice with -Nick- prefix and .chat-notice class", %{conn: conn} do
       nick = "NtcRdr#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_notice(view, "Bob", "hey there")
 
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
 
     test "notice from ignored user is silently dropped", %{conn: conn} do
       nick = "NtcIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Ignore the sender
       view
@@ -77,7 +77,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
 
     test "notice from user ignored with :notices type is dropped", %{conn: conn} do
       nick = "NtcIgnT#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Ignore only notices from sender
       view
@@ -92,7 +92,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
 
     test "notice does NOT trigger play_sound event", %{conn: conn} do
       nick = "NtcSnd2#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       # Consume connect sound event
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
@@ -103,7 +103,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
 
     test "notice does NOT create PM window or treebar entry", %{conn: conn} do
       nick = "NtcNoPm#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_notice(view, "SomeUser", "no pm please")
 
@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
       ch = "#ntc_ch#{System.unique_integer([:positive])}"
       ensure_channel(ch)
       nick = "ChNtc#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Join the channel
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
@@ -143,7 +143,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
       ch = "#ntc_nomem#{System.unique_integer([:positive])}"
       ensure_channel(ch)
       nick = "ChNtcE#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -157,7 +157,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
   describe "US2: receiving a channel notice" do
     test "renders channel notice with -Nick- prefix in chat stream", %{conn: conn} do
       nick = "ChRcv#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_channel_notice(view, "Alice", "maintenance soon", "#lobby")
 
@@ -169,7 +169,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
 
     test "channel notice from ignored user is silently dropped", %{conn: conn} do
       nick = "ChIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore SpamBot"})
 
@@ -181,7 +181,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
 
     test "channel notice does NOT trigger play_sound event", %{conn: conn} do
       nick = "ChSnd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       # Consume connect sound event
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
@@ -196,7 +196,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
   describe "US3: /notice_routing show and set" do
     test "show current routing displays default :active", %{conn: conn} do
       nick = "RtShow#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -208,7 +208,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
 
     test "set routing to status shows confirmation", %{conn: conn} do
       nick = "RtSet#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -220,7 +220,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
 
     test "set routing to sender shows confirmation", %{conn: conn} do
       nick = "RtSdr#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -232,7 +232,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
 
     test "invalid routing value shows error", %{conn: conn} do
       nick = "RtInv#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -246,7 +246,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
   describe "US3: routing behavior for received notices" do
     test "notice with :active routing inserts into chat_messages", %{conn: conn} do
       nick = "RtAct#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Default routing is :active
       send_notice(view, "Alice", "active-routed notice")
@@ -260,7 +260,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
       conn: conn
     } do
       nick = "RtSts#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Set routing to status
       view
@@ -280,7 +280,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
       conn: conn
     } do
       nick = "RtStF#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Set routing to status (no status tab open)
       view

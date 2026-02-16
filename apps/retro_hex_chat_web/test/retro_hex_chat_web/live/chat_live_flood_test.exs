@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
   describe "US1: duplicate message detection in channels" do
     test "messages below threshold are displayed normally", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Spammer", "hello", "#lobby")
       send_new_message(view, "Spammer", "hello", "#lobby")
@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "duplicate messages are dropped after threshold", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Default spam_threshold is 3, send 3 duplicates to hit threshold
       send_new_message(view, "Spammer", "spam spam spam", "#lobby")
@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "different senders are tracked independently", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Fill up threshold for SpammerA
       send_new_message(view, "SpammerA", "same msg", "#lobby")
@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "different channels are tracked independently", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Fill up threshold in #lobby
       send_new_message(view, "Spammer", "repeat", "#lobby")
@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "system messages are never filtered by duplicate detection", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Send the same system message many times
       send_system_message(view, "System", "User joined", "#lobby")
@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
   describe "US1: duplicate message detection in PMs" do
     test "duplicate PMs are tracked by the duplicate tracker", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Send 3 duplicate PMs to hit threshold
       send_new_pm(view, "Spammer", nick, "buy my product")
@@ -109,7 +109,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
   describe "US1: flood protection assigns are initialized" do
     test "duplicate_tracker assign is initialized", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       state = :sys.get_state(view.pid)
       assigns = state.socket.assigns
@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "flood_tracker assign is initialized", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       state = :sys.get_state(view.pid)
       assigns = state.socket.assigns
@@ -135,7 +135,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
   describe "US2: auto-ignore triggers on flood" do
     test "flooding triggers auto-ignore and shows system message", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Default flood_threshold is 10, flood_window_seconds is 15
       # Send 10 messages to hit threshold
@@ -149,7 +149,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "auto-ignore expiry removes ignore and shows message", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Trigger auto-ignore
       for i <- 1..10 do
@@ -165,7 +165,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "messages after auto-ignore are filtered", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Trigger auto-ignore
       for i <- 1..10 do
@@ -181,7 +181,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "user's own messages do not trigger auto-ignore", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Send messages from the user themselves
       for i <- 1..15 do
@@ -194,7 +194,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "system messages don't trigger flood tracking", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Send many system messages from same author
       for _i <- 1..15 do
@@ -207,7 +207,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "manual un-ignore after auto-ignore sets cooldown", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Trigger auto-ignore
       for i <- 1..10 do
@@ -248,7 +248,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
   describe "US2: auto-ignore in PMs" do
     test "PM flooding triggers auto-ignore", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Send 10 PMs from same sender
       for i <- 1..10 do
@@ -265,7 +265,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
   describe "US3: CTCP reply rate limiting" do
     test "CTCP replies within limit are sent", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Default ctcp_reply_limit is 2, window is 10 seconds
       # First 2 requests should generate replies
@@ -285,7 +285,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "CTCP replies exceeding limit are silently dropped", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Send 3 requests — only first 2 should trigger replies
       send_ctcp_request(view, "Requester", :version, "req-1")
@@ -315,7 +315,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
   describe "US4: settings dialog" do
     test "open and close dialog", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_flood_protection_dialog")
       html = render(view)
@@ -329,7 +329,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "save settings updates session", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_flood_protection_dialog")
 
@@ -351,7 +351,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "reset to defaults restores default values", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # First save custom settings
       render_click(view, "open_flood_protection_dialog")
@@ -377,7 +377,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
     test "menu Tools > Flood Protection opens dialog", %{conn: conn} do
       nick = "Flood#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_flood_protection_dialog")
 
