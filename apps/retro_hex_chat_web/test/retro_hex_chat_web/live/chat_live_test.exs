@@ -383,44 +383,91 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   # ── F4: nick change broadcast ───────────────────────────
 
-  describe "nick change broadcast" do
-    test "/nick updates nickname locally", %{conn: conn} do
+  describe "nick change dialog" do
+    test "/nick shows confirmation dialog instead of changing immediately", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "OldNick1"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/nick NewNick1"})
       html = render(view)
+      assert html =~ "nick-change-dialog"
       assert html =~ "NewNick1"
-      assert html =~ "You are now known as"
+      assert html =~ "nova sessão"
     end
 
-    test "/nick broadcasts system message to shared channels", %{conn: conn} do
-      ensure_channel("#nick_bcast")
-      {:ok, view, _html} = live(chat_conn(conn, "NickBcast1"), "/chat")
-      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_bcast"})
+    test "cancel closes the dialog without changes", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "CancelNick"), "/chat")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/nick Target1"})
+      assert render(view) =~ "nick-change-dialog"
 
-      # Subscribe to the channel to observe broadcasts
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#nick_bcast")
-
-      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/nick NickBcast2"})
-
-      assert_receive {:nick_changed, %{old_nick: "NickBcast1", new_nick: "NickBcast2"}}, 1000
+      view |> element("[data-testid=\"nick-change-cancel-btn\"]") |> render_click()
+      refute render(view) =~ "nick-change-dialog"
     end
 
-    test "/nick updates Presence metadata", %{conn: conn} do
-      ensure_channel("#nick_pres")
-      {:ok, view, _html} = live(chat_conn(conn, "PreNick"), "/chat")
-      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_pres"})
-      Process.sleep(50)
+    test "Escape closes the dialog", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "EscNick"), "/chat")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/nick EscTarget"})
+      assert render(view) =~ "nick-change-dialog"
 
-      users_before = Tracker.list_users("channel:#nick_pres")
-      assert "PreNick" in Enum.map(users_before, & &1.nickname)
+      render_hook(view, "cancel_nick_change", %{})
+      refute render(view) =~ "nick-change-dialog"
+    end
 
-      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/nick PostNick"})
-      Process.sleep(50)
+    test "unregistered nick confirm sets nick_change_target for POST", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "UnregNick"), "/chat")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/nick FreeNick1"})
+      assert render(view) =~ "nick-change-dialog"
 
-      users_after = Tracker.list_users("channel:#nick_pres")
-      nicks = Enum.map(users_after, & &1.nickname)
-      assert "PostNick" in nicks
-      refute "PreNick" in nicks
+      view |> element("[data-testid=\"nick-change-confirm-btn\"]") |> render_click()
+      html = render(view)
+      refute html =~ "nick-change-dialog"
+      assert html =~ "FreeNick1"
+    end
+
+    test "registered nick shows password field", %{conn: conn} do
+      NickServ.register("RegTarget1", "secret123")
+      {:ok, view, _html} = live(chat_conn(conn, "RegNick1"), "/chat")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/nick RegTarget1"})
+      html = render(view)
+      assert html =~ "nick-change-dialog"
+      assert html =~ "nick-change-password"
+      assert html =~ "NickServ"
+    end
+
+    test "registered nick with wrong password shows error", %{conn: conn} do
+      NickServ.register("RegTarget2", "correct_pass")
+      {:ok, view, _html} = live(chat_conn(conn, "RegNick2"), "/chat")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/nick RegTarget2"})
+
+      view
+      |> element("[data-testid=\"nick-change-confirm-btn\"]")
+      |> render_click(%{"password" => "wrong_pass"})
+
+      html = render(view)
+      assert html =~ "Senha incorreta"
+      assert html =~ "nick-change-dialog"
+    end
+
+    test "registered nick with correct password sets target and token for POST", %{conn: conn} do
+      NickServ.register("RegTarget3", "correct_pass")
+      {:ok, view, _html} = live(chat_conn(conn, "RegNick3"), "/chat")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/nick RegTarget3"})
+
+      view
+      |> element("[data-testid=\"nick-change-confirm-btn\"]")
+      |> render_click(%{"password" => "correct_pass"})
+
+      html = render(view)
+      refute html =~ "nick-change-dialog"
+      assert html =~ "RegTarget3"
+    end
+
+    test "password field updates via update_nick_change_password event", %{conn: conn} do
+      NickServ.register("RegTarget4", "pass")
+      {:ok, view, _html} = live(chat_conn(conn, "RegNick4"), "/chat")
+      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/nick RegTarget4"})
+
+      render_hook(view, "update_nick_change_password", %{"value" => "typed"})
+      html = render(view)
+      assert html =~ "nick-change-dialog"
     end
 
     test "receiving nick_changed broadcast shows system message", %{conn: conn} do

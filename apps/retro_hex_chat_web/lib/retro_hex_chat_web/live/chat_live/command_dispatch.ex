@@ -25,7 +25,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       part_channel: 2,
       handle_pm_send: 3,
       handle_notice_send: 4,
-      safe_track_user: 2,
       safe_untrack_user: 2
     ]
 
@@ -213,8 +212,18 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   defp handle_dispatch_result(socket, session, {:ok, :action, %{content: content}}),
     do: handle_action_message(socket, session, content)
 
-  defp handle_dispatch_result(socket, _session, {:ok, :nick_change, new_nick}),
-    do: handle_nick_change(socket, new_nick)
+  defp handle_dispatch_result(socket, _session, {:ok, :nick_change, new_nick}) do
+    registered = NickServ.registered?(new_nick)
+
+    assign(socket,
+      nick_change_dialog: %{
+        target_nick: new_nick,
+        registered: registered,
+        password: "",
+        password_error: nil
+      }
+    )
+  end
 
   defp handle_dispatch_result(socket, _session, {:ok, :quit, reason}),
     do: handle_quit(socket, reason)
@@ -277,55 +286,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       true ->
         socket
     end
-  end
-
-  # ── Private: nick change ──────────────────────────────────
-
-  defp handle_nick_change(socket, new_nick) do
-    old_nick = socket.assigns.session.nickname
-    session = Session.update_nickname(socket.assigns.session, new_nick)
-
-    Enum.each(session.channels, fn channel ->
-      try do
-        Server.rename_user(channel, old_nick, new_nick)
-      rescue
-        e ->
-          Logger.warning("Failed to rename #{old_nick}->#{new_nick} in #{channel}: #{inspect(e)}")
-      end
-    end)
-
-    Enum.each(session.channels, fn channel ->
-      case Phoenix.PubSub.broadcast(
-             RetroHexChat.PubSub,
-             "channel:#{channel}",
-             {:nick_changed, %{old_nick: old_nick, new_nick: new_nick}}
-           ) do
-        :ok ->
-          :ok
-
-        {:error, reason} ->
-          Logger.warning(
-            "PubSub nick_changed broadcast to channel:#{channel} failed: #{inspect(reason)}"
-          )
-      end
-    end)
-
-    Enum.each(session.channels, fn channel ->
-      safe_untrack_user("channel:#{channel}", old_nick)
-      safe_track_user("channel:#{channel}", new_nick)
-    end)
-
-    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "user:#{old_nick}")
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{new_nick}")
-
-    users =
-      Enum.map(socket.assigns.channel_users, fn user ->
-        if user.nickname == old_nick, do: %{user | nickname: new_nick}, else: user
-      end)
-
-    socket
-    |> stream_insert(:chat_messages, system_message("You are now known as #{new_nick}"))
-    |> assign(session: session, channel_users: users)
   end
 
   # ── Private: quit ─────────────────────────────────────────

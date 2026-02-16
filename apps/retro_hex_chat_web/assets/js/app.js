@@ -30,6 +30,7 @@ import TreebarHook from "./hooks/treebar_hook";
 import ContextualTipsHook from "./hooks/contextual_tips_hook";
 import NotificationDispatcherHook from "./hooks/notification_dispatcher_hook";
 import MessageInteractionsHook from "./hooks/message_interactions_hook";
+import NickChangeFormHook from "./hooks/nick_change_form_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
 
 const Hooks = {
@@ -47,6 +48,7 @@ const Hooks = {
   KeyboardHook: KeyboardHook,
   LagHook: LagHook,
   MessageInteractionsHook: MessageInteractionsHook,
+  NickChangeFormHook: NickChangeFormHook,
   NicklistHook: NicklistHook,
   NotificationDispatcherHook: NotificationDispatcherHook,
   NotifyListHook: NotifyListHook,

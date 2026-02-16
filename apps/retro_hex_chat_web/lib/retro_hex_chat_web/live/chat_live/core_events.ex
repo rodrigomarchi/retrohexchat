@@ -28,7 +28,9 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{Policy, Queries, Service, UnreadTracker, UserPreferences}
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Parser, Registry}
+  alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive
+  alias RetroHexChatWeb.Endpoint
 
   # -- send_input --
 
@@ -489,6 +491,36 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     {:halt, assign(socket, delete_confirm: nil)}
   end
 
+  # -- confirm_nick_change --
+
+  def handle_event("confirm_nick_change", params, socket) do
+    dialog = socket.assigns.nick_change_dialog
+
+    if dialog do
+      {:halt, handle_nick_change_confirm(socket, dialog, params)}
+    else
+      {:halt, socket}
+    end
+  end
+
+  # -- cancel_nick_change --
+
+  def handle_event("cancel_nick_change", _params, socket) do
+    {:halt, assign(socket, nick_change_dialog: nil)}
+  end
+
+  # -- update_nick_change_password --
+
+  def handle_event("update_nick_change_password", %{"value" => value}, socket) do
+    case socket.assigns.nick_change_dialog do
+      %{} = dialog ->
+        {:halt, assign(socket, nick_change_dialog: %{dialog | password: value})}
+
+      nil ->
+        {:halt, socket}
+    end
+  end
+
   # -- Catch-all: pass unhandled events to the next hook --
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
@@ -648,6 +680,31 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     case Enum.find(sub_options, &String.starts_with?(first_arg, &1.flag)) do
       nil -> nil
       opt -> "Você está definindo: #{opt.flag} (#{opt.label})"
+    end
+  end
+
+  defp handle_nick_change_confirm(socket, dialog, params) do
+    target = dialog.target_nick
+    password = params["password"] || ""
+
+    if dialog.registered do
+      case NickServ.identify(target, password) do
+        {:ok, _} ->
+          token = Phoenix.Token.sign(Endpoint, "nickserv_identify", target)
+
+          socket
+          |> assign(nick_change_dialog: nil, nick_change_target: target, nick_change_token: token)
+          |> push_event("submit_nick_change", %{})
+
+        {:error, _} ->
+          assign(socket,
+            nick_change_dialog: %{dialog | password_error: "Senha incorreta", password: ""}
+          )
+      end
+    else
+      socket
+      |> assign(nick_change_dialog: nil, nick_change_target: target, nick_change_token: nil)
+      |> push_event("submit_nick_change", %{})
     end
   end
 

@@ -1,5 +1,16 @@
 <div id="reconnect-hook" phx-hook="ReconnectHook" style="display: none;"></div>
 <div id="title-flash" phx-hook="TitleFlashHook" style="display: none;"></div>
+<div id="nick-change-hook" phx-hook="NickChangeFormHook" style="display: none;"></div>
+<form id="nick-change-session-form" action={~p"/chat/session"} method="post" class="u-hidden">
+  <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+  <input type="hidden" name="nickname" value={@nick_change_target || ""} />
+  <input
+    :if={@nick_change_token}
+    type="hidden"
+    name="auth_token"
+    value={@nick_change_token}
+  />
+</form>
 <div id="options-hook" phx-hook="OptionsHook" style="display: none;"></div>
 <div id="key-capture-hook" phx-hook="KeyBindingCaptureHook" style="display: none;"></div>
 <div id="search-highlight-hook" phx-hook="SearchHighlightHook" style="display: none;"></div>
@@ -366,6 +377,14 @@
   <RetroHexChatWeb.Components.DeleteConfirmDialog.delete_confirm_dialog
     visible={@delete_confirm != nil}
     message_id={@delete_confirm && @delete_confirm.message_id}
+  />
+
+  <RetroHexChatWeb.Components.NickChangeDialog.nick_change_dialog
+    visible={@nick_change_dialog != nil}
+    target_nick={(@nick_change_dialog && @nick_change_dialog.target_nick) || ""}
+    registered={(@nick_change_dialog && @nick_change_dialog.registered) || false}
+    password={(@nick_change_dialog && @nick_change_dialog.password) || ""}
+    password_error={@nick_change_dialog && @nick_change_dialog.password_error}
   />
 
   <RetroHexChatWeb.Components.NotifyListWindow.notify_list_window

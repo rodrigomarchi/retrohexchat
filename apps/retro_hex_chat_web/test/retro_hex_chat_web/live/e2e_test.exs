@@ -857,12 +857,13 @@ defmodule RetroHexChatWeb.E2ETest do
   # ══════════════════════════════════════════════════════════════
 
   describe "Screen 9: Nick changes" do
-    test "9.1 /nick updates status bar and nicklist", %{conn: conn} do
+    test "9.1 /nick shows confirmation dialog", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "OldNickE2E"), "/chat")
       send_command(view, "/nick NewNickE2E")
       html = render(view)
+      assert html =~ "nick-change-dialog"
       assert html =~ "NewNickE2E"
-      assert html =~ "You are now known as"
+      assert html =~ "nova sessão"
     end
 
     test "9.2 nick_changed broadcast shows system message", %{conn: conn} do
@@ -872,20 +873,22 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ "now known as"
     end
 
-    test "9.3 /nick updates Tracker", %{conn: conn} do
-      ch = unique_channel("nicktrack")
-      ensure_channel(ch)
+    test "9.3 /nick shows dialog and confirm prepares session POST", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "TrackOld"), "/chat")
-      send_command(view, "/join #{ch}")
-      Process.sleep(50)
-
       send_command(view, "/nick TrackNew")
-      Process.sleep(50)
 
-      users = Tracker.list_users("channel:#{ch}")
-      nicks = Enum.map(users, & &1.nickname)
-      assert "TrackNew" in nicks
-      refute "TrackOld" in nicks
+      # Dialog should be visible
+      html = render(view)
+      assert html =~ "nick-change-dialog"
+      assert html =~ "TrackNew"
+
+      # Confirm the nick change (unregistered nick)
+      view |> element("[data-testid=\"nick-change-confirm-btn\"]") |> render_click()
+
+      html = render(view)
+      refute html =~ "nick-change-dialog"
+      # Hidden form should have the target nick
+      assert html =~ "TrackNew"
     end
 
     test "9.4 /nick !!invalid shows error", %{conn: conn} do

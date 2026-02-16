@@ -143,10 +143,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         keywords: ["nick", "nickname", "rename", "change name"],
         content:
           "<h3>/nick</h3>" <>
-            "<p>Change your nickname.</p>" <>
+            "<p>Change your nickname. A confirmation dialog will appear before the change is applied, " <>
+            "since changing your nickname starts a new chat session.</p>" <>
             "<h4>Syntax</h4>" <>
             "<pre>/nick &lt;new_nickname&gt;</pre>" <>
             "<p>Nicknames must be 1–16 characters: letters, numbers, and underscores.</p>" <>
+            "<h4>Confirmation</h4>" <>
+            "<p>When you use /nick, a dialog will ask you to confirm the change. " <>
+            "If the target nickname is registered with NickServ, you will also need to enter the password.</p>" <>
             "<h4>Examples</h4>" <>
             "<pre>/nick CoolUser42</pre>" <>
             "<h4>See Also</h4>" <>

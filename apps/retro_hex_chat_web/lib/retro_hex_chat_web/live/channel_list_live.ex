@@ -78,7 +78,11 @@ defmodule RetroHexChatWeb.ChannelListLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="connect-dialog dialog-window--450" id="channel-list-root" phx-hook="ChannelListFormHook">
+    <div
+      class="connect-dialog dialog-window--450"
+      id="channel-list-root"
+      phx-hook="ChannelListFormHook"
+    >
       <div class="window">
         <div class="title-bar">
           <div class="title-bar-text">Channel List</div>
