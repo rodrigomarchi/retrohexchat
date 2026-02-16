@@ -39,6 +39,11 @@ connection-progress__icon
 connection-progress__label
 # JS-hook only — queried via querySelector in connection_banner_hook.js
 reconnect-overlay--visible
+# False positives — Portuguese text parsed as class refs from p2p_lobby.ex connection_state_class
+Conectado
+Falha
+na
+conexao
 
 [dynamic-prefixes]
 # Prefixes with dynamic suffixes (e.g. chat-message--#{type})

@@ -34,6 +34,7 @@ import NickChangeFormHook from "./hooks/nick_change_form_hook";
 import P2PCapabilityHook from "./hooks/p2p_capability_hook";
 import P2PSessionHook from "./hooks/p2p_session_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
+import WebRTCHook from "./hooks/webrtc_hook";
 
 const AutoFocusHook = {
   mounted() {
@@ -73,6 +74,7 @@ const Hooks = {
   TitleFlashHook: TitleFlashHook,
   TreebarHook: TreebarHook,
   URLCatcherHook: URLCatcherHook,
+  WebRTCHook: WebRTCHook,
 };
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");

@@ -83,6 +83,20 @@ defmodule RetroHexChat.P2P.Service do
     SessionServer.respond_action(token, user_id, nick || "unknown", accepted?)
   end
 
+  @spec start_signaling(String.t(), integer(), integer()) :: %{
+          creator_payload: map(),
+          peer_payload: map()
+        }
+  def start_signaling(_token, creator_id, peer_id) do
+    creator_ice = RetroHexChat.P2P.ice_servers(to_string(creator_id))
+    peer_ice = RetroHexChat.P2P.ice_servers(to_string(peer_id))
+
+    %{
+      creator_payload: %{ice_servers: creator_ice, role: "initiator"},
+      peer_payload: %{ice_servers: peer_ice}
+    }
+  end
+
   # --- Private Helpers ---
 
   defp insert_session(_signed_token, creator_id, peer_id, session_type) do

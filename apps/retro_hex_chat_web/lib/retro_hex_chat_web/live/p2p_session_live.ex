@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.Schema.Session
+  alias RetroHexChat.P2P.SignalingRateLimit
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChatWeb.Components.P2pLobby
 
@@ -37,6 +38,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     ~H"""
     <div id="p2p-session" class="p2p-session" phx-hook="P2PSessionHook">
       <div id="p2p-capabilities" phx-hook="P2PCapabilityHook"></div>
+      <div id="p2p-webrtc" phx-hook="WebRTCHook"></div>
       <P2pLobby.p2p_lobby
         session={@session}
         nickname={@nickname}
@@ -48,6 +50,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         session_status={@session_status}
         inactivity_warning={@inactivity_warning}
         role={@role}
+        webrtc_state={@webrtc_state}
+        retry_attempt={@retry_attempt}
       />
     </div>
     """
@@ -56,6 +60,29 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   # --- PubSub Handlers ---
 
   @impl true
+  def handle_info(
+        %{event: "p2p_status_changed", payload: %{status: "connecting"}},
+        socket
+      ) do
+    user_id = socket.assigns.user_id
+    role = socket.assigns.role
+
+    ice_servers = P2P.ice_servers(to_string(user_id))
+
+    socket = assign(socket, session_status: "connecting")
+
+    socket =
+      case role do
+        :creator ->
+          push_event(socket, "p2p_start_offer", %{ice_servers: ice_servers, role: "initiator"})
+
+        :peer ->
+          push_event(socket, "p2p_start_answer", %{ice_servers: ice_servers})
+      end
+
+    {:noreply, socket}
+  end
+
   def handle_info(%{event: "p2p_status_changed", payload: %{status: status}}, socket) do
     if Session.terminal?(status) do
       {:noreply,
@@ -119,6 +146,18 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     {:noreply, assign(socket, inactivity_warning: true)}
   end
 
+  def handle_info(
+        %{event: "p2p_signal", payload: %{from: from_id} = payload},
+        socket
+      ) do
+    # Only forward signals from the other peer
+    if from_id != socket.assigns.user_id do
+      {:noreply, push_event(socket, "p2p_signal", payload)}
+    else
+      {:noreply, socket}
+    end
+  end
+
   def handle_info(%{event: "p2p_peer_joined", payload: %{user_id: uid}}, socket) do
     if uid != socket.assigns.user_id do
       socket = assign(socket, peer_online: true)
@@ -171,6 +210,65 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     }
 
     {:noreply, assign(socket, capabilities: caps)}
+  end
+
+  def handle_event("p2p_signal", params, socket) do
+    rate_limiter = SignalingRateLimit.configured_module()
+
+    with :ok <- rate_limiter.check_signal_rate(socket.assigns.token, socket.assigns.user_id),
+         {:ok, validated} <- P2P.validate_signal(params) do
+      payload = Map.put(validated, :from, socket.assigns.user_id)
+
+      Phoenix.PubSub.broadcast(
+        @pubsub,
+        "p2p:#{socket.assigns.token}",
+        %{event: "p2p_signal", payload: payload}
+      )
+
+      {:noreply, socket}
+    else
+      {:error, :rate_limited} -> {:noreply, socket}
+      {:error, :invalid_signal} -> {:noreply, socket}
+    end
+  end
+
+  def handle_event("p2p_connected", _params, socket) do
+    case P2P.transition_status(socket.assigns.token, :active) do
+      :ok ->
+        {:noreply, assign(socket, session_status: "active")}
+
+      {:error, _reason} ->
+        # Ignore — session not in a state that allows this transition
+        {:noreply, socket}
+    end
+  end
+
+  def handle_event("p2p_failed", %{"reason" => reason}, socket) do
+    require Logger
+    Logger.warning("P2P connection failed: #{reason}, token: #{socket.assigns.token}")
+
+    case P2P.transition_status(socket.assigns.token, :failed) do
+      :ok ->
+        {:noreply, assign(socket, session_status: "failed", webrtc_state: "failed")}
+
+      {:error, _reason} ->
+        {:noreply, socket}
+    end
+  end
+
+  def handle_event("p2p_retry", %{"attempt" => attempt}, socket) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "p2p:#{socket.assigns.token}",
+      %{event: "p2p_retry", payload: %{attempt: attempt}}
+    )
+
+    {:noreply, assign(socket, webrtc_state: "retrying", retry_attempt: attempt)}
+  end
+
+  def handle_event("p2p_state_change", %{"state" => state}, socket) do
+    label = webrtc_state_label(state, socket.assigns[:retry_attempt])
+    {:noreply, assign(socket, webrtc_state: label)}
   end
 
   def handle_event("p2p_leave", _params, socket) do
@@ -249,7 +347,9 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         capabilities: %{webrtc: nil, getUserMedia: nil, dataChannel: nil},
         session_status: db_session.status,
         inactivity_warning: false,
-        permission_granted: %{}
+        permission_granted: %{},
+        webrtc_state: nil,
+        retry_attempt: nil
       )
 
     {:ok, socket}
@@ -320,6 +420,12 @@ defmodule RetroHexChatWeb.P2PSessionLive do
       _ -> "microphone"
     end
   end
+
+  defp webrtc_state_label("connecting", _attempt), do: "Conectando..."
+  defp webrtc_state_label("connected", _attempt), do: "Conectado"
+  defp webrtc_state_label("disconnected", _attempt), do: "Reconectando..."
+  defp webrtc_state_label("failed", _attempt), do: "Falha na conexao"
+  defp webrtc_state_label(_state, _attempt), do: nil
 
   defp close_reason_message("user_closed"), do: "Sessao P2P encerrada."
   defp close_reason_message("rejected"), do: "Convite P2P recusado."

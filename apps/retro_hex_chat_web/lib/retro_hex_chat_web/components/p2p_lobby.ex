@@ -15,6 +15,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
   attr :session_status, :string, required: true
   attr :inactivity_warning, :boolean, default: false
   attr :role, :atom, required: true
+  attr :webrtc_state, :string, default: nil
+  attr :retry_attempt, :integer, default: nil
 
   @spec p2p_lobby(map()) :: Phoenix.LiveView.Rendered.t()
   def p2p_lobby(assigns) do
@@ -30,8 +32,13 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
       </div>
       <div class="window-body p2p-lobby__body">
         <.p2p_inactivity_warning :if={@inactivity_warning} />
+        <.p2p_connection_state
+          :if={@webrtc_state}
+          webrtc_state={@webrtc_state}
+          retry_attempt={@retry_attempt}
+        />
 
-        <div :if={@session_status == "connecting"} class="p2p-lobby__connecting">
+        <div :if={@session_status == "connecting" && !@webrtc_state} class="p2p-lobby__connecting">
           <p>Aguardando conexao...</p>
         </div>
 
@@ -227,6 +234,29 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     </div>
     """
   end
+
+  attr :webrtc_state, :string, required: true
+  attr :retry_attempt, :integer, default: nil
+
+  defp p2p_connection_state(assigns) do
+    ~H"""
+    <div class={"p2p-lobby-connection #{connection_state_class(@webrtc_state)}"}>
+      <span class="p2p-lobby-connection__indicator"></span>
+      <span class="p2p-lobby-connection__label">
+        {@webrtc_state}
+        <span :if={@retry_attempt && String.contains?(@webrtc_state, "Reconectando")}>
+          (tentativa {@retry_attempt}/3)
+        </span>
+      </span>
+    </div>
+    """
+  end
+
+  defp connection_state_class("Conectado"), do: "p2p-lobby-connection--connected"
+  defp connection_state_class("Conectando..."), do: "p2p-lobby-connection--connecting"
+  defp connection_state_class("Reconectando..."), do: "p2p-lobby-connection--retrying"
+  defp connection_state_class("Falha na conexao"), do: "p2p-lobby-connection--failed"
+  defp connection_state_class(_), do: ""
 
   defp action_label("audio_call"), do: "Chamada de Audio"
   defp action_label("video_call"), do: "Chamada de Video"

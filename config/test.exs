@@ -42,3 +42,10 @@ config :phoenix,
 config :retro_hex_chat,
   admins: ["TestAdmin"],
   server_operators: ["TestOper"]
+
+# TURN server test overrides — disable listener, use random port, fixed secrets
+config :retro_hex_chat,
+  turn_listen_port: 0,
+  turn_listener_count: 0,
+  turn_auth_secret: "test-auth-secret-64-bytes-long-padding-padding-padding-padding-pad",
+  turn_nonce_secret: "test-nonce-secret-64-bytes-long-padding-padding-padding-padding-pad"

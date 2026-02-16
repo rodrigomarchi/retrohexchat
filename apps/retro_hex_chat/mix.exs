@@ -46,6 +46,7 @@ defmodule RetroHexChat.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       {:phoenix_html, "~> 4.0"},
       {:req, "~> 0.5"},
+      {:ex_stun, "~> 0.1"},
 
       # Test dependencies
       {:mox, "~> 1.0", only: :test},
