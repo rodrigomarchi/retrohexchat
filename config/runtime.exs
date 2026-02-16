@@ -17,6 +17,18 @@ config :retro_hex_chat,
   turn_auth_secret: :crypto.strong_rand_bytes(64),
   turn_nonce_secret: :crypto.strong_rand_bytes(64)
 
+# File transfer runtime config (all environments)
+config :retro_hex_chat,
+  file_transfer_max_size_mb:
+    String.to_integer(System.get_env("FILE_TRANSFER_MAX_SIZE_MB") || "500"),
+  file_transfer_blocked_extensions:
+    (System.get_env("FILE_TRANSFER_BLOCKED_EXTENSIONS") ||
+       ".exe,.bat,.cmd,.com,.msi,.scr,.pif,.vbs,.vbe,.js,.jse,.wsf,.wsh,.ps1,.reg")
+    |> String.split(",", trim: true)
+    |> Enum.map(&String.trim/1),
+  file_transfer_chunk_size_kb:
+    String.to_integer(System.get_env("FILE_TRANSFER_CHUNK_SIZE_KB") || "64")
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||

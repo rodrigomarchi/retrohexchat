@@ -52,6 +52,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         role={@role}
         webrtc_state={@webrtc_state}
         retry_attempt={@retry_attempt}
+        file_transfer={@file_transfer}
       />
     </div>
     """
@@ -276,6 +277,146 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     {:noreply, socket}
   end
 
+  # --- File Transfer Events ---
+
+  def handle_event("ft_offer_sent", params, socket) do
+    ft = %{
+      status: "offering",
+      file_name: params["fileName"],
+      file_size: params["fileSize"],
+      formatted_size: params["formattedSize"],
+      sender_nick: socket.assigns.nickname
+    }
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
+  def handle_event("ft_offer_received", params, socket) do
+    ft = %{
+      status: "offer_received",
+      file_name: params["fileName"],
+      file_size: params["fileSize"],
+      formatted_size: params["formattedSize"],
+      sender_nick: socket.assigns.peer_nick
+    }
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
+  def handle_event("ft_respond", %{"accepted" => accepted}, socket) do
+    if accepted == "true" do
+      {:noreply, push_event(socket, "ft_accept", %{})}
+    else
+      {:noreply, push_event(socket, "ft_reject", %{})}
+    end
+  end
+
+  def handle_event("ft_accepted", _params, socket) do
+    ft =
+      Map.merge(socket.assigns.file_transfer || %{}, %{
+        status: "transferring",
+        percent: 0,
+        speed: "0 B/s",
+        eta: "--"
+      })
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
+  def handle_event("ft_rejected", _params, socket) do
+    ft =
+      Map.merge(socket.assigns.file_transfer || %{}, %{
+        status: "rejected"
+      })
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
+  def handle_event("ft_progress", params, socket) do
+    ft =
+      Map.merge(socket.assigns.file_transfer || %{}, %{
+        status: "transferring",
+        percent: params["percent"],
+        speed: params["speed"],
+        eta: params["eta"]
+      })
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
+  def handle_event("ft_completed", params, socket) do
+    ft = %{
+      status: "completed",
+      file_name: params["fileName"]
+    }
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
+  def handle_event("ft_failed", params, socket) do
+    ft =
+      Map.merge(socket.assigns.file_transfer || %{}, %{
+        status: "failed",
+        reason: params["reason"],
+        can_retry: params["reason"] == "Verificacao de integridade falhou"
+      })
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
+  def handle_event("ft_cancelled", params, socket) do
+    ft = %{
+      status: "cancelled",
+      cancelled_by: params["cancelledBy"]
+    }
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
+  def handle_event("ft_cancel", _params, socket) do
+    {:noreply, push_event(socket, "ft_cancel", %{nickname: socket.assigns.nickname})}
+  end
+
+  def handle_event("ft_retry", _params, socket) do
+    {:noreply, push_event(socket, "ft_retry", %{})}
+  end
+
+  def handle_event("ft_paused", _params, socket) do
+    ft =
+      Map.merge(socket.assigns.file_transfer || %{}, %{
+        status: "paused"
+      })
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
+  def handle_event("ft_resumed", _params, socket) do
+    ft =
+      Map.merge(socket.assigns.file_transfer || %{}, %{
+        status: "resuming"
+      })
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
+  def handle_event("ft_validation_error", params, socket) do
+    ft = %{
+      status: "validation_error",
+      validation_error: params["error"]
+    }
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
+  def handle_event("ft_queued", params, socket) do
+    ft =
+      Map.merge(socket.assigns.file_transfer || %{}, %{
+        queued_file: params["fileName"]
+      })
+
+    {:noreply, assign(socket, file_transfer: ft)}
+  end
+
   def handle_event("permission_result", %{"granted" => granted, "type" => type}, socket) do
     if granted do
       {:noreply,
@@ -333,6 +474,16 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         _ -> []
       end
 
+    ft_config = %{
+      max_size_mb: Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500),
+      blocked_extensions:
+        Application.get_env(
+          :retro_hex_chat,
+          :file_transfer_blocked_extensions,
+          ~w(.exe .bat .cmd .com .msi .scr .pif .vbs .vbe .js .jse .wsf .wsh .ps1 .reg)
+        )
+    }
+
     socket =
       assign(socket,
         session: db_session,
@@ -349,8 +500,16 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         inactivity_warning: false,
         permission_granted: %{},
         webrtc_state: nil,
-        retry_attempt: nil
+        retry_attempt: nil,
+        file_transfer: nil
       )
+
+    socket =
+      if connected?(socket) do
+        push_event(socket, "ft_config", ft_config)
+      else
+        socket
+      end
 
     {:ok, socket}
   end

@@ -34,6 +34,7 @@ import NickChangeFormHook from "./hooks/nick_change_form_hook";
 import P2PCapabilityHook from "./hooks/p2p_capability_hook";
 import P2PSessionHook from "./hooks/p2p_session_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
+import FileTransferHook from "./hooks/file_transfer_hook";
 import WebRTCHook from "./hooks/webrtc_hook";
 
 const AutoFocusHook = {
@@ -53,6 +54,7 @@ const Hooks = {
   ContextualTipsHook: ContextualTipsHook,
   AutocompleteHook: AutocompleteHook,
   EmojiPickerHook: EmojiPickerHook,
+  FileTransferHook: FileTransferHook,
   FormatToolbarHook: FormatToolbarHook,
   KeyBindingCaptureHook: KeyBindingCaptureHook,
   KeyboardHook: KeyboardHook,

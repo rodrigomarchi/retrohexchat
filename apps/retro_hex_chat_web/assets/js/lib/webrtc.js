@@ -99,3 +99,14 @@ export function onIceCandidate(pc, callback) {
 export function onDataChannel(pc, callback) {
   pc.ondatachannel = (event) => callback(event.channel);
 }
+
+/**
+ * Create a named data channel on the peer connection.
+ * @param {RTCPeerConnection} pc
+ * @param {string} label - Channel name
+ * @param {RTCDataChannelInit} [options] - Channel options
+ * @returns {RTCDataChannel}
+ */
+export function createDataChannel(pc, label, options) {
+  return pc.createDataChannel(label, options);
+}
