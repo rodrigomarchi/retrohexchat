@@ -23,7 +23,7 @@ defmodule RetroHexChat.Commands.RegistryTest do
       assert "part" in commands
       assert "nick" in commands
       assert "invite" in commands
-      assert length(commands) == 43
+      assert length(commands) == 46
     end
   end
 
@@ -41,7 +41,7 @@ defmodule RetroHexChat.Commands.RegistryTest do
     test "returns all commands with metadata" do
       metadata = Registry.command_metadata()
       assert is_list(metadata)
-      assert length(metadata) == 43
+      assert length(metadata) == 46
 
       join = Enum.find(metadata, &(&1.name == "join"))
       assert join.description =~ "Join"
@@ -85,8 +85,8 @@ defmodule RetroHexChat.Commands.RegistryTest do
         Registry.commands_by_category()
         |> Enum.flat_map(fn {_label, cmds} -> Enum.map(cmds, & &1.name) end)
 
-      # 43 unique commands (leave is alias for part, both in registry but Part handler covers both)
-      assert length(all_names) == 43
+      # 46 unique commands (leave is alias for part, both in registry but Part handler covers both)
+      assert length(all_names) == 46
     end
   end
 end

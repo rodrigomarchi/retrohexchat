@@ -21,6 +21,13 @@ connection-banner--reconnected
 [missing]
 # False positive — "system" is a comparison value inside class={...} expression
 system
+# JS-only — toast body queried via querySelector in notification_toast.js
+toast-body
+# Semantic modifier classes — used in dynamic class expressions, no distinct styling needed
+p2p-lobby-chat__content
+p2p-lobby-consent__btn--reject
+p2p-lobby-presence__user--offline
+p2p-lobby-presence__user--online
 # Semantic container classes with no visual styling needed
 cheatsheet-dialog
 context-color-picker

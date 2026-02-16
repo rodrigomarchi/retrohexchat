@@ -3,6 +3,7 @@
  *
  * Manages up to MAX_VISIBLE simultaneous toast notifications.
  * Auto-dismisses after DISMISS_MS. Click-to-navigate callback support.
+ * P2P invite toasts have action buttons and no auto-dismiss.
  *
  * Reuses toast.js DOM builders for 98.css-styled toasts.
  */
@@ -18,10 +19,11 @@ const DISMISS_MS = 5000;
  * @param {Object} options
  * @param {HTMLElement} options.container - DOM container for toasts
  * @param {Function} [options.onNavigate] - Callback when toast is clicked (receives {channel, type})
+ * @param {Function} [options.onP2pAction] - Callback for P2P invite actions (receives {action, token})
  * @returns {Object} Manager with show(), showBatch(), getVisibleCount()
  */
 export function createNotificationToastManager(options = {}) {
-  const { container, onNavigate } = options;
+  const { container, onNavigate, onP2pAction } = options;
   const visible = [];
   const queue = [];
 
@@ -46,6 +48,11 @@ export function createNotificationToastManager(options = {}) {
 
   function displayToast(notification) {
     if (!container) return;
+
+    if (notification.type === "p2p_invite") {
+      displayP2pInviteToast(notification);
+      return;
+    }
 
     const el = createToastElement({
       title: notification.title || "Notification",
@@ -75,6 +82,71 @@ export function createNotificationToastManager(options = {}) {
     }, DISMISS_MS);
 
     el._dismissTimer = timer;
+  }
+
+  function displayP2pInviteToast(notification) {
+    const el = createToastElement({
+      title: notification.title || "Convite P2P",
+      body: notification.body || "",
+      dismissLabel: "",
+      showCheckbox: false,
+    });
+
+    el.classList.add("notification-toast", "notification-toast--p2p");
+    el.dataset.notificationId = notification.id;
+
+    // Remove the default click behavior — we use buttons instead
+    const bodyEl = el.querySelector(".toast-body") || el;
+
+    const btnContainer = document.createElement("div");
+    btnContainer.className = "notification-toast__actions";
+
+    const acceptBtn = document.createElement("button");
+    acceptBtn.className = "notification-toast__btn notification-toast__btn--accept";
+    acceptBtn.textContent = "Aceitar";
+    acceptBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dismiss(el, notification.id);
+      if (onP2pAction) {
+        onP2pAction({ action: "accept", token: notification.token });
+      } else {
+        window.location.href = `/p2p/${notification.token}`;
+      }
+    });
+
+    const rejectBtn = document.createElement("button");
+    rejectBtn.className = "notification-toast__btn notification-toast__btn--reject";
+    rejectBtn.textContent = "Recusar";
+    rejectBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dismiss(el, notification.id);
+      if (onP2pAction) {
+        onP2pAction({
+          action: "reject",
+          token: notification.token,
+          from: notification.from,
+        });
+      }
+    });
+
+    const ignoreBtn = document.createElement("button");
+    ignoreBtn.className = "notification-toast__btn notification-toast__btn--ignore";
+    ignoreBtn.textContent = "Ignorar";
+    ignoreBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dismiss(el, notification.id);
+    });
+
+    btnContainer.appendChild(acceptBtn);
+    btnContainer.appendChild(rejectBtn);
+    btnContainer.appendChild(ignoreBtn);
+    bodyEl.appendChild(btnContainer);
+
+    container.appendChild(el);
+    visible.push({ id: notification.id, el });
+    animateIn(el);
+
+    // P2P invite toasts do NOT auto-dismiss (persistent)
   }
 
   function dismiss(el, id) {

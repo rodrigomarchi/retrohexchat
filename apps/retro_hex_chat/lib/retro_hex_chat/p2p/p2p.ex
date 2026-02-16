@@ -30,4 +30,13 @@ defmodule RetroHexChat.P2P do
 
   @spec session_info(String.t()) :: {:ok, map()} | {:error, :not_found}
   defdelegate session_info(token), to: SessionServer, as: :get_state
+
+  @spec send_lobby_message(String.t(), integer(), String.t()) :: :ok | {:error, atom()}
+  defdelegate send_lobby_message(token, user_id, content), to: Service
+
+  @spec request_action(String.t(), integer(), String.t()) :: :ok | {:error, atom()}
+  defdelegate request_action(token, user_id, action_type), to: Service
+
+  @spec respond_action(String.t(), integer(), boolean()) :: :ok | {:error, atom()}
+  defdelegate respond_action(token, user_id, accepted?), to: Service
 end

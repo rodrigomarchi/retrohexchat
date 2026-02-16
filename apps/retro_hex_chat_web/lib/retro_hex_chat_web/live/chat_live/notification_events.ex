@@ -17,7 +17,9 @@ defmodule RetroHexChatWeb.ChatLive.NotificationEvents do
   import Phoenix.LiveView, only: [push_event: 3]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{NotificationPreferences, UserPreferences}
+  alias RetroHexChat.Chat.{NotificationPreferences, Service, UserPreferences}
+  alias RetroHexChat.P2P
+  alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChatWeb.ChatLive.Helpers
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
@@ -85,6 +87,45 @@ defmodule RetroHexChatWeb.ChatLive.NotificationEvents do
       |> Helpers.Persistence.maybe_persist_user_preferences(updated_session)
 
     {:halt, socket}
+  end
+
+  def handle_event("accept_p2p", %{"token" => token}, socket) do
+    {:halt, Phoenix.LiveView.push_navigate(socket, to: "/p2p/#{token}")}
+  end
+
+  def handle_event("reject_p2p", %{"token" => token, "from" => from}, socket) do
+    session = socket.assigns.session
+
+    nick = session.nickname
+    identified = session.identified
+
+    socket =
+      if identified do
+        case RegisteredNick |> RetroHexChat.Repo.get_by(nickname: nick) do
+          nil ->
+            socket
+
+          reg_nick ->
+            P2P.close_session(token, reg_nick.id, "rejected")
+
+            Service.send_private_message(
+              nick,
+              from,
+              "#{nick} recusou o convite P2P.",
+              "p2p_invite"
+            )
+
+            socket
+        end
+      else
+        socket
+      end
+
+    {:halt, socket}
+  end
+
+  def handle_event("reject_p2p", %{"token" => token}, socket) do
+    handle_event("reject_p2p", %{"token" => token, "from" => ""}, socket)
   end
 
   def handle_event("navigate_to_channel", %{"channel" => channel}, socket) do

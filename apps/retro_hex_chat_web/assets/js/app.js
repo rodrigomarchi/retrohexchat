@@ -31,6 +31,8 @@ import ContextualTipsHook from "./hooks/contextual_tips_hook";
 import NotificationDispatcherHook from "./hooks/notification_dispatcher_hook";
 import MessageInteractionsHook from "./hooks/message_interactions_hook";
 import NickChangeFormHook from "./hooks/nick_change_form_hook";
+import P2PCapabilityHook from "./hooks/p2p_capability_hook";
+import P2PSessionHook from "./hooks/p2p_session_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
 
 const AutoFocusHook = {
@@ -57,6 +59,8 @@ const Hooks = {
   MessageInteractionsHook: MessageInteractionsHook,
   NickChangeFormHook: NickChangeFormHook,
   NicklistHook: NicklistHook,
+  P2PCapabilityHook: P2PCapabilityHook,
+  P2PSessionHook: P2PSessionHook,
   NotificationDispatcherHook: NotificationDispatcherHook,
   NotifyListHook: NotifyListHook,
   OptionsHook: OptionsHook,

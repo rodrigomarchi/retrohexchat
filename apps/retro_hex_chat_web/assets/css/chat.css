@@ -76,6 +76,22 @@
   color: #cc6699;
 }
 
+.chat-p2p-invite {
+  display: inline;
+}
+
+.chat-p2p-invite__body {
+  display: inline;
+  margin-left: var(--space-4);
+}
+
+.chat-p2p-invite__link {
+  color: var(--color-link);
+  text-decoration: underline;
+  margin-left: var(--space-4);
+  cursor: pointer;
+}
+
 /* Chat input - sunken panel */
 .chat-input-area {
   display: flex;

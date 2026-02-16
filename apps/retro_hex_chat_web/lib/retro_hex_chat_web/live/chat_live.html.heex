@@ -160,6 +160,28 @@
               <span class="chat-notice">
                 <span class="chat-notice-nick">-{msg.author}-</span> {msg.content}
               </span>
+            <% :p2p_invite -> %>
+              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
+              <span class="chat-p2p-invite" data-testid="p2p-invite-card">
+                <span
+                  class="chat-nick"
+                  style={"color: #{@nick_color_fn.(msg.author)}"}
+                  data-nick={msg.author}
+                >
+                  &lt;{msg.author}&gt;
+                </span>
+                <span class="chat-p2p-invite__body">
+                  {extract_p2p_label(msg.content)}
+                  <a
+                    href={extract_p2p_link(msg.content)}
+                    class="chat-p2p-invite__link"
+                    data-phx-link="redirect"
+                    data-phx-link-state="push"
+                  >
+                    Entrar no lobby
+                  </a>
+                </span>
+              </span>
             <% _ -> %>
               <%= if Map.get(msg, :reply_to_id) do %>
                 <div

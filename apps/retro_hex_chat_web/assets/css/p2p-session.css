@@ -1,0 +1,9 @@
+/* P2P Session layout: full-viewport lobby container */
+
+.p2p-session {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: var(--space-8);
+  box-sizing: border-box;
+}

@@ -22,6 +22,28 @@
   animation: notification-slide-in 0.2s ease-out;
 }
 
+.notification-toast__actions {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.notification-toast__btn {
+  flex: 1;
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+}
+
+.notification-toast__btn--accept {
+  font-weight: bold;
+}
+
+.notification-toast__btn--reject,
+.notification-toast__btn--ignore {
+  color: var(--color-muted);
+}
+
 @keyframes notification-slide-in {
   from {
     transform: translateX(100%);

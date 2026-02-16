@@ -1,0 +1,203 @@
+/* P2P Lobby components: presence, chat, actions, consent */
+
+.p2p-lobby {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.p2p-lobby__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: var(--space-8);
+  padding: var(--space-8);
+}
+
+.p2p-lobby__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: var(--space-8);
+}
+
+.p2p-lobby__footer {
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.p2p-lobby__close-btn {
+  min-width: 120px;
+}
+
+.p2p-lobby__warning {
+  background: var(--color-warning);
+  color: var(--color-white);
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.p2p-lobby__connecting {
+  text-align: center;
+  padding: var(--space-16);
+  color: var(--color-muted);
+}
+
+/* ── Presence ── */
+
+.p2p-lobby-presence {
+  display: flex;
+  gap: var(--space-16);
+  padding: var(--space-4) 0;
+}
+
+.p2p-lobby-presence__user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.p2p-lobby-presence__indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.p2p-lobby-presence__indicator--online {
+  background: var(--color-online);
+}
+
+.p2p-lobby-presence__indicator--offline {
+  background: var(--color-offline);
+}
+
+.p2p-lobby-presence__nick {
+  font-weight: bold;
+}
+
+.p2p-lobby-presence__label {
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+}
+
+/* ── Chat ── */
+
+.p2p-lobby-chat {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.p2p-lobby-chat__messages {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 80px;
+  max-height: 300px;
+  border: 1px solid var(--color-border);
+  padding: var(--space-4);
+  background: var(--color-white);
+  font-size: var(--text-sm);
+}
+
+.p2p-lobby-chat__message {
+  padding: var(--space-2) 0;
+  word-break: break-word;
+}
+
+.p2p-lobby-chat__message--system {
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.p2p-lobby-chat__nick {
+  font-weight: bold;
+  margin-right: var(--space-4);
+}
+
+.p2p-lobby-chat__empty {
+  color: var(--color-muted);
+  font-style: italic;
+  text-align: center;
+  padding: var(--space-16);
+}
+
+.p2p-lobby-chat__form {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.p2p-lobby-chat__input {
+  flex: 1;
+}
+
+.p2p-lobby-chat__send {
+  min-width: 60px;
+}
+
+/* ── Actions ── */
+
+.p2p-lobby-actions {
+  padding: var(--space-4) 0;
+}
+
+.p2p-lobby-actions__buttons {
+  display: flex;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.p2p-lobby-actions__btn {
+  flex: 1;
+  min-width: 120px;
+}
+
+.p2p-lobby-actions__btn:disabled {
+  color: var(--color-disabled);
+  cursor: not-allowed;
+}
+
+.p2p-lobby-actions__waiting {
+  text-align: center;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  padding: var(--space-8);
+}
+
+/* ── Consent Banner ── */
+
+.p2p-lobby-consent {
+  border: 2px solid var(--color-warning-alt);
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.p2p-lobby-consent__text {
+  margin-bottom: var(--space-8);
+  font-size: var(--text-sm);
+}
+
+.p2p-lobby-consent__buttons {
+  display: flex;
+  gap: var(--space-8);
+  justify-content: center;
+}
+
+.p2p-lobby-consent__btn {
+  min-width: 80px;
+}
+
+.p2p-lobby-consent__btn--accept {
+  font-weight: bold;
+}
