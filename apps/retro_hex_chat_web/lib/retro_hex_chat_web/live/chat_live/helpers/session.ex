@@ -251,6 +251,21 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   @spec restore_session(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   def restore_session(socket, params) do
+    restored_nick = Map.get(params, "nickname")
+    current_nick = socket.assigns.session.nickname
+
+    if restored_nick != nil and restored_nick != current_nick do
+      Logger.info(
+        "Ignoring reconnect state from different user: #{restored_nick} != #{current_nick}"
+      )
+
+      socket
+    else
+      do_restore_session(socket, params)
+    end
+  end
+
+  defp do_restore_session(socket, params) do
     channels = Map.get(params, "channels", [])
     active_channel = Map.get(params, "active_channel")
     active_pm = Map.get(params, "active_pm")

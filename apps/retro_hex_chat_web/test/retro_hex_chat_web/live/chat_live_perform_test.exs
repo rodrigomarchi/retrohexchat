@@ -437,6 +437,22 @@ defmodule RetroHexChatWeb.ChatLivePerformTest do
       assert html =~ "Restoring session"
       assert html =~ nick
     end
+
+    test "restore_session ignores state from a different user", %{conn: conn} do
+      nick = "RstDif#{System.unique_integer([:positive])}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      html =
+        render_hook(view, "restore_session", %{
+          "nickname" => "someone_else",
+          "channels" => ["#leaked"],
+          "active_channel" => "#leaked",
+          "active_pm" => nil
+        })
+
+      refute html =~ "Restoring session"
+      refute html =~ "#leaked"
+    end
   end
 
   # ── perform disabled toggle ──────────────────────────────────

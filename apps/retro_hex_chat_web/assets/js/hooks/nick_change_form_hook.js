@@ -5,6 +5,7 @@
 const NickChangeFormHook = {
   mounted() {
     this.handleEvent("submit_nick_change", () => {
+      localStorage.removeItem("rhc_reconnect_state");
       const form = document.getElementById("nick-change-session-form");
       if (form) form.requestSubmit();
     });

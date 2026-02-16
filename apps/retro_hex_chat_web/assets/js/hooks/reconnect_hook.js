@@ -21,6 +21,7 @@ const ReconnectHook = {
 
     this.handleEvent("intentional_disconnect", () => {
       localStorage.setItem("rhc_intentional_disconnect", "true");
+      localStorage.removeItem("rhc_reconnect_state");
     });
 
     this.handleEvent("save_reconnect_state", (data) => {

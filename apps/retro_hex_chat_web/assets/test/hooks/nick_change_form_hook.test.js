@@ -1,15 +1,18 @@
-import { mountHook, simulateEvent, cleanupDOM } from "../helpers/hook_helper.js";
+import { mountHook, simulateEvent, cleanupDOM, mockLocalStorage } from "../helpers/hook_helper.js";
 import NickChangeFormHook from "../../js/hooks/nick_change_form_hook.js";
 
 describe("NickChangeFormHook", () => {
   let hook;
+  let storage;
 
   beforeEach(() => {
+    storage = mockLocalStorage();
     hook = mountHook(NickChangeFormHook);
   });
 
   afterEach(() => {
     cleanupDOM();
+    storage.restore();
   });
 
   it("registers a handler for submit_nick_change event", () => {
@@ -31,5 +34,11 @@ describe("NickChangeFormHook", () => {
     expect(() => {
       simulateEvent(hook, "submit_nick_change", {});
     }).not.toThrow();
+  });
+
+  it("removes rhc_reconnect_state on submit_nick_change event", () => {
+    storage.store["rhc_reconnect_state"] = JSON.stringify({ channels: ["#test"] });
+    simulateEvent(hook, "submit_nick_change", {});
+    expect(storage.store["rhc_reconnect_state"]).toBeUndefined();
   });
 });

@@ -84,6 +84,12 @@ describe("ReconnectHook", () => {
       hook.handleDisconnect();
       expect(hook.wasDisconnected).toBe(false);
     });
+
+    it("removes rhc_reconnect_state on intentional_disconnect event", () => {
+      storage.store["rhc_reconnect_state"] = JSON.stringify({ channels: ["#test"] });
+      simulateEvent(hook, "intentional_disconnect", {});
+      expect(storage.store["rhc_reconnect_state"]).toBeUndefined();
+    });
   });
 
   // ── max attempts ───────────────────────────────────────
