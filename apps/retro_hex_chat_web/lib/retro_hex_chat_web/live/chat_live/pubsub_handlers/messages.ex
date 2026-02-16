@@ -116,6 +116,58 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
+  # ── Message edited ───────────────────────────────────────
+
+  def handle_info(%{event: "message_edited", payload: payload}, socket) do
+    session = socket.assigns.session
+    is_active = active_context?(payload, session)
+
+    if is_active do
+      updated_item = %{
+        id: payload.id,
+        content: payload.content,
+        edited_at: payload.edited_at
+      }
+
+      {:halt, stream_insert(socket, :chat_messages, updated_item)}
+    else
+      {:halt, socket}
+    end
+  end
+
+  # ── Message deleted ─────────────────────────────────────
+
+  def handle_info(%{event: "message_deleted", payload: payload}, socket) do
+    session = socket.assigns.session
+    is_active = active_context?(payload, session)
+
+    if is_active do
+      deleted_item = %{
+        id: payload.id,
+        deleted_at: payload.deleted_at
+      }
+
+      {:halt, stream_insert(socket, :chat_messages, deleted_item)}
+    else
+      {:halt, socket}
+    end
+  end
+
+  # ── Reply quote updated ─────────────────────────────────
+
+  def handle_info(
+        %{event: "reply_quote_updated", payload: %{reply_ids: reply_ids, new_preview: preview}},
+        socket
+      ) do
+    Enum.reduce(reply_ids, socket, fn reply_id, acc ->
+      stream_insert(acc, :chat_messages, %{
+        id: reply_id,
+        reply_to_preview: preview
+      })
+    end)
+    |> then(&{:halt, &1})
+  end
+
   # ── Notices ───────────────────────────────────────────────
 
   def handle_info({:new_notice, %{sender: sender, content: content}}, socket) do
@@ -305,13 +357,25 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   end
 
   defp pm_to_stream_item(pm) do
-    %{
+    base = %{
       id: pm_field(pm, [:id]),
       author: pm_field(pm, [:sender, :sender_nickname]),
       content: pm.content,
       type: pm_resolve_type(pm),
       timestamp: pm_field(pm, [:timestamp, :inserted_at])
     }
+
+    reply_to_id = Map.get(pm, :reply_to_id)
+
+    if reply_to_id do
+      Map.merge(base, %{
+        reply_to_id: reply_to_id,
+        reply_to_author: Map.get(pm, :reply_to_author),
+        reply_to_preview: Map.get(pm, :reply_to_preview)
+      })
+    else
+      base
+    end
   end
 
   defp pm_field(map, keys) do
@@ -346,5 +410,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       )
 
     assign(socket, duplicate_tracker: tracker)
+  end
+
+  defp active_context?(payload, session) do
+    cond do
+      Map.has_key?(payload, :channel) -> payload.channel == session.active_channel
+      Map.has_key?(payload, :sender) -> session.active_pm != nil
+      true -> true
+    end
   end
 end

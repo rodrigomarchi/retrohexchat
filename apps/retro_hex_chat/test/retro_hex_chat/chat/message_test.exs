@@ -75,4 +75,85 @@ defmodule RetroHexChat.Chat.MessageTest do
       assert Ecto.Changeset.get_field(changeset, :type) == "message"
     end
   end
+
+  describe "reply_changeset/2" do
+    test "valid reply with all fields" do
+      attrs = %{
+        channel_name: "#lobby",
+        author_nickname: "Rodrigo",
+        content: "I agree!",
+        reply_to_id: 42,
+        reply_to_author: "Mario",
+        reply_to_preview: "eu acho que devíamos usar Elixir"
+      }
+
+      changeset = Message.reply_changeset(%Message{}, attrs)
+      assert changeset.valid?
+    end
+
+    test "requires reply_to_author and reply_to_preview when reply_to_id is set" do
+      attrs = %{
+        channel_name: "#lobby",
+        author_nickname: "Rodrigo",
+        content: "I agree!",
+        reply_to_id: 42
+      }
+
+      changeset = Message.reply_changeset(%Message{}, attrs)
+      refute changeset.valid?
+      assert %{reply_to_author: _, reply_to_preview: _} = errors_on(changeset)
+    end
+
+    test "valid without reply fields (normal message)" do
+      attrs = %{channel_name: "#lobby", author_nickname: "Rodrigo", content: "Hello!"}
+      changeset = Message.reply_changeset(%Message{}, attrs)
+      assert changeset.valid?
+    end
+
+    test "validates reply_to_preview max 100 chars" do
+      attrs = %{
+        channel_name: "#lobby",
+        author_nickname: "Rodrigo",
+        content: "reply",
+        reply_to_id: 1,
+        reply_to_author: "Mario",
+        reply_to_preview: String.duplicate("a", 101)
+      }
+
+      changeset = Message.reply_changeset(%Message{}, attrs)
+      refute changeset.valid?
+      assert %{reply_to_preview: _} = errors_on(changeset)
+    end
+  end
+
+  describe "edit_changeset/2" do
+    test "valid edit with content and edited_at" do
+      changeset =
+        Message.edit_changeset(%Message{}, %{
+          content: "Updated content",
+          edited_at: DateTime.utc_now()
+        })
+
+      assert changeset.valid?
+    end
+
+    test "requires content and edited_at" do
+      changeset = Message.edit_changeset(%Message{}, %{})
+      refute changeset.valid?
+      assert %{content: _, edited_at: _} = errors_on(changeset)
+    end
+  end
+
+  describe "delete_changeset/1" do
+    test "valid delete with deleted_at" do
+      changeset = Message.delete_changeset(%Message{}, %{deleted_at: DateTime.utc_now()})
+      assert changeset.valid?
+    end
+
+    test "requires deleted_at" do
+      changeset = Message.delete_changeset(%Message{}, %{})
+      refute changeset.valid?
+      assert %{deleted_at: _} = errors_on(changeset)
+    end
+  end
 end

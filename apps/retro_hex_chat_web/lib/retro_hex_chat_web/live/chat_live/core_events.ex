@@ -11,11 +11,12 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream: 4, stream_insert: 4, push_event: 3]
+  import Phoenix.LiveView, only: [stream: 4, stream_insert: 3, stream_insert: 4, push_event: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       join_channel: 3,
+      error_message: 1,
       load_channel_users: 2,
       load_channel_messages_with_pagination: 2,
       push_reconnect_state: 1,
@@ -25,38 +26,54 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{Queries, UnreadTracker, UserPreferences}
+  alias RetroHexChat.Chat.{Policy, Queries, Service, UnreadTracker, UserPreferences}
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Parser, Registry}
   alias RetroHexChatWeb.ChatLive
 
   # -- send_input --
 
-  def handle_event("send_input", %{"input" => ""}, socket), do: {:halt, socket}
+  def handle_event("send_input", %{"input" => ""}, socket) do
+    if socket.assigns.edit_mode_message_id do
+      # Empty edit = treat as delete (show confirmation dialog)
+      msg_id = socket.assigns.edit_mode_message_id
+
+      socket
+      |> exit_edit_mode()
+      |> assign(delete_confirm: %{message_id: msg_id})
+      |> then(&{:halt, &1})
+    else
+      {:halt, socket}
+    end
+  end
 
   def handle_event("send_input", %{"input" => input}, socket) do
-    session = socket.assigns.session
-    history = [input | socket.assigns.command_history] |> Enum.take(50)
+    if socket.assigns.edit_mode_message_id do
+      {:halt, submit_edit(socket, input)}
+    else
+      session = socket.assigns.session
+      history = [input | socket.assigns.command_history] |> Enum.take(50)
 
-    case Parser.parse(input) do
-      {:message, text} ->
-        new_session = Session.set_last_message_at(session, DateTime.utc_now())
+      case Parser.parse(input) do
+        {:message, text} ->
+          new_session = Session.set_last_message_at(session, DateTime.utc_now())
 
-        socket =
-          socket
-          |> assign(session: new_session)
-          |> ChatLive.CommandDispatch.send_plain_message(new_session, text)
-          |> push_event("tip_trigger", %{tip: "first_message"})
-          |> reset_activity()
+          socket =
+            socket
+            |> assign(session: new_session)
+            |> ChatLive.CommandDispatch.send_plain_message(new_session, text)
+            |> push_event("tip_trigger", %{tip: "first_message"})
+            |> reset_activity()
 
-        {:halt, assign(socket, input: "", command_history: history, history_index: -1)}
+          {:halt, assign(socket, input: "", command_history: history, history_index: -1)}
 
-      {:command, name, args} ->
-        socket =
-          socket
-          |> ChatLive.CommandDispatch.dispatch_command(session, name, args)
-          |> reset_activity()
+        {:command, name, args} ->
+          socket =
+            socket
+            |> ChatLive.CommandDispatch.dispatch_command(session, name, args)
+            |> reset_activity()
 
-        {:halt, assign(socket, input: "", command_history: history, history_index: -1)}
+          {:halt, assign(socket, input: "", command_history: history, history_index: -1)}
+      end
     end
   end
 
@@ -334,6 +351,126 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     {:halt, assign(socket, show_onboarding_tip: false)}
   end
 
+  # -- reply_to_message --
+
+  def handle_event("reply_to_message", %{"message_id" => msg_id_str}, socket) do
+    msg_id = String.to_integer(msg_id_str)
+    session = socket.assigns.session
+
+    message =
+      if session.active_pm do
+        Queries.get_private_message(msg_id)
+      else
+        Queries.get_message(msg_id)
+      end
+
+    if message do
+      author = Map.get(message, :author_nickname) || Map.get(message, :sender_nickname, "?")
+      preview = String.slice(message.content, 0, 100)
+
+      reply_to = %{
+        id: message.id,
+        author: author,
+        preview: preview
+      }
+
+      {:halt, assign(socket, reply_to: reply_to)}
+    else
+      {:halt, socket}
+    end
+  end
+
+  # -- cancel_reply --
+
+  def handle_event("cancel_reply", _params, socket) do
+    {:halt, assign(socket, reply_to: nil)}
+  end
+
+  # -- scroll_to_reply_parent --
+
+  def handle_event("scroll_to_reply_parent", %{"parent_id" => parent_id}, socket) do
+    {:halt, push_event(socket, "scroll_to_message", %{message_id: parent_id})}
+  end
+
+  # -- edit_last_message --
+
+  def handle_event("edit_last_message", _params, socket) do
+    session = socket.assigns.session
+    nickname = session.nickname
+
+    last_message =
+      if session.active_pm do
+        Queries.last_own_pm(nickname, session.active_pm)
+      else
+        session.active_channel && Queries.last_own_message(nickname, session.active_channel)
+      end
+
+    if last_message && Policy.can_edit?(last_message, nickname) == :ok do
+      msg_id = last_message.id
+
+      {:halt,
+       socket
+       |> assign(
+         edit_mode_message_id: msg_id,
+         edit_original_input: socket.assigns.input,
+         input: last_message.content
+       )
+       |> push_event("enter_edit_mode", %{message_id: msg_id, content: last_message.content})}
+    else
+      {:halt, socket}
+    end
+  end
+
+  # -- cancel_edit --
+
+  def handle_event("cancel_edit", _params, socket) do
+    {:halt, exit_edit_mode(socket)}
+  end
+
+  # -- ctx_chat_delete --
+
+  def handle_event("ctx_chat_delete", %{"message_id" => msg_id_str}, socket) do
+    msg_id = String.to_integer(msg_id_str)
+    {:halt, assign(socket, delete_confirm: %{message_id: msg_id})}
+  end
+
+  # -- confirm_delete --
+
+  def handle_event("confirm_delete", _params, socket) do
+    case socket.assigns.delete_confirm do
+      %{message_id: msg_id} ->
+        session = socket.assigns.session
+
+        result =
+          if session.active_pm do
+            Service.delete_private_message(msg_id, session.nickname)
+          else
+            Service.delete_message(msg_id, session.nickname)
+          end
+
+        socket = assign(socket, delete_confirm: nil)
+
+        case result do
+          {:ok, _} ->
+            {:halt, socket}
+
+          {:error, reason} ->
+            {:halt,
+             socket
+             |> stream_insert(:chat_messages, error_message(reason))}
+        end
+
+      nil ->
+        {:halt, socket}
+    end
+  end
+
+  # -- cancel_delete --
+
+  def handle_event("cancel_delete", _params, socket) do
+    {:halt, assign(socket, delete_confirm: nil)}
+  end
+
   # -- Catch-all: pass unhandled events to the next hook --
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
@@ -342,6 +479,43 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # Private helpers
   # ---------------------------------------------------------------------------
 
+  defp exit_edit_mode(socket) do
+    msg_id = socket.assigns.edit_mode_message_id
+    original = socket.assigns.edit_original_input || ""
+
+    socket
+    |> assign(
+      edit_mode_message_id: nil,
+      edit_original_input: nil,
+      input: original
+    )
+    |> push_event("exit_edit_mode", %{message_id: msg_id})
+    |> push_event("set_input", %{value: original})
+  end
+
+  defp submit_edit(socket, new_content) do
+    msg_id = socket.assigns.edit_mode_message_id
+    session = socket.assigns.session
+
+    result =
+      if session.active_pm do
+        Service.edit_private_message(msg_id, session.nickname, new_content)
+      else
+        Service.edit_message(msg_id, session.nickname, new_content)
+      end
+
+    socket = exit_edit_mode(socket)
+
+    case result do
+      {:ok, _} ->
+        assign(socket, input: "")
+        |> push_event("set_input", %{value: ""})
+
+      {:error, reason} ->
+        stream_insert(socket, :chat_messages, error_message(reason))
+    end
+  end
+
   defp load_pm_messages(my_nick, other_nick) do
     Queries.list_private_messages(my_nick, other_nick, limit: 50)
     |> Enum.reverse()
@@ -349,13 +523,20 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   end
 
   defp pm_to_stream_item(pm) do
-    %{
+    base = %{
       id: pm_field(pm, [:id]),
       author: pm_field(pm, [:sender, :sender_nickname]),
       content: pm.content,
       type: pm_resolve_type(pm),
       timestamp: pm_field(pm, [:timestamp, :inserted_at])
     }
+
+    base
+    |> maybe_add_field(pm, :reply_to_id)
+    |> maybe_add_field(pm, :reply_to_author)
+    |> maybe_add_field(pm, :reply_to_preview)
+    |> maybe_add_field(pm, :edited_at)
+    |> maybe_add_field(pm, :deleted_at)
   end
 
   defp pm_field(map, keys) do
@@ -411,6 +592,18 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       type: String.to_existing_atom(msg.type),
       timestamp: msg.inserted_at
     }
+    |> maybe_add_field(msg, :reply_to_id)
+    |> maybe_add_field(msg, :reply_to_author)
+    |> maybe_add_field(msg, :reply_to_preview)
+    |> maybe_add_field(msg, :edited_at)
+    |> maybe_add_field(msg, :deleted_at)
+  end
+
+  defp maybe_add_field(map, source, key) do
+    case Map.get(source, key) do
+      nil -> map
+      value -> Map.put(map, key, value)
+    end
   end
 
   defp build_context_message(%CommandSyntax{} = syntax, args, current_index) do

@@ -229,9 +229,23 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
     >
       Copy Selected Text
     </li>
-    <li class="disabled" data-testid="ctx-chat-quote-reply">
-      Quote/Reply
+    <li
+      class={if @is_system, do: "disabled", else: nil}
+      data-testid="ctx-chat-quote-reply"
+      phx-click={unless @is_system, do: "reply_to_message"}
+      phx-value-message_id={@menu.target_message && @menu.target_message[:message_id]}
+    >
+      Responder
     </li>
+    <li
+      :if={!@is_system && @menu.target_message && @menu.target_message[:is_own]}
+      data-testid="ctx-chat-delete"
+      phx-click="ctx_chat_delete"
+      phx-value-message_id={@menu.target_message && @menu.target_message[:message_id]}
+    >
+      Apagar mensagem
+    </li>
+    <li class="separator"></li>
     <li
       :if={!@is_system}
       data-testid="ctx-chat-ignore-sender"

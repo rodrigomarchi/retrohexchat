@@ -66,9 +66,17 @@ defmodule RetroHexChat.Channels.Server do
   @doc """
   Send a message to the channel. The message is broadcast via PubSub.
   """
-  @spec send_message(String.t(), String.t(), String.t(), atom()) :: :ok | {:error, String.t()}
-  def send_message(channel_name, nickname, content, type \\ :message) do
-    GenServer.call(via(channel_name), {:send_message, nickname, content, type})
+  @spec send_message(String.t(), String.t(), String.t(), atom() | keyword()) ::
+          :ok | {:error, String.t()}
+  def send_message(channel_name, nickname, content, type_or_opts \\ :message) do
+    {type, opts} =
+      if is_list(type_or_opts) do
+        {:message, type_or_opts}
+      else
+        {type_or_opts, []}
+      end
+
+    GenServer.call(via(channel_name), {:send_message, nickname, content, type, opts})
   end
 
   @doc """
@@ -259,7 +267,7 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
-  def handle_call({:send_message, nickname, content, type}, _from, state) do
+  def handle_call({:send_message, nickname, content, type, opts}, _from, state) do
     with :ok <- RetroHexChat.Chat.Policy.validate_content(content),
          :ok <- Policy.can_speak?(state.modes, state.membership, nickname) do
       final_content =
@@ -269,28 +277,35 @@ defmodule RetroHexChat.Channels.Server do
           content
         end
 
-      {id, timestamp} = persist_and_get_id(state.name, nickname, final_content, type)
+      reply_to_id = Keyword.get(opts, :reply_to_id)
 
-      broadcast(
-        state.name,
-        %{
-          event: "new_message",
-          payload: %{
-            id: id,
-            channel: state.name,
-            author: nickname,
-            content: final_content,
-            type: type,
-            timestamp: timestamp
-          }
-        }
-      )
+      {msg, id, timestamp} =
+        persist_and_get_id(state.name, nickname, final_content, type, reply_to_id)
+
+      payload = %{
+        id: id,
+        channel: state.name,
+        author: nickname,
+        content: final_content,
+        type: type,
+        timestamp: timestamp,
+        reply_to_id: msg && msg.reply_to_id,
+        reply_to_author: msg && msg.reply_to_author,
+        reply_to_preview: msg && msg.reply_to_preview
+      }
+
+      broadcast(state.name, %{event: "new_message", payload: payload})
 
       {:reply, :ok, state}
     else
       {:error, _} = err ->
         {:reply, err, state}
     end
+  end
+
+  # Backward compat: old 4-element tuple without opts
+  def handle_call({:send_message, nickname, content, type}, from, state) do
+    handle_call({:send_message, nickname, content, type, []}, from, state)
   end
 
   def handle_call(:get_state, _from, state) do
@@ -762,24 +777,59 @@ defmodule RetroHexChat.Channels.Server do
       else: :ok
   end
 
-  defp persist_and_get_id(channel_name, nickname, content, type) do
-    case Chat.Queries.insert_message(%{
-           channel_name: channel_name,
-           author_nickname: nickname,
-           content: content,
-           type: to_string(type)
-         }) do
+  defp persist_and_get_id(channel_name, nickname, content, type, reply_to_id) do
+    base_attrs = %{
+      channel_name: channel_name,
+      author_nickname: nickname,
+      content: content,
+      type: to_string(type)
+    }
+
+    result =
+      if reply_to_id do
+        case resolve_reply_attrs(reply_to_id) do
+          {:ok, reply_attrs} ->
+            Chat.Queries.insert_reply_message(Map.merge(base_attrs, reply_attrs))
+
+          {:error, _} ->
+            Chat.Queries.insert_message(base_attrs)
+        end
+      else
+        Chat.Queries.insert_message(base_attrs)
+      end
+
+    case result do
       {:ok, message} ->
-        {message.id, message.inserted_at}
+        {message, message.id, message.inserted_at}
 
       {:error, changeset} ->
         Logger.warning("Failed to persist message in #{channel_name}: #{inspect(changeset)}")
-        {"msg-#{System.unique_integer([:positive])}", DateTime.utc_now()}
+        {nil, "msg-#{System.unique_integer([:positive])}", DateTime.utc_now()}
     end
   rescue
     e ->
       Logger.warning("Failed to persist message in #{channel_name}: #{inspect(e)}")
-      {"msg-#{System.unique_integer([:positive])}", DateTime.utc_now()}
+      {nil, "msg-#{System.unique_integer([:positive])}", DateTime.utc_now()}
+  end
+
+  defp resolve_reply_attrs(reply_to_id) do
+    case Chat.Queries.get_message(reply_to_id) do
+      nil ->
+        {:error, :not_found}
+
+      parent ->
+        preview =
+          if String.length(parent.content) > 100,
+            do: String.slice(parent.content, 0, 97) <> "...",
+            else: parent.content
+
+        {:ok,
+         %{
+           reply_to_id: parent.id,
+           reply_to_author: parent.author_nickname,
+           reply_to_preview: preview
+         }}
+    end
   end
 
   defp maybe_persist_exception(type, action, channel_name, nickname, added_by, state) do

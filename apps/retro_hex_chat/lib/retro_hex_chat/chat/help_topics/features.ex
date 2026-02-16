@@ -1642,6 +1642,82 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<p><a href=\"#\" data-help-topic=\"feature-notifications\">Notifications</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-dnd\">Do Not Disturb</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-options-dialog\">Options Dialog</a></p>"
+      },
+      %{
+        id: "feature-message-reply",
+        title: "Message Reply",
+        category: "Features",
+        keywords: ["reply", "quote", "respond", "responder", "reply to", "quote message"],
+        content:
+          "<h3>Message Reply</h3>" <>
+            "<p>Reply to any message to create a visual quote linking your response to the original.</p>" <>
+            "<h4>How to Reply</h4>" <>
+            "<p><strong>Context menu:</strong> Right-click a message and select \"Responder\".<br/>" <>
+            "<strong>Hover button:</strong> Hover over a message and click the ↩ button that appears.</p>" <>
+            "<h4>Compose Bar</h4>" <>
+            "<p>A bar appears above the input showing the original author and a preview of their message. " <>
+            "Click ✕ to cancel the reply.</p>" <>
+            "<h4>Visual Format</h4>" <>
+            "<p>Replies appear with a quoted block showing the original message, with your response below. " <>
+            "Click the quoted block to scroll to and highlight the original message.</p>" <>
+            "<h4>Edge Cases</h4>" <>
+            "<p>If the original message was deleted, the quote shows \"[mensagem removida]\". " <>
+            "Long messages are truncated in the reply preview. " <>
+            "Editing the original message updates the quote in all replies.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-message-edit\">Message Edit</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-message-delete\">Message Delete</a> · " <>
+            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+      },
+      %{
+        id: "feature-message-edit",
+        title: "Message Edit",
+        category: "Features",
+        keywords: ["edit", "editar", "editado", "modify", "correct", "typo", "fix message"],
+        content:
+          "<h3>Message Edit</h3>" <>
+            "<p>Edit your own messages within 5 minutes of sending to fix typos or correct content.</p>" <>
+            "<h4>How to Edit</h4>" <>
+            "<p><strong>↑ key:</strong> Press the up arrow in an empty input to edit your last message. " <>
+            "The input fills with the message text, and the message gets a dashed border indicating edit mode.</p>" <>
+            "<h4>Submitting &amp; Canceling</h4>" <>
+            "<p><strong>Enter:</strong> Submit the edit. The message updates for all viewers with an \"(editado)\" tag.<br/>" <>
+            "<strong>Escape:</strong> Cancel the edit and restore the input to its previous state.<br/>" <>
+            "<strong>Empty edit:</strong> Submitting with empty text opens a delete confirmation dialog.</p>" <>
+            "<h4>Edited Indicator</h4>" <>
+            "<p>Edited messages show a small \"(editado)\" tag. Hover over it to see the edit timestamp.</p>" <>
+            "<h4>Limitations</h4>" <>
+            "<p>You can only edit your own messages. The 5-minute time limit is enforced server-side. " <>
+            "Editing preserves any reply context (if the message was a reply).</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-message-reply\">Message Reply</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-message-delete\">Message Delete</a> · " <>
+            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+      },
+      %{
+        id: "feature-message-delete",
+        title: "Message Delete",
+        category: "Features",
+        keywords: ["delete", "apagar", "remove", "mensagem removida", "soft delete"],
+        content:
+          "<h3>Message Delete</h3>" <>
+            "<p>Delete your own messages within 5 minutes of sending.</p>" <>
+            "<h4>How to Delete</h4>" <>
+            "<p>Right-click your message and select \"Apagar mensagem\". A confirmation dialog appears " <>
+            "with Confirmar/Cancelar buttons. Press Escape or click Cancelar to dismiss.</p>" <>
+            "<h4>What Happens</h4>" <>
+            "<p>The message is replaced with \"[mensagem removida]\" in italic text for all viewers. " <>
+            "The original content is preserved in the database (soft-delete) for audit purposes.</p>" <>
+            "<h4>Limitations</h4>" <>
+            "<p>You can only delete your own messages. The 5-minute time limit is enforced server-side. " <>
+            "Channel operators cannot delete other users' messages.</p>" <>
+            "<h4>Replies to Deleted Messages</h4>" <>
+            "<p>If someone replied to a message that is later deleted, the reply quote shows " <>
+            "\"[mensagem removida]\" instead of the original content.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-message-reply\">Message Reply</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-message-edit\">Message Edit</a> · " <>
+            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
       }
     ]
   end

@@ -112,6 +112,7 @@
         id="chat-messages"
         phx-update="stream"
         phx-hook="ScrollHook"
+        data-interactions-hook="MessageInteractionsHook"
         style={if @show_status_tab, do: "display: none;", else: nil}
       >
         <div
@@ -121,7 +122,9 @@
             "chat-message chat-message--#{msg.type}" <>
               if(Map.get(msg, :highlighted), do: " chat-message--highlighted", else: "") <>
               if(Map.get(msg, :status) == :pending, do: " chat-message--pending", else: "") <>
-              if(Map.get(msg, :status) == :failed, do: " chat-message--failed", else: "")
+              if(Map.get(msg, :status) == :failed, do: " chat-message--failed", else: "") <>
+              if(Map.get(msg, :deleted_at), do: " chat-message--deleted", else: "") <>
+              if(Map.get(msg, :id) == @edit_mode_message_id, do: " chat-message--editing", else: "")
           }
           style={
             if(Map.get(msg, :highlighted) && Map.get(msg, :highlight_color),
@@ -135,6 +138,7 @@
           data-temp-id={if(Map.get(msg, :status) in [:pending, :failed], do: msg.id, else: nil)}
           data-msg-status={if(Map.get(msg, :status), do: Atom.to_string(msg.status), else: nil)}
           data-system-message={if(msg.type in [:system, :service], do: "true", else: nil)}
+          data-real-id={Map.get(msg, :id)}
         >
           <%= case msg.type do %>
             <% :action -> %>
@@ -157,33 +161,82 @@
                 <span class="chat-notice-nick">-{msg.author}-</span> {msg.content}
               </span>
             <% _ -> %>
-              <div class="chat-msg-grid">
-                <span class="chat-timestamp">
-                  {format_time(msg.timestamp, @timestamp_format)}
-                </span>
-                <span
-                  class="chat-nick"
-                  style={"color: #{@nick_color_fn.(msg.author)}"}
-                  data-nick={msg.author}
+              <%= if Map.get(msg, :reply_to_id) do %>
+                <div
+                  class="chat-reply-block"
+                  phx-click="scroll_to_reply_parent"
+                  phx-value-parent_id={msg.reply_to_id}
+                  role="link"
+                  aria-label={"Respondendo a #{Map.get(msg, :reply_to_author, "?")}"}
+                  data-testid="reply-block"
                 >
-                  &lt;{msg.author}&gt;
-                </span>
-                <span class="chat-content">
-                  {raw(format_content(msg.content, @session.strip_formatting))}
-                  <button
-                    :if={Map.get(msg, :status) == :failed}
-                    class="chat-retry-btn"
-                    phx-click="retry_message"
-                    phx-value-temp_id={msg.id}
-                    phx-value-content={msg.content}
-                    phx-value-target={Map.get(msg, :target, "")}
-                    title="Falha ao enviar. Clique para reenviar"
-                    data-testid="retry-message"
+                  <span
+                    class="chat-reply-block__author"
+                    style={"color: #{@nick_color_fn.(Map.get(msg, :reply_to_author, ""))}"}
                   >
-                    ⚠️
-                  </button>
-                </span>
-              </div>
+                    {Map.get(msg, :reply_to_author, "?")}
+                  </span>
+                  <%= if Map.get(msg, :reply_to_preview) do %>
+                    <span class="chat-reply-block__preview">{msg.reply_to_preview}</span>
+                  <% else %>
+                    <span class="chat-reply-block__preview chat-reply-block__deleted">
+                      [mensagem removida]
+                    </span>
+                  <% end %>
+                </div>
+              <% end %>
+              <%= if Map.get(msg, :deleted_at) do %>
+                <div class="chat-msg-grid">
+                  <span class="chat-timestamp">
+                    {format_time(msg.timestamp, @timestamp_format)}
+                  </span>
+                  <span
+                    class="chat-message-content"
+                    aria-label="Mensagem removida"
+                    data-testid="deleted-message"
+                  >
+                    [mensagem removida]
+                  </span>
+                </div>
+              <% else %>
+                <div class="chat-msg-grid">
+                  <span class="chat-timestamp">
+                    {format_time(msg.timestamp, @timestamp_format)}
+                  </span>
+                  <span
+                    class="chat-nick"
+                    style={"color: #{@nick_color_fn.(msg.author)}"}
+                    data-nick={msg.author}
+                  >
+                    &lt;{msg.author}&gt;
+                  </span>
+                  <span class="chat-content">
+                    {raw(format_content(msg.content, @session.strip_formatting))}
+                    <span
+                      :if={Map.get(msg, :edited_at)}
+                      class="chat-edited-tag"
+                      title={"Editado às #{format_edit_timestamp(msg.edited_at)}"}
+                      tabindex="0"
+                      aria-label={"Editado às #{format_edit_timestamp(msg.edited_at)}"}
+                      data-testid="edited-tag"
+                    >
+                      (editado)
+                    </span>
+                    <button
+                      :if={Map.get(msg, :status) == :failed}
+                      class="chat-retry-btn"
+                      phx-click="retry_message"
+                      phx-value-temp_id={msg.id}
+                      phx-value-content={msg.content}
+                      phx-value-target={Map.get(msg, :target, "")}
+                      title="Falha ao enviar. Clique para reenviar"
+                      data-testid="retry-message"
+                    >
+                      ⚠️
+                    </button>
+                  </span>
+                </div>
+              <% end %>
           <% end %>
         </div>
       </div>
@@ -206,6 +259,8 @@
           @session.strip_formatting
         } />
       </div>
+
+      <RetroHexChatWeb.Components.ReplyComposeBar.reply_compose_bar reply_to={@reply_to} />
 
       <div
         :if={@pm_typing_from && @session.active_pm}
@@ -315,6 +370,11 @@
   />
 
   <RetroHexChatWeb.Components.AboutDialog.about_dialog visible={@show_about} />
+
+  <RetroHexChatWeb.Components.DeleteConfirmDialog.delete_confirm_dialog
+    visible={@delete_confirm != nil}
+    message_id={@delete_confirm && @delete_confirm.message_id}
+  />
 
   <RetroHexChatWeb.Components.NotifyListWindow.notify_list_window
     entries={NotifyList.sorted_entries(@session.notify_list)}

@@ -500,7 +500,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
       author: params["author"],
       text: params["message_text"],
       is_system: params["is_system"] == true,
-      urls: urls
+      urls: urls,
+      message_id: params["message_id"],
+      is_own: params["author"] == socket.assigns.session.nickname
     }
 
     assign(socket,

@@ -23,6 +23,7 @@ const AutocompleteHook = {
     this.dropdownVisible = false;
     this.tooltipVisible = false;
     this.tabCycleState = null;
+    this.editMode = false;
 
     // Enhanced history via lib
     this.historyManager = createHistoryManager({});
@@ -79,6 +80,12 @@ const AutocompleteHook = {
         if (this.historySearchActive) {
           e.preventDefault();
           this.closeHistorySearch(true);
+          return;
+        }
+        if (this.editMode) {
+          e.preventDefault();
+          this.editMode = false;
+          this.pushEvent("cancel_edit", {});
           return;
         }
         if (this.dropdownVisible) {
@@ -143,11 +150,14 @@ const AutocompleteHook = {
         return;
       }
 
-      // Arrow keys — navigate dropdown if visible, otherwise history
+      // Arrow keys — navigate dropdown if visible, otherwise history/edit
       if (e.key === "ArrowUp") {
         e.preventDefault();
         if (this.dropdownVisible) {
           this.pushEvent("autocomplete_navigate", { direction: "up" });
+        } else if (this.inputEl.value === "") {
+          // Empty input + ↑ = trigger edit mode for last own message
+          this.pushEvent("edit_last_message", {});
         } else {
           this.pushEvent("history_navigate", { direction: "up" });
         }
@@ -238,6 +248,18 @@ const AutocompleteHook = {
       this.inputEl.value = value;
       this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
       autoResize(this.inputEl, this.maxHeight);
+    });
+
+    this.handleEvent("enter_edit_mode", ({ content }) => {
+      this.editMode = true;
+      this.inputEl.value = content;
+      this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
+      autoResize(this.inputEl, this.maxHeight);
+      this.inputEl.focus();
+    });
+
+    this.handleEvent("exit_edit_mode", () => {
+      this.editMode = false;
     });
   },
 

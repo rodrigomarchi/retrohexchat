@@ -21,10 +21,14 @@ defmodule RetroHexChatWeb.Components.StatusBarTest do
   end
 
   describe "status_bar/1 left section" do
-    test "displays channel name and user count" do
+    test "displays nickname, channel name, and user count" do
       html = render_status_bar()
+      assert html =~ ~s(data-testid="status-nick")
+      assert html =~ "alice"
+      assert html =~ ~s(data-testid="status-channel")
       assert html =~ "#general"
-      assert html =~ "15 users"
+      assert html =~ ~s(data-testid="status-users")
+      assert html =~ "Users: 15"
     end
 
     test "displays 'No channel' when channel is nil" do
@@ -34,7 +38,7 @@ defmodule RetroHexChatWeb.Components.StatusBarTest do
 
     test "displays user count of zero" do
       html = render_status_bar(%{user_count: 0})
-      assert html =~ "0 users"
+      assert html =~ "Users: 0"
     end
   end
 

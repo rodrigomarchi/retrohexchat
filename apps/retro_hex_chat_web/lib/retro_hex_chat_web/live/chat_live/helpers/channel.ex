@@ -278,12 +278,26 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
   @spec message_to_stream_item(map()) :: map()
   def message_to_stream_item(msg) do
-    %{
+    base = %{
       id: msg.id,
       author: msg.author_nickname,
       content: msg.content,
       type: String.to_existing_atom(msg.type),
       timestamp: msg.inserted_at
     }
+
+    base
+    |> maybe_add(msg, :reply_to_id)
+    |> maybe_add(msg, :reply_to_author)
+    |> maybe_add(msg, :reply_to_preview)
+    |> maybe_add(msg, :edited_at)
+    |> maybe_add(msg, :deleted_at)
+  end
+
+  defp maybe_add(map, source, key) do
+    case Map.get(source, key) do
+      nil -> map
+      value -> Map.put(map, key, value)
+    end
   end
 end
