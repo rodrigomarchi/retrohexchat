@@ -21,6 +21,8 @@
 - No new PostgreSQL migrations — all state is ephemeral (socket assigns, client-side timers) (031-statusbar-loading-states)
 - PostgreSQL 16+ (existing `user_preferences.message_settings` JSONB — no new migration), localStorage (guest preferences, DND state) (032-notification-system)
 - PostgreSQL 16+ (new columns on `messages` and `private_messages` tables — 1 migration) (033-message-interactions)
+- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, Phoenix.Token (already in use) (034-p2p-foundation)
+- PostgreSQL 16+ (1 new migration: `p2p_sessions` table) (034-p2p-foundation)
 
 ## Project Structure
 
@@ -143,6 +145,6 @@ static analysis from day one, 98.css design fidelity, mandatory help documentati
 
 
 ## Recent Changes
+- 034-p2p-foundation: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, Phoenix.Token (already in use)
 - 033-message-interactions: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
 - 032-notification-system: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
-- 031-statusbar-loading-states: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild

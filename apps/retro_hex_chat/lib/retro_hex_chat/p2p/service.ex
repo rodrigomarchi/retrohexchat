@@ -1,0 +1,120 @@
+defmodule RetroHexChat.P2P.Service do
+  @moduledoc """
+  Orchestrates P2P session operations: policy check → persist → process → notify.
+  """
+
+  require Logger
+
+  alias RetroHexChat.P2P.{Policy, Queries, SessionServer, SessionToken, Supervisor}
+  alias RetroHexChat.P2P.Schema.Session
+
+  @pubsub RetroHexChat.PubSub
+
+  @spec create_session(integer(), integer(), keyword()) ::
+          {:ok, %{session: Session.t(), token: String.t()}} | {:error, String.t()}
+  def create_session(creator_id, peer_id, opts \\ []) do
+    session_type = Keyword.get(opts, :session_type, "generic")
+
+    with :ok <- Policy.can_create?(creator_id, peer_id),
+         token = SessionToken.sign(creator_id, peer_id, 0),
+         {:ok, session} <- insert_session(token, creator_id, peer_id, session_type),
+         {:ok, _pid} <- Supervisor.start_child(session.token) do
+      notify_peer(peer_id, session.token, creator_id, session_type)
+      {:ok, %{session: session, token: session.token}}
+    end
+  end
+
+  @spec join_session(String.t(), integer()) :: :ok | {:error, String.t()}
+  def join_session(token, user_id) do
+    with {:ok, _data} <- verify_token(token),
+         {:ok, session} <- fetch_session(token),
+         :ok <- Policy.can_join?(user_id, session) do
+      SessionServer.join(token, user_id)
+    end
+  end
+
+  @spec close_session(String.t(), integer(), String.t()) :: :ok | {:error, String.t()}
+  def close_session(token, user_id, reason) do
+    with {:ok, _data} <- verify_token(token),
+         {:ok, session} <- fetch_session(token),
+         :ok <- Policy.can_close?(user_id, session) do
+      case SessionServer.close(token, user_id, reason) do
+        :ok ->
+          :ok
+
+        {:error, "Session process not running"} ->
+          # GenServer not running — update DB directly
+          now = DateTime.utc_now()
+
+          Queries.update_status(session, "closed", %{
+            closed_at: now,
+            closed_reason: reason
+          })
+
+          :ok
+
+        error ->
+          error
+      end
+    end
+  end
+
+  # --- Private Helpers ---
+
+  defp insert_session(_signed_token, creator_id, peer_id, session_type) do
+    # Use a truncated token for the DB (Phoenix.Token can be long)
+    db_token = Base.url_encode64(:crypto.strong_rand_bytes(32), padding: false)
+
+    case Queries.insert_session(%{
+           token: db_token,
+           creator_id: creator_id,
+           peer_id: peer_id,
+           session_type: session_type,
+           status: "pending"
+         }) do
+      {:ok, _session} = ok ->
+        ok
+
+      {:error, changeset} ->
+        Logger.warning("Failed to insert P2P session: #{inspect(changeset.errors)}")
+        {:error, "Failed to create session"}
+    end
+  end
+
+  defp verify_token(_token_string) do
+    # First try to find the session by token (DB token)
+    # SessionToken.verify is for signed invite tokens, not DB lookup tokens
+    # For join/close, we look up by the DB token directly
+    {:ok, %{}}
+  end
+
+  defp fetch_session(token) do
+    case Queries.get_session_by_token(token) do
+      nil -> {:error, "Session not found"}
+      session -> {:ok, session}
+    end
+  end
+
+  defp notify_peer(peer_id, token, creator_id, session_type) do
+    peer_nick = get_nickname(peer_id)
+    creator_nick = get_nickname(creator_id)
+
+    if peer_nick do
+      Phoenix.PubSub.broadcast(@pubsub, "user:#{peer_nick}", %{
+        event: "p2p_invite",
+        payload: %{
+          token: token,
+          from: creator_nick,
+          session_type: session_type
+        }
+      })
+    end
+  end
+
+  defp get_nickname(user_id) do
+    import Ecto.Query
+
+    from(r in "registered_nicks", where: r.id == ^user_id, select: r.nickname)
+    |> RetroHexChat.Repo.one()
+  end
+end

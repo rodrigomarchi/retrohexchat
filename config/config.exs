@@ -13,7 +13,8 @@ import Config
 config :retro_hex_chat,
   ecto_repos: [RetroHexChat.Repo],
   admins: [],
-  server_operators: []
+  server_operators: [],
+  p2p_token_secret: "p2p-dev-secret-key-base-at-least-64-bytes-long-for-phoenix-token-signing"
 
 config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],
