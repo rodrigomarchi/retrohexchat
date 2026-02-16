@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.Helpers.Persistence
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
 
   # ── Nick color functions ───────────────────────────────────
@@ -388,7 +389,18 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   def maybe_start_nickserv_timer(socket, nickname, pre_identified \\ false) do
     cond do
       pre_identified or NickServ.identified?(nickname) ->
+        session =
+          socket.assigns.session
+          |> Session.set_identified(true)
+          |> Persistence.load_persisted_data(nickname)
+
         socket
+        |> assign(session: session)
+        |> rebuild_nick_color_fn(session)
+        |> stream_insert(
+          :chat_messages,
+          Messages.system_message("You are now identified as #{nickname}")
+        )
 
       NickServ.registered?(nickname) ->
         NickServ.start_identify_timer(nickname)
