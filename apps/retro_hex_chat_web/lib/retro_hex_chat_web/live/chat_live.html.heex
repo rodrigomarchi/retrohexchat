@@ -307,10 +307,12 @@
             maxlength="1000"
             phx-hook="AutocompleteHook"
           >{@input}</textarea>
-          <button type="submit">Send</button>
+          <div class="send-wrapper">
+            <button type="submit">Send</button>
+            <span class="char-counter" data-testid="char-counter">0/1000</span>
+          </div>
         </form>
         <RetroHexChatWeb.Components.HistorySearch.history_search />
-        <span class="char-counter" data-testid="char-counter">0/1000</span>
       </div>
     </div>
 

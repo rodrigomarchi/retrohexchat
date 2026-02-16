@@ -390,10 +390,16 @@ const AutocompleteHook = {
       if (searchInput) {
         searchInput.value = "";
         searchInput.focus();
-        searchInput.addEventListener("input", (e) => {
+
+        if (this._histSearchInputHandler) {
+          searchInput.removeEventListener("input", this._histSearchInputHandler);
+          searchInput.removeEventListener("keydown", this._histSearchKeydownHandler);
+        }
+
+        this._histSearchInputHandler = (e) => {
           this.onHistorySearchInput(e.target.value);
-        });
-        searchInput.addEventListener("keydown", (e) => {
+        };
+        this._histSearchKeydownHandler = (e) => {
           if (e.key === "Enter") {
             e.preventDefault();
             this.closeHistorySearch(false);
@@ -401,7 +407,10 @@ const AutocompleteHook = {
             e.preventDefault();
             this.closeHistorySearch(true);
           }
-        });
+        };
+
+        searchInput.addEventListener("input", this._histSearchInputHandler);
+        searchInput.addEventListener("keydown", this._histSearchKeydownHandler);
       }
     }
   },

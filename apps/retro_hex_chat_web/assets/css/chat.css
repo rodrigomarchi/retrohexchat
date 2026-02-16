@@ -101,19 +101,23 @@
   transition: height 0.1s ease;
 }
 
-.chat-input-area button {
+.send-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-left: 4px;
+}
+
+.send-wrapper button {
   padding: 4px 12px;
   font-size: var(--text-base);
+  width: 100%;
 }
 
 /* ── Character Counter ─── */
 .char-counter {
   font-size: var(--text-xs);
   color: var(--color-muted);
-  position: absolute;
-  right: 8px;
-  bottom: 2px;
   pointer-events: none;
 }
 .char-counter--warning {
@@ -195,7 +199,6 @@
 /* ─── History Search Bar ─── */
 
 .hist-search-panel {
-  display: flex;
   align-items: center;
   gap: 4px;
   padding: 2px 4px;
