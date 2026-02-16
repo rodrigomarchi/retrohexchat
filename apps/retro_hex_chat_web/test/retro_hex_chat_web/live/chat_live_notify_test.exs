@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
   describe "US1: Notify list CRUD" do
     test "add buddy via event", %{conn: conn} do
       nick = "AddBuddy#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "notify_add", %{"nickname" => "BuddyFriend", "note" => "my pal"})
 
@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "remove buddy via event", %{conn: conn} do
       nick = "RmBuddy#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add first, then remove
       render_click(view, "notify_add", %{"nickname" => "ToRemove", "note" => ""})
@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "edit note via event", %{conn: conn} do
       nick = "EditNote#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "notify_add", %{"nickname" => "NoteTarget", "note" => "old note"})
       render_click(view, "toggle_notify_list")
@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "reject self-add", %{conn: conn} do
       nick = "SelfAdd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "notify_add", %{"nickname" => nick, "note" => ""})
 
@@ -73,7 +73,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "reject duplicate add", %{conn: conn} do
       nick = "DupAdd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "notify_add", %{"nickname" => "DupTarget", "note" => "first"})
       render_click(view, "notify_add", %{"nickname" => "DupTarget", "note" => "second"})
@@ -110,7 +110,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
       {:ok, notify_list} = NotifyList.add_entry(notify_list, nick, "SavedBuddy", "from DB")
       :ok = NotifyList.save(nick, notify_list)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Simulate NickServ identify broadcast
       Phoenix.PubSub.broadcast!(
@@ -133,7 +133,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
   describe "US2: Presence notifications" do
     test "tracked buddy connect triggers debounce timer", %{conn: conn} do
       nick = "PresConn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add a buddy to track
       render_click(view, "notify_add", %{"nickname" => "OnBuddy", "note" => ""})
@@ -158,7 +158,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "tracked buddy disconnect triggers debounce timer", %{conn: conn} do
       nick = "PresDis#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add a buddy to track
       render_click(view, "notify_add", %{"nickname" => "OffBuddy", "note" => ""})
@@ -183,7 +183,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "non-tracked user events are ignored", %{conn: conn} do
       nick = "PresIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Do NOT add "Stranger" to the notify list
 
@@ -209,7 +209,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
       ch = "#ren_track_#{System.unique_integer([:positive])}"
       ensure_channel(ch)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Join isolated channel
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
@@ -241,7 +241,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
   describe "US3: Notify list window" do
     test "toggle_notify_list shows/hides window", %{conn: conn} do
       nick = "TogWin#{System.unique_integer([:positive])}"
-      {:ok, view, html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, html} = live(chat_conn(conn, nick), "/chat")
 
       refute html =~ "notify-list-window"
 
@@ -254,7 +254,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "notify_select highlights entry", %{conn: conn} do
       nick = "SelEntry#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "notify_add", %{"nickname" => "SelectMe", "note" => ""})
       render_click(view, "toggle_notify_list")
@@ -271,7 +271,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
   describe "US5: /notify commands" do
     test "/notify opens window", %{conn: conn} do
       nick = "NotCmd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/notify"})
 
@@ -282,7 +282,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "/notify add creates entry", %{conn: conn} do
       nick = "NotAdd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -297,7 +297,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "/notify remove removes entry", %{conn: conn} do
       nick = "NotRm#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add first
       view
@@ -319,7 +319,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "/notify list displays entries", %{conn: conn} do
       nick = "NotList#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add a couple of entries via command
       view
@@ -352,7 +352,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
   describe "US4: Auto-whois" do
     test "auto-whois toggle updates setting", %{conn: conn} do
       nick = "AutoWh#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Open notify list to see toggle
       render_click(view, "toggle_notify_list")
@@ -364,7 +364,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "auto-whois on connect shows whois info", %{conn: conn} do
       nick = "AWConn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add buddy and enable auto-whois
       render_click(view, "notify_add", %{"nickname" => "WBuddy", "note" => ""})
@@ -381,7 +381,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "auto-whois disabled does not show whois", %{conn: conn} do
       nick = "AWOff#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add buddy but do NOT enable auto-whois
       render_click(view, "notify_add", %{"nickname" => "NWBuddy", "note" => ""})
@@ -398,7 +398,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
 
     test "auto-whois not triggered on disconnect", %{conn: conn} do
       nick = "AWDis#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add buddy and enable auto-whois
       render_click(view, "notify_add", %{"nickname" => "DBuddy", "note" => ""})

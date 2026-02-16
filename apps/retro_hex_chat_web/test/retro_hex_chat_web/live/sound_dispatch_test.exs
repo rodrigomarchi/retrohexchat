@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
   describe "connect sound on mount" do
     test "play_sound with connect sound on successful mount", %{conn: conn} do
       nick = "SndCon#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       assert_push_event(view, "play_sound", %{type: "chime_short"})
     end
@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
   describe "highlight sound dispatch" do
     test "highlight plays alert sound (default)", %{conn: conn} do
       nick = "SndHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       # Consume connect sound
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
 
     test "non-highlight message in active channel produces no sound", %{conn: conn} do
       nick = "SndNoHL#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       send_new_message(view, "Other", "hello world", "#lobby")
@@ -108,7 +108,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
       ch = "#snd_bg_#{System.unique_integer([:positive])}"
       ensure_channel(ch)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       # Join second channel and switch back to #lobby
@@ -130,7 +130,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
   describe "PM sound dispatch" do
     test "PM from non-active conversation plays chime_high", %{conn: conn} do
       nick = "SndPM#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       send_new_pm(view, "Alice", nick, "hey there")
@@ -144,7 +144,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
   describe "join/part/kick sound dispatch" do
     test "user_joined plays click sound", %{conn: conn} do
       nick = "SndJoin#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       send_user_joined(view, "NewUser", "#lobby")
@@ -154,7 +154,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
 
     test "user_left plays click sound", %{conn: conn} do
       nick = "SndPart#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       send_user_left(view, "LeavingUser", "#lobby")
@@ -164,7 +164,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
 
     test "user_kicked plays buzz sound", %{conn: conn} do
       nick = "SndKick#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       send_user_kicked(view, "Operator", "KickedUser")

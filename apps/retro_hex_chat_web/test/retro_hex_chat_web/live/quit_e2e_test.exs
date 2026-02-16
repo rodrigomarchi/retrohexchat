@@ -20,10 +20,10 @@ defmodule RetroHexChatWeb.QuitE2ETest do
       nick1 = "QE1#{uid()}"
       nick2 = "QE2#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       join_channel(view1, channel)
 
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view2, channel)
 
       :timer.sleep(50)
@@ -42,10 +42,10 @@ defmodule RetroHexChatWeb.QuitE2ETest do
       nick1 = "QE3#{uid()}"
       nick2 = "QE4#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       join_channel(view1, channel)
 
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view2, channel)
 
       :timer.sleep(50)

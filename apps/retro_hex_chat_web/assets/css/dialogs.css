@@ -177,7 +177,7 @@
   border: 1px solid var(--color-border);
   background: var(--color-white);
   padding: 2px;
-  font-family: "Courier New", Courier, monospace;
+  font-family: var(--font-mono);
   font-size: var(--text-sm);
 }
 
@@ -223,3 +223,15 @@
 .url-col-90 { width: 90px; }
 .url-col-actions { width: 60px; }
 .url-cell-url { max-width: 0; }
+
+/* Nick Change Dialog */
+.nick-change-dialog { width: 340px; }
+.nick-change-dialog__body { padding: 12px; }
+.nick-change-dialog__password-row { margin-top: 6px; }
+.nick-change-dialog__error { color: var(--color-error); margin-top: 4px; }
+.nick-change-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 12px;
+}

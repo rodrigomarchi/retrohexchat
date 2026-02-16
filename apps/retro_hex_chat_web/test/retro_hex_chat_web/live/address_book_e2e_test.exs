@@ -399,7 +399,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
   # ══════════════════════════════════════════════════════════════
 
   defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
   end
 
@@ -410,5 +410,5 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
     end
   end
 
-  defp uid, do: System.unique_integer([:positive])
+  defp uid, do: rem(System.unique_integer([:positive]), 10_000)
 end

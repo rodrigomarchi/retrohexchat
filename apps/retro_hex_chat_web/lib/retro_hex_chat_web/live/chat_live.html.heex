@@ -1,5 +1,16 @@
 <div id="reconnect-hook" phx-hook="ReconnectHook" style="display: none;"></div>
 <div id="title-flash" phx-hook="TitleFlashHook" style="display: none;"></div>
+<div id="nick-change-hook" phx-hook="NickChangeFormHook" style="display: none;"></div>
+<form id="nick-change-session-form" action={~p"/chat/session"} method="post" class="u-hidden">
+  <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+  <input type="hidden" name="nickname" value={@nick_change_target || ""} />
+  <input
+    :if={@nick_change_token}
+    type="hidden"
+    name="auth_token"
+    value={@nick_change_token}
+  />
+</form>
 <div id="options-hook" phx-hook="OptionsHook" style="display: none;"></div>
 <div id="key-capture-hook" phx-hook="KeyBindingCaptureHook" style="display: none;"></div>
 <div id="search-highlight-hook" phx-hook="SearchHighlightHook" style="display: none;"></div>
@@ -87,17 +98,6 @@
         my_mentions={@search_my_mentions}
         history={@search_history}
       />
-
-      <div
-        :if={@show_onboarding_tip}
-        class="onboarding-tip-banner"
-        data-testid="onboarding-tip"
-      >
-        <span>
-          Dica: digite / para ver comandos disponíveis. Use ↑↓ para navegar o histórico.
-        </span>
-        <button phx-click="dismiss_onboarding_tip" aria-label="Fechar dica">✕</button>
-      </div>
 
       <RetroHexChatWeb.Components.LoadingSpinner.loading_spinner
         loading={@loading_channel != nil}
@@ -254,6 +254,19 @@
         </div>
       </div>
 
+      <div class="chat-popups-stack">
+        <RetroHexChatWeb.Components.AutocompleteDropdown.autocomplete_dropdown
+          visible={@autocomplete_visible}
+          mode={@autocomplete_mode || :command}
+          results={@autocomplete_results}
+          selected={@autocomplete_selected}
+        />
+        <RetroHexChatWeb.Components.SyntaxTooltip.syntax_tooltip
+          tooltip={@syntax_tooltip}
+          detail_level={@command_help_level}
+        />
+      </div>
+
       <div style={if @show_status_tab, do: "display: none;", else: nil}>
         <RetroHexChatWeb.Components.FormattingToolbar.formatting_toolbar strip_formatting={
           @session.strip_formatting
@@ -282,16 +295,6 @@
           active_category={@emoji_category}
           emojis={@emoji_emojis}
           search_query={@emoji_search}
-        />
-        <RetroHexChatWeb.Components.AutocompleteDropdown.autocomplete_dropdown
-          visible={@autocomplete_visible}
-          mode={@autocomplete_mode || :command}
-          results={@autocomplete_results}
-          selected={@autocomplete_selected}
-        />
-        <RetroHexChatWeb.Components.SyntaxTooltip.syntax_tooltip
-          tooltip={@syntax_tooltip}
-          detail_level={@command_help_level}
         />
         <form phx-submit="send_input" class="chat-input-form">
           <textarea
@@ -374,6 +377,14 @@
   <RetroHexChatWeb.Components.DeleteConfirmDialog.delete_confirm_dialog
     visible={@delete_confirm != nil}
     message_id={@delete_confirm && @delete_confirm.message_id}
+  />
+
+  <RetroHexChatWeb.Components.NickChangeDialog.nick_change_dialog
+    visible={@nick_change_dialog != nil}
+    target_nick={(@nick_change_dialog && @nick_change_dialog.target_nick) || ""}
+    registered={(@nick_change_dialog && @nick_change_dialog.registered) || false}
+    password={(@nick_change_dialog && @nick_change_dialog.password) || ""}
+    password_error={@nick_change_dialog && @nick_change_dialog.password_error}
   />
 
   <RetroHexChatWeb.Components.NotifyListWindow.notify_list_window

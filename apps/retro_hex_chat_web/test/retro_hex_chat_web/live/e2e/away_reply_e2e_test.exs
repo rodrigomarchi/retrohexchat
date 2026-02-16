@@ -12,8 +12,8 @@ defmodule RetroHexChatWeb.AwayReplyE2ETest do
       nick1 = "ARE1#{uid()}"
       nick2 = "ARE2#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
 
       # Nick1 sets away
       view1 |> render_submit("send_input", %{"input" => "/away Gone for lunch"})
@@ -39,8 +39,8 @@ defmodule RetroHexChatWeb.AwayReplyE2ETest do
       nick1 = "ARE3#{uid()}"
       nick2 = "ARE4#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
 
       # Nick1 sets away
       view1 |> render_submit("send_input", %{"input" => "/away Busy"})

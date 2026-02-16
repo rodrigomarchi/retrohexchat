@@ -21,10 +21,10 @@ defmodule RetroHexChatWeb.ChatLiveQuitTest do
       nick1 = "QT1#{uid()}"
       nick2 = "QT2#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       join_channel(view1, channel)
 
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view2, channel)
 
       # Wait for PubSub subscriptions to settle
@@ -46,10 +46,10 @@ defmodule RetroHexChatWeb.ChatLiveQuitTest do
       nick1 = "QT3#{uid()}"
       nick2 = "QT4#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       join_channel(view1, channel)
 
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view2, channel)
 
       :timer.sleep(50)
@@ -69,10 +69,10 @@ defmodule RetroHexChatWeb.ChatLiveQuitTest do
       nick1 = "QT5#{uid()}"
       nick2 = "QT6#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       join_channel(view1, channel)
 
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view2, channel)
 
       :timer.sleep(50)

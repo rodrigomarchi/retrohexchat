@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.ChatLiveCounterTest do
   describe "US4: Character Counter" do
     test "counter element exists with data-testid", %{conn: conn, channel: channel} do
       nick = "Cnt#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
       html = render(view)
 
@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.ChatLiveCounterTest do
 
     test "input has maxlength attribute", %{conn: conn, channel: channel} do
       nick = "CnM#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
       html = render(view)
 
@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.ChatLiveCounterTest do
 
     test "CharCounterHook is present on input area", %{conn: conn, channel: channel} do
       nick = "CnH#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
       html = render(view)
 

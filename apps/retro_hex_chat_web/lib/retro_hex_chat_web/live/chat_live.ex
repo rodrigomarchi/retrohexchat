@@ -37,14 +37,14 @@ defmodule RetroHexChatWeb.ChatLive do
   alias RetroHexChatWeb.ChatLive.Helpers
 
   @impl true
-  def mount(params, _session, socket) do
-    nickname = params["nickname"] || "Guest_#{:rand.uniform(99999)}"
+  def mount(_params, http_session, socket) do
+    nickname = http_session["chat_nickname"] || "Guest_#{:rand.uniform(99999)}"
 
     case NicknameValidator.validate(nickname) do
       :ok ->
         session = Session.new(nickname)
-
-        onboarded = params["onboarded"] == "true"
+        pre_identified = http_session["chat_pre_identified"] == true
+        join_channel = http_session["chat_join_channel"]
 
         if connected?(socket) do
           Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
@@ -63,10 +63,10 @@ defmodule RetroHexChatWeb.ChatLive do
             socket
             |> attach_all_hooks()
             |> assign_defaults(session)
-            |> assign(show_onboarding_tip: onboarded, connection_ready: true)
+            |> assign(connection_ready: true)
             |> Helpers.join_channel("#lobby", session)
-            |> Helpers.maybe_join_from_params(params)
-            |> Helpers.maybe_start_nickserv_timer(nickname)
+            |> Helpers.maybe_join_channel(join_channel)
+            |> Helpers.maybe_start_nickserv_timer(nickname, pre_identified)
             |> Helpers.maybe_trigger_perform()
             |> Helpers.play_event_sound(:connect, session)
             |> maybe_show_motd()
@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.ChatLive do
         else
           {:ok,
            assign_defaults(socket, session)
-           |> assign(show_onboarding_tip: onboarded, connection_progress_step: 1)}
+           |> assign(connection_progress_step: 1)}
         end
 
       {:error, _} ->
@@ -343,7 +343,10 @@ defmodule RetroHexChatWeb.ChatLive do
       reply_to: nil,
       edit_mode_message_id: nil,
       edit_original_input: nil,
-      delete_confirm: nil
+      delete_confirm: nil,
+      nick_change_dialog: nil,
+      nick_change_target: nil,
+      nick_change_token: nil
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])

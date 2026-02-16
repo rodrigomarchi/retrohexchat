@@ -20,10 +20,10 @@ defmodule RetroHexChatWeb.DblclickE2ETest do
       nick1 = "DE1#{uid()}"
       nick2 = "DE2#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       join_channel(view1, channel)
 
-      {:ok, _view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, _view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view1, channel)
 
       # Simulate double-click event (would come from NicklistHook JS)
@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.DblclickE2ETest do
       target = "#dbjt-#{System.unique_integer([:positive])}"
       ensure_channel(target)
 
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       render_click(view, "channel_dblclick", %{"channel" => target})
@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.DblclickE2ETest do
       channel: channel
     } do
       nick = "DEL#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Send message containing a channel name
@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.DblclickE2ETest do
 
     test "nicklist has NicklistHook", %{conn: conn, channel: channel} do
       nick = "DEH#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
       html = render(view)
 

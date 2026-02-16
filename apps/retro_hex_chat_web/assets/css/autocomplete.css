@@ -4,8 +4,10 @@
   cursor: pointer;
   padding: 4px 8px;
   display: flex;
-  gap: 4px;
+  gap: 8px;
   align-items: baseline;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .autocomplete-item:hover,
@@ -16,7 +18,7 @@
 
 .autocomplete-category-header {
   font-weight: bold;
-  font-size: 11px;
+  font-size: var(--text-sm);
   padding: 4px 8px 2px;
   color: var(--color-muted);
   cursor: default;
@@ -24,7 +26,7 @@
 }
 
 .autocomplete-description {
-  font-size: 11px;
+  font-size: var(--text-sm);
   color: var(--color-muted);
   margin-left: auto;
   overflow: hidden;

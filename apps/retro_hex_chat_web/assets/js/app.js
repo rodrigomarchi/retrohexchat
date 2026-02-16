@@ -4,8 +4,10 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
+import ChannelListFormHook from "./hooks/channel_list_form_hook";
 import CharCounterHook from "./hooks/char_counter_hook";
 import ClockHook from "./hooks/clock_hook";
+import ConnectFormHook from "./hooks/connect_form_hook";
 import ConnectionBannerHook from "./hooks/connection_banner_hook";
 import ContextMenuHook from "./hooks/context_menu_hook";
 import AutocompleteHook from "./hooks/autocomplete_hook";
@@ -25,15 +27,17 @@ import ShortcutDispatcherHook from "./hooks/shortcut_dispatcher_hook";
 import SoundHook from "./hooks/sound_hook";
 import TitleFlashHook from "./hooks/title_flash_hook";
 import TreebarHook from "./hooks/treebar_hook";
-import OnboardingHook from "./hooks/onboarding_hook";
 import ContextualTipsHook from "./hooks/contextual_tips_hook";
 import NotificationDispatcherHook from "./hooks/notification_dispatcher_hook";
 import MessageInteractionsHook from "./hooks/message_interactions_hook";
+import NickChangeFormHook from "./hooks/nick_change_form_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
 
 const Hooks = {
+  ChannelListFormHook: ChannelListFormHook,
   CharCounterHook: CharCounterHook,
   ClockHook: ClockHook,
+  ConnectFormHook: ConnectFormHook,
   ConnectionBannerHook: ConnectionBannerHook,
   ContextMenuHook: ContextMenuHook,
   ContextualTipsHook: ContextualTipsHook,
@@ -44,10 +48,10 @@ const Hooks = {
   KeyboardHook: KeyboardHook,
   LagHook: LagHook,
   MessageInteractionsHook: MessageInteractionsHook,
+  NickChangeFormHook: NickChangeFormHook,
   NicklistHook: NicklistHook,
   NotificationDispatcherHook: NotificationDispatcherHook,
   NotifyListHook: NotifyListHook,
-  OnboardingHook: OnboardingHook,
   OptionsHook: OptionsHook,
   PasteHook: PasteHook,
   ReconnectHook: ReconnectHook,

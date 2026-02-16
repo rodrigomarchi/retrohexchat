@@ -6,8 +6,8 @@
   position: fixed;
   z-index: var(--z-tooltip, 9000);
   padding: 3px 6px;
-  font-size: 11px;
-  font-family: "MS Sans Serif", Geneva, sans-serif;
+  font-size: var(--text-sm);
+  font-family: var(--font-system);
   background: var(--tooltip-bg, #ffffe1);
   color: var(--tooltip-fg, #000000);
   border: 1px solid #000000;
@@ -23,8 +23,8 @@
 .nick-hover-card {
   position: fixed;
   z-index: var(--z-tooltip, 9000);
-  font-size: 12px;
-  font-family: "MS Sans Serif", Geneva, sans-serif;
+  font-size: var(--text-base);
+  font-family: var(--font-system);
   min-width: 200px;
   max-width: 300px;
   pointer-events: none;
@@ -39,12 +39,12 @@
 }
 
 .nick-hover-card .title-bar-text {
-  font-size: 11px;
+  font-size: var(--text-sm);
 }
 
 .nick-hover-card .window-body {
   padding: 6px 8px;
-  font-size: 11px;
+  font-size: var(--text-sm);
   line-height: 1.5;
 }
 
@@ -82,7 +82,7 @@
   margin-top: 6px;
   padding-top: 4px;
   border-top: 1px solid var(--color-border, #808080);
-  font-size: 10px;
+  font-size: var(--text-xs);
   color: var(--color-muted);
   text-align: center;
 }

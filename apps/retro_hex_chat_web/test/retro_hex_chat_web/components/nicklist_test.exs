@@ -5,6 +5,30 @@ defmodule RetroHexChatWeb.Components.NicklistTest do
 
   alias RetroHexChatWeb.Components.Nicklist
 
+  describe "nicklist header" do
+    @tag :unit
+    test "renders header with user count and close button" do
+      users = [
+        %{nickname: "alice", role: :regular, away: false},
+        %{nickname: "bob", role: :regular, away: false}
+      ]
+
+      html = render_component(&Nicklist.nicklist/1, users: users)
+
+      assert html =~ "nicklist-header"
+      assert html =~ "Users (2)"
+      assert html =~ "nicklist-close"
+      assert html =~ "phx-click=\"toggle_nicklist\""
+    end
+
+    @tag :unit
+    test "renders header even when no users" do
+      html = render_component(&Nicklist.nicklist/1, users: [])
+      assert html =~ "nicklist-header"
+      assert html =~ "Users (0)"
+    end
+  end
+
   describe "nicklist/1" do
     test "groups users by role: operators, voiced, regular" do
       users = [
@@ -56,7 +80,7 @@ defmodule RetroHexChatWeb.Components.NicklistTest do
       assert html =~ "Users (3)"
     end
 
-    test "displays group counts" do
+    test "displays group counts for non-empty groups" do
       users = [
         %{nickname: "alice", role: :operator, away: false},
         %{nickname: "zach", role: :operator, away: false},
@@ -69,6 +93,22 @@ defmodule RetroHexChatWeb.Components.NicklistTest do
       assert html =~ "Operators (2)"
       assert html =~ "Voiced (1)"
       assert html =~ "Regular (1)"
+    end
+
+    @tag :unit
+    test "hides empty groups" do
+      users = [
+        %{nickname: "alice", role: :operator, away: false},
+        %{nickname: "bob", role: :regular, away: false}
+      ]
+
+      html = render_component(&Nicklist.nicklist/1, users: users)
+
+      assert html =~ "Operators (1)"
+      assert html =~ "Regular (1)"
+      refute html =~ "Owners"
+      refute html =~ "Voiced"
+      refute html =~ "Half-Ops"
     end
 
     test "renders empty nicklist" do
@@ -115,7 +155,7 @@ defmodule RetroHexChatWeb.Components.NicklistTest do
       # Check group headers
       assert html =~ "Owners (1)"
       assert html =~ "Operators (1)"
-      assert html =~ "Half-Operators (1)"
+      assert html =~ "Half-Ops (1)"
       assert html =~ "Voiced (1)"
       assert html =~ "Regular (1)"
 

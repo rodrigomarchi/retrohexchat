@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.Helpers.Persistence
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
 
   # ── Nick color functions ───────────────────────────────────
@@ -250,6 +251,21 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   @spec restore_session(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   def restore_session(socket, params) do
+    restored_nick = Map.get(params, "nickname")
+    current_nick = socket.assigns.session.nickname
+
+    if restored_nick != nil and restored_nick != current_nick do
+      Logger.info(
+        "Ignoring reconnect state from different user: #{restored_nick} != #{current_nick}"
+      )
+
+      socket
+    else
+      do_restore_session(socket, params)
+    end
+  end
+
+  defp do_restore_session(socket, params) do
     channels = Map.get(params, "channels", [])
     active_channel = Map.get(params, "active_channel")
     active_pm = Map.get(params, "active_pm")
@@ -383,30 +399,46 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   # ── Mount helpers ─────────────────────────────────────────
 
-  @spec maybe_start_nickserv_timer(Phoenix.LiveView.Socket.t(), String.t()) ::
+  @spec maybe_start_nickserv_timer(Phoenix.LiveView.Socket.t(), String.t(), boolean()) ::
           Phoenix.LiveView.Socket.t()
-  def maybe_start_nickserv_timer(socket, nickname) do
-    if NickServ.registered?(nickname) do
-      NickServ.start_identify_timer(nickname)
+  def maybe_start_nickserv_timer(socket, nickname, pre_identified \\ false) do
+    cond do
+      pre_identified or NickServ.identified?(nickname) ->
+        session =
+          socket.assigns.session
+          |> Session.set_identified(true)
+          |> Persistence.load_persisted_data(nickname)
 
-      notice =
-        "[NickServ] This nickname is registered. " <>
-          "You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+        socket
+        |> assign(session: session)
+        |> rebuild_nick_color_fn(session)
+        |> stream_insert(
+          :chat_messages,
+          Messages.system_message("You are now identified as #{nickname}")
+        )
 
-      stream_insert(socket, :chat_messages, Messages.service_message("NickServ", notice))
-    else
-      socket
+      NickServ.registered?(nickname) ->
+        NickServ.start_identify_timer(nickname)
+
+        notice =
+          "[NickServ] This nickname is registered. " <>
+            "You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+
+        stream_insert(socket, :chat_messages, Messages.service_message("NickServ", notice))
+
+      true ->
+        socket
     end
   end
 
-  @spec maybe_join_from_params(Phoenix.LiveView.Socket.t(), map()) ::
+  @spec maybe_join_channel(Phoenix.LiveView.Socket.t(), String.t() | nil) ::
           Phoenix.LiveView.Socket.t()
-  def maybe_join_from_params(socket, %{"join" => channel_name})
+  def maybe_join_channel(socket, channel_name)
       when is_binary(channel_name) and channel_name != "" do
     ChannelHelpers.join_channel(socket, channel_name, socket.assigns.session)
   end
 
-  def maybe_join_from_params(socket, _params), do: socket
+  def maybe_join_channel(socket, _channel_name), do: socket
 
   @spec maybe_trigger_perform(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   def maybe_trigger_perform(socket) do
@@ -415,6 +447,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     if PerformList.enabled?(session.perform_list) and
          PerformList.count(session.perform_list) > 0 do
       send(self(), {:execute_perform, 0})
+    else
+      send(self(), {:execute_autojoin, 0})
     end
 
     socket

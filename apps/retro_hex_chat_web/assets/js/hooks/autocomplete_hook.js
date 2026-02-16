@@ -110,7 +110,15 @@ const AutocompleteHook = {
           this.pushEvent("pm_stop_typing", {});
         }
 
-        if (this.dropdownVisible) return;
+        if (this.dropdownVisible) {
+          this.pushEvent("autocomplete_close", {});
+          this.dropdownVisible = false;
+        }
+
+        if (this.tooltipVisible) {
+          this.pushEvent("syntax_tooltip_dismiss", {});
+          this.tooltipVisible = false;
+        }
 
         const value = this.inputEl.value;
         if (value.trim()) {
@@ -261,6 +269,20 @@ const AutocompleteHook = {
     this.handleEvent("exit_edit_mode", () => {
       this.editMode = false;
     });
+
+    this.handleEvent("clear_input", () => {
+      this.inputEl.value = "";
+      this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
+      autoResize(this.inputEl, this.maxHeight);
+      if (this.tooltipVisible) {
+        this.pushEvent("syntax_tooltip_dismiss", {});
+        this.tooltipVisible = false;
+      }
+      if (this.dropdownVisible) {
+        this.pushEvent("autocomplete_close", {});
+        this.dropdownVisible = false;
+      }
+    });
   },
 
   updated() {
@@ -277,6 +299,26 @@ const AutocompleteHook = {
         }
       }
     }
+  },
+
+  // ── Syntax tooltip ────────────────────────────────────
+
+  checkSyntaxTooltip(value) {
+    if (!value || !value.startsWith("/")) {
+      if (this.tooltipVisible) {
+        this.pushEvent("syntax_tooltip_dismiss", {});
+        this.tooltipVisible = false;
+      }
+      return;
+    }
+
+    const spaceIdx = value.indexOf(" ");
+    if (spaceIdx <= 1) return;
+
+    const command = value.slice(1, spaceIdx);
+    const args = value.slice(spaceIdx + 1);
+    this.tooltipVisible = true;
+    this.pushEvent("syntax_tooltip_query", { command, args });
   },
 
   // ── Delegated methods ──────────────────────────────────

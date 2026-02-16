@@ -306,7 +306,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightE2ETest do
   # ══════════════════════════════════════════════════════════════
 
   defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
   end
 

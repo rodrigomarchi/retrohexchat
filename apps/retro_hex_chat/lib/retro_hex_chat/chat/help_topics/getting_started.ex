@@ -21,8 +21,7 @@ defmodule RetroHexChat.Chat.HelpTopics.GettingStarted do
             "<p>3. Type messages in the input box and press <strong>Enter</strong> to send.</p>" <>
             "<p>4. Use <code>/commands</code> for advanced features — type <code>/help</code> to see them all.</p>" <>
             "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"welcome-wizard\">Welcome Wizard</a> · " <>
-            "<a href=\"#\" data-help-topic=\"connecting\">Connecting</a> · " <>
+            "<p><a href=\"#\" data-help-topic=\"connecting\">Connecting</a> · " <>
             "<a href=\"#\" data-help-topic=\"channels\">Channels</a> · " <>
             "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
       },
@@ -85,26 +84,23 @@ defmodule RetroHexChat.Chat.HelpTopics.GettingStarted do
             "<a href=\"#\" data-help-topic=\"feature-notices\">Notices</a></p>"
       },
       %{
-        id: "welcome-wizard",
-        title: "Welcome Wizard",
+        id: "connect-authentication",
+        title: "Connect Authentication",
         category: "Getting Started",
-        keywords: ["wizard", "onboarding", "first time", "setup", "assistente"],
+        keywords: ["authentication", "login", "password", "registered", "identify"],
         content:
-          "<h3>Welcome Wizard</h3>" <>
-            "<p>When you visit RetroHexChat for the first time, a 3-step wizard guides you through setup:</p>" <>
-            "<h4>Step 1: Choose Your Nickname</h4>" <>
-            "<p>Enter a nickname (1–16 characters). This is how others will see you in chat.</p>" <>
-            "<h4>Step 2: Server Configuration</h4>" <>
-            "<p>Server settings are pre-filled with sensible defaults. Most users can simply click <strong>Conectar</strong>.</p>" <>
-            "<h4>Step 3: Join Channels</h4>" <>
-            "<p>Select from popular channels or type a custom channel name. You can also skip this step.</p>" <>
-            "<h4>Notes</h4>" <>
-            "<p>The wizard only appears once. To see it again, clear your browser's localStorage.</p>" <>
-            "<p>If you dismiss the wizard (close or press Escape), it won't appear again.</p>" <>
+          "<h3>Connect Authentication</h3>" <>
+            "<p>When you connect with a registered nickname, RetroHexChat prompts for your password " <>
+            "directly on the connection screen — no need to run <code>/ns identify</code> manually.</p>" <>
+            "<h4>How It Works</h4>" <>
+            "<p>1. Enter your registered nickname and click <strong>Connect</strong>.</p>" <>
+            "<p>2. A password prompt appears. Enter your NickServ password.</p>" <>
+            "<p>3. On success, you join the chat already identified — the 60-second timer is skipped.</p>" <>
+            "<h4>Unregistered Nicknames</h4>" <>
+            "<p>If the nickname is not registered, you connect immediately without a password step.</p>" <>
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"connecting\">Connecting</a> · " <>
-            "<a href=\"#\" data-help-topic=\"channels\">Channels</a> · " <>
-            "<a href=\"#\" data-help-topic=\"empty-states\">Empty States</a></p>"
+            "<a href=\"#\" data-help-topic=\"nickserv\">NickServ Overview</a></p>"
       }
     ]
   end

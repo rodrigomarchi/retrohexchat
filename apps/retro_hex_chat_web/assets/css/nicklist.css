@@ -8,16 +8,50 @@
   box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
 }
 
+/* ── Header (sticky at top of scroll container) ──────────── */
+
 .nicklist-header {
-  padding: 4px 8px;
-  font-size: 11px;
-  color: var(--color-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 6px;
   background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
+
+.nicklist-header-title {
+  font-size: var(--text-sm);
+  font-weight: bold;
+  color: var(--color-gray-700);
+}
+
+.nicklist-close {
+  width: 16px;
+  min-width: 16px;
+  height: 14px;
+  min-height: 14px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--color-gray-700);
+}
+
+.nicklist-close:hover {
+  color: var(--color-black, #000);
+}
+
+/* ── Group headers ───────────────────────────────────────── */
 
 .nicklist-group-header {
   padding: 3px 4px;
-  font-size: 10px;
+  font-size: var(--text-xs);
   color: var(--color-muted);
   font-weight: bold;
   letter-spacing: 0.5px;
@@ -30,12 +64,14 @@
   margin-top: 0;
 }
 
+/* ── User list ───────────────────────────────────────────── */
+
 .nicklist-list {
   list-style: none;
   margin: 0;
   padding: 4px;
-  font-size: var(--nicklist-font-size, 12px);
-  font-family: var(--nicklist-font-family, Fixedsys, "Courier New", monospace);
+  font-size: var(--nicklist-font-size, var(--text-base));
+  font-family: var(--nicklist-font-family, var(--font-mono));
 }
 
 .nicklist-list li {
@@ -47,6 +83,8 @@
   background-color: var(--color-selection-bg);
   color: var(--color-selection-fg);
 }
+
+/* ── Role colors ─────────────────────────────────────────── */
 
 .nick-owner {
   color: #990099;

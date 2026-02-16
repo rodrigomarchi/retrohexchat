@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
   describe "US2: URL Catcher window basics" do
     test "toggle_url_catcher opens the window", %{conn: conn} do
       nick = "UCOpen#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_url_catcher")
       assert html =~ "url-catcher-window"
@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "toggle_url_catcher closes the window", %{conn: conn} do
       nick = "UCClose#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "toggle_url_catcher")
       html = render_click(view, "toggle_url_catcher")
@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "window shows table with column headers", %{conn: conn} do
       nick = "UCHeaders#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_url_catcher")
       assert html =~ "url-catcher-sort-url"
@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "empty window shows no URLs message", %{conn: conn} do
       nick = "UCEmpty#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_url_catcher")
       assert html =~ "No URLs captured"
@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "Ctrl+Shift+S opens URL Catcher window", %{conn: conn} do
       nick = "UCAltU#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html =
         render_keydown(view, "window_keydown", %{
@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "Ctrl+Shift+S toggles URL Catcher window", %{conn: conn} do
       nick = "UCToggle#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_keydown(view, "window_keydown", %{
         "key" => "s",
@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "menu bar URL Catcher item opens window", %{conn: conn} do
       nick = "UCMenu#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       assert render(view) =~ "menu-url-catcher"
       html = render_click(view, "toggle_url_catcher")
@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
   describe "US2: URL capture and display" do
     test "new message with URL appears in URL Catcher", %{conn: conn} do
       nick = "UCCapture#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Alice", "check https://example.com out", "#lobby")
       html = render_click(view, "toggle_url_catcher")
@@ -103,7 +103,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "message with multiple URLs creates multiple entries", %{conn: conn} do
       nick = "UCMulti#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Bob", "visit https://a.com and https://b.com", "#lobby")
       html = render_click(view, "toggle_url_catcher")
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "PM with URL is captured with PM source", %{conn: conn} do
       nick = "UCPm#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Open PM conversation first
       render_click(view, "nick_right_click", %{"nick" => "Carol", "x" => 0, "y" => 0})
@@ -143,7 +143,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "real-time update: new URL appears in open window", %{conn: conn} do
       nick = "UCRealtime#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "toggle_url_catcher")
       send_new_message(view, "Dave", "look at https://realtime.com", "#lobby")
@@ -155,7 +155,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "message without URL does not add entry", %{conn: conn} do
       nick = "UCNoUrl#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Eve", "just some text", "#lobby")
       html = render_click(view, "toggle_url_catcher")
@@ -167,7 +167,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
   describe "US2: sorting" do
     test "clicking column header sorts entries", %{conn: conn} do
       nick = "UCSort#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Bob", "visit https://banana.com", "#lobby")
       send_new_message(view, "Alice", "check https://apple.com", "#lobby")
@@ -184,7 +184,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "clicking same column header toggles direction", %{conn: conn} do
       nick = "UCSortDir#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Bob", "visit https://banana.com", "#lobby")
       send_new_message(view, "Alice", "check https://apple.com", "#lobby")
@@ -205,7 +205,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "sort indicator shows on active column", %{conn: conn} do
       nick = "UCSortInd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_url_catcher")
       # Default sort is timestamp desc, so Time column should show ▼
@@ -216,7 +216,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
   describe "US2: filtering" do
     setup %{conn: conn} do
       nick = "UCFilter#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Join a second channel
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #filter-ch"})
@@ -249,7 +249,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
   describe "US2: search" do
     test "search filters by URL text", %{conn: conn} do
       nick = "UCSearch#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Alice", "https://elixir-lang.org here", "#lobby")
       send_new_message(view, "Bob", "https://phoenixframework.org here", "#lobby")
@@ -264,7 +264,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
 
     test "empty search shows all URLs", %{conn: conn} do
       nick = "UCSrchAll#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "Alice", "https://elixir-lang.org here", "#lobby")
       send_new_message(view, "Bob", "https://phoenixframework.org here", "#lobby")

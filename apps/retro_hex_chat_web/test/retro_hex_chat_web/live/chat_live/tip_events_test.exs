@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.TipEventsTest do
   describe "tips_state_sync event" do
     test "stores suppressed state in assigns", %{conn: conn, channel: channel} do
       nick = "Tips#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Push tips_state_sync — should not crash
@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.TipEventsTest do
 
     test "handles unsuppressed state", %{conn: conn, channel: channel} do
       nick = "Tips#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       assert render_click(view, "tips_state_sync", %{"suppressed" => false})
@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.ChatLive.TipEventsTest do
   describe "first message tip trigger" do
     test "send_input pushes tip_trigger event", %{conn: conn, channel: channel} do
       nick = "TipMsg#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       # Send a message — should not crash and should push tip_trigger

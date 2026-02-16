@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.NickColumnE2ETest do
   describe "Nick Column Alignment E2E" do
     test "regular messages render inside chat-msg-grid", %{conn: conn, channel: channel} do
       nick = "NCE#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       view |> render_submit("send_input", %{"input" => "Hello from grid test"})
@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.NickColumnE2ETest do
 
     test "action messages do not use grid layout", %{conn: conn, channel: channel} do
       nick = "NCE#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       view |> render_submit("send_input", %{"input" => "/me waves hello"})
@@ -47,10 +47,10 @@ defmodule RetroHexChatWeb.NickColumnE2ETest do
       nick1 = "NC1#{uid()}"
       nick2 = "NC2#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       join_channel(view1, channel)
 
-      {:ok, _view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, _view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view1, channel)
 
       # Wait for PubSub + flush

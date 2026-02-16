@@ -146,7 +146,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   def handle_info({:force_rename, %{reason: reason}}, socket) do
     old_nickname = socket.assigns.session.nickname
     guest_nick = "Guest_#{:rand.uniform(99999)}"
-    session = Session.update_nickname(socket.assigns.session, guest_nick)
+
+    session =
+      socket.assigns.session
+      |> Session.update_nickname(guest_nick)
+      |> Session.set_identified(false)
 
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "user:#{old_nickname}")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{guest_nick}")

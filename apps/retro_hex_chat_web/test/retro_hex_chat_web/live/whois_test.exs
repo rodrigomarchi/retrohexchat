@@ -22,8 +22,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       nick = "WhoQ#{System.unique_integer([:positive])}"
       target = "WhoT#{System.unique_integer([:positive])}"
 
-      {:ok, _target_view, _html} = live(conn, "/chat?nickname=#{target}")
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -40,8 +40,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       nick = "WhoQ2#{System.unique_integer([:positive])}"
       target = "WhoT2#{System.unique_integer([:positive])}"
 
-      {:ok, _target_view, _html} = live(conn, "/chat?nickname=#{target}")
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -57,8 +57,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       nick = "WhoQ3#{System.unique_integer([:positive])}"
       target = "WhoT3#{System.unique_integer([:positive])}"
 
-      {:ok, _target_view, _html} = live(conn, "/chat?nickname=#{target}")
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -74,8 +74,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       nick = "WhoQ4#{System.unique_integer([:positive])}"
       target = "WhoT4#{System.unique_integer([:positive])}"
 
-      {:ok, _target_view, _html} = live(conn, "/chat?nickname=#{target}")
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -91,8 +91,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       nick = "WhoQ5#{System.unique_integer([:positive])}"
       target = "WhoT5#{System.unique_integer([:positive])}"
 
-      {:ok, _target_view, _html} = live(conn, "/chat?nickname=#{target}")
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -109,7 +109,7 @@ defmodule RetroHexChatWeb.WhoisTest do
     test "self-whois works", %{conn: conn} do
       nick = "WhoSelf#{System.unique_integer([:positive])}"
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -125,7 +125,7 @@ defmodule RetroHexChatWeb.WhoisTest do
     test "whois for non-existent user shows not online message", %{conn: conn} do
       nick = "WhoQ6#{System.unique_integer([:positive])}"
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -140,7 +140,7 @@ defmodule RetroHexChatWeb.WhoisTest do
     test "double-click on nicklist triggers PM (nicklist_dblclick)", %{conn: conn} do
       nick = "DblClk#{System.unique_integer([:positive])}"
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Double-click opens PM query window via nicklist_dblclick event
       render_click(view, "nicklist_dblclick", %{"nick" => nick})

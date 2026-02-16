@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.FavoritesAutojoinTest do
       :ok = Favorites.save(nick, favorites)
 
       # Connect and identify
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.FavoritesAutojoinTest do
 
       :ok = Favorites.save(nick, favorites)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")

@@ -1336,8 +1336,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "contextual",
           "toast",
           "hint",
-          "progressive disclosure",
-          "onboarding"
+          "progressive disclosure"
         ],
         content:
           "<h3>Contextual Tips</h3>" <>

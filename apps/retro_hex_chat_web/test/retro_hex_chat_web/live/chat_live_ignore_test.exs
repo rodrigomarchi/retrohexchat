@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
   describe "US1: /ignore command dispatches" do
     test "/ignore with nickname adds ignore entry", %{conn: conn} do
       nick = "IgnCmd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore SpamBot"})
 
@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "/ignore bare shows ignore list (empty)", %{conn: conn} do
       nick = "IgnBare#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore"})
 
@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "/ignore bare shows ignore list (with entries)", %{conn: conn} do
       nick = "IgnLst#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore SpamBot"})
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore"})
@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "self-ignore shows error", %{conn: conn} do
       nick = "SelfIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore #{nick}"})
 
@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
   describe "US1: /unignore command dispatches" do
     test "/unignore removes ignore entry", %{conn: conn} do
       nick = "UnIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore SpamBot"})
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/unignore SpamBot"})
@@ -65,7 +65,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "/unignore non-ignored user shows error", %{conn: conn} do
       nick = "UnNone#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/unignore Nobody"})
 
@@ -77,7 +77,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
   describe "US1: channel message filtering" do
     test "messages from ignored user are hidden", %{conn: conn} do
       nick = "FiltCh#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Ignore SpamBot
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore SpamBot"})
@@ -91,7 +91,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "messages from non-ignored user are shown", %{conn: conn} do
       nick = "FiltOk#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore SpamBot"})
 
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "system messages from ignored user are NOT filtered", %{conn: conn} do
       nick = "FiltSys#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore SpamBot"})
 
@@ -119,7 +119,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
   describe "US1: PM filtering" do
     test "PMs from ignored user are hidden", %{conn: conn} do
       nick = "FiltPM#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore SpamBot"})
 
@@ -133,7 +133,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
   describe "US1: nick rename tracking" do
     test "ignoring carries over when user renames", %{conn: conn} do
       nick = "RenIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       ensure_channel("#lobby")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore OldNick"})
@@ -154,7 +154,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
   describe "US2: type-specific filtering" do
     test "/ignore nick messages hides channel msgs but allows PMs", %{conn: conn} do
       nick = "TypeMs#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -173,7 +173,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "/ignore nick pms hides PMs but allows channel msgs", %{conn: conn} do
       nick = "TypePm#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -192,7 +192,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "/ignore nick actions hides actions but allows messages", %{conn: conn} do
       nick = "TypeAc#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -211,7 +211,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "re-ignore updates type and shows update message", %{conn: conn} do
       nick = "ReIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -231,7 +231,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
   describe "US3: timed ignore" do
     test "timed ignore shows expiry in system message", %{conn: conn} do
       nick = "TimIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -243,7 +243,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "expired timer removes ignore and shows message", %{conn: conn} do
       nick = "ExpIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -263,7 +263,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "/unignore cancels active timer", %{conn: conn} do
       nick = "CnlTm#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -283,7 +283,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
   describe "US4: ignore list dialog" do
     test "Ctrl+Shift+G opens dialog", %{conn: conn} do
       nick = "AltI#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_keydown(view, "window_keydown", %{
         "key" => "g",
@@ -298,7 +298,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "menu bar Ignore List opens dialog", %{conn: conn} do
       nick = "MnuIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_ignore_dialog")
 
@@ -308,7 +308,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "close button closes dialog", %{conn: conn} do
       nick = "ClsIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_ignore_dialog")
       render_click(view, "close_ignore_dialog")
@@ -319,7 +319,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "dialog shows empty state when no ignores", %{conn: conn} do
       nick = "EmtIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_ignore_dialog")
 
@@ -329,7 +329,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "dialog shows ignored entries", %{conn: conn} do
       nick = "ShwIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -345,7 +345,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "select and remove entry via dialog", %{conn: conn} do
       nick = "DlgRm#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -361,7 +361,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "add via dialog creates ignore entry", %{conn: conn} do
       nick = "DlgAdd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_ignore_dialog")
       render_click(view, "ignore_dialog_add")
@@ -383,7 +383,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
   describe "context menu ignore integration" do
     test "context_ignore adds entry and shows system message", %{conn: conn} do
       nick = "CtxIgn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "context_ignore", %{"nick" => "SpamBot"})
 
@@ -393,7 +393,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "context_unignore removes entry and shows system message", %{conn: conn} do
       nick = "CtxUn#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # First ignore
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/ignore SpamBot"})
@@ -406,7 +406,7 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreTest do
 
     test "context_ignore filters subsequent messages", %{conn: conn} do
       nick = "CtxFlt#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "context_ignore", %{"nick" => "SpamBot"})
       send_new_message(view, "SpamBot", "hidden after ctx ignore", "#lobby")

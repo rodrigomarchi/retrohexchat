@@ -24,12 +24,12 @@ defmodule RetroHexChatWeb.WhowasTest do
       target = "Was2#{System.unique_integer([:positive])}"
 
       # Connect target, then disconnect
-      {:ok, target_view, _html} = live(conn, "/chat?nickname=#{target}")
+      {:ok, target_view, _html} = live(chat_conn(conn, target), "/chat")
       GenServer.stop(target_view.pid)
       Process.sleep(100)
 
       # Now query whowas
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.WhowasTest do
     test "shows not-found message for unknown user", %{conn: conn} do
       nick = "Was3#{System.unique_integer([:positive])}"
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -65,7 +65,7 @@ defmodule RetroHexChatWeb.WhowasTest do
       # Manually record a whowas entry for precise control
       WhowasCache.record(target, ["#lobby", "#elixir"])
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -84,7 +84,7 @@ defmodule RetroHexChatWeb.WhowasTest do
 
       WhowasCache.record(target, ["#lobby"], "See you tomorrow!")
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -101,7 +101,7 @@ defmodule RetroHexChatWeb.WhowasTest do
       target = "Was9#{System.unique_integer([:positive])}"
 
       # Connect and disconnect target
-      {:ok, target_view, _html} = live(conn, "/chat?nickname=#{target}")
+      {:ok, target_view, _html} = live(chat_conn(conn, target), "/chat")
       GenServer.stop(target_view.pid)
       Process.sleep(100)
 

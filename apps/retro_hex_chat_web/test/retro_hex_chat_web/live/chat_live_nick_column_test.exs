@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.ChatLiveNickColumnTest do
   describe "US1: Nick Column Alignment" do
     test "regular messages render with chat-msg-grid class", %{conn: conn, channel: channel} do
       nick = "NCol#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       view |> render_submit("send_input", %{"input" => "Hello world"})
@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.ChatLiveNickColumnTest do
 
     test "action messages use full-width layout without grid", %{conn: conn, channel: channel} do
       nick = "NCol#{uid()}"
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
       view |> render_submit("send_input", %{"input" => "/me waves"})
@@ -43,11 +43,11 @@ defmodule RetroHexChatWeb.ChatLiveNickColumnTest do
       nick1 = "NC1#{uid()}"
       nick2 = "NC2#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       join_channel(view1, channel)
 
       # Second user joins — view1 sees a system message via PubSub
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view2, channel)
 
       # Flush PubSub messages
@@ -64,10 +64,10 @@ defmodule RetroHexChatWeb.ChatLiveNickColumnTest do
       nick1 = "A#{uid()}"
       nick2 = "Med#{uid()}"
 
-      {:ok, view1, _} = live(conn, "/chat?nickname=#{nick1}")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       join_channel(view1, channel)
 
-      {:ok, view2, _} = live(conn, "/chat?nickname=#{nick2}")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view2, channel)
 
       view1 |> render_submit("send_input", %{"input" => "short nick msg"})

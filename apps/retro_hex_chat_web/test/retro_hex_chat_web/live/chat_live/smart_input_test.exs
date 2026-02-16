@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
 
   describe "textarea rendering" do
     test "renders a textarea element with correct attributes", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=TextareaUser")
+      {:ok, _view, html} = live(chat_conn(conn, "TextareaUser"), "/chat")
 
       assert html =~ ~s(id="chat-input")
       assert html =~ ~s(name="input")
@@ -26,13 +26,13 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
     end
 
     test "textarea has rows=1 for single-line default", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=RowsUser")
+      {:ok, _view, html} = live(chat_conn(conn, "RowsUser"), "/chat")
 
       assert html =~ ~s(rows="1")
     end
 
     test "textarea preserves AutocompleteHook", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=HookUser")
+      {:ok, _view, html} = live(chat_conn(conn, "HookUser"), "/chat")
 
       assert html =~ ~s(phx-hook="AutocompleteHook")
     end
@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
 
   describe "form submission with textarea" do
     test "submitting form with text sends message", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=SendUser")
+      {:ok, view, _html} = live(chat_conn(conn, "SendUser"), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Hello world"})
 
@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
     end
 
     test "submitting empty textarea is a no-op", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=EmptyTxt")
+      {:ok, view, _html} = live(chat_conn(conn, "EmptyTxt"), "/chat")
 
       html =
         view |> element("form.chat-input-form") |> render_submit(%{"input" => ""})
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
 
     test "command input still works via form submit", %{conn: conn} do
       ensure_channel("#smartjoin")
-      {:ok, view, _html} = live(conn, "/chat?nickname=CmdUser")
+      {:ok, view, _html} = live(chat_conn(conn, "CmdUser"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -77,7 +77,7 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
 
   describe "contextual placeholder" do
     test "shows channel-specific placeholder when in a channel", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PlaceChan")
+      {:ok, view, _html} = live(chat_conn(conn, "PlaceChan"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
     end
 
     test "shows Status placeholder when on status tab", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PlaceStatus")
+      {:ok, view, _html} = live(chat_conn(conn, "PlaceStatus"), "/chat")
 
       view |> render_click("switch_to_status")
 
@@ -99,7 +99,7 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
     end
 
     test "shows PM placeholder when in a PM", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/chat?nickname=PlacePM")
+      {:ok, view, _html} = live(chat_conn(conn, "PlacePM"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -112,7 +112,7 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
 
     test "placeholder updates on channel switch", %{conn: conn} do
       ensure_channel("#placeholder_ch")
-      {:ok, view, _html} = live(conn, "/chat?nickname=PlaceSwitch")
+      {:ok, view, _html} = live(chat_conn(conn, "PlaceSwitch"), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -132,14 +132,14 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
 
   describe "textarea expansion" do
     test "textarea renders with rows=1 for single-line default", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=ExpandUser")
+      {:ok, _view, html} = live(chat_conn(conn, "ExpandUser"), "/chat")
 
       assert html =~ ~s(rows="1")
       assert html =~ "<textarea"
     end
 
     test "textarea has correct CSS class for expansion", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/chat?nickname=CSSExpand")
+      {:ok, _view, html} = live(chat_conn(conn, "CSSExpand"), "/chat")
 
       # The textarea should be inside chat-input-form, which is inside chat-input-area
       assert html =~ "chat-input-area"

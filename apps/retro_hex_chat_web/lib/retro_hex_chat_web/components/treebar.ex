@@ -22,6 +22,20 @@ defmodule RetroHexChatWeb.Components.Treebar do
   def treebar(assigns) do
     ~H"""
     <div class="treebar" id="treebar" phx-hook="TreebarHook">
+      <div class="treebar-header">
+        <span class="treebar-header-title">Conversations</span>
+        <button
+          type="button"
+          class="treebar-close"
+          title="Hide channel list"
+          phx-click="toggle_treebar"
+          aria-label="Hide channel list"
+        >
+          <svg viewBox="0 0 8 7" width="8" height="7" fill="currentColor">
+            <polygon points="0,0 8,3.5 0,7" />
+          </svg>
+        </button>
+      </div>
       <div
         :if={@channels == [] and @pm_conversations == []}
         class="empty-state treebar-empty-state"

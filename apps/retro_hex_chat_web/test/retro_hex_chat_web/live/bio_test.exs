@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.BioTest do
     test "set bio shows confirmation message", %{conn: conn} do
       nick = "Bio1#{System.unique_integer([:positive])}"
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.BioTest do
     test "view bio shows current bio", %{conn: conn} do
       nick = "Bio2#{System.unique_integer([:positive])}"
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Set bio first
       view
@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.BioTest do
     test "view bio with no bio set shows help message", %{conn: conn} do
       nick = "Bio3#{System.unique_integer([:positive])}"
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -74,7 +74,7 @@ defmodule RetroHexChatWeb.BioTest do
     test "clear bio shows confirmation", %{conn: conn} do
       nick = "Bio4#{System.unique_integer([:positive])}"
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Set bio first
       view
@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.BioTest do
       nick = "Bio5#{System.unique_integer([:positive])}"
       target = "Bio6#{System.unique_integer([:positive])}"
 
-      {:ok, target_view, _html} = live(conn, "/chat?nickname=#{target}")
+      {:ok, target_view, _html} = live(chat_conn(conn, target), "/chat")
 
       # Target sets their bio
       target_view
@@ -107,7 +107,7 @@ defmodule RetroHexChatWeb.BioTest do
 
       Process.sleep(50)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Whois the target
       view
@@ -125,8 +125,8 @@ defmodule RetroHexChatWeb.BioTest do
       nick = "Bio7#{System.unique_integer([:positive])}"
       target = "Bio8#{System.unique_integer([:positive])}"
 
-      {:ok, _target_view, _html} = live(conn, "/chat?nickname=#{target}")
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")
@@ -144,7 +144,7 @@ defmodule RetroHexChatWeb.BioTest do
       nick = "Bio9#{System.unique_integer([:positive])}"
       long_bio = String.duplicate("x", 250)
 
-      {:ok, view, _html} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
       |> element("form.chat-input-form")

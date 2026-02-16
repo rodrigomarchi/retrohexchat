@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.ChatLiveTimestampTest do
       nick = "TS1#{uid()}"
       channel = "#tsd-#{uid()}"
 
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       view |> render_submit("send_input", %{"input" => "/join #{channel}"})
       :timer.sleep(50)
       # Send a message so it arrives via PubSub
@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.ChatLiveTimestampTest do
 
     test "options_change_timestamp_format event updates draft", %{conn: conn} do
       nick = "TS2#{uid()}"
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_options_dialog", %{})
 
@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.ChatLiveTimestampTest do
       nick = "TS3#{uid()}"
       channel = "#tsn-#{uid()}"
 
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       # Change format to none via options
       render_click(view, "open_options_dialog", %{})
@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.ChatLiveTimestampTest do
       nick = "TS4#{uid()}"
       channel = "#tsd2-#{uid()}"
 
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       # Change format first
       render_click(view, "open_options_dialog", %{})
@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.ChatLiveTimestampTest do
       nick = "TS5#{uid()}"
       channel = "#tsr-#{uid()}"
 
-      {:ok, view, _} = live(conn, "/chat?nickname=#{nick}")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       # Join and send to produce messages with default format
       view |> render_submit("send_input", %{"input" => "/join #{channel}"})
