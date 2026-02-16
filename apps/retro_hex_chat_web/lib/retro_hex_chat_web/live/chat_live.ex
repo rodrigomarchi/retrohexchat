@@ -109,6 +109,7 @@ defmodule RetroHexChatWeb.ChatLive do
       {:menu_toolbar_events, &ChatLive.MenuToolbarEvents.handle_event/3},
       {:hover_events, &ChatLive.HoverEvents.handle_event/3},
       {:context_menu_events, &ChatLive.ContextMenuEvents.handle_event/3},
+      {:notification_events, &ChatLive.NotificationEvents.handle_event/3},
       {:tip_events, &ChatLive.TipEvents.handle_event/3},
       {:kick_events, &ChatLive.KickEvents.handle_event/3},
       {:keyboard_events, &ChatLive.KeyboardEvents.handle_event/3},
@@ -334,7 +335,11 @@ defmodule RetroHexChatWeb.ChatLive do
       connection_timeout: false,
       lag_ms: nil,
       lag_status: :normal,
-      loading_channel: nil
+      loading_channel: nil,
+      notification_entries: [],
+      notification_count: 0,
+      show_notification_center: false,
+      dnd_enabled: session.user_preferences.notifications.dnd_enabled
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])

@@ -15,7 +15,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       maybe_play_highlight_sound: 3,
       capture_urls: 5,
       play_event_sound: 3,
-      maybe_flash_channel: 4
+      maybe_flash_channel: 4,
+      maybe_push_notification: 3
     ]
 
   alias RetroHexChat.Accounts.Session
@@ -210,10 +211,17 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   defp notify_channel(socket, decorated, channel, session) do
     is_highlighted = Map.get(decorated, :highlighted, false)
     flash_type = if is_highlighted, do: :highlight, else: :message
+    event_type = if is_highlighted, do: :mention, else: :channel_message
 
     socket
     |> maybe_play_sound(is_highlighted, session)
     |> maybe_flash_channel(channel, flash_type, session)
+    |> maybe_push_notification(event_type, %{
+      channel: channel,
+      sender: Map.get(decorated, :author, "Unknown"),
+      content: Map.get(decorated, :content, ""),
+      highlighted: is_highlighted
+    })
   end
 
   defp maybe_play_sound(socket, true = _is_highlighted, _session), do: socket
@@ -251,6 +259,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       socket
       |> play_event_sound(:pm, session)
       |> maybe_flash_channel("pm:#{other_nick}", :pm, session)
+      |> maybe_push_notification(:pm, %{
+        channel: nil,
+        sender: payload.sender,
+        content: payload.content,
+        highlighted: true
+      })
       |> assign(unread_counts: unread_counts)
     end
   end

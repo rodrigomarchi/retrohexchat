@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
   import Phoenix.LiveView, only: [push_event: 3, stream: 4]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{KeyBindings, UserPreferences}
+  alias RetroHexChat.Chat.{KeyBindings, NotificationPreferences, UserPreferences}
   alias RetroHexChatWeb.ChatLive.Helpers.Persistence
 
   # ---------------------------------------------------------------------------
@@ -237,6 +237,43 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
   end
 
   # ---------------------------------------------------------------------------
+  # Notifications Panel
+  # ---------------------------------------------------------------------------
+
+  def handle_event("options_toggle_notification", %{"setting" => setting_str}, socket) do
+    setting = String.to_existing_atom(setting_str)
+    draft = socket.assigns.options_draft
+    notif = draft.notifications
+    current = Map.get(notif, setting)
+    setter = :"set_#{setting}"
+    updated_notif = apply(NotificationPreferences, setter, [notif, !current])
+    updated_draft = UserPreferences.set_notifications(draft, updated_notif)
+    {:halt, assign(socket, options_draft: updated_draft)}
+  end
+
+  def handle_event("options_change_channel_level", params, socket) do
+    draft = socket.assigns.options_draft
+    notif = draft.notifications
+
+    updated_notif =
+      Enum.reduce(params, notif, fn
+        {"channel_level_" <> channel, level_str}, acc ->
+          level = String.to_existing_atom(level_str)
+          NotificationPreferences.set_channel_level(acc, channel, level)
+
+        _, acc ->
+          acc
+      end)
+
+    updated_draft = UserPreferences.set_notifications(draft, updated_notif)
+    {:halt, assign(socket, options_draft: updated_draft)}
+  end
+
+  def handle_event("request_browser_permission", _params, socket) do
+    {:halt, push_event(socket, "request_browser_permission", %{})}
+  end
+
+  # ---------------------------------------------------------------------------
   # Catch-all
   # ---------------------------------------------------------------------------
 
@@ -289,6 +326,12 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
     |> push_event("update_bindings", %{
       bindings: KeyBindings.to_persistable(draft.key_bindings)
     })
+    |> push_event(
+      "update_notification_prefs",
+      NotificationPreferences.to_map(draft.notifications)
+    )
+    |> push_event("dnd_changed", %{enabled: draft.notifications.dnd_enabled})
+    |> assign(dnd_enabled: draft.notifications.dnd_enabled)
     |> push_event("feedback_toast", %{message: "Configurações salvas", duration: 2000})
     |> Persistence.maybe_persist_user_preferences(updated_session)
   end

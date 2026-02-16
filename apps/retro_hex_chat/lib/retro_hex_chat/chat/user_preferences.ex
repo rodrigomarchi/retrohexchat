@@ -7,6 +7,7 @@ defmodule RetroHexChat.Chat.UserPreferences do
   """
 
   alias RetroHexChat.Chat.KeyBindings
+  alias RetroHexChat.Chat.NotificationPreferences
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.Repo
 
@@ -59,7 +60,8 @@ defmodule RetroHexChat.Chat.UserPreferences do
       colors: default_colors(),
       connect: default_connect(),
       messages: default_messages(),
-      key_bindings: KeyBindings.defaults()
+      key_bindings: KeyBindings.defaults(),
+      notifications: NotificationPreferences.new()
     }
   end
 
@@ -80,6 +82,14 @@ defmodule RetroHexChat.Chat.UserPreferences do
 
   @spec get_key_bindings(map()) :: map()
   def get_key_bindings(%{key_bindings: bindings}), do: bindings
+
+  @spec get_notifications(map()) :: NotificationPreferences.t()
+  def get_notifications(%{notifications: notifications}), do: notifications
+
+  @spec set_notifications(map(), NotificationPreferences.t()) :: map()
+  def set_notifications(prefs, notifications) when is_map(notifications) do
+    %{prefs | notifications: notifications}
+  end
 
   @spec set_display(map(), atom(), boolean()) :: map()
   def set_display(prefs, key, value) when key in @valid_display_keys and is_boolean(value) do
@@ -240,7 +250,9 @@ defmodule RetroHexChat.Chat.UserPreferences do
       font_settings: stringify_fonts(prefs.fonts),
       color_settings: stringify_colors(prefs.colors),
       connect_settings: stringify_map(prefs.connect),
-      message_settings: stringify_map(prefs.messages),
+      message_settings:
+        stringify_map(prefs.messages)
+        |> Map.put("notifications", NotificationPreferences.to_map(prefs.notifications)),
       key_bindings: KeyBindings.to_persistable(prefs.key_bindings)
     }
 
@@ -386,13 +398,27 @@ defmodule RetroHexChat.Chat.UserPreferences do
   end
 
   defp from_persisted(db_entry) do
+    msg_settings = db_entry.message_settings || %{}
+    notif_data = Map.get(msg_settings, "notifications", %{})
+    notifications = NotificationPreferences.from_map(notif_data)
+
+    # Migrate muted_channels to channel_levels if needed
+    messages = atomize_messages(msg_settings)
+
+    notifications =
+      case Map.get(messages, :muted_channels, []) do
+        [] -> notifications
+        muted -> NotificationPreferences.migrate_from_muted_channels(notifications, muted)
+      end
+
     %{
       display: atomize_display(db_entry.display_settings),
       fonts: atomize_fonts(db_entry.font_settings),
       colors: atomize_colors(db_entry.color_settings),
       connect: atomize_connect(db_entry.connect_settings),
-      messages: atomize_messages(db_entry.message_settings),
-      key_bindings: KeyBindings.from_persisted(db_entry.key_bindings)
+      messages: messages,
+      key_bindings: KeyBindings.from_persisted(db_entry.key_bindings),
+      notifications: notifications
     }
   end
 

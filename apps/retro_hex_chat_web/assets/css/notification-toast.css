@@ -1,0 +1,35 @@
+/* Notification toast container — fixed bottom-right stacking */
+
+.notification-toast-container {
+  position: fixed;
+  bottom: var(--space-lg, 24px);
+  right: var(--space-lg, 24px);
+  z-index: var(--z-toast, 9000);
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-xs, 4px);
+  pointer-events: none;
+  max-width: 320px;
+}
+
+.notification-toast-container > * {
+  pointer-events: auto;
+}
+
+.notification-toast {
+  cursor: pointer;
+  max-width: 320px;
+  animation: notification-slide-in 0.2s ease-out;
+}
+
+@keyframes notification-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

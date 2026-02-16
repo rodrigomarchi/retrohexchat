@@ -10,8 +10,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.Queries
+  alias RetroHexChat.Chat.{NotificationPreferences, Queries, UserPreferences}
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.Helpers.Persistence
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
 
@@ -70,8 +71,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
     PresenceHelpers.safe_untrack_user("channel:#{channel_name}", session.nickname)
     new_session = Session.remove_channel(session, channel_name)
+    new_session = cleanup_channel_notification_level(new_session, channel_name)
 
-    socket = assign(socket, session: new_session)
+    socket =
+      socket
+      |> assign(session: new_session)
+      |> Persistence.maybe_persist_user_preferences(new_session)
 
     socket =
       if new_session.active_channel do
@@ -260,6 +265,15 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       {:error, _} ->
         {:error, "* User '#{target}' not found"}
     end
+  end
+
+  @spec cleanup_channel_notification_level(Session.t(), String.t()) :: Session.t()
+  defp cleanup_channel_notification_level(session, channel_name) do
+    prefs = session.user_preferences
+    notif = prefs.notifications
+    updated_notif = NotificationPreferences.remove_channel_level(notif, channel_name)
+    updated_prefs = UserPreferences.set_notifications(prefs, updated_notif)
+    Session.set_user_preferences(session, updated_prefs)
   end
 
   @spec message_to_stream_item(map()) :: map()

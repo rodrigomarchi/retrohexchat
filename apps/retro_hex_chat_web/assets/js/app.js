@@ -27,6 +27,7 @@ import TitleFlashHook from "./hooks/title_flash_hook";
 import TreebarHook from "./hooks/treebar_hook";
 import OnboardingHook from "./hooks/onboarding_hook";
 import ContextualTipsHook from "./hooks/contextual_tips_hook";
+import NotificationDispatcherHook from "./hooks/notification_dispatcher_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
 
 const Hooks = {
@@ -42,6 +43,7 @@ const Hooks = {
   KeyboardHook: KeyboardHook,
   LagHook: LagHook,
   NicklistHook: NicklistHook,
+  NotificationDispatcherHook: NotificationDispatcherHook,
   NotifyListHook: NotifyListHook,
   OnboardingHook: OnboardingHook,
   OptionsHook: OptionsHook,

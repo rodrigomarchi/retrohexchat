@@ -20,7 +20,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       maybe_fire_autorespond: 5,
       maybe_persist_notify_list: 2,
       rebuild_nick_color_fn: 2,
-      load_persisted_data: 2
+      load_persisted_data: 2,
+      maybe_push_notification: 3
     ]
 
   alias RetroHexChat.Accounts.Session
@@ -44,6 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
      |> assign(channel_users: users)
      |> maybe_refresh_cc(channel)
      |> play_event_sound(:join, socket.assigns.session)
+     |> maybe_push_notification(:join, %{channel: channel, sender: nick, content: msg})
      |> stream_insert(:chat_messages, system_message(msg))
      |> maybe_fire_autorespond(
        :on_join,
@@ -63,6 +65,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
      |> assign(channel_users: users)
      |> maybe_refresh_cc(channel)
      |> play_event_sound(:part, socket.assigns.session)
+     |> maybe_push_notification(:leave, %{channel: channel, sender: nick, content: msg})
      |> stream_insert(:chat_messages, system_message(msg))
      |> maybe_fire_autorespond(
        :on_part,
