@@ -7,6 +7,16 @@ import Config
 # any compile-time configuration in here, as it won't be applied.
 # The block below contains prod specific runtime configuration.
 
+# TURN server runtime config (all environments)
+config :retro_hex_chat,
+  turn_listen_ip: {0, 0, 0, 0},
+  turn_listen_port: 3478,
+  turn_relay_ip: :auto,
+  turn_relay_port_range: {49152, 65535},
+  turn_listener_count: System.schedulers_online(),
+  turn_auth_secret: :crypto.strong_rand_bytes(64),
+  turn_nonce_secret: :crypto.strong_rand_bytes(64)
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||

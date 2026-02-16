@@ -24,6 +24,8 @@
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, Phoenix.Token (already in use) (034-p2p-foundation)
 - PostgreSQL 16+ (1 new migration: `p2p_sessions` table) (034-p2p-foundation)
 - PostgreSQL 16+ (existing `p2p_sessions` table, existing `private_messages` table — no new migrations). GenServer state for ephemeral lobby data. (035-p2p-session-ui)
+- Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, ex_stun ~> 0.1 (NEW), 98.css (036-webrtc-signaling)
+- PostgreSQL 16+ (existing `p2p_sessions` table — no new migrations) (036-webrtc-signaling)
 
 ## Project Structure
 
@@ -146,6 +148,6 @@ static analysis from day one, 98.css design fidelity, mandatory help documentati
 
 
 ## Recent Changes
+- 036-webrtc-signaling: Added Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, ex_stun ~> 0.1 (NEW), 98.css
 - 035-p2p-session-ui: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
 - 034-p2p-foundation: Added Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, Phoenix.Token (already in use)
-- 033-message-interactions: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild

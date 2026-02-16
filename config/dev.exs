@@ -28,7 +28,12 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:retro_hex_chat_web, ~w(--sourcemap=inline --watch)]},
     esbuild:
-      {Esbuild, :install_and_run, [:retro_hex_chat_web_css, ~w(--sourcemap=inline --watch)]}
+      {Esbuild, :install_and_run, [:retro_hex_chat_web_css, ~w(--sourcemap=inline --watch)]},
+    esbuild:
+      {Esbuild, :install_and_run, [:retro_hex_chat_web_landing, ~w(--sourcemap=inline --watch)]},
+    esbuild:
+      {Esbuild, :install_and_run,
+       [:retro_hex_chat_web_landing_css, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support

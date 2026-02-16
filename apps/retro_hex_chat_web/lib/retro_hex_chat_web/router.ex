@@ -14,6 +14,19 @@ defmodule RetroHexChatWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :landing do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :landing}
+    plug :put_secure_browser_headers
+  end
+
+  scope "/landing", RetroHexChatWeb do
+    pipe_through :landing
+
+    get "/", LandingController, :index
+  end
+
   scope "/", RetroHexChatWeb do
     pipe_through :browser
 

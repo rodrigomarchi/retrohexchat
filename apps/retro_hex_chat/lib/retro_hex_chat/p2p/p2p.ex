@@ -6,6 +6,7 @@ defmodule RetroHexChat.P2P do
 
   alias RetroHexChat.P2P.{Queries, Service, SessionServer}
   alias RetroHexChat.P2P.Schema.Session
+  alias RetroHexChat.P2P.Turn.{Auth, Config}
 
   @spec create_session(integer(), integer(), keyword()) ::
           {:ok, %{session: Session.t(), token: String.t()}} | {:error, String.t()}
@@ -39,4 +40,48 @@ defmodule RetroHexChat.P2P do
 
   @spec respond_action(String.t(), integer(), boolean()) :: :ok | {:error, atom()}
   defdelegate respond_action(token, user_id, accepted?), to: Service
+
+  @valid_signal_types ~w(offer answer ice-candidate)
+
+  @spec validate_signal(map()) :: {:ok, map()} | {:error, :invalid_signal}
+  def validate_signal(%{"type" => type} = signal) when type in @valid_signal_types do
+    case type do
+      t when t in ["offer", "answer"] ->
+        sdp = Map.get(signal, "sdp")
+
+        if is_binary(sdp) and sdp != "" do
+          {:ok, %{type: type, sdp: sdp}}
+        else
+          {:error, :invalid_signal}
+        end
+
+      "ice-candidate" ->
+        candidate = Map.get(signal, "candidate")
+
+        if is_map(candidate) do
+          {:ok, %{type: type, candidate: candidate}}
+        else
+          {:error, :invalid_signal}
+        end
+    end
+  end
+
+  def validate_signal(_), do: {:error, :invalid_signal}
+
+  @spec ice_servers(String.t()) :: [map()]
+  def ice_servers(user_id) do
+    config = Config.from_application_env()
+    creds = Auth.generate_credentials(user_id, config)
+
+    listen_port = config.listen_port
+    relay_ip = :inet.ntoa(config.relay_ip) |> to_string()
+
+    [
+      %{
+        urls: ["turn:#{relay_ip}:#{listen_port}?transport=udp"],
+        username: creds.username,
+        credential: creds.password
+      }
+    ]
+  end
 end

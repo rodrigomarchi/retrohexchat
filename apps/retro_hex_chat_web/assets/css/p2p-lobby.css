@@ -201,3 +201,43 @@
 .p2p-lobby-consent__btn--accept {
   font-weight: bold;
 }
+
+/* ── Connection State ── */
+
+.p2p-lobby-connection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-8);
+  border: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  background: var(--color-surface);
+}
+
+.p2p-lobby-connection__indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-muted);
+}
+
+.p2p-lobby-connection--connecting .p2p-lobby-connection__indicator {
+  background: var(--color-warning-alt);
+}
+
+.p2p-lobby-connection--connected .p2p-lobby-connection__indicator {
+  background: var(--color-online);
+}
+
+.p2p-lobby-connection--retrying .p2p-lobby-connection__indicator {
+  background: var(--color-warning-alt);
+}
+
+.p2p-lobby-connection--failed .p2p-lobby-connection__indicator {
+  background: var(--color-error);
+}
+
+.p2p-lobby-connection--failed .p2p-lobby-connection__label {
+  color: var(--color-error);
+}

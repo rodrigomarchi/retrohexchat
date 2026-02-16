@@ -899,56 +899,56 @@ ACESSIBILIDADE:
 
 ### Fase 1 — Infraestrutura
 
-- [ ] **T01** — Criar pipeline `:landing` no router com layout dedicado
-- [ ] **T02** — Criar `LandingController` com action `:index`
-- [ ] **T03** — Criar layout `landing.html.heex` (HTML semântico, meta tags SEO, OG tags, Twitter Cards, JSON-LD)
-- [ ] **T04** — Criar arquivo `landing.css` (bundle separado, ou `<style>` inline no layout se simples)
-- [ ] **T05** — Criar arquivo `landing.js` (bundle separado, defer)
-- [ ] **T06** — Configurar esbuild para bundle da landing (se necessário — avaliar se `<link>` estático basta)
+- [x] **T01** — Criar pipeline `:landing` no router com layout dedicado
+- [x] **T02** — Criar `LandingController` com action `:index`
+- [x] **T03** — Criar layout `landing.html.heex` (HTML semântico, meta tags SEO, OG tags, Twitter Cards, JSON-LD)
+- [x] **T04** — Criar arquivo `landing.css` (bundle separado, ou `<style>` inline no layout se simples)
+- [x] **T05** — Criar arquivo `landing.js` (bundle separado, defer)
+- [x] **T06** — Configurar esbuild para bundle da landing (se necessário — avaliar se `<link>` estático basta)
 - [ ] **T07** — Copiar SVGs de branding para `priv/static/images/landing/` (logo, wordmark, logo-compact)
 
 ### Fase 2 — Seções da Página
 
-- [ ] **T08** — Implementar Taskbar (nav fixa, logo, links âncora, botões Entrar/Criar conta, menu mobile)
-- [ ] **T09** — Implementar Seção Hero (janela principal, wordmark, subtítulo, CTAs, ícones desktop, status bar)
-- [ ] **T10** — Implementar Seção O Problema (janela com lista de problemas, parágrafos nostalgia/transição)
-- [ ] **T11** — Implementar Seção A Solução (3 janelas: o que é, o que NÃO é, analogia email)
-- [ ] **T12** — Implementar Seção Como Funciona (janela com 4 abas: Servidores, Federação, Identidade, Segurança)
-- [ ] **T13** — Implementar Seção Features (janela com 7 abas: Chat, Canais, Rede, Social, P2P, Admin, Comandos)
-- [ ] **T14** — Implementar Seção A Rede (grafo SVG estático ilustrativo)
-- [ ] **T15** — Implementar Seção Rode o Seu (3 passos com blocos `<pre>`, requisitos)
-- [ ] **T16** — Implementar Seção Open Source (repositório GitHub, stack, badges stars/forks/issues, guia de contribuição)
-- [ ] **T17** — Implementar Seção Apoie o Projeto (GitHub Sponsors, Open Collective, PIX/Crypto, outras formas de ajudar)
-- [ ] **T18** — Implementar Seção FAQ (details/summary estilizado como tree-view, incluir perguntas P2P, contribuição, doação)
-- [ ] **T19** — Implementar Footer (links em 4 colunas: Projeto, Comunidade, Legal, Apoie — com URLs reais do GitHub)
-- [ ] **T20** — Implementar Taskbar inferior (relógio real, scroll-to-top)
+- [x] **T08** — Implementar Taskbar (nav fixa, logo, links âncora, botões Entrar/Criar conta, menu mobile)
+- [x] **T09** — Implementar Seção Hero (janela principal, wordmark, subtítulo, CTAs, ícones desktop, status bar)
+- [x] **T10** — Implementar Seção O Problema (janela com lista de problemas, parágrafos nostalgia/transição)
+- [x] **T11** — Implementar Seção A Solução (3 janelas: o que é, o que NÃO é, analogia email)
+- [x] **T12** — Implementar Seção Como Funciona (janela com 4 abas: Servidores, Federação, Identidade, Segurança)
+- [x] **T13** — Implementar Seção Features (janela com 7 abas: Chat, Canais, Rede, Social, P2P, Admin, Comandos)
+- [x] **T14** — Implementar Seção A Rede (grafo SVG estático ilustrativo)
+- [x] **T15** — Implementar Seção Rode o Seu (3 passos com blocos `<pre>`, requisitos)
+- [x] **T16** — Implementar Seção Open Source (repositório GitHub, stack, badges stars/forks/issues, guia de contribuição)
+- [x] **T17** — Implementar Seção Apoie o Projeto (GitHub Sponsors, Open Collective, PIX/Crypto, outras formas de ajudar)
+- [x] **T18** — Implementar Seção FAQ (details/summary estilizado como tree-view, incluir perguntas P2P, contribuição, doação)
+- [x] **T19** — Implementar Footer (links em 4 colunas: Projeto, Comunidade, Legal, Apoie — com URLs reais do GitHub)
+- [x] **T20** — Implementar Taskbar inferior (relógio real, scroll-to-top)
 
 ### Fase 3 — Interatividade e Polish
 
-- [ ] **T21** — Implementar JS: scroll suave para âncoras
-- [ ] **T22** — Implementar JS: sistema de abas (Como Funciona + Features)
-- [ ] **T23** — Implementar JS: menu mobile (hamburguer toggle)
-- [ ] **T24** — Implementar JS: relógio na taskbar inferior
-- [ ] **T25** — Implementar JS: scroll-reveal com IntersectionObserver (animação window-open)
-- [ ] **T26** — Implementar CSS: responsividade (desktop, tablet, mobile)
-- [ ] **T27** — Implementar CSS: animações (window-open, hover states)
+- [x] **T21** — Implementar JS: scroll suave para âncoras
+- [x] **T22** — Implementar JS: sistema de abas (Como Funciona + Features)
+- [x] **T23** — Implementar JS: menu mobile (hamburguer toggle)
+- [x] **T24** — Implementar JS: relógio na taskbar inferior
+- [x] **T25** — Implementar JS: scroll-reveal com IntersectionObserver (animação window-open)
+- [x] **T26** — Implementar CSS: responsividade (desktop, tablet, mobile)
+- [x] **T27** — Implementar CSS: animações (window-open, hover states)
 
 ### Fase 4 — Easter Eggs e Extras
 
-- [ ] **T28** — Desktop icons clicáveis (Meus Chats → features, Rede → rede, README.txt → manifesto popup, Lixeira → easter egg)
-- [ ] **T29** — Konami code (↑↑↓↓←→←→BA → muda wallpaper para Bliss 5s)
+- [x] **T28** — Desktop icons clicáveis (Meus Chats → features, Rede → rede, README.txt → manifesto popup, Lixeira → easter egg)
+- [x] **T29** — Konami code (↑↑↓↓←→←→BA → muda wallpaper para Bliss 5s)
 - [ ] **T30** — Criar og-image.png (preview do desktop Win98 para social sharing, 1200x630)
 
 ### Fase 5 — Arquivos OSS Padrão
 
-- [ ] **T31** — Criar/atualizar CONTRIBUTING.md na raiz do projeto (guia de contribuição, workflow de PR, code style)
-- [ ] **T32** — Criar SECURITY.md na raiz do projeto (política de divulgação responsável de vulnerabilidades)
-- [ ] **T33** — Verificar LICENSE (MIT) está presente e correto na raiz
-- [ ] **T34** — Criar .github/FUNDING.yml (GitHub Sponsors, Open Collective, links de doação)
+- [x] **T31** — Criar/atualizar CONTRIBUTING.md na raiz do projeto (guia de contribuição, workflow de PR, code style)
+- [x] **T32** — Criar SECURITY.md na raiz do projeto (política de divulgação responsável de vulnerabilidades)
+- [x] **T33** — Verificar LICENSE (MIT) está presente e correto na raiz
+- [x] **T34** — Criar .github/FUNDING.yml (GitHub Sponsors, Open Collective, links de doação)
 
 ### Fase 6 — Validação
 
-- [ ] **T35** — Rodar validação CI completa (compile, format, credo, dialyzer, lint.js, lint.css, testes)
+- [x] **T35** — Rodar validação CI completa (compile, format, credo, dialyzer, lint.js, lint.css, testes)
 - [ ] **T36** — Testar SEO: validar meta tags, heading hierarchy, semântica HTML
 - [ ] **T37** — Testar responsividade: desktop, tablet, mobile
 - [ ] **T38** — Testar acessibilidade: tab navigation, screen reader, prefers-reduced-motion

@@ -1,0 +1,1208 @@
+<a href="#main-content" class="landing-skip-link">Pular para conteúdo</a>
+
+<%!-- ══════════════ TASKBAR (nav fixa) ══════════════ --%>
+<header class="landing-taskbar" role="banner">
+  <nav class="landing-taskbar__inner" aria-label="Navegação principal">
+    <a href="#hero" class="landing-taskbar__logo" aria-label="Retro Hex Chat — voltar ao topo">
+      <img
+        src="/images/landing/wordmark.svg"
+        alt="Retro Hex Chat"
+        class="landing-taskbar__wordmark"
+      />
+    </a>
+
+    <button
+      class="landing-taskbar__hamburger"
+      type="button"
+      aria-label="Abrir menu de navegação"
+      aria-expanded="false"
+      aria-controls="landing-nav-menu"
+    >
+      &#9776;
+    </button>
+
+    <div id="landing-nav-menu" class="landing-taskbar__nav" role="menubar">
+      <a href="#problema" class="landing-taskbar__link" role="menuitem">O Problema</a>
+      <a href="#solucao" class="landing-taskbar__link" role="menuitem">A Solução</a>
+      <a href="#como-funciona" class="landing-taskbar__link" role="menuitem">Como Funciona</a>
+      <a href="#features" class="landing-taskbar__link" role="menuitem">Features</a>
+      <a href="#open-source" class="landing-taskbar__link" role="menuitem">Open Source</a>
+      <a href="#faq" class="landing-taskbar__link" role="menuitem">FAQ</a>
+      <div class="landing-taskbar__actions">
+        <a href="/" class="landing-taskbar__btn landing-taskbar__btn--primary">Conectar</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <%!-- ══════════════ SEÇÃO 1: HERO ══════════════ --%>
+  <section id="hero" class="landing-section" aria-labelledby="hero-heading">
+    <div class="window landing-window landing-window--reveal">
+      <div class="title-bar">
+        <div class="title-bar-text">Retro Hex Chat &mdash; Bem-vindo</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" disabled></button>
+          <button aria-label="Maximize" disabled></button>
+          <button aria-label="Close" disabled></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <h1 id="hero-heading" class="landing-hero__title">
+          <img
+            src="/images/landing/wordmark.svg"
+            alt="Retro Hex Chat"
+            class="landing-hero__wordmark"
+          />
+        </h1>
+
+        <p class="landing-hero__subtitle">
+          Chat federado. Como nos velhos tempos.<br /> Mas com a tecnologia de hoje.
+        </p>
+
+        <p class="landing-hero__description">
+          Rode seu próprio servidor. Conecte com outros.<br />
+          Sem empresa no meio. Sem algoritmos. Sem permissão.<br />
+          <strong>Seus dados. Suas regras. Sua comunidade.</strong>
+        </p>
+
+        <div class="landing-hero__ctas">
+          <a href="/" class="landing-hero__cta landing-hero__cta--primary">
+            &#9654; Conectar
+          </a>
+        </div>
+
+        <p class="landing-hero__proof">
+          Projeto open source &bull; Feito com Elixir &amp; Phoenix
+        </p>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">Pronto</p>
+        <p class="status-bar-field">v0.1.0</p>
+      </div>
+    </div>
+
+    <div class="window landing-window landing-window--reveal">
+      <div class="title-bar">
+        <div class="title-bar-text">C:\Desktop</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" disabled></button>
+          <button aria-label="Maximize" disabled></button>
+          <button aria-label="Close" disabled></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <div class="landing-desktop-icons">
+          <button class="landing-desktop-icon" data-target="#features" type="button">
+            <span class="landing-desktop-icon__img">&#x1F4C1;</span>
+            <span class="landing-desktop-icon__label">Meus Chats</span>
+          </button>
+          <button class="landing-desktop-icon" data-target="#rede" type="button">
+            <span class="landing-desktop-icon__img">&#x1F310;</span>
+            <span class="landing-desktop-icon__label">Rede</span>
+          </button>
+          <button class="landing-desktop-icon" data-easter-egg="readme" type="button">
+            <span class="landing-desktop-icon__img">&#x1F4DD;</span>
+            <span class="landing-desktop-icon__label">README.txt</span>
+          </button>
+          <button class="landing-desktop-icon" data-easter-egg="lixeira" type="button">
+            <span class="landing-desktop-icon__img">&#x1F5D1;</span>
+            <span class="landing-desktop-icon__label">Lixeira</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%!-- ══════════════ SEÇÃO 2: O PROBLEMA ══════════════ --%>
+  <section id="problema" class="landing-section" aria-labelledby="problema-heading">
+    <div class="window landing-window landing-window--reveal">
+      <div class="title-bar">
+        <div class="title-bar-text">C:\VERDADE\sobre_o_chat_moderno.txt</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" disabled></button>
+          <button aria-label="Maximize" disabled></button>
+          <button aria-label="Close" disabled></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <h2 id="problema-heading" class="landing-section__headline">
+          &#9888; Sua comunidade não é sua.
+        </h2>
+
+        <p>
+          Você construiu uma comunidade no Discord. Ou no Slack.
+          Investiu meses. Milhares de mensagens. Conexões reais.
+        </p>
+        <p>Agora pense:</p>
+
+        <div class="sunken-panel">
+          <ul class="landing-problem-list">
+            <li>
+              <strong>O Discord pode banir seu servidor amanhã.</strong>
+              Sem aviso. Sem apelação. Sem backup.
+            </li>
+            <li>
+              <strong>O Slack cobra por mensagem que você já enviou.</strong>
+              Seu histórico, atrás de um paywall.
+            </li>
+            <li>
+              <strong>O Telegram pode ser bloqueado no seu país inteiro.</strong>
+              Uma decisão judicial e sua comunidade some.
+            </li>
+            <li>
+              <strong>O Twitter/X mudou as regras do DM. De novo.</strong>
+              Sua rede de contatos, refém de uma empresa.
+            </li>
+            <li>
+              <strong>Seus dados treinam a IA de outra empresa.</strong>
+              Suas conversas viram produto.
+            </li>
+          </ul>
+        </div>
+
+        <div class="landing-problem__nostalgia">
+          <p>
+            <strong>Nos anos 2000, não era assim.</strong>
+          </p>
+          <p>
+            Você rodava um servidor de IRC no porão de casa.
+            Conectava na EFnet, na Undernet, na BrasIRC.
+            Sua comunidade existia em uma rede que ninguém controlava.
+            Ninguém podia tirar ela de você.
+          </p>
+          <p class="landing-problem__transition">
+            Depois veio a &ldquo;conveniência&rdquo;. E junto veio o controle.
+          </p>
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">C:\VERDADE\</p>
+      </div>
+    </div>
+  </section>
+
+  <%!-- ══════════════ SEÇÃO 3: A SOLUÇÃO ══════════════ --%>
+  <section id="solucao" class="landing-section" aria-labelledby="solucao-heading">
+    <h2 id="solucao-heading" class="u-sr-only">A Solução</h2>
+
+    <div class="landing-solution-grid">
+      <div class="window landing-window landing-window--reveal">
+        <div class="title-bar">
+          <div class="title-bar-text">O que é o Retro Hex Chat</div>
+          <div class="title-bar-controls">
+            <button aria-label="Minimize" disabled></button>
+            <button aria-label="Maximize" disabled></button>
+            <button aria-label="Close" disabled></button>
+          </div>
+        </div>
+        <div class="window-body">
+          <p>
+            Retro Hex Chat é um <strong>software de chat</strong> que qualquer pessoa
+            pode instalar e rodar no seu próprio servidor.
+          </p>
+          <p>
+            Cada servidor Retro Hex Chat se conecta com outros servidores,
+            formando uma <strong>rede descentralizada</strong>.
+          </p>
+          <p>Pense como email:</p>
+          <ul>
+            <li>Você escolhe onde criar sua conta</li>
+            <li>Pode falar com qualquer pessoa em qualquer servidor</li>
+            <li>Se não gosta do seu servidor, muda e leva sua identidade</li>
+          </ul>
+          <p>É isso. Simples assim.</p>
+        </div>
+        <div class="status-bar">
+          <p class="status-bar-field">&#10003; Pronto</p>
+        </div>
+      </div>
+
+      <div class="window landing-window landing-window--reveal">
+        <div class="title-bar">
+          <div class="title-bar-text">O que NÃO é</div>
+          <div class="title-bar-controls">
+            <button aria-label="Minimize" disabled></button>
+            <button aria-label="Maximize" disabled></button>
+            <button aria-label="Close" disabled></button>
+          </div>
+        </div>
+        <div class="window-body">
+          <p><strong>Retro Hex Chat NÃO é um serviço.</strong></p>
+          <p>Não tem uma empresa por trás controlando a rede.</p>
+          <p>Não tem plano &ldquo;Pro&rdquo; ou &ldquo;Enterprise&rdquo;.</p>
+          <p>Não tem algoritmo decidindo o que você vê.</p>
+          <p>Não pode ser comprado, adquirido, ou desligado.</p>
+          <p><strong>É software livre. É um protocolo. É da comunidade.</strong></p>
+        </div>
+        <div class="status-bar">
+          <p class="status-bar-field">&#10003; Pronto</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="window landing-window landing-window--reveal landing-solution__analogy">
+      <div class="title-bar">
+        <div class="title-bar-text">Como email, mas para chat</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" disabled></button>
+          <button aria-label="Maximize" disabled></button>
+          <button aria-label="Close" disabled></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <p><strong>Você entende email? Então você entende Retro Hex Chat.</strong></p>
+
+        <div class="sunken-panel landing-analogy-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Retro Hex Chat</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>alice@gmail.com</td>
+                <td>@alice@alpha.chat</td>
+              </tr>
+              <tr>
+                <td>bob@outlook.com</td>
+                <td>@bob@beta.chat</td>
+              </tr>
+              <tr>
+                <td>Gmail não controla o email.</td>
+                <td>alpha.chat não controla o Retro Hex Chat.</td>
+              </tr>
+              <tr>
+                <td>O protocolo é de todos.</td>
+                <td>O protocolo é de todos.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          A diferença? Retro Hex Chat é <strong>em tempo real</strong>. Com canais.
+          Com presença. Com reações. Com tudo que você espera de um chat moderno.
+        </p>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">&#10003; Entendi</p>
+      </div>
+    </div>
+  </section>
+
+  <%!-- ══════════════ SEÇÃO 4: COMO FUNCIONA ══════════════ --%>
+  <section id="como-funciona" class="landing-section" aria-labelledby="como-funciona-heading">
+    <div class="window landing-window landing-window--reveal">
+      <div class="title-bar">
+        <div class="title-bar-text">Como funciona</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" disabled></button>
+          <button aria-label="Maximize" disabled></button>
+          <button aria-label="Close" disabled></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <h2 id="como-funciona-heading" class="u-sr-only">Como Funciona</h2>
+
+        <menu role="tablist" class="landing-tabs" aria-label="Conceitos de funcionamento">
+          <button
+            role="tab"
+            aria-selected="true"
+            aria-controls="tab-servidores"
+            id="tab-btn-servidores"
+            class="landing-tab active"
+            type="button"
+          >
+            Servidores
+          </button>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="tab-federacao"
+            id="tab-btn-federacao"
+            class="landing-tab"
+            type="button"
+          >
+            Federação
+          </button>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="tab-identidade"
+            id="tab-btn-identidade"
+            class="landing-tab"
+            type="button"
+          >
+            Identidade
+          </button>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="tab-seguranca"
+            id="tab-btn-seguranca"
+            class="landing-tab"
+            type="button"
+          >
+            Segurança
+          </button>
+        </menu>
+
+        <div
+          id="tab-servidores"
+          role="tabpanel"
+          aria-labelledby="tab-btn-servidores"
+          class="landing-tab-panel"
+        >
+          <h3>Cada servidor Retro Hex Chat é independente.</h3>
+          <div class="landing-server-cards">
+            <div class="sunken-panel landing-server-card">
+              <strong>alpha.chat</strong> <br /> &#x1F465; 342 &bull; &#x1F4E2; 12 canais
+            </div>
+            <div class="sunken-panel landing-server-card">
+              <strong>beta.chat</strong> <br /> &#x1F465; 1.2k &bull; &#x1F4E2; 34 canais
+            </div>
+            <div class="sunken-panel landing-server-card">
+              <strong>gamma.community</strong> <br /> &#x1F465; 89 &bull; &#x1F4E2; 7 canais
+            </div>
+          </div>
+          <p>
+            Qualquer pessoa pode rodar um servidor.
+            Cada um tem seus usuários, canais, e regras.
+            O dono do servidor decide tudo sobre o seu servidor.
+          </p>
+          <p>
+            <strong>Públicos:</strong> aparecem no diretório, qualquer um entra.<br />
+            <strong>Privados:</strong> por convite, para sua empresa ou grupo.
+          </p>
+        </div>
+
+        <div
+          id="tab-federacao"
+          role="tabpanel"
+          aria-labelledby="tab-btn-federacao"
+          class="landing-tab-panel"
+          hidden
+        >
+          <h3>Servidores se conectam entre si. Isso é federação.</h3>
+          <div class="sunken-panel landing-federation-diagram">
+            <pre aria-label="Diagrama de federação entre servidores">
+  alpha.chat ──── #elixir ────── beta.chat
+       │                              │
+       └──── #phoenix ────────────────┘
+       │
+       └──── #linux ─────── gamma.community</pre>
+          </div>
+          <p>
+            O canal #elixir existe em alpha E em beta.
+            Quando alguém fala no #elixir do alpha, a mensagem
+            aparece automaticamente no #elixir do beta. E vice-versa.
+          </p>
+          <p>
+            É como se fosse o mesmo canal, mas cada servidor
+            guarda suas próprias mensagens.
+          </p>
+          <p>
+            O admin de cada servidor decide com quem federar.
+            Não quer? Não federa. Simples.
+          </p>
+        </div>
+
+        <div
+          id="tab-identidade"
+          role="tabpanel"
+          aria-labelledby="tab-btn-identidade"
+          class="landing-tab-panel"
+          hidden
+        >
+          <h3>Sua identidade inclui o servidor onde você está.</h3>
+          <div class="sunken-panel">
+            <p>
+              <code>@alice</code> &rarr; Alice no servidor local<br />
+              <code>@alice@alpha.chat</code> &rarr; Alice de qualquer lugar
+            </p>
+          </div>
+          <p>
+            No seu servidor, você é só @alice.
+            Para o resto da rede, você é @alice@alpha.chat.
+          </p>
+          <p>Você pode:</p>
+          <ul>
+            <li>Conversar em canais federados com pessoas de qualquer servidor</li>
+            <li>Enviar mensagens diretas para qualquer usuário</li>
+            <li>Seguir pessoas de outros servidores</li>
+            <li>Ter um perfil visível em toda a rede</li>
+          </ul>
+        </div>
+
+        <div
+          id="tab-seguranca"
+          role="tabpanel"
+          aria-labelledby="tab-btn-seguranca"
+          class="landing-tab-panel"
+          hidden
+        >
+          <h3>Cada mensagem entre servidores é assinada criptograficamente.</h3>
+          <div class="sunken-panel">
+            <pre aria-label="Fluxo de verificação criptográfica">
+  Alice envia "Oi!"
+       │
+       ▼
+  alpha.chat ASSINA com sua chave privada
+       │
+       ▼
+  beta.chat VERIFICA com a chave pública
+       │
+       ▼
+  ✓ Mensagem genuína → entrega aos usuários</pre>
+          </div>
+          <p>
+            Ninguém pode forjar mensagens de outro servidor.
+            Ninguém pode ler mensagens no caminho.
+            Cada servidor prova quem é com criptografia,
+            não com confiança cega.
+          </p>
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">4 conceitos</p>
+        <p class="status-bar-field">~2 min de leitura</p>
+      </div>
+    </div>
+  </section>
+
+  <%!-- ══════════════ SEÇÃO 5: FEATURES ══════════════ --%>
+  <section id="features" class="landing-section" aria-labelledby="features-heading">
+    <div class="window landing-window landing-window--reveal">
+      <div class="title-bar">
+        <div class="title-bar-text">O que você pode fazer</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" disabled></button>
+          <button aria-label="Maximize" disabled></button>
+          <button aria-label="Close" disabled></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <h2 id="features-heading" class="u-sr-only">Features</h2>
+
+        <menu role="tablist" class="landing-tabs" aria-label="Funcionalidades">
+          <button
+            role="tab"
+            aria-selected="true"
+            aria-controls="feat-chat"
+            id="feat-btn-chat"
+            class="landing-tab active"
+            type="button"
+          >
+            Chat
+          </button>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="feat-canais"
+            id="feat-btn-canais"
+            class="landing-tab"
+            type="button"
+          >
+            Canais
+          </button>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="feat-rede"
+            id="feat-btn-rede"
+            class="landing-tab"
+            type="button"
+          >
+            Rede
+          </button>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="feat-social"
+            id="feat-btn-social"
+            class="landing-tab"
+            type="button"
+          >
+            Social
+          </button>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="feat-p2p"
+            id="feat-btn-p2p"
+            class="landing-tab"
+            type="button"
+          >
+            P2P
+          </button>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="feat-admin"
+            id="feat-btn-admin"
+            class="landing-tab"
+            type="button"
+          >
+            Admin
+          </button>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="feat-comandos"
+            id="feat-btn-comandos"
+            class="landing-tab"
+            type="button"
+          >
+            Comandos
+          </button>
+        </menu>
+
+        <div
+          id="feat-chat"
+          role="tabpanel"
+          aria-labelledby="feat-btn-chat"
+          class="landing-tab-panel"
+        >
+          <h3>Chat em tempo real. Zero refresh. Zero loading.</h3>
+          <div class="sunken-panel landing-feature-mockup">
+            <pre>
+  #elixir@alpha.chat
+  ───────────────────
+
+  ● alice                         10:23
+    Bom dia! Alguém testou o Phoenix 1.8?
+
+  ● bob@beta.chat         [beta]  10:24
+    Sim! O LiveView tá muito bom
+
+  ● carol@gamma        [gamma]  10:25
+    Concordo, a performance melhorou demais</pre>
+          </div>
+          <ul>
+            <li>Mensagens em tempo real via WebSocket</li>
+            <li>Reações em emoji</li>
+            <li>Threads (respostas encadeadas)</li>
+            <li>Usuários de outros servidores com badge</li>
+            <li>Markdown e formatação IRC</li>
+          </ul>
+        </div>
+
+        <div
+          id="feat-canais"
+          role="tabpanel"
+          aria-labelledby="feat-btn-canais"
+          class="landing-tab-panel"
+          hidden
+        >
+          <h3>Canais são salas de conversa.</h3>
+          <ul>
+            <li>Crie quantos canais quiser</li>
+            <li><strong>Públicos:</strong> qualquer pessoa entra</li>
+            <li><strong>Privados:</strong> só por convite</li>
+            <li><strong>Federados:</strong> conectados com canais de outros servidores</li>
+            <li>Topic, modos, slow mode &mdash; você controla</li>
+          </ul>
+        </div>
+
+        <div
+          id="feat-rede"
+          role="tabpanel"
+          aria-labelledby="feat-btn-rede"
+          class="landing-tab-panel"
+          hidden
+        >
+          <h3>Descubra servidores. Explore a rede.</h3>
+          <ul>
+            <li>Servidores se descobrem automaticamente</li>
+            <li>Diretório público listando toda a rede</li>
+            <li>Servidores privados: visíveis mas com conteúdo protegido</li>
+            <li>Busca por nome, descrição, ou canais</li>
+          </ul>
+        </div>
+
+        <div
+          id="feat-social"
+          role="tabpanel"
+          aria-labelledby="feat-btn-social"
+          class="landing-tab-panel"
+          hidden
+        >
+          <h3>Não é só IRC. É uma rede social descentralizada.</h3>
+          <ul>
+            <li>Siga pessoas de qualquer servidor</li>
+            <li>Feed com atividade de quem você segue</li>
+            <li>Perfis públicos federados</li>
+            <li>Mensagens diretas cross-server</li>
+            <li>Status e presença em tempo real</li>
+          </ul>
+        </div>
+
+        <div
+          id="feat-p2p"
+          role="tabpanel"
+          aria-labelledby="feat-btn-p2p"
+          class="landing-tab-panel"
+          hidden
+        >
+          <h3>Conexão direta entre pessoas. Peer-to-peer.</h3>
+          <ul>
+            <li>Chamadas de voz P2P via WebRTC</li>
+            <li>Transferência de arquivos direta</li>
+            <li>Sem passar pelo servidor &mdash; dados vão direto</li>
+            <li>Criptografia fim-a-fim automática</li>
+            <li>Lobby para encontrar e convidar participantes</li>
+          </ul>
+        </div>
+
+        <div
+          id="feat-admin"
+          role="tabpanel"
+          aria-labelledby="feat-btn-admin"
+          class="landing-tab-panel"
+          hidden
+        >
+          <h3>Seu servidor, suas regras.</h3>
+          <ul>
+            <li>Painel de administração completo</li>
+            <li>Gerenciamento de usuários e canais</li>
+            <li>Configuração de federação</li>
+            <li>Rate limiting e moderação</li>
+            <li>Logs e métricas em tempo real</li>
+          </ul>
+        </div>
+
+        <div
+          id="feat-comandos"
+          role="tabpanel"
+          aria-labelledby="feat-btn-comandos"
+          class="landing-tab-panel"
+          hidden
+        >
+          <h3>Comandos poderosos no estilo IRC.</h3>
+          <div class="sunken-panel">
+            <pre>
+  /join #canal       → entrar em um canal
+  /msg @nick texto   → mensagem direta
+  /nick novo_nick    → mudar de nickname
+  /help              → ver todos os comandos
+  /whois @nick       → info sobre um usuário</pre>
+          </div>
+          <p>Mais de 20 comandos com autocomplete inteligente.</p>
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">7 categorias</p>
+      </div>
+    </div>
+  </section>
+
+  <%!-- ══════════════ SEÇÃO 6: A REDE ══════════════ --%>
+  <section id="rede" class="landing-section" aria-labelledby="rede-heading">
+    <div class="window landing-window landing-window--reveal">
+      <div class="title-bar">
+        <div class="title-bar-text">A Rede</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" disabled></button>
+          <button aria-label="Maximize" disabled></button>
+          <button aria-label="Close" disabled></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <h2 id="rede-heading">Uma rede de servidores independentes.</h2>
+
+        <div class="sunken-panel landing-network-graph">
+          <svg
+            viewBox="0 0 600 300"
+            aria-label="Grafo ilustrativo da rede federada"
+            role="img"
+            class="landing-network-svg"
+          >
+            <%!-- Server nodes --%>
+            <circle cx="150" cy="80" r="30" class="landing-node landing-node--primary" />
+            <text x="150" y="85" text-anchor="middle" class="landing-node-label">alpha</text>
+
+            <circle cx="400" cy="60" r="25" class="landing-node landing-node--secondary" />
+            <text x="400" y="65" text-anchor="middle" class="landing-node-label">beta</text>
+
+            <circle cx="300" cy="200" r="28" class="landing-node landing-node--secondary" />
+            <text x="300" y="205" text-anchor="middle" class="landing-node-label">gamma</text>
+
+            <circle cx="500" cy="180" r="22" class="landing-node landing-node--tertiary" />
+            <text x="500" y="185" text-anchor="middle" class="landing-node-label">delta</text>
+
+            <circle cx="80" cy="220" r="20" class="landing-node landing-node--tertiary" />
+            <text x="80" y="225" text-anchor="middle" class="landing-node-label">epsilon</text>
+
+            <%!-- Federation links --%>
+            <line x1="175" y1="90" x2="378" y2="65" class="landing-link" />
+            <line x1="165" y1="105" x2="280" y2="180" class="landing-link" />
+            <line x1="325" y1="195" x2="480" y2="180" class="landing-link" />
+            <line x1="415" y1="80" x2="490" y2="165" class="landing-link" />
+            <line x1="130" y1="100" x2="95" y2="205" class="landing-link" />
+            <line x1="280" y1="210" x2="100" y2="225" class="landing-link" />
+          </svg>
+        </div>
+
+        <p>
+          Cada ponto é um servidor independente. Cada linha é uma federação.
+          A rede cresce organicamente, sem coordenação central.
+        </p>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">Rede descentralizada</p>
+      </div>
+    </div>
+  </section>
+
+  <%!-- ══════════════ SEÇÃO 7: RODE O SEU ══════════════ --%>
+  <section id="instalar" class="landing-section" aria-labelledby="instalar-heading">
+    <div class="window landing-window landing-window--reveal">
+      <div class="title-bar">
+        <div class="title-bar-text">C:\SETUP\instalar_servidor.exe</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" disabled></button>
+          <button aria-label="Maximize" disabled></button>
+          <button aria-label="Close" disabled></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <h2 id="instalar-heading">Quer seu próprio servidor? Três passos.</h2>
+
+        <div class="landing-install-steps">
+          <fieldset>
+            <legend>Passo 1 &mdash; Baixar</legend>
+            <pre class="landing-terminal">$ git clone https://github.com/rodrigomarchi/retro_hex_chat.git
+$ cd retro_hex_chat</pre>
+          </fieldset>
+
+          <fieldset>
+            <legend>Passo 2 &mdash; Configurar</legend>
+            <pre class="landing-terminal">$ make setup</pre>
+          </fieldset>
+
+          <fieldset>
+            <legend>Passo 3 &mdash; Rodar</legend>
+            <pre class="landing-terminal">$ make server
+[info] Running RetroHexChatWeb.Endpoint at http://localhost:4000</pre>
+          </fieldset>
+        </div>
+
+        <p>
+          <strong>Requisitos:</strong>
+          Elixir 1.17+, PostgreSQL 16+, Node.js 20+.<br /> Uma VPS de $5/mês roda tranquilo.
+        </p>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">Instalação concluída</p>
+      </div>
+    </div>
+  </section>
+
+  <%!-- ══════════════ SEÇÃO 8: OPEN SOURCE ══════════════ --%>
+  <section id="open-source" class="landing-section" aria-labelledby="opensource-heading">
+    <div class="window landing-window landing-window--reveal">
+      <div class="title-bar">
+        <div class="title-bar-text">Open Source</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" disabled></button>
+          <button aria-label="Maximize" disabled></button>
+          <button aria-label="Close" disabled></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <h2 id="opensource-heading">Código aberto. Comunidade aberta.</h2>
+
+        <div class="landing-opensource-info">
+          <div class="sunken-panel">
+            <p>
+              <strong>Repositório:</strong>
+              <a
+                href="https://github.com/rodrigomarchi/retro_hex_chat"
+                target="_blank"
+                rel="noopener"
+              >
+                github.com/rodrigomarchi/retro_hex_chat
+              </a>
+            </p>
+            <p><strong>Licença:</strong> MIT</p>
+          </div>
+
+          <div class="landing-stack">
+            <h3>Stack</h3>
+            <ul>
+              <li><strong>Backend:</strong> Elixir, Phoenix, LiveView</li>
+              <li><strong>Database:</strong> PostgreSQL</li>
+              <li><strong>Frontend:</strong> 98.css, Vanilla JS</li>
+              <li><strong>Real-time:</strong> Phoenix Channels, WebSocket</li>
+              <li><strong>P2P:</strong> WebRTC</li>
+            </ul>
+          </div>
+        </div>
+
+        <p>
+          Contribuições são bem-vindas! Veja o <a
+            href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/CONTRIBUTING.md"
+            target="_blank"
+            rel="noopener"
+          >guia de contribuição</a>.
+        </p>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">MIT License</p>
+        <p class="status-bar-field">Contribua!</p>
+      </div>
+    </div>
+  </section>
+
+  <%!-- ══════════════ SEÇÃO 9: APOIE ══════════════ --%>
+  <section id="apoie" class="landing-section" aria-labelledby="apoie-heading">
+    <div class="window landing-window landing-window--reveal">
+      <div class="title-bar">
+        <div class="title-bar-text">Apoie o Projeto</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" disabled></button>
+          <button aria-label="Maximize" disabled></button>
+          <button aria-label="Close" disabled></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <h2 id="apoie-heading">Ajude a manter o Retro Hex Chat vivo.</h2>
+
+        <p>
+          Retro Hex Chat é 100% voluntário. Sem investidores, sem ads, sem coleta de dados.
+          Se você acredita nesse projeto, considere apoiar:
+        </p>
+
+        <div class="landing-donate-options">
+          <fieldset>
+            <legend>GitHub Sponsors</legend>
+            <p>Apoie diretamente no GitHub com recorrência mensal ou pontual.</p>
+            <a
+              href="https://github.com/sponsors/rodrigomarchi"
+              target="_blank"
+              rel="noopener"
+              class="landing-donate-btn"
+            >
+              &#9829; Sponsor no GitHub
+            </a>
+          </fieldset>
+
+          <fieldset>
+            <legend>Outras formas de ajudar</legend>
+            <ul>
+              <li>&#11088; Dê uma star no repositório</li>
+              <li>&#x1F4E2; Compartilhe com amigos</li>
+              <li>&#x1F41B; Reporte bugs e sugira features</li>
+              <li>&#x1F4BB; Contribua com código</li>
+            </ul>
+          </fieldset>
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">Obrigado!</p>
+      </div>
+    </div>
+  </section>
+
+  <%!-- ══════════════ SEÇÃO 10: FAQ ══════════════ --%>
+  <section id="faq" class="landing-section" aria-labelledby="faq-heading">
+    <div class="window landing-window landing-window--reveal">
+      <div class="title-bar">
+        <div class="title-bar-text">Perguntas Frequentes</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" disabled></button>
+          <button aria-label="Maximize" disabled></button>
+          <button aria-label="Close" disabled></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <h2 id="faq-heading" class="u-sr-only">Perguntas Frequentes</h2>
+
+        <ul class="tree-view landing-faq-tree">
+          <li>
+            <details>
+              <summary>O que é federação?</summary>
+              <p>
+                Federação é quando servidores independentes se conectam entre si,
+                permitindo que usuários de um servidor conversem com usuários de outro.
+                Funciona como email: alice@gmail.com pode mandar email para bob@outlook.com.
+              </p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Preciso rodar meu próprio servidor?</summary>
+              <p>
+                Não! Você pode criar uma conta em qualquer servidor público existente.
+                Rodar seu próprio servidor é para quem quer total controle.
+              </p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>É de graça?</summary>
+              <p>
+                Sim, o software é 100% gratuito e open source (MIT).
+                Se você rodar seu próprio servidor, pagará apenas pela hospedagem
+                (uma VPS de $5/mês é suficiente).
+              </p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Qual a diferença para o Discord?</summary>
+              <p>
+                No Discord, seus dados estão nos servidores deles e suas comunidades
+                podem ser removidas a qualquer momento. No Retro Hex Chat, você controla
+                seus dados e ninguém pode tirar sua comunidade de você.
+              </p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>E se um servidor sair do ar?</summary>
+              <p>
+                Cada servidor é independente. Se alpha.chat sair do ar, beta.chat
+                continua funcionando normalmente. Suas mensagens em beta não são afetadas.
+              </p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Posso migrar de servidor?</summary>
+              <p>
+                Sim! Sua identidade é portátil. Você pode criar conta em outro servidor
+                e manter suas conexões na rede federada.
+              </p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Como funciona o P2P?</summary>
+              <p>
+                O Retro Hex Chat suporta conexões peer-to-peer via WebRTC para chamadas de voz
+                e transferência de arquivos. Os dados vão diretamente entre os participantes,
+                sem passar pelo servidor.
+              </p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Que tecnologias são usadas?</summary>
+              <p>
+                Elixir e Phoenix no backend, PostgreSQL para dados, 98.css para o visual
+                retrô, WebSocket para tempo real, e WebRTC para P2P. Tudo open source.
+              </p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Como posso contribuir?</summary>
+              <p>
+                Veja nosso guia de contribuição no GitHub! Aceitamos código, documentação,
+                tradução, design, testes, e report de bugs. Issues marcadas com
+                &ldquo;good first issue&rdquo; são ótimas para começar.
+              </p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Como posso apoiar financeiramente?</summary>
+              <p>
+                Através do GitHub Sponsors. Toda contribuição, por menor que seja,
+                ajuda a manter o projeto vivo e em desenvolvimento ativo.
+              </p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>É seguro?</summary>
+              <p>
+                Sim. As mensagens entre servidores são assinadas criptograficamente.
+                Cada servidor prova sua identidade com chaves criptográficas.
+                Conexões P2P usam criptografia fim-a-fim via WebRTC.
+              </p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Funciona no celular?</summary>
+              <p>
+                Sim! A interface é responsiva e funciona em qualquer navegador moderno.
+                No futuro, teremos apps nativos também.
+              </p>
+            </details>
+          </li>
+        </ul>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">12 perguntas</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%!-- ══════════════ FOOTER ══════════════ --%>
+<footer class="landing-footer" role="contentinfo">
+  <div class="window landing-window">
+    <div class="title-bar">
+      <div class="title-bar-text">Sobre</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" disabled></button>
+        <button aria-label="Maximize" disabled></button>
+        <button aria-label="Close" disabled></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <p>
+        Retro Hex Chat é software livre, licenciado sob MIT.<br />
+        Feito com Elixir, Phoenix, e LiveView.<br />
+        Inspirado pelo IRC dos anos 2000 e pela liberdade que ele representava.
+      </p>
+
+      <div class="landing-footer__columns">
+        <div class="landing-footer__col">
+          <h3>Projeto</h3>
+          <ul>
+            <li>
+              <a
+                href="https://github.com/rodrigomarchi/retro_hex_chat"
+                target="_blank"
+                rel="noopener"
+              >
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/CONTRIBUTING.md"
+                target="_blank"
+                rel="noopener"
+              >
+                Contribuir
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
+                target="_blank"
+                rel="noopener"
+              >
+                Licença (MIT)
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="landing-footer__col">
+          <h3>Comunidade</h3>
+          <ul>
+            <li><a href="/" target="_blank" rel="noopener">#general</a></li>
+            <li><a href="/" target="_blank" rel="noopener">#dev</a></li>
+            <li><a href="/" target="_blank" rel="noopener">#help</a></li>
+          </ul>
+        </div>
+        <div class="landing-footer__col">
+          <h3>Legal</h3>
+          <ul>
+            <li>
+              <a
+                href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
+                target="_blank"
+                rel="noopener"
+              >
+                MIT License
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/SECURITY.md"
+                target="_blank"
+                rel="noopener"
+              >
+                Segurança
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="landing-footer__col">
+          <h3>Apoie</h3>
+          <ul>
+            <li>
+              <a href="https://github.com/sponsors/rodrigomarchi" target="_blank" rel="noopener">
+                GitHub Sponsors
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="landing-footer__quote">
+        &ldquo;A internet é uma rede de redes.<br /> O chat deveria ser também.&rdquo;
+      </p>
+
+      <div class="landing-footer__meta">
+        <span>v0.1.0</span>
+        <span>Feito por humanos</span>
+        <span>2025&ndash;2026</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<%!-- ══════════════ EASTER EGG: README.txt popup ══════════════ --%>
+<div id="readme-popup" class="landing-popup" hidden aria-modal="false">
+  <div class="window landing-popup__window">
+    <div class="title-bar">
+      <div class="title-bar-text">README.txt &mdash; Bloco de Notas</div>
+      <div class="title-bar-controls">
+        <button aria-label="Close" class="landing-popup__close" type="button"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <pre class="landing-readme-text">
+Nos anos 2000, a internet era nossa.
+
+Tínhamos IRC, fóruns, blogs, e uma
+liberdade que não sabíamos que podíamos
+perder. Rodávamos servidores no porão.
+Montávamos redes com amigos. O código
+era livre. A web era descentralizada.
+
+Depois trocamos isso por conveniência.
+E quando percebemos, a internet era de
+cinco empresas.
+
+Retro Hex Chat é um lembrete de que podemos
+ter os dois: a conveniência de 2026
+e a liberdade de 2000.
+
+Rode seu servidor. Conecte com outros.
+A rede é de todos nós.
+
+— Os criadores do Retro Hex Chat</pre>
+    </div>
+    <div class="status-bar">
+      <p class="status-bar-field">Ln 1, Col 1</p>
+    </div>
+  </div>
+</div>
+
+<%!-- ══════════════ EASTER EGG: Lixeira popup ══════════════ --%>
+<div id="lixeira-popup" class="landing-popup" hidden aria-modal="false">
+  <div class="window landing-popup__window">
+    <div class="title-bar">
+      <div class="title-bar-text">Lixeira</div>
+      <div class="title-bar-controls">
+        <button aria-label="Close" class="landing-popup__close" type="button"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <p class="landing-lixeira-msg">
+        Aqui não tem lixo.<br /> Só código limpo. &#x2728;
+      </p>
+    </div>
+  </div>
+</div>

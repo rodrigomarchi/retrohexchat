@@ -14,7 +14,15 @@ config :retro_hex_chat,
   ecto_repos: [RetroHexChat.Repo],
   admins: [],
   server_operators: [],
-  p2p_token_secret: "p2p-dev-secret-key-base-at-least-64-bytes-long-for-phoenix-token-signing"
+  p2p_token_secret: "p2p-dev-secret-key-base-at-least-64-bytes-long-for-phoenix-token-signing",
+  # TURN server compile-time config
+  turn_realm: "retro-hex-chat",
+  turn_credentials_lifetime: 86_400,
+  turn_nonce_lifetime: 3_600_000_000_000,
+  turn_default_allocation_lifetime: 600,
+  turn_max_allocation_lifetime: 3_600,
+  turn_permission_lifetime: 300,
+  turn_channel_lifetime: 600
 
 config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],
@@ -43,6 +51,18 @@ config :esbuild,
   retro_hex_chat_web_css: [
     args:
       ~w(css/app.css --bundle --target=es2022 --outdir=../priv/static/assets/css --loader:.woff=file --loader:.woff2=file),
+    cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
+    env: %{}
+  ],
+  retro_hex_chat_web_landing: [
+    args:
+      ~w(js/landing.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ],
+  retro_hex_chat_web_landing_css: [
+    args:
+      ~w(css/landing.css --bundle --target=es2022 --outdir=../priv/static/assets/css --loader:.woff=file --loader:.woff2=file),
     cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
     env: %{}
   ]

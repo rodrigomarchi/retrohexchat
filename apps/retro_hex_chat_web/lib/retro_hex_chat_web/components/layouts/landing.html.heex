@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <%!-- SEO --%>
+    <title>Retro Hex Chat — Chat federado, como nos velhos tempos</title>
+    <meta
+      name="description"
+      content="Rode seu próprio servidor de chat. Conecte com outros. Sem empresa no meio. Open source, descentralizado, e livre como o IRC dos anos 2000."
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://retrohexchat.com/landing" />
+
+    <%!-- Open Graph --%>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Retro Hex Chat — Chat federado descentralizado" />
+    <meta
+      property="og:description"
+      content="Seus dados. Suas regras. Sua comunidade. Chat em tempo real com federação entre servidores independentes."
+    />
+    <meta property="og:url" content="https://retrohexchat.com/landing" />
+    <meta property="og:site_name" content="Retro Hex Chat" />
+    <meta property="og:locale" content="pt_BR" />
+
+    <%!-- Twitter Card --%>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Retro Hex Chat — Chat federado" />
+    <meta
+      name="twitter:description"
+      content="Como email, mas para chat em tempo real. Open source e descentralizado."
+    />
+
+    <%!-- JSON-LD Structured Data --%>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Retro Hex Chat",
+        "applicationCategory": "CommunicationApplication",
+        "operatingSystem": "Web",
+        "description": "Software de chat federado e descentralizado, inspirado no IRC dos anos 2000. Open source, licenciado sob MIT.",
+        "license": "https://opensource.org/licenses/MIT",
+        "url": "https://retrohexchat.com",
+        "author": {
+          "@type": "Person",
+          "name": "Rodrigo Marchi"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+
+    <%!-- Fonts (same as chat app) --%>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <%!-- Favicon --%>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <%!-- Landing-specific CSS (no app.css, no LiveView) --%>
+    <link rel="stylesheet" href="/assets/css/landing.css" />
+
+    <%!-- Landing-specific JS (no app.js, no LiveView, no WebSocket) --%>
+    <script defer src="/assets/js/landing.js">
+    </script>
+  </head>
+  <body class="landing-body">
+    {@inner_content}
+  </body>
+</html>
