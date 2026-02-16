@@ -1717,6 +1717,109 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<p><a href=\"#\" data-help-topic=\"feature-message-reply\">Message Reply</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-message-edit\">Message Edit</a> · " <>
             "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+      },
+      %{
+        id: "feature-audio-call",
+        title: "Chamada de Audio",
+        category: "Features",
+        keywords: ["audio", "call", "chamada", "voice", "voz", "mute", "silenciar", "p2p"],
+        content:
+          "<h3>Chamada de Audio</h3>" <>
+            "<p>Inicie chamadas de audio peer-to-peer com outro usuario em uma sessao P2P.</p>" <>
+            "<h4>Iniciando uma Chamada</h4>" <>
+            "<p>Na sessao P2P, clique em <strong>Chamada de Audio</strong>. O outro usuario precisa aceitar a solicitacao.</p>" <>
+            "<h4>Silenciar/Ativar Microfone</h4>" <>
+            "<p>Clique no botao <strong>Silenciar</strong> para silenciar seu microfone. " <>
+            "O outro usuario vera uma indicacao de que voce silenciou.</p>" <>
+            "<h4>Encerrar Chamada</h4>" <>
+            "<p>Clique em <strong>Encerrar Chamada</strong> para finalizar. " <>
+            "Ambos os usuarios retornam ao lobby.</p>" <>
+            "<h4>Indicadores</h4>" <>
+            "<p>O timer mostra a duracao da chamada. O indicador de qualidade mostra 4 niveis: " <>
+            "Excelente, Bom, Regular, Ruim.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-media-devices\">Dispositivos de Midia</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-call-quality\">Qualidade da Chamada</a></p>"
+      },
+      %{
+        id: "feature-video-call",
+        title: "Chamada de Video",
+        category: "Features",
+        keywords: ["video", "call", "chamada", "camera", "pip", "picture-in-picture", "p2p"],
+        content:
+          "<h3>Chamada de Video</h3>" <>
+            "<p>Chamadas de video peer-to-peer com video remoto em tela cheia e video local em miniatura.</p>" <>
+            "<h4>Iniciando uma Chamada de Video</h4>" <>
+            "<p>Na sessao P2P, clique em <strong>Chamada de Video</strong>. O peer precisa aceitar.</p>" <>
+            "<h4>Layout</h4>" <>
+            "<p>O video remoto ocupa a area principal. Seu video local aparece no canto inferior direito.</p>" <>
+            "<h4>Desligar/Ligar Camera</h4>" <>
+            "<p>Clique em <strong>Desligar Camera</strong> para pausar o video. " <>
+            "O peer vera um placeholder.</p>" <>
+            "<h4>Picture-in-Picture</h4>" <>
+            "<p>Clique em <strong>PiP</strong> para destacar o video remoto em uma janela flutuante " <>
+            "que permanece visivel ao navegar em outras abas.</p>" <>
+            "<h4>Atualizar de Audio para Video</h4>" <>
+            "<p>Durante uma chamada de audio, clique em <strong>Adicionar Video</strong>. " <>
+            "O peer precisa aceitar para a camera ser ativada.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-media-devices\">Dispositivos de Midia</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-call-quality\">Qualidade da Chamada</a></p>"
+      },
+      %{
+        id: "feature-media-devices",
+        title: "Dispositivos de Midia",
+        category: "Features",
+        keywords: [
+          "device",
+          "dispositivo",
+          "microphone",
+          "microfone",
+          "camera",
+          "speaker",
+          "fallback"
+        ],
+        content:
+          "<h3>Dispositivos de Midia</h3>" <>
+            "<p>Selecione e troque dispositivos de audio e video durante uma chamada.</p>" <>
+            "<h4>Selecionando Dispositivos</h4>" <>
+            "<p>Clique em <strong>Dispositivos</strong> para ver os dispositivos disponiveis. " <>
+            "Escolha microfone, camera ou saida de audio nos menus.</p>" <>
+            "<h4>Troca em Tempo Real</h4>" <>
+            "<p>A troca de dispositivo acontece sem interromper a chamada.</p>" <>
+            "<h4>Desconexao de Dispositivo</h4>" <>
+            "<p>Se um dispositivo for desconectado durante a chamada, o sistema automaticamente " <>
+            "usa o dispositivo padrao e exibe uma notificacao.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a></p>"
+      },
+      %{
+        id: "feature-call-quality",
+        title: "Qualidade da Chamada",
+        category: "Features",
+        keywords: ["quality", "qualidade", "bitrate", "preset", "indicator", "bars"],
+        content:
+          "<h3>Qualidade da Chamada</h3>" <>
+            "<p>Monitore e ajuste a qualidade da conexao durante chamadas.</p>" <>
+            "<h4>Indicador de Qualidade</h4>" <>
+            "<p>As 4 barras indicam a qualidade da conexao:</p>" <>
+            "<ul>" <>
+            "<li>4 barras verdes — Excelente</li>" <>
+            "<li>3 barras verdes — Bom</li>" <>
+            "<li>2 barras amarelas — Regular</li>" <>
+            "<li>1 barra vermelha — Ruim</li>" <>
+            "</ul>" <>
+            "<h4>Ajuste Manual de Qualidade</h4>" <>
+            "<p>Use os botoes <strong>Alta</strong> (1.5 Mbps), <strong>Media</strong> (500 Kbps), " <>
+            "ou <strong>Baixa</strong> (150 Kbps) para ajustar o bitrate manualmente.</p>" <>
+            "<h4>Adaptacao Automatica</h4>" <>
+            "<p>O WebRTC ajusta automaticamente a resolucao e framerate com base nas condicoes da rede.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a></p>"
       }
     ]
   end

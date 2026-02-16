@@ -1,0 +1,161 @@
+/* Media Call — audio/video call UI */
+
+.media-call {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+}
+
+.media-call--video {
+  position: relative;
+}
+
+/* Remote video fills container */
+.media-call__remote {
+  width: 100%;
+  max-height: 360px;
+  background: var(--color-bg-dark);
+  object-fit: contain;
+}
+
+/* Local video PiP overlay */
+.media-call__local {
+  position: absolute;
+  bottom: var(--space-md);
+  right: var(--space-sm);
+  width: 120px;
+  height: 90px;
+  border: 2px solid var(--color-border);
+  object-fit: cover;
+  z-index: var(--z-tooltip);
+}
+
+/* Placeholder when camera off */
+.media-call__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 200px;
+  background: var(--color-bg-dark);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+/* Controls bar */
+.media-call__controls {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.media-call__btn--active {
+  background: var(--color-bg-highlight);
+}
+
+/* Call info area */
+.media-call__info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+/* Duration timer */
+.media-call__timer {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+/* Mute indicator */
+.media-call__mute-indicator {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* Quality indicator */
+.media-call__quality {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.media-call__quality-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+}
+
+.media-call__quality-bar {
+  width: 4px;
+  background: var(--color-border);
+}
+
+.media-call__quality-bar:nth-child(1) { height: 4px; }
+.media-call__quality-bar:nth-child(2) { height: 8px; }
+.media-call__quality-bar:nth-child(3) { height: 12px; }
+.media-call__quality-bar:nth-child(4) { height: 16px; }
+
+.media-call__quality-bar--active.media-call__quality-bar--excellent,
+.media-call__quality-bar--active.media-call__quality-bar--good {
+  background: var(--color-success);
+}
+
+.media-call__quality-bar--active.media-call__quality-bar--fair {
+  background: var(--color-warning);
+}
+
+.media-call__quality-bar--active.media-call__quality-bar--poor {
+  background: var(--color-error);
+}
+
+.media-call__quality-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* Preset selector */
+.media-call__preset-selector {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+/* Device selector panel */
+.media-call__devices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+  border: 1px solid var(--color-border);
+}
+
+.media-call__device-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.media-call__device-fallback {
+  font-size: var(--text-sm);
+  color: var(--color-warning);
+  font-style: italic;
+}
+
+/* PiP button */
+.media-call__pip-btn {
+  margin-left: auto;
+}
+
+/* Upgrade consent */
+.media-call__upgrade-consent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs);
+  border: 1px solid var(--color-border);
+}
