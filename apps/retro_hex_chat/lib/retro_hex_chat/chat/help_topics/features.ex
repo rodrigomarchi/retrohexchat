@@ -1,7 +1,74 @@
 defmodule RetroHexChat.Chat.HelpTopics.Features do
   @moduledoc false
 
-  # credo:disable-for-this-file Credo.Check.Readability.StringSigils
+  @help_dir Path.join(:code.priv_dir(:retro_hex_chat), "help")
+
+  @external_resource Path.join(@help_dir, "feature-notify-list.html")
+  @external_resource Path.join(@help_dir, "feature-address-book.html")
+  @external_resource Path.join(@help_dir, "feature-highlight-words.html")
+  @external_resource Path.join(@help_dir, "feature-url-catcher.html")
+  @external_resource Path.join(@help_dir, "feature-ignore-list.html")
+  @external_resource Path.join(@help_dir, "feature-channel-central.html")
+  @external_resource Path.join(@help_dir, "feature-ban-exceptions.html")
+  @external_resource Path.join(@help_dir, "feature-invite-exceptions.html")
+  @external_resource Path.join(@help_dir, "feature-channel-invites.html")
+  @external_resource Path.join(@help_dir, "feature-search.html")
+  @external_resource Path.join(@help_dir, "feature-log-viewer.html")
+  @external_resource Path.join(@help_dir, "feature-log-export.html")
+  @external_resource Path.join(@help_dir, "feature-perform.html")
+  @external_resource Path.join(@help_dir, "feature-auto-reconnect.html")
+  @external_resource Path.join(@help_dir, "feature-notices.html")
+  @external_resource Path.join(@help_dir, "feature-ctcp.html")
+  @external_resource Path.join(@help_dir, "feature-flood-protection.html")
+  @external_resource Path.join(@help_dir, "feature-sounds.html")
+  @external_resource Path.join(@help_dir, "feature-mute.html")
+  @external_resource Path.join(@help_dir, "feature-typing-indicator.html")
+  @external_resource Path.join(@help_dir, "feature-visual-notifications.html")
+  @external_resource Path.join(@help_dir, "feature-favorites.html")
+  @external_resource Path.join(@help_dir, "feature-organize-favorites.html")
+  @external_resource Path.join(@help_dir, "feature-aliases.html")
+  @external_resource Path.join(@help_dir, "feature-timers.html")
+  @external_resource Path.join(@help_dir, "feature-custom-menus.html")
+  @external_resource Path.join(@help_dir, "feature-options-dialog.html")
+  @external_resource Path.join(@help_dir, "feature-display-settings.html")
+  @external_resource Path.join(@help_dir, "feature-key-bindings.html")
+  @external_resource Path.join(@help_dir, "feature-autorespond.html")
+  @external_resource Path.join(@help_dir, "feature-interactive-elements.html")
+  @external_resource Path.join(@help_dir, "feature-nick-alignment.html")
+  @external_resource Path.join(@help_dir, "feature-copy.html")
+  @external_resource Path.join(@help_dir, "feature-paste-dialog.html")
+  @external_resource Path.join(@help_dir, "feature-char-counter.html")
+  @external_resource Path.join(@help_dir, "feature-quit-message.html")
+  @external_resource Path.join(@help_dir, "feature-away-reply.html")
+  @external_resource Path.join(@help_dir, "feature-emoji.html")
+  @external_resource Path.join(@help_dir, "feature-timestamp-format.html")
+  @external_resource Path.join(@help_dir, "feature-autocomplete.html")
+  @external_resource Path.join(@help_dir, "feature-command-syntax-tooltip.html")
+  @external_resource Path.join(@help_dir, "feature-smart-input.html")
+  @external_resource Path.join(@help_dir, "feature-cheatsheet.html")
+  @external_resource Path.join(@help_dir, "feature-context-menus.html")
+  @external_resource Path.join(@help_dir, "feature-enhanced-history.html")
+  @external_resource Path.join(@help_dir, "feature-contextual-tips.html")
+  @external_resource Path.join(@help_dir, "feature-unread-indicators.html")
+  @external_resource Path.join(@help_dir, "feature-kick-notifications.html")
+  @external_resource Path.join(@help_dir, "feature-copy-feedback.html")
+  @external_resource Path.join(@help_dir, "feature-status-bar.html")
+  @external_resource Path.join(@help_dir, "feature-lag-indicator.html")
+  @external_resource Path.join(@help_dir, "feature-connection-states.html")
+  @external_resource Path.join(@help_dir, "feature-notifications.html")
+  @external_resource Path.join(@help_dir, "feature-dnd.html")
+  @external_resource Path.join(@help_dir, "feature-notification-center.html")
+  @external_resource Path.join(@help_dir, "feature-notification-settings.html")
+  @external_resource Path.join(@help_dir, "feature-message-reply.html")
+  @external_resource Path.join(@help_dir, "feature-message-edit.html")
+  @external_resource Path.join(@help_dir, "feature-message-delete.html")
+  @external_resource Path.join(@help_dir, "feature-audio-call.html")
+  @external_resource Path.join(@help_dir, "feature-video-call.html")
+  @external_resource Path.join(@help_dir, "feature-media-devices.html")
+  @external_resource Path.join(@help_dir, "feature-call-quality.html")
+  @external_resource Path.join(@help_dir, "feature-p2p-sessions.html")
+  @external_resource Path.join(@help_dir, "feature-file-transfer.html")
+  @external_resource Path.join(@help_dir, "feature-privacy-settings.html")
 
   @spec topics() :: [map()]
   def topics do
@@ -11,102 +78,35 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         title: "Notify List (Buddy List)",
         category: "Features",
         keywords: ["notify", "buddy", "friend list", "online", "offline", "track"],
-        content:
-          "<h3>Notify List (Buddy List)</h3>" <>
-            "<p>The Notify List tracks when specific users come online or go offline. You receive notifications in the Status tab.</p>" <>
-            "<h4>Opening the Notify List</h4>" <>
-            "<p>Use the treebar (click \"Notify List\") or the <code>/notify</code> command.</p>" <>
-            "<h4>Adding Users</h4>" <>
-            "<pre>/notify add &lt;nickname&gt; [note]</pre>" <>
-            "<p>Or use the <strong>Add</strong> button in the Notify List window.</p>" <>
-            "<h4>Auto-Whois</h4>" <>
-            "<p>Enable auto-whois to automatically look up user info when they come online.</p>" <>
-            "<h4>Persistence</h4>" <>
-            "<p>Register and identify with NickServ to save your notify list across sessions.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-notify\">/notify Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-address-book\">Address Book</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-notify-list.html"))
       },
       %{
         id: "feature-address-book",
         title: "Address Book",
         category: "Features",
         keywords: ["address book", "contacts", "nick colors", "color override"],
-        content:
-          "<h3>Address Book</h3>" <>
-            "<p>The Address Book (Ctrl+Shift+A) organizes your contacts, notify list, nick color overrides, and future ignore management in one window.</p>" <>
-            "<h4>Tabs</h4>" <>
-            "<p><strong>Contacts:</strong> Store notes about users with add/edit/remove.<br/>" <>
-            "<strong>Notify:</strong> Manage your buddy list (synced with Notify List window).<br/>" <>
-            "<strong>Nick Colors:</strong> Override display colors for specific nicks across the UI.<br/>" <>
-            "<strong>Control:</strong> Ignore management (coming in a future update).</p>" <>
-            "<h4>Opening</h4>" <>
-            "<p>Press <strong>Ctrl+Shift+A</strong>, use the toolbar button, or go to <strong>Tools &gt; Address Book</strong>.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-highlight-words\">Highlight Words</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-address-book.html"))
       },
       %{
         id: "feature-highlight-words",
         title: "Highlight Words",
         category: "Features",
         keywords: ["highlight", "mention", "alert", "notification", "flash"],
-        content:
-          "<h3>Highlight Words</h3>" <>
-            "<p>RetroHexChat highlights messages that mention your nickname or custom words. Highlighted messages have a colored background and the channel flashes in the treebar and tab bar.</p>" <>
-            "<h4>Default Behavior</h4>" <>
-            "<p>Your own nickname is always highlighted (case-insensitive, whole-word match).</p>" <>
-            "<h4>Custom Words</h4>" <>
-            "<p>Open the Highlight Words dialog (<strong>Ctrl+Shift+H</strong> or <strong>Tools &gt; Highlight Words</strong>) to add custom trigger words with optional background colors.</p>" <>
-            "<h4>Sound Notifications</h4>" <>
-            "<p>A notification sound plays when a highlight match occurs.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-address-book\">Address Book</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-highlight-words.html"))
       },
       %{
         id: "feature-url-catcher",
         title: "URL Catcher",
         category: "Features",
         keywords: ["url", "link", "catcher", "preview", "web"],
-        content:
-          "<h3>URL Catcher</h3>" <>
-            "<p>The URL Catcher captures all URLs shared in channels and PMs. URLs in messages are automatically made clickable with link previews.</p>" <>
-            "<h4>Opening</h4>" <>
-            "<p>Press <strong>Ctrl+Shift+S</strong> or go to <strong>Tools &gt; URL Catcher</strong>.</p>" <>
-            "<h4>Features</h4>" <>
-            "<p><strong>Clickable Links:</strong> URLs in messages become clickable, opening in a new tab.<br/>" <>
-            "<strong>Link Previews:</strong> Page titles are fetched and shown below the URL.<br/>" <>
-            "<strong>URL Catcher Window:</strong> Browse all captured URLs, sorted by time. Filter by channel and search by URL text. Double-click to open.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"formatting-overview\">Text Formatting</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-interactive-elements\">Interactive Chat Elements</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-url-catcher.html"))
       },
       %{
         id: "feature-ignore-list",
         title: "Ignore List",
         category: "Features",
         keywords: ["ignore", "block", "silence", "mute", "filter", "hide", "unignore"],
-        content:
-          "<h3>Ignore List</h3>" <>
-            "<p>The Ignore List lets you hide messages from specific users without moderator intervention. " <>
-            "Ignored users are not notified — filtering happens entirely on your side.</p>" <>
-            "<h4>Opening the Ignore List Dialog</h4>" <>
-            "<p>Press <strong>Ctrl+Shift+G</strong> or go to <strong>Tools &gt; Ignore List</strong>.</p>" <>
-            "<h4>Features</h4>" <>
-            "<p><strong>Per-Type Filtering:</strong> Ignore all content, or just messages, PMs, actions, or invites.<br/>" <>
-            "<strong>Timed Ignores:</strong> Set a duration (e.g., 5m, 2h, 1d) — the ignore automatically expires.<br/>" <>
-            "<strong>Dialog Management:</strong> View, add, and remove ignores from the visual dialog.<br/>" <>
-            "<strong>Context Menu:</strong> Right-click a nickname to quickly Ignore or Unignore.<br/>" <>
-            "<strong>Persistence:</strong> Registered users' ignore lists are saved across sessions.</p>" <>
-            "<h4>Filtering Rules</h4>" <>
-            "<p>User-authored content (messages, PMs, /me actions) is hidden. " <>
-            "System messages (joins, parts, kicks) from ignored users remain visible to maintain channel context.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-ignore\">/ignore Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"cmd-unignore\">/unignore Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-flood-protection\">Flood Protection</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-ignore-list.html"))
       },
       %{
         id: "feature-channel-central",
@@ -122,50 +122,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "invite exceptions",
           "tabs"
         ],
-        content:
-          "<h3>Channel Central</h3>" <>
-            "<p>Channel Central provides a comprehensive tabbed dialog for viewing and managing all channel settings in one place.</p>" <>
-            "<h4>Tabs</h4>" <>
-            "<p><strong>General:</strong> Channel name, topic, and basic information.<br/>" <>
-            "<strong>Modes:</strong> View and toggle channel modes (+m, +i, +t, +k, +l).<br/>" <>
-            "<strong>Bans:</strong> View and manage the channel ban list.<br/>" <>
-            "<strong>Ban Exceptions:</strong> Manage ban exceptions (+e) that let specific users bypass bans.<br/>" <>
-            "<strong>Invite Exceptions:</strong> Manage invite exceptions (+I) that let specific users bypass invite-only mode.</p>" <>
-            "<h4>Opening</h4>" <>
-            "<p>Double-click a channel in the treebar, or go to <strong>Tools &gt; Channel Central</strong>.</p>" <>
-            "<h4>Permissions</h4>" <>
-            "<p>Channel operators see editable controls and can modify settings directly. " <>
-            "Non-operators see read-only views of the channel configuration.</p>" <>
-            "<h4>Real-Time Updates</h4>" <>
-            "<p>The dialog updates in real time when other users change channel settings, " <>
-            "so you always see the current state.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-mode\">/mode Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"cmd-ban\">/ban Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"cmd-topic\">/topic Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-ban-exceptions\">Ban Exceptions</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-invite-exceptions\">Invite Exceptions</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-channel-central.html"))
       },
       %{
         id: "feature-ban-exceptions",
         title: "Ban Exceptions (+e)",
         category: "Features",
-        keywords: ["ban exception", "ban exempt", "exception", "exempt", "bypass ban", "+e"],
-        content:
-          "<h3>Ban Exceptions (+e)</h3>" <>
-            "<p>Ban exceptions allow specific users to bypass channel bans. " <>
-            "If a user is both banned and has a ban exception, they can still join and participate in the channel.</p>" <>
-            "<h4>Managing Ban Exceptions</h4>" <>
-            "<p>Ban exceptions are managed through the <strong>Ban Exceptions</strong> tab in " <>
-            "<a href=\"#\" data-help-topic=\"feature-channel-central\">Channel Central</a>. " <>
-            "Only channel operators can add or remove ban exceptions.</p>" <>
-            "<h4>How It Works</h4>" <>
-            "<p>When a user attempts to join a channel where they are banned, the server checks " <>
-            "the ban exception list. If the user matches a ban exception entry, the ban is overridden " <>
-            "and they are allowed to join.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-ban\">/ban Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-channel-central\">Channel Central</a></p>"
+        keywords: [
+          "ban exception",
+          "ban exempt",
+          "exception",
+          "exempt",
+          "bypass ban",
+          "+e"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-ban-exceptions.html"))
       },
       %{
         id: "feature-invite-exceptions",
@@ -178,22 +149,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "+I",
           "invite-only bypass"
         ],
-        content:
-          "<h3>Invite Exceptions (+I)</h3>" <>
-            "<p>Invite exceptions allow specific users to bypass invite-only (+i) mode. " <>
-            "When a channel has +i mode set, users in the invite exceptions list can still " <>
-            "join without an explicit invite from an operator.</p>" <>
-            "<h4>Managing Invite Exceptions</h4>" <>
-            "<p>Invite exceptions are managed through the <strong>Invite Exceptions</strong> tab in " <>
-            "<a href=\"#\" data-help-topic=\"feature-channel-central\">Channel Central</a>. " <>
-            "Only channel operators can add or remove invite exceptions.</p>" <>
-            "<h4>How It Works</h4>" <>
-            "<p>When a user attempts to join an invite-only channel, the server checks the " <>
-            "invite exception list. If the user matches an invite exception entry, " <>
-            "they are allowed to join without needing an invite.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-mode\">/mode Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-channel-central\">Channel Central</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-invite-exceptions.html"))
       },
       %{
         id: "feature-channel-invites",
@@ -207,27 +163,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "invite expiration",
           "invite-only"
         ],
-        content:
-          "<h3>Channel Invites</h3>" <>
-            "<p>The channel invite system allows operators of invite-only (+i) channels to " <>
-            "invite specific users to join. Invited users receive a Windows 98-style dialog " <>
-            "with Join and Ignore options.</p>" <>
-            "<h4>How It Works</h4>" <>
-            "<p>1. An operator uses <code>/invite &lt;nickname&gt;</code> to invite a user.<br/>" <>
-            "2. The invited user sees a popup dialog with the inviter's name and channel.<br/>" <>
-            "3. Clicking <strong>Join</strong> joins the channel. Clicking <strong>Ignore</strong> dismisses the dialog.<br/>" <>
-            "4. Invitations expire after 5 minutes if not accepted.</p>" <>
-            "<h4>Auto-Join on Invite</h4>" <>
-            "<p>Users can enable auto-join with <code>/invite auto</code>. When enabled, " <>
-            "incoming invitations are accepted automatically without showing a dialog. " <>
-            "This is disabled by default for security.</p>" <>
-            "<h4>Requirements</h4>" <>
-            "<p>Only channel operators can send invites. The channel must have +i (invite-only) " <>
-            "mode set. The target user must be online and not already in the channel.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-invite\">/invite Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"mode-i\">+i Invite Only</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-invite-exceptions\">Invite Exceptions</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-channel-invites.html"))
       },
       %{
         id: "feature-search",
@@ -243,79 +179,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "case sensitive",
           "history search"
         ],
-        content:
-          "<h3>Search</h3>" <>
-            "<p>Search through messages in the current channel or PM with real-time highlighting.</p>" <>
-            "<h4>Opening</h4>" <>
-            "<p>Press <strong>Ctrl+Shift+F</strong> or go to <strong>Edit &gt; Find...</strong>.</p>" <>
-            "<h4>Highlighting</h4>" <>
-            "<p>As you type, all matching occurrences in the chat are highlighted with a yellow background. " <>
-            "The active match is highlighted in orange. The counter shows your position (e.g., \"3 of 17\").</p>" <>
-            "<h4>Navigation</h4>" <>
-            "<p>Use <strong>Prev</strong>/<strong>Next</strong> buttons, or press " <>
-            "<strong>Arrow Down</strong>/<strong>Arrow Up</strong> in the search input to jump between matches. " <>
-            "The chat scrolls to each match automatically.</p>" <>
-            "<h4>Search Filters</h4>" <>
-            "<p><strong>Case:</strong> Case-sensitive matching (default: case-insensitive).<br/>" <>
-            "<strong>Regex:</strong> Regular expression matching (e.g., <code>error|warn</code>). " <>
-            "Invalid regex patterns show an inline error.<br/>" <>
-            "<strong>My nick:</strong> Only search messages that mention your nickname.<br/>" <>
-            "<strong>History:</strong> Extend search into the database beyond currently loaded messages.</p>" <>
-            "<h4>Session Memory</h4>" <>
-            "<p>The search bar remembers your last search term. When you reopen it, " <>
-            "the previous query is restored and matches are re-highlighted.</p>" <>
-            "<h4>Closing</h4>" <>
-            "<p>Press <strong>Escape</strong> or click the close button. All highlights are removed.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-cheatsheet\">Shortcut Cheatsheet</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-search.html"))
       },
       %{
         id: "feature-log-viewer",
         title: "Log Viewer",
         category: "Features",
         keywords: ["log", "viewer", "search", "history", "browse", "export", "logs"],
-        content:
-          "<h3>Log Viewer</h3>" <>
-            "<p>The Log Viewer lets you search and browse your chat history across channels and private messages.</p>" <>
-            "<h4>Opening</h4>" <>
-            "<p>Open via <strong>Ctrl+Shift+L</strong>, the <strong>Tools &gt; Log Viewer</strong> menu, or the toolbar button.</p>" <>
-            "<h4>Filtering</h4>" <>
-            "<p>Use the controls at the top to filter by:</p>" <>
-            "<ul><li><strong>Source</strong> — Select a channel or PM partner</li>" <>
-            "<li><strong>Date Range</strong> — Set From and To dates</li>" <>
-            "<li><strong>Nickname</strong> — Filter by message author (partial match)</li>" <>
-            "<li><strong>Text</strong> — Search message content (case-insensitive)</li></ul>" <>
-            "<p>Click <strong>Search</strong> to apply filters, or <strong>Refresh</strong> to re-run the current query.</p>" <>
-            "<h4>Pagination</h4>" <>
-            "<p>Results are paginated (50 per page). Use <strong>Prev</strong> / <strong>Next</strong> buttons to navigate.</p>" <>
-            "<h4>Display Options</h4>" <>
-            "<p>Toggle visibility of system events (Joins, Parts, Kicks, Modes, Topics) and choose timestamp format.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-log-export\">Log Export</a> · " <>
-            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-log-viewer.html"))
       },
       %{
         id: "feature-log-export",
         title: "Log Export",
         category: "Features",
         keywords: ["export", "download", "txt", "html", "log", "save"],
-        content:
-          "<h3>Log Export</h3>" <>
-            "<p>Export your filtered log results as a downloadable file.</p>" <>
-            "<h4>Export Formats</h4>" <>
-            "<ul><li><strong>.txt</strong> — Plain text with timestamps, one message per line</li>" <>
-            "<li><strong>.html</strong> — Styled HTML with IRC colors and formatting preserved</li></ul>" <>
-            "<h4>How to Export</h4>" <>
-            "<p>1. Open the <a href=\"#\" data-help-topic=\"feature-log-viewer\">Log Viewer</a> and apply your desired filters.</p>" <>
-            "<p>2. Click <strong>Export .txt</strong> or <strong>Export .html</strong> at the bottom of the dialog.</p>" <>
-            "<p>3. The file will download automatically with a descriptive filename.</p>" <>
-            "<h4>Filename Pattern</h4>" <>
-            "<p>Filenames include the source name and date range: <code>general_2026-01-01_to_2026-01-31.txt</code></p>" <>
-            "<h4>Notes</h4>" <>
-            "<p>Export includes <em>all</em> matching results, not just the current page. Display preferences (event filtering, timestamp format) are applied to the export.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-log-viewer\">Log Viewer</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-log-export.html"))
       },
       %{
         id: "feature-perform",
@@ -331,30 +209,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "perform list",
           "auto execute"
         ],
-        content:
-          "<h3>Perform / Auto-Commands</h3>" <>
-            "<p>The Perform system lets you define commands that execute automatically every time you connect, " <>
-            "followed by a list of channels to join.</p>" <>
-            "<h4>Perform List</h4>" <>
-            "<p>The perform list contains commands (e.g., <code>/ns identify</code>, <code>/mode +x</code>) " <>
-            "that run sequentially on connect. Use <code>/perform add &lt;command&gt;</code> to add commands, " <>
-            "or manage them visually in the Perform Dialog.</p>" <>
-            "<h4>Auto-Join Channels</h4>" <>
-            "<p>Auto-join channels are separate from perform commands. They are joined after all perform commands " <>
-            "complete, ensuring that NickServ identification and other setup happens first.</p>" <>
-            "<h4>Perform Dialog</h4>" <>
-            "<p>Press <strong>Ctrl+Shift+E</strong> to open the Perform Dialog, which provides a visual interface " <>
-            "for managing both the perform list and auto-join channels.</p>" <>
-            "<h4>Enable / Disable</h4>" <>
-            "<p>The perform system can be toggled on or off. When disabled, no commands execute and no channels " <>
-            "are auto-joined on connect.</p>" <>
-            "<h4>Execution Order</h4>" <>
-            "<p>1. Perform commands execute sequentially.<br/>" <>
-            "2. Auto-join channels are joined after all perform commands complete.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-perform\">/perform Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"cmd-autojoin\">/autojoin Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-auto-reconnect\">Auto-Reconnect</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-perform.html"))
       },
       %{
         id: "feature-auto-reconnect",
@@ -369,89 +224,29 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "retry",
           "backoff"
         ],
-        content:
-          "<h3>Auto-Reconnect</h3>" <>
-            "<p>RetroHexChat automatically attempts to reconnect when an unexpected disconnection occurs.</p>" <>
-            "<h4>How It Works</h4>" <>
-            "<p>When the connection drops unexpectedly, the client retries with exponential backoff:</p>" <>
-            "<pre>Attempt 1:  1 second\nAttempt 2:  2 seconds\nAttempt 3:  4 seconds\nAttempt 4:  8 seconds\nAttempt 5:  16 seconds\nAttempt 6+: 30 seconds (cap)</pre>" <>
-            "<p>A maximum of <strong>10 attempts</strong> are made before giving up.</p>" <>
-            "<h4>Cancel &amp; Refresh</h4>" <>
-            "<p>During reconnection attempts, a <strong>Cancel</strong> button is available to stop retrying. " <>
-            "You can also refresh the page to start a fresh connection.</p>" <>
-            "<h4>Intentional Disconnect</h4>" <>
-            "<p>Auto-reconnect does <strong>not</strong> trigger on intentional disconnects via <code>/quit</code>. " <>
-            "It only activates on unexpected connection loss.</p>" <>
-            "<h4>Session Restoration</h4>" <>
-            "<p>On successful reconnection, your previous session is restored: channels are rejoined " <>
-            "and the active tab is restored to its previous state.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-perform\">Perform / Auto-Commands</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-auto-reconnect.html"))
       },
       %{
         id: "feature-notices",
         title: "Notices",
         category: "Features",
         keywords: ["notice", "notification", "announce", "lightweight message"],
-        content:
-          "<h3>Notices</h3>" <>
-            "<p>Notices are a lightweight message type inspired by IRC's NOTICE command. " <>
-            "They are used for announcements, service messages, and bot responses.</p>" <>
-            "<h4>Key Characteristics</h4>" <>
-            "<p>- Display with <code>-Nick-</code> prefix (distinct from regular &lt;Nick&gt; messages)<br/>" <>
-            "- Shown in a distinct color for easy identification<br/>" <>
-            "- Do NOT create PM windows or treebar entries<br/>" <>
-            "- Do NOT trigger notification sounds or highlights<br/>" <>
-            "- The system must NEVER send automatic replies to notices (prevents bot loops)</p>" <>
-            "<h4>Sending Notices</h4>" <>
-            "<pre>/notice &lt;nickname&gt; &lt;message&gt;\n/notice &lt;#channel&gt; &lt;message&gt;</pre>" <>
-            "<h4>Routing Preferences</h4>" <>
-            "<p>Use <code>/notice_routing</code> to configure where user-targeted notices appear. " <>
-            "Channel notices always appear in the channel window regardless of routing settings.</p>" <>
-            "<h4>Ignore Integration</h4>" <>
-            "<p>Notices respect the ignore system. Use <code>/ignore &lt;nick&gt; notices</code> " <>
-            "to filter notices from a specific user, or <code>/ignore &lt;nick&gt;</code> to filter all message types.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-notice\">/notice Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"cmd-notice-routing\">/notice_routing Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"private-messages\">Private Messages</a> · " <>
-            "<a href=\"#\" data-help-topic=\"cmd-ignore\">/ignore Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-ctcp\">CTCP</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-notices.html"))
       },
       %{
         id: "feature-ctcp",
         title: "CTCP (Client-to-Client Protocol)",
         category: "Features",
-        keywords: ["ctcp", "ping", "version", "time", "finger", "client-to-client", "latency"],
-        content:
-          "<h3>CTCP (Client-to-Client Protocol)</h3>" <>
-            "<p>CTCP allows users to query information about other users' clients and " <>
-            "measure connection latency. Since RetroHexChat is web-based, CTCP is simulated " <>
-            "between users within the application.</p>" <>
-            "<h4>Available CTCP Types</h4>" <>
-            "<p><code>PING</code> — Measures round-trip latency in milliseconds.<br/>" <>
-            "<code>VERSION</code> — Returns the target's client version string (default: \"RetroHexChat v1.0\").<br/>" <>
-            "<code>TIME</code> — Returns the server's current UTC date and time.<br/>" <>
-            "<code>FINGER</code> — Returns the target's profile text or idle time.</p>" <>
-            "<h4>Usage</h4>" <>
-            "<pre>/ctcp &lt;nickname&gt; ping\n/ctcp &lt;nickname&gt; version\n/ctcp &lt;nickname&gt; time\n/ctcp &lt;nickname&gt; finger</pre>" <>
-            "<h4>Customizing Responses</h4>" <>
-            "<p>Access <strong>Tools &gt; CTCP Settings</strong> to:<br/>" <>
-            "- Enable or disable CTCP responses entirely<br/>" <>
-            "- Set a custom VERSION string<br/>" <>
-            "- Set a custom FINGER reply text</p>" <>
-            "<h4>Key Behaviors</h4>" <>
-            "<p>- CTCP exchanges are private between sender and target<br/>" <>
-            "- Self-CTCP returns instant responses (useful for testing)<br/>" <>
-            "- Unanswered requests time out after 10 seconds<br/>" <>
-            "- Rate limited to 3 requests per target per 30 seconds<br/>" <>
-            "- CTCP does NOT create PM windows or treebar entries<br/>" <>
-            "- Settings persist for registered (identified) users</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-ctcp\">/ctcp Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-notices\">Notices</a> · " <>
-            "<a href=\"#\" data-help-topic=\"cmd-msg\">/msg Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-flood-protection\">Flood Protection</a></p>"
+        keywords: [
+          "ctcp",
+          "ping",
+          "version",
+          "time",
+          "finger",
+          "client-to-client",
+          "latency"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-ctcp.html"))
       },
       %{
         id: "feature-flood-protection",
@@ -466,36 +261,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "anti-spam",
           "rate limit"
         ],
-        content:
-          "<h3>Flood Protection</h3>" <>
-            "<p>Flood Protection automatically detects and handles various types of abuse, " <>
-            "including message flooding, duplicate spam, and CTCP request flooding. " <>
-            "All detection runs on your side — other users are not affected.</p>" <>
-            "<h4>Features</h4>" <>
-            "<p><strong>Duplicate Detection:</strong> Detects repeated identical messages from the same sender. " <>
-            "Default: 3 identical messages in 10 seconds triggers blocking.<br/>" <>
-            "<strong>Auto-Ignore:</strong> Users who exceed the message flood threshold are automatically added " <>
-            "to your ignore list for a configurable duration (default: 5 minutes). The ignore is automatically " <>
-            "removed when the timer expires.<br/>" <>
-            "<strong>CTCP Reply Limiting:</strong> Limits outgoing CTCP replies to prevent your client from " <>
-            "being used as a flood amplifier. Default: 2 replies per 10 seconds.<br/>" <>
-            "<strong>Cooldown:</strong> If you manually un-ignore an auto-ignored user, a 60-second cooldown " <>
-            "prevents the auto-ignore from re-triggering immediately.</p>" <>
-            "<h4>Default Thresholds</h4>" <>
-            "<pre>Flood Threshold:    10 messages in 15 seconds\n" <>
-            "Spam Threshold:      3 duplicates in 10 seconds\n" <>
-            "Auto-Ignore Duration: 5 minutes\n" <>
-            "CTCP Reply Limit:    2 replies per 10 seconds</pre>" <>
-            "<h4>Customizing Settings</h4>" <>
-            "<p>Go to <strong>Tools &gt; Flood Protection</strong> to customize all thresholds. " <>
-            "Settings persist for registered (identified) users.</p>" <>
-            "<h4>Exemptions</h4>" <>
-            "<p>- System messages (joins, parts, kicks) are never filtered<br/>" <>
-            "- Your own messages do not trigger flood tracking<br/>" <>
-            "- Different channels/PM targets are tracked independently</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-ignore-list\">Ignore List</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-ctcp\">CTCP</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-flood-protection.html"))
       },
       %{
         id: "feature-sounds",
@@ -511,73 +277,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "chime",
           "notification sound"
         ],
-        content:
-          "<h3>Sounds</h3>" <>
-            "<p>RetroHexChat plays configurable sounds for various events. Access the " <>
-            "Sounds dialog from <strong>Tools &gt; Sounds</strong> to customize which " <>
-            "sound plays for each event type.</p>" <>
-            "<h4>Event Types</h4>" <>
-            "<p><code>Message</code> — New message in a background channel<br/>" <>
-            "<code>PM</code> — New private message<br/>" <>
-            "<code>Highlight</code> — Your nickname mentioned<br/>" <>
-            "<code>Join</code> — User joins a channel<br/>" <>
-            "<code>Part</code> — User leaves a channel<br/>" <>
-            "<code>Kick</code> — User is kicked from a channel<br/>" <>
-            "<code>Connect</code> — You connect to the chat<br/>" <>
-            "<code>Disconnect</code> — Connection lost<br/>" <>
-            "<code>Buddy Online</code> — A notify list contact comes online<br/>" <>
-            "<code>Buddy Offline</code> — A notify list contact goes offline</p>" <>
-            "<h4>Sound Catalog</h4>" <>
-            "<p>Choose from 14 built-in sounds (ding, alert, chime, click, etc.) " <>
-            "or select <code>None</code> to disable sound for an event.</p>" <>
-            "<h4>Dialog Controls</h4>" <>
-            "<p><strong>OK</strong> — Save changes and close<br/>" <>
-            "<strong>Cancel</strong> — Discard changes and close<br/>" <>
-            "<strong>Apply</strong> — Save changes and keep dialog open<br/>" <>
-            "<strong>Preview</strong> — Play the selected sound</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-mute\">Mute</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-visual-notifications\">Visual Notifications</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-sounds.html"))
       },
       %{
         id: "feature-mute",
         title: "Mute",
         category: "Features",
         keywords: ["mute", "unmute", "silence", "sound off", "quiet"],
-        content:
-          "<h3>Mute</h3>" <>
-            "<p>The global mute toggle silences all sounds with one click.</p>" <>
-            "<h4>Usage</h4>" <>
-            "<p>Click <strong>[SND]</strong> in the status bar to mute. " <>
-            "The indicator changes to <strong>[MUTE]</strong> when muted. " <>
-            "Click again to unmute.</p>" <>
-            "<h4>Key Behaviors</h4>" <>
-            "<p>- Mute state persists across page reloads (stored in browser)<br/>" <>
-            "- Muting does not affect visual notifications (treebar flash, title flash)<br/>" <>
-            "- Muting does not affect the typing indicator</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-sounds\">Sounds</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-visual-notifications\">Visual Notifications</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-mute.html"))
       },
       %{
         id: "feature-typing-indicator",
         title: "Typing Indicator",
         category: "Features",
         keywords: ["typing", "indicator", "is typing", "pm typing"],
-        content:
-          "<h3>Typing Indicator</h3>" <>
-            "<p>When someone is typing a message in a PM conversation, " <>
-            "a subtle indicator appears showing \"<em>NickName is typing...</em>\".</p>" <>
-            "<h4>Key Behaviors</h4>" <>
-            "<p>- Only appears in private message conversations (not channels)<br/>" <>
-            "- Disappears after 5 seconds of inactivity<br/>" <>
-            "- Disappears immediately when the other user sends their message<br/>" <>
-            "- Both users can see each other's typing indicators simultaneously<br/>" <>
-            "- Ignored users' typing indicators are not shown</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-msg\">/msg Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-ignore-list\">Ignore List</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-typing-indicator.html"))
       },
       %{
         id: "feature-visual-notifications",
@@ -593,25 +307,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "activity",
           "indicator"
         ],
-        content:
-          "<h3>Visual Notifications</h3>" <>
-            "<p>When activity occurs in a channel or PM you are not currently viewing, " <>
-            "visual indicators alert you.</p>" <>
-            "<h4>Treebar Flash</h4>" <>
-            "<p>The channel or PM entry in the treebar highlights when new activity " <>
-            "arrives. The highlight clears when you switch to that channel or PM.</p>" <>
-            "<h4>Title Bar Flash</h4>" <>
-            "<p>When the browser tab is not focused, the page title alternates " <>
-            "between the normal title and \"* New activity\" to draw your attention.</p>" <>
-            "<h4>Per-Event Flash Toggle</h4>" <>
-            "<p>In the Sounds dialog (<strong>Tools &gt; Sounds</strong>), each event " <>
-            "type has a <strong>Flash</strong> checkbox. Uncheck it to disable visual " <>
-            "notifications for that event type while keeping sounds enabled.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-sounds\">Sounds</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-mute\">Mute</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-notifications\">Notifications</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-notify-list\">Notify List</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-visual-notifications.html"))
       },
       %{
         id: "feature-favorites",
@@ -626,36 +322,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "quick",
           "access"
         ],
-        content:
-          "<h3>Favorites</h3>" <>
-            "<p>Favorites let you bookmark channels for quick access, similar to " <>
-            "browser bookmarks. Access them from the <strong>Favorites</strong> " <>
-            "menu in the menu bar.</p>" <>
-            "<h4>Adding a Favorite</h4>" <>
-            "<p>Right-click a channel in the treebar and select " <>
-            "<strong>Add to Favorites</strong>. A dialog lets you set:</p>" <>
-            "<p>- <strong>Channel name</strong> (pre-filled from the channel)<br/>" <>
-            "- <strong>Description</strong> (optional, shown in the Favorites menu)<br/>" <>
-            "- <strong>Password</strong> (for +k channels, stored encrypted)<br/>" <>
-            "- <strong>Auto-join on connect</strong> (join automatically after identification)</p>" <>
-            "<h4>Using Favorites</h4>" <>
-            "<p>Click a favorite in the <strong>Favorites</strong> menu to join " <>
-            "the channel (or switch to it if already joined). Channels you are " <>
-            "currently in are marked with a checkmark.</p>" <>
-            "<h4>Auto-Join</h4>" <>
-            "<p>Favorites marked with <em>Auto-join on connect</em> are automatically " <>
-            "joined after you identify with NickServ. This runs after any " <>
-            "Perform auto-join commands.</p>" <>
-            "<h4>Duplicate Detection</h4>" <>
-            "<p>Adding a channel that is already in your favorites opens the " <>
-            "existing entry for editing instead of creating a duplicate.</p>" <>
-            "<h4>Persistence</h4>" <>
-            "<p>Favorites are saved to the database for registered users. " <>
-            "Guest users lose their favorites when they disconnect.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-organize-favorites\">Organize Favorites</a> · " <>
-            "<a href=\"#\" data-help-topic=\"cmd-join\">/join Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-perform\">Perform</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-favorites.html"))
       },
       %{
         id: "feature-organize-favorites",
@@ -670,80 +337,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "manage",
           "bookmarks"
         ],
-        content:
-          "<h3>Organize Favorites</h3>" <>
-            "<p>The Organize Favorites dialog lets you manage your favorites list. " <>
-            "Open it from <strong>Favorites &gt; Organize Favorites...</strong>.</p>" <>
-            "<h4>Features</h4>" <>
-            "<p>- <strong>Reorder</strong>: Select a favorite and use " <>
-            "<strong>Move Up</strong> / <strong>Move Down</strong> to change its " <>
-            "position in the Favorites menu.<br/>" <>
-            "- <strong>Edit</strong>: Modify a favorite's description, password, " <>
-            "or auto-join setting.<br/>" <>
-            "- <strong>Remove</strong>: Delete a favorite from the list.</p>" <>
-            "<h4>Display Columns</h4>" <>
-            "<p>The dialog shows each favorite's channel name, description, " <>
-            "password status (\"Password set\" if configured), and auto-join " <>
-            "setting (\"Yes\" if enabled).</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-favorites\">Favorites</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-organize-favorites.html"))
       },
       %{
         id: "feature-aliases",
         title: "Aliases",
         category: "Features",
         keywords: ["alias", "aliases", "shortcut", "macro", "expansion", "scripting"],
-        content:
-          "<h3>Aliases</h3>" <>
-            "<p>Aliases let you create custom command shortcuts. Type a short name and it expands " <>
-            "into a longer command or message, with optional variable substitution.</p>" <>
-            "<h4>Creating Aliases</h4>" <>
-            "<p>Use <code>/alias add &lt;name&gt; &lt;expansion&gt;</code> or open the " <>
-            "<strong>Alias Editor</strong> from <strong>Tools &gt; Alias Editor</strong>.</p>" <>
-            "<h4>Variable Expansion</h4>" <>
-            "<p><code>$1</code>–<code>$9</code> — Positional arguments (words typed after the alias).<br/>" <>
-            "<code>$nick</code> — Your current nickname.<br/>" <>
-            "<code>$chan</code> — Current channel name.<br/>" <>
-            "<code>$$</code> — Literal <code>$</code> character.</p>" <>
-            "<h4>Safety Features</h4>" <>
-            "<p>- <strong>No command chaining</strong>: Expansions cannot contain <code>|</code>, " <>
-            "<code>&amp;&amp;</code>, <code>;</code>, or newlines.<br/>" <>
-            "- <strong>Recursion detection</strong>: Alias chains (A → B → A) are caught at 5 levels.<br/>" <>
-            "- <strong>Shadowing warning</strong>: Creating an alias that matches a built-in command " <>
-            "shows a warning but is allowed.</p>" <>
-            "<h4>Limits</h4>" <>
-            "<p>Maximum 50 aliases per user. Names: 1–30 characters (alphanumeric, hyphens, underscores). " <>
-            "Expansions: up to 500 characters. Persisted for registered users.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-alias\">/alias Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-timers\">Timers</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-custom-menus\">Custom Menus</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-aliases.html"))
       },
       %{
         id: "feature-timers",
         title: "Timers",
         category: "Features",
         keywords: ["timer", "timers", "schedule", "delay", "repeat", "interval"],
-        content:
-          "<h3>Timers</h3>" <>
-            "<p>Timers let you schedule commands to run after a delay or on a repeating interval. " <>
-            "Useful for periodic reminders, heartbeat messages, or delayed actions.</p>" <>
-            "<h4>Timer Types</h4>" <>
-            "<p><strong>One-shot</strong>: Runs once after the specified delay.<br/>" <>
-            "<code>/timer remind 1800 /me standup in 30 minutes</code></p>" <>
-            "<p><strong>Repeating</strong>: Runs every N seconds until stopped.<br/>" <>
-            "<code>/timer hb repeat 600 /me is still here</code></p>" <>
-            "<h4>Managing Timers</h4>" <>
-            "<p><code>/timer list</code> — Show all active timers.<br/>" <>
-            "<code>/timer stop &lt;name&gt;</code> — Cancel a specific timer.</p>" <>
-            "<h4>Limits</h4>" <>
-            "<p>- Maximum 5 concurrent timers per session.<br/>" <>
-            "- One-shot: minimum 1 second, maximum 86,400 seconds (24 hours).<br/>" <>
-            "- Repeat: minimum 10 seconds, maximum 86,400 seconds.<br/>" <>
-            "- <strong>Session-only</strong>: Timers do NOT survive page reload or disconnection.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-timer\">/timer Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-aliases\">Aliases</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-timers.html"))
       },
       %{
         id: "feature-custom-menus",
@@ -757,30 +365,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "nicklist menu",
           "channel menu"
         ],
-        content:
-          "<h3>Custom Menus</h3>" <>
-            "<p>Add custom items to the nicklist and channel right-click context menus. " <>
-            "Each item executes a command with variable expansion when clicked.</p>" <>
-            "<h4>Menu Types</h4>" <>
-            "<p><strong>Nicklist</strong>: Items appear when right-clicking a nickname. " <>
-            "Use <code>$1</code> for the target nickname.</p>" <>
-            "<p><strong>Channel</strong>: Items appear when right-clicking a channel in the treebar. " <>
-            "Use <code>$1</code> for the target channel name.</p>" <>
-            "<h4>Managing Items</h4>" <>
-            "<p>Use <code>/popups</code> or open <strong>Tools &gt; Custom Menus</strong>. " <>
-            "Switch between Nicklist and Channel tabs. Each item has a label (display text) " <>
-            "and a command (what runs on click).</p>" <>
-            "<h4>Variables</h4>" <>
-            "<p><code>$1</code> — Target nickname or channel name.<br/>" <>
-            "<code>$nick</code> — Your nickname.<br/>" <>
-            "<code>$chan</code> — Current channel.</p>" <>
-            "<h4>Limits</h4>" <>
-            "<p>Maximum 10 custom items per menu type. Labels: up to 50 characters. " <>
-            "Commands: up to 500 characters. Custom items append to (not replace) built-in menu items. " <>
-            "Persisted for registered users.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-popups\">/popups Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-aliases\">Aliases</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-custom-menus.html"))
       },
       %{
         id: "feature-options-dialog",
@@ -794,27 +379,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "customize",
           "Ctrl+Shift+O"
         ],
-        content:
-          "<h3>Options Dialog</h3>" <>
-            "<p>The Options dialog (<strong>Ctrl+Shift+O</strong>) is the central hub for all user preferences. " <>
-            "It provides a tree-view navigation with 7 settings panels.</p>" <>
-            "<h4>Panels</h4>" <>
-            "<p><strong>Connect:</strong> Auto-reconnect behavior (enable/disable, retry interval, max retries, timeout).<br/>" <>
-            "<strong>IRC Messages:</strong> Configure where whois results, notices, and PMs are displayed.<br/>" <>
-            "<strong>Display:</strong> Toggle toolbar, treebar, switchbar, status bar, compact mode, and line shading.<br/>" <>
-            "<strong>Fonts:</strong> Customize font family and size for chat messages, input box, nicklist, and treebar.<br/>" <>
-            "<strong>Colors:</strong> Customize chat background, text, system, timestamp, and error colors plus nick palette.<br/>" <>
-            "<strong>Key Bindings:</strong> View and customize all keyboard shortcuts.<br/>" <>
-            "<strong>Notifications:</strong> Global toggles, trigger rules, per-channel levels, DND, privacy mode.</p>" <>
-            "<h4>Apply / OK / Cancel</h4>" <>
-            "<p><strong>OK</strong> applies changes and closes the dialog. <strong>Apply</strong> applies changes " <>
-            "and keeps the dialog open. <strong>Cancel</strong> discards unsaved changes.</p>" <>
-            "<h4>Persistence</h4>" <>
-            "<p>Registered users' preferences persist across sessions. Guest preferences last for the current session only.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-display-settings\">Display Settings</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-key-bindings\">Key Bindings</a> · " <>
-            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-options-dialog.html"))
       },
       %{
         id: "feature-display-settings",
@@ -829,22 +394,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "compact mode",
           "line shading"
         ],
-        content:
-          "<h3>Display Settings</h3>" <>
-            "<p>Customize the visibility and density of the RetroHexChat interface from " <>
-            "<strong>Options &gt; Display</strong> (Ctrl+Shift+O).</p>" <>
-            "<h4>UI Element Toggles</h4>" <>
-            "<p><strong>Show Toolbar:</strong> Toggle the top toolbar with action buttons.<br/>" <>
-            "<strong>Show Treebar:</strong> Toggle the left-side channel/PM tree.<br/>" <>
-            "<strong>Show Switchbar:</strong> Toggle the tab bar above the chat area.<br/>" <>
-            "<strong>Show Status Bar:</strong> Toggle the bottom status bar.</p>" <>
-            "<h4>Appearance</h4>" <>
-            "<p><strong>Compact Mode:</strong> Reduces padding and margins throughout the UI for a denser layout.<br/>" <>
-            "<strong>Line Shading:</strong> Adds subtle alternating row backgrounds in the chat area " <>
-            "for easier reading of long conversations.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-options-dialog\">Options Dialog</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-key-bindings\">Key Bindings</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-display-settings.html"))
       },
       %{
         id: "feature-key-bindings",
@@ -858,24 +408,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "rebind",
           "shortcut"
         ],
-        content:
-          "<h3>Key Bindings</h3>" <>
-            "<p>Customize all keyboard shortcuts from <strong>Options &gt; Key Bindings</strong> (Ctrl+Shift+O).</p>" <>
-            "<h4>How to Rebind</h4>" <>
-            "<p>1. Open Options (Ctrl+Shift+O) and select the <strong>Key Bindings</strong> panel.<br/>" <>
-            "2. Click on an action in the list.<br/>" <>
-            "3. Press your desired key combination.<br/>" <>
-            "4. Click <strong>Apply</strong> or <strong>OK</strong> to save.</p>" <>
-            "<h4>Conflict Detection</h4>" <>
-            "<p>If the key combination is already assigned to another action, a warning is shown. " <>
-            "Browser-reserved shortcuts (Ctrl+W, Ctrl+T, etc.) cannot be assigned.</p>" <>
-            "<h4>Reset to Defaults</h4>" <>
-            "<p>Click <strong>Reset to Defaults</strong> to restore all original keyboard shortcuts.</p>" <>
-            "<h4>Clearing a Binding</h4>" <>
-            "<p>Use the clear button next to an action to unbind a shortcut without assigning a new one.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-options-dialog\">Options Dialog</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-key-bindings.html"))
       },
       %{
         id: "feature-autorespond",
@@ -890,34 +423,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "join greet",
           "welcome"
         ],
-        content:
-          "<h3>Auto-Respond</h3>" <>
-            "<p>Auto-respond rules automatically execute commands when specific events occur, " <>
-            "such as when a user joins or leaves a channel.</p>" <>
-            "<h4>Trigger Events</h4>" <>
-            "<p><code>on_join</code> — Fires when a user joins a channel.<br/>" <>
-            "<code>on_part</code> — Fires when a user leaves a channel.<br/>" <>
-            "<code>on_nick_change</code> — Fires when a user changes their nickname.</p>" <>
-            "<h4>Channel Filtering</h4>" <>
-            "<p>Each rule can optionally filter by channel. Leave the channel field empty " <>
-            "to match all channels, or specify a channel (e.g., <code>#welcome</code>) to " <>
-            "only trigger in that channel.</p>" <>
-            "<h4>Safety Features</h4>" <>
-            "<p>- <strong>Own-action exclusion</strong>: Your own joins/parts/nick changes " <>
-            "never trigger your auto-respond rules.<br/>" <>
-            "- <strong>Rate limiting</strong>: 60-second cooldown per rule per triggering user " <>
-            "to prevent spam.<br/>" <>
-            "- <strong>No cascading</strong>: Auto-respond commands are dispatched normally " <>
-            "but cannot trigger other auto-respond rules recursively.</p>" <>
-            "<h4>Managing Rules</h4>" <>
-            "<p>Use <code>/autorespond</code> or open <strong>Tools &gt; Auto-Respond</strong>. " <>
-            "Rules can be enabled/disabled individually via the checkbox in the dialog.</p>" <>
-            "<h4>Limits</h4>" <>
-            "<p>Maximum 10 auto-respond rules per user. Commands: up to 500 characters. " <>
-            "Persisted for registered users.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-autorespond\">/autorespond Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-aliases\">Aliases</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-autorespond.html"))
       },
       %{
         id: "feature-interactive-elements",
@@ -934,174 +440,63 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "url hover",
           "link preview"
         ],
-        content:
-          "<h3>Interactive Chat Elements</h3>" <>
-            "<p>Chat messages contain interactive elements that respond to hover and click actions. " <>
-            "URLs, channel names, and nicknames are all clickable.</p>" <>
-            "<h4>URLs</h4>" <>
-            "<p>URLs in messages are underlined on hover with a pointer cursor. " <>
-            "Hover to see the page title (fetched automatically). " <>
-            "Click to open in a new browser tab.</p>" <>
-            "<h4>Channel Names</h4>" <>
-            "<p>Channel names (e.g., <code>#general</code>) are clickable. " <>
-            "Hover to see a tooltip with the channel name, user count, and action hint. " <>
-            "Click to join the channel (or switch to it if already joined).</p>" <>
-            "<h4>Nicknames</h4>" <>
-            "<p>Hover over a nickname in a chat message for 500ms to see a hover card with user info: " <>
-            "hostname, online duration, channels, and away status.</p>" <>
-            "<p><strong>Single-click:</strong> Inserts <code>Nick: </code> into your input field.<br/>" <>
-            "<strong>Double-click:</strong> Opens a private message conversation.<br/>" <>
-            "<strong>Right-click:</strong> Opens the context menu (see Context Menus).</p>" <>
-            "<h4>Notes</h4>" <>
-            "<p>Interactive elements do not trigger during text selection. " <>
-            "The nick hover card does not appear for your own nickname. " <>
-            "Hover tooltips dismiss when the mouse leaves the viewport.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-context-menus\">Context Menus</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-url-catcher\">URL Catcher</a> · " <>
-            "<a href=\"#\" data-help-topic=\"cmd-join\">/join Command</a> · " <>
-            "<a href=\"#\" data-help-topic=\"cmd-msg\">/msg Command</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-interactive-elements.html"))
       },
       %{
         id: "feature-nick-alignment",
         title: "Nick Column Alignment",
         category: "Features",
         keywords: ["nick", "alignment", "column", "grid", "layout", "readability"],
-        content:
-          "<h3>Nick Column Alignment</h3>" <>
-            "<p>Nicknames in channel messages are rendered in a fixed-width column. " <>
-            "Whether the nick is 3 characters or 15, all message text starts at the same horizontal position.</p>" <>
-            "<h4>How It Works</h4>" <>
-            "<p>Messages use a CSS grid layout (<code>chat-msg-grid</code>) with the nick column set to a fixed width. " <>
-            "This dramatically improves readability in busy channels.</p>" <>
-            "<h4>Notes</h4>" <>
-            "<p>Action messages (<code>/me</code>), notices, and system messages are not grid-aligned as they use different formatting.</p>"
+        content: File.read!(Path.join(@help_dir, "feature-nick-alignment.html"))
       },
       %{
         id: "feature-copy",
         title: "Right-Click Copy",
         category: "Features",
         keywords: ["copy", "clipboard", "right-click", "context menu", "select", "text"],
-        content:
-          "<h3>Right-Click Copy</h3>" <>
-            "<p>Select text in the chat area by clicking and dragging. " <>
-            "Right-click to see a context menu with <strong>Copy</strong>, or use <kbd>Ctrl+C</kbd>.</p>" <>
-            "<h4>Usage</h4>" <>
-            "<p>1. Click and drag to select text in the chat area.<br/>" <>
-            "2. Right-click and choose <strong>Copy</strong>, or press <kbd>Ctrl+C</kbd>.<br/>" <>
-            "3. The selected text is copied to your clipboard as plain text.</p>" <>
-            "<h4>Notes</h4>" <>
-            "<p>If no text is selected, the Copy option appears disabled. " <>
-            "Rich formatting is stripped — only plain text is copied.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-context-menus\">Context Menus</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-copy.html"))
       },
       %{
         id: "feature-paste-dialog",
         title: "Multi-Line Paste Dialog",
         category: "Features",
         keywords: ["paste", "multiline", "flood", "confirmation", "send"],
-        content:
-          "<h3>Multi-Line Paste Dialog</h3>" <>
-            "<p>When you paste text containing multiple lines into the chat input, " <>
-            "a confirmation dialog appears before sending.</p>" <>
-            "<h4>Dialog Options</h4>" <>
-            "<p><strong>Send All</strong> — Sends each line as a separate message.<br/>" <>
-            "<strong>Cancel</strong> — Cancels the paste operation.</p>" <>
-            "<h4>Flood Warning</h4>" <>
-            "<p>Pasting more than 50 lines shows an additional flood warning. " <>
-            "This prevents accidentally flooding a channel.</p>"
+        content: File.read!(Path.join(@help_dir, "feature-paste-dialog.html"))
       },
       %{
         id: "feature-char-counter",
         title: "Character Counter",
         category: "Features",
         keywords: ["character", "counter", "limit", "length", "input"],
-        content:
-          "<h3>Character Counter</h3>" <>
-            "<p>A real-time character counter appears near the input box showing " <>
-            "<code>current/maximum</code> (e.g., <code>127/1000</code>).</p>" <>
-            "<h4>Color Indicators</h4>" <>
-            "<p>The counter changes color as you approach the limit:<br/>" <>
-            "<strong>Green</strong> — under 80% used<br/>" <>
-            "<strong>Orange</strong> — 80-95% used<br/>" <>
-            "<strong>Red</strong> — over 95% used</p>"
+        content: File.read!(Path.join(@help_dir, "feature-char-counter.html"))
       },
       %{
         id: "feature-quit-message",
         title: "Quit Messages",
         category: "Features",
         keywords: ["quit", "disconnect", "message", "goodbye", "leaving"],
-        content:
-          "<h3>Quit Messages</h3>" <>
-            "<p>When you disconnect, a quit message is shown to other users. " <>
-            "You can customize this message.</p>" <>
-            "<h4>Setting a Quit Message</h4>" <>
-            "<p>Use <code>/quit Your message here</code> to disconnect with a custom message, " <>
-            "or configure a default quit message in the Options dialog.</p>" <>
-            "<h4>Default</h4>" <>
-            "<p>If no custom message is set, the default message is \"Leaving\".</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-quit\">/quit Command</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-quit-message.html"))
       },
       %{
         id: "feature-away-reply",
         title: "Away Auto-Reply",
         category: "Features",
         keywords: ["away", "auto-reply", "automatic", "reply", "pm", "message"],
-        content:
-          "<h3>Away Auto-Reply</h3>" <>
-            "<p>When you are <code>/away</code> and someone sends you a private message, " <>
-            "the system automatically replies with your away message.</p>" <>
-            "<h4>How It Works</h4>" <>
-            "<p>1. Set yourself away: <code>/away Gone for lunch</code><br/>" <>
-            "2. When someone PMs you, they see: <em>* YourNick is away: Gone for lunch</em><br/>" <>
-            "3. The auto-reply is sent only <strong>once per unique sender</strong> until you return.</p>" <>
-            "<h4>Notes</h4>" <>
-            "<p>Auto-replies are NOT sent for notices (per IRC convention). " <>
-            "The replied-to set resets when you clear your away status.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"cmd-away\">/away Command</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-away-reply.html"))
       },
       %{
         id: "feature-emoji",
         title: "Emoji Picker",
         category: "Features",
         keywords: ["emoji", "smiley", "picker", "unicode", "emoticon"],
-        content:
-          "<h3>Emoji Picker</h3>" <>
-            "<p>Access a popup emoji picker with 300+ Unicode emojis organized in 8 categories.</p>" <>
-            "<h4>Opening the Picker</h4>" <>
-            "<p>Click the smiley face button in the formatting toolbar.</p>" <>
-            "<h4>Categories</h4>" <>
-            "<p>Smileys &amp; Emotion, People &amp; Body, Animals &amp; Nature, Food &amp; Drink, " <>
-            "Travel &amp; Places, Activities, Objects, Symbols.</p>" <>
-            "<h4>Search</h4>" <>
-            "<p>Type in the search box to filter emojis by name or keyword (minimum 2 characters).</p>" <>
-            "<h4>Inserting</h4>" <>
-            "<p>Click an emoji to insert it at the cursor position in the chat input. " <>
-            "The picker closes automatically after selection.</p>" <>
-            "<h4>Closing</h4>" <>
-            "<p>Click outside the picker, press <kbd>Escape</kbd>, or click the close button.</p>"
+        content: File.read!(Path.join(@help_dir, "feature-emoji.html"))
       },
       %{
         id: "feature-timestamp-format",
         title: "Timestamp Configuration",
         category: "Features",
         keywords: ["timestamp", "time", "format", "clock", "date"],
-        content:
-          "<h3>Timestamp Configuration</h3>" <>
-            "<p>Configure how timestamps appear in chat messages via the Options dialog.</p>" <>
-            "<h4>Available Formats</h4>" <>
-            "<p><code>[HH:MM]</code> — Default, shows hours and minutes.<br/>" <>
-            "<code>[HH:MM:SS]</code> — Includes seconds.<br/>" <>
-            "<code>[DD/MM HH:MM]</code> — Includes date and time.<br/>" <>
-            "<code>None</code> — Hides timestamps entirely.</p>" <>
-            "<h4>Changing the Format</h4>" <>
-            "<p>Open <strong>Tools &gt; Options</strong>, go to the <strong>Display</strong> panel, " <>
-            "and select your preferred format from the Timestamps dropdown. Click <strong>Apply</strong>.</p>" <>
-            "<h4>Notes</h4>" <>
-            "<p>Changing the format resets the chat stream. Previous messages are cleared from view.</p>"
+        content: File.read!(Path.join(@help_dir, "feature-timestamp-format.html"))
       },
       %{
         id: "feature-autocomplete",
@@ -1116,34 +511,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "nick completion",
           "channel completion"
         ],
-        content:
-          "<h3>Autocomplete</h3>" <>
-            "<p>RetroHexChat provides context-aware autocomplete for commands, nicknames, and channels.</p>" <>
-            "<h4>Command Autocomplete</h4>" <>
-            "<p>Type <code>/</code> to open the command palette. Commands are grouped by category " <>
-            "(Básicos, Canal, Usuário, Configuração, Avançado) with fuzzy search — typing " <>
-            "<code>/jo</code> matches both <code>/join</code> and <code>/autojoin</code>. " <>
-            "Your 5 most recently used commands appear at the top.</p>" <>
-            "<h4>Nick Autocomplete</h4>" <>
-            "<p>Type <code>@</code> followed by characters to search nicknames in the current channel. " <>
-            "Online users appear before away users. You can also press <strong>Tab</strong> at the " <>
-            "start of input to cycle through matching nicknames IRC-style (with <code>: </code> suffix).</p>" <>
-            "<h4>Channel Autocomplete</h4>" <>
-            "<p>Type <code>#</code> followed by characters to search channels. Joined channels " <>
-            "appear first, marked with a checkmark. Secret channels are hidden from non-members.</p>" <>
-            "<h4>Argument Completion</h4>" <>
-            "<p>After selecting a command like <code>/msg</code> or <code>/join</code>, " <>
-            "the system suggests appropriate arguments — nicknames for user commands, " <>
-            "channels for channel commands.</p>" <>
-            "<h4>Keyboard Navigation</h4>" <>
-            "<p><code>↑/↓</code> — Navigate the dropdown.<br/>" <>
-            "<code>Tab</code> or <code>Enter</code> — Select the highlighted item.<br/>" <>
-            "<code>Escape</code> — Dismiss the dropdown.<br/>" <>
-            "<code>Tab</code> (no dropdown) — Cycle through nick matches.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-command-syntax-tooltip\">Command Syntax Tooltip</a> · " <>
-            "<a href=\"#\" data-help-topic=\"getting-started\">Getting Started</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-autocomplete.html"))
       },
       %{
         id: "feature-command-syntax-tooltip",
@@ -1158,27 +526,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "inline help",
           "mode helper"
         ],
-        content:
-          "<h3>Command Syntax Tooltip</h3>" <>
-            "<p>When typing a command (e.g., <code>/mode #general +o</code>), a tooltip appears " <>
-            "above the input showing the command syntax with the current parameter highlighted in bold.</p>" <>
-            "<h4>How It Works</h4>" <>
-            "<p>1. Type a command followed by a space (e.g., <code>/mode </code>).<br/>" <>
-            "2. The tooltip shows the full syntax with parameter names.<br/>" <>
-            "3. As you type arguments, the next expected parameter is highlighted.<br/>" <>
-            "4. For <code>/mode</code>, available mode flags are listed below the syntax line.</p>" <>
-            "<h4>Detail Levels</h4>" <>
-            "<p>Configure in <strong>Options &gt; Display &gt; Command Help</strong>:<br/>" <>
-            "<strong>Beginner:</strong> Full descriptions, sub-options, context messages, and examples.<br/>" <>
-            "<strong>Expert:</strong> Syntax line only — compact and unobtrusive.<br/>" <>
-            "<strong>Off:</strong> Disable the tooltip entirely.</p>" <>
-            "<h4>Interaction</h4>" <>
-            "<p>Press <strong>Escape</strong> to dismiss the tooltip. " <>
-            "The tooltip automatically hides when the autocomplete dropdown is open.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-autocomplete\">Autocomplete</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-smart-input\">Smart Input</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-options-dialog\">Options Dialog</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-command-syntax-tooltip.html"))
       },
       %{
         id: "feature-smart-input",
@@ -1192,25 +540,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "expand",
           "input box"
         ],
-        content:
-          "<h3>Smart Input</h3>" <>
-            "<p>The chat input provides contextual hints and adapts to your content.</p>" <>
-            "<h4>Contextual Placeholder</h4>" <>
-            "<p>The placeholder text changes based on your current context:<br/>" <>
-            "In a channel: <em>Mensagem para #channel — / para comandos</em><br/>" <>
-            "In a PM: <em>Mensagem para NickName — / para comandos</em><br/>" <>
-            "In Status: <em>Digite um comando — / para lista</em></p>" <>
-            "<h4>Multi-Line Expansion</h4>" <>
-            "<p>The input grows vertically as you type or paste multi-line text, " <>
-            "up to 5 visible lines. Beyond that, a scrollbar appears. " <>
-            "The chat messages area compresses above to make room.</p>" <>
-            "<h4>Keyboard</h4>" <>
-            "<p><strong>Enter</strong> — Send message.<br/>" <>
-            "<strong>Shift+Enter</strong> — Insert a new line.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-enhanced-history\">Enhanced History</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-command-syntax-tooltip\">Command Syntax Tooltip</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-char-counter\">Character Counter</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-smart-input.html"))
       },
       %{
         id: "feature-cheatsheet",
@@ -1223,24 +553,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "keyboard reference",
           "quick reference"
         ],
-        content:
-          "<h3>Shortcut Cheatsheet</h3>" <>
-            "<p>The Shortcut Cheatsheet displays all available keyboard shortcuts organized by category " <>
-            "in a read-only 98.css-styled dialog.</p>" <>
-            "<h4>Opening</h4>" <>
-            "<p>Press <strong>Ctrl+Shift+/</strong> to toggle the cheatsheet dialog.</p>" <>
-            "<h4>Categories</h4>" <>
-            "<p>Shortcuts are grouped into categories: Navigation, Windows &amp; Dialogs, " <>
-            "and Text Formatting. Each category shows a table with Action and Binding columns.</p>" <>
-            "<h4>Custom Bindings</h4>" <>
-            "<p>The cheatsheet reflects your current key bindings. If you have customized " <>
-            "shortcuts in <strong>Options &gt; Key Bindings</strong>, the cheatsheet shows " <>
-            "your custom bindings. Unbound actions show an em dash (&mdash;).</p>" <>
-            "<h4>Closing</h4>" <>
-            "<p>Press <strong>Escape</strong>, <strong>Ctrl+Shift+/</strong>, or click the close button.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-key-bindings\">Key Bindings</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-cheatsheet.html"))
       },
       %{
         id: "feature-context-menus",
@@ -1258,40 +571,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "treebar menu",
           "mute channel"
         ],
-        content:
-          "<h3>Context Menus</h3>" <>
-            "<p>Right-click on elements in the chat area and treebar to access context-specific actions.</p>" <>
-            "<h4>Nick Menu (Chat Area)</h4>" <>
-            "<p>Right-click a nickname in a chat message to see: Private Message, Whois, Copy Nick, " <>
-            "Ignore/Unignore, Add to Address Book, Set Nick Color. " <>
-            "Registered users also see P2P actions: Sessao P2P, Chamada de Audio, Chamada de Video, Enviar Arquivo " <>
-            "(disabled if target is not registered or is yourself). " <>
-            "Channel operators also see: Kick, Ban, Give Voice (+v), Give Op (+o).</p>" <>
-            "<h4>URL Menu</h4>" <>
-            "<p>Right-click a URL in a chat message to see: Open Link, Copy URL, Save to URL List.</p>" <>
-            "<h4>Channel Menu</h4>" <>
-            "<p>Right-click a #channel reference in a chat message to see: Join Channel " <>
-            "(disabled if already joined), Add to Favorites, Copy Channel Name, Channel Info.</p>" <>
-            "<h4>Message Menu</h4>" <>
-            "<p>Right-click the general chat area to see: Copy Message, Copy Selected Text, " <>
-            "Quote/Reply (disabled), Ignore Sender. If the message contains URLs, " <>
-            "Open Link and Copy URL also appear.</p>" <>
-            "<h4>Treebar Menu</h4>" <>
-            "<p>Right-click a channel in the treebar to see: Mark as Read, Mute/Unmute Channel, " <>
-            "Add to Favorites, Copy Name, Leave Channel, Channel Settings.</p>" <>
-            "<h4>Keyboard Navigation</h4>" <>
-            "<p>Use <strong>Arrow Up/Down</strong> to navigate menu items, " <>
-            "<strong>Enter</strong> to select, and <strong>Escape</strong> to close.</p>" <>
-            "<h4>Notes</h4>" <>
-            "<p>Menus automatically reposition if they would go off-screen. " <>
-            "The browser's default right-click menu is preserved in the input field. " <>
-            "Self-targeting actions (Kick, Ban, Ignore, P2P actions on yourself) appear disabled.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-custom-menus\">Custom Menus</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-favorites\">Favorites</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-interactive-elements\">Interactive Chat Elements</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a> · " <>
-            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-context-menus.html"))
       },
       %{
         id: "feature-enhanced-history",
@@ -1307,27 +587,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "persistence",
           "localStorage"
         ],
-        content:
-          "<h3>Enhanced History</h3>" <>
-            "<p>Navigate your command and message history with draft preservation " <>
-            "and reverse search. History persists across page reloads.</p>" <>
-            "<h4>Draft-Preserving Navigation</h4>" <>
-            "<p><strong>Ctrl+Up</strong> — Save current text as draft and show previous history entry.<br/>" <>
-            "<strong>Ctrl+Down</strong> — Show next entry, or restore your draft when past the newest entry.<br/>" <>
-            "Regular <strong>Up/Down</strong> in an empty input works as before (server-side history).</p>" <>
-            "<h4>Reverse Search (Ctrl+R)</h4>" <>
-            "<p>Press <strong>Ctrl+R</strong> to open an inline search bar. " <>
-            "Type to filter history entries by substring match. " <>
-            "Press <strong>Enter</strong> to accept the match, or <strong>Escape</strong> to cancel.</p>" <>
-            "<h4>Persistence</h4>" <>
-            "<p>The last 100 entries are stored in your browser's localStorage. " <>
-            "History survives page reloads and browser restarts.</p>" <>
-            "<h4>Privacy</h4>" <>
-            "<p>Sensitive commands (<code>/identify</code>, <code>/nickserv</code>, <code>/ns</code>) " <>
-            "are never saved to localStorage.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-smart-input\">Smart Input</a> · " <>
-            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-enhanced-history.html"))
       },
       %{
         id: "feature-contextual-tips",
@@ -1341,25 +601,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "hint",
           "progressive disclosure"
         ],
-        content:
-          "<h3>Contextual Tips</h3>" <>
-            "<p>Contextual tips show helpful hints at the right moment — when you first encounter " <>
-            "a feature. Each tip appears at most once.</p>" <>
-            "<h4>Tip Triggers</h4>" <>
-            "<p><strong>First message:</strong> \"Use ↑ para editar sua última mensagem\"<br/>" <>
-            "<strong>First join:</strong> \"Canais que você entra aparecem no painel esquerdo\"<br/>" <>
-            "<strong>First PM:</strong> \"PMs aparecem como janelas separadas no treebar\"<br/>" <>
-            "<strong>First highlight:</strong> \"Seu nick foi mencionado! Configure alertas em Settings\"<br/>" <>
-            "<strong>Idle (30s):</strong> \"Digite /help para ver todos os comandos\"</p>" <>
-            "<h4>Disabling Tips</h4>" <>
-            "<p>Check \"Não mostrar mais dicas\" on any tip toast to suppress all future tips. " <>
-            "You can re-enable tips in <strong>Options &gt; Display &gt; Mostrar dicas contextuais</strong>.</p>" <>
-            "<h4>Behavior</h4>" <>
-            "<p>Tips queue if multiple triggers fire at once (2-second gap between toasts). " <>
-            "Tips do not appear while a dialog is open. Tips auto-dismiss after 8 seconds.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"getting-started\">Getting Started</a> · " <>
-            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-contextual-tips.html"))
       },
       %{
         id: "feature-unread-indicators",
@@ -1376,96 +618,58 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "muted",
           "disconnected"
         ],
-        content:
-          "<h3>Unread Indicators</h3>" <>
-            "<p>The treebar shows visual indicators for channel activity.</p>" <>
-            "<h4>Visual States</h4>" <>
-            "<ul>" <>
-            "<li><strong>Bold text</strong> — channel has unread user messages</li>" <>
-            "<li><strong>Numeric badge</strong> — shows count of unread messages (e.g., \"3\")</li>" <>
-            "<li><strong>Red dot badge</strong> — your nickname was mentioned</li>" <>
-            "<li><strong>Selected background</strong> — currently active channel</li>" <>
-            "<li><strong>Grayed out</strong> — channel is muted (no badges shown)</li>" <>
-            "<li><strong>⚡ icon + gray</strong> — channel is disconnected</li>" <>
-            "</ul>" <>
-            "<h4>Behavior</h4>" <>
-            "<p>Switching to a channel resets its unread count and badges. " <>
-            "System messages (joins, parts, quits) do not increment the count — only user messages and mentions do. " <>
-            "Counts above 99 display as \"99+\". " <>
-            "Muted channels still track unread counts internally — unmuting reveals accumulated indicators.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-kick-notifications\">Kick Notifications</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-copy-feedback\">Copy Feedback</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-unread-indicators.html"))
       },
       %{
         id: "feature-kick-notifications",
         title: "Kick Notifications",
         category: "Features",
         keywords: ["kick", "kicked", "expelled", "dialog", "notification"],
-        content:
-          "<h3>Kick Notifications</h3>" <>
-            "<p>When you are kicked from a channel, a dialog appears with the details.</p>" <>
-            "<h4>Dialog Contents</h4>" <>
-            "<p>The dialog shows: the channel name, who kicked you, and the reason (if provided). " <>
-            "Example: \"Você foi expulso de #general por AdminNick: spam\"</p>" <>
-            "<h4>Multiple Kicks</h4>" <>
-            "<p>If you are kicked from multiple channels simultaneously, the dialogs queue and display one at a time. " <>
-            "Click OK to dismiss each dialog.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-unread-indicators\">Unread Indicators</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-kick-notifications.html"))
       },
       %{
         id: "feature-copy-feedback",
         title: "Copy Feedback",
         category: "Features",
-        keywords: ["copy", "clipboard", "toast", "copied", "copiado", "settings", "saved"],
-        content:
-          "<h3>Copy & Settings Feedback</h3>" <>
-            "<p>Brief toast notifications confirm copy and settings save operations.</p>" <>
-            "<h4>Copy Confirmation</h4>" <>
-            "<p>When you copy text from the chat (via context menu or keyboard shortcut), " <>
-            "a \"Copiado!\" toast appears briefly at the bottom-right and fades after 2 seconds.</p>" <>
-            "<h4>Settings Confirmation</h4>" <>
-            "<p>When you save settings (OK or Apply in Options), a \"Configurações salvas\" toast confirms the save.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-unread-indicators\">Unread Indicators</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-contextual-tips\">Contextual Tips</a></p>"
+        keywords: [
+          "copy",
+          "clipboard",
+          "toast",
+          "copied",
+          "copiado",
+          "settings",
+          "saved"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-copy-feedback.html"))
       },
       %{
         id: "feature-status-bar",
         title: "Status Bar",
         category: "Features",
-        keywords: ["status bar", "lag", "clock", "connection", "mute", "channel info"],
-        content:
-          "<h3>Status Bar</h3>" <>
-            "<p>The status bar at the bottom of the screen provides real-time information about your connection and current channel.</p>" <>
-            "<h4>Three Sections</h4>" <>
-            "<p><strong>Left:</strong> Current channel name and user count.<br/>" <>
-            "<strong>Center:</strong> Connection state with colored indicator (green = connected, red = disconnected).<br/>" <>
-            "<strong>Right:</strong> Lag indicator, local clock, and mute toggle.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-lag-indicator\">Lag Indicator</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-connection-states\">Connection States</a></p>"
+        keywords: [
+          "status bar",
+          "lag",
+          "clock",
+          "connection",
+          "mute",
+          "channel info"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-status-bar.html"))
       },
       %{
         id: "feature-lag-indicator",
         title: "Lag Indicator",
         category: "Features",
-        keywords: ["lag", "latency", "ping", "pong", "network", "delay", "timeout"],
-        content:
-          "<h3>Lag Indicator</h3>" <>
-            "<p>The lag indicator in the status bar shows the round-trip latency between your browser and the server, measured every 30 seconds.</p>" <>
-            "<h4>Color Thresholds</h4>" <>
-            "<p><strong>Normal (green):</strong> Under 200ms — connection is good.<br/>" <>
-            "<strong>Warning (yellow):</strong> 200–499ms — noticeable delay.<br/>" <>
-            "<strong>Critical (red):</strong> 500ms or more — significant lag.<br/>" <>
-            "<strong>Timeout (?):</strong> No response received — connection may be lost.</p>" <>
-            "<h4>How It Works</h4>" <>
-            "<p>The client sends a ping to the server every 30 seconds. The server echoes the timestamp back, " <>
-            "and the client calculates the round-trip time. If no response arrives within 10 seconds, a timeout is shown.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-status-bar\">Status Bar</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-connection-states\">Connection States</a></p>"
+        keywords: [
+          "lag",
+          "latency",
+          "ping",
+          "pong",
+          "network",
+          "delay",
+          "timeout"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-lag-indicator.html"))
       },
       %{
         id: "feature-connection-states",
@@ -1480,24 +684,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "banner",
           "overlay"
         ],
-        content:
-          "<h3>Connection States</h3>" <>
-            "<p>The status bar shows four possible connection states with visual indicators.</p>" <>
-            "<h4>States</h4>" <>
-            "<p><strong>● Connected:</strong> Normal operation — you are connected to the server.<br/>" <>
-            "<strong>◌ Connecting:</strong> Initial connection in progress.<br/>" <>
-            "<strong>● Disconnected:</strong> Connection lost — shown in red.<br/>" <>
-            "<strong>↻ Reconnecting:</strong> Attempting to reconnect automatically.</p>" <>
-            "<h4>Connection Banners</h4>" <>
-            "<p>For brief disconnections (over 1 second), a red banner appears at the top of the chat area. " <>
-            "When reconnected, a green banner shows briefly and fades after 3 seconds. " <>
-            "Very brief disconnections (under 1 second) are suppressed to avoid flicker.</p>" <>
-            "<h4>Reconnect Overlay</h4>" <>
-            "<p>For extended disconnections, a full-screen overlay with countdown and retry appears. " <>
-            "The banner hides when the overlay is active to avoid duplication.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-status-bar\">Status Bar</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-lag-indicator\">Lag Indicator</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-connection-states.html"))
       },
       %{
         id: "feature-notifications",
@@ -1513,35 +700,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "mention",
           "alert"
         ],
-        content:
-          "<h3>Notifications</h3>" <>
-            "<p>The notification system provides coordinated alerts when activity occurs in " <>
-            "channels or PMs you are not currently viewing.</p>" <>
-            "<h4>Notification Channels</h4>" <>
-            "<p>When a notification fires, multiple output channels activate simultaneously:</p>" <>
-            "<ul>" <>
-            "<li><strong>Toast popup</strong> — Bottom-right toast with sender and preview (max 3 visible, auto-dismiss 5s)</li>" <>
-            "<li><strong>Sound</strong> — Event-appropriate notification sound</li>" <>
-            "<li><strong>Title flash</strong> — Browser title alternates when tab is in background</li>" <>
-            "<li><strong>Browser notification</strong> — Native OS notification (if permission granted)</li>" <>
-            "<li><strong>Favicon badge</strong> — Red dot on browser tab icon</li>" <>
-            "<li><strong>Treebar badge</strong> — Unread count and highlight indicator</li>" <>
-            "</ul>" <>
-            "<h4>Trigger Rules</h4>" <>
-            "<p>Configure what triggers notifications in <strong>Options &gt; Notifications</strong>: " <>
-            "mentions, PMs, all channel messages, or joins/leaves.</p>" <>
-            "<h4>Per-Channel Levels</h4>" <>
-            "<p>Each channel can be set to <strong>Normal</strong> (all notifications), " <>
-            "<strong>Mentions only</strong> (only when your nick is mentioned), or " <>
-            "<strong>Mute</strong> (no notifications). PMs always notify.</p>" <>
-            "<h4>Active Channel Suppression</h4>" <>
-            "<p>If you are viewing a channel, notifications for that channel are suppressed — " <>
-            "you can already see the messages.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-dnd\">Do Not Disturb</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-notification-center\">Notification Center</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-notification-settings\">Notification Settings</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-sounds\">Sounds</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-notifications.html"))
       },
       %{
         id: "feature-dnd",
@@ -1555,26 +714,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "suppress",
           "moon"
         ],
-        content:
-          "<h3>Do Not Disturb</h3>" <>
-            "<p>Do Not Disturb (DND) mode suppresses all audible and visual notifications " <>
-            "while still accumulating unread badges.</p>" <>
-            "<h4>Activating DND</h4>" <>
-            "<p>Click the moon icon in the toolbar, or enable it in " <>
-            "<strong>Options &gt; Notifications</strong>.</p>" <>
-            "<h4>What DND Suppresses</h4>" <>
-            "<p>Toast popups, notification sounds, title flash, and browser notifications " <>
-            "are all suppressed in DND mode.</p>" <>
-            "<h4>What Still Works</h4>" <>
-            "<p>Treebar unread badges and the favicon badge continue to accumulate. " <>
-            "The notification center still records entries. When you disable DND, " <>
-            "you can review everything you missed.</p>" <>
-            "<h4>Persistence</h4>" <>
-            "<p>DND state persists across page reloads for both registered users " <>
-            "and guests (via localStorage).</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-notifications\">Notifications</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-notification-settings\">Notification Settings</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-dnd.html"))
       },
       %{
         id: "feature-notification-center",
@@ -1587,26 +727,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "recent notifications",
           "mark all read"
         ],
-        content:
-          "<h3>Notification Center</h3>" <>
-            "<p>The notification center is a dropdown panel showing recent notifications " <>
-            "in reverse chronological order.</p>" <>
-            "<h4>Opening</h4>" <>
-            "<p>Click the bell icon in the toolbar. A badge on the bell shows the " <>
-            "number of unread notifications.</p>" <>
-            "<h4>Entries</h4>" <>
-            "<p>Each entry shows the relative time (e.g., \"2 min ago\"), the sender, " <>
-            "the channel, and a content preview. Click an entry to navigate to " <>
-            "the relevant channel or PM.</p>" <>
-            "<h4>Mark All as Read</h4>" <>
-            "<p>Click \"Mark all as read\" to clear all notification entries, " <>
-            "reset treebar badges, and clear the favicon badge.</p>" <>
-            "<h4>Limits</h4>" <>
-            "<p>The notification center stores up to 50 entries (FIFO). " <>
-            "Entries are ephemeral — they do not persist across page reloads.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-notifications\">Notifications</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-dnd\">Do Not Disturb</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-notification-center.html"))
       },
       %{
         id: "feature-notification-settings",
@@ -1619,161 +740,80 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "trigger rules",
           "privacy mode"
         ],
-        content:
-          "<h3>Notification Settings</h3>" <>
-            "<p>Configure all notification preferences from " <>
-            "<strong>Options &gt; Notifications</strong>.</p>" <>
-            "<h4>Global Toggles</h4>" <>
-            "<p><strong>Sound notifications</strong> — Enable/disable notification sounds.<br/>" <>
-            "<strong>Title flash</strong> — Enable/disable browser title flash.<br/>" <>
-            "<strong>Browser notifications</strong> — Enable native OS notifications. " <>
-            "Click \"Request Permission\" to grant browser permission.<br/>" <>
-            "<strong>Privacy mode</strong> — Hide message content in toasts and browser notifications.<br/>" <>
-            "<strong>Do Not Disturb</strong> — Suppress all interruptions.</p>" <>
-            "<h4>Trigger Rules</h4>" <>
-            "<p>Choose which events trigger notifications: mentions, PMs, " <>
-            "all channel messages, joins/leaves.</p>" <>
-            "<h4>Per-Channel Levels</h4>" <>
-            "<p>Set each channel to Normal, Mentions only, or Mute. " <>
-            "PMs are locked to \"Always\" and cannot be muted. " <>
-            "Channel settings are cleaned up when you leave a channel.</p>" <>
-            "<h4>Persistence</h4>" <>
-            "<p>Registered users' preferences persist in the database. " <>
-            "Guest preferences are saved to localStorage.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-notifications\">Notifications</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-dnd\">Do Not Disturb</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-options-dialog\">Options Dialog</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-notification-settings.html"))
       },
       %{
         id: "feature-message-reply",
         title: "Message Reply",
         category: "Features",
-        keywords: ["reply", "quote", "respond", "responder", "reply to", "quote message"],
-        content:
-          "<h3>Message Reply</h3>" <>
-            "<p>Reply to any message to create a visual quote linking your response to the original.</p>" <>
-            "<h4>How to Reply</h4>" <>
-            "<p><strong>Context menu:</strong> Right-click a message and select \"Responder\".<br/>" <>
-            "<strong>Hover button:</strong> Hover over a message and click the ↩ button that appears.</p>" <>
-            "<h4>Compose Bar</h4>" <>
-            "<p>A bar appears above the input showing the original author and a preview of their message. " <>
-            "Click ✕ to cancel the reply.</p>" <>
-            "<h4>Visual Format</h4>" <>
-            "<p>Replies appear with a quoted block showing the original message, with your response below. " <>
-            "Click the quoted block to scroll to and highlight the original message.</p>" <>
-            "<h4>Edge Cases</h4>" <>
-            "<p>If the original message was deleted, the quote shows \"[mensagem removida]\". " <>
-            "Long messages are truncated in the reply preview. " <>
-            "Editing the original message updates the quote in all replies.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-message-edit\">Message Edit</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-message-delete\">Message Delete</a> · " <>
-            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+        keywords: [
+          "reply",
+          "quote",
+          "respond",
+          "responder",
+          "reply to",
+          "quote message"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-message-reply.html"))
       },
       %{
         id: "feature-message-edit",
         title: "Message Edit",
         category: "Features",
-        keywords: ["edit", "editar", "editado", "modify", "correct", "typo", "fix message"],
-        content:
-          "<h3>Message Edit</h3>" <>
-            "<p>Edit your own messages within 5 minutes of sending to fix typos or correct content.</p>" <>
-            "<h4>How to Edit</h4>" <>
-            "<p><strong>↑ key:</strong> Press the up arrow in an empty input to edit your last message. " <>
-            "The input fills with the message text, and the message gets a dashed border indicating edit mode.</p>" <>
-            "<h4>Submitting &amp; Canceling</h4>" <>
-            "<p><strong>Enter:</strong> Submit the edit. The message updates for all viewers with an \"(editado)\" tag.<br/>" <>
-            "<strong>Escape:</strong> Cancel the edit and restore the input to its previous state.<br/>" <>
-            "<strong>Empty edit:</strong> Submitting with empty text opens a delete confirmation dialog.</p>" <>
-            "<h4>Edited Indicator</h4>" <>
-            "<p>Edited messages show a small \"(editado)\" tag. Hover over it to see the edit timestamp.</p>" <>
-            "<h4>Limitations</h4>" <>
-            "<p>You can only edit your own messages. The 5-minute time limit is enforced server-side. " <>
-            "Editing preserves any reply context (if the message was a reply).</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-message-reply\">Message Reply</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-message-delete\">Message Delete</a> · " <>
-            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+        keywords: [
+          "edit",
+          "editar",
+          "editado",
+          "modify",
+          "correct",
+          "typo",
+          "fix message"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-message-edit.html"))
       },
       %{
         id: "feature-message-delete",
         title: "Message Delete",
         category: "Features",
-        keywords: ["delete", "apagar", "remove", "mensagem removida", "soft delete"],
-        content:
-          "<h3>Message Delete</h3>" <>
-            "<p>Delete your own messages within 5 minutes of sending.</p>" <>
-            "<h4>How to Delete</h4>" <>
-            "<p>Right-click your message and select \"Apagar mensagem\". A confirmation dialog appears " <>
-            "with Confirmar/Cancelar buttons. Press Escape or click Cancelar to dismiss.</p>" <>
-            "<h4>What Happens</h4>" <>
-            "<p>The message is replaced with \"[mensagem removida]\" in italic text for all viewers. " <>
-            "The original content is preserved in the database (soft-delete) for audit purposes.</p>" <>
-            "<h4>Limitations</h4>" <>
-            "<p>You can only delete your own messages. The 5-minute time limit is enforced server-side. " <>
-            "Channel operators cannot delete other users' messages.</p>" <>
-            "<h4>Replies to Deleted Messages</h4>" <>
-            "<p>If someone replied to a message that is later deleted, the reply quote shows " <>
-            "\"[mensagem removida]\" instead of the original content.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-message-reply\">Message Reply</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-message-edit\">Message Edit</a> · " <>
-            "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
+        keywords: [
+          "delete",
+          "apagar",
+          "remove",
+          "mensagem removida",
+          "soft delete"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-message-delete.html"))
       },
       %{
         id: "feature-audio-call",
         title: "Chamada de Audio",
         category: "Features",
-        keywords: ["audio", "call", "chamada", "voice", "voz", "mute", "silenciar", "p2p"],
-        content:
-          "<h3>Chamada de Audio</h3>" <>
-            "<p>Inicie chamadas de audio peer-to-peer com outro usuario em uma sessao P2P.</p>" <>
-            "<h4>Iniciando uma Chamada</h4>" <>
-            "<p>Na sessao P2P, clique em <strong>Chamada de Audio</strong>. O outro usuario precisa aceitar a solicitacao.</p>" <>
-            "<h4>Silenciar/Ativar Microfone</h4>" <>
-            "<p>Clique no botao <strong>Silenciar</strong> para silenciar seu microfone. " <>
-            "O outro usuario vera uma indicacao de que voce silenciou.</p>" <>
-            "<h4>Encerrar Chamada</h4>" <>
-            "<p>Clique em <strong>Encerrar Chamada</strong> para finalizar. " <>
-            "Ambos os usuarios retornam ao lobby.</p>" <>
-            "<h4>Indicadores</h4>" <>
-            "<p>O timer mostra a duracao da chamada. O indicador de qualidade mostra 4 niveis: " <>
-            "Excelente, Bom, Regular, Ruim.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-media-devices\">Dispositivos de Midia</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-call-quality\">Qualidade da Chamada</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-privacy-settings\">Configuracoes de Privacidade</a></p>"
+        keywords: [
+          "audio",
+          "call",
+          "chamada",
+          "voice",
+          "voz",
+          "mute",
+          "silenciar",
+          "p2p"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-audio-call.html"))
       },
       %{
         id: "feature-video-call",
         title: "Chamada de Video",
         category: "Features",
-        keywords: ["video", "call", "chamada", "camera", "pip", "picture-in-picture", "p2p"],
-        content:
-          "<h3>Chamada de Video</h3>" <>
-            "<p>Chamadas de video peer-to-peer com video remoto em tela cheia e video local em miniatura.</p>" <>
-            "<h4>Iniciando uma Chamada de Video</h4>" <>
-            "<p>Na sessao P2P, clique em <strong>Chamada de Video</strong>. O peer precisa aceitar.</p>" <>
-            "<h4>Layout</h4>" <>
-            "<p>O video remoto ocupa a area principal. Seu video local aparece no canto inferior direito.</p>" <>
-            "<h4>Desligar/Ligar Camera</h4>" <>
-            "<p>Clique em <strong>Desligar Camera</strong> para pausar o video. " <>
-            "O peer vera um placeholder.</p>" <>
-            "<h4>Picture-in-Picture</h4>" <>
-            "<p>Clique em <strong>PiP</strong> para destacar o video remoto em uma janela flutuante " <>
-            "que permanece visivel ao navegar em outras abas.</p>" <>
-            "<h4>Atualizar de Audio para Video</h4>" <>
-            "<p>Durante uma chamada de audio, clique em <strong>Adicionar Video</strong>. " <>
-            "O peer precisa aceitar para a camera ser ativada.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-media-devices\">Dispositivos de Midia</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-call-quality\">Qualidade da Chamada</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-privacy-settings\">Configuracoes de Privacidade</a></p>"
+        keywords: [
+          "video",
+          "call",
+          "chamada",
+          "camera",
+          "pip",
+          "picture-in-picture",
+          "p2p"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-video-call.html"))
       },
       %{
         id: "feature-media-devices",
@@ -1788,90 +828,37 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "speaker",
           "fallback"
         ],
-        content:
-          "<h3>Dispositivos de Midia</h3>" <>
-            "<p>Selecione e troque dispositivos de audio e video durante uma chamada.</p>" <>
-            "<h4>Selecionando Dispositivos</h4>" <>
-            "<p>Clique em <strong>Dispositivos</strong> para ver os dispositivos disponiveis. " <>
-            "Escolha microfone, camera ou saida de audio nos menus.</p>" <>
-            "<h4>Troca em Tempo Real</h4>" <>
-            "<p>A troca de dispositivo acontece sem interromper a chamada.</p>" <>
-            "<h4>Desconexao de Dispositivo</h4>" <>
-            "<p>Se um dispositivo for desconectado durante a chamada, o sistema automaticamente " <>
-            "usa o dispositivo padrao e exibe uma notificacao.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-media-devices.html"))
       },
       %{
         id: "feature-call-quality",
         title: "Qualidade da Chamada",
         category: "Features",
-        keywords: ["quality", "qualidade", "bitrate", "preset", "indicator", "bars"],
-        content:
-          "<h3>Qualidade da Chamada</h3>" <>
-            "<p>Monitore e ajuste a qualidade da conexao durante chamadas.</p>" <>
-            "<h4>Indicador de Qualidade</h4>" <>
-            "<p>As 4 barras indicam a qualidade da conexao:</p>" <>
-            "<ul>" <>
-            "<li>4 barras verdes — Excelente</li>" <>
-            "<li>3 barras verdes — Bom</li>" <>
-            "<li>2 barras amarelas — Regular</li>" <>
-            "<li>1 barra vermelha — Ruim</li>" <>
-            "</ul>" <>
-            "<h4>Ajuste Manual de Qualidade</h4>" <>
-            "<p>Use os botoes <strong>Alta</strong> (1.5 Mbps), <strong>Media</strong> (500 Kbps), " <>
-            "ou <strong>Baixa</strong> (150 Kbps) para ajustar o bitrate manualmente.</p>" <>
-            "<h4>Adaptacao Automatica</h4>" <>
-            "<p>O WebRTC ajusta automaticamente a resolucao e framerate com base nas condicoes da rede.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a></p>"
+        keywords: [
+          "quality",
+          "qualidade",
+          "bitrate",
+          "preset",
+          "indicator",
+          "bars"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-call-quality.html"))
       },
       %{
         id: "feature-p2p-sessions",
         title: "Sessoes P2P",
         category: "Features",
-        keywords: ["p2p", "peer", "sessao", "session", "lobby", "consent", "bilateral", "invite"],
-        content:
-          "<h3>Sessoes P2P</h3>" <>
-            "<p>Sessoes P2P permitem comunicacao direta entre dois usuarios registrados " <>
-            "para chat, transferencia de arquivos e chamadas de audio/video.</p>" <>
-            "<h4>Criando uma Sessao</h4>" <>
-            "<p><strong>Via comandos:</strong></p>" <>
-            "<pre>/p2p &lt;nickname&gt;</pre>" <>
-            "<p>Inicia uma sessao generica. O usuario alvo recebe um convite e precisa aceitar.</p>" <>
-            "<pre>/call &lt;nickname&gt;</pre>" <>
-            "<p>Inicia uma sessao de chamada de audio. Automaticamente solicita permissao apos entrada no lobby.</p>" <>
-            "<pre>/sendfile &lt;nickname&gt;</pre>" <>
-            "<p>Inicia uma sessao de transferencia de arquivo.</p>" <>
-            "<p><strong>Via context menu:</strong> Clique com o botao direito em um nick (no nicklist ou no chat) " <>
-            "e selecione Sessao P2P, Chamada de Audio, Chamada de Video ou Enviar Arquivo. " <>
-            "Itens P2P aparecem apenas para usuarios registrados e ficam desabilitados se o alvo nao for registrado.</p>" <>
-            "<h4>Lobby</h4>" <>
-            "<p>O lobby e a sala de espera da sessao. Ambos os usuarios podem conversar " <>
-            "e solicitar acoes (chamadas, transferencias). Todas as acoes requerem <strong>consentimento bilateral</strong> — " <>
-            "o outro usuario deve aceitar antes da acao iniciar.</p>" <>
-            "<h4>Tipos de Sessao</h4>" <>
-            "<ul>" <>
-            "<li><strong>Generica</strong> — chat com opcoes de acao</li>" <>
-            "<li><strong>Transferencia de Arquivo</strong> — auto-solicita transferencia</li>" <>
-            "<li><strong>Chamada de Audio</strong> — auto-solicita chamada de audio</li>" <>
-            "<li><strong>Chamada de Video</strong> — auto-solicita chamada de video</li>" <>
-            "</ul>" <>
-            "<h4>Timeouts</h4>" <>
-            "<p>Sessoes pendentes (aguardando o peer) expiram em 5 minutos. " <>
-            "O lobby expira por inatividade apos 15 minutos. " <>
-            "A conexao WebRTC tem timeout de 30 segundos.</p>" <>
-            "<h4>Encerrando</h4>" <>
-            "<p>Clique em <strong>Encerrar Sessao</strong> ou feche a aba. " <>
-            "O outro usuario sera notificado.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-file-transfer\">Transferencia de Arquivos</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-privacy-settings\">Configuracoes de Privacidade</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-context-menus\">Context Menus</a></p>"
+        keywords: [
+          "p2p",
+          "peer",
+          "sessao",
+          "session",
+          "lobby",
+          "consent",
+          "bilateral",
+          "invite"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-p2p-sessions.html"))
       },
       %{
         id: "feature-file-transfer",
@@ -1888,29 +875,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "hash",
           "p2p"
         ],
-        content:
-          "<h3>Transferencia de Arquivos</h3>" <>
-            "<p>Envie arquivos diretamente para outro usuario via conexao peer-to-peer (WebRTC DataChannel).</p>" <>
-            "<h4>Enviando um Arquivo</h4>" <>
-            "<pre>/sendfile &lt;nickname&gt;</pre>" <>
-            "<p>Ou na sessao P2P, clique em <strong>Enviar Arquivo</strong> e selecione o arquivo.</p>" <>
-            "<h4>Recebendo</h4>" <>
-            "<p>Ao receber uma oferta, voce ve o nome e tamanho do arquivo. " <>
-            "Clique <strong>Aceitar</strong> ou <strong>Rejeitar</strong>.</p>" <>
-            "<h4>Progresso</h4>" <>
-            "<p>A barra de progresso mostra: porcentagem, velocidade e tempo estimado. " <>
-            "Voce pode cancelar a qualquer momento.</p>" <>
-            "<h4>Verificacao de Integridade</h4>" <>
-            "<p>Apos a transferencia, o hash SHA-256 e verificado automaticamente. " <>
-            "Se falhar, voce pode tentar novamente.</p>" <>
-            "<h4>Pausa e Retomada</h4>" <>
-            "<p>Se a conexao cair brevemente, a transferencia pausa automaticamente " <>
-            "e retoma quando a conexao e restabelecida.</p>" <>
-            "<h4>Restricoes</h4>" <>
-            "<p>Extensoes bloqueadas: .exe, .bat, .cmd, .com, .msi, .scr, .pif, .vbs, .js, entre outras. " <>
-            "Tamanho maximo configuravel pelo servidor (padrao: 500 MB).</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-file-transfer.html"))
       },
       %{
         id: "feature-privacy-settings",
@@ -1926,25 +891,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "hide",
           "modo privado"
         ],
-        content:
-          "<h3>Configuracoes de Privacidade</h3>" <>
-            "<p>Controle como sua conexao P2P funciona para proteger sua privacidade.</p>" <>
-            "<h4>Modo Privado (TURN-Only)</h4>" <>
-            "<p>Quando ativado, todo o trafego P2P passa pelo servidor TURN (relay), " <>
-            "impedindo que o outro usuario veja seu endereco IP real.</p>" <>
-            "<h4>Como Ativar</h4>" <>
-            "<p>Na sessao P2P, marque a caixa <strong>Modo privado (TURN-only)</strong> no rodape do lobby. " <>
-            "A preferencia e salva e lembrada para futuras sessoes.</p>" <>
-            "<h4>Tradeoff</h4>" <>
-            "<p>O modo privado adiciona latencia porque o trafego passa pelo servidor. " <>
-            "Conexoes diretas (padrao) sao mais rapidas, mas expoe o IP ao peer.</p>" <>
-            "<h4>Requisitos</h4>" <>
-            "<p>O modo privado requer que o servidor TURN esteja configurado. " <>
-            "Se nao estiver disponivel, voce vera um aviso e a conexao sera direta.</p>" <>
-            "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a></p>"
+        content: File.read!(Path.join(@help_dir, "feature-privacy-settings.html"))
       }
     ]
   end

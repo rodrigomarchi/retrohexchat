@@ -22,7 +22,6 @@ defmodule RetroHexChatWeb.ChatLive do
     Favorites,
     FloodTracker,
     Formatter,
-    HelpTopics,
     HighlightWords,
     IgnoreList,
     KeyBindings,
@@ -88,7 +87,6 @@ defmodule RetroHexChatWeb.ChatLive do
     event_hooks = [
       {:emoji_events, &ChatLive.EmojiEvents.handle_event/3},
       {:options_events, &ChatLive.OptionsEvents.handle_event/3},
-      {:help_events, &ChatLive.HelpEvents.handle_event/3},
       {:url_catcher_events, &ChatLive.UrlCatcherEvents.handle_event/3},
       {:invite_events, &ChatLive.InviteEvents.handle_event/3},
       {:pm_typing_events, &ChatLive.PmTypingEvents.handle_event/3},
@@ -200,14 +198,8 @@ defmodule RetroHexChatWeb.ChatLive do
       show_notify_add_dialog: false,
       show_notify_edit_dialog: false,
       show_notify_list: false,
-      help_active_tab: "contents",
-      help_index_filter: "",
-      help_search_query: "",
-      help_search_results: [],
-      help_selected_topic: nil,
       highlight_channels: MapSet.new(),
       highlight_selected: nil,
-      show_help_dialog: false,
       show_highlight_add_dialog: false,
       show_highlight_dialog: false,
       show_highlight_edit_dialog: false,
@@ -462,20 +454,6 @@ defmodule RetroHexChatWeb.ChatLive do
     |> CapturedURL.filter_by_source(assigns.url_catcher_filter_channel)
     |> CapturedURL.filter_by_url(assigns.url_catcher_search_query)
     |> CapturedURL.sort_by(assigns.url_catcher_sort_column, assigns.url_catcher_sort_direction)
-  end
-
-  defp filtered_help_keywords(assigns) do
-    all = HelpTopics.all_keywords()
-
-    case assigns.help_index_filter do
-      "" ->
-        all
-
-      filter ->
-        Enum.filter(all, fn {kw, _id} ->
-          String.contains?(String.downcase(kw), String.downcase(filter))
-        end)
-    end
   end
 
   defp url_catcher_channels(assigns) do

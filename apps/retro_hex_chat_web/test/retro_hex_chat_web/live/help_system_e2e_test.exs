@@ -1,40 +1,20 @@
 defmodule RetroHexChatWeb.HelpSystemE2ETest do
   @moduledoc """
-  End-to-end tests for the CHM-style Help System.
+  End-to-end tests for the dedicated help page at /chat/help.
   Run with: mix test --only e2e
   """
-  use RetroHexChatWeb.LiveViewCase, async: false
+  use RetroHexChatWeb.ConnCase, async: false
+
+  import Phoenix.LiveViewTest
 
   @moduletag :e2e
 
-  alias RetroHexChat.Channels.{Registry, Supervisor}
+  describe "Help Page E2E" do
+    test "help page renders with all categories", %{conn: conn} do
+      conn = get(conn, "/chat/help")
+      html = html_response(conn, 200)
 
-  setup do
-    ensure_channel("#lobby")
-    :ok
-  end
-
-  describe "Help Dialog" do
-    test "1.1 menu opens help dialog", %{conn: conn} do
-      view = connect_user(conn, "E2EHelp#{uid()}")
-      refute render(view) =~ "help-dialog"
-
-      html = render_click(view, "toggle_help_dialog")
-
-      assert html =~ "help-dialog"
       assert html =~ "RetroHexChat Help"
-    end
-
-    test "1.2 Help > Help Topics menu opens dialog", %{conn: conn} do
-      view = connect_user(conn, "E2EMenu#{uid()}")
-      html = render_click(view, "toggle_help_dialog")
-      assert html =~ "help-dialog"
-    end
-
-    test "1.3 Contents tree shows all categories", %{conn: conn} do
-      view = connect_user(conn, "E2ECat#{uid()}")
-      html = render_click(view, "toggle_help_dialog")
-
       assert html =~ "Getting Started"
       assert html =~ "Commands"
       assert html =~ "Services"
@@ -45,103 +25,57 @@ defmodule RetroHexChatWeb.HelpSystemE2ETest do
       assert html =~ "Keyboard Shortcuts"
     end
 
-    test "1.4 Click topic shows content in right pane", %{conn: conn} do
-      view = connect_user(conn, "E2ETopic#{uid()}")
-      render_click(view, "toggle_help_dialog")
+    test "topic deep-link shows content", %{conn: conn} do
+      conn = get(conn, "/chat/help?topic=cmd-join")
+      html = html_response(conn, 200)
 
-      html = render_click(view, "help_select_topic", %{"id" => "cmd-join"})
       assert html =~ "/join"
       assert html =~ "Join a channel"
     end
 
-    test "1.5 Switch to Index tab and filter keywords", %{conn: conn} do
-      view = connect_user(conn, "E2EIdx#{uid()}")
-      render_click(view, "toggle_help_dialog")
+    test "search returns matching results", %{conn: conn} do
+      conn = get(conn, "/chat/help?q=format")
+      html = html_response(conn, 200)
 
-      html = render_click(view, "help_tab", %{"tab" => "index"})
-      assert html =~ "help-index-filter"
-
-      html = render_keyup(view, "help_index_filter", %{"value" => "buddy"})
-      assert html =~ "buddy"
-    end
-
-    test "1.6 Click keyword shows topic", %{conn: conn} do
-      view = connect_user(conn, "E2EKw#{uid()}")
-      render_click(view, "toggle_help_dialog")
-      render_click(view, "help_tab", %{"tab" => "index"})
-
-      html = render_click(view, "help_select_topic", %{"id" => "feature-notify-list"})
-      assert html =~ "Notify List"
-    end
-
-    test "1.7 Switch to Search tab and search", %{conn: conn} do
-      view = connect_user(conn, "E2ESrch#{uid()}")
-      render_click(view, "toggle_help_dialog")
-      render_click(view, "help_tab", %{"tab" => "search"})
-
-      html = render_click(view, "help_search", %{"query" => "format"})
       assert html =~ "help-result-formatting-overview"
     end
 
-    test "1.8 Click search result shows topic", %{conn: conn} do
-      view = connect_user(conn, "E2ERes#{uid()}")
-      render_click(view, "toggle_help_dialog")
-      render_click(view, "help_tab", %{"tab" => "search"})
-      render_click(view, "help_search", %{"query" => "format"})
+    test "cross-reference links use topic URLs", %{conn: conn} do
+      conn = get(conn, "/chat/help?topic=welcome")
+      html = html_response(conn, 200)
 
-      html = render_click(view, "help_select_topic", %{"id" => "formatting-overview"})
-      assert html =~ "Text Formatting Overview"
+      assert html =~ "Welcome to RetroHexChat"
     end
 
-    test "1.9 Close dialog with X button", %{conn: conn} do
-      view = connect_user(conn, "E2ECls#{uid()}")
-      render_click(view, "toggle_help_dialog")
-      assert render(view) =~ "help-dialog"
+    test "empty state shown when no topic selected", %{conn: conn} do
+      conn = get(conn, "/chat/help")
+      html = html_response(conn, 200)
 
-      html = render_click(view, "close_help")
-      refute html =~ "help-dialog"
-    end
-
-    test "1.10 Cross-reference navigation via content click", %{conn: conn} do
-      view = connect_user(conn, "E2EXref#{uid()}")
-      render_click(view, "toggle_help_dialog")
-      render_click(view, "help_select_topic", %{"id" => "welcome"})
-
-      html = render_click(view, "help_content_click", %{"data-help-topic" => "connecting"})
-      assert html =~ "Connecting"
-    end
-
-    test "1.11 Empty state shown initially", %{conn: conn} do
-      view = connect_user(conn, "E2EEmpty#{uid()}")
-      html = render_click(view, "toggle_help_dialog")
       assert html =~ "Select a topic from the navigation pane"
     end
 
-    test "1.12 Search with Enter key", %{conn: conn} do
-      view = connect_user(conn, "E2EEnter#{uid()}")
-      render_click(view, "toggle_help_dialog")
-      render_click(view, "help_tab", %{"tab" => "search"})
+    test "breadcrumbs shown for selected topic", %{conn: conn} do
+      conn = get(conn, "/chat/help?topic=cmd-join")
+      html = html_response(conn, 200)
 
-      html = render_keyup(view, "help_search_input", %{"key" => "Enter", "value" => "kick"})
-      assert html =~ "help-result-cmd-kick"
+      assert html =~ "help-breadcrumbs"
+      assert html =~ "Commands"
     end
 
-    test "1.13 Menu bar has Help Topics item", %{conn: conn} do
-      view = connect_user(conn, "E2EMBar#{uid()}")
-      html = render(view)
+    test "sitemap includes help topics", %{conn: conn} do
+      conn = get(conn, "/sitemap.xml")
+      body = response(conn, 200)
+
+      assert body =~ "commands-overview"
+      assert body =~ "keyboard-shortcuts"
+    end
+
+    test "menu bar has Help Topics link in chat", %{conn: conn} do
+      nick = "E2EHlp#{uid()}"
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+
       assert html =~ "menu-help-topics"
-    end
-  end
-
-  defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
-    view
-  end
-
-  defp ensure_channel(name) do
-    case Registry.lookup(name) do
-      {:ok, _pid} -> :ok
-      {:error, :not_found} -> Supervisor.start_child(name)
+      assert html =~ "/chat/help"
     end
   end
 

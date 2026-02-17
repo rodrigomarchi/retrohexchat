@@ -1,0 +1,13 @@
+{
+  "$schema": "https://cdn.coollabs.io/coolify/coolify.schema.json",
+  "name": "retro-hex-chat",
+  "description": "RetroHexChat — Windows 98 style chat with embedded TURN server",
+  "build": {
+    "build_pack": "dockercompose"
+  },
+  "settings": {
+    "deployment": {
+      "auto_deploy": true
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<h3>/autojoin</h3><p>Manage your auto-join channel list — channels that are joined automatically after perform commands complete.</p><h4>Syntax</h4><pre>/autojoin [list|add|remove|clear] [args]</pre><h4>Subcommands</h4><pre>list                    — Show all auto-join channels
+add &lt;#channel&gt; [key]    — Add a channel (with optional key for +k channels)
+remove &lt;#channel&gt;       — Remove a channel from the auto-join list
+clear                   — Remove all auto-join channels</pre><h4>Notes</h4><p>Channels are joined automatically after all perform commands complete. This ensures that NickServ identification and other setup happens before joining channels.</p><h4>Examples</h4><pre>/autojoin list
+/autojoin add #elixir
+/autojoin add #secret mykey
+/autojoin remove #elixir
+/autojoin clear</pre><h4>See Also</h4><p><a href="#" data-help-topic="cmd-perform">/perform</a> · <a href="#" data-help-topic="feature-perform">Perform / Auto-Commands</a></p>

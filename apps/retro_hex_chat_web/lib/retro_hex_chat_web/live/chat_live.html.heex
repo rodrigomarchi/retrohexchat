@@ -559,17 +559,6 @@
     bindings={@session.user_preferences.key_bindings}
   />
 
-  <RetroHexChatWeb.Components.HelpDialog.help_dialog
-    visible={@show_help_dialog}
-    active_tab={@help_active_tab}
-    selected_topic={@help_selected_topic}
-    topics_by_category={RetroHexChat.Chat.HelpTopics.topics_by_category()}
-    index_keywords={filtered_help_keywords(assigns)}
-    index_filter={@help_index_filter}
-    search_query={@help_search_query}
-    search_results={@help_search_results}
-  />
-
   <RetroHexChatWeb.Components.LogViewerDialog.log_viewer_dialog
     visible={@show_log_viewer}
     filter={@log_filter}
