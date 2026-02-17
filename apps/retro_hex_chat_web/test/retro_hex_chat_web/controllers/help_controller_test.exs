@@ -124,6 +124,27 @@ defmodule RetroHexChatWeb.HelpControllerTest do
       assert body =~ "https://retrohexchat.com/chat/help"
       assert body =~ "commands-overview"
       assert body =~ "keyboard-shortcuts"
+      assert body =~ "<lastmod>"
+    end
+  end
+
+  describe "cross-reference links" do
+    test "data-help-topic links are rewritten to real URLs", %{conn: conn} do
+      conn = get(conn, "/chat/help?topic=cmd-ban")
+      html = html_response(conn, 200)
+
+      assert html =~ ~s(href="/chat/help?topic=cmd-kick")
+      refute html =~ ~s(href="#" data-help-topic)
+    end
+  end
+
+  describe "SEO" do
+    test "page has h1 tag", %{conn: conn} do
+      conn = get(conn, "/chat/help?topic=commands-overview")
+      html = html_response(conn, 200)
+
+      assert html =~ "<h1"
+      assert html =~ "IRC Commands Reference"
     end
   end
 end

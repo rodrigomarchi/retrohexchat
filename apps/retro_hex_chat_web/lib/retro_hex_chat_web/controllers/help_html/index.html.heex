@@ -105,6 +105,9 @@
 
       <%!-- Content pane --%>
       <main class="help-page-content" data-testid="help-content-pane">
+        <h1 class="u-sr-only">
+          {if @selected_topic, do: @selected_topic.title, else: "RetroHexChat Help"}
+        </h1>
         <%!-- Breadcrumbs --%>
         <nav :if={length(@breadcrumbs) > 1} aria-label="Breadcrumb" class="help-breadcrumbs">
           <ol>

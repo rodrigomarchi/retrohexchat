@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.HelpController do
     conn
     |> assign(:topics_by_category, topics_by_category)
     |> assign(:all_keywords, all_keywords)
-    |> assign(:selected_topic, selected_topic)
+    |> assign(:selected_topic, rewrite_cross_references(selected_topic))
     |> assign(:search_results, search_results)
     |> assign(:search_query, params["q"] || "")
     |> assign(:active_tab, active_tab)
@@ -67,6 +67,20 @@ defmodule RetroHexChatWeb.HelpController do
     |> String.replace(~r/\s+/, " ")
     |> String.trim()
     |> String.slice(0, 160)
+  end
+
+  @spec rewrite_cross_references(map() | nil) :: map() | nil
+  defp rewrite_cross_references(nil), do: nil
+
+  defp rewrite_cross_references(topic) do
+    content =
+      Regex.replace(
+        ~r/href="#"\s*data-help-topic="([^"]+)"/,
+        topic.content,
+        ~S(href="/chat/help?topic=\1" data-help-topic="\1")
+      )
+
+    %{topic | content: content}
   end
 
   @spec breadcrumbs(map() | nil) :: [{String.t(), String.t() | nil}]

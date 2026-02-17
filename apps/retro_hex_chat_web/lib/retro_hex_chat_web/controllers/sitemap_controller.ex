@@ -17,11 +17,14 @@ defmodule RetroHexChatWeb.SitemapController do
 
   @spec build_sitemap([map()]) :: String.t()
   defp build_sitemap(topics) do
+    today = Date.utc_today() |> Date.to_iso8601()
+
     urls =
       Enum.map_join(topics, "\n", fn topic ->
         """
           <url>
             <loc>https://retrohexchat.com/chat/help?topic=#{topic.id}</loc>
+            <lastmod>#{today}</lastmod>
             <changefreq>monthly</changefreq>
             <priority>0.6</priority>
           </url>\
@@ -33,6 +36,7 @@ defmodule RetroHexChatWeb.SitemapController do
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
       <url>
         <loc>https://retrohexchat.com/chat/help</loc>
+        <lastmod>#{today}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
       </url>
