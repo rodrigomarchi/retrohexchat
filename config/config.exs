@@ -75,6 +75,11 @@ config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Metrics history for LiveDashboard
+config :live_dashboard_history, LiveDashboardHistory,
+  router: RetroHexChatWeb.Router,
+  metrics: RetroHexChatWeb.Telemetry
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 

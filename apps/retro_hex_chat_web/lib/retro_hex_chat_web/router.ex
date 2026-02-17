@@ -52,7 +52,14 @@ defmodule RetroHexChatWeb.Router do
   scope "/dev" do
     pipe_through :admin
 
-    live_dashboard "/dashboard", metrics: RetroHexChatWeb.Telemetry
+    live_dashboard "/dashboard",
+      metrics: RetroHexChatWeb.Telemetry,
+      metrics_history: {LiveDashboardHistory, :metrics_history, [__MODULE__]},
+      ecto_repos: [RetroHexChat.Repo],
+      ecto_psql_extras_options: [long_running_queries: [threshold: "500 milliseconds"]],
+      additional_pages: [
+        app_info: RetroHexChatWeb.Admin.AppInfoPage
+      ]
   end
 
   defp admin_basic_auth(conn, _opts) do
