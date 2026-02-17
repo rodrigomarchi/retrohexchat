@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.HelpController do
 
     {selected_topic, search_results} = resolve_params(params)
 
-    active_tab = if params["q"], do: "search", else: "contents"
+    active_tab = resolve_tab(params)
 
     current_url =
       if params["topic"], do: "/chat/help?topic=#{params["topic"]}", else: "/chat/help"
@@ -45,6 +45,11 @@ defmodule RetroHexChatWeb.HelpController do
   end
 
   defp resolve_params(_params), do: {nil, []}
+
+  @spec resolve_tab(map()) :: String.t()
+  defp resolve_tab(%{"q" => _}), do: "search"
+  defp resolve_tab(%{"tab" => tab}) when tab in ["index", "search"], do: tab
+  defp resolve_tab(_params), do: "contents"
 
   @spec page_title(map() | nil) :: String.t()
   defp page_title(nil), do: "Help - RetroHexChat"

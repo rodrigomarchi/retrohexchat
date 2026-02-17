@@ -7,35 +7,24 @@
       <%!-- Navigation pane --%>
       <nav class="help-page-nav" aria-label="Help navigation">
         <menu role="tablist" class="help-nav-tabs">
-          <a
-            href={~p"/chat/help"}
-            role="tab"
-            aria-selected={@active_tab == "contents"}
-            class="help-tab-link"
-          >
-            Contents
-          </a>
-          <a
-            href={~p"/chat/help" <> "#index"}
-            role="tab"
-            aria-selected={@active_tab == "index"}
-            class="help-tab-link"
-          >
-            Index
-          </a>
-          <a
-            href={~p"/chat/help" <> "#search"}
-            role="tab"
-            aria-selected={@active_tab == "search"}
-            class="help-tab-link"
-          >
-            Search
-          </a>
+          <li role="tab" aria-selected={@active_tab == "contents"}>
+            <a href={~p"/chat/help?tab=contents"} class="help-tab-link">Contents</a>
+          </li>
+          <li role="tab" aria-selected={@active_tab == "index"}>
+            <a href={~p"/chat/help?tab=index"} class="help-tab-link">Index</a>
+          </li>
+          <li role="tab" aria-selected={@active_tab == "search"}>
+            <a href={~p"/chat/help?tab=search"} class="help-tab-link">Search</a>
+          </li>
         </menu>
 
         <div class="help-page-nav-content">
           <%!-- Contents tree --%>
-          <div id="contents-pane" data-testid="help-contents-pane">
+          <div
+            :if={@active_tab == "contents"}
+            id="contents-pane"
+            data-testid="help-contents-pane"
+          >
             <ul class="tree-view">
               <li :for={{category, topics} <- @topics_by_category}>
                 <details open={@selected_topic != nil && @selected_topic.category == category}>
@@ -65,11 +54,13 @@
           </div>
 
           <%!-- Index (keywords) --%>
-          <div id="index-pane" data-testid="help-index-pane">
-            <h4 class="help-section-heading">Keyword Index</h4>
+          <div :if={@active_tab == "index"} id="index-pane" data-testid="help-index-pane">
             <div class="help-index-scroll">
               <div :for={{keyword, topic_id} <- @all_keywords} class="help-index-item">
-                <a href={~p"/chat/help?topic=#{topic_id}"} class="help-index-link">
+                <a
+                  href={~p"/chat/help?topic=#{topic_id}&tab=index"}
+                  class="help-index-link"
+                >
                   {keyword}
                 </a>
               </div>
@@ -77,9 +68,9 @@
           </div>
 
           <%!-- Search --%>
-          <div id="search-pane" data-testid="help-search-pane">
-            <h4 class="help-section-heading">Search Help</h4>
+          <div :if={@active_tab == "search"} id="search-pane" data-testid="help-search-pane">
             <form action={~p"/chat/help"} method="get" class="help-search-row">
+              <input type="hidden" name="tab" value="search" />
               <input
                 type="text"
                 name="q"
@@ -96,7 +87,10 @@
                 class="help-search-result"
                 data-testid={"help-result-#{result.id}"}
               >
-                <a href={~p"/chat/help?topic=#{result.id}"} class="help-search-result-link">
+                <a
+                  href={~p"/chat/help?topic=#{result.id}"}
+                  class="help-search-result-link"
+                >
                   <div class="help-search-title">{result.title}</div>
                   <div class="help-search-snippet">{result.category}</div>
                 </a>
