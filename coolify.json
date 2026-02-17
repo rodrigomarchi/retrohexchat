@@ -3,11 +3,36 @@
   "name": "retro-hex-chat",
   "description": "RetroHexChat — Windows 98 style chat with embedded TURN server",
   "build": {
-    "build_pack": "dockercompose"
+    "build_pack": "dockerfile"
+  },
+  "network": {
+    "domains": {
+      "fqdn": "https://retrohexchat.app",
+      "redirect": "non-www"
+    },
+    "ports": {
+      "expose": "4000",
+      "mappings": "3478:3478/udp,49152-49651:49152-49651/udp"
+    }
+  },
+  "health_check": {
+    "enabled": true,
+    "path": "/api/healthz",
+    "port": 4000,
+    "method": "GET",
+    "scheme": "http",
+    "return_code": 200,
+    "interval": 30,
+    "timeout": 5,
+    "retries": 3,
+    "start_period": 15
   },
   "settings": {
     "deployment": {
       "auto_deploy": true
+    },
+    "proxy": {
+      "force_https": true
     }
   }
 }
