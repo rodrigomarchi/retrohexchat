@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{IgnoreEntry, IgnoreList}
+  alias RetroHexChat.Services.RegisteredNick
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -51,6 +52,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
           else
             "* #{nick} is now ignored (#{type})"
           end
+
+        close_p2p_sessions_for_ignore(socket, nick)
 
         socket
         |> assign(session: new_session)
@@ -97,5 +100,14 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
   defp format_ignore_entry(entry) do
     expires = if IgnoreEntry.permanent?(entry), do: "permanent", else: "timed"
     "  #{entry.nickname} [#{entry.ignore_type}] (#{expires})"
+  end
+
+  defp close_p2p_sessions_for_ignore(socket, ignored_nick) do
+    owner_nick = socket.assigns.session.nickname
+
+    with %{id: owner_id} <- RetroHexChat.Repo.get_by(RegisteredNick, nickname: owner_nick),
+         %{id: ignored_id} <- RetroHexChat.Repo.get_by(RegisteredNick, nickname: ignored_nick) do
+      RetroHexChat.P2P.close_sessions_between(owner_id, ignored_id)
+    end
   end
 end

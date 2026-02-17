@@ -464,6 +464,92 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     end
   end
 
+  describe "P2P help topics" do
+    test "P2P Sessions topic exists with correct category" do
+      topic = HelpTopics.get_topic("feature-p2p-sessions")
+      assert topic != nil
+      assert topic.category == "Features"
+      assert topic.title == "Sessoes P2P"
+    end
+
+    test "P2P Sessions content covers key functionality" do
+      topic = HelpTopics.get_topic("feature-p2p-sessions")
+      assert topic.content =~ "/p2p"
+      assert topic.content =~ "/call"
+      assert topic.content =~ "/sendfile"
+      assert topic.content =~ "lobby"
+      assert topic.content =~ "consentimento bilateral"
+    end
+
+    test "P2P Sessions cross-references related topics" do
+      topic = HelpTopics.get_topic("feature-p2p-sessions")
+      assert topic.content =~ "feature-file-transfer"
+      assert topic.content =~ "feature-audio-call"
+      assert topic.content =~ "feature-privacy-settings"
+    end
+
+    test "File Transfer topic exists with correct category" do
+      topic = HelpTopics.get_topic("feature-file-transfer")
+      assert topic != nil
+      assert topic.category == "Features"
+      assert topic.title == "Transferencia de Arquivos"
+    end
+
+    test "File Transfer content covers key functionality" do
+      topic = HelpTopics.get_topic("feature-file-transfer")
+      assert topic.content =~ "/sendfile"
+      assert topic.content =~ "SHA-256"
+      assert topic.content =~ "DataChannel"
+    end
+
+    test "File Transfer cross-references P2P Sessions" do
+      topic = HelpTopics.get_topic("feature-file-transfer")
+      assert topic.content =~ "feature-p2p-sessions"
+    end
+
+    test "Privacy Settings topic exists with correct category" do
+      topic = HelpTopics.get_topic("feature-privacy-settings")
+      assert topic != nil
+      assert topic.category == "Features"
+      assert topic.title == "Configuracoes de Privacidade"
+    end
+
+    test "Privacy Settings content covers key functionality" do
+      topic = HelpTopics.get_topic("feature-privacy-settings")
+      assert topic.content =~ "TURN"
+      assert topic.content =~ "relay"
+      assert topic.content =~ "IP"
+      assert topic.content =~ "Modo privado"
+    end
+
+    test "Privacy Settings cross-references related topics" do
+      topic = HelpTopics.get_topic("feature-privacy-settings")
+      assert topic.content =~ "feature-p2p-sessions"
+      assert topic.content =~ "feature-audio-call"
+    end
+
+    test "command topics exist for P2P commands" do
+      for id <- ~w(cmd-p2p cmd-call cmd-sendfile) do
+        topic = HelpTopics.get_topic(id)
+        assert topic != nil, "Missing help topic: #{id}"
+        assert topic.category == "Commands"
+        assert topic.content =~ "feature-p2p-sessions"
+      end
+    end
+
+    test "audio call topic cross-references P2P Sessions and Privacy" do
+      topic = HelpTopics.get_topic("feature-audio-call")
+      assert topic.content =~ "feature-p2p-sessions"
+      assert topic.content =~ "feature-privacy-settings"
+    end
+
+    test "video call topic cross-references P2P Sessions and Privacy" do
+      topic = HelpTopics.get_topic("feature-video-call")
+      assert topic.content =~ "feature-p2p-sessions"
+      assert topic.content =~ "feature-privacy-settings"
+    end
+  end
+
   describe "connection states help topic" do
     test "topic exists" do
       topic = HelpTopics.get_topic("feature-connection-states")

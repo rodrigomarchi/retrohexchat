@@ -49,6 +49,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
             "<a href=\"#\" data-help-topic=\"cmd-alias\">/alias</a> — Create command aliases<br/>" <>
             "<a href=\"#\" data-help-topic=\"cmd-timer\">/timer</a> — Schedule commands<br/>" <>
             "<a href=\"#\" data-help-topic=\"cmd-autorespond\">/autorespond</a> — Auto-respond rules</p>" <>
+            "<h4>P2P</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"cmd-p2p\">/p2p</a> — Start a P2P session<br/>" <>
+            "<a href=\"#\" data-help-topic=\"cmd-call\">/call</a> — Start an audio call<br/>" <>
+            "<a href=\"#\" data-help-topic=\"cmd-sendfile\">/sendfile</a> — Send a file</p>" <>
             "<h4>Utility</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"cmd-clear\">/clear</a> — Clear chat window<br/>" <>
             "<a href=\"#\" data-help-topic=\"cmd-help\">/help</a> — Show help</p>" <>
@@ -695,6 +699,72 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"feature-autorespond\">Auto-Respond Feature</a> · " <>
             "<a href=\"#\" data-help-topic=\"cmd-alias\">/alias</a></p>"
+      },
+      %{
+        id: "cmd-p2p",
+        title: "/p2p",
+        category: "Commands",
+        keywords: ["p2p", "peer", "session", "sessao", "direct"],
+        content:
+          "<h3>/p2p</h3>" <>
+            "<p>Inicia uma sessao P2P (peer-to-peer) com outro usuario registrado.</p>" <>
+            "<h4>Syntax</h4>" <>
+            "<pre>/p2p &lt;nickname&gt;</pre>" <>
+            "<h4>Parameters</h4>" <>
+            "<p><code>nickname</code> — Nick do usuario com quem iniciar a sessao.</p>" <>
+            "<h4>Detalhes</h4>" <>
+            "<p>Voce deve estar identificado (registrado). O usuario alvo tambem precisa ser registrado. " <>
+            "Nao e possivel ter mais de uma sessao ativa com o mesmo usuario.</p>" <>
+            "<h4>Examples</h4>" <>
+            "<pre>/p2p Mario</pre>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a> · " <>
+            "<a href=\"#\" data-help-topic=\"cmd-call\">/call</a> · " <>
+            "<a href=\"#\" data-help-topic=\"cmd-sendfile\">/sendfile</a></p>"
+      },
+      %{
+        id: "cmd-call",
+        title: "/call",
+        category: "Commands",
+        keywords: ["call", "chamada", "audio", "voice", "voz", "p2p"],
+        content:
+          "<h3>/call</h3>" <>
+            "<p>Inicia uma sessao P2P com chamada de audio.</p>" <>
+            "<h4>Syntax</h4>" <>
+            "<pre>/call &lt;nickname&gt;</pre>" <>
+            "<h4>Parameters</h4>" <>
+            "<p><code>nickname</code> — Nick do usuario para chamar.</p>" <>
+            "<h4>Detalhes</h4>" <>
+            "<p>Funciona como <code>/p2p</code>, mas automaticamente solicita uma chamada de audio " <>
+            "quando ambos os usuarios entram no lobby. O peer precisa aceitar a chamada.</p>" <>
+            "<h4>Examples</h4>" <>
+            "<pre>/call Mario</pre>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a> · " <>
+            "<a href=\"#\" data-help-topic=\"cmd-p2p\">/p2p</a></p>"
+      },
+      %{
+        id: "cmd-sendfile",
+        title: "/sendfile",
+        category: "Commands",
+        keywords: ["sendfile", "send", "file", "arquivo", "transferir", "transfer", "p2p"],
+        content:
+          "<h3>/sendfile</h3>" <>
+            "<p>Inicia uma sessao P2P para transferencia de arquivo.</p>" <>
+            "<h4>Syntax</h4>" <>
+            "<pre>/sendfile &lt;nickname&gt;</pre>" <>
+            "<h4>Parameters</h4>" <>
+            "<p><code>nickname</code> — Nick do usuario para enviar o arquivo.</p>" <>
+            "<h4>Detalhes</h4>" <>
+            "<p>Funciona como <code>/p2p</code>, mas automaticamente solicita transferencia de arquivo " <>
+            "quando ambos entram no lobby. O peer precisa aceitar.</p>" <>
+            "<h4>Examples</h4>" <>
+            "<pre>/sendfile Mario</pre>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-file-transfer\">Transferencia de Arquivos</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a> · " <>
+            "<a href=\"#\" data-help-topic=\"cmd-p2p\">/p2p</a></p>"
       }
     ]
   end

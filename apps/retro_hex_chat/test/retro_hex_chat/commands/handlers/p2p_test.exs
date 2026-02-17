@@ -2,6 +2,7 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
   use RetroHexChat.DataCase, async: false
 
   alias RetroHexChat.Commands.Handlers.P2p
+  alias RetroHexChat.P2P.{RateLimiter, RateLimitTable}
   alias RetroHexChat.Services.RegisteredNick
 
   @moduletag :integration
@@ -85,6 +86,47 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
       context = %{@base_context | nickname: "p2p_cr1"}
       assert {:error, msg} = P2p.execute(["nobody"], context)
       assert msg =~ "registrado"
+    end
+  end
+
+  describe "rate limiting" do
+    test "rejects session creation when rate limit exceeded" do
+      {:ok, creator} =
+        %RegisteredNick{}
+        |> RegisteredNick.registration_changeset(%{
+          nickname: "p2p_rl_creator",
+          password: "password123"
+        })
+        |> Repo.insert()
+
+      # Create 6 different peers (need unique peer for each session due to active session check)
+      peers =
+        for i <- 1..6 do
+          {:ok, peer} =
+            %RegisteredNick{}
+            |> RegisteredNick.registration_changeset(%{
+              nickname: "p2p_rl_peer#{i}",
+              password: "password123"
+            })
+            |> Repo.insert()
+
+          peer
+        end
+
+      context = %{@base_context | nickname: "p2p_rl_creator"}
+
+      # Exhaust rate limit (default 5 in test config)
+      for peer <- Enum.take(peers, 5) do
+        {:ok, :ui_action, :p2p_invite, _} = P2p.execute([peer.nickname], context)
+      end
+
+      # 6th should be rate limited
+      sixth_peer = Enum.at(peers, 5)
+      assert {:error, msg} = P2p.execute([sixth_peer.nickname], context)
+      assert msg =~ "muitas sessões"
+
+      # Clean up rate limit
+      RateLimiter.reset(RateLimitTable.table_name(), creator.id)
     end
   end
 

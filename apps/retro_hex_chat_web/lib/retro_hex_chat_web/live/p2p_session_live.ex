@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
   use RetroHexChatWeb, :live_view
 
+  alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.Schema.Session
   alias RetroHexChat.P2P.SignalingRateLimit
@@ -54,6 +55,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         retry_attempt={@retry_attempt}
         file_transfer={@file_transfer}
         call={@call}
+        turn_only={@turn_only}
+        turn_configured={@turn_configured}
       />
     </div>
     """
@@ -68,18 +71,43 @@ defmodule RetroHexChatWeb.P2PSessionLive do
       ) do
     user_id = socket.assigns.user_id
     role = socket.assigns.role
+    turn_only = socket.assigns.turn_only
 
     ice_servers = P2P.ice_servers(to_string(user_id))
+
+    # If turn_only but TURN not configured, warn and fall back
+    {effective_turn_only, socket} =
+      if turn_only and not P2P.turn_configured?() do
+        warn_msg = %{
+          id: System.unique_integer([:positive]),
+          sender_nick: "Sistema",
+          content: "Modo privado requer servidor TURN. Usando conexao direta.",
+          type: "system",
+          timestamp: DateTime.utc_now()
+        }
+
+        socket = assign(socket, messages: socket.assigns.messages ++ [warn_msg])
+        {false, socket}
+      else
+        {turn_only, socket}
+      end
 
     socket = assign(socket, session_status: "connecting")
 
     socket =
       case role do
         :creator ->
-          push_event(socket, "p2p_start_offer", %{ice_servers: ice_servers, role: "initiator"})
+          push_event(socket, "p2p_start_offer", %{
+            ice_servers: ice_servers,
+            role: "initiator",
+            turn_only: effective_turn_only
+          })
 
         :peer ->
-          push_event(socket, "p2p_start_answer", %{ice_servers: ice_servers})
+          push_event(socket, "p2p_start_answer", %{
+            ice_servers: ice_servers,
+            turn_only: effective_turn_only
+          })
       end
 
     {:noreply, socket}
@@ -669,6 +697,12 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     end
   end
 
+  def handle_event("toggle_privacy_mode", _params, socket) do
+    new_value = !socket.assigns.turn_only
+    save_turn_only_preference(socket.assigns.nickname, new_value)
+    {:noreply, assign(socket, turn_only: new_value)}
+  end
+
   def handle_event(_event, _params, socket), do: {:noreply, socket}
 
   @impl true
@@ -717,6 +751,9 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         )
     }
 
+    turn_only = load_turn_only_preference(nickname)
+    turn_configured = P2P.turn_configured?()
+
     socket =
       assign(socket,
         session: db_session,
@@ -735,7 +772,9 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         webrtc_state: nil,
         retry_attempt: nil,
         file_transfer: nil,
-        call: nil
+        call: nil,
+        turn_only: turn_only,
+        turn_configured: turn_configured
       )
 
     socket =
@@ -830,4 +869,32 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   defp close_reason_message("tab_closed"), do: "Peer desconectou."
   defp close_reason_message("disconnected"), do: "Peer desconectou."
   defp close_reason_message(_reason), do: "Sessao P2P encerrada."
+
+  defp load_turn_only_preference(nickname) do
+    case RetroHexChat.Repo.get(UserPreference, nickname) do
+      nil -> false
+      pref -> get_in(pref.message_settings, ["p2p_settings", "turn_only"]) == true
+    end
+  end
+
+  defp save_turn_only_preference(nickname, turn_only) do
+    case RetroHexChat.Repo.get(UserPreference, nickname) do
+      nil ->
+        %UserPreference{}
+        |> UserPreference.changeset(%{
+          owner_nickname: nickname,
+          message_settings: %{"p2p_settings" => %{"turn_only" => turn_only}}
+        })
+        |> RetroHexChat.Repo.insert()
+
+      pref ->
+        current = pref.message_settings || %{}
+        p2p = Map.get(current, "p2p_settings", %{})
+        updated = Map.put(current, "p2p_settings", Map.put(p2p, "turn_only", turn_only))
+
+        pref
+        |> UserPreference.changeset(%{message_settings: updated})
+        |> RetroHexChat.Repo.update()
+    end
+  end
 end

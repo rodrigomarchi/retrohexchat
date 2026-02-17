@@ -49,6 +49,18 @@ defmodule RetroHexChat.P2P.Queries do
     |> Repo.exists?()
   end
 
+  @spec active_sessions_between(integer(), integer()) :: [Session.t()]
+  def active_sessions_between(user_a_id, user_b_id) do
+    Session
+    |> where(
+      [s],
+      (s.creator_id == ^user_a_id and s.peer_id == ^user_b_id) or
+        (s.creator_id == ^user_b_id and s.peer_id == ^user_a_id)
+    )
+    |> where([s], s.status not in ^@terminal_statuses)
+    |> Repo.all()
+  end
+
   @spec list_stale_sessions(DateTime.t()) :: [Session.t()]
   def list_stale_sessions(before_datetime) do
     Session

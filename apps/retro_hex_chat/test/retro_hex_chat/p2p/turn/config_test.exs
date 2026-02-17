@@ -11,7 +11,7 @@ defmodule RetroHexChat.P2P.Turn.ConfigTest do
 
       assert %Config{} = config
       assert config.realm == "retro-hex-chat"
-      assert config.credentials_lifetime == 86_400
+      assert config.credentials_lifetime == 3_600
       assert config.nonce_lifetime == 3_600_000_000_000
       assert config.default_allocation_lifetime == 600
       assert config.max_allocation_lifetime == 3_600
