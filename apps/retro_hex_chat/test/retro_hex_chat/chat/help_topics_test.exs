@@ -594,7 +594,11 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       |> File.ls!()
       |> Enum.filter(&String.ends_with?(&1, ".html"))
       |> Enum.each(fn file ->
-        id = String.replace_suffix(file, ".html", "")
+        id =
+          file
+          |> String.replace_suffix(".html", "")
+          |> String.replace("mode-cap-", "mode-")
+
         assert MapSet.member?(topic_ids, id), "Orphan HTML file: #{file}"
       end)
     end

@@ -18,7 +18,7 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
   @external_resource Path.join(@help_dir, "mode-p.html")
   @external_resource Path.join(@help_dir, "mode-c.html")
   @external_resource Path.join(@help_dir, "mode-R.html")
-  @external_resource Path.join(@help_dir, "mode-K.html")
+  @external_resource Path.join(@help_dir, "mode-cap-K.html")
   @external_resource Path.join(@help_dir, "mode-j.html")
   @external_resource Path.join(@help_dir, "cmd-knock.html")
 
@@ -152,7 +152,7 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
         title: "+K No Knock",
         category: "Channel Modes",
         keywords: ["no knock", "disable knock", "block knock"],
-        content: File.read!(Path.join(@help_dir, "mode-K.html"))
+        content: File.read!(Path.join(@help_dir, "mode-cap-K.html"))
       },
       %{
         id: "mode-j",
