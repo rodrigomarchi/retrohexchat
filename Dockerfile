@@ -60,5 +60,7 @@ USER app
 COPY --from=builder --chown=app:app /app/_build/prod/rel/retro_hex_chat_umbrella ./
 
 EXPOSE 4000
+EXPOSE 3478/udp
+EXPOSE 49152-65535/udp
 
 CMD ["bin/server"]
