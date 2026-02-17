@@ -12,10 +12,10 @@ config :retro_hex_chat,
   turn_listen_ip: {0, 0, 0, 0},
   turn_listen_port: 3478,
   turn_relay_ip:
-    case System.get_env("TURN_RELAY_IP") do
-      nil -> :auto
-      ip_str -> ip_str |> to_charlist() |> :inet.parse_address() |> elem(1)
-    end,
+    (case System.get_env("TURN_RELAY_IP") do
+       nil -> :auto
+       ip_str -> ip_str |> to_charlist() |> :inet.parse_address() |> elem(1)
+     end),
   turn_relay_port_range:
     {String.to_integer(System.get_env("TURN_RELAY_PORT_MIN") || "49152"),
      String.to_integer(System.get_env("TURN_RELAY_PORT_MAX") || "49651")},
