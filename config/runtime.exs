@@ -12,7 +12,9 @@ config :retro_hex_chat,
   turn_listen_ip: {0, 0, 0, 0},
   turn_listen_port: 3478,
   turn_relay_ip: :auto,
-  turn_relay_port_range: {49152, 65535},
+  turn_relay_port_range:
+    {String.to_integer(System.get_env("TURN_RELAY_PORT_MIN") || "49152"),
+     String.to_integer(System.get_env("TURN_RELAY_PORT_MAX") || "49651")},
   turn_listener_count: System.schedulers_online(),
   turn_auth_secret: :crypto.strong_rand_bytes(64),
   turn_nonce_secret: :crypto.strong_rand_bytes(64)
