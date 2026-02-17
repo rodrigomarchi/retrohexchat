@@ -27,6 +27,20 @@ defmodule RetroHexChatWeb.Router do
     get "/", LandingController, :index
   end
 
+  pipeline :help do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :help}
+    plug :put_secure_browser_headers
+  end
+
+  scope "/", RetroHexChatWeb do
+    pipe_through :help
+
+    get "/chat/help", HelpController, :index
+    get "/sitemap.xml", SitemapController, :index
+  end
+
   scope "/", RetroHexChatWeb do
     pipe_through :browser
 

@@ -576,4 +576,34 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.content =~ "feature-lag-indicator"
     end
   end
+
+  describe "HTML file integrity" do
+    @help_dir Path.join(:code.priv_dir(:retro_hex_chat), "help")
+
+    test "every topic ID has a corresponding .html file" do
+      for topic <- HelpTopics.all_topics() do
+        path = Path.join(@help_dir, "#{topic.id}.html")
+        assert File.exists?(path), "Missing HTML file for topic: #{topic.id}"
+      end
+    end
+
+    test "no .html files without a corresponding topic" do
+      topic_ids = MapSet.new(HelpTopics.all_topics(), & &1.id)
+
+      @help_dir
+      |> File.ls!()
+      |> Enum.filter(&String.ends_with?(&1, ".html"))
+      |> Enum.each(fn file ->
+        id = String.replace_suffix(file, ".html", "")
+        assert MapSet.member?(topic_ids, id), "Orphan HTML file: #{file}"
+      end)
+    end
+
+    test "no empty content fields" do
+      for topic <- HelpTopics.all_topics() do
+        assert String.trim(topic.content) != "",
+               "Empty content for topic: #{topic.id}"
+      end
+    end
+  end
 end

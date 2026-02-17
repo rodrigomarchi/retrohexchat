@@ -1,0 +1,7 @@
+<h3>/timer</h3><p>Schedule commands to run after a delay or on a repeating interval.</p><h4>Syntax</h4><pre>/timer &lt;name&gt; &lt;seconds&gt; &lt;command&gt;
+/timer &lt;name&gt; repeat &lt;seconds&gt; &lt;command&gt;
+/timer list
+/timer stop &lt;name&gt;</pre><h4>Parameters</h4><p><code>name</code> — Unique name for the timer (letters, numbers, hyphens, underscores).<br/><code>seconds</code> — Delay in seconds (1–86400 for one-shot, 10–86400 for repeat).<br/><code>command</code> — Command to execute when the timer fires.</p><h4>Examples</h4><pre>/timer remind 1800 /me standup in 30 minutes
+/timer heartbeat repeat 600 /me is still here
+/timer list
+/timer stop heartbeat</pre><h4>Notes</h4><p>- Timers are <strong>session-only</strong> — they do not survive page reload.<br/>- Maximum 5 concurrent timers per session.<br/>- Repeat timers have a minimum interval of 10 seconds.<br/>- Timer commands support alias expansion (variables like <code>$nick</code>, <code>$chan</code>).<br/>- Creating a timer with an existing name replaces the old timer.</p><h4>See Also</h4><p><a href="#" data-help-topic="feature-timers">Timers Feature</a> · <a href="#" data-help-topic="cmd-alias">/alias</a></p>

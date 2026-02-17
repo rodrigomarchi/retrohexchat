@@ -1,34 +1,26 @@
 defmodule RetroHexChatWeb.HelpAccessE2ETest do
   @moduledoc """
-  E2E tests for Help menu quick access (US11).
+  E2E tests for Help page access (formerly US11 help dialog quick access).
   Run with: mix test --only e2e
   """
-  use RetroHexChatWeb.LiveViewCase, async: false
+  use RetroHexChatWeb.ConnCase, async: true
 
   @moduletag :e2e
 
-  describe "Help Menu Quick Access E2E" do
-    test "IRC Commands menu item opens help at commands overview", %{conn: conn} do
-      nick = "HE1#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
+  describe "Help Page Access E2E" do
+    test "IRC Commands deep-link renders commands topic", %{conn: conn} do
+      conn = get(conn, "/chat/help?topic=commands-overview")
+      html = html_response(conn, 200)
 
-      html = render_click(view, "open_help_at_topic", %{"topic" => "commands-overview"})
-
-      assert html =~ "help-dialog"
       assert html =~ "IRC Commands Reference"
       assert html =~ "/join"
     end
 
-    test "Keyboard Shortcuts menu item opens help at shortcuts topic", %{conn: conn} do
-      nick = "HE2#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
+    test "Keyboard Shortcuts deep-link renders shortcuts topic", %{conn: conn} do
+      conn = get(conn, "/chat/help?topic=keyboard-shortcuts")
+      html = html_response(conn, 200)
 
-      html = render_click(view, "open_help_at_topic", %{"topic" => "keyboard-shortcuts"})
-
-      assert html =~ "help-dialog"
       assert html =~ "Keyboard Shortcuts"
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

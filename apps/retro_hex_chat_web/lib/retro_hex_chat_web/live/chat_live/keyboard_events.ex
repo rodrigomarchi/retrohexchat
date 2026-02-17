@@ -127,14 +127,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:open_help, socket) do
-    assign(socket,
-      show_help_dialog: true,
-      help_active_tab: "contents",
-      help_selected_topic: nil,
-      help_index_filter: "",
-      help_search_query: "",
-      help_search_results: []
-    )
+    push_event(socket, "open_url", %{url: "/chat/help"})
   end
 
   defp dispatch_action(:window_next, socket) do

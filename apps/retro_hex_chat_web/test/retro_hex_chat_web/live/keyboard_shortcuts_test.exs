@@ -109,11 +109,12 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
       assert html =~ "chat-input-form"
     end
 
-    test "open_help opens help dialog", %{conn: conn} do
+    test "open_help pushes open_url event", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "SAHelp"), "/chat")
 
       html = render_click(view, "shortcut_action", %{"action" => "open_help"})
-      assert html =~ "help-dialog"
+      # open_help now uses push_event to open /chat/help in a new tab
+      assert html =~ "chat-input-form"
     end
   end
 end

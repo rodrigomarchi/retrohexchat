@@ -1,0 +1,9 @@
+<h3>/perform</h3><p>Manage your perform list — commands that auto-execute when you connect.</p><h4>Syntax</h4><pre>/perform [list|add|remove|move|clear] [args]</pre><h4>Subcommands</h4><pre>list              — Show all perform commands
+add &lt;command&gt;      — Append a command to the perform list
+remove &lt;position&gt;  — Remove command at the given position
+move &lt;from&gt; &lt;to&gt;   — Reorder a command from one position to another
+clear             — Remove all perform commands</pre><h4>Notes</h4><p>Commands execute sequentially on connect when the perform list is enabled. Passwords in <code>/ns identify</code> commands are masked in the list display for security.</p><h4>Examples</h4><pre>/perform list
+/perform add /ns identify mypassword
+/perform remove 2
+/perform move 3 1
+/perform clear</pre><h4>See Also</h4><p><a href="#" data-help-topic="cmd-autojoin">/autojoin</a> · <a href="#" data-help-topic="feature-perform">Perform / Auto-Commands</a></p>

@@ -195,29 +195,30 @@ defmodule RetroHexChatWeb.Components.MenuBar do
       <div class="menu-item-wrapper">
         <div class="menu-item" role="menuitem" tabindex="0">Help</div>
         <div class="menu-dropdown">
-          <div
+          <a
             class="menu-dropdown-item"
             data-testid="menu-help-topics"
-            phx-click="toggle_help_dialog"
+            href="/chat/help"
+            target="_blank"
           >
             Help Topics
-          </div>
-          <div
+          </a>
+          <a
             class="menu-dropdown-item"
             data-testid="menu-help-commands"
-            phx-click="open_help_at_topic"
-            phx-value-topic="commands-overview"
+            href="/chat/help?topic=commands-overview"
+            target="_blank"
           >
             IRC Commands
-          </div>
-          <div
+          </a>
+          <a
             class="menu-dropdown-item"
             data-testid="menu-help-shortcuts"
-            phx-click="open_help_at_topic"
-            phx-value-topic="keyboard-shortcuts"
+            href="/chat/help?topic=keyboard-shortcuts"
+            target="_blank"
           >
             Keyboard Shortcuts
-          </div>
+          </a>
           <div class="menu-dropdown-item" data-testid="menu-about" phx-click="show_about">About</div>
         </div>
       </div>
