@@ -18,6 +18,7 @@ RetroHexChat recreates the experience of classic IRC clients like mIRC, complete
 - [UI Components](#ui-components)
 - [Database Schema](#database-schema)
 - [Getting Started](#getting-started)
+- [Production Deployment](#production-deployment)
 - [Running Tests](#running-tests)
 - [Static Analysis](#static-analysis)
 - [Design Principles](#design-principles)
@@ -764,6 +765,54 @@ Run `make help` to see all available commands.
 
 ---
 
+## Production Deployment
+
+RetroHexChat ships with a multi-stage `Dockerfile` and a `docker-compose.prod.yml` for production deployments. The embedded TURN server requires specific UDP port mappings for WebRTC P2P connections.
+
+### Ports
+
+| Port | Protocol | Purpose |
+|------|----------|---------|
+| `4000` | TCP | Phoenix HTTP/WebSocket (proxied via HTTPS) |
+| `3478` | UDP | TURN server (STUN/TURN signaling) |
+| `49152-49651` | UDP | TURN relay ports (~250 concurrent P2P calls) |
+
+### Environment Variables (Production)
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DATABASE_URL` | Yes | PostgreSQL connection string (`ecto://user:pass@host:port/db`) |
+| `SECRET_KEY_BASE` | Yes | Phoenix secret (min 64 bytes, generate with `mix phx.gen.secret`) |
+| `PHX_HOST` | Yes | Public hostname (e.g. `retrohexchat.app`) |
+| `PORT` | No | HTTP port (default: `4000`) |
+| `TURN_RELAY_PORT_MIN` | No | TURN relay range start (default: `49152`) |
+| `TURN_RELAY_PORT_MAX` | No | TURN relay range end (default: `49651`) |
+| `FILE_TRANSFER_MAX_SIZE_MB` | No | Max file transfer size (default: `500`) |
+
+### Health Check
+
+`GET /api/healthz` returns `{"status":"ok"}` with HTTP 200 when the app is running.
+
+### Deploy with Docker Compose
+
+```bash
+docker compose -f docker-compose.prod.yml up -d
+```
+
+### Deploy with Coolify
+
+1. Create a new application pointing to the repository
+2. Set **Build Pack** to `Dockerfile`
+3. Set **Port** to `4000`
+4. Configure the domain (e.g. `https://retrohexchat.app`)
+5. Add **Port Mappings**: `3478:3478/udp` and `49152-49651:49152-49651/udp`
+6. Set the environment variables listed above
+7. Enable **Force HTTPS** in proxy settings
+
+> **Note:** The `coolify.json` configuration file is not yet supported in Coolify v4 (the feature exists in source but is not active). All configuration must be done via the Coolify UI.
+
+---
+
 ## Running Tests
 
 The project follows a strict test pyramid with unit, integration, LiveView, and E2E layers.
@@ -802,7 +851,7 @@ make test.cover
 
 | App | Threshold |
 |-----|-----------|
-| Domain (`retro_hex_chat`) | 80% |
+| Domain (`retro_hex_chat`) | 70% |
 | Web (`retro_hex_chat_web`) | 70% |
 
 ---
