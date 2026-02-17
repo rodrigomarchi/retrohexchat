@@ -352,7 +352,10 @@
     x={@context_menu.x}
     y={@context_menu.y}
     target_nick={@context_menu.target_nick}
+    viewer_is_identified={@session.identified}
     viewer_is_op={viewer_is_op?(@session)}
+    is_target_registered={@context_menu[:is_target_registered] || false}
+    is_target_self={@context_menu.target_nick == @session.nickname}
     nick_color_fn={@nick_color_fn}
     show_color_picker={@show_context_color_picker}
     is_ignored={context_target_ignored?(@session, @context_menu.target_nick)}
@@ -363,8 +366,10 @@
   <RetroHexChatWeb.Components.ChatContextMenu.chat_context_menu
     menu={@chat_context_menu}
     viewer_nick={@session.nickname}
+    viewer_is_identified={@session.identified}
     viewer_is_op={viewer_is_op?(@session)}
     is_target_ignored={chat_context_target_ignored?(@session, @chat_context_menu)}
+    is_target_registered={@chat_context_menu[:is_target_registered] || false}
     is_target_self={@chat_context_menu.target_nick == @session.nickname}
     is_already_joined={@chat_context_menu.target_channel in (@session.channels || [])}
     key_bindings={@session.user_preferences.key_bindings}

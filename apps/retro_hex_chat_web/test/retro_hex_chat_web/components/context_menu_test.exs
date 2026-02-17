@@ -76,4 +76,100 @@ defmodule RetroHexChatWeb.Components.ContextMenuTest do
       assert html =~ ~s(phx-value-nick="alice")
     end
   end
+
+  describe "P2P context menu items" do
+    @tag :unit
+    test "renders P2P items when viewer_is_identified is true and target is registered" do
+      html =
+        render_component(&ContextMenu.context_menu/1,
+          visible: true,
+          target_nick: "alice",
+          viewer_is_identified: true,
+          is_target_registered: true,
+          is_target_self: false,
+          viewer_is_op: false,
+          x: 100,
+          y: 200
+        )
+
+      assert html =~ ~s(data-testid="context-p2p")
+      assert html =~ ~s(data-testid="context-call")
+      assert html =~ ~s(data-testid="context-video-call")
+      assert html =~ ~s(data-testid="context-sendfile")
+      assert html =~ "Sessão P2P"
+      assert html =~ "Chamada de Áudio"
+      assert html =~ "Chamada de Vídeo"
+      assert html =~ "Enviar Arquivo"
+      # Items should be enabled (have phx-click)
+      assert html =~ ~s(phx-click="context_p2p")
+      assert html =~ ~s(phx-click="context_call")
+      assert html =~ ~s(phx-click="context_video_call")
+      assert html =~ ~s(phx-click="context_sendfile")
+    end
+
+    @tag :unit
+    test "does not render P2P items for guest user (viewer_is_identified false)" do
+      html =
+        render_component(&ContextMenu.context_menu/1,
+          visible: true,
+          target_nick: "alice",
+          viewer_is_identified: false,
+          is_target_registered: true,
+          is_target_self: false,
+          viewer_is_op: false,
+          x: 100,
+          y: 200
+        )
+
+      refute html =~ ~s(data-testid="context-p2p")
+      refute html =~ ~s(data-testid="context-call")
+      refute html =~ "Sessão P2P"
+    end
+
+    @tag :unit
+    test "P2P items disabled with tooltip when target is not registered" do
+      html =
+        render_component(&ContextMenu.context_menu/1,
+          visible: true,
+          target_nick: "guest_user",
+          viewer_is_identified: true,
+          is_target_registered: false,
+          is_target_self: false,
+          viewer_is_op: false,
+          x: 100,
+          y: 200
+        )
+
+      assert html =~ ~s(data-testid="context-p2p")
+      # Items should be disabled (class="disabled")
+      assert html =~ ~r/disabled[^>]*context-p2p/
+      # Should have tooltip
+      assert html =~ "Usuário não registrado"
+      # Should NOT have phx-click
+      refute html =~ ~s(phx-click="context_p2p")
+    end
+
+    @tag :unit
+    test "P2P items disabled without tooltip when target is self" do
+      html =
+        render_component(&ContextMenu.context_menu/1,
+          visible: true,
+          target_nick: "myself",
+          viewer_is_identified: true,
+          is_target_registered: true,
+          is_target_self: true,
+          viewer_is_op: false,
+          x: 100,
+          y: 200
+        )
+
+      assert html =~ ~s(data-testid="context-p2p")
+      # Items should be disabled
+      assert html =~ ~r/disabled[^>]*context-p2p/
+      # Should NOT have tooltip (self-targeting)
+      refute html =~ "Usuário não registrado"
+      # Should NOT have phx-click
+      refute html =~ ~s(phx-click="context_p2p")
+    end
+  end
 end

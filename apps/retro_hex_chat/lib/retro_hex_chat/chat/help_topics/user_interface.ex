@@ -101,10 +101,21 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
             "<h4>Options</h4>" <>
             "<p><strong>Query:</strong> Open a PM with the user.<br/>" <>
             "<strong>Whois:</strong> Look up user information.<br/>" <>
-            "<strong>Kick / Ban:</strong> Moderation (operators only).<br/>" <>
-            "<strong>+o / -o / +v / -v:</strong> Mode changes (operators only).<br/>" <>
             "<strong>Add to Contacts:</strong> Save to your address book.<br/>" <>
-            "<strong>Set Nick Color:</strong> Override the display color for this nick.</p>"
+            "<strong>Set Nick Color:</strong> Override the display color for this nick.<br/>" <>
+            "<strong>Ignore / Unignore:</strong> Block messages from the user.</p>" <>
+            "<h4>P2P Actions (registered users only)</h4>" <>
+            "<p><strong>Sessao P2P:</strong> Start a generic P2P session.<br/>" <>
+            "<strong>Chamada de Audio:</strong> Start an audio call.<br/>" <>
+            "<strong>Chamada de Video:</strong> Start a video call.<br/>" <>
+            "<strong>Enviar Arquivo:</strong> Send a file.<br/>" <>
+            "These items are disabled if the target is not registered or is yourself.</p>" <>
+            "<h4>Operator Actions</h4>" <>
+            "<p><strong>Kick / Ban:</strong> Moderation (operators only).<br/>" <>
+            "<strong>Give Op (+o) / Give Voice (+v):</strong> Mode changes (operators only).</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-context-menus\">Context Menus</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a></p>"
       },
       %{
         id: "ui-status-tab",

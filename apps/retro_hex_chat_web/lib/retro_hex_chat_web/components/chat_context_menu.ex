@@ -14,8 +14,10 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
 
   attr :menu, :map, required: true
   attr :viewer_nick, :string, required: true
+  attr :viewer_is_identified, :boolean, default: false
   attr :viewer_is_op, :boolean, default: false
   attr :is_target_ignored, :boolean, default: false
+  attr :is_target_registered, :boolean, default: false
   attr :is_target_self, :boolean, default: false
   attr :is_already_joined, :boolean, default: false
   attr :key_bindings, :map, default: %{}
@@ -101,6 +103,47 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-value-nick={@menu.target_nick}
     >
       Set Nick Color
+    </li>
+    <li :if={@viewer_is_identified} class="separator"></li>
+    <li
+      :if={@viewer_is_identified}
+      class={if !@is_target_registered || @is_target_self, do: "disabled"}
+      title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+      data-testid="ctx-chat-p2p"
+      phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_p2p"}
+      phx-value-nick={@menu.target_nick}
+    >
+      Sessão P2P
+    </li>
+    <li
+      :if={@viewer_is_identified}
+      class={if !@is_target_registered || @is_target_self, do: "disabled"}
+      title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+      data-testid="ctx-chat-call"
+      phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_call"}
+      phx-value-nick={@menu.target_nick}
+    >
+      Chamada de Áudio
+    </li>
+    <li
+      :if={@viewer_is_identified}
+      class={if !@is_target_registered || @is_target_self, do: "disabled"}
+      title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+      data-testid="ctx-chat-video-call"
+      phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_video_call"}
+      phx-value-nick={@menu.target_nick}
+    >
+      Chamada de Vídeo
+    </li>
+    <li
+      :if={@viewer_is_identified}
+      class={if !@is_target_registered || @is_target_self, do: "disabled"}
+      title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+      data-testid="ctx-chat-sendfile"
+      phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_sendfile"}
+      phx-value-nick={@menu.target_nick}
+    >
+      Enviar Arquivo
     </li>
     <li
       :if={@viewer_is_op}
