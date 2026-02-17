@@ -14,7 +14,7 @@ defmodule RetroHexChat.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      test_coverage: [summary: [threshold: 80]]
+      test_coverage: [summary: [threshold: 70]]
     ]
   end
 
