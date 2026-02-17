@@ -21,8 +21,8 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   secret_key_base: "test_only_secret_key_base_not_for_production_run_mix_phx_gen_secret_to_replace",
   server: false
 
-# Print only warnings and errors during test
-config :logger, level: :warning
+# Silence all logs during test (use @tag :capture_log to inspect per-test)
+config :logger, level: :none
 
 # Configure bcrypt with reduced rounds for fast tests
 config :bcrypt_elixir, log_rounds: 4

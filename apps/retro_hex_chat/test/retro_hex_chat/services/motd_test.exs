@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Services.MotdTest do
-  use RetroHexChat.DataCase, async: true
+  # async: false — MOTD uses Application.put_env (global state)
+  use RetroHexChat.DataCase, async: false
 
   @moduletag :unit
 

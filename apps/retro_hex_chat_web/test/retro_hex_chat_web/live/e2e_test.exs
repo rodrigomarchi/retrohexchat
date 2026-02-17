@@ -623,8 +623,12 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 7: Nicklist" do
     test "7.1 nicklist shows group headers and hides empty groups", %{conn: conn} do
-      {:ok, _view, html} = live(chat_conn(conn, "NickGrp"), "/chat")
-      # User is owner of auto-joined #lobby — Owners group visible
+      ch = unique_channel("nickgrp")
+      ensure_channel(ch)
+      {:ok, view, _html} = live(chat_conn(conn, "NickGrp"), "/chat")
+      send_command(view, "/join #{ch}")
+      html = render(view)
+      # User is owner (first to join) — Owners group visible
       assert html =~ "nicklist-group-header"
       assert html =~ "Owners ("
       # Empty groups are hidden — verified by unit tests in nicklist_test.exs
