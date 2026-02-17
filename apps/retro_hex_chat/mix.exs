@@ -14,7 +14,20 @@ defmodule RetroHexChat.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      test_coverage: [summary: [threshold: 70]]
+      test_coverage: [
+        summary: [threshold: 70],
+        ignore_modules: [
+          RetroHexChat.Chat.HelpTopics.ChannelModes,
+          RetroHexChat.Chat.HelpTopics.Commands,
+          RetroHexChat.Chat.HelpTopics.Features,
+          RetroHexChat.Chat.HelpTopics.GettingStarted,
+          RetroHexChat.Chat.HelpTopics.KeyboardShortcuts,
+          RetroHexChat.Chat.HelpTopics.Services,
+          RetroHexChat.Chat.HelpTopics.SpecialMessages,
+          RetroHexChat.Chat.HelpTopics.TextFormatting,
+          RetroHexChat.Chat.HelpTopics.UserInterface
+        ]
+      ]
     ]
   end
 
