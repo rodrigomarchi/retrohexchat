@@ -25,6 +25,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   defdelegate service_message(author, content), to: __MODULE__.Messages
   defdelegate notice_message(author, content), to: __MODULE__.Messages
   defdelegate push_status_message(socket, content, type), to: __MODULE__.Messages
+  defdelegate system_event(socket, content), to: __MODULE__.Messages
+  defdelegate error_event(socket, content), to: __MODULE__.Messages
+  defdelegate service_event(socket, author, content), to: __MODULE__.Messages
 
   # ── Persistence ──────────────────────────────────────────────
 

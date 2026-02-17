@@ -11,12 +11,12 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream: 4, stream_insert: 3, stream_insert: 4, push_event: 3]
+  import Phoenix.LiveView, only: [stream: 4, stream_insert: 4, push_event: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       join_channel: 3,
-      error_message: 1,
+      error_event: 2,
       load_channel_users: 2,
       load_channel_messages_with_pagination: 2,
       push_reconnect_state: 1,
@@ -477,7 +477,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
           {:error, reason} ->
             {:halt,
              socket
-             |> stream_insert(:chat_messages, error_message(reason))}
+             |> error_event(reason)}
         end
 
       nil ->
@@ -562,7 +562,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
         |> push_event("set_input", %{value: ""})
 
       {:error, reason} ->
-        stream_insert(socket, :chat_messages, error_message(reason))
+        error_event(socket, reason)
     end
   end
 

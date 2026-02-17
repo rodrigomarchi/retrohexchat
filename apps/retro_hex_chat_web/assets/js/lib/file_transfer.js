@@ -181,7 +181,7 @@ export function decodeHaveChunks(buffer) {
  * @returns {Promise<string>}
  */
 export async function computeHash(buffer) {
-  const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", new Uint8Array(buffer));
   const hashArray = new Uint8Array(hashBuffer);
   return Array.from(hashArray)
     .map((b) => b.toString(16).padStart(2, "0"))

@@ -5,10 +5,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_message: 1, play_event_sound: 3, part_channel_after_kick: 2]
+    only: [system_event: 2, play_event_sound: 3, part_channel_after_kick: 2]
 
   alias RetroHexChat.Channels.Server
 
@@ -25,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       socket
       |> assign(channel_users: users)
       |> maybe_update_current_modes(payload)
-      |> stream_insert(:chat_messages, system_message(msg))
+      |> system_event(msg)
 
     {:halt, socket}
   end
@@ -38,7 +37,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       socket
       |> maybe_update_current_modes(payload)
       |> maybe_refresh_cc(channel)
-      |> stream_insert(:chat_messages, system_message(msg))
+      |> system_event(msg)
 
     {:halt, socket}
   end
@@ -61,7 +60,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
         |> assign(channel_users: users, kick_queue: socket.assigns.kick_queue ++ [kick_event])
         |> play_event_sound(:kick, socket.assigns.session)
         |> part_channel_after_kick(socket.assigns.session.active_channel)
-        |> stream_insert(:chat_messages, system_message(msg))
+        |> system_event(msg)
 
       {:halt, socket}
     else
@@ -69,7 +68,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
        socket
        |> assign(channel_users: users)
        |> play_event_sound(:kick, socket.assigns.session)
-       |> stream_insert(:chat_messages, system_message(msg))}
+       |> system_event(msg)}
     end
   end
 
@@ -83,7 +82,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     {:halt,
      socket
      |> maybe_refresh_cc(channel)
-     |> stream_insert(:chat_messages, system_message(msg))}
+     |> system_event(msg)}
   end
 
   def handle_info({:user_unbanned, %{operator: op, target: target} = payload}, socket) do
@@ -93,7 +92,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     {:halt,
      socket
      |> maybe_refresh_cc(channel)
-     |> stream_insert(:chat_messages, system_message(msg))}
+     |> system_event(msg)}
   end
 
   # ── Exception broadcasts ──────────────────────────────────
@@ -130,7 +129,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     {:halt,
      socket
      |> maybe_refresh_cc(channel)
-     |> stream_insert(:chat_messages, system_message(msg))}
+     |> system_event(msg)}
   end
 
   # ── Knock notification ────────────────────────────────────
@@ -152,7 +151,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
           "* #{nick} has knocked on #{channel}"
         end
 
-      {:halt, stream_insert(socket, :chat_messages, system_message(msg))}
+      {:halt, system_event(socket, msg)}
     else
       {:halt, socket}
     end

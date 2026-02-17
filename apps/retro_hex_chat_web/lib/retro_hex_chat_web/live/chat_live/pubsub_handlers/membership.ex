@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2, stream_insert: 3]
+  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2]
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
-      system_message: 1,
+      system_event: 2,
       push_status_message: 3,
       play_event_sound: 3,
       maybe_fire_autorespond: 5,
@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
      |> maybe_refresh_cc(channel)
      |> play_event_sound(:join, socket.assigns.session)
      |> maybe_push_notification(:join, %{channel: channel, sender: nick, content: msg})
-     |> stream_insert(:chat_messages, system_message(msg))
+     |> system_event(msg)
      |> maybe_fire_autorespond(
        :on_join,
        channel,
@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
      |> maybe_refresh_cc(channel)
      |> play_event_sound(:part, socket.assigns.session)
      |> maybe_push_notification(:leave, %{channel: channel, sender: nick, content: msg})
-     |> stream_insert(:chat_messages, system_message(msg))
+     |> system_event(msg)
      |> maybe_fire_autorespond(
        :on_part,
        channel,
@@ -123,7 +123,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     {:halt,
      socket
      |> assign(channel_users: users)
-     |> stream_insert(:chat_messages, system_message(msg))
+     |> system_event(msg)
      |> maybe_fire_autorespond(
        :on_nick_change,
        socket.assigns.session.active_channel,
@@ -160,7 +160,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     {:halt,
      socket
      |> assign(session: session)
-     |> stream_insert(:chat_messages, system_message(msg))}
+     |> system_event(msg)}
   end
 
   # ── NickServ identified ───────────────────────────────────

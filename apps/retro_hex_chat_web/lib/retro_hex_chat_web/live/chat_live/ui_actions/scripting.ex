@@ -4,10 +4,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_message: 1, error_message: 1, maybe_persist_autorespond_rules: 2]
+    only: [system_event: 2, error_event: 2, maybe_persist_autorespond_rules: 2]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{AutoRespondRules, TimerManager}
@@ -37,16 +36,12 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
         socket
         |> assign(session: new_session)
         |> maybe_persist_autorespond_rules(new_session)
-        |> stream_insert(
-          :chat_messages,
-          system_message("Auto-respond rule added: #{trigger} → #{command}")
-        )
+        |> system_event("Auto-respond rule added: #{trigger} → #{command}")
 
       {:error, reason} ->
-        stream_insert(
+        system_event(
           socket,
-          :chat_messages,
-          system_message("Error adding auto-respond rule: #{autorespond_error_msg(reason)}")
+          "Error adding auto-respond rule: #{autorespond_error_msg(reason)}"
         )
     end
   end
@@ -61,10 +56,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
         socket
         |> assign(session: new_session)
         |> maybe_persist_autorespond_rules(new_session)
-        |> stream_insert(:chat_messages, system_message("Auto-respond rule removed."))
+        |> system_event("Auto-respond rule removed.")
 
       {:error, :not_found} ->
-        stream_insert(socket, :chat_messages, system_message("Auto-respond rule not found."))
+        system_event(socket, "Auto-respond rule not found.")
     end
   end
 
@@ -73,15 +68,11 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
     entries = AutoRespondRules.entries(session.autorespond_rules)
 
     if entries == [] do
-      stream_insert(
-        socket,
-        :chat_messages,
-        system_message("No auto-respond rules configured.")
-      )
+      system_event(socket, "No auto-respond rules configured.")
     else
       lines = Enum.map(entries, &format_autorespond_entry/1)
       msg = ["Auto-respond rules:" | lines] |> Enum.join("\n")
-      stream_insert(socket, :chat_messages, system_message(msg))
+      system_event(socket, msg)
     end
   end
 
@@ -121,23 +112,20 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
 
         socket =
           if notice do
-            stream_insert(socket, :chat_messages, system_message("* #{notice}"))
+            system_event(socket, "* #{notice}")
           else
             socket
           end
 
         type_label = if type == :repeat, do: "repeat", else: "one-shot"
 
-        stream_insert(
+        system_event(
           socket,
-          :chat_messages,
-          system_message(
-            "* Timer '#{name}' set: #{type_label}, #{clamped_interval}s → #{command}"
-          )
+          "* Timer '#{name}' set: #{type_label}, #{clamped_interval}s → #{command}"
         )
 
       {:error, msg} ->
-        stream_insert(socket, :chat_messages, error_message(msg))
+        error_event(socket, msg)
     end
   end
 
@@ -151,10 +139,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
 
         socket
         |> assign(user_timers: new_timers)
-        |> stream_insert(:chat_messages, system_message("* Timer '#{name}' stopped"))
+        |> system_event("* Timer '#{name}' stopped")
 
       nil ->
-        stream_insert(socket, :chat_messages, error_message("Timer '#{name}' not found"))
+        error_event(socket, "Timer '#{name}' not found")
     end
   end
 
@@ -164,7 +152,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
     text
     |> String.split("\n")
     |> Enum.reduce(socket, fn line, acc ->
-      stream_insert(acc, :chat_messages, system_message(line))
+      system_event(acc, line)
     end)
   end
 

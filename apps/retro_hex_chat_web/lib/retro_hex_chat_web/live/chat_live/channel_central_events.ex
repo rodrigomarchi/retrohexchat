@@ -14,8 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
-  import RetroHexChatWeb.ChatLive.Helpers, only: [error_message: 1]
+  import RetroHexChatWeb.ChatLive.Helpers, only: [error_event: 2]
 
   alias RetroHexChat.Channels.Server
 
@@ -90,7 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
         {:halt, refresh_channel_central(socket)}
 
       {:error, msg} ->
-        {:halt, stream_insert(socket, :chat_messages, error_message("Topic error: #{msg}"))}
+        {:halt, error_event(socket, "Topic error: #{msg}")}
     end
   end
 
@@ -117,7 +116,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
          |> refresh_channel_central()}
 
       {:error, msg} ->
-        {:halt, stream_insert(socket, :chat_messages, error_message("Ban error: #{msg}"))}
+        {:halt, error_event(socket, "Ban error: #{msg}")}
     end
   end
 
@@ -136,7 +135,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
            |> refresh_channel_central()}
 
         {:error, msg} ->
-          {:halt, stream_insert(socket, :chat_messages, error_message("Unban error: #{msg}"))}
+          {:halt, error_event(socket, "Unban error: #{msg}")}
       end
     else
       {:halt, socket}
@@ -157,8 +156,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
          |> refresh_channel_central()}
 
       {:error, msg} ->
-        {:halt,
-         stream_insert(socket, :chat_messages, error_message("Ban exception error: #{msg}"))}
+        {:halt, error_event(socket, "Ban exception error: #{msg}")}
     end
   end
 
@@ -177,8 +175,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
            |> refresh_channel_central()}
 
         {:error, msg} ->
-          {:halt,
-           stream_insert(socket, :chat_messages, error_message("Remove exception error: #{msg}"))}
+          {:halt, error_event(socket, "Remove exception error: #{msg}")}
       end
     else
       {:halt, socket}
@@ -199,12 +196,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
          |> refresh_channel_central()}
 
       {:error, msg} ->
-        {:halt,
-         stream_insert(
-           socket,
-           :chat_messages,
-           error_message("Invite exception error: #{msg}")
-         )}
+        {:halt, error_event(socket, "Invite exception error: #{msg}")}
     end
   end
 
@@ -223,12 +215,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
            |> refresh_channel_central()}
 
         {:error, msg} ->
-          {:halt,
-           stream_insert(
-             socket,
-             :chat_messages,
-             error_message("Remove exception error: #{msg}")
-           )}
+          {:halt, error_event(socket, "Remove exception error: #{msg}")}
       end
     else
       {:halt, socket}
@@ -269,16 +256,11 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
            )}
         else
           {:halt,
-           stream_insert(
-             socket,
-             :chat_messages,
-             error_message("You must be a member of #{channel} to open Channel Central")
-           )}
+           error_event(socket, "You must be a member of #{channel} to open Channel Central")}
         end
 
       {:error, _} ->
-        {:halt,
-         stream_insert(socket, :chat_messages, error_message("Channel #{channel} not found"))}
+        {:halt, error_event(socket, "Channel #{channel} not found")}
     end
   end
 
@@ -326,7 +308,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
     Enum.reduce(mode_ops, socket, fn {mode_str, mode_params}, acc ->
       case Server.set_mode(channel, nickname, mode_str, mode_params) do
         :ok -> acc
-        {:error, msg} -> stream_insert(acc, :chat_messages, error_message("Mode error: #{msg}"))
+        {:error, msg} -> error_event(acc, "Mode error: #{msg}")
       end
     end)
   end

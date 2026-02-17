@@ -127,4 +127,8 @@ if config_env() == :prod do
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 
   config :retro_hex_chat, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+
+  config :retro_hex_chat_web, :basic_auth,
+    username: System.get_env("DASHBOARD_USER") || "admin",
+    password: System.get_env("DASHBOARD_PASSWORD") || "retroforever"
 end

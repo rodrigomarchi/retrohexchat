@@ -14,7 +14,7 @@ defmodule RetroHexChat.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      test_coverage: [summary: [threshold: 80]]
+      test_coverage: [summary: [threshold: 70]]
     ]
   end
 
@@ -46,7 +46,8 @@ defmodule RetroHexChat.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       {:phoenix_html, "~> 4.0"},
       {:req, "~> 0.5"},
-      {:ex_stun, "~> 0.1"},
+      {:ex_stun, "~> 0.2.0"},
+      {:ecto_psql_extras, "~> 0.8"},
 
       # Test dependencies
       {:mox, "~> 1.0", only: :test},

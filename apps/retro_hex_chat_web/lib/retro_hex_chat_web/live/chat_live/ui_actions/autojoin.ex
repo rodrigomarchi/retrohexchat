@@ -4,10 +4,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_message: 1, error_message: 1, maybe_persist_autojoin_list: 2]
+    only: [system_event: 2, error_event: 2, maybe_persist_autojoin_list: 2]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.AutoJoinList
@@ -20,10 +19,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
     entries = AutoJoinList.entries(session.autojoin_list)
 
     if entries == [] do
-      stream_insert(socket, :chat_messages, system_message("Your auto-join list is empty"))
+      system_event(socket, "Your auto-join list is empty")
     else
       Enum.reduce(entries, socket, fn entry, acc ->
-        stream_insert(acc, :chat_messages, system_message(format_autojoin_entry(entry)))
+        system_event(acc, format_autojoin_entry(entry))
       end)
     end
   end
@@ -39,17 +38,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
         socket
         |> assign(session: new_session)
         |> maybe_persist_autojoin_list(new_session)
-        |> stream_insert(
-          :chat_messages,
-          system_message("* Added to auto-join list: #{channel}")
-        )
+        |> system_event("* Added to auto-join list: #{channel}")
 
       {:error, reason} ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          error_message("Failed to add auto-join channel: #{reason}")
-        )
+        error_event(socket, "Failed to add auto-join channel: #{reason}")
     end
   end
 
@@ -63,17 +55,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
         socket
         |> assign(session: new_session)
         |> maybe_persist_autojoin_list(new_session)
-        |> stream_insert(
-          :chat_messages,
-          system_message("* Removed #{channel} from auto-join list")
-        )
+        |> system_event("* Removed #{channel} from auto-join list")
 
       {:error, :not_found} ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          error_message("#{channel} is not in your auto-join list")
-        )
+        error_event(socket, "#{channel} is not in your auto-join list")
     end
   end
 
@@ -85,7 +70,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
     socket
     |> assign(session: new_session)
     |> maybe_persist_autojoin_list(new_session)
-    |> stream_insert(:chat_messages, system_message("* Auto-join list cleared"))
+    |> system_event("* Auto-join list cleared")
   end
 
   defp format_autojoin_entry(entry) do

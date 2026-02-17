@@ -4,12 +4,11 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
-      system_message: 1,
-      error_message: 1,
+      system_event: 2,
+      error_event: 2,
       maybe_persist_ignore_list: 2,
       cancel_ignore_timer: 2,
       maybe_start_ignore_timer: 3,
@@ -28,10 +27,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
     entries = IgnoreList.sorted_entries(session.ignore_list)
 
     if entries == [] do
-      stream_insert(socket, :chat_messages, system_message("Your ignore list is empty"))
+      system_event(socket, "Your ignore list is empty")
     else
       Enum.reduce(entries, socket, fn entry, acc ->
-        stream_insert(acc, :chat_messages, system_message(format_ignore_entry(entry)))
+        system_event(acc, format_ignore_entry(entry))
       end)
     end
   end
@@ -60,17 +59,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
         |> cancel_ignore_timer(nick)
         |> maybe_start_ignore_timer(nick, duration)
         |> maybe_persist_ignore_list(new_session)
-        |> stream_insert(:chat_messages, system_message(msg))
+        |> system_event(msg)
 
       {:error, :list_full} ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          error_message("Ignore list is full (max 100 entries)")
-        )
+        error_event(socket, "Ignore list is full (max 100 entries)")
 
       {:error, :invalid_type} ->
-        stream_insert(socket, :chat_messages, error_message("Invalid ignore type: #{type}"))
+        error_event(socket, "Invalid ignore type: #{type}")
     end
   end
 
@@ -86,14 +81,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
         |> cancel_ignore_timer(nick)
         |> cancel_auto_ignore_with_cooldown(nick)
         |> maybe_persist_ignore_list(new_session)
-        |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))
+        |> system_event("* #{nick} is no longer ignored")
 
       {:error, :not_found} ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          error_message("#{nick} is not in your ignore list")
-        )
+        error_event(socket, "#{nick} is not in your ignore list")
     end
   end
 

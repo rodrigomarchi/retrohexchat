@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3, push_event: 3, push_navigate: 2]
+  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2]
 
   require Logger
 
@@ -273,7 +273,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     socket =
       socket
       |> assign(reconnect_active_channel: active_channel, reconnect_active_pm: active_pm)
-      |> stream_insert(:chat_messages, Messages.system_message("* Restoring session..."))
+      |> Messages.system_event("* Restoring session...")
 
     if channels != [] do
       Process.send_after(self(), {:execute_rejoin, 0, channels}, 200)
@@ -363,7 +363,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       end)
 
     socket
-    |> stream_insert(:chat_messages, Messages.system_message("You are now known as #{new_nick}"))
+    |> Messages.system_event("You are now known as #{new_nick}")
     |> assign(session: session, channel_users: users)
   end
 
@@ -388,7 +388,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     end)
 
     socket
-    |> stream_insert(:chat_messages, Messages.system_message("You are now away: #{message}"))
+    |> Messages.system_event("You are now away: #{message}")
     |> assign(session: session)
   end
 
@@ -412,10 +412,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
         socket
         |> assign(session: session)
         |> rebuild_nick_color_fn(session)
-        |> stream_insert(
-          :chat_messages,
-          Messages.system_message("You are now identified as #{nickname}")
-        )
+        |> Messages.system_event("You are now identified as #{nickname}")
 
       NickServ.registered?(nickname) ->
         NickServ.start_identify_timer(nickname)
@@ -424,7 +421,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
           "[NickServ] This nickname is registered. " <>
             "You have 60 seconds to identify via /ns identify <password> or you will be renamed."
 
-        stream_insert(socket, :chat_messages, Messages.service_message("NickServ", notice))
+        Messages.service_event(socket, "NickServ", notice)
 
       true ->
         socket

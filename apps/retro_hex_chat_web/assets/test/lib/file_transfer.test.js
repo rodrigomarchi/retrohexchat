@@ -204,7 +204,7 @@ describe("computeHash", () => {
     const buffer = new ArrayBuffer(3);
     const result = await computeHash(buffer);
     expect(result).toBe("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
-    expect(crypto.subtle.digest).toHaveBeenCalledWith("SHA-256", buffer);
+    expect(crypto.subtle.digest).toHaveBeenCalledWith("SHA-256", new Uint8Array(buffer));
   });
 });
 

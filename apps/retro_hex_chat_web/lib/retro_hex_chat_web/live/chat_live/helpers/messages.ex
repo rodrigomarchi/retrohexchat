@@ -61,4 +61,28 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
 
     stream_insert(socket, :status_messages, msg)
   end
+
+  # ── Dual-write helpers (chat + status) ─────────────────────
+
+  @spec system_event(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def system_event(socket, content) do
+    socket
+    |> stream_insert(:chat_messages, system_message(content))
+    |> push_status_message(content, :system)
+  end
+
+  @spec error_event(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def error_event(socket, content) do
+    socket
+    |> stream_insert(:chat_messages, error_message(content))
+    |> push_status_message(content, :error)
+  end
+
+  @spec service_event(Phoenix.LiveView.Socket.t(), String.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def service_event(socket, author, content) do
+    socket
+    |> stream_insert(:chat_messages, service_message(author, content))
+    |> push_status_message(content, :system)
+  end
 end

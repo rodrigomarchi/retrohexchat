@@ -5,11 +5,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, stream_insert: 3]
+  import Phoenix.LiveView, only: [push_event: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
-      system_message: 1,
+      system_event: 2,
       push_status_message: 3,
       play_event_sound: 3,
       maybe_persist_notify_list: 2,
@@ -119,10 +119,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
       socket =
         socket
         |> join_channel(channel, session)
-        |> stream_insert(
-          :chat_messages,
-          system_message("* You have been invited to #{channel} by #{inviter} (auto-joined)")
-        )
+        |> system_event("* You have been invited to #{channel} by #{inviter} (auto-joined)")
 
       {:halt, socket}
     else

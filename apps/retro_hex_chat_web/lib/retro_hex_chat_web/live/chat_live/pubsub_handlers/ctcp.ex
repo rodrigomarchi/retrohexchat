@@ -4,10 +4,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Ctcp do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_message: 1, maybe_send_ctcp_reply: 7]
+    only: [system_event: 2, maybe_send_ctcp_reply: 7]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.CtcpSettings
@@ -20,12 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Ctcp do
     settings = Session.get_ctcp_settings(session)
     type_upper = type |> Atom.to_string() |> String.upcase()
 
-    socket =
-      stream_insert(
-        socket,
-        :chat_messages,
-        system_message("* CTCP #{type_upper} request from #{sender}")
-      )
+    socket = system_event(socket, "* CTCP #{type_upper} request from #{sender}")
 
     socket = maybe_send_ctcp_reply(socket, session, settings, type, sender, req_id, sent_at)
     {:halt, socket}
@@ -59,10 +53,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Ctcp do
         {:halt,
          socket
          |> assign(ctcp_pending: remaining)
-         |> stream_insert(
-           :chat_messages,
-           system_message("* CTCP #{type_upper} reply from #{replier}: #{display_value}")
-         )}
+         |> system_event("* CTCP #{type_upper} reply from #{replier}: #{display_value}")}
     end
   end
 
@@ -77,10 +68,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Ctcp do
         {:halt,
          socket
          |> assign(ctcp_pending: remaining)
-         |> stream_insert(
-           :chat_messages,
-           system_message("* No CTCP reply from #{target} (timed out)")
-         )}
+         |> system_event("* No CTCP reply from #{target} (timed out)")}
     end
   end
 

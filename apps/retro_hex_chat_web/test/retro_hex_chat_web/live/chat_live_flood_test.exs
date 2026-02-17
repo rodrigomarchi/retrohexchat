@@ -274,13 +274,14 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
 
       html = render(view)
       # Both should show "CTCP VERSION request from Requester"
+      # Each request appears in both chat_messages and status_messages (dual-write)
       version_count =
         html
         |> String.split("CTCP VERSION request from Requester")
         |> length()
         |> Kernel.-(1)
 
-      assert version_count == 2
+      assert version_count == 4
     end
 
     test "CTCP replies exceeding limit are silently dropped", %{conn: conn} do
@@ -293,6 +294,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
       send_ctcp_request(view, "Requester", :version, "req-3")
 
       # All 3 should show the request system message (we always display those)
+      # Each request appears in both chat_messages and status_messages (dual-write)
       html = render(view)
 
       request_count =
@@ -301,7 +303,7 @@ defmodule RetroHexChatWeb.ChatLiveFloodTest do
         |> length()
         |> Kernel.-(1)
 
-      assert request_count == 3
+      assert request_count == 6
 
       # The ctcp_reply_tracker should have 2 timestamps (replies sent for first 2 only)
       state = :sys.get_state(view.pid)

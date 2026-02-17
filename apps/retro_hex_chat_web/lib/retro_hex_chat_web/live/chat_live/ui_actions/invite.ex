@@ -4,10 +4,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Invite do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_message: 1, error_message: 1]
+    only: [system_event: 2, error_event: 2]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
@@ -31,14 +30,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Invite do
         {:channel_invite, %{channel: channel, inviter: nickname}}
       )
 
-      stream_insert(
-        socket,
-        :chat_messages,
-        system_message("* Inviting #{target} to #{channel}")
-      )
+      system_event(socket, "* Inviting #{target} to #{channel}")
     else
       {:error, msg} ->
-        stream_insert(socket, :chat_messages, error_message(msg))
+        error_event(socket, msg)
     end
   end
 
@@ -49,7 +44,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Invite do
 
     socket
     |> assign(session: new_session)
-    |> stream_insert(:chat_messages, system_message("* Auto-join on invite: #{status}"))
+    |> system_event("* Auto-join on invite: #{status}")
   end
 
   # Private helpers

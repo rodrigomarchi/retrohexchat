@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_navigate: 2, stream: 4, stream_insert: 3]
+  import Phoenix.LiveView, only: [push_navigate: 2, stream: 4]
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -14,8 +14,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
-      system_message: 1,
-      error_message: 1,
+      system_event: 2,
+      error_event: 2,
       open_pm_conversation: 2,
       show_whois_text: 2,
       safe_update_away: 4
@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     end)
 
     socket
-    |> stream_insert(:chat_messages, system_message("You are now away: #{message}"))
+    |> system_event("You are now away: #{message}")
     |> assign(session: session, away_replied_to: MapSet.new())
   end
 
@@ -57,14 +57,14 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     end)
 
     socket
-    |> stream_insert(:chat_messages, system_message("You are no longer away"))
+    |> system_event("You are no longer away")
     |> assign(session: new_session, away_replied_to: MapSet.new())
   end
 
   def handle_ui_action(socket, :set_topic, %{channel: channel, topic: topic}) do
     case Server.set_topic(channel, socket.assigns.session.nickname, topic) do
       :ok -> socket
-      {:error, msg} -> stream_insert(socket, :chat_messages, error_message(msg))
+      {:error, msg} -> error_event(socket, msg)
     end
   end
 
@@ -73,11 +73,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
       {:ok, state} ->
         topic_text = if state.topic == "", do: "No topic set", else: state.topic
 
-        stream_insert(
-          socket,
-          :chat_messages,
-          system_message("Topic for #{channel}: #{topic_text}")
-        )
+        system_event(socket, "Topic for #{channel}: #{topic_text}")
 
       {:error, _} ->
         socket
@@ -93,12 +89,12 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
         Enum.join(Enum.map(commands, &"/#{&1}"), ", ") <>
         "\nType /help <command> for details, or press F1 for the full help system."
 
-    stream_insert(socket, :chat_messages, system_message(text))
+    system_event(socket, text)
   end
 
   def handle_ui_action(socket, :show_command_help, %{help: help}) do
     text = "#{help.syntax} - #{help.description}"
-    stream_insert(socket, :chat_messages, system_message(text))
+    system_event(socket, text)
   end
 
   def handle_ui_action(socket, :set_mode, %{
@@ -108,7 +104,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
       }) do
     case Server.set_mode(channel, socket.assigns.session.nickname, mode_string, params) do
       :ok -> socket
-      {:error, msg} -> stream_insert(socket, :chat_messages, error_message(msg))
+      {:error, msg} -> error_event(socket, msg)
     end
   end
 
@@ -119,7 +115,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
       }) do
     case Server.kick(channel, socket.assigns.session.nickname, target, reason) do
       :ok -> socket
-      {:error, msg} -> stream_insert(socket, :chat_messages, error_message(msg))
+      {:error, msg} -> error_event(socket, msg)
     end
   end
 
@@ -130,7 +126,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
       }) do
     case Server.ban(channel, socket.assigns.session.nickname, target, reason) do
       :ok -> socket
-      {:error, msg} -> stream_insert(socket, :chat_messages, error_message(msg))
+      {:error, msg} -> error_event(socket, msg)
     end
   end
 
@@ -141,11 +137,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     last_knock = Map.get(knock_timestamps, channel, 0)
 
     if now - last_knock < 60_000 do
-      stream_insert(
-        socket,
-        :chat_messages,
-        error_message("Please wait before knocking on #{channel} again")
-      )
+      error_event(socket, "Please wait before knocking on #{channel} again")
     else
       case Server.knock(channel, socket.assigns.session.nickname, message) do
         :ok ->
@@ -153,10 +145,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
 
           socket
           |> assign(knock_timestamps: updated_timestamps)
-          |> stream_insert(:chat_messages, system_message("Knock sent to #{channel}"))
+          |> system_event("Knock sent to #{channel}")
 
         {:error, msg} ->
-          stream_insert(socket, :chat_messages, error_message(msg))
+          error_event(socket, msg)
       end
     end
   end
