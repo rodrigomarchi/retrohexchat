@@ -14,6 +14,7 @@ defmodule RetroHexChat.Application do
       {Registry, keys: :unique, name: RetroHexChat.Channels.ChannelRegistry},
       RetroHexChat.Channels.Supervisor,
       {Registry, keys: :unique, name: RetroHexChat.P2P.SessionRegistry},
+      RetroHexChat.P2P.RateLimitTable,
       RetroHexChat.P2P.Supervisor,
       RetroHexChat.P2P.CleanupTask,
       RetroHexChat.P2P.Turn.Supervisor,

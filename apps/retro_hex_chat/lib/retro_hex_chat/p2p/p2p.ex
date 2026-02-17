@@ -18,6 +18,9 @@ defmodule RetroHexChat.P2P do
   @spec close_session(String.t(), integer(), String.t()) :: :ok | {:error, String.t()}
   defdelegate close_session(token, user_id, reason), to: Service
 
+  @spec close_sessions_between(integer(), integer()) :: :ok
+  defdelegate close_sessions_between(user_a_id, user_b_id), to: Service
+
   @spec get_session(String.t()) :: {:ok, Session.t()} | {:error, :not_found}
   def get_session(token) do
     case Queries.get_session_by_token(token) do
@@ -40,6 +43,12 @@ defmodule RetroHexChat.P2P do
 
   @spec respond_action(String.t(), integer(), boolean()) :: :ok | {:error, atom()}
   defdelegate respond_action(token, user_id, accepted?), to: Service
+
+  @spec turn_configured?() :: boolean()
+  def turn_configured? do
+    listener_count = Application.get_env(:retro_hex_chat, :turn_listener_count, 0)
+    listener_count > 0
+  end
 
   @valid_signal_types ~w(offer answer ice-candidate)
 
@@ -70,18 +79,22 @@ defmodule RetroHexChat.P2P do
 
   @spec ice_servers(String.t()) :: [map()]
   def ice_servers(user_id) do
-    config = Config.from_application_env()
-    creds = Auth.generate_credentials(user_id, config)
+    if turn_configured?() do
+      config = Config.from_application_env()
+      creds = Auth.generate_credentials(user_id, config)
 
-    listen_port = config.listen_port
-    relay_ip = :inet.ntoa(config.relay_ip) |> to_string()
+      listen_port = config.listen_port
+      relay_ip = :inet.ntoa(config.relay_ip) |> to_string()
 
-    [
-      %{
-        urls: ["turn:#{relay_ip}:#{listen_port}?transport=udp"],
-        username: creds.username,
-        credential: creds.password
-      }
-    ]
+      [
+        %{
+          urls: ["turn:#{relay_ip}:#{listen_port}?transport=udp"],
+          username: creds.username,
+          credential: creds.password
+        }
+      ]
+    else
+      [%{urls: ["stun:stun.l.google.com:19302"]}]
+    end
   end
 end

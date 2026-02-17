@@ -70,6 +70,27 @@ describe("webrtc.js", () => {
       expect(pc).toBeInstanceOf(MockRTCPeerConnection);
       expect(pc.config.iceServers).toEqual(iceServers);
     });
+
+    it("sets iceTransportPolicy to relay when turnOnly is true", () => {
+      const iceServers = [{ urls: "turn:localhost:3478" }];
+      const pc = createPeerConnection(iceServers, { turnOnly: true });
+
+      expect(pc.config.iceTransportPolicy).toBe("relay");
+    });
+
+    it("does not set iceTransportPolicy when turnOnly is false", () => {
+      const iceServers = [{ urls: "turn:localhost:3478" }];
+      const pc = createPeerConnection(iceServers, { turnOnly: false });
+
+      expect(pc.config.iceTransportPolicy).toBeUndefined();
+    });
+
+    it("does not set iceTransportPolicy when options omitted", () => {
+      const iceServers = [{ urls: "turn:localhost:3478" }];
+      const pc = createPeerConnection(iceServers);
+
+      expect(pc.config.iceTransportPolicy).toBeUndefined();
+    });
   });
 
   describe("createOffer", () => {

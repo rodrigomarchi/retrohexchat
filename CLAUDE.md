@@ -30,6 +30,8 @@
 - No new database tables — all transfer state is ephemeral (client-side JS memory) (037-p2p-file-transfer)
 - Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild. Browser-native WebRTC APIs (getUserMedia, addTrack, replaceTrack, getStats, enumerateDevices, Picture-in-Picture). Zero new npm/Elixir dependencies. (038-audio-video-calls)
 - N/A — all call state is ephemeral (LiveView assigns + JS variables). No database migrations. (038-audio-video-calls)
+- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild, ExSTUN ~> 0.1 (existing) (039-p2p-security-help-polish)
+- PostgreSQL 16+ (existing `user_preferences.message_settings` JSONB — no new migrations), ETS (rate limit state) (039-p2p-security-help-polish)
 
 ## Project Structure
 
@@ -152,6 +154,6 @@ static analysis from day one, 98.css design fidelity, mandatory help documentati
 
 
 ## Recent Changes
+- 039-p2p-security-help-polish: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild, ExSTUN ~> 0.1 (existing)
 - 038-audio-video-calls: Added Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild. Browser-native WebRTC APIs (getUserMedia, addTrack, replaceTrack, getStats, enumerateDevices, Picture-in-Picture). Zero new npm/Elixir dependencies.
 - 037-p2p-file-transfer: Added Elixir 1.17+ / OTP 27+ (backend, minimal changes), JavaScript ES2020+ (frontend, bulk of implementation) + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), existing WebRTC infrastructure (034-036)
-- 036-webrtc-signaling: Added Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, ex_stun ~> 0.1 (NEW), 98.css

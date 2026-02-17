@@ -23,6 +23,7 @@ const WebRTCHook = {
   mounted() {
     this.pc = null;
     this.iceServers = null;
+    this.turnOnly = false;
     this.retryCount = 0;
     this.disconnectedTimer = null;
     this.role = null;
@@ -39,8 +40,9 @@ const WebRTCHook = {
 
   // --- Server event handlers ---
 
-  async _handleStartOffer({ ice_servers }) {
+  async _handleStartOffer({ ice_servers, turn_only }) {
     this.iceServers = ice_servers;
+    this.turnOnly = !!turn_only;
     this.role = "initiator";
     await this._createConnection();
 
@@ -48,8 +50,9 @@ const WebRTCHook = {
     this.pushEvent("p2p_signal", { type: "offer", sdp: offer.sdp });
   },
 
-  _handleStartAnswer({ ice_servers }) {
+  _handleStartAnswer({ ice_servers, turn_only }) {
     this.iceServers = ice_servers;
+    this.turnOnly = !!turn_only;
     this.role = "answerer";
     // Wait for offer to arrive via p2p_signal
   },
@@ -102,7 +105,9 @@ const WebRTCHook = {
       close(this.pc);
     }
 
-    this.pc = createPeerConnection(this.iceServers || []);
+    this.pc = createPeerConnection(this.iceServers || [], {
+      turnOnly: this.turnOnly,
+    });
 
     onIceCandidate(this.pc, (candidate) => {
       if (candidate) {

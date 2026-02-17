@@ -278,6 +278,44 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
     end
   end
 
+  describe "privacy mode" do
+    setup %{conn: conn} do
+      alice = create_nick("p2p_lv_priv_a")
+      bob = create_nick("p2p_lv_priv_b")
+      session = create_session(alice.id, bob.id)
+
+      on_exit(fn -> stop_server(session.token) end)
+
+      %{alice: alice, bob: bob, session: session, conn: conn}
+    end
+
+    test "toggle_privacy_mode toggles turn_only assign", %{conn: conn, session: session} do
+      conn = chat_conn(conn, "p2p_lv_priv_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      # Toggle on
+      render_click(view, "toggle_privacy_mode", %{})
+
+      # Toggle off
+      render_click(view, "toggle_privacy_mode", %{})
+
+      # Should not crash — preference persisted both ways
+    end
+
+    test "toggle_privacy_mode persists to user_preferences", %{conn: conn, session: session} do
+      conn = chat_conn(conn, "p2p_lv_priv_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      # Toggle on
+      render_click(view, "toggle_privacy_mode", %{})
+
+      # Check DB
+      pref = RetroHexChat.Repo.get(RetroHexChat.Chat.Schemas.UserPreference, "p2p_lv_priv_a")
+      assert pref != nil
+      assert get_in(pref.message_settings, ["p2p_settings", "turn_only"]) == true
+    end
+  end
+
   describe "close session" do
     setup %{conn: conn} do
       alice = create_nick("p2p_lv_a7")

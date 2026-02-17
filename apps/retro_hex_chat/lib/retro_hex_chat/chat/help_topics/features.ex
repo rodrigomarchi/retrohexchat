@@ -1738,9 +1738,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<p>O timer mostra a duracao da chamada. O indicador de qualidade mostra 4 niveis: " <>
             "Excelente, Bom, Regular, Ruim.</p>" <>
             "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a> · " <>
+            "<p><a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-media-devices\">Dispositivos de Midia</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-call-quality\">Qualidade da Chamada</a></p>"
+            "<a href=\"#\" data-help-topic=\"feature-call-quality\">Qualidade da Chamada</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-privacy-settings\">Configuracoes de Privacidade</a></p>"
       },
       %{
         id: "feature-video-call",
@@ -1764,9 +1766,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<p>Durante uma chamada de audio, clique em <strong>Adicionar Video</strong>. " <>
             "O peer precisa aceitar para a camera ser ativada.</p>" <>
             "<h4>See Also</h4>" <>
-            "<p><a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
+            "<p><a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-media-devices\">Dispositivos de Midia</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-call-quality\">Qualidade da Chamada</a></p>"
+            "<a href=\"#\" data-help-topic=\"feature-call-quality\">Qualidade da Chamada</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-privacy-settings\">Configuracoes de Privacidade</a></p>"
       },
       %{
         id: "feature-media-devices",
@@ -1819,6 +1823,119 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<p>O WebRTC ajusta automaticamente a resolucao e framerate com base nas condicoes da rede.</p>" <>
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a></p>"
+      },
+      %{
+        id: "feature-p2p-sessions",
+        title: "Sessoes P2P",
+        category: "Features",
+        keywords: ["p2p", "peer", "sessao", "session", "lobby", "consent", "bilateral", "invite"],
+        content:
+          "<h3>Sessoes P2P</h3>" <>
+            "<p>Sessoes P2P permitem comunicacao direta entre dois usuarios registrados " <>
+            "para chat, transferencia de arquivos e chamadas de audio/video.</p>" <>
+            "<h4>Criando uma Sessao</h4>" <>
+            "<pre>/p2p &lt;nickname&gt;</pre>" <>
+            "<p>Inicia uma sessao generica. O usuario alvo recebe um convite e precisa aceitar.</p>" <>
+            "<pre>/call &lt;nickname&gt;</pre>" <>
+            "<p>Inicia uma sessao de chamada de audio. Automaticamente solicita permissao apos entrada no lobby.</p>" <>
+            "<pre>/sendfile &lt;nickname&gt;</pre>" <>
+            "<p>Inicia uma sessao de transferencia de arquivo.</p>" <>
+            "<h4>Lobby</h4>" <>
+            "<p>O lobby e a sala de espera da sessao. Ambos os usuarios podem conversar " <>
+            "e solicitar acoes (chamadas, transferencias). Todas as acoes requerem <strong>consentimento bilateral</strong> — " <>
+            "o outro usuario deve aceitar antes da acao iniciar.</p>" <>
+            "<h4>Tipos de Sessao</h4>" <>
+            "<ul>" <>
+            "<li><strong>Generica</strong> — chat com opcoes de acao</li>" <>
+            "<li><strong>Transferencia de Arquivo</strong> — auto-solicita transferencia</li>" <>
+            "<li><strong>Chamada de Audio</strong> — auto-solicita chamada de audio</li>" <>
+            "<li><strong>Chamada de Video</strong> — auto-solicita chamada de video</li>" <>
+            "</ul>" <>
+            "<h4>Timeouts</h4>" <>
+            "<p>Sessoes pendentes (aguardando o peer) expiram em 5 minutos. " <>
+            "O lobby expira por inatividade apos 15 minutos. " <>
+            "A conexao WebRTC tem timeout de 30 segundos.</p>" <>
+            "<h4>Encerrando</h4>" <>
+            "<p>Clique em <strong>Encerrar Sessao</strong> ou feche a aba. " <>
+            "O outro usuario sera notificado.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-file-transfer\">Transferencia de Arquivos</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-privacy-settings\">Configuracoes de Privacidade</a></p>"
+      },
+      %{
+        id: "feature-file-transfer",
+        title: "Transferencia de Arquivos",
+        category: "Features",
+        keywords: [
+          "file",
+          "transfer",
+          "arquivo",
+          "transferencia",
+          "sendfile",
+          "drag",
+          "drop",
+          "hash",
+          "p2p"
+        ],
+        content:
+          "<h3>Transferencia de Arquivos</h3>" <>
+            "<p>Envie arquivos diretamente para outro usuario via conexao peer-to-peer (WebRTC DataChannel).</p>" <>
+            "<h4>Enviando um Arquivo</h4>" <>
+            "<pre>/sendfile &lt;nickname&gt;</pre>" <>
+            "<p>Ou na sessao P2P, clique em <strong>Enviar Arquivo</strong> e selecione o arquivo.</p>" <>
+            "<h4>Recebendo</h4>" <>
+            "<p>Ao receber uma oferta, voce ve o nome e tamanho do arquivo. " <>
+            "Clique <strong>Aceitar</strong> ou <strong>Rejeitar</strong>.</p>" <>
+            "<h4>Progresso</h4>" <>
+            "<p>A barra de progresso mostra: porcentagem, velocidade e tempo estimado. " <>
+            "Voce pode cancelar a qualquer momento.</p>" <>
+            "<h4>Verificacao de Integridade</h4>" <>
+            "<p>Apos a transferencia, o hash SHA-256 e verificado automaticamente. " <>
+            "Se falhar, voce pode tentar novamente.</p>" <>
+            "<h4>Pausa e Retomada</h4>" <>
+            "<p>Se a conexao cair brevemente, a transferencia pausa automaticamente " <>
+            "e retoma quando a conexao e restabelecida.</p>" <>
+            "<h4>Restricoes</h4>" <>
+            "<p>Extensoes bloqueadas: .exe, .bat, .cmd, .com, .msi, .scr, .pif, .vbs, .js, entre outras. " <>
+            "Tamanho maximo configuravel pelo servidor (padrao: 500 MB).</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a></p>"
+      },
+      %{
+        id: "feature-privacy-settings",
+        title: "Configuracoes de Privacidade",
+        category: "Features",
+        keywords: [
+          "privacy",
+          "privacidade",
+          "turn",
+          "relay",
+          "ip",
+          "esconder",
+          "hide",
+          "modo privado"
+        ],
+        content:
+          "<h3>Configuracoes de Privacidade</h3>" <>
+            "<p>Controle como sua conexao P2P funciona para proteger sua privacidade.</p>" <>
+            "<h4>Modo Privado (TURN-Only)</h4>" <>
+            "<p>Quando ativado, todo o trafego P2P passa pelo servidor TURN (relay), " <>
+            "impedindo que o outro usuario veja seu endereco IP real.</p>" <>
+            "<h4>Como Ativar</h4>" <>
+            "<p>Na sessao P2P, marque a caixa <strong>Modo privado (TURN-only)</strong> no rodape do lobby. " <>
+            "A preferencia e salva e lembrada para futuras sessoes.</p>" <>
+            "<h4>Tradeoff</h4>" <>
+            "<p>O modo privado adiciona latencia porque o trafego passa pelo servidor. " <>
+            "Conexoes diretas (padrao) sao mais rapidas, mas expoe o IP ao peer.</p>" <>
+            "<h4>Requisitos</h4>" <>
+            "<p>O modo privado requer que o servidor TURN esteja configurado. " <>
+            "Se nao estiver disponivel, voce vera um aviso e a conexao sera direta.</p>" <>
+            "<h4>See Also</h4>" <>
+            "<p><a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a></p>"
       }
     ]

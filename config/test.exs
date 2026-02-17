@@ -48,4 +48,7 @@ config :retro_hex_chat,
   turn_listen_port: 0,
   turn_listener_count: 0,
   turn_auth_secret: "test-auth-secret-64-bytes-long-padding-padding-padding-padding-pad",
-  turn_nonce_secret: "test-nonce-secret-64-bytes-long-padding-padding-padding-padding-pad"
+  turn_nonce_secret: "test-nonce-secret-64-bytes-long-padding-padding-padding-padding-pad",
+  # P2P rate limiting — small windows for fast tests
+  p2p_session_rate_limit: {5, 1_000},
+  signaling_rate_limiter: RetroHexChat.P2P.SignalingRateLimit.Noop

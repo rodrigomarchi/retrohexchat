@@ -17,12 +17,15 @@ config :retro_hex_chat,
   p2p_token_secret: "p2p-dev-secret-key-base-at-least-64-bytes-long-for-phoenix-token-signing",
   # TURN server compile-time config
   turn_realm: "retro-hex-chat",
-  turn_credentials_lifetime: 86_400,
+  turn_credentials_lifetime: 3_600,
   turn_nonce_lifetime: 3_600_000_000_000,
   turn_default_allocation_lifetime: 600,
   turn_max_allocation_lifetime: 3_600,
   turn_permission_lifetime: 300,
-  turn_channel_lifetime: 600
+  turn_channel_lifetime: 600,
+  # P2P rate limiting
+  p2p_session_rate_limit: {5, 600_000},
+  signaling_rate_limiter: RetroHexChat.P2P.SignalingRateLimit.ETS
 
 config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],

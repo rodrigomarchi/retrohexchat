@@ -19,6 +19,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
   attr :retry_attempt, :integer, default: nil
   attr :file_transfer, :map, default: nil
   attr :call, :map, default: nil
+  attr :turn_only, :boolean, default: false
+  attr :turn_configured, :boolean, default: false
 
   @spec p2p_lobby(map()) :: Phoenix.LiveView.Rendered.t()
   def p2p_lobby(assigns) do
@@ -72,6 +74,21 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
         </div>
 
         <div class="p2p-lobby__footer">
+          <div
+            :if={@turn_configured || @turn_only}
+            class="p2p-lobby__privacy"
+          >
+            <label class="p2p-lobby__privacy-label">
+              <input
+                type="checkbox"
+                checked={@turn_only}
+                phx-click="toggle_privacy_mode"
+              /> Modo privado (TURN-only)
+            </label>
+            <span :if={!@turn_configured} class="p2p-lobby__privacy-warning">
+              Servidor TURN nao configurado
+            </span>
+          </div>
           <button class="p2p-lobby__close-btn" phx-click="close_session">
             Encerrar Sessao
           </button>

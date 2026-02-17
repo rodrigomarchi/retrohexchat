@@ -205,13 +205,46 @@ defmodule RetroHexChat.P2P.ServiceTest do
         }
       ])
 
-      assert {:error, "Session cannot be created"} =
+      assert {:error, "Usuário não disponível"} =
                Service.create_session(alice.id, bob.id)
     end
 
     test "session not found returns error" do
       assert {:error, "Session not found"} =
                Service.join_session("nonexistent-token", 1)
+    end
+  end
+
+  describe "close_sessions_between/2" do
+    test "closes non-terminal sessions between two users" do
+      alice = create_registered_nick("alice_csb1")
+      bob = create_registered_nick("bob_csb1")
+
+      {:ok, %{session: session}} = Service.create_session(alice.id, bob.id)
+
+      assert :ok = Service.close_sessions_between(alice.id, bob.id)
+
+      updated = Queries.get_session_by_token(session.token)
+      assert updated.status == "closed"
+      assert updated.closed_reason == "user_blocked"
+    end
+
+    test "does not affect already-closed sessions" do
+      alice = create_registered_nick("alice_csb2")
+      bob = create_registered_nick("bob_csb2")
+
+      {:ok, %{session: session}} = Service.create_session(alice.id, bob.id)
+      :ok = Service.close_session(session.token, alice.id, "user_closed")
+
+      # Should not crash
+      assert :ok = Service.close_sessions_between(alice.id, bob.id)
+    end
+
+    test "returns ok when no sessions exist" do
+      alice = create_registered_nick("alice_csb3")
+      bob = create_registered_nick("bob_csb3")
+
+      assert :ok = Service.close_sessions_between(alice.id, bob.id)
     end
   end
 

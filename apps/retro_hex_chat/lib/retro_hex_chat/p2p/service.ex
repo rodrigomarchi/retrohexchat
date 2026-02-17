@@ -5,7 +5,7 @@ defmodule RetroHexChat.P2P.Service do
 
   require Logger
 
-  alias RetroHexChat.P2P.{Policy, Queries, SessionServer, SessionToken, Supervisor}
+  alias RetroHexChat.P2P.{Policy, Queries, RateLimiter, SessionServer, SessionToken, Supervisor}
   alias RetroHexChat.P2P.Schema.Session
 
   @pubsub RetroHexChat.PubSub
@@ -15,7 +15,8 @@ defmodule RetroHexChat.P2P.Service do
   def create_session(creator_id, peer_id, opts \\ []) do
     session_type = Keyword.get(opts, :session_type, "generic")
 
-    with :ok <- Policy.can_create?(creator_id, peer_id),
+    with :ok <- check_rate_limit(creator_id),
+         :ok <- Policy.can_create?(creator_id, peer_id),
          token = SessionToken.sign(creator_id, peer_id, 0),
          {:ok, session} <- insert_session(token, creator_id, peer_id, session_type),
          {:ok, _pid} <- Supervisor.start_child(session.token) do
@@ -57,6 +58,31 @@ defmodule RetroHexChat.P2P.Service do
           error
       end
     end
+  end
+
+  @spec close_sessions_between(integer(), integer()) :: :ok
+  def close_sessions_between(user_a_id, user_b_id) do
+    sessions = Queries.active_sessions_between(user_a_id, user_b_id)
+
+    for session <- sessions do
+      case SessionServer.close(session.token, user_a_id, "user_blocked") do
+        :ok ->
+          :ok
+
+        {:error, "Session process not running"} ->
+          now = DateTime.utc_now()
+
+          Queries.update_status(session, "closed", %{
+            closed_at: now,
+            closed_reason: "user_blocked"
+          })
+
+        _error ->
+          :ok
+      end
+    end
+
+    :ok
   end
 
   @valid_action_types ~w(audio_call video_call file_transfer)
@@ -154,5 +180,15 @@ defmodule RetroHexChat.P2P.Service do
 
     from(r in "registered_nicks", where: r.id == ^user_id, select: r.nickname)
     |> RetroHexChat.Repo.one()
+  end
+
+  defp check_rate_limit(user_id) do
+    case RateLimiter.check_session_rate(user_id) do
+      :ok ->
+        :ok
+
+      {:error, {:rate_limited, remaining_seconds}} ->
+        {:error, "Você criou muitas sessões. Tente novamente em #{remaining_seconds} minutos"}
+    end
   end
 end

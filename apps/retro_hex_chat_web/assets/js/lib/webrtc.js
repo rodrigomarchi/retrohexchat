@@ -15,10 +15,16 @@ export const RETRY_CONFIG = {
 /**
  * Create a new RTCPeerConnection with given ICE server config.
  * @param {RTCIceServer[]} iceServers
+ * @param {Object} [options]
+ * @param {boolean} [options.turnOnly] - Force relay-only transport (hides IP)
  * @returns {RTCPeerConnection}
  */
-export function createPeerConnection(iceServers) {
-  return new RTCPeerConnection({ iceServers });
+export function createPeerConnection(iceServers, options = {}) {
+  const config = { iceServers };
+  if (options.turnOnly) {
+    config.iceTransportPolicy = "relay";
+  }
+  return new RTCPeerConnection(config);
 }
 
 /**
