@@ -4,10 +4,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_message: 1, error_message: 1, maybe_persist_perform_list: 2]
+    only: [system_event: 2, error_event: 2, maybe_persist_perform_list: 2]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.PerformList
@@ -25,12 +24,12 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
     entries = PerformList.entries(session.perform_list)
 
     if entries == [] do
-      stream_insert(socket, :chat_messages, system_message("Your perform list is empty"))
+      system_event(socket, "Your perform list is empty")
     else
       Enum.with_index(entries)
       |> Enum.reduce(socket, fn {entry, idx}, acc ->
         masked = PerformList.mask_command(entry.command)
-        stream_insert(acc, :chat_messages, system_message("  #{idx}: #{masked}"))
+        system_event(acc, "  #{idx}: #{masked}")
       end)
     end
   end
@@ -46,35 +45,19 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
         socket
         |> assign(session: new_session)
         |> maybe_persist_perform_list(new_session)
-        |> stream_insert(:chat_messages, system_message("* Added to perform list: #{masked}"))
+        |> system_event("* Added to perform list: #{masked}")
 
       {:error, :invalid_command} ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          error_message("Invalid command. Commands must start with /")
-        )
+        error_event(socket, "Invalid command. Commands must start with /")
 
       {:error, :disallowed_command} ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          error_message("That command cannot be added to the perform list")
-        )
+        error_event(socket, "That command cannot be added to the perform list")
 
       {:error, :command_too_long} ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          error_message("Command too long (max 500 characters)")
-        )
+        error_event(socket, "Command too long (max 500 characters)")
 
       {:error, :list_full} ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          error_message("Perform list is full (max 50 commands)")
-        )
+        error_event(socket, "Perform list is full (max 50 commands)")
     end
   end
 
@@ -88,17 +71,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
         socket
         |> assign(session: new_session)
         |> maybe_persist_perform_list(new_session)
-        |> stream_insert(
-          :chat_messages,
-          system_message("* Removed command at position #{position}")
-        )
+        |> system_event("* Removed command at position #{position}")
 
       {:error, :not_found} ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          error_message("No command at position #{position}")
-        )
+        error_event(socket, "No command at position #{position}")
     end
   end
 
@@ -112,20 +88,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
         socket
         |> assign(session: new_session)
         |> maybe_persist_perform_list(new_session)
-        |> stream_insert(
-          :chat_messages,
-          system_message("* Moved command from position #{from} to #{to}")
-        )
+        |> system_event("* Moved command from position #{from} to #{to}")
 
       {:error, :same_position} ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          error_message("Source and destination are the same")
-        )
+        error_event(socket, "Source and destination are the same")
 
       {:error, :invalid_position} ->
-        stream_insert(socket, :chat_messages, error_message("Invalid position"))
+        error_event(socket, "Invalid position")
     end
   end
 
@@ -137,6 +106,6 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
     socket
     |> assign(session: new_session)
     |> maybe_persist_perform_list(new_session)
-    |> stream_insert(:chat_messages, system_message("* Perform list cleared"))
+    |> system_event("* Perform list cleared")
   end
 end

@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
   import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_message: 1, push_status_message: 3]
+    only: [system_event: 2, push_status_message: 3]
 
   alias RetroHexChat.Accounts.Session
 
@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
     session = socket.assigns.session
 
     if session.active_channel == channel and message do
-      {:halt, stream_insert(socket, :chat_messages, system_message("Welcome message updated."))}
+      {:halt, system_event(socket, "Welcome message updated.")}
     else
       {:halt, socket}
     end

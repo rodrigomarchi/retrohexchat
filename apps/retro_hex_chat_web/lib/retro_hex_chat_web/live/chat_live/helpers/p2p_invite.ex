@@ -6,8 +6,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.P2pInvite do
   to the initiator.
   """
 
-  import Phoenix.LiveView, only: [push_event: 3, stream_insert: 3]
-  import RetroHexChatWeb.ChatLive.Helpers, only: [system_message: 1]
+  import Phoenix.LiveView, only: [push_event: 3]
+
+  alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
   alias RetroHexChat.Chat.Service
 
@@ -31,7 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.P2pInvite do
     confirm_msg = "Convite P2P enviado para #{target}. Aguardando resposta..."
 
     socket
-    |> stream_insert(:chat_messages, system_message(confirm_msg))
+    |> Messages.system_event(confirm_msg)
     |> push_event("scroll_to_bottom", %{})
   end
 

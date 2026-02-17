@@ -3,8 +3,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   Whois and Whowas text output helpers.
   """
 
-  import Phoenix.LiveView, only: [stream_insert: 3]
-
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{TimeFormatter, UserBio}
@@ -18,12 +16,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
     target_meta = find_user_presence(target, session.channels)
 
     if target_meta == nil and target != session.nickname do
-      stream_insert(socket, :chat_messages, Messages.system_message("* #{target} is not online."))
+      Messages.system_event(socket, "* #{target} is not online.")
     else
       lines = build_whois_lines(socket, session, target, target_meta)
 
       Enum.reduce(lines, socket, fn line, acc ->
-        stream_insert(acc, :chat_messages, Messages.system_message(line))
+        Messages.system_event(acc, line)
       end)
     end
   end
@@ -48,15 +46,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
         lines = lines ++ ["-----------------------------"]
 
         Enum.reduce(lines, socket, fn line, acc ->
-          stream_insert(acc, :chat_messages, Messages.system_message(line))
+          Messages.system_event(acc, line)
         end)
 
       {:error, :not_found} ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          Messages.system_message("* No whowas information available for #{target}.")
-        )
+        Messages.system_event(socket, "* No whowas information available for #{target}.")
     end
   end
 

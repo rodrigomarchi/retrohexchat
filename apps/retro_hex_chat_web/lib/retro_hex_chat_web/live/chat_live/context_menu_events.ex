@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2, stream_insert: 3]
+  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2]
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -34,8 +34,8 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
       maybe_persist_contacts: 2,
       push_status_message: 3,
       maybe_persist_ignore_list: 2,
-      system_message: 1,
-      error_message: 1,
+      system_event: 2,
+      error_event: 2,
       cancel_ignore_timer: 2,
       rebuild_nick_color_fn: 2,
       maybe_persist_nick_colors: 2
@@ -176,13 +176,13 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
          |> close_context_menu()
          |> assign(session: new_session)
          |> maybe_persist_ignore_list(new_session)
-         |> stream_insert(:chat_messages, system_message("* #{nick} is now ignored"))}
+         |> system_event("* #{nick} is now ignored")}
 
       {:error, :list_full} ->
         {:halt,
          socket
          |> close_context_menu()
-         |> stream_insert(:chat_messages, error_message("Ignore list is full (max 100 entries)"))}
+         |> error_event("Ignore list is full (max 100 entries)")}
 
       {:error, _reason} ->
         {:halt, close_context_menu(socket)}
@@ -203,7 +203,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
          |> cancel_ignore_timer(nick)
          |> cancel_auto_ignore_with_cooldown(nick)
          |> maybe_persist_ignore_list(new_session)
-         |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))}
+         |> system_event("* #{nick} is no longer ignored")}
 
       {:error, :not_found} ->
         {:halt, close_context_menu(socket)}
@@ -310,7 +310,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
            |> close_chat_context_menu()
            |> assign(session: new_session)
            |> maybe_persist_ignore_list(new_session)
-           |> stream_insert(:chat_messages, system_message("* #{nick} is now ignored"))}
+           |> system_event("* #{nick} is now ignored")}
 
         {:error, _reason} ->
           {:halt, close_chat_context_menu(socket)}
@@ -511,7 +511,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
          |> close_chat_context_menu()
          |> assign(session: new_session)
          |> maybe_persist_ignore_list(new_session)
-         |> stream_insert(:chat_messages, system_message("* #{nick} is now ignored"))}
+         |> system_event("* #{nick} is now ignored")}
 
       {:error, _reason} ->
         {:halt, close_chat_context_menu(socket)}
@@ -605,7 +605,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
         |> assign(session: new_session)
         |> cancel_ignore_timer(nick)
         |> maybe_persist_ignore_list(new_session)
-        |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))
+        |> system_event("* #{nick} is no longer ignored")
 
       {:error, :not_found} ->
         socket
@@ -670,7 +670,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
 
       {:error, message} ->
         socket
-        |> stream_insert(:chat_messages, error_message(message))
+        |> error_event(message)
     end
   end
 

@@ -48,11 +48,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         |> SessionHelpers.push_reconnect_state()
 
       {:error, reason} ->
-        Phoenix.LiveView.stream_insert(
-          socket,
-          :chat_messages,
-          Messages.error_message(reason)
-        )
+        Messages.error_event(socket, reason)
     end
   end
 
@@ -176,10 +172,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
           socket
           |> assign(session: new_session)
-          |> Phoenix.LiveView.stream_insert(
-            :chat_messages,
-            Messages.system_message("[Welcome] #{message}")
-          )
+          |> Messages.system_event("[Welcome] #{message}")
         else
           socket
         end
@@ -227,7 +220,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         socket
 
       {:error, msg} ->
-        Phoenix.LiveView.stream_insert(socket, :chat_messages, Messages.error_message(msg))
+        Messages.error_event(socket, msg)
     end
   end
 

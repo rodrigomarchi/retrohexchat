@@ -4,10 +4,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_message: 1, push_status_message: 3]
+    only: [system_event: 2, push_status_message: 3]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
@@ -24,14 +23,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
 
     case Server.set_welcome(channel, message, nickname) do
       :ok ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          system_message("Welcome message for #{channel} has been set.")
-        )
+        system_event(socket, "Welcome message for #{channel} has been set.")
 
       {:error, msg} ->
-        stream_insert(socket, :chat_messages, system_message("Error: #{msg}"))
+        system_event(socket, "Error: #{msg}")
     end
   end
 
@@ -40,14 +35,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
 
     case Server.clear_welcome(channel, nickname) do
       :ok ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          system_message("Welcome message for #{channel} has been cleared.")
-        )
+        system_event(socket, "Welcome message for #{channel} has been cleared.")
 
       {:error, msg} ->
-        stream_insert(socket, :chat_messages, system_message("Error: #{msg}"))
+        system_event(socket, "Error: #{msg}")
     end
   end
 

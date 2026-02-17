@@ -10,12 +10,11 @@ defmodule RetroHexChatWeb.ChatLive.IgnoreEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
-      system_message: 1,
-      error_message: 1,
+      system_event: 2,
+      error_event: 2,
       maybe_persist_ignore_list: 2,
       cancel_ignore_timer: 2,
       maybe_start_ignore_timer: 3,
@@ -69,11 +68,10 @@ defmodule RetroHexChatWeb.ChatLive.IgnoreEvents do
          |> cancel_ignore_timer(nick)
          |> maybe_start_ignore_timer(nick, duration)
          |> maybe_persist_ignore_list(new_session)
-         |> stream_insert(:chat_messages, system_message("* #{nick} is now ignored (#{type})"))}
+         |> system_event("* #{nick} is now ignored (#{type})")}
 
       {:error, reason} ->
-        {:halt,
-         stream_insert(socket, :chat_messages, error_message("Failed to add ignore: #{reason}"))}
+        {:halt, error_event(socket, "Failed to add ignore: #{reason}")}
     end
   end
 
@@ -93,7 +91,7 @@ defmodule RetroHexChatWeb.ChatLive.IgnoreEvents do
            |> cancel_ignore_timer(nick)
            |> cancel_auto_ignore_with_cooldown(nick)
            |> maybe_persist_ignore_list(new_session)
-           |> stream_insert(:chat_messages, system_message("* #{nick} is no longer ignored"))}
+           |> system_event("* #{nick} is no longer ignored")}
 
         {:error, :not_found} ->
           {:halt, socket}

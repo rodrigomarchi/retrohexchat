@@ -8,7 +8,6 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
   import RetroHexChatWeb.ChatLive.Helpers
 
   alias RetroHexChat.Channels.Server
@@ -19,8 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
 
     case find_invite(pending, channel) do
       nil ->
-        {:halt,
-         stream_insert(socket, :chat_messages, error_message("This invitation has expired"))}
+        {:halt, error_event(socket, "This invitation has expired")}
 
       invite ->
         Process.cancel_timer(invite.timer_ref)

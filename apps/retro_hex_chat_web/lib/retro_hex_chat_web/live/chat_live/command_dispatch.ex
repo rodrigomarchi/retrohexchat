@@ -16,10 +16,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
-      system_message: 1,
-      error_message: 1,
-      service_message: 2,
       push_status_message: 3,
+      system_event: 2,
+      error_event: 2,
+      service_event: 3,
       join_channel: 3,
       join_channel: 4,
       part_channel: 2,
@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         handle_dispatch_result(socket, session, result)
 
       {:error, msg} ->
-        stream_insert(socket, :chat_messages, error_message(msg))
+        error_event(socket, msg)
     end
   end
 
@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         assign(socket, reply_to: nil)
 
       {:error, reason} ->
-        stream_insert(socket, :chat_messages, error_message(reason))
+        error_event(socket, reason)
     end
   end
 
@@ -143,7 +143,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       {:error, reason} ->
         socket
         |> push_event("message_failed", %{temp_id: temp_id, reason: reason})
-        |> stream_insert(:chat_messages, error_message(reason))
+        |> error_event(reason)
     end
   end
 
@@ -259,10 +259,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   end
 
   defp handle_dispatch_result(socket, _session, {:ok, :system, %{content: text}}),
-    do: stream_insert(socket, :chat_messages, service_message(detect_service_author(text), text))
+    do: service_event(socket, detect_service_author(text), text)
 
   defp handle_dispatch_result(socket, _session, {:error, msg}),
-    do: stream_insert(socket, :chat_messages, error_message(msg))
+    do: error_event(socket, msg)
 
   defp handle_dispatch_result(socket, _session, _other), do: socket
 
@@ -278,13 +278,13 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
                "action"
              ) do
           {:ok, _pm} -> socket
-          {:error, reason} -> stream_insert(socket, :chat_messages, error_message(reason))
+          {:error, reason} -> error_event(socket, reason)
         end
 
       session.active_channel ->
         case Server.send_message(session.active_channel, session.nickname, content, :action) do
           :ok -> socket
-          {:error, reason} -> stream_insert(socket, :chat_messages, error_message(reason))
+          {:error, reason} -> error_event(socket, reason)
         end
 
       true ->
@@ -343,20 +343,11 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
     case type do
       :ping ->
-        stream_insert(
-          socket,
-          :chat_messages,
-          system_message("* CTCP PING reply from #{session.nickname}: 0ms")
-        )
+        system_event(socket, "* CTCP PING reply from #{session.nickname}: 0ms")
 
       _ ->
         type_upper = type |> Atom.to_string() |> String.upcase()
-
-        stream_insert(
-          socket,
-          :chat_messages,
-          system_message("* CTCP #{type_upper} reply from #{session.nickname}: #{value}")
-        )
+        system_event(socket, "* CTCP #{type_upper} reply from #{session.nickname}: #{value}")
     end
   end
 
@@ -390,7 +381,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         assign(socket, ctcp_pending: pending)
 
       {:error, msg} ->
-        stream_insert(socket, :chat_messages, error_message(msg))
+        error_event(socket, msg)
     end
   end
 
@@ -410,12 +401,9 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       {:ok, assign(socket, ctcp_rate_limits: updated)}
     else
       {:error,
-       stream_insert(
+       system_event(
          socket,
-         :chat_messages,
-         system_message(
-           "* CTCP rate limit reached for #{target}. Please wait before sending another request."
-         )
+         "* CTCP rate limit reached for #{target}. Please wait before sending another request."
        )}
     end
   end

@@ -4,10 +4,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_message: 1, show_whowas_text: 2, safe_update_bio: 3]
+    only: [system_event: 2, show_whowas_text: 2, safe_update_bio: 3]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{NoticeRouting, UserBio}
@@ -22,11 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
     session = socket.assigns.session
     routing = Session.get_notice_routing(session)
 
-    stream_insert(
-      socket,
-      :chat_messages,
-      system_message("* Notice routing is set to: #{routing}")
-    )
+    system_event(socket, "* Notice routing is set to: #{routing}")
   end
 
   def handle_ui_action(socket, :notice_routing_set, %{routing: routing}) do
@@ -41,10 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
 
     socket
     |> assign(session: new_session)
-    |> stream_insert(
-      :chat_messages,
-      system_message("* Notice routing set to: #{routing}")
-    )
+    |> system_event("* Notice routing set to: #{routing}")
   end
 
   def handle_ui_action(socket, :set_bio, %{text: text, truncated: truncated}) do
@@ -66,7 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
 
     socket
     |> assign(session: new_session)
-    |> stream_insert(:chat_messages, system_message("* #{msg}"))
+    |> system_event("* #{msg}")
   end
 
   def handle_ui_action(socket, :view_bio, _payload) do
@@ -78,7 +70,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
         bio -> "Your bio: #{bio}"
       end
 
-    stream_insert(socket, :chat_messages, system_message("* #{msg}"))
+    system_event(socket, "* #{msg}")
   end
 
   def handle_ui_action(socket, :clear_bio, _payload) do
@@ -95,6 +87,6 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
 
     socket
     |> assign(session: new_session)
-    |> stream_insert(:chat_messages, system_message("* Bio cleared."))
+    |> system_event("* Bio cleared.")
   end
 end

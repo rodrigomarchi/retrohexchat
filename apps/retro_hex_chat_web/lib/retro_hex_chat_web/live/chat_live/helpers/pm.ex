@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream: 4, stream_insert: 3]
+  import Phoenix.LiveView, only: [stream: 4]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
         assign(socket, session: new_session)
 
       {:error, reason} ->
-        stream_insert(socket, :chat_messages, Messages.error_message(reason))
+        Messages.error_event(socket, reason)
     end
   end
 
@@ -83,7 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
             socket
 
           {:error, reason} ->
-            stream_insert(socket, :chat_messages, Messages.error_message(reason))
+            Messages.error_event(socket, reason)
         end
 
       true ->
@@ -111,10 +111,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
       socket
     else
-      stream_insert(
+      Messages.error_event(
         socket,
-        :chat_messages,
-        Messages.error_message("You must be a member of #{channel} to send notices there")
+        "You must be a member of #{channel} to send notices there"
       )
     end
   end
@@ -134,7 +133,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
         socket
 
       {:error, msg} ->
-        stream_insert(socket, :chat_messages, Messages.error_message(msg))
+        Messages.error_event(socket, msg)
     end
   end
 
@@ -148,7 +147,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
             socket
 
           {:error, reason} ->
-            stream_insert(socket, :chat_messages, Messages.error_message(reason))
+            Messages.error_event(socket, reason)
         end
 
       session.active_channel ->
@@ -157,7 +156,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
             socket
 
           {:error, reason} ->
-            stream_insert(socket, :chat_messages, Messages.error_message(reason))
+            Messages.error_event(socket, reason)
         end
 
       true ->

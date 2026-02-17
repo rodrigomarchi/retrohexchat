@@ -10,12 +10,12 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream: 4, stream_insert: 3]
+  import Phoenix.LiveView, only: [stream: 4]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
-      system_message: 1,
-      error_message: 1,
+      system_event: 2,
+      error_event: 2,
       maybe_persist_ignore_list: 2,
       join_channel: 4,
       load_channel_users: 2,
@@ -105,10 +105,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
          socket
          |> assign(session: new_session, ignore_timers: timers)
          |> maybe_persist_ignore_list(new_session)
-         |> stream_insert(
-           :chat_messages,
-           system_message("* #{nickname} is no longer ignored (timer expired)")
-         )}
+         |> system_event("* #{nickname} is no longer ignored (timer expired)")}
 
       {:error, :not_found} ->
         {:halt, socket}
@@ -138,10 +135,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
            flood_tracker: new_tracker
          )
          |> maybe_persist_ignore_list(new_session)
-         |> stream_insert(
-           :chat_messages,
-           system_message("* #{nickname} is no longer auto-ignored")
-         )}
+         |> system_event("* #{nickname} is no longer auto-ignored")}
 
       {:error, :not_found} ->
         new_active = Map.delete(auto_state.active, sender_key)
@@ -162,7 +156,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
 
       socket =
         socket
-        |> stream_insert(:chat_messages, system_message("* Performing: #{masked}"))
+        |> system_event("* Performing: #{masked}")
         |> execute_perform_command(session, entry.command)
 
       Process.send_after(self(), {:execute_perform, index + 1}, 100)
@@ -186,7 +180,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
 
       socket =
         socket
-        |> stream_insert(:chat_messages, system_message("* Auto-joining #{channel}..."))
+        |> system_event("* Auto-joining #{channel}...")
         |> join_channel(channel, session, key)
 
       Process.send_after(self(), {:execute_autojoin, index + 1}, 100)
@@ -212,10 +206,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
           socket
         else
           socket
-          |> stream_insert(
-            :chat_messages,
-            system_message("* Auto-joining favorite #{channel}...")
-          )
+          |> system_event("* Auto-joining favorite #{channel}...")
           |> join_channel(channel, session, entry.password)
         end
 
@@ -239,7 +230,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
           socket
         else
           socket
-          |> stream_insert(:chat_messages, system_message("* Rejoining #{channel}..."))
+          |> system_event("* Rejoining #{channel}...")
           |> join_channel(channel, session, nil)
         end
 
@@ -300,10 +291,9 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
         dispatch_command(socket, session, name, args)
 
       {:message, _text} ->
-        stream_insert(
+        error_event(
           socket,
-          :chat_messages,
-          error_message("Perform: invalid command format: #{PerformList.mask_command(command)}")
+          "Perform: invalid command format: #{PerformList.mask_command(command)}"
         )
     end
   end
