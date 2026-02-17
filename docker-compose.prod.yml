@@ -10,6 +10,14 @@ services:
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
       - PHX_HOST=${PHX_HOST}
       - PORT=${PORT:-4000}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.retro-hex-chat.rule=Host(`${PHX_HOST}`)
+      - traefik.http.routers.retro-hex-chat.entryPoints=https
+      - traefik.http.routers.retro-hex-chat.tls=true
+      - traefik.http.routers.retro-hex-chat.tls.certresolver=letsencrypt
+      - traefik.http.services.retro-hex-chat.loadbalancer.server.port=4000
+      - traefik.http.services.retro-hex-chat.loadbalancer.server.scheme=http
     healthcheck:
       test: ["CMD-SHELL", "curl -sf http://localhost:${PORT:-4000}/ || exit 1"]
       interval: 30s
