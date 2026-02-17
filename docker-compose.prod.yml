@@ -15,7 +15,7 @@ services:
       - TURN_RELAY_PORT_MIN=49152
       - TURN_RELAY_PORT_MAX=49651
     healthcheck:
-      test: ["CMD-SHELL", "curl -sf http://localhost:${PORT:-4000}/ || exit 1"]
+      test: ["CMD-SHELL", "curl -sf http://localhost:${PORT:-4000}/api/healthz || exit 1"]
       interval: 30s
       timeout: 5s
       retries: 3

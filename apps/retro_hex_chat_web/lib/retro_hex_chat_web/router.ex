@@ -21,6 +21,12 @@ defmodule RetroHexChatWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  scope "/api", RetroHexChatWeb do
+    pipe_through :api
+
+    get "/healthz", HealthController, :index
+  end
+
   scope "/landing", RetroHexChatWeb do
     pipe_through :landing
 
