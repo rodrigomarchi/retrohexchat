@@ -52,3 +52,6 @@ config :retro_hex_chat,
   # P2P rate limiting — small windows for fast tests
   p2p_session_rate_limit: {5, 1_000},
   signaling_rate_limiter: RetroHexChat.P2P.SignalingRateLimit.Noop
+
+# Basic auth for LiveDashboard
+config :retro_hex_chat_web, :basic_auth, username: "admin", password: "retroforever"

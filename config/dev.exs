@@ -74,8 +74,8 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
     ]
   ]
 
-# Enable dev routes for dashboard and mailbox
-config :retro_hex_chat_web, dev_routes: true
+# Basic auth for LiveDashboard
+config :retro_hex_chat_web, :basic_auth, username: "admin", password: "retroforever"
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :default_formatter, format: "[$level] $message\n"
