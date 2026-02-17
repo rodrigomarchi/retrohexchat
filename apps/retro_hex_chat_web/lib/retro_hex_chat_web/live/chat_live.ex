@@ -153,9 +153,10 @@ defmodule RetroHexChatWeb.ChatLive do
         target_url: nil,
         target_channel: nil,
         target_message: nil,
-        has_selection: false
+        has_selection: false,
+        is_target_registered: false
       },
-      context_menu: %{visible: false, x: 0, y: 0, target_nick: nil},
+      context_menu: %{visible: false, x: 0, y: 0, target_nick: nil, is_target_registered: false},
       nick_color_fn: build_nick_color_fn(session),
       nick_colors_selected: nil,
       has_more: true,

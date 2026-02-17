@@ -1263,8 +1263,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<p>Right-click on elements in the chat area and treebar to access context-specific actions.</p>" <>
             "<h4>Nick Menu (Chat Area)</h4>" <>
             "<p>Right-click a nickname in a chat message to see: Private Message, Whois, Copy Nick, " <>
-            "Ignore/Unignore, Add to Address Book, Set Nick Color. Channel operators also see: " <>
-            "Kick, Ban, Give Voice (+v), Give Op (+o).</p>" <>
+            "Ignore/Unignore, Add to Address Book, Set Nick Color. " <>
+            "Registered users also see P2P actions: Sessao P2P, Chamada de Audio, Chamada de Video, Enviar Arquivo " <>
+            "(disabled if target is not registered or is yourself). " <>
+            "Channel operators also see: Kick, Ban, Give Voice (+v), Give Op (+o).</p>" <>
             "<h4>URL Menu</h4>" <>
             "<p>Right-click a URL in a chat message to see: Open Link, Copy URL, Save to URL List.</p>" <>
             "<h4>Channel Menu</h4>" <>
@@ -1283,11 +1285,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<h4>Notes</h4>" <>
             "<p>Menus automatically reposition if they would go off-screen. " <>
             "The browser's default right-click menu is preserved in the input field. " <>
-            "Self-targeting actions (Kick, Ban, Ignore on yourself) appear disabled.</p>" <>
+            "Self-targeting actions (Kick, Ban, Ignore, P2P actions on yourself) appear disabled.</p>" <>
             "<h4>See Also</h4>" <>
             "<p><a href=\"#\" data-help-topic=\"feature-custom-menus\">Custom Menus</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-favorites\">Favorites</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-interactive-elements\">Interactive Chat Elements</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-p2p-sessions\">Sessoes P2P</a> · " <>
             "<a href=\"#\" data-help-topic=\"keyboard-shortcuts\">Keyboard Shortcuts</a></p>"
       },
       %{
@@ -1835,12 +1838,16 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<p>Sessoes P2P permitem comunicacao direta entre dois usuarios registrados " <>
             "para chat, transferencia de arquivos e chamadas de audio/video.</p>" <>
             "<h4>Criando uma Sessao</h4>" <>
+            "<p><strong>Via comandos:</strong></p>" <>
             "<pre>/p2p &lt;nickname&gt;</pre>" <>
             "<p>Inicia uma sessao generica. O usuario alvo recebe um convite e precisa aceitar.</p>" <>
             "<pre>/call &lt;nickname&gt;</pre>" <>
             "<p>Inicia uma sessao de chamada de audio. Automaticamente solicita permissao apos entrada no lobby.</p>" <>
             "<pre>/sendfile &lt;nickname&gt;</pre>" <>
             "<p>Inicia uma sessao de transferencia de arquivo.</p>" <>
+            "<p><strong>Via context menu:</strong> Clique com o botao direito em um nick (no nicklist ou no chat) " <>
+            "e selecione Sessao P2P, Chamada de Audio, Chamada de Video ou Enviar Arquivo. " <>
+            "Itens P2P aparecem apenas para usuarios registrados e ficam desabilitados se o alvo nao for registrado.</p>" <>
             "<h4>Lobby</h4>" <>
             "<p>O lobby e a sala de espera da sessao. Ambos os usuarios podem conversar " <>
             "e solicitar acoes (chamadas, transferencias). Todas as acoes requerem <strong>consentimento bilateral</strong> — " <>
@@ -1863,7 +1870,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "<p><a href=\"#\" data-help-topic=\"feature-file-transfer\">Transferencia de Arquivos</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-audio-call\">Chamada de Audio</a> · " <>
             "<a href=\"#\" data-help-topic=\"feature-video-call\">Chamada de Video</a> · " <>
-            "<a href=\"#\" data-help-topic=\"feature-privacy-settings\">Configuracoes de Privacidade</a></p>"
+            "<a href=\"#\" data-help-topic=\"feature-privacy-settings\">Configuracoes de Privacidade</a> · " <>
+            "<a href=\"#\" data-help-topic=\"feature-context-menus\">Context Menus</a></p>"
       },
       %{
         id: "feature-file-transfer",
