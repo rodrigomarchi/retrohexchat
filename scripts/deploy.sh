@@ -63,6 +63,8 @@ echo "==> Loading asdf environment..."
 # shellcheck disable=SC1091
 source "$HOME/.asdf/asdf.sh" 2>/dev/null || source /opt/asdf-vm/asdf.sh 2>/dev/null || true
 
+export MIX_ENV=prod
+
 echo "==> Installing Elixir deps..."
 mix local.hex --force --if-missing
 mix local.rebar --force --if-missing
@@ -72,13 +74,13 @@ echo "==> Installing Node.js deps..."
 npm install --prefix apps/retro_hex_chat_web/assets
 
 echo "==> Compiling (MIX_ENV=prod)..."
-MIX_ENV=prod mix compile
+mix compile
 
 echo "==> Building assets..."
-MIX_ENV=prod mix assets.deploy
+mix assets.deploy
 
 echo "==> Building release..."
-MIX_ENV=prod mix release retro_hex_chat --overwrite
+mix release retro_hex_chat --overwrite
 
 # ------------------------------------------------------------------
 # 4. Copy tarball to DeployEx dist directory
