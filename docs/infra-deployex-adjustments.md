@@ -1,134 +1,96 @@
-# DeployEx Infrastructure Adjustments
+# Ajustes de Infra para Deploy Pipeline
 
-These changes need to be made in the `retro_hex_chat_infra` repository to align the infrastructure with the application's deploy pipeline.
+> Prompt para agente de AI executar no repo `/Users/rodrigo/src/retro_hex_chat_infra`
 
----
+## Contexto
 
-## 1. Environment Variables — Remove App Prefix
+O RetroHexChat tem um pipeline de deploy via DeployEx. Os servidores (Sun=produção, Moon=staging) já têm:
+- Erlang 27, Elixir 1.18.4, Node.js 22.14 via asdf
+- DeployEx rodando (systemd, `release_adapter: "local"`)
+- Diretórios `~/releases/dist/retro_hex_chat/` e `~/releases/versions/retro_hex_chat/local/`
+- Env vars corretas no `deployex.yaml` (PHX_HOST, TURN_RELAY_IP, etc.)
+- Secrets no `/opt/deployex/.deployex-secrets` (DATABASE_URL, SECRET_KEY_BASE, etc.)
 
-The DeployEx runtime config expects env vars **without** the `RETRO_HEX_CHAT_` prefix. The Ansible `vars.yml` currently sets prefixed variables.
+**O que falta**: o repo da app **não está clonado** nos servidores (`~/retro_hex_chat` não existe). A role `github_deploy_key` gera a chave SSH mas o acesso ao GitHub falha com `Permission denied` — a public key precisa ser adicionada como deploy key no GitHub.
 
-**Change in `vars.yml` (or equivalent):**
+## Tarefa 1: Registrar deploy keys no GitHub
 
-```yaml
-# BEFORE
-RETRO_HEX_CHAT_PHX_HOST: "sun.retrohexchat.app"
-RETRO_HEX_CHAT_PHX_SERVER: "true"
-RETRO_HEX_CHAT_DATABASE_URL: "..."
-RETRO_HEX_CHAT_SECRET_KEY_BASE: "..."
+A role `github_deploy_key` já gera as chaves em `/home/rodrigo/.ssh/github_deploy` nos servidores. As public keys precisam ser adicionadas manualmente no GitHub.
 
-# AFTER
-PHX_HOST: "sun.retrohexchat.app"
-PHX_SERVER: "true"
-DATABASE_URL: "..."
-SECRET_KEY_BASE: "..."
-```
+**Ação:**
+1. Conectar em cada servidor e mostrar a public key:
+   ```bash
+   # Moon
+   ssh -p 2222 rodrigo@YOUR_STAGING_SERVER_IP "cat /home/rodrigo/.ssh/github_deploy.pub"
+   # Sun
+   ssh -p 2222 rodrigo@YOUR_PRODUCTION_SERVER_IP "cat /home/rodrigo/.ssh/github_deploy.pub"
+   ```
+2. Instruir o usuário a adicionar cada key no GitHub:
+   - Repo `rodrigomarchi/retro_hex_chat` → Settings → Deploy keys → Add deploy key
+   - Títulos: `Moon (staging)` e `Sun (production)`
+   - Read-only access é suficiente
 
-**Why:** Phoenix `runtime.exs` reads `System.get_env("PHX_HOST")`, not `System.get_env("RETRO_HEX_CHAT_PHX_HOST")`. DeployEx passes env vars to the release as-is.
-
-**Validation:** After deploy, check `bin/retro_hex_chat remote` and run `System.get_env("PHX_HOST")` — should return the expected hostname.
-
----
-
-## 2. Fix Versions Directory — Align `account_name` with Filesystem
-
-The DeployEx config uses `account_name: "local"` which means it looks for versions at:
-```
-~/releases/versions/retro_hex_chat/local/current.json
-```
-
-But Ansible may create the directory as `prod` instead of `local`. These must match.
-
-**Option A (preferred):** Ensure Ansible creates the directory as `local`:
-```yaml
-versions_path: "/home/rodrigo/releases/versions/retro_hex_chat/local"
-```
-
-**Option B:** Change DeployEx config to use `account_name: "prod"` and update `deploy.sh` accordingly.
-
-**Validation:** `ls ~/releases/versions/retro_hex_chat/local/` should exist and be writable.
-
----
-
-## 3. Add Node.js via asdf
-
-The build process needs `npm` to install 98.css and build assets. Add Node.js to the asdf setup in the `erlang_elixir` role (or a new `nodejs` role).
-
-**Add to asdf plugins:**
+**Validação:**
 ```bash
-asdf plugin add nodejs
-asdf install nodejs 22.14.0  # or latest LTS
-asdf global nodejs 22.14.0
+ssh -p 2222 rodrigo@YOUR_STAGING_SERVER_IP "ssh -T git@github.com 2>&1"
+# Esperado: "Hi rodrigomarchi/retro_hex_chat! You've been granted access..."
 ```
 
-**Or in Ansible:**
+## Tarefa 2: Criar role `app_clone` para clonar o repo da app
+
+**Nova role**: `roles/app_clone/tasks/main.yml`
+
+A role deve:
+1. Clonar `git@github.com:rodrigomarchi/retro_hex_chat.git` em `/home/{{ deploy_user }}/retro_hex_chat`
+2. Usar `ansible.builtin.git` (mesmo pattern da role `deployex` linhas 77-85)
+3. Ser idempotente (se o repo já existe, só faz fetch)
+4. Rodar como `become_user: "{{ deploy_user }}"`
+
+**Referência** — pattern existente no repo:
 ```yaml
-asdf_plugins:
-  - name: erlang
-    version: "27.3.4.6"
-  - name: elixir
-    version: "1.18.4-otp-27"
-  - name: nodejs
-    version: "22.14.0"
+# roles/deployex/tasks/main.yml (linhas 77-85)
+- name: Clone DeployEx repository
+  ansible.builtin.git:
+    repo: "{{ deployex_git_repo }}"
+    dest: "{{ deployex_build_dir }}"
+    version: "{{ deployex_git_ref }}"
+    force: true
+  become: true
+  become_user: "{{ deploy_user }}"
 ```
 
-**Validation:** `ssh -p 2222 rodrigo@<server-ip> "source ~/.asdf/asdf.sh && node --version && npm --version"`
+**Variáveis a adicionar** em `inventory/group_vars/all/vars.yml`:
+```yaml
+app_git_repo: "git@github.com:rodrigomarchi/retro_hex_chat.git"
+app_clone_dest: "/home/{{ deploy_user }}/retro_hex_chat"
+app_git_ref: "main"
+```
 
----
+## Tarefa 3: Inserir role no playbook
 
-## 4. Deploy Key for GitHub
+Em `playbooks/site.yml`, adicionar `app_clone` **depois** de `github_deploy_key` e **antes** de `postgresql`:
 
-The server needs SSH access to the GitHub repository to `git clone` and `git pull`.
+```yaml
+    - role: github_deploy_key      # posição 7 (já existe)
+    - role: app_clone              # posição 8 (NOVA)
+    - role: postgresql             # posição 9 (já existe, era 8)
+```
 
-**Steps:**
-1. Generate a deploy key on each server:
-   ```bash
-   ssh-keygen -t ed25519 -f ~/.ssh/github_deploy -N ""
-   ```
-2. Add the public key as a deploy key in the GitHub repo settings:
-   - Go to `Settings > Deploy keys > Add deploy key`
-   - Title: `Sun (production)` or `Moon (staging)`
-   - Paste the contents of `~/.ssh/github_deploy.pub`
-   - Read-only access is sufficient
-3. Configure SSH to use this key for GitHub:
-   ```bash
-   cat >> ~/.ssh/config <<EOF
-   Host github.com
-     IdentityFile ~/.ssh/github_deploy
-     IdentitiesOnly yes
-   EOF
-   ```
-4. Clone the repository:
-   ```bash
-   git clone git@github.com:rodrigomarchi/retro_hex_chat.git ~/retro_hex_chat
-   ```
+## Tarefa 4: Executar e validar
 
-**Validation:** `ssh -p 2222 rodrigo@<server-ip> "cd ~/retro_hex_chat && git fetch --all"`
+```bash
+make lint                    # Validar YAML/Ansible
+make dry-run-moon            # Simular no staging
+make provision-moon          # Aplicar no staging
+```
 
----
+**Validação pós-provision:**
+```bash
+ssh -p 2222 rodrigo@YOUR_STAGING_SERVER_IP "cd ~/retro_hex_chat && git log --oneline -1"
+```
 
-## 5. GitHub Actions Secrets
-
-Add these secrets in the GitHub repo (`Settings > Secrets and variables > Actions`):
-
-| Secret | Value |
-|--------|-------|
-| `SUN_IP` | `YOUR_PRODUCTION_SERVER_IP` |
-| `MOON_IP` | `YOUR_STAGING_SERVER_IP` |
-| `DEPLOY_USER` | `rodrigo` |
-| `DEPLOY_SSH_KEY` | Private SSH key for deploy (ed25519) |
-| `SSH_PORT` | `2222` |
-
-The deploy key should have SSH access to both servers.
-
----
-
-## Validation Checklist
-
-- [ ] Env vars reach the app without prefix (`PHX_HOST`, `DATABASE_URL`, etc.)
-- [ ] `~/releases/versions/retro_hex_chat/local/` directory exists
-- [ ] `node --version` and `npm --version` work via asdf
-- [ ] `git fetch` works from `~/retro_hex_chat` on both servers
-- [ ] `make deploy-moon REF=main` completes successfully
-- [ ] DeployEx dashboard shows the new version
-- [ ] App is accessible at the expected URL
+Depois repetir para Sun:
+```bash
+make provision-sun
+ssh -p 2222 rodrigo@YOUR_PRODUCTION_SERVER_IP "cd ~/retro_hex_chat && git log --oneline -1"
+```
