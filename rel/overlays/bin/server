@@ -13,7 +13,7 @@ echo "==> RUN_MIGRATIONS=${RUN_MIGRATIONS:-true}"
 # Run migrations unless explicitly disabled
 if [ "${RUN_MIGRATIONS:-true}" = "true" ]; then
   echo "==> Running migrations..."
-  if bin/retro_hex_chat_umbrella eval "RetroHexChat.Release.migrate()"; then
+  if bin/retro_hex_chat eval "RetroHexChat.Release.migrate()"; then
     echo "==> Migrations complete."
   else
     echo "==> Migration failed! Check database connectivity." >&2
@@ -24,4 +24,4 @@ else
 fi
 
 echo "==> Starting server..."
-exec bin/retro_hex_chat_umbrella start
+exec bin/retro_hex_chat start

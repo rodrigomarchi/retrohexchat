@@ -20,11 +20,12 @@ defmodule RetroHexChat.Umbrella.MixProject do
 
   defp releases do
     [
-      retro_hex_chat_umbrella: [
+      retro_hex_chat: [
         applications: [
           retro_hex_chat: :permanent,
           retro_hex_chat_web: :permanent
-        ]
+        ],
+        steps: [:assemble, :tar]
       ]
     ]
   end

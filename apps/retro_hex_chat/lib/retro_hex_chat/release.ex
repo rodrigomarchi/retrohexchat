@@ -4,7 +4,7 @@ defmodule RetroHexChat.Release do
 
   Usage:
 
-      bin/retro_hex_chat_umbrella eval "RetroHexChat.Release.migrate()"
+      bin/retro_hex_chat eval "RetroHexChat.Release.migrate()"
   """
 
   @app :retro_hex_chat

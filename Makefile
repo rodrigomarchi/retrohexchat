@@ -7,7 +7,8 @@
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
        deps.tree deps.update deps.unlock app.tree \
-       docker.up docker.down docker.ps docker.logs docker.reset docker.stop
+       docker.up docker.down docker.ps docker.logs docker.reset docker.stop \
+       deploy-sun deploy-moon
 
 DOMAIN_APP = apps/retro_hex_chat
 WEB_APP    = apps/retro_hex_chat_web
@@ -229,3 +230,21 @@ deps.unlock: ## Remove unused dependencies from lock file
 
 app.tree: ## Show OTP application supervision tree
 	mix app.tree --app retro_hex_chat
+
+# ---------------------------------------------------------------------
+# Deploy (via DeployEx)
+# ---------------------------------------------------------------------
+
+SSH_PORT    ?= 2222
+DEPLOY_USER ?= rodrigo
+SUN_IP      ?= YOUR_PRODUCTION_SERVER_IP
+MOON_IP     ?= YOUR_STAGING_SERVER_IP
+REF         ?= main
+
+deploy-sun: ## Deploy to Sun (production) — usage: make deploy-sun REF=main
+	scp -P $(SSH_PORT) scripts/deploy.sh $(DEPLOY_USER)@$(SUN_IP):~/deploy.sh
+	ssh -p $(SSH_PORT) $(DEPLOY_USER)@$(SUN_IP) "bash ~/deploy.sh $(REF)"
+
+deploy-moon: ## Deploy to Moon (staging) — usage: make deploy-moon REF=main
+	scp -P $(SSH_PORT) scripts/deploy.sh $(DEPLOY_USER)@$(MOON_IP):~/deploy.sh
+	ssh -p $(SSH_PORT) $(DEPLOY_USER)@$(MOON_IP) "bash ~/deploy.sh $(REF)"
