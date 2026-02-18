@@ -109,9 +109,17 @@ cat > "${CURRENT_JSON}" <<EOF
 {
   "version": "${RELEASE_VERSION}",
   "hash": "${FULL_SHA}",
-  "pre_commands": ["eval RetroHexChat.Release.migrate()"]
+  "pre_commands": ["eval RetroHexChat.Release.migrate"]
 }
 EOF
+
+# ------------------------------------------------------------------
+# 6. Fix permissions — DeployEx runs as the 'deployex' user and needs
+#    read access to the tarball and current.json written by 'rodrigo'.
+# ------------------------------------------------------------------
+echo "==> Fixing permissions for DeployEx..."
+chmod o+rx "${DIST_DIR}" "${VERSIONS_DIR}"
+chmod o+r "${DIST_DIR}/${APP_NAME}-${RELEASE_VERSION}.tar.gz" "${CURRENT_JSON}"
 
 echo "==> Deploy complete!"
 echo "    App:     ${APP_NAME}"
