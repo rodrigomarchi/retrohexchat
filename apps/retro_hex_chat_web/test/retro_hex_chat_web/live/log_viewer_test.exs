@@ -124,7 +124,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
       nick = "LogMenu#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
       assert render(view) =~ "log-viewer-dialog"
     end
 

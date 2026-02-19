@@ -2256,7 +2256,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     test "open via menu shows dialog with channel info", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "CcMenu"), "/chat")
 
-      html = view |> element("[data-testid=menu-channel-central]") |> render_click()
+      html = view |> element("[data-testid=toolbar-channel-central]") |> render_click()
 
       assert html =~ "channel-central-dialog"
       assert html =~ "Channel Central"
@@ -2266,7 +2266,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     test "close via close button hides dialog", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "CcClose"), "/chat")
 
-      view |> element("[data-testid=menu-channel-central]") |> render_click()
+      view |> element("[data-testid=toolbar-channel-central]") |> render_click()
       html = view |> element("[phx-click=close_channel_central]") |> render_click()
 
       refute html =~ "channel-central-dialog"
@@ -2275,7 +2275,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     test "Escape key closes dialog", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "CcEsc"), "/chat")
 
-      view |> element("[data-testid=menu-channel-central]") |> render_click()
+      view |> element("[data-testid=toolbar-channel-central]") |> render_click()
       html = render_keydown(view, "window_keydown", %{"key" => "Escape"})
 
       refute html =~ "channel-central-dialog"
@@ -2284,7 +2284,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     test "tab switching works", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "CcTabs"), "/chat")
 
-      view |> element("[data-testid=menu-channel-central]") |> render_click()
+      view |> element("[data-testid=toolbar-channel-central]") |> render_click()
 
       html = view |> element("[data-testid=cc-tab-modes]") |> render_click()
       assert html =~ "cc-modes-panel"
@@ -2305,7 +2305,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     test "all tabs display data for the channel", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "CcData"), "/chat")
 
-      view |> element("[data-testid=menu-channel-central]") |> render_click()
+      view |> element("[data-testid=toolbar-channel-central]") |> render_click()
 
       # General tab shows channel name and member count
       html = render(view)

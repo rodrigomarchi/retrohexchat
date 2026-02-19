@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       refute render(view) =~ "data-testid=\"sound-settings-dialog\""
 
       view
-      |> element(~s([data-testid="menu-sounds"]))
+      |> element(~s([data-testid="toolbar-sounds"]))
       |> render_click()
 
       html = render(view)
@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="menu-sounds"]))
+      |> element(~s([data-testid="toolbar-sounds"]))
       |> render_click()
 
       html = render(view)
@@ -47,7 +47,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="menu-sounds"]))
+      |> element(~s([data-testid="toolbar-sounds"]))
       |> render_click()
 
       html = render(view)
@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="menu-sounds"]))
+      |> element(~s([data-testid="toolbar-sounds"]))
       |> render_click()
 
       # Change highlight sound to "buzz" via the dropdown
@@ -87,7 +87,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="menu-sounds"]))
+      |> element(~s([data-testid="toolbar-sounds"]))
       |> render_click()
 
       assert render(view) =~ "data-testid=\"sound-settings-dialog\""
@@ -106,7 +106,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="menu-sounds"]))
+      |> element(~s([data-testid="toolbar-sounds"]))
       |> render_click()
 
       view
@@ -125,7 +125,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="menu-sounds"]))
+      |> element(~s([data-testid="toolbar-sounds"]))
       |> render_click()
 
       assert render(view) =~ "data-testid=\"sound-settings-dialog\""
@@ -150,7 +150,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       view
-      |> element(~s([data-testid="menu-sounds"]))
+      |> element(~s([data-testid="toolbar-sounds"]))
       |> render_click()
 
       view
@@ -169,7 +169,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="menu-sounds"]))
+      |> element(~s([data-testid="toolbar-sounds"]))
       |> render_click()
 
       # Toggle join flash (starts as false)

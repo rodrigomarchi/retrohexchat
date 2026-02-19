@@ -88,7 +88,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
       nick = "E2eMnu#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
       assert render(view) =~ "log-viewer-dialog"
     end
 
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
       nick = "E2eCls#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
 
       view
       |> element("[data-testid=log-viewer-dialog] button[aria-label=Close]")
@@ -134,7 +134,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       Process.sleep(100)
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       assert render(view) =~ "searchable content"
@@ -158,7 +158,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       Process.sleep(100)
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       view
@@ -185,7 +185,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       Process.sleep(100)
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       assert render(view) =~ "No results found"
@@ -215,7 +215,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       Process.sleep(100)
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       assert render(view) =~ "Page 1 of 2"
@@ -240,7 +240,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
 
       html = render(view)
       assert html =~ ch
@@ -267,7 +267,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       Process.sleep(100)
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       # Export txt — should not crash
@@ -292,7 +292,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       Process.sleep(100)
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       view |> element("[data-testid=log-export-html]") |> render_click()
@@ -307,7 +307,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
       nick = "E2ePrf#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
 
       view
       |> element("[data-testid=log-toggle-joins] input")
@@ -320,7 +320,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
       nick = "E2eTs#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
 
       view
       |> element("[data-testid=log-timestamp-format]")
@@ -350,7 +350,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       Process.sleep(100)
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
 
       view
       |> element("[data-testid=log-source-select]")
@@ -386,7 +386,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
       Process.sleep(100)
 
-      view |> element("[data-testid=menu-log-viewer]") |> render_click()
+      view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
       view |> element("[data-testid=log-source-select]") |> render_change(%{"source" => ch})
 
       view |> element("[data-testid=log-date-from]") |> render_change(%{"date" => "2026-02-01"})

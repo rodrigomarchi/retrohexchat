@@ -157,7 +157,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
       html =
         view
-        |> element("[data-testid=\"menu-address-book\"]")
+        |> element("[data-testid=\"toolbar-address-book\"]")
         |> render_click()
 
       assert html =~ "address-book-dialog"

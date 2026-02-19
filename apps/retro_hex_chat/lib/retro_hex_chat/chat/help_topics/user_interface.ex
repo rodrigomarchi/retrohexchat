@@ -10,6 +10,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
   @external_resource Path.join(@help_dir, "ui-topic-bar.html")
   @external_resource Path.join(@help_dir, "ui-context-menu.html")
   @external_resource Path.join(@help_dir, "ui-status-tab.html")
+  @external_resource Path.join(@help_dir, "ui-toolbar.html")
   @external_resource Path.join(@help_dir, "empty-states.html")
 
   @spec topics() :: [map()]
@@ -63,6 +64,13 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         category: "User Interface",
         keywords: ["status", "status tab", "status window", "system messages", "observability"],
         content: File.read!(Path.join(@help_dir, "ui-status-tab.html"))
+      },
+      %{
+        id: "ui-toolbar",
+        title: "Toolbar",
+        category: "User Interface",
+        keywords: ["toolbar", "buttons", "icons", "favorites", "tools", "menu"],
+        content: File.read!(Path.join(@help_dir, "ui-toolbar.html"))
       },
       %{
         id: "empty-states",

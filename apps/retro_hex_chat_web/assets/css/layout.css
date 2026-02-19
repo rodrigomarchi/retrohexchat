@@ -45,58 +45,6 @@ body {
   flex-shrink: 0;
 }
 
-/* Menu bar */
-.menu-bar {
-  display: flex;
-  gap: 0;
-  padding: 2px 4px;
-  flex-shrink: 0;
-}
-
-.menu-item-wrapper {
-  position: relative;
-}
-
-.menu-item {
-  padding: 2px 8px;
-  cursor: pointer;
-  font-size: var(--text-base);
-}
-
-.menu-item:hover {
-  background-color: var(--color-selection-bg);
-  color: var(--color-selection-fg);
-}
-
-/* Menu dropdowns (show on hover) */
-.menu-dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 160px;
-  z-index: 250;
-  background-color: var(--color-surface);
-  border: 2px outset var(--color-gray-200);
-  padding: 2px;
-}
-
-.menu-item-wrapper:hover .menu-dropdown {
-  display: block;
-}
-
-.menu-dropdown-item {
-  padding: 4px 16px;
-  font-size: var(--text-base);
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.menu-dropdown-item:hover {
-  background-color: var(--color-selection-bg);
-  color: var(--color-selection-fg);
-}
-
 /* Toolbar - raised panel */
 .toolbar {
   display: flex;
@@ -156,10 +104,6 @@ body {
 }
 
 /* ─── Compact Mode ─── */
-
-.compact-mode .menu-bar {
-  padding: 1px 2px;
-}
 
 .compact-mode .toolbar {
   padding: 1px 2px;

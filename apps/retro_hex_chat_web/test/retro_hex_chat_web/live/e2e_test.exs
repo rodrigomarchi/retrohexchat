@@ -112,7 +112,6 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ "chat-area"
       assert html =~ "nicklist"
       assert html =~ "status-bar"
-      assert html =~ "menu-bar"
       assert html =~ "toolbar"
     end
 

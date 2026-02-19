@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLiveHelpAccessTest do
     {:ok, conn: conn}
   end
 
-  describe "Help menu items in chat" do
+  describe "Help access in chat" do
     test "commands-overview topic exists and has content" do
       topic = HelpTopics.get_topic("commands-overview")
 
@@ -23,29 +23,11 @@ defmodule RetroHexChatWeb.ChatLiveHelpAccessTest do
       assert topic.content =~ "/msg"
     end
 
-    test "menu bar has IRC Commands link", %{conn: conn} do
-      nick = "HA3#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
-
-      assert html =~ "data-testid=\"menu-help-commands\""
-      assert html =~ "IRC Commands"
-      assert html =~ "/chat/help?topic=commands-overview"
-    end
-
-    test "menu bar has Keyboard Shortcuts link", %{conn: conn} do
-      nick = "HA4#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
-
-      assert html =~ "data-testid=\"menu-help-shortcuts\""
-      assert html =~ "Keyboard Shortcuts"
-      assert html =~ "/chat/help?topic=keyboard-shortcuts"
-    end
-
-    test "menu bar has Help Topics link", %{conn: conn} do
+    test "toolbar has Help Topics link", %{conn: conn} do
       nick = "HA5#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
-      assert html =~ "data-testid=\"menu-help-topics\""
+      assert html =~ "data-testid=\"toolbar-help\""
       assert html =~ "/chat/help"
     end
   end

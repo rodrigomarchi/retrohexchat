@@ -615,7 +615,8 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   defp close_context_menu(socket) do
     assign(socket,
       context_menu: %{visible: false, x: 0, y: 0, target_nick: nil, is_target_registered: false},
-      show_context_color_picker: false
+      show_context_color_picker: false,
+      show_favorites_dropdown: false
     )
   end
 

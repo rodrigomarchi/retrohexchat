@@ -284,6 +284,7 @@ defmodule RetroHexChatWeb.ChatLive do
       pm_typing_from: nil,
       pm_typing_timer: nil,
       show_favorite_dialog: false,
+      show_favorites_dropdown: false,
       show_organize_favorites: false,
       treebar_context_menu: %{visible: false, x: 0, y: 0, channel: nil},
       last_activity_at: DateTime.utc_now(),

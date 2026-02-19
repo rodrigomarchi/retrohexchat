@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.ChatLiveURLCatcherTest do
       nick = "UCMenu#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      assert render(view) =~ "menu-url-catcher"
+      assert render(view) =~ "toolbar-url-catcher"
       html = render_click(view, "toggle_url_catcher")
       assert html =~ "url-catcher-window"
     end

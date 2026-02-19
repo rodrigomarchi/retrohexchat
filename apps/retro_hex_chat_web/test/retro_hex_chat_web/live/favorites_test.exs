@@ -73,8 +73,30 @@ defmodule RetroHexChatWeb.FavoritesTest do
     end
   end
 
-  describe "favorites menu" do
-    test "shows favorites in menu", %{conn: conn} do
+  describe "favorites toolbar dropdown" do
+    test "toggle_favorites_dropdown opens and closes dropdown", %{conn: conn} do
+      {:ok, view, html} = live(chat_conn(conn, "FavTog1"), "/chat")
+      refute html =~ "toolbar-dropdown--open"
+
+      html = view |> element(~s([data-testid="toolbar-favorites"])) |> render_click()
+      assert html =~ "toolbar-dropdown--open"
+
+      html = view |> element(~s([data-testid="toolbar-favorites"])) |> render_click()
+      refute html =~ "toolbar-dropdown--open"
+    end
+
+    test "close_context_menu also closes favorites dropdown", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "FavTog2"), "/chat")
+
+      view |> element(~s([data-testid="toolbar-favorites"])) |> render_click()
+      html = render(view)
+      assert html =~ "toolbar-dropdown--open"
+
+      html = view |> render_click("close_context_menu", %{})
+      refute html =~ "toolbar-dropdown--open"
+    end
+
+    test "shows favorites in toolbar dropdown", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "FavMenu1"), "/chat")
 
       # Add a favorite
@@ -94,7 +116,7 @@ defmodule RetroHexChatWeb.FavoritesTest do
 
       html = render(view)
       assert html =~ "Favorites"
-      assert html =~ "menu-fav-#lobby"
+      assert html =~ "toolbar-fav-#lobby"
     end
 
     test "shows checkmark for joined channel", %{conn: conn} do

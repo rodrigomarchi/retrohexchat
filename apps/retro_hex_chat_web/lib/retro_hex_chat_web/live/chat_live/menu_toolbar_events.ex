@@ -1,12 +1,12 @@
 defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   @moduledoc """
-  Handle menu bar and toolbar events.
+  Handle toolbar events.
 
   Covers: quit_chat, restore_session, open_search, settings,
   toggle_treebar, toggle_nicklist, toggle_strip_formatting, show_about,
-  autocomplete_query, autocomplete_close, autocomplete_select,
-  autocomplete_navigate, autocomplete_select_current, recent_commands_loaded,
-  disconnect, channel_list.
+  toggle_favorites_dropdown, autocomplete_query, autocomplete_close,
+  autocomplete_select, autocomplete_navigate, autocomplete_select_current,
+  recent_commands_loaded, disconnect, channel_list.
 
   Attached as `attach_hook(:menu_toolbar_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -291,6 +291,10 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("recent_commands_loaded", %{"commands" => commands}, socket) do
     {:halt, assign(socket, recent_commands: commands)}
+  end
+
+  def handle_event("toggle_favorites_dropdown", _params, socket) do
+    {:halt, assign(socket, show_favorites_dropdown: !socket.assigns.show_favorites_dropdown)}
   end
 
   def handle_event("disconnect", _params, socket) do

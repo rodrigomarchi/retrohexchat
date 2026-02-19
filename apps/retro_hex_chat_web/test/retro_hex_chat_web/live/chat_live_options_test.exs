@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
   end
 
   defp open_options(view) do
-    view |> element(~s([data-testid="menu-options"])) |> render_click()
+    view |> element(~s([data-testid="toolbar-settings"])) |> render_click()
     view
   end
 
@@ -24,9 +24,9 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
 
   describe "Options dialog open/close" do
     @tag :liveview
-    test "opens via menu bar Options item", %{conn: conn} do
+    test "opens via toolbar Settings button", %{conn: conn} do
       view = connect_user(conn)
-      view |> element(~s([data-testid="menu-options"])) |> render_click()
+      view |> element(~s([data-testid="toolbar-settings"])) |> render_click()
       html = render(view)
       assert html =~ ~s(data-testid="options-dialog")
     end
@@ -39,14 +39,6 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
       |> element("#app-container")
       |> render_keydown(%{"key" => "o", "ctrlKey" => true, "shiftKey" => true})
 
-      html = render(view)
-      assert html =~ ~s(data-testid="options-dialog")
-    end
-
-    @tag :liveview
-    test "opens via toolbar Settings button", %{conn: conn} do
-      view = connect_user(conn)
-      view |> element(~s([data-testid="toolbar-settings"])) |> render_click()
       html = render(view)
       assert html =~ ~s(data-testid="options-dialog")
     end
@@ -108,7 +100,7 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
       assert render(view) =~ ~s(data-testid="options-dialog")
 
       # Opening again should be idempotent
-      view |> element(~s([data-testid="menu-options"])) |> render_click()
+      view |> element(~s([data-testid="toolbar-settings"])) |> render_click()
       assert render(view) =~ ~s(data-testid="options-dialog")
     end
   end
