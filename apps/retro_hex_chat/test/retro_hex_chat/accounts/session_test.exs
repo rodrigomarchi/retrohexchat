@@ -180,18 +180,62 @@ defmodule RetroHexChat.Accounts.SessionTest do
   end
 
   describe "add_pm_conversation/2" do
-    test "adds a PM conversation" do
+    test "adds a PM conversation at the head" do
       session = Session.new("Rodrigo") |> Session.add_pm_conversation("Alice")
       assert session.pm_conversations == ["Alice"]
     end
 
-    test "does not add duplicate PM conversations" do
+    test "prepends new conversations to the head" do
       session =
         Session.new("Rodrigo")
         |> Session.add_pm_conversation("Alice")
+        |> Session.add_pm_conversation("Bob")
+
+      assert session.pm_conversations == ["Bob", "Alice"]
+    end
+
+    test "moves existing conversation to the head" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.add_pm_conversation("Alice")
+        |> Session.add_pm_conversation("Bob")
         |> Session.add_pm_conversation("Alice")
 
-      assert session.pm_conversations == ["Alice"]
+      assert session.pm_conversations == ["Alice", "Bob"]
+    end
+  end
+
+  describe "move_pm_to_front/2" do
+    test "moves existing conversation to the head" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.add_pm_conversation("Charlie")
+        |> Session.add_pm_conversation("Bob")
+        |> Session.add_pm_conversation("Alice")
+
+      # Order is [Alice, Bob, Charlie]
+      updated = Session.move_pm_to_front(session, "Charlie")
+      assert updated.pm_conversations == ["Charlie", "Alice", "Bob"]
+    end
+
+    test "is a no-op if nick is not in the list" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.add_pm_conversation("Alice")
+
+      updated = Session.move_pm_to_front(session, "Unknown")
+      assert updated.pm_conversations == ["Alice"]
+    end
+
+    test "is a no-op if nick is already at the head" do
+      session =
+        Session.new("Rodrigo")
+        |> Session.add_pm_conversation("Bob")
+        |> Session.add_pm_conversation("Alice")
+
+      # Alice is already at head
+      updated = Session.move_pm_to_front(session, "Alice")
+      assert updated.pm_conversations == ["Alice", "Bob"]
     end
   end
 

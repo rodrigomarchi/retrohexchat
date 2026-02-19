@@ -152,10 +152,15 @@ defmodule RetroHexChat.Accounts.Session do
 
   @spec add_pm_conversation(t(), String.t()) :: t()
   def add_pm_conversation(%__MODULE__{pm_conversations: pms} = session, nickname) do
+    %{session | pm_conversations: [nickname | List.delete(pms, nickname)]}
+  end
+
+  @spec move_pm_to_front(t(), String.t()) :: t()
+  def move_pm_to_front(%__MODULE__{pm_conversations: pms} = session, nickname) do
     if nickname in pms do
-      session
+      %{session | pm_conversations: [nickname | List.delete(pms, nickname)]}
     else
-      %{session | pm_conversations: pms ++ [nickname]}
+      session
     end
   end
 

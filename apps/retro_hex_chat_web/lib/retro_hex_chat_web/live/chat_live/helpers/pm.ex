@@ -37,7 +37,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
     case Service.send_private_message(session.nickname, target, content) do
       {:ok, _pm} ->
-        new_session = Session.add_pm_conversation(session, target)
+        new_session =
+          session
+          |> Session.add_pm_conversation(target)
+          |> Session.move_pm_to_front(target)
 
         Phoenix.PubSub.broadcast(
           RetroHexChat.PubSub,

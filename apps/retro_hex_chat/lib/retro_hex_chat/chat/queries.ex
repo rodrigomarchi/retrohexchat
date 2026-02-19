@@ -71,6 +71,51 @@ defmodule RetroHexChat.Chat.Queries do
     |> Repo.all()
   end
 
+  # ── PM Partners ──
+
+  @spec list_pm_partners(String.t(), keyword()) :: [
+          %{nickname: String.t(), last_message_at: DateTime.t()}
+        ]
+  def list_pm_partners(nickname, opts \\ []) do
+    limit = Keyword.get(opts, :limit, @default_limit)
+
+    sent_query =
+      from pm in PrivateMessage,
+        where:
+          pm.sender_nickname == ^nickname and
+            pm.recipient_nickname != ^nickname and
+            is_nil(pm.deleted_at),
+        group_by: pm.recipient_nickname,
+        select: %{
+          nickname: pm.recipient_nickname,
+          last_message_at: max(pm.inserted_at)
+        }
+
+    received_query =
+      from pm in PrivateMessage,
+        where:
+          pm.recipient_nickname == ^nickname and
+            pm.sender_nickname != ^nickname and
+            is_nil(pm.deleted_at),
+        group_by: pm.sender_nickname,
+        select: %{
+          nickname: pm.sender_nickname,
+          last_message_at: max(pm.inserted_at)
+        }
+
+    union_query =
+      from s in subquery(union_all(sent_query, ^received_query)),
+        group_by: s.nickname,
+        select: %{
+          nickname: s.nickname,
+          last_message_at: max(s.last_message_at)
+        },
+        order_by: [desc: max(s.last_message_at)],
+        limit: ^limit
+
+    Repo.all(union_query)
+  end
+
   # ── Private Messages ──
 
   @spec insert_private_message(map()) :: {:ok, PrivateMessage.t()} | {:error, Ecto.Changeset.t()}

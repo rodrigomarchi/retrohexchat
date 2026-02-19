@@ -25,7 +25,8 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       part_channel: 2,
       handle_pm_send: 3,
       handle_notice_send: 4,
-      safe_untrack_user: 2
+      safe_untrack_user: 2,
+      maybe_persist_autojoin_list: 2
     ]
 
   alias RetroHexChat.Accounts.{ServerRoles, Session}
@@ -33,6 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   alias RetroHexChat.Chat.{
     AliasExpander,
     AliasList,
+    AutoJoinList,
     CtcpSettings,
     Service,
     UserPreferences
@@ -194,14 +196,23 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   # ── Private: dispatch result handling ─────────────────────
 
-  defp handle_dispatch_result(socket, session, {:ok, :join, channel_name, password}),
-    do: join_channel(socket, channel_name, session, password)
+  defp handle_dispatch_result(socket, session, {:ok, :join, channel_name, password}) do
+    socket
+    |> join_channel(channel_name, session, password)
+    |> maybe_auto_add_to_autojoin(channel_name, password)
+  end
 
-  defp handle_dispatch_result(socket, session, {:ok, :join, channel_name}),
-    do: join_channel(socket, channel_name, session)
+  defp handle_dispatch_result(socket, session, {:ok, :join, channel_name}) do
+    socket
+    |> join_channel(channel_name, session)
+    |> maybe_auto_add_to_autojoin(channel_name, nil)
+  end
 
-  defp handle_dispatch_result(socket, _session, {:ok, :part, channel_name, _msg}),
-    do: part_channel(socket, channel_name)
+  defp handle_dispatch_result(socket, _session, {:ok, :part, channel_name, _msg}) do
+    socket
+    |> part_channel(channel_name)
+    |> maybe_auto_remove_from_autojoin(channel_name)
+  end
 
   defp handle_dispatch_result(
          socket,
@@ -496,6 +507,54 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
       {:error, _} ->
         {:error, "* User '#{target}' not found"}
+    end
+  end
+
+  # ── Private: auto-join management ──────────────────────────
+
+  defp maybe_auto_add_to_autojoin(socket, channel_name, key) do
+    session = socket.assigns.session
+
+    if session.identified and channel_name != "#lobby" do
+      case AutoJoinList.add_entry(session.autojoin_list, channel_name, key) do
+        {:ok, new_list} ->
+          new_session = Session.set_autojoin_list(session, new_list)
+
+          socket
+          |> assign(session: new_session)
+          |> maybe_persist_autojoin_list(new_session)
+
+        {:error, :list_full} ->
+          system_event(
+            socket,
+            "Auto-join list is full (20 channels). #{channel_name} was not added to auto-join."
+          )
+
+        {:error, :duplicate} ->
+          socket
+      end
+    else
+      socket
+    end
+  end
+
+  defp maybe_auto_remove_from_autojoin(socket, channel_name) do
+    session = socket.assigns.session
+
+    if session.identified do
+      case AutoJoinList.remove_entry(session.autojoin_list, channel_name) do
+        {:ok, new_list} ->
+          new_session = Session.set_autojoin_list(session, new_list)
+
+          socket
+          |> assign(session: new_session)
+          |> maybe_persist_autojoin_list(new_session)
+
+        {:error, :not_found} ->
+          socket
+      end
+    else
+      socket
     end
   end
 end
