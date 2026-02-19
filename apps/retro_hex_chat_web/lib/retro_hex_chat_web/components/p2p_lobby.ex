@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
 
   use Phoenix.Component
 
+  alias Phoenix.LiveView.JS
+
   attr :session, :map, required: true
   attr :nickname, :string, required: true
   attr :peer_nick, :string, required: true
@@ -77,7 +79,7 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
           />
         </div>
 
-        <div class="p2p-lobby__footer">
+        <div :if={!@call && !@file_transfer} class="p2p-lobby__footer">
           <div
             :if={@turn_configured || @turn_only}
             class="p2p-lobby__privacy"
@@ -142,7 +144,11 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
           Nenhuma mensagem ainda. Diga oi!
         </div>
       </div>
-      <form class="p2p-lobby-chat__form" phx-submit="send_lobby_message">
+      <form
+        id="lobby-chat-form"
+        class="p2p-lobby-chat__form"
+        phx-submit={JS.push("send_lobby_message") |> JS.dispatch("reset", to: "#lobby-chat-form")}
+      >
         <input
           type="text"
           name="content"
@@ -167,7 +173,7 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     <div
       id="media-call"
       phx-hook="MediaHook"
-      class={"media-call #{if @call.type == "video", do: "media-call--video"}"}
+      class="media-call"
     >
       <div :if={@call.type == "video"} class="media-call__video-area">
         <video
@@ -221,37 +227,41 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
         Aguardando resposta para adicionar video...
       </div>
 
+      <hr class="media-call__separator" />
+
       <div class="media-call__controls">
-        <button
-          data-media-action="mute"
-          class={"#{if @call[:local_muted], do: "media-call__btn--active"}"}
-        >
-          {if @call[:local_muted], do: "Ativar Mic", else: "Silenciar"}
-        </button>
-        <button
-          :if={@call.type == "video"}
-          data-media-action="camera"
-          class={"#{if @call[:local_camera_off], do: "media-call__btn--active"}"}
-        >
-          {if @call[:local_camera_off], do: "Ligar Camera", else: "Desligar Camera"}
-        </button>
-        <button :if={@call.type == "audio"} data-media-action="upgrade">
-          Adicionar Video
-        </button>
-        <button :if={@call.type == "video"} data-media-action="pip" class="media-call__pip-btn">
-          PiP
-        </button>
-        <button data-media-action="device-settings">
-          Dispositivos
-        </button>
-        <div class="media-call__preset-selector">
+        <div class="media-call__controls-row">
+          <button
+            data-media-action="mute"
+            class={"#{if @call[:local_muted], do: "media-call__btn--active"}"}
+          >
+            {if @call[:local_muted], do: "Ativar Mic", else: "Silenciar"}
+          </button>
+          <button
+            :if={@call.type == "video"}
+            data-media-action="camera"
+            class={"#{if @call[:local_camera_off], do: "media-call__btn--active"}"}
+          >
+            {if @call[:local_camera_off], do: "Ligar Camera", else: "Desligar Camera"}
+          </button>
+          <button :if={@call.type == "audio"} data-media-action="upgrade">
+            Adicionar Video
+          </button>
+          <button :if={@call.type == "video"} data-media-action="pip">
+            PiP
+          </button>
+          <button class="media-call__push-right" data-media-action="device-settings">
+            Dispositivos
+          </button>
+        </div>
+        <div class="media-call__controls-row">
           <button phx-click="media_select_preset" phx-value-preset="high">Alta</button>
           <button phx-click="media_select_preset" phx-value-preset="medium">Media</button>
           <button phx-click="media_select_preset" phx-value-preset="low">Baixa</button>
+          <button class="media-call__end-btn" data-media-action="end-call">
+            Encerrar Chamada
+          </button>
         </div>
-        <button data-media-action="end-call">
-          Encerrar Chamada
-        </button>
       </div>
     </div>
     """

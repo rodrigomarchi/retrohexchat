@@ -129,6 +129,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
       socket =
         if status == "active" do
           socket
+          |> assign(webrtc_state: "Conectado")
           |> maybe_init_file_transfer()
           |> start_media_if_call()
         else
@@ -400,7 +401,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
       :ok ->
         socket =
           socket
-          |> assign(session_status: "active")
+          |> assign(session_status: "active", webrtc_state: "Conectado")
           |> maybe_init_file_transfer()
           |> start_media_if_call()
 
@@ -942,7 +943,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     case P2P.session_info(socket.assigns.token) do
       {:ok, %{session: %{status: "active"}}} ->
         socket
-        |> assign(session_status: "active")
+        |> assign(session_status: "active", webrtc_state: "Conectado")
         |> maybe_init_file_transfer()
         |> start_media_if_call()
 

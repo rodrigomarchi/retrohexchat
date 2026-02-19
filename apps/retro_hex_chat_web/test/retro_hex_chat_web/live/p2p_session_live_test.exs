@@ -790,7 +790,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       Process.sleep(50)
 
       html = render(view)
-      assert html =~ "media-call--video"
+      assert html =~ "media-call__video-area"
 
       stop_server(v_session.token)
     end
