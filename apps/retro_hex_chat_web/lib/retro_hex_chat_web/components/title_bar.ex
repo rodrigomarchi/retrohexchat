@@ -12,9 +12,9 @@ defmodule RetroHexChatWeb.Components.TitleBar do
     <div class="title-bar app-title-bar">
       <div class="title-bar-text">{@title}</div>
       <div class="title-bar-controls">
-        <button aria-label="Minimize"></button>
-        <button aria-label="Maximize"></button>
-        <button aria-label="Close"></button>
+        <button aria-label="Minimize" disabled></button>
+        <button aria-label="Maximize" disabled></button>
+        <button aria-label="Close" phx-click="disconnect"></button>
       </div>
     </div>
     """
