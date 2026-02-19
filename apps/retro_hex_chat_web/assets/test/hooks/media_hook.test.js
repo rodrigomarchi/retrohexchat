@@ -1,12 +1,13 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import MediaHook from "../../js/hooks/media_hook.js";
 
 // --- Test helpers ---
 
-function createMockHook() {
+function createMockHook(opts = {}) {
   const eventHandlers = {};
   const pushedEvents = [];
   const domListeners = {};
+  const webrtcListeners = {};
 
   const el = {
     addEventListener: vi.fn((type, handler) => {
@@ -18,6 +19,22 @@ function createMockHook() {
     dispatchEvent: vi.fn(),
   };
 
+  // Mock #p2p-webrtc element
+  const webrtcEl = {
+    addEventListener: vi.fn((type, handler) => {
+      webrtcListeners[type] = webrtcListeners[type] || [];
+      webrtcListeners[type].push(handler);
+    }),
+    removeEventListener: vi.fn(),
+    _peerConnection: opts.existingPC || null,
+  };
+
+  const origGetById = document.getElementById.bind(document);
+  vi.spyOn(document, "getElementById").mockImplementation((id) => {
+    if (id === "p2p-webrtc") return webrtcEl;
+    return origGetById(id);
+  });
+
   const hook = Object.create(MediaHook);
   hook.el = el;
   hook.pushEvent = vi.fn((event, payload) => pushedEvents.push({ event, payload }));
@@ -25,7 +42,7 @@ function createMockHook() {
     eventHandlers[event] = handler;
   });
 
-  return { hook, el, eventHandlers, pushedEvents, domListeners };
+  return { hook, el, eventHandlers, pushedEvents, domListeners, webrtcEl, webrtcListeners };
 }
 
 function createMockPC() {
@@ -52,11 +69,15 @@ function createMockStream(tracks = []) {
 // --- US1: Audio Call Flow (T014) ---
 
 describe("MediaHook — Audio Call", () => {
-  let hook, el;
+  let hook;
 
   beforeEach(() => {
-    ({ hook, el } = createMockHook());
+    ({ hook } = createMockHook());
     hook.mounted();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("registers all expected event listeners on mount", () => {
@@ -70,9 +91,10 @@ describe("MediaHook — Audio Call", () => {
     expect(hook.handleEvent).toHaveBeenCalledWith("media_set_preset", expect.any(Function));
   });
 
-  it("listens for media_pc_ready and media_pc_closed CustomEvents", () => {
-    expect(el.addEventListener).toHaveBeenCalledWith("media_pc_ready", expect.any(Function));
-    expect(el.addEventListener).toHaveBeenCalledWith("media_pc_closed", expect.any(Function));
+  it("listens for media_pc_ready and media_pc_closed on #p2p-webrtc element", () => {
+    const webrtcEl = document.getElementById("p2p-webrtc");
+    expect(webrtcEl.addEventListener).toHaveBeenCalledWith("media_pc_ready", expect.any(Function));
+    expect(webrtcEl.addEventListener).toHaveBeenCalledWith("media_pc_closed", expect.any(Function));
   });
 
   it("sets pc on media_pc_ready event", () => {
@@ -171,6 +193,10 @@ describe("MediaHook — Video Call", () => {
     hook.mounted();
   });
 
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("starts video call with audio+video constraints", async () => {
     const audioTrack = { kind: "audio", enabled: true, stop: vi.fn() };
     const videoTrack = { kind: "video", enabled: true, stop: vi.fn() };
@@ -233,6 +259,10 @@ describe("MediaHook — Upgrade Flow", () => {
   beforeEach(() => {
     ({ hook, el } = createMockHook());
     hook.mounted();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("upgrade button pushes media_request_upgrade via data-media-action", () => {
@@ -300,5 +330,61 @@ describe("MediaHook — Upgrade Flow", () => {
     );
     // callType stays audio since upgrade failed — actually it stays at "audio"
     // because the error happens before callType is changed
+  });
+});
+
+// --- Bug fix tests: event listening on #p2p-webrtc ---
+
+describe("MediaHook — #p2p-webrtc event wiring", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("receives media_pc_ready dispatched on #p2p-webrtc element", () => {
+    const { hook, webrtcListeners } = createMockHook();
+    hook.mounted();
+
+    const pc = createMockPC();
+    // Simulate WebRTCHook dispatching on #p2p-webrtc
+    const readyHandler = webrtcListeners["media_pc_ready"][0];
+    readyHandler({ detail: { pc } });
+
+    expect(hook.pc).toBe(pc);
+  });
+
+  it("late mount picks up existing PeerConnection", () => {
+    const existingPC = createMockPC();
+    const { hook } = createMockHook({ existingPC });
+    hook.mounted();
+
+    // PC should be set from late mount
+    expect(hook.pc).toBe(existingPC);
+    expect(existingPC.ontrack).toBeTypeOf("function");
+  });
+
+  it("_startCall guards on this.pc being null", async () => {
+    const { hook } = createMockHook();
+    hook.mounted();
+
+    // pc is null by default, _startCall should return early
+    await hook._startCall("audio");
+
+    expect(hook.callType).toBeNull();
+    expect(hook.pushEvent).not.toHaveBeenCalledWith("media_call_started", expect.anything());
+  });
+
+  it("cleanup removes listeners from #p2p-webrtc", () => {
+    const { hook, webrtcEl } = createMockHook();
+    hook.mounted();
+    hook.destroyed();
+
+    expect(webrtcEl.removeEventListener).toHaveBeenCalledWith(
+      "media_pc_ready",
+      expect.any(Function),
+    );
+    expect(webrtcEl.removeEventListener).toHaveBeenCalledWith(
+      "media_pc_closed",
+      expect.any(Function),
+    );
   });
 });

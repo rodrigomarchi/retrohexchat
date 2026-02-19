@@ -20,8 +20,16 @@ defmodule RetroHexChat.P2P.Service do
          token = SessionToken.sign(creator_id, peer_id, 0),
          {:ok, session} <- insert_session(token, creator_id, peer_id, session_type),
          {:ok, _pid} <- Supervisor.start_child(session.token) do
+      Logger.info(
+        "P2P session created: token=#{session.token}, creator=#{creator_id}, peer=#{peer_id}, type=#{session_type}"
+      )
+
       notify_peer(peer_id, session.token, creator_id, session_type)
       {:ok, %{session: session, token: session.token}}
+    else
+      {:error, reason} = error ->
+        Logger.info("P2P session denied: reason=#{inspect(reason)}, creator=#{creator_id}")
+        error
     end
   end
 

@@ -55,6 +55,30 @@ describe("FileTransferHook", () => {
     });
   });
 
+  describe("late mount — picks up existing open channel", () => {
+    it("sets up channel from webrtc element when already open", () => {
+      // Clean up the hook from beforeEach
+      cleanupDOM();
+
+      // Create a mock webrtc element with an already-open channel
+      const webrtcEl = document.createElement("div");
+      webrtcEl.id = "p2p-webrtc";
+      document.body.appendChild(webrtcEl);
+
+      const channel = createMockChannel();
+      webrtcEl._fileTransferChannel = channel;
+
+      // Mount hook — should pick up existing channel
+      const lateHook = mountHook(FileTransferHook, {
+        attrs: { id: "p2p-file-transfer" },
+        html: '<input type="file" class="file-transfer-input u-hidden" />',
+      });
+
+      expect(lateHook._channel).toBe(channel);
+      expect(channel.onmessage).toBeTypeOf("function");
+    });
+  });
+
   describe("ft_config event", () => {
     it("stores validation config", () => {
       simulateEvent(hook, "ft_config", {
@@ -113,6 +137,18 @@ describe("FileTransferHook", () => {
       const errors = hook.__pushEvents.filter((e) => e.event === "ft_validation_error");
       expect(errors.length).toBe(1);
       expect(errors[0].payload.error).toContain(".exe");
+    });
+  });
+
+  describe("file selection without config", () => {
+    it("pushes ft_validation_error when config not loaded", async () => {
+      // No ft_config event — _config is null
+      const file = new File(["hello"], "test.txt", { type: "text/plain" });
+      await hook._handleFileSelected(file);
+
+      const errors = hook.__pushEvents.filter((e) => e.event === "ft_validation_error");
+      expect(errors.length).toBe(1);
+      expect(errors[0].payload.error).toBeTruthy();
     });
   });
 

@@ -116,6 +116,7 @@ defmodule RetroHexChat.P2P.SessionServer do
 
           state = schedule_timeout(state, :pending_expiry, pending_timeout())
 
+          Logger.info("P2P SessionServer started: token=#{token}, type=#{session.session_type}")
           {:ok, state}
         end
     end
@@ -127,14 +128,18 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   def handle_call({:join, user_id}, _from, state) do
+    Logger.info("P2P join: user=#{user_id}, token=#{state.token}")
+
     cond do
       user_id == state.session.creator_id ->
         state = %{state | creator_joined: true}
+        broadcast(state.token, "p2p_peer_joined", %{user_id: user_id})
         state = maybe_transition_to_lobby(state)
         {:reply, :ok, state}
 
       user_id == state.session.peer_id ->
         state = %{state | peer_joined: true}
+        broadcast(state.token, "p2p_peer_joined", %{user_id: user_id})
         state = maybe_transition_to_lobby(state)
         {:reply, :ok, state}
 
@@ -200,6 +205,10 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   def handle_call({:request_action, user_id, requester_nick, action_type}, _from, state) do
+    Logger.info(
+      "P2P action request: token=#{state.token}, type=#{action_type}, by=#{requester_nick}"
+    )
+
     state = handle_request_action(state, user_id, requester_nick, action_type)
     {:reply, :ok, state}
   end
@@ -212,11 +221,24 @@ defmodule RetroHexChat.P2P.SessionServer do
     {:reply, {:error, :no_pending_request}, state}
   end
 
+  def handle_call(
+        {:respond_action, _user_id, _nick, _accepted},
+        _from,
+        %{session: %{status: s}} = state
+      )
+      when s not in ["lobby", "pending"] do
+    {:reply, {:error, :not_in_lobby}, state}
+  end
+
   def handle_call({:respond_action, user_id, responder_nick, accepted?}, _from, state) do
+    Logger.info(
+      "P2P action response: token=#{state.token}, accepted=#{accepted?}, by=#{responder_nick}"
+    )
+
     if user_id == state.action_request.requester_id do
       {:reply, {:error, :cannot_respond_own}, state}
     else
-      state = handle_respond_action(state, responder_nick, accepted?)
+      state = handle_respond_action(state, user_id, responder_nick, accepted?)
       {:reply, :ok, state}
     end
   end
@@ -233,6 +255,8 @@ defmodule RetroHexChat.P2P.SessionServer do
 
   @impl true
   def handle_info({:timeout, :pending_expiry}, state) do
+    Logger.info("P2P timeout: pending_expiry, token=#{state.token}")
+
     if state.session.status == "pending" do
       state = do_expire(state, "pending_timeout")
       {:stop, :normal, state}
@@ -242,6 +266,8 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   def handle_info({:timeout, :lobby_warning}, state) do
+    Logger.info("P2P timeout: lobby_warning, token=#{state.token}")
+
     if state.session.status == "lobby" do
       broadcast(state.token, "p2p_inactivity_warning", %{expires_in_seconds: 300})
       {:noreply, state}
@@ -251,6 +277,8 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   def handle_info({:timeout, :lobby_expiry}, state) do
+    Logger.info("P2P timeout: lobby_expiry, token=#{state.token}")
+
     if state.session.status == "lobby" do
       state = do_expire(state, "lobby_inactivity")
       {:stop, :normal, state}
@@ -260,6 +288,8 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   def handle_info({:timeout, :connecting_timeout}, state) do
+    Logger.info("P2P timeout: connecting_timeout, token=#{state.token}")
+
     if state.session.status == "connecting" do
       state = do_fail(state, "connecting_timeout")
       {:stop, :normal, state}
@@ -289,6 +319,7 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   defp do_transition(state, "lobby") do
+    Logger.info("P2P transition: #{state.session.status} → lobby, token=#{state.token}")
     state = cancel_timer(state, :pending_expiry)
 
     {:ok, session} = Queries.update_status(state.session, "lobby")
@@ -302,6 +333,7 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   defp do_transition(state, "connecting") do
+    Logger.info("P2P transition: #{state.session.status} → connecting, token=#{state.token}")
     state = cancel_timer(state, :lobby_warning)
     state = cancel_timer(state, :lobby_expiry)
 
@@ -315,6 +347,7 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   defp do_transition(state, "active") do
+    Logger.info("P2P transition: #{state.session.status} → active, token=#{state.token}")
     state = cancel_timer(state, :connecting_timeout)
 
     {:ok, session} = Queries.update_status(state.session, "active")
@@ -325,6 +358,7 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   defp do_close(state, reason, closed_by) do
+    Logger.info("P2P close: token=#{state.token}, reason=#{reason}, by=#{closed_by}")
     state = cancel_all_timers(state)
     now = DateTime.utc_now()
 
@@ -339,6 +373,7 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   defp do_expire(state, reason) do
+    Logger.info("P2P expired: token=#{state.token}, reason=#{reason}")
     state = cancel_all_timers(state)
     now = DateTime.utc_now()
 
@@ -353,6 +388,7 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   defp do_fail(state, reason) do
+    Logger.warning("P2P failed: token=#{state.token}, reason=#{reason}")
     state = cancel_all_timers(state)
     now = DateTime.utc_now()
 
@@ -367,6 +403,8 @@ defmodule RetroHexChat.P2P.SessionServer do
   end
 
   defp handle_send_message(state, user_id, sender_nick, content) do
+    Logger.debug("P2P message: token=#{state.token}, from=#{sender_nick}")
+
     msg = %{
       id: System.unique_integer([:positive]),
       sender_id: user_id,
@@ -400,13 +438,14 @@ defmodule RetroHexChat.P2P.SessionServer do
     state
   end
 
-  defp handle_respond_action(state, responder_nick, true) do
+  defp handle_respond_action(state, responder_id, responder_nick, true) do
     request = %{state.action_request | status: "accepted"}
     state = cancel_timer(state, :action_request_expiry)
     state = %{state | action_request: request}
 
     broadcast(state.token, "p2p_action_response", %{
       accepted: true,
+      responder_id: responder_id,
       responder_nick: responder_nick,
       action_type: request.action_type
     })
@@ -414,11 +453,12 @@ defmodule RetroHexChat.P2P.SessionServer do
     do_transition(state, "connecting")
   end
 
-  defp handle_respond_action(state, responder_nick, false) do
+  defp handle_respond_action(state, responder_id, responder_nick, false) do
     state = cancel_timer(state, :action_request_expiry)
 
     broadcast(state.token, "p2p_action_response", %{
       accepted: false,
+      responder_id: responder_id,
       responder_nick: responder_nick,
       action_type: state.action_request.action_type
     })

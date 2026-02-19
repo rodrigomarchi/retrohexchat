@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
   use RetroHexChatWeb, :live_view
 
+  require Logger
+
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.Schema.Session
@@ -69,6 +71,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         %{event: "p2p_status_changed", payload: %{status: "connecting"}},
         socket
       ) do
+    Logger.info("P2P connecting: token=#{socket.assigns.token}, role=#{socket.assigns.role}")
+
     user_id = socket.assigns.user_id
     role = socket.assigns.role
     turn_only = socket.assigns.turn_only
@@ -92,7 +96,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         {turn_only, socket}
       end
 
-    socket = assign(socket, session_status: "connecting")
+    socket = assign(socket, session_status: "connecting", action_request: nil)
 
     socket =
       case role do
@@ -120,7 +124,19 @@ defmodule RetroHexChatWeb.P2PSessionLive do
        |> put_flash(:info, "Sessao P2P encerrada.")
        |> push_navigate(to: ~p"/chat")}
     else
-      {:noreply, assign(socket, session_status: status)}
+      socket = assign(socket, session_status: status)
+
+      socket =
+        if status == "active" do
+          socket
+          |> assign(webrtc_state: "Conectado")
+          |> maybe_init_file_transfer()
+          |> start_media_if_call()
+        else
+          socket
+        end
+
+      {:noreply, socket}
     end
   end
 
@@ -141,13 +157,25 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   def handle_info(%{event: "p2p_action_response", payload: response}, socket) do
-    action_request = Map.merge(socket.assigns.action_request || %{}, response)
+    action_request =
+      (socket.assigns.action_request || %{})
+      |> Map.merge(response)
+      |> Map.put(:status, if(response[:accepted], do: "accepted", else: "rejected"))
+
     socket = assign(socket, action_request: action_request)
 
-    # If accepted and this is the requester, also start media
-    if response[:status] == "accepted" && response[:responder_id] != socket.assigns.user_id do
-      socket = start_media_if_call(socket)
-      {:noreply, socket}
+    # Store accepted action type for later use (e.g., initializing file transfer UI)
+    socket =
+      if response[:accepted] do
+        assign(socket, accepted_action_type: response[:action_type])
+      else
+        socket
+      end
+
+    # If accepted and this is the requester, init call UI (but don't start media yet —
+    # that happens on p2p_connected when WebRTC is ready and MediaHook exists)
+    if response[:accepted] && response[:responder_id] != socket.assigns.user_id do
+      {:noreply, maybe_init_call(socket)}
     else
       {:noreply, socket}
     end
@@ -319,8 +347,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     P2P.respond_action(socket.assigns.token, socket.assigns.user_id, accepted_bool)
 
     if accepted_bool do
-      socket = start_media_if_call(socket)
-      {:noreply, socket}
+      {:noreply, maybe_init_call(socket)}
     else
       {:noreply, socket}
     end
@@ -346,6 +373,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   def handle_event("p2p_signal", params, socket) do
+    Logger.debug("P2P signal relay: type=#{params["type"]}, token=#{socket.assigns.token}")
+
     rate_limiter = SignalingRateLimit.configured_module()
 
     with :ok <- rate_limiter.check_signal_rate(socket.assigns.token, socket.assigns.user_id),
@@ -366,19 +395,27 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   def handle_event("p2p_connected", _params, socket) do
+    Logger.info("P2P connected: token=#{socket.assigns.token}")
+
     case P2P.transition_status(socket.assigns.token, :active) do
       :ok ->
-        {:noreply, assign(socket, session_status: "active")}
+        socket =
+          socket
+          |> assign(session_status: "active", webrtc_state: "Conectado")
+          |> maybe_init_file_transfer()
+          |> start_media_if_call()
+
+        {:noreply, socket}
 
       {:error, _reason} ->
-        # Ignore — session not in a state that allows this transition
+        # Transition may have been done by other peer — check actual state
+        socket = sync_session_status(socket)
         {:noreply, socket}
     end
   end
 
   def handle_event("p2p_failed", %{"reason" => reason}, socket) do
-    require Logger
-    Logger.warning("P2P connection failed: #{reason}, token: #{socket.assigns.token}")
+    Logger.warning("P2P connection failed: #{reason}, token=#{socket.assigns.token}")
 
     case P2P.transition_status(socket.assigns.token, :failed) do
       :ok ->
@@ -412,6 +449,10 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   # --- File Transfer Events ---
 
   def handle_event("ft_offer_sent", params, socket) do
+    Logger.info(
+      "P2P file offer: #{params["fileName"]} (#{params["formattedSize"]}), token=#{socket.assigns.token}"
+    )
+
     ft = %{
       status: "offering",
       file_name: params["fileName"],
@@ -477,6 +518,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   def handle_event("ft_completed", params, socket) do
+    Logger.info("P2P file completed: #{params["fileName"]}, token=#{socket.assigns.token}")
+
     ft = %{
       status: "completed",
       file_name: params["fileName"]
@@ -486,6 +529,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   def handle_event("ft_failed", params, socket) do
+    Logger.warning("P2P file failed: #{params["reason"]}, token=#{socket.assigns.token}")
+
     ft =
       Map.merge(socket.assigns.file_transfer || %{}, %{
         status: "failed",
@@ -540,6 +585,15 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     {:noreply, assign(socket, file_transfer: ft)}
   end
 
+  def handle_event("ft_reset", _params, socket) do
+    socket =
+      socket
+      |> assign(file_transfer: %{status: "ready"})
+      |> push_ft_config()
+
+    {:noreply, socket}
+  end
+
   def handle_event("ft_queued", params, socket) do
     ft =
       Map.merge(socket.assigns.file_transfer || %{}, %{
@@ -552,6 +606,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   # --- Media Call Events ---
 
   def handle_event("media_call_started", %{"type" => type}, socket) do
+    Logger.info("P2P call started: type=#{type}, token=#{socket.assigns.token}")
+
     call = %{
       status: "#{type}_active",
       type: type,
@@ -567,6 +623,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   def handle_event("media_call_ended", %{"reason" => reason}, socket) do
+    Logger.info("P2P call ended: reason=#{reason}, token=#{socket.assigns.token}")
+
     msg = %{
       id: System.unique_integer([:positive]),
       sender_nick: "Sistema",
@@ -588,6 +646,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   def handle_event("media_error", %{"code" => _code, "message" => message}, socket) do
+    Logger.warning("P2P media error: #{message}, token=#{socket.assigns.token}")
+
     msg = %{
       id: System.unique_integer([:positive]),
       sender_nick: "Sistema",
@@ -707,6 +767,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
   @impl true
   def terminate(_reason, socket) do
+    Logger.info("P2P LiveView terminated: token=#{socket.assigns[:token]}")
+
     if connected?(socket) and socket.assigns[:token] do
       token = socket.assigns.token
       user_id = socket.assigns[:user_id]
@@ -726,30 +788,17 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   # --- Private Helpers ---
 
   defp mount_lobby(socket, token, nickname, user_id, db_session) do
+    role = if user_id == db_session.creator_id, do: :creator, else: :peer
+    Logger.info("P2P LiveView mounted: token=#{token}, user=#{nickname}, role=#{role}")
+
     if connected?(socket) do
       Phoenix.PubSub.subscribe(@pubsub, "p2p:#{token}")
       P2P.join_session(token, user_id)
     end
 
     peer_nick = resolve_peer_nick(user_id, db_session)
-    role = if user_id == db_session.creator_id, do: :creator, else: :peer
 
-    # Get existing messages from GenServer state
-    messages =
-      case P2P.session_info(token) do
-        {:ok, state} -> state.messages
-        _ -> []
-      end
-
-    ft_config = %{
-      max_size_mb: Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500),
-      blocked_extensions:
-        Application.get_env(
-          :retro_hex_chat,
-          :file_transfer_blocked_extensions,
-          ~w(.exe .bat .cmd .com .msi .scr .pif .vbs .vbe .js .jse .wsf .wsh .ps1 .reg)
-        )
-    }
+    {messages, accepted_action_type, peer_online} = fetch_session_state(token, role)
 
     turn_only = load_turn_only_preference(nickname)
     turn_configured = P2P.turn_configured?()
@@ -761,7 +810,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         nickname: nickname,
         user_id: user_id,
         peer_nick: peer_nick,
-        peer_online: false,
+        peer_online: peer_online,
         role: role,
         messages: messages,
         action_request: nil,
@@ -771,15 +820,16 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         permission_granted: %{},
         webrtc_state: nil,
         retry_attempt: nil,
-        file_transfer: nil,
-        call: nil,
+        file_transfer: init_file_transfer_on_mount(accepted_action_type, db_session.status),
+        accepted_action_type: accepted_action_type,
+        call: init_call_on_mount(accepted_action_type, db_session.status),
         turn_only: turn_only,
         turn_configured: turn_configured
       )
 
     socket =
-      if connected?(socket) do
-        push_event(socket, "ft_config", ft_config)
+      if connected?(socket) && socket.assigns.file_transfer do
+        push_ft_config(socket)
       else
         socket
       end
@@ -845,16 +895,124 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     {:noreply, socket}
   end
 
-  defp start_media_if_call(socket) do
-    case socket.assigns[:action_request] do
-      %{action_type: "audio_call"} ->
-        push_event(socket, "media_start_audio", %{})
+  defp fetch_session_state(token, role) do
+    case P2P.session_info(token) do
+      {:ok, state} ->
+        action_type =
+          if state.action_request && state.action_request.status == "accepted",
+            do: state.action_request.action_type,
+            else: nil
 
-      %{action_type: "video_call"} ->
-        push_event(socket, "media_start_video", %{})
+        peer_online =
+          if role == :creator,
+            do: state.peer_joined,
+            else: state.creator_joined
+
+        {state.messages, action_type, peer_online}
+
+      _ ->
+        {[], nil, false}
+    end
+  end
+
+  defp init_file_transfer_on_mount(accepted_action_type, status) do
+    if accepted_action_type == "file_transfer" && status in ["connecting", "active"],
+      do: %{status: "ready"},
+      else: nil
+  end
+
+  defp init_call_on_mount(accepted_action_type, status) do
+    if accepted_action_type in ["audio_call", "video_call"] &&
+         status in ["connecting", "active"] do
+      %{
+        status: "initializing",
+        type: String.replace(accepted_action_type, "_call", ""),
+        duration: "00:00:00",
+        quality_level: nil,
+        quality_label: nil,
+        peer_muted: false,
+        peer_camera_off: false,
+        upgrade_pending: false
+      }
+    else
+      nil
+    end
+  end
+
+  defp sync_session_status(socket) do
+    case P2P.session_info(socket.assigns.token) do
+      {:ok, %{session: %{status: "active"}}} ->
+        socket
+        |> assign(session_status: "active", webrtc_state: "Conectado")
+        |> maybe_init_file_transfer()
+        |> start_media_if_call()
 
       _ ->
         socket
+    end
+  end
+
+  defp maybe_init_file_transfer(socket) do
+    action_type =
+      socket.assigns[:accepted_action_type] ||
+        socket.assigns.session.session_type
+
+    if action_type == "file_transfer" && socket.assigns.file_transfer == nil do
+      socket
+      |> assign(file_transfer: %{status: "ready"})
+      |> push_ft_config()
+    else
+      socket
+    end
+  end
+
+  defp push_ft_config(socket) do
+    config = %{
+      max_size_mb: Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500),
+      blocked_extensions:
+        Application.get_env(
+          :retro_hex_chat,
+          :file_transfer_blocked_extensions,
+          ~w(.exe .bat .cmd .com .msi .scr .pif .vbs .vbe .js .jse .wsf .wsh .ps1 .reg)
+        )
+    }
+
+    push_event(socket, "ft_config", config)
+  end
+
+  defp maybe_init_call(socket) do
+    action_type =
+      socket.assigns[:accepted_action_type] ||
+        get_in(socket.assigns, [:action_request, :action_type]) ||
+        socket.assigns.session.session_type
+
+    if action_type in ["audio_call", "video_call"] && socket.assigns.call == nil do
+      assign(socket,
+        call: %{
+          status: "initializing",
+          type: String.replace(action_type, "_call", ""),
+          duration: "00:00:00",
+          quality_level: nil,
+          quality_label: nil,
+          peer_muted: false,
+          peer_camera_off: false,
+          upgrade_pending: false
+        }
+      )
+    else
+      socket
+    end
+  end
+
+  defp start_media_if_call(socket) do
+    action_type =
+      socket.assigns[:accepted_action_type] ||
+        get_in(socket.assigns, [:action_request, :action_type])
+
+    case action_type do
+      "audio_call" -> push_event(socket, "media_start_audio", %{})
+      "video_call" -> push_event(socket, "media_start_video", %{})
+      _ -> socket
     end
   end
 
