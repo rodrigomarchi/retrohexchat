@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Parser, Registry}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive
+  alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.Endpoint
 
   # -- send_input --
@@ -209,7 +210,11 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- close_pm_tab --
 
   def handle_event("close_pm_tab", %{"nickname" => nickname}, socket) do
-    session = Session.remove_pm_conversation(socket.assigns.session, nickname)
+    old_session = socket.assigns.session
+    topic = "pm:#{PM.pm_topic(old_session.nickname, nickname)}"
+    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, topic)
+
+    session = Session.remove_pm_conversation(old_session, nickname)
     socket = assign(socket, session: session)
 
     socket =

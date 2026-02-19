@@ -108,20 +108,8 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       nick = "AO#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      # Simulate incoming PM from new contact
-      pm_payload = %{
-        event: "new_pm",
-        payload: %{
-          id: System.unique_integer([:positive]),
-          sender: "NewPerson",
-          recipient: nick,
-          content: "Hey there!",
-          type: :message,
-          timestamp: DateTime.utc_now()
-        }
-      }
-
-      send(view.pid, pm_payload)
+      # Receiver gets {:incoming_pm_notify} on user:nick (the actual path for new contacts)
+      send(view.pid, {:incoming_pm_notify, %{sender: "NewPerson"}})
       html = render(view)
 
       assert html =~ "NewPerson"
@@ -186,6 +174,50 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
     end
   end
 
+  # ── US3: {:incoming_pm_notify} auto-opens PM in treebar ───
+
+  describe "US3: incoming_pm_notify auto-opens PM" do
+    test "{:incoming_pm_notify} from new contact auto-opens PM in treebar", %{conn: conn} do
+      nick = "IN#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      # Receiver gets {:incoming_pm_notify} on user:nick (NOT new_pm on pm:sorted)
+      send(view.pid, {:incoming_pm_notify, %{sender: "Dave"}})
+      html = render(view)
+
+      assert html =~ ~s(data-testid="pm-Dave")
+    end
+
+    test "{:incoming_pm_notify} from ignored user does NOT auto-open", %{conn: conn} do
+      nick = "IX#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      # Ignore the user first
+      view |> render_submit("send_input", %{"input" => "/ignore BadGuy"})
+
+      send(view.pid, {:incoming_pm_notify, %{sender: "BadGuy"}})
+      html = render(view)
+
+      refute html =~ ~s(data-testid="pm-BadGuy")
+    end
+
+    test "{:incoming_pm_notify} from existing contact does NOT duplicate", %{conn: conn} do
+      nick = "ND#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      # Open conversation first
+      view |> render_submit("send_input", %{"input" => "/query Dave"})
+
+      # Now get a notify — should NOT create a second entry
+      send(view.pid, {:incoming_pm_notify, %{sender: "Dave"}})
+      html = render(view)
+
+      # Count occurrences of pm-Dave — should be exactly 1
+      matches = Regex.scan(~r/data-testid="pm-Dave"/, html)
+      assert length(matches) == 1
+    end
+  end
+
   # ── US4: PM Conversation Ordering by Recency ───────────────
 
   describe "US4: PM recency ordering" do
@@ -218,6 +250,68 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       charlie_pos = :binary.match(html, ~s(data-testid="pm-Charlie")) |> elem(0)
       alice_pos = :binary.match(html, ~s(data-testid="pm-Alice")) |> elem(0)
       assert charlie_pos < alice_pos
+    end
+  end
+
+  # ── Bug fixes: PM close unsubscribe + PM edit context ───
+
+  describe "close_pm_tab unsubscribes from PM topic" do
+    test "closing PM tab stops receiving new_pm events for that conversation", %{conn: conn} do
+      nick = "CU#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      # Open PM with Eve
+      view |> render_submit("send_input", %{"input" => "/query Eve"})
+      assert render(view) =~ ~s(data-testid="pm-Eve")
+
+      # Close PM tab
+      view |> render_click("close_pm_tab", %{"nickname" => "Eve"})
+      refute render(view) =~ ~s(data-testid="pm-Eve")
+
+      # Send a new_pm directly — if unsubscribed, apply_new_pm won't fire for stale sub
+      # But incoming_pm_notify on user:nick should still auto-open
+      # The key behavior: no phantom unread for a non-visible tab
+      pm_payload = %{
+        event: "new_pm",
+        payload: %{
+          id: System.unique_integer([:positive]),
+          sender: "Eve",
+          recipient: nick,
+          content: "Are you there?",
+          type: :message,
+          timestamp: DateTime.utc_now()
+        }
+      }
+
+      send(view.pid, pm_payload)
+      html = render(view)
+
+      # After unsubscribe, stale new_pm should NOT create phantom unread for closed tab
+      # Eve should NOT appear in treebar (no auto-open from new_pm path)
+      refute html =~ ~s(data-testid="pm-Eve")
+    end
+  end
+
+  describe "PM edit/delete context detection" do
+    test "PM edit while viewing channel does NOT corrupt channel stream", %{conn: conn} do
+      nick = "PE#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      # Open PM with Frank, then switch back to channel
+      view |> render_submit("send_input", %{"input" => "/query Frank"})
+      view |> render_click("switch_channel", %{"channel" => "#lobby"})
+
+      # Simulate PM edit event arriving (from pm:frank:nick topic)
+      edit_payload = %{
+        event: "message_edited",
+        payload: %{id: 1, content: "edited PM content", edited_at: DateTime.utc_now()}
+      }
+
+      send(view.pid, edit_payload)
+      html = render(view)
+
+      # The edited PM content should NOT appear in the channel stream
+      refute html =~ "edited PM content"
     end
   end
 end

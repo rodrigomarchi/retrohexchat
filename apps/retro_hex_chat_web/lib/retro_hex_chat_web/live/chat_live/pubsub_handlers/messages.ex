@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{DuplicateTracker, FloodProtection, IgnoreList, UnreadTracker}
+  alias RetroHexChatWeb.ChatLive.Helpers.PM
 
   # ── Channel messages ──────────────────────────────────────
 
@@ -197,11 +198,18 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
-  # ── Incoming PM notification (for away auto-reply) ────────
+  # ── Incoming PM notification (auto-open + away auto-reply) ──
 
   def handle_info({:incoming_pm_notify, %{sender: sender}}, socket) do
     session = socket.assigns.session
-    {:halt, maybe_away_auto_reply(socket, sender, session)}
+
+    if IgnoreList.ignored?(session.ignore_list, sender, :pm) do
+      {:halt, socket}
+    else
+      socket = maybe_auto_open_incoming_pm(socket, session, sender)
+      session = socket.assigns.session
+      {:halt, maybe_away_auto_reply(socket, sender, session)}
+    end
   end
 
   # ── Catch-all: pass unhandled to next hook ────────────────
@@ -303,9 +311,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
         socket
       end
 
-    # Auto-open PM conversation if not already in the list
-    {socket, session} = maybe_auto_open_pm(socket, session, other_nick)
-
     # Reorder by recency — move to front on every message
     session = Session.move_pm_to_front(session, other_nick)
     socket = assign(socket, session: session)
@@ -328,25 +333,14 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
-  defp maybe_auto_open_pm(socket, session, other_nick) do
-    already_open = other_nick in session.pm_conversations
-
-    if already_open do
-      {socket, session}
+  defp maybe_auto_open_incoming_pm(socket, session, sender) do
+    if sender in session.pm_conversations do
+      socket
     else
-      ensure_pm_subscription(session.nickname, other_nick)
-      new_session = Session.add_pm_conversation(session, other_nick)
-      {assign(socket, session: new_session), new_session}
+      PM.ensure_pm_subscription(session.nickname, sender)
+      new_session = Session.add_pm_conversation(session, sender)
+      assign(socket, session: new_session)
     end
-  end
-
-  defp ensure_pm_subscription(nick_a, nick_b) do
-    topic = "pm:#{pm_topic_sorted(nick_a, nick_b)}"
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, topic)
-  end
-
-  defp pm_topic_sorted(nick_a, nick_b) do
-    [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
   end
 
   defp maybe_away_auto_reply(socket, sender, session) do
