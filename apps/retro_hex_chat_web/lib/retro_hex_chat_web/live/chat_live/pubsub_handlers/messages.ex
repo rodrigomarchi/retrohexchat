@@ -303,6 +303,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
         socket
       end
 
+    # Auto-open PM conversation if not already in the list
+    {socket, session} = maybe_auto_open_pm(socket, session, other_nick)
+
+    # Reorder by recency — move to front on every message
+    session = Session.move_pm_to_front(session, other_nick)
+    socket = assign(socket, session: session)
+
     if session.active_pm == other_nick do
       stream_insert(socket, :chat_messages, pm_to_stream_item(payload))
     else
@@ -319,6 +326,27 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       })
       |> assign(unread_counts: unread_counts)
     end
+  end
+
+  defp maybe_auto_open_pm(socket, session, other_nick) do
+    already_open = other_nick in session.pm_conversations
+
+    if already_open do
+      {socket, session}
+    else
+      ensure_pm_subscription(session.nickname, other_nick)
+      new_session = Session.add_pm_conversation(session, other_nick)
+      {assign(socket, session: new_session), new_session}
+    end
+  end
+
+  defp ensure_pm_subscription(nick_a, nick_b) do
+    topic = "pm:#{pm_topic_sorted(nick_a, nick_b)}"
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, topic)
+  end
+
+  defp pm_topic_sorted(nick_a, nick_b) do
+    [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
   end
 
   defp maybe_away_auto_reply(socket, sender, session) do

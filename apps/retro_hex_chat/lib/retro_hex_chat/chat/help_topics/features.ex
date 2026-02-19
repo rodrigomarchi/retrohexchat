@@ -69,6 +69,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
   @external_resource Path.join(@help_dir, "feature-p2p-sessions.html")
   @external_resource Path.join(@help_dir, "feature-file-transfer.html")
   @external_resource Path.join(@help_dir, "feature-privacy-settings.html")
+  @external_resource Path.join(@help_dir, "feature-pm-persistence.html")
+  @external_resource Path.join(@help_dir, "feature-auto-join-channels.html")
 
   @spec topics() :: [map()]
   def topics do
@@ -892,6 +894,37 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "modo privado"
         ],
         content: File.read!(Path.join(@help_dir, "feature-privacy-settings.html"))
+      },
+      %{
+        id: "feature-pm-persistence",
+        title: "PM Persistence",
+        category: "Features",
+        keywords: [
+          "pm",
+          "private message",
+          "persistence",
+          "restore",
+          "conversation",
+          "reconnect",
+          "auto-open",
+          "recency"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-pm-persistence.html"))
+      },
+      %{
+        id: "feature-auto-join-channels",
+        title: "Auto-Join Channels",
+        category: "Features",
+        keywords: [
+          "auto-join",
+          "autojoin",
+          "remember",
+          "channel",
+          "persistence",
+          "rejoin",
+          "reconnect"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-auto-join-channels.html"))
       }
     ]
   end

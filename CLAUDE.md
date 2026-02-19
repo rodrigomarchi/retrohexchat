@@ -33,6 +33,8 @@
 - Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild, ExSTUN ~> 0.1 (existing) (039-p2p-security-help-polish)
 - PostgreSQL 16+ (existing `user_preferences.message_settings` JSONB — no new migrations), ETS (rate limit state) (039-p2p-security-help-polish)
 - N/A — no new migrations, all state is ephemeral (socket assigns) (040-p2p-context-menus)
+- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css (npm), esbuild (041-session-persistence)
+- PostgreSQL 16+ (existing `private_messages` table, existing `autojoin_list_entries` table — no new migrations) (041-session-persistence)
 
 ## Project Structure
 
@@ -155,6 +157,6 @@ static analysis from day one, 98.css design fidelity, mandatory help documentati
 
 
 ## Recent Changes
+- 041-session-persistence: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css (npm), esbuild
 - 040-p2p-context-menus: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild
 - 039-p2p-security-help-polish: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild, ExSTUN ~> 0.1 (existing)
-- 038-audio-video-calls: Added Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild. Browser-native WebRTC APIs (getUserMedia, addTrack, replaceTrack, getStats, enumerateDevices, Picture-in-Picture). Zero new npm/Elixir dependencies.

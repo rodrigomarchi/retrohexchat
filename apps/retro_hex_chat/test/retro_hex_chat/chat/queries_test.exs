@@ -171,6 +171,151 @@ defmodule RetroHexChat.Chat.QueriesTest do
     end
   end
 
+  describe "list_pm_partners/2" do
+    test "returns empty list when user has no PM history" do
+      assert [] == Queries.list_pm_partners("NoHistory")
+    end
+
+    test "returns distinct PM partners ordered by most recent message" do
+      # Alice sends PM to Bob, then to Charlie, then Bob sends back
+      {:ok, _} =
+        Queries.insert_private_message(%{
+          sender_nickname: "Alice",
+          recipient_nickname: "Bob",
+          content: "Hi Bob"
+        })
+
+      {:ok, _} =
+        Queries.insert_private_message(%{
+          sender_nickname: "Alice",
+          recipient_nickname: "Charlie",
+          content: "Hi Charlie"
+        })
+
+      {:ok, _} =
+        Queries.insert_private_message(%{
+          sender_nickname: "Bob",
+          recipient_nickname: "Alice",
+          content: "Hi Alice back"
+        })
+
+      partners = Queries.list_pm_partners("Alice")
+      nicks = Enum.map(partners, & &1.nickname)
+
+      # Bob is most recent (last message), then Charlie
+      assert nicks == ["Bob", "Charlie"]
+    end
+
+    test "includes partners where user is recipient" do
+      {:ok, _} =
+        Queries.insert_private_message(%{
+          sender_nickname: "Dave",
+          recipient_nickname: "Eve",
+          content: "Hello Eve"
+        })
+
+      partners = Queries.list_pm_partners("Eve")
+      assert [%{nickname: "Dave"}] = partners
+    end
+
+    test "excludes self-PMs" do
+      {:ok, _} =
+        Queries.insert_private_message(%{
+          sender_nickname: "Frank",
+          recipient_nickname: "Frank",
+          content: "Note to self"
+        })
+
+      {:ok, _} =
+        Queries.insert_private_message(%{
+          sender_nickname: "Frank",
+          recipient_nickname: "Grace",
+          content: "Hi Grace"
+        })
+
+      partners = Queries.list_pm_partners("Frank")
+      nicks = Enum.map(partners, & &1.nickname)
+      assert nicks == ["Grace"]
+      refute "Frank" in nicks
+    end
+
+    test "excludes soft-deleted messages" do
+      {:ok, pm} =
+        Queries.insert_private_message(%{
+          sender_nickname: "Hank",
+          recipient_nickname: "Ivy",
+          content: "Will be deleted"
+        })
+
+      {:ok, _} = Queries.soft_delete_pm(pm, DateTime.utc_now())
+
+      partners = Queries.list_pm_partners("Hank")
+      assert [] == partners
+    end
+
+    test "limits results to 50 by default" do
+      for i <- 1..55 do
+        nick = "Partner#{String.pad_leading("#{i}", 3, "0")}"
+
+        {:ok, _} =
+          Queries.insert_private_message(%{
+            sender_nickname: "LimitTest",
+            recipient_nickname: nick,
+            content: "Hi #{nick}"
+          })
+      end
+
+      partners = Queries.list_pm_partners("LimitTest")
+      assert length(partners) == 50
+    end
+
+    test "respects custom limit option" do
+      for i <- 1..5 do
+        {:ok, _} =
+          Queries.insert_private_message(%{
+            sender_nickname: "Custom",
+            recipient_nickname: "P#{i}",
+            content: "Hi P#{i}"
+          })
+      end
+
+      partners = Queries.list_pm_partners("Custom", limit: 3)
+      assert length(partners) == 3
+    end
+
+    test "returns last_message_at as DateTime" do
+      {:ok, _} =
+        Queries.insert_private_message(%{
+          sender_nickname: "TimeTest",
+          recipient_nickname: "TimePartner",
+          content: "Check timestamp"
+        })
+
+      [partner] = Queries.list_pm_partners("TimeTest")
+      assert %DateTime{} = partner.last_message_at
+    end
+
+    test "does not return duplicate partners from bidirectional PMs" do
+      {:ok, _} =
+        Queries.insert_private_message(%{
+          sender_nickname: "Jack",
+          recipient_nickname: "Jill",
+          content: "Hi"
+        })
+
+      {:ok, _} =
+        Queries.insert_private_message(%{
+          sender_nickname: "Jill",
+          recipient_nickname: "Jack",
+          content: "Hello"
+        })
+
+      partners = Queries.list_pm_partners("Jack")
+      assert length(partners) == 1
+      assert [%{nickname: "Jill"}] = partners
+    end
+  end
+
   describe "get_reply_ids/1" do
     test "returns IDs of messages replying to a parent" do
       {:ok, parent} =

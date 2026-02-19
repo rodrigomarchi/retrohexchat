@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     HighlightWords,
     IgnoreList,
     PerformList,
+    Queries,
     SoundSettings,
     UserBio,
     UserPreferences
@@ -167,6 +168,24 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     |> load_if_found(CustomMenus.load(nick), &Session.set_custom_menus/2)
     |> load_if_found(AutoRespondRules.load(nick), &Session.set_autorespond_rules/2)
     |> load_if_found(UserPreferences.load(nick), &Session.set_user_preferences/2)
+    |> restore_pm_conversations(nick)
+  end
+
+  @spec restore_pm_conversations(Session.t(), String.t()) :: Session.t()
+  def restore_pm_conversations(session, nick) do
+    partners = Queries.list_pm_partners(nick)
+    nicks = Enum.map(partners, & &1.nickname)
+
+    Enum.each(nicks, fn partner_nick ->
+      topic = "pm:#{pm_topic(nick, partner_nick)}"
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, topic)
+    end)
+
+    %{session | pm_conversations: nicks}
+  end
+
+  defp pm_topic(nick_a, nick_b) do
+    [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
   end
 
   defp load_if_found(session, {:ok, data}, setter), do: setter.(session, data)
