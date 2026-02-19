@@ -300,6 +300,39 @@ describe("WebRTCHook", () => {
       expect(events[0].detail.channel).toBe(hook.dataChannel);
     });
 
+    it("stores channel reference on element for late-mounting hooks", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(WebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+
+      const startOfferCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "p2p_start_offer");
+      await startOfferCall[1]({ ice_servers: [] });
+
+      // Simulate channel open
+      hook.dataChannel.onopen();
+
+      expect(hook.el._fileTransferChannel).toBe(hook.dataChannel);
+    });
+
+    it("clears channel reference on element when DataChannel closes", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(WebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+
+      const startOfferCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "p2p_start_offer");
+      await startOfferCall[1]({ ice_servers: [] });
+
+      hook.dataChannel.onopen();
+      expect(hook.el._fileTransferChannel).toBe(hook.dataChannel);
+
+      hook.dataChannel.onclose();
+      expect(hook.el._fileTransferChannel).toBeNull();
+    });
+
     it("dispatches ft_channel_closed on DataChannel close", async () => {
       const ctx = createHookContext();
       const hook = Object.create(WebRTCHook);

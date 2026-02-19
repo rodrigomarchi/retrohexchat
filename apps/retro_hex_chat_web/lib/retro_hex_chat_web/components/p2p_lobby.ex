@@ -42,11 +42,20 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
           retry_attempt={@retry_attempt}
         />
 
-        <div :if={@session_status == "connecting" && !@webrtc_state} class="p2p-lobby__connecting">
+        <div
+          :if={@session_status == "connecting" && !@webrtc_state && !@call}
+          class="p2p-lobby__connecting"
+        >
           <p>Aguardando conexao...</p>
         </div>
 
-        <div :if={@session_status != "connecting"} class="p2p-lobby__content">
+        <.p2p_media_call
+          :if={@call}
+          call={@call}
+          peer_nick={@peer_nick}
+        />
+
+        <div :if={@session_status != "connecting" && !@call} class="p2p-lobby__content">
           <.p2p_presence nickname={@nickname} peer_nick={@peer_nick} peer_online={@peer_online} />
 
           <.p2p_chat messages={@messages} nickname={@nickname} />
@@ -58,13 +67,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
             peer_nick={@peer_nick}
           />
 
-          <.p2p_media_call
-            :if={@call}
-            call={@call}
-            peer_nick={@peer_nick}
-          />
-
           <.p2p_actions
+            :if={!@file_transfer}
             capabilities={@capabilities}
             action_request={@action_request}
             nickname={@nickname}
@@ -167,9 +171,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     >
       <div :if={@call.type == "video"} class="media-call__video-area">
         <video
-          :if={!@call.peer_camera_off}
           id="remote-video"
-          class="media-call__remote"
+          class={"media-call__remote #{if @call.peer_camera_off, do: "u-hidden"}"}
           autoplay
           playsinline
         >
@@ -343,6 +346,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     <div class="file-transfer" id="p2p-file-transfer" phx-hook="FileTransferHook">
       <input type="file" class="file-transfer-input u-hidden" />
 
+      <.ft_ready :if={@file_transfer[:status] == "ready"} />
+
       <.ft_offer_received
         :if={@file_transfer[:status] == "offer_received"}
         file_transfer={@file_transfer}
@@ -382,6 +387,22 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
         :if={@file_transfer[:status] == "offering"}
         file_transfer={@file_transfer}
       />
+    </div>
+    """
+  end
+
+  defp ft_ready(assigns) do
+    ~H"""
+    <div class="file-transfer__ready">
+      <p class="file-transfer__ready-text">
+        Arraste um arquivo aqui ou clique para selecionar
+      </p>
+      <button
+        class="file-transfer__ready-btn"
+        onclick="this.closest('.file-transfer').querySelector('.file-transfer-input').click()"
+      >
+        Escolher Arquivo
+      </button>
     </div>
     """
   end
@@ -477,6 +498,9 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     ~H"""
     <div class="file-transfer__status file-transfer__status--success">
       <p>Transferencia concluida com sucesso: {@file_transfer.file_name}</p>
+      <button phx-click="ft_reset" class="file-transfer__reset-btn">
+        Enviar outro arquivo
+      </button>
     </div>
     """
   end
@@ -487,6 +511,9 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     ~H"""
     <div class="file-transfer__status file-transfer__status--cancelled">
       <p>Transferencia cancelada por {@file_transfer.cancelled_by}</p>
+      <button phx-click="ft_reset" class="file-transfer__reset-btn">
+        Enviar outro arquivo
+      </button>
     </div>
     """
   end
@@ -497,13 +524,18 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     ~H"""
     <div class="file-transfer__status file-transfer__status--error">
       <p>{@file_transfer.reason}</p>
-      <button
-        :if={@file_transfer[:can_retry]}
-        phx-click="ft_retry"
-        class="file-transfer__retry-btn"
-      >
-        Tentar novamente
-      </button>
+      <div class="file-transfer__status-actions">
+        <button
+          :if={@file_transfer[:can_retry]}
+          phx-click="ft_retry"
+          class="file-transfer__retry-btn"
+        >
+          Tentar novamente
+        </button>
+        <button phx-click="ft_reset" class="file-transfer__reset-btn">
+          Enviar outro arquivo
+        </button>
+      </div>
     </div>
     """
   end
@@ -515,6 +547,9 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     ~H"""
     <div class="file-transfer__status file-transfer__status--rejected">
       <p>{@peer_nick} rejeitou a transferencia de arquivo</p>
+      <button phx-click="ft_reset" class="file-transfer__reset-btn">
+        Enviar outro arquivo
+      </button>
     </div>
     """
   end
@@ -535,6 +570,9 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     ~H"""
     <div class="file-transfer__status file-transfer__status--error">
       <p>{@error}</p>
+      <button phx-click="ft_reset" class="file-transfer__reset-btn">
+        Tentar outro arquivo
+      </button>
     </div>
     """
   end

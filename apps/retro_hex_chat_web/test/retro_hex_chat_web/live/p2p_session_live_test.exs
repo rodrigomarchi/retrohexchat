@@ -1,7 +1,7 @@
 defmodule RetroHexChatWeb.P2PSessionLiveTest do
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  alias RetroHexChat.P2P.{Queries, Supervisor}
+  alias RetroHexChat.P2P.{Queries, SessionServer, Supervisor}
   alias RetroHexChat.Services.RegisteredNick
 
   @moduletag :liveview
@@ -163,6 +163,52 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       assert html =~ "p2p_lv_a6"
       assert html =~ "p2p_lv_b6"
     end
+
+    test "peer presence is online on mount when peer already joined in GenServer", %{
+      conn: conn,
+      session: session,
+      alice: alice,
+      bob: bob
+    } do
+      # Both join the GenServer
+      :ok = SessionServer.join(session.token, alice.id)
+      :ok = SessionServer.join(session.token, bob.id)
+      Process.sleep(20)
+
+      # Mount as alice — bob should already show as online
+      conn = chat_conn(conn, "p2p_lv_a6")
+      {:ok, _view, html} = live(conn, "/p2p/#{session.token}")
+
+      refute html =~ "aguardando"
+    end
+
+    test "peer presence updates to online when p2p_peer_joined is received", %{
+      conn: conn,
+      session: session,
+      bob: bob
+    } do
+      conn = chat_conn(conn, "p2p_lv_a6")
+      {:ok, view, html} = live(conn, "/p2p/#{session.token}")
+
+      # Initially peer shows as "aguardando" (offline)
+      assert html =~ "aguardando"
+
+      # Simulate peer joining via PubSub
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "p2p:#{session.token}",
+        %{
+          event: "p2p_peer_joined",
+          payload: %{user_id: bob.id}
+        }
+      )
+
+      Process.sleep(20)
+      html = render(view)
+
+      # Peer should now show as online, not "aguardando"
+      refute html =~ "aguardando"
+    end
   end
 
   describe "action requests" do
@@ -260,21 +306,359 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       html = render(view)
       assert html =~ "quer iniciar"
 
-      # Simulate action response (accepted) via PubSub
+      # Simulate action response with real GenServer payload (no :status key)
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,
         "p2p:#{session.token}",
         %{
           event: "p2p_action_response",
-          payload: %{accepted: true, responder_nick: "p2p_lv_b8", status: "accepted"}
+          payload: %{
+            accepted: true,
+            responder_nick: "p2p_lv_b8",
+            action_type: "audio_call"
+          }
         }
       )
 
       Process.sleep(20)
       html = render(view)
-      # After response with status "accepted", consent banner should be hidden
-      # (only shows when status == "pending")
+      # After response with accepted: true, consent banner must NOT reappear
+      refute html =~ "quer iniciar"
+      # For audio_call, media-call UI renders instead of action buttons
+      assert html =~ "media-call"
+    end
+
+    test "consent banner does not reappear after connecting→active transition", %{
+      conn: conn,
+      session: session,
+      alice: alice
+    } do
+      conn = chat_conn(conn, "p2p_lv_b8")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      # Simulate action request from alice
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "p2p:#{session.token}",
+        %{
+          event: "p2p_action_request",
+          payload: %{
+            requester_id: alice.id,
+            requester_nick: "p2p_lv_a8",
+            action_type: "file_transfer",
+            status: "pending"
+          }
+        }
+      )
+
+      Process.sleep(20)
+      assert render(view) =~ "quer iniciar"
+
+      # Simulate accepted response (real GenServer payload)
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "p2p:#{session.token}",
+        %{
+          event: "p2p_action_response",
+          payload: %{
+            accepted: true,
+            responder_nick: "p2p_lv_b8",
+            action_type: "file_transfer"
+          }
+        }
+      )
+
+      Process.sleep(20)
+
+      # Transition to connecting — should clear action_request
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "p2p:#{session.token}",
+        %{event: "p2p_status_changed", payload: %{status: "connecting", reason: nil}}
+      )
+
+      Process.sleep(20)
+
+      # Transition to active
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "p2p:#{session.token}",
+        %{event: "p2p_status_changed", payload: %{status: "active", reason: nil}}
+      )
+
+      Process.sleep(20)
+      html = render(view)
+      # Consent banner must NOT reappear after active
+      refute html =~ "quer iniciar"
+    end
+  end
+
+  describe "file transfer integration" do
+    setup %{conn: conn} do
+      alice = create_nick("p2p_lv_ft_a")
+      bob = create_nick("p2p_lv_ft_b")
+      session = create_session(alice.id, bob.id)
+
+      # Properly transition GenServer through join → lobby → request → accept → connecting
+      :ok = SessionServer.join(session.token, alice.id)
+      :ok = SessionServer.join(session.token, bob.id)
+      Process.sleep(20)
+
+      :ok =
+        SessionServer.request_action(session.token, alice.id, alice.nickname, "file_transfer")
+
+      :ok = SessionServer.respond_action(session.token, bob.id, bob.nickname, true)
+      # Session is now in "connecting" state
+
+      on_exit(fn -> stop_server(session.token) end)
+
+      %{alice: alice, bob: bob, session: session, conn: conn}
+    end
+
+    test "file_transfer element renders after p2p_connected", %{
+      conn: conn,
+      session: session
+    } do
+      conn = chat_conn(conn, "p2p_lv_ft_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      # Simulate WebRTC connected
+      render_hook(view, "p2p_connected", %{})
+      Process.sleep(20)
+
+      html = render(view)
+      assert html =~ "p2p-file-transfer"
+    end
+
+    test "action buttons hidden when file transfer is active", %{
+      conn: conn,
+      session: session
+    } do
+      conn = chat_conn(conn, "p2p_lv_ft_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      render_hook(view, "p2p_connected", %{})
+      Process.sleep(20)
+
+      html = render(view)
+      # Action buttons should not be visible when file transfer is active
+      refute html =~ "p2p-lobby-actions__buttons"
+    end
+
+    test "file_transfer ready state shows file selection prompt", %{
+      conn: conn,
+      session: session
+    } do
+      conn = chat_conn(conn, "p2p_lv_ft_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      render_hook(view, "p2p_connected", %{})
+      Process.sleep(20)
+
+      html = render(view)
+      # "ready" status must show a visible file selection prompt
+      assert html =~ "file-transfer__ready"
+    end
+
+    test "second peer gets file_transfer via p2p_status_changed active", %{
+      conn: conn,
+      session: session,
+      bob: _bob
+    } do
+      # Mount as bob (second peer)
+      conn = chat_conn(conn, "p2p_lv_ft_b")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      # Bob's p2p_connected will fail (transition already done by alice)
+      # But the PubSub broadcast of "active" should still init file_transfer
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "p2p:#{session.token}",
+        %{event: "p2p_status_changed", payload: %{status: "active"}}
+      )
+
+      Process.sleep(20)
+      html = render(view)
+      assert html =~ "p2p-file-transfer"
+    end
+
+    test "peer_online is true on mount when peer already joined", %{
+      conn: conn,
+      session: session
+    } do
+      # Both alice and bob already joined in setup
+      # Mount as bob — alice should show as online
+      conn = chat_conn(conn, "p2p_lv_ft_b")
+      {:ok, _view, html} = live(conn, "/p2p/#{session.token}")
+
+      # Peer should NOT show as "aguardando" since alice already joined
+      refute html =~ "aguardando"
+    end
+
+    test "file_transfer resets to ready after ft_completed", %{
+      conn: conn,
+      session: session
+    } do
+      conn = chat_conn(conn, "p2p_lv_ft_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      render_hook(view, "p2p_connected", %{})
+      Process.sleep(20)
+
+      # Simulate transfer completed
+      render_hook(view, "ft_completed", %{"fileName" => "test.txt"})
+      Process.sleep(20)
+
+      html = render(view)
+      assert html =~ "Transferencia concluida"
+
+      # Click "Enviar outro arquivo" to reset
+      render_click(view, "ft_reset", %{})
+      Process.sleep(20)
+
+      html = render(view)
+      assert html =~ "file-transfer__ready"
+      refute html =~ "Transferencia concluida"
+    end
+
+    test "file_transfer resets to ready after ft_cancelled", %{
+      conn: conn,
+      session: session
+    } do
+      conn = chat_conn(conn, "p2p_lv_ft_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      render_hook(view, "p2p_connected", %{})
+      Process.sleep(20)
+
+      render_hook(view, "ft_cancelled", %{"cancelledBy" => "p2p_lv_ft_b"})
+      Process.sleep(20)
+
+      html = render(view)
+      assert html =~ "Transferencia cancelada"
+
+      render_click(view, "ft_reset", %{})
+      Process.sleep(20)
+
+      html = render(view)
+      assert html =~ "file-transfer__ready"
+    end
+
+    test "file_transfer resets to ready after ft_failed", %{
+      conn: conn,
+      session: session
+    } do
+      conn = chat_conn(conn, "p2p_lv_ft_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      render_hook(view, "p2p_connected", %{})
+      Process.sleep(20)
+
+      render_hook(view, "ft_failed", %{"reason" => "Erro de rede"})
+      Process.sleep(20)
+
+      html = render(view)
+      assert html =~ "Erro de rede"
+
+      render_click(view, "ft_reset", %{})
+      Process.sleep(20)
+
+      html = render(view)
+      assert html =~ "file-transfer__ready"
+    end
+  end
+
+  describe "file transfer full flow (mount during lobby)" do
+    setup %{conn: conn} do
+      alice = create_nick("p2p_lv_flow_a")
+      bob = create_nick("p2p_lv_flow_b")
+
+      token = "p2p-lv-#{System.unique_integer([:positive])}"
+
+      {:ok, session} =
+        Queries.insert_session(%{
+          token: token,
+          creator_id: alice.id,
+          peer_id: bob.id,
+          status: "pending",
+          session_type: "file_transfer"
+        })
+
+      {:ok, _pid} = Supervisor.start_child(session.token)
+
+      # Both join → transitions to lobby
+      :ok = SessionServer.join(session.token, alice.id)
+      :ok = SessionServer.join(session.token, bob.id)
+      Process.sleep(20)
+
+      on_exit(fn -> stop_server(session.token) end)
+
+      %{alice: alice, bob: bob, session: session, conn: conn}
+    end
+
+    test "file_transfer initializes after action accept → connecting → active via PubSub", %{
+      conn: conn,
+      session: session,
+      alice: alice,
+      bob: bob
+    } do
+      # Mount during lobby — file_transfer should be nil
+      conn = chat_conn(conn, "p2p_lv_flow_a")
+      {:ok, view, html} = live(conn, "/p2p/#{session.token}")
+
+      # In lobby state, action buttons should be visible (no file_transfer yet)
       assert html =~ "p2p-lobby-actions__buttons"
+      refute html =~ "p2p-file-transfer"
+
+      # Simulate the full action consent flow via GenServer
+      :ok =
+        SessionServer.request_action(session.token, alice.id, alice.nickname, "file_transfer")
+
+      Process.sleep(20)
+
+      :ok = SessionServer.respond_action(session.token, bob.id, bob.nickname, true)
+      # This transitions to "connecting" and broadcasts p2p_status_changed
+
+      Process.sleep(50)
+
+      # After connecting → active broadcast, file_transfer should be initialized
+      # Simulate p2p_connected from WebRTC
+      render_hook(view, "p2p_connected", %{})
+      Process.sleep(20)
+
+      html = render(view)
+      assert html =~ "p2p-file-transfer"
+      assert html =~ "file-transfer__ready"
+    end
+
+    test "second peer gets file_transfer via status_changed active (not p2p_connected)", %{
+      conn: conn,
+      session: session,
+      alice: alice,
+      bob: bob
+    } do
+      # Mount bob during lobby
+      conn = chat_conn(conn, "p2p_lv_flow_b")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      # Full action flow
+      :ok =
+        SessionServer.request_action(session.token, alice.id, alice.nickname, "file_transfer")
+
+      Process.sleep(20)
+
+      :ok = SessionServer.respond_action(session.token, bob.id, bob.nickname, true)
+      Process.sleep(50)
+
+      # Instead of p2p_connected (which hits the error branch for second peer),
+      # rely on the PubSub broadcast of "active" to init file_transfer
+      # First peer does the transition:
+      :ok = SessionServer.transition(session.token, :active)
+      Process.sleep(50)
+
+      html = render(view)
+      assert html =~ "p2p-file-transfer"
+      assert html =~ "file-transfer__ready"
     end
   end
 
@@ -313,6 +697,242 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       pref = RetroHexChat.Repo.get(RetroHexChat.Chat.Schemas.UserPreference, "p2p_lv_priv_a")
       assert pref != nil
       assert get_in(pref.message_settings, ["p2p_settings", "turn_only"]) == true
+    end
+  end
+
+  describe "audio/video call integration" do
+    setup %{conn: conn} do
+      alice = create_nick("p2p_lv_call_a")
+      bob = create_nick("p2p_lv_call_b")
+
+      token = "p2p-lv-#{System.unique_integer([:positive])}"
+
+      {:ok, session} =
+        Queries.insert_session(%{
+          token: token,
+          creator_id: alice.id,
+          peer_id: bob.id,
+          status: "pending",
+          session_type: "audio_call"
+        })
+
+      {:ok, _pid} = Supervisor.start_child(session.token)
+
+      # Both join → transitions to lobby
+      :ok = SessionServer.join(session.token, alice.id)
+      :ok = SessionServer.join(session.token, bob.id)
+      Process.sleep(20)
+
+      on_exit(fn -> stop_server(session.token) end)
+
+      %{alice: alice, bob: bob, session: session, conn: conn}
+    end
+
+    test "audio call initializes @call on action acceptance", %{
+      conn: conn,
+      session: session,
+      alice: alice,
+      bob: bob
+    } do
+      conn = chat_conn(conn, "p2p_lv_call_a")
+      {:ok, view, html} = live(conn, "/p2p/#{session.token}")
+
+      # Initially no media-call component
+      refute html =~ "media-call"
+
+      # Request and accept via GenServer
+      :ok = SessionServer.request_action(session.token, alice.id, alice.nickname, "audio_call")
+      Process.sleep(20)
+
+      :ok = SessionServer.respond_action(session.token, bob.id, bob.nickname, true)
+      Process.sleep(50)
+
+      html = render(view)
+      # After acceptance, media-call should render (call initialized with "initializing" status)
+      assert html =~ "media-call"
+    end
+
+    test "video call initializes @call on action acceptance", %{conn: conn} do
+      # Create a video_call session
+      v_alice = create_nick("p2p_lv_vcall_a")
+      v_bob = create_nick("p2p_lv_vcall_b")
+
+      token = "p2p-lv-#{System.unique_integer([:positive])}"
+
+      {:ok, v_session} =
+        Queries.insert_session(%{
+          token: token,
+          creator_id: v_alice.id,
+          peer_id: v_bob.id,
+          status: "pending",
+          session_type: "video_call"
+        })
+
+      {:ok, _pid} = Supervisor.start_child(v_session.token)
+      :ok = SessionServer.join(v_session.token, v_alice.id)
+      :ok = SessionServer.join(v_session.token, v_bob.id)
+      Process.sleep(20)
+
+      conn = chat_conn(conn, "p2p_lv_vcall_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{v_session.token}")
+
+      :ok =
+        SessionServer.request_action(
+          v_session.token,
+          v_alice.id,
+          v_alice.nickname,
+          "video_call"
+        )
+
+      Process.sleep(20)
+
+      :ok = SessionServer.respond_action(v_session.token, v_bob.id, v_bob.nickname, true)
+      Process.sleep(50)
+
+      html = render(view)
+      assert html =~ "media-call--video"
+
+      stop_server(v_session.token)
+    end
+
+    test "media_call_started sets full call state", %{
+      conn: conn,
+      session: session,
+      alice: alice,
+      bob: bob
+    } do
+      conn = chat_conn(conn, "p2p_lv_call_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      :ok = SessionServer.request_action(session.token, alice.id, alice.nickname, "audio_call")
+      Process.sleep(20)
+
+      :ok = SessionServer.respond_action(session.token, bob.id, bob.nickname, true)
+      Process.sleep(50)
+
+      # Simulate media_call_started from JS hook
+      render_hook(view, "media_call_started", %{"type" => "audio"})
+      Process.sleep(20)
+
+      html = render(view)
+      assert html =~ "media-call"
+      assert html =~ "00:00:00"
+    end
+
+    test "media_call_ended clears call state", %{
+      conn: conn,
+      session: session,
+      alice: alice,
+      bob: bob
+    } do
+      conn = chat_conn(conn, "p2p_lv_call_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      :ok = SessionServer.request_action(session.token, alice.id, alice.nickname, "audio_call")
+      Process.sleep(20)
+
+      :ok = SessionServer.respond_action(session.token, bob.id, bob.nickname, true)
+      Process.sleep(50)
+
+      # Transition to active (simulates WebRTC connected)
+      render_hook(view, "p2p_connected", %{})
+      Process.sleep(20)
+
+      render_hook(view, "media_call_started", %{"type" => "audio"})
+      Process.sleep(20)
+
+      # End the call
+      render_hook(view, "media_call_ended", %{"reason" => "ended"})
+      Process.sleep(20)
+
+      html = render(view)
+      # media-call component should not render
+      refute html =~ "media-call__controls"
+      assert html =~ "Chamada encerrada"
+    end
+
+    test "p2p_action_response includes responder_id from GenServer", %{
+      session: session,
+      alice: alice,
+      bob: bob
+    } do
+      # Request action
+      :ok = SessionServer.request_action(session.token, alice.id, alice.nickname, "audio_call")
+
+      # Subscribe to capture the broadcast
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "p2p:#{session.token}")
+
+      :ok = SessionServer.respond_action(session.token, bob.id, bob.nickname, true)
+
+      # Should receive the response with responder_id
+      assert_receive %{
+                       event: "p2p_action_response",
+                       payload: %{accepted: true, responder_id: responder_id}
+                     },
+                     1000
+
+      assert responder_id == bob.id
+    end
+
+    test "call mount-time initialization for connecting session", %{conn: conn} do
+      c_alice = create_nick("p2p_lv_cmnt_a")
+      c_bob = create_nick("p2p_lv_cmnt_b")
+
+      token = "p2p-lv-#{System.unique_integer([:positive])}"
+
+      {:ok, c_session} =
+        Queries.insert_session(%{
+          token: token,
+          creator_id: c_alice.id,
+          peer_id: c_bob.id,
+          status: "pending",
+          session_type: "audio_call"
+        })
+
+      {:ok, _pid} = Supervisor.start_child(c_session.token)
+      :ok = SessionServer.join(c_session.token, c_alice.id)
+      :ok = SessionServer.join(c_session.token, c_bob.id)
+      Process.sleep(20)
+
+      :ok =
+        SessionServer.request_action(
+          c_session.token,
+          c_alice.id,
+          c_alice.nickname,
+          "audio_call"
+        )
+
+      :ok = SessionServer.respond_action(c_session.token, c_bob.id, c_bob.nickname, true)
+      Process.sleep(20)
+
+      # Session is now in "connecting" state
+      # Mount now — @call should be initialized from mount
+      conn = chat_conn(conn, "p2p_lv_cmnt_a")
+      {:ok, _view, html} = live(conn, "/p2p/#{c_session.token}")
+
+      assert html =~ "media-call"
+
+      stop_server(c_session.token)
+    end
+
+    test "action buttons hidden when call is active", %{
+      conn: conn,
+      session: session,
+      alice: alice,
+      bob: bob
+    } do
+      conn = chat_conn(conn, "p2p_lv_call_a")
+      {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
+
+      :ok = SessionServer.request_action(session.token, alice.id, alice.nickname, "audio_call")
+      Process.sleep(20)
+
+      :ok = SessionServer.respond_action(session.token, bob.id, bob.nickname, true)
+      Process.sleep(50)
+
+      html = render(view)
+      # Action buttons should not be visible when call is active
+      refute html =~ "p2p-lobby-actions__buttons"
     end
   end
 

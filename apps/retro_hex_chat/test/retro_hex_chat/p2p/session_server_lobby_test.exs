@@ -88,6 +88,35 @@ defmodule RetroHexChat.P2P.SessionServerLobbyTest do
     %{alice: alice, bob: bob, session: session, token: session.token}
   end
 
+  describe "join/2 broadcasts peer_joined" do
+    test "broadcasts p2p_peer_joined for each participant that joins", %{} do
+      alice = create_registered_nick("alice_pj#{System.unique_integer([:positive])}")
+      bob = create_registered_nick("bob_pj#{System.unique_integer([:positive])}")
+      session = create_session_record(alice.id, bob.id)
+      _pid = start_server(session.token)
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "p2p:#{session.token}")
+
+      alice_id = alice.id
+      :ok = SessionServer.join(session.token, alice.id)
+
+      assert_receive %{
+        event: "p2p_peer_joined",
+        payload: %{user_id: ^alice_id}
+      }
+
+      bob_id = bob.id
+      :ok = SessionServer.join(session.token, bob.id)
+
+      assert_receive %{
+        event: "p2p_peer_joined",
+        payload: %{user_id: ^bob_id}
+      }
+
+      stop_server(session.token)
+    end
+  end
+
   describe "send_message/4" do
     setup :setup_lobby_session
 
@@ -252,6 +281,49 @@ defmodule RetroHexChat.P2P.SessionServerLobbyTest do
 
     test "errors when no pending request", %{bob: bob, token: token} do
       assert {:error, :no_pending_request} =
+               SessionServer.respond_action(token, bob.id, bob.nickname, true)
+    end
+
+    test "rejects respond_action when session is already connecting", %{
+      alice: alice,
+      bob: bob,
+      token: token
+    } do
+      :ok = SessionServer.request_action(token, alice.id, alice.nickname, "file_transfer")
+      assert_receive %{event: "p2p_action_request"}
+
+      # First accept — transitions lobby → connecting
+      :ok = SessionServer.respond_action(token, bob.id, bob.nickname, true)
+      assert_receive %{event: "p2p_action_response", payload: %{accepted: true}}
+      assert_receive %{event: "p2p_status_changed", payload: %{status: "connecting"}}
+
+      {:ok, state} = SessionServer.get_state(token)
+      assert state.session.status == "connecting"
+
+      # Second accept — must be rejected, not cause another transition
+      assert {:error, :not_in_lobby} =
+               SessionServer.respond_action(token, bob.id, bob.nickname, true)
+    end
+
+    test "rejects respond_action when session is already active", %{
+      alice: alice,
+      bob: bob,
+      token: token
+    } do
+      :ok = SessionServer.request_action(token, alice.id, alice.nickname, "file_transfer")
+      assert_receive %{event: "p2p_action_request"}
+
+      :ok = SessionServer.respond_action(token, bob.id, bob.nickname, true)
+      assert_receive %{event: "p2p_status_changed", payload: %{status: "connecting"}}
+
+      # Transition to active (simulating WebRTC connected)
+      :ok = SessionServer.transition(token, :active)
+
+      {:ok, state} = SessionServer.get_state(token)
+      assert state.session.status == "active"
+
+      # Duplicate accept — must be rejected
+      assert {:error, :not_in_lobby} =
                SessionServer.respond_action(token, bob.id, bob.nickname, true)
     end
   end
