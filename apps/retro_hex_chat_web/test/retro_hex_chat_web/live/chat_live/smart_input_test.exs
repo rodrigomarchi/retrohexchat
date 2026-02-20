@@ -44,6 +44,8 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
     test "submitting form with text sends message", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "SendUser"), "/chat")
 
+      # Switch from status tab to #lobby to send a channel message
+      view |> render_click("switch_channel", %{"channel" => "#lobby"})
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Hello world"})
 
       Process.sleep(50)
@@ -79,23 +81,20 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
     test "shows channel-specific placeholder when in a channel", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "PlaceChan"), "/chat")
 
-      view
-      |> element("form.chat-input-form")
-      |> render_submit(%{"input" => "/join #lobby"})
+      # Switch from status tab to #lobby channel
+      view |> render_click("switch_channel", %{"channel" => "#lobby"})
 
       html = render(view)
-      assert html =~ "Mensagem para #lobby"
-      assert html =~ "/ para comandos"
+      assert html =~ "Message to #lobby"
+      assert html =~ "/ for commands"
     end
 
     test "shows Status placeholder when on status tab", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "PlaceStatus"), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, "PlaceStatus"), "/chat")
 
-      view |> render_click("switch_to_status")
-
-      html = render(view)
-      assert html =~ "Digite um comando"
-      assert html =~ "/ para lista"
+      # Status tab is active on mount
+      assert html =~ "Type a command"
+      assert html =~ "/ for list"
     end
 
     test "shows PM placeholder when in a PM", %{conn: conn} do
@@ -106,8 +105,8 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
       |> render_submit(%{"input" => "/query PMTarget"})
 
       html = render(view)
-      assert html =~ "Mensagem para PMTarget"
-      assert html =~ "/ para comandos"
+      assert html =~ "Message to PMTarget"
+      assert html =~ "/ for commands"
     end
 
     test "placeholder updates on channel switch", %{conn: conn} do
@@ -119,12 +118,12 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
       |> render_submit(%{"input" => "/join #placeholder_ch"})
 
       html = render(view)
-      assert html =~ "Mensagem para #placeholder_ch"
+      assert html =~ "Message to #placeholder_ch"
 
       view |> render_click("switch_to_status")
 
       html = render(view)
-      assert html =~ "Digite um comando"
+      assert html =~ "Type a command"
     end
   end
 

@@ -1016,15 +1016,15 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     end
   end
 
-  defp webrtc_state_label("connecting", _attempt), do: "Conectando..."
-  defp webrtc_state_label("connected", _attempt), do: "Conectado"
-  defp webrtc_state_label("disconnected", _attempt), do: "Reconectando..."
-  defp webrtc_state_label("failed", _attempt), do: "Falha na conexao"
+  defp webrtc_state_label("connecting", _attempt), do: "Connecting..."
+  defp webrtc_state_label("connected", _attempt), do: "Connected"
+  defp webrtc_state_label("disconnected", _attempt), do: "Reconnecting..."
+  defp webrtc_state_label("failed", _attempt), do: "Connection failed"
   defp webrtc_state_label(_state, _attempt), do: nil
 
-  defp close_reason_message("user_closed"), do: "Sessao P2P encerrada."
-  defp close_reason_message("rejected"), do: "Convite P2P recusado."
-  defp close_reason_message("tab_closed"), do: "Peer desconectou."
+  defp close_reason_message("user_closed"), do: "P2P session closed."
+  defp close_reason_message("rejected"), do: "P2P invite rejected."
+  defp close_reason_message("tab_closed"), do: "Peer disconnected."
   defp close_reason_message("disconnected"), do: "Peer desconectou."
   defp close_reason_message(_reason), do: "Sessao P2P encerrada."
 

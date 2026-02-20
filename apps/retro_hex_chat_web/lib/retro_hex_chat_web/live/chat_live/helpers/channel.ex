@@ -38,7 +38,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
           |> Session.set_active_channel(channel_name)
 
         socket
-        |> assign(session: new_session, input: "", loading_channel: channel_name)
+        |> assign(
+          session: new_session,
+          input: "",
+          loading_channel: channel_name,
+          show_status_tab: false
+        )
         |> load_channel_users(channel_name)
         |> load_channel_messages_with_pagination(channel_name)
         |> assign(loading_channel: nil)

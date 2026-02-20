@@ -67,6 +67,8 @@ defmodule RetroHexChatWeb.ChatLive do
             |> Helpers.maybe_trigger_perform()
             |> Helpers.play_event_sound(:connect, session)
             |> maybe_show_motd()
+            |> show_welcome_message()
+            |> assign(show_status_tab: true)
             |> push_initial_preferences()
 
           {:ok, socket}
@@ -373,6 +375,25 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
+  defp show_welcome_message(socket) do
+    content = """
+    Welcome to RetroHexChat!
+    A real-time chat platform with a Windows 98 look and feel.
+
+    Useful commands:
+      /join #channel   — Join a channel
+      /msg nick text   — Send a private message
+      /nick new_nick   — Change your nickname
+      /help            — View full help
+      /help commands   — List all commands
+
+    Tip: Press F1 or go to Help > Help Topics for the full documentation.
+    Or open it in a new tab: <a href="/chat/help" target="_blank">/chat/help</a>\
+    """
+
+    Helpers.push_status_message(socket, content, :welcome)
+  end
+
   defp push_initial_preferences(socket) do
     socket
     |> push_event("update_bindings", %{
@@ -417,16 +438,16 @@ defmodule RetroHexChatWeb.ChatLive do
   defp input_placeholder(assigns) do
     cond do
       assigns.show_status_tab ->
-        "Digite um comando — / para lista"
+        "Type a command — / for list"
 
       assigns.session.active_pm != nil ->
-        "Mensagem para #{assigns.session.active_pm} — / para comandos"
+        "Message to #{assigns.session.active_pm} — / for commands"
 
       assigns.session.active_channel != nil ->
-        "Mensagem para #{assigns.session.active_channel} — / para comandos"
+        "Message to #{assigns.session.active_channel} — / for commands"
 
       true ->
-        "Digite um comando — / para lista"
+        "Type a command — / for list"
     end
   end
 

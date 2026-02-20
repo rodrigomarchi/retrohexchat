@@ -64,6 +64,9 @@ defmodule RetroHexChatWeb.AutocompleteE2ETest do
 
       Process.sleep(50)
 
+      # Switch from status tab to #lobby channel for nick context
+      render_click(view1, "switch_channel", %{"channel" => "#lobby"})
+
       # Step 1: Open nick autocomplete
       html =
         render_click(view1, "autocomplete_query", %{

@@ -31,16 +31,13 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
   describe "MOTD on connect" do
     test "displays MOTD in status window on mount when set", %{conn: conn} do
       # Set MOTD before mounting
-      Motd.set("Welcome to RetroHexChat! Enjoy your stay.", "Admin")
+      Motd.set("Server rules: be nice to everyone!", "Admin")
 
       nick = "E2EMotd#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
-      # Switch to status tab to see MOTD
-      render_click(view, "switch_to_status")
-      html = render(view)
-
-      assert html =~ "Welcome to RetroHexChat"
+      # Status tab is active on mount, MOTD should be visible
+      assert html =~ "Server rules: be nice to everyone!"
     end
 
     test "does not display MOTD when not set", %{conn: conn} do
@@ -50,8 +47,8 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
       nick = "E2ENoMtd#{System.unique_integer([:positive])}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
-      # Should not contain any MOTD-related content in initial load
-      refute html =~ "Welcome to RetroHexChat"
+      # Should not contain any MOTD-related content
+      refute html =~ "chat-status--motd"
     end
   end
 

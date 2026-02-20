@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     messages = load_pm_messages(new_session.nickname, target)
 
     socket
-    |> assign(session: new_session, input: "")
+    |> assign(session: new_session, input: "", show_status_tab: false)
     |> stream(:chat_messages, messages, reset: true)
   end
 

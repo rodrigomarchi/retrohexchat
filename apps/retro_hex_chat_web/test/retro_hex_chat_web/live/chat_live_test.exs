@@ -57,6 +57,8 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     test "plain text in channel sends message", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Sender1"), "/chat")
 
+      # Switch from status tab to #lobby channel
+      render_click(view, "switch_channel", %{"channel" => "#lobby"})
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Hello everyone"})
 
       # Give PubSub a moment to deliver
@@ -1448,6 +1450,9 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   describe "/clear command via LiveView" do
     test "/clear empties the chat messages stream", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "ClearUser"), "/chat")
+
+      # Switch from status tab to #lobby channel
+      render_click(view, "switch_channel", %{"channel" => "#lobby"})
 
       # Send some messages first
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "Message 1"})

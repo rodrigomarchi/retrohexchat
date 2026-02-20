@@ -151,6 +151,8 @@ defmodule RetroHexChatWeb.E2ETest do
   describe "Screen 3: Messages" do
     test "3.1 regular message shows nick, timestamp, content", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "MsgUser"), "/chat")
+      # Switch from status tab to #lobby channel
+      render_click(view, "switch_channel", %{"channel" => "#lobby"})
       send_message_and_wait(view, "Hello E2E")
       html = render(view)
       assert html =~ "chat-nick"

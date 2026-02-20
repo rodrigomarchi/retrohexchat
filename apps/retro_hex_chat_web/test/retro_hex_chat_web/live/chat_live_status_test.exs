@@ -132,6 +132,8 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
       unique = System.unique_integer([:positive])
       {:ok, view, _html} = live(chat_conn(conn, "TabAct#{unique}"), "/chat")
 
+      # Switch from status tab to #lobby channel
+      render_click(view, "switch_channel", %{"channel" => "#lobby"})
       html = render(view)
       tab = Floki.find(Floki.parse_document!(html), ~s([data-testid="tab-#lobby"]))
       assert length(tab) == 1
@@ -202,6 +204,8 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
       unique = System.unique_integer([:positive])
       {:ok, view, _html} = live(chat_conn(conn, "NoTopic#{unique}"), "/chat")
 
+      # Switch from status tab to #lobby to see the topic bar
+      render_click(view, "switch_channel", %{"channel" => "#lobby"})
       html = render(view)
       assert html =~ "(no topic set)"
     end
