@@ -8,10 +8,6 @@ defmodule RetroHexChatWeb.Components.Toolbar do
   attr :connected, :boolean, default: false
   attr :dnd_enabled, :boolean, default: false
   attr :notification_count, :integer, default: 0
-  attr :favorites, :list, default: []
-  attr :joined_channels, :list, default: []
-  attr :show_favorites_dropdown, :boolean, default: false
-
   @spec toolbar(map()) :: Phoenix.LiveView.Rendered.t()
   def toolbar(assigns) do
     ~H"""
@@ -19,8 +15,6 @@ defmodule RetroHexChatWeb.Components.Toolbar do
       {connection_group(assigns)}
       <span class="toolbar-separator"></span>
       {view_group(assigns)}
-      <span class="toolbar-separator"></span>
-      {favorites_group(assigns)}
       <span class="toolbar-separator"></span>
       {tools_group(assigns)}
       <span class="toolbar-separator"></span>
@@ -152,61 +146,6 @@ defmodule RetroHexChatWeb.Components.Toolbar do
         />
       </svg>
     </button>
-    """
-  end
-
-  defp favorites_group(assigns) do
-    ~H"""
-    <div class="toolbar-btn--has-dropdown">
-      <button
-        type="button"
-        class="toolbar-btn toolbar-btn--wide"
-        title="Favorites"
-        data-testid="toolbar-favorites"
-        phx-click="toggle_favorites_dropdown"
-      >
-        <svg viewBox="0 0 16 16">
-          <path
-            d="M8 1l2.2 4.5L15 6.2l-3.5 3.4.8 4.9L8 12.2 3.7 14.5l.8-4.9L1 6.2l4.8-.7z"
-            fill="#FFD700"
-            stroke="#000080"
-            stroke-width="0.8"
-          />
-        </svg>
-        <span class="toolbar-caret">&#9660;</span>
-      </button>
-      <div class={"toolbar-dropdown#{if @show_favorites_dropdown, do: " toolbar-dropdown--open", else: ""}"}>
-        <%= if @favorites == [] do %>
-          <div class="toolbar-dropdown-item toolbar-dropdown-item--disabled">No favorites</div>
-        <% else %>
-          <div
-            :for={fav <- @favorites}
-            class="toolbar-dropdown-item"
-            data-testid={"toolbar-fav-#{fav.channel_name}"}
-            phx-click="join_favorite"
-            phx-value-channel={fav.channel_name}
-          >
-            <span :if={fav.channel_name in @joined_channels} class="fav-check">&#10003;&nbsp;</span>
-            <span :if={fav.channel_name not in @joined_channels}>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            {fav.channel_name}
-            <span
-              :if={fav.description != "" and fav.description != nil}
-              class="toolbar-dropdown-hint"
-            >
-              - {fav.description}
-            </span>
-          </div>
-        <% end %>
-        <div class="toolbar-dropdown-separator"></div>
-        <div
-          class="toolbar-dropdown-item"
-          data-testid="toolbar-organize-favorites"
-          phx-click="open_organize_favorites"
-        >
-          Organize Favorites...
-        </div>
-      </div>
-    </div>
     """
   end
 

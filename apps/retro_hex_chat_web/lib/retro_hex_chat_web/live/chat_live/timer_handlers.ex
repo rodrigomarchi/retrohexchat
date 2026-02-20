@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   Handle timer and scheduled message callbacks via handle_info.
 
   Covers: clear_typing_indicator, user_timer_fired, ignore_expired, auto_ignore_expired,
-  execute_perform, execute_autojoin, execute_favorites_autojoin, execute_rejoin,
+  execute_perform, execute_autojoin, execute_rejoin,
   invite_expired, paste_next.
 
   Attached as `attach_hook(:timer_handlers, :handle_info, ...)` in ChatLive.mount/3.
@@ -27,7 +27,6 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   alias RetroHexChat.Chat.{
     AliasExpander,
     AutoJoinList,
-    Favorites,
     FloodTracker,
     IgnoreList,
     PerformList,
@@ -184,33 +183,6 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
         |> join_channel(channel, session, key)
 
       Process.send_after(self(), {:execute_autojoin, index + 1}, 100)
-      {:halt, socket}
-    else
-      send(self(), {:execute_favorites_autojoin, 0})
-      {:halt, socket}
-    end
-  end
-
-  # ── Execute favorites autojoin ────────────────────────────
-
-  def handle_info({:execute_favorites_autojoin, index}, socket) do
-    session = socket.assigns.session
-    entries = Favorites.auto_join_entries(session.favorites)
-
-    if index < length(entries) do
-      entry = Enum.at(entries, index)
-      channel = entry.channel_name
-
-      socket =
-        if channel in session.channels do
-          socket
-        else
-          socket
-          |> system_event("* Auto-joining favorite #{channel}...")
-          |> join_channel(channel, session, entry.password)
-        end
-
-      Process.send_after(self(), {:execute_favorites_autojoin, index + 1}, 100)
       {:halt, socket}
     else
       {:halt, socket}

@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   Covers: quit_chat, restore_session, open_search, settings,
   toggle_treebar, toggle_nicklist, toggle_strip_formatting, show_about,
-  toggle_favorites_dropdown, autocomplete_query, autocomplete_close,
+  autocomplete_query, autocomplete_close,
   autocomplete_select, autocomplete_navigate, autocomplete_select_current,
   recent_commands_loaded, disconnect, channel_list.
 
@@ -291,10 +291,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("recent_commands_loaded", %{"commands" => commands}, socket) do
     {:halt, assign(socket, recent_commands: commands)}
-  end
-
-  def handle_event("toggle_favorites_dropdown", _params, socket) do
-    {:halt, assign(socket, show_favorites_dropdown: !socket.assigns.show_favorites_dropdown)}
   end
 
   def handle_event("disconnect", _params, socket) do

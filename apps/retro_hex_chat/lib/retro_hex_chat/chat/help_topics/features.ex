@@ -24,8 +24,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
   @external_resource Path.join(@help_dir, "feature-mute.html")
   @external_resource Path.join(@help_dir, "feature-typing-indicator.html")
   @external_resource Path.join(@help_dir, "feature-visual-notifications.html")
-  @external_resource Path.join(@help_dir, "feature-favorites.html")
-  @external_resource Path.join(@help_dir, "feature-organize-favorites.html")
   @external_resource Path.join(@help_dir, "feature-aliases.html")
   @external_resource Path.join(@help_dir, "feature-timers.html")
   @external_resource Path.join(@help_dir, "feature-custom-menus.html")
@@ -310,36 +308,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "indicator"
         ],
         content: File.read!(Path.join(@help_dir, "feature-visual-notifications.html"))
-      },
-      %{
-        id: "feature-favorites",
-        title: "Favorites",
-        category: "Features",
-        keywords: [
-          "favorites",
-          "bookmarks",
-          "channels",
-          "auto-join",
-          "autojoin",
-          "quick",
-          "access"
-        ],
-        content: File.read!(Path.join(@help_dir, "feature-favorites.html"))
-      },
-      %{
-        id: "feature-organize-favorites",
-        title: "Organize Favorites",
-        category: "Features",
-        keywords: [
-          "organize",
-          "favorites",
-          "reorder",
-          "edit",
-          "remove",
-          "manage",
-          "bookmarks"
-        ],
-        content: File.read!(Path.join(@help_dir, "feature-organize-favorites.html"))
       },
       %{
         id: "feature-aliases",

@@ -390,11 +390,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       html = render(view)
 
       assert html =~ "Join Channel"
-      assert html =~ "Add to Favorites"
       assert html =~ "Copy Channel Name"
       assert html =~ "Channel Info"
       assert html =~ ~s(data-testid="ctx-chat-join")
-      assert html =~ ~s(data-testid="ctx-chat-fav")
     end
 
     test "Join Channel is disabled when user is already in that channel", %{
@@ -552,13 +550,11 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       assert html =~ ~s(data-testid="treebar-context-menu")
       assert html =~ ~s(data-testid="ctx-treebar-mark-read")
       assert html =~ ~s(data-testid="ctx-treebar-mute")
-      assert html =~ ~s(data-testid="ctx-add-to-favorites")
       assert html =~ ~s(data-testid="ctx-treebar-copy-name")
       assert html =~ ~s(data-testid="ctx-treebar-leave")
       assert html =~ ~s(data-testid="ctx-treebar-settings")
       assert html =~ "Mark as Read"
       assert html =~ "Mute Channel"
-      assert html =~ "Add to Favorites"
       assert html =~ "Copy Name"
       assert html =~ "Leave Channel"
       assert html =~ "Channel Settings"

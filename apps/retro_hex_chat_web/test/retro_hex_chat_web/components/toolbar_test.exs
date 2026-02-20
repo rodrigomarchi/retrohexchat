@@ -8,10 +8,7 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
   @default_assigns [
     connected: true,
     dnd_enabled: false,
-    notification_count: 0,
-    favorites: [],
-    joined_channels: [],
-    show_favorites_dropdown: false
+    notification_count: 0
   ]
 
   defp render_toolbar(overrides \\ []) do
@@ -56,51 +53,6 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
       html = render_toolbar()
       assert html =~ ~s(data-testid="toolbar-find")
       assert html =~ ~s(phx-click="open_search")
-    end
-  end
-
-  describe "favorites group" do
-    test "renders Favorites button" do
-      html = render_toolbar()
-      assert html =~ ~s(data-testid="toolbar-favorites")
-      assert html =~ ~s(phx-click="toggle_favorites_dropdown")
-    end
-
-    test "shows empty state when no favorites" do
-      html = render_toolbar(show_favorites_dropdown: true, favorites: [])
-      assert html =~ "No favorites"
-    end
-
-    test "shows favorite channels when present" do
-      favs = [%{channel_name: "#test", description: "Test channel"}]
-      html = render_toolbar(show_favorites_dropdown: true, favorites: favs)
-      assert html =~ "#test"
-      assert html =~ "Test channel"
-    end
-
-    test "shows checkmark for joined favorites" do
-      favs = [%{channel_name: "#test", description: ""}]
-
-      html =
-        render_toolbar(show_favorites_dropdown: true, favorites: favs, joined_channels: ["#test"])
-
-      assert html =~ "&#10003;"
-    end
-
-    test "shows Organize Favorites item" do
-      html = render_toolbar(show_favorites_dropdown: true)
-      assert html =~ "Organize Favorites..."
-      assert html =~ ~s(data-testid="toolbar-organize-favorites")
-    end
-
-    test "dropdown is hidden when show_favorites_dropdown is false" do
-      html = render_toolbar(show_favorites_dropdown: false)
-      refute html =~ "toolbar-dropdown--open"
-    end
-
-    test "dropdown is visible when show_favorites_dropdown is true" do
-      html = render_toolbar(show_favorites_dropdown: true)
-      assert html =~ "toolbar-dropdown--open"
     end
   end
 

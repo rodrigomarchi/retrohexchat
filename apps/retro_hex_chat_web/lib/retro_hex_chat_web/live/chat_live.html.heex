@@ -37,9 +37,6 @@
     connected={true}
     dnd_enabled={@dnd_enabled}
     notification_count={@notification_count}
-    favorites={Favorites.entries(@session.favorites)}
-    joined_channels={@session.channels}
-    show_favorites_dropdown={@show_favorites_dropdown}
   />
 
   <div class="mdi-layout">
@@ -384,20 +381,6 @@
       RetroHexChat.Chat.UnreadTracker.unread?(@unread_counts, @treebar_context_menu.channel)
     }
     custom_channel_items={CustomMenus.entries_for(@session.custom_menus, :channel)}
-  />
-
-  <RetroHexChatWeb.Components.FavoriteDialog.favorite_dialog
-    visible={@show_favorite_dialog}
-    mode={@favorite_dialog_mode}
-    channel={@favorite_dialog_channel}
-    data={@favorite_dialog_data}
-    is_duplicate={@favorite_dialog_is_duplicate}
-  />
-
-  <RetroHexChatWeb.Components.OrganizeFavoritesDialog.organize_favorites_dialog
-    visible={@show_organize_favorites}
-    favorites={Favorites.entries(@session.favorites)}
-    selected={@organize_favorites_selected}
   />
 
   <RetroHexChatWeb.Components.AboutDialog.about_dialog visible={@show_about} />

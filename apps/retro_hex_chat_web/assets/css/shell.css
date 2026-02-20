@@ -73,11 +73,6 @@
   to { background-position: 20px 0; }
 }
 
-/* ── Favorite checkmark ────────────────────────────────── */
-.fav-check {
-  color: var(--color-success);
-}
-
 /* ── Toolbar icons ─────────────────────────────────────── */
 
 .toolbar-btn {
@@ -154,67 +149,6 @@
   width: 500px;
   height: 350px;
   z-index: var(--z-floating);
-}
-
-/* ── Toolbar Dropdown ── */
-.toolbar-btn--has-dropdown {
-  position: relative;
-  display: inline-flex;
-}
-
-.toolbar-btn--wide {
-  width: auto;
-  min-width: 32px;
-  gap: 2px;
-  padding: 0 3px;
-}
-
-.toolbar-caret {
-  font-size: 7px;
-  line-height: 1;
-}
-
-.toolbar-dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 160px;
-  z-index: 250;
-  background-color: var(--color-surface);
-  border: 2px outset var(--color-gray-200);
-  padding: 2px;
-}
-
-.toolbar-dropdown--open {
-  display: block;
-}
-
-.toolbar-dropdown-item {
-  padding: 4px 16px;
-  font-size: var(--text-base);
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.toolbar-dropdown-item:hover {
-  background-color: var(--color-selection-bg);
-  color: var(--color-selection-fg);
-}
-
-.toolbar-dropdown-item--disabled {
-  color: var(--color-muted);
-  pointer-events: none;
-}
-
-.toolbar-dropdown-hint {
-  color: var(--color-muted);
-  margin-left: 8px;
-}
-
-.toolbar-dropdown-separator {
-  border-top: 1px solid var(--color-border);
-  margin: 2px 0;
 }
 
 /* ── Tab Menu Reset ── */

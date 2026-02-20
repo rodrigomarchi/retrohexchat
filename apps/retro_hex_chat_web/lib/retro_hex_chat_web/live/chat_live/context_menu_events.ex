@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   ctx_chat_whois, ctx_chat_copy_nick, ctx_chat_ignore, ctx_chat_add_contact,
   ctx_chat_set_color, ctx_chat_kick, ctx_chat_ban, ctx_chat_voice, ctx_chat_op,
   ctx_chat_open_url, ctx_chat_copy_url, ctx_chat_save_url, ctx_chat_join,
-  ctx_chat_fav, ctx_chat_copy_channel, ctx_chat_channel_info,
+  ctx_chat_copy_channel, ctx_chat_channel_info,
   ctx_chat_copy_message, ctx_chat_copy_selection, ctx_chat_ignore_sender,
   ctx_chat_p2p, ctx_chat_call, ctx_chat_video_call, ctx_chat_sendfile.
 
@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
 
   alias RetroHexChat.Accounts.{ContactList, NickColors, Session}
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{CapturedURL, Favorites, IgnoreList}
+  alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
   alias RetroHexChat.Commands.Handlers.P2p
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
@@ -436,41 +436,6 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      |> ChannelHelper.join_channel(channel, socket.assigns.session)}
   end
 
-  def handle_event("ctx_chat_fav", %{"channel" => channel}, socket) do
-    session = socket.assigns.session
-    favorites = Session.get_favorites(session)
-
-    if Favorites.has_entry?(favorites, channel) do
-      existing = Favorites.find_entry(favorites, channel)
-
-      {:halt,
-       socket
-       |> close_chat_context_menu()
-       |> assign(
-         show_favorite_dialog: true,
-         favorite_dialog_mode: :edit,
-         favorite_dialog_channel: channel,
-         favorite_dialog_is_duplicate: true,
-         favorite_dialog_data: %{
-           description: existing.description,
-           auto_join: existing.auto_join,
-           has_password: existing.password != nil and existing.password != ""
-         }
-       )}
-    else
-      {:halt,
-       socket
-       |> close_chat_context_menu()
-       |> assign(
-         show_favorite_dialog: true,
-         favorite_dialog_mode: :add,
-         favorite_dialog_channel: channel,
-         favorite_dialog_is_duplicate: false,
-         favorite_dialog_data: nil
-       )}
-    end
-  end
-
   def handle_event("ctx_chat_copy_channel", %{"channel" => channel}, socket) do
     {:halt,
      socket
@@ -615,8 +580,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   defp close_context_menu(socket) do
     assign(socket,
       context_menu: %{visible: false, x: 0, y: 0, target_nick: nil, is_target_registered: false},
-      show_context_color_picker: false,
-      show_favorites_dropdown: false
+      show_context_color_picker: false
     )
   end
 

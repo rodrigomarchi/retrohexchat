@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
   Supports 4 variants based on `@menu.type`:
   - `:nick` — PM, Whois, Copy Nick, Ignore, Address Book, Nick Color, op actions
   - `:url` — Open Link, Copy URL, Save to URL List
-  - `:channel` — Join Channel, Add to Favorites, Copy Channel Name, Channel Info
+  - `:channel` — Join Channel, Copy Channel Name, Channel Info
   - `:message` — Copy Message, Copy Selected Text, Quote/Reply, Ignore Sender
   """
   use Phoenix.Component
@@ -223,13 +223,6 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-value-channel={@menu.target_channel}
     >
       Join Channel
-    </li>
-    <li
-      data-testid="ctx-chat-fav"
-      phx-click="ctx_chat_fav"
-      phx-value-channel={@menu.target_channel}
-    >
-      Add to Favorites
     </li>
     <li
       data-testid="ctx-chat-copy-channel"

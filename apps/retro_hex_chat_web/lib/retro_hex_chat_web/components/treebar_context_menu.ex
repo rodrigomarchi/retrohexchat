@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.TreebarContextMenu do
   @moduledoc """
   Right-click context menu for channels in the treebar.
 
-  Extended menu with: Mark as Read, Mute/Unmute Channel, Add to Favorites,
+  Extended menu with: Mark as Read, Mute/Unmute Channel,
   Copy Name, separator, Leave Channel, Channel Settings.
   """
   use Phoenix.Component
@@ -42,13 +42,6 @@ defmodule RetroHexChatWeb.Components.TreebarContextMenu do
             phx-value-channel={@channel}
           >
             {if @is_muted, do: "Unmute Channel", else: "Mute Channel"}
-          </li>
-          <li
-            data-testid="ctx-add-to-favorites"
-            phx-click="add_to_favorites"
-            phx-value-channel={@channel}
-          >
-            Add to Favorites
           </li>
           <li
             data-testid="ctx-treebar-copy-name"

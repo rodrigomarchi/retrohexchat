@@ -69,7 +69,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         id: "ui-toolbar",
         title: "Toolbar",
         category: "User Interface",
-        keywords: ["toolbar", "buttons", "icons", "favorites", "tools", "menu"],
+        keywords: ["toolbar", "buttons", "icons", "tools", "menu"],
         content: File.read!(Path.join(@help_dir, "ui-toolbar.html"))
       },
       %{

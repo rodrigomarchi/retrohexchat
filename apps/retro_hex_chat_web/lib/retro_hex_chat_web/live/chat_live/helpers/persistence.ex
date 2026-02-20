@@ -11,7 +11,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     AutoJoinList,
     AutoRespondRules,
     CustomMenus,
-    Favorites,
     FloodProtection,
     HighlightWords,
     IgnoreList,
@@ -127,13 +126,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     socket
   end
 
-  @spec maybe_persist_favorites(Phoenix.LiveView.Socket.t(), Session.t()) :: :ok | nil
-  def maybe_persist_favorites(_socket, session) do
-    if session.identified do
-      Task.start(fn -> Favorites.save(session.nickname, session.favorites) end)
-    end
-  end
-
   @spec maybe_persist_user_preferences(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def maybe_persist_user_preferences(socket, session) do
@@ -160,7 +152,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
       Session.set_notice_routing(session_inner, routing)
     end)
     |> load_if_found(CtcpSettings.load(nick), &Session.set_ctcp_settings/2)
-    |> load_if_found(Favorites.load(nick), &Session.set_favorites/2)
     |> load_if_found(FloodProtection.load(nick), &Session.set_flood_protection/2)
     |> load_if_found(SoundSettings.load(nick), &Session.set_sound_settings/2)
     |> load_if_found(UserBio.load(nick), &Session.set_bio/2)
