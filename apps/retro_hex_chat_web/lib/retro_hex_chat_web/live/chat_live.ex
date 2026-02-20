@@ -109,6 +109,7 @@ defmodule RetroHexChatWeb.ChatLive do
       {:navigation_events, &ChatLive.NavigationEvents.handle_event/3},
       {:search_events, &ChatLive.SearchEvents.handle_event/3},
       {:perform_autojoin_events, &ChatLive.PerformAutojoinEvents.handle_event/3},
+      {:channel_list_events, &ChatLive.ChannelListEvents.handle_event/3},
       {:menu_toolbar_events, &ChatLive.MenuToolbarEvents.handle_event/3},
       {:hover_events, &ChatLive.HoverEvents.handle_event/3},
       {:context_menu_events, &ChatLive.ContextMenuEvents.handle_event/3},
@@ -332,7 +333,13 @@ defmodule RetroHexChatWeb.ChatLive do
       delete_confirm: nil,
       nick_change_dialog: nil,
       nick_change_target: nil,
-      nick_change_token: nil
+      nick_change_token: nil,
+      show_channel_list: false,
+      channel_list_channels: [],
+      channel_list_filtered: [],
+      channel_list_search: "",
+      channel_list_loading: false,
+      channel_list_count: 0
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])

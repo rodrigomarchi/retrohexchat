@@ -4,7 +4,6 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
-import ChannelListFormHook from "./hooks/channel_list_form_hook";
 import CharCounterHook from "./hooks/char_counter_hook";
 import ClockHook from "./hooks/clock_hook";
 import ConnectFormHook from "./hooks/connect_form_hook";
@@ -44,7 +43,6 @@ const AutoFocusHook = {
 
 const Hooks = {
   AutoFocusHook: AutoFocusHook,
-  ChannelListFormHook: ChannelListFormHook,
   CharCounterHook: CharCounterHook,
   ClockHook: ClockHook,
   ConnectFormHook: ConnectFormHook,

@@ -1238,11 +1238,12 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   # ── R3: channel_list handler ───────────────────────────
 
-  describe "channel_list navigation" do
-    test "channel_list navigates to /channels", %{conn: conn} do
+  describe "channel_list dialog" do
+    test "channel_list opens inline dialog", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "ChanListUser"), "/chat")
-      result = render_click(view, "channel_list")
-      assert {:error, {:live_redirect, %{to: "/channels"}}} = result
+      html = render_click(view, "channel_list")
+      assert html =~ ~s(data-testid="channel-list-dialog")
+      assert html =~ "Channel List"
     end
   end
 
@@ -1506,13 +1507,14 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   # ── R4: /list command ──────────────────────────────────
 
   describe "/list command via LiveView" do
-    test "/list navigates to channel list", %{conn: conn} do
+    test "/list opens channel list dialog", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "ListUser"), "/chat")
 
-      result =
+      html =
         view |> element("form.chat-input-form") |> render_submit(%{"input" => "/list"})
 
-      assert {:error, {:live_redirect, %{to: "/channels"}}} = result
+      assert html =~ ~s(data-testid="channel-list-dialog")
+      assert html =~ "Channel List"
     end
   end
 

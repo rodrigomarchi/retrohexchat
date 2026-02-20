@@ -1550,66 +1550,77 @@ defmodule RetroHexChatWeb.E2ETest do
   end
 
   # ══════════════════════════════════════════════════════════════
-  # Screen 20: ChannelListLive
+  # Screen 20: Channel List Dialog (inline modal)
   # ══════════════════════════════════════════════════════════════
 
-  describe "Screen 20: ChannelListLive" do
-    test "20.1 renders table with channels", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/channels")
+  describe "Screen 20: Channel List Dialog" do
+    test "20.1 opens dialog with channel table", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "ChanE2E1"), "/chat")
+      html = render_click(view, "channel_list")
       assert html =~ "Channel List"
+      assert html =~ ~s(data-testid="channel-list-dialog")
     end
 
     test "20.2 filter by name works", %{conn: conn} do
       ch = unique_channel("filtch")
       ensure_channel(ch)
 
-      {:ok, view, _html} = live(conn, "/channels")
-      html = view |> element("input[name=search]") |> render_keyup(%{"search" => "filtch"})
+      {:ok, view, _html} = live(chat_conn(conn, "ChanE2E2"), "/chat")
+      render_click(view, "channel_list")
+
+      html =
+        view
+        |> element(~s(input[data-testid="channel-list-search"]))
+        |> render_keyup(%{"search" => "filtch"})
+
       assert html =~ ch
     end
 
     test "20.3 regex metacharacters in filter are safe", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/channels")
-      html = view |> element("input[name=search]") |> render_keyup(%{"search" => "[test(.*"})
+      {:ok, view, _html} = live(chat_conn(conn, "ChanE2E3"), "/chat")
+      render_click(view, "channel_list")
+
+      html =
+        view
+        |> element(~s(input[data-testid="channel-list-search"]))
+        |> render_keyup(%{"search" => "[test(.*"})
+
       assert html =~ "Channel List"
     end
 
-    test "20.4 join from list renders hidden form with join_channel", %{conn: conn} do
+    test "20.4 join from list closes dialog", %{conn: conn} do
       ensure_channel("#lobby")
-      {:ok, view, _html} = live(conn, "/channels")
+      {:ok, view, _html} = live(chat_conn(conn, "ChanE2E4"), "/chat")
+      render_click(view, "channel_list")
 
-      html =
-        view
-        |> element(~s(button[phx-click="join"][phx-value-channel="#lobby"]))
-        |> render_click()
-
-      assert html =~ ~s(id="channel-join-form")
-      assert html =~ ~s(name="join_channel")
-      assert html =~ ~s(value="#lobby")
+      html = render_click(view, "channel_list_join", %{"channel" => "#lobby"})
+      refute html =~ ~s(data-testid="channel-list-dialog")
     end
 
-    test "20.5 close renders hidden form without join_channel", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/channels")
-      html = view |> element(~s(button[type="button"][phx-click="close"])) |> render_click()
-      assert html =~ ~s(id="channel-join-form")
-      refute html =~ ~s(name="join_channel")
+    test "20.5 close button dismisses dialog", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "ChanE2E5"), "/chat")
+      render_click(view, "channel_list")
+      html = render_click(view, "toggle_channel_list")
+      refute html =~ ~s(data-testid="channel-list-dialog")
     end
 
     test "20.6 empty list shows 'No channels found'", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/channels")
+      {:ok, view, _html} = live(chat_conn(conn, "ChanE2E6"), "/chat")
+      render_click(view, "channel_list")
 
       html =
         view
-        |> element("input[name=search]")
+        |> element(~s(input[data-testid="channel-list-search"]))
         |> render_keyup(%{"search" => "zzz_nonexistent_ever"})
 
       assert html =~ "No channels found"
     end
 
-    test "20.7 /list command redirects to /channels", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "ListCmdE2E"), "/chat")
-      result = send_command(view, "/list")
-      assert {:error, {:live_redirect, %{to: "/channels"}}} = result
+    test "20.7 /list command opens channel list dialog", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "ChanE2E7"), "/chat")
+      html = send_command(view, "/list")
+      assert html =~ ~s(data-testid="channel-list-dialog")
+      assert html =~ "Channel List"
     end
   end
 

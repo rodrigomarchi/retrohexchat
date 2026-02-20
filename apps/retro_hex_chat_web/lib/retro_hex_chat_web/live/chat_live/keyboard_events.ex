@@ -157,11 +157,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   defp dismiss_topmost(socket) do
     cond do
       socket.assigns.pending_invites != [] ->
-        last = List.last(socket.assigns.pending_invites)
-        Process.cancel_timer(last.timer_ref)
-        remaining = List.delete_at(socket.assigns.pending_invites, -1)
-        try_remove_invite_exception(last.channel, socket.assigns.session.nickname)
-        assign(socket, pending_invites: remaining)
+        dismiss_pending_invite(socket)
 
       socket.assigns.cheatsheet_visible ->
         assign(socket, cheatsheet_visible: false)
@@ -175,6 +171,16 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       socket.assigns.show_log_viewer ->
         close_log_viewer(socket)
 
+      true ->
+        dismiss_secondary(socket)
+    end
+  end
+
+  defp dismiss_secondary(socket) do
+    cond do
+      socket.assigns.show_channel_list ->
+        close_channel_list(socket)
+
       socket.assigns.show_channel_central ->
         close_channel_central(socket)
 
@@ -184,6 +190,14 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       true ->
         socket
     end
+  end
+
+  defp dismiss_pending_invite(socket) do
+    last = List.last(socket.assigns.pending_invites)
+    Process.cancel_timer(last.timer_ref)
+    remaining = List.delete_at(socket.assigns.pending_invites, -1)
+    try_remove_invite_exception(last.channel, socket.assigns.session.nickname)
+    assign(socket, pending_invites: remaining)
   end
 
   # ---------------------------------------------------------------------------
@@ -261,6 +275,17 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       show_cc_add_ban_dialog: false,
       show_cc_add_ban_ex_dialog: false,
       show_cc_add_invite_ex_dialog: false
+    )
+  end
+
+  defp close_channel_list(socket) do
+    assign(socket,
+      show_channel_list: false,
+      channel_list_channels: [],
+      channel_list_filtered: [],
+      channel_list_search: "",
+      channel_list_loading: false,
+      channel_list_count: 0
     )
   end
 

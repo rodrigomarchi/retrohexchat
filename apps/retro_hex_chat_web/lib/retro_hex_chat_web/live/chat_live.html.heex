@@ -442,6 +442,15 @@
     show_nick_color_edit_dialog={@show_nick_color_edit_dialog}
   />
 
+  <RetroHexChatWeb.Components.ChannelListDialog.channel_list_dialog
+    visible={@show_channel_list}
+    channels={@channel_list_channels}
+    filtered={@channel_list_filtered}
+    search={@channel_list_search}
+    loading={@channel_list_loading}
+    channel_count={@channel_list_count}
+  />
+
   <RetroHexChatWeb.Components.IgnoreListDialog.ignore_list_dialog
     visible={@show_ignore_dialog}
     ignore_entries={IgnoreList.sorted_entries(@session.ignore_list)}

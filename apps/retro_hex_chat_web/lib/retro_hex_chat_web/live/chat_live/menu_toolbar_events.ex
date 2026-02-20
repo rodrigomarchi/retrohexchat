@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   toggle_treebar, toggle_nicklist, toggle_strip_formatting, show_about,
   autocomplete_query, autocomplete_close,
   autocomplete_select, autocomplete_navigate, autocomplete_select_current,
-  recent_commands_loaded, disconnect, channel_list.
+  recent_commands_loaded, disconnect.
 
   Attached as `attach_hook(:menu_toolbar_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -295,10 +295,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     session = socket.assigns.session
     cleanup_channels(session, "Leaving")
     {:halt, push_navigate(socket, to: ~p"/connect")}
-  end
-
-  def handle_event("channel_list", _params, socket) do
-    {:halt, push_navigate(socket, to: ~p"/channels")}
   end
 
   def handle_event("toggle_cheatsheet", _params, socket) do

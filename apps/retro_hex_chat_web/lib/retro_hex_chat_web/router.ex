@@ -53,7 +53,6 @@ defmodule RetroHexChatWeb.Router do
     live "/connect", ConnectLive
     post "/chat/session", SessionController, :create
     live "/chat", ChatLive
-    live "/channels", ChannelListLive
     live "/p2p/:token", P2PSessionLive
   end
 
