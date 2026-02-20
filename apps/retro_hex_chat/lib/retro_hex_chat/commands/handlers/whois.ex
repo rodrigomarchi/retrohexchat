@@ -28,7 +28,8 @@ defmodule RetroHexChat.Commands.Handlers.Whois do
     %{
       name: "whois",
       syntax: "/whois <nickname>",
-      description: "Display information about a user.",
+      description:
+        "Look up detailed information about an online user.\nShows: nickname, channels (shared channels highlighted), idle time, away status, bio, and registration status.\nUser must be online. For offline users, use /whowas.",
       examples: ["/whois SomeUser"]
     }
   end
@@ -45,7 +46,7 @@ defmodule RetroHexChat.Commands.Handlers.Whois do
     %CommandSyntax{
       command: "whois",
       syntax: "/whois <nickname>",
-      description: "Display information about a user.",
+      description: "Look up detailed information about an online user.",
       category: :user,
       parameters: [
         %Parameter{
@@ -53,7 +54,7 @@ defmodule RetroHexChat.Commands.Handlers.Whois do
           required: true,
           type: :nick,
           position: 0,
-          description: "Usuário para consultar informações"
+          description: "User to look up"
         }
       ],
       examples: ["/whois SomeUser"]

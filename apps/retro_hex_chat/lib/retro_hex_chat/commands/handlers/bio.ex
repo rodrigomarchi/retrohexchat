@@ -44,7 +44,7 @@ defmodule RetroHexChat.Commands.Handlers.Bio do
       name: "bio",
       syntax: "/bio [<text>|clear]",
       description:
-        "Set, view, or clear your bio. Your bio appears in /whois output. Maximum 200 characters.",
+        "Set a short 'about me' text visible when others look you up with /whois.\nMax 200 characters (text beyond this limit is silently truncated). Use /bio to view, /bio clear to remove.",
       examples: ["/bio Elixir enthusiast from Brazil", "/bio", "/bio clear"]
     }
   end
@@ -61,8 +61,7 @@ defmodule RetroHexChat.Commands.Handlers.Bio do
     %CommandSyntax{
       command: "bio",
       syntax: "/bio [<text>|clear]",
-      description:
-        "Set, view, or clear your bio. Your bio appears in /whois output. Maximum 200 characters.",
+      description: "Set a short 'about me' text visible when others look you up with /whois.",
       category: :basics,
       parameters: [
         %Parameter{
@@ -70,7 +69,7 @@ defmodule RetroHexChat.Commands.Handlers.Bio do
           required: false,
           type: :text,
           position: 0,
-          description: "Texto do bio (ou 'clear' para limpar)"
+          description: "Bio text (or 'clear' to remove)"
         }
       ],
       examples: ["/bio Elixir enthusiast from Brazil", "/bio", "/bio clear"]

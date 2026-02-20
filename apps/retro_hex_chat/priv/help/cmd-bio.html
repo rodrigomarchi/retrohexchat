@@ -1,5 +1,5 @@
-<h3>/bio</h3><p>Set, view, or clear your profile bio. Your bio appears in /whois output when other users look you up.</p><h4>Syntax</h4><pre>/bio &lt;text&gt;    — Set your bio
-/bio             — View your current bio
-/bio clear       — Clear your bio</pre><h4>Examples</h4><pre>/bio Elixir enthusiast from Brazil
+<h3>/bio</h3><p>Set a short "about me" text that appears when others look you up with <code>/whois</code>.</p><h4>Syntax</h4><pre>/bio &lt;text&gt;
 /bio
-/bio clear</pre><h4>Notes</h4><p>Maximum 200 characters. Longer text is automatically truncated with a warning. Bios persist across sessions for registered users (via NickServ). Guest bios last only for the current session. If no bio is set, the bio field does not appear in /whois output.</p><h4>See Also</h4><p><a href="#" data-help-topic="cmd-whois">/whois</a> · <a href="#" data-help-topic="nickserv">NickServ</a></p>
+/bio clear</pre><h4>Parameters</h4><p><code>text</code> — Your bio text (max 200 characters). Use <code>clear</code> to remove your bio.</p><h4>How It Works</h4><p>Your bio is displayed in the <code>/whois</code> output when other users look you up. Running <code>/bio</code> with no arguments shows your current bio. If your text exceeds 200 characters, it is automatically truncated with a warning. When no bio is set, the bio field simply doesn't appear in <code>/whois</code> output.</p><h4>Rules &amp; Limits</h4><ul><li>Maximum 200 characters</li><li>Registered users: bio is saved across sessions</li><li>Guests: bio lasts only for the current session</li></ul><h4>Examples</h4><pre>/bio Elixir enthusiast from Brazil
+/bio
+/bio clear</pre><h4>See Also</h4><p><a href="#" data-help-topic="cmd-whois">/whois</a> · <a href="#" data-help-topic="cmd-ns">/ns</a></p>

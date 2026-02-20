@@ -7,12 +7,12 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Uso: /p2p <nickname>"}
+  def validate(""), do: {:error, "Usage: /p2p <nickname>"}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Uso: /p2p <nickname>"}
+  def execute([], _context), do: {:error, "Usage: /p2p <nickname>"}
 
   def execute([target | _rest], context) do
     do_execute(target, "generic", context)
@@ -29,7 +29,8 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
     %{
       name: "p2p",
       syntax: "/p2p <nickname>",
-      description: "Iniciar uma sessao P2P com outro usuario.",
+      description:
+        "Start a direct peer-to-peer session with another user for file transfers, audio calls, or video calls.\nRequires: both you and the target must be registered and identified (/ns identify).\nYou cannot start a session with yourself.",
       examples: ["/p2p mario"]
     }
   end
@@ -52,11 +53,11 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
   end
 
   defp validate_identified(%{identified: true}), do: :ok
-  defp validate_identified(_), do: {:error, "Voce precisa estar identificado para usar /p2p."}
+  defp validate_identified(_), do: {:error, "You must be identified to use /p2p."}
 
   defp validate_not_self(target, %{nickname: nick}) do
     if String.downcase(target) == String.downcase(nick) do
-      {:error, "Voce nao pode iniciar uma sessao P2P com voce mesmo."}
+      {:error, "You cannot start a P2P session with yourself."}
     else
       :ok
     end
@@ -64,7 +65,7 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
 
   defp resolve_registered_nick(nickname) do
     case RetroHexChat.Repo.get_by(RegisteredNick, nickname: nickname) do
-      nil -> {:error, "Usuario '#{nickname}' nao esta registrado."}
+      nil -> {:error, "User '#{nickname}' is not registered."}
       nick -> {:ok, nick.id}
     end
   end

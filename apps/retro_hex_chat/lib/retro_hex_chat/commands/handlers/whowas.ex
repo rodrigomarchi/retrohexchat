@@ -29,7 +29,7 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
       name: "whowas",
       syntax: "/whowas <nickname>",
       description:
-        "Display information about a recently disconnected user. Shows last seen time, channels, and quit message.",
+        "Look up information about a user who recently disconnected.\nShows last seen time, channels, and quit message. Data cached for up to 1 hour.\nFor online users, use /whois instead.",
       examples: ["/whowas SomeUser"]
     }
   end
@@ -46,8 +46,7 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
     %CommandSyntax{
       command: "whowas",
       syntax: "/whowas <nickname>",
-      description:
-        "Display information about a recently disconnected user. Shows last seen time, channels, and quit message.",
+      description: "Look up information about a user who recently disconnected.",
       category: :user,
       parameters: [
         %Parameter{
@@ -55,7 +54,7 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
           required: true,
           type: :nick,
           position: 0,
-          description: "Usuário desconectado recentemente"
+          description: "Recently disconnected user"
         }
       ],
       examples: ["/whowas SomeUser"]

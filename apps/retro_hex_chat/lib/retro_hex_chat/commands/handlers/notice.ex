@@ -37,7 +37,7 @@ defmodule RetroHexChat.Commands.Handlers.Notice do
       name: "notice",
       syntax: "/notice <target> <message>",
       description:
-        "Send a notice to a user or channel. Notices use -Nick- formatting and do not open PM windows.",
+        "Send a notice to a user or channel without opening a PM window on their side.\nBoth target and message are required. Target can be a nickname or a #channel.",
       examples: [
         "/notice Alice Check out #project",
         "/notice #elixir Server maintenance in 30 minutes"
@@ -58,7 +58,7 @@ defmodule RetroHexChat.Commands.Handlers.Notice do
       command: "notice",
       syntax: "/notice <target> <message>",
       description:
-        "Send a notice to a user or channel. Notices use -Nick- formatting and do not open PM windows.",
+        "Send a lightweight notice to a user or channel that doesn't open a PM window on their side.",
       category: :user,
       parameters: [
         %Parameter{
@@ -66,14 +66,14 @@ defmodule RetroHexChat.Commands.Handlers.Notice do
           required: true,
           type: :nick,
           position: 0,
-          description: "Destinatário (nick ou canal)"
+          description: "Recipient (nickname or channel)"
         },
         %Parameter{
           name: "message",
           required: true,
           type: :text,
           position: 1,
-          description: "Conteúdo do aviso"
+          description: "Notice content"
         }
       ],
       examples: [

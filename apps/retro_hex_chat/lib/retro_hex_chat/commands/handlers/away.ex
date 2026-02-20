@@ -30,7 +30,8 @@ defmodule RetroHexChat.Commands.Handlers.Away do
     %{
       name: "away",
       syntax: "/away [message]",
-      description: "Set or clear your away status.",
+      description:
+        "Mark yourself as temporarily unavailable, with an optional message shown in /whois.\nWith a message: sets you as away. Without arguments: clears your away status and marks you as back.",
       examples: ["/away Gone to lunch", "/away"]
     }
   end
@@ -47,7 +48,8 @@ defmodule RetroHexChat.Commands.Handlers.Away do
     %CommandSyntax{
       command: "away",
       syntax: "/away [message]",
-      description: "Set or clear your away status.",
+      description:
+        "Mark yourself as temporarily unavailable, with an optional message shown in /whois.",
       category: :basics,
       parameters: [
         %Parameter{
@@ -55,7 +57,7 @@ defmodule RetroHexChat.Commands.Handlers.Away do
           required: false,
           type: :text,
           position: 0,
-          description: "Mensagem de ausência (vazio para voltar)"
+          description: "Away message (empty to return)"
         }
       ],
       examples: ["/away Gone to lunch", "/away"]

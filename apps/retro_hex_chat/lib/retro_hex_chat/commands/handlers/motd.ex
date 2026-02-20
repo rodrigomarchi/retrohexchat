@@ -29,7 +29,8 @@ defmodule RetroHexChat.Commands.Handlers.Motd do
     %{
       name: "motd",
       syntax: "/motd",
-      description: "Display the server Message of the Day.",
+      description:
+        "View the server's Message of the Day, which is also shown automatically when you connect.",
       examples: ["/motd"]
     }
   end
@@ -45,7 +46,8 @@ defmodule RetroHexChat.Commands.Handlers.Motd do
     %CommandSyntax{
       command: "motd",
       syntax: "/motd",
-      description: "Display the server Message of the Day.",
+      description:
+        "View the server's Message of the Day, which is also shown automatically when you connect.",
       category: :advanced,
       parameters: [],
       examples: ["/motd"]

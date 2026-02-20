@@ -49,7 +49,8 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
     %{
       name: "wallops",
       syntax: "/wallops <message>",
-      description: "Send a wallops message to all users with +w mode. Requires server operator.",
+      description:
+        "Send a message to all users who opted in to operator announcements via /umode +w.\nRequires: server operator or server administrator. Message text is required.",
       examples: ["/wallops Server maintenance in 10 minutes"]
     }
   end
@@ -66,7 +67,8 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
     %CommandSyntax{
       command: "wallops",
       syntax: "/wallops <message>",
-      description: "Send a wallops message to all users with +w mode. Requires server operator.",
+      description:
+        "Send a message to all users who opted in to operator announcements via /umode +w.",
       category: :user,
       parameters: [
         %Parameter{
@@ -74,7 +76,7 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
           required: true,
           type: :text,
           position: 0,
-          description: "Mensagem para todos com +w"
+          description: "Message for all users with +w mode"
         }
       ],
       examples: ["/wallops Server maintenance in 10 minutes"]

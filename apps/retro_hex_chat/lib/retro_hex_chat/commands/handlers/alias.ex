@@ -63,7 +63,8 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
     %{
       name: "alias",
       syntax: "/alias [list|add|remove]",
-      description: "Manage command aliases. Type a short alias to expand into longer commands.",
+      description:
+        "Create short command shortcuts that expand into longer commands.\nSubcommands: list, add <name> <expansion>, remove <name>. No args opens the dialog.\nSupports $1-$9 for positional arguments, $nick for your nickname, $chan for current channel.\nMax 50 aliases. Registered users: persisted. Guests: session-only.",
       examples: [
         "/alias",
         "/alias list",
@@ -86,7 +87,7 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
     %CommandSyntax{
       command: "alias",
       syntax: "/alias [list|add|remove]",
-      description: "Manage command aliases. Type a short alias to expand into longer commands.",
+      description: "Create short command shortcuts that expand into longer commands.",
       category: :config,
       parameters: [
         %Parameter{
@@ -94,14 +95,14 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
           required: false,
           type: :text,
           position: 0,
-          description: "Subcomando: list, add, remove"
+          description: "Subcommand: list, add, remove"
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Argumentos do subcomando"
+          description: "Subcommand arguments"
         }
       ],
       examples: [

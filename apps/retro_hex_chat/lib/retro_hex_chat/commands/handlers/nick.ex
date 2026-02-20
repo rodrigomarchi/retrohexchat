@@ -52,7 +52,8 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
     %{
       name: "nick",
       syntax: "/nick <newnick>",
-      description: "Change your nickname.",
+      description:
+        "Change your display name. A confirmation dialog appears before the change takes effect.\nRules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\nAllowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\nCannot change to your current nickname or one already in use.",
       examples: ["/nick NewNick", "/nick [Bot]"]
     }
   end
@@ -69,7 +70,8 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
     %CommandSyntax{
       command: "nick",
       syntax: "/nick <newnick>",
-      description: "Change your nickname.",
+      description:
+        "Change your display name in the chat. A confirmation dialog appears before the change takes effect.",
       category: :basics,
       parameters: [
         %Parameter{
@@ -77,7 +79,7 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
           required: true,
           type: :nick,
           position: 0,
-          description: "Novo nickname (máx 16 caracteres)"
+          description: "New nickname (max 16 characters)"
         }
       ],
       examples: ["/nick NewNick", "/nick [Bot]"]

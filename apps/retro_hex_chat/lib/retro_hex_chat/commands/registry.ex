@@ -55,11 +55,11 @@ defmodule RetroHexChat.Commands.Registry do
 
   @category_order [:basics, :channel, :user, :config, :advanced]
   @category_labels %{
-    basics: "Básicos",
-    channel: "Canal",
-    user: "Usuário",
-    config: "Configuração",
-    advanced: "Avançado"
+    basics: "Basics",
+    channel: "Channel",
+    user: "User",
+    config: "Configuration",
+    advanced: "Advanced"
   }
 
   @command_metadata (for {name, module} <- @commands do

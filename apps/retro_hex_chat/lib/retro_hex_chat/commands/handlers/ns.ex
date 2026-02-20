@@ -82,7 +82,8 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     %{
       name: "ns",
       syntax: "/ns <subcommand> [args]",
-      description: "NickServ commands for nickname registration and protection.",
+      description:
+        "Register and protect your nickname with a password through NickServ.\nSubcommands: register <password>, identify <password>, ghost <nick>, info [nick], drop <password>, help.\nRegister: claims current nickname. Identify: authenticates each session.\nGhost: disconnects a stale session using your registered nickname.",
       examples: [
         "/ns register mypassword",
         "/ns identify mypassword",
@@ -148,7 +149,8 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     %CommandSyntax{
       command: "ns",
       syntax: "/ns <subcommand> [args]",
-      description: "NickServ commands for nickname registration and protection.",
+      description:
+        "Register and protect your nickname with a password through NickServ, the nickname services bot.",
       category: :advanced,
       parameters: [
         %Parameter{
@@ -156,14 +158,14 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
           required: true,
           type: :text,
           position: 0,
-          description: "Subcomando: register, identify, ghost, info, drop"
+          description: "Subcommand: register, identify, ghost, info, drop"
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Argumentos do subcomando"
+          description: "Subcommand arguments"
         }
       ],
       examples: [

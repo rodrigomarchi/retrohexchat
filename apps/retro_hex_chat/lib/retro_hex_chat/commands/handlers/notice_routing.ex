@@ -43,9 +43,7 @@ defmodule RetroHexChat.Commands.Handlers.NoticeRouting do
       name: "notice_routing",
       syntax: "/notice_routing [active|status|sender]",
       description:
-        "Configure where incoming notices appear. 'active' shows in current window (default), " <>
-          "'status' shows in Status Window, 'sender' shows in sender's PM window. " <>
-          "Without arguments, shows current setting.",
+        "Choose where incoming notices appear on your screen.\nOptions: active (current window, default), status (Status tab), sender (sender's PM tab).\nNo args: shows current setting. Persisted for registered users.",
       examples: [
         "/notice_routing",
         "/notice_routing active",
@@ -68,9 +66,7 @@ defmodule RetroHexChat.Commands.Handlers.NoticeRouting do
       command: "notice_routing",
       syntax: "/notice_routing [active|status|sender]",
       description:
-        "Configure where incoming notices appear. 'active' shows in current window (default), " <>
-          "'status' shows in Status Window, 'sender' shows in sender's PM window. " <>
-          "Without arguments, shows current setting.",
+        "Choose where incoming notices appear: in your active window, the Status tab, or the sender's PM tab.",
       category: :user,
       parameters: [
         %Parameter{
@@ -78,7 +74,7 @@ defmodule RetroHexChat.Commands.Handlers.NoticeRouting do
           required: false,
           type: :text,
           position: 0,
-          description: "Destino: active, status, sender"
+          description: "Destination: active, status, sender"
         }
       ],
       examples: [

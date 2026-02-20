@@ -37,7 +37,8 @@ defmodule RetroHexChat.Commands.Handlers.Help do
     %{
       name: "help",
       syntax: "/help [command]",
-      description: "Show available commands or help for a specific command.",
+      description:
+        "View help for any command, or browse all available commands.\nWith no args: lists all commands. With a command name: shows detailed help.\nAlso accessible via F1 key and the Help Topics button in the toolbar.",
       examples: ["/help", "/help join"]
     }
   end
@@ -54,7 +55,8 @@ defmodule RetroHexChat.Commands.Handlers.Help do
     %CommandSyntax{
       command: "help",
       syntax: "/help [command]",
-      description: "Show available commands or help for a specific command.",
+      description:
+        "View help for any command, or browse all available commands.\nWith no args: lists all commands. With a command name: shows detailed help.\nAlso accessible via F1 key and the Help Topics button in the toolbar.",
       category: :basics,
       parameters: [
         %Parameter{
@@ -62,7 +64,7 @@ defmodule RetroHexChat.Commands.Handlers.Help do
           required: false,
           type: :command,
           position: 0,
-          description: "Comando para ver ajuda detalhada"
+          description: "Command name to view detailed help"
         }
       ],
       examples: ["/help", "/help join"]

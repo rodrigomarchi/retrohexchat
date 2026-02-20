@@ -88,7 +88,8 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     %{
       name: "cs",
       syntax: "/cs <subcommand> [args]",
-      description: "ChanServ commands for channel registration and access management.",
+      description:
+        "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop requires being the channel founder.",
       examples: [
         "/cs register",
         "/cs drop",
@@ -160,7 +161,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     %CommandSyntax{
       command: "cs",
       syntax: "/cs <subcommand> [args]",
-      description: "ChanServ commands for channel registration and access management.",
+      description: "Manage channel registration and access lists through ChanServ.",
       category: :advanced,
       parameters: [
         %Parameter{
@@ -168,14 +169,14 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
           required: true,
           type: :text,
           position: 0,
-          description: "Subcomando: register, drop, info, sop, aop, vop"
+          description: "Subcommand: register, drop, info, sop, aop, vop"
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Argumentos do subcomando"
+          description: "Subcommand arguments"
         }
       ],
       examples: [

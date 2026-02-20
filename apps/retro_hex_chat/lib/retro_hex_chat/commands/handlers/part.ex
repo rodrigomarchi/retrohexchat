@@ -46,7 +46,8 @@ defmodule RetroHexChat.Commands.Handlers.Part do
     %{
       name: "part",
       syntax: "/part [#channel] [message]",
-      description: "Leave a channel. Defaults to active channel if none specified.",
+      description:
+        "Leave the current channel or a specified channel, with an optional parting message.\nDefaults to current channel. If the first word doesn't start with #, it's treated as the part message.\nYou must be in the channel to leave it.",
       examples: ["/part", "/part #elixir", "/part #elixir Goodbye!"]
     }
   end
@@ -63,7 +64,8 @@ defmodule RetroHexChat.Commands.Handlers.Part do
     %CommandSyntax{
       command: "part",
       syntax: "/part [#channel] [message]",
-      description: "Leave a channel. Defaults to active channel if none specified.",
+      description:
+        "Leave the current channel or a specified channel, with an optional parting message shown to others.",
       category: :channel,
       parameters: [
         %Parameter{
@@ -71,14 +73,14 @@ defmodule RetroHexChat.Commands.Handlers.Part do
           required: false,
           type: :channel,
           position: 0,
-          description: "Canal a sair (padrão: canal atual)"
+          description: "Channel to leave (defaults to current)"
         },
         %Parameter{
           name: "message",
           required: false,
           type: :text,
           position: 1,
-          description: "Mensagem de saída"
+          description: "Part message"
         }
       ],
       examples: ["/part", "/part #elixir", "/part #elixir Goodbye!"]

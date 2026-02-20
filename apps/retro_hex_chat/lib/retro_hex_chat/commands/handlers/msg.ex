@@ -32,7 +32,8 @@ defmodule RetroHexChat.Commands.Handlers.Msg do
     %{
       name: "msg",
       syntax: "/msg <nickname> <message>",
-      description: "Send a private message to a user.",
+      description:
+        "Send a private message to another user, opening a PM conversation tab.\nBoth nickname and message text are required.",
       examples: ["/msg Nick Hello there!", "/msg Nick How are you?"]
     }
   end
@@ -49,7 +50,8 @@ defmodule RetroHexChat.Commands.Handlers.Msg do
     %CommandSyntax{
       command: "msg",
       syntax: "/msg <nickname> <message>",
-      description: "Send a private message to a user.",
+      description:
+        "Send a private message to another user, opening a PM conversation tab.\nBoth nickname and message text are required.",
       category: :user,
       parameters: [
         %Parameter{
@@ -57,14 +59,14 @@ defmodule RetroHexChat.Commands.Handlers.Msg do
           required: true,
           type: :nick,
           position: 0,
-          description: "Destinatário da mensagem"
+          description: "Message recipient"
         },
         %Parameter{
           name: "message",
           required: true,
           type: :text,
           position: 1,
-          description: "Conteúdo da mensagem"
+          description: "Message content"
         }
       ],
       examples: ["/msg Nick Hello there!", "/msg Nick How are you?"]

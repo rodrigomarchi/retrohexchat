@@ -91,7 +91,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
       name: "autorespond",
       syntax: "/autorespond [list|add|remove]",
       description:
-        "Manage event-triggered auto-respond rules. Rules fire when users join, part, or change nicks.",
+        "Automatically run a command when someone joins, leaves, or changes their nickname.\nSubcommands: list, add <trigger> [#channel] <command>, remove <position>. No args opens the dialog.\nValid triggers: on_join, on_part, on_nick_change.\nUse $nick in your command to reference the triggering user. The remove subcommand takes a 0-based index number.",
       examples: [
         "/autorespond",
         "/autorespond list",
@@ -144,7 +144,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
       command: "autorespond",
       syntax: "/autorespond [list|add|remove]",
       description:
-        "Manage event-triggered auto-respond rules. Rules fire when users join, part, or change nicks.",
+        "Automatically run a command when someone joins, leaves, or changes their nickname.",
       category: :config,
       parameters: [
         %Parameter{
@@ -152,14 +152,14 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
           required: false,
           type: :text,
           position: 0,
-          description: "Subcomando: list, add, remove"
+          description: "Subcommand: list, add, remove"
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Argumentos do subcomando"
+          description: "Subcommand arguments"
         }
       ],
       examples: [

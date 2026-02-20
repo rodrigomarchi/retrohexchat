@@ -1,8 +1,9 @@
-<h3>/autojoin</h3><p>Manage your auto-join channel list — channels that are joined automatically after perform commands complete.</p><h4>Syntax</h4><pre>/autojoin [list|add|remove|clear] [args]</pre><h4>Subcommands</h4><pre>list                    — Show all auto-join channels
-add &lt;#channel&gt; [key]    — Add a channel (with optional key for +k channels)
-remove &lt;#channel&gt;       — Remove a channel from the auto-join list
-clear                   — Remove all auto-join channels</pre><h4>Notes</h4><p>Channels are joined automatically after all perform commands complete. This ensures that NickServ identification and other setup happens before joining channels.</p><h4>Examples</h4><pre>/autojoin list
+<h3>/autojoin</h3><p>Set channels to join automatically every time you connect, so you never have to manually rejoin your favorite rooms.</p><h4>Syntax</h4><pre>/autojoin
+/autojoin list
+/autojoin add &lt;#channel&gt; [key]
+/autojoin remove &lt;#channel&gt;
+/autojoin clear</pre><h4>Parameters</h4><p><code>#channel</code> — The channel name (must start with #).<br/><code>key</code> — Optional password for channels that require one (+k mode).</p><h4>How It Works</h4><p>When you connect to the server, your auto-join channels are joined automatically after all perform commands finish. This ensures things like NickServ identification happen before joining channels. When you use <code>/join</code> to enter a channel, it is automatically added to your auto-join list. When you use <code>/part</code> to leave, it is automatically removed. Running <code>/autojoin</code> with no arguments opens the Auto-Join dialog.</p><h4>Rules &amp; Limits</h4><ul><li>Registered users only — guests cannot save auto-join lists</li><li>Maximum number of channels matches the channel limit (10)</li></ul><h4>Examples</h4><pre>/autojoin list
 /autojoin add #elixir
 /autojoin add #secret mykey
 /autojoin remove #elixir
-/autojoin clear</pre><h4>See Also</h4><p><a href="#" data-help-topic="cmd-perform">/perform</a> · <a href="#" data-help-topic="feature-perform">Perform / Auto-Commands</a></p>
+/autojoin clear</pre><h4>See Also</h4><p><a href="#" data-help-topic="cmd-join">/join</a> · <a href="#" data-help-topic="cmd-perform">/perform</a> · <a href="#" data-help-topic="feature-auto-join-channels">Auto-Join Channels</a></p>

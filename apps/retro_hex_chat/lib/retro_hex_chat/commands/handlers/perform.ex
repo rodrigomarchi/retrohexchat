@@ -81,7 +81,8 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
     %{
       name: "perform",
       syntax: "/perform [list|add|remove|move|clear]",
-      description: "Manage commands that auto-execute on connect.",
+      description:
+        "Set up commands that automatically run every time you connect.\nSubcommands: list, add <command>, remove <index>, move <from> <to>, clear. No args opens the dialog.\nCommon use: /perform add /ns identify mypassword\nPositions are 0-based index numbers. Passwords are masked in the list display.",
       examples: [
         "/perform",
         "/perform list",
@@ -122,7 +123,8 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
     %CommandSyntax{
       command: "perform",
       syntax: "/perform [list|add|remove|move|clear]",
-      description: "Manage commands that auto-execute on connect.",
+      description:
+        "Set up commands that automatically run every time you connect, like identifying with NickServ.",
       category: :config,
       parameters: [
         %Parameter{
@@ -130,14 +132,14 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
           required: false,
           type: :text,
           position: 0,
-          description: "Subcomando: list, add, remove, move, clear"
+          description: "Subcommand: list, add, remove, move, clear"
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Argumentos do subcomando"
+          description: "Subcommand arguments"
         }
       ],
       examples: [

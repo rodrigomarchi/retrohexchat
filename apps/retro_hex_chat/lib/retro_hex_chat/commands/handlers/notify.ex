@@ -71,7 +71,8 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
     %{
       name: "notify",
       syntax: "/notify [add|remove|edit|list] [args]",
-      description: "Manage your notify (buddy) list.",
+      description:
+        "Track when specific users come online or go offline with your buddy list.\nSubcommands: add <nick> [note], remove <nick>, edit <nick> <note>, list. No args opens the dialog.\nRegistered users: persisted. Guests: session-only.",
       examples: [
         "/notify add Alice Works on Elixir",
         "/notify remove Alice",
@@ -94,7 +95,7 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
     %CommandSyntax{
       command: "notify",
       syntax: "/notify [add|remove|edit|list] [args]",
-      description: "Manage your notify (buddy) list.",
+      description: "Track when specific users come online or go offline with your buddy list.",
       category: :config,
       parameters: [
         %Parameter{
@@ -102,14 +103,14 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
           required: false,
           type: :text,
           position: 0,
-          description: "Subcomando: add, remove, edit, list"
+          description: "Subcommand: add, remove, edit, list"
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Argumentos do subcomando"
+          description: "Subcommand arguments"
         }
       ],
       examples: [

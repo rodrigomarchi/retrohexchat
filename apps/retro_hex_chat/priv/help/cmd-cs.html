@@ -1,4 +1,6 @@
-<h3>/cs</h3><p>Send a command to ChanServ (channel registration service).</p><h4>Syntax</h4><pre>/cs &lt;command&gt; [arguments]</pre><h4>Examples</h4><pre>/cs register #mychannel
-/cs access #mychannel add Alice op
-/cs access #mychannel list
-/cs drop #mychannel</pre><h4>See Also</h4><p><a href="#" data-help-topic="chanserv">ChanServ Overview</a></p>
+<h3>/cs</h3><p>Manage channel registration and access lists through ChanServ, the channel services bot. ChanServ keeps your channel settings safe even when no operators are online.</p><h4>Syntax</h4><pre>/cs &lt;subcommand&gt; [arguments]</pre><h4>How It Works</h4><p>ChanServ is an automated service that manages channel ownership and access. When you register a channel, ChanServ remembers who owns it and who has operator privileges, automatically restoring them when those users join. This prevents channels from becoming "ownerless" when operators disconnect.</p><h4>Subcommands</h4><p><code>register &lt;#channel&gt;</code> — Register and claim ownership of a channel (you must be operator).<br/><code>drop &lt;#channel&gt;</code> — Unregister a channel, giving up ownership.<br/><code>info &lt;#channel&gt;</code> — View channel registration details.<br/><code>sop &lt;#channel&gt; add/del/list &lt;nick&gt;</code> — Manage Super Operators (can manage all access lists).<br/><code>aop &lt;#channel&gt; add/del/list &lt;nick&gt;</code> — Manage Auto Operators (get operator on join).<br/><code>vop &lt;#channel&gt; add/del/list &lt;nick&gt;</code> — Manage Auto Voice (get voice on join).</p><h4>Rules &amp; Limits</h4><ul><li>You must be a registered user to use ChanServ</li><li>You must be a channel operator to register a channel</li><li>Access hierarchy: Owner &gt; SOP &gt; AOP &gt; VOP</li></ul><h4>Examples</h4><pre>/cs register #mychannel
+/cs info #mychannel
+/cs aop #mychannel add Alice
+/cs aop #mychannel list
+/cs vop #mychannel add Bob
+/cs drop #mychannel</pre><h4>See Also</h4><p><a href="#" data-help-topic="cmd-ns">/ns</a> · <a href="#" data-help-topic="cmd-mode">/mode</a> · <a href="#" data-help-topic="chanserv">ChanServ Overview</a></p>

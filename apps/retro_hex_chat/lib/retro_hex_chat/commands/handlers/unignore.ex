@@ -26,7 +26,8 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
     %{
       name: "unignore",
       syntax: "/unignore <nickname>",
-      description: "Remove a user from your ignore list.",
+      description:
+        "Stop ignoring a user you previously blocked, making their messages visible again.\nNickname is required. Use /ignore with no args to see your ignore list first.",
       examples: [
         "/unignore SpamBot"
       ]
@@ -45,7 +46,8 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
     %CommandSyntax{
       command: "unignore",
       syntax: "/unignore <nickname>",
-      description: "Remove a user from your ignore list.",
+      description:
+        "Stop ignoring a user you previously blocked, making their messages visible again.",
       category: :user,
       parameters: [
         %Parameter{
@@ -53,7 +55,7 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
           required: true,
           type: :nick,
           position: 0,
-          description: "Remover usuário da lista de ignorados"
+          description: "Remove user from ignore list"
         }
       ],
       examples: [

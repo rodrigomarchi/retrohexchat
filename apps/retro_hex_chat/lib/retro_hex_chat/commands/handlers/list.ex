@@ -25,7 +25,7 @@ defmodule RetroHexChat.Commands.Handlers.List do
     %{
       name: "list",
       syntax: "/list",
-      description: "Show the channel list dialog.",
+      description: "Browse all public channels on the server in a sortable, filterable dialog.",
       examples: ["/list"]
     }
   end
@@ -41,7 +41,7 @@ defmodule RetroHexChat.Commands.Handlers.List do
     %CommandSyntax{
       command: "list",
       syntax: "/list",
-      description: "Show the channel list dialog.",
+      description: "Browse all public channels on the server in a sortable, filterable dialog.",
       category: :channel,
       parameters: [],
       examples: ["/list"]

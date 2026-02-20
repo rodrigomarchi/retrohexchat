@@ -25,7 +25,8 @@ defmodule RetroHexChat.Commands.Handlers.Clear do
     %{
       name: "clear",
       syntax: "/clear",
-      description: "Clear the chat window.",
+      description:
+        "Clear all messages from the current chat window, giving you a fresh screen. Cannot be undone.",
       examples: ["/clear"]
     }
   end
@@ -41,7 +42,8 @@ defmodule RetroHexChat.Commands.Handlers.Clear do
     %CommandSyntax{
       command: "clear",
       syntax: "/clear",
-      description: "Clear the chat window.",
+      description:
+        "Clear all messages from the current chat window, giving you a fresh screen. Cannot be undone.",
       category: :basics,
       parameters: [],
       examples: ["/clear"]

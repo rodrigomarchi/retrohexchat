@@ -64,13 +64,13 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
     test "rejects when not identified" do
       context = %{@base_context | identified: false}
       assert {:error, msg} = P2p.execute(["mario"], context)
-      assert msg =~ "identificado"
+      assert msg =~ "identified"
     end
 
     test "rejects targeting self" do
       context = %{@base_context | nickname: "rodrigo"}
       assert {:error, msg} = P2p.execute(["rodrigo"], context)
-      assert msg =~ "voce mesmo"
+      assert msg =~ "yourself"
     end
 
     test "rejects unregistered target" do
@@ -85,7 +85,7 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
 
       context = %{@base_context | nickname: "p2p_cr1"}
       assert {:error, msg} = P2p.execute(["nobody"], context)
-      assert msg =~ "registrado"
+      assert msg =~ "not registered"
     end
   end
 

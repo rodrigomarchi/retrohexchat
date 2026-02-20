@@ -32,7 +32,8 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
     %{
       name: "mode",
       syntax: "/mode <+/-flags> [params]",
-      description: "Set or unset channel modes. Requires operator privilege.",
+      description:
+        "Change channel settings and user privileges using mode flags.\nFlags: +o (operator), +v (voice), +b (ban), +h (half-op), +m (moderated), +i (invite-only), +t (topic protected), +k (key/password), +l (user limit), +n (no external messages), +j (join throttle), +K (no knock).\nRequires: channel operator. Half-operators can only set +v/-v. Must be in a channel.",
       examples: ["/mode +m", "/mode +k secret", "/mode -t", "/mode +o nickname"]
     }
   end
@@ -82,12 +83,13 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
 
     %CommandSyntax{
       command: "mode",
-      syntax: "/mode <+/-modos> [nick]",
-      description: "Set or unset channel modes. Requires operator privilege.",
+      syntax: "/mode <+/-flags> [params]",
+      description:
+        "Change channel settings and user privileges using mode flags.\nFlags: +o (operator), +v (voice), +b (ban), +h (half-op), +m (moderated), +i (invite-only), +t (topic protected), +k (key/password), +l (user limit), +n (no external messages), +j (join throttle), +K (no knock).\nRequires: channel operator. Half-operators can only set +v/-v. Must be in a channel.",
       category: :channel,
       parameters: [
         %Parameter{
-          name: "+/-modos",
+          name: "+/-flags",
           required: true,
           type: :mode_flags,
           position: 0,
@@ -105,44 +107,44 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
       sub_options: [
         %SubOption{
           flag: "+o",
-          label: "Operador",
-          description: "Dar status de operador",
+          label: "Operator",
+          description: "Grant operator status",
           requires_param: true
         },
         %SubOption{
           flag: "+v",
-          label: "Voz",
-          description: "Dar voz ao usuário",
+          label: "Voice",
+          description: "Grant voice to speak in +m",
           requires_param: true
         },
         %SubOption{
           flag: "+b",
           label: "Ban",
-          description: "Banir usuário do canal",
+          description: "Ban user from channel",
           requires_param: true
         },
         %SubOption{
           flag: "+i",
-          label: "Somente convite",
-          description: "Canal acessível apenas por convite",
+          label: "Invite only",
+          description: "Channel accessible only by invitation",
           requires_param: false
         },
         %SubOption{
           flag: "+m",
-          label: "Moderado",
-          description: "Somente +v e +o podem falar",
+          label: "Moderated",
+          description: "Only +v and +o can speak",
           requires_param: false
         },
         %SubOption{
           flag: "+t",
-          label: "Tópico protegido",
-          description: "Somente operadores alteram o tópico",
+          label: "Topic protected",
+          description: "Only operators can change the topic",
           requires_param: false
         },
         %SubOption{
           flag: "+k",
-          label: "Senha",
-          description: "Definir senha do canal",
+          label: "Key",
+          description: "Set channel password",
           requires_param: true
         }
       ]

@@ -33,7 +33,8 @@ defmodule RetroHexChat.Commands.Handlers.Me do
     %{
       name: "me",
       syntax: "/me <action>",
-      description: "Sends an action message.",
+      description:
+        "Send an action message that appears as '* YourNick does something' to everyone in the channel.\nMust be in a channel. Action text is required.",
       examples: ["/me waves hello", "/me is away"]
     }
   end
@@ -50,7 +51,8 @@ defmodule RetroHexChat.Commands.Handlers.Me do
     %CommandSyntax{
       command: "me",
       syntax: "/me <action>",
-      description: "Sends an action message.",
+      description:
+        "Send an action message that appears as '* YourNick does something' to everyone in the channel.\nMust be in a channel. Action text is required.",
       category: :basics,
       parameters: [
         %Parameter{
@@ -58,7 +60,7 @@ defmodule RetroHexChat.Commands.Handlers.Me do
           required: true,
           type: :text,
           position: 0,
-          description: "Texto da ação"
+          description: "Action text"
         }
       ],
       examples: ["/me waves hello", "/me is away"]

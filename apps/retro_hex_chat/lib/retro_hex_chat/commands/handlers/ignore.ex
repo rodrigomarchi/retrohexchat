@@ -35,7 +35,8 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
     %{
       name: "ignore",
       syntax: "/ignore [nickname] [type] [duration]",
-      description: "Ignore a user. Types: all (default), messages, pms, invites, actions.",
+      description:
+        "Hide messages from a specific user.\nTypes: all (default), messages, pms, actions, invites.\nDuration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\nNo args: show your ignore list. You cannot ignore yourself.",
       examples: [
         "/ignore SpamBot",
         "/ignore AnnoyingGuy pms",
@@ -112,7 +113,8 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
     %CommandSyntax{
       command: "ignore",
       syntax: "/ignore [nickname] [type] [duration]",
-      description: "Ignore a user. Types: all (default), messages, pms, invites, actions.",
+      description:
+        "Hide messages from a specific user.\nTypes: all (default), messages, pms, actions, invites.\nDuration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\nNo args: show your ignore list. You cannot ignore yourself.",
       category: :user,
       parameters: [
         %Parameter{
@@ -120,21 +122,21 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
           required: false,
           type: :nick,
           position: 0,
-          description: "Usuário a ignorar"
+          description: "User to ignore"
         },
         %Parameter{
           name: "type",
           required: false,
           type: :text,
           position: 1,
-          description: "Tipo: all, messages, pms, invites, actions"
+          description: "Type: all, messages, pms, invites, actions"
         },
         %Parameter{
           name: "duration",
           required: false,
           type: :text,
           position: 2,
-          description: "Duração: 5m, 1h, 2d"
+          description: "Duration: 5m, 1h, 2d"
         }
       ],
       examples: [

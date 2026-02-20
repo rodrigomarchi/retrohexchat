@@ -75,7 +75,8 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
     %{
       name: "autojoin",
       syntax: "/autojoin [list|add|remove|clear]",
-      description: "Manage channels that are automatically joined on connect.",
+      description:
+        "Set channels to join automatically every time you connect.\nSubcommands: list, add <#channel> [key], remove <#channel>, clear. No args opens the Perform dialog.\nChannel names must start with #. Registered users only.",
       examples: [
         "/autojoin",
         "/autojoin list",
@@ -108,7 +109,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
     %CommandSyntax{
       command: "autojoin",
       syntax: "/autojoin [list|add|remove|clear]",
-      description: "Manage channels that are automatically joined on connect.",
+      description: "Set channels to join automatically every time you connect.",
       category: :config,
       parameters: [
         %Parameter{
@@ -116,14 +117,14 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
           required: false,
           type: :text,
           position: 0,
-          description: "Subcomando: list, add, remove, clear"
+          description: "Subcommand: list, add, remove, clear"
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Argumentos do subcomando"
+          description: "Subcommand arguments"
         }
       ],
       examples: [

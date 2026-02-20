@@ -7,12 +7,12 @@ defmodule RetroHexChat.Commands.Handlers.SendFile do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Uso: /sendfile <nickname>"}
+  def validate(""), do: {:error, "Usage: /sendfile <nickname>"}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Uso: /sendfile <nickname>"}
+  def execute([], _context), do: {:error, "Usage: /sendfile <nickname>"}
 
   def execute([target | _rest], context) do
     P2p.do_execute(target, "file_transfer", context)
@@ -29,7 +29,8 @@ defmodule RetroHexChat.Commands.Handlers.SendFile do
     %{
       name: "sendfile",
       syntax: "/sendfile <nickname>",
-      description: "Iniciar uma transferencia de arquivo P2P com outro usuario.",
+      description:
+        "Send a file to another user through a direct peer-to-peer connection.\nRequires: both you and the target must be registered and identified (/ns identify).\nYou cannot send files to yourself. Creates a P2P session — the peer must accept.",
       examples: ["/sendfile mario"]
     }
   end

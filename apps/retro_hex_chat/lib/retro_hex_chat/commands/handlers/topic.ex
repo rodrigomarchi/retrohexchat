@@ -39,7 +39,8 @@ defmodule RetroHexChat.Commands.Handlers.Topic do
     %{
       name: "topic",
       syntax: "/topic [new topic]",
-      description: "View or set the channel topic.",
+      description:
+        "View or change the channel topic displayed in the topic bar at the top of the channel.\nNo args: shows current topic. With text: sets a new topic.\nMust be in a channel. If channel has +t mode, only operators can change the topic.",
       examples: ["/topic", "/topic Welcome to #elixir!"]
     }
   end
@@ -56,7 +57,8 @@ defmodule RetroHexChat.Commands.Handlers.Topic do
     %CommandSyntax{
       command: "topic",
       syntax: "/topic [new topic]",
-      description: "View or set the channel topic.",
+      description:
+        "View or change the channel topic displayed in the topic bar at the top of the channel.",
       category: :channel,
       parameters: [
         %Parameter{
@@ -64,7 +66,7 @@ defmodule RetroHexChat.Commands.Handlers.Topic do
           required: false,
           type: :text,
           position: 0,
-          description: "Novo tópico do canal"
+          description: "New channel topic"
         }
       ],
       examples: ["/topic", "/topic Welcome to #elixir!"]

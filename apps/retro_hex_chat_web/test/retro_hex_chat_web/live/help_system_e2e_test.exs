@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.HelpSystemE2ETest do
       html = html_response(conn, 200)
 
       assert html =~ "/join"
-      assert html =~ "Join a channel"
+      assert html =~ "Enter a chat channel"
     end
 
     test "search returns matching results", %{conn: conn} do

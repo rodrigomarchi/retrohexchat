@@ -34,7 +34,7 @@ defmodule RetroHexChat.Commands.Handlers.ClearWelcome do
       name: "clearwelcome",
       syntax: "/clearwelcome",
       description:
-        "Clear the welcome message for the current channel. Requires operator privileges.",
+        "Remove the welcome message from the current channel so new joiners won't see one.\nRequires: channel operator. Must be in a channel.",
       examples: ["/clearwelcome"]
     }
   end
@@ -51,7 +51,7 @@ defmodule RetroHexChat.Commands.Handlers.ClearWelcome do
       command: "clearwelcome",
       syntax: "/clearwelcome",
       description:
-        "Clear the welcome message for the current channel. Requires operator privileges.",
+        "Remove the welcome message from the current channel so new joiners won't see one.",
       category: :advanced,
       parameters: [],
       examples: ["/clearwelcome"]

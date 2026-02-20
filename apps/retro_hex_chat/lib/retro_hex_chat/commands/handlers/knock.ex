@@ -35,7 +35,7 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
       name: "knock",
       syntax: "/knock #channel [message]",
       description:
-        "Request access to an invite-only channel. Channel operators will see your knock.",
+        "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\nChannel name must start with #.",
       examples: [
         "/knock #private",
         "/knock #private Hey, can I join?"
@@ -56,7 +56,7 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
       command: "knock",
       syntax: "/knock #channel [message]",
       description:
-        "Request access to an invite-only channel. Channel operators will see your knock.",
+        "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\nChannel name must start with #.",
       category: :channel,
       parameters: [
         %Parameter{
@@ -64,14 +64,14 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
           required: true,
           type: :channel,
           position: 0,
-          description: "Canal para solicitar acesso"
+          description: "Channel to request access to"
         },
         %Parameter{
           name: "message",
           required: false,
           type: :text,
           position: 1,
-          description: "Mensagem para os operadores"
+          description: "Message for the channel operators"
         }
       ],
       examples: [

@@ -39,7 +39,8 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
     %{
       name: "setmotd",
       syntax: "/setmotd <text>",
-      description: "Set the server Message of the Day. Requires server administrator privileges.",
+      description:
+        "Set the server's Message of the Day shown to all users when they connect.\nRequires: server administrator. Message text is required.",
       examples: ["/setmotd Welcome to RetroHexChat!"]
     }
   end
@@ -56,7 +57,7 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
     %CommandSyntax{
       command: "setmotd",
       syntax: "/setmotd <text>",
-      description: "Set the server Message of the Day. Requires server administrator privileges.",
+      description: "Set the server's Message of the Day shown to all users when they connect.",
       category: :advanced,
       parameters: [
         %Parameter{
@@ -64,7 +65,7 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
           required: true,
           type: :text,
           position: 0,
-          description: "Texto da mensagem do dia"
+          description: "Message of the Day text"
         }
       ],
       examples: ["/setmotd Welcome to RetroHexChat!"]

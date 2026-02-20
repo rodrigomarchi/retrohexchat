@@ -54,7 +54,7 @@ defmodule RetroHexChat.Commands.Handlers.Ctcp do
       name: "ctcp",
       syntax: "/ctcp <target> <ping|version|time|finger>",
       description:
-        "Send a CTCP request to query information about another user's client or measure latency.",
+        "Query another user's client info or measure connection latency via CTCP.\nTypes: ping (round-trip time), version (client info), time (local time), finger (user info).\nBoth target nickname and type are required. Type is case-insensitive.",
       examples: [
         "/ctcp Alice ping",
         "/ctcp Bob version",
@@ -77,7 +77,7 @@ defmodule RetroHexChat.Commands.Handlers.Ctcp do
       command: "ctcp",
       syntax: "/ctcp <target> <ping|version|time|finger>",
       description:
-        "Send a CTCP request to query information about another user's client or measure latency.",
+        "Query another user's client info or measure connection latency via CTCP.\nTypes: ping (round-trip time), version (client info), time (local time), finger (user info).\nBoth target nickname and type are required. Type is case-insensitive.",
       category: :user,
       parameters: [
         %Parameter{
@@ -85,14 +85,14 @@ defmodule RetroHexChat.Commands.Handlers.Ctcp do
           required: true,
           type: :nick,
           position: 0,
-          description: "Destinatário"
+          description: "Target user"
         },
         %Parameter{
           name: "type",
           required: true,
           type: :text,
           position: 1,
-          description: "Tipo: ping, version, time, finger"
+          description: "Type: ping, version, time, finger"
         }
       ],
       examples: [

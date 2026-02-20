@@ -7,12 +7,12 @@ defmodule RetroHexChat.Commands.Handlers.Call do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Uso: /call <nickname>"}
+  def validate(""), do: {:error, "Usage: /call <nickname>"}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Uso: /call <nickname>"}
+  def execute([], _context), do: {:error, "Usage: /call <nickname>"}
 
   def execute([target | _rest], context) do
     P2p.do_execute(target, "audio_call", context)
@@ -29,7 +29,8 @@ defmodule RetroHexChat.Commands.Handlers.Call do
     %{
       name: "call",
       syntax: "/call <nickname>",
-      description: "Iniciar uma chamada de audio P2P com outro usuario.",
+      description:
+        "Start a peer-to-peer audio call with another user.\nRequires: both you and the target must be registered and identified (/ns identify).\nYou cannot call yourself. Creates a P2P session — the peer must accept in their lobby.",
       examples: ["/call mario"]
     }
   end

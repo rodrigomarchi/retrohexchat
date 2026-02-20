@@ -34,7 +34,8 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
     %{
       name: "kick",
       syntax: "/kick <nickname> [reason]",
-      description: "Kick a user from the channel. Requires half-operator or higher.",
+      description:
+        "Remove a user from the channel with an optional reason. They can rejoin unless also banned.\nRequires: channel operator or half-operator. Must be in a channel.",
       examples: ["/kick troll", "/kick troll Spamming the channel"]
     }
   end
@@ -65,7 +66,8 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
     %CommandSyntax{
       command: "kick",
       syntax: "/kick <nickname> [reason]",
-      description: "Kick a user from the channel. Requires half-operator or higher.",
+      description:
+        "Remove a user from the channel with an optional reason. They can rejoin unless also banned.\nRequires: channel operator or half-operator. Must be in a channel.",
       category: :channel,
       parameters: [
         %Parameter{
@@ -73,14 +75,14 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
           required: true,
           type: :nick,
           position: 0,
-          description: "Usuário a ser expulso"
+          description: "User to kick"
         },
         %Parameter{
           name: "reason",
           required: false,
           type: :text,
           position: 1,
-          description: "Motivo da expulsão"
+          description: "Reason for the kick"
         }
       ],
       examples: ["/kick troll", "/kick troll Spamming the channel"]

@@ -28,7 +28,8 @@ defmodule RetroHexChat.Commands.Handlers.Query do
     %{
       name: "query",
       syntax: "/query <nickname>",
-      description: "Open a private message window with a user.",
+      description:
+        "Open a private message tab with a user without sending any message, unlike /msg.\nNickname is required. If the PM tab already exists, switches to it.",
       examples: ["/query Nick"]
     }
   end
@@ -45,7 +46,8 @@ defmodule RetroHexChat.Commands.Handlers.Query do
     %CommandSyntax{
       command: "query",
       syntax: "/query <nickname>",
-      description: "Open a private message window with a user.",
+      description:
+        "Open a private message tab with a user without sending any message, unlike /msg.",
       category: :user,
       parameters: [
         %Parameter{
@@ -53,7 +55,7 @@ defmodule RetroHexChat.Commands.Handlers.Query do
           required: true,
           type: :nick,
           position: 0,
-          description: "Abrir janela de PM com este usuário"
+          description: "Open a PM tab with this user"
         }
       ],
       examples: ["/query Nick"]

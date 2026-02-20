@@ -50,7 +50,7 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
       name: "announce",
       syntax: "/announce <message>",
       description:
-        "Send a global announcement to all connected users. Requires server administrator.",
+        "Send an urgent broadcast message to every connected user. Bypasses all ignore filters.\nRequires: server administrator.",
       examples: ["/announce Server will restart at midnight"]
     }
   end
@@ -68,7 +68,7 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
       command: "announce",
       syntax: "/announce <message>",
       description:
-        "Send a global announcement to all connected users. Requires server administrator.",
+        "Send an urgent broadcast message to every connected user. Bypasses all ignore filters.",
       category: :advanced,
       parameters: [
         %Parameter{
@@ -76,7 +76,7 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
           required: true,
           type: :text,
           position: 0,
-          description: "Mensagem de anúncio global"
+          description: "Global announcement message"
         }
       ],
       examples: ["/announce Server will restart at midnight"]

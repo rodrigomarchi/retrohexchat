@@ -32,7 +32,7 @@ defmodule RetroHexChat.Commands.Handlers.ClearMotd do
       name: "clearmotd",
       syntax: "/clearmotd",
       description:
-        "Clear the server Message of the Day. Requires server administrator privileges.",
+        "Remove the server's Message of the Day so new users won't see any MOTD. Admin only.",
       examples: ["/clearmotd"]
     }
   end
@@ -49,7 +49,7 @@ defmodule RetroHexChat.Commands.Handlers.ClearMotd do
       command: "clearmotd",
       syntax: "/clearmotd",
       description:
-        "Clear the server Message of the Day. Requires server administrator privileges.",
+        "Remove the server's Message of the Day so new users won't see any MOTD. Admin only.",
       category: :advanced,
       parameters: [],
       examples: ["/clearmotd"]

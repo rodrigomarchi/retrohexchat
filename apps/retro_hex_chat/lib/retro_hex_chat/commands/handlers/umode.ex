@@ -37,7 +37,8 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
     %{
       name: "umode",
       syntax: "/umode <+/-mode>",
-      description: "Set or unset a user mode. Available modes: +w (receive wallops messages).",
+      description:
+        "Toggle personal user modes that affect what messages you receive.\nAvailable modes: +w (wallops — receive operator broadcast messages), -w (stop receiving).\nMust start with + or -. Currently only the w (wallops) mode is supported.",
       examples: ["/umode +w", "/umode -w"]
     }
   end
@@ -67,7 +68,7 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
     %CommandSyntax{
       command: "umode",
       syntax: "/umode <+/-mode>",
-      description: "Set or unset a user mode. Available modes: +w (receive wallops messages).",
+      description: "Toggle personal user modes that affect what messages you receive.",
       category: :config,
       parameters: [
         %Parameter{
@@ -75,7 +76,7 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
           required: true,
           type: :text,
           position: 0,
-          description: "Modo de usuário: +w (wallops), -w"
+          description: "User mode: +w (wallops), -w"
         }
       ],
       examples: ["/umode +w", "/umode -w"]

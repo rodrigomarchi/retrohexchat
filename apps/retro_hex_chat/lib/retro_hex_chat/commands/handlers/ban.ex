@@ -34,7 +34,8 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
     %{
       name: "ban",
       syntax: "/ban <nickname> [reason]",
-      description: "Ban a user from the channel. Requires operator privilege.",
+      description:
+        "Permanently block a user from the channel. The ban persists until removed with /mode -b.\nRequires: channel operator. Must be in a channel.",
       examples: ["/ban troll", "/ban troll Repeated violations"]
     }
   end
@@ -62,7 +63,8 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
     %CommandSyntax{
       command: "ban",
       syntax: "/ban <nickname> [reason]",
-      description: "Ban a user from the channel. Requires operator privilege.",
+      description:
+        "Permanently block a user from the channel. The ban persists until removed with /mode -b.",
       category: :channel,
       parameters: [
         %Parameter{
@@ -70,14 +72,14 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
           required: true,
           type: :nick,
           position: 0,
-          description: "Usuário a ser banido"
+          description: "User to ban"
         },
         %Parameter{
           name: "reason",
           required: false,
           type: :text,
           position: 1,
-          description: "Motivo do ban"
+          description: "Reason for the ban"
         }
       ],
       examples: ["/ban troll", "/ban troll Repeated violations"]

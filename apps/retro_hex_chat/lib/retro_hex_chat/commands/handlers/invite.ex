@@ -39,7 +39,8 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
     %{
       name: "invite",
       syntax: "/invite <nickname> [#channel]",
-      description: "Invite a user to an invite-only (+i) channel",
+      description:
+        "Send a channel invitation to another user. Required for invite-only (+i) channels.\nDefaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n/invite auto — toggles whether you automatically join channels when invited.",
       examples: ["/invite Alice", "/invite Alice #private", "/invite auto"]
     }
   end
@@ -60,7 +61,8 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
     %CommandSyntax{
       command: "invite",
       syntax: "/invite <nickname> [#channel]",
-      description: "Invite a user to an invite-only (+i) channel",
+      description:
+        "Send a channel invitation to another user. Required for invite-only (+i) channels.\nDefaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n/invite auto — toggles whether you automatically join channels when invited.",
       category: :channel,
       parameters: [
         %Parameter{
@@ -68,14 +70,14 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
           required: true,
           type: :nick,
           position: 0,
-          description: "Usuário a convidar"
+          description: "User to invite"
         },
         %Parameter{
           name: "#channel",
           required: false,
           type: :channel,
           position: 1,
-          description: "Canal destino (padrão: canal atual)"
+          description: "Target channel (defaults to current channel)"
         }
       ],
       examples: ["/invite Alice", "/invite Alice #private", "/invite auto"]

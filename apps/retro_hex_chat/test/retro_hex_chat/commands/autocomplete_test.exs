@@ -139,7 +139,7 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
 
       join = Enum.find(results, &(&1.name == "join"))
       assert join.type == :command
-      assert join.category == "Canal"
+      assert join.category == "Channel"
       assert is_list(join.matched_chars)
     end
 

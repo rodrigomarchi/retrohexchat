@@ -42,7 +42,8 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
     %{
       name: "setwelcome",
       syntax: "/setwelcome <message>",
-      description: "Set a welcome message for the current channel. Requires operator privileges.",
+      description:
+        "Set a message shown once to each user when they join the current channel.\nRequires: channel operator. Must be in a channel.\nWith no args: clears the welcome message (same as /clearwelcome).",
       examples: ["/setwelcome Welcome to our channel!"]
     }
   end
@@ -63,7 +64,7 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
     %CommandSyntax{
       command: "setwelcome",
       syntax: "/setwelcome <message>",
-      description: "Set a welcome message for the current channel. Requires operator privileges.",
+      description: "Set a message shown once to each user when they join the current channel.",
       category: :advanced,
       parameters: [
         %Parameter{
@@ -71,7 +72,7 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
           required: true,
           type: :text,
           position: 0,
-          description: "Mensagem de boas-vindas do canal"
+          description: "Channel welcome message"
         }
       ],
       examples: ["/setwelcome Welcome to our channel!"]

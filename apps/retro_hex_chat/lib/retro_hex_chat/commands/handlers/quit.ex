@@ -30,7 +30,8 @@ defmodule RetroHexChat.Commands.Handlers.Quit do
     %{
       name: "quit",
       syntax: "/quit [message]",
-      description: "Disconnect from the chat.",
+      description:
+        "Disconnect from the server and return to the connect screen.\nOther users see your optional quit message. All channels are left and your session ends.",
       examples: ["/quit", "/quit Goodbye!"]
     }
   end
@@ -47,7 +48,8 @@ defmodule RetroHexChat.Commands.Handlers.Quit do
     %CommandSyntax{
       command: "quit",
       syntax: "/quit [message]",
-      description: "Disconnect from the chat.",
+      description:
+        "Disconnect from the server and return to the connect screen. Other users see your optional quit message.",
       category: :basics,
       parameters: [
         %Parameter{
@@ -55,7 +57,7 @@ defmodule RetroHexChat.Commands.Handlers.Quit do
           required: false,
           type: :text,
           position: 0,
-          description: "Mensagem de saída"
+          description: "Quit message"
         }
       ],
       examples: ["/quit", "/quit Goodbye!"]

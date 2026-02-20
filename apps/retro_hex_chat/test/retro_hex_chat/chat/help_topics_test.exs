@@ -249,7 +249,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     test "cross-references related topics" do
       topic = HelpTopics.get_topic("cmd-autojoin")
       assert topic.content =~ "cmd-perform"
-      assert topic.content =~ "feature-perform"
+      assert topic.content =~ "cmd-join"
     end
 
     test "has non-empty keywords" do

@@ -48,7 +48,8 @@ defmodule RetroHexChat.Commands.Handlers.Join do
     %{
       name: "join",
       syntax: "/join #channel [password]",
-      description: "Join a channel. Creates it if it doesn't exist.",
+      description:
+        "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\nChannel name must start with #, max 50 characters, no spaces.\nMax 10 channels at once. Password required if channel has +k mode set.",
       examples: ["/join #elixir", "/join #secret mypassword"]
     }
   end
@@ -65,7 +66,8 @@ defmodule RetroHexChat.Commands.Handlers.Join do
     %CommandSyntax{
       command: "join",
       syntax: "/join #channel [password]",
-      description: "Join a channel. Creates it if it doesn't exist.",
+      description:
+        "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\nChannel name must start with #, max 50 characters, no spaces.\nMax 10 channels at once. Password required if channel has +k mode set.",
       category: :channel,
       parameters: [
         %Parameter{
@@ -73,14 +75,14 @@ defmodule RetroHexChat.Commands.Handlers.Join do
           required: true,
           type: :channel,
           position: 0,
-          description: "Nome do canal"
+          description: "Channel name"
         },
         %Parameter{
           name: "password",
           required: false,
           type: :text,
           position: 1,
-          description: "Senha do canal (se protegido)"
+          description: "Channel password (if key-protected)"
         }
       ],
       examples: ["/join #elixir", "/join #secret mypassword"]

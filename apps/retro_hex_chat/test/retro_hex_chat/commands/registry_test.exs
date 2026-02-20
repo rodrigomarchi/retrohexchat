@@ -44,8 +44,8 @@ defmodule RetroHexChat.Commands.RegistryTest do
       assert length(metadata) == 46
 
       join = Enum.find(metadata, &(&1.name == "join"))
-      assert join.description =~ "Join"
-      assert join.category == "Canal"
+      assert join.description =~ "chat channel"
+      assert join.category == "Channel"
       assert join.category_atom == :channel
     end
 
@@ -64,7 +64,7 @@ defmodule RetroHexChat.Commands.RegistryTest do
       categories = Registry.commands_by_category()
       labels = Enum.map(categories, &elem(&1, 0))
 
-      assert labels == ["Básicos", "Canal", "Usuário", "Configuração", "Avançado"]
+      assert labels == ["Basics", "Channel", "User", "Configuration", "Advanced"]
     end
 
     test "each group contains sorted commands with name and description" do
