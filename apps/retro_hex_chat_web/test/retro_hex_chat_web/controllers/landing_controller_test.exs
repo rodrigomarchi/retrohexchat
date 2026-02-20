@@ -24,14 +24,14 @@ defmodule RetroHexChatWeb.LandingControllerTest do
       body = html_response(conn, 200)
 
       assert body =~ ~s(id="hero")
-      assert body =~ ~s(id="problema")
-      assert body =~ ~s(id="solucao")
-      assert body =~ ~s(id="como-funciona")
+      assert body =~ ~s(id="problem")
+      assert body =~ ~s(id="solution")
+      assert body =~ ~s(id="how-it-works")
       assert body =~ ~s(id="features")
-      assert body =~ ~s(id="rede")
-      assert body =~ ~s(id="instalar")
+      assert body =~ ~s(id="privacy")
+      assert body =~ ~s(id="install")
       assert body =~ ~s(id="open-source")
-      assert body =~ ~s(id="apoie")
+      assert body =~ ~s(id="support")
       assert body =~ ~s(id="faq")
     end
 
@@ -54,11 +54,11 @@ defmodule RetroHexChatWeb.LandingControllerTest do
       refute body =~ "LiveSocket"
     end
 
-    test "uses pt-BR lang attribute", %{conn: conn} do
+    test "uses English lang attribute", %{conn: conn} do
       conn = get(conn, "/landing")
       body = html_response(conn, 200)
 
-      assert body =~ ~s(lang="pt-BR")
+      assert body =~ ~s(lang="en")
     end
   end
 end

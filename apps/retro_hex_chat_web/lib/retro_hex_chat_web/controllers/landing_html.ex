@@ -4,5 +4,7 @@ defmodule RetroHexChatWeb.LandingHTML do
   """
   use RetroHexChatWeb, :html
 
+  import RetroHexChatWeb.LandingIcons
+
   embed_templates "landing_html/*"
 end

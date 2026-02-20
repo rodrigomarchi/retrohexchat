@@ -107,9 +107,9 @@ export function initDesktopIcons() {
     icon.addEventListener("click", () => togglePopup("readme-popup", true));
   });
 
-  // Easter egg: Lixeira
-  document.querySelectorAll('[data-easter-egg="lixeira"]').forEach((icon) => {
-    icon.addEventListener("click", () => togglePopup("lixeira-popup", true));
+  // Easter egg: Trash
+  document.querySelectorAll('[data-easter-egg="trash"]').forEach((icon) => {
+    icon.addEventListener("click", () => togglePopup("trash-popup", true));
   });
 
   // Close popup buttons
