@@ -6,15 +6,11 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
   use Phoenix.Component
 
   alias RetroHexChat.Chat.KeyBindings
-  alias RetroHexChat.Chat.UserPreferences
   alias RetroHexChatWeb.Components.NotificationsPanel
 
   @panels [
-    {"connect", "Connect"},
     {"messages", "IRC Messages"},
     {"display", "Display"},
-    {"fonts", "Fonts"},
-    {"colors", "Colors"},
     {"keybindings", "Key Bindings"},
     {"notifications", "Notifications"}
   ]
@@ -57,9 +53,6 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
           </div>
           <div class="options-panel" data-testid="options-panel">
             <.display_panel :if={@active_panel == "display"} draft={@options_draft} />
-            <.fonts_panel :if={@active_panel == "fonts"} draft={@options_draft} />
-            <.colors_panel :if={@active_panel == "colors"} draft={@options_draft} />
-            <.connect_panel :if={@active_panel == "connect"} draft={@options_draft} />
             <.messages_panel :if={@active_panel == "messages"} draft={@options_draft} />
             <.keybindings_panel :if={@active_panel == "keybindings"} draft={@options_draft} />
             <NotificationsPanel.notifications_panel
@@ -257,247 +250,6 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
   end
 
   # ---------------------------------------------------------------------------
-  # Fonts Panel
-  # ---------------------------------------------------------------------------
-
-  defp fonts_panel(assigns) do
-    font_families = UserPreferences.valid_font_families()
-    assigns = assign(assigns, :font_families, font_families)
-
-    ~H"""
-    <div data-testid="options-fonts-panel">
-      <.font_area
-        label="Chat Messages"
-        area="chat_messages"
-        font={@draft.fonts.chat_messages}
-        families={@font_families}
-      />
-      <.font_area
-        label="Input Box"
-        area="input_box"
-        font={@draft.fonts.input_box}
-        families={@font_families}
-      />
-      <.font_area
-        label="Nicklist"
-        area="nicklist"
-        font={@draft.fonts.nicklist}
-        families={@font_families}
-      />
-      <.font_area
-        label="Treebar"
-        area="treebar"
-        font={@draft.fonts.treebar}
-        families={@font_families}
-      />
-      <fieldset>
-        <legend>Preview</legend>
-        <div
-          class="font-preview"
-          style={"font-family: #{@draft.fonts.chat_messages.family}; font-size: #{@draft.fonts.chat_messages.size}px;"}
-          data-testid="font-preview"
-        >
-          [12:34] &lt;Alice&gt; Hello! The quick brown fox jumps over the lazy dog.
-        </div>
-      </fieldset>
-    </div>
-    """
-  end
-
-  defp font_area(assigns) do
-    sizes = Enum.to_list(8..24)
-    assigns = assign(assigns, :sizes, sizes)
-
-    ~H"""
-    <fieldset>
-      <legend>{@label}</legend>
-      <div class="field-row">
-        <label>Family:</label>
-        <select
-          phx-change="options_change_font"
-          data-testid={"options-font-family-#{@area}"}
-          name={"font_family_#{@area}"}
-        >
-          <option
-            :for={family <- @families}
-            value={family}
-            selected={@font.family == family}
-          >
-            {short_family_name(family)}
-          </option>
-        </select>
-      </div>
-      <div class="field-row">
-        <label>Size:</label>
-        <select
-          phx-change="options_change_font"
-          data-testid={"options-font-size-#{@area}"}
-          name={"font_size_#{@area}"}
-        >
-          <option :for={size <- @sizes} value={size} selected={@font.size == size}>
-            {size}px
-          </option>
-        </select>
-      </div>
-    </fieldset>
-    """
-  end
-
-  # ---------------------------------------------------------------------------
-  # Colors Panel
-  # ---------------------------------------------------------------------------
-
-  defp colors_panel(assigns) do
-    color_palette = color_picker_palette()
-    assigns = assign(assigns, :palette, color_palette)
-
-    ~H"""
-    <div data-testid="options-colors-panel">
-      <fieldset>
-        <legend>Message Colors</legend>
-        <.color_slot
-          label="Chat Background"
-          slot="chat_background"
-          color={@draft.colors.chat_background}
-          palette={@palette}
-        />
-        <.color_slot
-          label="Default Text"
-          slot="default_text"
-          color={@draft.colors.default_text}
-          palette={@palette}
-        />
-        <.color_slot
-          label="Own Messages"
-          slot="own_messages"
-          color={@draft.colors.own_messages}
-          palette={@palette}
-        />
-        <.color_slot
-          label="System Messages"
-          slot="system_messages"
-          color={@draft.colors.system_messages}
-          palette={@palette}
-        />
-        <.color_slot
-          label="Timestamps"
-          slot="timestamps"
-          color={@draft.colors.timestamps}
-          palette={@palette}
-        />
-        <.color_slot
-          label="Error Messages"
-          slot="error_messages"
-          color={@draft.colors.error_messages}
-          palette={@palette}
-        />
-      </fieldset>
-      <fieldset>
-        <legend>Nick Colors (IRC Palette)</legend>
-        <div class="nick-palette-grid" data-testid="nick-palette-grid">
-          <div
-            :for={{color, idx} <- Enum.with_index(@draft.colors.nick_palette)}
-            class="nick-palette-swatch"
-            style={"background-color: #{color};"}
-            phx-click="options_select_nick_color"
-            phx-value-index={idx}
-            data-testid={"nick-palette-#{idx}"}
-            title={"Color #{idx}: #{color}"}
-          >
-          </div>
-        </div>
-      </fieldset>
-    </div>
-    """
-  end
-
-  defp color_slot(assigns) do
-    ~H"""
-    <div class="color-slot-row" data-testid={"options-color-#{@slot}"}>
-      <span class="color-swatch" style={"background-color: #{@color};"}></span>
-      <span class="color-slot-label">{@label}</span>
-      <div class="color-picker-grid">
-        <div
-          :for={hex <- @palette}
-          class="color-picker-cell"
-          style={"background-color: #{hex};"}
-          phx-click="options_change_color"
-          phx-value-slot={@slot}
-          phx-value-color={hex}
-          title={hex}
-        >
-        </div>
-      </div>
-    </div>
-    """
-  end
-
-  # ---------------------------------------------------------------------------
-  # Connect Panel
-  # ---------------------------------------------------------------------------
-
-  defp connect_panel(assigns) do
-    ~H"""
-    <div data-testid="options-connect-panel">
-      <fieldset>
-        <legend>Auto-Reconnect</legend>
-        <div class="field-row">
-          <input
-            type="checkbox"
-            id="opt-auto-reconnect"
-            checked={@draft.connect.auto_reconnect_enabled}
-            phx-click="options_change_connect"
-            phx-value-setting="auto_reconnect_enabled"
-            phx-value-value={to_string(!@draft.connect.auto_reconnect_enabled)}
-            data-testid="options-connect-auto-reconnect"
-          />
-          <label for="opt-auto-reconnect">Enable auto-reconnect</label>
-        </div>
-        <div class="field-row">
-          <label for="opt-retry-interval">Retry interval (seconds):</label>
-          <input
-            type="number"
-            id="opt-retry-interval"
-            value={@draft.connect.retry_interval}
-            min="1"
-            max="60"
-            phx-change="options_change_connect_number"
-            name="retry_interval"
-            data-testid="options-connect-retry-interval"
-          />
-        </div>
-        <div class="field-row">
-          <label for="opt-max-retries">Maximum retries:</label>
-          <input
-            type="number"
-            id="opt-max-retries"
-            value={@draft.connect.max_retries}
-            min="1"
-            max="100"
-            phx-change="options_change_connect_number"
-            name="max_retries"
-            data-testid="options-connect-max-retries"
-          />
-        </div>
-        <div class="field-row">
-          <label for="opt-connection-timeout">Connection timeout (seconds):</label>
-          <input
-            type="number"
-            id="opt-connection-timeout"
-            value={@draft.connect.connection_timeout}
-            min="5"
-            max="120"
-            phx-change="options_change_connect_number"
-            name="connection_timeout"
-            data-testid="options-connect-timeout"
-          />
-        </div>
-      </fieldset>
-    </div>
-    """
-  end
-
-  # ---------------------------------------------------------------------------
   # IRC Messages Panel
   # ---------------------------------------------------------------------------
 
@@ -506,22 +258,6 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
     <div data-testid="options-messages-panel">
       <fieldset>
         <legend>Message Routing</legend>
-        <div class="field-row">
-          <label for="opt-whois-routing">Whois results:</label>
-          <select
-            id="opt-whois-routing"
-            phx-change="options_change_routing"
-            name="whois_routing"
-            data-testid="options-messages-whois-routing"
-          >
-            <option value="active" selected={@draft.messages.whois_routing == :active}>
-              Active Window
-            </option>
-            <option value="dialog" selected={@draft.messages.whois_routing == :dialog}>
-              Whois Dialog
-            </option>
-          </select>
-        </div>
         <div class="field-row">
           <label for="opt-notice-routing">Notices:</label>
           <select
@@ -538,22 +274,6 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
             </option>
             <option value="sender" selected={@draft.messages.notice_routing == :sender}>
               Sender Window
-            </option>
-          </select>
-        </div>
-        <div class="field-row">
-          <label for="opt-pm-routing">Private Messages:</label>
-          <select
-            id="opt-pm-routing"
-            phx-change="options_change_routing"
-            name="pm_routing"
-            data-testid="options-messages-pm-routing"
-          >
-            <option value="new_tab" selected={@draft.messages.pm_routing == :new_tab}>
-              Open New Tab
-            </option>
-            <option value="active" selected={@draft.messages.pm_routing == :active}>
-              Active Window
             </option>
           </select>
         </div>
@@ -603,44 +323,6 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
   # ---------------------------------------------------------------------------
   # Helpers
   # ---------------------------------------------------------------------------
-
-  defp short_family_name(family) do
-    family
-    |> String.split(",")
-    |> List.first()
-    |> String.trim()
-    |> String.replace("\"", "")
-  end
-
-  defp color_picker_palette do
-    # 16 standard IRC colors + 8 additional presets = 24 total
-    [
-      "#ffffff",
-      "#000000",
-      "#00007f",
-      "#009300",
-      "#ff0000",
-      "#7f0000",
-      "#9c009c",
-      "#fc7f00",
-      "#ffff00",
-      "#00fc00",
-      "#009393",
-      "#00ffff",
-      "#0000fc",
-      "#ff00ff",
-      "#7f7f7f",
-      "#d2d2d2",
-      "#c0c0c0",
-      "#808000",
-      "#008080",
-      "#000080",
-      "#800080",
-      "#808080",
-      "#400000",
-      "#ffa500"
-    ]
-  end
 
   defp format_binding(bindings, action) do
     case Map.get(bindings, action) do

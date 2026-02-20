@@ -28,12 +28,6 @@ const ReconnectHook = {
       localStorage.setItem("rhc_reconnect_state", JSON.stringify(data));
     });
 
-    this.handleEvent("reconnect_config", (config) => {
-      if (config.enabled !== undefined) this.enabled = config.enabled;
-      if (config.max_attempts !== undefined) this.maxAttempts = config.max_attempts;
-      if (config.max_delay !== undefined) this.maxDelay = config.max_delay;
-    });
-
     this.maybePushRestoreSession();
     this.setupObserver();
   },

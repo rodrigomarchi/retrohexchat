@@ -2,7 +2,7 @@ defmodule RetroHexChat.Chat.Schemas.UserPreference do
   @moduledoc """
   Ecto schema for user_preferences table.
   Persists per-user centralized preferences for registered users.
-  Six JSONB columns store display, font, color, connect, message, and key binding settings.
+  Three JSONB columns store display, message, and key binding settings.
   """
   use Ecto.Schema
   import Ecto.Changeset
@@ -12,9 +12,6 @@ defmodule RetroHexChat.Chat.Schemas.UserPreference do
   @primary_key {:owner_nickname, :string, autogenerate: false}
   schema "user_preferences" do
     field :display_settings, :map, default: %{}
-    field :font_settings, :map, default: %{}
-    field :color_settings, :map, default: %{}
-    field :connect_settings, :map, default: %{}
     field :message_settings, :map, default: %{}
     field :key_bindings, :map, default: %{}
 
@@ -27,9 +24,6 @@ defmodule RetroHexChat.Chat.Schemas.UserPreference do
     |> cast(attrs, [
       :owner_nickname,
       :display_settings,
-      :font_settings,
-      :color_settings,
-      :connect_settings,
       :message_settings,
       :key_bindings
     ])

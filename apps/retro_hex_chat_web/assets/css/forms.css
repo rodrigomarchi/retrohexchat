@@ -116,6 +116,18 @@
   cursor: pointer;
 }
 
+.nick-palette-swatch {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+}
+
+.nick-palette-swatch:hover {
+  border-color: var(--color-white);
+  outline: 1px solid var(--color-black);
+}
+
 /* ── CRUD List (shared max-height for alias/auto-respond/etc. lists) ── */
 .crud-list { max-height: 200px; }
 

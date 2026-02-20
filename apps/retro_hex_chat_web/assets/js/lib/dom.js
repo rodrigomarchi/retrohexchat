@@ -3,7 +3,6 @@
  *
  * Provides semantic helpers for common patterns:
  * - Delegated event targeting (find closest ancestor with data attribute)
- * - CSS custom property application
  */
 
 /**
@@ -27,20 +26,4 @@ export function findClosestWithData(target, selector, dataKey) {
     return el.dataset[dataKey];
   }
   return el.getAttribute(dataKey);
-}
-
-/**
- * Applies a map of CSS custom properties to the document root element.
- *
- * Used by the options hook to reflect server-side preference changes
- * (font family, font size, colors) as CSS variables without page reload.
- *
- * @param {Object<string, string>} styles - Map of CSS property names to values
- *   (e.g., { "--chat-font-family": "Courier New", "--chat-font-size": "14px" })
- */
-export function applyCSSProperties(styles) {
-  const root = document.documentElement;
-  for (const [prop, value] of Object.entries(styles)) {
-    root.style.setProperty(prop, value);
-  }
 }

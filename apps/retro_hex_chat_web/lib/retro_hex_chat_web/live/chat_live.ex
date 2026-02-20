@@ -377,15 +377,8 @@ defmodule RetroHexChatWeb.ChatLive do
 
   defp push_initial_preferences(socket) do
     prefs = socket.assigns.session.user_preferences
-    styles = UserPreferences.to_css_styles(prefs)
 
     socket
-    |> push_event("apply_preferences", %{styles: styles})
-    |> push_event("reconnect_config", %{
-      enabled: prefs.connect.auto_reconnect_enabled,
-      max_attempts: prefs.connect.max_retries,
-      max_delay: prefs.connect.retry_interval
-    })
     |> push_event("update_bindings", %{
       bindings: KeyBindings.to_persistable(prefs.key_bindings)
     })

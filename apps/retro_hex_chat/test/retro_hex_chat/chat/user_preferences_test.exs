@@ -5,15 +5,13 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
 
   describe "new/0" do
     @tag :unit
-    test "returns default preferences with all 6 categories" do
+    test "returns default preferences with all 4 categories" do
       prefs = UserPreferences.new()
 
       assert Map.has_key?(prefs, :display)
-      assert Map.has_key?(prefs, :fonts)
-      assert Map.has_key?(prefs, :colors)
-      assert Map.has_key?(prefs, :connect)
       assert Map.has_key?(prefs, :messages)
       assert Map.has_key?(prefs, :key_bindings)
+      assert Map.has_key?(prefs, :notifications)
     end
 
     @tag :unit
@@ -29,46 +27,11 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
     end
 
     @tag :unit
-    test "font defaults use Fixedsys for chat/input/nicklist, MS Sans Serif for treebar" do
-      %{fonts: fonts} = UserPreferences.new()
-
-      assert fonts.chat_messages.family =~ "Fixedsys"
-      assert fonts.chat_messages.size == 13
-      assert fonts.input_box.family =~ "Fixedsys"
-      assert fonts.input_box.size == 13
-      assert fonts.nicklist.family =~ "Fixedsys"
-      assert fonts.nicklist.size == 12
-      assert fonts.treebar.family =~ "MS Sans Serif"
-      assert fonts.treebar.size == 12
-    end
-
-    @tag :unit
-    test "color defaults include 16-color nick palette" do
-      %{colors: colors} = UserPreferences.new()
-
-      assert colors.chat_background == "#ffffff"
-      assert colors.default_text == "#000000"
-      assert colors.error_messages == "#cc0000"
-      assert length(colors.nick_palette) == 16
-    end
-
-    @tag :unit
-    test "connect defaults" do
-      %{connect: connect} = UserPreferences.new()
-
-      assert connect.auto_reconnect_enabled == true
-      assert connect.retry_interval == 5
-      assert connect.max_retries == 10
-      assert connect.connection_timeout == 30
-    end
-
-    @tag :unit
     test "message defaults" do
       %{messages: messages} = UserPreferences.new()
 
-      assert messages.whois_routing == :active
       assert messages.notice_routing == :active
-      assert messages.pm_routing == :new_tab
+      assert messages.muted_channels == []
     end
 
     @tag :unit
@@ -83,24 +46,6 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
     test "get_display/1 returns display settings" do
       prefs = UserPreferences.new()
       assert UserPreferences.get_display(prefs) == prefs.display
-    end
-
-    @tag :unit
-    test "get_fonts/1 returns font settings" do
-      prefs = UserPreferences.new()
-      assert UserPreferences.get_fonts(prefs) == prefs.fonts
-    end
-
-    @tag :unit
-    test "get_colors/1 returns color settings" do
-      prefs = UserPreferences.new()
-      assert UserPreferences.get_colors(prefs) == prefs.colors
-    end
-
-    @tag :unit
-    test "get_connect/1 returns connect settings" do
-      prefs = UserPreferences.new()
-      assert UserPreferences.get_connect(prefs) == prefs.connect
     end
 
     @tag :unit
@@ -132,100 +77,12 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
     end
   end
 
-  describe "set_font/3" do
-    @tag :unit
-    test "updates chat messages font" do
-      prefs = UserPreferences.new()
-      font = %{family: "Consolas, monospace", size: 16}
-      updated = UserPreferences.set_font(prefs, :chat_messages, font)
-      assert updated.fonts.chat_messages == font
-    end
-
-    @tag :unit
-    test "updates nicklist font" do
-      prefs = UserPreferences.new()
-      font = %{family: "monospace", size: 10}
-      updated = UserPreferences.set_font(prefs, :nicklist, font)
-      assert updated.fonts.nicklist == font
-    end
-  end
-
-  describe "set_color/3" do
-    @tag :unit
-    test "updates a color slot" do
-      prefs = UserPreferences.new()
-      updated = UserPreferences.set_color(prefs, :chat_background, "#1a1a1a")
-      assert updated.colors.chat_background == "#1a1a1a"
-    end
-  end
-
-  describe "set_nick_palette_color/3" do
-    @tag :unit
-    test "updates a specific nick palette color" do
-      prefs = UserPreferences.new()
-      updated = UserPreferences.set_nick_palette_color(prefs, 0, "#ff0000")
-      assert Enum.at(updated.colors.nick_palette, 0) == "#ff0000"
-    end
-
-    @tag :unit
-    test "does not affect other palette entries" do
-      prefs = UserPreferences.new()
-      original_second = Enum.at(prefs.colors.nick_palette, 1)
-      updated = UserPreferences.set_nick_palette_color(prefs, 0, "#ff0000")
-      assert Enum.at(updated.colors.nick_palette, 1) == original_second
-    end
-  end
-
-  describe "set_connect/3" do
-    @tag :unit
-    test "toggles auto_reconnect_enabled" do
-      prefs = UserPreferences.new()
-      updated = UserPreferences.set_connect(prefs, :auto_reconnect_enabled, false)
-      assert updated.connect.auto_reconnect_enabled == false
-    end
-
-    @tag :unit
-    test "updates retry_interval within range" do
-      prefs = UserPreferences.new()
-      updated = UserPreferences.set_connect(prefs, :retry_interval, 15)
-      assert updated.connect.retry_interval == 15
-    end
-
-    @tag :unit
-    test "updates max_retries within range" do
-      prefs = UserPreferences.new()
-      updated = UserPreferences.set_connect(prefs, :max_retries, 50)
-      assert updated.connect.max_retries == 50
-    end
-
-    @tag :unit
-    test "updates connection_timeout within range" do
-      prefs = UserPreferences.new()
-      updated = UserPreferences.set_connect(prefs, :connection_timeout, 60)
-      assert updated.connect.connection_timeout == 60
-    end
-  end
-
   describe "set_routing/3" do
-    @tag :unit
-    test "sets whois_routing" do
-      prefs = UserPreferences.new()
-      updated = UserPreferences.set_routing(prefs, :whois_routing, :dialog)
-      assert updated.messages.whois_routing == :dialog
-    end
-
     @tag :unit
     test "sets notice_routing" do
       prefs = UserPreferences.new()
       updated = UserPreferences.set_routing(prefs, :notice_routing, :status)
       assert updated.messages.notice_routing == :status
-    end
-
-    @tag :unit
-    test "sets pm_routing" do
-      prefs = UserPreferences.new()
-      updated = UserPreferences.set_routing(prefs, :pm_routing, :active)
-      assert updated.messages.pm_routing == :active
     end
   end
 
@@ -249,68 +106,6 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
     end
   end
 
-  describe "to_css_styles/1" do
-    @tag :unit
-    test "returns font CSS custom properties" do
-      prefs = UserPreferences.new()
-      styles = UserPreferences.to_css_styles(prefs)
-
-      assert styles["--chat-font-size"] == "13px"
-      assert styles["--chat-font-family"] =~ "Fixedsys"
-      assert styles["--input-font-size"] == "13px"
-      assert styles["--nicklist-font-size"] == "12px"
-      assert styles["--treebar-font-size"] == "12px"
-    end
-
-    @tag :unit
-    test "returns color CSS custom properties" do
-      prefs = UserPreferences.new()
-      styles = UserPreferences.to_css_styles(prefs)
-
-      assert styles["--chat-bg-color"] == "#ffffff"
-      assert styles["--default-text-color"] == "#000000"
-      assert styles["--error-messages-color"] == "#cc0000"
-    end
-
-    @tag :unit
-    test "returns IRC color palette CSS custom properties" do
-      prefs = UserPreferences.new()
-      styles = UserPreferences.to_css_styles(prefs)
-
-      assert styles["--irc-color-0"] == "#ffffff"
-      assert styles["--irc-color-1"] == "#000000"
-      assert styles["--irc-color-15"] == "#d2d2d2"
-    end
-
-    @tag :unit
-    test "reflects updated fonts" do
-      prefs =
-        UserPreferences.new()
-        |> UserPreferences.set_font(:chat_messages, %{family: "monospace", size: 20})
-
-      styles = UserPreferences.to_css_styles(prefs)
-      assert styles["--chat-font-size"] == "20px"
-      assert styles["--chat-font-family"] == "monospace"
-    end
-
-    @tag :unit
-    test "reflects updated colors" do
-      prefs =
-        UserPreferences.new()
-        |> UserPreferences.set_color(:chat_background, "#1a1a2e")
-
-      styles = UserPreferences.to_css_styles(prefs)
-      assert styles["--chat-bg-color"] == "#1a1a2e"
-    end
-  end
-
-  describe "valid_font_families/0" do
-    @tag :unit
-    test "returns 5 font families" do
-      assert length(UserPreferences.valid_font_families()) == 5
-    end
-  end
-
   describe "persistence" do
     setup do
       register_nick("TestPrefs")
@@ -322,19 +117,12 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
       prefs =
         UserPreferences.new()
         |> UserPreferences.set_display(:line_shading, true)
-        |> UserPreferences.set_font(:chat_messages, %{family: "Consolas, monospace", size: 16})
-        |> UserPreferences.set_color(:chat_background, "#1a1a2e")
-        |> UserPreferences.set_connect(:retry_interval, 15)
         |> UserPreferences.set_routing(:notice_routing, :status)
 
       assert :ok == UserPreferences.save("TestPrefs", prefs)
       assert {:ok, loaded} = UserPreferences.load("TestPrefs")
 
       assert loaded.display.line_shading == true
-      assert loaded.fonts.chat_messages.family == "Consolas, monospace"
-      assert loaded.fonts.chat_messages.size == 16
-      assert loaded.colors.chat_background == "#1a1a2e"
-      assert loaded.connect.retry_interval == 15
       assert loaded.messages.notice_routing == :status
     end
 
@@ -372,17 +160,6 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
     end
 
     @tag :integration
-    test "save/2 and load/1 round-trip preserves nick palette" do
-      prefs = UserPreferences.new()
-      updated = UserPreferences.set_nick_palette_color(prefs, 0, "#abcdef")
-
-      assert :ok == UserPreferences.save("TestPrefs", updated)
-      assert {:ok, loaded} = UserPreferences.load("TestPrefs")
-
-      assert Enum.at(loaded.colors.nick_palette, 0) == "#abcdef"
-    end
-
-    @tag :integration
     test "save/2 and load/1 round-trip preserves command_help_level" do
       prefs =
         UserPreferences.new()
@@ -405,8 +182,6 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
       defaults = UserPreferences.new()
 
       assert loaded.display == defaults.display
-      assert loaded.fonts == defaults.fonts
-      assert loaded.connect == defaults.connect
     end
   end
 

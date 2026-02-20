@@ -103,19 +103,4 @@ describe("ReconnectHook", () => {
       expect(spy).toHaveBeenCalled();
     });
   });
-
-  // ── reconnect_config event ─────────────────────────────
-
-  describe("reconnect_config", () => {
-    it("updates config from server event", () => {
-      simulateEvent(hook, "reconnect_config", {
-        enabled: false,
-        max_attempts: 5,
-        max_delay: 15,
-      });
-      expect(hook.enabled).toBe(false);
-      expect(hook.maxAttempts).toBe(5);
-      expect(hook.maxDelay).toBe(15);
-    });
-  });
 });

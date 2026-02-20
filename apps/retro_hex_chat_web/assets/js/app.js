@@ -18,7 +18,6 @@ import KeyboardHook from "./hooks/keyboard_hook";
 import LagHook from "./hooks/lag_hook";
 import NicklistHook from "./hooks/nicklist_hook";
 import NotifyListHook from "./hooks/notify_list_hook";
-import OptionsHook from "./hooks/options_hook";
 import PasteHook from "./hooks/paste_hook";
 import ReconnectHook from "./hooks/reconnect_hook";
 import ScrollHook from "./hooks/scroll_hook";
@@ -68,7 +67,6 @@ const Hooks = {
   P2PSessionHook: P2PSessionHook,
   NotificationDispatcherHook: NotificationDispatcherHook,
   NotifyListHook: NotifyListHook,
-  OptionsHook: OptionsHook,
   PasteHook: PasteHook,
   ReconnectHook: ReconnectHook,
   ScrollHook: ScrollHook,

@@ -1,4 +1,4 @@
-import { findClosestWithData, applyCSSProperties } from "../../js/lib/dom.js";
+import { findClosestWithData } from "../../js/lib/dom.js";
 
 describe("findClosestWithData", () => {
   it("returns data attribute from matching ancestor", () => {
@@ -40,32 +40,5 @@ describe("findClosestWithData", () => {
     const li = document.createElement("li");
     li.dataset.channel = "#general";
     expect(findClosestWithData(li, "[data-channel]", "channel")).toBe("#general");
-  });
-});
-
-describe("applyCSSProperties", () => {
-  afterEach(() => {
-    document.documentElement.removeAttribute("style");
-  });
-
-  it("sets CSS custom properties on document root", () => {
-    applyCSSProperties({
-      "--chat-font-family": "Courier New",
-      "--chat-font-size": "14px",
-    });
-    const style = document.documentElement.style;
-    expect(style.getPropertyValue("--chat-font-family")).toBe("Courier New");
-    expect(style.getPropertyValue("--chat-font-size")).toBe("14px");
-  });
-
-  it("handles empty styles object", () => {
-    applyCSSProperties({});
-    // No error thrown
-  });
-
-  it("overwrites existing properties", () => {
-    applyCSSProperties({ "--color": "red" });
-    applyCSSProperties({ "--color": "blue" });
-    expect(document.documentElement.style.getPropertyValue("--color")).toBe("blue");
   });
 });

@@ -5,12 +5,12 @@
   flex: 1;
   overflow-y: auto;
   padding: 4px 8px;
-  font-size: var(--chat-font-size, 14px);
+  font-size: 14px;
   line-height: 1.5;
   letter-spacing: 0.3px;
-  font-family: var(--chat-font-family, var(--font-mono));
-  background-color: var(--chat-bg-color, white);
-  color: var(--default-text-color, black);
+  font-family: var(--font-mono);
+  background-color: white;
+  color: black;
   box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
 }
 
@@ -34,23 +34,23 @@
 }
 
 .chat-timestamp {
-  color: var(--timestamps-color, #808080);
+  color: #808080;
   margin-right: 4px;
-  font-family: var(--chat-font-family, var(--font-mono));
+  font-family: var(--font-mono);
 }
 
 .chat-nick {
   font-weight: bold;
   margin-right: 4px;
-  font-family: var(--chat-font-family, var(--font-mono));
+  font-family: var(--font-mono);
 }
 
 .chat-content {
-  font-family: var(--chat-font-family, var(--font-mono));
+  font-family: var(--font-mono);
 }
 
 .chat-system {
-  color: var(--system-messages-color, #808080);
+  color: #808080;
   font-style: italic;
 }
 
@@ -59,7 +59,7 @@
 }
 
 .chat-error {
-  color: var(--error-messages-color, #cc0000);
+  color: #cc0000;
   font-weight: bold;
 }
 
@@ -106,8 +106,8 @@
 
 .chat-input-area textarea {
   flex: 1;
-  font-family: var(--input-font-family, var(--font-mono));
-  font-size: var(--input-font-size, 13px);
+  font-family: var(--font-mono);
+  font-size: 13px;
   padding: 4px 6px;
   resize: none;
   overflow-y: hidden;
@@ -231,7 +231,7 @@
   flex: 1;
   font-size: var(--text-base);
   padding: 1px 4px;
-  font-family: var(--input-font-family, var(--font-mono));
+  font-family: var(--font-mono);
 }
 .history-no-match {
   color: var(--color-error);

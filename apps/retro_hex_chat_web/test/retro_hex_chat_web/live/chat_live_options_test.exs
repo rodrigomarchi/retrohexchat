@@ -118,30 +118,6 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
     end
 
     @tag :liveview
-    test "clicking Connect tree item shows connect panel", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-connect"])) |> render_click()
-      html = render(view)
-      assert html =~ ~s(data-testid="options-connect-panel")
-    end
-
-    @tag :liveview
-    test "clicking Fonts tree item shows fonts panel", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-fonts"])) |> render_click()
-      html = render(view)
-      assert html =~ ~s(data-testid="options-fonts-panel")
-    end
-
-    @tag :liveview
-    test "clicking Colors tree item shows colors panel", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-colors"])) |> render_click()
-      html = render(view)
-      assert html =~ ~s(data-testid="options-colors-panel")
-    end
-
-    @tag :liveview
     test "clicking Messages tree item shows messages panel", %{conn: conn} do
       view = connect_user(conn) |> open_options()
       view |> element(~s([data-testid="options-tree-messages"])) |> render_click()
@@ -309,81 +285,6 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
   end
 
   # ---------------------------------------------------------------------------
-  # Connect Panel
-  # ---------------------------------------------------------------------------
-
-  describe "connect panel" do
-    @tag :liveview
-    test "shows connect settings", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-connect"])) |> render_click()
-      html = render(view)
-      assert html =~ "Auto-Reconnect"
-      assert html =~ ~s(data-testid="options-connect-auto-reconnect")
-    end
-
-    @tag :liveview
-    test "toggle auto-reconnect updates draft", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-connect"])) |> render_click()
-
-      view
-      |> element(~s([data-testid="options-connect-auto-reconnect"]))
-      |> render_click()
-
-      html = render(view)
-      assert html =~ ~s(data-testid="options-connect-panel")
-    end
-
-    @tag :liveview
-    test "changing retry interval updates draft", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-connect"])) |> render_click()
-
-      view
-      |> element(~s([data-testid="options-connect-retry-interval"]))
-      |> render_change(%{"retry_interval" => "15"})
-
-      html = render(view)
-      assert html =~ ~s(data-testid="options-connect-panel")
-    end
-
-    @tag :liveview
-    test "apply pushes reconnect_config event", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-connect"])) |> render_click()
-
-      view
-      |> element(~s([data-testid="options-connect-retry-interval"]))
-      |> render_change(%{"retry_interval" => "20"})
-
-      # Apply should push reconnect_config (no crash)
-      view |> element(~s([data-testid="options-apply"])) |> render_click()
-      html = render(view)
-      assert html =~ ~s(data-testid="options-dialog")
-    end
-
-    @tag :liveview
-    test "cancel discards connect changes", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-connect"])) |> render_click()
-
-      view
-      |> element(~s([data-testid="options-connect-retry-interval"]))
-      |> render_change(%{"retry_interval" => "30"})
-
-      view |> element(~s([data-testid="options-cancel"])) |> render_click()
-
-      # Re-open and check default value is restored
-      view |> open_options()
-      view |> element(~s([data-testid="options-tree-connect"])) |> render_click()
-      html = render(view)
-      # Default retry interval is 5
-      assert html =~ ~s(value="5")
-    end
-  end
-
-  # ---------------------------------------------------------------------------
   # Messages Panel
   # ---------------------------------------------------------------------------
 
@@ -394,9 +295,7 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
       view |> element(~s([data-testid="options-tree-messages"])) |> render_click()
       html = render(view)
       assert html =~ "Message Routing"
-      assert html =~ "Whois results"
       assert html =~ "Notices"
-      assert html =~ "Private Messages"
     end
 
     @tag :liveview
@@ -407,32 +306,6 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
       view
       |> element(~s([data-testid="options-messages-notice-routing"]))
       |> render_change(%{"notice_routing" => "status"})
-
-      html = render(view)
-      assert html =~ ~s(data-testid="options-messages-panel")
-    end
-
-    @tag :liveview
-    test "changing whois routing updates draft", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-messages"])) |> render_click()
-
-      view
-      |> element(~s([data-testid="options-messages-whois-routing"]))
-      |> render_change(%{"whois_routing" => "dialog"})
-
-      html = render(view)
-      assert html =~ ~s(data-testid="options-messages-panel")
-    end
-
-    @tag :liveview
-    test "changing PM routing updates draft", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-messages"])) |> render_click()
-
-      view
-      |> element(~s([data-testid="options-messages-pm-routing"]))
-      |> render_change(%{"pm_routing" => "active"})
 
       html = render(view)
       assert html =~ ~s(data-testid="options-messages-panel")
@@ -455,144 +328,6 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
       html = render(view)
       # Default notice routing is "active"
       assert html =~ "Active Window"
-    end
-  end
-
-  # ---------------------------------------------------------------------------
-  # Fonts Panel
-  # ---------------------------------------------------------------------------
-
-  describe "fonts panel" do
-    @tag :liveview
-    test "shows font settings for all areas", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-fonts"])) |> render_click()
-      html = render(view)
-      assert html =~ "Chat Messages"
-      assert html =~ "Input Box"
-      assert html =~ "Nicklist"
-      assert html =~ "Treebar"
-      assert html =~ ~s(data-testid="font-preview")
-    end
-
-    @tag :liveview
-    test "shows live preview area", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-fonts"])) |> render_click()
-      html = render(view)
-      assert html =~ "The quick brown fox"
-    end
-
-    @tag :liveview
-    test "changing font size updates draft preview", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-fonts"])) |> render_click()
-
-      view
-      |> element(~s([data-testid="options-font-size-chat_messages"]))
-      |> render_change(%{"font_size_chat_messages" => "16"})
-
-      html = render(view)
-      # Preview should show the new size
-      assert html =~ "font-size: 16px"
-    end
-
-    @tag :liveview
-    test "changing font family updates draft preview", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-fonts"])) |> render_click()
-
-      view
-      |> element(~s([data-testid="options-font-family-chat_messages"]))
-      |> render_change(%{"font_family_chat_messages" => "\"Courier New\", monospace"})
-
-      html = render(view)
-      assert html =~ "Courier New"
-    end
-
-    @tag :liveview
-    test "apply pushes apply_preferences event", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-fonts"])) |> render_click()
-
-      view
-      |> element(~s([data-testid="options-font-size-chat_messages"]))
-      |> render_change(%{"font_size_chat_messages" => "18"})
-
-      # Apply should push styles (no crash)
-      view |> element(~s([data-testid="options-apply"])) |> render_click()
-      html = render(view)
-      assert html =~ ~s(data-testid="options-dialog")
-    end
-  end
-
-  # ---------------------------------------------------------------------------
-  # Colors Panel
-  # ---------------------------------------------------------------------------
-
-  describe "colors panel" do
-    @tag :liveview
-    test "shows color settings with swatches", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-colors"])) |> render_click()
-      html = render(view)
-      assert html =~ "Message Colors"
-      assert html =~ "Nick Colors"
-      assert html =~ ~s(data-testid="options-color-chat_background")
-    end
-
-    @tag :liveview
-    test "shows nick palette grid", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-colors"])) |> render_click()
-      html = render(view)
-      assert html =~ ~s(data-testid="nick-palette-grid")
-      assert html =~ ~s(data-testid="nick-palette-0")
-    end
-
-    @tag :liveview
-    test "changing a color slot updates draft swatch", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-colors"])) |> render_click()
-
-      # Change chat_background color
-      view
-      |> render_click("options_change_color", %{"slot" => "chat_background", "color" => "#000000"})
-
-      html = render(view)
-      assert html =~ "background-color: #000000"
-    end
-
-    @tag :liveview
-    test "cancel discards color changes", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-colors"])) |> render_click()
-
-      view
-      |> render_click("options_change_color", %{"slot" => "chat_background", "color" => "#ff0000"})
-
-      view |> element(~s([data-testid="options-cancel"])) |> render_click()
-
-      # Re-open options and check default is restored
-      view |> open_options()
-      view |> element(~s([data-testid="options-tree-colors"])) |> render_click()
-      html = render(view)
-      # Default chat background is #ffffff
-      assert html =~ "background-color: #ffffff"
-    end
-
-    @tag :liveview
-    test "selecting a nick palette swatch stores editing index", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-colors"])) |> render_click()
-
-      view
-      |> element(~s([data-testid="nick-palette-0"]))
-      |> render_click()
-
-      # Should not crash — the editing index is stored in assigns
-      html = render(view)
-      assert html =~ ~s(data-testid="options-colors-panel")
     end
   end
 

@@ -1,4 +1,4 @@
-/* RetroHexChat — Options dialog: overlay, split nav/panel, colors, fonts, key bindings */
+/* RetroHexChat — Options dialog: overlay, split nav/panel, key bindings */
 
 .options-dialog-overlay {
   position: fixed;
@@ -101,77 +101,6 @@
 
 .options-button-bar button {
   min-width: 75px;
-}
-
-/* ── Options: Colors ── */
-
-.color-slot-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
-  padding: 2px 0;
-}
-
-.color-swatch {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 1px solid var(--color-border);
-  flex-shrink: 0;
-}
-
-.color-slot-label {
-  font-size: var(--text-base);
-  min-width: 100px;
-}
-
-.color-picker-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1px;
-}
-
-.color-picker-cell {
-  width: 14px;
-  height: 14px;
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-}
-
-.color-picker-cell:hover {
-  border-color: var(--color-white);
-  outline: 1px solid var(--color-black);
-}
-
-.nick-palette-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding: 4px 0;
-}
-
-.nick-palette-swatch {
-  width: 20px;
-  height: 20px;
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-}
-
-.nick-palette-swatch:hover {
-  border-color: var(--color-white);
-  outline: 1px solid var(--color-black);
-}
-
-/* ── Options: Fonts ── */
-
-.font-preview {
-  padding: 8px;
-  background: var(--color-white);
-  color: var(--color-black);
-  border: 1px solid var(--color-border);
-  min-height: 40px;
-  box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
 }
 
 /* ── Options: Key Bindings ── */
