@@ -280,11 +280,7 @@
       >
         <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
           <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
-          <%= if msg.type == :welcome do %>
-            <span class="chat-status chat-status--welcome">{raw(msg.content)}</span>
-          <% else %>
-            <span class={"chat-status chat-status--#{msg.type}"}>{msg.content}</span>
-          <% end %>
+          <span class={"chat-status chat-status--#{msg.type}"}>{msg.content}</span>
         </div>
       </div>
 

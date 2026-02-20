@@ -376,22 +376,23 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   defp show_welcome_message(socket) do
-    content = """
-    Welcome to RetroHexChat!
-    A real-time chat platform with a Windows 98 look and feel.
+    lines = [
+      "Welcome to RetroHexChat!",
+      "A real-time chat platform with a Windows 98 look and feel.",
+      "",
+      "Useful commands:",
+      "  /join #channel   — Join a channel",
+      "  /msg nick text   — Send a private message",
+      "  /nick new_nick   — Change your nickname",
+      "  /help            — View full help",
+      "  /help commands   — List all commands",
+      "",
+      "Tip: Go to Help > Help Topics for the full documentation, or open /chat/help in a new tab."
+    ]
 
-    Useful commands:
-      /join #channel   — Join a channel
-      /msg nick text   — Send a private message
-      /nick new_nick   — Change your nickname
-      /help            — View full help
-      /help commands   — List all commands
-
-    Tip: Press F1 or go to Help > Help Topics for the full documentation.
-    Or open it in a new tab: <a href="/chat/help" target="_blank">/chat/help</a>\
-    """
-
-    Helpers.push_status_message(socket, content, :welcome)
+    Enum.reduce(lines, socket, fn line, acc ->
+      Helpers.push_status_message(acc, line, :system)
+    end)
   end
 
   defp push_initial_preferences(socket) do

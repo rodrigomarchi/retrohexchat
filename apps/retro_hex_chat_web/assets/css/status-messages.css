@@ -23,20 +23,6 @@
   margin-bottom: 4px;
 }
 
-/* Welcome — bordered multi-line welcome message */
-.chat-status--welcome {
-  border: 2px solid var(--text-color, #000);
-  padding: 8px;
-  margin: 4px 0;
-  background: var(--surface, #fff);
-  white-space: pre-wrap;
-  display: block;
-}
-.chat-status--welcome a {
-  color: var(--link-color, #00f);
-  text-decoration: underline;
-}
-
 /* Wallops — italic status message */
 .chat-status--wallops {
   color: var(--highlight-color, #9b59b6);
