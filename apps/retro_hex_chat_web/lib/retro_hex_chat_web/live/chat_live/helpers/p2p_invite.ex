@@ -3,12 +3,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.P2pInvite do
   Shared P2P invite logic used by both command dispatch and context menu events.
 
   Sends a PM invitation to the target and shows a confirmation system message
-  to the initiator.
+  to the initiator, then switches the sender to the PM conversation.
   """
 
   import Phoenix.LiveView, only: [push_event: 3]
 
-  alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.Helpers.{Messages, PM}
 
   alias RetroHexChat.Chat.Service
 
@@ -21,14 +21,24 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.P2pInvite do
 
     # Send PM invitation (persisted, appears in PM chat)
     case Service.send_private_message(session.nickname, target, pm_content, "p2p_invite") do
-      {:ok, _pm} -> :ok
-      {:error, _} -> :ok
+      {:ok, _pm} ->
+        Phoenix.PubSub.broadcast(
+          RetroHexChat.PubSub,
+          "user:#{target}",
+          {:incoming_pm_notify, %{sender: session.nickname}}
+        )
+
+      {:error, _} ->
+        :ok
     end
 
     # Toast notification is sent by P2P.Service.notify_peer via "user:#{peer_nick}" PubSub
     # The PubSub handler in ChatLive handles the "p2p_invite" event
 
-    # Show confirmation system message to initiator
+    # Switch sender to PM conversation with the target
+    socket = PM.open_pm_conversation(socket, target)
+
+    # Show confirmation system message to initiator (in the PM window)
     confirm_msg = "Convite P2P enviado para #{target}. Aguardando resposta..."
 
     socket

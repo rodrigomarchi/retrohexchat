@@ -12,10 +12,14 @@ import { createNotificationToastManager } from "../lib/notification_toast.js";
 import { createFaviconBadge } from "../lib/favicon_badge.js";
 import * as browserNotif from "../lib/browser_notification.js";
 import { loadPrefs, savePrefs } from "../lib/notification_prefs.js";
+import { SOUND_CATALOG, synthesizeSound } from "../lib/sound.js";
+import { createTitleFlasher } from "../lib/title_flash.js";
 
 const NotificationDispatcherHook = {
   mounted() {
     this.prefs = loadPrefs();
+    this.audioCtx = null;
+    this.titleFlasher = createTitleFlasher();
 
     const toastContainer = document.getElementById("notification-toasts");
 
@@ -37,18 +41,21 @@ const NotificationDispatcherHook = {
 
     this.faviconBadge = createFaviconBadge();
 
+    const muted = localStorage.getItem("retro_hex_chat_mute") === "true";
+
     this.dispatcher = createDispatcher({
       toast: this.toastManager,
       sound: {
         play: (type) => {
-          this.pushEvent("play_notification_sound", { type });
+          if (muted) return;
+          if (!SOUND_CATALOG[type]) return;
+          if (!this.audioCtx) {
+            this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          synthesizeSound(this.audioCtx, type);
         },
       },
-      titleFlash: {
-        start: (message) => {
-          this.pushEvent("start_title_flash", { message });
-        },
-      },
+      titleFlash: this.titleFlasher,
       browserNotif,
       faviconBadge: this.faviconBadge,
     });
@@ -81,6 +88,9 @@ const NotificationDispatcherHook = {
     }
     if (this.faviconBadge) {
       this.faviconBadge.clear();
+    }
+    if (this.titleFlasher) {
+      this.titleFlasher.stop();
     }
   },
 };
