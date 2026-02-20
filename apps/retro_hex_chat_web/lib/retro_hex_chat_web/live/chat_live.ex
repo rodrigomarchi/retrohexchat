@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.ChatLive do
         end
 
       {:error, _} ->
-        {:ok, push_navigate(socket, to: ~p"/")}
+        {:ok, push_navigate(socket, to: ~p"/connect")}
     end
   end
 

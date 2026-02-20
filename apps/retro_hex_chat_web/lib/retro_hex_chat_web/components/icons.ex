@@ -1,6 +1,6 @@
-defmodule RetroHexChatWeb.LandingIcons do
+defmodule RetroHexChatWeb.Icons do
   @moduledoc """
-  Pixel-art SVG icons in the Windows 98 style for the landing page.
+  Pixel-art SVG icons in the Windows 98 style for RetroHexChat.
   Each function renders an inline SVG with `aria-hidden="true"`.
 
   Color palette (matches toolbar.ex):

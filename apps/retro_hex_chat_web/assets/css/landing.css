@@ -723,7 +723,9 @@
   }
 }
 
-/* ── 22. Landing icons (.licon) ────────────────────────────── */
+/* ── 22. Landing icon layout ──────────────────────────────── */
+/* Base .licon classes duplicated here because landing.css is standalone
+   (does not import utilities.css / app.css). */
 
 .licon {
   display: inline-block;
@@ -731,25 +733,10 @@
   flex-shrink: 0;
 }
 
-.licon-12 {
-  width: 12px;
-  height: 12px;
-}
-
-.licon-14 {
-  width: 14px;
-  height: 14px;
-}
-
-.licon-16 {
-  width: 16px;
-  height: 16px;
-}
-
-.licon-32 {
-  width: 32px;
-  height: 32px;
-}
+.licon-12 { width: 12px; height: 12px; }
+.licon-14 { width: 14px; height: 14px; }
+.licon-16 { width: 16px; height: 16px; }
+.licon-32 { width: 32px; height: 32px; }
 
 /* Problem list: icon + text side by side */
 .landing-problem-list li {

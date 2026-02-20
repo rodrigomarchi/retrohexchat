@@ -9,26 +9,26 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
 
   describe "mount" do
     test "renders connection dialog with nickname input", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/")
+      {:ok, _view, html} = live(conn, "/connect")
       assert html =~ "Connect to RetroHexChat"
       assert html =~ ~s(name="nickname")
     end
 
     test "renders title and branding", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/")
+      {:ok, _view, html} = live(conn, "/connect")
       assert html =~ "RetroHexChat"
       assert html =~ "Connect"
     end
 
     test "starts on nickname step", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/")
+      {:ok, _view, html} = live(conn, "/connect")
       assert html =~ "User Information"
       refute html =~ "Authentication"
       refute html =~ "Registration"
     end
 
     test "renders hidden session form", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/")
+      {:ok, _view, html} = live(conn, "/connect")
       assert html =~ ~s(id="connect-session-form")
       assert html =~ ~s(action="/chat/session")
       assert html =~ ~s(method="post")
@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
 
     test "renders nick-help text with rules", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/")
+      {:ok, _view, html} = live(conn, "/connect")
       assert html =~ "nick-help"
       assert html =~ "Case sensitive"
     end
@@ -44,19 +44,19 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
 
   describe "validate" do
     test "shows error for empty nickname", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => ""})
       assert html =~ "disabled" or html =~ "error"
     end
 
     test "shows error for invalid nickname", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => " bad"})
       assert html =~ "error-text"
     end
 
     test "clears error for valid nickname", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => "ValidNick"})
       refute html =~ "error-text"
     end
@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
 
   describe "nickname boundary" do
     test "connect with single-char nickname transitions to register step", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "A"})
       html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "A"})
       assert html =~ "Registration"
@@ -73,7 +73,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
 
     test "connect with 16-char nickname transitions to register step", %{conn: conn} do
       nick = String.duplicate("A", 16)
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => nick})
       html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => nick})
       assert html =~ "Registration"
@@ -83,7 +83,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
 
   describe "connect with unregistered nick" do
     test "transitions to register step", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "TestUser"})
       html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "TestUser"})
       assert html =~ "Registration"
@@ -94,7 +94,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
 
     test "back button returns to nickname step", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "TestUser"})
       view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "TestUser"})
 
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
 
     test "short password shows error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "TestUser"})
       view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "TestUser"})
 
@@ -117,7 +117,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
 
     test "mismatched passwords show error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "TestUser"})
       view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "TestUser"})
 
@@ -130,7 +130,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
 
     test "successful registration triggers submit_connect with auth_token", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "NewUser"})
       view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "NewUser"})
 
@@ -151,7 +151,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
 
     test "transitions to password step", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "RegNick"})
       html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "RegNick"})
       assert html =~ "Authentication"
@@ -160,7 +160,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
 
     test "back button returns to nickname step", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "RegNick"})
       view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "RegNick"})
 
@@ -170,7 +170,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
 
     test "wrong password shows error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "RegNick"})
       view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "RegNick"})
 
@@ -183,7 +183,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
 
     test "correct password triggers submit_connect with auth_token", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "RegNick"})
       view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "RegNick"})
 

@@ -838,7 +838,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   defp verify_nickname(socket, nil) do
-    {:redirect, push_navigate(socket, to: ~p"/")}
+    {:redirect, push_navigate(socket, to: ~p"/connect")}
   end
 
   defp verify_nickname(socket, _nickname), do: {:ok, socket}

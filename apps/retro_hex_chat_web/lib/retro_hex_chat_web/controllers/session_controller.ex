@@ -20,12 +20,12 @@ defmodule RetroHexChatWeb.SessionController do
       |> redirect(to: ~p"/chat")
     else
       _ ->
-        redirect(conn, to: ~p"/")
+        redirect(conn, to: ~p"/connect")
     end
   end
 
   def create(conn, _params) do
-    redirect(conn, to: ~p"/")
+    redirect(conn, to: ~p"/connect")
   end
 
   @spec verify_optional_token(String.t() | nil, String.t()) :: :ok | :error

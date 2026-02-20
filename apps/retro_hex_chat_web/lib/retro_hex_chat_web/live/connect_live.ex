@@ -8,6 +8,8 @@ defmodule RetroHexChatWeb.ConnectLive do
   """
   use RetroHexChatWeb, :live_view
 
+  import RetroHexChatWeb.Icons
+
   alias Phoenix.LiveView.JS
 
   alias RetroHexChat.Accounts.NicknameValidator
@@ -143,11 +145,18 @@ defmodule RetroHexChatWeb.ConnectLive do
           </div>
         </div>
         <div class="window-body">
+          <div class="connect-dialog__logo">
+            <img
+              src="/images/header-logo.svg"
+              alt="RetroHexChat"
+              class="connect-dialog__wordmark"
+            />
+          </div>
           <%= case @step do %>
             <% :nickname -> %>
               <form phx-submit="connect" phx-change="validate">
                 <fieldset>
-                  <legend>User Information</legend>
+                  <legend><.icon_chat class="licon licon-14" /> User Information</legend>
                   <label for="nickname">Nickname:</label>
                   <input
                     type="text"
@@ -171,14 +180,14 @@ defmodule RetroHexChatWeb.ConnectLive do
                     data-testid="connect-btn"
                     disabled={@nickname_error != nil or @nickname == ""}
                   >
-                    Connect
+                    <.icon_connect class="licon licon-14" /> Connect
                   </button>
                 </div>
               </form>
             <% :password -> %>
               <form phx-submit="authenticate" phx-change="validate_password">
                 <fieldset>
-                  <legend>Authentication</legend>
+                  <legend><.icon_lock class="licon licon-14" /> Authentication</legend>
                   <p class="auth-info">
                     The nickname <strong>{@nickname}</strong>
                     is registered. Please enter your password.
@@ -200,14 +209,14 @@ defmodule RetroHexChatWeb.ConnectLive do
                     &lt; Back
                   </button>
                   <button type="submit" data-testid="auth-btn" disabled={@password == ""}>
-                    Connect
+                    <.icon_connect class="licon licon-14" /> Connect
                   </button>
                 </div>
               </form>
             <% :register -> %>
               <form phx-submit="register" phx-change="validate_register">
                 <fieldset>
-                  <legend>Registration</legend>
+                  <legend><.icon_notepad class="licon licon-14" /> Registration</legend>
                   <p class="auth-info">
                     The nickname <strong>{@nickname}</strong>
                     is available. Choose a password to register it.
@@ -240,7 +249,7 @@ defmodule RetroHexChatWeb.ConnectLive do
                     data-testid="register-btn"
                     disabled={@password == "" or @password_confirm == ""}
                   >
-                    Register &amp; Connect
+                    <.icon_connect class="licon licon-14" /> Register &amp; Connect
                   </button>
                 </div>
               </form>

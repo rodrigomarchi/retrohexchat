@@ -8,6 +8,15 @@
   min-width: 350px;
 }
 
+.connect-dialog__logo {
+  margin-bottom: 16px;
+}
+
+.connect-dialog__wordmark {
+  height: 36px;
+  width: auto;
+}
+
 .connect-dialog .window-body {
   padding: 16px;
 }
@@ -50,4 +59,9 @@
   font-size: var(--text-sm);
   margin-top: 0;
   margin-bottom: 4px;
+}
+
+.connect-dialog legend .licon,
+.connect-dialog button .licon {
+  margin-right: 4px;
 }

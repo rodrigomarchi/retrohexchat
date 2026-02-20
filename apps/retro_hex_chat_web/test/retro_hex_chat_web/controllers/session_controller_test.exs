@@ -15,18 +15,18 @@ defmodule RetroHexChatWeb.SessionControllerTest do
 
     test "invalid nickname redirects to /", %{conn: conn} do
       conn = post(conn, ~p"/chat/session", %{"nickname" => " bad"})
-      assert redirected_to(conn) == "/"
+      assert redirected_to(conn) == "/connect"
       refute get_session(conn, :chat_nickname)
     end
 
     test "empty nickname redirects to /", %{conn: conn} do
       conn = post(conn, ~p"/chat/session", %{"nickname" => ""})
-      assert redirected_to(conn) == "/"
+      assert redirected_to(conn) == "/connect"
     end
 
     test "missing nickname param redirects to /", %{conn: conn} do
       conn = post(conn, ~p"/chat/session", %{})
-      assert redirected_to(conn) == "/"
+      assert redirected_to(conn) == "/connect"
     end
 
     test "valid auth_token sets pre_identified to true", %{conn: conn} do
@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.SessionControllerTest do
           "auth_token" => "bad_token"
         })
 
-      assert redirected_to(conn) == "/"
+      assert redirected_to(conn) == "/connect"
     end
 
     test "expired auth_token redirects to /", %{conn: conn} do
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.SessionControllerTest do
           "auth_token" => token
         })
 
-      assert redirected_to(conn) == "/"
+      assert redirected_to(conn) == "/connect"
     end
 
     test "without auth_token but valid nick stores session without pre_identified", %{conn: conn} do
@@ -74,7 +74,7 @@ defmodule RetroHexChatWeb.SessionControllerTest do
 
     test "nickname with special chars that fail validation redirects to /", %{conn: conn} do
       conn = post(conn, ~p"/chat/session", %{"nickname" => "!!invalid!!"})
-      assert redirected_to(conn) == "/"
+      assert redirected_to(conn) == "/connect"
     end
 
     test "join_channel param stores channel in session", %{conn: conn} do

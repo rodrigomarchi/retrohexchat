@@ -140,7 +140,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     {:halt,
      socket
      |> Phoenix.LiveView.put_flash(:error, "Disconnected: #{reason}")
-     |> push_navigate(to: ~p"/")}
+     |> push_navigate(to: ~p"/connect")}
   end
 
   def handle_info({:force_rename, %{reason: reason}}, socket) do

@@ -375,7 +375,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     socket
     |> assign(quit_reason: quit_reason)
     |> push_event("intentional_disconnect", %{})
-    |> push_navigate(to: "/")
+    |> push_navigate(to: "/connect")
   end
 
   @spec handle_set_away(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()

@@ -22,46 +22,46 @@ defmodule RetroHexChatWeb.E2ETest do
 
   describe "Screen 1: ConnectLive" do
     test "1.1 renders nickname input and Connect button", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/")
+      {:ok, _view, html} = live(conn, "/connect")
       assert html =~ ~s(name="nickname")
       assert html =~ "Connect"
       assert html =~ "connect-btn"
     end
 
     test "1.2 empty nickname keeps button disabled", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => ""})
       assert html =~ "disabled"
     end
 
     test "1.3 nickname >16 chars shows error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       long = String.duplicate("A", 17)
       html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => long})
       assert html =~ "error-text"
     end
 
     test "1.4 nickname with space shows error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => "bad nick"})
       assert html =~ "error-text"
     end
 
     test "1.5 nickname starting with number shows error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => "1nick"})
       assert html =~ "error-text"
     end
 
     test "1.6 valid nickname clears error and enables button", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => "ValidNick"})
       refute html =~ "error-text"
       refute html =~ ~s(disabled="disabled")
     end
 
     test "1.7 boundary: 1-char nickname accepted", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "A"})
       html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "A"})
       assert html =~ ~s(value="A")
@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
     test "1.8 boundary: 16-char nickname accepted", %{conn: conn} do
       nick = String.duplicate("B", 16)
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => nick})
       html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => nick})
       assert html =~ ~s(value="#{nick}")
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "1.9 valid submit triggers form submission to /chat/session", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "TestUser"})
       html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "TestUser"})
       assert html =~ ~s(value="TestUser")
@@ -86,14 +86,14 @@ defmodule RetroHexChatWeb.E2ETest do
     end
 
     test "1.10 IRC special chars [Nick] work", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       view |> element("form[phx-submit]") |> render_change(%{"nickname" => "[Nick]"})
       html = view |> element("form[phx-submit]") |> render_submit(%{"nickname" => "[Nick]"})
       assert html =~ ~s(id="connect-session-form")
     end
 
     test "1.11 invalid chars !!bad show error", %{conn: conn} do
-      {:ok, view, _html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/connect")
       html = view |> element("form[phx-submit]") |> render_change(%{"nickname" => "!!bad"})
       assert html =~ "error-text"
     end
@@ -134,7 +134,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
     test "2.4 mount without nickname redirects to /", %{conn: conn} do
       result = live(chat_conn(conn, "!!invalid!!"), "/chat")
-      assert {:error, {:live_redirect, %{to: "/"}}} = result
+      assert {:error, {:live_redirect, %{to: "/connect"}}} = result
     end
 
     test "2.5 chat input and Send button present", %{conn: conn} do
@@ -973,7 +973,7 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ "Ghost" or html =~ "NickServ"
 
       # Target should receive force_disconnect and redirect
-      flash = assert_redirect(tgt_view, "/")
+      flash = assert_redirect(tgt_view, "/connect")
       assert flash["error"] =~ "Disconnected"
     end
   end
@@ -1339,19 +1339,19 @@ defmodule RetroHexChatWeb.E2ETest do
     test "15.5 quit chat redirects to /", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "QuitE2E"), "/chat")
       result = render_click(view, "quit_chat")
-      assert {:error, {:live_redirect, %{to: "/"}}} = result
+      assert {:error, {:live_redirect, %{to: "/connect"}}} = result
     end
 
     test "15.6 disconnect toolbar redirects to /", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "DiscE2E"), "/chat")
       result = render_click(view, "disconnect")
-      assert {:error, {:live_redirect, %{to: "/"}}} = result
+      assert {:error, {:live_redirect, %{to: "/connect"}}} = result
     end
 
     test "15.7 /quit command redirects to /", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "QuitCmdE2E"), "/chat")
       result = send_command(view, "/quit leaving")
-      assert {:error, {:live_redirect, %{to: "/"}}} = result
+      assert {:error, {:live_redirect, %{to: "/connect"}}} = result
     end
   end
 
@@ -1509,7 +1509,7 @@ defmodule RetroHexChatWeb.E2ETest do
     test "18.6 force_disconnect redirects to /", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "ForceE2E"), "/chat")
       send(view.pid, {:force_disconnect, %{reason: "Ghosted"}})
-      flash = assert_redirect(view, "/")
+      flash = assert_redirect(view, "/connect")
       assert flash["error"] =~ "Disconnected"
     end
   end

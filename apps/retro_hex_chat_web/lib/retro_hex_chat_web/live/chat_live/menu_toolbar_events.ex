@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     {:halt,
      socket
      |> push_event("intentional_disconnect", %{})
-     |> push_navigate(to: ~p"/")}
+     |> push_navigate(to: ~p"/connect")}
   end
 
   def handle_event("restore_session", params, socket) do
@@ -294,7 +294,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   def handle_event("disconnect", _params, socket) do
     session = socket.assigns.session
     cleanup_channels(session, "Leaving")
-    {:halt, push_navigate(socket, to: ~p"/")}
+    {:halt, push_navigate(socket, to: ~p"/connect")}
   end
 
   def handle_event("channel_list", _params, socket) do

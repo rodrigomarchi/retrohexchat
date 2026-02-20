@@ -1,14 +1,14 @@
 defmodule RetroHexChatWeb.LandingControllerTest do
   use RetroHexChatWeb.ConnCase, async: true
 
-  describe "GET /landing" do
+  describe "GET /" do
     test "returns 200", %{conn: conn} do
-      conn = get(conn, "/landing")
+      conn = get(conn, "/")
       assert html_response(conn, 200)
     end
 
     test "contains SEO meta tags", %{conn: conn} do
-      conn = get(conn, "/landing")
+      conn = get(conn, "/")
       body = html_response(conn, 200)
 
       assert body =~ "Retro Hex Chat"
@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.LandingControllerTest do
     end
 
     test "contains all major section IDs", %{conn: conn} do
-      conn = get(conn, "/landing")
+      conn = get(conn, "/")
       body = html_response(conn, 200)
 
       assert body =~ ~s(id="hero")
@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.LandingControllerTest do
     end
 
     test "loads landing-specific assets, not app.js", %{conn: conn} do
-      conn = get(conn, "/landing")
+      conn = get(conn, "/")
       body = html_response(conn, 200)
 
       assert body =~ "/assets/css/landing.css"
@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.LandingControllerTest do
     end
 
     test "does not contain LiveView references", %{conn: conn} do
-      conn = get(conn, "/landing")
+      conn = get(conn, "/")
       body = html_response(conn, 200)
 
       refute body =~ "phx-track-static"
@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.LandingControllerTest do
     end
 
     test "uses English lang attribute", %{conn: conn} do
-      conn = get(conn, "/landing")
+      conn = get(conn, "/")
       body = html_response(conn, 200)
 
       assert body =~ ~s(lang="en")

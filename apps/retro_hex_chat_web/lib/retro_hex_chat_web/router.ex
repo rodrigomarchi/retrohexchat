@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.Router do
     get "/healthz", HealthController, :index
   end
 
-  scope "/landing", RetroHexChatWeb do
+  scope "/", RetroHexChatWeb do
     pipe_through :landing
 
     get "/", LandingController, :index
@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.Router do
   scope "/", RetroHexChatWeb do
     pipe_through :browser
 
-    live "/", ConnectLive
+    live "/connect", ConnectLive
     post "/chat/session", SessionController, :create
     live "/chat", ChatLive
     live "/channels", ChannelListLive

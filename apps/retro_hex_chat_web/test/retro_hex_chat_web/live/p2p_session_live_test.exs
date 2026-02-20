@@ -60,7 +60,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
 
   describe "mount/auth" do
     test "guest is redirected to /", %{conn: conn} do
-      assert {:error, {:live_redirect, %{to: "/"}}} = live(conn, "/p2p/some-token")
+      assert {:error, {:live_redirect, %{to: "/connect"}}} = live(conn, "/p2p/some-token")
     end
 
     test "unregistered nick is redirected", %{conn: conn} do

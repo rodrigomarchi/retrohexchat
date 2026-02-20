@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "invalid nickname redirects to /", %{conn: conn} do
       result = live(chat_conn(conn, "!!invalid!!"), "/chat")
-      assert {:error, {:live_redirect, %{to: "/"}}} = result
+      assert {:error, {:live_redirect, %{to: "/connect"}}} = result
     end
 
     test "registered but unidentified nick shows NickServ notice", %{conn: conn} do
@@ -204,7 +204,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       send(view.pid, {:force_disconnect, %{reason: "Ghosted by admin"}})
 
-      flash = assert_redirect(view, "/")
+      flash = assert_redirect(view, "/connect")
       assert flash["error"] =~ "Disconnected"
     end
 
@@ -223,7 +223,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     test "quit_chat redirects to /", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Quitter"), "/chat")
       result = render_click(view, "quit_chat")
-      assert {:error, {:live_redirect, %{to: "/"}}} = result
+      assert {:error, {:live_redirect, %{to: "/connect"}}} = result
     end
 
     test "toggle_treebar toggles visibility", %{conn: conn} do
@@ -1232,7 +1232,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     test "disconnect cleans up and redirects to /", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "DiscUser"), "/chat")
       result = render_click(view, "disconnect")
-      assert {:error, {:live_redirect, %{to: "/"}}} = result
+      assert {:error, {:live_redirect, %{to: "/connect"}}} = result
     end
   end
 
@@ -1839,7 +1839,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       result =
         view |> element("form.chat-input-form") |> render_submit(%{"input" => "/quit bye"})
 
-      assert {:error, {:live_redirect, %{to: "/"}}} = result
+      assert {:error, {:live_redirect, %{to: "/connect"}}} = result
     end
   end
 

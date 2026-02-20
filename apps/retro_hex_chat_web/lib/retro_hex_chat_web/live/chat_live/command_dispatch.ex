@@ -312,7 +312,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     socket
     |> assign(quit_reason: quit_reason)
     |> Phoenix.LiveView.push_event("intentional_disconnect", %{})
-    |> push_navigate(to: ~p"/")
+    |> push_navigate(to: ~p"/connect")
   end
 
   defp cleanup_channels(session, reason) do

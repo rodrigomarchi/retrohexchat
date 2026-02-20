@@ -101,6 +101,33 @@
 /* ── Display: Contents ── */
 .u-contents { display: contents; }
 
+/* ── Icons ── */
+.licon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.licon-12 {
+  width: 12px;
+  height: 12px;
+}
+
+.licon-14 {
+  width: 14px;
+  height: 14px;
+}
+
+.licon-16 {
+  width: 16px;
+  height: 16px;
+}
+
+.licon-32 {
+  width: 32px;
+  height: 32px;
+}
+
 /* ── Display ── */
 .u-block { display: block; }
 .u-inline-block { display: inline-block; }
