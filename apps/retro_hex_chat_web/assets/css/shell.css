@@ -141,14 +141,12 @@
   z-index: var(--z-floating);
 }
 
-/* ── URL Catcher Window Positioning ── */
+/* ── URL Catcher Window ── */
 .url-catcher-window {
-  position: absolute;
-  bottom: 40px;
-  right: 10px;
   width: 500px;
-  height: 350px;
-  z-index: var(--z-floating);
+  height: 400px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ── Tab Menu Reset ── */

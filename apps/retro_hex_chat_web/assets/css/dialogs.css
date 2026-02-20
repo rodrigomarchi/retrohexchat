@@ -62,6 +62,13 @@
 .dialog-window--320 { width: 320px; }
 .dialog-window--450 { min-width: 450px; }
 
+/* Tab items without <a> wrappers need explicit padding (98.css supplies it via li > a) */
+menu[role="tablist"] > li[role="tab"] {
+  padding: 6px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 /* Tabbed dialog body (flex column with tabs) */
 .dialog-tabbed-body {
   padding: 8px;
