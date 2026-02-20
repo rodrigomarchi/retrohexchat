@@ -696,7 +696,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       # Check DB
       pref = RetroHexChat.Repo.get(RetroHexChat.Chat.Schemas.UserPreference, "p2p_lv_priv_a")
       assert pref != nil
-      assert get_in(pref.message_settings, ["p2p_settings", "turn_only"]) == true
+      assert get_in(pref.display_settings, ["p2p_settings", "turn_only"]) == true
     end
   end
 

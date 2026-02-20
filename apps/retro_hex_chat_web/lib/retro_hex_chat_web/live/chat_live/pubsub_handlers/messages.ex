@@ -9,7 +9,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       notice_message: 2,
-      push_status_message: 3,
       check_flood_and_auto_ignore: 4,
       maybe_highlight: 2,
       maybe_play_highlight_sound: 3,
@@ -218,27 +217,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   # ── Private helpers ───────────────────────────────────────
 
-  defp route_notice(socket, session, sender, content) do
+  defp route_notice(socket, _session, sender, content) do
     notice = notice_message(sender, content)
-
-    case Session.get_notice_routing(session) do
-      :active ->
-        stream_insert(socket, :chat_messages, notice)
-
-      :status ->
-        if socket.assigns.show_status_tab do
-          push_status_message(socket, "-#{sender}- #{content}", :notice)
-        else
-          stream_insert(socket, :chat_messages, notice)
-        end
-
-      :sender ->
-        if sender in session.pm_conversations do
-          stream_insert(socket, :chat_messages, notice)
-        else
-          stream_insert(socket, :chat_messages, notice)
-        end
-    end
+    stream_insert(socket, :chat_messages, notice)
   end
 
   defp maybe_push_highlight_tip(socket, %{highlighted: true}),

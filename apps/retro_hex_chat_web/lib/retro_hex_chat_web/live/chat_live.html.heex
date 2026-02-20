@@ -11,7 +11,6 @@
     value={@nick_change_token}
   />
 </form>
-<div id="key-capture-hook" phx-hook="KeyBindingCaptureHook" style="display: none;"></div>
 <div id="search-highlight-hook" phx-hook="SearchHighlightHook" style="display: none;"></div>
 <div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" style="display: none;"></div>
 <div
@@ -24,7 +23,7 @@
 <div id="notification-toasts" class="notification-toast-container"></div>
 <RetroHexChatWeb.Components.Toast.toast_container />
 <div
-  class={"app-container#{if @compact_mode, do: " compact-mode", else: ""}"}
+  class="app-container"
   phx-click="close_context_menu"
   phx-window-keydown="window_keydown"
   id="app-container"
@@ -103,7 +102,7 @@
       <RetroHexChatWeb.Components.ScrollLoader.scroll_loader loading={@loading_more} />
 
       <div
-        class={"chat-messages#{if @line_shading, do: " chat-line-shading", else: ""}"}
+        class="chat-messages"
         id="chat-messages"
         phx-update="stream"
         phx-hook="ScrollHook"
@@ -354,7 +353,7 @@
     nick_color_fn={@nick_color_fn}
     show_color_picker={@show_context_color_picker}
     is_ignored={context_target_ignored?(@session, @context_menu.target_nick)}
-    key_bindings={@session.user_preferences.key_bindings}
+    key_bindings={RetroHexChat.Chat.KeyBindings.defaults()}
     custom_nicklist_items={CustomMenus.entries_for(@session.custom_menus, :nicklist)}
   />
 
@@ -367,7 +366,7 @@
     is_target_registered={@chat_context_menu[:is_target_registered] || false}
     is_target_self={@chat_context_menu.target_nick == @session.nickname}
     is_already_joined={@chat_context_menu.target_channel in (@session.channels || [])}
-    key_bindings={@session.user_preferences.key_bindings}
+    key_bindings={RetroHexChat.Chat.KeyBindings.defaults()}
   />
 
   <RetroHexChatWeb.Components.TreebarContextMenu.treebar_context_menu
@@ -535,10 +534,7 @@
     entry_count={length(@url_catcher_entries)}
   />
 
-  <RetroHexChatWeb.Components.CheatsheetDialog.cheatsheet_dialog
-    visible={@cheatsheet_visible}
-    bindings={@session.user_preferences.key_bindings}
-  />
+  <RetroHexChatWeb.Components.CheatsheetDialog.cheatsheet_dialog visible={@cheatsheet_visible} />
 
   <RetroHexChatWeb.Components.LogViewerDialog.log_viewer_dialog
     visible={@show_log_viewer}

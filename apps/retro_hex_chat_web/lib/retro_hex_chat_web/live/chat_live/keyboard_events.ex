@@ -2,8 +2,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   @moduledoc """
   Handle keyboard shortcut events (window_keydown).
 
-  Uses dynamic key binding lookup via KeyBindings.find_action/2 so users
-  can customize shortcuts via Options > Key Bindings.
+  Uses KeyBindings.find_action/2 with hardcoded default bindings.
 
   Escape is always hardcoded to dismiss the topmost dialog/overlay.
 
@@ -24,7 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
 
   # Dynamic key binding lookup for all other shortcuts
   def handle_event("window_keydown", params, socket) do
-    bindings = socket.assigns.session.user_preferences.key_bindings
+    bindings = KeyBindings.defaults()
 
     case KeyBindings.find_action(bindings, params) do
       nil -> {:halt, socket}

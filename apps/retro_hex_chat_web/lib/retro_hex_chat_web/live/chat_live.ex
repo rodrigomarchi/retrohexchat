@@ -26,8 +26,7 @@ defmodule RetroHexChatWeb.ChatLive do
     KeyBindings,
     LogFilter,
     PerformList,
-    URLDetector,
-    UserPreferences
+    URLDetector
   }
 
   alias RetroHexChat.Presence.{NotifyList, WhowasCache}
@@ -181,7 +180,6 @@ defmodule RetroHexChatWeb.ChatLive do
       search_results: [],
       search_visible: false,
       session: session,
-      show_contextual_tips: true,
       tips_suppressed: false,
       cheatsheet_visible: false,
       show_about: false,
@@ -267,13 +265,9 @@ defmodule RetroHexChatWeb.ChatLive do
       show_toolbar: true,
       show_switchbar: true,
       show_statusbar: true,
-      compact_mode: false,
-      line_shading: false,
       nick_palette_editing_index: nil,
-      keybinding_editing: nil,
-      keybinding_warning: nil,
       muted: false,
-      muted_channels: load_muted_channels(session),
+      muted_channels: MapSet.new(),
       flash_channels: MapSet.new(),
       pm_typing_from: nil,
       pm_typing_timer: nil,
@@ -312,8 +306,8 @@ defmodule RetroHexChatWeb.ChatLive do
       emoji_category: "Smileys & Emotion",
       emoji_emojis: EmojiData.by_category("Smileys & Emotion"),
       syntax_tooltip: nil,
-      command_help_level: UserPreferences.get_command_help_level(session.user_preferences),
-      timestamp_format: UserPreferences.get_timestamp_format(session.user_preferences),
+      command_help_level: :beginner,
+      timestamp_format: :dd_mm_hh_mm,
       connection_ready: false,
       connection_state: :connected,
       connection_progress_step: 1,
@@ -363,9 +357,8 @@ defmodule RetroHexChatWeb.ChatLive do
     :ok
   end
 
-  defp quit_reason_for(socket, session) do
-    socket.assigns[:quit_reason] ||
-      UserPreferences.get_quit_message(session.user_preferences)
+  defp quit_reason_for(socket, _session) do
+    socket.assigns[:quit_reason] || "Leaving"
   end
 
   defp maybe_show_motd(socket) do
@@ -376,11 +369,9 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   defp push_initial_preferences(socket) do
-    prefs = socket.assigns.session.user_preferences
-
     socket
     |> push_event("update_bindings", %{
-      bindings: KeyBindings.to_persistable(prefs.key_bindings)
+      bindings: KeyBindings.to_persistable(KeyBindings.defaults())
     })
   end
 
@@ -453,13 +444,6 @@ defmodule RetroHexChatWeb.ChatLive do
     fn nickname ->
       NickColors.color_for(session.nick_colors, nickname) || nick_color(nickname)
     end
-  end
-
-  @spec load_muted_channels(Session.t()) :: MapSet.t()
-  defp load_muted_channels(session) do
-    session.user_preferences
-    |> UserPreferences.get_muted_channels()
-    |> MapSet.new()
   end
 
   @nick_colors ~w(#e74c3c #3498db #2ecc71 #e67e22 #9b59b6 #1abc9c #f39c12 #e91e63 #00bcd4 #8bc34a #ff5722 #607d8b)

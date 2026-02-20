@@ -34,11 +34,6 @@ describe("ContextualTipsHook", () => {
       expect(hook.handleEvent).toHaveBeenCalledWith("tip_trigger", expect.any(Function));
     });
 
-    it("registers tips_toggle event handler", () => {
-      const hook = mountTipsHook();
-      expect(hook.handleEvent).toHaveBeenCalledWith("tips_toggle", expect.any(Function));
-    });
-
     it("pushes tips_state_sync with suppressed: false on mount", () => {
       const hook = mountTipsHook();
       const events = getPushEvents(hook, "tips_state_sync");
@@ -98,35 +93,6 @@ describe("ContextualTipsHook", () => {
       // No toast should appear for help_used
       const toast = hook.el.querySelector(".toast-notification");
       expect(toast).toBeNull();
-    });
-  });
-
-  // ── tips_toggle event ─────────────────────────────────────
-
-  describe("tips_toggle event", () => {
-    it("suppresses tips when enabled is false", () => {
-      const hook = mountTipsHook();
-      simulateEvent(hook, "tips_toggle", { enabled: false });
-
-      expect(storage.store[STORAGE_KEYS.SUPPRESSED]).toBe("true");
-    });
-
-    it("unsuppresses tips when enabled is true", () => {
-      storage.store[STORAGE_KEYS.SUPPRESSED] = "true";
-      const hook = mountTipsHook();
-      simulateEvent(hook, "tips_toggle", { enabled: true });
-
-      expect(storage.store[STORAGE_KEYS.SUPPRESSED]).toBeUndefined();
-    });
-
-    it("pushes tips_state_sync after toggle", () => {
-      const hook = mountTipsHook();
-      simulateEvent(hook, "tips_toggle", { enabled: false });
-
-      const events = getPushEvents(hook, "tips_state_sync");
-      // First from mount, second from toggle
-      expect(events).toHaveLength(2);
-      expect(events[1]).toEqual({ suppressed: true });
     });
   });
 

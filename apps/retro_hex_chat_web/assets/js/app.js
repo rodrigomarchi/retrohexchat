@@ -13,7 +13,6 @@ import ContextMenuHook from "./hooks/context_menu_hook";
 import AutocompleteHook from "./hooks/autocomplete_hook";
 import EmojiPickerHook from "./hooks/emoji_picker_hook";
 import FormatToolbarHook from "./hooks/format_toolbar_hook";
-import KeyBindingCaptureHook from "./hooks/key_binding_capture_hook";
 import KeyboardHook from "./hooks/keyboard_hook";
 import LagHook from "./hooks/lag_hook";
 import NicklistHook from "./hooks/nicklist_hook";
@@ -56,7 +55,6 @@ const Hooks = {
   EmojiPickerHook: EmojiPickerHook,
   FileTransferHook: FileTransferHook,
   FormatToolbarHook: FormatToolbarHook,
-  KeyBindingCaptureHook: KeyBindingCaptureHook,
   KeyboardHook: KeyboardHook,
   LagHook: LagHook,
   MediaHook: MediaHook,

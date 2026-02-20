@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
   @invite_actions ~w(send_invite toggle_auto_join_on_invite)a
 
   @settings_actions ~w(
-    notice_routing_show notice_routing_set show_whowas_info
+    notice_routing_show show_whowas_info
     set_bio view_bio clear_bio
   )a
 

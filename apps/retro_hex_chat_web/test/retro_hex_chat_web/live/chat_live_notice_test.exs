@@ -193,8 +193,8 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
 
   # ── US3: Notice Routing Preferences ─────────────────────────
 
-  describe "US3: /notice_routing show and set" do
-    test "show current routing displays default :active", %{conn: conn} do
+  describe "US3: /notice_routing command" do
+    test "shows hardcoded routing message", %{conn: conn} do
       nick = "RtShow#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -203,95 +203,20 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
       |> render_submit(%{"input" => "/notice_routing"})
 
       html = render(view)
-      assert html =~ "Notice routing is set to: active"
-    end
-
-    test "set routing to status shows confirmation", %{conn: conn} do
-      nick = "RtSet#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
-
-      view
-      |> element("form.chat-input-form")
-      |> render_submit(%{"input" => "/notice_routing status"})
-
-      html = render(view)
-      assert html =~ "Notice routing set to: status"
-    end
-
-    test "set routing to sender shows confirmation", %{conn: conn} do
-      nick = "RtSdr#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
-
-      view
-      |> element("form.chat-input-form")
-      |> render_submit(%{"input" => "/notice_routing sender"})
-
-      html = render(view)
-      assert html =~ "Notice routing set to: sender"
-    end
-
-    test "invalid routing value shows error", %{conn: conn} do
-      nick = "RtInv#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
-
-      view
-      |> element("form.chat-input-form")
-      |> render_submit(%{"input" => "/notice_routing invalid"})
-
-      html = render(view)
-      assert html =~ "Invalid routing"
+      assert html =~ "hardcoded to: active"
     end
   end
 
-  describe "US3: routing behavior for received notices" do
-    test "notice with :active routing inserts into chat_messages", %{conn: conn} do
+  describe "US3: notice routing behavior" do
+    test "notices are always routed to active window", %{conn: conn} do
       nick = "RtAct#{System.unique_integer([:positive])}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      # Default routing is :active
       send_notice(view, "Alice", "active-routed notice")
 
       html = render(view)
       assert html =~ "active-routed notice"
       assert html =~ "-Alice-"
-    end
-
-    test "notice with :status routing and status tab open inserts into status_messages", %{
-      conn: conn
-    } do
-      nick = "RtSts#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
-
-      # Set routing to status
-      view
-      |> element("form.chat-input-form")
-      |> render_submit(%{"input" => "/notice_routing status"})
-
-      # Open status tab
-      render_click(view, "switch_to_status")
-
-      send_notice(view, "Bob", "status-routed notice")
-
-      html = render(view)
-      assert html =~ "status-routed notice"
-    end
-
-    test "notice with :status routing and no status tab falls back to chat_messages", %{
-      conn: conn
-    } do
-      nick = "RtStF#{System.unique_integer([:positive])}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
-
-      # Set routing to status (no status tab open)
-      view
-      |> element("form.chat-input-form")
-      |> render_submit(%{"input" => "/notice_routing status"})
-
-      send_notice(view, "Bob", "fallback notice")
-
-      html = render(view)
-      assert html =~ "fallback notice"
-      assert html =~ "-Bob-"
     end
   end
 

@@ -1031,7 +1031,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   defp load_turn_only_preference(nickname) do
     case RetroHexChat.Repo.get(UserPreference, nickname) do
       nil -> false
-      pref -> get_in(pref.message_settings, ["p2p_settings", "turn_only"]) == true
+      pref -> get_in(pref.display_settings, ["p2p_settings", "turn_only"]) == true
     end
   end
 
@@ -1041,17 +1041,17 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         %UserPreference{}
         |> UserPreference.changeset(%{
           owner_nickname: nickname,
-          message_settings: %{"p2p_settings" => %{"turn_only" => turn_only}}
+          display_settings: %{"p2p_settings" => %{"turn_only" => turn_only}}
         })
         |> RetroHexChat.Repo.insert()
 
       pref ->
-        current = pref.message_settings || %{}
+        current = pref.display_settings || %{}
         p2p = Map.get(current, "p2p_settings", %{})
         updated = Map.put(current, "p2p_settings", Map.put(p2p, "turn_only", turn_only))
 
         pref
-        |> UserPreference.changeset(%{message_settings: updated})
+        |> UserPreference.changeset(%{display_settings: updated})
         |> RetroHexChat.Repo.update()
     end
   end

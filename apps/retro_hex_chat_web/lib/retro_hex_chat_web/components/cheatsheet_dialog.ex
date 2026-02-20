@@ -10,11 +10,10 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialog do
   alias RetroHexChat.Chat.KeyBindings
 
   attr :visible, :boolean, default: false
-  attr :bindings, :map, required: true
 
   @spec cheatsheet_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def cheatsheet_dialog(assigns) do
-    assigns = assign(assigns, :categories, KeyBindings.categories(assigns.bindings))
+    assigns = assign(assigns, :categories, KeyBindings.categories(KeyBindings.defaults()))
 
     ~H"""
     <div
@@ -60,7 +59,7 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialog do
             </table>
           </div>
           <p class="u-text-xs u-text-muted u-mt-8">
-            Customize shortcuts in Options &gt; Key Bindings
+            All shortcuts use Ctrl+Shift combinations
           </p>
         </div>
       </div>

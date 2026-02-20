@@ -87,10 +87,6 @@
   font-size: var(--text-base);
 }
 
-.options-quit-input {
-  width: 200px;
-}
-
 .options-button-bar {
   display: flex;
   justify-content: flex-end;
@@ -103,38 +99,3 @@
   min-width: 75px;
 }
 
-/* ── Options: Key Bindings ── */
-
-.keybindings-list {
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid var(--color-border);
-  background: var(--color-white);
-  box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
-}
-
-.keybinding-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 2px 6px;
-  font-size: var(--text-base);
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.keybinding-row:last-child {
-  border-bottom: none;
-}
-
-.keybinding-action {
-  color: var(--color-black);
-}
-
-.keybinding-combo {
-  color: var(--color-link);
-  font-weight: bold;
-  font-family: var(--font-mono);
-}
-
-.keybindings-actions {
-  margin-top: 8px;
-}

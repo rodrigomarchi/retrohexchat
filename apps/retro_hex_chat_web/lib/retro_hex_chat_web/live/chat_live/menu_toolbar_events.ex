@@ -22,15 +22,13 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     ]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.UserPreferences
   alias RetroHexChat.Commands.Autocomplete
 
   use Phoenix.VerifiedRoutes, endpoint: RetroHexChatWeb.Endpoint, router: RetroHexChatWeb.Router
 
   def handle_event("quit_chat", _params, socket) do
     session = socket.assigns.session
-    reason = UserPreferences.get_quit_message(session.user_preferences)
-    cleanup_channels(session, reason)
+    cleanup_channels(session, "Leaving")
 
     {:halt,
      socket
@@ -295,8 +293,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("disconnect", _params, socket) do
     session = socket.assigns.session
-    reason = UserPreferences.get_quit_message(session.user_preferences)
-    cleanup_channels(session, reason)
+    cleanup_channels(session, "Leaving")
     {:halt, push_navigate(socket, to: ~p"/")}
   end
 

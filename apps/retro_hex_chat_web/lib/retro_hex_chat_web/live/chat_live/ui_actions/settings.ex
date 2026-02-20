@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
     only: [system_event: 2, show_whowas_text: 2, safe_update_bio: 3]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{NoticeRouting, UserBio}
+  alias RetroHexChat.Chat.UserBio
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -18,25 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
     do: show_whowas_text(socket, target)
 
   def handle_ui_action(socket, :notice_routing_show, _payload) do
-    session = socket.assigns.session
-    routing = Session.get_notice_routing(session)
-
-    system_event(socket, "* Notice routing is set to: #{routing}")
-  end
-
-  def handle_ui_action(socket, :notice_routing_set, %{routing: routing}) do
-    session = socket.assigns.session
-    new_session = Session.set_notice_routing(session, routing)
-
-    if new_session.identified do
-      Task.start(fn ->
-        NoticeRouting.save(new_session.nickname, %{routing: routing})
-      end)
-    end
-
-    socket
-    |> assign(session: new_session)
-    |> system_event("* Notice routing set to: #{routing}")
+    system_event(socket, "* Notice routing is hardcoded to: active")
   end
 
   def handle_ui_action(socket, :set_bio, %{text: text, truncated: truncated}) do

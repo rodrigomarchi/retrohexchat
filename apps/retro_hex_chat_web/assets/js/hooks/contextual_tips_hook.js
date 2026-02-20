@@ -37,14 +37,6 @@ const ContextualTipsHook = {
       this.enqueueTip(tip);
     });
 
-    this.handleEvent("tips_toggle", ({ enabled }) => {
-      setSuppressed(!enabled);
-      this.pushEvent("tips_state_sync", { suppressed: !enabled });
-      if (!enabled) {
-        this.clearQueue();
-      }
-    });
-
     this.pushEvent("tips_state_sync", { suppressed: isSuppressed() });
 
     this.startIdleTimer();

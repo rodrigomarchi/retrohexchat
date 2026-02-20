@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{Policy, Queries, Service, UnreadTracker, UserPreferences}
+  alias RetroHexChat.Chat.{Policy, Queries, Service, UnreadTracker}
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Parser, Registry}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive
@@ -346,27 +346,21 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- syntax_tooltip_query --
 
   def handle_event("syntax_tooltip_query", %{"command" => command, "args" => args}, socket) do
-    help_level = UserPreferences.get_command_help_level(socket.assigns.session.user_preferences)
+    case Registry.get_syntax(command) do
+      nil ->
+        {:halt, assign(socket, syntax_tooltip: nil)}
 
-    if help_level == :off do
-      {:halt, assign(socket, syntax_tooltip: nil)}
-    else
-      case Registry.get_syntax(command) do
-        nil ->
-          {:halt, assign(socket, syntax_tooltip: nil)}
+      %CommandSyntax{} = syntax ->
+        current_index = CommandSyntax.compute_current_param_index(syntax.parameters, args)
+        payload = CommandSyntax.to_client_payload(syntax)
 
-        %CommandSyntax{} = syntax ->
-          current_index = CommandSyntax.compute_current_param_index(syntax.parameters, args)
-          payload = CommandSyntax.to_client_payload(syntax)
+        tooltip_data =
+          Map.merge(payload, %{
+            current_param_index: current_index,
+            context_message: build_context_message(syntax, args, current_index)
+          })
 
-          tooltip_data =
-            Map.merge(payload, %{
-              current_param_index: current_index,
-              context_message: build_context_message(syntax, args, current_index)
-            })
-
-          {:halt, assign(socket, syntax_tooltip: tooltip_data)}
-      end
+        {:halt, assign(socket, syntax_tooltip: tooltip_data)}
     end
   end
 

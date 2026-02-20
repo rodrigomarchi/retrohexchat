@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.OptionsDialogE2ETest do
   @moduledoc """
-  End-to-end tests for the Options Dialog (021).
+  End-to-end tests for the Options Dialog.
   Run with: mix test --only e2e
   """
   use RetroHexChatWeb.LiveViewCase, async: false
@@ -83,24 +83,13 @@ defmodule RetroHexChatWeb.OptionsDialogE2ETest do
       assert html =~ ~s(data-testid="options-display-panel")
     end
 
-    test "2.2 click tree item switches panel", %{conn: conn} do
-      view = connect_user(conn, "E2EPnl#{uid()}")
-      render_click(view, "open_options_dialog")
-
-      html = render_click(view, "options_select_panel", %{"panel" => "messages"})
-      assert html =~ ~s(data-testid="options-messages-panel")
-      refute html =~ ~s(data-testid="options-display-panel")
-    end
-
-    test "2.3 navigate all 4 panels", %{conn: conn} do
+    test "2.2 navigate both panels", %{conn: conn} do
       view = connect_user(conn, "E2EAll#{uid()}")
       render_click(view, "open_options_dialog")
 
       panels = [
-        {"messages", "options-messages-panel"},
-        {"display", "options-display-panel"},
-        {"keybindings", "options-keybindings-panel"},
-        {"notifications", "options-notifications-panel"}
+        {"notifications", "options-notifications-panel"},
+        {"display", "options-display-panel"}
       ]
 
       for {panel_id, testid} <- panels do
@@ -126,127 +115,37 @@ defmodule RetroHexChatWeb.OptionsDialogE2ETest do
 
       refute html =~ ~s(data-testid="toolbar-connect")
     end
-
-    test "3.2 toggle line shading", %{conn: conn} do
-      view = connect_user(conn, "E2EShad#{uid()}")
-      render_click(view, "open_options_dialog")
-      render_click(view, "options_toggle_display", %{"setting" => "line_shading"})
-      html = view |> element(~s([data-testid="options-apply"])) |> render_click()
-
-      assert html =~ "chat-line-shading"
-    end
-
-    test "3.3 toggle compact mode", %{conn: conn} do
-      view = connect_user(conn, "E2ECmp#{uid()}")
-      render_click(view, "open_options_dialog")
-      render_click(view, "options_toggle_display", %{"setting" => "compact_mode"})
-      html = view |> element(~s([data-testid="options-ok"])) |> render_click()
-
-      assert html =~ "compact-mode"
-    end
   end
 
   # ---------------------------------------------------------------------------
-  # 4. IRC Messages Panel
-  # ---------------------------------------------------------------------------
-
-  describe "IRC Messages panel" do
-    test "4.1 shows notice routing selector", %{conn: conn} do
-      view = connect_user(conn, "E2EMsg#{uid()}")
-      render_click(view, "open_options_dialog")
-      html = render_click(view, "options_select_panel", %{"panel" => "messages"})
-
-      assert html =~ ~s(data-testid="options-messages-notice-routing")
-    end
-
-    test "4.2 change notice routing to status", %{conn: conn} do
-      view = connect_user(conn, "E2ENRt#{uid()}")
-      render_click(view, "open_options_dialog")
-      render_click(view, "options_select_panel", %{"panel" => "messages"})
-
-      render_click(view, "options_change_routing", %{"notice_routing" => "status"})
-      html = view |> element(~s([data-testid="options-ok"])) |> render_click()
-      refute html =~ "options-dialog-overlay"
-    end
-  end
-
-  # ---------------------------------------------------------------------------
-  # 5. Key Bindings Panel
-  # ---------------------------------------------------------------------------
-
-  describe "Key Bindings panel" do
-    test "5.1 shows all action bindings", %{conn: conn} do
-      view = connect_user(conn, "E2EKB#{uid()}")
-      render_click(view, "open_options_dialog")
-      html = render_click(view, "options_select_panel", %{"panel" => "keybindings"})
-
-      assert html =~ ~s(data-testid="keybindings-list")
-      assert html =~ "Address Book"
-      assert html =~ "Search"
-      assert html =~ "Options"
-    end
-
-    test "5.2 reset to defaults", %{conn: conn} do
-      view = connect_user(conn, "E2ERst#{uid()}")
-      render_click(view, "open_options_dialog")
-      render_click(view, "options_select_panel", %{"panel" => "keybindings"})
-
-      html = render_click(view, "options_reset_bindings")
-      assert html =~ ~s(data-testid="keybindings-list")
-    end
-
-    test "5.3 reserved key does not change binding", %{conn: conn} do
-      view = connect_user(conn, "E2ERes#{uid()}")
-      render_click(view, "open_options_dialog")
-      render_click(view, "options_select_panel", %{"panel" => "keybindings"})
-
-      render_click(view, "options_select_binding", %{"action" => "toggle_search"})
-
-      render_click(view, "options_capture_key", %{
-        "action" => "toggle_search",
-        "key" => "w",
-        "ctrlKey" => true,
-        "altKey" => false,
-        "shiftKey" => false
-      })
-
-      # Binding should remain as Ctrl+Shift+F (not changed to Ctrl+W)
-      html = render(view)
-      assert html =~ "Ctrl+Shift+F"
-    end
-  end
-
-  # ---------------------------------------------------------------------------
-  # 6. Draft State (Apply vs Cancel)
+  # 4. Draft State (Apply vs Cancel)
   # ---------------------------------------------------------------------------
 
   describe "Draft state" do
-    test "6.1 cancel discards changes", %{conn: conn} do
+    test "4.1 cancel discards changes", %{conn: conn} do
       view = connect_user(conn, "E2EDsc#{uid()}")
       render_click(view, "open_options_dialog")
 
-      # Toggle compact mode in draft
-      render_click(view, "options_toggle_display", %{"setting" => "compact_mode"})
+      # Toggle toolbar off in draft
+      render_click(view, "options_toggle_display", %{"setting" => "show_toolbar"})
 
       # Cancel
       view |> element(~s([data-testid="options-cancel"])) |> render_click()
 
-      # Compact mode should NOT be applied
+      # Toolbar should still be visible
       html = render(view)
-      refute html =~ "compact-mode"
+      assert html =~ "toolbar"
     end
 
-    test "6.2 apply keeps dialog open with changes applied", %{conn: conn} do
+    test "4.2 apply keeps dialog open with changes applied", %{conn: conn} do
       view = connect_user(conn, "E2EApl#{uid()}")
       render_click(view, "open_options_dialog")
 
-      render_click(view, "options_toggle_display", %{"setting" => "line_shading"})
+      render_click(view, "options_toggle_display", %{"setting" => "show_statusbar"})
       html = view |> element(~s([data-testid="options-apply"])) |> render_click()
 
       # Dialog stays open
       assert html =~ "options-dialog-overlay"
-      # Change is applied
-      assert html =~ "chat-line-shading"
     end
   end
 

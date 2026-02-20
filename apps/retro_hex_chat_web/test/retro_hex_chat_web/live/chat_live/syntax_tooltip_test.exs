@@ -76,26 +76,6 @@ defmodule RetroHexChatWeb.ChatLive.SyntaxTooltipTest do
     end
   end
 
-  # ── detail level filtering ────────────────────────────────
-
-  describe "detail level filtering" do
-    test "off level suppresses tooltip entirely", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "OffLevelUser"), "/chat")
-
-      # Set help level to off
-      render_hook(view, "update_command_help_level", %{"level" => "off"})
-
-      # Try to show tooltip
-      render_hook(view, "syntax_tooltip_query", %{
-        "command" => "mode",
-        "args" => ""
-      })
-
-      html = render(view)
-      refute html =~ "syntax-tooltip"
-    end
-  end
-
   # ── helpers ────────────────────────────────────────────────
 
   defp ensure_channel(name) do

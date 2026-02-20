@@ -16,8 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.TreebarContextMenuEvents do
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [part_channel: 2]
 
-  alias RetroHexChat.Chat.{UnreadTracker, UserPreferences}
-  alias RetroHexChatWeb.ChatLive.Helpers.Persistence
+  alias RetroHexChat.Chat.UnreadTracker
 
   # ── Context menu ─────────────────────────────────────────
 
@@ -49,16 +48,12 @@ defmodule RetroHexChatWeb.ChatLive.TreebarContextMenuEvents do
   end
 
   def handle_event("ctx_treebar_mute", %{"channel" => channel}, socket) do
-    session = socket.assigns.session
-    updated_prefs = UserPreferences.toggle_mute_channel(session.user_preferences, channel)
-    updated_session = %{session | user_preferences: updated_prefs}
     muted = toggle_muted(socket.assigns.muted_channels, channel)
 
     {:halt,
      socket
      |> close_treebar_menu()
-     |> assign(session: updated_session, muted_channels: muted)
-     |> Persistence.maybe_persist_user_preferences(updated_session)}
+     |> assign(muted_channels: muted)}
   end
 
   def handle_event("ctx_treebar_copy_name", %{"channel" => channel}, socket) do

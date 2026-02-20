@@ -3,19 +3,15 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialogTest do
 
   import Phoenix.LiveViewTest
 
-  alias RetroHexChat.Chat.KeyBindings
   alias RetroHexChatWeb.Components.CheatsheetDialog
 
   @moduletag :unit
-
-  @default_bindings KeyBindings.defaults()
 
   describe "cheatsheet_dialog/1" do
     test "renders when visible" do
       html =
         render_component(&CheatsheetDialog.cheatsheet_dialog/1,
-          visible: true,
-          bindings: @default_bindings
+          visible: true
         )
 
       assert html =~ "data-testid=\"cheatsheet-dialog\""
@@ -25,8 +21,7 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialogTest do
     test "does not render when not visible" do
       html =
         render_component(&CheatsheetDialog.cheatsheet_dialog/1,
-          visible: false,
-          bindings: @default_bindings
+          visible: false
         )
 
       refute html =~ "cheatsheet-dialog"
@@ -35,8 +30,7 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialogTest do
     test "renders all 4 categories" do
       html =
         render_component(&CheatsheetDialog.cheatsheet_dialog/1,
-          visible: true,
-          bindings: @default_bindings
+          visible: true
         )
 
       assert html =~ "cheatsheet-category-navigation"
@@ -48,8 +42,7 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialogTest do
     test "renders shortcut labels" do
       html =
         render_component(&CheatsheetDialog.cheatsheet_dialog/1,
-          visible: true,
-          bindings: @default_bindings
+          visible: true
         )
 
       assert html =~ "Toggle Search"
@@ -61,8 +54,7 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialogTest do
     test "renders shortcut key bindings" do
       html =
         render_component(&CheatsheetDialog.cheatsheet_dialog/1,
-          visible: true,
-          bindings: @default_bindings
+          visible: true
         )
 
       assert html =~ "Ctrl+Shift+F"
@@ -74,32 +66,17 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialogTest do
     test "renders em dash for unbound actions" do
       html =
         render_component(&CheatsheetDialog.cheatsheet_dialog/1,
-          visible: true,
-          bindings: @default_bindings
+          visible: true
         )
 
       # open_help has nil binding
-      assert html =~ "—"
-    end
-
-    test "reflects custom bindings" do
-      custom = Map.put(@default_bindings, :toggle_search, %{key: "q", modifiers: [:ctrl, :shift]})
-
-      html =
-        render_component(&CheatsheetDialog.cheatsheet_dialog/1,
-          visible: true,
-          bindings: custom
-        )
-
-      assert html =~ "Ctrl+Shift+Q"
-      refute html =~ "Ctrl+Shift+F"
+      assert html =~ "\u2014"
     end
 
     test "is read-only — no text inputs" do
       html =
         render_component(&CheatsheetDialog.cheatsheet_dialog/1,
-          visible: true,
-          bindings: @default_bindings
+          visible: true
         )
 
       refute html =~ "<input"
@@ -109,21 +86,19 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialogTest do
     test "renders close button" do
       html =
         render_component(&CheatsheetDialog.cheatsheet_dialog/1,
-          visible: true,
-          bindings: @default_bindings
+          visible: true
         )
 
       assert html =~ "aria-label=\"Close\""
     end
 
-    test "renders customization hint" do
+    test "renders footer hint about Ctrl+Shift combinations" do
       html =
         render_component(&CheatsheetDialog.cheatsheet_dialog/1,
-          visible: true,
-          bindings: @default_bindings
+          visible: true
         )
 
-      assert html =~ "Customize shortcuts in Options"
+      assert html =~ "All shortcuts use Ctrl+Shift combinations"
     end
   end
 end

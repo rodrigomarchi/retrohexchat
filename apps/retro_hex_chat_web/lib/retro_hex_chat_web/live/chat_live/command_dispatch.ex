@@ -36,8 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     AliasList,
     AutoJoinList,
     CtcpSettings,
-    Service,
-    UserPreferences
+    Service
   }
 
   alias RetroHexChat.Channels.Server
@@ -307,7 +306,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp handle_quit(socket, reason) do
     session = socket.assigns.session
-    quit_reason = reason || UserPreferences.get_quit_message(session.user_preferences)
+    quit_reason = reason || "Leaving"
     cleanup_channels(session, quit_reason)
 
     socket
