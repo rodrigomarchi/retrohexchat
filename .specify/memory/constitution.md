@@ -184,7 +184,7 @@ subscription bugs. Streams prevent memory bloat on high-traffic channels.
 
 The UI MUST faithfully reproduce the Windows 98 aesthetic:
 
-- 98.css as the base design system, with a dark theme as the default.
+- 98.css as the base design system.
 - 3D beveled borders, pixelated fonts, 16x16 icons.
 - Monospace fonts in chat areas (Fixedsys / Consolas / Courier New).
 - Semantic HTML as required by 98.css for accessibility.
@@ -262,7 +262,7 @@ remains comprehensive and trustworthy.
 | Framework | Phoenix | Latest stable |
 | Reactive UI | Phoenix LiveView | No JS UI frameworks |
 | Database | PostgreSQL | Primary persistent store |
-| Design System | 98.css | Dark theme default |
+| Design System | 98.css | Windows 98 aesthetic |
 | Process Management | OTP (GenServer, DynamicSupervisor, Registry) | Core architecture |
 | Testing (Elixir) | ExUnit, Mox, ExMachina, StreamData, Floki | Full pyramid |
 | Testing (JS) | Vitest, jsdom | Hook + lib tests |

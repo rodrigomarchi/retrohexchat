@@ -2,7 +2,7 @@
 
 A real-time IRC client for the web — built with Elixir, Phoenix LiveView, and OTP — wearing a Windows 98 skin.
 
-RetroHexChat recreates the experience of classic IRC clients like mIRC, complete with multi-channel chat, private messaging, NickServ/ChanServ services, moderation tools, and a faithful dark-themed Windows 98 UI powered by [98.css](https://jdan.github.io/98.css/).
+RetroHexChat recreates the experience of classic IRC clients like mIRC, complete with multi-channel chat, private messaging, NickServ/ChanServ services, moderation tools, and a faithful Windows 98 UI powered by [98.css](https://jdan.github.io/98.css/).
 
 ---
 
@@ -104,7 +104,7 @@ RetroHexChat recreates the experience of classic IRC clients like mIRC, complete
 - **Help system** — CHM-style dialog with Contents/Index/Search tabs, F1 shortcut
 
 ### UI
-- **Windows 98 aesthetic** — 98.css with a custom dark theme
+- **Windows 98 aesthetic** — 98.css for authentic Windows 98 look
 - **MDI layout** — TreeBar (channels/PMs) | Tab bar | Topic bar | Chat area | Nicklist
 - **Context menus** — Right-click users for Query, Whois, Kick, Ban, Op, Voice, Ignore, Nick Color, Add to Contacts
 - **Command palette** — `Ctrl+/` to browse all slash commands
@@ -125,7 +125,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
 ┌─────────────────────────────────────────────────────────┐
 │                    Browser (LiveView)                    │
 │  ConnectLive ──→ ChatLive ──→ ChannelListLive           │
-│  41 function components · 16 JS hooks · 98.css dark     │
+│  41 function components · 16 JS hooks · 98.css     │
 └─────────────────────┬───────────────────────────────────┘
                       │ Phoenix.PubSub
 ┌─────────────────────▼───────────────────────────────────┐
@@ -176,7 +176,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
 | Framework | **Phoenix 1.8** | HTTP, WebSocket, PubSub |
 | Reactive UI | **Phoenix LiveView 1.0+** | Server-rendered reactive UI, zero JS frameworks |
 | Database | **PostgreSQL 16+** | Persistent storage, full-text search |
-| Design System | **98.css** + custom dark theme | Windows 98 aesthetic |
+| Design System | **98.css** | Windows 98 aesthetic |
 | Assets | **esbuild** | JS/CSS bundling |
 | HTTP Server | **Bandit** | HTTP/1.1 + WebSocket |
 | HTTP Client | **Req 0.5+** | Link preview fetching |
@@ -241,9 +241,7 @@ retro_hex_chat/
 │       │       ├── notify_list_window.ex # Buddy list window
 │       │       └── url_catcher_window.ex # URL capture/search
 │       ├── assets/
-│       │   ├── css/
-│       │   │   ├── dark-theme.css       # Win98 dark theme
-│       │   │   └── layout.css           # Component layout styles
+│       │   ├── css/                    # Component and layout styles
 │       │   └── js/hooks/               # 16 LiveView hooks
 │       └── test/                        # Web tests (LiveView + E2E)
 │
@@ -511,7 +509,7 @@ Every slash command implements the `Handler` behaviour:
 
 ## UI Components
 
-The interface is built with ~40 function components rendering semantic HTML styled by 98.css and a custom dark theme.
+The interface is built with ~40 function components rendering semantic HTML styled by 98.css.
 
 ### Screen Flow
 
@@ -888,7 +886,7 @@ This project is governed by a [Constitution](.specify/memory/constitution.md) �
 | V | **Contracts & Behaviours** | `@callback` contracts. One module per command. |
 | VI | **Static Analysis from Day One** | Credo + Dialyxir + `mix format` enforced from first commit |
 | VII | **Lean LiveViews** | Zero business logic in web layer. Streams for performance. |
-| VIII | **Windows 98 Design Fidelity** | 98.css, dark theme, 3D bevels, monospace fonts |
+| VIII | **Windows 98 Design Fidelity** | 98.css, 3D bevels, monospace fonts |
 | IX | **Hot/Cold Data Separation** | GenServer/ETS for runtime. PostgreSQL for persistence. |
 | X | **Scalable Architecture** | Process-per-channel scales via distributed Erlang |
 | XI | **User-Facing Documentation** | Every feature must include help topics and keyboard shortcut updates |

@@ -10,7 +10,7 @@ Phoenix LiveView web layer with Windows 98 aesthetic.
 
 ### Components
 
-15 function components rendering semantic HTML styled by 98.css with a custom dark theme: Window, TitleBar, MenuBar, Toolbar, Treebar, ChatMessage, Nicklist, StatusBar, CommandPalette, ContextMenu, SearchBar, ScrollLoader, Dialog.
+15 function components rendering semantic HTML styled by 98.css: Window, TitleBar, MenuBar, Toolbar, Treebar, ChatMessage, Nicklist, StatusBar, CommandPalette, ContextMenu, SearchBar, ScrollLoader, Dialog.
 
 ### JavaScript Hooks
 

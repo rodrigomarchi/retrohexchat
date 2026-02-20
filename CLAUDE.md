@@ -50,7 +50,7 @@ apps/
     ├── lib/retro_hex_chat_web/
     │   ├── live/             # ConnectLive, ChatLive, ChannelListLive
     │   └── components/       # ~40 function components (98.css-based)
-    ├── assets/               # CSS (dark-theme.css), JS hooks, static
+    ├── assets/               # CSS, JS hooks, static
     └── test/
 ```
 
