@@ -35,9 +35,9 @@ defmodule RetroHexChatWeb.ChatLive do
 
   @impl true
   def mount(_params, http_session, socket) do
-    nickname = http_session["chat_nickname"] || "Guest_#{:rand.uniform(99999)}"
+    nickname = http_session["chat_nickname"]
 
-    case NicknameValidator.validate(nickname) do
+    case validate_session_nickname(nickname) do
       :ok ->
         session = Session.new(nickname)
         pre_identified = http_session["chat_pre_identified"] == true
@@ -80,6 +80,11 @@ defmodule RetroHexChatWeb.ChatLive do
         {:ok, push_navigate(socket, to: ~p"/")}
     end
   end
+
+  @spec validate_session_nickname(String.t() | nil) :: :ok | {:error, String.t()}
+  defp validate_session_nickname(nil), do: {:error, "No nickname in session"}
+
+  defp validate_session_nickname(nickname), do: NicknameValidator.validate(nickname)
 
   defp attach_all_hooks(socket) do
     event_hooks = [
