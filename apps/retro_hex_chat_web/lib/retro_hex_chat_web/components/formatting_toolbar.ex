@@ -95,6 +95,62 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
           </button>
         </div>
       </div>
+      <button
+        type="button"
+        class="format-btn"
+        data-format-code="reverse"
+        data-testid="format-btn-reverse"
+        title="Reverse (Ctrl+Shift+V)"
+      >
+        <svg viewBox="0 0 14 14" fill="currentColor">
+          <rect x="1" y="1" width="6" height="12" fill="#000" />
+          <rect x="7" y="1" width="6" height="12" fill="#fff" stroke="#808080" stroke-width="0.5" />
+          <text
+            x="4"
+            y="10.5"
+            text-anchor="middle"
+            font-size="8"
+            font-weight="bold"
+            font-family="sans-serif"
+            fill="#fff"
+          >
+            R
+          </text>
+          <text
+            x="10"
+            y="10.5"
+            text-anchor="middle"
+            font-size="8"
+            font-weight="bold"
+            font-family="sans-serif"
+            fill="#000"
+          >
+            R
+          </text>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="format-btn"
+        data-format-code="reset"
+        data-testid="format-btn-reset"
+        title="Reset (Ctrl+Shift+X)"
+      >
+        <svg viewBox="0 0 14 14" fill="currentColor">
+          <text
+            x="7"
+            y="10"
+            text-anchor="middle"
+            font-size="9"
+            font-weight="bold"
+            font-family="sans-serif"
+            fill="#808080"
+          >
+            Aa
+          </text>
+          <line x1="2" y1="2" x2="12" y2="12" stroke="#FF0000" stroke-width="2" />
+        </svg>
+      </button>
       <span class="format-separator"></span>
       <button
         type="button"

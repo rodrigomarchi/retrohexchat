@@ -129,7 +129,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
     <button
       type="button"
       class="toolbar-btn"
-      title="Find"
+      title="Find (Ctrl+Shift+F)"
       data-testid="toolbar-find"
       phx-click="open_search"
     >
@@ -154,7 +154,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
     <button
       type="button"
       class="toolbar-btn"
-      title="Address Book"
+      title="Address Book (Ctrl+Shift+A)"
       data-testid="toolbar-address-book"
       phx-click="toggle_address_book"
     >
@@ -171,7 +171,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
     <button
       type="button"
       class="toolbar-btn"
-      title="Highlight Words"
+      title="Highlight Words (Ctrl+Shift+H)"
       data-testid="toolbar-highlight"
       phx-click="open_highlight_dialog"
     >
@@ -184,7 +184,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
     <button
       type="button"
       class="toolbar-btn"
-      title="Ignore List"
+      title="Ignore List (Ctrl+Shift+G)"
       data-testid="toolbar-ignore-list"
       phx-click="open_ignore_dialog"
     >
@@ -198,7 +198,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
     <button
       type="button"
       class="toolbar-btn"
-      title="URL Catcher"
+      title="URL Catcher (Ctrl+Shift+S)"
       data-testid="toolbar-url-catcher"
       phx-click="toggle_url_catcher"
     >
@@ -230,7 +230,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
     <button
       type="button"
       class="toolbar-btn"
-      title="Log Viewer"
+      title="Log Viewer (Ctrl+Shift+L)"
       data-testid="toolbar-log-viewer"
       phx-click="open_log_viewer"
     >
@@ -245,7 +245,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
     <button
       type="button"
       class="toolbar-btn"
-      title="Perform"
+      title="Perform (Ctrl+Shift+E)"
       data-testid="toolbar-perform"
       phx-click="open_perform_dialog"
     >
@@ -341,7 +341,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
     <button
       type="button"
       class="toolbar-btn"
-      title="Settings"
+      title="Settings (Ctrl+Shift+O)"
       data-testid="toolbar-settings"
       phx-click="settings"
     >
@@ -400,9 +400,36 @@ defmodule RetroHexChatWeb.Components.Toolbar do
 
   defp help_group(assigns) do
     ~H"""
+    <button
+      type="button"
+      class="toolbar-btn"
+      title="Keyboard Shortcuts (Ctrl+Shift+/)"
+      data-testid="toolbar-cheatsheet"
+      phx-click="toggle_cheatsheet"
+    >
+      <svg viewBox="0 0 16 16">
+        <rect
+          x="1"
+          y="3"
+          width="14"
+          height="10"
+          rx="1"
+          fill="#C0C0C0"
+          stroke="#808080"
+          stroke-width="1"
+        />
+        <rect x="3" y="5" width="2" height="2" rx="0.3" fill="#000080" />
+        <rect x="6" y="5" width="2" height="2" rx="0.3" fill="#000080" />
+        <rect x="9" y="5" width="2" height="2" rx="0.3" fill="#000080" />
+        <rect x="12" y="5" width="2" height="2" rx="0.3" fill="#000080" />
+        <rect x="3" y="8" width="2" height="2" rx="0.3" fill="#000080" />
+        <rect x="6" y="8" width="6" height="2" rx="0.3" fill="#000080" />
+        <rect x="12" y="8" width="2" height="2" rx="0.3" fill="#000080" />
+      </svg>
+    </button>
     <a
       class="toolbar-btn"
-      title="Help Topics"
+      title="Help Topics (Ctrl+Shift+W)"
       data-testid="toolbar-help"
       href="/chat/help"
       target="_blank"

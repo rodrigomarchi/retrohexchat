@@ -301,6 +301,10 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     {:halt, push_navigate(socket, to: ~p"/channels")}
   end
 
+  def handle_event("toggle_cheatsheet", _params, socket) do
+    {:halt, assign(socket, cheatsheet_visible: !socket.assigns.cheatsheet_visible)}
+  end
+
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
   defp select_item_params(:command, %{name: name}), do: {"command", name}
