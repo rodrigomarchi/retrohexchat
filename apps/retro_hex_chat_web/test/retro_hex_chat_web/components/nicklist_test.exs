@@ -15,16 +15,16 @@ defmodule RetroHexChatWeb.Components.NicklistTest do
 
       html = render_component(&Nicklist.nicklist/1, users: users)
 
-      assert html =~ "nicklist-header"
+      assert html =~ "sidebar-tab-bar"
       assert html =~ "Users (2)"
-      assert html =~ "nicklist-close"
+      assert html =~ "tab-close"
       assert html =~ "phx-click=\"toggle_nicklist\""
     end
 
     @tag :unit
     test "renders header even when no users" do
       html = render_component(&Nicklist.nicklist/1, users: [])
-      assert html =~ "nicklist-header"
+      assert html =~ "sidebar-tab-bar"
       assert html =~ "Users (0)"
     end
   end

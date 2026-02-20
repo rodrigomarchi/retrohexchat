@@ -754,7 +754,7 @@ defmodule RetroHexChatWeb.E2ETest do
       render_click(view, "nick_right_click", %{"nick" => "pmpal", "x" => 0, "y" => 0})
       render_click(view, "context_query", %{"nick" => "pmpal"})
       html = render(view)
-      refute html =~ "nicklist-header"
+      refute html =~ "sidebar-tab-bar--right"
 
       # Switch back to channel — nicklist should show
       html =
@@ -1317,7 +1317,7 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ "nicklist"
 
       html = render_click(view, "toggle_nicklist")
-      refute html =~ "nicklist-header"
+      refute html =~ "sidebar-tab-bar--right"
 
       html = render_click(view, "toggle_nicklist")
       assert html =~ "nicklist"

@@ -16,19 +16,19 @@ defmodule RetroHexChatWeb.Components.Nicklist do
 
     ~H"""
     <div class="nicklist" id="nicklist-container" phx-hook="NicklistHook">
-      <div class="nicklist-header">
-        <span class="nicklist-header-title">Users ({length(@users)})</span>
-        <button
-          type="button"
-          class="nicklist-close"
-          title="Hide user list"
-          phx-click="toggle_nicklist"
-          aria-label="Hide user list"
-        >
-          <svg viewBox="0 0 8 7" width="8" height="7" fill="currentColor">
-            <polygon points="0,0 8,3.5 0,7" />
-          </svg>
-        </button>
+      <div class="sidebar-tab-bar sidebar-tab-bar--right">
+        <div class="tab-item tab-active">
+          <span class="tab-label">Users ({length(@users)})</span>
+          <button
+            type="button"
+            class="tab-close"
+            phx-click="toggle_nicklist"
+            title="Hide user list"
+            aria-label="Hide user list"
+          >
+            ×
+          </button>
+        </div>
       </div>
       <div
         :if={@users == []}

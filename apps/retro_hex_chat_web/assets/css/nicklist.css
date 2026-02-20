@@ -5,46 +5,8 @@
   min-width: 100px;
   overflow-y: auto;
   flex-shrink: 0;
+  background-color: var(--color-white, #fff);
   box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
-}
-
-/* ── Header (sticky at top of scroll container) ──────────── */
-
-.nicklist-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 3px 6px;
-  background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-.nicklist-header-title {
-  font-size: var(--text-sm);
-  font-weight: bold;
-  color: var(--color-gray-700);
-}
-
-.nicklist-close {
-  width: 16px;
-  min-width: 16px;
-  height: 14px;
-  min-height: 14px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: none;
-  border: none;
-  color: var(--color-gray-700);
-}
-
-.nicklist-close:hover {
-  color: var(--color-black, #000);
 }
 
 /* ── Group headers ───────────────────────────────────────── */

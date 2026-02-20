@@ -26,21 +26,21 @@ defmodule RetroHexChatWeb.Components.TreebarTest do
     @tag :unit
     test "renders treebar header with title" do
       html = render_treebar(channels: ["#lobby"])
-      assert html =~ "treebar-header"
+      assert html =~ "sidebar-tab-bar"
       assert html =~ "Conversations"
     end
 
     @tag :unit
     test "header has close button with toggle_treebar event" do
       html = render_treebar(channels: ["#lobby"])
-      assert html =~ "treebar-close"
+      assert html =~ "tab-close"
       assert html =~ "phx-click=\"toggle_treebar\""
     end
 
     @tag :unit
     test "renders header even when no channels" do
       html = render_treebar([])
-      assert html =~ "treebar-header"
+      assert html =~ "sidebar-tab-bar"
       assert html =~ "Conversations"
     end
   end

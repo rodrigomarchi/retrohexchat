@@ -89,3 +89,32 @@
   text-overflow: ellipsis;
   max-width: 120px;
 }
+
+/* ── Sidebar tab bars — reuse tab-item styling ──────────── */
+
+.sidebar-tab-bar {
+  display: flex;
+  padding: 2px 4px 0 4px;
+  background-color: var(--color-surface);
+  flex-shrink: 0;
+  min-height: 24px;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sidebar-tab-bar .tab-item {
+  flex: 1;
+  justify-content: space-between;
+}
+
+.sidebar-tab-bar--left {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.sidebar-tab-bar--right {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
