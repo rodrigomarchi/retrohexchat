@@ -29,13 +29,27 @@
   id="app-container"
   phx-hook="SoundHook"
 >
-  <RetroHexChatWeb.Components.TitleBar.title_bar />
-  <RetroHexChatWeb.Components.Toolbar.toolbar
-    :if={@show_toolbar}
-    connected={true}
-    dnd_enabled={@dnd_enabled}
-    notification_count={@notification_count}
-  />
+  <div class="app-header">
+    <img src={~p"/images/header-logo.svg"} alt="RetroHexChat" class="app-header-wordmark" />
+    <div class="app-header-panels">
+      <RetroHexChatWeb.Components.Toolbar.toolbar
+        :if={@show_toolbar}
+        connected={true}
+        dnd_enabled={@dnd_enabled}
+        notification_count={@notification_count}
+      />
+      <RetroHexChatWeb.Components.StatusBar.status_bar
+        :if={@show_statusbar}
+        nickname={@session.nickname}
+        channel={@session.active_pm || @session.active_channel}
+        user_count={length(@channel_users)}
+        connection_state={@connection_state}
+        lag_ms={@lag_ms}
+        lag_status={@lag_status}
+        muted={@muted}
+      />
+    </div>
+  </div>
 
   <div class="mdi-layout">
     <RetroHexChatWeb.Components.Treebar.treebar
@@ -566,15 +580,4 @@
   />
 
   <RetroHexChatWeb.Components.KickDialog.kick_dialog kick_queue={@kick_queue} />
-
-  <RetroHexChatWeb.Components.StatusBar.status_bar
-    :if={@show_statusbar}
-    nickname={@session.nickname}
-    channel={@session.active_pm || @session.active_channel}
-    user_count={length(@channel_users)}
-    connection_state={@connection_state}
-    lag_ms={@lag_ms}
-    lag_status={@lag_status}
-    muted={@muted}
-  />
 </div>
