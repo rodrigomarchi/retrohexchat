@@ -29,9 +29,8 @@
   id="app-container"
   phx-hook="SoundHook"
 >
-  <div class="app-header">
-    <img src={~p"/images/header-logo.svg"} alt="RetroHexChat" class="app-header-wordmark" />
-    <div class="app-header-panels">
+  <RetroHexChatWeb.Components.AppHeader.app_header>
+    <:panels>
       <RetroHexChatWeb.Components.Toolbar.toolbar
         :if={@show_toolbar}
         connected={true}
@@ -48,8 +47,8 @@
         lag_status={@lag_status}
         muted={@muted}
       />
-    </div>
-  </div>
+    </:panels>
+  </RetroHexChatWeb.Components.AppHeader.app_header>
 
   <div class="mdi-layout">
     <RetroHexChatWeb.Components.Treebar.treebar

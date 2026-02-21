@@ -34,7 +34,7 @@
 .landing-body .window-body legend,
 .landing-body .window-body a,
 .landing-body button,
-.landing-body .landing-taskbar,
+.landing-body .landing-header,
 .landing-body .status-bar-field,
 .landing-body .landing-tab {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -71,9 +71,9 @@
   border: 0;
 }
 
-/* ── 2. Taskbar (top navigation) ────────────────────────────── */
+/* ── 2. Header (fixed nav using shared AppHeader) ──────────── */
 
-.landing-taskbar {
+.landing-header {
   position: fixed;
   top: 0;
   left: 0;
@@ -82,35 +82,37 @@
   background: silver;
   border-bottom: 2px solid #888;
   box-shadow: inset 0 1px 0 #fff;
-  padding: 4px 8px;
-  min-height: 40px;
 }
 
-.landing-taskbar__inner {
+.landing-header .app-header {
   display: flex;
   align-items: center;
-  gap: 4px;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 4px 8px;
 }
 
-.landing-taskbar__logo {
-  display: flex;
-  align-items: center;
-  padding: 0;
-  text-decoration: none;
-  background: transparent;
-  border: none;
+.landing-header .app-header-wordmark {
+  height: 52px;
+  width: auto;
   flex-shrink: 0;
 }
 
-.landing-taskbar__wordmark {
-  height: 36px;
-  width: auto;
-  display: block;
+.landing-header .app-header-panels {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
 }
 
-.landing-taskbar__hamburger {
+.landing-nav {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.landing-nav__hamburger {
   display: none;
   margin-left: auto;
   font-size: 18px;
@@ -118,7 +120,7 @@
   min-height: 28px;
 }
 
-.landing-taskbar__nav {
+.landing-nav__links {
   display: flex;
   align-items: center;
   gap: 2px;
@@ -126,23 +128,23 @@
   justify-content: center;
 }
 
-.landing-taskbar__link {
+.landing-nav__link {
   color: #000;
   text-decoration: none;
   padding: 4px 8px;
 }
 
-.landing-taskbar__link:hover {
+.landing-nav__link:hover {
   text-decoration: underline;
 }
 
-.landing-taskbar__actions {
+.landing-nav__actions {
   display: flex;
   gap: 4px;
   margin-left: auto;
 }
 
-.landing-taskbar__btn {
+.landing-nav__btn {
   display: inline-block;
   text-decoration: none;
   color: #000;
@@ -157,7 +159,7 @@
     inset 2px 2px #dfdfdf;
 }
 
-.landing-taskbar__btn:active {
+.landing-nav__btn:active {
   box-shadow:
     inset -1px -1px #fff,
     inset 1px 1px #0a0a0a,
@@ -165,7 +167,7 @@
     inset 2px 2px grey;
 }
 
-.landing-taskbar__btn--primary {
+.landing-nav__btn--primary {
   font-weight: bold;
 }
 
@@ -178,7 +180,7 @@
 }
 
 .landing-section:first-of-type {
-  padding-top: 56px; /* space for fixed taskbar */
+  padding-top: 72px; /* space for fixed header (52px logo + padding + border) */
 }
 
 .landing-window {
@@ -669,11 +671,11 @@
 
 /* Mobile */
 @media (max-width: 768px) {
-  .landing-taskbar__hamburger {
+  .landing-nav__hamburger {
     display: block;
   }
 
-  .landing-taskbar__nav {
+  .landing-nav__links {
     display: none;
     flex-direction: column;
     position: absolute;
@@ -686,11 +688,11 @@
     gap: 4px;
   }
 
-  .landing-taskbar__nav--open {
+  .landing-nav__links--open {
     display: flex;
   }
 
-  .landing-taskbar__actions {
+  .landing-nav__actions {
     margin-left: 0;
     width: 100%;
     justify-content: center;
@@ -803,8 +805,8 @@
   vertical-align: -2px;
 }
 
-/* Taskbar nav links: icon spacing */
-.landing-taskbar__link .licon {
+/* Nav links: icon spacing */
+.landing-nav__link .licon {
   margin-right: 2px;
   vertical-align: -1px;
 }

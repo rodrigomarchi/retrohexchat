@@ -1,20 +1,9 @@
 /* RetroHexChat — Connect dialog: centered window, fieldset, inputs, buttons */
 
 .connect-dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   min-width: 350px;
-}
-
-.connect-dialog__logo {
-  margin-bottom: 16px;
-}
-
-.connect-dialog__wordmark {
-  height: 36px;
-  width: auto;
+  max-width: 400px;
+  margin: 40px auto 0;
 }
 
 .connect-dialog .window-body {

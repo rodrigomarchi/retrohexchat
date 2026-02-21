@@ -19,9 +19,9 @@ export function initSmoothScroll() {
 
       // Close mobile menu if open
       const nav = document.getElementById("landing-nav-menu");
-      const hamburger = document.querySelector(".landing-taskbar__hamburger");
-      if (nav && nav.classList.contains("landing-taskbar__nav--open")) {
-        nav.classList.remove("landing-taskbar__nav--open");
+      const hamburger = document.querySelector(".landing-nav__hamburger");
+      if (nav && nav.classList.contains("landing-nav__links--open")) {
+        nav.classList.remove("landing-nav__links--open");
         if (hamburger) hamburger.setAttribute("aria-expanded", "false");
       }
     });
@@ -57,12 +57,12 @@ export function switchTab(selectedTab, allTabs) {
 // ── Mobile menu ────────────────────────────────────────────────
 
 export function initMobileMenu() {
-  const hamburger = document.querySelector(".landing-taskbar__hamburger");
+  const hamburger = document.querySelector(".landing-nav__hamburger");
   const nav = document.getElementById("landing-nav-menu");
   if (!hamburger || !nav) return;
 
   hamburger.addEventListener("click", () => {
-    const isOpen = nav.classList.toggle("landing-taskbar__nav--open");
+    const isOpen = nav.classList.toggle("landing-nav__links--open");
     hamburger.setAttribute("aria-expanded", String(isOpen));
   });
 }

@@ -157,3 +157,30 @@
   cursor: pointer;
   user-select: none;
 }
+
+/* ── Skeleton toolbar (connect, P2P lobby) ── */
+.toolbar--skeleton {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+.toolbar-btn--skeleton {
+  background-color: var(--color-gray-200);
+  border-color: var(--color-gray-300);
+}
+
+.toolbar-btn--skeleton:hover {
+  background-color: var(--color-gray-200);
+}
+
+/* ── Skeleton status bar ── */
+.status-bar--skeleton {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.status-bar--skeleton .status-bar-field {
+  color: var(--color-gray-500);
+  min-width: 60px;
+}

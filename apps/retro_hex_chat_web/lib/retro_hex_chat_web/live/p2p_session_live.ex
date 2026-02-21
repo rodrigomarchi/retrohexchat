@@ -42,27 +42,55 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   @impl true
   def render(%{expired: true} = assigns) do
     ~H"""
-    <div class="p2p-session">
-      <header class="p2p-session__header">
-        <a href="/chat" class="p2p-session__logo-link">
-          <img src={~p"/images/header-logo.svg"} alt="RetroHexChat" class="p2p-session__wordmark" />
-        </a>
-        <span class="p2p-session__header-title">Sessao P2P</span>
-      </header>
-      <P2pLobby.p2p_expired reason={@expired_reason} />
+    <div class="app-container">
+      <RetroHexChatWeb.Components.AppHeader.app_header>
+        <:panels>
+          <div class="toolbar toolbar--skeleton">
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+          </div>
+          <div class="status-bar status-bar--skeleton">
+            <p class="status-bar-field">&nbsp;</p>
+            <p class="status-bar-field">&nbsp;</p>
+            <p class="status-bar-field">&nbsp;</p>
+          </div>
+        </:panels>
+      </RetroHexChatWeb.Components.AppHeader.app_header>
+      <div class="p2p-session">
+        <P2pLobby.p2p_expired reason={@expired_reason} />
+      </div>
     </div>
     """
   end
 
   def render(assigns) do
     ~H"""
-    <div id="p2p-session" class="p2p-session" phx-hook="P2PSessionHook">
-      <header class="p2p-session__header">
-        <a href="/chat" class="p2p-session__logo-link">
-          <img src={~p"/images/header-logo.svg"} alt="RetroHexChat" class="p2p-session__wordmark" />
-        </a>
-        <span class="p2p-session__header-title">Sessao P2P</span>
-      </header>
+    <div id="p2p-session" class="app-container" phx-hook="P2PSessionHook">
+      <RetroHexChatWeb.Components.AppHeader.app_header>
+        <:panels>
+          <div class="toolbar toolbar--skeleton">
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+          </div>
+          <div class="status-bar status-bar--skeleton">
+            <p class="status-bar-field">&nbsp;</p>
+            <p class="status-bar-field">&nbsp;</p>
+            <p class="status-bar-field">&nbsp;</p>
+          </div>
+        </:panels>
+      </RetroHexChatWeb.Components.AppHeader.app_header>
       <div id="p2p-capabilities" phx-hook="P2PCapabilityHook"></div>
       <div id="p2p-webrtc" phx-hook="WebRTCHook"></div>
       <P2pLobby.p2p_lobby

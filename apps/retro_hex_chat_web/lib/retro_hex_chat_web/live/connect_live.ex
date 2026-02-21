@@ -136,131 +136,145 @@ defmodule RetroHexChatWeb.ConnectLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="connect-dialog" id="connect-root" phx-hook="ConnectFormHook">
-      <div class="window">
-        <div class="title-bar">
-          <div class="title-bar-text">Connect to RetroHexChat</div>
-          <div class="title-bar-controls">
-            <button aria-label="Close"></button>
+    <div class="app-container" id="connect-root" phx-hook="ConnectFormHook">
+      <RetroHexChatWeb.Components.AppHeader.app_header>
+        <:panels>
+          <div class="toolbar toolbar--skeleton">
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+          </div>
+          <div class="status-bar status-bar--skeleton">
+            <p class="status-bar-field">&nbsp;</p>
+            <p class="status-bar-field">&nbsp;</p>
+            <p class="status-bar-field">&nbsp;</p>
+          </div>
+        </:panels>
+      </RetroHexChatWeb.Components.AppHeader.app_header>
+      <div class="connect-dialog">
+        <div class="window">
+          <div class="title-bar">
+            <div class="title-bar-text">Connect to RetroHexChat</div>
+            <div class="title-bar-controls">
+              <button aria-label="Close"></button>
+            </div>
+          </div>
+          <div class="window-body">
+            <%= case @step do %>
+              <% :nickname -> %>
+                <form phx-submit="connect" phx-change="validate">
+                  <fieldset>
+                    <legend><.icon_chat class="licon licon-14" /> User Information</legend>
+                    <label for="nickname">Nickname:</label>
+                    <input
+                      type="text"
+                      id="nickname"
+                      name="nickname"
+                      value={@nickname}
+                      maxlength="16"
+                      autofocus
+                      autocomplete="off"
+                      phx-debounce="300"
+                      phx-mounted={JS.focus()}
+                    />
+                    <p class="nick-help">
+                      1–16 characters. Must start with a letter. No spaces. Case sensitive.
+                    </p>
+                    <p :if={@nickname_error} class="error-text">{@nickname_error}</p>
+                  </fieldset>
+                  <div class="button-row">
+                    <button
+                      type="submit"
+                      data-testid="connect-btn"
+                      disabled={@nickname_error != nil or @nickname == ""}
+                    >
+                      <.icon_connect class="licon licon-14" /> Connect
+                    </button>
+                  </div>
+                </form>
+              <% :password -> %>
+                <form phx-submit="authenticate" phx-change="validate_password">
+                  <fieldset>
+                    <legend><.icon_lock class="licon licon-14" /> Authentication</legend>
+                    <p class="auth-info">
+                      The nickname <strong>{@nickname}</strong>
+                      is registered. Please enter your password.
+                    </p>
+                    <label for="password">Password:</label>
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      value={@password}
+                      autofocus
+                      autocomplete="off"
+                      phx-mounted={JS.focus()}
+                    />
+                    <p :if={@password_error} class="error-text">{@password_error}</p>
+                  </fieldset>
+                  <div class="button-row">
+                    <button type="button" phx-click="back" data-testid="back-btn">
+                      &lt; Back
+                    </button>
+                    <button type="submit" data-testid="auth-btn" disabled={@password == ""}>
+                      <.icon_connect class="licon licon-14" /> Connect
+                    </button>
+                  </div>
+                </form>
+              <% :register -> %>
+                <form phx-submit="register" phx-change="validate_register">
+                  <fieldset>
+                    <legend><.icon_notepad class="licon licon-14" /> Registration</legend>
+                    <p class="auth-info">
+                      The nickname <strong>{@nickname}</strong>
+                      is available. Choose a password to register it.
+                    </p>
+                    <label for="reg-password">Password:</label>
+                    <input
+                      type="password"
+                      id="reg-password"
+                      name="password"
+                      value={@password}
+                      autocomplete="off"
+                      phx-mounted={JS.focus()}
+                    />
+                    <label for="reg-password-confirm">Confirm password:</label>
+                    <input
+                      type="password"
+                      id="reg-password-confirm"
+                      name="password_confirm"
+                      value={@password_confirm}
+                      autocomplete="off"
+                    />
+                    <p :if={@password_error} class="error-text">{@password_error}</p>
+                  </fieldset>
+                  <div class="button-row">
+                    <button type="button" phx-click="back" data-testid="back-btn">
+                      &lt; Back
+                    </button>
+                    <button
+                      type="submit"
+                      data-testid="register-btn"
+                      disabled={@password == "" or @password_confirm == ""}
+                    >
+                      <.icon_connect class="licon licon-14" /> Register &amp; Connect
+                    </button>
+                  </div>
+                </form>
+            <% end %>
           </div>
         </div>
-        <div class="window-body">
-          <div class="connect-dialog__logo">
-            <img
-              src="/images/header-logo.svg"
-              alt="RetroHexChat"
-              class="connect-dialog__wordmark"
-            />
-          </div>
-          <%= case @step do %>
-            <% :nickname -> %>
-              <form phx-submit="connect" phx-change="validate">
-                <fieldset>
-                  <legend><.icon_chat class="licon licon-14" /> User Information</legend>
-                  <label for="nickname">Nickname:</label>
-                  <input
-                    type="text"
-                    id="nickname"
-                    name="nickname"
-                    value={@nickname}
-                    maxlength="16"
-                    autofocus
-                    autocomplete="off"
-                    phx-debounce="300"
-                    phx-mounted={JS.focus()}
-                  />
-                  <p class="nick-help">
-                    1–16 characters. Must start with a letter. No spaces. Case sensitive.
-                  </p>
-                  <p :if={@nickname_error} class="error-text">{@nickname_error}</p>
-                </fieldset>
-                <div class="button-row">
-                  <button
-                    type="submit"
-                    data-testid="connect-btn"
-                    disabled={@nickname_error != nil or @nickname == ""}
-                  >
-                    <.icon_connect class="licon licon-14" /> Connect
-                  </button>
-                </div>
-              </form>
-            <% :password -> %>
-              <form phx-submit="authenticate" phx-change="validate_password">
-                <fieldset>
-                  <legend><.icon_lock class="licon licon-14" /> Authentication</legend>
-                  <p class="auth-info">
-                    The nickname <strong>{@nickname}</strong>
-                    is registered. Please enter your password.
-                  </p>
-                  <label for="password">Password:</label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={@password}
-                    autofocus
-                    autocomplete="off"
-                    phx-mounted={JS.focus()}
-                  />
-                  <p :if={@password_error} class="error-text">{@password_error}</p>
-                </fieldset>
-                <div class="button-row">
-                  <button type="button" phx-click="back" data-testid="back-btn">
-                    &lt; Back
-                  </button>
-                  <button type="submit" data-testid="auth-btn" disabled={@password == ""}>
-                    <.icon_connect class="licon licon-14" /> Connect
-                  </button>
-                </div>
-              </form>
-            <% :register -> %>
-              <form phx-submit="register" phx-change="validate_register">
-                <fieldset>
-                  <legend><.icon_notepad class="licon licon-14" /> Registration</legend>
-                  <p class="auth-info">
-                    The nickname <strong>{@nickname}</strong>
-                    is available. Choose a password to register it.
-                  </p>
-                  <label for="reg-password">Password:</label>
-                  <input
-                    type="password"
-                    id="reg-password"
-                    name="password"
-                    value={@password}
-                    autocomplete="off"
-                    phx-mounted={JS.focus()}
-                  />
-                  <label for="reg-password-confirm">Confirm password:</label>
-                  <input
-                    type="password"
-                    id="reg-password-confirm"
-                    name="password_confirm"
-                    value={@password_confirm}
-                    autocomplete="off"
-                  />
-                  <p :if={@password_error} class="error-text">{@password_error}</p>
-                </fieldset>
-                <div class="button-row">
-                  <button type="button" phx-click="back" data-testid="back-btn">
-                    &lt; Back
-                  </button>
-                  <button
-                    type="submit"
-                    data-testid="register-btn"
-                    disabled={@password == "" or @password_confirm == ""}
-                  >
-                    <.icon_connect class="licon licon-14" /> Register &amp; Connect
-                  </button>
-                </div>
-              </form>
-          <% end %>
-        </div>
+        <form id="connect-session-form" action={~p"/chat/session"} method="post" class="u-hidden">
+          <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+          <input type="hidden" name="nickname" value={@nickname} />
+          <input :if={@auth_token} type="hidden" name="auth_token" value={@auth_token} />
+        </form>
       </div>
-      <form id="connect-session-form" action={~p"/chat/session"} method="post" class="u-hidden">
-        <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
-        <input type="hidden" name="nickname" value={@nickname} />
-        <input :if={@auth_token} type="hidden" name="auth_token" value={@auth_token} />
-      </form>
     </div>
     """
   end

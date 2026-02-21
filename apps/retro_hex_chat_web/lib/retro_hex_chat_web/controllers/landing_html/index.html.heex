@@ -1,55 +1,51 @@
 <a href="#main-content" class="landing-skip-link">Skip to content</a>
 
-<%!-- ══════════════ TASKBAR (fixed nav) ══════════════ --%>
-<header class="landing-taskbar" role="banner">
-  <nav class="landing-taskbar__inner" aria-label="Main navigation">
-    <a href="#hero" class="landing-taskbar__logo" aria-label="Retro Hex Chat — back to top">
-      <img
-        src="/images/header-logo.svg"
-        alt="Retro Hex Chat"
-        class="landing-taskbar__wordmark"
-      />
-    </a>
+<%!-- ══════════════ HEADER (fixed nav) ══════════════ --%>
+<header class="landing-header" role="banner">
+  <RetroHexChatWeb.Components.AppHeader.app_header>
+    <:panels>
+      <nav class="landing-nav" aria-label="Main navigation">
+        <button
+          class="landing-nav__hamburger"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="landing-nav-menu"
+        >
+          &#9776;
+        </button>
 
-    <button
-      class="landing-taskbar__hamburger"
-      type="button"
-      aria-label="Open navigation menu"
-      aria-expanded="false"
-      aria-controls="landing-nav-menu"
-    >
-      &#9776;
-    </button>
-
-    <div id="landing-nav-menu" class="landing-taskbar__nav" role="menubar">
-      <a href="#problem" class="landing-taskbar__link" role="menuitem">
-        <.icon_warning class="licon licon-12" /> The Problem
-      </a>
-      <a href="#solution" class="landing-taskbar__link" role="menuitem">
-        <.icon_shield class="licon licon-12" /> The Solution
-      </a>
-      <a href="#how-it-works" class="landing-taskbar__link" role="menuitem">
-        <.icon_server class="licon licon-12" /> How It Works
-      </a>
-      <a href="#features" class="landing-taskbar__link" role="menuitem">
-        <.icon_chat class="licon licon-12" /> Features
-      </a>
-      <a href="#open-source" class="landing-taskbar__link" role="menuitem">
-        <.icon_code class="licon licon-12" /> Open Source
-      </a>
-      <a href="#faq" class="landing-taskbar__link" role="menuitem">
-        <.icon_question class="licon licon-12" /> FAQ
-      </a>
-      <a href="/chat/help" class="landing-taskbar__link" role="menuitem">
-        <.icon_notepad class="licon licon-12" /> Docs
-      </a>
-      <div class="landing-taskbar__actions">
-        <a href="/connect" class="landing-taskbar__btn landing-taskbar__btn--primary">
-          <.icon_connect class="licon licon-12" /> Connect
-        </a>
-      </div>
-    </div>
-  </nav>
+        <div id="landing-nav-menu" class="landing-nav__links" role="menubar">
+          <a href="#problem" class="landing-nav__link" role="menuitem">
+            <.icon_warning class="licon licon-12" /> The Problem
+          </a>
+          <a href="#solution" class="landing-nav__link" role="menuitem">
+            <.icon_shield class="licon licon-12" /> The Solution
+          </a>
+          <a href="#how-it-works" class="landing-nav__link" role="menuitem">
+            <.icon_server class="licon licon-12" /> How It Works
+          </a>
+          <a href="#features" class="landing-nav__link" role="menuitem">
+            <.icon_chat class="licon licon-12" /> Features
+          </a>
+          <a href="#open-source" class="landing-nav__link" role="menuitem">
+            <.icon_code class="licon licon-12" /> Open Source
+          </a>
+          <a href="#faq" class="landing-nav__link" role="menuitem">
+            <.icon_question class="licon licon-12" /> FAQ
+          </a>
+          <a href="/chat/help" class="landing-nav__link" role="menuitem">
+            <.icon_notepad class="licon licon-12" /> Docs
+          </a>
+          <div class="landing-nav__actions">
+            <a href="/connect" class="landing-nav__btn landing-nav__btn--primary">
+              <.icon_connect class="licon licon-12" /> Connect
+            </a>
+          </div>
+        </div>
+      </nav>
+    </:panels>
+  </RetroHexChatWeb.Components.AppHeader.app_header>
 </header>
 
 <main id="main-content">
