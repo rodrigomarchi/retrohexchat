@@ -92,24 +92,10 @@
     inset 2px 2px var(--button-highlight);
 }
 
-@font-face {
-  font-family: "Pixelated MS Sans Serif";
-  src: url("ms_sans_serif.woff") format("woff");
-  src: url("ms_sans_serif.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Pixelated MS Sans Serif";
-  src: url("ms_sans_serif_bold.woff") format("woff");
-  src: url("ms_sans_serif_bold.woff2") format("woff2");
-  font-weight: bold;
-  font-style: normal;
-}
+/* @font-face declarations removed — platform uses Source Code Pro exclusively */
 
 body {
-  font-family: Arial;
+  font-family: "Source Code Pro", "Courier New", monospace;
   font-size: 12px;
   color: var(--text-color);
 }
@@ -126,8 +112,7 @@ ul.tree-view,
 .window,
 .title-bar,
 li[role=tab] {
-  font-family: "Pixelated MS Sans Serif", Arial;
-  -webkit-font-smoothing: none;
+  font-family: "Source Code Pro", "Courier New", monospace;
   font-size: 11px;
 }
 
@@ -835,7 +820,7 @@ pre {
 
 code,
 code * {
-  font-family: monospace;
+  font-family: "Source Code Pro", "Courier New", monospace;
 }
 
 summary:focus {

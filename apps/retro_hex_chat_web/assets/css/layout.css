@@ -10,7 +10,9 @@ input,
 select,
 textarea {
   font-family: var(--font-system);
-  -webkit-font-smoothing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {

@@ -8,9 +8,12 @@
   padding: 0;
   background-color: #008080;
   min-height: 100vh;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Source Code Pro", "Courier New", monospace;
   font-size: 14px;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /*
@@ -37,9 +40,11 @@
 .landing-body .landing-header,
 .landing-body .status-bar-field,
 .landing-body .landing-tab {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Source Code Pro", "Courier New", monospace;
   font-size: 14px;
-  -webkit-font-smoothing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Skip-to-content link (accessible, hidden until focused) */
