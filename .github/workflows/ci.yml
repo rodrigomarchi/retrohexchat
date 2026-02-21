@@ -458,28 +458,3 @@ jobs:
             echo "::error::One or more checks failed"
             exit 1
           fi
-
-  deploy:
-    name: Deploy (${{ matrix.server }})
-    needs: [report]
-    if: always() && needs.report.result == 'success' && github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - server: moon
-            ip_secret: MOON_IP
-          - server: sun
-            ip_secret: SUN_IP
-    steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets[matrix.ip_secret] }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            cd ~/retro_hex_chat
-            git fetch --all --prune
-            bash ~/retro_hex_chat/scripts/deploy.sh main

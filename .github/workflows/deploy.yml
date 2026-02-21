@@ -1,6 +1,13 @@
 name: Deploy
 
 on:
+  # Auto-deploy after CI passes on main
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+  # Manual deploy by tag (sun-* or moon-*)
   push:
     tags:
       - 'sun-*'
@@ -10,32 +17,58 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: Deploy
+  # Auto-deploy to both servers after CI passes
+  deploy-all:
+    name: Deploy (${{ matrix.server }})
+    if: >-
+      github.event_name == 'workflow_run'
+      && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - server: moon
+            ip_secret: MOON_IP
+          - server: sun
+            ip_secret: SUN_IP
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets[matrix.ip_secret] }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/retro_hex_chat
+            git fetch --all --prune
+            bash ~/retro_hex_chat/scripts/deploy.sh main
+
+  # Manual deploy to a single server by tag
+  deploy-tag:
+    name: Deploy (${{ github.ref_name }})
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
       - name: Determine target server
         id: target
         run: |
           TAG="${GITHUB_REF_NAME}"
           if [[ "$TAG" == sun-* ]]; then
             echo "server=sun" >> "$GITHUB_OUTPUT"
-            echo "ip=${{ secrets.SUN_IP }}" >> "$GITHUB_OUTPUT"
+            echo "ip_secret=SUN_IP" >> "$GITHUB_OUTPUT"
           elif [[ "$TAG" == moon-* ]]; then
             echo "server=moon" >> "$GITHUB_OUTPUT"
-            echo "ip=${{ secrets.MOON_IP }}" >> "$GITHUB_OUTPUT"
+            echo "ip_secret=MOON_IP" >> "$GITHUB_OUTPUT"
           else
             echo "::error::Unknown tag prefix: ${TAG}"
             exit 1
           fi
-          echo "==> Deploying ${TAG} to $( [[ "$TAG" == sun-* ]] && echo 'Sun (production)' || echo 'Moon (staging)' )"
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ steps.target.outputs.ip }}
+          host: ${{ secrets[steps.target.outputs.ip_secret] }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
