@@ -38,6 +38,31 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
   @impl true
   def category, do: :user
 
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "p2p",
+      syntax: "/p2p <nickname>",
+      description:
+        "Start a direct peer-to-peer session with another user for file transfers, audio calls, or video calls.\nRequires: both users must be registered and identified (/ns identify).",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "Target user"
+        }
+      ],
+      examples: ["/p2p mario"]
+    }
+  end
+
   # Shared execution logic used by /p2p, /call, and /sendfile handlers
   @doc false
   @spec do_execute(String.t(), String.t(), Handler.context()) :: Handler.result()

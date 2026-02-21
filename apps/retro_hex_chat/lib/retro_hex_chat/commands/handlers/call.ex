@@ -37,4 +37,29 @@ defmodule RetroHexChat.Commands.Handlers.Call do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "call",
+      syntax: "/call <nickname>",
+      description:
+        "Start a peer-to-peer audio call with another user.\nRequires: both users must be registered and identified (/ns identify).",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "User to call"
+        }
+      ],
+      examples: ["/call mario"]
+    }
+  end
 end

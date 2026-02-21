@@ -37,4 +37,29 @@ defmodule RetroHexChat.Commands.Handlers.SendFile do
 
   @impl true
   def category, do: :user
+
+  @impl true
+  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+  def syntax_definition do
+    alias RetroHexChat.Commands.CommandSyntax
+    alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+    %CommandSyntax{
+      command: "sendfile",
+      syntax: "/sendfile <nickname>",
+      description:
+        "Send a file to another user through a direct peer-to-peer connection.\nRequires: both users must be registered and identified (/ns identify).",
+      category: :user,
+      parameters: [
+        %Parameter{
+          name: "nickname",
+          required: true,
+          type: :nick,
+          position: 0,
+          description: "File recipient"
+        }
+      ],
+      examples: ["/sendfile mario"]
+    }
+  end
 end

@@ -66,6 +66,7 @@ const AutocompleteHook = {
       if (trigger) {
         this.hasNavigated = false;
         this.pushEvent("autocomplete_query", trigger);
+        this.checkSyntaxTooltip(value);
         return;
       }
 
