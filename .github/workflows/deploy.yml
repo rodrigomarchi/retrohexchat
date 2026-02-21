@@ -12,21 +12,56 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: Deploy (${{ matrix.server }})
+  prepare:
+    name: Prepare
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - server: moon
-            ip_secret: MOON_IP
-          - server: sun
-            ip_secret: SUN_IP
+    steps:
+      - name: Validate secrets
+        env:
+          MOON_IP: ${{ secrets.MOON_IP }}
+          SUN_IP: ${{ secrets.SUN_IP }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+        run: |
+          missing=()
+          [ -z "$MOON_IP" ] && missing+=("MOON_IP")
+          [ -z "$SUN_IP" ] && missing+=("SUN_IP")
+          [ -z "$DEPLOY_USER" ] && missing+=("DEPLOY_USER")
+          [ -z "$DEPLOY_SSH_KEY" ] && missing+=("DEPLOY_SSH_KEY")
+          [ -z "$SSH_PORT" ] && missing+=("SSH_PORT")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Missing secrets: ${missing[*]}"
+            exit 1
+          fi
+          echo "Deploying ${GITHUB_SHA::7} to moon + sun"
+
+  moon:
+    name: Deploy (moon)
+    needs: [prepare]
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets[matrix.ip_secret] }}
+          host: ${{ secrets.MOON_IP }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/retro_hex_chat
+            git fetch --all --prune
+            bash ~/retro_hex_chat/scripts/deploy.sh main
+
+  sun:
+    name: Deploy (sun)
+    needs: [prepare]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SUN_IP }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
