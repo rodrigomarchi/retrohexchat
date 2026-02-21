@@ -42,6 +42,38 @@ defmodule RetroHexChat.Services.Queries do
     |> Repo.update()
   end
 
+  @spec update_last_seen_by_nickname(String.t()) :: :ok
+  def update_last_seen_by_nickname(nickname) do
+    case find_by_nickname(nickname) do
+      nil -> :ok
+      nick -> update_last_seen(nick)
+    end
+
+    :ok
+  end
+
+  @spec purge_expired_nicks(pos_integer(), [String.t()]) :: {non_neg_integer(), [String.t()]}
+  def purge_expired_nicks(days, protected_nicks) do
+    cutoff = DateTime.add(DateTime.utc_now(), -days, :day)
+
+    query =
+      from(n in RegisteredNick,
+        where: n.last_seen_at < ^cutoff,
+        where: n.nickname not in ^protected_nicks,
+        select: n.nickname
+      )
+
+    nicknames = Repo.all(query)
+
+    {count, _} =
+      from(n in RegisteredNick,
+        where: n.nickname in ^nicknames
+      )
+      |> Repo.delete_all()
+
+    {count, nicknames}
+  end
+
   # ── Channel registration ────────────────────────────────────
 
   @spec insert_registered_channel(String.t(), String.t()) ::

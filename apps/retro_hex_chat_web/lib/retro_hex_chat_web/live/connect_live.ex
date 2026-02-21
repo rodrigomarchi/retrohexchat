@@ -219,6 +219,9 @@ defmodule RetroHexChatWeb.ConnectLive do
                     encerra a sessão anterior. A sessão expira após 10 tentativas de reconexão
                     sem sucesso.
                   </p>
+                  <p class="session-info" data-testid="nick-expiry-notice">
+                    ⚠ Nicknames não utilizados por 7 dias são automaticamente liberados.
+                  </p>
                 </form>
               <% :password -> %>
                 <form phx-submit="authenticate" phx-change="validate_password">

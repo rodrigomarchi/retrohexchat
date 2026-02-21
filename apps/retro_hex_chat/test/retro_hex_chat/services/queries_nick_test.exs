@@ -51,10 +51,12 @@ defmodule RetroHexChat.Services.QueriesNickTest do
   describe "update_last_seen/1" do
     test "updates the last_seen_at timestamp" do
       {:ok, nick} = Queries.insert_registered_nick("SeenNick", "secret123")
-      assert nick.last_seen_at == nil
+      assert nick.last_seen_at != nil
 
+      original_last_seen = nick.last_seen_at
+      Process.sleep(10)
       assert {:ok, updated} = Queries.update_last_seen(nick)
-      assert updated.last_seen_at != nil
+      assert DateTime.compare(updated.last_seen_at, original_last_seen) == :gt
     end
   end
 end

@@ -27,6 +27,7 @@ defmodule RetroHexChat.Services.RegisteredNick do
     |> unique_constraint(:nickname, name: :idx_registered_nicks_nickname)
     |> hash_password()
     |> put_registered_at()
+    |> put_last_seen_at()
   end
 
   @spec changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
@@ -46,6 +47,12 @@ defmodule RetroHexChat.Services.RegisteredNick do
   end
 
   defp put_registered_at(changeset), do: changeset
+
+  defp put_last_seen_at(%Ecto.Changeset{valid?: true} = changeset) do
+    put_change(changeset, :last_seen_at, DateTime.utc_now())
+  end
+
+  defp put_last_seen_at(changeset), do: changeset
 
   @spec verify_password(t(), String.t()) :: boolean()
   def verify_password(%__MODULE__{password_hash: hash}, password) do

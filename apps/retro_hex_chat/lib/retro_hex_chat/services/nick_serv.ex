@@ -67,6 +67,16 @@ defmodule RetroHexChat.Services.NickServ do
     GenServer.cast(server, {:cancel_identify_timer, nickname})
   end
 
+  @spec list_identified(GenServer.server()) :: [String.t()]
+  def list_identified(server \\ __MODULE__) do
+    GenServer.call(server, :list_identified)
+  end
+
+  @spec remove_identified(String.t(), GenServer.server()) :: :ok
+  def remove_identified(nickname, server \\ __MODULE__) do
+    GenServer.cast(server, {:remove_identified, nickname})
+  end
+
   # -- GenServer callbacks --
 
   @impl true
@@ -160,6 +170,10 @@ defmodule RetroHexChat.Services.NickServ do
     end
   end
 
+  def handle_call(:list_identified, _from, state) do
+    {:reply, MapSet.to_list(state.identified), state}
+  end
+
   def handle_call({:drop, nickname, password}, _from, state) do
     case Queries.find_by_nickname(nickname) do
       nil ->
@@ -183,6 +197,10 @@ defmodule RetroHexChat.Services.NickServ do
 
     new_timers = Map.put(state.timers, nickname, timer_ref)
     {:noreply, %{state | timers: new_timers}}
+  end
+
+  def handle_cast({:remove_identified, nickname}, state) do
+    {:noreply, %{state | identified: MapSet.delete(state.identified, nickname)}}
   end
 
   def handle_cast({:cancel_identify_timer, nickname}, state) do

@@ -24,6 +24,7 @@ defmodule RetroHexChat.Application do
       {Task.Supervisor, name: RetroHexChat.LinkPreviewTasks},
       RetroHexChat.Presence.WhowasCache,
       RetroHexChat.Services.NickServ,
+      RetroHexChat.Services.NickExpiry,
       RetroHexChat.Services.ChanServ
     ]
 

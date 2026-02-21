@@ -70,6 +70,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
   @external_resource Path.join(@help_dir, "feature-pm-persistence.html")
   @external_resource Path.join(@help_dir, "feature-auto-join-channels.html")
   @external_resource Path.join(@help_dir, "feature-single-session.html")
+  @external_resource Path.join(@help_dir, "feature-nick-expiry.html")
 
   @spec topics() :: [map()]
   def topics do
@@ -910,6 +911,22 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "one session"
         ],
         content: File.read!(Path.join(@help_dir, "feature-single-session.html"))
+      },
+      %{
+        id: "feature-nick-expiry",
+        title: "Nick Expiration",
+        category: "Features",
+        keywords: [
+          "nick expiry",
+          "expiration",
+          "inactive",
+          "purge",
+          "7 days",
+          "automatic",
+          "freed",
+          "released"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-nick-expiry.html"))
       }
     ]
   end

@@ -37,6 +37,12 @@ defmodule RetroHexChat.Services.RegisteredNickTest do
       changeset = RegisteredNick.registration_changeset(%RegisteredNick{}, attrs)
       assert changeset.changes.registered_at
     end
+
+    test "sets last_seen_at timestamp" do
+      attrs = %{nickname: "Rodrigo", password: "secret123"}
+      changeset = RegisteredNick.registration_changeset(%RegisteredNick{}, attrs)
+      assert changeset.changes.last_seen_at
+    end
   end
 
   describe "verify_password/2" do

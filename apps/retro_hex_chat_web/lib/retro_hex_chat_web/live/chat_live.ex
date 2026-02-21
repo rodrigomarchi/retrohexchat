@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
   alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, Session}
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Services.Motd
+  alias RetroHexChat.Services.{Motd, Queries}
 
   alias RetroHexChat.Chat.{
     AliasList,
@@ -364,6 +364,8 @@ defmodule RetroHexChatWeb.ChatLive do
 
     if session do
       quit_reason = quit_reason_for(socket, session)
+
+      Queries.update_last_seen_by_nickname(session.nickname)
 
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,

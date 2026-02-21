@@ -61,6 +61,12 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
       assert html =~ "session-info"
       assert html =~ "Apenas uma sessão por nickname"
     end
+
+    test "renders nick expiry notice", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/connect")
+      assert html =~ "nick-expiry-notice"
+      assert html =~ "7 dias"
+    end
   end
 
   describe "validate" do
