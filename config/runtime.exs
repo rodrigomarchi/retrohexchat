@@ -7,6 +7,10 @@ import Config
 # any compile-time configuration in here, as it won't be applied.
 # The block below contains prod specific runtime configuration.
 
+# Default channel (all environments)
+config :retro_hex_chat,
+  default_channel: System.get_env("DEFAULT_CHANNEL") || "#lobby"
+
 # TURN server runtime config (all environments)
 config :retro_hex_chat,
   turn_listen_ip: {0, 0, 0, 0},

@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   Message factory functions for building stream-insertable message maps.
   """
 
+  import Phoenix.Component, only: [assign: 3]
   import Phoenix.LiveView, only: [stream_insert: 3]
 
   @spec system_message(String.t()) :: map()
@@ -59,7 +60,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
       timestamp: DateTime.utc_now()
     }
 
-    stream_insert(socket, :status_messages, msg)
+    socket = stream_insert(socket, :status_messages, msg)
+
+    if socket.assigns.show_status_tab do
+      socket
+    else
+      assign(socket, :status_unread, true)
+    end
   end
 
   # ── Dual-write helpers (chat + status) ─────────────────────

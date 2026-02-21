@@ -57,7 +57,8 @@ defmodule RetroHexChatWeb.ChatLive.NotificationEvents do
         show_notification_center: false,
         unread_counts: %{},
         highlight_channels: MapSet.new(),
-        flash_channels: MapSet.new()
+        flash_channels: MapSet.new(),
+        status_unread: false
       )
       |> push_event("clear_favicon_badge", %{})
 

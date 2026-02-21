@@ -90,9 +90,12 @@ defmodule RetroHexChatWeb.ChatLive.SmartInputTest do
     end
 
     test "shows Status placeholder when on status tab", %{conn: conn} do
-      {:ok, _view, html} = live(chat_conn(conn, "PlaceStatus"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "PlaceStatus"), "/chat")
 
-      # Status tab is active on mount
+      # Switch to status tab (lobby is active on mount)
+      view |> render_click("switch_to_status")
+
+      html = render(view)
       assert html =~ "Type a command"
       assert html =~ "/ for list"
     end

@@ -14,13 +14,14 @@ defmodule RetroHexChatWeb.Components.TabBar do
   attr :show_status_tab, :boolean, default: false
   attr :unread_counts, :map, default: %{}
   attr :highlight_channels, :list, default: []
+  attr :status_unread, :boolean, default: false
 
   @spec tab_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def tab_bar(assigns) do
     ~H"""
     <div class="tab-bar" data-testid="tab-bar">
       <div
-        class={status_tab_class(@show_status_tab)}
+        class={status_tab_class(@show_status_tab, @status_unread)}
         phx-click="switch_to_status"
         data-testid="tab-status"
       >
@@ -74,10 +75,12 @@ defmodule RetroHexChatWeb.Components.TabBar do
     """
   end
 
-  @spec status_tab_class(boolean()) :: String.t()
-  defp status_tab_class(active) do
-    base = "tab-item tab-item--status"
-    if active, do: "#{base} tab-active", else: base
+  @spec status_tab_class(boolean(), boolean()) :: String.t()
+  defp status_tab_class(active, unread) do
+    classes = ["tab-item", "tab-item--status"]
+    classes = if active, do: ["tab-active" | classes], else: classes
+    classes = if unread and not active, do: ["tab-unread" | classes], else: classes
+    Enum.join(Enum.reverse(classes), " ")
   end
 
   @spec channel_tab_class(

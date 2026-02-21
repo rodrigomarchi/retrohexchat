@@ -198,7 +198,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- switch_to_status --
 
   def handle_event("switch_to_status", _params, socket) do
-    {:halt, assign(socket, show_status_tab: true)}
+    {:halt, assign(socket, show_status_tab: true, status_unread: false)}
   end
 
   # -- close_channel_tab --

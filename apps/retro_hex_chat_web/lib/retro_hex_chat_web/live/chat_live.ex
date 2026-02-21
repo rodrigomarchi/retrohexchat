@@ -68,7 +68,10 @@ defmodule RetroHexChatWeb.ChatLive do
             |> attach_all_hooks()
             |> assign_defaults(session)
             |> assign(connection_ready: true)
-            |> Helpers.join_channel("#lobby", session)
+            |> Helpers.join_channel(
+              Application.get_env(:retro_hex_chat, :default_channel, "#lobby"),
+              session
+            )
             |> Helpers.maybe_join_channel(join_channel)
             |> Helpers.maybe_start_nickserv_timer(nickname, pre_identified)
             |> Helpers.maybe_trigger_perform()
@@ -77,7 +80,6 @@ defmodule RetroHexChatWeb.ChatLive do
             |> show_welcome_message()
             |> show_chanserv_announcement()
             |> show_nickserv_announcement()
-            |> assign(show_status_tab: true)
             |> push_initial_preferences()
 
           {:ok, socket}
@@ -210,6 +212,7 @@ defmodule RetroHexChatWeb.ChatLive do
       show_nick_color_edit_dialog: false,
       show_nicklist: true,
       show_status_tab: false,
+      status_unread: false,
       show_notify_add_dialog: false,
       show_notify_edit_dialog: false,
       show_notify_list: false,
