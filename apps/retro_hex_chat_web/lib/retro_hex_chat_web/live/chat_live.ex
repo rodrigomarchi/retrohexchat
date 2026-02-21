@@ -429,6 +429,11 @@ defmodule RetroHexChatWeb.ChatLive do
       "  /cs info #channel              — View channel registration info",
       "",
       "Access hierarchy: Owner > SOP > AOP > VOP",
+      "",
+      "Rules:",
+      "  • Channels expire after 7 days of inactivity",
+      "  • If a founder's nick expires, the next ranked user is promoted",
+      "",
       "Type /help chanserv or /help channel-permissions for full details."
     ]
 

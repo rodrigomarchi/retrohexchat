@@ -20,7 +20,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Services do
         id: "chanserv",
         title: "ChanServ Overview",
         category: "Services",
-        keywords: ["chanserv", "channel service", "register channel", "access list"],
+        keywords: [
+          "chanserv",
+          "channel service",
+          "register channel",
+          "access list",
+          "channel expiration",
+          "channel expiry"
+        ],
         content: File.read!(Path.join(@help_dir, "chanserv.html"))
       }
     ]

@@ -95,6 +95,76 @@ defmodule RetroHexChat.Services.Queries do
     Repo.delete(channel)
   end
 
+  @spec touch_channel_activity(String.t()) :: :ok
+  def touch_channel_activity(channel_name) do
+    from(c in RegisteredChannel, where: c.name == ^channel_name)
+    |> Repo.update_all(set: [last_activity_at: DateTime.utc_now()])
+
+    :ok
+  end
+
+  @spec list_expired_channel_names(pos_integer()) :: [String.t()]
+  def list_expired_channel_names(days) do
+    cutoff = DateTime.add(DateTime.utc_now(), -days, :day)
+
+    from(c in RegisteredChannel,
+      where: c.last_activity_at < ^cutoff,
+      select: c.name
+    )
+    |> Repo.all()
+  end
+
+  @spec purge_expired_channels(pos_integer()) :: {non_neg_integer(), [String.t()]}
+  def purge_expired_channels(days) do
+    names = list_expired_channel_names(days)
+
+    {count, _} =
+      from(c in RegisteredChannel, where: c.name in ^names)
+      |> Repo.delete_all()
+
+    {count, names}
+  end
+
+  @spec list_channels_for_founder(String.t()) :: [String.t()]
+  def list_channels_for_founder(nickname) do
+    from(c in RegisteredChannel,
+      where: c.founder_nickname == ^nickname,
+      select: c.name
+    )
+    |> Repo.all()
+  end
+
+  @spec update_channel_founder(String.t(), String.t()) :: :ok
+  def update_channel_founder(channel_name, new_founder) do
+    from(c in RegisteredChannel, where: c.name == ^channel_name)
+    |> Repo.update_all(set: [founder_nickname: new_founder])
+
+    :ok
+  end
+
+  @spec find_next_successor(String.t()) :: AccessListEntry.t() | nil
+  def find_next_successor(channel_name) do
+    rank_order = ["sop", "aop", "vop"]
+
+    from(a in AccessListEntry,
+      where: a.channel_name == ^channel_name and a.level != "founder",
+      where: a.level in ^rank_order,
+      order_by: [asc: fragment("array_position(ARRAY['sop','aop','vop'], ?)", a.level)],
+      order_by: [asc: a.inserted_at],
+      limit: 1
+    )
+    |> Repo.one()
+  end
+
+  @spec remove_access_for_nick(String.t()) :: non_neg_integer()
+  def remove_access_for_nick(nickname) do
+    {count, _} =
+      from(a in AccessListEntry, where: a.nickname == ^nickname)
+      |> Repo.delete_all()
+
+    count
+  end
+
   # ── Access list ─────────────────────────────────────────────
 
   @spec add_access(String.t(), String.t(), String.t(), String.t()) ::

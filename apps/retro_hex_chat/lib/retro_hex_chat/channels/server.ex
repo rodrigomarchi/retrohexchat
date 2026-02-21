@@ -29,7 +29,8 @@ defmodule RetroHexChat.Channels.Server do
           invite_exceptions: MapSet.t(String.t()),
           registered: boolean(),
           created_at: DateTime.t(),
-          join_timestamps: [DateTime.t()]
+          join_timestamps: [DateTime.t()],
+          last_activity_touched_at: DateTime.t() | nil
         }
 
   @pubsub RetroHexChat.PubSub
@@ -206,7 +207,8 @@ defmodule RetroHexChat.Channels.Server do
       registered: false,
       created_at: DateTime.utc_now(),
       join_timestamps: [],
-      welcome_message: nil
+      welcome_message: nil,
+      last_activity_touched_at: nil
     }
 
     {:ok, load_persisted_state(state) |> load_welcome_message()}
@@ -236,6 +238,7 @@ defmodule RetroHexChat.Channels.Server do
         {:user_joined, %{channel: state.name, nickname: nickname, role: role}}
       )
 
+      new_state = maybe_touch_activity(new_state)
       {:reply, {:ok, state_to_map(new_state)}, new_state}
     else
       {:error, _} = err -> {:reply, err, state}
@@ -296,7 +299,7 @@ defmodule RetroHexChat.Channels.Server do
 
       broadcast(state.name, %{event: "new_message", payload: payload})
 
-      {:reply, :ok, state}
+      {:reply, :ok, maybe_touch_activity(state)}
     else
       {:error, _} = err ->
         {:reply, err, state}
@@ -1069,6 +1072,30 @@ defmodule RetroHexChat.Channels.Server do
   rescue
     e ->
       Logger.warning("Failed to load welcome message for #{state.name}: #{inspect(e)}")
+      state
+  end
+
+  @activity_touch_interval_seconds 300
+
+  defp maybe_touch_activity(%{registered: false} = state), do: state
+
+  defp maybe_touch_activity(state) do
+    now = DateTime.utc_now()
+
+    should_touch =
+      is_nil(state.last_activity_touched_at) or
+        DateTime.diff(now, state.last_activity_touched_at, :second) >=
+          @activity_touch_interval_seconds
+
+    if should_touch do
+      ServiceQueries.touch_channel_activity(state.name)
+      %{state | last_activity_touched_at: now}
+    else
+      state
+    end
+  rescue
+    e ->
+      Logger.warning("Failed to touch activity for #{state.name}: #{inspect(e)}")
       state
   end
 

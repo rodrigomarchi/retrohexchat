@@ -16,6 +16,7 @@ defmodule RetroHexChat.Services.RegisteredChannel do
     field :mode_limit, :integer
     field :mode_join_throttle, :string
     field :registered_at, :utc_datetime_usec
+    field :last_activity_at, :utc_datetime_usec
 
     timestamps(type: :utc_datetime_usec)
   end
@@ -30,7 +31,8 @@ defmodule RetroHexChat.Services.RegisteredChannel do
       :modes,
       :mode_key,
       :mode_limit,
-      :mode_join_throttle
+      :mode_join_throttle,
+      :last_activity_at
     ])
     |> validate_required([:name, :founder_nickname])
     |> validate_length(:name, max: 50)

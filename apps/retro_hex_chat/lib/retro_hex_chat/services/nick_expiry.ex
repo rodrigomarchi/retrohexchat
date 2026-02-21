@@ -67,7 +67,56 @@ defmodule RetroHexChat.Services.NickExpiry do
       Logger.info("NickExpiry: purged #{count} inactive nick(s): #{Enum.join(nicknames, ", ")}")
     end
 
+    handle_founder_succession(nicknames)
+
     {count, nicknames}
+  end
+
+  defp handle_founder_succession(nicknames) do
+    Enum.each(nicknames, fn nick ->
+      channels = Queries.list_channels_for_founder(nick)
+      Queries.remove_access_for_nick(nick)
+      Enum.each(channels, &succeed_or_deregister/1)
+    end)
+  end
+
+  defp succeed_or_deregister(channel_name) do
+    case Queries.find_next_successor(channel_name) do
+      nil ->
+        cleanup_and_delete_channel(channel_name)
+        Logger.info("NickExpiry: deregistered orphaned channel #{channel_name}")
+
+      successor ->
+        promote_successor(channel_name, successor)
+        Logger.info("NickExpiry: promoted #{successor.nickname} to founder of #{channel_name}")
+    end
+  end
+
+  defp promote_successor(channel_name, successor) do
+    Queries.remove_access(channel_name, successor.nickname)
+    Queries.add_access(channel_name, successor.nickname, "founder", "NickExpiry")
+    Queries.update_channel_founder(channel_name, successor.nickname)
+  end
+
+  defp cleanup_and_delete_channel(channel_name) do
+    Queries.list_access(channel_name)
+    |> Enum.each(fn entry -> Queries.remove_access(channel_name, entry.nickname) end)
+
+    Queries.list_bans(channel_name)
+    |> Enum.each(fn ban -> Queries.remove_ban(channel_name, ban.banned_nickname) end)
+
+    Queries.list_ban_exceptions(channel_name)
+    |> Enum.each(fn entry -> Queries.remove_ban_exception(channel_name, entry.nickname) end)
+
+    Queries.list_invite_exceptions(channel_name)
+    |> Enum.each(fn entry -> Queries.remove_invite_exception(channel_name, entry.nickname) end)
+
+    Queries.delete_welcome_message(channel_name)
+
+    case Queries.find_registered_channel(channel_name) do
+      nil -> :ok
+      channel -> Queries.delete_registered_channel(channel)
+    end
   end
 
   defp schedule_purge(interval_ms) do

@@ -25,7 +25,8 @@ defmodule RetroHexChat.Application do
       RetroHexChat.Presence.WhowasCache,
       RetroHexChat.Services.NickServ,
       RetroHexChat.Services.NickExpiry,
-      RetroHexChat.Services.ChanServ
+      RetroHexChat.Services.ChanServ,
+      RetroHexChat.Services.ChanExpiry
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: RetroHexChat.Supervisor)
