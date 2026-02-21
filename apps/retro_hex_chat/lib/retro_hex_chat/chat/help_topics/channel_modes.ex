@@ -3,6 +3,7 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
 
   @help_dir Path.join(:code.priv_dir(:retro_hex_chat), "help")
 
+  @external_resource Path.join(@help_dir, "channel-permissions.html")
   @external_resource Path.join(@help_dir, "channel-modes-overview.html")
   @external_resource Path.join(@help_dir, "mode-m.html")
   @external_resource Path.join(@help_dir, "mode-i.html")
@@ -25,6 +26,27 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
   @spec topics() :: [map()]
   def topics do
     [
+      %{
+        id: "channel-permissions",
+        title: "Channel Permissions",
+        category: "Channel Modes",
+        keywords: [
+          "permissions",
+          "rank",
+          "hierarchy",
+          "owner",
+          "operator",
+          "half-operator",
+          "voiced",
+          "kick",
+          "ban",
+          "privileges",
+          "access level",
+          "chanserv",
+          "auto-grant"
+        ],
+        content: File.read!(Path.join(@help_dir, "channel-permissions.html"))
+      },
       %{
         id: "channel-modes-overview",
         title: "Channel Modes Overview",

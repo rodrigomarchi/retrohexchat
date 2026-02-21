@@ -75,6 +75,7 @@ defmodule RetroHexChatWeb.ChatLive do
             |> Helpers.play_event_sound(:connect, session)
             |> maybe_show_motd()
             |> show_welcome_message()
+            |> show_chanserv_announcement()
             |> assign(show_status_tab: true)
             |> push_initial_preferences()
 
@@ -409,6 +410,29 @@ defmodule RetroHexChatWeb.ChatLive do
 
     Enum.reduce(lines, socket, fn line, acc ->
       Helpers.push_status_message(acc, line, :system)
+    end)
+  end
+
+  defp show_chanserv_announcement(socket) do
+    lines = [
+      "",
+      "[ChanServ] Channel Services Online",
+      "ChanServ manages channel registration and access control.",
+      "Register your channel to protect it when no operators are online.",
+      "",
+      "Quick start:",
+      "  /cs register #channel          — Register a channel you operate",
+      "  /cs sop #channel add <nick>    — Add a Super Operator",
+      "  /cs aop #channel add <nick>    — Add an Auto Operator",
+      "  /cs vop #channel add <nick>    — Add an Auto Voice user",
+      "  /cs info #channel              — View channel registration info",
+      "",
+      "Access hierarchy: Owner > SOP > AOP > VOP",
+      "Type /help chanserv or /help channel-permissions for full details."
+    ]
+
+    Enum.reduce(lines, socket, fn line, acc ->
+      Helpers.push_status_message(acc, line, :service)
     end)
   end
 
