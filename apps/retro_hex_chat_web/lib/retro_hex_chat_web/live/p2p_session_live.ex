@@ -28,6 +28,9 @@ defmodule RetroHexChatWeb.P2PSessionLive do
          :ok <- verify_not_terminal(db_session) do
       mount_lobby(socket, token, nickname, user_id, db_session)
     else
+      {:expired, reason} ->
+        {:ok, assign(socket, expired: true, expired_reason: expired_reason_label(reason))}
+
       {:redirect, redirect_socket} when is_struct(redirect_socket) ->
         {:ok, redirect_socket}
 
@@ -37,9 +40,29 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   @impl true
+  def render(%{expired: true} = assigns) do
+    ~H"""
+    <div class="p2p-session">
+      <header class="p2p-session__header">
+        <a href="/chat" class="p2p-session__logo-link">
+          <img src={~p"/images/header-logo.svg"} alt="RetroHexChat" class="p2p-session__wordmark" />
+        </a>
+        <span class="p2p-session__header-title">Sessao P2P</span>
+      </header>
+      <P2pLobby.p2p_expired reason={@expired_reason} />
+    </div>
+    """
+  end
+
   def render(assigns) do
     ~H"""
     <div id="p2p-session" class="p2p-session" phx-hook="P2PSessionHook">
+      <header class="p2p-session__header">
+        <a href="/chat" class="p2p-session__logo-link">
+          <img src={~p"/images/header-logo.svg"} alt="RetroHexChat" class="p2p-session__wordmark" />
+        </a>
+        <span class="p2p-session__header-title">Sessao P2P</span>
+      </header>
       <div id="p2p-capabilities" phx-hook="P2PCapabilityHook"></div>
       <div id="p2p-webrtc" phx-hook="WebRTCHook"></div>
       <P2pLobby.p2p_lobby
@@ -867,7 +890,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
   defp verify_not_terminal(session) do
     if Session.terminal?(session.status) do
-      {:redirect, nil}
+      {:expired, session.closed_reason || session.status}
     else
       :ok
     end
@@ -1027,6 +1050,14 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   defp close_reason_message("tab_closed"), do: "Peer disconnected."
   defp close_reason_message("disconnected"), do: "Peer desconectou."
   defp close_reason_message(_reason), do: "Sessao P2P encerrada."
+
+  defp expired_reason_label("user_closed"), do: "Sessao encerrada pelo usuario."
+  defp expired_reason_label("rejected"), do: "Convite P2P foi rejeitado."
+  defp expired_reason_label("tab_closed"), do: "Sessao encerrada (desconexao)."
+  defp expired_reason_label("disconnected"), do: "Sessao encerrada (desconexao)."
+  defp expired_reason_label("expired"), do: "Sessao expirada por inatividade."
+  defp expired_reason_label("failed"), do: "Sessao encerrada por falha na conexao."
+  defp expired_reason_label(_reason), do: "Sessao P2P encerrada."
 
   defp load_turn_only_preference(nickname) do
     case RetroHexChat.Repo.get(UserPreference, nickname) do

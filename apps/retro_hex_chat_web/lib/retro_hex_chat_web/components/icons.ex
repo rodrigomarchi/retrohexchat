@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.Icons do
       <path
         d="M10 14V10C10 6.7 12.7 4 16 4C19.3 4 22 6.7 22 10V14"
         fill="none"
-        stroke="#808080"
+        stroke="#555"
         stroke-width="2"
       />
       <rect x="8" y="14" width="16" height="14" rx="2" fill="#FFD700" stroke="#000" stroke-width="1" />
@@ -76,15 +76,15 @@ defmodule RetroHexChatWeb.Icons do
         width="14"
         height="20"
         rx="1"
-        fill="#C0C0C0"
-        stroke="#808080"
+        fill="#fff"
+        stroke="#555"
         stroke-width="1"
       />
-      <rect x="7" y="6" width="18" height="3" rx="1" fill="#808080" />
-      <rect x="13" y="4" width="6" height="3" fill="#808080" />
-      <line x1="13" y1="12" x2="13" y2="24" stroke="#808080" stroke-width="1" />
-      <line x1="16" y1="12" x2="16" y2="24" stroke="#808080" stroke-width="1" />
-      <line x1="19" y1="12" x2="19" y2="24" stroke="#808080" stroke-width="1" />
+      <rect x="7" y="6" width="18" height="3" rx="1" fill="#555" />
+      <rect x="13" y="4" width="6" height="3" fill="#555" />
+      <line x1="13" y1="12" x2="13" y2="24" stroke="#555" stroke-width="1" />
+      <line x1="16" y1="12" x2="16" y2="24" stroke="#555" stroke-width="1" />
+      <line x1="19" y1="12" x2="19" y2="24" stroke="#555" stroke-width="1" />
     </svg>
     """
   end
@@ -145,7 +145,7 @@ defmodule RetroHexChatWeb.Icons do
   def icon_document_alert(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="3" y="1" width="10" height="14" rx="1" fill="#fff" stroke="#808080" stroke-width="1" />
+      <rect x="3" y="1" width="10" height="14" rx="1" fill="#fff" stroke="#000" stroke-width="1" />
       <line x1="5" y1="4" x2="11" y2="4" stroke="#000080" stroke-width="1" />
       <line x1="5" y1="6" x2="11" y2="6" stroke="#000080" stroke-width="1" />
       <line x1="5" y1="8" x2="9" y2="8" stroke="#000080" stroke-width="1" />
@@ -171,14 +171,14 @@ defmodule RetroHexChatWeb.Icons do
   def icon_robot(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="4" y="5" width="8" height="8" rx="1" fill="#C0C0C0" stroke="#808080" stroke-width="1" />
+      <rect x="4" y="5" width="8" height="8" rx="1" fill="#fff" stroke="#555" stroke-width="1" />
       <rect x="5" y="7" width="2" height="2" fill="#FF0000" />
       <rect x="9" y="7" width="2" height="2" fill="#FF0000" />
-      <rect x="6" y="10" width="4" height="1" fill="#808080" />
-      <line x1="8" y1="3" x2="8" y2="5" stroke="#808080" stroke-width="1" />
+      <rect x="6" y="10" width="4" height="1" fill="#555" />
+      <line x1="8" y1="3" x2="8" y2="5" stroke="#555" stroke-width="1" />
       <circle cx="8" cy="2.5" r="1" fill="#FF0000" />
-      <line x1="3" y1="8" x2="4" y2="8" stroke="#808080" stroke-width="1.5" />
-      <line x1="12" y1="8" x2="13" y2="8" stroke="#808080" stroke-width="1.5" />
+      <line x1="3" y1="8" x2="4" y2="8" stroke="#555" stroke-width="1.5" />
+      <line x1="12" y1="8" x2="13" y2="8" stroke="#555" stroke-width="1.5" />
     </svg>
     """
   end
@@ -251,7 +251,7 @@ defmodule RetroHexChatWeb.Icons do
   def icon_rules(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="3" y="1" width="10" height="14" rx="1" fill="#fff" stroke="#808080" stroke-width="1" />
+      <rect x="3" y="1" width="10" height="14" rx="1" fill="#fff" stroke="#000" stroke-width="1" />
       <rect x="5" y="3" width="2" height="2" fill="none" stroke="#000080" stroke-width="1" />
       <line x1="8" y1="4" x2="11" y2="4" stroke="#000080" stroke-width="1" />
       <rect x="5" y="7" width="2" height="2" fill="none" stroke="#000080" stroke-width="1" />
@@ -268,11 +268,11 @@ defmodule RetroHexChatWeb.Icons do
   def icon_backup(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="8" r="6" fill="#C0C0C0" stroke="#808080" stroke-width="1" />
-      <circle cx="8" cy="8" r="2" fill="#808080" />
-      <circle cx="8" cy="8" r="0.8" fill="#C0C0C0" />
-      <path d="M4 4l1.5 1.5" stroke="#808080" stroke-width="0.8" />
-      <path d="M12 4l-1.5 1.5" stroke="#808080" stroke-width="0.8" />
+      <circle cx="8" cy="8" r="6" fill="#fff" stroke="#555" stroke-width="1" />
+      <circle cx="8" cy="8" r="2" fill="#555" />
+      <circle cx="8" cy="8" r="0.8" fill="#fff" />
+      <path d="M4 4l1.5 1.5" stroke="#555" stroke-width="0.8" />
+      <path d="M12 4l-1.5 1.5" stroke="#555" stroke-width="0.8" />
       <path d="M3 11l2-1" stroke="#008000" stroke-width="1.5" />
       <polygon points="2,10 3,12.5 4.5,10.5" fill="#008000" />
     </svg>
@@ -300,7 +300,7 @@ defmodule RetroHexChatWeb.Icons do
       <path
         d="M7 6.5V5.5C7 4.7 7.4 4 8 4s1 .7 1 1.5V6.5"
         fill="none"
-        stroke="#808080"
+        stroke="#555"
         stroke-width="0.8"
       />
     </svg>
@@ -370,8 +370,8 @@ defmodule RetroHexChatWeb.Icons do
       <circle cx="8" cy="4" r="2" fill="#FF0000" />
       <circle cx="4" cy="12" r="2" fill="#008000" />
       <circle cx="12" cy="12" r="2" fill="#000080" />
-      <line x1="8" y1="6" x2="5" y2="10" stroke="#808080" stroke-width="1.5" />
-      <line x1="8" y1="6" x2="11" y2="10" stroke="#808080" stroke-width="1.5" />
+      <line x1="8" y1="6" x2="5" y2="10" stroke="#555" stroke-width="1.5" />
+      <line x1="8" y1="6" x2="11" y2="10" stroke="#555" stroke-width="1.5" />
     </svg>
     """
   end
@@ -384,7 +384,7 @@ defmodule RetroHexChatWeb.Icons do
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
       <path
         d="M11 2c-1.5 0-2.8.8-3.5 2L3 8.5 2 10l1.5 1.5 1 1L6 14l1.5-1 4.5-4.5c1.2-.7 2-2 2-3.5 0-.5-.1-1-.2-1.5L12 5.5 10.5 4l2-1.8C12 2.1 11.5 2 11 2z"
-        fill="#808080"
+        fill="#555"
         stroke="#000"
         stroke-width="0.5"
       />
@@ -490,7 +490,7 @@ defmodule RetroHexChatWeb.Icons do
   def icon_palette(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="8" r="6.5" fill="#C0C0C0" stroke="#808080" stroke-width="1" />
+      <circle cx="8" cy="8" r="6.5" fill="#fff" stroke="#555" stroke-width="1" />
       <circle cx="6" cy="5" r="1.2" fill="#FF0000" />
       <circle cx="9" cy="4.5" r="1.2" fill="#008000" />
       <circle cx="11" cy="7" r="1.2" fill="#000080" />
@@ -536,7 +536,7 @@ defmodule RetroHexChatWeb.Icons do
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
       <path d="M5 4L1 8l4 4" fill="none" stroke="#000080" stroke-width="1.5" stroke-linecap="round" />
       <path d="M11 4l4 4-4 4" fill="none" stroke="#000080" stroke-width="1.5" stroke-linecap="round" />
-      <line x1="9" y1="2" x2="7" y2="14" stroke="#808080" stroke-width="1" />
+      <line x1="9" y1="2" x2="7" y2="14" stroke="#555" stroke-width="1" />
     </svg>
     """
   end
@@ -551,8 +551,8 @@ defmodule RetroHexChatWeb.Icons do
       <path d="M2 9c0-2 1.5-3 3-3s3 1 3 3" fill="#000080" />
       <circle cx="11" cy="4" r="2" fill="#008080" />
       <path d="M8 9c0-2 1.5-3 3-3s3 1 3 3" fill="#008080" />
-      <circle cx="8" cy="10" r="2" fill="#808080" />
-      <path d="M5 15c0-2 1.5-3 3-3s3 1 3 3" fill="#808080" />
+      <circle cx="8" cy="10" r="2" fill="#555" />
+      <path d="M5 15c0-2 1.5-3 3-3s3 1 3 3" fill="#555" />
     </svg>
     """
   end
@@ -563,11 +563,11 @@ defmodule RetroHexChatWeb.Icons do
   def icon_legal(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="7" y="2" width="2" height="10" fill="#808080" />
-      <line x1="3" y1="5" x2="13" y2="5" stroke="#808080" stroke-width="1.5" />
+      <rect x="7" y="2" width="2" height="10" fill="#555" />
+      <line x1="3" y1="5" x2="13" y2="5" stroke="#555" stroke-width="1.5" />
       <circle cx="3" cy="7" r="1.5" fill="#FFD700" stroke="#000" stroke-width="0.5" />
       <circle cx="13" cy="7" r="1.5" fill="#FFD700" stroke="#000" stroke-width="0.5" />
-      <rect x="5" y="12" width="6" height="2" rx="0.5" fill="#808080" />
+      <rect x="5" y="12" width="6" height="2" rx="0.5" fill="#555" />
     </svg>
     """
   end
@@ -638,12 +638,12 @@ defmodule RetroHexChatWeb.Icons do
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
       <ellipse cx="8" cy="9" rx="3.5" ry="4.5" fill="#008000" />
       <circle cx="8" cy="5" r="2" fill="#008000" />
-      <line x1="4" y1="7" x2="2" y2="5" stroke="#808080" stroke-width="1" />
-      <line x1="12" y1="7" x2="14" y2="5" stroke="#808080" stroke-width="1" />
-      <line x1="4.5" y1="10" x2="2" y2="11" stroke="#808080" stroke-width="1" />
-      <line x1="11.5" y1="10" x2="14" y2="11" stroke="#808080" stroke-width="1" />
-      <line x1="5" y1="4" x2="4" y2="2" stroke="#808080" stroke-width="1" />
-      <line x1="11" y1="4" x2="12" y2="2" stroke="#808080" stroke-width="1" />
+      <line x1="4" y1="7" x2="2" y2="5" stroke="#555" stroke-width="1" />
+      <line x1="12" y1="7" x2="14" y2="5" stroke="#555" stroke-width="1" />
+      <line x1="4.5" y1="10" x2="2" y2="11" stroke="#555" stroke-width="1" />
+      <line x1="11.5" y1="10" x2="14" y2="11" stroke="#555" stroke-width="1" />
+      <line x1="5" y1="4" x2="4" y2="2" stroke="#555" stroke-width="1" />
+      <line x1="11" y1="4" x2="12" y2="2" stroke="#555" stroke-width="1" />
     </svg>
     """
   end
@@ -661,11 +661,316 @@ defmodule RetroHexChatWeb.Icons do
         height="8"
         rx="0.5"
         fill="#000080"
-        stroke="#808080"
+        stroke="#000"
         stroke-width="1"
       />
       <rect x="4" y="3" width="8" height="6" fill="#008080" />
-      <path d="M1 12h14l-1 2H2z" fill="#C0C0C0" stroke="#808080" stroke-width="0.5" />
+      <path d="M1 12h14l-1 2H2z" fill="#fff" stroke="#555" stroke-width="0.5" />
+    </svg>
+    """
+  end
+
+  # ── 16x16 P2P Lobby Icons ─────────────────────────────────
+
+  attr :class, :string, default: nil
+
+  @spec icon_file_send(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_file_send(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M2 2h7l3 3v9H2z" fill="#FFD700" stroke="#000" stroke-width="0.8" />
+      <path d="M9 2v3h3" fill="none" stroke="#000" stroke-width="0.8" />
+      <path
+        d="M7 10h5M10 8l2 2-2 2"
+        fill="none"
+        stroke="#000080"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_microphone(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_microphone(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="6" y="2" width="4" height="7" rx="2" fill="#000080" />
+      <path d="M4 8c0 2.2 1.8 4 4 4s4-1.8 4-4" fill="none" stroke="#555" stroke-width="1.2" />
+      <line x1="8" y1="12" x2="8" y2="14" stroke="#555" stroke-width="1.2" />
+      <line x1="6" y1="14" x2="10" y2="14" stroke="#555" stroke-width="1.2" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_camera(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_camera(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1" y="4" width="10" height="8" rx="1" fill="#000080" stroke="#000" stroke-width="0.5" />
+      <polygon points="11,6 15,4 15,12 11,10" fill="#008080" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_phone_end(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_phone_end(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path
+        d="M1 7c0-1 2-3 7-3s7 2 7 3v2c0 .5-.5 1-1 1h-2c-.5 0-1-.5-1-1V8c-1-.3-2-.5-3-.5S6 7.7 5 8v1c0 .5-.5 1-1 1H2c-.5 0-1-.5-1-1z"
+        fill="#FF0000"
+        stroke="#000"
+        stroke-width="0.5"
+      />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_mute(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_mute(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="6" y="2" width="4" height="7" rx="2" fill="#555" />
+      <path d="M4 8c0 2.2 1.8 4 4 4s4-1.8 4-4" fill="none" stroke="#555" stroke-width="1.2" />
+      <line x1="8" y1="12" x2="8" y2="14" stroke="#555" stroke-width="1.2" />
+      <line x1="6" y1="14" x2="10" y2="14" stroke="#555" stroke-width="1.2" />
+      <line x1="3" y1="3" x2="13" y2="13" stroke="#FF0000" stroke-width="1.5" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_camera_off(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_camera_off(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1" y="4" width="10" height="8" rx="1" fill="#555" stroke="#000" stroke-width="0.5" />
+      <polygon points="11,6 15,4 15,12 11,10" fill="#555" />
+      <line x1="2" y1="3" x2="14" y2="13" stroke="#FF0000" stroke-width="1.5" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_devices(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_devices(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <polygon points="2,5 2,13 6,11 6,7" fill="#000080" />
+      <path d="M6 6c2-2 4-2 6 0 2 2 2 4 0 6" fill="none" stroke="#555" stroke-width="1" />
+      <path d="M6 4c3-3 6-3 9 0 3 3 3 6 0 9" fill="none" stroke="#555" stroke-width="0.8" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_pip(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_pip(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1" y="2" width="14" height="12" rx="1" fill="none" stroke="#000080" stroke-width="1.2" />
+      <rect x="8" y="7" width="6" height="5" rx="0.5" fill="#000080" stroke="#000" stroke-width="0.5" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_upgrade_video(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_upgrade_video(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1" y="4" width="9" height="8" rx="1" fill="#000080" stroke="#000" stroke-width="0.5" />
+      <polygon points="10,6 14,4 14,12 10,10" fill="#008080" />
+      <circle cx="13" cy="4" r="3" fill="#fff" stroke="#008000" stroke-width="0.8" />
+      <line x1="13" y1="2.5" x2="13" y2="5.5" stroke="#008000" stroke-width="1.2" />
+      <line x1="11.5" y1="4" x2="14.5" y2="4" stroke="#008000" stroke-width="1.2" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_close(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_close(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <line x1="4" y1="4" x2="12" y2="12" stroke="#000" stroke-width="2" stroke-linecap="round" />
+      <line x1="12" y1="4" x2="4" y2="12" stroke="#000" stroke-width="2" stroke-linecap="round" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_send(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_send(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <polygon points="2,2 14,8 2,14 4,8" fill="#000080" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_accept(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_accept(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path
+        d="M3 8l3.5 4L13 4"
+        fill="none"
+        stroke="#008000"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_reject(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_reject(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <line x1="4" y1="4" x2="12" y2="12" stroke="#FF0000" stroke-width="2.5" stroke-linecap="round" />
+      <line x1="12" y1="4" x2="4" y2="12" stroke="#FF0000" stroke-width="2.5" stroke-linecap="round" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_clock(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_clock(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="8" cy="8" r="6.5" fill="#fff" stroke="#555" stroke-width="1" />
+      <line x1="8" y1="4" x2="8" y2="8" stroke="#000" stroke-width="1.2" />
+      <line x1="8" y1="8" x2="11" y2="10" stroke="#000" stroke-width="1.2" />
+      <circle cx="8" cy="8" r="0.8" fill="#000" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_retry(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_retry(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M3 8a5 5 0 0 1 9-3" fill="none" stroke="#000080" stroke-width="1.5" />
+      <polygon points="12,3 14,5 10,5" fill="#000080" />
+      <path d="M13 8a5 5 0 0 1-9 3" fill="none" stroke="#000080" stroke-width="1.5" />
+      <polygon points="4,13 2,11 6,11" fill="#000080" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_cancel(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_cancel(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="8" cy="8" r="6.5" fill="none" stroke="#FF0000" stroke-width="1.2" />
+      <line x1="5" y1="5" x2="11" y2="11" stroke="#FF0000" stroke-width="1.5" />
+      <line x1="11" y1="5" x2="5" y2="11" stroke="#FF0000" stroke-width="1.5" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_quality_high(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_quality_high(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="2" y="10" width="3" height="4" fill="#008000" />
+      <rect x="6.5" y="6" width="3" height="8" fill="#008000" />
+      <rect x="11" y="2" width="3" height="12" fill="#008000" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_quality_medium(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_quality_medium(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="2" y="10" width="3" height="4" fill="#FFD700" />
+      <rect x="6.5" y="6" width="3" height="8" fill="#FFD700" />
+      <rect x="11" y="2" width="3" height="12" fill="#aaa" stroke="#888" stroke-width="0.5" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_quality_low(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_quality_low(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="2" y="10" width="3" height="4" fill="#FF0000" />
+      <rect x="6.5" y="6" width="3" height="8" fill="#aaa" stroke="#888" stroke-width="0.5" />
+      <rect x="11" y="2" width="3" height="12" fill="#aaa" stroke="#888" stroke-width="0.5" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_choose_file(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_choose_file(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M1 4V14H15V6H8L6 4z" fill="#FFD700" stroke="#000" stroke-width="0.8" />
+      <path d="M1 6H15V14H1z" fill="#FFD700" />
+      <path d="M1 6H15V8H1z" fill="#FFC000" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_privacy(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_privacy(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M8 1L2 4v4c0 3.5 3 6 6 7 3-1 6-3.5 6-7V4z" fill="#000080" />
+      <path d="M8 3L4 5.5v3c0 2.5 2 4.5 4 5.2 2-.7 4-2.7 4-5.2v-3z" fill="#fff" />
+      <rect
+        x="6.5"
+        y="6"
+        width="3"
+        height="4"
+        rx="0.5"
+        fill="#FFD700"
+        stroke="#000"
+        stroke-width="0.5"
+      />
+      <path
+        d="M7 6.5V5.5C7 4.7 7.4 4 8 4s1 .7 1 1.5V6.5"
+        fill="none"
+        stroke="#555"
+        stroke-width="0.8"
+      />
     </svg>
     """
   end

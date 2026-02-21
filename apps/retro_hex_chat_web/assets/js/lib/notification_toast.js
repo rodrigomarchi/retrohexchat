@@ -110,7 +110,7 @@ export function createNotificationToastManager(options = {}) {
       if (onP2pAction) {
         onP2pAction({ action: "accept", token: notification.token });
       } else {
-        window.location.href = `/p2p/${notification.token}`;
+        window.open(`/p2p/${notification.token}`, "_blank");
       }
     });
 

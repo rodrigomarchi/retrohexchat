@@ -1,7 +1,7 @@
 /* File transfer: drop zone, offer, progress, status messages */
 
 .file-transfer {
-  padding: var(--space-4) 0;
+  padding: var(--space-8) 0;
 }
 
 /* ── File Input (hidden, triggered by JS hook) ── */
@@ -22,23 +22,23 @@
 
 .file-transfer__offer {
   border: 2px solid var(--color-warning-alt);
-  padding: var(--space-8);
+  padding: var(--space-12);
   text-align: center;
 }
 
 .file-transfer__offer-text {
-  margin-bottom: var(--space-8);
-  font-size: var(--text-sm);
+  margin-bottom: var(--space-12);
 }
 
 .file-transfer__offer-buttons {
   display: flex;
-  gap: var(--space-8);
+  gap: var(--space-12);
   justify-content: center;
 }
 
 .file-transfer__offer-btn {
-  min-width: 80px;
+  min-width: 100px;
+  padding: var(--space-6) var(--space-12);
 }
 
 .file-transfer__offer-btn--accept {
@@ -53,15 +53,14 @@
 
 .file-transfer__progress {
   border: 1px solid var(--color-border);
-  padding: var(--space-8);
+  padding: var(--space-12);
 }
 
 .file-transfer__progress-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-4);
-  font-size: var(--text-sm);
+  margin-bottom: var(--space-6);
 }
 
 .file-transfer__progress-filename {
@@ -73,7 +72,7 @@
 }
 
 .file-transfer__progress-status {
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   color: var(--color-muted);
 }
 
@@ -86,10 +85,10 @@
 }
 
 .file-transfer__bar {
-  height: 16px;
+  height: 20px;
   border: 1px solid var(--color-border);
   background: var(--color-white);
-  padding: 1px;
+  padding: 2px;
 }
 
 .file-transfer__bar-fill {
@@ -101,25 +100,24 @@
 .file-transfer__progress-info {
   display: flex;
   justify-content: space-between;
-  margin-top: var(--space-4);
-  font-size: var(--text-xs);
+  margin-top: var(--space-6);
+  font-size: var(--text-sm);
   color: var(--color-muted);
 }
 
 .file-transfer__progress-actions {
-  margin-top: var(--space-4);
+  margin-top: var(--space-8);
   text-align: center;
 }
 
 .file-transfer__cancel-btn {
-  min-width: 80px;
+  min-width: 100px;
 }
 
 /* ── Status Messages ── */
 
 .file-transfer__status {
-  padding: var(--space-8);
-  font-size: var(--text-sm);
+  padding: var(--space-12);
   text-align: center;
   border: 1px solid var(--color-border);
 }
@@ -159,30 +157,30 @@
 }
 
 .file-transfer__ready-text {
-  margin-bottom: var(--space-8);
-  font-size: var(--text-sm);
+  margin-bottom: var(--space-12);
   color: var(--color-muted);
 }
 
 .file-transfer__ready-btn {
-  min-width: 140px;
+  min-width: 160px;
+  padding: var(--space-6) var(--space-12);
 }
 
 /* ── Action Buttons ── */
 
 .file-transfer__retry-btn {
   margin-top: var(--space-8);
-  min-width: 120px;
+  min-width: 140px;
 }
 
 .file-transfer__reset-btn {
   margin-top: var(--space-8);
-  min-width: 140px;
+  min-width: 160px;
 }
 
 .file-transfer__status-actions {
   display: flex;
-  gap: var(--space-8);
+  gap: var(--space-12);
   justify-content: center;
-  margin-top: var(--space-4);
+  margin-top: var(--space-8);
 }

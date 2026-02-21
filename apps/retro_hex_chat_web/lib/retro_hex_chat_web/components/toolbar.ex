@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
       <svg viewBox="0 0 16 16">
         <circle cx="4" cy="8" r="2.5" fill="#000080" />
         <circle cx="12" cy="8" r="2.5" fill="#000080" />
-        <line x1="6" y1="8" x2="10" y2="8" stroke="#C0C0C0" stroke-width="1.5" />
+        <line x1="6" y1="8" x2="10" y2="8" stroke="#555" stroke-width="1.5" />
         <line x1="5" y1="5" x2="11" y2="11" stroke="#FF0000" stroke-width="2" />
         <line x1="11" y1="5" x2="5" y2="11" stroke="#FF0000" stroke-width="2" />
       </svg>
@@ -92,8 +92,8 @@ defmodule RetroHexChatWeb.Components.Toolbar do
           width="14"
           height="14"
           rx="1"
-          fill="#C0C0C0"
-          stroke="#808080"
+          fill="#fff"
+          stroke="#000"
           stroke-width="1"
         />
         <rect x="2" y="2" width="5" height="12" fill="#000080" />
@@ -116,8 +116,8 @@ defmodule RetroHexChatWeb.Components.Toolbar do
           width="14"
           height="14"
           rx="1"
-          fill="#C0C0C0"
-          stroke="#808080"
+          fill="#fff"
+          stroke="#000"
           stroke-width="1"
         />
         <rect x="9" y="2" width="5" height="12" fill="#008000" />
@@ -140,7 +140,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
           y1="10"
           x2="14"
           y2="14"
-          stroke="#FFD700"
+          stroke="#8B4513"
           stroke-width="2.5"
           stroke-linecap="round"
         />
@@ -189,8 +189,8 @@ defmodule RetroHexChatWeb.Components.Toolbar do
       phx-click="open_ignore_dialog"
     >
       <svg viewBox="0 0 16 16">
-        <circle cx="8" cy="5" r="3" fill="#808080" />
-        <path d="M4 12c0-2.5 2-4 4-4s4 1.5 4 4z" fill="#808080" />
+        <circle cx="8" cy="5" r="3" fill="#555" />
+        <path d="M4 12c0-2.5 2-4 4-4s4 1.5 4 4z" fill="#555" />
         <circle cx="8" cy="8" r="5.5" fill="none" stroke="#FF0000" stroke-width="1.5" />
         <line x1="4.5" y1="4.5" x2="11.5" y2="11.5" stroke="#FF0000" stroke-width="1.5" />
       </svg>
@@ -218,12 +218,12 @@ defmodule RetroHexChatWeb.Components.Toolbar do
       phx-click="open_channel_central"
     >
       <svg viewBox="0 0 16 16">
-        <rect x="3" y="6" width="10" height="9" fill="#808080" />
+        <rect x="3" y="6" width="10" height="9" fill="#555" stroke="#000" stroke-width="0.5" />
         <rect x="4" y="7" width="3" height="3" fill="#87CEEB" />
         <rect x="9" y="7" width="3" height="3" fill="#87CEEB" />
         <rect x="7" y="11" width="2" height="4" fill="#8B4513" />
-        <polygon points="2,6 8,1 14,6" fill="#FF0000" />
-        <line x1="8" y1="1" x2="8" y2="-1" stroke="#808080" stroke-width="1.5" />
+        <polygon points="2,6 8,1 14,6" fill="#FF0000" stroke="#000" stroke-width="0.5" />
+        <line x1="8" y1="1" x2="8" y2="-1" stroke="#555" stroke-width="1.5" />
         <circle cx="8" cy="-1" r="1" fill="#FF0000" />
       </svg>
     </button>
@@ -235,7 +235,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
       phx-click="open_log_viewer"
     >
       <svg viewBox="0 0 16 16">
-        <rect x="2" y="1" width="12" height="14" rx="1" fill="#fff" stroke="#808080" stroke-width="1" />
+        <rect x="2" y="1" width="12" height="14" rx="1" fill="#fff" stroke="#000" stroke-width="1" />
         <line x1="4" y1="4" x2="12" y2="4" stroke="#000080" stroke-width="1" />
         <line x1="4" y1="6" x2="12" y2="6" stroke="#000080" stroke-width="1" />
         <line x1="4" y1="8" x2="12" y2="8" stroke="#000080" stroke-width="1" />
@@ -251,8 +251,8 @@ defmodule RetroHexChatWeb.Components.Toolbar do
     >
       <svg viewBox="0 0 16 16">
         <polygon points="3,2 13,8 3,14" fill="#008000" />
-        <circle cx="12" cy="4" r="3" fill="none" stroke="#808080" stroke-width="1.5" />
-        <circle cx="12" cy="4" r="1" fill="#808080" />
+        <circle cx="12" cy="4" r="3" fill="none" stroke="#555" stroke-width="1.5" />
+        <circle cx="12" cy="4" r="1" fill="#555" />
       </svg>
     </button>
     <button
@@ -319,9 +319,9 @@ defmodule RetroHexChatWeb.Components.Toolbar do
       phx-click="open_custom_menus_dialog"
     >
       <svg viewBox="0 0 16 16">
-        <rect x="2" y="2" width="10" height="2" fill="#808080" />
-        <rect x="2" y="5" width="10" height="2" fill="#808080" />
-        <rect x="2" y="8" width="10" height="2" fill="#808080" />
+        <rect x="2" y="2" width="10" height="2" fill="#000080" />
+        <rect x="2" y="5" width="10" height="2" fill="#000080" />
+        <rect x="2" y="8" width="10" height="2" fill="#000080" />
         <polygon points="11,11 14,13.5 11,16" fill="#FFD700" stroke="#FF8C00" stroke-width="0.5" />
       </svg>
     </button>
@@ -348,7 +348,9 @@ defmodule RetroHexChatWeb.Components.Toolbar do
       <svg viewBox="0 0 16 16">
         <path
           d="M6.5 1h3l.5 2.1a5.5 5.5 0 0 1 1.3.7L13.3 3l1.5 2.6-1.5 1.5c.1.3.1.6.1.9s0 .6-.1.9l1.5 1.5L13.3 13l-2-.8a5.5 5.5 0 0 1-1.3.7L9.5 15h-3l-.5-2.1a5.5 5.5 0 0 1-1.3-.7L2.7 13 1.2 10.4l1.5-1.5A5.3 5.3 0 0 1 2.6 8c0-.3 0-.6.1-.9L1.2 5.6 2.7 3l2 .8a5.5 5.5 0 0 1 1.3-.7L6.5 1z"
-          fill="#808080"
+          fill="#555"
+          stroke="#000"
+          stroke-width="0.3"
         />
         <circle cx="8" cy="8" r="2" fill="#000080" />
       </svg>
@@ -384,8 +386,10 @@ defmodule RetroHexChatWeb.Components.Toolbar do
         <path
           d="M8 1a1 1 0 0 1 1 1v1a4 4 0 0 1 3 3.87V10l2 2H2l2-2V6.87A4 4 0 0 1 7 3V2a1 1 0 0 1 1-1z"
           fill="#FFD700"
+          stroke="#000"
+          stroke-width="0.5"
         />
-        <path d="M6.5 13a1.5 1.5 0 0 0 3 0h-3z" fill="#FFD700" />
+        <path d="M6.5 13a1.5 1.5 0 0 0 3 0h-3z" fill="#FFD700" stroke="#000" stroke-width="0.5" />
       </svg>
       <span
         :if={@notification_count > 0}
@@ -414,8 +418,8 @@ defmodule RetroHexChatWeb.Components.Toolbar do
           width="14"
           height="10"
           rx="1"
-          fill="#C0C0C0"
-          stroke="#808080"
+          fill="#fff"
+          stroke="#000"
           stroke-width="1"
         />
         <rect x="3" y="5" width="2" height="2" rx="0.3" fill="#000080" />

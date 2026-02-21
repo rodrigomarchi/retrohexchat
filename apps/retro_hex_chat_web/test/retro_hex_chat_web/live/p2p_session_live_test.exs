@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       stop_server(session.token)
     end
 
-    test "terminal session redirects", %{conn: conn} do
+    test "terminal session shows expired page", %{conn: conn} do
       alice = create_nick("p2p_lv_a5")
       bob = create_nick("p2p_lv_b5")
       session = create_session(alice.id, bob.id)
@@ -123,13 +123,15 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       # Close the session
       Queries.update_status(session, "closed", %{
         closed_at: DateTime.utc_now(),
-        closed_reason: "done"
+        closed_reason: "user_closed"
       })
 
       stop_server(session.token)
 
       conn = chat_conn(conn, "p2p_lv_a5")
-      assert {:error, {:live_redirect, _}} = live(conn, "/p2p/#{session.token}")
+      {:ok, _view, html} = live(conn, "/p2p/#{session.token}")
+      assert html =~ "Sessao Indisponivel"
+      assert html =~ "Sessao encerrada pelo usuario"
     end
   end
 

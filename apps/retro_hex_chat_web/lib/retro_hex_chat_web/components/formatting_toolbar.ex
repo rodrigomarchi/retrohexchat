@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
             <rect x="1" y="5" width="4" height="4" fill="#ffff00" />
             <rect x="5" y="5" width="4" height="4" fill="#ff00ff" />
             <rect x="9" y="5" width="4" height="4" fill="#00ffff" />
-            <rect x="1" y="9" width="12" height="4" fill="#808080" />
+            <rect x="1" y="9" width="12" height="4" fill="#555" />
           </svg>
         </button>
         <div class="format-color-dropdown u-hidden">
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
       >
         <svg viewBox="0 0 14 14" fill="currentColor">
           <rect x="1" y="1" width="6" height="12" fill="#000" />
-          <rect x="7" y="1" width="6" height="12" fill="#fff" stroke="#808080" stroke-width="0.5" />
+          <rect x="7" y="1" width="6" height="12" fill="#fff" stroke="#555" stroke-width="0.5" />
           <text
             x="4"
             y="10.5"
@@ -144,7 +144,7 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
             font-size="9"
             font-weight="bold"
             font-family="sans-serif"
-            fill="#808080"
+            fill="#555"
           >
             Aa
           </text>

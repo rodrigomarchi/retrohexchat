@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
   use Phoenix.Component
 
   alias Phoenix.LiveView.JS
+  alias RetroHexChatWeb.Icons
 
   attr :session, :map, required: true
   attr :nickname, :string, required: true
@@ -89,15 +90,36 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
                 type="checkbox"
                 checked={@turn_only}
                 phx-click="toggle_privacy_mode"
-              /> Modo privado (TURN-only)
+              />
+              <Icons.icon_privacy class="btn-icon__svg" /> Modo privado (TURN-only)
             </label>
             <span :if={!@turn_configured} class="p2p-lobby__privacy-warning">
               Servidor TURN nao configurado
             </span>
           </div>
-          <button class="p2p-lobby__close-btn" phx-click="close_session">
-            Encerrar Sessao
+          <button class="p2p-lobby__close-btn btn-icon" phx-click="close_session">
+            <Icons.icon_close class="btn-icon__svg" /> Encerrar Sessao
           </button>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :reason, :string, required: true
+
+  @spec p2p_expired(map()) :: Phoenix.LiveView.Rendered.t()
+  def p2p_expired(assigns) do
+    ~H"""
+    <div class="p2p-lobby p2p-lobby--expired window">
+      <div class="title-bar">
+        <div class="title-bar-text">Sessao P2P</div>
+      </div>
+      <div class="window-body p2p-lobby__body">
+        <div class="p2p-lobby-expired">
+          <Icons.icon_clock class="p2p-lobby-expired__icon" />
+          <p class="p2p-lobby-expired__title">Sessao Indisponivel</p>
+          <p class="p2p-lobby-expired__reason">{@reason}</p>
         </div>
       </div>
     </div>
@@ -156,7 +178,9 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
           autocomplete="off"
           class="p2p-lobby-chat__input"
         />
-        <button type="submit" class="p2p-lobby-chat__send">Enviar</button>
+        <button type="submit" class="p2p-lobby-chat__send btn-icon">
+          <Icons.icon_send class="btn-icon__svg" /> Enviar
+        </button>
       </form>
     </div>
     """
@@ -219,8 +243,12 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
 
       <div :if={@call.upgrade_pending && !@call[:upgrade_from]} class="media-call__upgrade-consent">
         <span>{@peer_nick} quer adicionar video</span>
-        <button phx-click="media_respond_upgrade" phx-value-accepted="true">Aceitar</button>
-        <button phx-click="media_respond_upgrade" phx-value-accepted="false">Recusar</button>
+        <button phx-click="media_respond_upgrade" phx-value-accepted="true" class="btn-icon">
+          <Icons.icon_accept class="btn-icon__svg" /> Aceitar
+        </button>
+        <button phx-click="media_respond_upgrade" phx-value-accepted="false" class="btn-icon">
+          <Icons.icon_reject class="btn-icon__svg" /> Recusar
+        </button>
       </div>
 
       <div :if={@call.upgrade_pending && @call[:upgrade_from]} class="media-call__mute-indicator">
@@ -233,33 +261,43 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
         <div class="media-call__controls-row">
           <button
             data-media-action="mute"
-            class={"#{if @call[:local_muted], do: "media-call__btn--active"}"}
+            class={"btn-icon #{if @call[:local_muted], do: "media-call__btn--active"}"}
           >
+            <Icons.icon_mute :if={@call[:local_muted]} class="btn-icon__svg" />
+            <Icons.icon_microphone :if={!@call[:local_muted]} class="btn-icon__svg" />
             {if @call[:local_muted], do: "Ativar Mic", else: "Silenciar"}
           </button>
           <button
             :if={@call.type == "video"}
             data-media-action="camera"
-            class={"#{if @call[:local_camera_off], do: "media-call__btn--active"}"}
+            class={"btn-icon #{if @call[:local_camera_off], do: "media-call__btn--active"}"}
           >
+            <Icons.icon_camera_off :if={@call[:local_camera_off]} class="btn-icon__svg" />
+            <Icons.icon_camera :if={!@call[:local_camera_off]} class="btn-icon__svg" />
             {if @call[:local_camera_off], do: "Ligar Camera", else: "Desligar Camera"}
           </button>
-          <button :if={@call.type == "audio"} data-media-action="upgrade">
-            Adicionar Video
+          <button :if={@call.type == "audio"} data-media-action="upgrade" class="btn-icon">
+            <Icons.icon_upgrade_video class="btn-icon__svg" /> Adicionar Video
           </button>
-          <button :if={@call.type == "video"} data-media-action="pip">
-            PiP
+          <button :if={@call.type == "video"} data-media-action="pip" class="btn-icon">
+            <Icons.icon_pip class="btn-icon__svg" /> PiP
           </button>
-          <button class="media-call__push-right" data-media-action="device-settings">
-            Dispositivos
+          <button class="media-call__push-right btn-icon" data-media-action="device-settings">
+            <Icons.icon_devices class="btn-icon__svg" /> Dispositivos
           </button>
         </div>
         <div class="media-call__controls-row">
-          <button phx-click="media_select_preset" phx-value-preset="high">Alta</button>
-          <button phx-click="media_select_preset" phx-value-preset="medium">Media</button>
-          <button phx-click="media_select_preset" phx-value-preset="low">Baixa</button>
-          <button class="media-call__end-btn" data-media-action="end-call">
-            Encerrar Chamada
+          <button phx-click="media_select_preset" phx-value-preset="high" class="btn-icon">
+            <Icons.icon_quality_high class="btn-icon__svg" /> Alta
+          </button>
+          <button phx-click="media_select_preset" phx-value-preset="medium" class="btn-icon">
+            <Icons.icon_quality_medium class="btn-icon__svg" /> Media
+          </button>
+          <button phx-click="media_select_preset" phx-value-preset="low" class="btn-icon">
+            <Icons.icon_quality_low class="btn-icon__svg" /> Baixa
+          </button>
+          <button class="media-call__end-btn btn-icon" data-media-action="end-call">
+            <Icons.icon_phone_end class="btn-icon__svg" /> Encerrar Chamada
           </button>
         </div>
       </div>
@@ -312,9 +350,9 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
               do: "Navegador nao suporta transferencia de arquivos",
               else: "Enviar arquivo"
           }
-          class="p2p-lobby-actions__btn"
+          class="p2p-lobby-actions__btn btn-icon"
         >
-          Enviar Arquivo
+          <Icons.icon_file_send class="btn-icon__svg" /> Enviar Arquivo
         </button>
         <button
           phx-click="request_action"
@@ -325,9 +363,9 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
               do: "Navegador nao suporta chamadas de audio",
               else: "Chamada de audio"
           }
-          class="p2p-lobby-actions__btn"
+          class="p2p-lobby-actions__btn btn-icon"
         >
-          Chamada de Audio
+          <Icons.icon_microphone class="btn-icon__svg" /> Chamada de Audio
         </button>
         <button
           phx-click="request_action"
@@ -338,9 +376,9 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
               do: "Navegador nao suporta chamadas de video",
               else: "Chamada de video"
           }
-          class="p2p-lobby-actions__btn"
+          class="p2p-lobby-actions__btn btn-icon"
         >
-          Chamada de Video
+          <Icons.icon_camera class="btn-icon__svg" /> Chamada de Video
         </button>
       </div>
     </div>
@@ -408,10 +446,10 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
         Arraste um arquivo aqui ou clique para selecionar
       </p>
       <button
-        class="file-transfer__ready-btn"
+        class="file-transfer__ready-btn btn-icon"
         onclick="this.closest('.file-transfer').querySelector('.file-transfer-input').click()"
       >
-        Escolher Arquivo
+        <Icons.icon_choose_file class="btn-icon__svg" /> Escolher Arquivo
       </button>
     </div>
     """
@@ -429,16 +467,16 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
         <button
           phx-click="ft_respond"
           phx-value-accepted="true"
-          class="file-transfer__offer-btn file-transfer__offer-btn--accept"
+          class="file-transfer__offer-btn file-transfer__offer-btn--accept btn-icon"
         >
-          Aceitar
+          <Icons.icon_accept class="btn-icon__svg" /> Aceitar
         </button>
         <button
           phx-click="ft_respond"
           phx-value-accepted="false"
-          class="file-transfer__offer-btn file-transfer__offer-btn--reject"
+          class="file-transfer__offer-btn file-transfer__offer-btn--reject btn-icon"
         >
-          Rejeitar
+          <Icons.icon_reject class="btn-icon__svg" /> Rejeitar
         </button>
       </div>
     </div>
@@ -494,8 +532,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
         <span :if={!@paused && !@verifying}>{@speed} — ETA: {@eta}</span>
       </div>
       <div :if={!@verifying} class="file-transfer__progress-actions">
-        <button phx-click="ft_cancel" class="file-transfer__cancel-btn">
-          Cancelar
+        <button phx-click="ft_cancel" class="file-transfer__cancel-btn btn-icon">
+          <Icons.icon_cancel class="btn-icon__svg" /> Cancelar
         </button>
       </div>
     </div>
@@ -508,8 +546,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     ~H"""
     <div class="file-transfer__status file-transfer__status--success">
       <p>Transferencia concluida com sucesso: {@file_transfer.file_name}</p>
-      <button phx-click="ft_reset" class="file-transfer__reset-btn">
-        Enviar outro arquivo
+      <button phx-click="ft_reset" class="file-transfer__reset-btn btn-icon">
+        <Icons.icon_choose_file class="btn-icon__svg" /> Enviar outro arquivo
       </button>
     </div>
     """
@@ -521,8 +559,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     ~H"""
     <div class="file-transfer__status file-transfer__status--cancelled">
       <p>Transferencia cancelada por {@file_transfer.cancelled_by}</p>
-      <button phx-click="ft_reset" class="file-transfer__reset-btn">
-        Enviar outro arquivo
+      <button phx-click="ft_reset" class="file-transfer__reset-btn btn-icon">
+        <Icons.icon_choose_file class="btn-icon__svg" /> Enviar outro arquivo
       </button>
     </div>
     """
@@ -538,12 +576,12 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
         <button
           :if={@file_transfer[:can_retry]}
           phx-click="ft_retry"
-          class="file-transfer__retry-btn"
+          class="file-transfer__retry-btn btn-icon"
         >
-          Tentar novamente
+          <Icons.icon_retry class="btn-icon__svg" /> Tentar novamente
         </button>
-        <button phx-click="ft_reset" class="file-transfer__reset-btn">
-          Enviar outro arquivo
+        <button phx-click="ft_reset" class="file-transfer__reset-btn btn-icon">
+          <Icons.icon_choose_file class="btn-icon__svg" /> Enviar outro arquivo
         </button>
       </div>
     </div>
@@ -557,8 +595,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     ~H"""
     <div class="file-transfer__status file-transfer__status--rejected">
       <p>{@peer_nick} rejeitou a transferencia de arquivo</p>
-      <button phx-click="ft_reset" class="file-transfer__reset-btn">
-        Enviar outro arquivo
+      <button phx-click="ft_reset" class="file-transfer__reset-btn btn-icon">
+        <Icons.icon_choose_file class="btn-icon__svg" /> Enviar outro arquivo
       </button>
     </div>
     """
@@ -580,8 +618,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     ~H"""
     <div class="file-transfer__status file-transfer__status--error">
       <p>{@error}</p>
-      <button phx-click="ft_reset" class="file-transfer__reset-btn">
-        Tentar outro arquivo
+      <button phx-click="ft_reset" class="file-transfer__reset-btn btn-icon">
+        <Icons.icon_choose_file class="btn-icon__svg" /> Tentar outro arquivo
       </button>
     </div>
     """
@@ -607,16 +645,16 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
         <button
           phx-click="respond_action"
           phx-value-accepted="true"
-          class="p2p-lobby-consent__btn p2p-lobby-consent__btn--accept"
+          class="p2p-lobby-consent__btn p2p-lobby-consent__btn--accept btn-icon"
         >
-          Aceitar
+          <Icons.icon_accept class="btn-icon__svg" /> Aceitar
         </button>
         <button
           phx-click="respond_action"
           phx-value-accepted="false"
-          class="p2p-lobby-consent__btn p2p-lobby-consent__btn--reject"
+          class="p2p-lobby-consent__btn p2p-lobby-consent__btn--reject btn-icon"
         >
-          Recusar
+          <Icons.icon_reject class="btn-icon__svg" /> Recusar
         </button>
       </div>
     </div>
