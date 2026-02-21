@@ -92,6 +92,12 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_dialog_address_book(assigns), to: RetroHexChatWeb.Icons.People
   defdelegate icon_dialog_nick(assigns), to: RetroHexChatWeb.Icons.People
   defdelegate icon_tab_contacts(assigns), to: RetroHexChatWeb.Icons.People
+  defdelegate icon_role_owner(assigns), to: RetroHexChatWeb.Icons.People
+  defdelegate icon_role_operator(assigns), to: RetroHexChatWeb.Icons.People
+  defdelegate icon_role_halfop(assigns), to: RetroHexChatWeb.Icons.People
+  defdelegate icon_role_voiced(assigns), to: RetroHexChatWeb.Icons.People
+  defdelegate icon_role_regular(assigns), to: RetroHexChatWeb.Icons.People
+  defdelegate icon_status_user(assigns), to: RetroHexChatWeb.Icons.People
   defdelegate icon_tab_nicklist(assigns), to: RetroHexChatWeb.Icons.People
 
   # ── Communication ───────────────────────────────────────
@@ -106,6 +112,8 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_dialog_url(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_tab_autojoin(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_tab_channel(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_tab_pm(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_tab_conversations(assigns), to: RetroHexChatWeb.Icons.Communication
 
   # ── Media ───────────────────────────────────────────────
   defdelegate icon_microphone(assigns), to: RetroHexChatWeb.Icons.Media
@@ -214,6 +222,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_tab_general(assigns), to: RetroHexChatWeb.Icons.Alerts
   defdelegate icon_tab_notify(assigns), to: RetroHexChatWeb.Icons.Alerts
   defdelegate icon_tab_notifications(assigns), to: RetroHexChatWeb.Icons.Alerts
+  defdelegate icon_tab_status(assigns), to: RetroHexChatWeb.Icons.Alerts
 
   # ── Symbols ─────────────────────────────────────────────
   defdelegate icon_dollar(assigns), to: RetroHexChatWeb.Icons.Symbols
@@ -223,5 +232,6 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_legal(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_clock(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_btn_ignore(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_status_signal(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_dialog_kick(assigns), to: RetroHexChatWeb.Icons.Symbols
 end

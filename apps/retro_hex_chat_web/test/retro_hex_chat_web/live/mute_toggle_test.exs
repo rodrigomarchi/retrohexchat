@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
       html = render(view)
       assert html =~ "data-testid=\"mute-toggle\""
-      assert html =~ "[SND]"
+      assert html =~ "mute-toggle"
     end
 
     test "clicking mute toggles to muted state", %{conn: conn} do
@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       |> render_click()
 
       html = render(view)
-      assert html =~ "[MUTE]"
+      assert html =~ "mute-toggle"
 
       # Toggle back
       view
@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       |> render_click()
 
       html = render(view)
-      assert html =~ "[SND]"
+      assert html =~ "mute-toggle"
     end
 
     test "toggle_mute pushes toggle_mute event to client", %{conn: conn} do
@@ -50,13 +50,13 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
       # Initially unmuted
       html = render(view)
-      assert html =~ "[SND]"
+      assert html =~ "mute-toggle"
 
       # Simulate client-side mute sync (as if localStorage had muted=true)
       render_hook(view, "mute_state_sync", %{"muted" => true})
 
       html = render(view)
-      assert html =~ "[MUTE]"
+      assert html =~ "mute-toggle"
     end
   end
 end

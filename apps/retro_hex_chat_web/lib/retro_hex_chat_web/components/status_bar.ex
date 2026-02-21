@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.Components.StatusBar do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :nickname, :string, required: true
   attr :channel, :string, default: nil
   attr :user_count, :integer, default: 0
@@ -17,10 +19,13 @@ defmodule RetroHexChatWeb.Components.StatusBar do
     ~H"""
     <div class="status-bar">
       <p class="status-bar-field status-bar-section--left">
+        <Icons.icon_status_user class="status-bar-icon" />
         <span data-testid="status-nick">{@nickname}</span>
         <span class="status-bar-separator">|</span>
+        <Icons.icon_tab_channel class="status-bar-icon" />
         <span data-testid="status-channel">{@channel || "No channel"}</span>
         <span class="status-bar-separator">|</span>
+        <Icons.icon_community class="status-bar-icon" />
         <span data-testid="status-users">Users: {@user_count}</span>
       </p>
       <p
@@ -30,6 +35,7 @@ defmodule RetroHexChatWeb.Components.StatusBar do
         {connection_indicator(@connection_state)} {connection_text(@connection_state)}
       </p>
       <p class="status-bar-field status-bar-section--right" data-testid="status-right">
+        <Icons.icon_status_signal class="status-bar-icon" />
         <span
           id="lag-display"
           class={"status-bar-lag status-bar-lag--#{@lag_status}"}
@@ -39,6 +45,7 @@ defmodule RetroHexChatWeb.Components.StatusBar do
           Lag: {lag_text(@lag_ms, @lag_status)}
         </span>
         <span class="status-bar-separator">|</span>
+        <Icons.icon_clock class="status-bar-icon" />
         <span id="clock-display" phx-hook="ClockHook" data-testid="status-clock">--:--</span>
         <span class="status-bar-separator">|</span>
         <span
@@ -46,7 +53,8 @@ defmodule RetroHexChatWeb.Components.StatusBar do
           data-testid="mute-toggle"
           phx-click="toggle_mute"
         >
-          {if @muted, do: "[MUTE]", else: "[SND]"}
+          <Icons.icon_dialog_sound :if={!@muted} class="status-bar-icon" />
+          <Icons.icon_mute :if={@muted} class="status-bar-icon" />
         </span>
       </p>
     </div>

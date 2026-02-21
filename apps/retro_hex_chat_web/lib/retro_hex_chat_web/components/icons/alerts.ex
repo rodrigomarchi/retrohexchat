@@ -128,6 +128,21 @@ defmodule RetroHexChatWeb.Icons.Alerts do
 
   attr :class, :string, default: nil
 
+  @spec icon_tab_status(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_tab_status(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="2" y="2" width="12" height="12" rx="1" fill="#000080" />
+      <line x1="4" y1="6" x2="8" y2="6" stroke="#fff" stroke-width="1" />
+      <line x1="4" y1="8.5" x2="10" y2="8.5" stroke="#fff" stroke-width="1" />
+      <line x1="4" y1="11" x2="7" y2="11" stroke="#fff" stroke-width="1" />
+      <rect x="9" y="10" width="2" height="2" fill="#fff" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_tab_general(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_tab_general(assigns) do
     ~H"""

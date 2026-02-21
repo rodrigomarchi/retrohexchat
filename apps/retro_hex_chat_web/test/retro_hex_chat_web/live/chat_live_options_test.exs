@@ -148,7 +148,7 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
 
       view |> element(~s([data-testid="options-apply"])) |> render_click()
       html = render(view)
-      refute html =~ ~s(class="treebar)
+      refute html =~ ~s(class="treebar")
     end
 
     @tag :liveview

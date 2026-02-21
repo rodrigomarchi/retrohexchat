@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.Components.Nicklist do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :users, :list, default: []
   attr :nick_color_fn, :any, default: nil
 
@@ -18,6 +20,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
     <div class="nicklist" id="nicklist-container" phx-hook="NicklistHook">
       <div class="sidebar-tab-bar sidebar-tab-bar--right">
         <div class="tab-item tab-active">
+          <Icons.icon_tab_nicklist class="treebar-icon" />
           <span class="tab-label">Users ({length(@users)})</span>
           <button
             type="button"
@@ -43,7 +46,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
           label="Owners"
           count={length(@grouped.owners)}
           users={@grouped.owners}
-          prefix="~"
+          role={:owner}
           role_class="nick-owner"
           nick_color_fn={@nick_color_fn}
         />
@@ -52,7 +55,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
           label="Operators"
           count={length(@grouped.operators)}
           users={@grouped.operators}
-          prefix="@"
+          role={:operator}
           role_class="nick-operator"
           nick_color_fn={@nick_color_fn}
         />
@@ -61,7 +64,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
           label="Half-Ops"
           count={length(@grouped.half_operators)}
           users={@grouped.half_operators}
-          prefix="%"
+          role={:half_operator}
           role_class="nick-halfop"
           nick_color_fn={@nick_color_fn}
         />
@@ -70,7 +73,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
           label="Voiced"
           count={length(@grouped.voiced)}
           users={@grouped.voiced}
-          prefix="+"
+          role={:voiced}
           role_class="nick-voiced"
           nick_color_fn={@nick_color_fn}
         />
@@ -79,7 +82,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
           label="Regular"
           count={length(@grouped.regular)}
           users={@grouped.regular}
-          prefix=""
+          role={:regular}
           role_class="nick-regular"
           nick_color_fn={@nick_color_fn}
         />
@@ -91,7 +94,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
   attr :label, :string, required: true
   attr :count, :integer, required: true
   attr :users, :list, required: true
-  attr :prefix, :string, required: true
+  attr :role, :atom, required: true
   attr :role_class, :string, required: true
   attr :nick_color_fn, :any, default: nil
 
@@ -105,8 +108,40 @@ defmodule RetroHexChatWeb.Components.Nicklist do
       phx-value-nick={user.nickname}
       style={nick_style(@nick_color_fn, user.nickname)}
     >
-      {@prefix}{user.nickname}
+      <.role_icon role={@role} /> {user.nickname}
     </li>
+    """
+  end
+
+  attr :role, :atom, required: true
+
+  defp role_icon(%{role: :owner} = assigns) do
+    ~H"""
+    <Icons.icon_role_owner class="nick-icon" />
+    """
+  end
+
+  defp role_icon(%{role: :operator} = assigns) do
+    ~H"""
+    <Icons.icon_role_operator class="nick-icon" />
+    """
+  end
+
+  defp role_icon(%{role: :half_operator} = assigns) do
+    ~H"""
+    <Icons.icon_role_halfop class="nick-icon" />
+    """
+  end
+
+  defp role_icon(%{role: :voiced} = assigns) do
+    ~H"""
+    <Icons.icon_role_voiced class="nick-icon" />
+    """
+  end
+
+  defp role_icon(%{role: _} = assigns) do
+    ~H"""
+    <Icons.icon_role_regular class="nick-icon" />
     """
   end
 

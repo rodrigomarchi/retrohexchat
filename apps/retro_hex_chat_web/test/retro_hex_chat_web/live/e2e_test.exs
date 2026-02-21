@@ -551,7 +551,7 @@ defmodule RetroHexChatWeb.E2ETest do
       # Mode change broadcast should update nicklist
       Process.sleep(50)
       html = render(view)
-      assert html =~ "@OpRecv" or html =~ "nick-operator" or html =~ "nick-owner"
+      assert html =~ "nick-operator" or html =~ "nick-owner"
     end
 
     test "6.6 give voice via context menu shows +prefix", %{conn: conn} do
@@ -571,7 +571,7 @@ defmodule RetroHexChatWeb.E2ETest do
       # Wait for PubSub mode_changed broadcast to arrive
       Process.sleep(100)
       html = render(view)
-      assert html =~ "nick-voiced" or html =~ "+VoRecv" or html =~ "sets mode"
+      assert html =~ "nick-voiced" or html =~ "sets mode"
     end
 
     test "6.7 non-op kick shows error", %{conn: conn} do
@@ -643,8 +643,8 @@ defmodule RetroHexChatWeb.E2ETest do
 
       send(view.pid, {:user_joined, %{nickname: "VoUser", role: :voiced}})
       html = render(view)
-      assert html =~ "~PrefixOp"
-      assert html =~ "+VoUser"
+      assert html =~ "nick-owner"
+      assert html =~ "nick-voiced"
     end
 
     test "7.3 away user has nick-away class", %{conn: conn} do

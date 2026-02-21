@@ -9,6 +9,9 @@
 /* ── Status bar 3-section layout ── */
 .status-bar-section--left {
   flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -40,6 +43,9 @@
 .status-bar-lag--warning { color: var(--color-warning-alt); }
 .status-bar-lag--critical { color: var(--color-error); }
 .status-bar-lag--timeout { color: var(--color-muted); }
+
+/* ── Status bar icons ── */
+.status-bar-icon { width: 10px; height: 10px; flex-shrink: 0; vertical-align: middle; }
 
 /* ── Status bar separator ── */
 .status-bar-separator {

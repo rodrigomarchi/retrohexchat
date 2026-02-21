@@ -125,14 +125,16 @@ defmodule RetroHexChatWeb.Components.StatusBarTest do
   end
 
   describe "status_bar/1 mute toggle" do
-    test "shows SND when not muted" do
+    test "shows speaker icon when not muted" do
       html = render_status_bar(%{muted: false})
-      assert html =~ "[SND]"
+      assert html =~ "mute-toggle"
+      assert html =~ "<svg"
     end
 
-    test "shows MUTE when muted" do
+    test "shows mute icon when muted" do
       html = render_status_bar(%{muted: true})
-      assert html =~ "[MUTE]"
+      assert html =~ "mute-toggle"
+      assert html =~ "<svg"
     end
   end
 

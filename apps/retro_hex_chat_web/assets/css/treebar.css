@@ -19,14 +19,9 @@
   padding-top: 4px;
 }
 
-/* ── PM item icon ────────────────────────────────────────── */
+/* ── Treebar icons ───────────────────────────────────────── */
 
-.treebar [data-testid^="pm-"]::before {
-  content: "\2709";
-  font-size: 9px;
-  margin-right: 3px;
-  color: var(--color-muted);
-}
+.treebar-icon { width: 10px; height: 10px; flex-shrink: 0; vertical-align: middle; }
 
 /* ── Unread badge (numeric count) ────────────────────────── */
 

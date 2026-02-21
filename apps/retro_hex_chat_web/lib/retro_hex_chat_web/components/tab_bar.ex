@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.TabBar do
   use Phoenix.Component
 
   alias RetroHexChat.Chat.UnreadTracker
+  alias RetroHexChatWeb.Icons
 
   attr :channels, :list, default: []
   attr :pm_conversations, :list, default: []
@@ -25,6 +26,7 @@ defmodule RetroHexChatWeb.Components.TabBar do
         phx-click="switch_to_status"
         data-testid="tab-status"
       >
+        <Icons.icon_tab_status class="tab-item-icon" />
         <span class="tab-label">Status</span>
       </div>
       <div
@@ -40,6 +42,7 @@ defmodule RetroHexChatWeb.Components.TabBar do
         }
         data-testid={"tab-#{channel}"}
       >
+        <Icons.icon_tab_channel class="tab-item-icon" />
         <span class="tab-label" phx-click="switch_channel" phx-value-channel={channel}>
           {channel}
         </span>
@@ -59,6 +62,7 @@ defmodule RetroHexChatWeb.Components.TabBar do
         class={pm_tab_class(pm, @active_pm, @show_status_tab, @unread_counts)}
         data-testid={"tab-pm-#{pm}"}
       >
+        <Icons.icon_tab_pm class="tab-item-icon" />
         <span class="tab-label" phx-click="switch_pm" phx-value-nickname={pm}>{pm}</span>
         <button
           type="button"

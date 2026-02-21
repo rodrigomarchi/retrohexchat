@@ -533,7 +533,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       html = render(view)
       assert html =~ "sets mode +o"
       # ModeTarget should now be in operator section
-      assert html =~ "@ModeTarget"
+      assert html =~ "nick-operator"
     end
 
     test "mode_changed +v updates user role to voiced in nicklist", %{conn: conn} do
@@ -563,7 +563,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       # Add an operator user
       send(view.pid, {:user_joined, %{nickname: "DeopTarget", role: :operator}})
       html = render(view)
-      assert html =~ "@DeopTarget"
+      assert html =~ "nick-operator"
 
       # Remove operator
       send(
@@ -573,7 +573,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       html = render(view)
       assert html =~ "sets mode -o"
-      refute html =~ "@DeopTarget"
+      refute html =~ "nick-operator"
     end
   end
 

@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
   use Phoenix.Component
 
   alias RetroHexChat.Chat.UnreadTracker
+  alias RetroHexChatWeb.Icons
 
   attr :channels, :list, default: []
   attr :active_channel, :string, default: nil
@@ -24,6 +25,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
     <div class="treebar" id="treebar" phx-hook="TreebarHook">
       <div class="sidebar-tab-bar sidebar-tab-bar--left">
         <div class="tab-item tab-active">
+          <Icons.icon_tab_conversations class="treebar-icon" />
           <span class="tab-label">Conversations</span>
           <button
             type="button"
@@ -49,7 +51,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
       <ul :if={@channels != [] or @pm_conversations != []} class="tree-view">
         <li>
           <details open>
-            <summary>Channels</summary>
+            <summary><Icons.icon_tab_channel class="treebar-icon" /> Channels</summary>
             <ul>
               <li
                 :for={channel <- @channels}
@@ -72,6 +74,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
                 phx-value-cc_channel={channel}
               >
                 <span :if={channel in @disconnected_channels}>⚡</span>
+                <Icons.icon_tab_channel class="treebar-icon" />
                 {channel}
                 <.badge
                   :if={UnreadTracker.unread?(@unread_counts, channel)}
@@ -84,7 +87,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
         </li>
         <li>
           <details open>
-            <summary>Private</summary>
+            <summary><Icons.icon_tab_pm class="treebar-icon" /> Private</summary>
             <ul>
               <li
                 :for={pm <- @pm_conversations}
@@ -100,6 +103,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
                 phx-click="switch_pm"
                 phx-value-nickname={pm}
               >
+                <Icons.icon_tab_pm class="treebar-icon" />
                 {pm}
                 <.badge
                   :if={UnreadTracker.unread?(@unread_counts, "pm:#{pm}")}

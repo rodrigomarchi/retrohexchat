@@ -42,8 +42,8 @@ defmodule RetroHexChatWeb.Components.NicklistTest do
       assert html =~ "nick-operator"
       assert html =~ "nick-voiced"
       assert html =~ "nick-regular"
-      assert html =~ "@alice"
-      assert html =~ "+carol"
+      assert html =~ "alice"
+      assert html =~ "carol"
       assert html =~ "bob"
     end
 
@@ -159,11 +159,12 @@ defmodule RetroHexChatWeb.Components.NicklistTest do
       assert html =~ "Voiced (1)"
       assert html =~ "Regular (1)"
 
-      # Check prefixes
-      assert html =~ "~alpha"
-      assert html =~ "@bravo"
-      assert html =~ "%charlie"
-      assert html =~ "+delta"
+      # Check role icons are rendered (SVG icons replace text prefixes)
+      assert html =~ "nick-icon"
+      assert html =~ "alpha"
+      assert html =~ "bravo"
+      assert html =~ "charlie"
+      assert html =~ "delta"
     end
 
     test "owner uses nick-owner CSS class" do

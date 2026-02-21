@@ -105,6 +105,19 @@ defmodule RetroHexChatWeb.Icons.Symbols do
 
   attr :class, :string, default: nil
 
+  @spec icon_status_signal(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_status_signal(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="2" y="11" width="3" height="4" fill="#000080" />
+      <rect x="6.5" y="7" width="3" height="8" fill="#000080" />
+      <rect x="11" y="3" width="3" height="12" fill="#000080" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_btn_ignore(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_ignore(assigns) do
     ~H"""

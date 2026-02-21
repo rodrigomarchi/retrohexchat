@@ -146,6 +146,31 @@ defmodule RetroHexChatWeb.Icons.Communication do
 
   attr :class, :string, default: nil
 
+  @spec icon_tab_pm(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_tab_pm(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1" y="4" width="14" height="9" rx="1" fill="none" stroke="#000080" stroke-width="1.2" />
+      <polyline points="1,4 8,9.5 15,4" fill="none" stroke="#000080" stroke-width="1.2" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_tab_conversations(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_tab_conversations(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M2 2h12v8H6l-3 3v-3H2z" fill="#000080" />
+      <line x1="5" y1="5" x2="11" y2="5" stroke="#fff" stroke-width="1" />
+      <line x1="5" y1="7.5" x2="9" y2="7.5" stroke="#fff" stroke-width="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_tab_autojoin(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_tab_autojoin(assigns) do
     ~H"""
@@ -171,17 +196,11 @@ defmodule RetroHexChatWeb.Icons.Communication do
   def icon_tab_channel(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <text
-        x="8"
-        y="12"
-        text-anchor="middle"
-        font-size="12"
-        font-weight="bold"
-        font-family="sans-serif"
-        fill="#000080"
-      >
-        #
-      </text>
+      <rect x="1" y="2" width="14" height="10" rx="1" fill="#000080" />
+      <rect x="2" y="3" width="12" height="8" rx="0.5" fill="#fff" />
+      <line x1="4" y1="5.5" x2="10" y2="5.5" stroke="#000080" stroke-width="1" />
+      <line x1="4" y1="8" x2="8" y2="8" stroke="#000080" stroke-width="1" />
+      <polygon points="5,12 8,15 11,12" fill="#000080" />
     </svg>
     """
   end
