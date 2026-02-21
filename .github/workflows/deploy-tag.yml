@@ -6,6 +6,10 @@ on:
       - 'sun-*'
       - 'moon-*'
 
+concurrency:
+  group: deploy-tag-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
