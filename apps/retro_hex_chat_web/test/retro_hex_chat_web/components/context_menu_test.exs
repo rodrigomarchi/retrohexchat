@@ -96,10 +96,10 @@ defmodule RetroHexChatWeb.Components.ContextMenuTest do
       assert html =~ ~s(data-testid="context-call")
       assert html =~ ~s(data-testid="context-video-call")
       assert html =~ ~s(data-testid="context-sendfile")
-      assert html =~ "Sessão P2P"
-      assert html =~ "Chamada de Áudio"
-      assert html =~ "Chamada de Vídeo"
-      assert html =~ "Enviar Arquivo"
+      assert html =~ "P2P Session"
+      assert html =~ "Audio Call"
+      assert html =~ "Video Call"
+      assert html =~ "Send File"
       # Items should be enabled (have phx-click)
       assert html =~ ~s(phx-click="context_p2p")
       assert html =~ ~s(phx-click="context_call")
@@ -123,7 +123,7 @@ defmodule RetroHexChatWeb.Components.ContextMenuTest do
 
       refute html =~ ~s(data-testid="context-p2p")
       refute html =~ ~s(data-testid="context-call")
-      refute html =~ "Sessão P2P"
+      refute html =~ "P2P Session"
     end
 
     @tag :unit
@@ -144,7 +144,7 @@ defmodule RetroHexChatWeb.Components.ContextMenuTest do
       # Items should be disabled (class="disabled")
       assert html =~ ~r/disabled[^>]*context-p2p/
       # Should have tooltip
-      assert html =~ "Usuário não registrado"
+      assert html =~ "User not registered"
       # Should NOT have phx-click
       refute html =~ ~s(phx-click="context_p2p")
     end
@@ -167,7 +167,7 @@ defmodule RetroHexChatWeb.Components.ContextMenuTest do
       # Items should be disabled
       assert html =~ ~r/disabled[^>]*context-p2p/
       # Should NOT have tooltip (self-targeting)
-      refute html =~ "Usuário não registrado"
+      refute html =~ "User not registered"
       # Should NOT have phx-click
       refute html =~ ~s(phx-click="context_p2p")
     end

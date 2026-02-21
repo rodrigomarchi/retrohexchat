@@ -50,21 +50,21 @@ describe("Media Acquisition", () => {
       const error = new DOMException("Permission denied", "NotAllowedError");
       const result = categorizeMediaError(error);
       expect(result.code).toBe("permission_denied");
-      expect(result.message).toContain("Permissao de microfone negada");
+      expect(result.message).toContain("Microphone permission denied");
     });
 
     it("maps NotReadableError to not_readable", () => {
       const error = new DOMException("Device in use", "NotReadableError");
       const result = categorizeMediaError(error);
       expect(result.code).toBe("not_readable");
-      expect(result.message).toContain("Camera em uso");
+      expect(result.message).toContain("Camera in use");
     });
 
     it("maps NotFoundError to not_found", () => {
       const error = new DOMException("No device", "NotFoundError");
       const result = categorizeMediaError(error);
       expect(result.code).toBe("not_found");
-      expect(result.message).toContain("Nenhuma camera encontrada");
+      expect(result.message).toContain("No camera found");
     });
 
     it("maps unknown errors with original message", () => {
@@ -96,7 +96,7 @@ describe("Media Acquisition", () => {
 
       await expect(acquireMedia({ audio: true })).rejects.toEqual({
         code: "permission_denied",
-        message: expect.stringContaining("Permissao"),
+        message: expect.stringContaining("Microphone permission denied"),
       });
     });
   });
@@ -220,11 +220,11 @@ describe("Quality Monitoring", () => {
   });
 
   describe("QUALITY_LABELS", () => {
-    it("has Portuguese labels for all levels", () => {
-      expect(QUALITY_LABELS.excellent).toBe("Excelente");
-      expect(QUALITY_LABELS.good).toBe("Bom");
-      expect(QUALITY_LABELS.fair).toBe("Regular");
-      expect(QUALITY_LABELS.poor).toBe("Ruim");
+    it("has English labels for all levels", () => {
+      expect(QUALITY_LABELS.excellent).toBe("Excellent");
+      expect(QUALITY_LABELS.good).toBe("Good");
+      expect(QUALITY_LABELS.fair).toBe("Fair");
+      expect(QUALITY_LABELS.poor).toBe("Poor");
     });
   });
 

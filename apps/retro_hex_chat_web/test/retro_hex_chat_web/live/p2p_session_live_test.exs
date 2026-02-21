@@ -96,7 +96,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
 
       assert html =~ "p2p_lv_a3"
       assert html =~ "p2p_lv_b3"
-      assert html =~ "Sessao P2P"
+      assert html =~ "P2P Session"
 
       stop_server(session.token)
     end
@@ -130,8 +130,8 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
 
       conn = chat_conn(conn, "p2p_lv_a5")
       {:ok, _view, html} = live(conn, "/p2p/#{session.token}")
-      assert html =~ "Sessao Indisponivel"
-      assert html =~ "Sessao encerrada pelo usuario"
+      assert html =~ "Session Unavailable"
+      assert html =~ "Session closed by user"
     end
   end
 
@@ -151,10 +151,10 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       {:ok, _view, html} = live(conn, "/p2p/#{session.token}")
 
       assert html =~ "p2p-lobby-chat"
-      assert html =~ "Encerrar Sessao"
-      assert html =~ "Enviar Arquivo"
-      assert html =~ "Chamada de Audio"
-      assert html =~ "Chamada de Video"
+      assert html =~ "End Session"
+      assert html =~ "Send File"
+      assert html =~ "Audio Call"
+      assert html =~ "Video Call"
     end
 
     test "renders presence indicators", %{conn: conn, session: session} do
@@ -181,7 +181,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       conn = chat_conn(conn, "p2p_lv_a6")
       {:ok, _view, html} = live(conn, "/p2p/#{session.token}")
 
-      refute html =~ "aguardando"
+      refute html =~ "waiting"
     end
 
     test "peer presence updates to online when p2p_peer_joined is received", %{
@@ -192,8 +192,8 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       conn = chat_conn(conn, "p2p_lv_a6")
       {:ok, view, html} = live(conn, "/p2p/#{session.token}")
 
-      # Initially peer shows as "aguardando" (offline)
-      assert html =~ "aguardando"
+      # Initially peer shows as "waiting" (offline)
+      assert html =~ "waiting"
 
       # Simulate peer joining via PubSub
       Phoenix.PubSub.broadcast(
@@ -208,8 +208,8 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       Process.sleep(20)
       html = render(view)
 
-      # Peer should now show as online, not "aguardando"
-      refute html =~ "aguardando"
+      # Peer should now show as online, not "waiting"
+      refute html =~ "waiting"
     end
   end
 
@@ -249,7 +249,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
 
       Process.sleep(20)
       html = render(view)
-      assert html =~ "Aguardando resposta"
+      assert html =~ "Waiting for response"
     end
 
     test "action buttons render with disabled state for capabilities", %{
@@ -260,9 +260,9 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       {:ok, _view, html} = live(conn, "/p2p/#{session.token}")
 
       # Capabilities default to nil (not yet detected), buttons should be disabled
-      assert html =~ "Enviar Arquivo"
-      assert html =~ "Chamada de Audio"
-      assert html =~ "Chamada de Video"
+      assert html =~ "Send File"
+      assert html =~ "Audio Call"
+      assert html =~ "Video Call"
     end
 
     test "p2p_capabilities event updates assigns", %{conn: conn, session: session} do
@@ -277,8 +277,8 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
 
       html = render(view)
       # Buttons should still be present after capabilities update
-      assert html =~ "Enviar Arquivo"
-      assert html =~ "Chamada de Audio"
+      assert html =~ "Send File"
+      assert html =~ "Audio Call"
     end
 
     test "action response clears consent banner", %{
@@ -306,7 +306,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
 
       Process.sleep(20)
       html = render(view)
-      assert html =~ "quer iniciar"
+      assert html =~ "wants to start"
 
       # Simulate action response with real GenServer payload (no :status key)
       Phoenix.PubSub.broadcast(
@@ -325,7 +325,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       Process.sleep(20)
       html = render(view)
       # After response with accepted: true, consent banner must NOT reappear
-      refute html =~ "quer iniciar"
+      refute html =~ "wants to start"
       # For audio_call, media-call UI renders instead of action buttons
       assert html =~ "media-call"
     end
@@ -354,7 +354,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       )
 
       Process.sleep(20)
-      assert render(view) =~ "quer iniciar"
+      assert render(view) =~ "wants to start"
 
       # Simulate accepted response (real GenServer payload)
       Phoenix.PubSub.broadcast(
@@ -391,7 +391,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       Process.sleep(20)
       html = render(view)
       # Consent banner must NOT reappear after active
-      refute html =~ "quer iniciar"
+      refute html =~ "wants to start"
     end
   end
 
@@ -493,8 +493,8 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       conn = chat_conn(conn, "p2p_lv_ft_b")
       {:ok, _view, html} = live(conn, "/p2p/#{session.token}")
 
-      # Peer should NOT show as "aguardando" since alice already joined
-      refute html =~ "aguardando"
+      # Peer should NOT show as "waiting" since alice already joined
+      refute html =~ "waiting"
     end
 
     test "file_transfer resets to ready after ft_completed", %{
@@ -512,7 +512,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       Process.sleep(20)
 
       html = render(view)
-      assert html =~ "Transferencia concluida"
+      assert html =~ "Transfer completed"
 
       # Click "Enviar outro arquivo" to reset
       render_click(view, "ft_reset", %{})
@@ -520,7 +520,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
 
       html = render(view)
       assert html =~ "file-transfer__ready"
-      refute html =~ "Transferencia concluida"
+      refute html =~ "Transfer completed"
     end
 
     test "file_transfer resets to ready after ft_cancelled", %{
@@ -537,7 +537,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       Process.sleep(20)
 
       html = render(view)
-      assert html =~ "Transferencia cancelada"
+      assert html =~ "Transfer cancelled"
 
       render_click(view, "ft_reset", %{})
       Process.sleep(20)
@@ -850,7 +850,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       html = render(view)
       # media-call component should not render
       refute html =~ "media-call__controls"
-      assert html =~ "Chamada encerrada"
+      assert html =~ "Call ended"
     end
 
     test "p2p_action_response includes responder_id from GenServer", %{

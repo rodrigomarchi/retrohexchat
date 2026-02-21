@@ -135,8 +135,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
       if turn_only and not P2P.turn_configured?() do
         warn_msg = %{
           id: System.unique_integer([:positive]),
-          sender_nick: "Sistema",
-          content: "Modo privado requer servidor TURN. Usando conexao direta.",
+          sender_nick: "System",
+          content: "Private mode requires a TURN server. Using direct connection.",
           type: "system",
           timestamp: DateTime.utc_now()
         }
@@ -172,7 +172,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     if Session.terminal?(status) do
       {:noreply,
        socket
-       |> put_flash(:info, "Sessao P2P encerrada.")
+       |> put_flash(:info, "P2P session ended.")
        |> push_navigate(to: ~p"/chat")}
     else
       socket = assign(socket, session_status: status)
@@ -180,7 +180,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
       socket =
         if status == "active" do
           socket
-          |> assign(webrtc_state: "Conectado")
+          |> assign(webrtc_state: "Connected")
           |> maybe_init_file_transfer()
           |> start_media_if_call()
         else
@@ -235,8 +235,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   def handle_info(%{event: "p2p_action_expired"}, socket) do
     expired_msg = %{
       id: System.unique_integer([:positive]),
-      sender_nick: "Sistema",
-      content: "Pedido expirou.",
+      sender_nick: "System",
+      content: "Request expired.",
       type: "system",
       timestamp: DateTime.utc_now()
     }
@@ -307,8 +307,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     if socket.assigns.call do
       msg = %{
         id: System.unique_integer([:positive]),
-        sender_nick: "Sistema",
-        content: "Chamada encerrada: #{reason}",
+        sender_nick: "System",
+        content: "Call ended: #{reason}",
         type: "system",
         timestamp: DateTime.utc_now()
       }
@@ -352,8 +352,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
         msg = %{
           id: System.unique_integer([:positive]),
-          sender_nick: "Sistema",
-          content: "Pedido de video recusado.",
+          sender_nick: "System",
+          content: "Video request declined.",
           type: "system",
           timestamp: DateTime.utc_now()
         }
@@ -409,7 +409,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
     {:noreply,
      socket
-     |> put_flash(:info, "Sessao P2P encerrada.")
+     |> put_flash(:info, "P2P session ended.")
      |> push_navigate(to: ~p"/chat")}
   end
 
@@ -452,7 +452,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
       :ok ->
         socket =
           socket
-          |> assign(session_status: "active", webrtc_state: "Conectado")
+          |> assign(session_status: "active", webrtc_state: "Connected")
           |> maybe_init_file_transfer()
           |> start_media_if_call()
 
@@ -586,7 +586,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
       Map.merge(socket.assigns.file_transfer || %{}, %{
         status: "failed",
         reason: params["reason"],
-        can_retry: params["reason"] == "Verificacao de integridade falhou"
+        can_retry: params["reason"] == "Integrity check failed"
       })
 
     {:noreply, assign(socket, file_transfer: ft)}
@@ -678,8 +678,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
     msg = %{
       id: System.unique_integer([:positive]),
-      sender_nick: "Sistema",
-      content: "Chamada encerrada: #{reason}",
+      sender_nick: "System",
+      content: "Call ended: #{reason}",
       type: "system",
       timestamp: DateTime.utc_now()
     }
@@ -701,7 +701,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
     msg = %{
       id: System.unique_integer([:positive]),
-      sender_nick: "Sistema",
+      sender_nick: "System",
       content: message,
       type: "system",
       timestamp: DateTime.utc_now()
@@ -776,7 +776,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   def handle_event("media_device_fallback", %{"message" => message}, socket) do
     msg = %{
       id: System.unique_integer([:positive]),
-      sender_nick: "Sistema",
+      sender_nick: "System",
       content: message,
       type: "system",
       timestamp: DateTime.utc_now()
@@ -798,8 +798,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     else
       error_msg = %{
         id: System.unique_integer([:positive]),
-        sender_nick: "Sistema",
-        content: "Permissao negada para #{type}. Tente novamente.",
+        sender_nick: "System",
+        content: "Permission denied for #{type}. Please try again.",
         type: "system",
         timestamp: DateTime.utc_now()
       }
@@ -994,7 +994,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     case P2P.session_info(socket.assigns.token) do
       {:ok, %{session: %{status: "active"}}} ->
         socket
-        |> assign(session_status: "active", webrtc_state: "Conectado")
+        |> assign(session_status: "active", webrtc_state: "Connected")
         |> maybe_init_file_transfer()
         |> start_media_if_call()
 
@@ -1076,16 +1076,16 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   defp close_reason_message("user_closed"), do: "P2P session closed."
   defp close_reason_message("rejected"), do: "P2P invite rejected."
   defp close_reason_message("tab_closed"), do: "Peer disconnected."
-  defp close_reason_message("disconnected"), do: "Peer desconectou."
-  defp close_reason_message(_reason), do: "Sessao P2P encerrada."
+  defp close_reason_message("disconnected"), do: "Peer disconnected."
+  defp close_reason_message(_reason), do: "P2P session ended."
 
-  defp expired_reason_label("user_closed"), do: "Sessao encerrada pelo usuario."
-  defp expired_reason_label("rejected"), do: "Convite P2P foi rejeitado."
-  defp expired_reason_label("tab_closed"), do: "Sessao encerrada (desconexao)."
-  defp expired_reason_label("disconnected"), do: "Sessao encerrada (desconexao)."
-  defp expired_reason_label("expired"), do: "Sessao expirada por inatividade."
-  defp expired_reason_label("failed"), do: "Sessao encerrada por falha na conexao."
-  defp expired_reason_label(_reason), do: "Sessao P2P encerrada."
+  defp expired_reason_label("user_closed"), do: "Session closed by user."
+  defp expired_reason_label("rejected"), do: "P2P invite was rejected."
+  defp expired_reason_label("tab_closed"), do: "Session closed (disconnected)."
+  defp expired_reason_label("disconnected"), do: "Session closed (disconnected)."
+  defp expired_reason_label("expired"), do: "Session expired due to inactivity."
+  defp expired_reason_label("failed"), do: "Session closed due to connection failure."
+  defp expired_reason_label(_reason), do: "P2P session ended."
 
   defp load_turn_only_preference(nickname) do
     case RetroHexChat.Repo.get(UserPreference, nickname) do

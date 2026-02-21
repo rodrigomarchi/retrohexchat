@@ -26,19 +26,19 @@ defmodule RetroHexChatWeb.Components.NickChangeDialog do
       <div class="window nick-change-dialog">
         <div class="title-bar">
           <Icons.icon_dialog_nick class="title-bar-icon" />
-          <div class="title-bar-text">Mudar Nickname</div>
+          <div class="title-bar-text">Change Nickname</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="cancel_nick_change"></button>
           </div>
         </div>
         <div class="window-body nick-change-dialog__body">
           <p>
-            Mudar para <strong>{@target_nick}</strong>? Isso iniciará uma nova sessão de chat.
+            Change to <strong>{@target_nick}</strong>? This will start a new chat session.
           </p>
           <fieldset :if={@registered}>
-            <legend>Autenticação NickServ</legend>
+            <legend>NickServ Authentication</legend>
             <p>
-              O nick <strong>{@target_nick}</strong> é registrado. Digite a senha para continuar:
+              The nick <strong>{@target_nick}</strong> is registered. Enter the password to continue:
             </p>
             <div class="nick-change-dialog__password-row">
               <input
@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.Components.NickChangeDialog do
                 phx-keydown="confirm_nick_change"
                 phx-key="Enter"
                 phx-value-password={@password}
-                placeholder="Senha"
+                placeholder="Password"
                 id="nick-change-password-input"
                 phx-hook="AutoFocusHook"
                 data-testid="nick-change-password"
@@ -66,14 +66,14 @@ defmodule RetroHexChatWeb.Components.NickChangeDialog do
               phx-value-password={@password}
               data-testid="nick-change-confirm-btn"
             >
-              <Icons.icon_btn_ok class="btn-icon__svg" /> Confirmar
+              <Icons.icon_btn_ok class="btn-icon__svg" /> Confirm
             </button>
             <button
               class="btn-icon"
               phx-click="cancel_nick_change"
               data-testid="nick-change-cancel-btn"
             >
-              <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancelar
+              <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
             </button>
           </div>
         </div>

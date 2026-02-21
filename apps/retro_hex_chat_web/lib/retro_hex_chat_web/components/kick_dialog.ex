@@ -50,14 +50,14 @@ defmodule RetroHexChatWeb.Components.KickDialog do
 
   @spec format_kick_message(map()) :: String.t()
   defp format_kick_message(%{channel: channel, operator: operator, reason: nil}) do
-    "Você foi expulso de #{channel} por #{operator}"
+    "You were kicked from #{channel} by #{operator}"
   end
 
   defp format_kick_message(%{channel: channel, operator: operator, reason: ""}) do
-    "Você foi expulso de #{channel} por #{operator}"
+    "You were kicked from #{channel} by #{operator}"
   end
 
   defp format_kick_message(%{channel: channel, operator: operator, reason: reason}) do
-    "Você foi expulso de #{channel} por #{operator}: #{reason}"
+    "You were kicked from #{channel} by #{operator}: #{reason}"
   end
 end

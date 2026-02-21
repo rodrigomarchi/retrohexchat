@@ -143,16 +143,16 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     body =
       case session_type do
-        "audio_call" -> "#{from} quer iniciar uma chamada de audio"
-        "video_call" -> "#{from} quer iniciar uma chamada de video"
-        "file_transfer" -> "#{from} quer enviar um arquivo"
-        _ -> "#{from} quer iniciar uma sessao P2P"
+        "audio_call" -> "#{from} wants to start an audio call"
+        "video_call" -> "#{from} wants to start a video call"
+        "file_transfer" -> "#{from} wants to send a file"
+        _ -> "#{from} wants to start a P2P session"
       end
 
     socket =
       push_event(socket, "notify", %{
         id: "p2p_invite_#{token}",
-        title: "Convite P2P",
+        title: "P2P Invite",
         body: body,
         type: "p2p_invite",
         token: token,

@@ -76,7 +76,7 @@ defmodule RetroHexChat.P2P.Policy do
       |> Repo.exists?()
 
     if blocked do
-      {:error, "Usuário não disponível"}
+      {:error, "User not available"}
     else
       :ok
     end

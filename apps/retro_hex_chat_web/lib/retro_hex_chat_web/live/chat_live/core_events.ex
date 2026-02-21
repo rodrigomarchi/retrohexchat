@@ -668,7 +668,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       true ->
         case Enum.at(syntax.parameters, current_index) do
           nil -> nil
-          param -> "Próximo: #{param.name}"
+          param -> "Next: #{param.name}"
         end
     end
   end
@@ -678,7 +678,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
     case Enum.find(sub_options, &String.starts_with?(first_arg, &1.flag)) do
       nil -> nil
-      opt -> "Você está definindo: #{opt.flag} (#{opt.label})"
+      opt -> "You are setting: #{opt.flag} (#{opt.label})"
     end
   end
 
@@ -697,7 +697,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
         {:error, _} ->
           assign(socket,
-            nick_change_dialog: %{dialog | password_error: "Senha incorreta", password: ""}
+            nick_change_dialog: %{dialog | password_error: "Incorrect password", password: ""}
           )
       end
     else

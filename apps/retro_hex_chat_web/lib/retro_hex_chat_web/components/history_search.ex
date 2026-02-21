@@ -13,9 +13,9 @@ defmodule RetroHexChatWeb.Components.HistorySearch do
   def history_search(assigns) do
     ~H"""
     <div id="hist-search-panel" class="hist-search-panel u-hidden">
-      <label class="history-search-label">Pesquisar histórico:</label>
+      <label class="history-search-label">Search history:</label>
       <input type="text" class="history-search-input" autocomplete="off" />
-      <span class="history-no-match u-hidden">Sem resultados</span>
+      <span class="history-no-match u-hidden">No results</span>
     </div>
     """
   end

@@ -2,7 +2,7 @@
  * Feedback toast creation and display.
  *
  * Simpler variant of the Z2 toast — no checkbox, no suppress logic.
- * Used for copy confirmation ("Copiado!") and settings saved toasts.
+ * Used for copy confirmation ("Copied!") and settings saved toasts.
  */
 import { animateIn, animateOut } from "./toast.js";
 

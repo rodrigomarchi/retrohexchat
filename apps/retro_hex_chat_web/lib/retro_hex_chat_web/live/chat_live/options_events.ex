@@ -129,7 +129,7 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
     )
     |> push_event("dnd_changed", %{enabled: draft.notifications.dnd_enabled})
     |> assign(dnd_enabled: draft.notifications.dnd_enabled)
-    |> push_event("feedback_toast", %{message: "Configurações salvas", duration: 2000})
+    |> push_event("feedback_toast", %{message: "Settings saved", duration: 2000})
     |> Persistence.maybe_persist_user_preferences(updated_session)
   end
 end

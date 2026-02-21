@@ -31,16 +31,16 @@ defmodule RetroHexChat.Chat.Policy do
   def can_edit?(message, nickname) do
     cond do
       message.author_nickname != nickname ->
-        {:error, "Você não pode editar mensagens de outros usuários."}
+        {:error, "You cannot edit other users' messages."}
 
       message.deleted_at != nil ->
-        {:error, "Mensagem já foi removida."}
+        {:error, "Message has already been deleted."}
 
       not within_window?(message.inserted_at, @edit_window_seconds) ->
-        {:error, "Tempo para edição expirou."}
+        {:error, "Edit window has expired."}
 
       debounced?(message.edited_at, @edit_debounce_seconds) ->
-        {:error, "Aguarde alguns segundos antes de editar novamente."}
+        {:error, "Please wait a few seconds before editing again."}
 
       true ->
         :ok
@@ -53,10 +53,10 @@ defmodule RetroHexChat.Chat.Policy do
 
     cond do
       message.author_nickname != nickname ->
-        {:error, "Você não pode editar mensagens de outros usuários."}
+        {:error, "You cannot edit other users' messages."}
 
       message.deleted_at != nil ->
-        {:error, "Mensagem já foi removida."}
+        {:error, "Message has already been deleted."}
 
       within_window?(message.inserted_at, @edit_window_seconds) ->
         check_debounce(message)
@@ -66,7 +66,7 @@ defmodule RetroHexChat.Chat.Policy do
         check_debounce(message)
 
       true ->
-        {:error, "Tempo para edição expirou."}
+        {:error, "Edit window has expired."}
     end
   end
 
@@ -74,13 +74,13 @@ defmodule RetroHexChat.Chat.Policy do
   def can_delete?(message, nickname) do
     cond do
       message.author_nickname != nickname ->
-        {:error, "Você não pode apagar mensagens de outros usuários."}
+        {:error, "You cannot delete other users' messages."}
 
       message.deleted_at != nil ->
-        {:error, "Mensagem já foi removida."}
+        {:error, "Message has already been deleted."}
 
       not within_window?(message.inserted_at, @edit_window_seconds) ->
-        {:error, "Tempo para exclusão expirou."}
+        {:error, "Delete window has expired."}
 
       true ->
         :ok
@@ -105,7 +105,7 @@ defmodule RetroHexChat.Chat.Policy do
 
   defp check_debounce(message) do
     if debounced?(message.edited_at, @edit_debounce_seconds) do
-      {:error, "Aguarde alguns segundos antes de editar novamente."}
+      {:error, "Please wait a few seconds before editing again."}
     else
       :ok
     end

@@ -19,7 +19,7 @@ const TreebarHook = {
       }
     });
 
-    // Feedback toast from server (e.g., "Configurações salvas")
+    // Feedback toast from server (e.g., "Settings saved")
     this.handleEvent("feedback_toast", ({ message, duration }) => {
       showFeedbackToast(this.el, message, duration);
     });

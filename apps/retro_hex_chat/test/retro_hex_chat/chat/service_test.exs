@@ -97,7 +97,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
     test "rejects editing another user's message" do
       {:ok, msg} = Service.send_message("#lobby", "Mario", "Mario's message")
 
-      assert {:error, "Você não pode editar mensagens de outros usuários."} =
+      assert {:error, "You cannot edit other users' messages."} =
                Service.edit_message(msg.id, "Rodrigo", "Hacked")
     end
 
@@ -113,7 +113,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
         set: [inserted_at: six_minutes_ago]
       )
 
-      assert {:error, "Tempo para edição expirou."} =
+      assert {:error, "Edit window has expired."} =
                Service.edit_message(msg.id, "Rodrigo", "Too late")
     end
 
@@ -146,7 +146,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
     test "rejects deleting another user's message" do
       {:ok, msg} = Service.send_message("#lobby", "Mario", "Mario's message")
 
-      assert {:error, "Você não pode apagar mensagens de outros usuários."} =
+      assert {:error, "You cannot delete other users' messages."} =
                Service.delete_message(msg.id, "Rodrigo")
     end
 
@@ -154,7 +154,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
       {:ok, msg} = Service.send_message("#lobby", "Rodrigo", "To delete")
       {:ok, _} = Service.delete_message(msg.id, "Rodrigo")
 
-      assert {:error, "Mensagem já foi removida."} =
+      assert {:error, "Message has already been deleted."} =
                Service.delete_message(msg.id, "Rodrigo")
     end
   end

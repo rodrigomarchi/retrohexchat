@@ -123,7 +123,7 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
       # 6th should be rate limited
       sixth_peer = Enum.at(peers, 5)
       assert {:error, msg} = P2p.execute([sixth_peer.nickname], context)
-      assert msg =~ "muitas sessões"
+      assert msg =~ "Too many sessions"
 
       # Clean up rate limit
       RateLimiter.reset(RateLimitTable.table_name(), creator.id)

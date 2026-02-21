@@ -567,7 +567,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         category: "Features",
         keywords: [
           "tips",
-          "dicas",
           "contextual",
           "toast",
           "hint",
@@ -608,7 +607,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "clipboard",
           "toast",
           "copied",
-          "copiado",
           "settings",
           "saved"
         ],
@@ -734,8 +732,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         category: "Features",
         keywords: [
           "edit",
-          "editar",
-          "editado",
+          "edited",
           "modify",
           "correct",
           "typo",
@@ -749,37 +746,32 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         category: "Features",
         keywords: [
           "delete",
-          "apagar",
           "remove",
-          "mensagem removida",
+          "message removed",
           "soft delete"
         ],
         content: File.read!(Path.join(@help_dir, "feature-message-delete.html"))
       },
       %{
         id: "feature-audio-call",
-        title: "Chamada de Audio",
+        title: "Audio Call",
         category: "Features",
         keywords: [
           "audio",
           "call",
-          "chamada",
           "voice",
-          "voz",
           "mute",
-          "silenciar",
           "p2p"
         ],
         content: File.read!(Path.join(@help_dir, "feature-audio-call.html"))
       },
       %{
         id: "feature-video-call",
-        title: "Chamada de Video",
+        title: "Video Call",
         category: "Features",
         keywords: [
           "video",
           "call",
-          "chamada",
           "camera",
           "pip",
           "picture-in-picture",
@@ -789,13 +781,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-media-devices",
-        title: "Dispositivos de Midia",
+        title: "Media Devices",
         category: "Features",
         keywords: [
           "device",
-          "dispositivo",
           "microphone",
-          "microfone",
           "camera",
           "speaker",
           "fallback"
@@ -804,11 +794,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-call-quality",
-        title: "Qualidade da Chamada",
+        title: "Call Quality",
         category: "Features",
         keywords: [
           "quality",
-          "qualidade",
           "bitrate",
           "preset",
           "indicator",
@@ -818,12 +807,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-p2p-sessions",
-        title: "Sessoes P2P",
+        title: "P2P Sessions",
         category: "Features",
         keywords: [
           "p2p",
           "peer",
-          "sessao",
           "session",
           "lobby",
           "consent",
@@ -834,13 +822,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-file-transfer",
-        title: "Transferencia de Arquivos",
+        title: "File Transfer",
         category: "Features",
         keywords: [
           "file",
           "transfer",
-          "arquivo",
-          "transferencia",
           "sendfile",
           "drag",
           "drop",
@@ -851,17 +837,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-privacy-settings",
-        title: "Configuracoes de Privacidade",
+        title: "Privacy Settings",
         category: "Features",
         keywords: [
           "privacy",
-          "privacidade",
           "turn",
           "relay",
           "ip",
-          "esconder",
           "hide",
-          "modo privado"
+          "private mode"
         ],
         content: File.read!(Path.join(@help_dir, "feature-privacy-settings.html"))
       },

@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.P2pInvite do
     socket = PM.open_pm_conversation(socket, target)
 
     # Show confirmation system message to initiator (in the PM window)
-    confirm_msg = "Convite P2P enviado para #{target}. Aguardando resposta..."
+    confirm_msg = "P2P invite sent to #{target}. Waiting for response..."
 
     socket
     |> Messages.system_event(confirm_msg)
@@ -48,14 +48,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.P2pInvite do
 
   @spec p2p_invite_content(String.t(), String.t()) :: String.t()
   def p2p_invite_content("audio_call", token),
-    do: "Chamada de audio iniciada. Entre no lobby: /p2p/#{token}"
+    do: "Audio call started. Join the lobby: /p2p/#{token}"
 
   def p2p_invite_content("video_call", token),
-    do: "Chamada de video iniciada. Entre no lobby: /p2p/#{token}"
+    do: "Video call started. Join the lobby: /p2p/#{token}"
 
   def p2p_invite_content("file_transfer", token),
-    do: "Transferencia de arquivo iniciada. Entre no lobby: /p2p/#{token}"
+    do: "File transfer started. Join the lobby: /p2p/#{token}"
 
   def p2p_invite_content(_generic, token),
-    do: "Sessao P2P iniciada. Entre no lobby: /p2p/#{token}"
+    do: "P2P session started. Join the lobby: /p2p/#{token}"
 end

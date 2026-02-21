@@ -42,8 +42,8 @@ defmodule RetroHexChatWeb.ConnectLive do
   end
 
   @spec reason_to_message(String.t()) :: String.t()
-  defp reason_to_message("expired"), do: "Sessão expirada"
-  defp reason_to_message("disconnected"), do: "Sessão encerrada"
+  defp reason_to_message("expired"), do: "Session expired"
+  defp reason_to_message("disconnected"), do: "Session ended"
   defp reason_to_message(reason), do: reason
 
   @impl true
@@ -97,7 +97,7 @@ defmodule RetroHexChatWeb.ConnectLive do
          |> push_event("submit_connect", %{})}
 
       {:error, _msg} ->
-        {:noreply, assign(socket, password_error: "Senha incorreta", password: "")}
+        {:noreply, assign(socket, password_error: "Incorrect password", password: "")}
     end
   end
 
@@ -215,12 +215,12 @@ defmodule RetroHexChatWeb.ConnectLive do
                     </button>
                   </div>
                   <p class="session-info">
-                    Apenas uma sessão por nickname é permitida. Conectar em outra janela
-                    encerra a sessão anterior. A sessão expira após 10 tentativas de reconexão
-                    sem sucesso.
+                    Only one session per nickname is allowed. Connecting from another window
+                    ends the previous session. The session expires after 10 failed reconnection
+                    attempts.
                   </p>
                   <p class="session-info" data-testid="nick-expiry-notice">
-                    ⚠ Nicknames não utilizados por 7 dias são automaticamente liberados.
+                    ⚠ Nicknames unused for 7 days are automatically released.
                   </p>
                 </form>
               <% :password -> %>

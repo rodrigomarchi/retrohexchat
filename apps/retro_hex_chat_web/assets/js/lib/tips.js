@@ -14,16 +14,16 @@ export const TIP_IDS = {
 };
 
 export const TIPS = [
-  { id: "first_message", text: "Use ↑ para editar sua última mensagem" },
-  { id: "first_join", text: "Canais que você entra aparecem no painel esquerdo" },
-  { id: "first_pm", text: "PMs aparecem como janelas separadas no treebar" },
+  { id: "first_message", text: "Use ↑ to edit your last message" },
+  { id: "first_join", text: "Channels you join appear in the left panel" },
+  { id: "first_pm", text: "PMs appear as separate windows in the treebar" },
   {
     id: "first_highlight",
-    text: "Seu nick foi mencionado! Configure alertas em Settings",
+    text: "Your nick was mentioned! Configure alerts in Settings",
   },
   {
     id: "idle_help",
-    text: "Digite /help para ver todos os comandos",
+    text: "Type /help to see all commands",
     preemptedBy: "help_used",
   },
 ];

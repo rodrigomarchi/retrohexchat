@@ -8,7 +8,7 @@ describe("toast", () => {
 
   const makeTip = (overrides = {}) => ({
     id: "first_message",
-    text: "Use ↑ para editar sua última mensagem",
+    text: "Use ↑ to edit your last message",
     ...overrides,
   });
 
@@ -37,7 +37,7 @@ describe("toast", () => {
       expect(win).not.toBeNull();
       const titleBar = win.querySelector(".title-bar");
       expect(titleBar).not.toBeNull();
-      expect(titleBar.querySelector(".title-bar-text").textContent).toBe("Dica");
+      expect(titleBar.querySelector(".title-bar-text").textContent).toBe("Tip");
     });
 
     it("contains the tip text", () => {
@@ -46,11 +46,11 @@ describe("toast", () => {
       expect(el.querySelector(".toast-text").textContent).toBe("Custom text here");
     });
 
-    it("contains an Entendi! dismiss button", () => {
+    it("contains a Got it! dismiss button", () => {
       const el = createToastElement(makeTip(), { onDismiss: vi.fn() });
       const button = el.querySelector("button");
       expect(button).not.toBeNull();
-      expect(button.textContent).toBe("Entendi!");
+      expect(button.textContent).toBe("Got it!");
     });
 
     it("contains a suppress checkbox by default", () => {
@@ -58,7 +58,7 @@ describe("toast", () => {
       const checkbox = el.querySelector('input[type="checkbox"]');
       expect(checkbox).not.toBeNull();
       const label = el.querySelector(".toast-checkbox label");
-      expect(label.textContent).toBe("Não mostrar mais dicas");
+      expect(label.textContent).toBe("Don't show tips again");
     });
 
     it("omits checkbox when showCheckbox is false", () => {

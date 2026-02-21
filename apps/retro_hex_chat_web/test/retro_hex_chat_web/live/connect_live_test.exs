@@ -46,12 +46,12 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     test "shows expired session flash when reason=expired", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/connect?reason=expired")
       html = render(view)
-      assert html =~ "Sessão expirada"
+      assert html =~ "Session expired"
     end
 
     test "does not show flash without reason param", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/connect")
-      refute html =~ "Sessão expirada"
+      refute html =~ "Session expired"
     end
   end
 
@@ -59,13 +59,13 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     test "renders session rules text", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/connect")
       assert html =~ "session-info"
-      assert html =~ "Apenas uma sessão por nickname"
+      assert html =~ "Only one session per nickname"
     end
 
     test "renders nick expiry notice", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/connect")
       assert html =~ "nick-expiry-notice"
-      assert html =~ "7 dias"
+      assert html =~ "7 days"
     end
   end
 
@@ -206,7 +206,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
         |> element("form[phx-submit]")
         |> render_submit(%{"password" => "wrongpass"})
 
-      assert html =~ "Senha incorreta"
+      assert html =~ "Incorrect password"
     end
 
     test "correct password triggers submit_connect with auth_token", %{conn: conn} do

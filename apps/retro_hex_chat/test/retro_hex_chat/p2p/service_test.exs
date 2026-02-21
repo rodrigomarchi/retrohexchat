@@ -205,7 +205,7 @@ defmodule RetroHexChat.P2P.ServiceTest do
         }
       ])
 
-      assert {:error, "Usuário não disponível"} =
+      assert {:error, "User not available"} =
                Service.create_session(alice.id, bob.id)
     end
 

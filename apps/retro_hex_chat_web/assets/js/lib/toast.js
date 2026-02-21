@@ -10,7 +10,7 @@
  *
  * @param {Object} tip - Tip definition with id and text
  * @param {Object} options
- * @param {boolean} [options.showCheckbox=true] - Show "Não mostrar mais dicas" checkbox
+ * @param {boolean} [options.showCheckbox=true] - Show "Don't show tips again" checkbox
  * @param {function} options.onDismiss - Called with (checkboxChecked) when dismissed
  * @returns {HTMLElement}
  */
@@ -30,7 +30,7 @@ export function createToastElement(tip, options = {}) {
   titleBar.className = "title-bar";
   const titleText = document.createElement("div");
   titleText.className = "title-bar-text";
-  titleText.textContent = "Dica";
+  titleText.textContent = "Tip";
   titleBar.appendChild(titleText);
   win.appendChild(titleBar);
 
@@ -65,7 +65,7 @@ export function createToastElement(tip, options = {}) {
 
     const label = document.createElement("label");
     label.htmlFor = checkboxInput.id;
-    label.textContent = "Não mostrar mais dicas";
+    label.textContent = "Don't show tips again";
 
     // Prevent label click from stealing focus
     label.addEventListener("mousedown", (e) => e.preventDefault());
@@ -80,7 +80,7 @@ export function createToastElement(tip, options = {}) {
   }
 
   const button = document.createElement("button");
-  button.textContent = "Entendi!";
+  button.textContent = "Got it!";
   // Prevent button from stealing focus from chat input
   button.addEventListener("mousedown", (e) => e.preventDefault());
   button.addEventListener("click", () => {

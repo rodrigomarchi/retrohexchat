@@ -47,11 +47,10 @@ reconnect-overlay--visible
 media-call__video-area
 # False positive — "video" parsed from dynamic class expression "media-call--video"
 video
-# False positives — Portuguese text parsed as class refs from p2p_lobby.ex connection_state_class
-Conectado
-Falha
-na
-conexao
+# False positives — English text parsed as class refs from p2p_lobby.ex connection_state_class
+Connected
+Connection
+failed
 
 [dynamic-prefixes]
 # Prefixes with dynamic suffixes (e.g. chat-message--#{type})

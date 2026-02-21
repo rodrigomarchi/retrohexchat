@@ -17,14 +17,14 @@ defmodule RetroHexChatWeb.Components.ReplyComposeBar do
       data-testid="reply-compose-bar"
     >
       <span class="reply-compose-bar__text">
-        Respondendo a <span class="reply-compose-bar__author">{@reply_to.author}</span>
+        Replying to <span class="reply-compose-bar__author">{@reply_to.author}</span>
         — {@reply_to.preview}
       </span>
       <button
         class="reply-compose-bar__dismiss"
         phx-click="cancel_reply"
         tabindex="0"
-        aria-label="Cancelar resposta"
+        aria-label="Cancel reply"
         data-testid="cancel-reply"
       >
         ✕

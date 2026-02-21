@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.ChatLive.NotificationEvents do
             Service.send_private_message(
               nick,
               from,
-              "#{nick} recusou o convite P2P.",
+              "#{nick} declined the P2P invite.",
               "p2p_invite"
             )
 

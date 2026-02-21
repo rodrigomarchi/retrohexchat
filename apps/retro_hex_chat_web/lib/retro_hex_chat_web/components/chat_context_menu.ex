@@ -108,42 +108,42 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
     <li
       :if={@viewer_is_identified}
       class={if !@is_target_registered || @is_target_self, do: "disabled"}
-      title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+      title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
       data-testid="ctx-chat-p2p"
       phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_p2p"}
       phx-value-nick={@menu.target_nick}
     >
-      Sessão P2P
+      P2P Session
     </li>
     <li
       :if={@viewer_is_identified}
       class={if !@is_target_registered || @is_target_self, do: "disabled"}
-      title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+      title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
       data-testid="ctx-chat-call"
       phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_call"}
       phx-value-nick={@menu.target_nick}
     >
-      Chamada de Áudio
+      Audio Call
     </li>
     <li
       :if={@viewer_is_identified}
       class={if !@is_target_registered || @is_target_self, do: "disabled"}
-      title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+      title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
       data-testid="ctx-chat-video-call"
       phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_video_call"}
       phx-value-nick={@menu.target_nick}
     >
-      Chamada de Vídeo
+      Video Call
     </li>
     <li
       :if={@viewer_is_identified}
       class={if !@is_target_registered || @is_target_self, do: "disabled"}
-      title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+      title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
       data-testid="ctx-chat-sendfile"
       phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_sendfile"}
       phx-value-nick={@menu.target_nick}
     >
-      Enviar Arquivo
+      Send File
     </li>
     <li
       :if={@viewer_is_op}
@@ -271,7 +271,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click={unless @is_system, do: "reply_to_message"}
       phx-value-message_id={@menu.target_message && @menu.target_message[:message_id]}
     >
-      Responder
+      Reply
     </li>
     <li
       :if={!@is_system && @menu.target_message && @menu.target_message[:is_own]}
@@ -279,7 +279,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click="ctx_chat_delete"
       phx-value-message_id={@menu.target_message && @menu.target_message[:message_id]}
     >
-      Apagar mensagem
+      Delete message
     </li>
     <li class="separator"></li>
     <li

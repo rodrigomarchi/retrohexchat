@@ -422,7 +422,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       html = render(view)
       assert html =~ "nick-change-dialog"
       assert html =~ "NewNick1"
-      assert html =~ "nova sessão"
+      assert html =~ "new chat session"
     end
 
     test "cancel closes the dialog without changes", %{conn: conn} do
@@ -474,7 +474,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       |> render_click(%{"password" => "wrong_pass"})
 
       html = render(view)
-      assert html =~ "Senha incorreta"
+      assert html =~ "Incorrect password"
       assert html =~ "nick-change-dialog"
     end
 

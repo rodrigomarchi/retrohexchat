@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.Components.Nicklist do
         class="empty-state nicklist-empty-state"
         data-testid="nicklist-empty-state"
       >
-        <p>Ninguém aqui — Você é o(a) primeiro(a)!</p>
+        <p>Nobody here — you're the first!</p>
       </div>
       <ul :if={@users != []} class="nicklist-list">
         <.nick_group

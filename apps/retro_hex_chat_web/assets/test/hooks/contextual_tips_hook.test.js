@@ -60,7 +60,7 @@ describe("ContextualTipsHook", () => {
       const toast = hook.el.querySelector(".toast-notification");
       expect(toast).not.toBeNull();
       expect(toast.querySelector(".toast-text").textContent).toBe(
-        "Use ↑ para editar sua última mensagem",
+        "Use ↑ to edit your last message",
       );
     });
 
@@ -263,9 +263,7 @@ describe("ContextualTipsHook", () => {
 
       const toast = hook.el.querySelector(".toast-notification");
       expect(toast).not.toBeNull();
-      expect(toast.querySelector(".toast-text").textContent).toBe(
-        "Digite /help para ver todos os comandos",
-      );
+      expect(toast.querySelector(".toast-text").textContent).toBe("Type /help to see all commands");
     });
 
     it("resets idle timer on keydown", () => {

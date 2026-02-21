@@ -4,13 +4,13 @@
  */
 
 /**
- * Quality level labels in Portuguese.
+ * Quality level labels.
  */
 export const QUALITY_LABELS = {
-  excellent: "Excelente",
-  good: "Bom",
-  fair: "Regular",
-  poor: "Ruim",
+  excellent: "Excellent",
+  good: "Good",
+  fair: "Fair",
+  poor: "Poor",
 };
 
 /**
@@ -50,23 +50,23 @@ export function categorizeMediaError(error) {
     case "NotAllowedError":
       return {
         code: "permission_denied",
-        message: "Permissao de microfone negada. A chamada nao pode continuar.",
+        message: "Microphone permission denied. The call cannot continue.",
       };
     case "NotReadableError":
       return {
         code: "not_readable",
         message:
-          "Camera em uso por outro aplicativo. Tente fechar outros programas que usam a camera.",
+          "Camera in use by another application. Try closing other programs using the camera.",
       };
     case "NotFoundError":
       return {
         code: "not_found",
-        message: "Nenhuma camera encontrada.",
+        message: "No camera found.",
       };
     default:
       return {
         code: "unknown",
-        message: `Erro ao acessar midia: ${error.message}`,
+        message: `Error accessing media: ${error.message}`,
       };
   }
 }

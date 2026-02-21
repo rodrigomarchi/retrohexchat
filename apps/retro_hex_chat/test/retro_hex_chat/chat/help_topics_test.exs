@@ -469,7 +469,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-p2p-sessions")
       assert topic != nil
       assert topic.category == "Features"
-      assert topic.title == "Sessoes P2P"
+      assert topic.title == "P2P Sessions"
     end
 
     test "P2P Sessions content covers key functionality" do
@@ -478,7 +478,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.content =~ "/call"
       assert topic.content =~ "/sendfile"
       assert topic.content =~ "lobby"
-      assert topic.content =~ "consentimento bilateral"
+      assert topic.content =~ "bilateral consent"
     end
 
     test "P2P Sessions cross-references related topics" do
@@ -492,7 +492,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-file-transfer")
       assert topic != nil
       assert topic.category == "Features"
-      assert topic.title == "Transferencia de Arquivos"
+      assert topic.title == "File Transfer"
     end
 
     test "File Transfer content covers key functionality" do
@@ -511,7 +511,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-privacy-settings")
       assert topic != nil
       assert topic.category == "Features"
-      assert topic.title == "Configuracoes de Privacidade"
+      assert topic.title == "Privacy Settings"
     end
 
     test "Privacy Settings content covers key functionality" do
@@ -519,7 +519,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.content =~ "TURN"
       assert topic.content =~ "relay"
       assert topic.content =~ "IP"
-      assert topic.content =~ "Modo privado"
+      assert topic.content =~ "Private Mode"
     end
 
     test "Privacy Settings cross-references related topics" do

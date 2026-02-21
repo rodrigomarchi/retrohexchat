@@ -103,7 +103,7 @@ export function createNotificationToastManager(options = {}) {
 
     const acceptBtn = document.createElement("button");
     acceptBtn.className = "notification-toast__btn notification-toast__btn--accept";
-    acceptBtn.textContent = "Aceitar";
+    acceptBtn.textContent = "Accept";
     acceptBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       dismiss(el, notification.id);
@@ -116,7 +116,7 @@ export function createNotificationToastManager(options = {}) {
 
     const rejectBtn = document.createElement("button");
     rejectBtn.className = "notification-toast__btn notification-toast__btn--reject";
-    rejectBtn.textContent = "Recusar";
+    rejectBtn.textContent = "Decline";
     rejectBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       dismiss(el, notification.id);
@@ -131,7 +131,7 @@ export function createNotificationToastManager(options = {}) {
 
     const ignoreBtn = document.createElement("button");
     ignoreBtn.className = "notification-toast__btn notification-toast__btn--ignore";
-    ignoreBtn.textContent = "Ignorar";
+    ignoreBtn.textContent = "Ignore";
     ignoreBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       dismiss(el, notification.id);

@@ -72,42 +72,42 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
           <li
             :if={@viewer_is_identified}
             class={if !@is_target_registered || @is_target_self, do: "disabled"}
-            title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+            title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
             data-testid="context-p2p"
             phx-click={if @is_target_registered && !@is_target_self, do: "context_p2p"}
             phx-value-nick={@target_nick}
           >
-            Sessão P2P
+            P2P Session
           </li>
           <li
             :if={@viewer_is_identified}
             class={if !@is_target_registered || @is_target_self, do: "disabled"}
-            title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+            title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
             data-testid="context-call"
             phx-click={if @is_target_registered && !@is_target_self, do: "context_call"}
             phx-value-nick={@target_nick}
           >
-            Chamada de Áudio
+            Audio Call
           </li>
           <li
             :if={@viewer_is_identified}
             class={if !@is_target_registered || @is_target_self, do: "disabled"}
-            title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+            title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
             data-testid="context-video-call"
             phx-click={if @is_target_registered && !@is_target_self, do: "context_video_call"}
             phx-value-nick={@target_nick}
           >
-            Chamada de Vídeo
+            Video Call
           </li>
           <li
             :if={@viewer_is_identified}
             class={if !@is_target_registered || @is_target_self, do: "disabled"}
-            title={if !@is_target_registered && !@is_target_self, do: "Usuário não registrado"}
+            title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
             data-testid="context-sendfile"
             phx-click={if @is_target_registered && !@is_target_self, do: "context_sendfile"}
             phx-value-nick={@target_nick}
           >
-            Enviar Arquivo
+            Send File
           </li>
           <li
             :if={@viewer_is_op}

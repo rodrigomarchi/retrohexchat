@@ -41,9 +41,9 @@ defmodule RetroHexChatWeb.Components.Treebar do
         class="empty-state treebar-empty-state"
         data-testid="treebar-empty-state"
       >
-        <p>Nenhum canal — /join #canal para começar</p>
+        <p>No channels — /join #channel to get started</p>
         <button type="button" class="empty-state-action" phx-click="open_channel_list">
-          Explorar canais
+          Browse channels
         </button>
       </div>
       <ul :if={@channels != [] or @pm_conversations != []} class="tree-view">

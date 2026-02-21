@@ -146,8 +146,8 @@ defmodule RetroHexChatWeb.Components.URLCatcherWindow do
                       class="empty-state url-catcher-empty-state"
                       data-testid="url-catcher-empty-state"
                     >
-                      <p>Nenhuma URL capturada.</p>
-                      <p>URLs mencionadas no chat aparecerão aqui.</p>
+                      <p>No URLs captured.</p>
+                      <p>URLs mentioned in chat will appear here.</p>
                     </div>
                   </td>
                 </tr>

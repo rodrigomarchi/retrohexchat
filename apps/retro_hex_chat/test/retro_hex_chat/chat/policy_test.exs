@@ -72,7 +72,7 @@ defmodule RetroHexChat.Chat.PolicyTest do
         edited_at: nil
       }
 
-      assert {:error, "Você não pode editar mensagens de outros usuários."} =
+      assert {:error, "You cannot edit other users' messages."} =
                Policy.can_edit?(message, "Rodrigo")
     end
 
@@ -97,7 +97,7 @@ defmodule RetroHexChat.Chat.PolicyTest do
         edited_at: nil
       }
 
-      assert {:error, "Tempo para edição expirou."} = Policy.can_edit?(message, "Rodrigo")
+      assert {:error, "Edit window has expired."} = Policy.can_edit?(message, "Rodrigo")
     end
 
     test "allows editing at exactly 5 minutes (inclusive)" do
@@ -123,7 +123,7 @@ defmodule RetroHexChat.Chat.PolicyTest do
         edited_at: one_second_ago
       }
 
-      assert {:error, "Aguarde alguns segundos antes de editar novamente."} =
+      assert {:error, "Please wait a few seconds before editing again."} =
                Policy.can_edit?(message, "Rodrigo")
     end
 
@@ -159,7 +159,7 @@ defmodule RetroHexChat.Chat.PolicyTest do
         deleted_at: nil
       }
 
-      assert {:error, "Você não pode apagar mensagens de outros usuários."} =
+      assert {:error, "You cannot delete other users' messages."} =
                Policy.can_delete?(message, "Mario2")
     end
 
@@ -182,7 +182,7 @@ defmodule RetroHexChat.Chat.PolicyTest do
         deleted_at: nil
       }
 
-      assert {:error, "Tempo para exclusão expirou."} = Policy.can_delete?(message, "Rodrigo")
+      assert {:error, "Delete window has expired."} = Policy.can_delete?(message, "Rodrigo")
     end
 
     test "allows deleting at exactly 5 minutes (inclusive)" do

@@ -36,10 +36,10 @@ defmodule RetroHexChatWeb.Components.ChatContextMenuTest do
       assert html =~ ~s(data-testid="ctx-chat-call")
       assert html =~ ~s(data-testid="ctx-chat-video-call")
       assert html =~ ~s(data-testid="ctx-chat-sendfile")
-      assert html =~ "Sessão P2P"
-      assert html =~ "Chamada de Áudio"
-      assert html =~ "Chamada de Vídeo"
-      assert html =~ "Enviar Arquivo"
+      assert html =~ "P2P Session"
+      assert html =~ "Audio Call"
+      assert html =~ "Video Call"
+      assert html =~ "Send File"
       assert html =~ ~s(phx-click="ctx_chat_p2p")
     end
 
@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenuTest do
 
       refute html =~ ~s(data-testid="ctx-chat-p2p")
       refute html =~ ~s(data-testid="ctx-chat-call")
-      refute html =~ "Sessão P2P"
+      refute html =~ "P2P Session"
     end
 
     @tag :unit
@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenuTest do
 
       assert html =~ ~s(data-testid="ctx-chat-p2p")
       assert html =~ ~r/disabled[^>]*ctx-chat-p2p/
-      assert html =~ "Usuário não registrado"
+      assert html =~ "User not registered"
       refute html =~ ~s(phx-click="ctx_chat_p2p")
     end
 
@@ -95,7 +95,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenuTest do
 
       assert html =~ ~s(data-testid="ctx-chat-p2p")
       assert html =~ ~r/disabled[^>]*ctx-chat-p2p/
-      refute html =~ "Usuário não registrado"
+      refute html =~ "User not registered"
       refute html =~ ~s(phx-click="ctx_chat_p2p")
     end
   end

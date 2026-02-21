@@ -259,7 +259,7 @@ const ScrollHook = {
     // Clipboard copy handler (server → client)
     this.handleEvent("clipboard_copy", ({ text }) => {
       navigator.clipboard.writeText(text).then(() => {
-        showFeedbackToast(this.el, "Copiado!", 2000);
+        showFeedbackToast(this.el, "Copied!", 2000);
       });
     });
 
@@ -268,7 +268,7 @@ const ScrollHook = {
       const selection = window.getSelection().toString();
       if (selection) {
         navigator.clipboard.writeText(selection).then(() => {
-          showFeedbackToast(this.el, "Copiado!", 2000);
+          showFeedbackToast(this.el, "Copied!", 2000);
         });
       }
     });

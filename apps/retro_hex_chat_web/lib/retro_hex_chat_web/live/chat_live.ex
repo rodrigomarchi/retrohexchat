@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.ChatLive do
           Phoenix.PubSub.broadcast(
             RetroHexChat.PubSub,
             "user:#{nickname}",
-            {:force_disconnect, %{reason: "Sessão encerrada — login iniciado em outra janela"}}
+            {:force_disconnect, %{reason: "Session ended — logged in from another window"}}
           )
 
           Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
@@ -600,7 +600,7 @@ defmodule RetroHexChatWeb.ChatLive do
 
   @spec extract_p2p_label(String.t()) :: String.t()
   defp extract_p2p_label(content) when is_binary(content) do
-    case String.split(content, ". Entre no lobby:") do
+    case String.split(content, ". Join the lobby:") do
       [label | _] -> label
       _ -> content
     end

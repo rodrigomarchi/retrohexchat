@@ -869,7 +869,7 @@ defmodule RetroHexChatWeb.E2ETest do
       html = render(view)
       assert html =~ "nick-change-dialog"
       assert html =~ "NewNickE2E"
-      assert html =~ "nova sessão"
+      assert html =~ "new chat session"
     end
 
     test "9.2 nick_changed broadcast shows system message", %{conn: conn} do

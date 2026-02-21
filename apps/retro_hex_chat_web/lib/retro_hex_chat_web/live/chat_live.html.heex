@@ -185,7 +185,7 @@
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Entrar no lobby
+                    Join lobby
                   </a>
                 </span>
               </span>
@@ -196,7 +196,7 @@
                   phx-click="scroll_to_reply_parent"
                   phx-value-parent_id={msg.reply_to_id}
                   role="link"
-                  aria-label={"Respondendo a #{Map.get(msg, :reply_to_author, "?")}"}
+                  aria-label={"Replying to #{Map.get(msg, :reply_to_author, "?")}"}
                   data-testid="reply-block"
                 >
                   <span
@@ -209,7 +209,7 @@
                     <span class="chat-reply-block__preview">{msg.reply_to_preview}</span>
                   <% else %>
                     <span class="chat-reply-block__preview chat-reply-block__deleted">
-                      [mensagem removida]
+                      [message deleted]
                     </span>
                   <% end %>
                 </div>
@@ -221,10 +221,10 @@
                   </span>
                   <span
                     class="chat-message-content"
-                    aria-label="Mensagem removida"
+                    aria-label="Message deleted"
                     data-testid="deleted-message"
                   >
-                    [mensagem removida]
+                    [message deleted]
                   </span>
                 </div>
               <% else %>
@@ -244,12 +244,12 @@
                     <span
                       :if={Map.get(msg, :edited_at)}
                       class="chat-edited-tag"
-                      title={"Editado às #{format_edit_timestamp(msg.edited_at)}"}
+                      title={"Edited at #{format_edit_timestamp(msg.edited_at)}"}
                       tabindex="0"
-                      aria-label={"Editado às #{format_edit_timestamp(msg.edited_at)}"}
+                      aria-label={"Edited at #{format_edit_timestamp(msg.edited_at)}"}
                       data-testid="edited-tag"
                     >
-                      (editado)
+                      (edited)
                     </span>
                     <button
                       :if={Map.get(msg, :status) == :failed}

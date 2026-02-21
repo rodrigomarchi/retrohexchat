@@ -111,7 +111,7 @@ defmodule RetroHexChat.P2P.PolicyTest do
       bob = create_registered_nick("bob_pol8")
       create_ignore_entry("alice_pol8", "bob_pol8")
 
-      assert {:error, "Usuário não disponível"} =
+      assert {:error, "User not available"} =
                Policy.can_create?(alice.id, bob.id)
     end
 
@@ -120,7 +120,7 @@ defmodule RetroHexChat.P2P.PolicyTest do
       bob = create_registered_nick("bob_pol9")
       create_ignore_entry("bob_pol9", "alice_pol9")
 
-      assert {:error, "Usuário não disponível"} =
+      assert {:error, "User not available"} =
                Policy.can_create?(alice.id, bob.id)
     end
   end

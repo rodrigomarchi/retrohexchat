@@ -194,7 +194,7 @@ describe("tips", () => {
     it("returns tip definition for valid ID", () => {
       const tip = getTipById("first_message");
       expect(tip).toBeDefined();
-      expect(tip.text).toBe("Use ↑ para editar sua última mensagem");
+      expect(tip.text).toBe("Use ↑ to edit your last message");
     });
 
     it("returns undefined for invalid ID", () => {

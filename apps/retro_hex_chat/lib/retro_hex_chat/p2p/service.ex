@@ -196,7 +196,7 @@ defmodule RetroHexChat.P2P.Service do
         :ok
 
       {:error, {:rate_limited, remaining_seconds}} ->
-        {:error, "Você criou muitas sessões. Tente novamente em #{remaining_seconds} minutos"}
+        {:error, "Too many sessions created. Try again in #{remaining_seconds} minutes"}
     end
   end
 end
