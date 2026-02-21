@@ -1,8 +1,8 @@
 /* RetroHexChat — Connect dialog: centered window, fieldset, inputs, buttons */
 
 .connect-dialog {
-  min-width: 350px;
-  max-width: 400px;
+  min-width: var(--dialog-config-min-w);
+  max-width: var(--dialog-config-min-w);
   margin: 40px auto 0;
 }
 

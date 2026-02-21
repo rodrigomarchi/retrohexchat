@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
       class="dialog-overlay"
       data-testid="ignore-list-dialog"
     >
-      <div class="window dialog-window--md ignore-dialog-window">
+      <div class="window dialog-window--md">
         <div class="title-bar">
           <Icons.icon_dialog_ignore class="title-bar-icon" />
           <div class="title-bar-text">Ignore List</div>

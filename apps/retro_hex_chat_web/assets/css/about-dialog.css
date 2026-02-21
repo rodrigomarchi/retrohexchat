@@ -1,7 +1,8 @@
 /* RetroHexChat — About dialog: logo, title, credits, buttons */
 
 .about-dialog {
-  width: 360px;
+  width: var(--dialog-config-min-w);
+  min-height: var(--dialog-config-min-h);
 }
 
 .about-body {

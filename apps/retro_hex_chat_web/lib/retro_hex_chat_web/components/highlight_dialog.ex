@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
       class="dialog-overlay"
       data-testid="highlight-dialog"
     >
-      <div class="window dialog-window--md highlight-dialog-window">
+      <div class="window dialog-window--md">
         <div class="title-bar">
           <Icons.icon_dialog_highlight class="title-bar-icon" />
           <div class="title-bar-text">Highlight Words</div>

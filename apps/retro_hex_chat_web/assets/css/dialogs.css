@@ -27,40 +27,44 @@
 }
 
 /* Dialog window sizes */
-.dialog-window--sm { width: 300px; }
-.dialog-window--md { width: 400px; }
+.dialog-window--sm { width: var(--dialog-sub-w); }
+.dialog-window--md {
+  width: var(--dialog-config-min-w);
+  min-height: var(--dialog-config-min-h);
+  display: flex;
+  flex-direction: column;
+}
 
 .dialog-window--narrow {
-  min-width: 280px;
-  max-width: 340px;
+  width: var(--dialog-sub-w);
 }
 
 /* Address book and channel central specific sizes */
 .dialog-window--address-book {
-  width: 480px;
-  height: 400px;
+  width: var(--dialog-config-min-w);
+  height: var(--dialog-config-min-h);
   display: flex;
   flex-direction: column;
 }
 
 .dialog-window--channel-central {
-  width: 520px;
-  height: 440px;
+  width: var(--dialog-config-min-w);
+  height: var(--dialog-config-min-h);
   display: flex;
   flex-direction: column;
 }
 
 /* More dialog sizes */
-.dialog-window--alias { width: 440px; max-height: 80vh; }
-.dialog-window--auto-respond { width: 500px; max-height: 80vh; }
-.dialog-window--custom-menus { width: 460px; max-height: 80vh; }
-.dialog-window--perform { width: 460px; min-height: 340px; }
-.dialog-window--cheatsheet { width: 460px; }
+.dialog-window--alias { width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); max-height: 80vh; }
+.dialog-window--auto-respond { width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); max-height: 80vh; }
+.dialog-window--custom-menus { width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); max-height: 80vh; }
+.dialog-window--perform { width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); }
+.dialog-window--cheatsheet { width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); }
 .dialog-window--log-viewer { width: 750px; height: 550px; }
 .dialog-window--generic { min-width: 300px; max-width: 500px; }
-.dialog-window--360 { width: 360px; }
-.dialog-window--320 { width: 320px; }
-.dialog-window--450 { min-width: 450px; }
+.dialog-window--360 { width: var(--dialog-sub-w); }
+.dialog-window--320 { width: var(--dialog-sub-w); }
+.dialog-window--450 { min-width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); display: flex; flex-direction: column; }
 
 /* Tab items without <a> wrappers need explicit padding (98.css supplies it via li > a) */
 menu[role="tablist"] > li[role="tab"] {
@@ -229,7 +233,6 @@ menu[role="tablist"] > li[role="tab"] {
 .perform-num-col { width: 30px; }
 
 /* Ignore Dialog */
-.ignore-dialog-window { min-height: 280px; }
 .ignore-list-panel { min-height: 150px; }
 
 /* CTCP Settings Dialog */
@@ -250,7 +253,7 @@ menu[role="tablist"] > li[role="tab"] {
 .url-cell-url { max-width: 0; }
 
 /* Nick Change Dialog */
-.nick-change-dialog { width: 340px; }
+.nick-change-dialog { width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); }
 .nick-change-dialog__body { padding: 12px; }
 .nick-change-dialog__password-row { margin-top: 6px; }
 .nick-change-dialog__error { color: var(--color-error); margin-top: 4px; }

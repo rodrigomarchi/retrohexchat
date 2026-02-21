@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.Components.KickDialog do
       class="dialog-overlay"
       data-testid="kick-dialog"
     >
-      <div class="window dialog-window--narrow">
+      <div class="window dialog-window--generic">
         <div class="title-bar">
           <Icons.icon_dialog_kick class="title-bar-icon" />
           <div class="title-bar-text">Kicked</div>

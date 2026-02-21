@@ -11,7 +11,8 @@
 }
 
 .options-dialog {
-  width: 560px;
+  width: var(--dialog-config-min-w);
+  min-height: var(--dialog-config-min-h);
   max-height: 80vh;
   display: flex;
   flex-direction: column;
