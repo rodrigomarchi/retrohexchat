@@ -16,17 +16,13 @@ permissions:
 
 env:
   MIX_ENV: test
+  OTP_VERSION: '27.3.4.6'
+  ELIXIR_VERSION: '1.18.4'
 
 jobs:
-  lint:
-    name: Lint
+  compile:
+    name: Compile
     runs-on: ubuntu-latest
-    outputs:
-      compile: ${{ steps.compile.outcome }}
-      format: ${{ steps.format.outcome }}
-      credo: ${{ steps.credo.outcome }}
-      js_lint: ${{ steps.js_lint.outcome }}
-      css_lint: ${{ steps.css_lint.outcome }}
     steps:
       - uses: actions/checkout@v4
 
@@ -34,8 +30,8 @@ jobs:
         id: beam
         uses: erlef/setup-beam@v1
         with:
-          otp-version: '27.3.4.6'
-          elixir-version: '1.18.4'
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
 
       - name: Cache deps
         uses: actions/cache@v4
@@ -54,14 +50,63 @@ jobs:
             build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-
             build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
 
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: apps/retro_hex_chat_web/assets/node_modules
+          key: node-${{ runner.os }}-${{ hashFiles('apps/retro_hex_chat_web/assets/package-lock.json') }}
+          restore-keys: |
+            node-${{ runner.os }}-
+
       - run: mix deps.get
+      - run: npm install --prefix apps/retro_hex_chat_web/assets
 
       - name: Compile
-        id: compile
-        continue-on-error: true
-        run: |
-          set -o pipefail
-          mix compile --warnings-as-errors 2>&1 | tee /tmp/compile_output.txt
+        run: mix compile --warnings-as-errors
+
+  lint:
+    name: Lint
+    needs: [compile]
+    runs-on: ubuntu-latest
+    outputs:
+      format: ${{ steps.format.outcome }}
+      credo: ${{ steps.credo.outcome }}
+      js_lint: ${{ steps.js_lint.outcome }}
+      css_lint: ${{ steps.css_lint.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Elixir/OTP
+        id: beam
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+
+      - name: Restore deps cache
+        uses: actions/cache/restore@v4
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - name: Restore _build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: _build
+          key: build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-${{ github.sha }}
+          restore-keys: |
+            build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-
+            build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - name: Restore node_modules cache
+        uses: actions/cache/restore@v4
+        with:
+          path: apps/retro_hex_chat_web/assets/node_modules
+          key: node-${{ runner.os }}-${{ hashFiles('apps/retro_hex_chat_web/assets/package-lock.json') }}
+          restore-keys: |
+            node-${{ runner.os }}-
 
       - name: Format
         id: format
@@ -76,8 +121,6 @@ jobs:
         run: |
           set -o pipefail
           mix credo --strict 2>&1 | tee /tmp/credo_output.txt
-
-      - run: npm install --prefix apps/retro_hex_chat_web/assets
 
       - name: JS Lint
         id: js_lint
@@ -103,6 +146,7 @@ jobs:
 
   test:
     name: Test
+    needs: [compile]
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.tests.outcome }}
@@ -133,19 +177,19 @@ jobs:
         id: beam
         uses: erlef/setup-beam@v1
         with:
-          otp-version: '27.3.4.6'
-          elixir-version: '1.18.4'
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
 
-      - name: Cache deps
-        uses: actions/cache@v4
+      - name: Restore deps cache
+        uses: actions/cache/restore@v4
         with:
           path: deps
           key: deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}
           restore-keys: |
             deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
 
-      - name: Cache _build
-        uses: actions/cache@v4
+      - name: Restore _build cache
+        uses: actions/cache/restore@v4
         with:
           path: _build
           key: build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-${{ github.sha }}
@@ -153,9 +197,14 @@ jobs:
             build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-
             build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
 
-      - run: mix deps.get
-      - run: npm install --prefix apps/retro_hex_chat_web/assets
-      - run: mix compile
+      - name: Restore node_modules cache
+        uses: actions/cache/restore@v4
+        with:
+          path: apps/retro_hex_chat_web/assets/node_modules
+          key: node-${{ runner.os }}-${{ hashFiles('apps/retro_hex_chat_web/assets/package-lock.json') }}
+          restore-keys: |
+            node-${{ runner.os }}-
+
       - run: mix ecto.create --quiet && mix ecto.migrate --quiet
 
       - name: JS Tests
@@ -170,7 +219,7 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          mix test --include e2e --cover 2>&1 | tee /tmp/tests_output.txt
+          mix test --cover 2>&1 | tee /tmp/tests_output.txt
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -180,8 +229,78 @@ jobs:
           if-no-files-found: ignore
           retention-days: 1
 
+  test-e2e:
+    name: Test (E2E)
+    needs: [compile]
+    runs-on: ubuntu-latest
+    outputs:
+      e2e: ${{ steps.e2e.outcome }}
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: retro_hex_chat_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
+    env:
+      PGHOST: localhost
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Elixir/OTP
+        id: beam
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+
+      - name: Restore deps cache
+        uses: actions/cache/restore@v4
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - name: Restore _build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: _build
+          key: build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-${{ github.sha }}
+          restore-keys: |
+            build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-
+            build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
+
+      - run: mix ecto.create --quiet && mix ecto.migrate --quiet
+
+      - name: E2E Tests
+        id: e2e
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          mix test --only e2e 2>&1 | tee /tmp/e2e_output.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-outputs
+          path: /tmp/e2e_output.txt
+          if-no-files-found: ignore
+          retention-days: 1
+
   dialyzer:
     name: Dialyzer
+    needs: [compile]
     runs-on: ubuntu-latest
     outputs:
       dialyzer: ${{ steps.dialyzer.outcome }}
@@ -192,19 +311,19 @@ jobs:
         id: beam
         uses: erlef/setup-beam@v1
         with:
-          otp-version: '27.3.4.6'
-          elixir-version: '1.18.4'
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
 
-      - name: Cache deps
-        uses: actions/cache@v4
+      - name: Restore deps cache
+        uses: actions/cache/restore@v4
         with:
           path: deps
           key: deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}
           restore-keys: |
             deps-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
 
-      - name: Cache _build
-        uses: actions/cache@v4
+      - name: Restore _build cache
+        uses: actions/cache/restore@v4
         with:
           path: _build
           key: build-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}-${{ github.sha }}
@@ -220,9 +339,6 @@ jobs:
           key: plt-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-${{ hashFiles('**/mix.lock') }}
           restore-keys: |
             plt-${{ runner.os }}-otp${{ steps.beam.outputs.otp-version }}-elixir${{ steps.beam.outputs.elixir-version }}-
-
-      - run: mix deps.get
-      - run: mix compile
 
       - name: Create PLTs
         if: steps.plt_cache.outputs.cache-hit != 'true'
@@ -252,7 +368,7 @@ jobs:
 
   report:
     name: CI Report
-    needs: [lint, test, dialyzer]
+    needs: [compile, lint, test, test-e2e, dialyzer]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -264,13 +380,14 @@ jobs:
 
       - name: Build CI report
         env:
-          STATUS_COMPILE: ${{ needs.lint.outputs.compile }}
+          STATUS_COMPILE: ${{ needs.compile.result }}
           STATUS_FORMAT: ${{ needs.lint.outputs.format }}
           STATUS_CREDO: ${{ needs.lint.outputs.credo }}
           STATUS_JS_LINT: ${{ needs.lint.outputs.js_lint }}
           STATUS_CSS_LINT: ${{ needs.lint.outputs.css_lint }}
           STATUS_TESTS: ${{ needs.test.outputs.tests }}
           STATUS_JS_TESTS: ${{ needs.test.outputs.js_tests }}
+          STATUS_E2E: ${{ needs.test-e2e.outputs.e2e }}
           STATUS_DIALYZER: ${{ needs.dialyzer.outputs.dialyzer }}
           RUN_NUMBER: ${{ github.run_number }}
           RUN_ID: ${{ github.run_id }}
@@ -348,6 +465,15 @@ jobs:
             TEST_SUMMARY=$(grep -oE '[0-9]+ tests?, [0-9]+ failures?(, [0-9]+ excluded)?' /tmp/ci-outputs/tests_output.txt | tail -1)
           fi
 
+          # Extract E2E summary
+          E2E_SUMMARY=""
+          if [ -f /tmp/ci-outputs/e2e_output.txt ]; then
+            E2E_SUMMARY=$(grep -oE '[0-9]+ tests?, [0-9]+ failures?(, [0-9]+ excluded)?' /tmp/ci-outputs/e2e_output.txt | tail -1)
+            [ -z "$E2E_SUMMARY" ] && [ "$STATUS_E2E" = "success" ] && E2E_SUMMARY="all passed"
+          elif [ "$STATUS_E2E" = "success" ]; then
+            E2E_SUMMARY="all passed"
+          fi
+
           # Extract dialyzer summary
           DIALYZER_SUMMARY=""
           if [ -f /tmp/ci-outputs/dialyzer_output.txt ]; then
@@ -382,6 +508,7 @@ jobs:
             echo "| **CSS Lint** | $(icon "$STATUS_CSS_LINT") ${CSS_LINT_SUMMARY} |"
             echo "| **JS Tests** | $(icon "$STATUS_JS_TESTS") ${JS_TESTS_SUMMARY} |"
             echo "| **Tests** | $(icon "$STATUS_TESTS") ${TEST_SUMMARY} |"
+            echo "| **E2E** | $(icon "$STATUS_E2E") ${E2E_SUMMARY} |"
             echo "| **Dialyzer** | $(icon "$STATUS_DIALYZER") ${DIALYZER_SUMMARY} |"
             if [ -n "$COVERAGE_DOMAIN" ]; then
               echo "| **Coverage** | domain: ${COVERAGE_DOMAIN} · web: ${COVERAGE_WEB} |"
@@ -405,7 +532,7 @@ jobs:
             fi
 
             # Detailed output for each failed check
-            for check in compile format credo js_lint css_lint js_tests tests dialyzer; do
+            for check in compile format credo js_lint css_lint js_tests tests e2e dialyzer; do
               status_var="STATUS_$(echo "$check" | tr '[:lower:]' '[:upper:]')"
               status="${!status_var}"
 
@@ -438,22 +565,29 @@ jobs:
 
       - name: Fail if any check failed
         run: |
+          # Check compile (job-level result)
+          if [[ "${{ needs.compile.result }}" != "success" ]]; then
+            echo "::error::Compilation failed"
+            exit 1
+          fi
+
           # Check for infrastructure failures (job didn't complete)
           if [[ "${{ needs.lint.result }}" != "success" || \
                 "${{ needs.test.result }}" != "success" || \
+                "${{ needs.test-e2e.result }}" != "success" || \
                 "${{ needs.dialyzer.result }}" != "success" ]]; then
             echo "::error::One or more jobs had infrastructure failures"
             exit 1
           fi
 
           # Check individual step outcomes
-          if [[ "${{ needs.lint.outputs.compile }}" == "failure" || \
-                "${{ needs.lint.outputs.format }}" == "failure" || \
+          if [[ "${{ needs.lint.outputs.format }}" == "failure" || \
                 "${{ needs.lint.outputs.credo }}" == "failure" || \
                 "${{ needs.lint.outputs.js_lint }}" == "failure" || \
                 "${{ needs.lint.outputs.css_lint }}" == "failure" || \
                 "${{ needs.test.outputs.tests }}" == "failure" || \
                 "${{ needs.test.outputs.js_tests }}" == "failure" || \
+                "${{ needs.test-e2e.outputs.e2e }}" == "failure" || \
                 "${{ needs.dialyzer.outputs.dialyzer }}" == "failure" ]]; then
             echo "::error::One or more checks failed"
             exit 1
