@@ -119,6 +119,12 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
         "/notify edit Alice New note",
         "/notify list",
         "/notify"
+      ],
+      subcommands: [
+        %{name: "add", description: "Add a user to your notify list"},
+        %{name: "remove", description: "Remove a user from your notify list"},
+        %{name: "edit", description: "Edit a user's note"},
+        %{name: "list", description: "Show your notify list"}
       ]
     }
   end

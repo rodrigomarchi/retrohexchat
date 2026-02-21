@@ -168,6 +168,11 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
         "/autorespond add on_join #welcome /notice $nick Welcome!",
         "/autorespond add on_part /say $nick left",
         "/autorespond remove 0"
+      ],
+      subcommands: [
+        %{name: "list", description: "Show auto-respond rules"},
+        %{name: "add", description: "Add an auto-respond rule"},
+        %{name: "remove", description: "Remove an auto-respond rule"}
       ]
     }
   end

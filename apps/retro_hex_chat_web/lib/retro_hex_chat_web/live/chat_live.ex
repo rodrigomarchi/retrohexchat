@@ -141,6 +141,7 @@ defmodule RetroHexChatWeb.ChatLive do
     |> assign(
       channel_users: [],
       command_history: [],
+      autocomplete_command: nil,
       autocomplete_filter: "",
       autocomplete_mode: nil,
       autocomplete_results: [],

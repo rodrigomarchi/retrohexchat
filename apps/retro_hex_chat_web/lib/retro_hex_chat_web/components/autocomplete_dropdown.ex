@@ -6,9 +6,10 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdown do
   use Phoenix.Component
 
   attr :visible, :boolean, default: false
-  attr :mode, :atom, default: :command, values: [:command, :nick, :channel]
+  attr :mode, :atom, default: :command, values: [:command, :nick, :channel, :subcommand]
   attr :results, :list, default: []
   attr :selected, :integer, default: 0
+  attr :command, :string, default: nil
 
   @spec autocomplete_dropdown(map()) :: Phoenix.LiveView.Rendered.t()
   def autocomplete_dropdown(assigns) do
@@ -84,9 +85,29 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdown do
     """
   end
 
+  defp render_results(%{mode: :subcommand} = assigns) do
+    ~H"""
+    <%= for {result, idx} <- Enum.with_index(@results) do %>
+      <li
+        phx-click="autocomplete_select"
+        phx-value-type="subcommand"
+        phx-value-value={result.name}
+        phx-value-command={@command}
+        class={"autocomplete-item #{if idx == @selected, do: "selected"}"}
+      >
+        <span>
+          <.highlight_matches text={result.name} matched_chars={result.matched_chars} />
+        </span>
+        <span class="autocomplete-description">{result.description}</span>
+      </li>
+    <% end %>
+    """
+  end
+
   defp mode_title(:command), do: "Commands"
   defp mode_title(:nick), do: "Nicknames"
   defp mode_title(:channel), do: "Channels"
+  defp mode_title(:subcommand), do: "Subcommands"
 
   attr :text, :string, required: true
   attr :matched_chars, :list, default: []

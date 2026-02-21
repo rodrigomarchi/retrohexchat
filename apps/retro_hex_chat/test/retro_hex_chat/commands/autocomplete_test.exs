@@ -460,4 +460,60 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
       assert dev.user_count == 5
     end
   end
+
+  # ── Subcommand Autocomplete ─────────────────────────────
+
+  describe "search_subcommands/2" do
+    test "returns all subcommands with empty partial" do
+      results = Autocomplete.search_subcommands("ns", "")
+      assert length(results) == 6
+      assert Enum.all?(results, &(&1.type == :subcommand))
+      names = Enum.map(results, & &1.name)
+      assert "register" in names
+      assert "identify" in names
+    end
+
+    test "fuzzy matches subcommand name" do
+      results = Autocomplete.search_subcommands("ns", "reg")
+      assert results != []
+      assert hd(results).name == "register"
+    end
+
+    test "returns empty for no match" do
+      assert Autocomplete.search_subcommands("ns", "xyz") == []
+    end
+
+    test "returns empty for unknown command" do
+      assert Autocomplete.search_subcommands("unknown_cmd", "") == []
+    end
+
+    test "returns empty for command without subcommands" do
+      assert Autocomplete.search_subcommands("kick", "") == []
+    end
+
+    test "includes matched_chars in results" do
+      results = Autocomplete.search_subcommands("ns", "reg")
+      result = hd(results)
+      assert is_list(result.matched_chars)
+      assert result.matched_chars == [0, 1, 2]
+    end
+
+    test "works for all commands with subcommands" do
+      for {cmd, expected_count} <- [
+            {"ns", 6},
+            {"cs", 7},
+            {"autojoin", 4},
+            {"alias", 3},
+            {"notify", 4},
+            {"perform", 5},
+            {"autorespond", 3},
+            {"timer", 2}
+          ] do
+        results = Autocomplete.search_subcommands(cmd, "")
+
+        assert length(results) == expected_count,
+               "Expected #{expected_count} subcommands for /#{cmd}, got #{length(results)}"
+      end
+    end
+  end
 end

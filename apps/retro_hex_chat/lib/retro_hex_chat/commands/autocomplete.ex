@@ -43,7 +43,16 @@ defmodule RetroHexChat.Commands.Autocomplete do
           matched_chars: [non_neg_integer()]
         }
 
-  @type autocomplete_result :: command_result() | nick_result() | channel_result()
+  @type subcommand_result :: %{
+          type: :subcommand,
+          name: String.t(),
+          description: String.t(),
+          score: non_neg_integer(),
+          matched_chars: [non_neg_integer()]
+        }
+
+  @type autocomplete_result ::
+          command_result() | nick_result() | channel_result() | subcommand_result()
 
   @type match_result :: {:match, non_neg_integer(), [non_neg_integer()]} | :no_match
 
@@ -186,6 +195,42 @@ defmodule RetroHexChat.Commands.Autocomplete do
           user_count: channel.user_count,
           topic: Map.get(channel, :topic),
           joined?: channel.name in user_channels,
+          score: score,
+          matched_chars: matched_chars
+        }
+
+      :no_match ->
+        nil
+    end
+  end
+
+  @doc """
+  Searches subcommands for a given parent command using fuzzy matching.
+  """
+  @spec search_subcommands(String.t(), String.t()) :: [subcommand_result()]
+  def search_subcommands(command_name, partial) do
+    alias RetroHexChat.Commands.{CommandSyntax, Registry}
+
+    case Registry.get_syntax(command_name) do
+      %CommandSyntax{subcommands: subs} when is_list(subs) ->
+        subs
+        |> Enum.map(&match_subcommand(&1, partial))
+        |> Enum.reject(&is_nil/1)
+        |> Enum.sort_by(&{-&1.score, &1.name})
+        |> Enum.take(@max_results)
+
+      _ ->
+        []
+    end
+  end
+
+  defp match_subcommand(sub, partial) do
+    case fuzzy_match(partial, sub.name) do
+      {:match, score, matched_chars} ->
+        %{
+          type: :subcommand,
+          name: sub.name,
+          description: sub.description,
           score: score,
           matched_chars: matched_chars
         }

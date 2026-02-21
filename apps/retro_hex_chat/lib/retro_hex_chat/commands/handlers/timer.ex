@@ -101,6 +101,10 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
         "/timer heartbeat repeat 600 /me is still here",
         "/timer list",
         "/timer stop heartbeat"
+      ],
+      subcommands: [
+        %{name: "list", description: "Show active timers"},
+        %{name: "stop", description: "Stop a running timer"}
       ]
     }
   end

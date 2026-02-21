@@ -138,9 +138,46 @@ describe("lib/input", () => {
       expect(getArgumentContext("topic")).toBe("arg_channel");
     });
 
+    it("returns arg_subcommand for subcommand commands", () => {
+      expect(getArgumentContext("ns")).toBe("arg_subcommand");
+      expect(getArgumentContext("cs")).toBe("arg_subcommand");
+      expect(getArgumentContext("autojoin")).toBe("arg_subcommand");
+      expect(getArgumentContext("alias")).toBe("arg_subcommand");
+      expect(getArgumentContext("notify")).toBe("arg_subcommand");
+      expect(getArgumentContext("perform")).toBe("arg_subcommand");
+      expect(getArgumentContext("autorespond")).toBe("arg_subcommand");
+      expect(getArgumentContext("timer")).toBe("arg_subcommand");
+    });
+
     it("returns null for unknown commands", () => {
       expect(getArgumentContext("quit")).toBeNull();
       expect(getArgumentContext("help")).toBeNull();
+    });
+  });
+
+  // ── detectTrigger: subcommand ───────────────────────────
+
+  describe("detectTrigger subcommand", () => {
+    const getCtx = getArgumentContext;
+
+    it("detects subcommand trigger /ns reg", () => {
+      expect(detectTrigger("/ns reg", 7, getCtx)).toEqual({
+        type: "arg_subcommand",
+        partial: "reg",
+        command: "ns",
+      });
+    });
+
+    it("detects subcommand trigger /ns with empty partial", () => {
+      expect(detectTrigger("/ns ", 4, getCtx)).toEqual({
+        type: "arg_subcommand",
+        partial: "",
+        command: "ns",
+      });
+    });
+
+    it("does not trigger subcommand after second space", () => {
+      expect(detectTrigger("/ns register password", 21, getCtx)).toBeNull();
     });
   });
 

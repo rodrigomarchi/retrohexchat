@@ -111,6 +111,11 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
         "/alias add hi /me says hello everyone!",
         "/alias add greet /me waves at $1",
         "/alias remove hi"
+      ],
+      subcommands: [
+        %{name: "add", description: "Create a new command alias"},
+        %{name: "remove", description: "Remove an existing alias"},
+        %{name: "list", description: "Show all defined aliases"}
       ]
     }
   end

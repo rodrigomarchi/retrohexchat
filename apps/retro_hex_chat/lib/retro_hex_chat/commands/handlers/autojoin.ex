@@ -134,6 +134,12 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
         "/autojoin add #secret mykey",
         "/autojoin remove #elixir",
         "/autojoin clear"
+      ],
+      subcommands: [
+        %{name: "list", description: "Show your autojoin list"},
+        %{name: "add", description: "Add a channel to autojoin"},
+        %{name: "remove", description: "Remove a channel from autojoin"},
+        %{name: "clear", description: "Clear your entire autojoin list"}
       ]
     }
   end

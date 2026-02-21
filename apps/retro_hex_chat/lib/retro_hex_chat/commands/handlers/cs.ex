@@ -186,6 +186,15 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         "/cs sop add nick",
         "/cs aop del nick",
         "/cs vop list"
+      ],
+      subcommands: [
+        %{name: "register", description: "Register the current channel"},
+        %{name: "drop", description: "Drop channel registration"},
+        %{name: "info", description: "View channel registration info"},
+        %{name: "sop", description: "Manage super-operator access list"},
+        %{name: "aop", description: "Manage auto-operator access list"},
+        %{name: "vop", description: "Manage auto-voice access list"},
+        %{name: "help", description: "Show ChanServ help"}
       ]
     }
   end

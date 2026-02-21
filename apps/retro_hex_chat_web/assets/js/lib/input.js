@@ -42,7 +42,12 @@ export function detectTrigger(value, cursorPos, getArgContext) {
       const cmdName = value.slice(1, spaceIdx);
       const argText = value.slice(spaceIdx + 1);
       const argContext = getArgContext(cmdName);
-      if (argContext && argText.length >= 0) {
+      if (argContext === "arg_subcommand") {
+        // Only trigger for the first argument (the subcommand itself)
+        if (!argText.includes(" ")) {
+          return { type: argContext, partial: argText, command: cmdName };
+        }
+      } else if (argContext && argText.length >= 0) {
         return { type: argContext, partial: argText, command: cmdName };
       }
     }
@@ -89,13 +94,15 @@ export function detectTrigger(value, cursorPos, getArgContext) {
  * Determine the argument context for a command name.
  *
  * @param {string} cmdName
- * @returns {"arg_nick" | "arg_channel" | null}
+ * @returns {"arg_nick" | "arg_channel" | "arg_subcommand" | null}
  */
 export function getArgumentContext(cmdName) {
+  const subcommand = ["ns", "cs", "autojoin", "alias", "notify", "perform", "autorespond", "timer"];
   const nickAll = ["msg", "query", "whois", "whowas", "notice", "ctcp", "invite"];
   const nickCurrent = ["kick", "ban", "call", "p2p", "sendfile"];
   const channel = ["join", "part", "topic", "mode"];
 
+  if (subcommand.includes(cmdName)) return "arg_subcommand";
   if (nickAll.includes(cmdName)) return "arg_nick";
   if (nickCurrent.includes(cmdName)) return "arg_nick";
   if (channel.includes(cmdName)) return "arg_channel";

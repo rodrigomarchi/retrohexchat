@@ -48,11 +48,21 @@ defmodule RetroHexChat.Commands.CommandSyntax do
           category: :basics | :channel | :user | :config | :advanced,
           parameters: [Parameter.t()],
           examples: [String.t()],
-          sub_options: [SubOption.t()] | nil
+          sub_options: [SubOption.t()] | nil,
+          subcommands: [%{name: String.t(), description: String.t()}] | nil
         }
 
   @enforce_keys [:command, :syntax, :description, :category, :parameters, :examples]
-  defstruct [:command, :syntax, :description, :category, :parameters, :examples, :sub_options]
+  defstruct [
+    :command,
+    :syntax,
+    :description,
+    :category,
+    :parameters,
+    :examples,
+    :sub_options,
+    :subcommands
+  ]
 
   @doc """
   Converts a CommandSyntax struct to a map suitable for `push_event`.

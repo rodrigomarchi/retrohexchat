@@ -174,6 +174,14 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
         "/ns ghost othernick",
         "/ns info",
         "/ns drop mypassword"
+      ],
+      subcommands: [
+        %{name: "register", description: "Register your nickname with a password"},
+        %{name: "identify", description: "Authenticate with your registered password"},
+        %{name: "ghost", description: "Disconnect a stale session using your nickname"},
+        %{name: "info", description: "View registration info for a nickname"},
+        %{name: "drop", description: "Delete your nickname registration"},
+        %{name: "help", description: "Show NickServ help"}
       ]
     }
   end

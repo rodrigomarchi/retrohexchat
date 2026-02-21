@@ -150,6 +150,13 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
         "/perform remove 0",
         "/perform move 0 2",
         "/perform clear"
+      ],
+      subcommands: [
+        %{name: "list", description: "Show perform commands"},
+        %{name: "add", description: "Add a command to perform on connect"},
+        %{name: "remove", description: "Remove a perform command"},
+        %{name: "move", description: "Reorder a perform command"},
+        %{name: "clear", description: "Clear all perform commands"}
       ]
     }
   end

@@ -192,6 +192,24 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
      )}
   end
 
+  def handle_event(
+        "autocomplete_query",
+        %{"type" => "arg_subcommand", "partial" => partial, "command" => command},
+        socket
+      ) do
+    results = Autocomplete.search_subcommands(command, partial)
+
+    {:halt,
+     assign(socket,
+       autocomplete_visible: true,
+       autocomplete_mode: :subcommand,
+       autocomplete_command: command,
+       autocomplete_results: results,
+       autocomplete_filter: partial,
+       autocomplete_selected: 0
+     )}
+  end
+
   def handle_event("autocomplete_query", _params, socket) do
     {:halt, socket}
   end
@@ -202,6 +220,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
      |> assign(
        autocomplete_visible: false,
        autocomplete_mode: nil,
+       autocomplete_command: nil,
        autocomplete_results: [],
        autocomplete_filter: "",
        autocomplete_selected: 0
@@ -249,6 +268,27 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
      |> push_event("set_input", %{value: channel_name <> " "})}
   end
 
+  def handle_event(
+        "autocomplete_select",
+        %{"type" => "subcommand", "value" => subcommand, "command" => command},
+        socket
+      ) do
+    value = "/#{command} #{subcommand} "
+
+    {:halt,
+     socket
+     |> assign(
+       input: value,
+       autocomplete_visible: false,
+       autocomplete_mode: nil,
+       autocomplete_command: nil,
+       autocomplete_results: [],
+       autocomplete_filter: "",
+       autocomplete_selected: 0
+     )
+     |> push_event("set_input", %{value: value})}
+  end
+
   def handle_event("autocomplete_select", _params, socket) do
     {:halt, socket}
   end
@@ -267,11 +307,16 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
       item ->
         {type, value} = select_item_params(mode, item)
 
-        handle_event(
-          "autocomplete_select",
-          %{"type" => type, "value" => value},
-          socket
-        )
+        params = %{"type" => type, "value" => value}
+
+        params =
+          if mode == :subcommand do
+            Map.put(params, "command", socket.assigns.autocomplete_command)
+          else
+            params
+          end
+
+        handle_event("autocomplete_select", params, socket)
     end
   end
 
@@ -308,5 +353,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   defp select_item_params(:command, %{name: name}), do: {"command", name}
   defp select_item_params(:nick, %{nickname: nick}), do: {"nick", nick}
   defp select_item_params(:channel, %{name: name}), do: {"channel", name}
+  defp select_item_params(:subcommand, %{name: name}), do: {"subcommand", name}
   defp select_item_params(_, %{name: name}), do: {"command", name}
 end
