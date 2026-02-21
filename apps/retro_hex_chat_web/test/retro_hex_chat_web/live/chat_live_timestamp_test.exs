@@ -21,6 +21,4 @@ defmodule RetroHexChatWeb.ChatLiveTimestampTest do
       assert html =~ ~r/\[\d{2}\/\d{2} \d{2}:\d{2}\]/
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

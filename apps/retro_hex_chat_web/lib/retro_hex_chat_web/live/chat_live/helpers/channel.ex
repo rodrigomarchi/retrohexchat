@@ -29,32 +29,40 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
     case Server.join(channel_name, session.nickname, password, identified: session.identified) do
       {:ok, _state} ->
-        Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
-        PresenceHelpers.safe_track_user("channel:#{channel_name}", session.nickname)
+        setup_joined_channel(socket, channel_name, session)
 
-        new_session =
-          session
-          |> Session.add_channel(channel_name)
-          |> Session.set_active_channel(channel_name)
-
-        socket
-        |> assign(
-          session: new_session,
-          input: "",
-          loading_channel: channel_name,
-          show_status_tab: false
-        )
-        |> load_channel_users(channel_name)
-        |> load_channel_messages_with_pagination(channel_name)
-        |> assign(loading_channel: nil)
-        |> maybe_show_welcome(channel_name, new_session)
-        |> push_event("tip_trigger", %{tip: "first_join"})
-        |> push_event("channel_joined_flash", %{channel: channel_name})
-        |> SessionHelpers.push_reconnect_state()
+      {:error, "Already in channel"} ->
+        Logger.info("Rejoining channel #{channel_name} (already a member in server)")
+        setup_joined_channel(socket, channel_name, session)
 
       {:error, reason} ->
         Messages.error_event(socket, reason)
     end
+  end
+
+  defp setup_joined_channel(socket, channel_name, session) do
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
+    PresenceHelpers.safe_track_user("channel:#{channel_name}", session.nickname)
+
+    new_session =
+      session
+      |> Session.add_channel(channel_name)
+      |> Session.set_active_channel(channel_name)
+
+    socket
+    |> assign(
+      session: new_session,
+      input: "",
+      loading_channel: channel_name,
+      show_status_tab: false
+    )
+    |> load_channel_users(channel_name)
+    |> load_channel_messages_with_pagination(channel_name)
+    |> assign(loading_channel: nil)
+    |> maybe_show_welcome(channel_name, new_session)
+    |> push_event("tip_trigger", %{tip: "first_join"})
+    |> push_event("channel_joined_flash", %{channel: channel_name})
+    |> SessionHelpers.push_reconnect_state()
   end
 
   @spec part_channel(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()

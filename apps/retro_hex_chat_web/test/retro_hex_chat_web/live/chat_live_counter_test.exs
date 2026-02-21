@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLiveCounterTest do
   @moduletag :liveview
 
   setup %{conn: conn} do
-    channel = "#cntr-#{System.unique_integer([:positive])}"
+    channel = "#cntr-#{uid()}"
     ensure_channel(channel)
     {:ok, conn: conn, channel: channel}
   end
@@ -53,6 +53,4 @@ defmodule RetroHexChatWeb.ChatLiveCounterTest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

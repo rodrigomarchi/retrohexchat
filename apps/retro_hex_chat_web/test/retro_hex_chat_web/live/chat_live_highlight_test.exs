@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
   describe "US1: own-nick highlight in active channel" do
     test "message mentioning user's nick is highlighted", %{conn: conn} do
-      nick = "HiLite#{System.unique_integer([:positive])}"
+      nick = "HiLite#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hey #{nick}, check this out", "#lobby")
@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "self-message is NOT highlighted", %{conn: conn} do
-      nick = "SelfHL#{System.unique_integer([:positive])}"
+      nick = "SelfHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, nick, "I am #{nick} and I said my own name", "#lobby")
@@ -33,13 +33,13 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "system message is NOT highlighted", %{conn: conn} do
-      nick = "SysHL#{System.unique_integer([:positive])}"
+      nick = "SysHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       msg = %{
         event: "new_message",
         payload: %{
-          id: "sys-#{System.unique_integer([:positive])}",
+          id: "sys-#{uid()}",
           author: "system",
           content: "#{nick} has joined #lobby",
           type: :system,
@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "case-insensitive nick matching highlights", %{conn: conn} do
-      nick = "CaseNick#{System.unique_integer([:positive])}"
+      nick = "CaseNick#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hey #{String.upcase(nick)}!", "#lobby")
@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "message NOT mentioning nick is NOT highlighted", %{conn: conn} do
-      nick = "NoMatch#{System.unique_integer([:positive])}"
+      nick = "NoMatch#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hello world nothing special here", "#lobby")
@@ -77,7 +77,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "highlight applies inline background-color style", %{conn: conn} do
-      nick = "StyleHL#{System.unique_integer([:positive])}"
+      nick = "StyleHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hey #{nick}!", "#lobby")
@@ -87,13 +87,13 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "action type (/me) mentioning nick is highlighted", %{conn: conn} do
-      nick = "ActHL#{System.unique_integer([:positive])}"
+      nick = "ActHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       msg = %{
         event: "new_message",
         payload: %{
-          id: "act-#{System.unique_integer([:positive])}",
+          id: "act-#{uid()}",
           author: "OtherUser",
           content: "waves at #{nick}",
           type: :action,
@@ -113,8 +113,8 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
   describe "US2: treebar flash on non-active channel highlight" do
     test "highlight in non-active channel adds tree-highlight class", %{conn: conn} do
-      nick = "FlashHL#{System.unique_integer([:positive])}"
-      ch = "#hl_flash_#{System.unique_integer([:positive])}"
+      nick = "FlashHL#{uid()}"
+      ch = "#hl_flash_#{uid()}"
       ensure_channel(ch)
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -134,7 +134,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "highlight in active channel does NOT flash treebar", %{conn: conn} do
-      nick = "NoFlash#{System.unique_integer([:positive])}"
+      nick = "NoFlash#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hey #{nick}!", "#lobby")
@@ -145,8 +145,8 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "switching to highlighted channel clears flash", %{conn: conn} do
-      nick = "ClearFlash#{System.unique_integer([:positive])}"
-      ch = "#hl_clear_#{System.unique_integer([:positive])}"
+      nick = "ClearFlash#{uid()}"
+      ch = "#hl_clear_#{uid()}"
       ensure_channel(ch)
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -172,8 +172,8 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "non-highlight message in non-active channel does NOT flash", %{conn: conn} do
-      nick = "NoFlash2#{System.unique_integer([:positive])}"
-      ch = "#hl_nofl_#{System.unique_integer([:positive])}"
+      nick = "NoFlash2#{uid()}"
+      ch = "#hl_nofl_#{uid()}"
       ensure_channel(ch)
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -195,7 +195,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
   describe "US3: notification sound on highlight" do
     test "push_event play_sound sent on highlight", %{conn: conn} do
-      nick = "SndHL#{System.unique_integer([:positive])}"
+      nick = "SndHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hey #{nick}!", "#lobby")
@@ -204,7 +204,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "no push_event on non-highlight message", %{conn: conn} do
-      nick = "NoSnd#{System.unique_integer([:positive])}"
+      nick = "NoSnd#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hello world", "#lobby")
@@ -215,8 +215,8 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "push_event sent for highlight in non-active channel too", %{conn: conn} do
-      nick = "SndBG#{System.unique_integer([:positive])}"
-      ch = "#hl_snd_#{System.unique_integer([:positive])}"
+      nick = "SndBG#{uid()}"
+      ch = "#hl_snd_#{uid()}"
       ensure_channel(ch)
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -237,7 +237,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
   describe "US4: custom highlight words" do
     test "message matching custom word is highlighted", %{conn: conn} do
-      nick = "CustHL#{System.unique_integer([:positive])}"
+      nick = "CustHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add a custom highlight word
@@ -251,7 +251,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "custom word with custom color applies that color", %{conn: conn} do
-      nick = "ColorHL#{System.unique_integer([:positive])}"
+      nick = "ColorHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add word with color index 4 (red)
@@ -266,7 +266,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "own nick takes priority over custom word", %{conn: conn} do
-      nick = "PrioHL#{System.unique_integer([:positive])}"
+      nick = "PrioHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add custom word with a different color
@@ -281,7 +281,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "removed highlight word no longer triggers", %{conn: conn} do
-      nick = "RmHL#{System.unique_integer([:positive])}"
+      nick = "RmHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "highlight_add", %{"word" => "deploy", "bg_color" => ""})
@@ -298,7 +298,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
   describe "US5: highlight dialog" do
     test "opens and closes via event", %{conn: conn} do
-      nick = "DlgHL#{System.unique_integer([:positive])}"
+      nick = "DlgHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "open_highlight_dialog")
@@ -310,7 +310,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "add word via dialog", %{conn: conn} do
-      nick = "AddWd#{System.unique_integer([:positive])}"
+      nick = "AddWd#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "open_highlight_dialog")
@@ -326,7 +326,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "remove word via dialog", %{conn: conn} do
-      nick = "RmWd#{System.unique_integer([:positive])}"
+      nick = "RmWd#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "highlight_add", %{"word" => "phoenix", "bg_color" => ""})
@@ -340,7 +340,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "edit word color via dialog", %{conn: conn} do
-      nick = "EdWd#{System.unique_integer([:positive])}"
+      nick = "EdWd#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "highlight_add", %{"word" => "deploy", "bg_color" => ""})
@@ -357,7 +357,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "Ctrl+Shift+H toggles dialog", %{conn: conn} do
-      nick = "AltH#{System.unique_integer([:positive])}"
+      nick = "AltH#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html =
@@ -380,7 +380,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
 
     test "Highlight Words menu item opens dialog", %{conn: conn} do
-      nick = "MenuHL#{System.unique_integer([:positive])}"
+      nick = "MenuHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "open_highlight_dialog")
@@ -394,7 +394,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     msg = %{
       event: "new_message",
       payload: %{
-        id: "msg-#{System.unique_integer([:positive])}",
+        id: "msg-#{uid()}",
         author: author,
         content: content,
         type: :message,

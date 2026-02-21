@@ -8,8 +8,6 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
   alias RetroHexChat.Chat.AutoJoinList
   alias RetroHexChat.Services.NickServ
 
-  defp uid, do: System.unique_integer([:positive])
-
   defp register_and_identify(nick) do
     NickServ.register(nick, "pass123")
     {:ok, _} = NickServ.identify(nick, "pass123")

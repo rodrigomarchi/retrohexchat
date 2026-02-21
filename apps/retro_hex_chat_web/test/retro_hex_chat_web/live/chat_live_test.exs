@@ -187,7 +187,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       msg = %{
         event: "new_message",
         payload: %{
-          id: "pubmsg-#{System.unique_integer([:positive])}",
+          id: "pubmsg-#{uid()}",
           author: "other_user",
           content: "PubSub hello",
           type: :message,
@@ -596,7 +596,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       pm_payload = %{
         event: "new_pm",
         payload: %{
-          id: "pm-unread-#{System.unique_integer([:positive])}",
+          id: "pm-unread-#{uid()}",
           sender: "Alice",
           recipient: "PmUnread",
           content: "Hey there!",
@@ -625,7 +625,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       pm_payload = %{
         event: "new_pm",
         payload: %{
-          id: "pm-clr-#{System.unique_integer([:positive])}",
+          id: "pm-clr-#{uid()}",
           sender: "Bob",
           recipient: "PmClr",
           content: "Hello!",
@@ -665,7 +665,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       msg = %{
         event: "new_message",
         payload: %{
-          id: "unr-#{System.unique_integer([:positive])}",
+          id: "unr-#{uid()}",
           author: "someone",
           content: "hey",
           type: :message,
@@ -693,7 +693,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       msg = %{
         event: "new_message",
         payload: %{
-          id: "unr2-#{System.unique_integer([:positive])}",
+          id: "unr2-#{uid()}",
           author: "someone",
           content: "hello",
           type: :message,
@@ -721,7 +721,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       msg = %{
         event: "new_message",
         payload: %{
-          id: "unr3-#{System.unique_integer([:positive])}",
+          id: "unr3-#{uid()}",
           author: "someone",
           content: "active msg",
           type: :message,
@@ -1674,7 +1674,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       pm_payload = %{
         event: "new_pm",
         payload: %{
-          id: "pm-active-#{System.unique_integer([:positive])}",
+          id: "pm-active-#{uid()}",
           sender: "PmSender",
           recipient: "PmActive",
           content: "Hello from PM!",
@@ -2360,7 +2360,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
     test "non-operator sees disabled controls", %{conn: conn} do
       # Create a channel with an existing operator
-      channel = "#ccro-#{System.unique_integer([:positive])}"
+      channel = "#ccro-#{uid()}"
       ensure_channel(channel)
       {:ok, _} = Server.join(channel, "ExistingOp")
 
@@ -2388,7 +2388,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       {:ok, view, _html} = live(chat_conn(conn, "CcOp"), "/chat")
 
       # User is operator of a new channel (first to join)
-      channel = "#ccop-#{System.unique_integer([:positive])}"
+      channel = "#ccop-#{uid()}"
 
       # Join via /join command (first user becomes operator)
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2411,7 +2411,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "Channel Central topic editing" do
     test "operator can set topic via Channel Central", %{conn: conn} do
-      channel = "#cctop-#{System.unique_integer([:positive])}"
+      channel = "#cctop-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcTopicOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2428,7 +2428,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "clearing topic works", %{conn: conn} do
-      channel = "#ccclr-#{System.unique_integer([:positive])}"
+      channel = "#ccclr-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcTopClr"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2452,7 +2452,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "Channel Central mode toggles" do
     test "operator can set +m moderated mode", %{conn: conn} do
-      channel = "#ccmod-#{System.unique_integer([:positive])}"
+      channel = "#ccmod-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcModeOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2472,7 +2472,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "operator can set +k key mode", %{conn: conn} do
-      channel = "#cckey-#{System.unique_integer([:positive])}"
+      channel = "#cckey-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcKeyOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2494,7 +2494,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "Channel Central ban management" do
     test "operator can add ban via dialog", %{conn: conn} do
-      channel = "#ccban-#{System.unique_integer([:positive])}"
+      channel = "#ccban-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcBanOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2518,7 +2518,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "operator can remove ban", %{conn: conn} do
-      channel = "#ccunb-#{System.unique_integer([:positive])}"
+      channel = "#ccunb-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcUnBan"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2548,7 +2548,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "Channel Central ban exceptions" do
     test "operator can add ban exception via dialog", %{conn: conn} do
-      channel = "#ccbex-#{System.unique_integer([:positive])}"
+      channel = "#ccbex-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcBExOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2570,7 +2570,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "operator can remove ban exception", %{conn: conn} do
-      channel = "#ccbrx-#{System.unique_integer([:positive])}"
+      channel = "#ccbrx-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcBRxOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2597,7 +2597,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "Channel Central invite exceptions" do
     test "operator can add invite exception via dialog", %{conn: conn} do
-      channel = "#cciex-#{System.unique_integer([:positive])}"
+      channel = "#cciex-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcIExOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2619,7 +2619,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "operator can remove invite exception", %{conn: conn} do
-      channel = "#ccirx-#{System.unique_integer([:positive])}"
+      channel = "#ccirx-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcIRxOp"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2645,7 +2645,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   describe "Channel Central real-time updates" do
     test "topic change by another user updates dialog", %{conn: conn} do
-      channel = "#ccrt1-#{System.unique_integer([:positive])}"
+      channel = "#ccrt1-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcRtObs"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2660,7 +2660,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "mode change updates dialog", %{conn: conn} do
-      channel = "#ccrt2-#{System.unique_integer([:positive])}"
+      channel = "#ccrt2-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcRtMod"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})
@@ -2677,7 +2677,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
 
     test "ban change updates dialog ban list", %{conn: conn} do
-      channel = "#ccrt3-#{System.unique_integer([:positive])}"
+      channel = "#ccrt3-#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, "CcRtBan"), "/chat")
 
       render_click(view, "send_input", %{"input" => "/join #{channel}"})

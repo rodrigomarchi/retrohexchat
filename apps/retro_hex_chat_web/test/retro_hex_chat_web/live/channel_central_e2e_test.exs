@@ -475,6 +475,4 @@ defmodule RetroHexChatWeb.ChannelCentralE2ETest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid, do: rem(System.unique_integer([:positive]), 100_000)
 end

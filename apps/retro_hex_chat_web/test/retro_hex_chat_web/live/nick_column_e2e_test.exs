@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.NickColumnE2ETest do
   alias RetroHexChat.Channels.{Registry, Supervisor}
 
   setup do
-    channel = "#ncole2e-#{System.unique_integer([:positive])}"
+    channel = "#ncole2e-#{uid()}"
     ensure_channel(channel)
     {:ok, channel: channel}
   end
@@ -73,6 +73,4 @@ defmodule RetroHexChatWeb.NickColumnE2ETest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

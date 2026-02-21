@@ -172,9 +172,6 @@ defmodule RetroHexChatWeb.ConnectLive do
         </:panels>
       </RetroHexChatWeb.Components.AppHeader.app_header>
       <div class="connect-dialog">
-        <p :if={@flash["error"]} class="error-text" data-testid="session-alert">
-          {@flash["error"]}
-        </p>
         <div class="window">
           <div class="title-bar">
             <div class="title-bar-text">Connect to RetroHexChat</div>
@@ -183,6 +180,10 @@ defmodule RetroHexChatWeb.ConnectLive do
             </div>
           </div>
           <div class="window-body">
+            <div :if={@flash["error"]} class="session-alert" data-testid="session-alert">
+              <span class="session-alert-icon">&#9888;</span>
+              <span>{@flash["error"]}</span>
+            </div>
             <%= case @step do %>
               <% :nickname -> %>
                 <form phx-submit="connect" phx-change="validate">

@@ -8,8 +8,6 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Services.NickServ
 
-  defp uid, do: System.unique_integer([:positive])
-
   defp register_and_identify(nick) do
     NickServ.register(nick, "pass123")
     {:ok, _} = NickServ.identify(nick, "pass123")
@@ -130,7 +128,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       pm_payload = %{
         event: "new_pm",
         payload: %{
-          id: System.unique_integer([:positive]),
+          id: uid(),
           sender: "Alice",
           recipient: nick,
           content: "Hello!",
@@ -158,7 +156,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       pm_payload = %{
         event: "new_pm",
         payload: %{
-          id: System.unique_integer([:positive]),
+          id: uid(),
           sender: "IgnoredUser",
           recipient: nick,
           content: "You can't see me",
@@ -235,7 +233,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       pm_payload = %{
         event: "new_pm",
         payload: %{
-          id: System.unique_integer([:positive]),
+          id: uid(),
           sender: "Charlie",
           recipient: nick,
           content: "I'm back!",
@@ -274,7 +272,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       pm_payload = %{
         event: "new_pm",
         payload: %{
-          id: System.unique_integer([:positive]),
+          id: uid(),
           sender: "Eve",
           recipient: nick,
           content: "Are you there?",

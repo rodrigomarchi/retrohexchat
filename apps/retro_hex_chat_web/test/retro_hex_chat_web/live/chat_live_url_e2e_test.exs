@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
 
   describe "E2E: clickable URLs in chat" do
     test "URL in channel message is clickable link", %{conn: conn} do
-      nick = "E2EUrl#{System.unique_integer([:positive])}"
+      nick = "E2EUrl#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_channel_msg(view, "Alice", "check https://example.com out", "#lobby")
@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "URL with trailing period excludes period", %{conn: conn} do
-      nick = "E2EDot#{System.unique_integer([:positive])}"
+      nick = "E2EDot#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_channel_msg(view, "Bob", "visit https://example.com.", "#lobby")
@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "multiple URLs in one message render independently", %{conn: conn} do
-      nick = "E2EMulti#{System.unique_integer([:positive])}"
+      nick = "E2EMulti#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_channel_msg(view, "Carol", "see https://a.com and https://b.com", "#lobby")
@@ -41,7 +41,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "long URL is truncated in display", %{conn: conn} do
-      nick = "E2ELong#{System.unique_integer([:positive])}"
+      nick = "E2ELong#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       long_path = String.duplicate("x", 90)
@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "URL in PM is clickable", %{conn: conn} do
-      nick = "E2EPmUrl#{System.unique_integer([:positive])}"
+      nick = "E2EPmUrl#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Open PM
@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
       send(view.pid, %{
         event: "new_pm",
         payload: %{
-          id: "pm-#{System.unique_integer([:positive])}",
+          id: "pm-#{uid()}",
           author: "Eve",
           content: "link https://pm-link.com here",
           type: :message,
@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "bold-formatted URL is still clickable", %{conn: conn} do
-      nick = "E2EBold#{System.unique_integer([:positive])}"
+      nick = "E2EBold#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_channel_msg(view, "Frank", "\x02https://bold-link.com\x02", "#lobby")
@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
 
   describe "E2E: URL Catcher window" do
     test "open via Ctrl+Shift+S, see captured URLs", %{conn: conn} do
-      nick = "E2ECatcher#{System.unique_integer([:positive])}"
+      nick = "E2ECatcher#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_channel_msg(view, "Alice", "link https://catcher-test.com", "#lobby")
@@ -112,7 +112,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "sort by URL column", %{conn: conn} do
-      nick = "E2ECSort#{System.unique_integer([:positive])}"
+      nick = "E2ECSort#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_channel_msg(view, "Bob", "visit https://zebra.com", "#lobby")
@@ -128,7 +128,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "filter by channel", %{conn: conn} do
-      nick = "E2ECFilter#{System.unique_integer([:positive])}"
+      nick = "E2ECFilter#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #e2e-filter"})
@@ -143,7 +143,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "search by URL text", %{conn: conn} do
-      nick = "E2ECSearch#{System.unique_integer([:positive])}"
+      nick = "E2ECSearch#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_channel_msg(view, "Alice", "https://elixir-search.com here", "#lobby")
@@ -157,7 +157,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "close and reopen preserves entries", %{conn: conn} do
-      nick = "E2ECReopen#{System.unique_integer([:positive])}"
+      nick = "E2ECReopen#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_channel_msg(view, "Alice", "https://persist-test.com", "#lobby")
@@ -169,7 +169,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "real-time: new URL appears in open catcher", %{conn: conn} do
-      nick = "E2ERT#{System.unique_integer([:positive])}"
+      nick = "E2ERT#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "toggle_url_catcher")
@@ -180,7 +180,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "open via menu bar", %{conn: conn} do
-      nick = "E2ECMenu#{System.unique_integer([:positive])}"
+      nick = "E2ECMenu#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_url_catcher")
@@ -192,7 +192,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
 
   describe "E2E: link preview" do
     test "preview title appears via push event", %{conn: conn} do
-      nick = "E2EPreview#{System.unique_integer([:positive])}"
+      nick = "E2EPreview#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_channel_msg(view, "Alice", "see https://preview-e2e.com", "#lobby")
@@ -205,7 +205,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "no preview for error URL", %{conn: conn} do
-      nick = "E2ENoPrv#{System.unique_integer([:positive])}"
+      nick = "E2ENoPrv#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send(view.pid, {:link_preview_result, "https://broken-e2e.com", {:error, :fetch_failed}})
@@ -215,7 +215,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     end
 
     test "preview title escaped in URL Catcher", %{conn: conn} do
-      nick = "E2EEscape#{System.unique_integer([:positive])}"
+      nick = "E2EEscape#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_channel_msg(view, "Alice", "https://xss-test.com", "#lobby")
@@ -235,7 +235,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
 
   describe "E2E: session behavior" do
     test "URL Catcher is empty on fresh connect", %{conn: conn} do
-      nick = "E2EFresh#{System.unique_integer([:positive])}"
+      nick = "E2EFresh#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_url_catcher")
@@ -267,7 +267,7 @@ defmodule RetroHexChatWeb.ChatLiveURLe2eTest do
     send(view.pid, %{
       event: "new_message",
       payload: %{
-        id: "msg-#{System.unique_integer([:positive])}",
+        id: "msg-#{uid()}",
         author: author,
         content: content,
         type: :message,

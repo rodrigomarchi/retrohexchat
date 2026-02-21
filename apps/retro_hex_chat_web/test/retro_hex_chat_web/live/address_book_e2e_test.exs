@@ -409,6 +409,4 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid, do: rem(System.unique_integer([:positive]), 10_000)
 end

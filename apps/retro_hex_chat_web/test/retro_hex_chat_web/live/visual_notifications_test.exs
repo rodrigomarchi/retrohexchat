@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
     msg = %{
       event: "new_message",
       payload: %{
-        id: "msg-#{System.unique_integer([:positive])}",
+        id: "msg-#{uid()}",
         author: author,
         content: content,
         type: :message,
@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
     msg = %{
       event: "new_pm",
       payload: %{
-        id: "pm-#{System.unique_integer([:positive])}",
+        id: "pm-#{uid()}",
         sender: sender,
         recipient: recipient,
         content: content,
@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
 
   describe "treebar flash for channels" do
     test "title_flash_start pushed for PM with flash enabled", %{conn: conn} do
-      nick = "VNot#{System.unique_integer([:positive])}"
+      nick = "VNot#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       # Consume connect sound
       assert_push_event(view, "play_sound", %{type: "chime_short"})
@@ -63,8 +63,8 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
     end
 
     test "flash cleared on channel switch", %{conn: conn} do
-      nick = "VClr#{System.unique_integer([:positive])}"
-      ch = "#vn_clr_#{System.unique_integer([:positive])}"
+      nick = "VClr#{uid()}"
+      ch = "#vn_clr_#{uid()}"
       ensure_channel(ch)
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
 
   describe "title flash events" do
     test "title_flash_start pushed on flash-enabled activity", %{conn: conn} do
-      nick = "VTitle#{System.unique_integer([:positive])}"
+      nick = "VTitle#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       # Consume connect sound
       assert_push_event(view, "play_sound", %{type: "chime_short"})
@@ -110,7 +110,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
     end
 
     test "title_flash_stop pushed on tab_focused", %{conn: conn} do
-      nick = "VStop#{System.unique_integer([:positive])}"
+      nick = "VStop#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_hook(view, "tab_focused", %{})

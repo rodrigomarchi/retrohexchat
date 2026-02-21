@@ -24,6 +24,4 @@ defmodule RetroHexChatWeb.TimestampE2ETest do
       assert html =~ "timestamp test"
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.QuitE2ETest do
   alias RetroHexChat.Channels.{Registry, Supervisor}
 
   setup do
-    channel = "#qte2e-#{System.unique_integer([:positive])}"
+    channel = "#qte2e-#{uid()}"
     ensure_channel(channel)
     {:ok, channel: channel}
   end
@@ -71,6 +71,4 @@ defmodule RetroHexChatWeb.QuitE2ETest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

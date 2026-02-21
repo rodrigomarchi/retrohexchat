@@ -296,10 +296,4 @@ defmodule RetroHexChatWeb.ChatLiveIgnoreE2ETest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid do
-    val = System.unique_integer([:positive])
-    Process.put(:last_uid, val)
-    val
-  end
 end

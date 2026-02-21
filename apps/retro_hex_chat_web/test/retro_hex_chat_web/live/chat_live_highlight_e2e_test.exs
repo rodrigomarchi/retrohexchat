@@ -20,8 +20,8 @@ defmodule RetroHexChatWeb.ChatLiveHighlightE2ETest do
 
   describe "US1: Own-nick highlighting" do
     test "message mentioning user's nick is highlighted", %{conn: conn} do
-      view = connect_user(conn, "E2EHL#{uid()}")
-      nick = "E2EHL" <> last_uid()
+      nick = "E2EHL#{uid()}"
+      view = connect_user(conn, nick)
 
       send_message(view, "OtherUser", "hey #{nick}, look at this!", "#lobby")
 
@@ -340,12 +340,4 @@ defmodule RetroHexChatWeb.ChatLiveHighlightE2ETest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid do
-    val = System.unique_integer([:positive])
-    Process.put(:last_uid, val)
-    val
-  end
-
-  defp last_uid, do: to_string(Process.get(:last_uid))
 end

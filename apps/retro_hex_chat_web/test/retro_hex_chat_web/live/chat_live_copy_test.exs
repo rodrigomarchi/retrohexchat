@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLiveCopyTest do
   @moduletag :liveview
 
   setup %{conn: conn} do
-    channel = "#copy-#{System.unique_integer([:positive])}"
+    channel = "#copy-#{uid()}"
     ensure_channel(channel)
     {:ok, conn: conn, channel: channel}
   end
@@ -55,6 +55,4 @@ defmodule RetroHexChatWeb.ChatLiveCopyTest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

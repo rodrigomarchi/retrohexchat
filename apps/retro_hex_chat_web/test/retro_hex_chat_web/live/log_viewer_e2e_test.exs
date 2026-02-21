@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
   describe "E2E: open/close log viewer" do
     test "Ctrl+Shift+L opens and closes", %{conn: conn} do
-      nick = "E2eLv#{System.unique_integer([:positive])}"
+      nick = "E2eLv#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -73,7 +73,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
     end
 
     test "Escape closes dialog", %{conn: conn} do
-      nick = "E2eEsc#{System.unique_integer([:positive])}"
+      nick = "E2eEsc#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -85,7 +85,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
     end
 
     test "menu bar opens log viewer", %{conn: conn} do
-      nick = "E2eMnu#{System.unique_integer([:positive])}"
+      nick = "E2eMnu#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
     end
 
     test "toolbar button opens log viewer", %{conn: conn} do
-      nick = "E2eTlb#{System.unique_integer([:positive])}"
+      nick = "E2eTlb#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
@@ -101,7 +101,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
     end
 
     test "close button closes dialog", %{conn: conn} do
-      nick = "E2eCls#{System.unique_integer([:positive])}"
+      nick = "E2eCls#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
@@ -118,10 +118,10 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
   describe "E2E: channel search" do
     test "registered user can search channel history", %{conn: conn} do
-      ch = "#e2ech-#{System.unique_integer([:positive])}"
+      ch = "#e2ech-#{uid()}"
       ensure_channel(ch)
 
-      nick = "E2eSch#{System.unique_integer([:positive])}"
+      nick = "E2eSch#{uid()}"
       NickServ.register(nick, "pass123")
 
       insert_msg!(ch, nick, "searchable content")
@@ -141,10 +141,10 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
     end
 
     test "text filter works end-to-end", %{conn: conn} do
-      ch = "#e2etxt-#{System.unique_integer([:positive])}"
+      ch = "#e2etxt-#{uid()}"
       ensure_channel(ch)
 
-      nick = "E2eTxt#{System.unique_integer([:positive])}"
+      nick = "E2eTxt#{uid()}"
       NickServ.register(nick, "pass123")
 
       insert_msg!(ch, nick, "important meeting")
@@ -171,10 +171,10 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
     end
 
     test "empty results show message", %{conn: conn} do
-      ch = "#e2eempt-#{System.unique_integer([:positive])}"
+      ch = "#e2eempt-#{uid()}"
       ensure_channel(ch)
 
-      nick = "E2eEm#{System.unique_integer([:positive])}"
+      nick = "E2eEm#{uid()}"
       NickServ.register(nick, "pass123")
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -196,10 +196,10 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
   describe "E2E: pagination" do
     test "paginated results with navigation", %{conn: conn} do
-      ch = "#e2epag-#{System.unique_integer([:positive])}"
+      ch = "#e2epag-#{uid()}"
       ensure_channel(ch)
 
-      nick = "E2ePg#{System.unique_integer([:positive])}"
+      nick = "E2ePg#{uid()}"
       NickServ.register(nick, "pass123")
 
       for i <- 1..55 do
@@ -232,10 +232,10 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
   describe "E2E: guest mode" do
     test "guest user sees session channels", %{conn: conn} do
-      ch = "#e2egst-#{System.unique_integer([:positive])}"
+      ch = "#e2egst-#{uid()}"
       ensure_channel(ch)
 
-      nick = "E2eGst#{System.unique_integer([:positive])}"
+      nick = "E2eGst#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
@@ -251,10 +251,10 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
   describe "E2E: export" do
     test "export .txt button works with results", %{conn: conn} do
-      ch = "#e2eexp-#{System.unique_integer([:positive])}"
+      ch = "#e2eexp-#{uid()}"
       ensure_channel(ch)
 
-      nick = "E2eExp#{System.unique_integer([:positive])}"
+      nick = "E2eExp#{uid()}"
       NickServ.register(nick, "pass123")
 
       insert_msg!(ch, nick, "export me")
@@ -276,10 +276,10 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
     end
 
     test "export .html button works with results", %{conn: conn} do
-      ch = "#e2eexh-#{System.unique_integer([:positive])}"
+      ch = "#e2eexh-#{uid()}"
       ensure_channel(ch)
 
-      nick = "E2eExH#{System.unique_integer([:positive])}"
+      nick = "E2eExH#{uid()}"
       NickServ.register(nick, "pass123")
 
       insert_msg!(ch, nick, "export html")
@@ -304,7 +304,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
   describe "E2E: display preferences" do
     test "toggle event type checkbox", %{conn: conn} do
-      nick = "E2ePrf#{System.unique_integer([:positive])}"
+      nick = "E2ePrf#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
@@ -317,7 +317,7 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
     end
 
     test "change timestamp format", %{conn: conn} do
-      nick = "E2eTs#{System.unique_integer([:positive])}"
+      nick = "E2eTs#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
@@ -334,8 +334,8 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
   describe "E2E: PM search" do
     test "PM messages appear bidirectionally", %{conn: conn} do
-      nick = "E2ePm#{System.unique_integer([:positive])}"
-      peer = "E2ePeer#{System.unique_integer([:positive])}"
+      nick = "E2ePm#{uid()}"
+      peer = "E2ePeer#{uid()}"
 
       NickServ.register(nick, "pass123")
 
@@ -366,10 +366,10 @@ defmodule RetroHexChatWeb.LogViewerE2ETest do
 
   describe "E2E: date filter" do
     test "date range restricts results", %{conn: conn} do
-      ch = "#e2edt-#{System.unique_integer([:positive])}"
+      ch = "#e2edt-#{uid()}"
       ensure_channel(ch)
 
-      nick = "E2eDt#{System.unique_integer([:positive])}"
+      nick = "E2eDt#{uid()}"
       NickServ.register(nick, "pass123")
 
       old_dt = DateTime.new!(~D[2026-01-01], ~T[12:00:00], "Etc/UTC")

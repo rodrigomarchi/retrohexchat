@@ -87,6 +87,4 @@ defmodule RetroHexChatWeb.ChatLiveEmojiTest do
       assert html =~ "emoji-category-tabs"
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

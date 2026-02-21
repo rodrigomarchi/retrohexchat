@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.ChatLivePreIdentifiedTest do
   end
 
   defp unique_nick(prefix) do
-    n = System.unique_integer([:positive])
+    n = uid()
     "#{prefix}#{n}"
   end
 

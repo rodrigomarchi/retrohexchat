@@ -31,6 +31,4 @@ defmodule RetroHexChatWeb.ChatLiveHelpAccessTest do
       assert html =~ "/chat/help"
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
   describe "mute toggle in status bar" do
     test "mute toggle button renders in status bar", %{conn: conn} do
-      nick = "Mute#{System.unique_integer([:positive])}"
+      nick = "Mute#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render(view)
@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
     end
 
     test "clicking mute toggles to muted state", %{conn: conn} do
-      nick = "Mute#{System.unique_integer([:positive])}"
+      nick = "Mute#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
     end
 
     test "toggle_mute pushes toggle_mute event to client", %{conn: conn} do
-      nick = "Mute#{System.unique_integer([:positive])}"
+      nick = "Mute#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
     end
 
     test "mute_state_sync updates server-side muted state", %{conn: conn} do
-      nick = "Mute#{System.unique_integer([:positive])}"
+      nick = "Mute#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Initially unmuted

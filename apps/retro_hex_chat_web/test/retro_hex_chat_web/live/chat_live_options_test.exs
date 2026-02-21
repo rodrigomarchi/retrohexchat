@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
   # ---------------------------------------------------------------------------
 
   defp connect_user(conn, nick \\ nil) do
-    nick = nick || "Opt#{System.unique_integer([:positive])}"
+    nick = nick || "Opt#{uid()}"
     {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
   end

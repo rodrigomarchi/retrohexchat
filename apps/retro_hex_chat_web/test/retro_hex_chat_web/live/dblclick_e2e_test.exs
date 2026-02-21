@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.DblclickE2ETest do
   alias RetroHexChat.Channels.{Registry, Supervisor}
 
   setup do
-    channel = "#dble-#{System.unique_integer([:positive])}"
+    channel = "#dble-#{uid()}"
     ensure_channel(channel)
     {:ok, channel: channel}
   end
@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.DblclickE2ETest do
 
     test "channel_dblclick joins a new channel", %{conn: conn, channel: channel} do
       nick = "DEJ#{uid()}"
-      target = "#dbjt-#{System.unique_integer([:positive])}"
+      target = "#dbjt-#{uid()}"
       ensure_channel(target)
 
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
@@ -84,6 +84,4 @@ defmodule RetroHexChatWeb.DblclickE2ETest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

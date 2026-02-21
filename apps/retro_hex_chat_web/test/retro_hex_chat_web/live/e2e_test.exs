@@ -310,7 +310,7 @@ defmodule RetroHexChatWeb.E2ETest do
       send(view.pid, %{
         event: "new_message",
         payload: %{
-          id: "unr-#{System.unique_integer([:positive])}",
+          id: "unr-#{uid()}",
           author: "someone",
           content: "unread msg",
           type: :message,
@@ -336,7 +336,7 @@ defmodule RetroHexChatWeb.E2ETest do
       send(view.pid, %{
         event: "new_message",
         payload: %{
-          id: "unr2-#{System.unique_integer([:positive])}",
+          id: "unr2-#{uid()}",
           author: "x",
           content: "y",
           type: :message,
@@ -780,7 +780,7 @@ defmodule RetroHexChatWeb.E2ETest do
       send(view.pid, %{
         event: "new_pm",
         payload: %{
-          id: "pm-unrd-#{System.unique_integer([:positive])}",
+          id: "pm-unrd-#{uid()}",
           sender: "UnrdPal",
           recipient: "PmUnrdE2E",
           content: "hey",
@@ -806,7 +806,7 @@ defmodule RetroHexChatWeb.E2ETest do
       send(view.pid, %{
         event: "new_pm",
         payload: %{
-          id: "pm-clr-#{System.unique_integer([:positive])}",
+          id: "pm-clr-#{uid()}",
           sender: "ClrPal",
           recipient: "PmClrE2E",
           content: "hello",
@@ -836,7 +836,7 @@ defmodule RetroHexChatWeb.E2ETest do
       send(view.pid, %{
         event: "new_pm",
         payload: %{
-          id: "pm-act-#{System.unique_integer([:positive])}",
+          id: "pm-act-#{uid()}",
           sender: "ActPal",
           recipient: "PmActE2E",
           content: "live msg",
@@ -1745,7 +1745,7 @@ defmodule RetroHexChatWeb.E2ETest do
   end
 
   defp unique_channel(prefix) do
-    "##{prefix}_#{System.unique_integer([:positive])}"
+    "##{prefix}_#{uid()}"
   end
 
   defp new_conn do

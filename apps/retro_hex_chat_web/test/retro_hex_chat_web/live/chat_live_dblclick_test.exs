@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLiveDblclickTest do
   @moduletag :liveview
 
   setup %{conn: conn} do
-    channel = "#dblc-#{System.unique_integer([:positive])}"
+    channel = "#dblc-#{uid()}"
     ensure_channel(channel)
     {:ok, conn: conn, channel: channel}
   end
@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.ChatLiveDblclickTest do
   describe "US2: Channel double-click → join" do
     test "channel_dblclick with new channel joins it", %{conn: conn, channel: channel} do
       nick = "DCJ#{uid()}"
-      target_channel = "#dcjt-#{System.unique_integer([:positive])}"
+      target_channel = "#dcjt-#{uid()}"
       ensure_channel(target_channel)
 
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.ChatLiveDblclickTest do
       channel: channel
     } do
       nick = "DCS#{uid()}"
-      other = "#dcot-#{System.unique_integer([:positive])}"
+      other = "#dcot-#{uid()}"
       ensure_channel(other)
 
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
@@ -94,6 +94,4 @@ defmodule RetroHexChatWeb.ChatLiveDblclickTest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

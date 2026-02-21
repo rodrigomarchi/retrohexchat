@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLivePasteTest do
   @moduletag :liveview
 
   setup %{conn: conn} do
-    channel = "#pste-#{System.unique_integer([:positive])}"
+    channel = "#pste-#{uid()}"
     ensure_channel(channel)
     {:ok, conn: conn, channel: channel}
   end
@@ -100,6 +100,4 @@ defmodule RetroHexChatWeb.ChatLivePasteTest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

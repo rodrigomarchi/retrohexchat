@@ -92,6 +92,4 @@ defmodule RetroHexChatWeb.StatusBarE2ETest do
       assert html =~ "phx-hook=\"ConnectionBannerHook\""
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

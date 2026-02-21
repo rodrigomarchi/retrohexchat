@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
   end
 
   defp create_session(creator_id, peer_id) do
-    token = "p2p-lv-#{System.unique_integer([:positive])}"
+    token = "p2p-lv-#{uid()}"
 
     {:ok, session} =
       Queries.insert_session(%{
@@ -575,7 +575,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       alice = create_nick("p2p_lv_flow_a")
       bob = create_nick("p2p_lv_flow_b")
 
-      token = "p2p-lv-#{System.unique_integer([:positive])}"
+      token = "p2p-lv-#{uid()}"
 
       {:ok, session} =
         Queries.insert_session(%{
@@ -707,7 +707,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       alice = create_nick("p2p_lv_call_a")
       bob = create_nick("p2p_lv_call_b")
 
-      token = "p2p-lv-#{System.unique_integer([:positive])}"
+      token = "p2p-lv-#{uid()}"
 
       {:ok, session} =
         Queries.insert_session(%{
@@ -759,7 +759,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       v_alice = create_nick("p2p_lv_vcall_a")
       v_bob = create_nick("p2p_lv_vcall_b")
 
-      token = "p2p-lv-#{System.unique_integer([:positive])}"
+      token = "p2p-lv-#{uid()}"
 
       {:ok, v_session} =
         Queries.insert_session(%{
@@ -880,7 +880,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       c_alice = create_nick("p2p_lv_cmnt_a")
       c_bob = create_nick("p2p_lv_cmnt_b")
 
-      token = "p2p-lv-#{System.unique_integer([:positive])}"
+      token = "p2p-lv-#{uid()}"
 
       {:ok, c_session} =
         Queries.insert_session(%{

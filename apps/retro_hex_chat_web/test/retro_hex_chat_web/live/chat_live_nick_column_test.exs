@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLiveNickColumnTest do
   @moduletag :liveview
 
   setup %{conn: conn} do
-    channel = "#ncol-#{System.unique_integer([:positive])}"
+    channel = "#ncol-#{uid()}"
     ensure_channel(channel)
     {:ok, conn: conn, channel: channel}
   end
@@ -91,6 +91,4 @@ defmodule RetroHexChatWeb.ChatLiveNickColumnTest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

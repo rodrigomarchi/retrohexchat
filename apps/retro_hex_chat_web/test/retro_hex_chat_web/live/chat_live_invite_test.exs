@@ -6,11 +6,11 @@ defmodule RetroHexChatWeb.ChatLiveInviteTest do
   # ── Helpers ──────────────────────────────────────────────
 
   defp unique_nick(prefix) do
-    "#{prefix}#{System.unique_integer([:positive])}"
+    "#{prefix}#{uid()}"
   end
 
   defp unique_channel do
-    "#inv#{System.unique_integer([:positive])}"
+    "#inv#{uid()}"
   end
 
   defp connect_user(conn, nick) do

@@ -75,6 +75,4 @@ defmodule RetroHexChatWeb.AwayReplyE2ETest do
     |> length()
     |> Kernel.-(1)
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

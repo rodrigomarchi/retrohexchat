@@ -19,8 +19,8 @@ defmodule RetroHexChatWeb.IdleTimeTest do
 
   describe "idle time tracking" do
     test "idle time shown in whois output", %{conn: conn} do
-      nick = "Idle1#{System.unique_integer([:positive])}"
-      target = "Idle2#{System.unique_integer([:positive])}"
+      nick = "Idle1#{uid()}"
+      target = "Idle2#{uid()}"
 
       {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.IdleTimeTest do
     end
 
     test "idle time resets on sending a message", %{conn: conn} do
-      nick = "Idle3#{System.unique_integer([:positive])}"
+      nick = "Idle3#{uid()}"
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.IdleTimeTest do
     end
 
     test "idle time resets on command dispatch", %{conn: conn} do
-      nick = "Idle4#{System.unique_integer([:positive])}"
+      nick = "Idle4#{uid()}"
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 

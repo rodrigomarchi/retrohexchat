@@ -78,6 +78,4 @@ defmodule RetroHexChatWeb.HelpSystemE2ETest do
       assert html =~ "/chat/help"
     end
   end
-
-  defp uid, do: rem(System.unique_integer([:positive]), 100_000)
 end

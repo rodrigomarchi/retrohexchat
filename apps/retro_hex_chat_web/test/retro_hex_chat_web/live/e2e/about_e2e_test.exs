@@ -29,6 +29,4 @@ defmodule RetroHexChatWeb.AboutE2ETest do
       refute html =~ "data-testid=\"about-dialog\""
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

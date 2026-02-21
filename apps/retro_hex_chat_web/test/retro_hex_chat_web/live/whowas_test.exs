@@ -20,8 +20,8 @@ defmodule RetroHexChatWeb.WhowasTest do
 
   describe "/whowas command" do
     test "shows whowas info for recently disconnected user", %{conn: conn} do
-      nick = "Was1#{System.unique_integer([:positive])}"
-      target = "Was2#{System.unique_integer([:positive])}"
+      nick = "Was1#{uid()}"
+      target = "Was2#{uid()}"
 
       # Connect target, then disconnect
       {:ok, target_view, _html} = live(chat_conn(conn, target), "/chat")
@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.WhowasTest do
     end
 
     test "shows not-found message for unknown user", %{conn: conn} do
-      nick = "Was3#{System.unique_integer([:positive])}"
+      nick = "Was3#{uid()}"
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -59,8 +59,8 @@ defmodule RetroHexChatWeb.WhowasTest do
     end
 
     test "whowas shows channels the user was in", %{conn: conn} do
-      nick = "Was4#{System.unique_integer([:positive])}"
-      target = "Was5#{System.unique_integer([:positive])}"
+      nick = "Was4#{uid()}"
+      target = "Was5#{uid()}"
 
       # Manually record a whowas entry for precise control
       WhowasCache.record(target, ["#lobby", "#elixir"])
@@ -79,8 +79,8 @@ defmodule RetroHexChatWeb.WhowasTest do
     end
 
     test "whowas shows quit message when available", %{conn: conn} do
-      nick = "Was6#{System.unique_integer([:positive])}"
-      target = "Was7#{System.unique_integer([:positive])}"
+      nick = "Was6#{uid()}"
+      target = "Was7#{uid()}"
 
       WhowasCache.record(target, ["#lobby"], "See you tomorrow!")
 
@@ -97,8 +97,8 @@ defmodule RetroHexChatWeb.WhowasTest do
     end
 
     test "disconnect records whowas entry automatically", %{conn: conn} do
-      _nick = "Was8#{System.unique_integer([:positive])}"
-      target = "Was9#{System.unique_integer([:positive])}"
+      _nick = "Was8#{uid()}"
+      target = "Was9#{uid()}"
 
       # Connect and disconnect target
       {:ok, target_view, _html} = live(chat_conn(conn, target), "/chat")

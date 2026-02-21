@@ -60,6 +60,4 @@ defmodule RetroHexChatWeb.ChatLive.TipEventsTest do
       {:error, :not_found} -> Supervisor.start_child(name)
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

@@ -37,6 +37,13 @@ defmodule RetroHexChatWeb.ConnCase do
   end
 
   @doc """
+  Returns a short unique integer suitable for use in test nicknames.
+  Capped at 5 digits to stay within the 16-char IRC nickname limit.
+  """
+  @spec uid() :: non_neg_integer()
+  def uid, do: rem(System.unique_integer([:positive]), 100_000)
+
+  @doc """
   Returns a connection with the chat session initialized for the given nickname.
   Use this instead of appending `?nickname=X` to the URL.
   """

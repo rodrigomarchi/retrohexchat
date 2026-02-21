@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
   describe "open/close dialog" do
     test "Ctrl+Shift+L opens the log viewer dialog", %{conn: conn} do
-      nick = "LogOpen#{System.unique_integer([:positive])}"
+      nick = "LogOpen#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -71,7 +71,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "Ctrl+Shift+L toggles the log viewer closed", %{conn: conn} do
-      nick = "LogTog#{System.unique_integer([:positive])}"
+      nick = "LogTog#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Open
@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "Escape closes the log viewer", %{conn: conn} do
-      nick = "LogEsc#{System.unique_integer([:positive])}"
+      nick = "LogEsc#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "close button closes the dialog", %{conn: conn} do
-      nick = "LogCls#{System.unique_integer([:positive])}"
+      nick = "LogCls#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -121,7 +121,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "menu bar opens the log viewer", %{conn: conn} do
-      nick = "LogMenu#{System.unique_integer([:positive])}"
+      nick = "LogMenu#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
@@ -129,7 +129,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "toolbar button opens the log viewer", %{conn: conn} do
-      nick = "LogTbar#{System.unique_integer([:positive])}"
+      nick = "LogTbar#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("[data-testid=toolbar-log-viewer]") |> render_click()
@@ -141,7 +141,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
   describe "initial state" do
     test "shows initial prompt before search", %{conn: conn} do
-      nick = "LogInit#{System.unique_integer([:positive])}"
+      nick = "LogInit#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -153,10 +153,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "shows source options from session channels", %{conn: conn} do
-      ch = "#logsrc-#{System.unique_integer([:positive])}"
+      ch = "#logsrc-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogSrc#{System.unique_integer([:positive])}"
+      nick = "LogSrc#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Join the channel
@@ -176,10 +176,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
   describe "channel search" do
     test "search returns channel messages", %{conn: conn} do
-      ch = "#logch-#{System.unique_integer([:positive])}"
+      ch = "#logch-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogSch#{System.unique_integer([:positive])}"
+      nick = "LogSch#{uid()}"
       NickServ.register(nick, "pass123")
 
       insert_msg!(ch, nick, "hello from logs")
@@ -205,10 +205,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "text filter narrows results", %{conn: conn} do
-      ch = "#logtxt-#{System.unique_integer([:positive])}"
+      ch = "#logtxt-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogTxt#{System.unique_integer([:positive])}"
+      nick = "LogTxt#{uid()}"
       NickServ.register(nick, "pass123")
 
       insert_msg!(ch, nick, "important meeting notes")
@@ -239,10 +239,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "nickname filter narrows results", %{conn: conn} do
-      ch = "#lognk-#{System.unique_integer([:positive])}"
+      ch = "#lognk-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogNk#{System.unique_integer([:positive])}"
+      nick = "LogNk#{uid()}"
       NickServ.register(nick, "pass123")
 
       insert_msg!(ch, nick, "my message")
@@ -273,10 +273,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "empty results shows no results message", %{conn: conn} do
-      ch = "#logempty-#{System.unique_integer([:positive])}"
+      ch = "#logempty-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogEmp#{System.unique_integer([:positive])}"
+      nick = "LogEmp#{uid()}"
       NickServ.register(nick, "pass123")
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -302,10 +302,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
   describe "pagination" do
     test "paginated results show page indicator and navigation", %{conn: conn} do
-      ch = "#logpag-#{System.unique_integer([:positive])}"
+      ch = "#logpag-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogPag#{System.unique_integer([:positive])}"
+      nick = "LogPag#{uid()}"
       NickServ.register(nick, "pass123")
 
       # Insert 55 messages (more than 50 per page)
@@ -334,10 +334,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "next page navigates forward", %{conn: conn} do
-      ch = "#lognxt-#{System.unique_integer([:positive])}"
+      ch = "#lognxt-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogNxt#{System.unique_integer([:positive])}"
+      nick = "LogNxt#{uid()}"
       NickServ.register(nick, "pass123")
 
       for i <- 1..55 do
@@ -371,10 +371,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
   describe "date range filters" do
     test "date_from filter restricts results", %{conn: conn} do
-      ch = "#logdf-#{System.unique_integer([:positive])}"
+      ch = "#logdf-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogDf#{System.unique_integer([:positive])}"
+      nick = "LogDf#{uid()}"
       NickServ.register(nick, "pass123")
 
       old_dt = DateTime.new!(~D[2026-01-01], ~T[12:00:00], "Etc/UTC")
@@ -409,7 +409,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "invalid date shows error", %{conn: conn} do
-      nick = "LogBad#{System.unique_integer([:positive])}"
+      nick = "LogBad#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -427,10 +427,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
   describe "refresh" do
     test "refresh re-runs the search", %{conn: conn} do
-      ch = "#logref-#{System.unique_integer([:positive])}"
+      ch = "#logref-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogRef#{System.unique_integer([:positive])}"
+      nick = "LogRef#{uid()}"
       NickServ.register(nick, "pass123")
 
       insert_msg!(ch, nick, "initial message")
@@ -467,10 +467,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
   describe "guest user" do
     test "guest user sees session channels in source options", %{conn: conn} do
-      ch = "#logguest-#{System.unique_integer([:positive])}"
+      ch = "#logguest-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogGst#{System.unique_integer([:positive])}"
+      nick = "LogGst#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Join a channel (guest, not identified)
@@ -489,7 +489,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
   describe "display preferences" do
     test "toggle event type checkbox updates preferences", %{conn: conn} do
-      nick = "LogPrf#{System.unique_integer([:positive])}"
+      nick = "LogPrf#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -507,7 +507,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "changing timestamp format updates preferences", %{conn: conn} do
-      nick = "LogTs#{System.unique_integer([:positive])}"
+      nick = "LogTs#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -528,8 +528,8 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
   describe "PM search" do
     test "PM source search returns bidirectional messages", %{conn: conn} do
-      nick = "LogPm#{System.unique_integer([:positive])}"
-      partner = "Partner#{System.unique_integer([:positive])}"
+      nick = "LogPm#{uid()}"
+      partner = "Partner#{uid()}"
 
       NickServ.register(nick, "pass123")
 
@@ -563,7 +563,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
   describe "source selection" do
     test "clearing source resets results", %{conn: conn} do
-      nick = "LogRst#{System.unique_integer([:positive])}"
+      nick = "LogRst#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -582,10 +582,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
 
   describe "export" do
     test "export .txt triggers download_file push_event", %{conn: conn} do
-      ch = "#logexp-#{System.unique_integer([:positive])}"
+      ch = "#logexp-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogExp#{System.unique_integer([:positive])}"
+      nick = "LogExp#{uid()}"
       NickServ.register(nick, "pass123")
 
       insert_msg!(ch, nick, "export this message")
@@ -613,10 +613,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "export .html triggers download_file push_event", %{conn: conn} do
-      ch = "#logexh-#{System.unique_integer([:positive])}"
+      ch = "#logexh-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogExH#{System.unique_integer([:positive])}"
+      nick = "LogExH#{uid()}"
       NickServ.register(nick, "pass123")
 
       insert_msg!(ch, nick, "export html message")
@@ -643,7 +643,7 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "export buttons disabled when no results", %{conn: conn} do
-      nick = "LogExD#{System.unique_integer([:positive])}"
+      nick = "LogExD#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -657,10 +657,10 @@ defmodule RetroHexChatWeb.LogViewerTest do
     end
 
     test "export empty results does nothing", %{conn: conn} do
-      ch = "#logexn-#{System.unique_integer([:positive])}"
+      ch = "#logexn-#{uid()}"
       ensure_channel(ch)
 
-      nick = "LogExN#{System.unique_integer([:positive])}"
+      nick = "LogExN#{uid()}"
       NickServ.register(nick, "pass123")
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")

@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
       # Set MOTD before mounting
       Motd.set("Server rules: be nice to everyone!", "Admin")
 
-      nick = "E2EMotd#{System.unique_integer([:positive])}"
+      nick = "E2EMotd#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
       # Status tab is active on mount, MOTD should be visible
@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
       # Ensure no MOTD is set
       Motd.clear("Admin")
 
-      nick = "E2ENoMtd#{System.unique_integer([:positive])}"
+      nick = "E2ENoMtd#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
       # Should not contain any MOTD-related content
@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
     test "shows MOTD when set", %{conn: conn} do
       Motd.set("Server MOTD: Please be respectful.", "Admin")
 
-      nick = "E2EMotdCmd#{System.unique_integer([:positive])}"
+      nick = "E2EMotdCmd#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Execute /motd command
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
     test "shows message when MOTD is not set", %{conn: conn} do
       Motd.clear("Admin")
 
-      nick = "E2EMtdErr#{System.unique_integer([:positive])}"
+      nick = "E2EMtdErr#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -97,7 +97,7 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
 
   describe "/setmotd command" do
     test "non-admin cannot set MOTD", %{conn: conn} do
-      nick = "User#{System.unique_integer([:positive])}"
+      nick = "User#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -116,7 +116,7 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
 
   describe "/clearmotd command" do
     test "non-admin cannot clear MOTD", %{conn: conn} do
-      nick = "User#{System.unique_integer([:positive])}"
+      nick = "User#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -135,7 +135,7 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
 
   describe "channel welcome messages" do
     test "welcome message is set and persisted", %{conn: conn} do
-      unique = System.unique_integer([:positive])
+      unique = uid()
       ch = "#welc_#{unique}"
       ensure_channel(ch)
 
@@ -163,7 +163,7 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
 
   describe "wallops" do
     test "user without +w mode does not receive wallops", %{conn: conn} do
-      unique = System.unique_integer([:positive])
+      unique = uid()
       nick = "NoWall#{unique}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -189,7 +189,7 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
 
   describe "announcements" do
     test "announcement appears in active window", %{conn: conn} do
-      unique = System.unique_integer([:positive])
+      unique = uid()
       nick = "AnnUser#{unique}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -207,7 +207,7 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
     end
 
     test "multiple announcements appear in order", %{conn: conn} do
-      unique = System.unique_integer([:positive])
+      unique = uid()
       nick = "MultiAnn#{unique}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 

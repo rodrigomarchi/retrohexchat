@@ -82,6 +82,4 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
       assert html =~ "data-emoji="
     end
   end
-
-  defp uid, do: System.unique_integer([:positive])
 end

@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
 
   describe "Notify List Window" do
     test "open notify list window via toolbar", %{conn: conn} do
-      nick = "E2ENotWin#{System.unique_integer([:positive])}"
+      nick = "E2ENotWin#{uid()}"
       {:ok, view, html} = live(chat_conn(conn, nick), "/chat")
 
       # Window should not be visible initially
@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
     end
 
     test "close notify list window via toggle", %{conn: conn} do
-      nick = "E2ENotCls#{System.unique_integer([:positive])}"
+      nick = "E2ENotCls#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "toggle_notify_list")
@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
     end
 
     test "notify list window shows empty state", %{conn: conn} do
-      nick = "E2ENotEmp#{System.unique_integer([:positive])}"
+      nick = "E2ENotEmp#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_notify_list")
@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
 
   describe "Buddy CRUD Flow" do
     test "add buddy appears in notify list", %{conn: conn} do
-      nick = "E2EAdd#{System.unique_integer([:positive])}"
+      nick = "E2EAdd#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add buddy
@@ -65,7 +65,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
     end
 
     test "remove buddy disappears from notify list", %{conn: conn} do
-      nick = "E2ERm#{System.unique_integer([:positive])}"
+      nick = "E2ERm#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add then remove
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
     end
 
     test "edit buddy note updates in notify list", %{conn: conn} do
-      nick = "E2EEdit#{System.unique_integer([:positive])}"
+      nick = "E2EEdit#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add and then edit note
@@ -92,7 +92,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
     end
 
     test "select buddy highlights row", %{conn: conn} do
-      nick = "E2ESel#{System.unique_integer([:positive])}"
+      nick = "E2ESel#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       render_click(view, "notify_add", %{"nickname" => "SelBud", "note" => ""})
@@ -108,7 +108,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
 
   describe "/notify Commands" do
     test "/notify opens the notify list window", %{conn: conn} do
-      nick = "E2ECmd#{System.unique_integer([:positive])}"
+      nick = "E2ECmd#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/notify"})
@@ -119,7 +119,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
     end
 
     test "/notify add creates entry visible in window", %{conn: conn} do
-      nick = "E2ECmdAdd#{System.unique_integer([:positive])}"
+      nick = "E2ECmdAdd#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
@@ -133,7 +133,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
     end
 
     test "/notify remove deletes entry", %{conn: conn} do
-      nick = "E2ECmdRm#{System.unique_integer([:positive])}"
+      nick = "E2ECmdRm#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add then remove via commands
@@ -154,7 +154,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
     end
 
     test "/notify list displays entries in status window", %{conn: conn} do
-      nick = "E2ECmdLst#{System.unique_integer([:positive])}"
+      nick = "E2ECmdLst#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add entries
@@ -186,7 +186,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
 
   describe "Presence Notifications" do
     test "buddy online notification in status window", %{conn: conn} do
-      nick = "E2EPres#{System.unique_integer([:positive])}"
+      nick = "E2EPres#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add buddy
@@ -202,7 +202,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
     end
 
     test "buddy offline notification in status window", %{conn: conn} do
-      nick = "E2EPresOff#{System.unique_integer([:positive])}"
+      nick = "E2EPresOff#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add buddy
@@ -222,7 +222,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
 
   describe "Status Tab" do
     test "status tab always present in tab bar", %{conn: conn} do
-      nick = "E2EStat#{System.unique_integer([:positive])}"
+      nick = "E2EStat#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
       assert html =~ "tab-status"
@@ -234,7 +234,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
 
   describe "Auto-Whois" do
     test "toggle auto-whois and verify whois on buddy connect", %{conn: conn} do
-      nick = "E2EAW#{System.unique_integer([:positive])}"
+      nick = "E2EAW#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Add buddy and enable auto-whois
@@ -254,8 +254,8 @@ defmodule RetroHexChatWeb.ChatLiveNotifyE2ETest do
 
   describe "Nick Rename Tracking" do
     test "tracked buddy rename updates notify list entry", %{conn: conn} do
-      nick = "E2ERen#{System.unique_integer([:positive])}"
-      ch = "#e2e_ren_#{System.unique_integer([:positive])}"
+      nick = "E2ERen#{uid()}"
+      ch = "#e2e_ren_#{uid()}"
       ensure_channel(ch)
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
