@@ -138,11 +138,13 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     case Server.send_message(session.active_channel, session.nickname, text, opts) do
       :ok ->
         socket
+        |> assign(pending_channel_msg_id: temp_id)
         |> push_event("message_confirmed", %{temp_id: temp_id})
         |> assign(reply_to: nil)
 
       {:error, reason} ->
         socket
+        |> assign(pending_channel_msg_id: nil)
         |> push_event("message_failed", %{temp_id: temp_id, reason: reason})
         |> error_event(reason)
     end

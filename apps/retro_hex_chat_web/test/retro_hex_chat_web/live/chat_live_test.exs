@@ -67,6 +67,25 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       assert html =~ "Hello everyone"
     end
 
+    test "sender sees own message exactly once (no optimistic + broadcast duplicate)", %{
+      conn: conn
+    } do
+      {:ok, view, _html} = live(chat_conn(conn, "NoDup"), "/chat")
+      render_click(view, "switch_channel", %{"channel" => "#lobby"})
+
+      view
+      |> element("form.chat-input-form")
+      |> render_submit(%{"input" => "unique_dedup_test_msg"})
+
+      # Wait for PubSub broadcast to arrive back to sender
+      Process.sleep(100)
+      html = render(view)
+
+      # Message must appear exactly once — count occurrences of the unique content
+      occurrences = html |> String.split("unique_dedup_test_msg") |> length() |> Kernel.-(1)
+      assert occurrences == 1, "Expected message once, got #{occurrences} times"
+    end
+
     test "/join command joins a new channel", %{conn: conn} do
       ensure_channel("#jointest")
       {:ok, view, _html} = live(chat_conn(conn, "Joiner1"), "/chat")

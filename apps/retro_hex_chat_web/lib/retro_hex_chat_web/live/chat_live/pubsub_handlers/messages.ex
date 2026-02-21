@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, stream_insert: 3]
+  import Phoenix.LiveView, only: [push_event: 3, stream_delete: 3, stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
@@ -229,7 +229,16 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   defp apply_new_message(socket, decorated, channel, session) do
     if channel == session.active_channel do
-      stream_insert(socket, :chat_messages, decorated)
+      case socket.assigns[:pending_channel_msg_id] do
+        pending_id when is_binary(pending_id) and decorated.author == session.nickname ->
+          socket
+          |> stream_delete(:chat_messages, %{id: pending_id})
+          |> stream_insert(:chat_messages, decorated)
+          |> assign(pending_channel_msg_id: nil)
+
+        _ ->
+          stream_insert(socket, :chat_messages, decorated)
+      end
     else
       apply_background_message(socket, decorated, channel, session)
     end
