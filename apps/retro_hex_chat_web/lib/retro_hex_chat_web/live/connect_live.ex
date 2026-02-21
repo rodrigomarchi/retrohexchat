@@ -32,6 +32,21 @@ defmodule RetroHexChatWeb.ConnectLive do
   end
 
   @impl true
+  def handle_params(%{"reason" => reason}, _uri, socket) do
+    message = reason_to_message(reason)
+    {:noreply, put_flash(socket, :error, message)}
+  end
+
+  def handle_params(_params, _uri, socket) do
+    {:noreply, socket}
+  end
+
+  @spec reason_to_message(String.t()) :: String.t()
+  defp reason_to_message("expired"), do: "Sessão expirada"
+  defp reason_to_message("disconnected"), do: "Sessão encerrada"
+  defp reason_to_message(reason), do: reason
+
+  @impl true
   def handle_event("validate", %{"nickname" => nickname}, socket) do
     error =
       case NicknameValidator.validate(nickname) do
@@ -157,6 +172,9 @@ defmodule RetroHexChatWeb.ConnectLive do
         </:panels>
       </RetroHexChatWeb.Components.AppHeader.app_header>
       <div class="connect-dialog">
+        <p :if={@flash["error"]} class="error-text" data-testid="session-alert">
+          {@flash["error"]}
+        </p>
         <div class="window">
           <div class="title-bar">
             <div class="title-bar-text">Connect to RetroHexChat</div>
@@ -196,6 +214,11 @@ defmodule RetroHexChatWeb.ConnectLive do
                       <.icon_connect class="licon licon-14" /> Connect
                     </button>
                   </div>
+                  <p class="session-info">
+                    Apenas uma sessão por nickname é permitida. Conectar em outra janela
+                    encerra a sessão anterior. A sessão expira após 10 tentativas de reconexão
+                    sem sucesso.
+                  </p>
                 </form>
               <% :password -> %>
                 <form phx-submit="authenticate" phx-change="validate_password">

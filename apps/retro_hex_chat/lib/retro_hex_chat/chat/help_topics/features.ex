@@ -69,6 +69,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
   @external_resource Path.join(@help_dir, "feature-privacy-settings.html")
   @external_resource Path.join(@help_dir, "feature-pm-persistence.html")
   @external_resource Path.join(@help_dir, "feature-auto-join-channels.html")
+  @external_resource Path.join(@help_dir, "feature-single-session.html")
 
   @spec topics() :: [map()]
   def topics do
@@ -893,6 +894,22 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "reconnect"
         ],
         content: File.read!(Path.join(@help_dir, "feature-auto-join-channels.html"))
+      },
+      %{
+        id: "feature-single-session",
+        title: "Single Session",
+        category: "Features",
+        keywords: [
+          "single session",
+          "session",
+          "duplicate",
+          "multiple tabs",
+          "another window",
+          "disconnect",
+          "expired",
+          "one session"
+        ],
+        content: File.read!(Path.join(@help_dir, "feature-single-session.html"))
       }
     ]
   end

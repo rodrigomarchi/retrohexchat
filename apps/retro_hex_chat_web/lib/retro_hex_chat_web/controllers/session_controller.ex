@@ -28,6 +28,15 @@ defmodule RetroHexChatWeb.SessionController do
     redirect(conn, to: ~p"/connect")
   end
 
+  @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def delete(conn, params) do
+    reason = params["reason"] || "disconnected"
+
+    conn
+    |> clear_session()
+    |> redirect(to: ~p"/connect?reason=#{reason}")
+  end
+
   @spec verify_optional_token(String.t() | nil, String.t()) :: :ok | :error
   defp verify_optional_token(nil, _nickname), do: :ok
   defp verify_optional_token("", _nickname), do: :ok

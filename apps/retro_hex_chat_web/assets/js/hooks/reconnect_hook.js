@@ -28,6 +28,12 @@ const ReconnectHook = {
       localStorage.setItem("rhc_reconnect_state", JSON.stringify(data));
     });
 
+    this.handleEvent("clear_client_state", () => {
+      Object.keys(localStorage)
+        .filter((k) => k.startsWith("rhc_"))
+        .forEach((k) => localStorage.removeItem(k));
+    });
+
     this.maybePushRestoreSession();
     this.setupObserver();
   },
@@ -167,28 +173,7 @@ const ReconnectHook = {
   showFailedOverlay() {
     this.removeOverlay();
     this.clearCountdown();
-
-    this.overlay = document.createElement("div");
-    this.overlay.className = "reconnect-overlay";
-    this.overlay.innerHTML = `
-      <div class="window">
-        <div class="title-bar">
-          <div class="title-bar-text">Connection Lost</div>
-        </div>
-        <div class="window-body">
-          <p>Connection failed. Please refresh the page.</p>
-          <div style="margin-top: 12px;">
-            <button class="reconnect-refresh-btn">Refresh</button>
-          </div>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(this.overlay);
-
-    this.overlay.querySelector(".reconnect-refresh-btn").addEventListener("click", () => {
-      window.location.reload();
-    });
+    window.location.href = "/connect?reason=expired";
   },
 
   handleCancel() {

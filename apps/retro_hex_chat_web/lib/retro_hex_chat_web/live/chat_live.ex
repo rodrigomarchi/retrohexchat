@@ -44,6 +44,13 @@ defmodule RetroHexChatWeb.ChatLive do
         join_channel = http_session["chat_join_channel"]
 
         if connected?(socket) do
+          # Kick any existing sessions for this nick BEFORE subscribing
+          Phoenix.PubSub.broadcast(
+            RetroHexChat.PubSub,
+            "user:#{nickname}",
+            {:force_disconnect, %{reason: "Sessão encerrada — login iniciado em outra janela"}}
+          )
+
           Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
           Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "presence:global")
           Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")

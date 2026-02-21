@@ -42,6 +42,27 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
     end
   end
 
+  describe "session expiry flash" do
+    test "shows expired session flash when reason=expired", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/connect?reason=expired")
+      html = render(view)
+      assert html =~ "Sessão expirada"
+    end
+
+    test "does not show flash without reason param", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/connect")
+      refute html =~ "Sessão expirada"
+    end
+  end
+
+  describe "session info" do
+    test "renders session rules text", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/connect")
+      assert html =~ "session-info"
+      assert html =~ "Apenas uma sessão por nickname"
+    end
+  end
+
   describe "validate" do
     test "shows error for empty nickname", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/connect")

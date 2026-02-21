@@ -95,12 +95,26 @@ describe("ReconnectHook", () => {
   // ── max attempts ───────────────────────────────────────
 
   describe("max attempts", () => {
-    it("shows failed overlay after exceeding max attempts", () => {
+    it("calls showFailedOverlay after exceeding max attempts", () => {
       const spy = vi.spyOn(hook, "showFailedOverlay");
       hook.wasDisconnected = true;
       hook.attempt = hook.maxAttempts;
       hook.startReconnectCycle();
       expect(spy).toHaveBeenCalled();
+    });
+
+    it("redirects to /connect?reason=expired on max attempts", () => {
+      // Replace window.location to capture the redirect URL
+      const origLocation = window.location;
+      delete window.location;
+      window.location = { href: "" };
+
+      hook.wasDisconnected = true;
+      hook.attempt = hook.maxAttempts;
+      hook.startReconnectCycle();
+      expect(window.location.href).toBe("/connect?reason=expired");
+
+      window.location = origLocation;
     });
   });
 });

@@ -972,9 +972,10 @@ defmodule RetroHexChatWeb.E2ETest do
       html = render(view)
       assert html =~ "Ghost" or html =~ "NickServ"
 
-      # Target should receive force_disconnect and redirect
-      flash = assert_redirect(tgt_view, "/connect")
-      assert flash["error"] =~ "Disconnected"
+      # Target should receive force_disconnect and redirect via session clear
+      {path, _flash} = assert_redirect(tgt_view)
+      assert path =~ "/chat/session/clear"
+      assert path =~ "Ghosted"
     end
   end
 
@@ -1506,11 +1507,11 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ "kicked"
     end
 
-    test "18.6 force_disconnect redirects to /", %{conn: conn} do
+    test "18.6 force_disconnect redirects via session clear", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "ForceE2E"), "/chat")
       send(view.pid, {:force_disconnect, %{reason: "Ghosted"}})
-      flash = assert_redirect(view, "/connect")
-      assert flash["error"] =~ "Disconnected"
+      {path, _flash} = assert_redirect(view)
+      assert path =~ "/chat/session/clear"
     end
   end
 

@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2]
+  import Phoenix.LiveView, only: [push_event: 3]
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -139,8 +139,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
     {:halt,
      socket
-     |> Phoenix.LiveView.put_flash(:error, "Disconnected: #{reason}")
-     |> push_navigate(to: ~p"/connect")}
+     |> push_event("intentional_disconnect", %{})
+     |> push_event("clear_client_state", %{})
+     |> Phoenix.LiveView.redirect(to: ~p"/chat/session/clear?reason=#{reason}")}
   end
 
   def handle_info({:force_rename, %{reason: reason}}, socket) do

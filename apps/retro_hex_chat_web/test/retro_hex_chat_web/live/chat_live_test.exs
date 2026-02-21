@@ -223,8 +223,19 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       send(view.pid, {:force_disconnect, %{reason: "Ghosted by admin"}})
 
-      flash = assert_redirect(view, "/connect")
-      assert flash["error"] =~ "Disconnected"
+      {path, _flash} = assert_redirect(view)
+      assert path =~ "/chat/session/clear"
+      assert path =~ "Ghosted"
+    end
+
+    test "single session enforcement disconnects existing session", %{conn: conn} do
+      {:ok, view1, _html} = live(chat_conn(conn, "SSEnforce"), "/chat")
+
+      # Second session with the same nick — should kick the first
+      {:ok, _view2, _html} = live(chat_conn(conn, "SSEnforce"), "/chat")
+
+      {path, _flash} = assert_redirect(view1)
+      assert path =~ "/chat/session/clear"
     end
 
     test "force_rename updates nickname", %{conn: conn} do

@@ -95,4 +95,26 @@ defmodule RetroHexChatWeb.SessionControllerTest do
       refute get_session(conn, :chat_join_channel)
     end
   end
+
+  describe "delete/2" do
+    test "clears session and redirects to /connect with reason", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{chat_nickname: "Cleared", chat_pre_identified: true})
+        |> get(~p"/chat/session/clear?reason=expired")
+
+      assert redirected_to(conn) == "/connect?reason=expired"
+      refute get_session(conn, :chat_nickname)
+      refute get_session(conn, :chat_pre_identified)
+    end
+
+    test "defaults reason to disconnected", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{chat_nickname: "DefReason"})
+        |> get(~p"/chat/session/clear")
+
+      assert redirected_to(conn) == "/connect?reason=disconnected"
+    end
+  end
 end

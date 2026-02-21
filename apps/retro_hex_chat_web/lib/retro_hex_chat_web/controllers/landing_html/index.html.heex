@@ -1895,10 +1895,26 @@ $ cd retro_hex_chat</pre>
               </p>
             </details>
           </li>
+          <li>
+            <details>
+              <summary>
+                <.icon_question class="licon licon-14" /> How do sessions work?
+              </summary>
+              <p>
+                Each nickname can only have <strong>one active session</strong> at a time.
+                If you connect from another browser or tab, the previous session is
+                automatically disconnected. If your connection drops, the client attempts
+                to reconnect up to 10 times with exponential backoff. After all attempts
+                fail, the session expires and you&rsquo;re redirected to the login screen.
+                Registered nicknames are protected by password &mdash; only the owner
+                can connect with that nick.
+              </p>
+            </details>
+          </li>
         </ul>
       </div>
       <div class="status-bar">
-        <p class="status-bar-field">11 questions</p>
+        <p class="status-bar-field">12 questions</p>
       </div>
     </div>
   </section>
