@@ -1,0 +1,40 @@
+name: Deploy (tag)
+
+on:
+  push:
+    tags:
+      - 'sun-*'
+      - 'moon-*'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy (${{ github.ref_name }})
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine target server
+        id: target
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if [[ "$TAG" == sun-* ]]; then
+            echo "ip_secret=SUN_IP" >> "$GITHUB_OUTPUT"
+          elif [[ "$TAG" == moon-* ]]; then
+            echo "ip_secret=MOON_IP" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Unknown tag prefix: ${TAG}"
+            exit 1
+          fi
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets[steps.target.outputs.ip_secret] }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/retro_hex_chat
+            git fetch --all --prune
+            bash ~/retro_hex_chat/scripts/deploy.sh ${{ github.ref_name }}
