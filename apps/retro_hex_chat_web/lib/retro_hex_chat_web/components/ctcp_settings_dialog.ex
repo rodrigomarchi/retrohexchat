@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
   attr :ctcp_settings, :map, required: true
 
@@ -16,6 +18,7 @@ defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
     >
       <div class="window dialog-window--md">
         <div class="title-bar">
+          <Icons.icon_dialog_ctcp class="title-bar-icon" />
           <div class="title-bar-text">CTCP Settings</div>
           <div class="title-bar-controls">
             <button
@@ -80,8 +83,12 @@ defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
             </fieldset>
 
             <div class="dialog-buttons u-mt-8">
-              <button type="submit">Save</button>
-              <button type="button" phx-click="close_ctcp_settings_dialog">Cancel</button>
+              <button type="submit" class="btn-icon">
+                <Icons.icon_btn_save class="btn-icon__svg" /> Save
+              </button>
+              <button type="button" class="btn-icon" phx-click="close_ctcp_settings_dialog">
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
+              </button>
             </div>
           </form>
         </div>

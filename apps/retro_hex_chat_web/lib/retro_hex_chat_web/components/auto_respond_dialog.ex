@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.Components.AutoRespondDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
   attr :rules, :list, default: []
   attr :selected_position, :integer, default: nil
@@ -22,6 +24,7 @@ defmodule RetroHexChatWeb.Components.AutoRespondDialog do
         data-testid="autorespond-dialog"
       >
         <div class="title-bar">
+          <Icons.icon_dialog_auto_respond class="title-bar-icon" />
           <div class="title-bar-text">Auto-Respond Rules</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="close_autorespond_dialog"></button>
@@ -134,32 +137,44 @@ defmodule RetroHexChatWeb.Components.AutoRespondDialog do
                   {@error_message}
                 </div>
                 <div class="dialog-buttons u-mt-4">
-                  <button type="submit" data-testid="autorespond-save-btn">Save</button>
-                  <button type="button" phx-click="autorespond_dialog_cancel_edit">Cancel</button>
+                  <button type="submit" class="btn-icon" data-testid="autorespond-save-btn">
+                    <Icons.icon_btn_save class="btn-icon__svg" /> Save
+                  </button>
+                  <button type="button" class="btn-icon" phx-click="autorespond_dialog_cancel_edit">
+                    <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
+                  </button>
                 </div>
               </div>
             </form>
           </div>
 
           <div class="dialog-buttons">
-            <button phx-click="autorespond_dialog_add" data-testid="autorespond-add-btn">
-              Add
+            <button
+              class="btn-icon"
+              phx-click="autorespond_dialog_add"
+              data-testid="autorespond-add-btn"
+            >
+              <Icons.icon_btn_add class="btn-icon__svg" /> Add
             </button>
             <button
+              class="btn-icon"
               phx-click="autorespond_dialog_edit"
               disabled={@selected_position == nil}
               data-testid="autorespond-edit-btn"
             >
-              Edit
+              <Icons.icon_btn_edit class="btn-icon__svg" /> Edit
             </button>
             <button
+              class="btn-icon"
               phx-click="autorespond_dialog_delete"
               disabled={@selected_position == nil}
               data-testid="autorespond-delete-btn"
             >
-              Remove
+              <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
             </button>
-            <button phx-click="close_autorespond_dialog">Close</button>
+            <button class="btn-icon" phx-click="close_autorespond_dialog">
+              <Icons.icon_btn_cancel class="btn-icon__svg" /> Close
+            </button>
           </div>
         </div>
       </div>

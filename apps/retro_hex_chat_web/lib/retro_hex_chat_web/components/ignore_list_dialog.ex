@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
   use Phoenix.Component
 
   alias RetroHexChat.Chat.IgnoreEntry
+  alias RetroHexChatWeb.Icons
 
   attr :visible, :boolean, default: false
   attr :ignore_entries, :list, default: []
@@ -22,6 +23,7 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
     >
       <div class="window dialog-window--md ignore-dialog-window">
         <div class="title-bar">
+          <Icons.icon_dialog_ignore class="title-bar-icon" />
           <div class="title-bar-text">Ignore List</div>
           <div class="title-bar-controls">
             <button
@@ -71,20 +73,20 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
           <div class="dialog-buttons dialog-buttons--start u-mt-8">
             <button
               type="button"
-              class="btn-sm"
+              class="btn-sm btn-icon"
               data-testid="ignore-add-btn"
               phx-click="ignore_dialog_add"
             >
-              Add...
+              <Icons.icon_btn_add class="btn-icon__svg" /> Add...
             </button>
             <button
               type="button"
-              class="btn-sm"
+              class="btn-sm btn-icon"
               data-testid="ignore-remove-btn"
               phx-click="ignore_dialog_remove"
               disabled={is_nil(@ignore_selected)}
             >
-              Remove
+              <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
             </button>
           </div>
         </div>
@@ -98,6 +100,7 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
       >
         <div class="window dialog-window--sm">
           <div class="title-bar">
+            <Icons.icon_dialog_ignore class="title-bar-icon" />
             <div class="title-bar-text">Add Ignore</div>
           </div>
           <div class="window-body dialog-body--p8">
@@ -135,13 +138,16 @@ defmodule RetroHexChatWeb.Components.IgnoreListDialog do
                 />
               </div>
               <div class="dialog-buttons">
-                <button type="submit" data-testid="ignore-add-confirm">OK</button>
+                <button type="submit" class="btn-icon" data-testid="ignore-add-confirm">
+                  <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+                </button>
                 <button
                   type="button"
+                  class="btn-icon"
                   phx-click="close_ignore_add_dialog"
                   data-testid="ignore-add-cancel"
                 >
-                  Cancel
+                  <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
                 </button>
               </div>
             </form>

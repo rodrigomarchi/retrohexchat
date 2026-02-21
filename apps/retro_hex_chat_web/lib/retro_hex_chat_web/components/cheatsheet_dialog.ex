@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialog do
   use Phoenix.Component
 
   alias RetroHexChat.Chat.KeyBindings
+  alias RetroHexChatWeb.Icons
 
   attr :visible, :boolean, default: false
 
@@ -29,6 +30,7 @@ defmodule RetroHexChatWeb.Components.CheatsheetDialog do
         phx-value-dialog="cheatsheet"
       >
         <div class="title-bar">
+          <Icons.icon_dialog_cheatsheet class="title-bar-icon" />
           <div class="title-bar-text">Keyboard Shortcuts</div>
           <div class="title-bar-controls">
             <button

@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
   use Phoenix.Component
 
   alias RetroHexChat.Accounts.NickColors
+  alias RetroHexChatWeb.Icons
 
   attr :visible, :boolean, default: false
   attr :highlight_entries, :list, default: []
@@ -33,6 +34,7 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
     >
       <div class="window dialog-window--md highlight-dialog-window">
         <div class="title-bar">
+          <Icons.icon_dialog_highlight class="title-bar-icon" />
           <div class="title-bar-text">Highlight Words</div>
           <div class="title-bar-controls">
             <button
@@ -90,27 +92,30 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
             <div class="dialog-buttons dialog-buttons--start u-mt-8">
               <button
                 type="button"
+                class="btn-icon"
                 data-testid="highlight-add-btn"
                 phx-click="open_highlight_add_dialog"
               >
-                Add...
+                <Icons.icon_btn_add class="btn-icon__svg" /> Add...
               </button>
               <button
                 type="button"
+                class="btn-icon"
                 data-testid="highlight-edit-btn"
                 phx-click="open_highlight_edit_dialog"
                 disabled={@highlight_selected == nil}
               >
-                Edit...
+                <Icons.icon_btn_edit class="btn-icon__svg" /> Edit...
               </button>
               <button
                 type="button"
+                class="btn-icon"
                 data-testid="highlight-remove-btn"
                 phx-click="highlight_remove"
                 phx-value-word={@highlight_selected || ""}
                 disabled={@highlight_selected == nil}
               >
-                Remove
+                <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
               </button>
             </div>
           </fieldset>
@@ -124,6 +129,7 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
         >
           <div class="window dialog-window--sm">
             <div class="title-bar">
+              <Icons.icon_dialog_highlight class="title-bar-icon" />
               <div class="title-bar-text">Add Highlight Word</div>
             </div>
             <div class="window-body dialog-body--p8">
@@ -145,13 +151,16 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
                   {color_picker_grid(assigns)}
                 </div>
                 <div class="field-row dialog-buttons u-mt-12">
-                  <button type="submit" data-testid="highlight-add-submit">Add</button>
+                  <button type="submit" class="btn-icon" data-testid="highlight-add-submit">
+                    <Icons.icon_btn_add class="btn-icon__svg" /> Add
+                  </button>
                   <button
                     type="button"
+                    class="btn-icon"
                     data-testid="highlight-add-cancel"
                     phx-click="close_highlight_add_dialog"
                   >
-                    Cancel
+                    <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
                   </button>
                 </div>
               </form>
@@ -167,6 +176,7 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
         >
           <div class="window dialog-window--sm">
             <div class="title-bar">
+              <Icons.icon_dialog_highlight class="title-bar-icon" />
               <div class="title-bar-text">Edit Highlight: {@highlight_selected}</div>
             </div>
             <div class="window-body dialog-body--p8">
@@ -177,13 +187,16 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
                   {color_picker_grid(assigns)}
                 </div>
                 <div class="field-row dialog-buttons u-mt-12">
-                  <button type="submit" data-testid="highlight-edit-submit">OK</button>
+                  <button type="submit" class="btn-icon" data-testid="highlight-edit-submit">
+                    <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+                  </button>
                   <button
                     type="button"
+                    class="btn-icon"
                     data-testid="highlight-edit-cancel"
                     phx-click="close_highlight_edit_dialog"
                   >
-                    Cancel
+                    <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
                   </button>
                 </div>
               </form>

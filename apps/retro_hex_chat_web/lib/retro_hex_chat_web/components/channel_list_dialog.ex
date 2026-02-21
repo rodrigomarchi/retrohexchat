@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.Components.ChannelListDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
   attr :channels, :list, default: []
   attr :filtered, :list, default: []
@@ -22,6 +24,7 @@ defmodule RetroHexChatWeb.Components.ChannelListDialog do
     >
       <div class="window dialog-window--450">
         <div class="title-bar">
+          <Icons.icon_dialog_channel_list class="title-bar-icon" />
           <div class="title-bar-text">Channel List</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="toggle_channel_list"></button>
@@ -66,9 +69,9 @@ defmodule RetroHexChatWeb.Components.ChannelListDialog do
                       type="button"
                       phx-click="channel_list_join"
                       phx-value-channel={ch.name}
-                      class="btn-sm"
+                      class="btn-sm btn-icon"
                     >
-                      Join
+                      <Icons.icon_btn_join class="btn-icon__svg" /> Join
                     </button>
                   </td>
                 </tr>
@@ -81,7 +84,9 @@ defmodule RetroHexChatWeb.Components.ChannelListDialog do
             </table>
           </div>
           <div class="button-row u-mt-12">
-            <button type="button" phx-click="toggle_channel_list">Close</button>
+            <button type="button" class="btn-icon" phx-click="toggle_channel_list">
+              <Icons.icon_btn_cancel class="btn-icon__svg" /> Close
+            </button>
           </div>
         </div>
       </div>

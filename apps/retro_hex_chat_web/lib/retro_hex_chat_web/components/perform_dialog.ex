@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
   use Phoenix.Component
 
   alias RetroHexChat.Chat.PerformList
+  alias RetroHexChatWeb.Icons
 
   attr :visible, :boolean, default: false
   attr :active_tab, :string, default: "commands"
@@ -29,6 +30,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
     >
       <div class="window dialog-window--perform">
         <div class="title-bar">
+          <Icons.icon_dialog_perform class="title-bar-icon" />
           <div class="title-bar-text">Perform / Auto-Commands</div>
           <div class="title-bar-controls">
             <button
@@ -47,8 +49,9 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
                 phx-click="perform_dialog_tab"
                 phx-value-tab="commands"
                 data-testid="perform-tab-commands"
+                class="tab-icon"
               >
-                Commands
+                <Icons.icon_tab_commands class="btn-icon__svg" /> Commands
               </a>
             </li>
             <li role="tab" aria-selected={@active_tab == "autojoin"}>
@@ -57,8 +60,9 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
                 phx-click="perform_dialog_tab"
                 phx-value-tab="autojoin"
                 data-testid="perform-tab-autojoin"
+                class="tab-icon"
               >
-                Auto-Join
+                <Icons.icon_tab_autojoin class="btn-icon__svg" /> Auto-Join
               </a>
             </li>
           </menu>
@@ -137,48 +141,48 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
       <div class="u-flex u-gap-4 u-items-center u-mt-8">
         <button
           type="button"
-          class="btn-sm"
+          class="btn-sm btn-icon"
           data-testid="perform-add-btn"
           phx-click="perform_dialog_add"
         >
-          Add...
+          <Icons.icon_btn_add class="btn-icon__svg" /> Add...
         </button>
         <button
           type="button"
-          class="btn-sm"
+          class="btn-sm btn-icon"
           data-testid="perform-edit-btn"
           phx-click="perform_dialog_edit"
           disabled={is_nil(@selected)}
         >
-          Edit...
+          <Icons.icon_btn_edit class="btn-icon__svg" /> Edit...
         </button>
         <button
           type="button"
-          class="btn-sm"
+          class="btn-sm btn-icon"
           data-testid="perform-remove-btn"
           phx-click="perform_dialog_remove"
           disabled={is_nil(@selected)}
         >
-          Remove
+          <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
         </button>
         <div class="vertical-separator"></div>
         <button
           type="button"
-          class="btn-sm"
+          class="btn-sm btn-icon"
           data-testid="perform-move-up-btn"
           phx-click="perform_dialog_move_up"
           disabled={is_nil(@selected) or @selected == 0}
         >
-          Move Up
+          <Icons.icon_btn_up class="btn-icon__svg" /> Move Up
         </button>
         <button
           type="button"
-          class="btn-sm"
+          class="btn-sm btn-icon"
           data-testid="perform-move-down-btn"
           phx-click="perform_dialog_move_down"
           disabled={is_nil(@selected) or @selected == length(@entries) - 1}
         >
-          Move Down
+          <Icons.icon_btn_down class="btn-icon__svg" /> Move Down
         </button>
       </div>
       <div class="u-mt-8">
@@ -238,29 +242,29 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
       <div class="dialog-buttons dialog-buttons--start u-mt-8">
         <button
           type="button"
-          class="btn-sm"
+          class="btn-sm btn-icon"
           data-testid="autojoin-add-btn"
           phx-click="autojoin_dialog_add"
         >
-          Add...
+          <Icons.icon_btn_add class="btn-icon__svg" /> Add...
         </button>
         <button
           type="button"
-          class="btn-sm"
+          class="btn-sm btn-icon"
           data-testid="autojoin-edit-btn"
           phx-click="autojoin_dialog_edit"
           disabled={is_nil(@selected)}
         >
-          Edit...
+          <Icons.icon_btn_edit class="btn-icon__svg" /> Edit...
         </button>
         <button
           type="button"
-          class="btn-sm"
+          class="btn-sm btn-icon"
           data-testid="autojoin-remove-btn"
           phx-click="autojoin_dialog_remove"
           disabled={is_nil(@selected)}
         >
-          Remove
+          <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
         </button>
       </div>
     </div>
@@ -275,6 +279,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
     >
       <div class="window dialog-window--360">
         <div class="title-bar">
+          <Icons.icon_dialog_perform class="title-bar-icon" />
           <div class="title-bar-text">Add Perform Command</div>
         </div>
         <div class="window-body dialog-body--p8">
@@ -293,13 +298,16 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
               />
             </div>
             <div class="dialog-buttons">
-              <button type="submit" data-testid="perform-add-confirm">OK</button>
+              <button type="submit" class="btn-icon" data-testid="perform-add-confirm">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
               <button
                 type="button"
+                class="btn-icon"
                 phx-click="close_perform_add_dialog"
                 data-testid="perform-add-cancel"
               >
-                Cancel
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>
@@ -320,6 +328,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
     >
       <div class="window dialog-window--360">
         <div class="title-bar">
+          <Icons.icon_dialog_perform class="title-bar-icon" />
           <div class="title-bar-text">Edit Perform Command</div>
         </div>
         <div class="window-body dialog-body--p8">
@@ -338,13 +347,16 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
               />
             </div>
             <div class="dialog-buttons">
-              <button type="submit" data-testid="perform-edit-confirm">OK</button>
+              <button type="submit" class="btn-icon" data-testid="perform-edit-confirm">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
               <button
                 type="button"
+                class="btn-icon"
                 phx-click="close_perform_edit_dialog"
                 data-testid="perform-edit-cancel"
               >
-                Cancel
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>
@@ -362,6 +374,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
     >
       <div class="window dialog-window--320">
         <div class="title-bar">
+          <Icons.icon_dialog_perform class="title-bar-icon" />
           <div class="title-bar-text">Add Auto-Join Channel</div>
         </div>
         <div class="window-body dialog-body--p8">
@@ -391,13 +404,16 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
               />
             </div>
             <div class="dialog-buttons">
-              <button type="submit" data-testid="autojoin-add-confirm">OK</button>
+              <button type="submit" class="btn-icon" data-testid="autojoin-add-confirm">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
               <button
                 type="button"
+                class="btn-icon"
                 phx-click="close_autojoin_add_dialog"
                 data-testid="autojoin-add-cancel"
               >
-                Cancel
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>
@@ -422,6 +438,7 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
     >
       <div class="window dialog-window--320">
         <div class="title-bar">
+          <Icons.icon_dialog_perform class="title-bar-icon" />
           <div class="title-bar-text">Edit Auto-Join Channel</div>
         </div>
         <div class="window-body dialog-body--p8">
@@ -450,13 +467,16 @@ defmodule RetroHexChatWeb.Components.PerformDialog do
               />
             </div>
             <div class="dialog-buttons">
-              <button type="submit" data-testid="autojoin-edit-confirm">OK</button>
+              <button type="submit" class="btn-icon" data-testid="autojoin-edit-confirm">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
               <button
                 type="button"
+                class="btn-icon"
                 phx-click="close_autojoin_edit_dialog"
                 data-testid="autojoin-edit-cancel"
               >
-                Cancel
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>

@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
   use Phoenix.Component
 
   alias RetroHexChatWeb.Components.NotificationsPanel
+  alias RetroHexChatWeb.Icons
 
   @panels [
     {"display", "Display"},
@@ -29,6 +30,7 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
     >
       <div class="window options-dialog" data-testid="options-dialog">
         <div class="title-bar">
+          <Icons.icon_dialog_options class="title-bar-icon" />
           <div class="title-bar-text">Options</div>
           <div class="title-bar-controls">
             <button type="button" aria-label="Close" phx-click="close_options_dialog"></button>
@@ -44,7 +46,11 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
                 phx-value-panel={id}
                 data-testid={"options-tree-#{id}"}
               >
-                {label}
+                <span class="tab-icon">
+                  <Icons.icon_tab_display :if={id == "display"} class="btn-icon__svg" />
+                  <Icons.icon_tab_notifications :if={id == "notifications"} class="btn-icon__svg" />
+                  {label}
+                </span>
               </li>
             </ul>
           </div>
@@ -58,11 +64,20 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
           </div>
         </div>
         <div class="options-button-bar">
-          <button type="button" phx-click="options_ok" data-testid="options-ok">OK</button>
-          <button type="button" phx-click="close_options_dialog" data-testid="options-cancel">
-            Cancel
+          <button type="button" class="btn-icon" phx-click="options_ok" data-testid="options-ok">
+            <Icons.icon_btn_ok class="btn-icon__svg" /> OK
           </button>
-          <button type="button" phx-click="options_apply" data-testid="options-apply">Apply</button>
+          <button
+            type="button"
+            class="btn-icon"
+            phx-click="close_options_dialog"
+            data-testid="options-cancel"
+          >
+            <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
+          </button>
+          <button type="button" class="btn-icon" phx-click="options_apply" data-testid="options-apply">
+            <Icons.icon_btn_apply class="btn-icon__svg" /> Apply
+          </button>
         </div>
       </div>
     </div>

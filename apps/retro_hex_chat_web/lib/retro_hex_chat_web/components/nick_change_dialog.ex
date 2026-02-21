@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.Components.NickChangeDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
   attr :target_nick, :string, default: ""
   attr :registered, :boolean, default: false
@@ -23,6 +25,7 @@ defmodule RetroHexChatWeb.Components.NickChangeDialog do
     >
       <div class="window nick-change-dialog">
         <div class="title-bar">
+          <Icons.icon_dialog_nick class="title-bar-icon" />
           <div class="title-bar-text">Mudar Nickname</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="cancel_nick_change"></button>
@@ -58,14 +61,19 @@ defmodule RetroHexChatWeb.Components.NickChangeDialog do
           </fieldset>
           <div class="nick-change-dialog__actions">
             <button
+              class="btn-icon"
               phx-click="confirm_nick_change"
               phx-value-password={@password}
               data-testid="nick-change-confirm-btn"
             >
-              Confirmar
+              <Icons.icon_btn_ok class="btn-icon__svg" /> Confirmar
             </button>
-            <button phx-click="cancel_nick_change" data-testid="nick-change-cancel-btn">
-              Cancelar
+            <button
+              class="btn-icon"
+              phx-click="cancel_nick_change"
+              data-testid="nick-change-cancel-btn"
+            >
+              <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancelar
             </button>
           </div>
         </div>

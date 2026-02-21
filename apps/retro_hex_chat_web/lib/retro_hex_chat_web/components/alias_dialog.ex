@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.Components.AliasDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
   attr :aliases, :list, default: []
   attr :selected_alias, :string, default: nil
@@ -25,6 +27,7 @@ defmodule RetroHexChatWeb.Components.AliasDialog do
         data-testid="alias-dialog"
       >
         <div class="title-bar">
+          <Icons.icon_dialog_alias class="title-bar-icon" />
           <div class="title-bar-text">Alias Editor</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="close_alias_dialog"></button>
@@ -113,30 +116,40 @@ defmodule RetroHexChatWeb.Components.AliasDialog do
                   {@error_message}
                 </div>
                 <div class="dialog-buttons u-mt-4">
-                  <button type="submit" data-testid="alias-save-btn">Save</button>
-                  <button type="button" phx-click="alias_dialog_cancel_edit">Cancel</button>
+                  <button type="submit" class="btn-icon" data-testid="alias-save-btn">
+                    <Icons.icon_btn_save class="btn-icon__svg" /> Save
+                  </button>
+                  <button type="button" class="btn-icon" phx-click="alias_dialog_cancel_edit">
+                    <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
+                  </button>
                 </div>
               </div>
             </form>
           </div>
 
           <div class="dialog-buttons">
-            <button phx-click="alias_dialog_add" data-testid="alias-add-btn">Add</button>
+            <button class="btn-icon" phx-click="alias_dialog_add" data-testid="alias-add-btn">
+              <Icons.icon_btn_add class="btn-icon__svg" /> Add
+            </button>
             <button
+              class="btn-icon"
               phx-click="alias_dialog_edit"
               disabled={@selected_alias == nil}
               data-testid="alias-edit-btn"
             >
-              Edit
+              <Icons.icon_btn_edit class="btn-icon__svg" /> Edit
             </button>
             <button
+              class="btn-icon"
               phx-click="alias_dialog_delete"
               disabled={@selected_alias == nil}
               data-testid="alias-delete-btn"
             >
-              Remove
+              <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
             </button>
-            <button phx-click="close_alias_dialog">Close</button>
+            <button class="btn-icon" phx-click="close_alias_dialog">
+              <Icons.icon_btn_cancel class="btn-icon__svg" /> Close
+            </button>
           </div>
         </div>
       </div>

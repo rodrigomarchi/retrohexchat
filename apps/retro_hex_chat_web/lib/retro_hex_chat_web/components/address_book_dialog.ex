@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
   attr :active_tab, :string, default: "contacts"
   attr :contacts, :list, default: []
@@ -59,6 +61,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
     >
       <div class="window dialog-window--address-book">
         <div class="title-bar">
+          <Icons.icon_dialog_address_book class="title-bar-icon" />
           <div class="title-bar-text">Address Book</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="toggle_address_book"></button>
@@ -73,7 +76,9 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
               phx-value-tab="contacts"
               data-testid="address-book-tab-contacts"
             >
-              Contacts
+              <span class="tab-icon">
+                <Icons.icon_tab_contacts class="btn-icon__svg" /> Contacts
+              </span>
             </li>
             <li
               role="tab"
@@ -82,7 +87,9 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
               phx-value-tab="notify"
               data-testid="address-book-tab-notify"
             >
-              Notify
+              <span class="tab-icon">
+                <Icons.icon_tab_notify class="btn-icon__svg" /> Notify
+              </span>
             </li>
             <li
               role="tab"
@@ -91,7 +98,9 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
               phx-value-tab="nick_colors"
               data-testid="address-book-tab-nick-colors"
             >
-              Nick Colors
+              <span class="tab-icon">
+                <Icons.icon_tab_colors class="btn-icon__svg" /> Nick Colors
+              </span>
             </li>
             <li
               role="tab"
@@ -100,7 +109,9 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
               phx-value-tab="control"
               data-testid="address-book-tab-control"
             >
-              Control
+              <span class="tab-icon">
+                <Icons.icon_tab_control class="btn-icon__svg" /> Control
+              </span>
             </li>
           </menu>
           <div
@@ -113,18 +124,18 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
                   type="button"
                   phx-click="contact_add_dialog"
                   data-testid="contact-add-btn"
-                  class="btn-sm"
+                  class="btn-sm btn-icon"
                 >
-                  Add
+                  <Icons.icon_btn_add class="btn-icon__svg" /> Add
                 </button>
                 <button
                   type="button"
                   phx-click="contact_edit_dialog"
                   disabled={is_nil(@contacts_selected)}
                   data-testid="contact-edit-btn"
-                  class="btn-sm"
+                  class="btn-sm btn-icon"
                 >
-                  Edit
+                  <Icons.icon_btn_edit class="btn-icon__svg" /> Edit
                 </button>
                 <button
                   type="button"
@@ -132,9 +143,9 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
                   phx-value-nickname={@contacts_selected}
                   disabled={is_nil(@contacts_selected)}
                   data-testid="contact-remove-btn"
-                  class="btn-sm"
+                  class="btn-sm btn-icon"
                 >
-                  Remove
+                  <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
                 </button>
               </div>
               <div class="sunken-panel u-flex-1 u-overflow-y-auto">
@@ -178,9 +189,9 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
                   type="button"
                   phx-click="notify_add_dialog"
                   data-testid="ab-notify-btn-add"
-                  class="btn-sm"
+                  class="btn-sm btn-icon"
                 >
-                  Add
+                  <Icons.icon_btn_add class="btn-icon__svg" /> Add
                 </button>
                 <button
                   type="button"
@@ -188,18 +199,18 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
                   phx-value-nickname={@notify_selected}
                   disabled={is_nil(@notify_selected)}
                   data-testid="ab-notify-btn-remove"
-                  class="btn-sm"
+                  class="btn-sm btn-icon"
                 >
-                  Remove
+                  <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
                 </button>
                 <button
                   type="button"
                   phx-click="notify_edit_dialog"
                   disabled={is_nil(@notify_selected)}
                   data-testid="ab-notify-btn-edit"
-                  class="btn-sm"
+                  class="btn-sm btn-icon"
                 >
-                  Edit
+                  <Icons.icon_btn_edit class="btn-icon__svg" /> Edit
                 </button>
                 <label class="u-text-sm u-ml-auto u-flex u-items-center u-gap-2">
                   <input
@@ -255,18 +266,18 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
                   type="button"
                   phx-click="nick_color_add_dialog"
                   data-testid="nick-color-add-btn"
-                  class="btn-sm"
+                  class="btn-sm btn-icon"
                 >
-                  Add
+                  <Icons.icon_btn_add class="btn-icon__svg" /> Add
                 </button>
                 <button
                   type="button"
                   phx-click="nick_color_edit_dialog"
                   disabled={is_nil(@nick_colors_selected)}
                   data-testid="nick-color-edit-btn"
-                  class="btn-sm"
+                  class="btn-sm btn-icon"
                 >
-                  Edit
+                  <Icons.icon_btn_edit class="btn-icon__svg" /> Edit
                 </button>
                 <button
                   type="button"
@@ -274,9 +285,9 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
                   phx-value-nickname={@nick_colors_selected}
                   disabled={is_nil(@nick_colors_selected)}
                   data-testid="nick-color-remove-btn"
-                  class="btn-sm"
+                  class="btn-sm btn-icon"
                 >
-                  Remove
+                  <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
                 </button>
               </div>
               <div class="sunken-panel u-flex-1 u-overflow-y-auto">
@@ -334,6 +345,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
     >
       <div class="window dialog-window--narrow">
         <div class="title-bar">
+          <Icons.icon_dialog_address_book class="title-bar-icon" />
           <div class="title-bar-text">Add Contact</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="contact_add_cancel"></button>
@@ -377,9 +389,16 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
               />
             </div>
             <div class="dialog-buttons dialog-buttons--gap-8">
-              <button type="submit" data-testid="contact-add-ok">OK</button>
-              <button type="button" phx-click="contact_add_cancel" data-testid="contact-add-cancel">
-                Cancel
+              <button type="submit" class="btn-icon" data-testid="contact-add-ok">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
+              <button
+                type="button"
+                class="btn-icon"
+                phx-click="contact_add_cancel"
+                data-testid="contact-add-cancel"
+              >
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>
@@ -393,6 +412,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
     >
       <div class="window dialog-window--narrow">
         <div class="title-bar">
+          <Icons.icon_dialog_address_book class="title-bar-icon" />
           <div class="title-bar-text">Add to Notify List</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="notify_add_cancel"></button>
@@ -424,9 +444,16 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
               />
             </div>
             <div class="dialog-buttons dialog-buttons--gap-8">
-              <button type="submit" data-testid="ab-notify-add-ok">OK</button>
-              <button type="button" phx-click="notify_add_cancel" data-testid="ab-notify-add-cancel">
-                Cancel
+              <button type="submit" class="btn-icon" data-testid="ab-notify-add-ok">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
+              <button
+                type="button"
+                class="btn-icon"
+                phx-click="notify_add_cancel"
+                data-testid="ab-notify-add-cancel"
+              >
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>
@@ -440,6 +467,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
     >
       <div class="window dialog-window--narrow">
         <div class="title-bar">
+          <Icons.icon_dialog_address_book class="title-bar-icon" />
           <div class="title-bar-text">Edit Notify Entry</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="notify_edit_cancel"></button>
@@ -470,9 +498,16 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
               />
             </div>
             <div class="dialog-buttons dialog-buttons--gap-8">
-              <button type="submit" data-testid="ab-notify-edit-ok">OK</button>
-              <button type="button" phx-click="notify_edit_cancel" data-testid="ab-notify-edit-cancel">
-                Cancel
+              <button type="submit" class="btn-icon" data-testid="ab-notify-edit-ok">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
+              <button
+                type="button"
+                class="btn-icon"
+                phx-click="notify_edit_cancel"
+                data-testid="ab-notify-edit-cancel"
+              >
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>
@@ -486,6 +521,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
     >
       <div class="window dialog-window--narrow">
         <div class="title-bar">
+          <Icons.icon_dialog_address_book class="title-bar-icon" />
           <div class="title-bar-text">Add Nick Color</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="nick_color_add_cancel"></button>
@@ -510,13 +546,16 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
               {color_picker_grid(assigns, "nick-color-add")}
             </div>
             <div class="dialog-buttons dialog-buttons--gap-8">
-              <button type="submit" data-testid="nick-color-add-ok">OK</button>
+              <button type="submit" class="btn-icon" data-testid="nick-color-add-ok">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
               <button
                 type="button"
+                class="btn-icon"
                 phx-click="nick_color_add_cancel"
                 data-testid="nick-color-add-cancel"
               >
-                Cancel
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>
@@ -530,6 +569,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
     >
       <div class="window dialog-window--narrow">
         <div class="title-bar">
+          <Icons.icon_dialog_address_book class="title-bar-icon" />
           <div class="title-bar-text">Edit Nick Color</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="nick_color_edit_cancel"></button>
@@ -552,13 +592,16 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
               {color_picker_grid(assigns, "nick-color-edit")}
             </div>
             <div class="dialog-buttons dialog-buttons--gap-8">
-              <button type="submit" data-testid="nick-color-edit-ok">OK</button>
+              <button type="submit" class="btn-icon" data-testid="nick-color-edit-ok">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
               <button
                 type="button"
+                class="btn-icon"
                 phx-click="nick_color_edit_cancel"
                 data-testid="nick-color-edit-cancel"
               >
-                Cancel
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>
@@ -572,6 +615,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
     >
       <div class="window dialog-window--narrow">
         <div class="title-bar">
+          <Icons.icon_dialog_address_book class="title-bar-icon" />
           <div class="title-bar-text">Edit Contact</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="contact_edit_cancel"></button>
@@ -614,13 +658,16 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
               >{@selected_note}</textarea>
             </div>
             <div class="dialog-buttons dialog-buttons--gap-8">
-              <button type="submit" data-testid="contact-edit-ok">OK</button>
+              <button type="submit" class="btn-icon" data-testid="contact-edit-ok">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
               <button
                 type="button"
+                class="btn-icon"
                 phx-click="contact_edit_cancel"
                 data-testid="contact-edit-cancel"
               >
-                Cancel
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>

@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.Components.PasteConfirmDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
   attr :line_count, :integer, default: 0
   attr :flood_warning, :boolean, default: false
@@ -15,6 +17,7 @@ defmodule RetroHexChatWeb.Components.PasteConfirmDialog do
     ~H"""
     <div :if={@visible} class="window paste-dialog" data-testid="paste-dialog">
       <div class="title-bar">
+        <Icons.icon_dialog_paste class="title-bar-icon" />
         <div class="title-bar-text">Paste Confirmation</div>
         <div class="title-bar-controls">
           <button aria-label="Close" phx-click="paste_cancel"></button>
@@ -32,10 +35,17 @@ defmodule RetroHexChatWeb.Components.PasteConfirmDialog do
         </p>
 
         <div class="dialog-buttons u-mt-12">
-          <button phx-click="paste_send" disabled={@send_disabled} data-testid="paste-send-btn">
-            Send All
+          <button
+            class="btn-icon"
+            phx-click="paste_send"
+            disabled={@send_disabled}
+            data-testid="paste-send-btn"
+          >
+            <Icons.icon_btn_send class="btn-icon__svg" /> Send All
           </button>
-          <button phx-click="paste_cancel" data-testid="paste-cancel-btn">Cancel</button>
+          <button class="btn-icon" phx-click="paste_cancel" data-testid="paste-cancel-btn">
+            <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
+          </button>
         </div>
       </div>
     </div>

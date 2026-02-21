@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.Components.URLCatcherWindow do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, required: true
   attr :entries, :list, required: true
   attr :sort_column, :atom, required: true
@@ -28,6 +30,7 @@ defmodule RetroHexChatWeb.Components.URLCatcherWindow do
         class="window u-flex-col url-catcher-window"
       >
         <div class="title-bar">
+          <Icons.icon_dialog_url class="title-bar-icon" />
           <div class="title-bar-text">URL Catcher</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="toggle_url_catcher"></button>

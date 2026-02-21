@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
   use Phoenix.Component
 
   alias RetroHexChat.Chat.DisplayPreferences
+  alias RetroHexChatWeb.Icons
 
   attr :visible, :boolean, default: false
   attr :filter, :map, default: nil
@@ -28,6 +29,7 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
     >
       <div class="window u-flex-col dialog-window--log-viewer">
         <div class="title-bar">
+          <Icons.icon_dialog_log class="title-bar-icon" />
           <div class="title-bar-text">Log Viewer</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="close_log_viewer"></button>
@@ -106,18 +108,18 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
               />
               <button
                 type="submit"
-                class="btn-sm"
+                class="btn-sm btn-icon"
                 data-testid="log-search-btn"
               >
-                Search
+                <Icons.icon_btn_search class="btn-icon__svg" /> Search
               </button>
               <button
                 type="button"
                 phx-click="log_refresh"
-                class="btn-sm"
+                class="btn-sm btn-icon"
                 data-testid="log-refresh-btn"
               >
-                Refresh
+                <Icons.icon_btn_refresh class="btn-icon__svg" /> Refresh
               </button>
             </form>
             <div
@@ -175,10 +177,10 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
                 phx-click="log_page"
                 phx-value-page={@page.page - 1}
                 disabled={@page.page <= 1}
-                class="btn-sm"
+                class="btn-sm btn-icon"
                 data-testid="log-prev-btn"
               >
-                « Prev
+                <Icons.icon_btn_prev class="btn-icon__svg" /> Prev
               </button>
               <span class="u-text-sm" data-testid="log-page-indicator">
                 Page {@page.page} of {@page.total_pages}
@@ -188,10 +190,10 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
                 phx-click="log_page"
                 phx-value-page={@page.page + 1}
                 disabled={@page.page >= @page.total_pages}
-                class="btn-sm"
+                class="btn-sm btn-icon"
                 data-testid="log-next-btn"
               >
-                Next »
+                Next <Icons.icon_btn_next class="btn-icon__svg" />
               </button>
             </div>
             <%!-- Export --%>
@@ -202,20 +204,20 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
                 phx-click="log_export"
                 phx-value-format="txt"
                 disabled={export_disabled?(@page)}
-                class="btn-sm"
+                class="btn-sm btn-icon"
                 data-testid="log-export-txt"
               >
-                Export .txt
+                <Icons.icon_btn_export class="btn-icon__svg" /> Export .txt
               </button>
               <button
                 type="button"
                 phx-click="log_export"
                 phx-value-format="html"
                 disabled={export_disabled?(@page)}
-                class="btn-sm"
+                class="btn-sm btn-icon"
                 data-testid="log-export-html"
               >
-                Export .html
+                <Icons.icon_btn_export class="btn-icon__svg" /> Export .html
               </button>
             </div>
           </div>

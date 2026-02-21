@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.SoundSettingsDialog do
   use Phoenix.Component
 
   alias RetroHexChat.Chat.SoundSettings
+  alias RetroHexChatWeb.Icons
 
   attr :visible, :boolean, default: false
   attr :sound_settings_draft, :map, default: nil
@@ -26,6 +27,7 @@ defmodule RetroHexChatWeb.Components.SoundSettingsDialog do
     >
       <div class="window dialog-window--md">
         <div class="title-bar">
+          <Icons.icon_dialog_sound class="title-bar-icon" />
           <div class="title-bar-text">Sounds</div>
           <div class="title-bar-controls">
             <button
@@ -94,9 +96,15 @@ defmodule RetroHexChatWeb.Components.SoundSettingsDialog do
           </fieldset>
 
           <div class="dialog-buttons u-mt-8">
-            <button type="button" phx-click="sound_settings_ok">OK</button>
-            <button type="button" phx-click="close_sound_settings_dialog">Cancel</button>
-            <button type="button" phx-click="sound_settings_apply">Apply</button>
+            <button type="button" class="btn-icon" phx-click="sound_settings_ok">
+              <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+            </button>
+            <button type="button" class="btn-icon" phx-click="close_sound_settings_dialog">
+              <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
+            </button>
+            <button type="button" class="btn-icon" phx-click="sound_settings_apply">
+              <Icons.icon_btn_apply class="btn-icon__svg" /> Apply
+            </button>
           </div>
         </div>
       </div>

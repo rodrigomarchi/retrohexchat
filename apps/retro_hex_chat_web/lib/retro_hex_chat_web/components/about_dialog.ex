@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.Components.AboutDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
 
   @spec about_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -22,6 +24,7 @@ defmodule RetroHexChatWeb.Components.AboutDialog do
         phx-value-dialog="about"
       >
         <div class="title-bar">
+          <Icons.icon_dialog_about class="title-bar-icon" />
           <div class="title-bar-text">About RetroHexChat</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="close_dialog" phx-value-dialog="about"></button>
@@ -47,8 +50,8 @@ defmodule RetroHexChatWeb.Components.AboutDialog do
             </p>
           </div>
           <div class="about-buttons">
-            <button class="about-ok-btn" phx-click="close_dialog" phx-value-dialog="about">
-              OK
+            <button class="about-ok-btn btn-icon" phx-click="close_dialog" phx-value-dialog="about">
+              <Icons.icon_btn_ok class="btn-icon__svg" /> OK
             </button>
           </div>
         </div>

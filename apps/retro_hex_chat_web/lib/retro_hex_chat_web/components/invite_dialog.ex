@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.Components.InviteDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :pending_invites, :list, default: []
 
   @spec invite_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -21,6 +23,7 @@ defmodule RetroHexChatWeb.Components.InviteDialog do
           style={"width: 320px; position: absolute; top: calc(50% - 80px + #{20 * index}px); left: calc(50% - 160px + #{20 * index}px);"}
         >
           <div class="title-bar">
+            <Icons.icon_dialog_invite class="title-bar-icon" />
             <div class="title-bar-text">Channel Invitation</div>
             <div class="title-bar-controls">
               <button
@@ -37,11 +40,11 @@ defmodule RetroHexChatWeb.Components.InviteDialog do
               has invited you to join <strong>{invite.channel}</strong>
             </p>
             <div class="dialog-buttons dialog-buttons--center dialog-buttons--gap-8 u-mt-16">
-              <button phx-click="invite_accept" phx-value-channel={invite.channel}>
-                Join
+              <button class="btn-icon" phx-click="invite_accept" phx-value-channel={invite.channel}>
+                <Icons.icon_btn_join class="btn-icon__svg" /> Join
               </button>
-              <button phx-click="invite_ignore" phx-value-channel={invite.channel}>
-                Ignore
+              <button class="btn-icon" phx-click="invite_ignore" phx-value-channel={invite.channel}>
+                <Icons.icon_btn_ignore class="btn-icon__svg" /> Ignore
               </button>
             </div>
           </div>

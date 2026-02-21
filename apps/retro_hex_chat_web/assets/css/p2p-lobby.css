@@ -1,20 +1,5 @@
 /* P2P Lobby components: presence, chat, actions, consent */
 
-/* ── Inline icon+text button utility ── */
-
-.btn-icon {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.btn-icon__svg {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  vertical-align: middle;
-}
-
 /* ── Lobby Window (larger than chat — matches landing page scale) ── */
 
 .p2p-lobby {

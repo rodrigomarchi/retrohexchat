@@ -7,6 +7,8 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
   attr :active_tab, :string, default: "general"
   attr :channel_state, :map, default: nil
@@ -37,6 +39,7 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
     >
       <div class="window dialog-window--channel-central">
         <div class="title-bar">
+          <Icons.icon_dialog_channel_central class="title-bar-icon" />
           <div class="title-bar-text">
             Channel Central — {@channel_state.name}
           </div>
@@ -53,7 +56,9 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               phx-value-tab="general"
               data-testid="cc-tab-general"
             >
-              General
+              <span class="tab-icon">
+                <Icons.icon_tab_general class="btn-icon__svg" /> General
+              </span>
             </li>
             <li
               role="tab"
@@ -62,7 +67,9 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               phx-value-tab="modes"
               data-testid="cc-tab-modes"
             >
-              Modes
+              <span class="tab-icon">
+                <Icons.icon_tab_modes class="btn-icon__svg" /> Modes
+              </span>
             </li>
             <li
               role="tab"
@@ -71,7 +78,9 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               phx-value-tab="bans"
               data-testid="cc-tab-bans"
             >
-              Bans
+              <span class="tab-icon">
+                <Icons.icon_tab_bans class="btn-icon__svg" /> Bans
+              </span>
             </li>
             <li
               role="tab"
@@ -80,7 +89,9 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               phx-value-tab="ban_exceptions"
               data-testid="cc-tab-ban-ex"
             >
-              Ban Exceptions
+              <span class="tab-icon">
+                <Icons.icon_tab_exceptions class="btn-icon__svg" /> Ban Exceptions
+              </span>
             </li>
             <li
               role="tab"
@@ -89,7 +100,9 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               phx-value-tab="invite_exceptions"
               data-testid="cc-tab-invite-ex"
             >
-              Invite Exceptions
+              <span class="tab-icon">
+                <Icons.icon_tab_exceptions class="btn-icon__svg" /> Invite Exceptions
+              </span>
             </li>
           </menu>
 
@@ -136,8 +149,8 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               data-testid="cc-topic-input"
             >{@channel_state.topic}</textarea>
             <div class="u-flex-end u-gap-4">
-              <button type="submit" data-testid="cc-set-topic-btn" class="btn-sm">
-                Set Topic
+              <button type="submit" data-testid="cc-set-topic-btn" class="btn-sm btn-icon">
+                <Icons.icon_btn_set_topic class="btn-icon__svg" /> Set Topic
               </button>
             </div>
           </form>
@@ -243,8 +256,8 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
           </div>
         </fieldset>
         <div class="u-flex-end u-gap-4 u-mt-8">
-          <button type="submit" data-testid="cc-apply-modes-btn" class="btn-sm">
-            Apply
+          <button type="submit" data-testid="cc-apply-modes-btn" class="btn-sm btn-icon">
+            <Icons.icon_btn_apply class="btn-icon__svg" /> Apply
           </button>
         </div>
       </form>
@@ -309,17 +322,17 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
         <button
           phx-click="cc_open_add_ban"
           data-testid="cc-add-ban-btn"
-          class="btn-sm"
+          class="btn-sm btn-icon"
         >
-          Add Ban
+          <Icons.icon_btn_add class="btn-icon__svg" /> Add Ban
         </button>
         <button
           phx-click="cc_remove_ban"
           data-testid="cc-remove-ban-btn"
-          class="btn-sm"
+          class="btn-sm btn-icon"
           disabled={is_nil(@ban_selected)}
         >
-          Remove Ban
+          <Icons.icon_btn_remove class="btn-icon__svg" /> Remove Ban
         </button>
       </div>
       {render_add_ban_dialog(assigns)}
@@ -336,6 +349,7 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
     >
       <div class="window dialog-window--sm">
         <div class="title-bar">
+          <Icons.icon_dialog_channel_central class="title-bar-icon" />
           <div class="title-bar-text">Add Ban</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="cc_close_add_ban"></button>
@@ -348,9 +362,11 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               <input type="text" id="cc-ban-nick" name="nickname" data-testid="cc-ban-nick-input" />
             </div>
             <div class="u-flex-end u-gap-4 u-mt-8">
-              <button type="submit" class="btn-sm">OK</button>
-              <button type="button" phx-click="cc_close_add_ban" class="btn-sm">
-                Cancel
+              <button type="submit" class="btn-sm btn-icon">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
+              <button type="button" phx-click="cc_close_add_ban" class="btn-sm btn-icon">
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>
@@ -395,17 +411,17 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
         <button
           phx-click="cc_open_add_ban_ex"
           data-testid="cc-add-ban-ex-btn"
-          class="btn-sm"
+          class="btn-sm btn-icon"
         >
-          Add Exception
+          <Icons.icon_btn_add class="btn-icon__svg" /> Add Exception
         </button>
         <button
           phx-click="cc_remove_ban_exception"
           data-testid="cc-remove-ban-ex-btn"
-          class="btn-sm"
+          class="btn-sm btn-icon"
           disabled={is_nil(@ban_ex_selected)}
         >
-          Remove Exception
+          <Icons.icon_btn_remove class="btn-icon__svg" /> Remove Exception
         </button>
       </div>
       {render_add_ban_ex_dialog(assigns)}
@@ -422,6 +438,7 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
     >
       <div class="window dialog-window--sm">
         <div class="title-bar">
+          <Icons.icon_dialog_channel_central class="title-bar-icon" />
           <div class="title-bar-text">Add Ban Exception</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="cc_close_add_ban_ex"></button>
@@ -439,9 +456,11 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               />
             </div>
             <div class="u-flex-end u-gap-4 u-mt-8">
-              <button type="submit" class="btn-sm">OK</button>
-              <button type="button" phx-click="cc_close_add_ban_ex" class="btn-sm">
-                Cancel
+              <button type="submit" class="btn-sm btn-icon">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
+              <button type="button" phx-click="cc_close_add_ban_ex" class="btn-sm btn-icon">
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>
@@ -486,17 +505,17 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
         <button
           phx-click="cc_open_add_invite_ex"
           data-testid="cc-add-invite-ex-btn"
-          class="btn-sm"
+          class="btn-sm btn-icon"
         >
-          Add Exception
+          <Icons.icon_btn_add class="btn-icon__svg" /> Add Exception
         </button>
         <button
           phx-click="cc_remove_invite_exception"
           data-testid="cc-remove-invite-ex-btn"
-          class="btn-sm"
+          class="btn-sm btn-icon"
           disabled={is_nil(@invite_ex_selected)}
         >
-          Remove Exception
+          <Icons.icon_btn_remove class="btn-icon__svg" /> Remove Exception
         </button>
       </div>
       {render_add_invite_ex_dialog(assigns)}
@@ -513,6 +532,7 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
     >
       <div class="window dialog-window--sm">
         <div class="title-bar">
+          <Icons.icon_dialog_channel_central class="title-bar-icon" />
           <div class="title-bar-text">Add Invite Exception</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="cc_close_add_invite_ex"></button>
@@ -530,9 +550,11 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
               />
             </div>
             <div class="u-flex-end u-gap-4 u-mt-8">
-              <button type="submit" class="btn-sm">OK</button>
-              <button type="button" phx-click="cc_close_add_invite_ex" class="btn-sm">
-                Cancel
+              <button type="submit" class="btn-sm btn-icon">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+              </button>
+              <button type="button" phx-click="cc_close_add_invite_ex" class="btn-sm btn-icon">
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>

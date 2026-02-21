@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.Components.KickDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :kick_queue, :list, default: []
 
   @spec kick_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -22,12 +24,15 @@ defmodule RetroHexChatWeb.Components.KickDialog do
     >
       <div class="window dialog-window--narrow">
         <div class="title-bar">
+          <Icons.icon_dialog_kick class="title-bar-icon" />
           <div class="title-bar-text">Kicked</div>
         </div>
         <div class="window-body dialog-body--p16">
           <p>{@kick_message}</p>
           <div class="dialog-buttons dialog-buttons--center dialog-buttons--gap-8 u-mt-16">
-            <button phx-click="kick_dialog_dismiss" data-testid="kick-dialog-ok">OK</button>
+            <button class="btn-icon" phx-click="kick_dialog_dismiss" data-testid="kick-dialog-ok">
+              <Icons.icon_btn_ok class="btn-icon__svg" /> OK
+            </button>
           </div>
         </div>
       </div>

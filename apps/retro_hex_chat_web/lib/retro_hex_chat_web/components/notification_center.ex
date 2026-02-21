@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.Components.NotificationCenter do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
   attr :entries, :list, default: []
   attr :count, :integer, default: 0
@@ -19,6 +21,7 @@ defmodule RetroHexChatWeb.Components.NotificationCenter do
       data-testid="notification-center"
     >
       <div class="title-bar">
+        <Icons.icon_dialog_notifications class="title-bar-icon" />
         <div class="title-bar-text">Notifications</div>
         <div class="title-bar-controls">
           <button type="button" aria-label="Close" phx-click="toggle_notification_center"></button>
@@ -48,10 +51,11 @@ defmodule RetroHexChatWeb.Components.NotificationCenter do
         <div :if={@entries != []} class="notification-center-actions">
           <button
             type="button"
+            class="btn-icon"
             phx-click="mark_all_notifications_read"
             data-testid="mark-all-read"
           >
-            Mark all as read
+            <Icons.icon_btn_mark_read class="btn-icon__svg" /> Mark all as read
           </button>
         </div>
       </div>

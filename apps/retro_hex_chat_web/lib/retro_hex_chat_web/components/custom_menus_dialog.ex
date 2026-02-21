@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
   attr :custom_menus, :map, default: %{entries: []}
   attr :active_tab, :atom, default: :nicklist
@@ -32,6 +34,7 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
         data-testid="custom-menus-dialog"
       >
         <div class="title-bar">
+          <Icons.icon_dialog_custom_menus class="title-bar-icon" />
           <div class="title-bar-text">Custom Menus</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="close_custom_menus_dialog"></button>
@@ -40,20 +43,22 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
         <div class="dialog-body--p8 u-flex-col u-gap-8 u-overflow-hidden">
           <div class="u-flex">
             <button
+              class="btn-icon"
               phx-click="custom_menus_tab"
               phx-value-tab="nicklist"
               style={"padding: 4px 12px; #{if @active_tab == :nicklist, do: "font-weight: bold;", else: ""}"}
               data-testid="custom-menus-tab-nicklist"
             >
-              Nicklist
+              <Icons.icon_tab_nicklist class="btn-icon__svg" /> Nicklist
             </button>
             <button
+              class="btn-icon"
               phx-click="custom_menus_tab"
               phx-value-tab="channel"
               style={"padding: 4px 12px; #{if @active_tab == :channel, do: "font-weight: bold;", else: ""}"}
               data-testid="custom-menus-tab-channel"
             >
-              Channel
+              <Icons.icon_tab_channel class="btn-icon__svg" /> Channel
             </button>
           </div>
 
@@ -134,30 +139,44 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
                   {@error_message}
                 </div>
                 <div class="dialog-buttons u-mt-4">
-                  <button type="submit">Save</button>
-                  <button type="button" phx-click="custom_menu_dialog_cancel_edit">Cancel</button>
+                  <button type="submit" class="btn-icon">
+                    <Icons.icon_btn_save class="btn-icon__svg" /> Save
+                  </button>
+                  <button type="button" class="btn-icon" phx-click="custom_menu_dialog_cancel_edit">
+                    <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
+                  </button>
                 </div>
               </div>
             </form>
           </div>
 
           <div class="dialog-buttons">
-            <button phx-click="custom_menu_dialog_add" data-testid="custom-menu-add-btn">Add</button>
             <button
+              class="btn-icon"
+              phx-click="custom_menu_dialog_add"
+              data-testid="custom-menu-add-btn"
+            >
+              <Icons.icon_btn_add class="btn-icon__svg" /> Add
+            </button>
+            <button
+              class="btn-icon"
               phx-click="custom_menu_dialog_edit"
               disabled={@selected_item == nil}
               data-testid="custom-menu-edit-btn"
             >
-              Edit
+              <Icons.icon_btn_edit class="btn-icon__svg" /> Edit
             </button>
             <button
+              class="btn-icon"
               phx-click="custom_menu_dialog_delete"
               disabled={@selected_item == nil}
               data-testid="custom-menu-delete-btn"
             >
-              Remove
+              <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
             </button>
-            <button phx-click="close_custom_menus_dialog">Close</button>
+            <button class="btn-icon" phx-click="close_custom_menus_dialog">
+              <Icons.icon_btn_cancel class="btn-icon__svg" /> Close
+            </button>
           </div>
         </div>
       </div>
