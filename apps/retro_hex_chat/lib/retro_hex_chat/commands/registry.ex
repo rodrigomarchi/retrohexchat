@@ -47,6 +47,7 @@ defmodule RetroHexChat.Commands.Registry do
     "timer" => RetroHexChat.Commands.Handlers.Timer,
     "topic" => RetroHexChat.Commands.Handlers.Topic,
     "umode" => RetroHexChat.Commands.Handlers.Umode,
+    "unban" => RetroHexChat.Commands.Handlers.Unban,
     "unignore" => RetroHexChat.Commands.Handlers.Unignore,
     "wallops" => RetroHexChat.Commands.Handlers.Wallops,
     "whois" => RetroHexChat.Commands.Handlers.Whois,

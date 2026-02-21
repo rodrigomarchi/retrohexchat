@@ -446,6 +446,60 @@ defmodule RetroHexChat.Channels.ServerTest do
       :ok = Server.ban(channel, "op", "troll", "spam")
       assert_receive {:user_banned, %{operator: "op", target: "troll", reason: "spam"}}
     end
+
+    test "operator cannot ban owner" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "owner")
+      {:ok, _} = Server.join(channel, "regular")
+
+      :ok = Server.set_mode(channel, "owner", "+o", ["regular"])
+
+      assert {:error, msg} = Server.ban(channel, "regular", "owner")
+      assert msg =~ "equal or higher rank"
+    end
+
+    test "cannot ban yourself" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+
+      assert {:error, msg} = Server.ban(channel, "op", "op")
+      assert msg =~ "cannot ban yourself"
+    end
+  end
+
+  describe "ban/4 via mode +b" do
+    test "+b bans a user" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+
+      :ok = Server.set_mode(channel, "op", "+b", ["troll"])
+
+      {:ok, state} = Server.get_state(channel)
+      assert "troll" in state.bans
+    end
+
+    test "-b unbans a user" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      {:ok, _} = Server.join(channel, "op")
+
+      :ok = Server.ban(channel, "op", "troll")
+
+      {:ok, state} = Server.get_state(channel)
+      assert "troll" in state.bans
+
+      :ok = Server.set_mode(channel, "op", "-b", ["troll"])
+
+      {:ok, state} = Server.get_state(channel)
+      refute "troll" in state.bans
+    end
   end
 
   describe "rename_user/3" do

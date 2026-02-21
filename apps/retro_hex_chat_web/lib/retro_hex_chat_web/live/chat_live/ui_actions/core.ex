@@ -136,6 +136,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     end
   end
 
+  def handle_ui_action(socket, :unban_user, %{channel: channel, target: target}) do
+    case Server.unban(channel, socket.assigns.session.nickname, target) do
+      :ok -> socket
+      {:error, msg} -> error_event(socket, msg)
+    end
+  end
+
   def handle_ui_action(socket, :knock_channel, %{channel: channel} = payload) do
     message = Map.get(payload, :message)
     knock_timestamps = Map.get(socket.assigns, :knock_timestamps, %{})

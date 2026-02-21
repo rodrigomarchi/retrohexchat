@@ -37,6 +37,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
   @external_resource Path.join(@help_dir, "cmd-sendfile.html")
   @external_resource Path.join(@help_dir, "cmd-timer.html")
   @external_resource Path.join(@help_dir, "cmd-topic.html")
+  @external_resource Path.join(@help_dir, "cmd-unban.html")
   @external_resource Path.join(@help_dir, "cmd-unignore.html")
   @external_resource Path.join(@help_dir, "cmd-whois.html")
   @external_resource Path.join(@help_dir, "cmd-whowas.html")
@@ -281,6 +282,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         category: "Commands",
         keywords: ["topic", "channel topic", "set topic"],
         content: File.read!(Path.join(@help_dir, "cmd-topic.html"))
+      },
+      %{
+        id: "cmd-unban",
+        title: "/unban",
+        category: "Commands",
+        keywords: ["unban", "remove ban", "lift ban", "pardon"],
+        content: File.read!(Path.join(@help_dir, "cmd-unban.html"))
       },
       %{
         id: "cmd-unignore",

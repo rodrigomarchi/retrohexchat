@@ -141,16 +141,20 @@ defmodule RetroHexChat.Services.Queries do
 
   # ── Bans ────────────────────────────────────────────────────
 
-  @spec add_ban(String.t(), String.t(), String.t()) ::
+  @spec add_ban(String.t(), String.t(), String.t(), String.t() | nil) ::
           {:ok, Ban.t()} | {:error, Ecto.Changeset.t()}
-  def add_ban(channel_name, nickname, banned_by) do
+  def add_ban(channel_name, nickname, banned_by, reason \\ nil) do
     %Ban{}
     |> Ban.changeset(%{
       channel_name: channel_name,
       banned_nickname: nickname,
-      banned_by: banned_by
+      banned_by: banned_by,
+      reason: reason
     })
-    |> Repo.insert()
+    |> Repo.insert(
+      on_conflict: :nothing,
+      conflict_target: [:channel_name, :banned_nickname]
+    )
   end
 
   @spec remove_ban(String.t(), String.t()) :: :ok | {:error, :not_found}

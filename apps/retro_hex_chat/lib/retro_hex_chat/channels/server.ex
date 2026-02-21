@@ -313,10 +313,16 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   def handle_call({:set_mode, nickname, mode_string, params}, _from, state) do
+    {ban_ops, clean_mode_string, clean_params} =
+      extract_ban_operations(mode_string, params)
+
     with :ok <- check_mode_permissions(state.membership, nickname, mode_string, params),
-         {:ok, new_membership} <- apply_user_modes(state.membership, mode_string, params),
-         {:ok, new_modes} <- Modes.apply_changes(state.modes, mode_string, params) do
-      new_state = %{state | modes: new_modes, membership: new_membership}
+         {:ok, new_state} <- apply_ban_operations(ban_ops, nickname, state),
+         {:ok, new_membership} <-
+           apply_user_modes(new_state.membership, clean_mode_string, clean_params),
+         {:ok, new_modes} <-
+           Modes.apply_changes(new_state.modes, clean_mode_string, clean_params) do
+      new_state = %{new_state | modes: new_modes, membership: new_membership}
 
       Events.emit_mode_changed(state.name, mode_string, nickname)
 
@@ -360,10 +366,12 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   def handle_call({:ban, actor_nick, target_nick, reason}, _from, state) do
-    case Policy.can_ban?(state.membership, actor_nick) do
+    case Policy.can_ban?(state.membership, actor_nick, target_nick) do
       :ok ->
         new_bans = MapSet.put(state.bans, target_nick)
         new_state = %{state | bans: new_bans}
+
+        maybe_persist_ban(:add, state.name, target_nick, actor_nick, reason, state)
 
         broadcast(
           state.name,
@@ -537,6 +545,8 @@ defmodule RetroHexChat.Channels.Server do
       new_bans = MapSet.delete(state.bans, target_nick)
       new_state = %{state | bans: new_bans}
 
+      maybe_persist_ban(:remove, state.name, target_nick, operator_nick, nil, state)
+
       broadcast(
         state.name,
         {:user_unbanned, %{channel: state.name, operator: operator_nick, target: target_nick}}
@@ -615,6 +625,112 @@ defmodule RetroHexChat.Channels.Server do
   # ──────────────────────────────────────────────────────────────
   # Private Helpers
   # ──────────────────────────────────────────────────────────────
+
+  defp extract_ban_operations(mode_string, params) do
+    case String.split(mode_string, "", trim: true) do
+      [sign | flags] when sign in ["+", "-"] ->
+        action = if sign == "+", do: :ban, else: :unban
+
+        {ban_ops, remaining_flags, remaining_params} =
+          collect_ban_flags(action, flags, params)
+
+        clean_mode_string =
+          case remaining_flags do
+            [] -> sign
+            _ -> sign <> Enum.join(remaining_flags)
+          end
+
+        {ban_ops, clean_mode_string, remaining_params}
+
+      _ ->
+        {[], mode_string, params}
+    end
+  end
+
+  defp collect_ban_flags(action, flags, params) do
+    {ops, kept_flags, kept_params, _remaining_params} =
+      Enum.reduce(flags, {[], [], [], params}, fn
+        "b", {ops, kept, kp, [nick | rest]} ->
+          {[{action, nick} | ops], kept, kp, rest}
+
+        "b", {ops, kept, kp, []} ->
+          {ops, kept, kp, []}
+
+        flag, {ops, kept, kp, [param | rest]} when flag in ~w(o v q h k l j) ->
+          {ops, kept ++ [flag], kp ++ [param], rest}
+
+        flag, {ops, kept, kp, []} when flag in ~w(o v q h k l j) ->
+          {ops, kept ++ [flag], kp, []}
+
+        flag, {ops, kept, kp, rest} ->
+          {ops, kept ++ [flag], kp, rest}
+      end)
+
+    {Enum.reverse(ops), kept_flags, kept_params}
+  end
+
+  defp apply_ban_operations([], _nickname, state), do: {:ok, state}
+
+  defp apply_ban_operations(ban_ops, nickname, state) do
+    Enum.reduce_while(ban_ops, {:ok, state}, fn
+      {:ban, target}, {:ok, st} ->
+        case do_mode_ban(st, nickname, target) do
+          {:ok, new_st} -> {:cont, {:ok, new_st}}
+          {:error, _} = err -> {:halt, err}
+        end
+
+      {:unban, target}, {:ok, st} ->
+        case do_mode_unban(st, nickname, target) do
+          {:ok, new_st} -> {:cont, {:ok, new_st}}
+          {:error, _} = err -> {:halt, err}
+        end
+    end)
+  end
+
+  defp do_mode_ban(state, nickname, target) do
+    with :ok <- Policy.can_ban?(state.membership, nickname, target) do
+      new_state = %{state | bans: MapSet.put(state.bans, target)}
+      maybe_persist_ban(:add, state.name, target, nickname, nil, state)
+
+      broadcast(
+        state.name,
+        {:user_banned, %{channel: state.name, operator: nickname, target: target, reason: nil}}
+      )
+
+      {:ok, eject_if_member(new_state, nickname, target)}
+    end
+  end
+
+  defp do_mode_unban(state, nickname, target) do
+    if Policy.operator?(state.membership, nickname) do
+      new_state = %{state | bans: MapSet.delete(state.bans, target)}
+      maybe_persist_ban(:remove, state.name, target, nickname, nil, state)
+
+      broadcast(
+        state.name,
+        {:user_unbanned, %{channel: state.name, operator: nickname, target: target}}
+      )
+
+      {:ok, new_state}
+    else
+      {:error, "You must be a channel operator to unban users"}
+    end
+  end
+
+  defp eject_if_member(state, operator, target) do
+    if Membership.member?(state.membership, target) do
+      new_membership = Membership.remove(state.membership, target)
+
+      broadcast(
+        state.name,
+        {:user_kicked, %{operator: operator, target: target, reason: "Banned"}}
+      )
+
+      %{state | membership: new_membership}
+    else
+      state
+    end
+  end
 
   defp check_mode_permissions(membership, nickname, mode_string, params) do
     flags = extract_mode_flags(mode_string, params)
@@ -851,6 +967,18 @@ defmodule RetroHexChat.Channels.Server do
   rescue
     e ->
       Logger.warning("Failed to persist #{type} #{action} for #{channel_name}: #{inspect(e)}")
+  end
+
+  defp maybe_persist_ban(action, channel_name, nickname, actor, reason, state) do
+    if state.registered do
+      case action do
+        :add -> ServiceQueries.add_ban(channel_name, nickname, actor, reason)
+        :remove -> ServiceQueries.remove_ban(channel_name, nickname)
+      end
+    end
+  rescue
+    e ->
+      Logger.warning("Failed to persist ban #{action} for #{channel_name}: #{inspect(e)}")
   end
 
   defp load_persisted_state(state) do

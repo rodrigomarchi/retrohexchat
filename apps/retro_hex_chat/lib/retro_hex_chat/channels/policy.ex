@@ -123,11 +123,30 @@ defmodule RetroHexChat.Channels.Policy do
     end
   end
 
-  @spec can_ban?(Membership.t(), String.t()) :: :ok | {:error, String.t()}
-  def can_ban?(membership, actor) do
-    case Membership.role(membership, actor) do
-      {:ok, role} when role in [:owner, :operator] -> :ok
-      _ -> {:error, "Insufficient privileges"}
+  @spec can_ban?(Membership.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
+  def can_ban?(membership, actor, target) do
+    if actor == target do
+      {:error, "You cannot ban yourself"}
+    else
+      with {:ok, actor_role} <- Membership.role(membership, actor),
+           true <- actor_role in [:owner, :operator] do
+        check_ban_target(membership, actor_role, target)
+      else
+        {:error, :not_member} -> {:error, "Insufficient privileges"}
+        false -> {:error, "Insufficient privileges"}
+      end
+    end
+  end
+
+  defp check_ban_target(membership, actor_role, target) do
+    case Membership.role(membership, target) do
+      {:ok, target_role} ->
+        if Membership.rank(actor_role) > Membership.rank(target_role),
+          do: :ok,
+          else: {:error, "Cannot ban a user with equal or higher rank"}
+
+      {:error, :not_member} ->
+        :ok
     end
   end
 

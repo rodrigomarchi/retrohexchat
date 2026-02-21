@@ -221,25 +221,72 @@ defmodule RetroHexChat.Channels.PolicyTest do
     end
   end
 
-  describe "can_ban?/2" do
-    test "operator can ban" do
-      m = Membership.new() |> Membership.add("op", :operator)
-      assert :ok = Policy.can_ban?(m, "op")
+  describe "can_ban?/3" do
+    test "operator can ban regular user" do
+      m =
+        Membership.new()
+        |> Membership.add("op", :operator)
+        |> Membership.add("user", :regular)
+
+      assert :ok = Policy.can_ban?(m, "op", "user")
     end
 
-    test "owner can ban" do
-      m = Membership.new() |> Membership.add("owner", :owner)
-      assert :ok = Policy.can_ban?(m, "owner")
+    test "owner can ban operator" do
+      m =
+        Membership.new()
+        |> Membership.add("owner", :owner)
+        |> Membership.add("op", :operator)
+
+      assert :ok = Policy.can_ban?(m, "owner", "op")
+    end
+
+    test "operator cannot ban owner" do
+      m =
+        Membership.new()
+        |> Membership.add("op", :operator)
+        |> Membership.add("owner", :owner)
+
+      assert {:error, msg} = Policy.can_ban?(m, "op", "owner")
+      assert msg =~ "equal or higher rank"
+    end
+
+    test "operator cannot ban another operator (equal rank)" do
+      m =
+        Membership.new()
+        |> Membership.add("op1", :operator)
+        |> Membership.add("op2", :operator)
+
+      assert {:error, msg} = Policy.can_ban?(m, "op1", "op2")
+      assert msg =~ "equal or higher rank"
+    end
+
+    test "cannot ban yourself" do
+      m = Membership.new() |> Membership.add("op", :operator)
+      assert {:error, msg} = Policy.can_ban?(m, "op", "op")
+      assert msg =~ "cannot ban yourself"
     end
 
     test "half_operator cannot ban" do
-      m = Membership.new() |> Membership.add("halfop", :half_operator)
-      assert {:error, _} = Policy.can_ban?(m, "halfop")
+      m =
+        Membership.new()
+        |> Membership.add("halfop", :half_operator)
+        |> Membership.add("user", :regular)
+
+      assert {:error, _} = Policy.can_ban?(m, "halfop", "user")
     end
 
     test "regular user cannot ban" do
-      m = Membership.new() |> Membership.add("user", :regular)
-      assert {:error, _} = Policy.can_ban?(m, "user")
+      m =
+        Membership.new()
+        |> Membership.add("user", :regular)
+        |> Membership.add("other", :regular)
+
+      assert {:error, _} = Policy.can_ban?(m, "user", "other")
+    end
+
+    test "operator can ban non-member (preemptive ban)" do
+      m = Membership.new() |> Membership.add("op", :operator)
+      assert :ok = Policy.can_ban?(m, "op", "outsider")
     end
   end
 
