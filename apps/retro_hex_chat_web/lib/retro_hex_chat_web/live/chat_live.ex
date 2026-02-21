@@ -76,6 +76,7 @@ defmodule RetroHexChatWeb.ChatLive do
             |> maybe_show_motd()
             |> show_welcome_message()
             |> show_chanserv_announcement()
+            |> show_nickserv_announcement()
             |> assign(show_status_tab: true)
             |> push_initial_preferences()
 
@@ -429,6 +430,32 @@ defmodule RetroHexChatWeb.ChatLive do
       "",
       "Access hierarchy: Owner > SOP > AOP > VOP",
       "Type /help chanserv or /help channel-permissions for full details."
+    ]
+
+    Enum.reduce(lines, socket, fn line, acc ->
+      Helpers.push_status_message(acc, line, :service)
+    end)
+  end
+
+  defp show_nickserv_announcement(socket) do
+    lines = [
+      "",
+      "[NickServ] Nickname Services Online",
+      "NickServ protects your nickname with a password so nobody else can use it.",
+      "",
+      "Quick start:",
+      "  /ns register <password>   — Register your current nickname",
+      "  /ns identify <password>   — Identify (log in) for this session",
+      "  /ns info [nickname]       — Look up registration info",
+      "  /ns ghost <nick>          — Disconnect a ghost session",
+      "  /ns drop <password>       — Permanently unregister your nickname",
+      "",
+      "Rules:",
+      "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different",
+      "  • Nicks expire after 7 days of inactivity",
+      "  • Switching to a registered nick gives you 60s to identify",
+      "",
+      "Type /help nickserv for full details."
     ]
 
     Enum.reduce(lines, socket, fn line, acc ->

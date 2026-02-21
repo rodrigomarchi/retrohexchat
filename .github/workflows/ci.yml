@@ -462,7 +462,7 @@ jobs:
   deploy:
     name: Deploy (${{ matrix.server }})
     needs: [report]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: always() && needs.report.result == 'success' && github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     strategy:
       matrix:
