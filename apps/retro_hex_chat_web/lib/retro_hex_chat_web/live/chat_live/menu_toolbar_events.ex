@@ -211,14 +211,16 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("autocomplete_select", %{"type" => "command", "value" => command}, socket) do
     {:halt,
-     assign(socket,
+     socket
+     |> assign(
        input: "/#{command} ",
        autocomplete_visible: false,
        autocomplete_mode: nil,
        autocomplete_results: [],
        autocomplete_filter: "",
        autocomplete_selected: 0
-     )}
+     )
+     |> push_event("set_input", %{value: "/#{command} "})}
   end
 
   def handle_event("autocomplete_select", %{"type" => "nick", "value" => nickname}, socket) do

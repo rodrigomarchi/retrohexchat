@@ -20,7 +20,7 @@ const AutocompleteHook = {
     this.inputEl = this.el;
     this.typingTimeout = null;
     this.isTyping = false;
-    this.dropdownVisible = false;
+    this.hasNavigated = false;
     this.tooltipVisible = false;
     this.tabCycleState = null;
     this.editMode = false;
@@ -57,22 +57,23 @@ const AutocompleteHook = {
       }, 3000);
     });
 
-    this.inputEl.addEventListener("keyup", () => {
+    this.inputEl.addEventListener("keyup", (e) => {
+      if (["ArrowUp", "ArrowDown", "Tab", "Enter", "Escape"].includes(e.key)) return;
+
       const value = this.inputEl.value;
       const trigger = this.detectTrigger(value);
 
       if (trigger) {
+        this.hasNavigated = false;
         this.pushEvent("autocomplete_query", trigger);
         return;
       }
 
-      if (this.dropdownVisible) {
+      if (this.isDropdownVisible()) {
         this.pushEvent("autocomplete_close", {});
       }
 
-      if (!this.dropdownVisible) {
-        this.checkSyntaxTooltip(value);
-      }
+      this.checkSyntaxTooltip(value);
     });
 
     this.inputEl.addEventListener("keydown", (e) => {
@@ -88,9 +89,10 @@ const AutocompleteHook = {
           this.pushEvent("cancel_edit", {});
           return;
         }
-        if (this.dropdownVisible) {
+        if (this.isDropdownVisible()) {
           e.preventDefault();
           this.pushEvent("autocomplete_close", {});
+          this.hasNavigated = false;
         } else if (this.tooltipVisible) {
           e.preventDefault();
           this.pushEvent("syntax_tooltip_dismiss", {});
@@ -104,15 +106,20 @@ const AutocompleteHook = {
 
         e.preventDefault();
 
+        if (this.isDropdownVisible() && this.hasNavigated) {
+          this.pushEvent("autocomplete_select_current", {});
+          this.hasNavigated = false;
+          return;
+        }
+
+        if (this.isDropdownVisible()) {
+          this.pushEvent("autocomplete_close", {});
+        }
+
         if (this.isTyping) {
           this.isTyping = false;
           clearTimeout(this.typingTimeout);
           this.pushEvent("pm_stop_typing", {});
-        }
-
-        if (this.dropdownVisible) {
-          this.pushEvent("autocomplete_close", {});
-          this.dropdownVisible = false;
         }
 
         if (this.tooltipVisible) {
@@ -161,8 +168,10 @@ const AutocompleteHook = {
       // Arrow keys — navigate dropdown if visible, otherwise history/edit
       if (e.key === "ArrowUp") {
         e.preventDefault();
-        if (this.dropdownVisible) {
+        if (this.isDropdownVisible()) {
+          this.hasNavigated = true;
           this.pushEvent("autocomplete_navigate", { direction: "up" });
+          this.scrollSelectedIntoView();
         } else if (this.inputEl.value === "") {
           // Empty input + ↑ = trigger edit mode for last own message
           this.pushEvent("edit_last_message", {});
@@ -174,8 +183,10 @@ const AutocompleteHook = {
 
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        if (this.dropdownVisible) {
+        if (this.isDropdownVisible()) {
+          this.hasNavigated = true;
           this.pushEvent("autocomplete_navigate", { direction: "down" });
+          this.scrollSelectedIntoView();
         } else {
           this.pushEvent("history_navigate", { direction: "down" });
         }
@@ -185,8 +196,9 @@ const AutocompleteHook = {
       if (e.key === "Tab") {
         e.preventDefault();
 
-        if (this.dropdownVisible) {
+        if (this.isDropdownVisible()) {
           this.pushEvent("autocomplete_select_current", {});
+          this.hasNavigated = false;
           return;
         }
 
@@ -222,17 +234,6 @@ const AutocompleteHook = {
     });
 
     // Handle server events
-    this.handleEvent("autocomplete_results", ({ results }) => {
-      this.dropdownVisible = results.length > 0;
-      if (this.dropdownVisible && this.tooltipVisible) {
-        this.tooltipVisible = false;
-      }
-    });
-
-    this.handleEvent("autocomplete_closed", () => {
-      this.dropdownVisible = false;
-    });
-
     this.handleEvent("tab_matches", ({ matches, is_start }) => {
       if (matches.length === 0) return;
 
@@ -278,9 +279,9 @@ const AutocompleteHook = {
         this.pushEvent("syntax_tooltip_dismiss", {});
         this.tooltipVisible = false;
       }
-      if (this.dropdownVisible) {
+      if (this.isDropdownVisible()) {
         this.pushEvent("autocomplete_close", {});
-        this.dropdownVisible = false;
+        this.hasNavigated = false;
       }
     });
   },
@@ -319,6 +320,19 @@ const AutocompleteHook = {
     const args = value.slice(spaceIdx + 1);
     this.tooltipVisible = true;
     this.pushEvent("syntax_tooltip_query", { command, args });
+  },
+
+  // ── Dropdown helpers ────────────────────────────────────
+
+  isDropdownVisible() {
+    return !!document.getElementById("autocomplete-dropdown");
+  },
+
+  scrollSelectedIntoView() {
+    requestAnimationFrame(() => {
+      const item = document.querySelector("#autocomplete-dropdown .autocomplete-item.selected");
+      if (item) item.scrollIntoView({ block: "nearest" });
+    });
   },
 
   // ── Delegated methods ──────────────────────────────────
