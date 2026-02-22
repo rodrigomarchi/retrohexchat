@@ -11,13 +11,16 @@
   --color-gray-600: #606060;
   --color-gray-500: #808080;
   --color-gray-400: #c0c0c0;
+  --color-gray-350: #b5b5b5;
   --color-gray-300: #d4d0c8;
   --color-gray-200: #dfdfdf;
   --color-gray-100: #f0f0f0;
 
   /* ── Colors: Semantic ── */
+  --color-text: #222222;
   --color-selection-bg: #000080;
   --color-selection-fg: #ffffff;
+  --color-highlight-light: #1084d0;
   --color-error: #cc0000;
   --color-warning: #808000;
   --color-warning-alt: #cc8800;
@@ -45,6 +48,7 @@
   --space-4: 4px;
   --space-6: 6px;
   --space-8: 8px;
+  --space-10: 10px;
   --space-12: 12px;
   --space-16: 16px;
 
@@ -69,4 +73,69 @@
   --z-modal-above: 210;
   --z-context-menu: 300;
   --z-toast: 10000;
+
+  /* ── Retro Primitives: Geometry ── */
+  --radio-width: 12px;
+  --checkbox-width: 13px;
+  --radio-label-spacing: 6px;
+  --range-track-height: 4px;
+  --range-spacing: 10px;
+
+  --radio-total-width-precalc: var(--radio-width) + var(--radio-label-spacing);
+  --radio-total-width: calc(var(--radio-total-width-precalc));
+  --radio-left: calc(-1 * var(--radio-total-width-precalc));
+  --radio-dot-width: 4px;
+  --radio-dot-top: calc(var(--radio-width) / 2 - var(--radio-dot-width) / 2);
+  --radio-dot-left: calc(
+    -1 * (var(--radio-total-width-precalc)) + var(--radio-width) / 2 - var(
+        --radio-dot-width
+      ) / 2
+  );
+
+  --checkbox-total-width-precalc: var(--checkbox-width) +
+    var(--radio-label-spacing);
+  --checkbox-total-width: calc(var(--checkbox-total-width-precalc));
+  --checkbox-left: calc(-1 * var(--checkbox-total-width-precalc));
+  --checkmark-width: 7px;
+  --checkmark-left: 3px;
+
+  /* ── Retro Primitives: Borders (box-shadow composites) ── */
+  --border-raised-outer: inset -1px -1px var(--color-gray-900),
+    inset 1px 1px var(--color-white);
+  --border-raised-inner: inset -2px -2px var(--color-gray-500),
+    inset 2px 2px var(--color-gray-200);
+  --border-sunken-outer: inset -1px -1px var(--color-white),
+    inset 1px 1px var(--color-gray-900);
+  --border-sunken-inner: inset -2px -2px var(--color-gray-200),
+    inset 2px 2px var(--color-gray-500);
+  --default-button-border-raised-outer: inset -2px -2px var(--color-gray-900),
+    inset 1px 1px var(--color-gray-900);
+  --default-button-border-raised-inner: inset 2px 2px var(--color-white),
+    inset -3px -3px var(--color-gray-500),
+    inset 3px 3px var(--color-gray-200);
+  --default-button-border-sunken-outer: inset 2px 2px var(--color-gray-900),
+    inset -1px -1px var(--color-gray-900);
+  --default-button-border-sunken-inner: inset -2px -2px var(--color-white),
+    inset 3px 3px var(--color-gray-500),
+    inset -3px -3px var(--color-gray-200);
+
+  /* Window borders flip button-face and button-highlight */
+  --border-window-outer: inset -1px -1px var(--color-gray-900),
+    inset 1px 1px var(--color-gray-200);
+  --border-window-inner: inset -2px -2px var(--color-gray-500),
+    inset 2px 2px var(--color-white);
+
+  /* Field borders (checkbox, input, etc) flip window-frame and button-shadow */
+  --border-field: inset -1px -1px var(--color-white),
+    inset 1px 1px var(--color-gray-500),
+    inset -2px -2px var(--color-gray-200),
+    inset 2px 2px var(--color-gray-900);
+  --border-status-field: inset -1px -1px var(--color-gray-200),
+    inset 1px 1px var(--color-gray-500);
+
+  /* Tabs */
+  --border-tab: inset -1px 0 var(--color-gray-900),
+    inset 1px 1px var(--color-gray-200),
+    inset -2px 0 var(--color-gray-500),
+    inset 2px 2px var(--color-white);
 }

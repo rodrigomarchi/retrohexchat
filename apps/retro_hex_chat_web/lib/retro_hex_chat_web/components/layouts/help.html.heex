@@ -71,55 +71,55 @@
       <div class="app-header">
         <img src="/images/header-logo.svg" alt="RetroHexChat" class="app-header-wordmark" />
         <div class="app-header-panels">
-        <%!-- Toolbar: all buttons disabled (preview mode) --%>
-        <div class="toolbar toolbar--preview" role="toolbar">
-          <span class="toolbar-btn toolbar-btn--disabled" title="Connect">
-            <svg viewBox="0 0 16 16">
-              <circle cx="4" cy="8" r="2.5" fill="#999" />
-              <circle cx="12" cy="8" r="2.5" fill="#999" />
-              <path
-                d="M7 6l2-2 2 2-1 1-1-1v6l1-1 1 1-2 2-2-2 1-1 1 1V6L7 7z"
-                fill="#bbb"
-              />
-            </svg>
-          </span>
-          <span class="toolbar-btn toolbar-btn--disabled" title="View">
-            <.icon_group_view class="toolbar-group-icon toolbar-icon--disabled" />
-          </span>
-          <span class="toolbar-btn toolbar-btn--disabled" title="Tools">
-            <.icon_group_tools class="toolbar-group-icon toolbar-icon--disabled" />
-          </span>
-          <span class="toolbar-btn toolbar-btn--disabled" title="Notifications">
-            <.icon_group_notifications class="toolbar-group-icon toolbar-icon--disabled" />
-          </span>
-          <span class="toolbar-btn toolbar-btn--disabled" title="Help">
-            <.icon_group_help class="toolbar-group-icon toolbar-icon--disabled" />
-          </span>
-        </div>
-        <%!-- Status bar: all fields disabled --%>
-        <div class="status-bar">
-          <p class="status-bar-field status-bar-section--left">
-            <.icon_status_user class="status-bar-icon status-bar-icon--disabled" />
-            <span class="status-bar-nick status-bar-text--disabled">Guest</span>
-            <span class="status-bar-separator">|</span>
-            <.icon_tab_channel class="status-bar-icon status-bar-icon--disabled" />
-            <span class="status-bar-channel status-bar-text--disabled">No channel</span>
-            <span class="status-bar-text--disabled">(0)</span>
-            <span class="status-bar-separator">|</span>
-            <span class="status-bar-connection--disconnected">● Off</span>
-            <span class="status-bar-separator">|</span>
-            <.icon_status_signal class="status-bar-icon status-bar-icon--disabled" />
-            <span class="status-bar-text--disabled">Lag: —</span>
-            <span class="status-bar-separator">|</span>
-            <.icon_clock class="status-bar-icon status-bar-icon--disabled" />
-            <span>--:--</span>
-            <span class="status-bar-separator">|</span>
-            <span class="status-bar-text--disabled">
-              <.icon_dialog_sound class="status-bar-icon status-bar-icon--disabled" />
+          <%!-- Toolbar: all buttons disabled (preview mode) --%>
+          <div class="toolbar toolbar--preview" role="toolbar">
+            <span class="toolbar-btn toolbar-btn--disabled" title="Connect">
+              <svg viewBox="0 0 16 16">
+                <circle cx="4" cy="8" r="2.5" fill="#999" />
+                <circle cx="12" cy="8" r="2.5" fill="#999" />
+                <path
+                  d="M7 6l2-2 2 2-1 1-1-1v6l1-1 1 1-2 2-2-2 1-1 1 1V6L7 7z"
+                  fill="#bbb"
+                />
+              </svg>
             </span>
-          </p>
+            <span class="toolbar-btn toolbar-btn--disabled" title="View">
+              <.icon_group_view class="toolbar-group-icon toolbar-icon--disabled" />
+            </span>
+            <span class="toolbar-btn toolbar-btn--disabled" title="Tools">
+              <.icon_group_tools class="toolbar-group-icon toolbar-icon--disabled" />
+            </span>
+            <span class="toolbar-btn toolbar-btn--disabled" title="Notifications">
+              <.icon_group_notifications class="toolbar-group-icon toolbar-icon--disabled" />
+            </span>
+            <span class="toolbar-btn toolbar-btn--disabled" title="Help">
+              <.icon_group_help class="toolbar-group-icon toolbar-icon--disabled" />
+            </span>
+          </div>
+          <%!-- Status bar: all fields disabled --%>
+          <div class="status-bar">
+            <p class="status-bar-field status-bar-section--left">
+              <.icon_status_user class="status-bar-icon status-bar-icon--disabled" />
+              <span class="status-bar-nick status-bar-text--disabled">Guest</span>
+              <span class="status-bar-separator">|</span>
+              <.icon_tab_channel class="status-bar-icon status-bar-icon--disabled" />
+              <span class="status-bar-channel status-bar-text--disabled">No channel</span>
+              <span class="status-bar-text--disabled">(0)</span>
+              <span class="status-bar-separator">|</span>
+              <span class="status-bar-connection--disconnected">● Off</span>
+              <span class="status-bar-separator">|</span>
+              <.icon_status_signal class="status-bar-icon status-bar-icon--disabled" />
+              <span class="status-bar-text--disabled">Lag: —</span>
+              <span class="status-bar-separator">|</span>
+              <.icon_clock class="status-bar-icon status-bar-icon--disabled" />
+              <span>--:--</span>
+              <span class="status-bar-separator">|</span>
+              <span class="status-bar-text--disabled">
+                <.icon_dialog_sound class="status-bar-icon status-bar-icon--disabled" />
+              </span>
+            </p>
+          </div>
         </div>
-      </div>
       </div>
       {@inner_content}
     </div>

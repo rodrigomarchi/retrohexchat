@@ -29,7 +29,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   @domain_app_dir "apps/retro_hex_chat"
 
   defp css_dir, do: Path.join(web_app_root(), "assets/css")
-  defp vendor_css, do: Path.join(web_app_root(), "assets/vendor/98.css/98.css")
+  defp retro_css_dir, do: Path.join(web_app_root(), "assets/css")
   defp web_lib, do: Path.join(web_app_root(), "lib")
   defp js_dir, do: Path.join(web_app_root(), "assets/js")
   defp domain_lib, do: Path.join(project_root(), "#{@domain_app_dir}/lib")
@@ -95,11 +95,22 @@ defmodule Mix.Tasks.Lint.CssConsistency do
 
   # -- Phase A: Extract defined CSS classes --
 
+  @retro_files ~w(
+    retro-base.css retro-buttons.css retro-form-controls.css retro-panels.css
+    retro-range.css retro-scrollbar.css retro-tabs.css retro-tree-view.css
+    retro-window.css
+  )
+
   @doc false
   @spec extract_defined_classes() :: MapSet.t()
   def extract_defined_classes do
+    retro_set = MapSet.new(@retro_files)
+
     Path.wildcard("#{css_dir()}/**/*.css")
-    |> Enum.reject(&String.ends_with?(&1, "app.css"))
+    |> Enum.reject(fn path ->
+      String.ends_with?(path, "app.css") or
+        MapSet.member?(retro_set, Path.basename(path))
+    end)
     |> Enum.reduce(%{}, fn file, acc ->
       extract_classes_from_css(File.read!(file), short_css_path(file))
       |> Enum.reduce(acc, fn {class, source}, map ->
@@ -134,20 +145,25 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     |> Enum.uniq()
   end
 
-  # -- Phase A (vendor): Extract retro design system classes --
+  # -- Phase A (retro primitives): Extract retro design system classes --
 
   @doc false
   @spec extract_vendor_classes() :: MapSet.t()
   def extract_vendor_classes do
-    if File.exists?(vendor_css()) do
-      vendor_css()
-      |> File.read!()
-      |> remove_css_comments()
-      |> extract_selectors()
-      |> MapSet.new()
-    else
-      MapSet.new()
-    end
+    @retro_files
+    |> Enum.flat_map(fn file ->
+      path = Path.join(retro_css_dir(), file)
+
+      if File.exists?(path) do
+        path
+        |> File.read!()
+        |> remove_css_comments()
+        |> extract_selectors()
+      else
+        []
+      end
+    end)
+    |> MapSet.new()
   end
 
   # -- Phase B: Extract referenced classes --
@@ -541,7 +557,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     IO.puts("#{IO.ANSI.cyan()}Summary:#{IO.ANSI.reset()}")
     IO.puts("  CSS classes defined:      #{MapSet.size(defined)}")
     IO.puts("  Classes referenced:       #{MapSet.size(referenced)}")
-    IO.puts("  Vendor classes (retro):   #{MapSet.size(vendor)}")
+    IO.puts("  Retro classes:            #{MapSet.size(vendor)}")
     IO.puts("  Allowlisted (unused):     #{MapSet.size(unused_allow)}")
     IO.puts("  Allowlisted (missing):    #{MapSet.size(missing_allow)}")
     IO.puts("")

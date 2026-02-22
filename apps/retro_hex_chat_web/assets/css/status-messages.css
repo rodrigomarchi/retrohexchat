@@ -9,10 +9,10 @@
 
 /* MOTD — bordered container in Status Window */
 .chat-status--motd {
-  border: 2px solid var(--text-color, #000);
+  border: 2px solid var(--color-text);
   padding: 8px;
   margin: 4px 0;
-  background: var(--surface, #fff);
+  background: var(--color-surface);
   white-space: pre-wrap;
 }
 .chat-status--motd::before {

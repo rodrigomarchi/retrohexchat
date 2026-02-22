@@ -1,9 +1,19 @@
 /* RetroHexChat - main CSS entry point */
-@import "../vendor/98.css/98.css";
 
 /* Layer 1: Foundation */
 @import "./tokens.css";
 @import "./utilities.css";
+
+/* Layer 1.5: Retro Primitives (decomposed from vendor 98.css) */
+@import "./retro-base.css";
+@import "./retro-buttons.css";
+@import "./retro-form-controls.css";
+@import "./retro-panels.css";
+@import "./retro-range.css";
+@import "./retro-scrollbar.css";
+@import "./retro-tabs.css";
+@import "./retro-tree-view.css";
+@import "./retro-window.css";
 
 /* Layer 2: Layout & Shell */
 @import "./layout.css";

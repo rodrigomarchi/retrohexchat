@@ -1,0 +1,91 @@
+/* Retro Primitives: .sunken-panel, table base, .progress-indicator, .field-border, .status-field-border */
+
+.sunken-panel {
+  box-sizing: border-box;
+  border: 2px groove transparent;
+  border-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='5' height='5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='gray' d='M0 0h4v1H0z'/%3E%3Cpath fill='gray' d='M0 0h1v4H0z'/%3E%3Cpath fill='%230a0a0a' d='M1 1h2v1H1z'/%3E%3Cpath fill='%230a0a0a' d='M1 1h1v2H1z'/%3E%3Cpath fill='%23fff' d='M0 4h5v1H0z'/%3E%3Cpath fill='%23fff' d='M4 0h1v5H4z'/%3E%3Cpath fill='%23dfdfdf' d='M3 1h1v3H3z'/%3E%3Cpath fill='%23dfdfdf' d='M1 3h3v1H1z'/%3E%3C/svg%3E") 2;
+  overflow: auto;
+  background-color: #fff;
+}
+
+table {
+  border-collapse: collapse;
+  position: relative;
+  text-align: left;
+  white-space: nowrap;
+  background-color: #fff;
+}
+
+table > thead > tr > * {
+  position: sticky;
+  top: 0;
+  height: 17px;
+  box-shadow: var(--border-raised-outer), var(--border-raised-inner);
+  background: var(--color-surface);
+  box-sizing: border-box;
+  font-weight: normal;
+  padding: 0 var(--space-6);
+}
+
+table.interactive > tbody > tr {
+  cursor: pointer;
+}
+
+table > tbody > tr.highlighted {
+  color: #fff;
+  background-color: var(--color-selection-bg);
+}
+
+table > tbody > tr > * {
+  padding: 0 var(--space-6);
+  height: 14px;
+}
+
+.progress-indicator {
+  height: 32px;
+  position: relative;
+  box-shadow: var(--border-sunken-inner);
+  padding: 4px 4px;
+  border: none;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0;
+}
+
+.progress-indicator > .progress-indicator-bar {
+  height: 100%;
+  display: block;
+  background-color: var(--color-selection-bg);
+}
+
+.progress-indicator.segmented > .progress-indicator-bar {
+  width: 100%;
+  background-color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    var(--color-selection-bg) 0 16px,
+    transparent 0 2px
+  );
+  background-repeat: repeat;
+  background-size: 18px 100%;
+}
+
+.field-border {
+  background: var(--color-white);
+  box-shadow: var(--border-field);
+  padding: 2px;
+}
+
+.field-border-disabled {
+  background: var(--color-surface);
+  box-shadow: var(--border-field);
+  padding: 2px;
+}
+
+.status-field-border {
+  background: var(--color-surface);
+  box-shadow: var(--border-status-field);
+  padding: 1px;
+}
