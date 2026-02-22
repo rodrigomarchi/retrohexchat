@@ -845,6 +845,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "Establish peer-to-peer sessions with bilateral consent for calls and file transfers."
       },
       %{
+        id: "feature-connection-diagram",
+        title: "Connection Diagram",
+        category: "Features",
+        keywords: [
+          "connection",
+          "diagram",
+          "p2p",
+          "webrtc",
+          "status",
+          "animation",
+          "whois",
+          "peer",
+          "info",
+          "browser"
+        ],
+        icon: :icon_p2p,
+        description:
+          "Animated visual diagram showing the bilateral P2P link with real-time status and peer info."
+      },
+      %{
         id: "feature-file-transfer",
         title: "File Transfer",
         category: "Features",

@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
   use Phoenix.Component
 
   alias Phoenix.LiveView.JS
+  alias RetroHexChatWeb.Components.P2pConnectionDiagram
   alias RetroHexChatWeb.Icons
 
   attr :session, :map, required: true
@@ -24,6 +25,8 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
   attr :call, :map, default: nil
   attr :turn_only, :boolean, default: false
   attr :turn_configured, :boolean, default: false
+  attr :local_info, :map, default: %{}
+  attr :peer_info, :map, default: %{}
 
   @spec p2p_lobby(map()) :: Phoenix.LiveView.Rendered.t()
   def p2p_lobby(assigns) do
@@ -38,6 +41,18 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
         </div>
       </div>
       <div class="window-body p2p-lobby__body">
+        <P2pConnectionDiagram.p2p_connection_diagram
+          nickname={@nickname}
+          peer_nick={@peer_nick}
+          peer_online={@peer_online}
+          session_status={@session_status}
+          webrtc_state={@webrtc_state}
+          retry_attempt={@retry_attempt}
+          file_transfer={@file_transfer}
+          call={@call}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
         <.p2p_inactivity_warning :if={@inactivity_warning} />
         <.p2p_connection_state
           :if={@webrtc_state}

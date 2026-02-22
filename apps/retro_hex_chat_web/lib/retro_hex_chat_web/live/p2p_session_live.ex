@@ -110,6 +110,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         call={@call}
         turn_only={@turn_only}
         turn_configured={@turn_configured}
+        local_info={@local_info}
+        peer_info={@peer_info}
       />
     </div>
     """
@@ -172,6 +174,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     if Session.terminal?(status) do
       {:noreply,
        socket
+       |> assign(session_closed: true)
        |> put_flash(:info, "P2P session ended.")
        |> push_navigate(to: ~p"/chat")}
     else
@@ -252,6 +255,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
     {:noreply,
      socket
+     |> assign(session_closed: true)
      |> put_flash(:info, msg)
      |> push_navigate(to: ~p"/chat")}
   end
@@ -315,7 +319,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
       {:noreply,
        socket
-       |> assign(call: nil)
+       |> assign(call: nil, webrtc_state: "Connected")
        |> assign(messages: socket.assigns.messages ++ [msg])
        |> push_event("media_end_call", %{})}
     else
@@ -371,8 +375,29 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
   def handle_info(%{event: "p2p_peer_joined", payload: %{user_id: uid}}, socket) do
     if uid != socket.assigns.user_id do
+      # Re-broadcast our client info so the newly joined peer gets it
+      Phoenix.PubSub.broadcast(
+        @pubsub,
+        "p2p:#{socket.assigns.token}",
+        %{
+          event: "p2p_client_info",
+          payload: %{from: socket.assigns.user_id, info: socket.assigns.local_info}
+        }
+      )
+
       socket = assign(socket, peer_online: true)
       maybe_auto_present(socket)
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(
+        %{event: "p2p_client_info", payload: %{from: from_id, info: info}},
+        socket
+      ) do
+    if from_id != socket.assigns.user_id do
+      {:noreply, assign(socket, peer_info: info)}
     else
       {:noreply, socket}
     end
@@ -409,6 +434,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
     {:noreply,
      socket
+     |> assign(session_closed: true)
      |> put_flash(:info, "P2P session ended.")
      |> push_navigate(to: ~p"/chat")}
   end
@@ -493,8 +519,11 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   def handle_event("p2p_leave", _params, socket) do
-    P2P.close_session(socket.assigns.token, socket.assigns.user_id, "tab_closed")
-    {:noreply, socket}
+    unless socket.assigns[:session_closed] do
+      P2P.close_session(socket.assigns.token, socket.assigns.user_id, "tab_closed")
+    end
+
+    {:noreply, assign(socket, session_closed: true)}
   end
 
   # --- File Transfer Events ---
@@ -692,7 +721,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
     {:noreply,
      socket
-     |> assign(call: nil)
+     |> assign(call: nil, webrtc_state: "Connected")
      |> assign(messages: socket.assigns.messages ++ [msg])}
   end
 
@@ -820,7 +849,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   def terminate(_reason, socket) do
     Logger.info("P2P LiveView terminated: token=#{socket.assigns[:token]}")
 
-    if connected?(socket) and socket.assigns[:token] do
+    if connected?(socket) and socket.assigns[:token] and !socket.assigns[:session_closed] do
       token = socket.assigns.token
       user_id = socket.assigns[:user_id]
 
@@ -842,9 +871,18 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     role = if user_id == db_session.creator_id, do: :creator, else: :peer
     Logger.info("P2P LiveView mounted: token=#{token}, user=#{nickname}, role=#{role}")
 
+    local_info = parse_client_info(get_connect_params(socket))
+
     if connected?(socket) do
       Phoenix.PubSub.subscribe(@pubsub, "p2p:#{token}")
       P2P.join_session(token, user_id)
+
+      # Broadcast our client info so the peer can display it
+      Phoenix.PubSub.broadcast(
+        @pubsub,
+        "p2p:#{token}",
+        %{event: "p2p_client_info", payload: %{from: user_id, info: local_info}}
+      )
     end
 
     peer_nick = resolve_peer_nick(user_id, db_session)
@@ -875,7 +913,10 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         accepted_action_type: accepted_action_type,
         call: init_call_on_mount(accepted_action_type, db_session.status),
         turn_only: turn_only,
-        turn_configured: turn_configured
+        turn_configured: turn_configured,
+        local_info: local_info,
+        peer_info: %{},
+        session_closed: false
       )
 
     socket =
@@ -1093,6 +1134,47 @@ defmodule RetroHexChatWeb.P2PSessionLive do
       pref -> get_in(pref.display_settings, ["p2p_settings", "turn_only"]) == true
     end
   end
+
+  @allowed_client_keys %{
+    "browser" => :browser,
+    "os" => :os,
+    "language" => :language,
+    "screen" => :screen,
+    "color_depth" => :color_depth,
+    "touch" => :touch,
+    "cores" => :cores,
+    "timezone" => :timezone
+  }
+  @max_string_length 100
+
+  @spec parse_client_info(map() | nil) :: map()
+  defp parse_client_info(nil), do: %{}
+
+  defp parse_client_info(params) do
+    case params["client_info"] do
+      json when is_binary(json) -> decode_client_json(json)
+      _ -> %{}
+    end
+  end
+
+  defp decode_client_json(json) do
+    case Jason.decode(json) do
+      {:ok, data} when is_map(data) ->
+        Map.new(@allowed_client_keys, fn {str_key, atom_key} ->
+          {atom_key, sanitize_client_value(data[str_key])}
+        end)
+
+      _ ->
+        %{}
+    end
+  end
+
+  defp sanitize_client_value(val) when is_binary(val),
+    do: String.slice(val, 0, @max_string_length)
+
+  defp sanitize_client_value(val) when is_integer(val), do: val
+  defp sanitize_client_value(val) when is_boolean(val), do: val
+  defp sanitize_client_value(_), do: nil
 
   defp save_turn_only_preference(nickname, turn_only) do
     case RetroHexChat.Repo.get(UserPreference, nickname) do

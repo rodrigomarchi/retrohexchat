@@ -29,6 +29,7 @@ import NotificationDispatcherHook from "./hooks/notification_dispatcher_hook";
 import MessageInteractionsHook from "./hooks/message_interactions_hook";
 import NickChangeFormHook from "./hooks/nick_change_form_hook";
 import P2PCapabilityHook from "./hooks/p2p_capability_hook";
+import P2PDiagramHook from "./hooks/p2p_diagram_hook";
 import P2PSessionHook from "./hooks/p2p_session_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
 import FileTransferHook from "./hooks/file_transfer_hook";
@@ -60,6 +61,7 @@ const Hooks = {
   MessageInteractionsHook: MessageInteractionsHook,
   NickChangeFormHook: NickChangeFormHook,
   P2PCapabilityHook: P2PCapabilityHook,
+  P2PDiagramHook: P2PDiagramHook,
   P2PSessionHook: P2PSessionHook,
   NotificationDispatcherHook: NotificationDispatcherHook,
   NotifyListHook: NotifyListHook,
