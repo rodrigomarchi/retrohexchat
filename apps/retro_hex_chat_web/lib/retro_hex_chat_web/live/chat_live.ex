@@ -65,12 +65,13 @@ defmodule RetroHexChatWeb.ChatLive do
           )
 
           timezone = resolve_timezone(http_session, socket)
+          client_info = parse_client_info(get_connect_params(socket))
 
           socket =
             socket
             |> attach_all_hooks()
             |> assign_defaults(session)
-            |> assign(timezone: timezone, connection_ready: true)
+            |> assign(timezone: timezone, client_info: client_info, connection_ready: true)
             |> Helpers.join_channel(
               Application.get_env(:retro_hex_chat, :default_channel, "#lobby"),
               session
@@ -91,6 +92,7 @@ defmodule RetroHexChatWeb.ChatLive do
            assign_defaults(socket, session)
            |> assign(
              timezone: Timezone.validate(http_session["chat_timezone"]),
+             client_info: %{},
              connection_progress_step: 1
            )}
         end
@@ -125,6 +127,47 @@ defmodule RetroHexChatWeb.ChatLive do
 
     Timezone.validate(tz)
   end
+
+  @allowed_client_keys %{
+    "browser" => :browser,
+    "os" => :os,
+    "language" => :language,
+    "screen" => :screen,
+    "color_depth" => :color_depth,
+    "touch" => :touch,
+    "cores" => :cores,
+    "timezone" => :timezone
+  }
+  @max_string_length 100
+
+  @spec parse_client_info(map() | nil) :: map()
+  defp parse_client_info(nil), do: %{}
+
+  defp parse_client_info(params) do
+    case params["client_info"] do
+      json when is_binary(json) -> decode_client_json(json)
+      _ -> %{}
+    end
+  end
+
+  defp decode_client_json(json) do
+    case Jason.decode(json) do
+      {:ok, data} when is_map(data) ->
+        Map.new(@allowed_client_keys, fn {str_key, atom_key} ->
+          {atom_key, sanitize_client_value(data[str_key])}
+        end)
+
+      _ ->
+        %{}
+    end
+  end
+
+  defp sanitize_client_value(val) when is_binary(val),
+    do: String.slice(val, 0, @max_string_length)
+
+  defp sanitize_client_value(val) when is_integer(val), do: val
+  defp sanitize_client_value(val) when is_boolean(val), do: val
+  defp sanitize_client_value(_), do: nil
 
   defp attach_all_hooks(socket) do
     event_hooks = [

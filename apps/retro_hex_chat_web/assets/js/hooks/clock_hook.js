@@ -13,6 +13,10 @@ const ClockHook = {
     }, CLOCK_INTERVAL);
   },
 
+  updated() {
+    this.el.textContent = formatTime(new Date());
+  },
+
   destroyed() {
     clearInterval(this._interval);
     this._interval = null;

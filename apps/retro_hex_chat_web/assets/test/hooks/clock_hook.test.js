@@ -27,6 +27,12 @@ describe("ClockHook", () => {
     expect(hook.el.textContent).toMatch(/\d{2}:\d{2}/);
   });
 
+  it("restores time on updated (after LiveView patch)", () => {
+    hook.el.textContent = "--:--";
+    hook.updated();
+    expect(hook.el.textContent).toMatch(/\d{2}:\d{2}/);
+  });
+
   it("clears interval on destroyed", () => {
     hook.destroyed();
     const textAfterDestroy = hook.el.textContent;

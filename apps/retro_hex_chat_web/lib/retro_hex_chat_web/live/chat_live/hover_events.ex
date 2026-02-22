@@ -117,21 +117,36 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
     session = socket.assigns.session
     target_meta = find_user_presence(nick, session.channels)
 
-    data = %{
-      nickname: nick,
-      hostname: target_meta && target_meta[:hostname],
-      online_for: format_online_time(target_meta),
-      channels: get_visible_channels(nick, session.channels),
-      away: (target_meta && target_meta[:away]) || false,
-      away_message: target_meta && target_meta[:away_message],
-      registered: NickServ.registered?(nick),
-      role: get_role_in_active_channel(nick, session.active_channel),
-      is_contact: contact?(nick, session.contacts),
-      is_ignored: IgnoreList.get_entry(session.ignore_list, nick) != nil
-    }
+    data =
+      %{
+        nickname: nick,
+        hostname: target_meta && target_meta[:hostname],
+        online_for: format_online_time(target_meta),
+        channels: get_visible_channels(nick, session.channels),
+        away: (target_meta && target_meta[:away]) || false,
+        away_message: target_meta && target_meta[:away_message],
+        registered: NickServ.registered?(nick),
+        role: get_role_in_active_channel(nick, session.active_channel),
+        is_contact: contact?(nick, session.contacts),
+        is_ignored: IgnoreList.get_entry(session.ignore_list, nick) != nil
+      }
+      |> Map.merge(extract_client_fields(target_meta))
 
     hover_card = socket.assigns.hover_card
     assign(socket, hover_card: %{hover_card | loading: false, data: data})
+  end
+
+  @spec extract_client_fields(map() | nil) :: map()
+  defp extract_client_fields(nil), do: %{}
+
+  defp extract_client_fields(meta) do
+    %{
+      browser: meta[:browser],
+      os: meta[:os],
+      language: meta[:language],
+      screen: meta[:screen],
+      client_timezone: meta[:timezone]
+    }
   end
 
   @spec format_online_time(map() | nil) :: String.t()

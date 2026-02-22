@@ -349,9 +349,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       end
     end)
 
+    client_meta = Map.get(socket.assigns, :client_info, %{})
+
     Enum.each(session.channels, fn channel ->
       PresenceHelpers.safe_untrack_user("channel:#{channel}", old_nick)
-      PresenceHelpers.safe_track_user("channel:#{channel}", new_nick)
+      PresenceHelpers.safe_track_user("channel:#{channel}", new_nick, client_meta)
     end)
 
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "user:#{old_nick}")

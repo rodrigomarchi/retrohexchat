@@ -42,7 +42,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
   defp setup_joined_channel(socket, channel_name, session) do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
-    PresenceHelpers.safe_track_user("channel:#{channel_name}", session.nickname)
+    client_meta = Map.get(socket.assigns, :client_info, %{})
+    PresenceHelpers.safe_track_user("channel:#{channel_name}", session.nickname, client_meta)
 
     new_session =
       session

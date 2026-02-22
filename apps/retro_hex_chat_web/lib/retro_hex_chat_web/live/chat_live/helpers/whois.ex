@@ -73,9 +73,20 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
       registered: NickServ.registered?(target),
       away: target_meta && target_meta[:away],
       away_message: target_meta && target_meta[:away_message],
-      bio: whois_bio(is_self, session, target_meta, target)
+      bio: whois_bio(is_self, session, target_meta, target),
+      browser: client_field(is_self, socket, target_meta, :browser),
+      os: client_field(is_self, socket, target_meta, :os),
+      language: client_field(is_self, socket, target_meta, :language),
+      screen: client_field(is_self, socket, target_meta, :screen),
+      client_timezone: client_field(is_self, socket, target_meta, :timezone)
     }
   end
+
+  defp client_field(true, socket, _meta, key),
+    do: get_in(socket.assigns, [:client_info, key])
+
+  defp client_field(false, _socket, meta, key),
+    do: meta && meta[key]
 
   defp whois_online_seconds(true, session, _meta), do: seconds_since(session.connected_at)
   defp whois_online_seconds(false, _session, meta), do: seconds_since(meta && meta[:joined_at])
@@ -123,8 +134,20 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
     lines = lines ++ ["Registered: #{if data.registered, do: "Yes", else: "No"}"]
     lines = maybe_append(lines, data.away, "Away: #{data.away_message || ""}")
     lines = maybe_append(lines, data.bio != nil, "Bio: #{data.bio}")
+
+    client_label = client_display(data.browser, data.os)
+    lines = maybe_append(lines, client_label != nil, "Client: #{client_label}")
+    lines = maybe_append(lines, data.screen != nil, "Screen: #{data.screen}")
+    lines = maybe_append(lines, data.language != nil, "Language: #{data.language}")
+    lines = maybe_append(lines, data.client_timezone != nil, "Timezone: #{data.client_timezone}")
+
     lines ++ ["-----------------------------"]
   end
+
+  defp client_display(nil, nil), do: nil
+  defp client_display(browser, nil), do: browser
+  defp client_display(nil, os), do: os
+  defp client_display(browser, os), do: "#{browser} — #{os}"
 
   defp maybe_append(lines, true, line), do: lines ++ [line]
   defp maybe_append(lines, _, _line), do: lines

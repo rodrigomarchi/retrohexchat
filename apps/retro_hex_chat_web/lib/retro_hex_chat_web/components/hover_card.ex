@@ -72,6 +72,28 @@ defmodule RetroHexChatWeb.Components.HoverCard do
         <span class="nick-hover-card-label">Online:</span>
         <span class="nick-hover-card-value">{@data.online_for}</span>
       </div>
+      <div :if={@data[:browser]} class="nick-hover-card-field">
+        <Icons.icon_laptop class="hover-card-icon" />
+        <span class="nick-hover-card-label">Client:</span>
+        <span class="nick-hover-card-value">
+          {@data.browser}{if @data[:os], do: " — #{@data.os}", else: ""}
+        </span>
+      </div>
+      <div :if={@data[:screen]} class="nick-hover-card-field">
+        <Icons.icon_tab_display class="hover-card-icon" />
+        <span class="nick-hover-card-label">Screen:</span>
+        <span class="nick-hover-card-value">{@data.screen}</span>
+      </div>
+      <div :if={@data[:language]} class="nick-hover-card-field">
+        <Icons.icon_channels class="hover-card-icon" />
+        <span class="nick-hover-card-label">Language:</span>
+        <span class="nick-hover-card-value">{@data.language}</span>
+      </div>
+      <div :if={@data[:client_timezone]} class="nick-hover-card-field">
+        <Icons.icon_clock class="hover-card-icon" />
+        <span class="nick-hover-card-label">Timezone:</span>
+        <span class="nick-hover-card-value">{@data.client_timezone}</span>
+      </div>
       <div :if={@data.channels != []} class="nick-hover-card-field">
         <Icons.icon_channels class="hover-card-icon" />
         <span class="nick-hover-card-label">Channels:</span>

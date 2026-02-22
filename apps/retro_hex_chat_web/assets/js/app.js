@@ -34,6 +34,7 @@ import URLCatcherHook from "./hooks/url_catcher_hook";
 import FileTransferHook from "./hooks/file_transfer_hook";
 import WebRTCHook from "./hooks/webrtc_hook";
 import MediaHook from "./hooks/media_hook";
+import { getClientInfo } from "./lib/client_info";
 
 const AutoFocusHook = {
   mounted() {
@@ -80,6 +81,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
   params: () => ({
     _csrf_token: document.querySelector("meta[name='csrf-token']").getAttribute("content"),
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Etc/UTC",
+    client_info: JSON.stringify(getClientInfo()),
   }),
   hooks: Hooks,
 });
