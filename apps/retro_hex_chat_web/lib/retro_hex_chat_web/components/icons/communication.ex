@@ -192,6 +192,37 @@ defmodule RetroHexChatWeb.Icons.Communication do
 
   attr :class, :string, default: nil
 
+  @spec icon_link(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_link(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path
+        d="M6.5 9.5l3-3"
+        fill="none"
+        stroke="#000080"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M7 10l-1.5 1.5a2 2 0 0 1-2.8-2.8L4.2 7.2"
+        fill="none"
+        stroke="#000080"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M9 6l1.5-1.5a2 2 0 0 1 2.8 2.8L11.8 8.8"
+        fill="none"
+        stroke="#000080"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_tab_channel(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_tab_channel(assigns) do
     ~H"""

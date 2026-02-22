@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
   use Phoenix.Component
 
   alias RetroHexChat.Chat.KeyBindings
+  alias RetroHexChatWeb.Icons
 
   attr :custom_nicklist_items, :list, default: []
   attr :is_ignored, :boolean, default: false
@@ -32,10 +33,11 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
       <div class="window u-p-2">
         <ul class="tree-view">
           <li data-testid="ctx-query" phx-click="context_query" phx-value-nick={@target_nick}>
-            Query (PM) <.shortcut_hint bindings={@key_bindings} action={:open_pm} />
+            <Icons.icon_tab_pm class="ctx-icon" /> Query (PM)
+            <.shortcut_hint bindings={@key_bindings} action={:open_pm} />
           </li>
           <li data-testid="ctx-whois" phx-click="context_whois" phx-value-nick={@target_nick}>
-            Whois
+            <Icons.icon_btn_search class="ctx-icon" /> Whois
           </li>
           <li class="separator"></li>
           <li
@@ -43,14 +45,14 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-click="context_add_contact"
             phx-value-nick={@target_nick}
           >
-            Add to Contacts
+            <Icons.icon_tab_contacts class="ctx-icon" /> Add to Contacts
           </li>
           <li
             data-testid="ctx-set-nick-color"
             phx-click="context_set_nick_color"
             phx-value-nick={@target_nick}
           >
-            Set Nick Color
+            <Icons.icon_palette class="ctx-icon" /> Set Nick Color
           </li>
           <li
             :if={!@is_ignored}
@@ -58,7 +60,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-click="context_ignore"
             phx-value-nick={@target_nick}
           >
-            Ignore
+            <Icons.icon_btn_ignore class="ctx-icon" /> Ignore
           </li>
           <li
             :if={@is_ignored}
@@ -66,7 +68,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-click="context_unignore"
             phx-value-nick={@target_nick}
           >
-            Unignore
+            <Icons.icon_btn_ignore class="ctx-icon" /> Unignore
           </li>
           <li :if={@viewer_is_identified} class="separator"></li>
           <li
@@ -77,7 +79,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-click={if @is_target_registered && !@is_target_self, do: "context_p2p"}
             phx-value-nick={@target_nick}
           >
-            P2P Session
+            <Icons.icon_p2p class="ctx-icon" /> P2P Session
           </li>
           <li
             :if={@viewer_is_identified}
@@ -87,7 +89,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-click={if @is_target_registered && !@is_target_self, do: "context_call"}
             phx-value-nick={@target_nick}
           >
-            Audio Call
+            <Icons.icon_microphone class="ctx-icon" /> Audio Call
           </li>
           <li
             :if={@viewer_is_identified}
@@ -97,7 +99,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-click={if @is_target_registered && !@is_target_self, do: "context_video_call"}
             phx-value-nick={@target_nick}
           >
-            Video Call
+            <Icons.icon_camera class="ctx-icon" /> Video Call
           </li>
           <li
             :if={@viewer_is_identified}
@@ -107,7 +109,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-click={if @is_target_registered && !@is_target_self, do: "context_sendfile"}
             phx-value-nick={@target_nick}
           >
-            Send File
+            <Icons.icon_file_send class="ctx-icon" /> Send File
           </li>
           <li
             :if={@viewer_is_op}
@@ -120,7 +122,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-click="context_kick"
             phx-value-nick={@target_nick}
           >
-            Kick
+            <Icons.icon_dialog_kick class="ctx-icon" /> Kick
           </li>
           <li
             :if={@viewer_is_op}
@@ -128,7 +130,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-click="context_ban"
             phx-value-nick={@target_nick}
           >
-            Ban
+            <Icons.icon_ban class="ctx-icon" /> Ban
           </li>
           <li
             :if={@viewer_is_op}
@@ -136,7 +138,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-click="context_op"
             phx-value-nick={@target_nick}
           >
-            Give Op
+            <Icons.icon_role_operator class="ctx-icon" /> Give Op
           </li>
           <li
             :if={@viewer_is_op}
@@ -144,7 +146,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
             phx-click="context_voice"
             phx-value-nick={@target_nick}
           >
-            Give Voice
+            <Icons.icon_role_voiced class="ctx-icon" /> Give Voice
           </li>
           <li
             :if={@custom_nicklist_items != []}

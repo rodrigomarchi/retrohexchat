@@ -177,4 +177,18 @@ defmodule RetroHexChatWeb.Icons.Files do
     </svg>
     """
   end
+
+  attr :class, :string, default: nil
+
+  @spec icon_copy(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_copy(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="5" y="5" width="8" height="9" rx="0.5" fill="#fff" stroke="#000080" stroke-width="1" />
+      <rect x="3" y="2" width="8" height="9" rx="0.5" fill="#fff" stroke="#000080" stroke-width="1" />
+      <line x1="5" y1="5" x2="9" y2="5" stroke="#000080" stroke-width="0.8" />
+      <line x1="5" y1="7.5" x2="9" y2="7.5" stroke="#000080" stroke-width="0.8" />
+    </svg>
+    """
+  end
 end

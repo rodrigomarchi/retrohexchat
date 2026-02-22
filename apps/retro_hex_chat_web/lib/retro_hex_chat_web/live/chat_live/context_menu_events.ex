@@ -50,19 +50,23 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChatWeb.ChatLive.Helpers.P2pInvite
 
   def handle_event("nick_right_click", %{"nick" => nick} = params, socket) do
-    x = params["x"] || 0
-    y = params["y"] || 0
+    if nick == socket.assigns.session.nickname do
+      {:halt, socket}
+    else
+      x = params["x"] || 0
+      y = params["y"] || 0
 
-    {:halt,
-     assign(socket,
-       context_menu: %{
-         visible: true,
-         x: x,
-         y: y,
-         target_nick: nick,
-         is_target_registered: NickServ.registered?(nick)
-       }
-     )}
+      {:halt,
+       assign(socket,
+         context_menu: %{
+           visible: true,
+           x: x,
+           y: y,
+           target_nick: nick,
+           is_target_registered: NickServ.registered?(nick)
+         }
+       )}
+    end
   end
 
   def handle_event("nicklist_dblclick", %{"nick" => nick}, socket) do

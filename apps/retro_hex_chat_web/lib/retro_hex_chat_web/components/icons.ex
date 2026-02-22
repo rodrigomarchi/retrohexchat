@@ -108,6 +108,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_webrtc(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_megaphone(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_send(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_link(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_dialog_invite(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_dialog_url(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_tab_autojoin(assigns), to: RetroHexChatWeb.Icons.Communication
@@ -139,6 +140,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_dialog_cheatsheet(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_dialog_delete(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_dialog_log(assigns), to: RetroHexChatWeb.Icons.Files
+  defdelegate icon_copy(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_dialog_paste(assigns), to: RetroHexChatWeb.Icons.Files
 
   # ── Hardware ────────────────────────────────────────────

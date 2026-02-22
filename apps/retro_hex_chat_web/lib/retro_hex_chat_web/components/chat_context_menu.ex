@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
   use Phoenix.Component
 
   alias RetroHexChat.Chat.KeyBindings
+  alias RetroHexChatWeb.Icons
 
   attr :menu, :map, required: true
   attr :viewer_nick, :string, required: true
@@ -54,17 +55,18 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
   defp nick_menu_items(assigns) do
     ~H"""
     <li data-testid="ctx-chat-pm" phx-click="ctx_chat_pm" phx-value-nick={@menu.target_nick}>
-      Private Message <.shortcut_hint bindings={@key_bindings} action={:open_pm} />
+      <Icons.icon_tab_pm class="ctx-icon" /> Private Message
+      <.shortcut_hint bindings={@key_bindings} action={:open_pm} />
     </li>
     <li data-testid="ctx-chat-whois" phx-click="ctx_chat_whois" phx-value-nick={@menu.target_nick}>
-      Whois
+      <Icons.icon_btn_search class="ctx-icon" /> Whois
     </li>
     <li
       data-testid="ctx-chat-copy-nick"
       phx-click="ctx_chat_copy_nick"
       phx-value-nick={@menu.target_nick}
     >
-      Copy Nick
+      <Icons.icon_copy class="ctx-icon" /> Copy Nick
     </li>
     <li class="separator"></li>
     <li
@@ -73,7 +75,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click="ctx_chat_ignore"
       phx-value-nick={@menu.target_nick}
     >
-      Ignore
+      <Icons.icon_btn_ignore class="ctx-icon" /> Ignore
     </li>
     <li
       :if={@is_target_ignored && !@is_target_self}
@@ -81,28 +83,28 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click="ctx_chat_ignore"
       phx-value-nick={@menu.target_nick}
     >
-      Unignore
+      <Icons.icon_btn_ignore class="ctx-icon" /> Unignore
     </li>
     <li
       :if={@is_target_self}
       class="disabled"
       data-testid="ctx-chat-ignore-disabled"
     >
-      Ignore
+      <Icons.icon_btn_ignore class="ctx-icon" /> Ignore
     </li>
     <li
       data-testid="ctx-chat-add-contact"
       phx-click="ctx_chat_add_contact"
       phx-value-nick={@menu.target_nick}
     >
-      Add to Address Book
+      <Icons.icon_tab_contacts class="ctx-icon" /> Add to Address Book
     </li>
     <li
       data-testid="ctx-chat-set-color"
       phx-click="ctx_chat_set_color"
       phx-value-nick={@menu.target_nick}
     >
-      Set Nick Color
+      <Icons.icon_palette class="ctx-icon" /> Set Nick Color
     </li>
     <li :if={@viewer_is_identified} class="separator"></li>
     <li
@@ -113,7 +115,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_p2p"}
       phx-value-nick={@menu.target_nick}
     >
-      P2P Session
+      <Icons.icon_p2p class="ctx-icon" /> P2P Session
     </li>
     <li
       :if={@viewer_is_identified}
@@ -123,7 +125,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_call"}
       phx-value-nick={@menu.target_nick}
     >
-      Audio Call
+      <Icons.icon_microphone class="ctx-icon" /> Audio Call
     </li>
     <li
       :if={@viewer_is_identified}
@@ -133,7 +135,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_video_call"}
       phx-value-nick={@menu.target_nick}
     >
-      Video Call
+      <Icons.icon_camera class="ctx-icon" /> Video Call
     </li>
     <li
       :if={@viewer_is_identified}
@@ -143,7 +145,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_sendfile"}
       phx-value-nick={@menu.target_nick}
     >
-      Send File
+      <Icons.icon_file_send class="ctx-icon" /> Send File
     </li>
     <li
       :if={@viewer_is_op}
@@ -157,7 +159,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click={unless @is_target_self, do: "ctx_chat_kick"}
       phx-value-nick={@menu.target_nick}
     >
-      Kick
+      <Icons.icon_dialog_kick class="ctx-icon" /> Kick
     </li>
     <li
       :if={@viewer_is_op}
@@ -166,7 +168,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click={unless @is_target_self, do: "ctx_chat_ban"}
       phx-value-nick={@menu.target_nick}
     >
-      Ban
+      <Icons.icon_ban class="ctx-icon" /> Ban
     </li>
     <li
       :if={@viewer_is_op}
@@ -174,7 +176,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click="ctx_chat_voice"
       phx-value-nick={@menu.target_nick}
     >
-      Give Voice (+v)
+      <Icons.icon_role_voiced class="ctx-icon" /> Give Voice (+v)
     </li>
     <li
       :if={@viewer_is_op}
@@ -182,7 +184,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click="ctx_chat_op"
       phx-value-nick={@menu.target_nick}
     >
-      Give Op (+o)
+      <Icons.icon_role_operator class="ctx-icon" /> Give Op (+o)
     </li>
     """
   end
@@ -194,14 +196,14 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click="ctx_chat_open_url"
       phx-value-url={@menu.target_url}
     >
-      Open Link
+      <Icons.icon_link class="ctx-icon" /> Open Link
     </li>
     <li
       data-testid="ctx-chat-copy-url"
       phx-click="ctx_chat_copy_url"
       phx-value-url={@menu.target_url}
     >
-      Copy URL
+      <Icons.icon_copy class="ctx-icon" /> Copy URL
     </li>
     <li
       data-testid="ctx-chat-save-url"
@@ -209,7 +211,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-value-url={@menu.target_url}
       phx-value-author={@menu.target_message && @menu.target_message.author}
     >
-      Save to URL List
+      <Icons.icon_btn_save class="ctx-icon" /> Save to URL List
     </li>
     """
   end
@@ -222,21 +224,21 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click={unless @is_already_joined, do: "ctx_chat_join"}
       phx-value-channel={@menu.target_channel}
     >
-      Join Channel
+      <Icons.icon_btn_join class="ctx-icon" /> Join Channel
     </li>
     <li
       data-testid="ctx-chat-copy-channel"
       phx-click="ctx_chat_copy_channel"
       phx-value-channel={@menu.target_channel}
     >
-      Copy Channel Name
+      <Icons.icon_copy class="ctx-icon" /> Copy Channel Name
     </li>
     <li
       data-testid="ctx-chat-channel-info"
       phx-click="ctx_chat_channel_info"
       phx-value-channel={@menu.target_channel}
     >
-      Channel Info
+      <Icons.icon_tab_channel class="ctx-icon" /> Channel Info
     </li>
     """
   end
@@ -256,14 +258,14 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click="ctx_chat_copy_message"
       phx-value-text={@menu.target_message && @menu.target_message[:text]}
     >
-      Copy Message
+      <Icons.icon_copy class="ctx-icon" /> Copy Message
     </li>
     <li
       class={unless @menu.has_selection, do: "disabled"}
       data-testid="ctx-chat-copy-selection"
       phx-click={if @menu.has_selection, do: "ctx_chat_copy_selection"}
     >
-      Copy Selected Text
+      <Icons.icon_copy class="ctx-icon" /> Copy Selected Text
     </li>
     <li
       class={if @is_system, do: "disabled", else: nil}
@@ -271,7 +273,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click={unless @is_system, do: "reply_to_message"}
       phx-value-message_id={@menu.target_message && @menu.target_message[:message_id]}
     >
-      Reply
+      <Icons.icon_chat class="ctx-icon" /> Reply
     </li>
     <li
       :if={!@is_system && @menu.target_message && @menu.target_message[:is_own]}
@@ -279,7 +281,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click="ctx_chat_delete"
       phx-value-message_id={@menu.target_message && @menu.target_message[:message_id]}
     >
-      Delete message
+      <Icons.icon_trash class="ctx-icon" /> Delete message
     </li>
     <li class="separator"></li>
     <li
@@ -288,7 +290,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click="ctx_chat_ignore_sender"
       phx-value-nick={@menu.target_message && @menu.target_message[:author]}
     >
-      Ignore Sender
+      <Icons.icon_btn_ignore class="ctx-icon" /> Ignore Sender
     </li>
     <li
       :if={@has_urls}
@@ -301,7 +303,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click="ctx_chat_open_url"
       phx-value-url={@menu.target_url}
     >
-      Open Link
+      <Icons.icon_link class="ctx-icon" /> Open Link
     </li>
     <li
       :if={@has_urls}
@@ -309,7 +311,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       phx-click="ctx_chat_copy_url"
       phx-value-url={@menu.target_url}
     >
-      Copy URL
+      <Icons.icon_copy class="ctx-icon" /> Copy URL
     </li>
     """
   end
