@@ -1,7 +1,7 @@
 defmodule RetroHexChatWeb.Components.TabBar do
   @moduledoc """
   Minimal tab bar showing only Status + the active conversation.
-  Navigation between channels/PMs is handled by the treebar.
+  Navigation between channels/PMs is handled by the conversations sidebar.
   """
   use Phoenix.Component
 

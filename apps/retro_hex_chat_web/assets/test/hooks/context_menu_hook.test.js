@@ -81,7 +81,7 @@ describe("ContextMenuHook", () => {
     it("pushes close events on Escape", () => {
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
       expect(hook.pushEvent).toHaveBeenCalledWith("close_chat_context_menu", {});
-      expect(hook.pushEvent).toHaveBeenCalledWith("close_treebar_context_menu", {});
+      expect(hook.pushEvent).toHaveBeenCalledWith("close_conversations_context_menu", {});
     });
   });
 });

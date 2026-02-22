@@ -1,5 +1,5 @@
 /* Empty state placeholders — shared base styles for containers with no content.
-   Used by channel messages, treebar, and URL catcher. */
+   Used by channel messages, conversations sidebar, and URL catcher. */
 
 .empty-state {
   display: flex;
@@ -21,7 +21,7 @@
 }
 
 /* Component-specific empty states — extend .empty-state for per-container tweaks */
-.treebar-empty-state {
+.conversations-empty-state {
   padding: var(--space-8);
 }
 

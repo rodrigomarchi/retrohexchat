@@ -73,7 +73,7 @@ const ContextMenuHook = {
 
   closeMenu() {
     this.pushEvent("close_chat_context_menu", {});
-    this.pushEvent("close_treebar_context_menu", {});
+    this.pushEvent("close_conversations_context_menu", {});
   },
 };
 

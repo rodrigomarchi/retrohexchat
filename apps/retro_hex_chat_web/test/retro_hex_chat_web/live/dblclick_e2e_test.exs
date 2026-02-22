@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.DblclickE2ETest do
       {:ok, _view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view1, channel)
 
-      # Simulate double-click event (would come from TreebarHook JS)
+      # Simulate double-click event (would come from ConversationsHook JS)
       render_click(view1, "nicklist_dblclick", %{"nick" => nick2})
       html = render(view1)
 
@@ -64,13 +64,13 @@ defmodule RetroHexChatWeb.DblclickE2ETest do
       assert html =~ ~s(data-channel="#general")
     end
 
-    test "treebar has TreebarHook", %{conn: conn, channel: channel} do
+    test "conversations has ConversationsHook", %{conn: conn, channel: channel} do
       nick = "DEH#{uid()}"
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
       html = render(view)
 
-      assert html =~ "TreebarHook"
+      assert html =~ "ConversationsHook"
     end
   end
 

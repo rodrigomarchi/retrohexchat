@@ -198,10 +198,10 @@
   padding: 4px 8px;
   border: 1px solid #ff9900;
 }
-.tree-highlight {
-  animation: tree-flash 0.8s ease-in-out infinite;
+.conversations-highlight {
+  animation: conversations-flash 0.8s ease-in-out infinite;
 }
-@keyframes tree-flash {
+@keyframes conversations-flash {
   0%, 100% { background-color: transparent; }
   50% { background-color: #ffffd0; }
 }

@@ -81,7 +81,7 @@ body {
   flex-shrink: 0;
 }
 
-/* MDI layout: treebar | chat+input */
+/* MDI layout: conversations | chat+input */
 .mdi-layout {
   display: flex;
   flex: 1;
@@ -90,8 +90,8 @@ body {
   padding: 0 6px;
 }
 
-/* Treebar - sunken panel (channels + inline user list) */
-.treebar {
+/* Conversations - sunken panel (channels + inline user list) */
+.conversations {
   width: 220px;
   min-width: 180px;
   overflow-y: auto;
@@ -100,28 +100,12 @@ body {
   box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
 }
 
-.treebar .tree-view {
-  margin: 0;
-  font-size: var(--text-base);
-  font-family: var(--font-system);
+.conversations-active {
+  background-color: var(--color-gray-200, #dfdfdf);
+  font-weight: bold;
 }
 
-.treebar li {
-  padding: 2px 4px;
-  cursor: pointer;
-}
-
-.treebar li:hover {
-  background-color: var(--color-selection-bg);
-  color: var(--color-selection-fg);
-}
-
-.tree-active {
-  background-color: var(--color-selection-bg);
-  color: var(--color-selection-fg);
-}
-
-.tree-unread {
+.conversations-unread {
   font-weight: bold;
 }
 

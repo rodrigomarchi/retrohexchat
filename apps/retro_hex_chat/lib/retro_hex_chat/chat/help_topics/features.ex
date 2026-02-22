@@ -304,7 +304,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "notifications",
           "flash",
           "blink",
-          "treebar",
+          "conversations",
           "title",
           "activity",
           "indicator"
@@ -360,7 +360,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         keywords: [
           "display",
           "toolbar",
-          "treebar",
+          "conversations",
           "switchbar",
           "status bar",
           "compact mode",
@@ -540,7 +540,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "url menu",
           "channel menu",
           "message menu",
-          "treebar menu",
+          "conversations menu",
           "mute channel"
         ],
         content: File.read!(Path.join(@help_dir, "feature-context-menus.html"))
@@ -582,7 +582,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "unread",
           "badge",
           "indicator",
-          "treebar",
+          "conversations",
           "count",
           "mention",
           "highlight",

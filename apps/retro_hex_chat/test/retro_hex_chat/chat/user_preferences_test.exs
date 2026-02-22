@@ -17,7 +17,7 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
       %{display: display} = UserPreferences.new()
 
       assert display.show_toolbar == true
-      assert display.show_treebar == true
+      assert display.show_conversations == true
       assert display.show_switchbar == true
       assert display.show_statusbar == true
     end

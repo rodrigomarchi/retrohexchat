@@ -1,14 +1,14 @@
 /**
  * Unread badge rendering logic.
  *
- * Pure functions for creating and updating unread badge elements in the treebar.
+ * Pure functions for creating and updating unread badge elements in the conversations sidebar.
  * No side effects — used by server-side HEEx rendering for badge data,
  * and optionally by JS for client-side badge manipulation.
  */
 
 export const MAX_DISPLAY_COUNT = 99;
-export const BADGE_CLASS = "treebar-badge";
-export const BADGE_HIGHLIGHT_CLASS = "treebar-badge--highlight";
+export const BADGE_CLASS = "conversations-badge";
+export const BADGE_HIGHLIGHT_CLASS = "conversations-badge--highlight";
 
 /**
  * Format an unread count for display.
@@ -40,7 +40,7 @@ export function createBadgeElement(count, isHighlight) {
 }
 
 /**
- * Update or remove the badge on a treebar list item.
+ * Update or remove the badge on a conversations list item.
  *
  * @param {HTMLElement} listItem - The <li> element
  * @param {number} count - Unread count
@@ -70,7 +70,7 @@ export function updateBadge(listItem, count, isHighlight) {
 }
 
 /**
- * Remove the badge from a treebar list item.
+ * Remove the badge from a conversations list item.
  *
  * @param {HTMLElement} listItem - The <li> element
  */

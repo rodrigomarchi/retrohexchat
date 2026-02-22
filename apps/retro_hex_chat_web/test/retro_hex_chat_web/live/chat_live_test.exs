@@ -112,14 +112,14 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   # ── switch_channel ────────────────────────────────────────
 
   describe "switch_channel" do
-    test "clicking channel in treebar switches active channel", %{conn: conn} do
+    test "clicking channel in conversations switches active channel", %{conn: conn} do
       ensure_channel("#switch_ch")
       {:ok, view, _html} = live(chat_conn(conn, "Switcher"), "/chat")
 
       # Join second channel
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #switch_ch"})
 
-      # Switch back to #lobby via treebar
+      # Switch back to #lobby via conversations
       html =
         view
         |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
@@ -256,17 +256,17 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       assert {:error, {:live_redirect, %{to: "/connect"}}} = result
     end
 
-    test "toggle_treebar toggles visibility", %{conn: conn} do
+    test "toggle_conversations toggles visibility", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "TreeToggle"), "/chat")
-      # Treebar should be visible initially (has class="treebar")
+      # Treebar should be visible initially (has class="conversations")
       html = render(view)
-      assert html =~ ~s(class="treebar")
+      assert html =~ ~s(class="conversations")
 
-      html = render_click(view, "toggle_treebar")
-      refute html =~ ~s(class="treebar")
+      html = render_click(view, "toggle_conversations")
+      refute html =~ ~s(class="conversations")
 
-      html = render_click(view, "toggle_treebar")
-      assert html =~ ~s(class="treebar")
+      html = render_click(view, "toggle_conversations")
+      assert html =~ ~s(class="conversations")
     end
   end
 
@@ -289,7 +289,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   # ── F1: user list integration ────────────────────────────
 
   describe "user list integration" do
-    test "after mount in isolated channel, treebar shows the user as owner", %{conn: conn} do
+    test "after mount in isolated channel, conversations shows the user as owner", %{conn: conn} do
       ensure_channel("#nick_iso1")
       {:ok, view, _html} = live(chat_conn(conn, "NickOp"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso1"})
@@ -597,7 +597,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       send(view.pid, pm_payload)
       html = render(view)
-      assert html =~ "tree-unread"
+      assert html =~ "conversations-unread"
     end
 
     test "switch_pm clears unread for that PM", %{conn: conn} do
@@ -626,7 +626,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       send(view.pid, pm_payload)
       html = render(view)
-      assert html =~ "tree-unread"
+      assert html =~ "conversations-unread"
 
       # Switch to Bob's PM — should clear unread
       html =
@@ -634,7 +634,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
         |> element(~s(li[phx-click="switch_pm"][phx-value-nickname="Bob"]))
         |> render_click()
 
-      refute html =~ "tree-unread"
+      refute html =~ "conversations-unread"
     end
   end
 
@@ -666,7 +666,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       send(view.pid, msg)
       html = render(view)
-      assert html =~ "tree-unread"
+      assert html =~ "conversations-unread"
     end
 
     test "switching to unread channel clears the indicator", %{conn: conn} do
@@ -694,7 +694,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       send(view.pid, msg)
       html = render(view)
-      assert html =~ "tree-unread"
+      assert html =~ "conversations-unread"
 
       # Switch to #unread_clr — should clear unread
       html =
@@ -702,7 +702,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
         |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#unread_clr"]))
         |> render_click()
 
-      refute html =~ "tree-unread"
+      refute html =~ "conversations-unread"
     end
 
     test "message in active channel does NOT mark as unread", %{conn: conn} do
@@ -722,7 +722,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       send(view.pid, msg)
       html = render(view)
-      refute html =~ "tree-unread"
+      refute html =~ "conversations-unread"
     end
   end
 
@@ -1559,7 +1559,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   # ── R5: PM conversation lifecycle via ChatLive ──────────
 
   describe "PM conversation lifecycle" do
-    test "opening PM via context_query shows conversation in treebar Private section", %{
+    test "opening PM via context_query shows conversation in conversations Private section", %{
       conn: conn
     } do
       {:ok, view, _html} = live(chat_conn(conn, "PmTree"), "/chat")
@@ -1567,11 +1567,11 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       render_click(view, "nick_right_click", %{"nick" => "TreeTarget", "x" => 0, "y" => 0})
       html = render_click(view, "context_query", %{"nick" => "TreeTarget"})
 
-      # PM should appear in treebar Private section
+      # PM should appear in conversations Private section
       assert html =~ "Private"
       assert html =~ "TreeTarget"
-      # The PM should be active (tree-active class)
-      assert html =~ "tree-active"
+      # The PM should be active (conversations-active class)
+      assert html =~ "conversations-active"
     end
 
     test "switching to PM hides channel content and shows PM view", %{conn: conn} do
@@ -1586,7 +1586,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
-      # Now switch to PM via treebar
+      # Now switch to PM via conversations
       html =
         view
         |> element(~s(li[phx-click="switch_pm"][phx-value-nickname="PmPal"]))
@@ -1607,7 +1607,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       render_click(view, "nick_right_click", %{"nick" => "PmFriend", "x" => 0, "y" => 0})
       render_click(view, "context_query", %{"nick" => "PmFriend"})
 
-      # Verify we're in PM view (no user list in treebar)
+      # Verify we're in PM view (no user list in conversations)
       html = render(view)
       refute html =~ "nick-owner"
 
@@ -1677,7 +1677,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       html = render(view)
       # Message should appear in the stream directly (not just as unread)
       assert html =~ "Hello from PM!"
-      refute html =~ "tree-unread"
+      refute html =~ "conversations-unread"
     end
   end
 
@@ -2686,19 +2686,19 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   # ── empty states ───────────────────────────────────────
 
-  describe "user list in treebar" do
-    test "user list renders in treebar when users are present", %{conn: conn} do
+  describe "user list in conversations" do
+    test "user list renders in conversations when users are present", %{conn: conn} do
       {:ok, _view, html} = live(chat_conn(conn, "NickUser"), "/chat")
-      # User auto-joins #lobby — treebar renders with user list
-      assert html =~ "treebar-users"
+      # User auto-joins #lobby — conversations renders with user list
+      assert html =~ "conversations-users"
       assert html =~ "NickUser"
     end
   end
 
-  describe "empty treebar state" do
-    test "treebar shows empty state when no channels and no PMs", %{conn: conn} do
+  describe "empty conversations state" do
+    test "conversations shows empty state when no channels and no PMs", %{conn: conn} do
       # This is hard to test in isolation since #lobby is auto-joined.
-      # The treebar should have at least #lobby after mount.
+      # The conversations should have at least #lobby after mount.
       {:ok, _view, html} = live(chat_conn(conn, "TreeUser"), "/chat")
       assert html =~ "#lobby"
     end

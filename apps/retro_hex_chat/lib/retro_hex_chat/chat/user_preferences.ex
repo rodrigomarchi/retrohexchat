@@ -10,7 +10,7 @@ defmodule RetroHexChat.Chat.UserPreferences do
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.Repo
 
-  @valid_display_keys ~w(show_toolbar show_treebar show_switchbar show_statusbar)a
+  @valid_display_keys ~w(show_toolbar show_conversations show_switchbar show_statusbar)a
 
   # ---------------------------------------------------------------------------
   # In-Memory CRUD
@@ -88,7 +88,7 @@ defmodule RetroHexChat.Chat.UserPreferences do
   defp default_display do
     %{
       show_toolbar: true,
-      show_treebar: true,
+      show_conversations: true,
       show_switchbar: true,
       show_statusbar: true
     }
@@ -130,7 +130,19 @@ defmodule RetroHexChat.Chat.UserPreferences do
 
     Map.new(defaults, fn {key, default_val} ->
       str_key = Atom.to_string(key)
-      {key, Map.get(data, str_key, default_val)}
+
+      value =
+        if Map.has_key?(data, str_key),
+          do: Map.get(data, str_key),
+          else: display_fallback(data, key, default_val)
+
+      {key, value}
     end)
   end
+
+  # Backward compat: show_treebar → show_conversations
+  defp display_fallback(data, :show_conversations, default),
+    do: Map.get(data, "show_treebar", default)
+
+  defp display_fallback(_data, _key, default), do: default
 end

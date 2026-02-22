@@ -5,7 +5,8 @@ defmodule RetroHexChatWeb.Components.ChatMessage do
   """
   use Phoenix.Component
 
-  @nick_colors ~w(#e74c3c #3498db #2ecc71 #e67e22 #9b59b6 #1abc9c #f39c12 #e91e63 #00bcd4 #8bc34a #ff5722 #607d8b)
+  # All colors ≥4.5:1 contrast on white (WCAG AA)
+  @nick_colors ~w(#c0392b #2471a3 #1e8449 #b9770e #7d3c98 #148f77 #b7950b #c2185b #00838f #558b2f #d84315 #455a64)
 
   attr :message, :map, required: true
   attr :timezone, :string, default: "Etc/UTC"

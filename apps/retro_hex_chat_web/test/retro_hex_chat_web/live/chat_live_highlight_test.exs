@@ -109,10 +109,10 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
     end
   end
 
-  # ── US2: Non-active channel treebar flash ─────────────────────
+  # ── US2: Non-active channel conversations flash ─────────────────────
 
-  describe "US2: treebar flash on non-active channel highlight" do
-    test "highlight in non-active channel adds tree-highlight class", %{conn: conn} do
+  describe "US2: conversations flash on non-active channel highlight" do
+    test "highlight in non-active channel adds conversations-highlight class", %{conn: conn} do
       nick = "FlashHL#{uid()}"
       ch = "#hl_flash_#{uid()}"
       ensure_channel(ch)
@@ -130,10 +130,10 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       send_new_message(view, "OtherUser", "hey #{nick}!", ch)
 
       html = render(view)
-      assert html =~ "tree-highlight"
+      assert html =~ "conversations-highlight"
     end
 
-    test "highlight in active channel does NOT flash treebar", %{conn: conn} do
+    test "highlight in active channel does NOT flash conversations", %{conn: conn} do
       nick = "NoFlash#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -141,7 +141,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
       html = render(view)
       assert html =~ "chat-message--highlighted"
-      refute html =~ "tree-highlight"
+      refute html =~ "conversations-highlight"
     end
 
     test "switching to highlighted channel clears flash", %{conn: conn} do
@@ -160,7 +160,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       # Send highlight to non-active channel
       send_new_message(view, "OtherUser", "hey #{nick}!", ch)
       html = render(view)
-      assert html =~ "tree-highlight"
+      assert html =~ "conversations-highlight"
 
       # Switch to that channel — flash should clear
       view
@@ -168,7 +168,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       |> render_click()
 
       html = render(view)
-      refute html =~ "tree-highlight"
+      refute html =~ "conversations-highlight"
     end
 
     test "non-highlight message in non-active channel does NOT flash", %{conn: conn} do
@@ -187,7 +187,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       send_new_message(view, "OtherUser", "hello world", ch)
 
       html = render(view)
-      refute html =~ "tree-highlight"
+      refute html =~ "conversations-highlight"
     end
   end
 

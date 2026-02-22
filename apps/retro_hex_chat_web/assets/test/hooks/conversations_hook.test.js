@@ -1,11 +1,11 @@
 import { mountHook, cleanupDOM } from "../helpers/hook_helper.js";
-import TreebarHook from "../../js/hooks/treebar_hook.js";
+import ConversationsHook from "../../js/hooks/conversations_hook.js";
 
-describe("TreebarHook", () => {
+describe("ConversationsHook", () => {
   let hook;
 
   beforeEach(() => {
-    hook = mountHook(TreebarHook, {
+    hook = mountHook(ConversationsHook, {
       tag: "ul",
       html: `
         <li data-channel="#general">#general</li>

@@ -99,9 +99,9 @@ defmodule RetroHexChatWeb.Components.Toolbar do
         <button
           type="button"
           class="toolbar-btn"
-          title="Toggle Treebar"
-          data-testid="toolbar-toggle-treebar"
-          phx-click="toggle_treebar"
+          title="Toggle Conversations"
+          data-testid="toolbar-toggle-conversations"
+          phx-click="toggle_conversations"
         >
           <svg viewBox="0 0 16 16">
             <rect
@@ -119,7 +119,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
             <line x1="3" y1="7" x2="6" y2="7" stroke="#fff" stroke-width="1" />
             <line x1="3" y1="9" x2="6" y2="9" stroke="#fff" stroke-width="1" />
           </svg>
-          <span class="toolbar-group-label">Toggle Treebar</span>
+          <span class="toolbar-group-label">Toggle Conversations</span>
         </button>
         <button
           type="button"

@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   # ── US1: PM Conversation Restore on Connect ────────────────
 
   describe "US1: PM conversation restore on connect" do
-    test "registered user sees PM partners in treebar on connect", %{conn: conn} do
+    test "registered user sees PM partners in conversations on connect", %{conn: conn} do
       nick = "PR#{uid()}"
       register_and_identify(nick)
 
@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   # ── US2: Incoming PM Auto-Opens Conversation ───────────────
 
   describe "US2: incoming PM auto-opens conversation" do
-    test "new contact appears in treebar on incoming PM", %{conn: conn} do
+    test "new contact appears in conversations on incoming PM", %{conn: conn} do
       nick = "AO#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -172,10 +172,10 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
     end
   end
 
-  # ── US3: {:incoming_pm_notify} auto-opens PM in treebar ───
+  # ── US3: {:incoming_pm_notify} auto-opens PM in conversations ───
 
   describe "US3: incoming_pm_notify auto-opens PM" do
-    test "{:incoming_pm_notify} from new contact auto-opens PM in treebar", %{conn: conn} do
+    test "{:incoming_pm_notify} from new contact auto-opens PM in conversations", %{conn: conn} do
       nick = "IN#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -285,7 +285,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       html = render(view)
 
       # After unsubscribe, stale new_pm should NOT create phantom unread for closed tab
-      # Eve should NOT appear in treebar (no auto-open from new_pm path)
+      # Eve should NOT appear in conversations (no auto-open from new_pm path)
       refute html =~ ~s(data-testid="pm-Eve")
     end
   end

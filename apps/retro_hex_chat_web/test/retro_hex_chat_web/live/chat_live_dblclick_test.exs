@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.ChatLiveDblclickTest do
       {:ok, _view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view1, channel)
 
-      # Simulate user double-click event from treebar
+      # Simulate user double-click event from conversations
       render_click(view1, "nicklist_dblclick", %{"nick" => nick2})
       html = render(view1)
 

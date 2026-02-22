@@ -65,10 +65,10 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
       assert html =~ ~s(phx-click="channel_list")
     end
 
-    test "renders Toggle Treebar button" do
+    test "renders Toggle Conversations button" do
       html = render_toolbar()
-      assert html =~ ~s(data-testid="toolbar-toggle-treebar")
-      assert html =~ ~s(phx-click="toggle_treebar")
+      assert html =~ ~s(data-testid="toolbar-toggle-conversations")
+      assert html =~ ~s(phx-click="toggle_conversations")
     end
 
     test "renders Toggle Nicklist button" do

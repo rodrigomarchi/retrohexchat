@@ -1,6 +1,6 @@
-defmodule RetroHexChatWeb.Components.Treebar do
+defmodule RetroHexChatWeb.Components.Conversations do
   @moduledoc """
-  Treebar component with Channels/Private sections plus inline user list.
+  Conversations sidebar component with Channels/Private sections plus inline user list.
   The active channel is pinned to the top of the Channels section with its
   users expanded below it, sorted by role priority (owner > operator >
   half_op > voiced > regular), alphabetically within each role.
@@ -24,9 +24,12 @@ defmodule RetroHexChatWeb.Components.Treebar do
   attr :active_pm, :string, default: nil
   attr :channel_users, :list, default: []
   attr :nick_color_fn, :any, default: nil
+  attr :channel_user_counts, :map, default: %{}
+  attr :popular_channels, :list, default: []
+  attr :sections, :map, default: %{channels: true, pms: true, popular: false}
 
-  @spec treebar(map()) :: Phoenix.LiveView.Rendered.t()
-  def treebar(assigns) do
+  @spec conversations(map()) :: Phoenix.LiveView.Rendered.t()
+  def conversations(assigns) do
     sorted_users = sort_users_by_role(assigns.channel_users)
     other_channels = Enum.reject(assigns.channels, &(&1 == assigns.active_channel))
 
@@ -36,15 +39,15 @@ defmodule RetroHexChatWeb.Components.Treebar do
       |> assign(:other_channels, other_channels)
 
     ~H"""
-    <div class="treebar" id="treebar" phx-hook="TreebarHook">
+    <div class="conversations" id="conversations" phx-hook="ConversationsHook">
       <div class="sidebar-tab-bar sidebar-tab-bar--left">
         <div class="tab-item tab-active">
-          <Icons.icon_tab_conversations class="treebar-icon" />
+          <Icons.icon_tab_conversations class="conversations-icon" />
           <span class="tab-label">Conversations</span>
           <button
             type="button"
             class="tab-close"
-            phx-click="toggle_treebar"
+            phx-click="toggle_conversations"
             title="Hide channel list"
             aria-label="Hide channel list"
           >
@@ -54,76 +57,135 @@ defmodule RetroHexChatWeb.Components.Treebar do
       </div>
       <div
         :if={@channels == [] and @pm_conversations == []}
-        class="empty-state treebar-empty-state"
-        data-testid="treebar-empty-state"
+        class="empty-state conversations-empty-state"
+        data-testid="conversations-empty-state"
       >
         <p>No channels — /join #channel to get started</p>
         <button type="button" class="empty-state-action" phx-click="open_channel_list">
           Browse channels
         </button>
       </div>
-      <ul :if={@channels != [] or @pm_conversations != []} class="tree-view">
-        <li>
-          <details open>
-            <summary><Icons.icon_tab_channel class="treebar-icon" /> Channels</summary>
-            <ul>
-              <.channel_item
-                :if={@active_channel && @active_channel in @channels}
-                channel={@active_channel}
-                active_channel={@active_channel}
-                unread_counts={@unread_counts}
-                highlight_channels={@highlight_channels}
-                flash_channels={@flash_channels}
-                muted_channels={@muted_channels}
-                disconnected_channels={@disconnected_channels}
-                channel_users={@sorted_users}
-                nick_color_fn={@nick_color_fn}
-              />
-              <.channel_item
-                :for={channel <- @other_channels}
-                channel={channel}
-                active_channel={@active_channel}
-                unread_counts={@unread_counts}
-                highlight_channels={@highlight_channels}
-                flash_channels={@flash_channels}
-                muted_channels={@muted_channels}
-                disconnected_channels={@disconnected_channels}
-                channel_users={[]}
-                nick_color_fn={nil}
-              />
-            </ul>
-          </details>
-        </li>
-        <li>
-          <details open>
-            <summary><Icons.icon_tab_pm class="treebar-icon" /> Private</summary>
-            <ul>
-              <li
-                :for={pm <- @pm_conversations}
-                class={
-                  pm_item_class(
-                    pm,
-                    @active_pm,
-                    @unread_counts,
-                    @flash_channels
-                  )
-                }
-                data-testid={"pm-#{pm}"}
-                phx-click="switch_pm"
-                phx-value-nickname={pm}
-              >
-                <Icons.icon_tab_pm class="treebar-icon" />
-                {pm}
-                <.badge
-                  :if={UnreadTracker.unread?(@unread_counts, "pm:#{pm}")}
-                  count={UnreadTracker.get_count(@unread_counts, "pm:#{pm}")}
-                  highlight={false}
-                />
-              </li>
-            </ul>
-          </details>
-        </li>
-      </ul>
+      <div
+        :if={@channels != [] or @pm_conversations != []}
+        class="conversations-sections"
+      >
+        <.section_header
+          label="MY CHANNELS"
+          section="channels"
+          expanded={@sections.channels}
+        />
+        <ul :if={@sections.channels} class="conversations-list">
+          <.channel_item
+            :if={@active_channel && @active_channel in @channels}
+            channel={@active_channel}
+            active_channel={@active_channel}
+            unread_counts={@unread_counts}
+            highlight_channels={@highlight_channels}
+            flash_channels={@flash_channels}
+            muted_channels={@muted_channels}
+            disconnected_channels={@disconnected_channels}
+            channel_users={@sorted_users}
+            nick_color_fn={@nick_color_fn}
+            channel_user_counts={@channel_user_counts}
+          />
+          <.channel_item
+            :for={channel <- @other_channels}
+            channel={channel}
+            active_channel={@active_channel}
+            unread_counts={@unread_counts}
+            highlight_channels={@highlight_channels}
+            flash_channels={@flash_channels}
+            muted_channels={@muted_channels}
+            disconnected_channels={@disconnected_channels}
+            channel_users={[]}
+            nick_color_fn={nil}
+            channel_user_counts={@channel_user_counts}
+          />
+        </ul>
+
+        <.section_header
+          label="PRIVATE MESSAGES"
+          section="pms"
+          expanded={@sections.pms}
+        />
+        <ul :if={@sections.pms} class="conversations-list">
+          <li
+            :for={pm <- @pm_conversations}
+            class={
+              pm_item_class(
+                pm,
+                @active_pm,
+                @unread_counts,
+                @flash_channels
+              )
+            }
+            data-testid={"pm-#{pm}"}
+            phx-click="switch_pm"
+            phx-value-nickname={pm}
+          >
+            <Icons.icon_tab_pm class="conversations-icon" />
+            {pm}
+            <.badge
+              :if={UnreadTracker.unread?(@unread_counts, "pm:#{pm}")}
+              count={UnreadTracker.get_count(@unread_counts, "pm:#{pm}")}
+              highlight={false}
+            />
+          </li>
+        </ul>
+
+        <.section_header
+          label="POPULAR CHANNELS"
+          section="popular"
+          expanded={@sections.popular}
+        />
+        <ul :if={@sections.popular} class="conversations-list">
+          <li
+            :for={ch <- @popular_channels}
+            class="conversations-popular-item"
+            data-testid={"popular-#{ch.name}"}
+          >
+            <Icons.icon_tab_channel class="conversations-icon" />
+            <span class="conversations-popular-name">{ch.name}</span>
+            <span class="conversations-popular-count">({ch.user_count})</span>
+            <button
+              type="button"
+              class="conversations-join-btn"
+              phx-click="conversations_join_popular"
+              phx-value-channel={ch.name}
+              title={"Join #{ch.name}"}
+            >
+              [+]
+            </button>
+          </li>
+          <li class="conversations-browse-all">
+            <button
+              type="button"
+              class="conversations-browse-all-btn"
+              phx-click="conversations_browse_all"
+            >
+              Browse All Channels...
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    """
+  end
+
+  attr :label, :string, required: true
+  attr :section, :string, required: true
+  attr :expanded, :boolean, required: true
+
+  defp section_header(assigns) do
+    ~H"""
+    <div
+      class="conversations-section-header"
+      phx-click="conversations_toggle_section"
+      phx-value-section={@section}
+      data-testid={"conversations-section-#{@section}"}
+    >
+      <span class="conversations-section-arrow">{if @expanded, do: "▾", else: "▸"}</span>
+      {@label}
     </div>
     """
   end
@@ -137,16 +199,19 @@ defmodule RetroHexChatWeb.Components.Treebar do
   attr :disconnected_channels, :list, required: true
   attr :channel_users, :list, default: []
   attr :nick_color_fn, :any, default: nil
+  attr :channel_user_counts, :map, default: %{}
 
   defp channel_item(assigns) do
     is_active = assigns.channel == assigns.active_channel
+    user_count = Map.get(assigns.channel_user_counts, assigns.channel)
 
     assigns =
       assigns
       |> assign(:is_active, is_active)
+      |> assign(:user_count, user_count)
       |> assign(
         :item_class,
-        treebar_item_class(
+        conversations_item_class(
           assigns.channel,
           assigns.active_channel,
           assigns.unread_counts,
@@ -168,10 +233,10 @@ defmodule RetroHexChatWeb.Components.Treebar do
       phx-value-cc_channel={@channel}
     >
       <span :if={@channel in @disconnected_channels}>⚡</span>
-      <Icons.icon_tab_channel class="treebar-icon" />
+      <Icons.icon_tab_channel class="conversations-icon" />
       {@channel}
-      <span :if={@is_active && @channel_users != []} class="treebar-user-count">
-        ({length(@channel_users)})
+      <span :if={@user_count} class="conversations-user-count">
+        ({@user_count})
       </span>
       <.badge
         :if={UnreadTracker.unread?(@unread_counts, @channel)}
@@ -179,8 +244,8 @@ defmodule RetroHexChatWeb.Components.Treebar do
         highlight={@channel in @highlight_channels}
       />
     </li>
-    <li :if={@is_active && @channel_users != []} class="treebar-users-container">
-      <ul class="treebar-users" data-testid="treebar-users">
+    <li :if={@is_active && @channel_users != []} class="conversations-users-container">
+      <ul class="conversations-users" data-testid="conversations-users">
         <li
           :for={user <- @channel_users}
           class={user_item_class(user)}
@@ -238,8 +303,8 @@ defmodule RetroHexChatWeb.Components.Treebar do
   end
 
   @spec badge_class(boolean()) :: String.t()
-  defp badge_class(true), do: "treebar-badge treebar-badge--highlight"
-  defp badge_class(false), do: "treebar-badge"
+  defp badge_class(true), do: "conversations-badge conversations-badge--highlight"
+  defp badge_class(false), do: "conversations-badge"
 
   @spec nick_style((String.t() -> String.t()) | nil, String.t()) :: String.t()
   defp nick_style(nil, _nickname), do: ""
@@ -265,7 +330,7 @@ defmodule RetroHexChatWeb.Components.Treebar do
     end)
   end
 
-  @spec treebar_item_class(
+  @spec conversations_item_class(
           String.t(),
           String.t() | nil,
           UnreadTracker.counts(),
@@ -274,22 +339,32 @@ defmodule RetroHexChatWeb.Components.Treebar do
           list(String.t()),
           list(String.t())
         ) :: String.t()
-  defp treebar_item_class(channel, active, unread_counts, highlight, flash, muted, disconnected) do
+  defp conversations_item_class(
+         channel,
+         active,
+         unread_counts,
+         highlight,
+         flash,
+         muted,
+         disconnected
+       ) do
     classes = []
-    classes = if channel == active, do: ["tree-active" | classes], else: classes
+    classes = if channel == active, do: ["conversations-active" | classes], else: classes
 
     classes =
       if UnreadTracker.unread?(unread_counts, channel),
-        do: ["tree-unread" | classes],
+        do: ["conversations-unread" | classes],
         else: classes
 
     classes =
       if channel in highlight or channel in flash,
-        do: ["tree-highlight" | classes],
+        do: ["conversations-highlight" | classes],
         else: classes
 
-    classes = if channel in muted, do: ["tree-muted" | classes], else: classes
-    classes = if channel in disconnected, do: ["tree-disconnected" | classes], else: classes
+    classes = if channel in muted, do: ["conversations-muted" | classes], else: classes
+
+    classes =
+      if channel in disconnected, do: ["conversations-disconnected" | classes], else: classes
 
     Enum.join(classes, " ")
   end
@@ -298,14 +373,14 @@ defmodule RetroHexChatWeb.Components.Treebar do
           String.t()
   defp pm_item_class(pm, active_pm, unread_counts, flash) do
     classes = []
-    classes = if pm == active_pm, do: ["tree-active" | classes], else: classes
+    classes = if pm == active_pm, do: ["conversations-active" | classes], else: classes
 
     classes =
       if UnreadTracker.unread?(unread_counts, "pm:#{pm}"),
-        do: ["tree-unread" | classes],
+        do: ["conversations-unread" | classes],
         else: classes
 
-    classes = if "pm:#{pm}" in flash, do: ["tree-highlight" | classes], else: classes
+    classes = if "pm:#{pm}" in flash, do: ["conversations-highlight" | classes], else: classes
     Enum.join(classes, " ")
   end
 end

@@ -100,10 +100,10 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
           setting="show_toolbar"
         />
         <.display_checkbox
-          id="opt-show-treebar"
-          label="Show Treebar"
-          checked={@draft.display.show_treebar}
-          setting="show_treebar"
+          id="opt-show-conversations"
+          label="Show Conversations"
+          checked={@draft.display.show_conversations}
+          setting="show_conversations"
         />
         <.display_checkbox
           id="opt-show-switchbar"

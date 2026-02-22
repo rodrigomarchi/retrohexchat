@@ -54,8 +54,8 @@
   </RetroHexChatWeb.Components.AppHeader.app_header>
 
   <div class="mdi-layout">
-    <RetroHexChatWeb.Components.Treebar.treebar
-      :if={@show_treebar}
+    <RetroHexChatWeb.Components.Conversations.conversations
+      :if={@show_conversations}
       channels={@session.channels}
       active_channel={@session.active_channel}
       unread_counts={@unread_counts}
@@ -69,6 +69,9 @@
       active_pm={@session.active_pm}
       channel_users={if !@session.active_pm && !@show_status_tab, do: @channel_users, else: []}
       nick_color_fn={@nick_color_fn}
+      channel_user_counts={@channel_user_counts}
+      popular_channels={@popular_channels}
+      sections={@conversations_sections}
     />
 
     <div class="chat-area" style="position: relative;">
@@ -397,14 +400,14 @@
     key_bindings={RetroHexChat.Chat.KeyBindings.defaults()}
   />
 
-  <RetroHexChatWeb.Components.TreebarContextMenu.treebar_context_menu
-    visible={@treebar_context_menu.visible}
-    x={@treebar_context_menu.x}
-    y={@treebar_context_menu.y}
-    channel={@treebar_context_menu.channel}
-    is_muted={MapSet.member?(@muted_channels, @treebar_context_menu.channel)}
+  <RetroHexChatWeb.Components.ConversationsContextMenu.conversations_context_menu
+    visible={@conversations_context_menu.visible}
+    x={@conversations_context_menu.x}
+    y={@conversations_context_menu.y}
+    channel={@conversations_context_menu.channel}
+    is_muted={MapSet.member?(@muted_channels, @conversations_context_menu.channel)}
     has_unread={
-      RetroHexChat.Chat.UnreadTracker.unread?(@unread_counts, @treebar_context_menu.channel)
+      RetroHexChat.Chat.UnreadTracker.unread?(@unread_counts, @conversations_context_menu.channel)
     }
     custom_channel_items={CustomMenus.entries_for(@session.custom_menus, :channel)}
   />

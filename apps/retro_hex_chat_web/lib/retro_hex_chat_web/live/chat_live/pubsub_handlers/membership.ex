@@ -43,6 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     {:halt,
      socket
      |> assign(channel_users: users)
+     |> increment_channel_user_count(channel)
      |> maybe_refresh_cc(channel)
      |> play_event_sound(:join, socket.assigns.session)
      |> maybe_push_notification(:join, %{channel: channel, sender: nick, content: msg})
@@ -63,6 +64,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     {:halt,
      socket
      |> assign(channel_users: users)
+     |> decrement_channel_user_count(channel)
      |> maybe_refresh_cc(channel)
      |> play_event_sound(:part, socket.assigns.session)
      |> maybe_push_notification(:leave, %{channel: channel, sender: nick, content: msg})
@@ -221,6 +223,22 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     else
       socket
     end
+  end
+
+  defp increment_channel_user_count(socket, nil), do: socket
+
+  defp increment_channel_user_count(socket, channel) do
+    counts = socket.assigns.channel_user_counts
+    current = Map.get(counts, channel, 0)
+    assign(socket, channel_user_counts: Map.put(counts, channel, current + 1))
+  end
+
+  defp decrement_channel_user_count(socket, nil), do: socket
+
+  defp decrement_channel_user_count(socket, channel) do
+    counts = socket.assigns.channel_user_counts
+    current = Map.get(counts, channel, 0)
+    assign(socket, channel_user_counts: Map.put(counts, channel, max(current - 1, 0)))
   end
 
   defp cleanup_channels(session) do

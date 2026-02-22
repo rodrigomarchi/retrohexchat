@@ -16,7 +16,7 @@ export const TIP_IDS = {
 export const TIPS = [
   { id: "first_message", text: "Use ↑ to edit your last message" },
   { id: "first_join", text: "Channels you join appear in the left panel" },
-  { id: "first_pm", text: "PMs appear as separate windows in the treebar" },
+  { id: "first_pm", text: "PMs appear as separate conversations in the sidebar" },
   {
     id: "first_highlight",
     text: "Your nick was mentioned! Configure alerts in Settings",

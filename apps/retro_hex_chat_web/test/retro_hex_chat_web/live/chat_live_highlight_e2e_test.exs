@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightE2ETest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US2: TreeBar flash on non-active channel highlight" do
-    test "highlight in non-active channel adds tree-highlight class", %{conn: conn} do
+    test "highlight in non-active channel adds conversations-highlight class", %{conn: conn} do
       nick = "E2EFlash#{uid()}"
       ch = "#e2e_flash_#{uid()}"
       ensure_channel(ch)
@@ -91,7 +91,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightE2ETest do
       send_message(view, "OtherUser", "hey #{nick}!", ch)
 
       html = render(view)
-      assert html =~ "tree-highlight"
+      assert html =~ "conversations-highlight"
     end
 
     test "switching to highlighted channel clears flash", %{conn: conn} do
@@ -105,11 +105,11 @@ defmodule RetroHexChatWeb.ChatLiveHighlightE2ETest do
       click_channel(view, "#lobby")
 
       send_message(view, "OtherUser", "hey #{nick}!", ch)
-      assert render(view) =~ "tree-highlight"
+      assert render(view) =~ "conversations-highlight"
 
       # Switch to the highlighted channel — flash should clear
       click_channel(view, ch)
-      refute render(view) =~ "tree-highlight"
+      refute render(view) =~ "conversations-highlight"
     end
   end
 

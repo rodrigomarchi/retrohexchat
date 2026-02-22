@@ -1,11 +1,11 @@
 /**
- * LiveView hook for treebar channel right-click context menu,
+ * LiveView hook for conversations sidebar channel right-click context menu,
  * nick double-click → PM, feedback toasts, and channel join flash.
  */
 import { findClosestWithData } from "../lib/dom.js";
 import { showFeedbackToast } from "../lib/feedback_toast.js";
 
-const TreebarHook = {
+const ConversationsHook = {
   mounted() {
     this.el.addEventListener("contextmenu", (e) => {
       const channel = findClosestWithData(e.target, "[data-channel]", "channel");
@@ -36,11 +36,11 @@ const TreebarHook = {
     this.handleEvent("channel_joined_flash", ({ channel }) => {
       const li = this.el.querySelector(`[data-channel="${channel}"]`);
       if (li) {
-        li.classList.add("tree-join-flash");
-        setTimeout(() => li.classList.remove("tree-join-flash"), 1000);
+        li.classList.add("conversations-join-flash");
+        setTimeout(() => li.classList.remove("conversations-join-flash"), 1000);
       }
     });
   },
 };
 
-export default TreebarHook;
+export default ConversationsHook;

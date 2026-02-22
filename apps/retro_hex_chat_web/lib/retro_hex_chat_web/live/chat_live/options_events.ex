@@ -119,7 +119,7 @@ defmodule RetroHexChatWeb.ChatLive.OptionsEvents do
       session: updated_session,
       options_draft: draft,
       show_toolbar: draft.display.show_toolbar,
-      show_treebar: draft.display.show_treebar,
+      show_conversations: draft.display.show_conversations,
       show_switchbar: draft.display.show_switchbar,
       show_statusbar: draft.display.show_statusbar
     )

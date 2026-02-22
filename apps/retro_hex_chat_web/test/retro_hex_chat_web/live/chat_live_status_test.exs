@@ -71,14 +71,14 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
       unique = uid()
       {:ok, view, _html} = live(chat_conn(conn, "StNick#{unique}"), "/chat")
 
-      # User list should be visible initially in treebar
+      # User list should be visible initially in conversations
       html = render(view)
-      assert html =~ "treebar-users"
+      assert html =~ "conversations-users"
 
       # Switch to status tab — user list should be hidden
       render_click(view, "switch_to_status")
       html = render(view)
-      refute html =~ "treebar-users"
+      refute html =~ "conversations-users"
     end
 
     test "plain text on status tab shows error", %{conn: conn} do

@@ -104,18 +104,18 @@ defmodule RetroHexChatWeb.E2ETest do
   # ══════════════════════════════════════════════════════════════
 
   describe "Screen 2: ChatLive layout and connection" do
-    test "2.1 mount shows complete layout (treebar, chat, status, toolbar)", %{
+    test "2.1 mount shows complete layout (conversations, chat, status, toolbar)", %{
       conn: conn
     } do
       {:ok, _view, html} = live(chat_conn(conn, "LayoutUser"), "/chat")
-      assert html =~ "treebar"
+      assert html =~ "conversations"
       assert html =~ "chat-area"
-      assert html =~ "treebar-users"
+      assert html =~ "conversations-users"
       assert html =~ "status-bar"
       assert html =~ "toolbar"
     end
 
-    test "2.2 auto-join #lobby, user appears in treebar user list", %{conn: conn} do
+    test "2.2 auto-join #lobby, user appears in conversations user list", %{conn: conn} do
       {:ok, _view, html} = live(chat_conn(conn, "LobbyJoin"), "/chat")
       assert html =~ "#lobby"
       assert html =~ "LobbyJoin"
@@ -231,7 +231,7 @@ defmodule RetroHexChatWeb.E2ETest do
   # ══════════════════════════════════════════════════════════════
 
   describe "Screen 4: Channel operations" do
-    test "4.1 /join creates channel, appears in treebar, switches to it", %{conn: conn} do
+    test "4.1 /join creates channel, appears in conversations, switches to it", %{conn: conn} do
       ch = unique_channel("join")
       ensure_channel(ch)
       {:ok, view, _html} = live(chat_conn(conn, "JoinE2E"), "/chat")
@@ -281,7 +281,7 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ "chat-input-form"
     end
 
-    test "4.6 click on treebar changes active channel", %{conn: conn} do
+    test "4.6 click on conversations changes active channel", %{conn: conn} do
       ch = unique_channel("tree")
       ensure_channel(ch)
       {:ok, view, _html} = live(chat_conn(conn, "TreeClick"), "/chat")
@@ -292,10 +292,10 @@ defmodule RetroHexChatWeb.E2ETest do
         |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
         |> render_click()
 
-      assert html =~ "tree-active"
+      assert html =~ "conversations-active"
     end
 
-    test "4.7 message in inactive channel marks tree-unread", %{conn: conn} do
+    test "4.7 message in inactive channel marks conversations-unread", %{conn: conn} do
       ch = unique_channel("unread")
       ensure_channel(ch)
       {:ok, view, _html} = live(chat_conn(conn, "UnreadE2E"), "/chat")
@@ -320,7 +320,7 @@ defmodule RetroHexChatWeb.E2ETest do
       })
 
       html = render(view)
-      assert html =~ "tree-unread"
+      assert html =~ "conversations-unread"
     end
 
     test "4.8 switching to unread channel clears indicator", %{conn: conn} do
@@ -346,14 +346,14 @@ defmodule RetroHexChatWeb.E2ETest do
       })
 
       html = render(view)
-      assert html =~ "tree-unread"
+      assert html =~ "conversations-unread"
 
       html =
         view
         |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#{ch}"]))
         |> render_click()
 
-      refute html =~ "tree-unread"
+      refute html =~ "conversations-unread"
     end
 
     test "4.9 limit of 10 channels shows error", %{conn: conn} do
@@ -619,7 +619,7 @@ defmodule RetroHexChatWeb.E2ETest do
   end
 
   # ══════════════════════════════════════════════════════════════
-  # Screen 7: User List (in treebar)
+  # Screen 7: User List (in conversations)
   # ══════════════════════════════════════════════════════════════
 
   describe "Screen 7: User List" do
@@ -629,9 +629,9 @@ defmodule RetroHexChatWeb.E2ETest do
       {:ok, view, _html} = live(chat_conn(conn, "NickGrp"), "/chat")
       send_command(view, "/join #{ch}")
       html = render(view)
-      # User is owner (first to join) — role icon visible in treebar
+      # User is owner (first to join) — role icon visible in conversations
       assert html =~ "nick-owner"
-      assert html =~ "treebar-users"
+      assert html =~ "conversations-users"
     end
 
     test "7.2 prefixes: @ for op, + for voiced", %{conn: conn} do
@@ -690,7 +690,7 @@ defmodule RetroHexChatWeb.E2ETest do
       {:ok, view, _html} = live(chat_conn(conn, "CountE2E"), "/chat")
       send_command(view, "/join #{ch}")
       html = render(view)
-      # User count shown in treebar next to channel name
+      # User count shown in conversations next to channel name
       assert html =~ "(1)"
 
       send(view.pid, {:user_joined, %{nickname: "CountGuest", role: :regular}})
@@ -728,7 +728,7 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ "PmRecipient"
     end
 
-    test "8.2 /query opens tab in treebar", %{conn: conn} do
+    test "8.2 /query opens tab in conversations", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "QryUser"), "/chat")
       send_command(view, "/query QryTarget")
       html = render(view)
@@ -741,7 +741,7 @@ defmodule RetroHexChatWeb.E2ETest do
       render_click(view, "nick_right_click", %{"nick" => "PmPal", "x" => 0, "y" => 0})
       html = render_click(view, "context_query", %{"nick" => "PmPal"})
       assert html =~ "PmPal"
-      assert html =~ "tree-active"
+      assert html =~ "conversations-active"
     end
 
     test "8.4 user list hides during PM, shows in channel", %{conn: conn} do
@@ -750,11 +750,11 @@ defmodule RetroHexChatWeb.E2ETest do
       {:ok, view, _html} = live(chat_conn(conn, "PmNick"), "/chat")
       send_command(view, "/join #{ch}")
 
-      # Open PM — user list should hide (no treebar-users)
+      # Open PM — user list should hide (no conversations-users)
       render_click(view, "nick_right_click", %{"nick" => "pmpal", "x" => 0, "y" => 0})
       render_click(view, "context_query", %{"nick" => "pmpal"})
       html = render(view)
-      refute html =~ "treebar-users"
+      refute html =~ "conversations-users"
 
       # Switch back to channel — user list should show
       html =
@@ -762,7 +762,7 @@ defmodule RetroHexChatWeb.E2ETest do
         |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#{ch}"]))
         |> render_click()
 
-      assert html =~ "treebar-users"
+      assert html =~ "conversations-users"
     end
 
     test "8.5 unread indicator for PM", %{conn: conn} do
@@ -790,7 +790,7 @@ defmodule RetroHexChatWeb.E2ETest do
       })
 
       html = render(view)
-      assert html =~ "tree-unread"
+      assert html =~ "conversations-unread"
     end
 
     test "8.6 switching to unread PM clears indicator", %{conn: conn} do
@@ -816,14 +816,14 @@ defmodule RetroHexChatWeb.E2ETest do
       })
 
       html = render(view)
-      assert html =~ "tree-unread"
+      assert html =~ "conversations-unread"
 
       html =
         view
         |> element(~s(li[phx-click="switch_pm"][phx-value-nickname="ClrPal"]))
         |> render_click()
 
-      refute html =~ "tree-unread"
+      refute html =~ "conversations-unread"
     end
 
     test "8.7 PM arrives while PM is active (no unread)", %{conn: conn} do
@@ -847,7 +847,7 @@ defmodule RetroHexChatWeb.E2ETest do
 
       html = render(view)
       assert html =~ "live msg"
-      refute html =~ "tree-unread"
+      refute html =~ "conversations-unread"
     end
 
     test "8.8 /msg without message shows error", %{conn: conn} do
@@ -1302,20 +1302,20 @@ defmodule RetroHexChatWeb.E2ETest do
   # ══════════════════════════════════════════════════════════════
 
   describe "Screen 15: UI toggles" do
-    test "15.1 toggle treebar hides/shows", %{conn: conn} do
+    test "15.1 toggle conversations hides/shows", %{conn: conn} do
       {:ok, view, html} = live(chat_conn(conn, "TreeTgl"), "/chat")
-      assert html =~ ~s(class="treebar")
+      assert html =~ ~s(class="conversations")
 
-      html = render_click(view, "toggle_treebar")
-      refute html =~ ~s(class="treebar")
+      html = render_click(view, "toggle_conversations")
+      refute html =~ ~s(class="conversations")
 
-      html = render_click(view, "toggle_treebar")
-      assert html =~ ~s(class="treebar")
+      html = render_click(view, "toggle_conversations")
+      assert html =~ ~s(class="conversations")
     end
 
-    test "15.2 treebar shows user list under active channel", %{conn: conn} do
+    test "15.2 conversations shows user list under active channel", %{conn: conn} do
       {:ok, _view, html} = live(chat_conn(conn, "NickTgl"), "/chat")
-      assert html =~ "treebar-users"
+      assert html =~ "conversations-users"
       assert html =~ "NickTgl"
     end
 

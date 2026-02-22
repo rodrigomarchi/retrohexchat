@@ -101,7 +101,7 @@ defmodule RetroHexChatWeb.ChatLiveNoticeTest do
       refute_push_event(view, "play_sound", %{})
     end
 
-    test "notice does NOT create PM window or treebar entry", %{conn: conn} do
+    test "notice does NOT create PM window or conversations entry", %{conn: conn} do
       nick = "NtcNoPm#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 

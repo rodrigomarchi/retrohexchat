@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.ChatLive do
   @moduledoc """
-  Main chat interface with MDI layout: treebar, chat area, nicklist, status bar.
+  Main chat interface with MDI layout: conversations sidebar, chat area, nicklist, status bar.
   """
   use RetroHexChatWeb, :live_view
 
@@ -141,7 +141,9 @@ defmodule RetroHexChatWeb.ChatLive do
       {:settings_dialogs_events, &ChatLive.SettingsDialogsEvents.handle_event/3},
       {:notify_events, &ChatLive.NotifyEvents.handle_event/3},
       {:address_book_events, &ChatLive.AddressBookEvents.handle_event/3},
-      {:treebar_context_menu_events, &ChatLive.TreebarContextMenuEvents.handle_event/3},
+      {:conversations_events, &ChatLive.ConversationsEvents.handle_event/3},
+      {:conversations_context_menu_events,
+       &ChatLive.ConversationsContextMenuEvents.handle_event/3},
       {:channel_central_events, &ChatLive.ChannelCentralEvents.handle_event/3},
       {:log_viewer_events, &ChatLive.LogViewerEvents.handle_event/3},
       {:navigation_events, &ChatLive.NavigationEvents.handle_event/3},
@@ -249,7 +251,11 @@ defmodule RetroHexChatWeb.ChatLive do
       show_highlight_edit_dialog: false,
       current_topic: nil,
       current_modes: nil,
-      show_treebar: true,
+      show_conversations: true,
+      channel_user_counts: %{},
+      popular_channels: [],
+      popular_channels_loaded: false,
+      conversations_sections: %{channels: true, pms: true, popular: false},
       show_url_catcher: false,
       show_whois: false,
       unread_counts: %{},
@@ -318,7 +324,7 @@ defmodule RetroHexChatWeb.ChatLive do
       flash_channels: MapSet.new(),
       pm_typing_from: nil,
       pm_typing_timer: nil,
-      treebar_context_menu: %{visible: false, x: 0, y: 0, channel: nil},
+      conversations_context_menu: %{visible: false, x: 0, y: 0, channel: nil},
       last_activity_at: DateTime.utc_now(),
       show_alias_dialog: false,
       alias_dialog_selected: nil,
@@ -575,7 +581,8 @@ defmodule RetroHexChatWeb.ChatLive do
     end
   end
 
-  @nick_colors ~w(#e74c3c #3498db #2ecc71 #e67e22 #9b59b6 #1abc9c #f39c12 #e91e63 #00bcd4 #8bc34a #ff5722 #607d8b)
+  # All colors ≥4.5:1 contrast on white (WCAG AA)
+  @nick_colors ~w(#c0392b #2471a3 #1e8449 #b9770e #7d3c98 #148f77 #b7950b #c2185b #00838f #558b2f #d84315 #455a64)
 
   @spec format_content(String.t(), boolean()) :: String.t()
   defp format_content(content, strip_formatting) do

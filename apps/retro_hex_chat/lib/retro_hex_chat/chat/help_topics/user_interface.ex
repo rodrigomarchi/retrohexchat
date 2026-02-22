@@ -4,7 +4,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
   @help_dir Path.join(:code.priv_dir(:retro_hex_chat), "help")
 
   @external_resource Path.join(@help_dir, "ui-overview.html")
-  @external_resource Path.join(@help_dir, "ui-treebar.html")
+  @external_resource Path.join(@help_dir, "ui-conversations.html")
   @external_resource Path.join(@help_dir, "ui-tab-bar.html")
   @external_resource Path.join(@help_dir, "ui-nicklist.html")
   @external_resource Path.join(@help_dir, "ui-topic-bar.html")
@@ -24,11 +24,11 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         content: File.read!(Path.join(@help_dir, "ui-overview.html"))
       },
       %{
-        id: "ui-treebar",
-        title: "Treebar",
+        id: "ui-conversations",
+        title: "Conversations",
         category: "User Interface",
-        keywords: ["treebar", "tree", "sidebar", "navigation", "left pane"],
-        content: File.read!(Path.join(@help_dir, "ui-treebar.html"))
+        keywords: ["conversations", "sidebar", "navigation", "left pane", "channels", "popular"],
+        content: File.read!(Path.join(@help_dir, "ui-conversations.html"))
       },
       %{
         id: "ui-tab-bar",
@@ -41,7 +41,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         id: "ui-nicklist",
         title: "User List",
         category: "User Interface",
-        keywords: ["nicklist", "user list", "nick list", "users", "treebar users"],
+        keywords: ["nicklist", "user list", "nick list", "users", "conversations users"],
         content: File.read!(Path.join(@help_dir, "ui-nicklist.html"))
       },
       %{

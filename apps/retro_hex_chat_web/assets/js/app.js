@@ -23,7 +23,7 @@ import ShortcutDispatcherHook from "./hooks/shortcut_dispatcher_hook";
 import SoundHook from "./hooks/sound_hook";
 import TitleFlashHook from "./hooks/title_flash_hook";
 import ToolbarGroupHook from "./hooks/toolbar_group_hook";
-import TreebarHook from "./hooks/treebar_hook";
+import ConversationsHook from "./hooks/conversations_hook";
 import ContextualTipsHook from "./hooks/contextual_tips_hook";
 import NotificationDispatcherHook from "./hooks/notification_dispatcher_hook";
 import MessageInteractionsHook from "./hooks/message_interactions_hook";
@@ -70,7 +70,7 @@ const Hooks = {
   SoundHook: SoundHook,
   TitleFlashHook: TitleFlashHook,
   ToolbarGroupHook: ToolbarGroupHook,
-  TreebarHook: TreebarHook,
+  ConversationsHook: ConversationsHook,
   URLCatcherHook: URLCatcherHook,
   WebRTCHook: WebRTCHook,
 };

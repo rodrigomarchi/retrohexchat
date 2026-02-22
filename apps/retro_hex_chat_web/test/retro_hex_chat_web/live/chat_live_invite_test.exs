@@ -171,7 +171,7 @@ defmodule RetroHexChatWeb.ChatLiveInviteTest do
       html = render(tgt_view)
       # Dialog should be gone
       refute html =~ "Channel Invitation"
-      # Channel should appear in treebar
+      # Channel should appear in conversations
       assert html =~ channel
     end
   end

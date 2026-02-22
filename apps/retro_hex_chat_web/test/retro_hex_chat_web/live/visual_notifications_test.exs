@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
 
   # ── Treebar flash for channels ──────────────────────────────
 
-  describe "treebar flash for channels" do
+  describe "conversations flash for channels" do
     test "title_flash_start pushed for PM with flash enabled", %{conn: conn} do
       nick = "VNot#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
       send_new_message(view, "Other", "hey #{nick}!", ch)
 
       html = render(view)
-      assert html =~ "tree-highlight"
+      assert html =~ "conversations-highlight"
 
       # Switch to that channel — flash should clear
       view
@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
 
       html = render(view)
       # The flash class should be gone for the switched-to channel
-      refute html =~ ~r/data-testid="channel-#{Regex.escape(ch)}"[^>]*tree-highlight/
+      refute html =~ ~r/data-testid="channel-#{Regex.escape(ch)}"[^>]*conversations-highlight/
     end
   end
 

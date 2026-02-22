@@ -533,8 +533,11 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
   # ── Phase 7 US5: Extended Treebar Context Menu ────────────────
 
-  describe "extended treebar context menu" do
-    test "right-click treebar channel shows extended menu items", %{conn: conn, channel: channel} do
+  describe "extended conversations context menu" do
+    test "right-click conversations channel shows extended menu items", %{
+      conn: conn,
+      channel: channel
+    } do
       nick = "CtxTb1#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
@@ -547,12 +550,12 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
       html = render(view)
 
-      assert html =~ ~s(data-testid="treebar-context-menu")
-      assert html =~ ~s(data-testid="ctx-treebar-mark-read")
-      assert html =~ ~s(data-testid="ctx-treebar-mute")
-      assert html =~ ~s(data-testid="ctx-treebar-copy-name")
-      assert html =~ ~s(data-testid="ctx-treebar-leave")
-      assert html =~ ~s(data-testid="ctx-treebar-settings")
+      assert html =~ ~s(data-testid="conversations-context-menu")
+      assert html =~ ~s(data-testid="ctx-conversations-mark-read")
+      assert html =~ ~s(data-testid="ctx-conversations-mute")
+      assert html =~ ~s(data-testid="ctx-conversations-copy-name")
+      assert html =~ ~s(data-testid="ctx-conversations-leave")
+      assert html =~ ~s(data-testid="ctx-conversations-settings")
       assert html =~ "Mark as Read"
       assert html =~ "Mute Channel"
       assert html =~ "Copy Name"
@@ -570,18 +573,18 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       ensure_channel(other_channel)
       join_channel(view, other_channel)
 
-      # Now mark the original channel as read via treebar menu
+      # Now mark the original channel as read via conversations menu
       render_click(view, "channel_right_click", %{
         "channel" => channel,
         "x" => 100,
         "y" => 200
       })
 
-      render_click(view, "ctx_treebar_mark_read", %{"channel" => channel})
+      render_click(view, "ctx_conversations_mark_read", %{"channel" => channel})
 
       # Menu should close
       html = render(view)
-      refute html =~ ~s(data-testid="treebar-context-menu")
+      refute html =~ ~s(data-testid="conversations-context-menu")
     end
 
     test "Mute Channel toggles mute state", %{conn: conn, channel: channel} do
@@ -600,7 +603,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       assert html =~ "Mute Channel"
 
       # Click mute
-      render_click(view, "ctx_treebar_mute", %{"channel" => channel})
+      render_click(view, "ctx_conversations_mute", %{"channel" => channel})
 
       # Now open menu again - should show "Unmute Channel"
       render_click(view, "channel_right_click", %{
@@ -643,7 +646,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       assert html =~ ~s(id="chat-context-menu")
     end
 
-    test "treebar context menu has ContextMenuHook", %{conn: conn, channel: channel} do
+    test "conversations context menu has ContextMenuHook", %{conn: conn, channel: channel} do
       nick = "CtxHk2#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
@@ -656,7 +659,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
 
       html = render(view)
       assert html =~ ~s(phx-hook="ContextMenuHook")
-      assert html =~ ~s(id="treebar-context-menu")
+      assert html =~ ~s(id="conversations-context-menu")
     end
 
     test "user context menu has shortcut hints", %{conn: conn, channel: channel} do

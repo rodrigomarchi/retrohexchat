@@ -1,6 +1,6 @@
-defmodule RetroHexChatWeb.Components.TreebarContextMenu do
+defmodule RetroHexChatWeb.Components.ConversationsContextMenu do
   @moduledoc """
-  Right-click context menu for channels in the treebar.
+  Right-click context menu for channels in the conversations sidebar.
 
   Extended menu with: Mark as Read, Mute/Unmute Channel,
   Copy Name, separator, Leave Channel, Channel Settings.
@@ -15,52 +15,52 @@ defmodule RetroHexChatWeb.Components.TreebarContextMenu do
   attr :is_muted, :boolean, default: false
   attr :has_unread, :boolean, default: false
 
-  @spec treebar_context_menu(map()) :: Phoenix.LiveView.Rendered.t()
-  def treebar_context_menu(assigns) do
+  @spec conversations_context_menu(map()) :: Phoenix.LiveView.Rendered.t()
+  def conversations_context_menu(assigns) do
     ~H"""
     <div
       :if={@visible}
       class="context-menu"
-      data-testid="treebar-context-menu"
+      data-testid="conversations-context-menu"
       style={"position: fixed; left: #{@x}px; top: #{@y}px; z-index: 300;"}
       phx-hook="ContextMenuHook"
-      id="treebar-context-menu"
+      id="conversations-context-menu"
     >
       <div class="window u-p-2">
         <ul class="tree-view">
           <li
             class={unless @has_unread, do: "disabled"}
-            data-testid="ctx-treebar-mark-read"
-            phx-click={if @has_unread, do: "ctx_treebar_mark_read"}
+            data-testid="ctx-conversations-mark-read"
+            phx-click={if @has_unread, do: "ctx_conversations_mark_read"}
             phx-value-channel={@channel}
           >
             Mark as Read
           </li>
           <li
-            data-testid="ctx-treebar-mute"
-            phx-click="ctx_treebar_mute"
+            data-testid="ctx-conversations-mute"
+            phx-click="ctx_conversations_mute"
             phx-value-channel={@channel}
           >
             {if @is_muted, do: "Unmute Channel", else: "Mute Channel"}
           </li>
           <li
-            data-testid="ctx-treebar-copy-name"
-            phx-click="ctx_treebar_copy_name"
+            data-testid="ctx-conversations-copy-name"
+            phx-click="ctx_conversations_copy_name"
             phx-value-channel={@channel}
           >
             Copy Name
           </li>
           <li class="separator"></li>
           <li
-            data-testid="ctx-treebar-leave"
-            phx-click="ctx_treebar_leave"
+            data-testid="ctx-conversations-leave"
+            phx-click="ctx_conversations_leave"
             phx-value-channel={@channel}
           >
             Leave Channel
           </li>
           <li
-            data-testid="ctx-treebar-settings"
-            phx-click="ctx_treebar_settings"
+            data-testid="ctx-conversations-settings"
+            phx-click="ctx_conversations_settings"
             phx-value-channel={@channel}
           >
             Channel Settings

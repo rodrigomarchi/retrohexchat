@@ -139,16 +139,16 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
     end
 
     @tag :liveview
-    test "toggling show_treebar hides treebar on apply", %{conn: conn} do
+    test "toggling show_conversations hides conversations on apply", %{conn: conn} do
       view = connect_user(conn) |> open_options()
 
       view
-      |> element(~s([data-testid="options-display-show_treebar"]))
+      |> element(~s([data-testid="options-display-show_conversations"]))
       |> render_click()
 
       view |> element(~s([data-testid="options-apply"])) |> render_click()
       html = render(view)
-      refute html =~ ~s(class="treebar")
+      refute html =~ ~s(class="conversations")
     end
 
     @tag :liveview

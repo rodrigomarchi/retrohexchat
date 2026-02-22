@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   Handle toolbar events.
 
   Covers: quit_chat, restore_session, open_search, settings,
-  toggle_treebar, toggle_strip_formatting, show_about,
+  toggle_conversations, toggle_strip_formatting, show_about,
   autocomplete_query, autocomplete_close,
   autocomplete_select, autocomplete_navigate, autocomplete_select_current,
   recent_commands_loaded, disconnect.
@@ -54,8 +54,8 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
      )}
   end
 
-  def handle_event("toggle_treebar", _params, socket) do
-    {:halt, assign(socket, show_treebar: !socket.assigns.show_treebar)}
+  def handle_event("toggle_conversations", _params, socket) do
+    {:halt, assign(socket, show_conversations: !socket.assigns.show_conversations)}
   end
 
   def handle_event("toggle_strip_formatting", _params, socket) do
