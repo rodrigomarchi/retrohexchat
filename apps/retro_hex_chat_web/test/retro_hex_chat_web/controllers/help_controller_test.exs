@@ -40,8 +40,7 @@ defmodule RetroHexChatWeb.HelpControllerTest do
       conn = get(conn, "/chat/help")
       html = html_response(conn, 200)
 
-      assert html =~ "window"
-      assert html =~ "title-bar"
+      assert html =~ "help-page-window"
       assert html =~ "tree-view"
     end
   end
