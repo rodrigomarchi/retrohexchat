@@ -52,7 +52,8 @@ defmodule RetroHexChat.Channels.Server do
           {:ok, map()} | {:error, String.t()}
   def join(channel_name, nickname, password \\ nil, opts \\ []) do
     identified = Keyword.get(opts, :identified, false)
-    GenServer.call(via(channel_name), {:join, nickname, password, identified})
+    bot = Keyword.get(opts, :bot, false)
+    GenServer.call(via(channel_name), {:join, nickname, password, identified, bot})
   end
 
   @doc """
@@ -215,20 +216,24 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   @impl true
-  def handle_call({:join, nickname, password, identified}, _from, state) do
+  def handle_call({:join, nickname, password, identified, bot}, _from, state) do
     with :ok <- check_not_banned(state, nickname),
          :ok <- check_not_member(state, nickname),
          :ok <-
-           Policy.can_join?(
-             state.modes,
-             state.membership,
-             password,
-             nickname,
-             state.invite_exceptions,
-             identified
-           ),
-         :ok <- check_join_throttle(state, nickname) do
-      role = determine_join_role(state, nickname)
+           (if bot do
+              :ok
+            else
+              Policy.can_join?(
+                state.modes,
+                state.membership,
+                password,
+                nickname,
+                state.invite_exceptions,
+                identified
+              )
+            end),
+         :ok <- if(bot, do: :ok, else: check_join_throttle(state, nickname)) do
+      role = if bot, do: :bot, else: determine_join_role(state, nickname)
       new_membership = Membership.add(state.membership, nickname, role)
       new_timestamps = [DateTime.utc_now() | state.join_timestamps]
       new_state = %{state | membership: new_membership, join_timestamps: new_timestamps}
@@ -245,9 +250,15 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
+  # Backwards-compatible 4-arg join (no bot flag)
+  def handle_call({:join, nickname, password, identified}, _from, state)
+      when is_boolean(identified) do
+    handle_call({:join, nickname, password, identified, false}, {:join_compat, nil}, state)
+  end
+
   # Backwards-compatible 3-arg join (no identified flag)
   def handle_call({:join, nickname, password}, _from, state) do
-    handle_call({:join, nickname, password, false}, {:join_compat, nil}, state)
+    handle_call({:join, nickname, password, false, false}, {:join_compat, nil}, state)
   end
 
   def handle_call({:part, nickname, reason}, _from, state) do

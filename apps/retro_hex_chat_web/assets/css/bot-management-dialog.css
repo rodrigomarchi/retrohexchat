@@ -1,0 +1,460 @@
+/* Bot Management Dialog — Win98 split-view layout */
+
+.bot-mgmt-dialog {
+  width: 680px;
+  max-height: 80vh;
+}
+
+.bot-form-overlay {
+  z-index: calc(var(--z-modal) + 1);
+}
+
+.bot-new-dialog {
+  width: 420px;
+}
+
+.bot-addcmd-dialog {
+  width: 380px;
+}
+
+.bot-mgmt-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+}
+
+.bot-mgmt-split {
+  display: flex;
+  gap: var(--space-sm);
+  min-height: 300px;
+}
+
+/* Sidebar */
+.bot-mgmt-sidebar {
+  width: 160px;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  border: var(--border-field);
+  background: var(--color-canvas);
+}
+
+.bot-mgmt-sidebar-header {
+  padding: 2px var(--space-xs);
+  font-weight: bold;
+  font-size: var(--font-xs);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.bot-mgmt-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.bot-mgmt-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 2px var(--space-xs);
+  cursor: pointer;
+  font-size: var(--font-xs);
+  font-family: var(--font-mono);
+}
+
+.bot-mgmt-list-item:hover {
+  background: var(--color-highlight-bg);
+  color: var(--color-highlight-text);
+}
+
+.bot-mgmt-list-item--selected {
+  background: var(--color-highlight-bg);
+  color: var(--color-highlight-text);
+}
+
+.bot-mgmt-status {
+  font-size: 8px;
+}
+
+.bot-mgmt-sidebar-actions {
+  padding: var(--space-xs);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Detail panel */
+.bot-mgmt-detail {
+  flex: 1;
+  border: var(--border-field);
+  background: var(--color-canvas);
+  overflow-y: auto;
+  padding: var(--space-sm);
+}
+
+.bot-mgmt-detail-header {
+  font-weight: bold;
+  font-size: var(--font-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.bot-mgmt-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* Tabs */
+.bot-mgmt-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.bot-mgmt-tab {
+  padding: 2px var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+  background: var(--color-bg);
+  cursor: pointer;
+  font-size: var(--font-xs);
+  font-family: var(--font-system);
+  margin-bottom: -1px;
+}
+
+.bot-mgmt-tab--active {
+  background: var(--color-canvas);
+  border-bottom: 1px solid var(--color-canvas);
+  font-weight: bold;
+}
+
+.bot-mgmt-tab-content {
+  min-height: 180px;
+}
+
+/* Fieldsets */
+.bot-mgmt-fieldset {
+  margin: 0 0 var(--space-sm) 0;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-border);
+}
+
+.bot-mgmt-fieldset legend {
+  font-size: var(--font-xs);
+  font-weight: bold;
+  padding: 0 var(--space-xs);
+}
+
+.bot-mgmt-field {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+  margin-bottom: 2px;
+  font-size: var(--font-xs);
+}
+
+.bot-mgmt-label {
+  font-weight: bold;
+  min-width: 80px;
+  font-size: var(--font-xs);
+}
+
+.bot-mgmt-value {
+  font-family: var(--font-mono);
+  font-size: var(--font-xs);
+}
+
+.bot-mgmt-status--on {
+  color: var(--color-success);
+}
+
+.bot-mgmt-status--off {
+  color: var(--color-error);
+}
+
+/* Capabilities badges */
+.bot-mgmt-caps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.bot-mgmt-cap {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.bot-mgmt-cap--on {
+  background: var(--color-success-bg, #d4edda);
+  color: var(--color-success, #155724);
+}
+
+.bot-mgmt-cap--off {
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+}
+
+/* Table */
+.bot-mgmt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-xs);
+}
+
+.bot-mgmt-table th,
+.bot-mgmt-table td {
+  padding: 2px var(--space-xs);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.bot-mgmt-table th {
+  background: var(--color-bg);
+  font-weight: bold;
+}
+
+.bot-mgmt-cmd-response {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bot-mgmt-empty-cell {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* Events tab */
+.bot-mgmt-event-row {
+  display: flex;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xs);
+  font-size: var(--font-xs);
+}
+
+.bot-mgmt-event-label {
+  font-weight: bold;
+  min-width: 120px;
+}
+
+.bot-mgmt-event-value {
+  font-family: var(--font-mono);
+}
+
+.bot-mgmt-placeholders {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  margin-top: var(--space-sm);
+}
+
+/* Buttons */
+.bot-mgmt-btn {
+  font-size: var(--font-xs);
+  padding: 2px var(--space-sm);
+  font-family: var(--font-system);
+}
+
+.bot-mgmt-btn--danger {
+  color: var(--color-error);
+}
+
+.bot-mgmt-btn-sm {
+  font-size: 10px;
+  padding: 1px 4px;
+  font-family: var(--font-system);
+}
+
+/* Footer */
+.bot-mgmt-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--color-border);
+}
+
+.bot-mgmt-footer-left {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.bot-mgmt-footer-right {
+  margin-left: auto;
+}
+
+.bot-mgmt-channels,
+.bot-mgmt-commands {
+  font-size: var(--font-xs);
+}
+
+.bot-mgmt-name {
+  font-family: var(--font-mono);
+}
+
+/* Channel add inline form */
+.bot-mgmt-channel-add {
+  margin-top: var(--space-xs);
+}
+
+.bot-mgmt-inline-form {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+  margin-top: var(--space-xs);
+}
+
+.bot-mgmt-input {
+  width: 140px;
+  font-size: var(--font-xs);
+  font-family: var(--font-mono);
+  padding: 1px 4px;
+}
+
+.bot-mgmt-cmd-actions {
+  margin-top: var(--space-xs);
+}
+
+/* Bot form (New Bot / Add Command dialogs) */
+.bot-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.bot-form fieldset {
+  margin: 0;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-border);
+}
+
+.bot-form legend {
+  font-size: var(--font-xs);
+  font-weight: bold;
+  padding: 0 var(--space-xs);
+}
+
+.bot-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: var(--space-xs);
+}
+
+.bot-form-field label {
+  font-size: var(--font-xs);
+  font-weight: bold;
+}
+
+.bot-form-field small {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+}
+
+.bot-form-input {
+  font-size: var(--font-xs);
+  font-family: var(--font-mono);
+  padding: 2px 4px;
+}
+
+.bot-form-input--wide {
+  width: 100%;
+}
+
+.bot-form-input--short {
+  width: 80px;
+}
+
+.bot-form-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.bot-form-caps {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bot-form-cap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-xs);
+  cursor: pointer;
+}
+
+.bot-form-cap--coming-soon {
+  color: var(--color-text-secondary);
+}
+
+.coming-soon-badge {
+  font-size: 9px;
+  padding: 0 4px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+}
+
+.bot-form-divider {
+  border: none;
+  border-top: 1px dashed var(--color-border);
+  margin: var(--space-xs) 0;
+}
+
+.bot-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-xs);
+}
+
+.bot-form-btn {
+  font-size: var(--font-xs);
+  padding: 2px var(--space-md);
+  font-family: var(--font-system);
+}
+
+/* Capabilities config tab */
+.bot-mgmt-caps-config {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.bot-mgmt-caps-empty {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-style: italic;
+  padding: var(--space-md);
+  font-size: var(--font-xs);
+}
+
+.bot-mgmt-cap-hint {
+  margin-top: var(--space-xs);
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-style: italic;
+}
+
+.bot-mgmt-cap-table {
+  margin-top: var(--space-xs);
+}
+
+/* Nicklist bot icon */
+.nick-icon--bot {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+}

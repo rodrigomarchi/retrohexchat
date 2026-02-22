@@ -26,7 +26,10 @@ defmodule RetroHexChat.Application do
       RetroHexChat.Services.NickServ,
       RetroHexChat.Services.NickExpiry,
       RetroHexChat.Services.ChanServ,
-      RetroHexChat.Services.ChanExpiry
+      RetroHexChat.Services.ChanExpiry,
+      {Registry, keys: :unique, name: RetroHexChat.Bots.BotRegistry},
+      RetroHexChat.Bots.Supervisor,
+      RetroHexChat.Bots.Loader
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: RetroHexChat.Supervisor)

@@ -432,6 +432,24 @@ defmodule RetroHexChatWeb.Components.Toolbar do
           </svg>
           <span class="toolbar-group-label">Settings</span>
         </button>
+        <button
+          type="button"
+          class="toolbar-btn"
+          title="Bot Management"
+          data-testid="toolbar-bot-management"
+          phx-click="open_bot_dialog"
+        >
+          <svg viewBox="0 0 16 16">
+            <path
+              d="M6.5 1h3l.5 2a5 5 0 0 1 1.2.7l1.8-.7 1.5 2.6-1.4 1.4c.1.3.1.6.1.9s0 .6-.1.9l1.4 1.4L13 12.8l-1.8-.7a5 5 0 0 1-1.2.7l-.5 2h-3l-.5-2a5 5 0 0 1-1.2-.7L3 13l-1.5-2.6 1.4-1.4A5 5 0 0 1 2.8 8c0-.3 0-.6.1-.9L1.5 5.7 3 3.1l1.8.7a5 5 0 0 1 1.2-.7L6.5 1z"
+              fill="#008080"
+              stroke="#000"
+              stroke-width="0.3"
+            />
+            <circle cx="8" cy="8" r="2" fill="#fff" />
+          </svg>
+          <span class="toolbar-group-label">Bot Management</span>
+        </button>
       </div>
     </div>
     """

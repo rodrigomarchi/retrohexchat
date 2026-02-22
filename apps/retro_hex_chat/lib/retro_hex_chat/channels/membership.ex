@@ -4,7 +4,7 @@ defmodule RetroHexChat.Channels.Membership do
   Maps nicknames to their role and join time.
   """
 
-  @type role :: :owner | :operator | :half_operator | :voiced | :regular
+  @type role :: :owner | :operator | :half_operator | :voiced | :regular | :bot
   @type member_info :: %{role: role(), joined_at: DateTime.t()}
   @type t :: %__MODULE__{members: %{String.t() => member_info()}}
 
@@ -59,6 +59,7 @@ defmodule RetroHexChat.Channels.Membership do
   def rank(:half_operator), do: 2
   def rank(:voiced), do: 1
   def rank(:regular), do: 0
+  def rank(:bot), do: 0
 
   @spec owners(t()) :: [String.t()]
   def owners(%__MODULE__{members: members}) do

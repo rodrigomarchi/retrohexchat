@@ -1,0 +1,78 @@
+<p>
+  The <code>/bot</code>
+  command lets admins and server operators create, configure, and manage bots.
+  Regular users can view bot info and list available commands.
+</p>
+
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/bot
+/bot create &lt;name&gt; [description]
+/bot destroy &lt;name&gt;
+/bot list
+/bot info &lt;name&gt;
+/bot join &lt;bot&gt; &lt;channel&gt;
+/bot part &lt;bot&gt; &lt;channel&gt;
+/bot enable &lt;bot&gt; [channel]
+/bot disable &lt;bot&gt; [channel]
+/bot set &lt;bot&gt; &lt;key&gt; &lt;value&gt;
+/bot commands &lt;bot&gt;
+/bot addcmd &lt;bot&gt; &lt;trigger&gt; &lt;response&gt;
+/bot delcmd &lt;bot&gt; &lt;trigger&gt;</pre>
+
+<.help_h4 icon={:icon_tag}>Subcommands</.help_h4>
+
+<p>
+  <strong>create</strong>
+  — Create a new bot. The name must be 2–16 characters. An optional description follows the name.
+</p>
+<pre>/bot create GreeterBot Welcomes new users</pre>
+
+<p><strong>destroy</strong> — Permanently delete a bot and all its data.</p>
+<pre>/bot destroy GreeterBot</pre>
+
+<p><strong>list</strong> — Show all registered bots with their status. Available to all users.</p>
+<pre>/bot list</pre>
+
+<p><strong>info</strong> — Show detailed information about a bot. Available to all users.</p>
+<pre>/bot info GreeterBot</pre>
+
+<p><strong>join / part</strong> — Make a bot join or leave a channel.</p>
+<pre>/bot join GreeterBot #general
+/bot part GreeterBot #help</pre>
+
+<p><strong>enable / disable</strong> — Toggle a bot globally, or just for a specific channel.</p>
+<pre>/bot enable GreeterBot
+/bot disable GreeterBot #random</pre>
+
+<p>
+  <strong>set</strong>
+  — Change a bot setting. Valid keys: <code>greeting</code>, <code>farewell</code>, <code>mention_response</code>, <code>prefix</code>, <code>cooldown</code>, <code>description</code>, <code>nickname</code>.
+</p>
+<pre>/bot set GreeterBot greeting Welcome, {"{nickname}"}!
+/bot set GreeterBot cooldown 3000
+/bot set GreeterBot prefix ?</pre>
+
+<p><strong>commands</strong> — List custom commands for a bot. Available to all users.</p>
+<pre>/bot commands GreeterBot</pre>
+
+<p><strong>addcmd / delcmd</strong> — Add or remove a custom command.</p>
+<pre>/bot addcmd GreeterBot rules Please read #rules
+/bot delcmd GreeterBot rules</pre>
+
+<.help_h4 icon={:icon_rules}>Rules & Limits</.help_h4>
+<ul>
+  <li>Bot names must be 2–16 characters, unique</li>
+  <li>Command prefix can be 1–3 characters (default: <code>!</code>)</li>
+  <li>Cooldown minimum is 500ms (default: 2000ms)</li>
+  <li>Only admins and server operators can create, modify, or delete bots</li>
+  <li>
+    Running <code>/bot</code>
+    with no arguments opens the Bot Management dialog (admin only) or shows the bot list (regular users)
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="botservice">BotService Overview</.help_link>
+  · <.help_link topic="bot-custom-commands">Bot Custom Commands</.help_link>
+</p>

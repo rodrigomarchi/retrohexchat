@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.Components.Conversations do
   alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChatWeb.Icons
 
-  @role_priority %{owner: 0, operator: 1, half_operator: 2, voiced: 3, regular: 4}
+  @role_priority %{owner: 0, operator: 1, half_operator: 2, voiced: 3, regular: 4, bot: 5}
 
   attr :channels, :list, default: []
   attr :active_channel, :string, default: nil
@@ -293,6 +293,12 @@ defmodule RetroHexChatWeb.Components.Conversations do
   defp role_icon(%{role: :voiced} = assigns) do
     ~H"""
     <Icons.icon_role_voiced class="nick-icon" />
+    """
+  end
+
+  defp role_icon(%{role: :bot} = assigns) do
+    ~H"""
+    <span class="nick-icon nick-icon--bot" title="Bot">&#9881;</span>
     """
   end
 

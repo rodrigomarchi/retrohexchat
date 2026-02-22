@@ -12,6 +12,7 @@ defmodule RetroHexChat.Commands.Registry do
     "away" => RetroHexChat.Commands.Handlers.Away,
     "ban" => RetroHexChat.Commands.Handlers.Ban,
     "bio" => RetroHexChat.Commands.Handlers.Bio,
+    "bot" => RetroHexChat.Commands.Handlers.Bot,
     "clear" => RetroHexChat.Commands.Handlers.Clear,
     "clearmotd" => RetroHexChat.Commands.Handlers.ClearMotd,
     "clearwelcome" => RetroHexChat.Commands.Handlers.ClearWelcome,

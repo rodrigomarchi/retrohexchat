@@ -148,6 +148,9 @@ defmodule RetroHexChatWeb.Components.HoverCard do
   defp role_icon(%{role: :voiced} = assigns),
     do: ~H|<Icons.icon_role_voiced class="hover-card-role-icon" />|
 
+  defp role_icon(%{role: :bot} = assigns),
+    do: ~H|<span class="hover-card-role-icon">&#9881;</span>|
+
   defp role_icon(assigns), do: ~H""
 
   @spec role_label(atom()) :: String.t()
@@ -155,6 +158,7 @@ defmodule RetroHexChatWeb.Components.HoverCard do
   defp role_label(:operator), do: "Operator"
   defp role_label(:half_operator), do: "Half-Op"
   defp role_label(:voiced), do: "Voiced"
+  defp role_label(:bot), do: "Bot"
   defp role_label(_), do: ""
 
   @spec hover_card_title(map()) :: String.t()

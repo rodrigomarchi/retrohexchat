@@ -633,4 +633,24 @@
   />
 
   <RetroHexChatWeb.Components.KickDialog.kick_dialog kick_queue={@kick_queue} />
+
+  <RetroHexChatWeb.Components.BotManagementDialog.bot_management_dialog
+    visible={@show_bot_dialog}
+    bots={@bot_dialog_bots}
+    selected={@bot_dialog_selected}
+    channels={@bot_dialog_channels}
+    commands={@bot_dialog_commands}
+    active_tab={@bot_dialog_tab}
+    is_admin={
+      RetroHexChat.Accounts.ServerRoles.admin?(@session.nickname, @session.identified) or
+        RetroHexChat.Accounts.ServerRoles.server_operator?(@session.nickname, @session.identified)
+    }
+  />
+
+  <RetroHexChatWeb.Components.BotFormDialog.new_bot_dialog visible={@show_new_bot_dialog} />
+
+  <RetroHexChatWeb.Components.BotFormDialog.add_command_dialog
+    visible={@show_add_command_dialog}
+    bot_name={if @bot_dialog_selected, do: @bot_dialog_selected.name, else: ""}
+  />
 </div>

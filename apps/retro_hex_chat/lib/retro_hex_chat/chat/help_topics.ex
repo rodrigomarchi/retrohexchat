@@ -12,6 +12,7 @@ defmodule RetroHexChat.Chat.HelpTopics do
   """
 
   alias RetroHexChat.Chat.HelpTopics.{
+    Bots,
     ChannelModes,
     Commands,
     Features,
@@ -57,6 +58,7 @@ defmodule RetroHexChat.Chat.HelpTopics do
   @topics GettingStarted.topics() ++
             Commands.topics() ++
             Services.topics() ++
+            Bots.topics() ++
             ChannelModes.topics() ++
             TextFormatting.topics() ++
             Features.topics() ++

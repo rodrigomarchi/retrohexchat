@@ -1,0 +1,61 @@
+<p>
+  Bots can have custom commands that respond to specific triggers. When a user types the bot's
+  command prefix followed by the bot name and a trigger word, the bot replies with the configured response.
+</p>
+
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>!BotName trigger</pre>
+<p>
+  The prefix (<code>!</code> by default) and bot name are required before the trigger word.
+  For example, if a bot named "FAQ" has a command "rules":
+</p>
+<pre>!FAQ rules</pre>
+
+<.help_h4 icon={:icon_tab_control}>Creating Commands</.help_h4>
+<p>Use the <code>/bot addcmd</code> command or the Bot Management dialog:</p>
+<pre>/bot addcmd FAQ rules Please read the #rules channel
+/bot addcmd FAQ hours We're available 9am-5pm EST</pre>
+<p>
+  Each command has a <strong>trigger</strong>
+  (the word users type) and a <strong>response</strong>
+  (what the bot says). An optional description is shown in the <code>!BotName help</code>
+  listing.
+</p>
+
+<.help_h4 icon={:icon_star}>Template Placeholders</.help_h4>
+<p>Command responses support dynamic placeholders:</p>
+<ul>
+  <li><code>{"{nickname}"}</code> — the user who invoked the command</li>
+  <li><code>{"{channel}"}</code> — the channel where the command was used</li>
+  <li><code>{"{prefix}"}</code> — the bot's command prefix</li>
+  <li><code>{"{botname}"}</code> — the bot's name</li>
+</ul>
+<pre>/bot addcmd FAQ welcome Hello {"{nickname}"}, welcome to {"{channel}"}!</pre>
+
+<.help_h4 icon={:icon_lightbulb}>Built-in Help Command</.help_h4>
+<p>
+  If the Help capability is enabled, typing <code>!BotName help</code> lists all available
+  commands with their descriptions. This is automatic — no setup required.
+</p>
+<pre>!FAQ help</pre>
+
+<.help_h4 icon={:icon_rules}>Rules & Limits</.help_h4>
+<ul>
+  <li>Triggers must be unique per bot (case-sensitive)</li>
+  <li>The Custom Commands capability must be enabled on the bot</li>
+  <li>Only admins and server operators can add or remove commands</li>
+  <li>Bot cooldown applies — rapid invocations may be ignored</li>
+</ul>
+
+<.help_h4 icon={:icon_laptop}>Managing via Dialog</.help_h4>
+<p>
+  Open the Bot Management dialog (<strong>Tools → Bot Management</strong>), select a bot,
+  and click the <strong>Commands</strong> tab. Use <strong>Add Command...</strong> to create
+  new commands or <strong>Remove</strong> to delete existing ones.
+</p>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="botservice">BotService Overview</.help_link>
+  · <.help_link topic="bot-command">/bot Command Reference</.help_link>
+</p>
