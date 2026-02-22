@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.HelpSystemE2ETest do
     end
 
     test "topic deep-link shows content", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=cmd-join")
+      conn = get(conn, "/chat/help/cmd-join")
       html = html_response(conn, 200)
 
       assert html =~ "/join"
@@ -34,21 +34,22 @@ defmodule RetroHexChatWeb.HelpSystemE2ETest do
     end
 
     test "cross-reference links use topic URLs", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=welcome")
+      conn = get(conn, "/chat/help/welcome")
       html = html_response(conn, 200)
 
       assert html =~ "Welcome to RetroHexChat"
     end
 
-    test "empty state shown when no topic selected", %{conn: conn} do
+    test "defaults to welcome topic when no topic specified", %{conn: conn} do
       conn = get(conn, "/chat/help")
       html = html_response(conn, 200)
 
-      assert html =~ "Select a topic from the navigation pane"
+      assert html =~ "Welcome to RetroHexChat"
+      assert html =~ "Quick Start"
     end
 
     test "breadcrumbs shown for selected topic", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=cmd-join")
+      conn = get(conn, "/chat/help/cmd-join")
       html = html_response(conn, 200)
 
       assert html =~ "help-breadcrumbs"

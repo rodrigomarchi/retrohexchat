@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.HelpHTML do
   @spec help_link(map()) :: Phoenix.LiveView.Rendered.t()
   def help_link(assigns) do
     ~H"""
-    <a href={~p"/chat/help?topic=#{@topic}"} class="help-topic-link">
+    <a href={~p"/chat/help/#{@topic}"} class="help-topic-link">
       {render_slot(@inner_block)}
     </a>
     """

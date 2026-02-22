@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.HelpAccessE2ETest do
 
   describe "Help Page Access E2E" do
     test "IRC Commands deep-link renders commands topic", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=commands-overview")
+      conn = get(conn, "/chat/help/commands-overview")
       html = html_response(conn, 200)
 
       assert html =~ "IRC Commands Reference"
@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.HelpAccessE2ETest do
     end
 
     test "Keyboard Shortcuts deep-link renders shortcuts topic", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=keyboard-shortcuts")
+      conn = get(conn, "/chat/help/keyboard-shortcuts")
       html = html_response(conn, 200)
 
       assert html =~ "Keyboard Shortcuts"

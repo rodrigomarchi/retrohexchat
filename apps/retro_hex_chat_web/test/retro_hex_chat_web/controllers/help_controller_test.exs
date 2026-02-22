@@ -10,8 +10,7 @@ defmodule RetroHexChatWeb.HelpControllerTest do
 
       assert html =~ "RetroHexChat Help"
       assert html =~ "help-page"
-      assert html =~ "Contents"
-      assert html =~ "Index"
+      assert html =~ "contents-pane"
     end
 
     test "includes all 8 categories in navigation", %{conn: conn} do
@@ -28,11 +27,12 @@ defmodule RetroHexChatWeb.HelpControllerTest do
       assert html =~ "Keyboard Shortcuts"
     end
 
-    test "shows empty state when no topic selected", %{conn: conn} do
+    test "defaults to welcome topic when no topic specified", %{conn: conn} do
       conn = get(conn, "/chat/help")
       html = html_response(conn, 200)
 
-      assert html =~ "Select a topic from the navigation pane"
+      assert html =~ "Welcome to RetroHexChat"
+      assert html =~ "Quick Start"
     end
 
     test "has 98.css classes present", %{conn: conn} do
@@ -44,9 +44,9 @@ defmodule RetroHexChatWeb.HelpControllerTest do
     end
   end
 
-  describe "GET /chat/help?topic=<id>" do
+  describe "GET /chat/help/<id>" do
     test "renders specific topic content", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=commands-overview")
+      conn = get(conn, "/chat/help/commands-overview")
       html = html_response(conn, 200)
 
       assert html =~ "IRC Commands Reference"
@@ -55,22 +55,23 @@ defmodule RetroHexChatWeb.HelpControllerTest do
     end
 
     test "renders keyboard shortcuts topic", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=keyboard-shortcuts")
+      conn = get(conn, "/chat/help/keyboard-shortcuts")
       html = html_response(conn, 200)
 
       assert html =~ "Keyboard Shortcuts"
       assert html =~ "Ctrl+Shift"
     end
 
-    test "handles nonexistent topic gracefully", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=nonexistent-topic-xyz")
+    test "handles nonexistent topic by falling back to welcome", %{conn: conn} do
+      conn = get(conn, "/chat/help/nonexistent-topic-xyz")
       html = html_response(conn, 200)
 
-      assert html =~ "Select a topic from the navigation pane"
+      assert html =~ "Welcome to RetroHexChat"
+      assert html =~ "Quick Start"
     end
 
     test "shows breadcrumbs for selected topic", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=cmd-join")
+      conn = get(conn, "/chat/help/cmd-join")
       html = html_response(conn, 200)
 
       assert html =~ "help-breadcrumbs"
@@ -78,7 +79,7 @@ defmodule RetroHexChatWeb.HelpControllerTest do
     end
 
     test "includes SEO meta tags", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=commands-overview")
+      conn = get(conn, "/chat/help/commands-overview")
       html = html_response(conn, 200)
 
       assert html =~ ~s(<meta name="description")
@@ -87,7 +88,7 @@ defmodule RetroHexChatWeb.HelpControllerTest do
     end
 
     test "shows content header with icon", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=cmd-join")
+      conn = get(conn, "/chat/help/cmd-join")
       html = html_response(conn, 200)
 
       assert html =~ "help-content-header"
@@ -97,10 +98,10 @@ defmodule RetroHexChatWeb.HelpControllerTest do
 
   describe "cross-reference links" do
     test "help-topic-link class links are rendered with proper URLs", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=cmd-ban")
+      conn = get(conn, "/chat/help/cmd-ban")
       html = html_response(conn, 200)
 
-      assert html =~ ~s(href="/chat/help?topic=cmd-kick")
+      assert html =~ ~s(href="/chat/help/cmd-kick")
       assert html =~ "help-topic-link"
     end
   end
@@ -123,7 +124,7 @@ defmodule RetroHexChatWeb.HelpControllerTest do
 
   describe "SEO" do
     test "page has h1 tag", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=commands-overview")
+      conn = get(conn, "/chat/help/commands-overview")
       html = html_response(conn, 200)
 
       assert html =~ "<h1"

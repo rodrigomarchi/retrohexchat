@@ -36,19 +36,7 @@
   overflow-y: auto;
   padding: 4px;
   background: var(--color-white);
-}
-
-/* Tab bar — proper 98.css tabs */
-.help-page-nav .help-nav-tabs {
-  margin: 0;
-}
-
-.help-tab-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  width: 100%;
-  height: 100%;
+  font-size: var(--text-lg);
 }
 
 /* Tree view links */
@@ -66,11 +54,11 @@
   color: var(--color-selection-fg);
 }
 
-/* Index links */
-.help-index-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
+/* Page title */
+.help-page-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 0 8px;
 }
 
 /* Content pane */
@@ -80,18 +68,18 @@
   padding: 24px;
   background: var(--color-white);
   color: var(--color-black);
-  font-size: var(--text-base);
+  font-size: var(--text-lg);
 }
 
 .help-page-content h3 {
-  font-size: var(--text-lg);
+  font-size: 16px;
   margin: 0 0 8px;
   border-bottom: 1px solid var(--color-border);
   padding-bottom: 4px;
 }
 
 .help-page-content h4 {
-  font-size: var(--text-base);
+  font-size: var(--text-lg);
   font-weight: bold;
   margin: 16px 0 6px;
 }
@@ -101,7 +89,7 @@
   border: 1px solid var(--color-border);
   padding: 8px;
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   margin: 4px 0 8px;
   overflow-x: auto;
 }
@@ -110,7 +98,7 @@
   background: var(--color-gray-100);
   padding: 1px 3px;
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
 }
 
 .help-page-content p {
@@ -132,7 +120,7 @@
 /* Breadcrumbs */
 .help-breadcrumbs {
   margin-bottom: 12px;
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   color: var(--color-muted);
 }
 
@@ -162,12 +150,6 @@
   text-decoration: underline;
 }
 
-/* Scroll containers for nav pane lists */
-.help-index-scroll {
-  overflow-y: auto;
-  flex: 1;
-}
-
 /* Empty state */
 .help-page-content .help-no-topic {
   color: var(--color-muted);
@@ -180,15 +162,14 @@
   text-align: center;
 }
 
-/* Active tree item */
+/* Active tree item — softer than full selection highlight */
 .help-tree-active {
-  background: var(--color-selection-bg);
-  color: var(--color-selection-fg);
+  background: var(--color-gray-200);
+  color: var(--color-black);
 }
 
-/* Index items */
-.help-index-item {
-  padding: 1px 4px;
+.help-tree-active .help-tree-link {
+  font-weight: bold;
 }
 
 /* Icons in help content */

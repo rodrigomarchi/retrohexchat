@@ -12,20 +12,15 @@ defmodule RetroHexChatWeb.HelpController do
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, params) do
     topics_by_category = HelpTopics.topics_by_category()
-    all_keywords = HelpTopics.all_keywords()
 
-    selected_topic = resolve_params(params)
-
-    active_tab = resolve_tab(params)
+    selected_topic = resolve_topic(params)
 
     current_url =
-      if params["topic"], do: "/chat/help?topic=#{params["topic"]}", else: "/chat/help"
+      if selected_topic, do: "/chat/help/#{selected_topic.id}", else: "/chat/help"
 
     conn
     |> assign(:topics_by_category, topics_by_category)
-    |> assign(:all_keywords, all_keywords)
     |> assign(:selected_topic, selected_topic)
-    |> assign(:active_tab, active_tab)
     |> assign(:page_title, page_title(selected_topic))
     |> assign(:page_description, page_description(selected_topic))
     |> assign(:breadcrumbs, breadcrumbs(selected_topic))
@@ -33,16 +28,14 @@ defmodule RetroHexChatWeb.HelpController do
     |> render(:index)
   end
 
-  @spec resolve_params(map()) :: map() | nil
-  defp resolve_params(%{"topic" => topic_id}) do
-    HelpTopics.get_topic(topic_id)
+  @default_topic "welcome"
+
+  @spec resolve_topic(map()) :: map() | nil
+  defp resolve_topic(%{"topic" => topic_id}) do
+    HelpTopics.get_topic(topic_id) || HelpTopics.get_topic(@default_topic)
   end
 
-  defp resolve_params(_params), do: nil
-
-  @spec resolve_tab(map()) :: String.t()
-  defp resolve_tab(%{"tab" => "index"}), do: "index"
-  defp resolve_tab(_params), do: "contents"
+  defp resolve_topic(_params), do: HelpTopics.get_topic(@default_topic)
 
   @spec page_title(map() | nil) :: String.t()
   defp page_title(nil), do: "Help - RetroHexChat"
@@ -61,7 +54,7 @@ defmodule RetroHexChatWeb.HelpController do
 
   defp breadcrumbs(topic) do
     [
-      {"Help", "/chat/help"},
+      {"Help", ~p"/chat/help"},
       {topic.category, nil},
       {topic.title, nil}
     ]

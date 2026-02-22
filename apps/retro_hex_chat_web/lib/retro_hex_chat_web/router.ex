@@ -51,6 +51,7 @@ defmodule RetroHexChatWeb.Router do
     pipe_through :help
 
     get "/chat/help", HelpController, :index
+    get "/chat/help/:topic", HelpController, :index
     get "/sitemap.xml", SitemapController, :index
   end
 

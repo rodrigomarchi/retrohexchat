@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.SitemapController do
       Enum.map_join(topics, "\n", fn topic ->
         """
           <url>
-            <loc>https://retrohexchat.com/chat/help?topic=#{topic.id}</loc>
+            <loc>https://retrohexchat.com/chat/help/#{topic.id}</loc>
             <lastmod>#{today}</lastmod>
             <changefreq>monthly</changefreq>
             <priority>0.6</priority>
