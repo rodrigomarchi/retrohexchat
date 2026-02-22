@@ -62,11 +62,6 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     end
   end
 
-  def execute(["help" | _], _context) do
-    {:ok, :ui_action, :show_help,
-     %{commands: ["ns register", "ns identify", "ns ghost", "ns info", "ns drop"]}}
-  end
-
   def execute([subcmd | _], _context) do
     {:error, "Unknown NickServ command: #{subcmd}. Try /ns help"}
   end

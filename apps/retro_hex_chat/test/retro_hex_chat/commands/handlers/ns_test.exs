@@ -3,6 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.Commands.Dispatcher
   alias RetroHexChat.Commands.Handlers.Ns
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.Queries
@@ -122,12 +123,13 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
     end
   end
 
-  describe "execute/2 - help" do
-    test "returns help ui_action" do
-      assert {:ok, :ui_action, :show_help, %{commands: commands}} =
-               Ns.execute(["help"], @base_context)
+  describe "execute/2 - help (via dispatcher)" do
+    test "dispatcher intercepts help and returns show_command_help" do
+      assert {:ok, :ui_action, :show_command_help, %{help: help}} =
+               Dispatcher.dispatch("ns", ["help"], @base_context)
 
-      assert is_list(commands)
+      assert help.name == "ns"
+      assert is_binary(help.syntax)
     end
   end
 

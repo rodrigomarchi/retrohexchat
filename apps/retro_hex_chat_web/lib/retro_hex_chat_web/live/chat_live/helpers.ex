@@ -28,6 +28,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   defdelegate system_event(socket, content), to: __MODULE__.Messages
   defdelegate error_event(socket, content), to: __MODULE__.Messages
   defdelegate service_event(socket, author, content), to: __MODULE__.Messages
+  defdelegate inline_help_message(topic_id, topic_title), to: __MODULE__.Messages
+  defdelegate inline_help_event(socket, topic_id, topic_title), to: __MODULE__.Messages
 
   # ── Persistence ──────────────────────────────────────────────
 

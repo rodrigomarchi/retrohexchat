@@ -9,15 +9,23 @@ defmodule RetroHexChat.Commands.Dispatcher do
   def dispatch(command_name, args, context) do
     case Registry.lookup(command_name) do
       {:ok, handler} ->
-        raw_args = Enum.join(args, " ")
-
-        case handler.validate(raw_args) do
-          :ok -> handler.execute(args, context)
-          {:error, _reason} = error -> error
-        end
+        run_handler(handler, args, context)
 
       {:error, :unknown_command} ->
         {:error, "Unknown command: /#{command_name}. Type /help for a list of commands."}
+    end
+  end
+
+  defp run_handler(handler, ["help" | _], _context) do
+    {:ok, :ui_action, :show_command_help, %{help: handler.help()}}
+  end
+
+  defp run_handler(handler, args, context) do
+    raw_args = Enum.join(args, " ")
+
+    case handler.validate(raw_args) do
+      :ok -> handler.execute(args, context)
+      {:error, _reason} = error -> error
     end
   end
 end

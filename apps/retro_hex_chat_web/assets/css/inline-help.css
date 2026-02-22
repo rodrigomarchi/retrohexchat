@@ -1,0 +1,67 @@
+/* Inline help content rendered inside chat messages */
+
+.chat-inline-help {
+  display: block;
+  width: 100%;
+  padding: 6px 0;
+  font-size: var(--text-base);
+}
+
+.chat-inline-help__title {
+  font-size: var(--text-lg);
+  font-weight: bold;
+  margin: 0 0 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Compact overrides for help content inside chat */
+.chat-inline-help h4 {
+  font-size: var(--text-base);
+  font-weight: bold;
+  margin: 10px 0 4px;
+}
+
+.chat-inline-help pre {
+  background: var(--color-gray-100);
+  border: 1px solid var(--color-border);
+  padding: 4px 6px;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  margin: 2px 0 6px;
+  overflow-x: auto;
+}
+
+.chat-inline-help code {
+  background: var(--color-gray-100);
+  padding: 1px 3px;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.chat-inline-help p {
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+.chat-inline-help ul,
+.chat-inline-help ol {
+  margin: 2px 0 6px;
+  padding-left: 20px;
+}
+
+.chat-inline-help li {
+  margin: 1px 0;
+  line-height: 1.4;
+}
+
+.chat-inline-help__footer {
+  padding-top: 4px;
+  margin-top: 6px;
+  font-size: var(--text-sm);
+  text-align: right;
+}
+
+.chat-inline-help__footer a {
+  color: var(--color-link);
+}

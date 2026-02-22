@@ -59,20 +59,6 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     {:error, "Usage: /cs #{level} <add|del|list> [nick]"}
   end
 
-  def execute(["help" | _], _context) do
-    {:ok, :ui_action, :show_help,
-     %{
-       commands: [
-         "cs register",
-         "cs drop",
-         "cs info",
-         "cs sop add/del/list",
-         "cs aop add/del/list",
-         "cs vop add/del/list"
-       ]
-     }}
-  end
-
   def execute([subcmd | _], _context) do
     {:error, "Unknown ChanServ command: #{subcmd}. Try /cs help"}
   end

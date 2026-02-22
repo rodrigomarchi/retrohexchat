@@ -3,6 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.Commands.Dispatcher
   alias RetroHexChat.Commands.Handlers.Cs
   alias RetroHexChat.Services.ChanServ
   alias RetroHexChat.Services.NickServ
@@ -136,8 +137,8 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
     end
   end
 
-  describe "execute/2 - help" do
-    test "returns help ui_action" do
+  describe "execute/2 - help (via dispatcher)" do
+    test "dispatcher intercepts help and returns show_command_help" do
       context = %{
         nickname: "Tester",
         active_channel: "#test",
@@ -147,10 +148,11 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
         chan_serv: nil
       }
 
-      assert {:ok, :ui_action, :show_help, %{commands: commands}} =
-               Cs.execute(["help"], context)
+      assert {:ok, :ui_action, :show_command_help, %{help: help}} =
+               Dispatcher.dispatch("cs", ["help"], context)
 
-      assert is_list(commands)
+      assert help.name == "cs"
+      assert is_binary(help.syntax)
     end
   end
 

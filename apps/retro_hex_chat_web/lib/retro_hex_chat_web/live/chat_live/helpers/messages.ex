@@ -92,4 +92,25 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
     |> stream_insert(:chat_messages, service_message(author, content))
     |> push_status_message(content, :system)
   end
+
+  @spec inline_help_message(String.t(), String.t()) :: map()
+  def inline_help_message(topic_id, topic_title) do
+    %{
+      id: "help-#{System.unique_integer([:positive])}",
+      author: "Help",
+      content: topic_id,
+      type: :inline_help,
+      topic_id: topic_id,
+      topic_title: topic_title,
+      timestamp: DateTime.utc_now()
+    }
+  end
+
+  @spec inline_help_event(Phoenix.LiveView.Socket.t(), String.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def inline_help_event(socket, topic_id, topic_title) do
+    socket
+    |> stream_insert(:chat_messages, inline_help_message(topic_id, topic_title))
+    |> push_status_message("Help: #{topic_title}", :system)
+  end
 end

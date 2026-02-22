@@ -149,7 +149,9 @@
           data-message-id={dom_id}
           data-temp-id={if(Map.get(msg, :status) in [:pending, :failed], do: msg.id, else: nil)}
           data-msg-status={if(Map.get(msg, :status), do: Atom.to_string(msg.status), else: nil)}
-          data-system-message={if(msg.type in [:system, :service], do: "true", else: nil)}
+          data-system-message={
+            if(msg.type in [:system, :service, :inline_help], do: "true", else: nil)
+          }
           data-real-id={Map.get(msg, :id)}
         >
           <%= case msg.type do %>
@@ -175,6 +177,26 @@
                 {format_time(msg.timestamp, @timestamp_format, @timezone)}
               </span>
               <span class="chat-error">{msg.content}</span>
+            <% :inline_help -> %>
+              <div class="chat-msg-grid">
+                <span class="chat-timestamp">
+                  {format_time(msg.timestamp, @timestamp_format, @timezone)}
+                </span>
+                <span></span>
+                <div class="chat-inline-help" data-testid="inline-help">
+                  <h3 class="chat-inline-help__title">{msg.topic_title}</h3>
+                  <RetroHexChatWeb.HelpHTML.render_topic_content id={msg.topic_id} />
+                  <div class="chat-inline-help__footer">
+                    <a
+                      href={~p"/chat/help/#{msg.topic_id}"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Open in Help Topics (F1)
+                    </a>
+                  </div>
+                </div>
+              </div>
             <% :notice -> %>
               <span class="chat-timestamp">
                 {format_time(msg.timestamp, @timestamp_format, @timezone)}

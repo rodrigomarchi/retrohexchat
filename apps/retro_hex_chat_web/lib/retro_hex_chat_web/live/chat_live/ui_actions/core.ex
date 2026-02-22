@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     only: [
       system_event: 2,
       error_event: 2,
+      inline_help_event: 3,
       open_pm_conversation: 2,
       show_whois_text: 2,
       safe_update_away: 4
@@ -18,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChat.Commands.Autocomplete
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
@@ -99,8 +101,16 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   end
 
   def handle_ui_action(socket, :show_command_help, %{help: help}) do
-    text = "#{help.syntax} - #{help.description}"
-    system_event(socket, text)
+    topic_id = "cmd-#{help.name}"
+
+    case HelpTopics.get_topic(topic_id) do
+      %{title: title} ->
+        inline_help_event(socket, topic_id, title)
+
+      nil ->
+        text = "#{help.syntax} - #{help.description}"
+        system_event(socket, text)
+    end
   end
 
   def handle_ui_action(socket, :set_mode, %{
