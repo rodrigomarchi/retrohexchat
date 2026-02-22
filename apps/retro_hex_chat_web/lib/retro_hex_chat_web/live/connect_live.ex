@@ -154,20 +154,93 @@ defmodule RetroHexChatWeb.ConnectLive do
     <div class="app-container" id="connect-root" phx-hook="ConnectFormHook">
       <RetroHexChatWeb.Components.AppHeader.app_header>
         <:panels>
-          <div class="toolbar toolbar--skeleton">
-            <span class="toolbar-btn toolbar-btn--skeleton"></span>
-            <span class="toolbar-btn toolbar-btn--skeleton"></span>
-            <span class="toolbar-btn toolbar-btn--skeleton"></span>
-            <span class="toolbar-btn toolbar-btn--skeleton"></span>
-            <span class="toolbar-btn toolbar-btn--skeleton"></span>
-            <span class="toolbar-btn toolbar-btn--skeleton"></span>
-            <span class="toolbar-btn toolbar-btn--skeleton"></span>
-            <span class="toolbar-btn toolbar-btn--skeleton"></span>
+          <div
+            class="toolbar toolbar--preview"
+            role="toolbar"
+            id="connect-toolbar"
+            phx-hook="ToolbarGroupHook"
+          >
+            <%!-- Connection (disabled — not connected yet) --%>
+            <span class="toolbar-btn toolbar-btn--disabled" title="Connect">
+              <svg viewBox="0 0 16 16">
+                <circle cx="4" cy="8" r="2.5" fill="#999" />
+                <circle cx="12" cy="8" r="2.5" fill="#999" />
+                <path d="M7 6l2-2 2 2-1 1-1-1v6l1-1 1 1-2 2-2-2 1-1 1 1V6L7 7z" fill="#bbb" />
+              </svg>
+            </span>
+            <%!-- View group --%>
+            <span class="toolbar-btn toolbar-btn--disabled" title="View">
+              <.icon_group_view class="toolbar-group-icon toolbar-icon--disabled" />
+            </span>
+            <%!-- Tools group --%>
+            <span class="toolbar-btn toolbar-btn--disabled" title="Tools">
+              <.icon_group_tools class="toolbar-group-icon toolbar-icon--disabled" />
+            </span>
+            <%!-- Notifications group --%>
+            <span class="toolbar-btn toolbar-btn--disabled" title="Notifications">
+              <.icon_group_notifications class="toolbar-group-icon toolbar-icon--disabled" />
+            </span>
+            <%!-- Help group (ACTIVE — links work on connect page) --%>
+            <div class="toolbar-group">
+              <button
+                type="button"
+                class="toolbar-btn toolbar-group-toggle"
+                data-toolbar-group="help"
+                title="Help"
+              >
+                <.icon_group_help class="toolbar-group-icon" />
+              </button>
+              <div class="toolbar-group-dropdown u-hidden">
+                <a
+                  class="toolbar-btn"
+                  title="Help Topics"
+                  href="/chat/help"
+                  target="_blank"
+                >
+                  <svg viewBox="0 0 16 16">
+                    <circle cx="8" cy="8" r="7" fill="#000080" />
+                    <text
+                      x="8"
+                      y="12"
+                      text-anchor="middle"
+                      font-size="11"
+                      font-weight="bold"
+                      font-family="sans-serif"
+                      fill="#fff"
+                    >
+                      ?
+                    </text>
+                  </svg>
+                  <span class="toolbar-group-label">Help Topics</span>
+                </a>
+              </div>
+            </div>
           </div>
-          <div class="status-bar status-bar--skeleton">
-            <p class="status-bar-field">&nbsp;</p>
-            <p class="status-bar-field">&nbsp;</p>
-            <p class="status-bar-field">&nbsp;</p>
+          <div class="status-bar">
+            <p class="status-bar-field status-bar-section--left">
+              <.icon_status_user class="status-bar-icon status-bar-icon--disabled" />
+              <span class="status-bar-nick status-bar-text--disabled">Guest</span>
+              <span class="status-bar-separator">|</span>
+              <.icon_tab_channel class="status-bar-icon status-bar-icon--disabled" />
+              <span class="status-bar-channel status-bar-text--disabled">No channel</span>
+              <span class="status-bar-text--disabled">(0)</span>
+              <span class="status-bar-separator">|</span>
+              <span class="status-bar-connection--disconnected">● Off</span>
+              <span class="status-bar-separator">|</span>
+              <.icon_status_signal class="status-bar-icon status-bar-icon--disabled" />
+              <span class="status-bar-text--disabled">Lag: —</span>
+              <span class="status-bar-separator">|</span>
+              <.icon_clock class="status-bar-icon status-bar-icon--disabled" />
+              <span
+                id="clock-display"
+                phx-hook="ClockHook"
+                data-testid="status-clock"
+              >--:--</span>
+              <span class="status-bar-separator">|</span>
+              <span class="status-bar-text--disabled">
+                <.icon_dialog_sound class="status-bar-icon status-bar-icon--disabled" />
+              </span>
+            </p>
           </div>
         </:panels>
       </RetroHexChatWeb.Components.AppHeader.app_header>
@@ -181,30 +254,48 @@ defmodule RetroHexChatWeb.ConnectLive do
           </div>
           <div class="window-body">
             <div :if={@flash["error"]} class="session-alert" data-testid="session-alert">
-              <span class="session-alert-icon">&#9888;</span>
+              <.icon_warning class="licon licon-16" />
               <span>{@flash["error"]}</span>
             </div>
             <%= case @step do %>
               <% :nickname -> %>
                 <form phx-submit="connect" phx-change="validate">
                   <fieldset>
-                    <legend><.icon_chat class="licon licon-14" /> User Information</legend>
-                    <label for="nickname">Nickname:</label>
-                    <input
-                      type="text"
-                      id="nickname"
-                      name="nickname"
-                      value={@nickname}
-                      maxlength="16"
-                      autofocus
-                      autocomplete="off"
-                      phx-debounce="300"
-                      phx-mounted={JS.focus()}
-                    />
-                    <p class="nick-help">
-                      1–16 characters. Must start with a letter. No spaces. Case sensitive.
-                    </p>
-                    <p :if={@nickname_error} class="error-text">{@nickname_error}</p>
+                    <legend><.icon_dialog_nick class="licon licon-16" /> User Information</legend>
+                    <div class="connect-field">
+                      <label for="nickname">
+                        <.icon_status_user class="licon licon-14" /> Nickname:
+                      </label>
+                      <input
+                        type="text"
+                        id="nickname"
+                        name="nickname"
+                        value={@nickname}
+                        maxlength="16"
+                        autofocus
+                        autocomplete="off"
+                        placeholder="Enter your nickname..."
+                        phx-debounce="300"
+                        phx-mounted={JS.focus()}
+                      />
+                      <ul class="nick-rules">
+                        <li>
+                          <.icon_checkmark class="licon licon-12" /> 1–16 characters
+                        </li>
+                        <li>
+                          <.icon_checkmark class="licon licon-12" /> Must start with a letter
+                        </li>
+                        <li>
+                          <.icon_checkmark class="licon licon-12" /> No spaces allowed
+                        </li>
+                        <li>
+                          <.icon_checkmark class="licon licon-12" /> Case sensitive
+                        </li>
+                      </ul>
+                      <p :if={@nickname_error} class="error-text">
+                        <.icon_reject class="licon licon-12" /> {@nickname_error}
+                      </p>
+                    </div>
                   </fieldset>
                   <div class="button-row">
                     <button
@@ -215,38 +306,69 @@ defmodule RetroHexChatWeb.ConnectLive do
                       <.icon_connect class="licon licon-14" /> Connect
                     </button>
                   </div>
-                  <p class="session-info">
-                    Only one session per nickname is allowed. Connecting from another window
-                    ends the previous session. The session expires after 10 failed reconnection
-                    attempts.
-                  </p>
-                  <p class="session-info" data-testid="nick-expiry-notice">
-                    ⚠ Nicknames unused for 7 days are automatically released.
-                  </p>
+                  <div class="connect-footer">
+                    <div class="connect-notice">
+                      <.icon_connect class="licon licon-14 connect-notice-icon" />
+                      <div>
+                        <strong>One session per nickname</strong>
+                        <p>
+                          Connecting from another window ends the previous session.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="connect-notice">
+                      <.icon_clock class="licon licon-14 connect-notice-icon" />
+                      <div>
+                        <strong>Session expiry</strong>
+                        <p>
+                          Sessions expire after 10 failed reconnection attempts.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="connect-notice" data-testid="nick-expiry-notice">
+                      <.icon_warning class="licon licon-14 connect-notice-icon" />
+                      <div>
+                        <strong>Nickname cleanup</strong>
+                        <p>
+                          Nicknames unused for 7 days are automatically released.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </form>
               <% :password -> %>
                 <form phx-submit="authenticate" phx-change="validate_password">
                   <fieldset>
-                    <legend><.icon_lock class="licon licon-14" /> Authentication</legend>
-                    <p class="auth-info">
-                      The nickname <strong>{@nickname}</strong>
-                      is registered. Please enter your password.
-                    </p>
-                    <label for="password">Password:</label>
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      value={@password}
-                      autofocus
-                      autocomplete="off"
-                      phx-mounted={JS.focus()}
-                    />
-                    <p :if={@password_error} class="error-text">{@password_error}</p>
+                    <legend><.icon_lock class="licon licon-16" /> Authentication</legend>
+                    <div class="auth-banner">
+                      <.icon_shield class="licon licon-16 auth-banner-icon" />
+                      <p class="auth-info">
+                        The nickname <strong>{@nickname}</strong>
+                        is registered. Please enter your password to continue.
+                      </p>
+                    </div>
+                    <div class="connect-field">
+                      <label for="password">
+                        <.icon_lock class="licon licon-14" /> Password:
+                      </label>
+                      <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        value={@password}
+                        autofocus
+                        autocomplete="off"
+                        placeholder="Enter your password..."
+                        phx-mounted={JS.focus()}
+                      />
+                      <p :if={@password_error} class="error-text">
+                        <.icon_reject class="licon licon-12" /> {@password_error}
+                      </p>
+                    </div>
                   </fieldset>
                   <div class="button-row">
                     <button type="button" phx-click="back" data-testid="back-btn">
-                      &lt; Back
+                      <.icon_btn_prev class="licon licon-14" /> Back
                     </button>
                     <button type="submit" data-testid="auth-btn" disabled={@password == ""}>
                       <.icon_connect class="licon licon-14" /> Connect
@@ -256,33 +378,48 @@ defmodule RetroHexChatWeb.ConnectLive do
               <% :register -> %>
                 <form phx-submit="register" phx-change="validate_register">
                   <fieldset>
-                    <legend><.icon_notepad class="licon licon-14" /> Registration</legend>
-                    <p class="auth-info">
-                      The nickname <strong>{@nickname}</strong>
-                      is available. Choose a password to register it.
+                    <legend><.icon_notepad class="licon licon-16" /> Registration</legend>
+                    <div class="auth-banner auth-banner--success">
+                      <.icon_checkmark class="licon licon-16 auth-banner-icon" />
+                      <p class="auth-info">
+                        The nickname <strong>{@nickname}</strong>
+                        is available! Choose a password to register it.
+                      </p>
+                    </div>
+                    <div class="connect-field">
+                      <label for="reg-password">
+                        <.icon_lock class="licon licon-14" /> Password:
+                      </label>
+                      <input
+                        type="password"
+                        id="reg-password"
+                        name="password"
+                        value={@password}
+                        autocomplete="off"
+                        placeholder="Choose a password (min. 5 characters)..."
+                        phx-mounted={JS.focus()}
+                      />
+                    </div>
+                    <div class="connect-field">
+                      <label for="reg-password-confirm">
+                        <.icon_lock class="licon licon-14" /> Confirm password:
+                      </label>
+                      <input
+                        type="password"
+                        id="reg-password-confirm"
+                        name="password_confirm"
+                        value={@password_confirm}
+                        autocomplete="off"
+                        placeholder="Repeat your password..."
+                      />
+                    </div>
+                    <p :if={@password_error} class="error-text">
+                      <.icon_reject class="licon licon-12" /> {@password_error}
                     </p>
-                    <label for="reg-password">Password:</label>
-                    <input
-                      type="password"
-                      id="reg-password"
-                      name="password"
-                      value={@password}
-                      autocomplete="off"
-                      phx-mounted={JS.focus()}
-                    />
-                    <label for="reg-password-confirm">Confirm password:</label>
-                    <input
-                      type="password"
-                      id="reg-password-confirm"
-                      name="password_confirm"
-                      value={@password_confirm}
-                      autocomplete="off"
-                    />
-                    <p :if={@password_error} class="error-text">{@password_error}</p>
                   </fieldset>
                   <div class="button-row">
                     <button type="button" phx-click="back" data-testid="back-btn">
-                      &lt; Back
+                      <.icon_btn_prev class="licon licon-14" /> Back
                     </button>
                     <button
                       type="submit"

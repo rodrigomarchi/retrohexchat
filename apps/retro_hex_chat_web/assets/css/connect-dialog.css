@@ -7,23 +7,106 @@
 }
 
 .connect-dialog .window-body {
-  padding: 16px;
+  padding: 16px 20px;
 }
+
+/* ── Fieldset & Legend ── */
 
 .connect-dialog fieldset {
   margin-bottom: 12px;
+  padding: 12px 14px;
+}
+
+.connect-dialog legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: bold;
+  font-size: var(--text-lg);
+  padding: 0 4px;
+}
+
+/* ── Field groups ── */
+
+.connect-dialog .connect-field {
+  margin-bottom: 8px;
+}
+
+.connect-dialog .connect-field:last-child {
+  margin-bottom: 0;
 }
 
 .connect-dialog label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 4px;
   margin-bottom: 4px;
+  font-size: var(--text-base);
+  font-weight: bold;
+  color: var(--color-gray-900);
+}
+
+.connect-dialog input[type="text"],
+.connect-dialog input[type="password"] {
+  width: 100%;
+  margin-bottom: 4px;
+  padding: 4px 6px;
   font-size: var(--text-base);
 }
 
-.connect-dialog input {
-  width: 100%;
-  margin-bottom: 8px;
+.connect-dialog input::placeholder {
+  color: var(--color-gray-500);
+  font-style: italic;
 }
+
+/* ── Nickname rules list ── */
+
+.connect-dialog .nick-rules {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 12px;
+}
+
+.connect-dialog .nick-rules li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-sm);
+  color: var(--color-gray-700);
+}
+
+/* ── Auth banner (password & register steps) ── */
+
+.connect-dialog .auth-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+  background: #fffff0;
+  border: 1px solid var(--color-warning-alt);
+}
+
+.connect-dialog .auth-banner--success {
+  background: #f0fff0;
+  border-color: var(--color-success);
+}
+
+.connect-dialog .auth-banner-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.connect-dialog .auth-info {
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: 1.5;
+}
+
+/* ── Button row ── */
 
 .connect-dialog .button-row {
   display: flex;
@@ -32,51 +115,98 @@
   margin-top: 12px;
 }
 
+/* ── Error text ── */
+
 .connect-dialog .error-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   color: var(--color-error);
   font-size: var(--text-sm);
   margin-top: 2px;
+  font-weight: bold;
 }
+
+/* ── Session alert (flash errors) ── */
 
 .connect-dialog .session-alert {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
   padding: 8px 10px;
   margin-bottom: 12px;
-  background: var(--color-bg, #fff);
+  background: #fff0f0;
   border: 1px solid var(--color-error);
   font-size: var(--text-sm);
   color: var(--color-error);
+  font-weight: bold;
 }
 
-.connect-dialog .session-alert-icon {
-  font-size: 16px;
-  line-height: 1;
-  flex-shrink: 0;
+/* ── Footer notices ── */
+
+.connect-dialog .connect-footer {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-gray-200);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.connect-dialog .auth-info {
-  margin-bottom: 8px;
-  font-size: var(--text-base);
-}
-
-.connect-dialog .nick-help {
-  color: var(--color-text-muted, #666);
+.connect-dialog .connect-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
   font-size: var(--text-sm);
-  margin-top: 0;
-  margin-bottom: 4px;
-}
-
-.connect-dialog .session-info {
-  color: var(--color-text-muted, #666);
-  font-size: var(--text-xs);
-  margin-top: 8px;
-  margin-bottom: 0;
+  color: var(--color-gray-700);
   line-height: 1.4;
 }
 
+.connect-dialog .connect-notice strong {
+  display: block;
+  color: var(--color-gray-900);
+  margin-bottom: 1px;
+}
+
+.connect-dialog .connect-notice p {
+  margin: 0;
+}
+
+.connect-dialog .connect-notice-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── Toolbar preview (disabled icons on connect page) ── */
+
+.toolbar--preview {
+  gap: 2px;
+}
+
+.toolbar-btn--disabled {
+  cursor: default;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.toolbar-icon--disabled {
+  filter: grayscale(1);
+}
+
+/* ── Status bar disabled placeholders ── */
+
+.status-bar-icon--disabled {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+.status-bar-text--disabled {
+  color: var(--color-disabled);
+}
+
+/* ── Icon alignment in legend & buttons ── */
+
 .connect-dialog legend .licon,
 .connect-dialog button .licon {
-  margin-right: 4px;
+  margin-right: 2px;
 }

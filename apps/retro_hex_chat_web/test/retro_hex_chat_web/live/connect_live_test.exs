@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
 
     test "renders nick-help text with rules", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/connect")
-      assert html =~ "nick-help"
+      assert html =~ "nick-rules"
       assert html =~ "Case sensitive"
     end
   end
@@ -58,8 +58,8 @@ defmodule RetroHexChatWeb.ConnectLiveTest do
   describe "session info" do
     test "renders session rules text", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/connect")
-      assert html =~ "session-info"
-      assert html =~ "Only one session per nickname"
+      assert html =~ "connect-notice"
+      assert html =~ "One session per nickname"
     end
 
     test "renders nick expiry notice", %{conn: conn} do
