@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.URLCatcherWindow do
   attr :search_query, :string, required: true
   attr :channels, :list, required: true
   attr :entry_count, :integer, required: true
+  attr :timezone, :string, default: "Etc/UTC"
 
   @spec url_catcher_window(map()) :: Phoenix.LiveView.Rendered.t()
   def url_catcher_window(assigns) do
@@ -138,7 +139,7 @@ defmodule RetroHexChatWeb.Components.URLCatcherWindow do
                   </td>
                   <td class="table-cell--nowrap">{entry.source}</td>
                   <td class="table-cell--nowrap">{entry.posted_by}</td>
-                  <td class="table-cell--nowrap">{format_time(entry.timestamp)}</td>
+                  <td class="table-cell--nowrap">{format_time(entry.timestamp, @timezone)}</td>
                 </tr>
                 <tr :if={@entries == []}>
                   <td colspan="4" class="table-empty" data-testid="url-catcher-empty">
@@ -173,9 +174,9 @@ defmodule RetroHexChatWeb.Components.URLCatcherWindow do
 
   defp sort_indicator(_active_column, _direction, _column), do: ""
 
-  @spec format_time(DateTime.t()) :: String.t()
-  defp format_time(%DateTime{} = dt) do
-    Calendar.strftime(dt, "%H:%M")
+  @spec format_time(DateTime.t(), String.t()) :: String.t()
+  defp format_time(%DateTime{} = dt, timezone) do
+    dt |> RetroHexChatWeb.Timezone.shift(timezone) |> Calendar.strftime("%H:%M")
   end
 
   @spec truncate_url(String.t(), non_neg_integer()) :: String.t()

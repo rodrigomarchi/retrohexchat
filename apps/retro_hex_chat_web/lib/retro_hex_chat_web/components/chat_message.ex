@@ -8,10 +8,13 @@ defmodule RetroHexChatWeb.Components.ChatMessage do
   @nick_colors ~w(#e74c3c #3498db #2ecc71 #e67e22 #9b59b6 #1abc9c #f39c12 #e91e63 #00bcd4 #8bc34a #ff5722 #607d8b)
 
   attr :message, :map, required: true
+  attr :timezone, :string, default: "Etc/UTC"
 
   @spec chat_message(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_message(assigns) do
-    assigns = assign(assigns, :formatted_time, format_time(assigns.message.timestamp))
+    assigns =
+      assign(assigns, :formatted_time, format_time(assigns.message.timestamp, assigns.timezone))
+
     assigns = assign(assigns, :nick_color_value, nick_color(assigns.message.author))
 
     ~H"""
@@ -66,12 +69,12 @@ defmodule RetroHexChatWeb.Components.ChatMessage do
     """
   end
 
-  @spec format_time(DateTime.t() | any()) :: String.t()
-  defp format_time(%DateTime{} = dt) do
-    Calendar.strftime(dt, "%H:%M")
+  @spec format_time(DateTime.t() | any(), String.t()) :: String.t()
+  defp format_time(%DateTime{} = dt, tz) do
+    dt |> RetroHexChatWeb.Timezone.shift(tz) |> Calendar.strftime("%H:%M")
   end
 
-  defp format_time(_), do: "--:--"
+  defp format_time(_, _tz), do: "--:--"
 
   @spec nick_color(String.t()) :: String.t()
   defp nick_color(nickname) do

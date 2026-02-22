@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
   attr :show_edit_dialog, :boolean, default: false
   attr :auto_whois, :boolean, default: false
   attr :nick_color_fn, :any, default: nil
+  attr :timezone, :string, default: "Etc/UTC"
 
   @spec notify_list_window(map()) :: Phoenix.LiveView.Rendered.t()
   def notify_list_window(assigns) do
@@ -106,7 +107,7 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
                 </td>
                 <td>{entry.note || ""}</td>
                 <td class="table-cell--nowrap">
-                  {format_last_seen(entry.last_seen_at)}
+                  {format_last_seen(entry.last_seen_at, @timezone)}
                 </td>
               </tr>
               <tr :if={@entries == []}>
@@ -240,9 +241,11 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
     """
   end
 
-  @spec format_last_seen(DateTime.t() | nil) :: String.t()
-  defp format_last_seen(nil), do: "Never"
-  defp format_last_seen(%DateTime{} = dt), do: Calendar.strftime(dt, "%Y-%m-%d %H:%M")
+  @spec format_last_seen(DateTime.t() | nil, String.t()) :: String.t()
+  defp format_last_seen(nil, _tz), do: "Never"
+
+  defp format_last_seen(%DateTime{} = dt, tz),
+    do: dt |> RetroHexChatWeb.Timezone.shift(tz) |> Calendar.strftime("%Y-%m-%d %H:%M")
 
   @spec notify_nick_style((String.t() -> String.t()) | nil, String.t()) :: String.t()
   defp notify_nick_style(nil, _nickname), do: ""

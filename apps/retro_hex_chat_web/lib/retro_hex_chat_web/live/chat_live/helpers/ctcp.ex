@@ -35,7 +35,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.CTCP do
 
     if ctcp_reply_allowed?(socket.assigns.ctcp_reply_tracker, reply_limit, reply_window) do
       socket = record_ctcp_reply(socket)
-      value = generate_ctcp_reply_value(session, type)
+      timezone = socket.assigns[:timezone] || "Etc/UTC"
+      value = generate_ctcp_reply_value(session, type, timezone)
 
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,
@@ -76,7 +77,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.CTCP do
     assign(socket, ctcp_reply_tracker: new_tracker)
   end
 
-  defp generate_ctcp_reply_value(session, type) do
+  defp generate_ctcp_reply_value(session, type, timezone) do
     settings = Session.get_ctcp_settings(session)
 
     case type do
@@ -87,7 +88,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.CTCP do
         CtcpSettings.get_version_string(settings)
 
       :time ->
-        Calendar.strftime(DateTime.utc_now(), "%Y-%m-%d %H:%M:%S UTC")
+        now = DateTime.utc_now()
+        tz_label = RetroHexChatWeb.Timezone.format_utc_offset(timezone)
+
+        now
+        |> RetroHexChatWeb.Timezone.shift(timezone)
+        |> Calendar.strftime("%Y-%m-%d %H:%M:%S #{tz_label}")
 
       :finger ->
         case CtcpSettings.get_finger_text(settings) do

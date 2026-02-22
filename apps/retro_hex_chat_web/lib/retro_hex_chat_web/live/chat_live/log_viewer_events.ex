@@ -130,7 +130,8 @@ defmodule RetroHexChatWeb.ChatLive.LogViewerEvents do
 
       entries = fetch_all_log_entries(socket, all_filter)
 
-      content = LogExporter.export(entries, format, prefs)
+      timezone = socket.assigns[:timezone] || "Etc/UTC"
+      content = LogExporter.export(entries, format, prefs, timezone)
 
       filename = LogExporter.generate_filename(filter, format)
 

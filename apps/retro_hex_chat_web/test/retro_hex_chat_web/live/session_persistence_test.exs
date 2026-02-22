@@ -46,21 +46,21 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       nick = "PO#{uid()}"
       register_and_identify(nick)
 
-      insert_pm(nick, "First", "oldest")
-      insert_pm(nick, "Second", "middle")
-      insert_pm(nick, "Third", "newest")
+      insert_pm(nick, "Zara", "oldest")
+      insert_pm(nick, "Yuki", "middle")
+      insert_pm(nick, "Xena", "newest")
 
       {:ok, _view, html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
 
       # All partners should be present
-      assert html =~ "Third"
-      assert html =~ "Second"
-      assert html =~ "First"
+      assert html =~ "Xena"
+      assert html =~ "Yuki"
+      assert html =~ "Zara"
 
-      # Verify order: Third should appear before First in the HTML
-      third_pos = :binary.match(html, "Third") |> elem(0)
-      first_pos = :binary.match(html, "First") |> elem(0)
-      assert third_pos < first_pos
+      # Verify order: Xena (newest) should appear before Zara (oldest) in the HTML
+      xena_pos = :binary.match(html, "Xena") |> elem(0)
+      zara_pos = :binary.match(html, "Zara") |> elem(0)
+      assert xena_pos < zara_pos
     end
 
     test "guest user sees no PM conversations restored", %{conn: conn} do

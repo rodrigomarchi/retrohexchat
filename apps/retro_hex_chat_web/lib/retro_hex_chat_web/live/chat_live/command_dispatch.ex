@@ -351,7 +351,8 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   end
 
   defp handle_self_ctcp(socket, session, type) do
-    value = generate_ctcp_reply_value(session, type)
+    timezone = socket.assigns[:timezone] || "Etc/UTC"
+    value = generate_ctcp_reply_value(session, type, timezone)
 
     case type do
       :ping ->
@@ -420,7 +421,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     end
   end
 
-  defp generate_ctcp_reply_value(session, type) do
+  defp generate_ctcp_reply_value(session, type, timezone) do
     settings = Session.get_ctcp_settings(session)
 
     case type do
@@ -431,7 +432,12 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         CtcpSettings.get_version_string(settings)
 
       :time ->
-        Calendar.strftime(DateTime.utc_now(), "%Y-%m-%d %H:%M:%S UTC")
+        now = DateTime.utc_now()
+        tz_label = RetroHexChatWeb.Timezone.format_utc_offset(timezone)
+
+        now
+        |> RetroHexChatWeb.Timezone.shift(timezone)
+        |> Calendar.strftime("%Y-%m-%d %H:%M:%S #{tz_label}")
 
       :finger ->
         case CtcpSettings.get_finger_text(settings) do

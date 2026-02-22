@@ -15,17 +15,17 @@ export function truncatePreview(text, maxLen = 100) {
 }
 
 /**
- * Format an edit timestamp as "HH:MM DD/MM/YYYY" (UTC).
+ * Format an edit timestamp as "HH:MM DD/MM/YYYY" (local time).
  * @param {Date} date
  * @returns {string}
  */
 export function formatEditTimestamp(date) {
   const pad = (n) => String(n).padStart(2, "0");
-  const hours = pad(date.getUTCHours());
-  const minutes = pad(date.getUTCMinutes());
-  const day = pad(date.getUTCDate());
-  const month = pad(date.getUTCMonth() + 1);
-  const year = date.getUTCFullYear();
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  const day = pad(date.getDate());
+  const month = pad(date.getMonth() + 1);
+  const year = date.getFullYear();
   return `${hours}:${minutes} ${day}/${month}/${year}`;
 }
 

@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
 
   # Modes form state
   attr :modes_form, :map, default: %{}
+  attr :timezone, :string, default: "Etc/UTC"
 
   @spec channel_central_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def channel_central_dialog(assigns) do
@@ -134,7 +135,7 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
         <legend>Channel Info</legend>
         <div class="u-text-sm">
           <div><strong>Name:</strong> {@channel_state.name}</div>
-          <div><strong>Created:</strong> {format_datetime(@channel_state.created_at)}</div>
+          <div><strong>Created:</strong> {format_datetime(@channel_state.created_at, @timezone)}</div>
           <div><strong>Members:</strong> {@channel_state.member_count}</div>
         </div>
       </fieldset>
@@ -169,7 +170,7 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
         >
           Set by {@channel_state.topic_set_by}
           <span :if={@channel_state.topic_set_at}>
-            at {format_datetime(@channel_state.topic_set_at)}
+            at {format_datetime(@channel_state.topic_set_at, @timezone)}
           </span>
         </div>
       </fieldset>
@@ -566,11 +567,11 @@ defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
 
   # ── Helpers ───────────────────────────────────────────────
 
-  defp format_datetime(nil), do: "—"
+  defp format_datetime(nil, _tz), do: "—"
 
-  defp format_datetime(%DateTime{} = dt) do
-    Calendar.strftime(dt, "%Y-%m-%d %H:%M")
+  defp format_datetime(%DateTime{} = dt, tz) do
+    dt |> RetroHexChatWeb.Timezone.shift(tz) |> Calendar.strftime("%Y-%m-%d %H:%M")
   end
 
-  defp format_datetime(_), do: "—"
+  defp format_datetime(_, _tz), do: "—"
 end

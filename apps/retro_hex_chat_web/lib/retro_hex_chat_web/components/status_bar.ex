@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Components.StatusBar do
   attr :lag_ms, :integer, default: nil
   attr :lag_status, :atom, default: :normal
   attr :muted, :boolean, default: false
+  attr :timezone, :string, default: "Etc/UTC"
 
   @spec status_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def status_bar(assigns) do
@@ -49,6 +50,9 @@ defmodule RetroHexChatWeb.Components.StatusBar do
         <span class="status-bar-separator">|</span>
         <Icons.icon_clock class="status-bar-icon" />
         <span id="clock-display" phx-hook="ClockHook" data-testid="status-clock">--:--</span>
+        <span class="status-bar-tz" data-testid="status-timezone">
+          {RetroHexChatWeb.Timezone.format_utc_offset(@timezone)}
+        </span>
         <span class="status-bar-separator">|</span>
         <span
           class="mute-toggle status-bar-clickable"

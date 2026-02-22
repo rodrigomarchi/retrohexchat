@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.ChatLive do
   alias RetroHexChat.Presence.{NotifyList, WhowasCache}
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.Helpers
+  alias RetroHexChatWeb.Timezone
 
   @impl true
   def mount(_params, http_session, socket) do
@@ -63,11 +64,13 @@ defmodule RetroHexChatWeb.ChatLive do
             {:user_connected, %{nickname: nickname}}
           )
 
+          timezone = resolve_timezone(http_session, socket)
+
           socket =
             socket
             |> attach_all_hooks()
             |> assign_defaults(session)
-            |> assign(connection_ready: true)
+            |> assign(timezone: timezone, connection_ready: true)
             |> Helpers.join_channel(
               Application.get_env(:retro_hex_chat, :default_channel, "#lobby"),
               session
@@ -86,7 +89,10 @@ defmodule RetroHexChatWeb.ChatLive do
         else
           {:ok,
            assign_defaults(socket, session)
-           |> assign(connection_progress_step: 1)}
+           |> assign(
+             timezone: Timezone.validate(http_session["chat_timezone"]),
+             connection_progress_step: 1
+           )}
         end
 
       {:error, _} ->
@@ -98,6 +104,27 @@ defmodule RetroHexChatWeb.ChatLive do
   defp validate_session_nickname(nil), do: {:error, "No nickname in session"}
 
   defp validate_session_nickname(nickname), do: NicknameValidator.validate(nickname)
+
+  @spec resolve_timezone(map(), Phoenix.LiveView.Socket.t()) :: String.t()
+  defp resolve_timezone(http_session, socket) do
+    session_tz = http_session["chat_timezone"]
+    connect_params = get_connect_params(socket)
+    params_tz = Map.get(connect_params || %{}, "timezone")
+
+    tz =
+      cond do
+        session_tz && session_tz != "" && session_tz != "Etc/UTC" ->
+          session_tz
+
+        params_tz && params_tz != "" ->
+          params_tz
+
+        true ->
+          "Etc/UTC"
+      end
+
+    Timezone.validate(tz)
+  end
 
   defp attach_all_hooks(socket) do
     event_hooks = [
@@ -578,22 +605,28 @@ defmodule RetroHexChatWeb.ChatLive do
     end)
   end
 
-  defp format_time(%DateTime{} = dt, :hh_mm), do: "[#{Calendar.strftime(dt, "%H:%M")}]"
-  defp format_time(%DateTime{} = dt, :hh_mm_ss), do: "[#{Calendar.strftime(dt, "%H:%M:%S")}]"
+  defp format_time(%DateTime{} = dt, :hh_mm, tz),
+    do: "[#{dt |> Timezone.shift(tz) |> Calendar.strftime("%H:%M")}]"
 
-  defp format_time(%DateTime{} = dt, :dd_mm_hh_mm),
-    do: "[#{Calendar.strftime(dt, "%d/%m %H:%M")}]"
+  defp format_time(%DateTime{} = dt, :hh_mm_ss, tz),
+    do: "[#{dt |> Timezone.shift(tz) |> Calendar.strftime("%H:%M:%S")}]"
 
-  defp format_time(_, :none), do: ""
-  defp format_time(%DateTime{} = dt, _), do: "[#{Calendar.strftime(dt, "%H:%M")}]"
-  defp format_time(_, _), do: "[--:--]"
+  defp format_time(%DateTime{} = dt, :dd_mm_hh_mm, tz),
+    do: "[#{dt |> Timezone.shift(tz) |> Calendar.strftime("%d/%m %H:%M")}]"
 
-  @spec format_edit_timestamp(DateTime.t() | any()) :: String.t()
-  defp format_edit_timestamp(%DateTime{} = dt) do
-    Calendar.strftime(dt, "%H:%M %d/%m/%Y")
+  defp format_time(_, :none, _tz), do: ""
+
+  defp format_time(%DateTime{} = dt, _, tz),
+    do: "[#{dt |> Timezone.shift(tz) |> Calendar.strftime("%H:%M")}]"
+
+  defp format_time(_, _, _tz), do: "[--:--]"
+
+  @spec format_edit_timestamp(DateTime.t() | any(), String.t()) :: String.t()
+  defp format_edit_timestamp(%DateTime{} = dt, tz) do
+    dt |> Timezone.shift(tz) |> Calendar.strftime("%H:%M %d/%m/%Y")
   end
 
-  defp format_edit_timestamp(_), do: "--:--"
+  defp format_edit_timestamp(_, _tz), do: "--:--"
 
   defp nick_color(nickname) do
     index = :erlang.phash2(nickname, length(@nick_colors))

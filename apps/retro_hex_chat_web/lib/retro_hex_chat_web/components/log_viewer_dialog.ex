@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
   attr :exporting, :boolean, default: false
   attr :error, :string, default: nil
   attr :nick_color_fn, :any, default: nil
+  attr :timezone, :string, default: "Etc/UTC"
 
   @spec log_viewer_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def log_viewer_dialog(assigns) do
@@ -159,7 +160,7 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
                 }
               >
                 <span class="u-text-muted">
-                  {format_entry_timestamp(entry, @preferences)}
+                  {format_entry_timestamp(entry, @preferences, @timezone)}
                 </span>
                 {render_entry(entry, @nick_color_fn)}
               </div>
@@ -317,11 +318,12 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
     end)
   end
 
-  defp format_entry_timestamp(entry, prefs) do
+  defp format_entry_timestamp(entry, prefs, timezone) do
     ts = Map.get(entry, :inserted_at)
 
     if ts && prefs do
-      DisplayPreferences.format_timestamp(prefs, ts)
+      shifted = RetroHexChatWeb.Timezone.shift(ts, timezone)
+      DisplayPreferences.format_timestamp(prefs, shifted)
     else
       ""
     end

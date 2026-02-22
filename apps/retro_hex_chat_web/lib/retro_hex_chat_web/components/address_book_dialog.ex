@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
   attr :nick_colors_selected, :string, default: nil
   attr :show_nick_color_add_dialog, :boolean, default: false
   attr :show_nick_color_edit_dialog, :boolean, default: false
+  attr :timezone, :string, default: "Etc/UTC"
 
   @spec address_book_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def address_book_dialog(assigns) do
@@ -171,7 +172,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
                       <td>{entry.contact_nickname}</td>
                       <td>{entry.note || ""}</td>
                       <td class="u-text-nowrap">
-                        {format_contact_date(entry.first_contact_date)}
+                        {format_contact_date(entry.first_contact_date, @timezone)}
                       </td>
                     </tr>
                     <tr :if={@contacts == []}>
@@ -248,7 +249,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
                       <td>{entry.tracked_nickname}</td>
                       <td>{entry.note || ""}</td>
                       <td class="u-text-nowrap">
-                        {format_last_seen(entry.last_seen_at)}
+                        {format_last_seen(entry.last_seen_at, @timezone)}
                       </td>
                     </tr>
                     <tr :if={@notify_entries == []}>
@@ -677,9 +678,11 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
     """
   end
 
-  @spec format_contact_date(DateTime.t() | nil) :: String.t()
-  defp format_contact_date(nil), do: ""
-  defp format_contact_date(%DateTime{} = dt), do: Calendar.strftime(dt, "%Y-%m-%d")
+  @spec format_contact_date(DateTime.t() | nil, String.t()) :: String.t()
+  defp format_contact_date(nil, _tz), do: ""
+
+  defp format_contact_date(%DateTime{} = dt, tz),
+    do: dt |> RetroHexChatWeb.Timezone.shift(tz) |> Calendar.strftime("%Y-%m-%d")
 
   @spec status_dot(boolean()) :: Phoenix.LiveView.Rendered.t()
   defp status_dot(true) do
@@ -698,9 +701,11 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
     """
   end
 
-  @spec format_last_seen(DateTime.t() | nil) :: String.t()
-  defp format_last_seen(nil), do: "Never"
-  defp format_last_seen(%DateTime{} = dt), do: Calendar.strftime(dt, "%Y-%m-%d %H:%M")
+  @spec format_last_seen(DateTime.t() | nil, String.t()) :: String.t()
+  defp format_last_seen(nil, _tz), do: "Never"
+
+  defp format_last_seen(%DateTime{} = dt, tz),
+    do: dt |> RetroHexChatWeb.Timezone.shift(tz) |> Calendar.strftime("%Y-%m-%d %H:%M")
 
   @irc_colors %{
     0 => {"White", "#ffffff"},

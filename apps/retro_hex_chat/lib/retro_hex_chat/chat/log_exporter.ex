@@ -8,13 +8,13 @@ defmodule RetroHexChat.Chat.LogExporter do
   alias RetroHexChat.Chat.Formatter
   alias RetroHexChat.Chat.LogFilter
 
-  @spec export(list(map()), String.t(), DisplayPreferences.t()) :: String.t()
-  def export(entries, format, prefs) do
+  @spec export(list(map()), String.t(), DisplayPreferences.t(), String.t()) :: String.t()
+  def export(entries, format, prefs, timezone \\ "Etc/UTC") do
     filtered = filter_by_preferences(entries, prefs)
 
     case format do
-      "txt" -> export_txt(filtered, prefs)
-      "html" -> export_html(filtered, prefs)
+      "txt" -> export_txt(filtered, prefs, timezone)
+      "html" -> export_html(filtered, prefs, timezone)
     end
   end
 
@@ -41,14 +41,14 @@ defmodule RetroHexChat.Chat.LogExporter do
     end)
   end
 
-  defp export_txt(entries, prefs) do
+  defp export_txt(entries, prefs, timezone) do
     entries
-    |> Enum.map(fn entry -> format_txt_line(entry, prefs) end)
+    |> Enum.map(fn entry -> format_txt_line(entry, prefs, timezone) end)
     |> Enum.join("\n")
   end
 
-  defp format_txt_line(entry, prefs) do
-    ts = format_timestamp(entry, prefs)
+  defp format_txt_line(entry, prefs, timezone) do
+    ts = format_timestamp(entry, prefs, timezone)
     type = Map.get(entry, :type, "message")
     content = Map.get(entry, :content, "")
 
@@ -66,10 +66,10 @@ defmodule RetroHexChat.Chat.LogExporter do
     end
   end
 
-  defp export_html(entries, prefs) do
+  defp export_html(entries, prefs, timezone) do
     body =
       entries
-      |> Enum.map(fn entry -> format_html_line(entry, prefs) end)
+      |> Enum.map(fn entry -> format_html_line(entry, prefs, timezone) end)
       |> Enum.join("\n")
 
     """
@@ -109,8 +109,8 @@ defmodule RetroHexChat.Chat.LogExporter do
     """
   end
 
-  defp format_html_line(entry, prefs) do
-    ts = format_timestamp(entry, prefs)
+  defp format_html_line(entry, prefs, timezone) do
+    ts = format_timestamp(entry, prefs, timezone)
     type = Map.get(entry, :type, "message")
     content = Map.get(entry, :content, "")
 
@@ -133,15 +133,27 @@ defmodule RetroHexChat.Chat.LogExporter do
     end
   end
 
-  defp format_timestamp(entry, prefs) do
+  defp format_timestamp(entry, prefs, timezone) do
     ts = Map.get(entry, :inserted_at)
 
     if ts do
-      DisplayPreferences.format_timestamp(prefs, ts)
+      shifted = shift_timezone(ts, timezone)
+      DisplayPreferences.format_timestamp(prefs, shifted)
     else
       ""
     end
   end
+
+  defp shift_timezone(%DateTime{} = dt, "Etc/UTC"), do: dt
+
+  defp shift_timezone(%DateTime{} = dt, timezone) do
+    case DateTime.shift_zone(dt, timezone) do
+      {:ok, shifted} -> shifted
+      {:error, _} -> dt
+    end
+  end
+
+  defp shift_timezone(dt, _timezone), do: dt
 
   defp get_nick(entry) do
     Map.get(entry, :author_nickname) || Map.get(entry, :sender_nickname, "")

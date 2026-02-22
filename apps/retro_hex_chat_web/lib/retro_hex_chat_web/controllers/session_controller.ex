@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.SessionController do
       conn
       |> put_session(:chat_nickname, nickname)
       |> put_session(:chat_pre_identified, pre_identified)
+      |> put_session(:chat_timezone, params["timezone"] || "Etc/UTC")
       |> maybe_put_join_channel(params["join_channel"])
       |> redirect(to: ~p"/chat")
     else

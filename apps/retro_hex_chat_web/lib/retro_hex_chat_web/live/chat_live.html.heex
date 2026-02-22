@@ -10,6 +10,7 @@
     name="auth_token"
     value={@nick_change_token}
   />
+  <input type="hidden" name="timezone" value={@timezone} />
 </form>
 <div id="search-highlight-hook" phx-hook="SearchHighlightHook" style="display: none;"></div>
 <div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" style="display: none;"></div>
@@ -47,6 +48,7 @@
         lag_ms={@lag_ms}
         lag_status={@lag_status}
         muted={@muted}
+        timezone={@timezone}
       />
     </:panels>
   </RetroHexChatWeb.Components.AppHeader.app_header>
@@ -149,26 +151,38 @@
         >
           <%= case msg.type do %>
             <% :action -> %>
-              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
+              <span class="chat-timestamp">
+                {format_time(msg.timestamp, @timestamp_format, @timezone)}
+              </span>
               <span class="chat-action">
                 * {msg.author} {raw(format_content(msg.content, @session.strip_formatting))}
               </span>
             <% :system -> %>
-              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
+              <span class="chat-timestamp">
+                {format_time(msg.timestamp, @timestamp_format, @timezone)}
+              </span>
               <span class="chat-system">* {msg.content}</span>
             <% :service -> %>
-              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
+              <span class="chat-timestamp">
+                {format_time(msg.timestamp, @timestamp_format, @timezone)}
+              </span>
               <span class="chat-service">{msg.content}</span>
             <% :error -> %>
-              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
+              <span class="chat-timestamp">
+                {format_time(msg.timestamp, @timestamp_format, @timezone)}
+              </span>
               <span class="chat-error">{msg.content}</span>
             <% :notice -> %>
-              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
+              <span class="chat-timestamp">
+                {format_time(msg.timestamp, @timestamp_format, @timezone)}
+              </span>
               <span class="chat-notice">
                 <span class="chat-notice-nick">-{msg.author}-</span> {msg.content}
               </span>
             <% :p2p_invite -> %>
-              <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
+              <span class="chat-timestamp">
+                {format_time(msg.timestamp, @timestamp_format, @timezone)}
+              </span>
               <span class="chat-p2p-invite" data-testid="p2p-invite-card">
                 <span
                   class="chat-nick"
@@ -217,7 +231,7 @@
               <%= if Map.get(msg, :deleted_at) do %>
                 <div class="chat-msg-grid">
                   <span class="chat-timestamp">
-                    {format_time(msg.timestamp, @timestamp_format)}
+                    {format_time(msg.timestamp, @timestamp_format, @timezone)}
                   </span>
                   <span
                     class="chat-message-content"
@@ -230,7 +244,7 @@
               <% else %>
                 <div class="chat-msg-grid">
                   <span class="chat-timestamp">
-                    {format_time(msg.timestamp, @timestamp_format)}
+                    {format_time(msg.timestamp, @timestamp_format, @timezone)}
                   </span>
                   <span
                     class="chat-nick"
@@ -244,9 +258,9 @@
                     <span
                       :if={Map.get(msg, :edited_at)}
                       class="chat-edited-tag"
-                      title={"Edited at #{format_edit_timestamp(msg.edited_at)}"}
+                      title={"Edited at #{format_edit_timestamp(msg.edited_at, @timezone)}"}
                       tabindex="0"
-                      aria-label={"Edited at #{format_edit_timestamp(msg.edited_at)}"}
+                      aria-label={"Edited at #{format_edit_timestamp(msg.edited_at, @timezone)}"}
                       data-testid="edited-tag"
                     >
                       (edited)
@@ -278,7 +292,9 @@
         data-testid="status-messages"
       >
         <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
-          <span class="chat-timestamp">{format_time(msg.timestamp, @timestamp_format)}</span>
+          <span class="chat-timestamp">
+            {format_time(msg.timestamp, @timestamp_format, @timezone)}
+          </span>
           <span class={"chat-status chat-status--#{msg.type}"}>{msg.content}</span>
         </div>
       </div>
@@ -416,6 +432,7 @@
     show_edit_dialog={@show_notify_edit_dialog}
     auto_whois={@session.notify_list.settings.auto_whois}
     nick_color_fn={@nick_color_fn}
+    timezone={@timezone}
   />
 
   <RetroHexChatWeb.Components.AddressBookDialog.address_book_dialog
@@ -434,6 +451,7 @@
     nick_colors_selected={@nick_colors_selected}
     show_nick_color_add_dialog={@show_nick_color_add_dialog}
     show_nick_color_edit_dialog={@show_nick_color_edit_dialog}
+    timezone={@timezone}
   />
 
   <RetroHexChatWeb.Components.ChannelListDialog.channel_list_dialog
@@ -533,6 +551,7 @@
     show_add_ban_dialog={@show_cc_add_ban_dialog}
     show_add_ban_ex_dialog={@show_cc_add_ban_ex_dialog}
     show_add_invite_ex_dialog={@show_cc_add_invite_ex_dialog}
+    timezone={@timezone}
   />
 
   <RetroHexChatWeb.Components.HighlightDialog.highlight_dialog
@@ -553,6 +572,7 @@
     search_query={@url_catcher_search_query}
     channels={url_catcher_channels(assigns)}
     entry_count={length(@url_catcher_entries)}
+    timezone={@timezone}
   />
 
   <RetroHexChatWeb.Components.CheatsheetDialog.cheatsheet_dialog visible={@cheatsheet_visible} />
@@ -567,6 +587,7 @@
     exporting={@log_exporting}
     error={@log_error}
     nick_color_fn={@nick_color_fn}
+    timezone={@timezone}
   />
 
   <RetroHexChatWeb.Components.PasteConfirmDialog.paste_confirm_dialog

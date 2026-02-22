@@ -300,6 +300,7 @@ defmodule RetroHexChatWeb.ConnectLive do
           <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
           <input type="hidden" name="nickname" value={@nickname} />
           <input :if={@auth_token} type="hidden" name="auth_token" value={@auth_token} />
+          <input type="hidden" name="timezone" id="connect-timezone-input" value="Etc/UTC" />
         </form>
       </div>
     </div>

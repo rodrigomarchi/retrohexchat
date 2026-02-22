@@ -34,13 +34,14 @@ describe("truncatePreview", () => {
 });
 
 describe("formatEditTimestamp", () => {
-  it("formats datetime as HH:MM DD/MM/YYYY", () => {
-    const dt = new Date("2026-02-16T14:30:00Z");
+  it("formats datetime as HH:MM DD/MM/YYYY in local time", () => {
+    // Use a date constructed with local time components to avoid TZ sensitivity
+    const dt = new Date(2026, 1, 16, 14, 30, 0); // Feb 16, 2026 14:30 local
     expect(formatEditTimestamp(dt)).toBe("14:30 16/02/2026");
   });
 
   it("pads single-digit hours and minutes", () => {
-    const dt = new Date("2026-01-05T08:05:00Z");
+    const dt = new Date(2026, 0, 5, 8, 5, 0); // Jan 5, 2026 08:05 local
     expect(formatEditTimestamp(dt)).toBe("08:05 05/01/2026");
   });
 });

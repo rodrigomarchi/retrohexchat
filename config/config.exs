@@ -83,6 +83,9 @@ config :live_dashboard_history, LiveDashboardHistory,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Use Tz for timezone database (compile-time, no GenServer)
+config :elixir, :time_zone_database, Tz.TimeZoneDatabase
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
