@@ -78,13 +78,9 @@
 
       <RetroHexChatWeb.Components.TabBar.tab_bar
         :if={@show_switchbar}
-        channels={@session.channels}
-        pm_conversations={@session.pm_conversations}
         active_channel={@session.active_channel}
         active_pm={@session.active_pm}
         show_status_tab={@show_status_tab}
-        unread_counts={@unread_counts}
-        highlight_channels={MapSet.to_list(@highlight_channels)}
         status_unread={@status_unread}
       />
 

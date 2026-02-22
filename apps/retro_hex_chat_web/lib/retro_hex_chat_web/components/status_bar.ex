@@ -21,11 +21,13 @@ defmodule RetroHexChatWeb.Components.StatusBar do
     <div class="status-bar">
       <p class="status-bar-field status-bar-section--left">
         <Icons.icon_status_user class="status-bar-icon" />
-        <span data-testid="status-nick">{@nickname}</span>
+        <span class="status-bar-nick" data-testid="status-nick">{@nickname}</span>
         <span class="status-bar-separator">|</span>
         <Icons.icon_tab_channel :if={@tab_type == :channel} class="status-bar-icon" />
         <Icons.icon_tab_pm :if={@tab_type == :pm} class="status-bar-icon" />
-        <span data-testid="status-channel">{@channel || "No channel"}</span>
+        <span class="status-bar-channel" data-testid="status-channel">
+          {@channel || "No channel"}
+        </span>
         <span :if={@tab_type == :channel} data-testid="status-users">({@user_count})</span>
         <span class="status-bar-separator">|</span>
         <span

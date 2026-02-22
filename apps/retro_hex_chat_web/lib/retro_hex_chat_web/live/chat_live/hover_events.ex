@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.TimeFormatter
+  alias RetroHexChat.Chat.{IgnoreList, TimeFormatter}
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
@@ -124,7 +124,10 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
       channels: get_visible_channels(nick, session.channels),
       away: (target_meta && target_meta[:away]) || false,
       away_message: target_meta && target_meta[:away_message],
-      registered: NickServ.registered?(nick)
+      registered: NickServ.registered?(nick),
+      role: get_role_in_active_channel(nick, session.active_channel),
+      is_contact: contact?(nick, session.contacts),
+      is_ignored: IgnoreList.get_entry(session.ignore_list, nick) != nil
     }
 
     hover_card = socket.assigns.hover_card
@@ -189,5 +192,28 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
       _ ->
         false
     end
+  end
+
+  @spec get_role_in_active_channel(String.t(), String.t() | nil) :: atom() | nil
+  defp get_role_in_active_channel(_nick, nil), do: nil
+
+  defp get_role_in_active_channel(nick, channel) do
+    with {:ok, state} <- Server.get_state(channel),
+         nick_lower = String.downcase(nick),
+         {_nick, info} <-
+           Enum.find(state.members, fn {m, _} -> String.downcase(m) == nick_lower end) do
+      info.role
+    else
+      _ -> nil
+    end
+  end
+
+  @spec contact?(String.t(), map()) :: boolean()
+  defp contact?(nick, contacts) do
+    nick_lower = String.downcase(nick)
+
+    Enum.any?(contacts.entries, fn entry ->
+      String.downcase(entry.contact_nickname) == nick_lower
+    end)
   end
 end

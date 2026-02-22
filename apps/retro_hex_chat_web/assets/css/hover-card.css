@@ -25,8 +25,8 @@
   z-index: var(--z-tooltip, 9000);
   font-size: var(--text-base);
   font-family: var(--font-system);
-  min-width: 200px;
-  max-width: 300px;
+  min-width: 220px;
+  max-width: 320px;
   pointer-events: none;
 }
 
@@ -40,6 +40,9 @@
 
 .nick-hover-card .title-bar-text {
   font-size: var(--text-sm);
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .nick-hover-card .window-body {
@@ -48,8 +51,25 @@
   line-height: 1.5;
 }
 
+/* ── Title bar icon ─── */
+
+.hover-card-title-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+/* ── Field rows ─── */
+
+.nick-hover-card-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
 .nick-hover-card-field {
   display: flex;
+  align-items: center;
   gap: 4px;
 }
 
@@ -62,21 +82,88 @@
   word-break: break-word;
 }
 
-.nick-hover-card-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+/* ── Field icons ─── */
+
+.hover-card-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
 }
+
+/* ── Registered badge ─── */
 
 .nick-hover-card-registered {
   color: var(--color-success);
   font-weight: bold;
-  margin-left: 4px;
+  margin-left: 2px;
 }
 
-.nick-hover-card-channels {
-  margin-top: 4px;
+/* ── Role badge ─── */
+
+.hover-card-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 4px;
+  padding: 0 4px;
+  font-size: var(--text-xs);
+  border-radius: 2px;
+  background: var(--color-gray-200, #e0e0e0);
+  color: var(--color-fg);
 }
+
+.hover-card-role--owner { background: #fff3cd; color: #856404; }
+.hover-card-role--operator { background: #f8d7da; color: #721c24; }
+.hover-card-role--half_operator { background: #d4edda; color: #155724; }
+.hover-card-role--voiced { background: #d1ecf1; color: #0c5460; }
+
+.hover-card-role-icon {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+/* ── Channels ─── */
+
+.nick-hover-card-channels {
+  word-break: break-word;
+}
+
+/* ── Contact / Ignored badges ─── */
+
+.nick-hover-card-badges {
+  display: flex;
+  gap: 6px;
+  margin-top: 2px;
+  padding-top: 3px;
+}
+
+.hover-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 5px;
+  font-size: var(--text-xs);
+  border-radius: 2px;
+}
+
+.hover-card-badge--contact {
+  background: #d4edda;
+  color: #155724;
+}
+
+.hover-card-badge--ignored {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.hover-card-badge-icon {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+/* ── Hints footer ─── */
 
 .nick-hover-card-hints {
   margin-top: 6px;

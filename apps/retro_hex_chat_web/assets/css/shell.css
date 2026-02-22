@@ -32,6 +32,15 @@
 /* ── Status bar icons ── */
 .status-bar-icon { width: 10px; height: 10px; flex-shrink: 0; vertical-align: middle; }
 
+/* ── Status bar fixed-width fields (16ch = max nick length) ── */
+.status-bar-nick,
+.status-bar-channel {
+  display: inline-block;
+  width: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ── Status bar separator ── */
 .status-bar-separator {
   color: var(--color-muted);

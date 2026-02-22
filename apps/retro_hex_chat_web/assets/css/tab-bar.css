@@ -44,15 +44,6 @@
   font-weight: bold;
 }
 
-.tab-highlight {
-  animation: tab-flash 0.8s ease-in-out infinite;
-}
-
-@keyframes tab-flash {
-  0%, 100% { background-color: var(--color-gray-300); }
-  50% { background-color: #ffffd0; }
-}
-
 .tab-item-icon { width: 12px; height: 12px; flex-shrink: 0; vertical-align: middle; }
 
 .tab-close {
@@ -87,9 +78,10 @@
 }
 
 .tab-label {
+  display: inline-block;
+  width: 16ch;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 120px;
 }
 
 /* ── Sidebar tab bars — reuse tab-item styling ──────────── */
