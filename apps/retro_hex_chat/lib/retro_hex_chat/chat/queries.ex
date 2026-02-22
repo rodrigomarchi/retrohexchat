@@ -215,6 +215,26 @@ defmodule RetroHexChat.Chat.Queries do
     |> Repo.one()
   end
 
+  @spec bulk_delete_messages(String.t()) :: non_neg_integer()
+  def bulk_delete_messages(channel_name) do
+    {count, _} =
+      from(m in Message, where: m.channel_name == ^channel_name)
+      |> Repo.delete_all()
+
+    count
+  end
+
+  @spec bulk_delete_messages(String.t(), String.t()) :: non_neg_integer()
+  def bulk_delete_messages(channel_name, author_nickname) do
+    {count, _} =
+      from(m in Message,
+        where: m.channel_name == ^channel_name and m.author_nickname == ^author_nickname
+      )
+      |> Repo.delete_all()
+
+    count
+  end
+
   defp maybe_before(query, nil), do: query
 
   defp maybe_before(query, before_id) do

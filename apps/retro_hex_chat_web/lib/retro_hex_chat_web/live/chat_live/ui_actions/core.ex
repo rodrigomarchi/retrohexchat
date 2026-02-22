@@ -153,6 +153,31 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     end
   end
 
+  def handle_ui_action(socket, :channel_mute_user, %{channel: channel, target: target} = payload) do
+    duration = Map.get(payload, :duration, :permanent)
+
+    case Server.channel_mute(channel, socket.assigns.session.nickname, target, duration) do
+      :ok -> system_event(socket, "#{target} has been muted in #{channel}.")
+      {:error, msg} -> error_event(socket, msg)
+    end
+  end
+
+  def handle_ui_action(socket, :channel_unmute_user, %{channel: channel, target: target}) do
+    case Server.channel_unmute(channel, socket.assigns.session.nickname, target) do
+      :ok -> system_event(socket, "#{target} has been unmuted in #{channel}.")
+      {:error, msg} -> error_event(socket, msg)
+    end
+  end
+
+  def handle_ui_action(socket, :transfer_ownership, %{channel: channel, target: target}) do
+    nick = socket.assigns.session.nickname
+
+    case Server.transfer_ownership(channel, nick, target) do
+      :ok -> system_event(socket, "Channel ownership transferred to #{target}.")
+      {:error, msg} -> error_event(socket, msg)
+    end
+  end
+
   def handle_ui_action(socket, :knock_channel, %{channel: channel} = payload) do
     message = Map.get(payload, :message)
     knock_timestamps = Map.get(socket.assigns, :knock_timestamps, %{})

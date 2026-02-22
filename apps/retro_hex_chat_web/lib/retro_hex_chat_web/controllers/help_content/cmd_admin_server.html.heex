@@ -1,0 +1,72 @@
+<p>
+  View server information and manage server settings.
+  Requires server administrator role.
+</p>
+
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/admin server info
+/admin server set &lt;key&gt; &lt;value&gt;
+/admin server get &lt;key&gt;
+/admin server settings</pre>
+
+<.help_h4 icon={:icon_tag}>Subcommands</.help_h4>
+<ul>
+  <li>
+    <code>info</code> — Show server stats: online users, active channels, registered nicks, uptime
+  </li>
+  <li><code>set &lt;key&gt; &lt;value&gt;</code> — Change a server setting</li>
+  <li><code>get &lt;key&gt;</code> — View the current value of a setting</li>
+  <li><code>settings</code> — List all server settings with their values</li>
+</ul>
+
+<.help_h4 icon={:icon_tab_control}>Available Settings</.help_h4>
+<ul>
+  <li>
+    <code>server_name</code>
+    — Display name of the server (shown in welcome message and server info)
+  </li>
+  <li><code>server_description</code> — Server description text (shown in server info)</li>
+  <li>
+    <code>welcome_message</code>
+    — Custom message shown to users on connect (after the default welcome)
+  </li>
+  <li>
+    <code>max_channels</code>
+    — Maximum number of channels a user can join (default: 10, must be a positive integer)
+  </li>
+  <li>
+    <code>registration</code>
+    — Whether new nick registrations are allowed: <code>open</code>
+    (default) or <code>closed</code>
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_rules}>Enforcement</.help_h4>
+<ul>
+  <li><code>server_name</code> — Used in the welcome message header when users connect</li>
+  <li>
+    <code>welcome_message</code> — Displayed as a system message right after the default welcome
+  </li>
+  <li><code>max_channels</code> — Enforced when users try to <code>/join</code> a channel</li>
+  <li>
+    <code>registration</code>
+    — Enforced in NickServ; when <code>closed</code>, <code>/ns register</code>
+    is rejected
+  </li>
+  <li>
+    Nickname length is a compile-time constant (16 characters) and cannot be changed at runtime
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/admin server info
+/admin server set server_name "My IRC Server"
+/admin server get registration
+/admin server settings</pre>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-admin">/admin</.help_link>
+  · <.help_link topic="cmd-admin-log">/admin log</.help_link>
+  · <.help_link topic="cmd-admin-debug">/admin debug</.help_link>
+</p>

@@ -1,0 +1,67 @@
+<p>
+  Manage server users: list, view details, ban, kick, mute, rename, and assign roles.
+  Requires server administrator role.
+</p>
+
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/admin user list [--search Q] [--online]
+/admin user info @&lt;nick&gt;
+/admin user ban @&lt;nick&gt; [--reason R] [--duration D]
+/admin user unban @&lt;nick&gt;
+/admin user kick @&lt;nick&gt; [--reason R]
+/admin user mute @&lt;nick&gt; [--duration D]
+/admin user unmute @&lt;nick&gt;
+/admin user rename @&lt;nick&gt; &lt;new_nick&gt;
+/admin user role @&lt;nick&gt; &lt;admin|server_operator|user&gt;
+/admin user banlist [--search Q]</pre>
+
+<.help_h4 icon={:icon_tag}>Subcommands</.help_h4>
+<ul>
+  <li>
+    <code>list</code>
+    — List registered users (filter with <code>--search</code>, <code>--online</code>)
+  </li>
+  <li><code>info</code> — Show detailed user info (registration, status, channels)</li>
+  <li>
+    <code>ban</code>
+    — Server ban (user cannot connect). Supports <code>--duration 1h</code>,
+    <code>--reason text</code>
+  </li>
+  <li><code>unban</code> — Remove a server ban</li>
+  <li><code>kick</code> — Force disconnect (user can reconnect immediately)</li>
+  <li>
+    <code>mute</code>
+    — Globally mute (cannot send messages anywhere). Supports <code>--duration</code>
+  </li>
+  <li><code>unmute</code> — Remove global mute</li>
+  <li><code>rename</code> — Force nickname change</li>
+  <li>
+    <code>role</code>
+    — Set server role: <code>admin</code>, <code>server_operator</code>, or <code>user</code>
+    (removes role)
+  </li>
+  <li><code>banlist</code> — List active server bans</li>
+</ul>
+
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Only root admins (env var) can promote users to admin</li>
+  <li>Root admins cannot be demoted via commands</li>
+  <li>All actions are recorded in the audit log</li>
+  <li>Duration format: <code>30s</code>, <code>5m</code>, <code>1h</code>, <code>1d</code></li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/admin user list --online
+/admin user ban @Spammer --reason Flooding --duration 24h
+/admin user kick @Troll --reason Breaking rules
+/admin user mute @Noisy --duration 30m
+/admin user role @Trusted server_operator</pre>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-admin">/admin</.help_link>
+  · <.help_link topic="cmd-kick">/kick</.help_link>
+  · <.help_link topic="cmd-ban">/ban</.help_link>
+  · <.help_link topic="cmd-mute">/mute</.help_link>
+</p>

@@ -52,6 +52,18 @@ defmodule RetroHexChat.Services.NickServ do
     GenServer.call(server, {:drop, nickname, password})
   end
 
+  @spec admin_drop(String.t(), GenServer.server()) ::
+          {:ok, String.t()} | {:error, String.t()}
+  def admin_drop(nickname, server \\ __MODULE__) do
+    GenServer.call(server, {:admin_drop, nickname})
+  end
+
+  @spec admin_reset_password(String.t(), String.t(), GenServer.server()) ::
+          {:ok, String.t()} | {:error, String.t()}
+  def admin_reset_password(nickname, new_password, server \\ __MODULE__) do
+    GenServer.call(server, {:admin_reset_password, nickname, new_password})
+  end
+
   @spec identified?(String.t(), GenServer.server()) :: boolean()
   def identified?(nickname, server \\ __MODULE__) do
     GenServer.call(server, {:identified?, nickname})
@@ -93,14 +105,18 @@ defmodule RetroHexChat.Services.NickServ do
 
   @impl true
   def handle_call({:register, nickname, password}, _from, state) do
-    case Queries.insert_registered_nick(nickname, password) do
-      {:ok, _} ->
-        new_state = %{state | identified: MapSet.put(state.identified, nickname)}
-        {:reply, {:ok, "Nickname #{nickname} registered successfully"}, new_state}
+    if Queries.get_setting("registration") == "closed" do
+      {:reply, {:error, "Registration is currently closed by the server administrator"}, state}
+    else
+      case Queries.insert_registered_nick(nickname, password) do
+        {:ok, _} ->
+          new_state = %{state | identified: MapSet.put(state.identified, nickname)}
+          {:reply, {:ok, "Nickname #{nickname} registered successfully"}, new_state}
 
-      {:error, changeset} ->
-        msg = format_changeset_error(changeset)
-        {:reply, {:error, msg}, state}
+        {:error, changeset} ->
+          msg = format_changeset_error(changeset)
+          {:reply, {:error, msg}, state}
+      end
     end
   end
 
@@ -186,6 +202,36 @@ defmodule RetroHexChat.Services.NickServ do
           {:reply, {:ok, "Registration for #{nickname} dropped"}, new_state}
         else
           {:reply, {:error, "Invalid password"}, state}
+        end
+    end
+  end
+
+  def handle_call({:admin_drop, nickname}, _from, state) do
+    case Queries.find_by_nickname(nickname) do
+      nil ->
+        {:reply, {:error, "Nickname #{nickname} is not registered"}, state}
+
+      %RegisteredNick{} = nick ->
+        Queries.delete_registered_nick(nick)
+        new_state = %{state | identified: MapSet.delete(state.identified, nickname)}
+        {:reply, {:ok, "Registration for #{nickname} dropped by admin"}, new_state}
+    end
+  end
+
+  def handle_call({:admin_reset_password, nickname, new_password}, _from, state) do
+    case Queries.find_by_nickname(nickname) do
+      nil ->
+        {:reply, {:error, "Nickname #{nickname} is not registered"}, state}
+
+      %RegisteredNick{} ->
+        new_hash = Bcrypt.hash_pwd_salt(new_password)
+
+        case Queries.update_password_hash(nickname, new_hash) do
+          {:ok, _} ->
+            {:reply, {:ok, "Password for #{nickname} has been reset"}, state}
+
+          {:error, _} ->
+            {:reply, {:error, "Failed to reset password for #{nickname}"}, state}
         end
     end
   end

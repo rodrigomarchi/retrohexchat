@@ -33,4 +33,19 @@ defmodule RetroHexChat.Commands.Policy do
       {:error, "You must be a channel operator to use this command"}
     end
   end
+
+  @spec require_admin(Handler.context()) :: :ok | {:error, String.t()}
+  def require_admin(%{is_admin: true}), do: :ok
+  def require_admin(_), do: {:error, "You must be a server administrator to use this command"}
+
+  @spec require_owner(Handler.context(), String.t()) :: :ok | {:error, String.t()}
+  def require_owner(context, channel) do
+    owner_in = Map.get(context, :owner_in, [])
+
+    if channel in owner_in do
+      :ok
+    else
+      {:error, "You must be the channel owner to use this command"}
+    end
+  end
 end

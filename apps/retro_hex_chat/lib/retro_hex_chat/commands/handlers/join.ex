@@ -3,6 +3,9 @@ defmodule RetroHexChat.Commands.Handlers.Join do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Services.Queries
+
+  @default_max_channels 10
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -26,8 +29,8 @@ defmodule RetroHexChat.Commands.Handlers.Join do
       String.contains?(channel_name, " ") ->
         {:error, "Channel name cannot contain spaces"}
 
-      length(context.channels) >= 10 ->
-        {:error, "Maximum channel limit reached (10)"}
+      length(context.channels) >= max_channels() ->
+        {:error, "Maximum channel limit reached (#{max_channels()})"}
 
       channel_name in context.channels ->
         {:error, "You are already in #{channel_name}"}
@@ -87,5 +90,15 @@ defmodule RetroHexChat.Commands.Handlers.Join do
       ],
       examples: ["/join #elixir", "/join #secret mypassword"]
     }
+  end
+
+  @spec max_channels() :: pos_integer()
+  defp max_channels do
+    case Queries.get_setting("max_channels") do
+      nil -> @default_max_channels
+      val -> String.to_integer(val)
+    end
+  rescue
+    _ -> @default_max_channels
   end
 end

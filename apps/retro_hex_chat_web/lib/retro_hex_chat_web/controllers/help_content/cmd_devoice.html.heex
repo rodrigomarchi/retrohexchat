@@ -1,0 +1,28 @@
+<p>
+  Remove voice status from a user in the current channel. This is a shorthand for <code>/mode -v nickname</code>.
+</p>
+
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/devoice &lt;nickname&gt;</pre>
+
+<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<p>
+  <code>nickname</code> — The user to remove voice from.
+</p>
+
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Requires half-operator (%) status or higher</li>
+  <li>The target must be in the channel</li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/devoice Bob</pre>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-voice">/voice</.help_link>
+  · <.help_link topic="cmd-deop">/deop</.help_link>
+  · <.help_link topic="cmd-mode">/mode</.help_link>
+  · <.help_link topic="channel-permissions">Channel Permissions</.help_link>
+</p>

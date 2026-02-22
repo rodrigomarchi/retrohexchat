@@ -132,6 +132,27 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
      |> system_event(msg)}
   end
 
+  # ── Admin channel events ──────────────────────────────────
+
+  def handle_info({:channel_deleted, %{channel: channel, admin: admin}}, socket) do
+    if channel == socket.assigns.session.active_channel do
+      {:halt,
+       socket
+       |> system_event("Channel #{channel} has been deleted by #{admin}.")
+       |> part_channel_after_kick(channel)}
+    else
+      {:halt, system_event(socket, "Channel #{channel} has been deleted by #{admin}.")}
+    end
+  end
+
+  def handle_info({:user_channel_muted, %{target: target, channel: channel}}, socket) do
+    {:halt, system_event(socket, "#{target} has been muted in #{channel}.")}
+  end
+
+  def handle_info({:user_channel_unmuted, %{target: target, channel: channel}}, socket) do
+    {:halt, system_event(socket, "#{target} has been unmuted in #{channel}.")}
+  end
+
   # ── Knock notification ────────────────────────────────────
 
   def handle_info({:knock, %{nickname: nick, channel: channel, message: message}}, socket) do

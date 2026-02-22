@@ -4,6 +4,7 @@ defmodule RetroHexChat.Services.NickExpiry do
 
   require Logger
 
+  alias RetroHexChat.Admin.RoleCache
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.Queries
 
@@ -56,7 +57,9 @@ defmodule RetroHexChat.Services.NickExpiry do
   # -- Private --
 
   defp do_purge(state) do
-    protected = NickServ.list_identified(state.nickserv)
+    identified = NickServ.list_identified(state.nickserv)
+    admin_nicks = admin_protected_nicks()
+    protected = Enum.uniq(identified ++ admin_nicks)
     {count, nicknames} = Queries.purge_expired_nicks(state.expiration_days, protected)
 
     Enum.each(nicknames, fn nick ->
@@ -117,6 +120,19 @@ defmodule RetroHexChat.Services.NickExpiry do
       nil -> :ok
       channel -> Queries.delete_registered_channel(channel)
     end
+  end
+
+  defp admin_protected_nicks do
+    root_admins = Application.get_env(:retro_hex_chat, :root_admins, [])
+
+    db_admins =
+      try do
+        RoleCache.list_admin_nicks()
+      rescue
+        _ -> []
+      end
+
+    root_admins ++ db_admins
   end
 
   defp schedule_purge(interval_ms) do

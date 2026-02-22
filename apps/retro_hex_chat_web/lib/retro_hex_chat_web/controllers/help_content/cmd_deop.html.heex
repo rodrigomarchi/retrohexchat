@@ -1,0 +1,28 @@
+<p>
+  Remove operator status from a user in the current channel. This is a shorthand for <code>/mode -o nickname</code>.
+</p>
+
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/deop &lt;nickname&gt;</pre>
+
+<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<p>
+  <code>nickname</code> — The user to demote from operator.
+</p>
+
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Requires operator (@) or owner (~) status in the channel</li>
+  <li>The target must be in the channel</li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/deop Alice</pre>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-op">/op</.help_link>
+  · <.help_link topic="cmd-devoice">/devoice</.help_link>
+  · <.help_link topic="cmd-mode">/mode</.help_link>
+  · <.help_link topic="channel-permissions">Channel Permissions</.help_link>
+</p>

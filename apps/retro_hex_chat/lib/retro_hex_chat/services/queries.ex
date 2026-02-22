@@ -315,6 +315,46 @@ defmodule RetroHexChat.Services.Queries do
     |> Repo.all()
   end
 
+  # ── Admin queries ────────────────────────────────────────
+
+  @spec list_registered_nicks(keyword()) :: [RegisteredNick.t()]
+  def list_registered_nicks(opts \\ []) do
+    search = Keyword.get(opts, :search)
+    limit = Keyword.get(opts, :limit, 100)
+
+    RegisteredNick
+    |> maybe_search_nick(search)
+    |> order_by([n], asc: n.nickname)
+    |> limit(^limit)
+    |> Repo.all()
+  end
+
+  @spec count_registered_nicks() :: non_neg_integer()
+  def count_registered_nicks do
+    Repo.aggregate(RegisteredNick, :count)
+  end
+
+  @spec update_password_hash(String.t(), String.t()) ::
+          {:ok, RegisteredNick.t()} | {:error, :not_found}
+  def update_password_hash(nickname, new_hash) do
+    case find_by_nickname(nickname) do
+      nil ->
+        {:error, :not_found}
+
+      nick ->
+        nick
+        |> Ecto.Changeset.change(password_hash: new_hash)
+        |> Repo.update()
+    end
+  end
+
+  defp maybe_search_nick(query, nil), do: query
+
+  defp maybe_search_nick(query, search) do
+    pattern = "%#{search}%"
+    where(query, [n], ilike(n.nickname, ^pattern))
+  end
+
   # ── Server settings ──────────────────────────────────────
 
   @spec get_setting(String.t()) :: String.t() | nil
@@ -339,6 +379,11 @@ defmodule RetroHexChat.Services.Queries do
         |> ServerSetting.changeset(%{value: value, updated_by: updated_by})
         |> Repo.update()
     end
+  end
+
+  @spec list_settings() :: [ServerSetting.t()]
+  def list_settings do
+    from(s in ServerSetting, order_by: s.key) |> Repo.all()
   end
 
   @spec delete_setting(String.t()) :: :ok

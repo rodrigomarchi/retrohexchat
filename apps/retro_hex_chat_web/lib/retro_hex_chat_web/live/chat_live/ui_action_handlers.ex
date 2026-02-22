@@ -21,7 +21,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
   @core_actions ~w(
     open_query open_channel_list clear_chat set_away clear_away
     set_topic view_topic show_whois_info show_help show_command_help
-    set_mode kick_user ban_user
+    set_mode kick_user ban_user unban_user
+    channel_mute_user channel_unmute_user transfer_ownership
+    knock_channel
   )a
 
   @notify_actions ~w(

@@ -63,6 +63,30 @@ defmodule RetroHexChat.Services.ChanServ do
     )
   end
 
+  @spec admin_drop(String.t(), GenServer.server()) ::
+          {:ok, String.t()} | {:error, String.t()}
+  def admin_drop(channel_name, server \\ __MODULE__) do
+    GenServer.call(server, {:admin_drop, channel_name})
+  end
+
+  @spec admin_transfer(String.t(), String.t(), GenServer.server()) ::
+          {:ok, String.t()} | {:error, String.t()}
+  def admin_transfer(channel_name, new_founder, server \\ __MODULE__) do
+    GenServer.call(server, {:admin_transfer, channel_name, new_founder})
+  end
+
+  @spec admin_manage_access(
+          String.t(),
+          :add | :remove,
+          String.t(),
+          String.t(),
+          GenServer.server()
+        ) ::
+          {:ok, String.t()} | {:error, String.t()}
+  def admin_manage_access(channel_name, action, level, target_nick, server \\ __MODULE__) do
+    GenServer.call(server, {:admin_manage_access, channel_name, action, level, target_nick})
+  end
+
   # ── GenServer callbacks ─────────────────────────────────────
 
   @impl true
@@ -127,6 +151,45 @@ defmodule RetroHexChat.Services.ChanServ do
       {:reply, result, state}
     else
       {:error, msg} -> {:reply, {:error, msg}, state}
+    end
+  end
+
+  def handle_call({:admin_drop, channel_name}, _from, state) do
+    case find_channel_or_error(channel_name) do
+      {:ok, channel} ->
+        cleanup_channel(channel_name)
+        Queries.delete_registered_channel(channel)
+        {:reply, {:ok, "Channel #{channel_name} dropped by admin"}, state}
+
+      {:error, msg} ->
+        {:reply, {:error, msg}, state}
+    end
+  end
+
+  def handle_call({:admin_transfer, channel_name, new_founder}, _from, state) do
+    case find_channel_or_error(channel_name) do
+      {:ok, channel} ->
+        old_founder = channel.founder_nickname
+        Queries.remove_access(channel_name, old_founder)
+        Queries.add_access(channel_name, old_founder, "sop", "admin")
+        Queries.remove_access(channel_name, new_founder)
+        Queries.add_access(channel_name, new_founder, "founder", "admin")
+        Queries.update_channel_founder(channel_name, new_founder)
+        {:reply, {:ok, "Founder of #{channel_name} transferred to #{new_founder}"}, state}
+
+      {:error, msg} ->
+        {:reply, {:error, msg}, state}
+    end
+  end
+
+  def handle_call({:admin_manage_access, channel_name, action, level, target_nick}, _from, state) do
+    case find_channel_or_error(channel_name) do
+      {:ok, _channel} ->
+        result = do_manage_access(channel_name, action, level, target_nick, "admin")
+        {:reply, result, state}
+
+      {:error, msg} ->
+        {:reply, {:error, msg}, state}
     end
   end
 

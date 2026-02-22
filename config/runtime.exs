@@ -27,6 +27,13 @@ config :retro_hex_chat,
   turn_auth_secret: :crypto.strong_rand_bytes(64),
   turn_nonce_secret: :crypto.strong_rand_bytes(64)
 
+# Root admins (all environments) — immutable, cannot be removed via /admin commands
+config :retro_hex_chat,
+  root_admins:
+    (System.get_env("ROOT_ADMINS") || "")
+    |> String.split(",", trim: true)
+    |> Enum.map(&String.trim/1)
+
 # File transfer runtime config (all environments)
 config :retro_hex_chat,
   file_transfer_max_size_mb:

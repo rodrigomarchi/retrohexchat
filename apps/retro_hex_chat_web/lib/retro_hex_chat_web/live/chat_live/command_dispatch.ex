@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     ]
 
   alias RetroHexChat.Accounts.{ServerRoles, Session}
+  alias RetroHexChat.Admin.GlobalMutes
 
   alias RetroHexChat.Chat.{
     AliasExpander,
@@ -106,6 +107,14 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   # ── Private: message sending ─────────────────────────────
 
   defp send_pm_message(socket, session, text) do
+    if GlobalMutes.muted?(session.nickname) do
+      error_event(socket, "You are muted by an administrator")
+    else
+      do_send_pm_message(socket, session, text)
+    end
+  end
+
+  defp do_send_pm_message(socket, session, text) do
     reply_to = socket.assigns[:reply_to]
     opts = if reply_to, do: [reply_to_id: reply_to.id], else: []
     target = session.active_pm
@@ -126,6 +135,14 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   end
 
   defp send_channel_message(socket, session, text) do
+    if GlobalMutes.muted?(session.nickname) do
+      error_event(socket, "You are muted by an administrator")
+    else
+      do_send_channel_message(socket, session, text)
+    end
+  end
+
+  defp do_send_channel_message(socket, session, text) do
     reply_to = socket.assigns[:reply_to]
     temp_id = "pending_#{System.unique_integer([:positive])}"
 

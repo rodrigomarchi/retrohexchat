@@ -189,6 +189,25 @@ defmodule RetroHexChat.Channels.Server do
     GenServer.call(via(channel_name), :get_welcome)
   end
 
+  @doc "Mute a user in the channel. Requires operator privilege."
+  @spec channel_mute(String.t(), String.t(), String.t(), non_neg_integer() | :permanent) ::
+          :ok | {:error, String.t()}
+  def channel_mute(channel_name, operator_nick, target_nick, duration \\ :permanent) do
+    GenServer.call(via(channel_name), {:channel_mute, operator_nick, target_nick, duration})
+  end
+
+  @doc "Unmute a user in the channel. Requires operator privilege."
+  @spec channel_unmute(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
+  def channel_unmute(channel_name, operator_nick, target_nick) do
+    GenServer.call(via(channel_name), {:channel_unmute, operator_nick, target_nick})
+  end
+
+  @doc "Transfer channel ownership to another member."
+  @spec transfer_ownership(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
+  def transfer_ownership(channel_name, current_owner, new_owner) do
+    GenServer.call(via(channel_name), {:transfer_ownership, current_owner, new_owner})
+  end
+
   # ──────────────────────────────────────────────────────────────
   # GenServer Callbacks
   # ──────────────────────────────────────────────────────────────
@@ -208,6 +227,7 @@ defmodule RetroHexChat.Channels.Server do
       registered: false,
       created_at: DateTime.utc_now(),
       join_timestamps: [],
+      channel_mutes: MapSet.new(),
       welcome_message: nil,
       last_activity_touched_at: nil
     }
@@ -283,7 +303,8 @@ defmodule RetroHexChat.Channels.Server do
 
   def handle_call({:send_message, nickname, content, type, opts}, _from, state) do
     with :ok <- RetroHexChat.Chat.Policy.validate_content(content),
-         :ok <- Policy.can_speak?(state.modes, state.membership, nickname) do
+         :ok <- Policy.can_speak?(state.modes, state.membership, nickname),
+         :ok <- check_channel_mute(state, nickname) do
       final_content =
         if Modes.strip_colors?(state.modes) do
           Formatter.strip(content)
@@ -636,6 +657,92 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
+  def handle_call({:channel_mute, operator_nick, target_nick, duration}, _from, state) do
+    with {:ok, op_role} <- Membership.role(state.membership, operator_nick),
+         true <- Membership.rank(op_role) >= Membership.rank(:half_operator),
+         {:ok, _} <- Membership.role(state.membership, target_nick),
+         true <-
+           Membership.rank(op_role) >
+             Membership.rank(elem(Membership.role(state.membership, target_nick), 1)) do
+      new_mutes = MapSet.put(state.channel_mutes, target_nick)
+      new_state = %{state | channel_mutes: new_mutes}
+
+      if is_integer(duration) and duration > 0 do
+        Process.send_after(self(), {:unmute_timer, target_nick}, duration * 1_000)
+      end
+
+      broadcast(state.name, {:user_channel_muted, %{target: target_nick, channel: state.name}})
+      {:reply, :ok, new_state}
+    else
+      {:error, :not_member} -> {:reply, {:error, "User is not in channel"}, state}
+      false -> {:reply, {:error, "Insufficient privileges"}, state}
+    end
+  end
+
+  def handle_call({:channel_unmute, operator_nick, target_nick}, _from, state) do
+    with {:ok, op_role} <- Membership.role(state.membership, operator_nick),
+         true <- Membership.rank(op_role) >= Membership.rank(:half_operator) do
+      new_mutes = MapSet.delete(state.channel_mutes, target_nick)
+      new_state = %{state | channel_mutes: new_mutes}
+
+      broadcast(state.name, {:user_channel_unmuted, %{target: target_nick, channel: state.name}})
+      {:reply, :ok, new_state}
+    else
+      {:error, :not_member} -> {:reply, {:error, "Insufficient privileges"}, state}
+      false -> {:reply, {:error, "Insufficient privileges"}, state}
+    end
+  end
+
+  def handle_call({:transfer_ownership, current_owner, new_owner}, _from, state) do
+    with {:ok, :owner} <- Membership.role(state.membership, current_owner),
+         {:ok, _} <- Membership.role(state.membership, new_owner) do
+      new_membership =
+        state.membership
+        |> Membership.set_role(current_owner, :operator)
+        |> Membership.set_role(new_owner, :owner)
+
+      new_state = %{state | membership: new_membership}
+
+      broadcast(
+        state.name,
+        {:mode_changed,
+         %{
+           nickname: current_owner,
+           mode_string: "+q",
+           params: [new_owner],
+           channel: state.name
+         }}
+      )
+
+      broadcast(
+        state.name,
+        {:mode_changed,
+         %{
+           nickname: current_owner,
+           mode_string: "-q",
+           params: [current_owner],
+           channel: state.name
+         }}
+      )
+
+      {:reply, :ok, new_state}
+    else
+      {:ok, _role} -> {:reply, {:error, "Only the channel owner can transfer ownership"}, state}
+      {:error, :not_member} -> {:reply, {:error, "User is not in channel"}, state}
+    end
+  end
+
+  @impl true
+  def handle_info({:unmute_timer, target_nick}, state) do
+    if MapSet.member?(state.channel_mutes, target_nick) do
+      new_state = %{state | channel_mutes: MapSet.delete(state.channel_mutes, target_nick)}
+      broadcast(state.name, {:user_channel_unmuted, %{target: target_nick, channel: state.name}})
+      {:noreply, new_state}
+    else
+      {:noreply, state}
+    end
+  end
+
   # ──────────────────────────────────────────────────────────────
   # Private Helpers
   # ──────────────────────────────────────────────────────────────
@@ -820,6 +927,14 @@ defmodule RetroHexChat.Channels.Server do
 
   defp process_user_flag(_, flag, acc, []) when flag in ~w(o v k l q h j), do: {acc, []}
   defp process_user_flag(_, _, acc, remaining), do: {acc, remaining}
+
+  defp check_channel_mute(state, nickname) do
+    if MapSet.member?(state.channel_mutes, nickname) do
+      {:error, "You are muted in this channel"}
+    else
+      :ok
+    end
+  end
 
   defp via(channel_name), do: Registry.via_tuple(channel_name)
 

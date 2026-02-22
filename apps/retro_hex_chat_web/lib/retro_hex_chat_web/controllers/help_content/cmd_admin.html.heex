@@ -1,0 +1,65 @@
+<p>
+  Server administration commands for managing users, channels, services, and settings.
+  Only available to server administrators and operators.
+</p>
+
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/admin &lt;category&gt; &lt;subcommand&gt; [arguments]</pre>
+
+<.help_h4 icon={:icon_tag}>Categories</.help_h4>
+<ul>
+  <li>
+    <.help_link topic="cmd-admin-server">/admin server</.help_link>
+    — Server info and settings (<code>info</code>, <code>set</code>, <code>get</code>, <code>settings</code>)
+  </li>
+  <li>
+    <.help_link topic="cmd-admin-user">/admin user</.help_link>
+    — User management (<code>list</code>, <code>info</code>, <code>ban</code>, <code>unban</code>, <code>kick</code>, <code>mute</code>, <code>unmute</code>, <code>rename</code>, <code>role</code>, <code>banlist</code>)
+  </li>
+  <li>
+    <.help_link topic="cmd-admin-channel">/admin channel</.help_link>
+    — Channel management (<code>list</code>, <code>info</code>, <code>create</code>, <code>delete</code>, <code>purge</code>, <code>banlist</code>)
+  </li>
+  <li>
+    <.help_link topic="cmd-admin-ns">/admin ns</.help_link>
+    — NickServ administration (<code>drop</code>, <code>info</code>, <code>resetpass</code>)
+  </li>
+  <li>
+    <.help_link topic="cmd-admin-cs">/admin cs</.help_link>
+    — ChanServ administration (<code>drop</code>, <code>info</code>, <code>transfer</code>, <code>access</code>)
+  </li>
+  <li>
+    <.help_link topic="cmd-admin-debug">/admin debug</.help_link>
+    — Debug information (<code>connections</code>, <code>processes</code>, <code>memory</code>)
+  </li>
+  <li>
+    <.help_link topic="cmd-admin-log">/admin log</.help_link> — Audit log queries
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/admin server info
+/admin user ban @Spammer --reason Flooding --duration 24h
+/admin user list --online
+/admin channel delete #old-channel
+/admin ns drop @OldNick
+/admin cs transfer #channel @NewOwner
+/admin debug memory
+/admin log --last 20 --user Admin</pre>
+
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Requires server administrator or server operator role</li>
+  <li>All admin actions are recorded in the audit log</li>
+  <li>Root admins (configured via environment) cannot be demoted</li>
+  <li>Only root admins can promote new admins</li>
+</ul>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-op">/op</.help_link>
+  · <.help_link topic="cmd-kick">/kick</.help_link>
+  · <.help_link topic="cmd-ban">/ban</.help_link>
+  · <.help_link topic="cmd-mute">/mute</.help_link>
+  · <.help_link topic="cmd-transfer">/transfer</.help_link>
+</p>

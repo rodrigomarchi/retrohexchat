@@ -83,6 +83,15 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:topic_changed, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 
+  def handle_info({:channel_deleted, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:user_channel_muted, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:user_channel_unmuted, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
   # ── Membership: join/leave, nick change, disconnect ───────
 
   def handle_info({:user_joined, _} = msg, socket),
@@ -102,6 +111,23 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
   def handle_info({:nickserv_identified, _} = msg, socket),
     do: Membership.handle_info(msg, socket)
+
+  # ── Admin: rename, role change, mute/unmute ───────────────
+
+  def handle_info({:admin_rename, _} = msg, socket),
+    do: ServerMessages.handle_info(msg, socket)
+
+  def handle_info({:role_changed, _} = msg, socket),
+    do: ServerMessages.handle_info(msg, socket)
+
+  def handle_info({:user_muted, _} = msg, socket),
+    do: ServerMessages.handle_info(msg, socket)
+
+  def handle_info({:user_unmuted, _} = msg, socket),
+    do: ServerMessages.handle_info(msg, socket)
+
+  def handle_info({:server_setting_changed, _} = msg, socket),
+    do: ServerMessages.handle_info(msg, socket)
 
   # ── Presence: connect/disconnect, notify, previews, invite
 

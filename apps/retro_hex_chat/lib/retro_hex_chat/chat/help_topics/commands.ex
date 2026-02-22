@@ -316,6 +316,142 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         keywords: ["whowas", "recently", "disconnected", "last seen", "offline"],
         icon: :icon_clock,
         description: "Look up information about a user who recently disconnected from the server."
+      },
+      # ── Admin & channel management commands ─────────────────
+      %{
+        id: "cmd-admin",
+        title: "/admin",
+        category: "Commands",
+        keywords: ["admin", "administration", "server", "manage", "ban", "mute", "role"],
+        icon: :icon_shield,
+        description:
+          "Server administration commands for managing users, channels, services, and server settings."
+      },
+      %{
+        id: "cmd-admin-server",
+        title: "/admin server",
+        category: "Commands",
+        keywords: ["admin", "server", "settings", "info", "config", "motd"],
+        icon: :icon_shield,
+        description:
+          "View server information and manage server settings (name, description, registration, limits)."
+      },
+      %{
+        id: "cmd-admin-user",
+        title: "/admin user",
+        category: "Commands",
+        keywords: ["admin", "user", "ban", "kick", "mute", "rename", "role", "banlist"],
+        icon: :icon_shield,
+        description:
+          "Manage server users: list, info, ban/unban, kick, mute/unmute, rename, set role."
+      },
+      %{
+        id: "cmd-admin-channel",
+        title: "/admin channel",
+        category: "Commands",
+        keywords: ["admin", "channel", "create", "delete", "purge", "banlist"],
+        icon: :icon_shield,
+        description:
+          "Manage server channels: list, info, create, delete, purge messages, view bans."
+      },
+      %{
+        id: "cmd-admin-ns",
+        title: "/admin ns",
+        category: "Commands",
+        keywords: ["admin", "nickserv", "drop", "resetpass", "password", "registration"],
+        icon: :icon_shield,
+        description:
+          "NickServ administration: drop nick registrations, view info, reset passwords."
+      },
+      %{
+        id: "cmd-admin-cs",
+        title: "/admin cs",
+        category: "Commands",
+        keywords: ["admin", "chanserv", "drop", "transfer", "access", "founder"],
+        icon: :icon_shield,
+        description:
+          "ChanServ administration: drop registrations, transfer founder, manage access lists."
+      },
+      %{
+        id: "cmd-admin-debug",
+        title: "/admin debug",
+        category: "Commands",
+        keywords: ["admin", "debug", "connections", "processes", "memory", "stats"],
+        icon: :icon_shield,
+        description:
+          "Server debug tools: view active connections, channel processes, and BEAM memory usage."
+      },
+      %{
+        id: "cmd-admin-log",
+        title: "/admin log",
+        category: "Commands",
+        keywords: ["admin", "audit", "log", "history", "actions"],
+        icon: :icon_shield,
+        description: "Query the audit log of admin actions with optional filters."
+      },
+      %{
+        id: "cmd-op",
+        title: "/op",
+        category: "Commands",
+        keywords: ["op", "operator", "promote", "channel operator"],
+        icon: :icon_tab_modes,
+        description: "Give operator status to a user in the current channel."
+      },
+      %{
+        id: "cmd-deop",
+        title: "/deop",
+        category: "Commands",
+        keywords: ["deop", "remove operator", "demote"],
+        icon: :icon_tab_modes,
+        description: "Remove operator status from a user in the current channel."
+      },
+      %{
+        id: "cmd-voice",
+        title: "/voice",
+        category: "Commands",
+        keywords: ["voice", "give voice", "speak", "promote"],
+        icon: :icon_tab_modes,
+        description: "Give voice status to a user in the current channel."
+      },
+      %{
+        id: "cmd-devoice",
+        title: "/devoice",
+        category: "Commands",
+        keywords: ["devoice", "remove voice", "silence"],
+        icon: :icon_tab_modes,
+        description: "Remove voice status from a user in the current channel."
+      },
+      %{
+        id: "cmd-slow",
+        title: "/slow",
+        category: "Commands",
+        keywords: ["slow", "throttle", "rate limit", "flood"],
+        icon: :icon_clock,
+        description: "Enable or disable slow mode (join throttle) in the current channel."
+      },
+      %{
+        id: "cmd-mute",
+        title: "/mute",
+        category: "Commands",
+        keywords: ["mute", "silence", "channel mute", "quiet"],
+        icon: :icon_mute,
+        description: "Mute a user in the current channel, preventing them from sending messages."
+      },
+      %{
+        id: "cmd-unmute",
+        title: "/unmute",
+        category: "Commands",
+        keywords: ["unmute", "unsilence", "channel unmute"],
+        icon: :icon_mute,
+        description: "Remove a channel mute from a user, allowing them to send messages again."
+      },
+      %{
+        id: "cmd-transfer",
+        title: "/transfer",
+        category: "Commands",
+        keywords: ["transfer", "ownership", "channel owner", "founder"],
+        icon: :icon_tab_modes,
+        description: "Transfer channel ownership to another user."
       }
     ]
   end

@@ -55,14 +55,23 @@ defmodule RetroHexChatWeb.Router do
     get "/sitemap.xml", SitemapController, :index
   end
 
+  pipeline :chat_session do
+    plug RetroHexChatWeb.Plugs.CheckServerBan
+  end
+
   scope "/", RetroHexChatWeb do
     pipe_through :browser
 
     live "/connect", ConnectLive
-    post "/chat/session", SessionController, :create
     get "/chat/session/clear", SessionController, :delete
     live "/chat", ChatLive
     live "/p2p/:token", P2PSessionLive
+  end
+
+  scope "/", RetroHexChatWeb do
+    pipe_through [:browser, :chat_session]
+
+    post "/chat/session", SessionController, :create
   end
 
   import Phoenix.LiveDashboard.Router

@@ -1,0 +1,35 @@
+<p>
+  NickServ administration: drop nick registrations, view info, and reset passwords.
+  Requires server administrator role.
+</p>
+
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/admin ns drop @&lt;nick&gt;
+/admin ns info @&lt;nick&gt;
+/admin ns resetpass @&lt;nick&gt; &lt;new_password&gt;</pre>
+
+<.help_h4 icon={:icon_tag}>Subcommands</.help_h4>
+<ul>
+  <li><code>drop</code> — Force-drop a nick registration (disconnects the user)</li>
+  <li><code>info</code> — View detailed registration info for a nick</li>
+  <li><code>resetpass</code> — Reset a user's password (the new password is NOT logged)</li>
+</ul>
+
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Dropping a nick disconnects the user with a notice</li>
+  <li>Password resets are audited but the new password is never stored in logs</li>
+  <li>All actions are recorded in the audit log</li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/admin ns info @Alice
+/admin ns drop @OldAccount
+/admin ns resetpass @Alice newpassword123</pre>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-admin">/admin</.help_link>
+  · <.help_link topic="cmd-ns">/ns</.help_link>
+  · <.help_link topic="nickserv">NickServ</.help_link>
+</p>

@@ -67,6 +67,8 @@ defmodule RetroHexChatWeb.ChatLive do
           timezone = resolve_timezone(http_session, socket)
           client_info = parse_client_info(get_connect_params(socket))
 
+          Helpers.safe_track_user("presence:global", nickname)
+
           socket =
             socket
             |> attach_all_hooks()
@@ -462,6 +464,7 @@ defmodule RetroHexChatWeb.ChatLive do
         {:user_disconnected, %{nickname: session.nickname}}
       )
 
+      Helpers.safe_untrack_user("presence:global", session.nickname)
       WhowasCache.record(session.nickname, session.channels, quit_reason)
 
       ChatLive.Helpers.cleanup_channels(session, quit_reason)
@@ -482,8 +485,10 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   defp show_welcome_message(socket) do
+    server_name = Queries.get_setting("server_name") || "RetroHexChat"
+
     lines = [
-      "Welcome to RetroHexChat!",
+      "Welcome to #{server_name}!",
       "A real-time chat platform with a retro look and feel.",
       "",
       "Useful commands:",
@@ -496,9 +501,15 @@ defmodule RetroHexChatWeb.ChatLive do
       "Tip: Go to Help > Help Topics for the full documentation, or open /chat/help in a new tab."
     ]
 
-    Enum.reduce(lines, socket, fn line, acc ->
-      Helpers.push_status_message(acc, line, :system)
-    end)
+    socket =
+      Enum.reduce(lines, socket, fn line, acc ->
+        Helpers.push_status_message(acc, line, :system)
+      end)
+
+    case Queries.get_setting("welcome_message") do
+      nil -> socket
+      msg -> Helpers.push_status_message(socket, msg, :system)
+    end
   end
 
   defp show_chanserv_announcement(socket) do

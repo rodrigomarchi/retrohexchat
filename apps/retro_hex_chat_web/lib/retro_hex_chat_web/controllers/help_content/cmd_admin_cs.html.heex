@@ -1,0 +1,53 @@
+<p>
+  ChanServ administration: drop channel registrations, transfer founders, and manage access lists.
+  Requires server administrator role.
+</p>
+
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/admin cs drop #&lt;channel&gt;
+/admin cs info #&lt;channel&gt;
+/admin cs transfer #&lt;channel&gt; @&lt;nick&gt;
+/admin cs access #&lt;channel&gt;
+/admin cs access #&lt;channel&gt; add &lt;level&gt; @&lt;nick&gt;
+/admin cs access #&lt;channel&gt; del &lt;level&gt; @&lt;nick&gt;</pre>
+
+<.help_h4 icon={:icon_tag}>Subcommands</.help_h4>
+<ul>
+  <li><code>drop</code> — Force-drop a channel registration (bypasses founder check)</li>
+  <li><code>info</code> — View detailed registration info, founder, modes, and access list</li>
+  <li><code>transfer</code> — Transfer channel founder to another nick</li>
+  <li><code>access</code> — View or modify the channel access list</li>
+  <li>
+    <code>access add &lt;level&gt; @nick</code>
+    — Add a user to the access list at the specified level (sop, aop, vop)
+  </li>
+  <li>
+    <code>access del &lt;level&gt; @nick</code> — Remove a user from the access list
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Admin bypasses normal founder/rank checks</li>
+  <li>All actions are recorded in the audit log</li>
+  <li>
+    Access levels: <code>sop</code>
+    (super op), <code>aop</code>
+    (auto op), <code>vop</code>
+    (auto voice)
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/admin cs info #general
+/admin cs transfer #general @NewOwner
+/admin cs access #general add sop @TrustedUser
+/admin cs access #general del aop @OldMod
+/admin cs drop #abandoned</pre>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-admin">/admin</.help_link>
+  · <.help_link topic="cmd-cs">/cs</.help_link>
+  · <.help_link topic="chanserv">ChanServ</.help_link>
+</p>
