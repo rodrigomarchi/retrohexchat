@@ -1,14 +1,6 @@
 defmodule RetroHexChat.Chat.HelpTopics.GettingStarted do
   @moduledoc false
 
-  @help_dir Path.join(:code.priv_dir(:retro_hex_chat), "help")
-
-  @external_resource Path.join(@help_dir, "welcome.html")
-  @external_resource Path.join(@help_dir, "connecting.html")
-  @external_resource Path.join(@help_dir, "channels.html")
-  @external_resource Path.join(@help_dir, "private-messages.html")
-  @external_resource Path.join(@help_dir, "connect-authentication.html")
-
   @spec topics() :: [map()]
   def topics do
     [
@@ -17,35 +9,45 @@ defmodule RetroHexChat.Chat.HelpTopics.GettingStarted do
         title: "Welcome to RetroHexChat",
         category: "Getting Started",
         keywords: ["welcome", "introduction", "about", "overview"],
-        content: File.read!(Path.join(@help_dir, "welcome.html"))
+        icon: :icon_lightbulb,
+        description:
+          "Get started with RetroHexChat, a web-based IRC client with an authentic Windows 98 look and feel."
       },
       %{
         id: "connecting",
         title: "Connecting",
         category: "Getting Started",
         keywords: ["connect", "login", "nickname", "join"],
-        content: File.read!(Path.join(@help_dir, "connecting.html"))
+        icon: :icon_connect,
+        description:
+          "Learn how to connect to the RetroHexChat server by choosing a nickname and joining channels."
       },
       %{
         id: "channels",
         title: "Channels",
         category: "Getting Started",
         keywords: ["channel", "room", "chat room", "join channel"],
-        content: File.read!(Path.join(@help_dir, "channels.html"))
+        icon: :icon_channels,
+        description:
+          "Understand how chat channels work, including joining, leaving, and participating in conversations."
       },
       %{
         id: "private-messages",
         title: "Private Messages",
         category: "Getting Started",
         keywords: ["pm", "private message", "direct message", "dm", "whisper", "query"],
-        content: File.read!(Path.join(@help_dir, "private-messages.html"))
+        icon: :icon_p2p,
+        description:
+          "Send and receive private messages with other users using the /msg and /query commands."
       },
       %{
         id: "connect-authentication",
         title: "Connect Authentication",
         category: "Getting Started",
         keywords: ["authentication", "login", "password", "registered", "identify"],
-        content: File.read!(Path.join(@help_dir, "connect-authentication.html"))
+        icon: :icon_lock,
+        description:
+          "Authenticate with your registered nickname on connect to access your saved settings and channels."
       }
     ]
   end

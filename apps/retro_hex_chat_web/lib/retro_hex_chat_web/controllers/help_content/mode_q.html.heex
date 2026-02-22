@@ -1,0 +1,14 @@
+<p>
+  Grants channel owner status to a user (prefix ~). Owners have the highest privilege level and can set any mode, including +o and +q. The first user to join an unregistered channel is automatically made owner.
+</p>
+<.help_h4 icon={:icon_role_owner}>Hierarchy</.help_h4>
+<p>Owner (~) > Operator (@) > Half-Operator (%) > Voice (+) > Regular</p>
+<.help_h4 icon={:icon_terminal}>Usage</.help_h4>
+<pre>/mode +q Alice    — Make Alice an owner
+/mode -q Alice    — Remove owner from Alice</pre>
+<p>Only other owners can grant or revoke +q.</p>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="mode-o">Operator (+o)</.help_link>
+  · <.help_link topic="mode-h">Half-Operator (+h)</.help_link>
+</p>

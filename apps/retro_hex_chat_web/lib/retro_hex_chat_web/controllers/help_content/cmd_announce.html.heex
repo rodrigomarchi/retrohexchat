@@ -1,0 +1,24 @@
+<p>
+  Send an urgent broadcast message to every connected user. This is for critical server-wide announcements that everyone must see.
+</p>
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/announce &lt;message&gt;</pre>
+<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<p><code>message</code> — The announcement text to broadcast to all users.</p>
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  The announcement appears in each user's currently active window with distinctive bold styling. Unlike regular messages, announcements bypass all ignore filters — every connected user will see it regardless of their ignore settings. Use this for important server-wide notices like scheduled maintenance or rule changes.
+</p>
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Server administrator only — regular users cannot send announcements</li>
+  <li>Cannot be filtered or ignored by recipients</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/announce Server will restart at midnight UTC
+/announce Please read the updated rules in #rules</pre>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-wallops">/wallops</.help_link>
+  · <.help_link topic="feature-special-messages">Special Messages</.help_link>
+</p>

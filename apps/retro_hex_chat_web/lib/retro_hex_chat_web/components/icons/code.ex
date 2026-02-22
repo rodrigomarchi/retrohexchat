@@ -58,17 +58,17 @@ defmodule RetroHexChatWeb.Icons.Code do
         font-size="10"
         font-weight="bold"
         font-family="sans-serif"
-        fill="#fff"
+        fill="#000080"
       >
         A=
       </text>
-      <line x1="11" y1="13" x2="14" y2="3" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="11" y1="13" x2="14" y2="3" stroke="#B8860B" stroke-width="1.5" stroke-linecap="round" />
       <line
         x1="11"
         y1="13"
         x2="13"
         y2="11"
-        stroke="#FFD700"
+        stroke="#B8860B"
         stroke-width="1.5"
         stroke-linecap="round"
       />
@@ -85,20 +85,20 @@ defmodule RetroHexChatWeb.Icons.Code do
       <path
         d="M3 5h4M5 3v4"
         fill="none"
-        stroke="#fff"
+        stroke="#000080"
         stroke-width="1.5"
         stroke-linecap="round"
       />
       <path
         d="M9 9h4M11 7v4"
         fill="none"
-        stroke="#fff"
+        stroke="#000080"
         stroke-width="1.5"
         stroke-linecap="round"
       />
-      <path d="M7 6l2 4" fill="none" stroke="#FFD700" stroke-width="1.2" stroke-linecap="round" />
-      <polygon points="10,9 8.5,10.5 10,10.5" fill="#FFD700" />
-      <polygon points="7,7 8.5,5.5 7,5.5" fill="#FFD700" />
+      <path d="M7 6l2 4" fill="none" stroke="#B8860B" stroke-width="1.2" stroke-linecap="round" />
+      <polygon points="10,9 8.5,10.5 10,10.5" fill="#B8860B" />
+      <polygon points="7,7 8.5,5.5 7,5.5" fill="#B8860B" />
     </svg>
     """
   end
@@ -109,15 +109,15 @@ defmodule RetroHexChatWeb.Icons.Code do
   def icon_dialog_auto_respond(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M1 2h10v7H5l-3 2v-2H1z" fill="none" stroke="#fff" stroke-width="1" />
+      <path d="M1 2h10v7H5l-3 2v-2H1z" fill="none" stroke="#555" stroke-width="1" />
       <path
         d="M11 8h2v2l1.5-1.5"
         fill="none"
-        stroke="#FFD700"
+        stroke="#B8860B"
         stroke-width="1.2"
         stroke-linecap="round"
       />
-      <polygon points="14,6 14,10 15.5,8.5" fill="#FFD700" />
+      <polygon points="14,6 14,10 15.5,8.5" fill="#B8860B" />
     </svg>
     """
   end
@@ -128,13 +128,13 @@ defmodule RetroHexChatWeb.Icons.Code do
   def icon_dialog_perform(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <polygon points="2,2 2,12 9,7" fill="#fff" />
-      <circle cx="12" cy="11" r="3.5" fill="none" stroke="#fff" stroke-width="1" />
-      <circle cx="12" cy="11" r="1.2" fill="#fff" />
-      <line x1="12" y1="7.5" x2="12" y2="8.5" stroke="#fff" stroke-width="1" />
-      <line x1="12" y1="13.5" x2="12" y2="14.5" stroke="#fff" stroke-width="1" />
-      <line x1="8.5" y1="11" x2="9.5" y2="11" stroke="#fff" stroke-width="1" />
-      <line x1="14.5" y1="11" x2="15.5" y2="11" stroke="#fff" stroke-width="1" />
+      <polygon points="2,2 2,12 9,7" fill="#008000" stroke="#000" stroke-width="0.5" />
+      <circle cx="12" cy="11" r="3.5" fill="none" stroke="#555" stroke-width="1" />
+      <circle cx="12" cy="11" r="1.2" fill="#555" />
+      <line x1="12" y1="7.5" x2="12" y2="8.5" stroke="#555" stroke-width="1" />
+      <line x1="12" y1="13.5" x2="12" y2="14.5" stroke="#555" stroke-width="1" />
+      <line x1="8.5" y1="11" x2="9.5" y2="11" stroke="#555" stroke-width="1" />
+      <line x1="14.5" y1="11" x2="15.5" y2="11" stroke="#555" stroke-width="1" />
     </svg>
     """
   end

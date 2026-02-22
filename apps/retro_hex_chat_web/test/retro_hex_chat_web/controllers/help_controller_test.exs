@@ -12,7 +12,6 @@ defmodule RetroHexChatWeb.HelpControllerTest do
       assert html =~ "help-page"
       assert html =~ "Contents"
       assert html =~ "Index"
-      assert html =~ "Search"
     end
 
     test "includes all 8 categories in navigation", %{conn: conn} do
@@ -86,28 +85,23 @@ defmodule RetroHexChatWeb.HelpControllerTest do
       assert html =~ ~s(<meta property="og:title")
       assert html =~ ~s(<link rel="canonical")
     end
+
+    test "shows content header with icon", %{conn: conn} do
+      conn = get(conn, "/chat/help?topic=cmd-join")
+      html = html_response(conn, 200)
+
+      assert html =~ "help-content-header"
+      assert html =~ "help-icon"
+    end
   end
 
-  describe "GET /chat/help?q=<query>" do
-    test "returns search results", %{conn: conn} do
-      conn = get(conn, "/chat/help?q=format")
+  describe "cross-reference links" do
+    test "help-topic-link class links are rendered with proper URLs", %{conn: conn} do
+      conn = get(conn, "/chat/help?topic=cmd-ban")
       html = html_response(conn, 200)
 
-      assert html =~ "help-result-formatting-overview"
-    end
-
-    test "shows no results for unknown query", %{conn: conn} do
-      conn = get(conn, "/chat/help?q=zzzznonexistentzzzz")
-      html = html_response(conn, 200)
-
-      assert html =~ "No results found"
-    end
-
-    test "ignores single-character queries", %{conn: conn} do
-      conn = get(conn, "/chat/help?q=x")
-      html = html_response(conn, 200)
-
-      refute html =~ "help-result-"
+      assert html =~ ~s(href="/chat/help?topic=cmd-kick")
+      assert html =~ "help-topic-link"
     end
   end
 
@@ -124,16 +118,6 @@ defmodule RetroHexChatWeb.HelpControllerTest do
       assert body =~ "commands-overview"
       assert body =~ "keyboard-shortcuts"
       assert body =~ "<lastmod>"
-    end
-  end
-
-  describe "cross-reference links" do
-    test "data-help-topic links are rewritten to real URLs", %{conn: conn} do
-      conn = get(conn, "/chat/help?topic=cmd-ban")
-      html = html_response(conn, 200)
-
-      assert html =~ ~s(href="/chat/help?topic=cmd-kick")
-      refute html =~ ~s(href="#" data-help-topic)
     end
   end
 

@@ -54,8 +54,8 @@ defmodule RetroHexChatWeb.Icons.Marks do
   def icon_btn_cancel(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <line x1="4" y1="4" x2="12" y2="12" stroke="#808080" stroke-width="2" stroke-linecap="round" />
-      <line x1="12" y1="4" x2="4" y2="12" stroke="#808080" stroke-width="2" stroke-linecap="round" />
+      <line x1="4" y1="4" x2="12" y2="12" stroke="#555" stroke-width="2" stroke-linecap="round" />
+      <line x1="12" y1="4" x2="4" y2="12" stroke="#555" stroke-width="2" stroke-linecap="round" />
     </svg>
     """
   end

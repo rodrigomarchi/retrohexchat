@@ -15,7 +15,8 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
         assert is_binary(topic.id) and topic.id != ""
         assert is_binary(topic.title) and topic.title != ""
         assert is_binary(topic.category) and topic.category != ""
-        assert is_binary(topic.content) and topic.content != ""
+        assert is_atom(topic.icon)
+        assert is_binary(topic.description) and topic.description != ""
         assert is_list(topic.keywords) and topic.keywords != []
       end
     end
@@ -39,7 +40,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
   end
 
   describe "topics_by_category/0" do
-    test "returns categories in display order" do
+    test "returns categories in display order with icons" do
       categories = HelpTopics.topics_by_category()
       assert is_list(categories)
 
@@ -52,10 +53,17 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert "Features" in names
       assert "User Interface" in names
       assert "Keyboard Shortcuts" in names
+
+      # Each entry is a 3-tuple with category icon
+      for {name, icon, topics} <- categories do
+        assert is_binary(name)
+        assert is_atom(icon)
+        assert is_list(topics)
+      end
     end
 
     test "every category has at least one topic" do
-      for {_name, topics} <- HelpTopics.topics_by_category() do
+      for {_name, _icon, topics} <- HelpTopics.topics_by_category() do
         assert [_ | _] = topics
       end
     end
@@ -63,39 +71,16 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     test "categories cover all topics" do
       category_topics =
         HelpTopics.topics_by_category()
-        |> Enum.flat_map(&elem(&1, 1))
+        |> Enum.flat_map(&elem(&1, 2))
 
       assert Enum.count(category_topics) == Enum.count(HelpTopics.all_topics())
     end
   end
 
-  describe "search/1" do
-    test "returns empty list for queries shorter than 2 chars" do
-      assert HelpTopics.search("") == []
-      assert HelpTopics.search("a") == []
-    end
-
-    test "finds topics by title" do
-      results = HelpTopics.search("join")
-      ids = Enum.map(results, & &1.id)
-      assert "cmd-join" in ids
-    end
-
-    test "finds topics by keyword" do
-      results = HelpTopics.search("buddy")
-      ids = Enum.map(results, & &1.id)
-      assert "feature-notify-list" in ids
-    end
-
-    test "finds topics by content" do
-      results = HelpTopics.search("operator")
-      assert results != []
-    end
-
-    test "search is case-insensitive" do
-      lower = HelpTopics.search("join")
-      upper = HelpTopics.search("JOIN")
-      assert Enum.map(lower, & &1.id) == Enum.map(upper, & &1.id)
+  describe "category_icon/1" do
+    test "returns icon atom for known category" do
+      assert is_atom(HelpTopics.category_icon("Getting Started"))
+      assert is_atom(HelpTopics.category_icon("Commands"))
     end
   end
 
@@ -112,17 +97,10 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.title == "Channel Central"
     end
 
-    test "has non-empty content with key information" do
+    test "has icon and description" do
       topic = HelpTopics.get_topic("feature-channel-central")
-      assert topic.content != ""
-      assert topic.content =~ "tabbed"
-      assert topic.content =~ "General"
-      assert topic.content =~ "Modes"
-      assert topic.content =~ "Bans"
-      assert topic.content =~ "Ban Exceptions"
-      assert topic.content =~ "Invite Exceptions"
-      assert topic.content =~ "Double-click"
-      assert topic.content =~ "Tools"
+      assert is_atom(topic.icon)
+      assert topic.description != ""
     end
 
     test "has non-empty keywords" do
@@ -144,15 +122,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.title == "Ban Exceptions (+e)"
     end
 
-    test "has non-empty content with key information" do
-      topic = HelpTopics.get_topic("feature-ban-exceptions")
-      assert topic.content != ""
-      assert topic.content =~ "bypass channel bans"
-      assert topic.content =~ "Ban Exceptions"
-      assert topic.content =~ "Channel Central"
-      assert topic.content =~ "operator"
-    end
-
     test "has non-empty keywords" do
       topic = HelpTopics.get_topic("feature-ban-exceptions")
       assert topic.keywords != []
@@ -170,15 +139,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     test "has correct title" do
       topic = HelpTopics.get_topic("feature-invite-exceptions")
       assert topic.title == "Invite Exceptions (+I)"
-    end
-
-    test "has non-empty content with key information" do
-      topic = HelpTopics.get_topic("feature-invite-exceptions")
-      assert topic.content != ""
-      assert topic.content =~ "invite-only"
-      assert topic.content =~ "Invite Exceptions"
-      assert topic.content =~ "Channel Central"
-      assert topic.content =~ "+i"
     end
 
     test "has non-empty keywords" do
@@ -200,23 +160,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.title == "/perform"
     end
 
-    test "content covers key functionality" do
-      topic = HelpTopics.get_topic("cmd-perform")
-      assert topic.content =~ "list"
-      assert topic.content =~ "add"
-      assert topic.content =~ "remove"
-      assert topic.content =~ "move"
-      assert topic.content =~ "clear"
-      assert topic.content =~ "sequentially"
-      assert topic.content =~ "masked"
-    end
-
-    test "cross-references related topics" do
-      topic = HelpTopics.get_topic("cmd-perform")
-      assert topic.content =~ "cmd-autojoin"
-      assert topic.content =~ "feature-perform"
-    end
-
     test "has non-empty keywords" do
       topic = HelpTopics.get_topic("cmd-perform")
       assert topic.keywords != []
@@ -234,22 +177,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     test "has correct title" do
       topic = HelpTopics.get_topic("cmd-autojoin")
       assert topic.title == "/autojoin"
-    end
-
-    test "content covers key functionality" do
-      topic = HelpTopics.get_topic("cmd-autojoin")
-      assert topic.content =~ "list"
-      assert topic.content =~ "add"
-      assert topic.content =~ "remove"
-      assert topic.content =~ "clear"
-      assert topic.content =~ "#channel"
-      assert topic.content =~ "key"
-    end
-
-    test "cross-references related topics" do
-      topic = HelpTopics.get_topic("cmd-autojoin")
-      assert topic.content =~ "cmd-perform"
-      assert topic.content =~ "cmd-join"
     end
 
     test "has non-empty keywords" do
@@ -271,22 +198,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.title == "Perform / Auto-Commands"
     end
 
-    test "content covers key functionality" do
-      topic = HelpTopics.get_topic("feature-perform")
-      assert topic.content =~ "Perform"
-      assert topic.content =~ "auto-join"
-      assert topic.content =~ "Ctrl+Shift+E"
-      assert topic.content =~ "Enable"
-      assert topic.content =~ "Execution Order"
-    end
-
-    test "cross-references related topics" do
-      topic = HelpTopics.get_topic("feature-perform")
-      assert topic.content =~ "cmd-perform"
-      assert topic.content =~ "cmd-autojoin"
-      assert topic.content =~ "feature-auto-reconnect"
-    end
-
     test "has non-empty keywords" do
       topic = HelpTopics.get_topic("feature-perform")
       assert topic.keywords != []
@@ -306,31 +217,9 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.title == "Auto-Reconnect"
     end
 
-    test "content covers key functionality" do
-      topic = HelpTopics.get_topic("feature-auto-reconnect")
-      assert topic.content =~ "exponential backoff"
-      assert topic.content =~ "10 attempts"
-      assert topic.content =~ "Cancel"
-      assert topic.content =~ "/quit"
-      assert topic.content =~ "Session Restoration"
-    end
-
-    test "cross-references related topics" do
-      topic = HelpTopics.get_topic("feature-auto-reconnect")
-      assert topic.content =~ "feature-perform"
-    end
-
     test "has non-empty keywords" do
       topic = HelpTopics.get_topic("feature-auto-reconnect")
       assert topic.keywords != []
-    end
-  end
-
-  describe "keyboard shortcuts includes Ctrl+Shift+E for Perform" do
-    test "Ctrl+Shift+E is listed in keyboard shortcuts" do
-      topic = HelpTopics.get_topic("keyboard-shortcuts")
-      assert topic.content =~ "Ctrl+Shift+E"
-      assert topic.content =~ "Perform Dialog"
     end
   end
 
@@ -373,20 +262,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-log-viewer")
       assert topic.title == "Log Viewer"
     end
-
-    test "content covers key functionality" do
-      topic = HelpTopics.get_topic("feature-log-viewer")
-      assert topic.content =~ "Ctrl+Shift+L"
-      assert topic.content =~ "Source"
-      assert topic.content =~ "Date Range"
-      assert topic.content =~ "Nickname"
-      assert topic.content =~ "Pagination"
-    end
-
-    test "cross-references log export topic" do
-      topic = HelpTopics.get_topic("feature-log-viewer")
-      assert topic.content =~ "feature-log-export"
-    end
   end
 
   describe "feature-log-export topic" do
@@ -401,25 +276,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-log-export")
       assert topic.title == "Log Export"
     end
-
-    test "content covers export formats" do
-      topic = HelpTopics.get_topic("feature-log-export")
-      assert topic.content =~ ".txt"
-      assert topic.content =~ ".html"
-    end
-
-    test "cross-references log viewer topic" do
-      topic = HelpTopics.get_topic("feature-log-export")
-      assert topic.content =~ "feature-log-viewer"
-    end
-  end
-
-  describe "keyboard shortcuts includes Ctrl+Shift+L for Log Viewer" do
-    test "Ctrl+Shift+L is listed in keyboard shortcuts" do
-      topic = HelpTopics.get_topic("keyboard-shortcuts")
-      assert topic.content =~ "Ctrl+Shift+L"
-      assert topic.content =~ "Log Viewer"
-    end
   end
 
   describe "status bar help topic" do
@@ -429,19 +285,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.title == "Status Bar"
       assert topic.category == "Features"
     end
-
-    test "content describes three sections" do
-      topic = HelpTopics.get_topic("feature-status-bar")
-      assert topic.content =~ "Left"
-      assert topic.content =~ "Center"
-      assert topic.content =~ "Right"
-    end
-
-    test "cross-references lag and connection topics" do
-      topic = HelpTopics.get_topic("feature-status-bar")
-      assert topic.content =~ "feature-lag-indicator"
-      assert topic.content =~ "feature-connection-states"
-    end
   end
 
   describe "lag indicator help topic" do
@@ -449,18 +292,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-lag-indicator")
       assert topic != nil
       assert topic.title == "Lag Indicator"
-    end
-
-    test "content describes color thresholds" do
-      topic = HelpTopics.get_topic("feature-lag-indicator")
-      assert topic.content =~ "200ms"
-      assert topic.content =~ "500ms"
-      assert topic.content =~ "Timeout"
-    end
-
-    test "cross-references status bar" do
-      topic = HelpTopics.get_topic("feature-lag-indicator")
-      assert topic.content =~ "feature-status-bar"
     end
   end
 
@@ -472,39 +303,11 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.title == "P2P Sessions"
     end
 
-    test "P2P Sessions content covers key functionality" do
-      topic = HelpTopics.get_topic("feature-p2p-sessions")
-      assert topic.content =~ "/p2p"
-      assert topic.content =~ "/call"
-      assert topic.content =~ "/sendfile"
-      assert topic.content =~ "lobby"
-      assert topic.content =~ "bilateral consent"
-    end
-
-    test "P2P Sessions cross-references related topics" do
-      topic = HelpTopics.get_topic("feature-p2p-sessions")
-      assert topic.content =~ "feature-file-transfer"
-      assert topic.content =~ "feature-audio-call"
-      assert topic.content =~ "feature-privacy-settings"
-    end
-
     test "File Transfer topic exists with correct category" do
       topic = HelpTopics.get_topic("feature-file-transfer")
       assert topic != nil
       assert topic.category == "Features"
       assert topic.title == "File Transfer"
-    end
-
-    test "File Transfer content covers key functionality" do
-      topic = HelpTopics.get_topic("feature-file-transfer")
-      assert topic.content =~ "/sendfile"
-      assert topic.content =~ "SHA-256"
-      assert topic.content =~ "DataChannel"
-    end
-
-    test "File Transfer cross-references P2P Sessions" do
-      topic = HelpTopics.get_topic("feature-file-transfer")
-      assert topic.content =~ "feature-p2p-sessions"
     end
 
     test "Privacy Settings topic exists with correct category" do
@@ -514,39 +317,12 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.title == "Privacy Settings"
     end
 
-    test "Privacy Settings content covers key functionality" do
-      topic = HelpTopics.get_topic("feature-privacy-settings")
-      assert topic.content =~ "TURN"
-      assert topic.content =~ "relay"
-      assert topic.content =~ "IP"
-      assert topic.content =~ "Private Mode"
-    end
-
-    test "Privacy Settings cross-references related topics" do
-      topic = HelpTopics.get_topic("feature-privacy-settings")
-      assert topic.content =~ "feature-p2p-sessions"
-      assert topic.content =~ "feature-audio-call"
-    end
-
     test "command topics exist for P2P commands" do
       for id <- ~w(cmd-p2p cmd-call cmd-sendfile) do
         topic = HelpTopics.get_topic(id)
         assert topic != nil, "Missing help topic: #{id}"
         assert topic.category == "Commands"
-        assert topic.content =~ "feature-p2p-sessions"
       end
-    end
-
-    test "audio call topic cross-references P2P Sessions and Privacy" do
-      topic = HelpTopics.get_topic("feature-audio-call")
-      assert topic.content =~ "feature-p2p-sessions"
-      assert topic.content =~ "feature-privacy-settings"
-    end
-
-    test "video call topic cross-references P2P Sessions and Privacy" do
-      topic = HelpTopics.get_topic("feature-video-call")
-      assert topic.content =~ "feature-p2p-sessions"
-      assert topic.content =~ "feature-privacy-settings"
     end
   end
 
@@ -556,54 +332,24 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic != nil
       assert topic.title == "Connection States"
     end
-
-    test "content describes four states" do
-      topic = HelpTopics.get_topic("feature-connection-states")
-      assert topic.content =~ "Connected"
-      assert topic.content =~ "Connecting"
-      assert topic.content =~ "Disconnected"
-      assert topic.content =~ "Reconnecting"
-    end
-
-    test "content describes banners" do
-      topic = HelpTopics.get_topic("feature-connection-states")
-      assert topic.content =~ "banner"
-    end
-
-    test "cross-references status bar and lag" do
-      topic = HelpTopics.get_topic("feature-connection-states")
-      assert topic.content =~ "feature-status-bar"
-      assert topic.content =~ "feature-lag-indicator"
-    end
   end
 
-  describe "HTML file integrity" do
-    @help_dir Path.join(:code.priv_dir(:retro_hex_chat), "help")
+  describe "HEEx content template integrity" do
+    # Navigate from this test file to the web app's help_content directory
+    @content_dir __DIR__
+                 |> Path.join("../../../../..")
+                 |> Path.join(
+                   "apps/retro_hex_chat_web/lib/retro_hex_chat_web/controllers/help_content"
+                 )
+                 |> Path.expand()
 
-    test "every topic ID has a corresponding .html file" do
+    test "every topic ID has a corresponding .html.heex file" do
       for topic <- HelpTopics.all_topics() do
-        path = Path.join(@help_dir, "#{topic.id}.html")
-        assert File.exists?(path), "Missing HTML file for topic: #{topic.id}"
-      end
-    end
+        func_name = String.replace(topic.id, "-", "_")
+        path = Path.join(@content_dir, "#{func_name}.html.heex")
 
-    test "no .html files without a corresponding topic" do
-      topic_ids = MapSet.new(HelpTopics.all_topics(), & &1.id)
-
-      @help_dir
-      |> File.ls!()
-      |> Enum.filter(&String.ends_with?(&1, ".html"))
-      |> Enum.each(fn file ->
-        id = String.replace_suffix(file, ".html", "")
-
-        assert MapSet.member?(topic_ids, id), "Orphan HTML file: #{file}"
-      end)
-    end
-
-    test "no empty content fields" do
-      for topic <- HelpTopics.all_topics() do
-        assert String.trim(topic.content) != "",
-               "Empty content for topic: #{topic.id}"
+        assert File.exists?(path),
+               "Missing HEEx file for topic: #{topic.id} (expected #{path})"
       end
     end
   end

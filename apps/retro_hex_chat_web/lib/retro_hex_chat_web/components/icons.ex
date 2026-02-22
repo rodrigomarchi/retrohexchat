@@ -229,6 +229,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_tab_status(assigns), to: RetroHexChatWeb.Icons.Alerts
   defdelegate icon_group_notifications(assigns), to: RetroHexChatWeb.Icons.Alerts
   defdelegate icon_group_help(assigns), to: RetroHexChatWeb.Icons.Alerts
+  defdelegate icon_lightbulb(assigns), to: RetroHexChatWeb.Icons.Alerts
 
   # ── Symbols ─────────────────────────────────────────────
   defdelegate icon_dollar(assigns), to: RetroHexChatWeb.Icons.Symbols
@@ -240,4 +241,5 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_btn_ignore(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_status_signal(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_dialog_kick(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_tag(assigns), to: RetroHexChatWeb.Icons.Symbols
 end

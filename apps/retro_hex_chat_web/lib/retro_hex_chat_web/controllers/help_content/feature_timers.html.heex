@@ -1,0 +1,31 @@
+<p>
+  Timers let you schedule commands to run after a delay or on a repeating interval. Useful for periodic reminders, heartbeat messages, or delayed actions.
+</p>
+<.help_h4 icon={:icon_clock}>Timer Types</.help_h4>
+<p>
+  <strong>One-shot</strong>: Runs once after the specified delay.<br />
+  <code>
+    /timer remind 1800 /me standup in 30 minutes
+  </code>
+</p>
+<p>
+  <strong>Repeating</strong>: Runs every N seconds until stopped.<br />
+  <code>
+    /timer hb repeat 600 /me is still here
+  </code>
+</p>
+<.help_h4 icon={:icon_clock}>Managing Timers</.help_h4>
+<p>
+  <code>/timer list</code>
+  — Show all active timers.<br /><code>/timer stop &lt;name&gt;</code>
+  — Cancel a specific timer.
+</p>
+<.help_h4 icon={:icon_rules}>Limits</.help_h4>
+<p>
+  - Maximum 5 concurrent timers per session.<br />- One-shot: minimum 1 second, maximum 86,400 seconds (24 hours).<br />- Repeat: minimum 10 seconds, maximum 86,400 seconds.<br />- <strong>Session-only</strong>: Timers do NOT survive page reload or disconnection.
+</p>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-timer">/timer Command</.help_link>
+  · <.help_link topic="feature-aliases">Aliases</.help_link>
+</p>

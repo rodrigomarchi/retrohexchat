@@ -1,0 +1,11 @@
+<p>
+  Nicknames in channel messages are rendered in a fixed-width column. Whether the nick is 3 characters or 15, all message text starts at the same horizontal position.
+</p>
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  Messages use a CSS grid layout (<code>chat-msg-grid</code>) with the nick column set to a fixed width. This dramatically improves readability in busy channels.
+</p>
+<.help_h4 icon={:icon_document_alert}>Notes</.help_h4>
+<p>
+  Action messages (<code>/me</code>), notices, and system messages are not grid-aligned as they use different formatting.
+</p>

@@ -94,9 +94,9 @@ defmodule RetroHexChatWeb.Icons.Communication do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
       <polygon points="3,6 3,10 6,10 11,13 11,3 6,6" fill="#000080" />
-      <rect x="11" y="6" width="3" height="1" fill="#FFD700" />
-      <rect x="11" y="9" width="3" height="1" fill="#FFD700" />
-      <rect x="12" y="7" width="2" height="2" fill="#FFD700" />
+      <rect x="11" y="6" width="3" height="1" fill="#FFD700" stroke="#B8860B" stroke-width="0.3" />
+      <rect x="11" y="9" width="3" height="1" fill="#FFD700" stroke="#B8860B" stroke-width="0.3" />
+      <rect x="12" y="7" width="2" height="2" fill="#FFD700" stroke="#B8860B" stroke-width="0.3" />
     </svg>
     """
   end
@@ -118,12 +118,14 @@ defmodule RetroHexChatWeb.Icons.Communication do
   def icon_dialog_invite(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M1 4l7 4 7-4v9H1z" fill="none" stroke="#fff" stroke-width="1" />
-      <line x1="1" y1="4" x2="8" y2="9" stroke="#fff" stroke-width="1" />
-      <line x1="15" y1="4" x2="8" y2="9" stroke="#fff" stroke-width="1" />
+      <path d="M1 4l7 4 7-4v9H1z" fill="#fff" stroke="#555" stroke-width="1" />
+      <line x1="1" y1="4" x2="8" y2="9" stroke="#555" stroke-width="1" />
+      <line x1="15" y1="4" x2="8" y2="9" stroke="#555" stroke-width="1" />
       <polygon
         points="12,1 12.8,3 15,3 13.2,4.2 13.8,6.5 12,5.2 10.2,6.5 10.8,4.2 9,3 11.2,3"
         fill="#FFD700"
+        stroke="#000"
+        stroke-width="0.3"
       />
     </svg>
     """
@@ -135,11 +137,11 @@ defmodule RetroHexChatWeb.Icons.Communication do
   def icon_dialog_url(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="8" r="6.5" fill="none" stroke="#fff" stroke-width="1" />
-      <ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="#fff" stroke-width="0.8" />
-      <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="#fff" stroke-width="0.8" />
-      <line x1="3" y1="4.5" x2="13" y2="4.5" stroke="#fff" stroke-width="0.6" />
-      <line x1="3" y1="11.5" x2="13" y2="11.5" stroke="#fff" stroke-width="0.6" />
+      <circle cx="8" cy="8" r="6.5" fill="none" stroke="#000080" stroke-width="1" />
+      <ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="#000080" stroke-width="0.8" />
+      <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="#000080" stroke-width="0.8" />
+      <line x1="3" y1="4.5" x2="13" y2="4.5" stroke="#000080" stroke-width="0.6" />
+      <line x1="3" y1="11.5" x2="13" y2="11.5" stroke="#000080" stroke-width="0.6" />
     </svg>
     """
   end

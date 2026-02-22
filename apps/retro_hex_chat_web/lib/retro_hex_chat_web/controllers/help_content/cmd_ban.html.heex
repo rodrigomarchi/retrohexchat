@@ -1,0 +1,35 @@
+<p>
+  Permanently block a user from the current channel. The banned user is immediately removed and cannot rejoin until the ban is lifted.
+</p>
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/ban &lt;nickname&gt; [reason]</pre>
+<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<p>
+  <code>nickname</code>
+  — The user to ban from the channel.<br /><code>reason</code>
+  — Optional reason for the ban.
+</p>
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  The user is kicked from the channel and a ban is set, preventing them from rejoining. The ban stays in effect until a channel operator removes it using
+  <code>/unban nickname</code>
+  or <code>/mode -b nickname</code>. Other channel members see that the user was banned. For registered channels, bans are persisted and survive channel restarts.
+</p>
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Requires channel operator or owner status</li>
+  <li>Cannot ban yourself</li>
+  <li>Cannot ban users with equal or higher rank (operators cannot ban the owner)</li>
+  <li>To remove a ban, use <code>/unban nickname</code> or <code>/mode -b nickname</code></li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/ban Spammer
+/ban Troll Repeated violations</pre>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-unban">/unban</.help_link>
+  · <.help_link topic="cmd-kick">/kick</.help_link>
+  · <.help_link topic="cmd-mode">/mode</.help_link>
+  · <.help_link topic="channel-permissions">Channel Permissions</.help_link>
+  · <.help_link topic="feature-channel-central">Channel Central</.help_link>
+</p>

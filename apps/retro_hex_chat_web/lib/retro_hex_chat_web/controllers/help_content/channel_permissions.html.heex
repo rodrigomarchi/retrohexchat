@@ -1,0 +1,122 @@
+<p>
+  Every channel member has a rank that determines what they can do. Higher ranks inherit all privileges of lower ranks.
+</p>
+
+<.help_h4 icon={:icon_role_owner}>Rank Hierarchy</.help_h4>
+<p>
+  <strong>~</strong>
+  Owner (rank 4) — Full control over the channel.<br />
+  <strong>@</strong>
+  Operator (rank 3) — Day-to-day channel management.<br />
+  <strong>%</strong>
+  Half-Operator (rank 2) — Limited moderation duties.<br />
+  <strong>+</strong>
+  Voiced (rank 1) — Can speak in moderated channels.<br />
+  &nbsp;&nbsp; Regular (rank 0) — Standard member, no special privileges.
+</p>
+
+<.help_h4 icon={:icon_role_operator}>What Each Rank Can Do</.help_h4>
+
+<p><strong>Owner (~)</strong></p>
+<ul>
+  <li>Everything an Operator can do</li>
+  <li>Grant/revoke Owner status (<code>/mode +q</code>)</li>
+  <li>Cannot be kicked or banned by anyone</li>
+  <li>Drop (unregister) the channel via ChanServ</li>
+</ul>
+
+<p><strong>Operator (@)</strong></p>
+<ul>
+  <li>Everything a Half-Operator can do</li>
+  <li>
+    Grant/revoke Operator and Half-Operator status (<code>/mode +o</code>, <code>/mode +h</code>)
+  </li>
+  <li>Ban and unban users (<code>/ban</code>, <code>/unban</code>, <code>/mode +b/-b</code>)</li>
+  <li>
+    Set all channel modes (<code>/mode +m</code>, <code>+i</code>, <code>+t</code>, <code>+k</code>, <code>+l</code>, <code>+n</code>, <code>+s</code>, <code>+p</code>, <code>+c</code>, <code>+R</code>, <code>+K</code>, <code>+j</code>)
+  </li>
+  <li>Change topic when channel is +t (topic locked)</li>
+</ul>
+
+<p><strong>Half-Operator (%)</strong></p>
+<ul>
+  <li>Kick users of lower rank</li>
+  <li>Grant/revoke Voice (<code>/mode +v</code>)</li>
+</ul>
+
+<p><strong>Voiced (+)</strong></p>
+<ul>
+  <li>Speak in moderated (+m) channels</li>
+</ul>
+
+<p><strong>Regular</strong></p>
+<ul>
+  <li>Send messages (unless channel is +m moderated)</li>
+  <li>Change topic (unless channel is +t topic-locked)</li>
+  <li>Join channel (subject to +i, +k, +l, +R, +b restrictions)</li>
+</ul>
+
+<.help_h4 icon={:icon_rules}>Key Rules</.help_h4>
+<ul>
+  <li>
+    <strong>Rank comparison</strong>: You can only kick or ban users with a
+    <em>strictly lower</em>
+    rank than yours. An operator cannot kick another operator.
+  </li>
+  <li><strong>Self-actions</strong>: You cannot ban yourself.</li>
+  <li>
+    <strong>Ban vs. Kick</strong>: Kicking requires Half-Operator or higher. Banning requires Operator or higher.
+  </li>
+  <li>
+    <strong>Mode setting</strong>: Most channel modes require Operator. Only Owners can grant +q. Half-Operators can only grant +v.
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_shield}>ChanServ Auto-Grant</.help_h4>
+<p>For registered channels, ChanServ automatically assigns ranks when identified users join:</p>
+<ul>
+  <li><strong>Founder</strong> &rarr; Owner (~) automatically on join</li>
+  <li><strong>SOP</strong> (Super Operator) &rarr; Operator (@) automatically on join</li>
+  <li><strong>AOP</strong> (Auto Operator) &rarr; Operator (@) automatically on join</li>
+  <li><strong>VOP</strong> (Auto Voice) &rarr; Voiced (+) automatically on join</li>
+</ul>
+<p>
+  You must be identified with NickServ (<code>/ns identify</code>) for ChanServ to recognize your access level.
+</p>
+
+<.help_h4 icon={:icon_ban}>Join Restrictions</.help_h4>
+<p>Channel modes can restrict who may join:</p>
+<ul>
+  <li>
+    <strong>+b</strong>
+    (banned) — Banned users cannot join. Removed with <code>/unban</code>
+    or <code>/mode -b</code>.
+  </li>
+  <li>
+    <strong>+i</strong> (invite-only) — Only invited users or those with ban exceptions can join.
+  </li>
+  <li>
+    <strong>+k</strong>
+    (key) — Requires the correct password: <code>/join #channel password</code>.
+  </li>
+  <li><strong>+l</strong> (limit) — Channel cannot exceed the user limit.</li>
+  <li><strong>+R</strong> (registered-only) — Only registered and identified users can join.</li>
+  <li><strong>+j</strong> (throttle) — Limits the rate of joins (anti-flood).</li>
+</ul>
+
+<.help_h4 icon={:icon_mute}>Speaking Restrictions</.help_h4>
+<ul>
+  <li>
+    <strong>+m</strong> (moderated) — Only Voiced, Half-Operator, Operator, and Owner can speak.
+  </li>
+  <li><strong>+n</strong> (no external) — Only channel members can send messages.</li>
+</ul>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="chanserv">ChanServ Overview</.help_link>
+  · <.help_link topic="channel-modes-overview">Channel Modes</.help_link>
+  · <.help_link topic="cmd-mode">/mode</.help_link>
+  · <.help_link topic="cmd-ban">/ban</.help_link>
+  · <.help_link topic="cmd-kick">/kick</.help_link>
+</p>

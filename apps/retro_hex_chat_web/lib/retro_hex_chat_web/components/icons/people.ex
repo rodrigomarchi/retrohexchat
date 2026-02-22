@@ -56,13 +56,22 @@ defmodule RetroHexChatWeb.Icons.People do
   def icon_dialog_address_book(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="3" y="1" width="10" height="14" rx="1" fill="none" stroke="#fff" stroke-width="1" />
-      <rect x="1" y="3" width="3" height="2" rx="0.5" fill="#FFD700" />
-      <rect x="1" y="7" width="3" height="2" rx="0.5" fill="#FFD700" />
-      <rect x="1" y="11" width="3" height="2" rx="0.5" fill="#FFD700" />
-      <line x1="6" y1="5" x2="11" y2="5" stroke="#fff" stroke-width="0.8" />
-      <line x1="6" y1="8" x2="11" y2="8" stroke="#fff" stroke-width="0.8" />
-      <line x1="6" y1="11" x2="11" y2="11" stroke="#fff" stroke-width="0.8" />
+      <rect x="3" y="1" width="10" height="14" rx="1" fill="#fff" stroke="#555" stroke-width="1" />
+      <rect x="1" y="3" width="3" height="2" rx="0.5" fill="#FFD700" stroke="#000" stroke-width="0.3" />
+      <rect x="1" y="7" width="3" height="2" rx="0.5" fill="#FFD700" stroke="#000" stroke-width="0.3" />
+      <rect
+        x="1"
+        y="11"
+        width="3"
+        height="2"
+        rx="0.5"
+        fill="#FFD700"
+        stroke="#000"
+        stroke-width="0.3"
+      />
+      <line x1="6" y1="5" x2="11" y2="5" stroke="#000080" stroke-width="0.8" />
+      <line x1="6" y1="8" x2="11" y2="8" stroke="#000080" stroke-width="0.8" />
+      <line x1="6" y1="11" x2="11" y2="11" stroke="#000080" stroke-width="0.8" />
     </svg>
     """
   end
@@ -73,8 +82,8 @@ defmodule RetroHexChatWeb.Icons.People do
   def icon_dialog_nick(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="6" cy="5" r="3" fill="#fff" />
-      <path d="M2 13c0-3 2-4 4-4s4 1 4 4" fill="#fff" />
+      <circle cx="6" cy="5" r="3" fill="#000080" />
+      <path d="M2 13c0-3 2-4 4-4s4 1 4 4" fill="#000080" />
       <path
         d="M12 4v5M10 6.5h4"
         fill="none"
@@ -164,7 +173,7 @@ defmodule RetroHexChatWeb.Icons.People do
       />
       <line x1="8" y1="2" x2="8" y2="14" stroke="#000" stroke-width="0.5" />
       <path d="M8 1L2 4v4c0 3.5 3 6 6 7V1z" fill="#008000" />
-      <path d="M8 1L14 4v4c0 3.5-3 6-6 7V1z" fill="#C0C0C0" />
+      <path d="M8 1L14 4v4c0 3.5-3 6-6 7V1z" fill="#C0C0C0" stroke="#000" stroke-width="0.5" />
     </svg>
     """
   end
@@ -200,8 +209,8 @@ defmodule RetroHexChatWeb.Icons.People do
   def icon_role_regular(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="5" r="2.5" fill="#808080" />
-      <path d="M4 13c0-2.5 2-4 4-4s4 1.5 4 4" fill="#808080" />
+      <circle cx="8" cy="5" r="2.5" fill="#555" />
+      <path d="M4 13c0-2.5 2-4 4-4s4 1.5 4 4" fill="#555" />
     </svg>
     """
   end

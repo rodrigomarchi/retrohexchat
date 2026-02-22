@@ -116,12 +116,12 @@ defmodule RetroHexChatWeb.Icons.Tools do
   def icon_dialog_options(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="8" r="5.5" fill="none" stroke="#fff" stroke-width="1.2" />
-      <circle cx="8" cy="8" r="2" fill="#fff" />
-      <line x1="8" y1="1" x2="8" y2="3.5" stroke="#fff" stroke-width="1.5" />
-      <line x1="8" y1="12.5" x2="8" y2="15" stroke="#fff" stroke-width="1.5" />
-      <line x1="1" y1="8" x2="3.5" y2="8" stroke="#fff" stroke-width="1.5" />
-      <line x1="12.5" y1="8" x2="15" y2="8" stroke="#fff" stroke-width="1.5" />
+      <circle cx="8" cy="8" r="5.5" fill="none" stroke="#555" stroke-width="1.2" />
+      <circle cx="8" cy="8" r="2" fill="#555" />
+      <line x1="8" y1="1" x2="8" y2="3.5" stroke="#555" stroke-width="1.5" />
+      <line x1="8" y1="12.5" x2="8" y2="15" stroke="#555" stroke-width="1.5" />
+      <line x1="1" y1="8" x2="3.5" y2="8" stroke="#555" stroke-width="1.5" />
+      <line x1="12.5" y1="8" x2="15" y2="8" stroke="#555" stroke-width="1.5" />
     </svg>
     """
   end
@@ -132,10 +132,10 @@ defmodule RetroHexChatWeb.Icons.Tools do
   def icon_dialog_custom_menus(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <line x1="2" y1="3" x2="11" y2="3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" />
-      <line x1="2" y1="7" x2="11" y2="7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" />
-      <line x1="2" y1="11" x2="11" y2="11" stroke="#fff" stroke-width="1.5" stroke-linecap="round" />
-      <polygon points="12,5 14,7.5 12,10" fill="#FFD700" />
+      <line x1="2" y1="3" x2="11" y2="3" stroke="#555" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="2" y1="7" x2="11" y2="7" stroke="#555" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="2" y1="11" x2="11" y2="11" stroke="#555" stroke-width="1.5" stroke-linecap="round" />
+      <polygon points="12,5 14,7.5 12,10" fill="#FFD700" stroke="#000" stroke-width="0.3" />
     </svg>
     """
   end

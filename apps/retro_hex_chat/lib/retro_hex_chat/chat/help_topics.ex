@@ -1,7 +1,11 @@
 defmodule RetroHexChat.Chat.HelpTopics do
   @moduledoc """
-  Static help content for the CHM-style help system.
+  Static help topic metadata for the CHM-style help system.
   All topics are compiled at build time — no database required.
+
+  Topic content is rendered via HEEx templates in the web layer
+  (`RetroHexChatWeb.HelpContent`). This module only holds metadata:
+  id, title, category, keywords, icon, and description.
 
   Topics are organized into category modules under `HelpTopics.*`
   and aggregated here at compile time.
@@ -24,8 +28,20 @@ defmodule RetroHexChat.Chat.HelpTopics do
           title: String.t(),
           category: String.t(),
           keywords: [String.t()],
-          content: String.t()
+          icon: atom(),
+          description: String.t()
         }
+
+  @category_icons %{
+    "Getting Started" => :icon_lightbulb,
+    "Commands" => :icon_terminal,
+    "Services" => :icon_shield,
+    "Channel Modes" => :icon_tab_modes,
+    "Text Formatting" => :icon_palette,
+    "Features" => :icon_star,
+    "User Interface" => :icon_laptop,
+    "Keyboard Shortcuts" => :icon_dialog_cheatsheet
+  }
 
   @categories [
     "Getting Started",
@@ -58,27 +74,17 @@ defmodule RetroHexChat.Chat.HelpTopics do
   @spec get_topic(String.t()) :: topic() | nil
   def get_topic(id), do: Map.get(@topic_map, id)
 
-  @doc "Return topics grouped by category, in display order."
-  @spec topics_by_category() :: [{String.t(), [topic()]}]
+  @doc "Return topics grouped by category, in display order. Each tuple includes the category icon."
+  @spec topics_by_category() :: [{String.t(), atom(), [topic()]}]
   def topics_by_category do
     Enum.map(@categories, fn cat ->
-      {cat, Enum.filter(@topics, &(&1.category == cat))}
+      {cat, Map.fetch!(@category_icons, cat), Enum.filter(@topics, &(&1.category == cat))}
     end)
   end
 
-  @doc "Search topics by query (case-insensitive match on title, keywords, content)."
-  @spec search(String.t()) :: [topic()]
-  def search(query) when byte_size(query) < 2, do: []
-
-  def search(query) do
-    q = String.downcase(query)
-
-    Enum.filter(@topics, fn topic ->
-      String.contains?(String.downcase(topic.title), q) or
-        Enum.any?(topic.keywords, &String.contains?(String.downcase(&1), q)) or
-        String.contains?(String.downcase(topic.content), q)
-    end)
-  end
+  @doc "Return the icon atom for a category name."
+  @spec category_icon(String.t()) :: atom()
+  def category_icon(name), do: Map.fetch!(@category_icons, name)
 
   @doc "Return a sorted list of {keyword, topic_id} for the index tab."
   @spec all_keywords() :: [{String.t(), String.t()}]

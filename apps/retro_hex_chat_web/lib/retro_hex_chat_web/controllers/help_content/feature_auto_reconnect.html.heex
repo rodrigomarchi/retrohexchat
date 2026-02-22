@@ -1,0 +1,34 @@
+<p>RetroHexChat automatically attempts to reconnect when an unexpected disconnection occurs.</p>
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>When the connection drops unexpectedly, the client retries with exponential backoff:</p>
+<pre>Attempt 1:  1 second
+Attempt 2:  2 seconds
+Attempt 3:  4 seconds
+Attempt 4:  8 seconds
+Attempt 5:  16 seconds
+Attempt 6+: 30 seconds (cap)</pre>
+<p>
+  A maximum of <strong>10 attempts</strong>
+  are made. If all attempts fail, you are automatically redirected to the Connect screen with a
+  <em>Session expired</em>
+  message.
+</p>
+<.help_h4 icon={:icon_btn_cancel}>Cancel</.help_h4>
+<p>
+  During reconnection attempts, a <strong>Cancel</strong>
+  button is available to stop retrying. You can also refresh the page to start a fresh connection.
+</p>
+<.help_h4 icon={:icon_close}>Intentional Disconnect</.help_h4>
+<p>
+  Auto-reconnect does <strong>not</strong>
+  trigger on intentional disconnects via <code>/quit</code>. It only activates on unexpected connection loss.
+</p>
+<.help_h4 icon={:icon_backup}>Session Restoration</.help_h4>
+<p>
+  On successful reconnection, your previous session is restored: channels are rejoined and the active tab is restored to its previous state.
+</p>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="feature-perform">Perform / Auto-Commands</.help_link>
+  | <.help_link topic="feature-single-session">Single Session</.help_link>
+</p>

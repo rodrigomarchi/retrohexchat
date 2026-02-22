@@ -1,0 +1,39 @@
+<p>
+  Remove a user from the channel. Unlike <code>/ban</code>, the kicked user can rejoin immediately unless a ban is also set.
+</p>
+
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/kick &lt;nickname&gt; [reason]</pre>
+
+<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<p>
+  <code>nickname</code> — The user to kick.<br />
+  <code>reason</code> — Optional message explaining why (visible to the channel).
+</p>
+
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  The user is immediately removed from the channel. All channel members see the kick along with the optional reason message. The kicked user can rejoin the channel immediately unless they are also banned. If you want to permanently prevent someone from returning, use
+  <code>/ban</code>
+  instead.
+</p>
+
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Requires half-operator (%) status or higher</li>
+  <li>Cannot kick users with equal or higher rank than you</li>
+  <li>An operator cannot kick another operator — only the owner can</li>
+  <li>The target must be in the channel</li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/kick Spammer
+/kick Spammer Flooding the channel
+/kick Troll Please follow the rules</pre>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-ban">/ban</.help_link>
+  · <.help_link topic="cmd-mode">/mode</.help_link>
+  · <.help_link topic="channel-permissions">Channel Permissions</.help_link>
+</p>

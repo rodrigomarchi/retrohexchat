@@ -113,8 +113,8 @@ defmodule RetroHexChatWeb.Icons.Security do
   def icon_dialog_ignore(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="7" cy="5" r="3" fill="#fff" />
-      <path d="M3 13c0-3 2-4 4-4s4 1 4 4" fill="#fff" />
+      <circle cx="7" cy="5" r="3" fill="#555" />
+      <path d="M3 13c0-3 2-4 4-4s4 1 4 4" fill="#555" />
       <circle cx="10" cy="10" r="4" fill="none" stroke="#FF0000" stroke-width="1.5" />
       <line x1="7.5" y1="7.5" x2="12.5" y2="12.5" stroke="#FF0000" stroke-width="1.5" />
     </svg>

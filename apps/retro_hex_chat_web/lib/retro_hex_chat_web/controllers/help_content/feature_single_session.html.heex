@@ -1,0 +1,31 @@
+<p>
+  RetroHexChat enforces a <strong>single active session per nickname</strong>. Only one browser window or tab can be connected with the same nickname at a time.
+</p>
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  When you connect with a nickname that is already in use by another session (even your own in another tab or browser), the
+  <strong>previous session is immediately disconnected</strong>
+  and redirected to the Connect screen with the message:
+</p>
+<pre>Session ended — login started in another window</pre>
+<p>The new session takes over and becomes the active connection.</p>
+<.help_h4 icon={:icon_clock}>Session Expiry</.help_h4>
+<p>
+  If your connection drops unexpectedly, the client attempts to reconnect automatically with exponential backoff (up to 10 attempts). If all attempts fail, the session is considered
+  <strong>expired</strong>
+  and you are redirected to the Connect screen with the message:
+</p>
+<pre>Session expired</pre>
+<p>You can then reconnect manually.</p>
+<.help_h4 icon={:icon_question}>Why Single Session?</.help_h4>
+<p>Enforcing one session per nickname prevents:</p>
+<ul>
+  <li>Duplicate presence in channels</li>
+  <li>Messages being received in multiple windows simultaneously</li>
+  <li>State inconsistencies between sessions</li>
+</ul>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="feature-auto-reconnect">Auto-Reconnect</.help_link>
+  | <.help_link topic="cmd-ghost">GHOST Command</.help_link>
+</p>

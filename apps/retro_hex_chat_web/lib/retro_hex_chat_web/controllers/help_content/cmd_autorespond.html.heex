@@ -1,0 +1,43 @@
+<p>
+  Automatically run a command when someone joins a channel, leaves, or changes their nickname. Useful for auto-greeting new users or reacting to events.
+</p>
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/autorespond
+/autorespond list
+/autorespond add &lt;trigger&gt; [#channel] &lt;command&gt;
+/autorespond remove &lt;position&gt;</pre>
+<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<p>
+  <code>trigger</code>
+  — Event type: <code>on_join</code>
+  (someone joins), <code>on_part</code>
+  (someone leaves), or <code>on_nick_change</code>
+  (someone renames).<br /><code>#channel</code>
+  — Optional channel filter. Omit to match all channels.<br /><code>command</code>
+  — The slash command to execute when the event fires. Use <code>$nick</code>
+  for the triggering user's name and <code>$chan</code>
+  for the channel name.<br /><code>position</code>
+  — Rule number shown in <code>/autorespond list</code>.
+</p>
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  When the specified event occurs (and optionally in the specified channel), the command is executed automatically. For example, you can greet anyone who joins #welcome with a notice. Running
+  <code>/autorespond</code>
+  with no arguments opens the Auto-Respond dialog.
+</p>
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Registered users only — rules are persisted across sessions</li>
+  <li>The command must be a valid slash command</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/autorespond add on_join #welcome /notice $nick Welcome!
+/autorespond add on_part /say $nick left the channel
+/autorespond list
+/autorespond remove 0</pre>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="feature-autorespond">Auto-Respond Feature</.help_link>
+  · <.help_link topic="cmd-alias">/alias</.help_link>
+  · <.help_link topic="cmd-timer">/timer</.help_link>
+</p>

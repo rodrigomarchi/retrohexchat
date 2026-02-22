@@ -1,11 +1,6 @@
 defmodule RetroHexChat.Chat.HelpTopics.Services do
   @moduledoc false
 
-  @help_dir Path.join(:code.priv_dir(:retro_hex_chat), "help")
-
-  @external_resource Path.join(@help_dir, "nickserv.html")
-  @external_resource Path.join(@help_dir, "chanserv.html")
-
   @spec topics() :: [map()]
   def topics do
     [
@@ -14,7 +9,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Services do
         title: "NickServ Overview",
         category: "Services",
         keywords: ["nickserv", "register", "identify", "password", "nickname protection"],
-        content: File.read!(Path.join(@help_dir, "nickserv.html"))
+        icon: :icon_lock,
+        description:
+          "Register and protect your nickname with NickServ to prevent others from using it."
       },
       %{
         id: "chanserv",
@@ -28,7 +25,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Services do
           "channel expiration",
           "channel expiry"
         ],
-        content: File.read!(Path.join(@help_dir, "chanserv.html"))
+        icon: :icon_shield,
+        description:
+          "Register and manage channels with ChanServ, including access lists and channel settings."
       }
     ]
   end

@@ -1,0 +1,33 @@
+<p>
+  Send a lightweight notice to a user or channel. Unlike <code>/msg</code>, notices don't open a PM window on the recipient's side and don't trigger notification sounds.
+</p>
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/notice &lt;target&gt; &lt;message&gt;</pre>
+<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<p>
+  <code>target</code>
+  — A nickname or #channel to send the notice to.<br /><code>message</code>
+  — The notice text.
+</p>
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  Notices appear with a distinctive <code>-YourNick-</code>
+  prefix (instead of the usual <code>&lt;YourNick&gt;</code>). They are designed for automated messages and informational announcements that shouldn't interrupt the recipient. Channel notices always appear in the channel window. User notices appear according to the recipient's
+  <code>/notice_routing</code>
+  preference.
+</p>
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Both target and message are required</li>
+  <li>Does not create PM windows or conversations sidebar entries</li>
+  <li>Does not trigger notification sounds or highlights</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/notice Alice Check out #project
+/notice #elixir Server maintenance in 30 minutes</pre>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-notice-routing">/notice_routing</.help_link>
+  · <.help_link topic="cmd-msg">/msg</.help_link>
+  · <.help_link topic="feature-notices">Notices</.help_link>
+</p>

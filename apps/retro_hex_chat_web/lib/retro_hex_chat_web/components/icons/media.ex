@@ -94,7 +94,7 @@ defmodule RetroHexChatWeb.Icons.Media do
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
       <rect x="1" y="4" width="9" height="8" rx="1" fill="#000080" stroke="#000" stroke-width="0.5" />
       <polygon points="10,6 14,4 14,12 10,10" fill="#008080" />
-      <circle cx="13" cy="4" r="3" fill="#fff" stroke="#008000" stroke-width="0.8" />
+      <circle cx="13" cy="4" r="3" fill="#fff" stroke="#008000" stroke-width="1.2" />
       <line x1="13" y1="2.5" x2="13" y2="5.5" stroke="#008000" stroke-width="1.2" />
       <line x1="11.5" y1="4" x2="14.5" y2="4" stroke="#008000" stroke-width="1.2" />
     </svg>
@@ -133,9 +133,9 @@ defmodule RetroHexChatWeb.Icons.Media do
   def icon_quality_medium(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="2" y="10" width="3" height="4" fill="#FFD700" />
-      <rect x="6.5" y="6" width="3" height="8" fill="#FFD700" />
-      <rect x="11" y="2" width="3" height="12" fill="#aaa" stroke="#888" stroke-width="0.5" />
+      <rect x="2" y="10" width="3" height="4" fill="#FFD700" stroke="#B8860B" stroke-width="0.5" />
+      <rect x="6.5" y="6" width="3" height="8" fill="#FFD700" stroke="#B8860B" stroke-width="0.5" />
+      <rect x="11" y="2" width="3" height="12" fill="#C0C0C0" stroke="#808080" stroke-width="0.5" />
     </svg>
     """
   end
@@ -147,8 +147,8 @@ defmodule RetroHexChatWeb.Icons.Media do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
       <rect x="2" y="10" width="3" height="4" fill="#FF0000" />
-      <rect x="6.5" y="6" width="3" height="8" fill="#aaa" stroke="#888" stroke-width="0.5" />
-      <rect x="11" y="2" width="3" height="12" fill="#aaa" stroke="#888" stroke-width="0.5" />
+      <rect x="6.5" y="6" width="3" height="8" fill="#C0C0C0" stroke="#808080" stroke-width="0.5" />
+      <rect x="11" y="2" width="3" height="12" fill="#C0C0C0" stroke="#808080" stroke-width="0.5" />
     </svg>
     """
   end
@@ -159,18 +159,18 @@ defmodule RetroHexChatWeb.Icons.Media do
   def icon_dialog_sound(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <polygon points="2,5 5,5 9,2 9,14 5,11 2,11" fill="#fff" />
+      <polygon points="2,5 5,5 9,2 9,14 5,11 2,11" fill="#555" stroke="#000" stroke-width="0.3" />
       <path
         d="M11 5.5c1 1 1 4 0 5"
         fill="none"
-        stroke="#FFD700"
+        stroke="#B8860B"
         stroke-width="1.2"
         stroke-linecap="round"
       />
       <path
         d="M13 3.5c1.8 2 1.8 7 0 9"
         fill="none"
-        stroke="#FFD700"
+        stroke="#B8860B"
         stroke-width="1.2"
         stroke-linecap="round"
       />

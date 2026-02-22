@@ -12,15 +12,14 @@ defmodule RetroHexChatWeb.ChatLiveHelpAccessTest do
   end
 
   describe "Help access in chat" do
-    test "commands-overview topic exists and has content" do
+    test "commands-overview topic exists with metadata" do
       topic = HelpTopics.get_topic("commands-overview")
 
       assert topic != nil
       assert topic.title == "IRC Commands Reference"
       assert topic.category == "Commands"
-      assert topic.content =~ "/join"
-      assert topic.content =~ "/quit"
-      assert topic.content =~ "/msg"
+      assert is_atom(topic.icon)
+      assert topic.description != ""
     end
 
     test "toolbar has Help Topics link", %{conn: conn} do

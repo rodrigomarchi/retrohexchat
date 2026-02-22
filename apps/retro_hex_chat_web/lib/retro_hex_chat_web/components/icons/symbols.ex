@@ -95,7 +95,7 @@ defmodule RetroHexChatWeb.Icons.Symbols do
   def icon_clock(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="8" r="6.5" fill="#fff" stroke="#555" stroke-width="1" />
+      <circle cx="8" cy="8" r="6.5" fill="#fff" stroke="#000" stroke-width="1" />
       <line x1="8" y1="4" x2="8" y2="8" stroke="#000" stroke-width="1.2" />
       <line x1="8" y1="8" x2="11" y2="10" stroke="#000" stroke-width="1.2" />
       <circle cx="8" cy="8" r="0.8" fill="#000" />
@@ -122,8 +122,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
   def icon_btn_ignore(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="8" r="6" fill="none" stroke="#808080" stroke-width="1.5" />
-      <line x1="4" y1="4" x2="12" y2="12" stroke="#808080" stroke-width="1.5" />
+      <circle cx="8" cy="8" r="6" fill="none" stroke="#555" stroke-width="1.5" />
+      <line x1="4" y1="4" x2="12" y2="12" stroke="#555" stroke-width="1.5" />
     </svg>
     """
   end
@@ -146,6 +146,18 @@ defmodule RetroHexChatWeb.Icons.Symbols do
       >
         !
       </text>
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_tag(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_tag(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M1 1h6.5L15 8.5 8.5 15 1 7.5z" fill="#FFD700" stroke="#000" stroke-width="0.5" />
+      <circle cx="4.5" cy="4.5" r="1.5" fill="#fff" stroke="#000" stroke-width="0.5" />
     </svg>
     """
   end

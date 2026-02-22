@@ -1,0 +1,43 @@
+<p>
+  Register and protect your nickname with a password through NickServ, the nickname services bot. Once registered, nobody else can use your name.
+</p>
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/ns &lt;subcommand&gt; [arguments]</pre>
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  NickServ manages nickname ownership. After registering, you "identify" (log in) each session to prove the nickname is yours. This unlocks features like saved preferences, auto-join lists, and channel access lists. If someone else tries to use your registered nickname, they'll be asked for the password.
+</p>
+<.help_h4 icon={:icon_terminal}>Subcommands</.help_h4>
+<p>
+  <code>register &lt;password&gt;</code>
+  — Register your current nickname with a password.<br /><code>identify &lt;password&gt;</code>
+  — Log in to your registered nickname for this session.<br /><code>ghost &lt;nick&gt;</code>
+  — Disconnect another session using your registered nickname (if you got disconnected and your old session is still lingering).<br />
+  <code>
+    info [nick]
+  </code>
+  — View registration info about a nickname (defaults to your own).<br />
+  <code>
+    drop &lt;password&gt;
+  </code>
+  — Permanently unregister your nickname.
+</p>
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Password is required for register, identify, and drop</li>
+  <li>Ghost only works on your own registered nickname</li>
+  <li>You must be using the nickname you want to register</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/ns register mySecurePassword
+/ns identify mySecurePassword
+/ns info Alice
+/ns ghost MyNick
+/ns drop mySecurePassword</pre>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-cs">/cs</.help_link>
+  · <.help_link topic="cmd-nick">/nick</.help_link>
+  · <.help_link topic="cmd-perform">/perform</.help_link>
+  · <.help_link topic="connect-authentication">Connect Authentication</.help_link>
+</p>

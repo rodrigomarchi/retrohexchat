@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.HelpController do
     topics_by_category = HelpTopics.topics_by_category()
     all_keywords = HelpTopics.all_keywords()
 
-    {selected_topic, search_results} = resolve_params(params)
+    selected_topic = resolve_params(params)
 
     active_tab = resolve_tab(params)
 
@@ -24,9 +24,7 @@ defmodule RetroHexChatWeb.HelpController do
     conn
     |> assign(:topics_by_category, topics_by_category)
     |> assign(:all_keywords, all_keywords)
-    |> assign(:selected_topic, rewrite_cross_references(selected_topic))
-    |> assign(:search_results, search_results)
-    |> assign(:search_query, params["q"] || "")
+    |> assign(:selected_topic, selected_topic)
     |> assign(:active_tab, active_tab)
     |> assign(:page_title, page_title(selected_topic))
     |> assign(:page_description, page_description(selected_topic))
@@ -35,20 +33,15 @@ defmodule RetroHexChatWeb.HelpController do
     |> render(:index)
   end
 
-  @spec resolve_params(map()) :: {map() | nil, [map()]}
+  @spec resolve_params(map()) :: map() | nil
   defp resolve_params(%{"topic" => topic_id}) do
-    {HelpTopics.get_topic(topic_id), []}
+    HelpTopics.get_topic(topic_id)
   end
 
-  defp resolve_params(%{"q" => query}) when byte_size(query) >= 2 do
-    {nil, HelpTopics.search(query)}
-  end
-
-  defp resolve_params(_params), do: {nil, []}
+  defp resolve_params(_params), do: nil
 
   @spec resolve_tab(map()) :: String.t()
-  defp resolve_tab(%{"q" => _}), do: "search"
-  defp resolve_tab(%{"tab" => tab}) when tab in ["index", "search"], do: tab
+  defp resolve_tab(%{"tab" => "index"}), do: "index"
   defp resolve_tab(_params), do: "contents"
 
   @spec page_title(map() | nil) :: String.t()
@@ -61,27 +54,7 @@ defmodule RetroHexChatWeb.HelpController do
       "channel modes, features, and keyboard shortcuts."
   end
 
-  defp page_description(topic) do
-    topic.content
-    |> String.replace(~r/<[^>]+>/, "")
-    |> String.replace(~r/\s+/, " ")
-    |> String.trim()
-    |> String.slice(0, 160)
-  end
-
-  @spec rewrite_cross_references(map() | nil) :: map() | nil
-  defp rewrite_cross_references(nil), do: nil
-
-  defp rewrite_cross_references(topic) do
-    content =
-      Regex.replace(
-        ~r/href="#"\s*data-help-topic="([^"]+)"/,
-        topic.content,
-        ~S(href="/chat/help?topic=\1" data-help-topic="\1")
-      )
-
-    %{topic | content: content}
-  end
+  defp page_description(topic), do: topic.description
 
   @spec breadcrumbs(map() | nil) :: [{String.t(), String.t() | nil}]
   defp breadcrumbs(nil), do: [{"Help", nil}]

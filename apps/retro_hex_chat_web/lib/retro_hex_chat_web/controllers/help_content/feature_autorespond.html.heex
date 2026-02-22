@@ -1,0 +1,32 @@
+<p>
+  Auto-respond rules automatically execute commands when specific events occur, such as when a user joins or leaves a channel.
+</p>
+<.help_h4 icon={:icon_clock}>Trigger Events</.help_h4>
+<p>
+  <code>on_join</code>
+  — Fires when a user joins a channel.<br /><code>on_part</code>
+  — Fires when a user leaves a channel.<br /><code>on_nick_change</code>
+  — Fires when a user changes their nickname.
+</p>
+<.help_h4 icon={:icon_btn_search}>Channel Filtering</.help_h4>
+<p>
+  Each rule can optionally filter by channel. Leave the channel field empty to match all channels, or specify a channel (e.g., <code>#welcome</code>) to only trigger in that channel.
+</p>
+<.help_h4 icon={:icon_shield}>Safety Features</.help_h4>
+<p>
+  - <strong>Own-action exclusion</strong>: Your own joins/parts/nick changes never trigger your auto-respond rules.<br />- <strong>Rate limiting</strong>: 60-second cooldown per rule per triggering user to prevent spam.<br />- <strong>No cascading</strong>: Auto-respond commands are dispatched normally but cannot trigger other auto-respond rules recursively.
+</p>
+<.help_h4 icon={:icon_rules}>Managing Rules</.help_h4>
+<p>
+  Use <code>/autorespond</code>
+  or open <strong>Tools &gt; Auto-Respond</strong>. Rules can be enabled/disabled individually via the checkbox in the dialog.
+</p>
+<.help_h4 icon={:icon_rules}>Limits</.help_h4>
+<p>
+  Maximum 10 auto-respond rules per user. Commands: up to 500 characters. Persisted for registered users.
+</p>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-autorespond">/autorespond Command</.help_link>
+  · <.help_link topic="feature-aliases">Aliases</.help_link>
+</p>

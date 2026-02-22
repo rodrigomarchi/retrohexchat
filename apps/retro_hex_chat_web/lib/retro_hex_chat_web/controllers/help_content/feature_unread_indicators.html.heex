@@ -1,0 +1,19 @@
+<p>The conversations sidebar shows visual indicators for channel activity.</p>
+<.help_h4 icon={:icon_group_view}>Visual States</.help_h4>
+<ul>
+  <li><strong>Bold text</strong> — channel has unread user messages</li>
+  <li><strong>Numeric badge</strong> — shows count of unread messages (e.g., "3")</li>
+  <li><strong>Red dot badge</strong> — your nickname was mentioned</li>
+  <li><strong>Selected background</strong> — currently active channel</li>
+  <li><strong>Grayed out</strong> — channel is muted (no badges shown)</li>
+  <li><strong>⚡ icon + gray</strong> — channel is disconnected</li>
+</ul>
+<.help_h4 icon={:icon_tab_general}>Behavior</.help_h4>
+<p>
+  Switching to a channel resets its unread count and badges. System messages (joins, parts, quits) do not increment the count — only user messages and mentions do. Counts above 99 display as "99+". Muted channels still track unread counts internally — unmuting reveals accumulated indicators.
+</p>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="feature-kick-notifications">Kick Notifications</.help_link>
+  · <.help_link topic="feature-copy-feedback">Copy Feedback</.help_link>
+</p>

@@ -1,77 +1,6 @@
 defmodule RetroHexChat.Chat.HelpTopics.Features do
   @moduledoc false
 
-  @help_dir Path.join(:code.priv_dir(:retro_hex_chat), "help")
-
-  @external_resource Path.join(@help_dir, "feature-notify-list.html")
-  @external_resource Path.join(@help_dir, "feature-address-book.html")
-  @external_resource Path.join(@help_dir, "feature-highlight-words.html")
-  @external_resource Path.join(@help_dir, "feature-url-catcher.html")
-  @external_resource Path.join(@help_dir, "feature-ignore-list.html")
-  @external_resource Path.join(@help_dir, "feature-channel-central.html")
-  @external_resource Path.join(@help_dir, "feature-ban-exceptions.html")
-  @external_resource Path.join(@help_dir, "feature-invite-exceptions.html")
-  @external_resource Path.join(@help_dir, "feature-channel-invites.html")
-  @external_resource Path.join(@help_dir, "feature-search.html")
-  @external_resource Path.join(@help_dir, "feature-log-viewer.html")
-  @external_resource Path.join(@help_dir, "feature-log-export.html")
-  @external_resource Path.join(@help_dir, "feature-perform.html")
-  @external_resource Path.join(@help_dir, "feature-auto-reconnect.html")
-  @external_resource Path.join(@help_dir, "feature-notices.html")
-  @external_resource Path.join(@help_dir, "feature-ctcp.html")
-  @external_resource Path.join(@help_dir, "feature-flood-protection.html")
-  @external_resource Path.join(@help_dir, "feature-sounds.html")
-  @external_resource Path.join(@help_dir, "feature-mute.html")
-  @external_resource Path.join(@help_dir, "feature-typing-indicator.html")
-  @external_resource Path.join(@help_dir, "feature-visual-notifications.html")
-  @external_resource Path.join(@help_dir, "feature-aliases.html")
-  @external_resource Path.join(@help_dir, "feature-timers.html")
-  @external_resource Path.join(@help_dir, "feature-custom-menus.html")
-  @external_resource Path.join(@help_dir, "feature-options-dialog.html")
-  @external_resource Path.join(@help_dir, "feature-display-settings.html")
-  @external_resource Path.join(@help_dir, "feature-key-bindings.html")
-  @external_resource Path.join(@help_dir, "feature-autorespond.html")
-  @external_resource Path.join(@help_dir, "feature-interactive-elements.html")
-  @external_resource Path.join(@help_dir, "feature-nick-alignment.html")
-  @external_resource Path.join(@help_dir, "feature-copy.html")
-  @external_resource Path.join(@help_dir, "feature-paste-dialog.html")
-  @external_resource Path.join(@help_dir, "feature-char-counter.html")
-  @external_resource Path.join(@help_dir, "feature-quit-message.html")
-  @external_resource Path.join(@help_dir, "feature-away-reply.html")
-  @external_resource Path.join(@help_dir, "feature-emoji.html")
-  @external_resource Path.join(@help_dir, "feature-timestamp-format.html")
-  @external_resource Path.join(@help_dir, "feature-autocomplete.html")
-  @external_resource Path.join(@help_dir, "feature-command-syntax-tooltip.html")
-  @external_resource Path.join(@help_dir, "feature-smart-input.html")
-  @external_resource Path.join(@help_dir, "feature-cheatsheet.html")
-  @external_resource Path.join(@help_dir, "feature-context-menus.html")
-  @external_resource Path.join(@help_dir, "feature-enhanced-history.html")
-  @external_resource Path.join(@help_dir, "feature-contextual-tips.html")
-  @external_resource Path.join(@help_dir, "feature-unread-indicators.html")
-  @external_resource Path.join(@help_dir, "feature-kick-notifications.html")
-  @external_resource Path.join(@help_dir, "feature-copy-feedback.html")
-  @external_resource Path.join(@help_dir, "feature-status-bar.html")
-  @external_resource Path.join(@help_dir, "feature-lag-indicator.html")
-  @external_resource Path.join(@help_dir, "feature-connection-states.html")
-  @external_resource Path.join(@help_dir, "feature-notifications.html")
-  @external_resource Path.join(@help_dir, "feature-dnd.html")
-  @external_resource Path.join(@help_dir, "feature-notification-center.html")
-  @external_resource Path.join(@help_dir, "feature-notification-settings.html")
-  @external_resource Path.join(@help_dir, "feature-message-reply.html")
-  @external_resource Path.join(@help_dir, "feature-message-edit.html")
-  @external_resource Path.join(@help_dir, "feature-message-delete.html")
-  @external_resource Path.join(@help_dir, "feature-audio-call.html")
-  @external_resource Path.join(@help_dir, "feature-video-call.html")
-  @external_resource Path.join(@help_dir, "feature-media-devices.html")
-  @external_resource Path.join(@help_dir, "feature-call-quality.html")
-  @external_resource Path.join(@help_dir, "feature-p2p-sessions.html")
-  @external_resource Path.join(@help_dir, "feature-file-transfer.html")
-  @external_resource Path.join(@help_dir, "feature-privacy-settings.html")
-  @external_resource Path.join(@help_dir, "feature-pm-persistence.html")
-  @external_resource Path.join(@help_dir, "feature-auto-join-channels.html")
-  @external_resource Path.join(@help_dir, "feature-single-session.html")
-  @external_resource Path.join(@help_dir, "feature-nick-expiry.html")
-
   @spec topics() :: [map()]
   def topics do
     [
@@ -80,35 +9,41 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         title: "Notify List (Buddy List)",
         category: "Features",
         keywords: ["notify", "buddy", "friend list", "online", "offline", "track"],
-        content: File.read!(Path.join(@help_dir, "feature-notify-list.html"))
+        icon: :icon_tab_notify,
+        description: "Track when specific users connect or disconnect with the notify list."
       },
       %{
         id: "feature-address-book",
         title: "Address Book",
         category: "Features",
         keywords: ["address book", "contacts", "nick colors", "color override"],
-        content: File.read!(Path.join(@help_dir, "feature-address-book.html"))
+        icon: :icon_dialog_address_book,
+        description: "Manage contacts, assign custom nick colors, and organize your notify list."
       },
       %{
         id: "feature-highlight-words",
         title: "Highlight Words",
         category: "Features",
         keywords: ["highlight", "mention", "alert", "notification", "flash"],
-        content: File.read!(Path.join(@help_dir, "feature-highlight-words.html"))
+        icon: :icon_dialog_highlight,
+        description:
+          "Configure words that trigger visual and audio alerts when mentioned in chat."
       },
       %{
         id: "feature-url-catcher",
         title: "URL Catcher",
         category: "Features",
         keywords: ["url", "link", "catcher", "preview", "web"],
-        content: File.read!(Path.join(@help_dir, "feature-url-catcher.html"))
+        icon: :icon_dialog_url,
+        description: "View and manage URLs shared across all channels with link previews."
       },
       %{
         id: "feature-ignore-list",
         title: "Ignore List",
         category: "Features",
         keywords: ["ignore", "block", "silence", "mute", "filter", "hide", "unignore"],
-        content: File.read!(Path.join(@help_dir, "feature-ignore-list.html"))
+        icon: :icon_dialog_ignore,
+        description: "Manage your ignore list to hide messages and actions from specific users."
       },
       %{
         id: "feature-channel-central",
@@ -124,7 +59,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "invite exceptions",
           "tabs"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-channel-central.html"))
+        icon: :icon_dialog_channel_central,
+        description:
+          "View and manage channel settings, bans, exceptions, and modes in one dialog."
       },
       %{
         id: "feature-ban-exceptions",
@@ -138,7 +75,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "bypass ban",
           "+e"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-ban-exceptions.html"))
+        icon: :icon_tab_exceptions,
+        description: "Allow specific users to bypass channel bans using ban exception masks."
       },
       %{
         id: "feature-invite-exceptions",
@@ -151,7 +89,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "+I",
           "invite-only bypass"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-invite-exceptions.html"))
+        icon: :icon_tab_exceptions,
+        description:
+          "Allow specific users to join invite-only channels without an explicit invitation."
       },
       %{
         id: "feature-channel-invites",
@@ -165,7 +105,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "invite expiration",
           "invite-only"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-channel-invites.html"))
+        icon: :icon_dialog_invite,
+        description: "Receive and manage channel invitations with optional auto-join on invite."
       },
       %{
         id: "feature-search",
@@ -181,21 +122,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "case sensitive",
           "history search"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-search.html"))
+        icon: :icon_btn_search,
+        description:
+          "Find text in the current channel using search with regex and case-sensitive options."
       },
       %{
         id: "feature-log-viewer",
         title: "Log Viewer",
         category: "Features",
         keywords: ["log", "viewer", "search", "history", "browse", "export", "logs"],
-        content: File.read!(Path.join(@help_dir, "feature-log-viewer.html"))
+        icon: :icon_dialog_log,
+        description:
+          "Browse and search chat history with filtering, pagination, and export options."
       },
       %{
         id: "feature-log-export",
         title: "Log Export",
         category: "Features",
         keywords: ["export", "download", "txt", "html", "log", "save"],
-        content: File.read!(Path.join(@help_dir, "feature-log-export.html"))
+        icon: :icon_btn_export,
+        description: "Export chat logs in plain text or HTML format for archival or sharing."
       },
       %{
         id: "feature-perform",
@@ -211,7 +157,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "perform list",
           "auto execute"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-perform.html"))
+        icon: :icon_dialog_perform,
+        description:
+          "Configure commands and channels that execute automatically when you connect."
       },
       %{
         id: "feature-auto-reconnect",
@@ -226,14 +174,17 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "retry",
           "backoff"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-auto-reconnect.html"))
+        icon: :icon_retry,
+        description:
+          "Automatically reconnect to the server when the connection is lost with exponential backoff."
       },
       %{
         id: "feature-notices",
         title: "Notices",
         category: "Features",
         keywords: ["notice", "notification", "announce", "lightweight message"],
-        content: File.read!(Path.join(@help_dir, "feature-notices.html"))
+        icon: :icon_megaphone,
+        description: "Lightweight messages used for server announcements and automated responses."
       },
       %{
         id: "feature-ctcp",
@@ -248,7 +199,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "client-to-client",
           "latency"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-ctcp.html"))
+        icon: :icon_dialog_ctcp,
+        description:
+          "Configure Client-to-Client Protocol responses for PING, VERSION, TIME, and more."
       },
       %{
         id: "feature-flood-protection",
@@ -263,7 +216,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "anti-spam",
           "rate limit"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-flood-protection.html"))
+        icon: :icon_dialog_flood,
+        description:
+          "Protect against message flooding with rate limiting and automatic ignore rules."
       },
       %{
         id: "feature-sounds",
@@ -279,21 +234,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "chime",
           "notification sound"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-sounds.html"))
+        icon: :icon_dialog_sound,
+        description:
+          "Configure sound notifications for events like mentions, private messages, and joins."
       },
       %{
         id: "feature-mute",
         title: "Mute",
         category: "Features",
         keywords: ["mute", "unmute", "silence", "sound off", "quiet"],
-        content: File.read!(Path.join(@help_dir, "feature-mute.html"))
+        icon: :icon_mute,
+        description: "Mute all sounds globally or per-channel to silence notifications."
       },
       %{
         id: "feature-typing-indicator",
         title: "Typing Indicator",
         category: "Features",
         keywords: ["typing", "indicator", "is typing", "pm typing"],
-        content: File.read!(Path.join(@help_dir, "feature-typing-indicator.html"))
+        icon: :icon_chat,
+        description: "See when someone is typing a message in a private conversation."
       },
       %{
         id: "feature-visual-notifications",
@@ -309,21 +268,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "activity",
           "indicator"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-visual-notifications.html"))
+        icon: :icon_document_alert,
+        description:
+          "Visual indicators for activity including title bar flashing and conversations panel highlights."
       },
       %{
         id: "feature-aliases",
         title: "Aliases",
         category: "Features",
         keywords: ["alias", "aliases", "shortcut", "macro", "expansion", "scripting"],
-        content: File.read!(Path.join(@help_dir, "feature-aliases.html"))
+        icon: :icon_dialog_alias,
+        description:
+          "Create custom command shortcuts that expand into one or more commands with variable support."
       },
       %{
         id: "feature-timers",
         title: "Timers",
         category: "Features",
         keywords: ["timer", "timers", "schedule", "delay", "repeat", "interval"],
-        content: File.read!(Path.join(@help_dir, "feature-timers.html"))
+        icon: :icon_clock,
+        description: "Schedule commands to execute after a delay or repeat at regular intervals."
       },
       %{
         id: "feature-custom-menus",
@@ -337,7 +301,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "nicklist menu",
           "channel menu"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-custom-menus.html"))
+        icon: :icon_dialog_custom_menus,
+        description: "Add custom items to right-click context menus for quick access to commands."
       },
       %{
         id: "feature-options-dialog",
@@ -351,7 +316,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "customize",
           "Ctrl+Shift+O"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-options-dialog.html"))
+        icon: :icon_dialog_options,
+        description:
+          "Configure display, font, behavior, and notification preferences in the options dialog."
       },
       %{
         id: "feature-display-settings",
@@ -366,7 +333,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "compact mode",
           "line shading"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-display-settings.html"))
+        icon: :icon_tab_display,
+        description:
+          "Customize which interface elements are visible and toggle compact display mode."
       },
       %{
         id: "feature-key-bindings",
@@ -380,7 +349,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "rebind",
           "shortcut"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-key-bindings.html"))
+        icon: :icon_dialog_cheatsheet,
+        description: "Customize keyboard shortcuts by rebinding keys to different actions."
       },
       %{
         id: "feature-autorespond",
@@ -395,7 +365,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "join greet",
           "welcome"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-autorespond.html"))
+        icon: :icon_dialog_auto_respond,
+        description:
+          "Configure automatic responses triggered by events like user joins or keyword matches."
       },
       %{
         id: "feature-interactive-elements",
@@ -412,63 +384,74 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "url hover",
           "link preview"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-interactive-elements.html"))
+        icon: :icon_community,
+        description: "Clickable nicknames, channels, and URLs with hover cards and link previews."
       },
       %{
         id: "feature-nick-alignment",
         title: "Nick Column Alignment",
         category: "Features",
         keywords: ["nick", "alignment", "column", "grid", "layout", "readability"],
-        content: File.read!(Path.join(@help_dir, "feature-nick-alignment.html"))
+        icon: :icon_tab_nicklist,
+        description: "Align nicknames in a fixed-width column for improved chat readability."
       },
       %{
         id: "feature-copy",
         title: "Right-Click Copy",
         category: "Features",
         keywords: ["copy", "clipboard", "right-click", "context menu", "select", "text"],
-        content: File.read!(Path.join(@help_dir, "feature-copy.html"))
+        icon: :icon_copy,
+        description: "Copy message text to the clipboard using the right-click context menu."
       },
       %{
         id: "feature-paste-dialog",
         title: "Multi-Line Paste Dialog",
         category: "Features",
         keywords: ["paste", "multiline", "flood", "confirmation", "send"],
-        content: File.read!(Path.join(@help_dir, "feature-paste-dialog.html"))
+        icon: :icon_dialog_paste,
+        description:
+          "Review and confirm multi-line pastes before sending to prevent accidental flooding."
       },
       %{
         id: "feature-char-counter",
         title: "Character Counter",
         category: "Features",
         keywords: ["character", "counter", "limit", "length", "input"],
-        content: File.read!(Path.join(@help_dir, "feature-char-counter.html"))
+        icon: :icon_notepad,
+        description: "See how many characters remain before reaching the message length limit."
       },
       %{
         id: "feature-quit-message",
         title: "Quit Messages",
         category: "Features",
         keywords: ["quit", "disconnect", "message", "goodbye", "leaving"],
-        content: File.read!(Path.join(@help_dir, "feature-quit-message.html"))
+        icon: :icon_close,
+        description:
+          "Customize the message displayed to others when you disconnect from the server."
       },
       %{
         id: "feature-away-reply",
         title: "Away Auto-Reply",
         category: "Features",
         keywords: ["away", "auto-reply", "automatic", "reply", "pm", "message"],
-        content: File.read!(Path.join(@help_dir, "feature-away-reply.html"))
+        icon: :icon_clock,
+        description: "Automatically reply to private messages when you are marked as away."
       },
       %{
         id: "feature-emoji",
         title: "Emoji Picker",
         category: "Features",
         keywords: ["emoji", "smiley", "picker", "unicode", "emoticon"],
-        content: File.read!(Path.join(@help_dir, "feature-emoji.html"))
+        icon: :icon_heart,
+        description: "Browse and insert emoji into your messages using the emoji picker."
       },
       %{
         id: "feature-timestamp-format",
         title: "Timestamp Configuration",
         category: "Features",
         keywords: ["timestamp", "time", "format", "clock", "date"],
-        content: File.read!(Path.join(@help_dir, "feature-timestamp-format.html"))
+        icon: :icon_clock,
+        description: "Customize how timestamps are displayed next to messages."
       },
       %{
         id: "feature-autocomplete",
@@ -483,7 +466,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "nick completion",
           "channel completion"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-autocomplete.html"))
+        icon: :icon_btn_search,
+        description: "Tab-complete nicknames, commands, channels, and emoji with fuzzy matching."
       },
       %{
         id: "feature-command-syntax-tooltip",
@@ -498,7 +482,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "inline help",
           "mode helper"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-command-syntax-tooltip.html"))
+        icon: :icon_code,
+        description: "See command syntax and parameter hints as you type slash commands."
       },
       %{
         id: "feature-smart-input",
@@ -512,7 +497,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "expand",
           "input box"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-smart-input.html"))
+        icon: :icon_terminal,
+        description:
+          "Auto-expanding input box with multi-line support and contextual placeholders."
       },
       %{
         id: "feature-cheatsheet",
@@ -525,7 +512,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "keyboard reference",
           "quick reference"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-cheatsheet.html"))
+        icon: :icon_dialog_cheatsheet,
+        description: "Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+/."
       },
       %{
         id: "feature-context-menus",
@@ -543,7 +531,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "conversations menu",
           "mute channel"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-context-menus.html"))
+        icon: :icon_dialog_custom_menus,
+        description:
+          "Right-click context menus for nicknames, messages, URLs, channels, and conversations."
       },
       %{
         id: "feature-enhanced-history",
@@ -559,7 +549,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "persistence",
           "localStorage"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-enhanced-history.html"))
+        icon: :icon_backup,
+        description:
+          "Navigate command history with Ctrl+Up/Down and search with Ctrl+R. Drafts persist per channel."
       },
       %{
         id: "feature-contextual-tips",
@@ -572,7 +564,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "hint",
           "progressive disclosure"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-contextual-tips.html"))
+        icon: :icon_lightbulb,
+        description:
+          "Helpful tips that appear contextually to guide you through features as you use them."
       },
       %{
         id: "feature-unread-indicators",
@@ -589,14 +583,18 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "muted",
           "disconnected"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-unread-indicators.html"))
+        icon: :icon_document_alert,
+        description:
+          "Unread message badges on tabs and conversations showing message and mention counts."
       },
       %{
         id: "feature-kick-notifications",
         title: "Kick Notifications",
         category: "Features",
         keywords: ["kick", "kicked", "expelled", "dialog", "notification"],
-        content: File.read!(Path.join(@help_dir, "feature-kick-notifications.html"))
+        icon: :icon_dialog_kick,
+        description:
+          "Dialog notification when you are kicked from a channel with the reason and rejoin option."
       },
       %{
         id: "feature-copy-feedback",
@@ -610,7 +608,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "settings",
           "saved"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-copy-feedback.html"))
+        icon: :icon_copy,
+        description:
+          "Visual toast confirmation when text or settings are copied to the clipboard."
       },
       %{
         id: "feature-status-bar",
@@ -624,7 +624,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "mute",
           "channel info"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-status-bar.html"))
+        icon: :icon_tab_status,
+        description:
+          "Bottom bar showing connection status, lag indicator, clock, and channel information."
       },
       %{
         id: "feature-lag-indicator",
@@ -639,7 +641,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "delay",
           "timeout"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-lag-indicator.html"))
+        icon: :icon_status_signal,
+        description:
+          "Real-time latency indicator in the status bar showing network delay to the server."
       },
       %{
         id: "feature-connection-states",
@@ -654,7 +658,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "banner",
           "overlay"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-connection-states.html"))
+        icon: :icon_websocket,
+        description:
+          "Visual indicators for connection status including banners, overlays, and status bar changes."
       },
       %{
         id: "feature-notifications",
@@ -670,7 +676,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "mention",
           "alert"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-notifications.html"))
+        icon: :icon_dialog_notifications,
+        description:
+          "Multi-channel notification system with toasts, browser notifications, sounds, and favicon badges."
       },
       %{
         id: "feature-dnd",
@@ -684,7 +692,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "suppress",
           "moon"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-dnd.html"))
+        icon: :icon_mute,
+        description: "Suppress all notifications while keeping messages visible in channels."
       },
       %{
         id: "feature-notification-center",
@@ -697,7 +706,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "recent notifications",
           "mark all read"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-notification-center.html"))
+        icon: :icon_group_notifications,
+        description:
+          "Review recent notifications in the bell dropdown with mark-all-read support."
       },
       %{
         id: "feature-notification-settings",
@@ -710,7 +721,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "trigger rules",
           "privacy mode"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-notification-settings.html"))
+        icon: :icon_dialog_notifications,
+        description:
+          "Fine-tune notification preferences per channel with custom trigger rules and privacy mode."
       },
       %{
         id: "feature-message-reply",
@@ -724,7 +737,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "reply to",
           "quote message"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-message-reply.html"))
+        icon: :icon_chat,
+        description: "Reply to specific messages with quoted context for threaded conversations."
       },
       %{
         id: "feature-message-edit",
@@ -738,7 +752,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "typo",
           "fix message"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-message-edit.html"))
+        icon: :icon_btn_edit,
+        description: "Edit your recently sent messages to fix typos or update content."
       },
       %{
         id: "feature-message-delete",
@@ -750,7 +765,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "message removed",
           "soft delete"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-message-delete.html"))
+        icon: :icon_dialog_delete,
+        description: "Delete your own messages with a soft-delete that shows a removal notice."
       },
       %{
         id: "feature-audio-call",
@@ -763,7 +779,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "mute",
           "p2p"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-audio-call.html"))
+        icon: :icon_microphone,
+        description: "Make peer-to-peer audio calls with mute controls and quality indicators."
       },
       %{
         id: "feature-video-call",
@@ -777,7 +794,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "picture-in-picture",
           "p2p"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-video-call.html"))
+        icon: :icon_camera,
+        description:
+          "Make video calls with camera controls, picture-in-picture, and quality settings."
       },
       %{
         id: "feature-media-devices",
@@ -790,7 +809,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "speaker",
           "fallback"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-media-devices.html"))
+        icon: :icon_devices,
+        description: "Select and switch between microphones, cameras, and speakers during calls."
       },
       %{
         id: "feature-call-quality",
@@ -803,7 +823,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "indicator",
           "bars"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-call-quality.html"))
+        icon: :icon_quality_high,
+        description:
+          "Monitor and adjust call quality with bitrate presets and real-time quality indicators."
       },
       %{
         id: "feature-p2p-sessions",
@@ -818,7 +840,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "bilateral",
           "invite"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-p2p-sessions.html"))
+        icon: :icon_p2p,
+        description:
+          "Establish peer-to-peer sessions with bilateral consent for calls and file transfers."
       },
       %{
         id: "feature-file-transfer",
@@ -833,7 +857,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "hash",
           "p2p"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-file-transfer.html"))
+        icon: :icon_file_send,
+        description:
+          "Send files directly to other users via peer-to-peer with drag-and-drop support."
       },
       %{
         id: "feature-privacy-settings",
@@ -847,7 +873,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "hide",
           "private mode"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-privacy-settings.html"))
+        icon: :icon_privacy,
+        description:
+          "Enable TURN-only relay mode to hide your IP address during peer-to-peer connections."
       },
       %{
         id: "feature-pm-persistence",
@@ -863,7 +891,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "auto-open",
           "recency"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-pm-persistence.html"))
+        icon: :icon_p2p,
+        description:
+          "Private message conversations are restored automatically on reconnect, ordered by recency."
       },
       %{
         id: "feature-auto-join-channels",
@@ -878,7 +908,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "rejoin",
           "reconnect"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-auto-join-channels.html"))
+        icon: :icon_tab_autojoin,
+        description: "Channels are automatically remembered and rejoined when you reconnect."
       },
       %{
         id: "feature-single-session",
@@ -894,7 +925,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "expired",
           "one session"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-single-session.html"))
+        icon: :icon_lock,
+        description: "Only one active session per nickname is allowed to prevent conflicts."
       },
       %{
         id: "feature-nick-expiry",
@@ -910,7 +942,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "freed",
           "released"
         ],
-        content: File.read!(Path.join(@help_dir, "feature-nick-expiry.html"))
+        icon: :icon_clock,
+        description:
+          "Registered nicknames expire after 7 days of inactivity and become available again."
       }
     ]
   end

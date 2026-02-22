@@ -1,0 +1,45 @@
+<p>
+  Hide messages from a specific user. The ignored user is not notified — their messages are silently hidden from your view.
+</p>
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/ignore
+/ignore &lt;nickname&gt;
+/ignore &lt;nickname&gt; &lt;type&gt;
+/ignore &lt;nickname&gt; &lt;type&gt; &lt;duration&gt;</pre>
+<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<p>
+  <code>nickname</code>
+  — The user to ignore.<br /><code>type</code>
+  — What to block: <code>all</code>
+  (default), <code>messages</code>
+  (channel only), <code>pms</code>
+  (private messages only), <code>actions</code>
+  (/me messages only), <code>invites</code>
+  (channel invites only).<br /><code>duration</code>
+  — How long to ignore: e.g. <code>5m</code>
+  (5 minutes), <code>2h</code>
+  (2 hours), <code>1d</code>
+  (1 day). No duration means permanent until you <code>/unignore</code>.
+</p>
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  Running <code>/ignore</code>
+  with no arguments shows your current ignore list. When you ignore someone, their specified content types are silently hidden from your view. They receive no notification that they're being ignored. Timed ignores automatically expire after the specified duration.
+</p>
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>Cannot ignore yourself</li>
+  <li>Duration must be a positive number</li>
+  <li>Ignore list persists for registered users</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/ignore
+/ignore SpamBot
+/ignore AnnoyingGuy pms
+/ignore LoudPerson all 5m
+/ignore Troll messages 2h</pre>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-unignore">/unignore</.help_link>
+  · <.help_link topic="feature-ignore-list">Ignore List</.help_link>
+</p>

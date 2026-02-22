@@ -1,8 +1,0 @@
-<h3>/ignore</h3><p>Hide messages from a specific user. The ignored user is not notified — their messages are silently hidden from your view.</p><h4>Syntax</h4><pre>/ignore
-/ignore &lt;nickname&gt;
-/ignore &lt;nickname&gt; &lt;type&gt;
-/ignore &lt;nickname&gt; &lt;type&gt; &lt;duration&gt;</pre><h4>Parameters</h4><p><code>nickname</code> — The user to ignore.<br/><code>type</code> — What to block: <code>all</code> (default), <code>messages</code> (channel only), <code>pms</code> (private messages only), <code>actions</code> (/me messages only), <code>invites</code> (channel invites only).<br/><code>duration</code> — How long to ignore: e.g. <code>5m</code> (5 minutes), <code>2h</code> (2 hours), <code>1d</code> (1 day). No duration means permanent until you <code>/unignore</code>.</p><h4>How It Works</h4><p>Running <code>/ignore</code> with no arguments shows your current ignore list. When you ignore someone, their specified content types are silently hidden from your view. They receive no notification that they're being ignored. Timed ignores automatically expire after the specified duration.</p><h4>Rules &amp; Limits</h4><ul><li>Cannot ignore yourself</li><li>Duration must be a positive number</li><li>Ignore list persists for registered users</li></ul><h4>Examples</h4><pre>/ignore
-/ignore SpamBot
-/ignore AnnoyingGuy pms
-/ignore LoudPerson all 5m
-/ignore Troll messages 2h</pre><h4>See Also</h4><p><a href="#" data-help-topic="cmd-unignore">/unignore</a> · <a href="#" data-help-topic="feature-ignore-list">Ignore List</a></p>

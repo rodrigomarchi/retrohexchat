@@ -110,14 +110,14 @@ defmodule RetroHexChatWeb.Icons.Hardware do
         font-size="7"
         font-weight="bold"
         font-family="sans-serif"
-        fill="#fff"
+        fill="#000080"
       >
         #
       </text>
-      <line x1="7" y1="4" x2="14" y2="4" stroke="#fff" stroke-width="1" />
-      <line x1="7" y1="7" x2="14" y2="7" stroke="#fff" stroke-width="1" />
-      <line x1="2" y1="10" x2="14" y2="10" stroke="#fff" stroke-width="1" />
-      <line x1="2" y1="13" x2="14" y2="13" stroke="#fff" stroke-width="1" />
+      <line x1="7" y1="4" x2="14" y2="4" stroke="#555" stroke-width="1" />
+      <line x1="7" y1="7" x2="14" y2="7" stroke="#555" stroke-width="1" />
+      <line x1="2" y1="10" x2="14" y2="10" stroke="#555" stroke-width="1" />
+      <line x1="2" y1="13" x2="14" y2="13" stroke="#555" stroke-width="1" />
     </svg>
     """
   end
@@ -128,9 +128,9 @@ defmodule RetroHexChatWeb.Icons.Hardware do
   def icon_dialog_channel_central(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <polygon points="8,1 2,6 2,14 14,14 14,6" fill="none" stroke="#fff" stroke-width="1" />
+      <polygon points="8,1 2,6 2,14 14,14 14,6" fill="none" stroke="#555" stroke-width="1" />
       <polygon points="8,1 2,6 14,6" fill="#FF0000" />
-      <rect x="6" y="9" width="4" height="5" fill="#fff" />
+      <rect x="6" y="9" width="4" height="5" fill="#C0C0C0" stroke="#555" stroke-width="0.3" />
       <text
         x="8"
         y="7"

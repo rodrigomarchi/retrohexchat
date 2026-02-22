@@ -1,0 +1,36 @@
+<p>
+  Enter a chat channel to read and send messages. If the channel doesn't exist yet, it is created and you become its operator.
+</p>
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/join &lt;#channel&gt; [key]</pre>
+<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<p>
+  <code>#channel</code>
+  — Channel name (must start with #).<br /><code>key</code>
+  — Optional password if the channel requires one (+k mode).
+</p>
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its first operator (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection.
+</p>
+<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<ul>
+  <li>
+    Channel names must start with <code>#</code>, be at most 50 characters, and contain no spaces
+  </li>
+  <li>Maximum 10 channels at once</li>
+  <li>Cannot rejoin a channel you're already in</li>
+  <li>If the channel has +k mode, you must provide the correct key</li>
+  <li>If the channel has +i mode, you must be invited first</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/join #elixir
+/join #secret mykey
+/join #newchannel</pre>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-part">/part</.help_link>
+  · <.help_link topic="cmd-invite">/invite</.help_link>
+  · <.help_link topic="cmd-autojoin">/autojoin</.help_link>
+  · <.help_link topic="cmd-list">/list</.help_link>
+</p>

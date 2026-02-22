@@ -81,8 +81,8 @@ defmodule RetroHexChatWeb.Icons.Arrows do
   def icon_btn_reset(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M4 8a4.5 4.5 0 1 1 1 3" fill="none" stroke="#808080" stroke-width="1.5" />
-      <polygon points="2,9 5,11 5,7" fill="#808080" />
+      <path d="M4 8a4.5 4.5 0 1 1 1 3" fill="none" stroke="#555" stroke-width="1.5" />
+      <polygon points="2,9 5,11 5,7" fill="#555" />
     </svg>
     """
   end

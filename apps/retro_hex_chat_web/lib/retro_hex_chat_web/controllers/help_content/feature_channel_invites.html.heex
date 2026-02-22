@@ -1,0 +1,25 @@
+<p>
+  The channel invite system allows operators of invite-only (+i) channels to invite specific users to join. Invited users receive a Windows 98-style dialog with Join and Ignore options.
+</p>
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  1. An operator uses <code>/invite &lt;nickname&gt;</code>
+  to invite a user.<br />2. The invited user sees a popup dialog with the inviter's name and channel.<br />3. Clicking
+  <strong>Join</strong>
+  joins the channel. Clicking <strong>Ignore</strong>
+  dismisses the dialog.<br />4. Invitations expire after 5 minutes if not accepted.
+</p>
+<.help_h4 icon={:icon_dialog_invite}>Auto-Join on Invite</.help_h4>
+<p>
+  Users can enable auto-join with <code>/invite auto</code>. When enabled, incoming invitations are accepted automatically without showing a dialog. This is disabled by default for security.
+</p>
+<.help_h4 icon={:icon_checkmark}>Requirements</.help_h4>
+<p>
+  Only channel operators can send invites. The channel must have +i (invite-only) mode set. The target user must be online and not already in the channel.
+</p>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-invite">/invite Command</.help_link>
+  · <.help_link topic="mode-i">+i Invite Only</.help_link>
+  · <.help_link topic="feature-invite-exceptions">Invite Exceptions</.help_link>
+</p>

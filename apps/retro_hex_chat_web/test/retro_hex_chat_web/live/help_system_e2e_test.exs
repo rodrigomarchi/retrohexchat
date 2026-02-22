@@ -33,13 +33,6 @@ defmodule RetroHexChatWeb.HelpSystemE2ETest do
       assert html =~ "Enter a chat channel"
     end
 
-    test "search returns matching results", %{conn: conn} do
-      conn = get(conn, "/chat/help?q=format")
-      html = html_response(conn, 200)
-
-      assert html =~ "help-result-formatting-overview"
-    end
-
     test "cross-reference links use topic URLs", %{conn: conn} do
       conn = get(conn, "/chat/help?topic=welcome")
       html = html_response(conn, 200)

@@ -55,7 +55,9 @@
 .help-tree-link {
   text-decoration: none;
   color: inherit;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 4px;
   padding: 1px 4px;
 }
 
@@ -66,13 +68,6 @@
 
 /* Index links */
 .help-index-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-/* Search result links */
-.help-search-result-link {
   text-decoration: none;
   color: inherit;
   display: block;
@@ -173,11 +168,6 @@
   flex: 1;
 }
 
-.help-search-scroll {
-  overflow-y: auto;
-  flex: 1;
-}
-
 /* Empty state */
 .help-page-content .help-no-topic {
   color: var(--color-muted);
@@ -201,50 +191,60 @@
   padding: 1px 4px;
 }
 
-/* Search form */
-.help-search-row {
+/* Icons in help content */
+.help-icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.help-icon-14 {
+  width: 14px;
+  height: 14px;
+}
+
+.help-icon-24 {
+  width: 24px;
+  height: 24px;
+}
+
+/* Content header with icon */
+.help-content-header {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
-  padding: 4px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 4px;
 }
 
-.help-search-field {
-  flex: 1;
+.help-content-header h3 {
+  margin: 0;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
-.help-search-btn {
-  min-width: 40px;
+/* Section headings with icon */
+.help-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Search results */
-.help-search-result {
-  padding: 4px;
+/* Category summary icons */
+.tree-view summary {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.help-search-title {
-  font-weight: bold;
-  font-size: var(--text-sm);
-}
-
-.help-search-snippet {
-  font-size: var(--text-xs);
-  color: var(--color-muted);
-}
-
-.help-no-results {
-  padding: 8px;
-  color: var(--color-muted);
-  font-size: var(--text-sm);
-}
-
-/* Internal help links (data-help-topic) become real links on help page */
-.help-page-content a[data-help-topic] {
+/* Cross-reference topic links */
+.help-topic-link {
   color: var(--color-link);
   text-decoration: none;
   cursor: pointer;
 }
 
-.help-page-content a[data-help-topic]:hover {
+.help-topic-link:hover {
   text-decoration: underline;
 }

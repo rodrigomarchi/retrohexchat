@@ -115,13 +115,40 @@ defmodule RetroHexChatWeb.Icons.Files do
   def icon_dialog_cheatsheet(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="1" y="4" width="14" height="10" rx="1" fill="none" stroke="#fff" stroke-width="1" />
-      <rect x="3" y="6" width="3" height="2" rx="0.3" fill="#fff" />
-      <rect x="7" y="6" width="3" height="2" rx="0.3" fill="#fff" />
-      <rect x="11" y="6" width="2" height="2" rx="0.3" fill="#fff" />
-      <rect x="4" y="9" width="8" height="2" rx="0.3" fill="#fff" />
-      <rect x="2" y="9" width="1.5" height="2" rx="0.3" fill="#fff" />
-      <rect x="13" y="9" width="1.5" height="2" rx="0.3" fill="#fff" />
+      <rect x="1" y="4" width="14" height="10" rx="1" fill="none" stroke="#555" stroke-width="1" />
+      <rect x="3" y="6" width="3" height="2" rx="0.3" fill="#C0C0C0" stroke="#555" stroke-width="0.5" />
+      <rect x="7" y="6" width="3" height="2" rx="0.3" fill="#C0C0C0" stroke="#555" stroke-width="0.5" />
+      <rect
+        x="11"
+        y="6"
+        width="2"
+        height="2"
+        rx="0.3"
+        fill="#C0C0C0"
+        stroke="#555"
+        stroke-width="0.5"
+      />
+      <rect x="4" y="9" width="8" height="2" rx="0.3" fill="#C0C0C0" stroke="#555" stroke-width="0.5" />
+      <rect
+        x="2"
+        y="9"
+        width="1.5"
+        height="2"
+        rx="0.3"
+        fill="#C0C0C0"
+        stroke="#555"
+        stroke-width="0.5"
+      />
+      <rect
+        x="13"
+        y="9"
+        width="1.5"
+        height="2"
+        rx="0.3"
+        fill="#C0C0C0"
+        stroke="#555"
+        stroke-width="0.5"
+      />
     </svg>
     """
   end
@@ -132,7 +159,7 @@ defmodule RetroHexChatWeb.Icons.Files do
   def icon_dialog_delete(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <polygon points="8,1 15,14 1,14" fill="#FFD700" stroke="#fff" stroke-width="0.5" />
+      <polygon points="8,1 15,14 1,14" fill="#FFD700" stroke="#000" stroke-width="0.5" />
       <text
         x="8"
         y="13"
@@ -140,7 +167,7 @@ defmodule RetroHexChatWeb.Icons.Files do
         font-size="9"
         font-weight="bold"
         font-family="sans-serif"
-        fill="#fff"
+        fill="#000"
       >
         !
       </text>
@@ -154,11 +181,11 @@ defmodule RetroHexChatWeb.Icons.Files do
   def icon_dialog_log(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="3" y="1" width="10" height="14" rx="1" fill="none" stroke="#fff" stroke-width="1" />
-      <line x1="5" y1="4" x2="11" y2="4" stroke="#fff" stroke-width="0.8" />
-      <line x1="5" y1="6.5" x2="11" y2="6.5" stroke="#fff" stroke-width="0.8" />
-      <line x1="5" y1="9" x2="11" y2="9" stroke="#fff" stroke-width="0.8" />
-      <line x1="5" y1="11.5" x2="9" y2="11.5" stroke="#fff" stroke-width="0.8" />
+      <rect x="3" y="1" width="10" height="14" rx="1" fill="#fff" stroke="#555" stroke-width="1" />
+      <line x1="5" y1="4" x2="11" y2="4" stroke="#000080" stroke-width="0.8" />
+      <line x1="5" y1="6.5" x2="11" y2="6.5" stroke="#000080" stroke-width="0.8" />
+      <line x1="5" y1="9" x2="11" y2="9" stroke="#000080" stroke-width="0.8" />
+      <line x1="5" y1="11.5" x2="9" y2="11.5" stroke="#000080" stroke-width="0.8" />
     </svg>
     """
   end
@@ -169,11 +196,11 @@ defmodule RetroHexChatWeb.Icons.Files do
   def icon_dialog_paste(assigns) do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="3" y="3" width="10" height="12" rx="1" fill="none" stroke="#fff" stroke-width="1" />
-      <rect x="6" y="1" width="4" height="3" rx="0.5" fill="#fff" />
-      <line x1="5" y1="7" x2="11" y2="7" stroke="#fff" stroke-width="0.8" />
-      <line x1="5" y1="9.5" x2="11" y2="9.5" stroke="#fff" stroke-width="0.8" />
-      <line x1="5" y1="12" x2="9" y2="12" stroke="#fff" stroke-width="0.8" />
+      <rect x="3" y="3" width="10" height="12" rx="1" fill="#fff" stroke="#555" stroke-width="1" />
+      <rect x="6" y="1" width="4" height="3" rx="0.5" fill="#C0C0C0" stroke="#555" stroke-width="0.5" />
+      <line x1="5" y1="7" x2="11" y2="7" stroke="#000080" stroke-width="0.8" />
+      <line x1="5" y1="9.5" x2="11" y2="9.5" stroke="#000080" stroke-width="0.8" />
+      <line x1="5" y1="12" x2="9" y2="12" stroke="#000080" stroke-width="0.8" />
     </svg>
     """
   end
