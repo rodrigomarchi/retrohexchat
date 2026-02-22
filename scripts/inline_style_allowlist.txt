@@ -6,9 +6,8 @@
 # reason to remain inline (e.g., one-off values with no reuse pattern).
 # The snippet is matched as a substring of the trimmed line content.
 
-# Nicklist: nick_style/2 returns dynamic color from nick_color_fn assign
-# Matches 5 lines: style={nick_style(@nick_color_fn, user.nickname)}
-retro_hex_chat_web/components/nicklist.ex:style={nick_style(
+# Treebar: nick_style/2 returns dynamic color from nick_color_fn assign
+retro_hex_chat_web/components/treebar.ex:style={nick_style(
 
 # Highlight dialog: color_swatch_style/1 returns dynamic background-color by index
 retro_hex_chat_web/components/highlight_dialog.ex:style={color_swatch_style(
@@ -25,8 +24,8 @@ retro_hex_chat_web/components/notify_list_window.ex:style={notify_nick_style(
 # Highlight dialog: two clauses of color_swatch_style/1
 retro_hex_chat_web/components/highlight_dialog.ex:defp color_swatch_style(
 
-# Nicklist: two clauses of nick_style/2
-retro_hex_chat_web/components/nicklist.ex:defp nick_style(
+# Treebar: two clauses of nick_style/2
+retro_hex_chat_web/components/treebar.ex:defp nick_style(
 
 # Notify list: two clauses of notify_nick_style/2
 retro_hex_chat_web/components/notify_list_window.ex:defp notify_nick_style(

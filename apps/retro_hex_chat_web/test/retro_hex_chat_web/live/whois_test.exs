@@ -137,7 +137,7 @@ defmodule RetroHexChatWeb.WhoisTest do
       assert html =~ "OfflineUser12345 is not online"
     end
 
-    test "double-click on nicklist triggers PM (nicklist_dblclick)", %{conn: conn} do
+    test "double-click on user in treebar triggers PM (nicklist_dblclick)", %{conn: conn} do
       nick = "DblClk#{uid()}"
 
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
@@ -147,7 +147,7 @@ defmodule RetroHexChatWeb.WhoisTest do
 
       html = render(view)
 
-      # Double-click on nicklist now opens a PM — check for switch_pm link
+      # Double-click on user list opens a PM — check for switch_pm link
       assert html =~ "switch_pm"
     end
   end

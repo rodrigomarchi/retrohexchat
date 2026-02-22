@@ -268,16 +268,6 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       html = render_click(view, "toggle_treebar")
       assert html =~ ~s(class="treebar")
     end
-
-    test "toggle_nicklist toggles visibility", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "NickToggle"), "/chat")
-      html = render(view)
-      assert html =~ "nick-" or html =~ "Users"
-
-      html = render_click(view, "toggle_nicklist")
-      # After toggling off, nicklist should not be rendered
-      refute html =~ "nick-owner" and html =~ "nick-regular"
-    end
   end
 
   # ── about dialog ──────────────────────────────────────────
@@ -296,20 +286,20 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
   end
 
-  # ── F1: nicklist integration ────────────────────────────
+  # ── F1: user list integration ────────────────────────────
 
-  describe "nicklist integration" do
-    test "after mount in isolated channel, nicklist shows the user as owner", %{conn: conn} do
+  describe "user list integration" do
+    test "after mount in isolated channel, treebar shows the user as owner", %{conn: conn} do
       ensure_channel("#nick_iso1")
       {:ok, view, _html} = live(chat_conn(conn, "NickOp"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso1"})
       html = render(view)
       assert html =~ "nick-owner"
       assert html =~ "NickOp"
-      assert html =~ "Users (1)"
+      assert html =~ "(1)"
     end
 
-    test "after second user joins via PubSub, nicklist updates", %{conn: conn} do
+    test "after second user joins via PubSub, user list updates", %{conn: conn} do
       ensure_channel("#nick_iso2")
       {:ok, view, _html} = live(chat_conn(conn, "NickHost"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso2"})
@@ -318,22 +308,22 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       html = render(view)
       assert html =~ "NickHost"
       assert html =~ "NickGuest"
-      assert html =~ "Users (2)"
+      assert html =~ "(2)"
     end
 
-    test "after user_left PubSub, user removed from nicklist", %{conn: conn} do
+    test "after user_left PubSub, user removed from list", %{conn: conn} do
       ensure_channel("#nick_iso3")
       {:ok, view, _html} = live(chat_conn(conn, "NickStay"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso3"})
 
       send(view.pid, {:user_joined, %{nickname: "NickLeave", role: :regular}})
       html = render(view)
-      assert html =~ "Users (2)"
+      assert html =~ "(2)"
       assert html =~ "nick-regular"
 
       send(view.pid, {:user_left, %{nickname: "NickLeave", reason: nil}})
       html = render(view)
-      assert html =~ "Users (1)"
+      assert html =~ "(1)"
       refute html =~ "nick-regular"
     end
 
@@ -342,14 +332,14 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       {:ok, view, _html} = live(chat_conn(conn, "CountUser"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso4"})
       html = render(view)
-      assert html =~ "Users: 1"
+      assert html =~ "(1)"
 
       send(view.pid, {:user_joined, %{nickname: "CountGuest", role: :regular}})
       html = render(view)
-      assert html =~ "Users: 2"
+      assert html =~ "(2)"
     end
 
-    test "switching channel reloads nicklist for new channel", %{conn: conn} do
+    test "switching channel reloads user list for new channel", %{conn: conn} do
       ensure_channel("#nick_ch2")
       {:ok, view, _html} = live(chat_conn(conn, "NickSwitch"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_ch2"})
@@ -360,11 +350,11 @@ defmodule RetroHexChatWeb.ChatLiveTest do
         |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
         |> render_click()
 
-      # Should show the user in #lobby's nicklist
+      # Should show the user in #lobby's user list
       assert html =~ "NickSwitch"
     end
 
-    test "switching to PM hides nicklist", %{conn: conn} do
+    test "switching to PM hides user list", %{conn: conn} do
       ensure_channel("#nick_iso5")
       {:ok, view, _html} = live(chat_conn(conn, "NickPm"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso5"})
@@ -373,7 +363,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       refute html =~ "nick-owner"
     end
 
-    test "user_kicked removes user from nicklist", %{conn: conn} do
+    test "user_kicked removes user from user list", %{conn: conn} do
       ensure_channel("#nick_iso6")
       {:ok, view, _html} = live(chat_conn(conn, "KickHost"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #nick_iso6"})
@@ -381,11 +371,11 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       send(view.pid, {:user_joined, %{nickname: "KickTarget", role: :regular}})
       html = render(view)
       assert html =~ "nick-regular"
-      assert html =~ "Users (2)"
+      assert html =~ "(2)"
 
       send(view.pid, {:user_kicked, %{operator: "KickHost", target: "KickTarget", reason: nil}})
       html = render(view)
-      assert html =~ "Users (1)"
+      assert html =~ "(1)"
       refute html =~ "nick-regular"
     end
   end
@@ -511,10 +501,10 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
   end
 
-  # ── B3: mode_changed updates nicklist ───────────────────
+  # ── B3: mode_changed updates user list ───────────────────
 
-  describe "mode_changed nicklist update" do
-    test "mode_changed +o updates user role to operator in nicklist", %{conn: conn} do
+  describe "mode_changed user list update" do
+    test "mode_changed +o updates user role to operator in user list", %{conn: conn} do
       ensure_channel("#mode_op")
       {:ok, view, _html} = live(chat_conn(conn, "ModeHost"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mode_op"})
@@ -536,7 +526,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       assert html =~ "nick-operator"
     end
 
-    test "mode_changed +v updates user role to voiced in nicklist", %{conn: conn} do
+    test "mode_changed +v updates user role to voiced in user list", %{conn: conn} do
       ensure_channel("#mode_voice")
       {:ok, view, _html} = live(chat_conn(conn, "VoiceHost"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mode_voice"})
@@ -555,7 +545,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       assert html =~ "nick-voiced"
     end
 
-    test "mode_changed -o removes operator status in nicklist", %{conn: conn} do
+    test "mode_changed -o removes operator status in user list", %{conn: conn} do
       ensure_channel("#mode_deop")
       {:ok, view, _html} = live(chat_conn(conn, "DeopHost"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #mode_deop"})
@@ -1617,7 +1607,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       render_click(view, "nick_right_click", %{"nick" => "PmFriend", "x" => 0, "y" => 0})
       render_click(view, "context_query", %{"nick" => "PmFriend"})
 
-      # Verify we're in PM view (no nicklist)
+      # Verify we're in PM view (no user list in treebar)
       html = render(view)
       refute html =~ "nick-owner"
 
@@ -1627,7 +1617,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
         |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#pm_back"]))
         |> render_click()
 
-      # Channel view restored: nicklist visible, user shown as owner
+      # Channel view restored: user list visible, user shown as owner
       assert html =~ "nick-owner"
       assert html =~ "PmBack"
     end
@@ -1694,16 +1684,16 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   # ── R5: context_ban success ────────────────────────────────
 
   describe "context_ban success" do
-    test "operator banning removes user from nicklist", %{conn: conn} do
+    test "operator banning removes user from user list", %{conn: conn} do
       ensure_channel("#ctx_ban_ok")
       {:ok, view, _html} = live(chat_conn(conn, "BanOper"), "/chat")
       view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #ctx_ban_ok"})
 
-      # Add a regular user to nicklist
+      # Add a regular user to user list
       send(view.pid, {:user_joined, %{nickname: "BanTarget", role: :regular}})
       html = render(view)
       assert html =~ "BanTarget"
-      assert html =~ "Users (2)"
+      assert html =~ "(2)"
 
       # Ban via context menu (BanOper is operator as first user)
       render_click(view, "nick_right_click", %{"nick" => "BanTarget", "x" => 0, "y" => 0})
@@ -1834,7 +1824,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
     end
   end
 
-  # ── R6: -v mode update in nicklist ────────────────────────
+  # ── R6: -v mode update in user list ────────────────────────
 
   describe "mode_changed -v" do
     test "-v removes voiced role and resets to regular", %{conn: conn} do
@@ -2696,12 +2686,12 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
   # ── empty states ───────────────────────────────────────
 
-  describe "empty nicklist state" do
-    test "nicklist renders without empty state when users are present", %{conn: conn} do
+  describe "user list in treebar" do
+    test "user list renders in treebar when users are present", %{conn: conn} do
       {:ok, _view, html} = live(chat_conn(conn, "NickUser"), "/chat")
-      # User auto-joins #lobby — nicklist renders with user count
-      assert html =~ "nicklist"
-      refute html =~ "nicklist-empty-state"
+      # User auto-joins #lobby — treebar renders with user list
+      assert html =~ "treebar-users"
+      assert html =~ "NickUser"
     end
   end
 

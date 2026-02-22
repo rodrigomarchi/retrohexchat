@@ -42,6 +42,7 @@
         nickname={@session.nickname}
         channel={@session.active_pm || @session.active_channel}
         user_count={length(@channel_users)}
+        tab_type={if @session.active_pm, do: :pm, else: :channel}
         connection_state={@connection_state}
         lag_ms={@lag_ms}
         lag_status={@lag_status}
@@ -64,6 +65,8 @@
       }
       pm_conversations={@session.pm_conversations}
       active_pm={@session.active_pm}
+      channel_users={if !@session.active_pm && !@show_status_tab, do: @channel_users, else: []}
+      nick_color_fn={@nick_color_fn}
     />
 
     <div class="chat-area" style="position: relative;">
@@ -346,12 +349,6 @@
         <RetroHexChatWeb.Components.HistorySearch.history_search />
       </div>
     </div>
-
-    <RetroHexChatWeb.Components.Nicklist.nicklist
-      :if={@show_nicklist && !@session.active_pm && !@show_status_tab}
-      users={@channel_users}
-      nick_color_fn={@nick_color_fn}
-    />
   </div>
 
   <div class="status-bar app-footer">

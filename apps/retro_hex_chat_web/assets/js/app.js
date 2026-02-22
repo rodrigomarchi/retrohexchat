@@ -14,7 +14,6 @@ import EmojiPickerHook from "./hooks/emoji_picker_hook";
 import FormatToolbarHook from "./hooks/format_toolbar_hook";
 import KeyboardHook from "./hooks/keyboard_hook";
 import LagHook from "./hooks/lag_hook";
-import NicklistHook from "./hooks/nicklist_hook";
 import NotifyListHook from "./hooks/notify_list_hook";
 import PasteHook from "./hooks/paste_hook";
 import ReconnectHook from "./hooks/reconnect_hook";
@@ -23,6 +22,7 @@ import SearchHighlightHook from "./hooks/search_highlight_hook";
 import ShortcutDispatcherHook from "./hooks/shortcut_dispatcher_hook";
 import SoundHook from "./hooks/sound_hook";
 import TitleFlashHook from "./hooks/title_flash_hook";
+import ToolbarGroupHook from "./hooks/toolbar_group_hook";
 import TreebarHook from "./hooks/treebar_hook";
 import ContextualTipsHook from "./hooks/contextual_tips_hook";
 import NotificationDispatcherHook from "./hooks/notification_dispatcher_hook";
@@ -58,7 +58,6 @@ const Hooks = {
   MediaHook: MediaHook,
   MessageInteractionsHook: MessageInteractionsHook,
   NickChangeFormHook: NickChangeFormHook,
-  NicklistHook: NicklistHook,
   P2PCapabilityHook: P2PCapabilityHook,
   P2PSessionHook: P2PSessionHook,
   NotificationDispatcherHook: NotificationDispatcherHook,
@@ -70,6 +69,7 @@ const Hooks = {
   ShortcutDispatcherHook: ShortcutDispatcherHook,
   SoundHook: SoundHook,
   TitleFlashHook: TitleFlashHook,
+  ToolbarGroupHook: ToolbarGroupHook,
   TreebarHook: TreebarHook,
   URLCatcherHook: URLCatcherHook,
   WebRTCHook: WebRTCHook,

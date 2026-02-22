@@ -186,4 +186,42 @@ defmodule RetroHexChatWeb.Icons.Alerts do
     </svg>
     """
   end
+
+  attr :class, :string, default: nil
+
+  @spec icon_group_notifications(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_group_notifications(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path
+        d="M8 1a1 1 0 0 1 1 1v1a4 4 0 0 1 3 3.87V10l1.5 1.5H2.5L4 10V6.87A4 4 0 0 1 7 3V2a1 1 0 0 1 1-1z"
+        fill="#FFD700"
+        stroke="#000"
+        stroke-width="0.5"
+      />
+      <path d="M6.5 13a1.5 1.5 0 0 0 3 0h-3z" fill="#FFD700" stroke="#000" stroke-width="0.5" />
+      <circle cx="12" cy="4" r="3" fill="#FF0000" />
+      <text x="12" y="6" text-anchor="middle" font-size="5" font-weight="bold" fill="#fff">!</text>
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_group_help(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_group_help(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="8" cy="8" r="7" fill="#000080" />
+      <path
+        d="M6 5.5c0-1.4 1-2 2-2s2 .6 2 2c0 1-1 1.5-1.5 2L8 8.5"
+        fill="none"
+        stroke="#fff"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <circle cx="8" cy="11.5" r="1" fill="#fff" />
+    </svg>
+    """
+  end
 end

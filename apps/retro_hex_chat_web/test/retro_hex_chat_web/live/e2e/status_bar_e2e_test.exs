@@ -8,20 +8,20 @@ defmodule RetroHexChatWeb.StatusBarE2ETest do
   @moduletag :e2e
 
   describe "Status Bar E2E" do
-    test "renders three-section status bar on chat page", %{conn: conn} do
+    test "renders status bar with channel and connection on chat page", %{conn: conn} do
       nick = "SB1#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
       assert html =~ "data-testid=\"status-channel\""
       assert html =~ "data-testid=\"status-connection\""
-      assert html =~ "data-testid=\"status-right\""
+      assert html =~ "data-testid=\"status-lag\""
     end
 
     test "shows connected state by default", %{conn: conn} do
       nick = "SB2#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
-      assert html =~ "Connected"
+      assert html =~ "● On"
       assert html =~ "status-bar-connection--connected"
     end
 
@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.StatusBarE2ETest do
 
       # Sending a ping event should not crash
       html = render_click(view, "ping", %{"client_time" => 1_000_000})
-      assert html =~ "Connected"
+      assert html =~ "● On"
     end
 
     test "lag_update event updates lag display", %{conn: conn} do

@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.StatusBarTest do
     nickname: "alice",
     channel: "#general",
     user_count: 15,
+    tab_type: :channel,
     connection_state: :connected,
     lag_ms: nil,
     lag_status: :normal,
@@ -28,7 +29,7 @@ defmodule RetroHexChatWeb.Components.StatusBarTest do
       assert html =~ ~s(data-testid="status-channel")
       assert html =~ "#general"
       assert html =~ ~s(data-testid="status-users")
-      assert html =~ "Users: 15"
+      assert html =~ "(15)"
     end
 
     test "displays 'No channel' when channel is nil" do
@@ -38,32 +39,51 @@ defmodule RetroHexChatWeb.Components.StatusBarTest do
 
     test "displays user count of zero" do
       html = render_status_bar(%{user_count: 0})
-      assert html =~ "Users: 0"
+      assert html =~ "(0)"
+    end
+  end
+
+  describe "status_bar/1 PM tab" do
+    test "hides user count for PM tab" do
+      html = render_status_bar(%{tab_type: :pm, channel: "DoeJoe"})
+      refute html =~ ~s(data-testid="status-users")
+    end
+
+    test "displays PM nickname in channel field" do
+      html = render_status_bar(%{tab_type: :pm, channel: "DoeJoe"})
+      assert html =~ ~s(data-testid="status-channel")
+      assert html =~ "DoeJoe"
+    end
+
+    test "channel tab shows user count" do
+      html = render_status_bar(%{tab_type: :channel, channel: "#general", user_count: 5})
+      assert html =~ ~s(data-testid="status-users")
+      assert html =~ "(5)"
     end
   end
 
   describe "status_bar/1 connection state" do
     test "shows connected state" do
       html = render_status_bar(%{connection_state: :connected})
-      assert html =~ "Connected"
+      assert html =~ "● On"
       assert html =~ "status-bar-connection--connected"
     end
 
     test "shows connecting state" do
       html = render_status_bar(%{connection_state: :connecting})
-      assert html =~ "Connecting..."
+      assert html =~ "◌ ..."
       assert html =~ "status-bar-connection--connecting"
     end
 
     test "shows disconnected state" do
       html = render_status_bar(%{connection_state: :disconnected})
-      assert html =~ "Disconnected"
+      assert html =~ "● Off"
       assert html =~ "status-bar-connection--disconnected"
     end
 
     test "shows reconnecting state" do
       html = render_status_bar(%{connection_state: :reconnecting})
-      assert html =~ "Reconnecting..."
+      assert html =~ "↻ ..."
       assert html =~ "status-bar-connection--reconnecting"
     end
   end
@@ -139,11 +159,9 @@ defmodule RetroHexChatWeb.Components.StatusBarTest do
   end
 
   describe "status_bar/1 layout" do
-    test "renders three sections" do
+    test "renders single left section with all items" do
       html = render_status_bar()
       assert html =~ "status-bar-section--left"
-      assert html =~ "status-bar-section--center"
-      assert html =~ "status-bar-section--right"
     end
 
     test "lag display has LagHook" do

@@ -170,4 +170,32 @@ defmodule RetroHexChatWeb.Icons.Tools do
     </svg>
     """
   end
+
+  attr :class, :string, default: nil
+
+  @spec icon_group_view(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_group_view(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M1 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z" fill="none" stroke="#000080" stroke-width="1.5" />
+      <circle cx="8" cy="8" r="2.5" fill="#000080" />
+      <circle cx="8" cy="8" r="1" fill="#fff" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_group_tools(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_group_tools(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1" y="5" width="14" height="10" rx="1" fill="#555" stroke="#000" stroke-width="0.5" />
+      <rect x="2" y="6" width="12" height="3" fill="#808080" />
+      <rect x="5" y="3" width="6" height="3" rx="0.5" fill="none" stroke="#000" stroke-width="1" />
+      <rect x="4" y="10" width="3" height="2" fill="#FFD700" />
+      <rect x="9" y="10" width="3" height="2" fill="#FF0000" />
+    </svg>
+    """
+  end
 end

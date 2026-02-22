@@ -104,24 +104,24 @@ defmodule RetroHexChatWeb.E2ETest do
   # ══════════════════════════════════════════════════════════════
 
   describe "Screen 2: ChatLive layout and connection" do
-    test "2.1 mount shows complete layout (treebar, chat, nicklist, status, menu, toolbar)", %{
+    test "2.1 mount shows complete layout (treebar, chat, status, toolbar)", %{
       conn: conn
     } do
       {:ok, _view, html} = live(chat_conn(conn, "LayoutUser"), "/chat")
       assert html =~ "treebar"
       assert html =~ "chat-area"
-      assert html =~ "nicklist"
+      assert html =~ "treebar-users"
       assert html =~ "status-bar"
       assert html =~ "toolbar"
     end
 
-    test "2.2 auto-join #lobby, user appears in nicklist", %{conn: conn} do
+    test "2.2 auto-join #lobby, user appears in treebar user list", %{conn: conn} do
       {:ok, _view, html} = live(chat_conn(conn, "LobbyJoin"), "/chat")
       assert html =~ "#lobby"
       assert html =~ "LobbyJoin"
     end
 
-    test "2.3 status bar shows nick, channel, user count, Connected", %{conn: conn} do
+    test "2.3 status bar shows nick, channel, user count, connection", %{conn: conn} do
       {:ok, _view, html} = live(chat_conn(conn, "StatusChk"), "/chat")
       assert html =~ ~s(data-testid="status-nick")
       assert html =~ "StatusChk"
@@ -129,7 +129,7 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ "#lobby"
       assert html =~ ~s(data-testid="status-users")
       assert html =~ ~s(data-testid="status-connection")
-      assert html =~ "Connected"
+      assert html =~ "● On"
     end
 
     test "2.4 mount without nickname redirects to /", %{conn: conn} do
@@ -548,7 +548,7 @@ defmodule RetroHexChatWeb.E2ETest do
       render_click(view, "nick_right_click", %{"nick" => "OpRecv", "x" => 0, "y" => 0})
       render_click(view, "context_op", %{"nick" => "OpRecv"})
 
-      # Mode change broadcast should update nicklist
+      # Mode change broadcast should update user list
       Process.sleep(50)
       html = render(view)
       assert html =~ "nick-operator" or html =~ "nick-owner"
@@ -598,7 +598,7 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ "chat-error" or html =~ "operator"
     end
 
-    test "6.9 kicked user removed from nicklist", %{conn: conn} do
+    test "6.9 kicked user removed from user list", %{conn: conn} do
       ch = unique_channel("kickremove")
       ensure_channel(ch)
       {:ok, view, _html} = live(chat_conn(conn, "KickRmOp"), "/chat")
@@ -619,20 +619,19 @@ defmodule RetroHexChatWeb.E2ETest do
   end
 
   # ══════════════════════════════════════════════════════════════
-  # Screen 7: Nicklist
+  # Screen 7: User List (in treebar)
   # ══════════════════════════════════════════════════════════════
 
-  describe "Screen 7: Nicklist" do
-    test "7.1 nicklist shows group headers and hides empty groups", %{conn: conn} do
+  describe "Screen 7: User List" do
+    test "7.1 user list shows role icons under active channel", %{conn: conn} do
       ch = unique_channel("nickgrp")
       ensure_channel(ch)
       {:ok, view, _html} = live(chat_conn(conn, "NickGrp"), "/chat")
       send_command(view, "/join #{ch}")
       html = render(view)
-      # User is owner (first to join) — Owners group visible
-      assert html =~ "nicklist-group-header"
-      assert html =~ "Owners ("
-      # Empty groups are hidden — verified by unit tests in nicklist_test.exs
+      # User is owner (first to join) — role icon visible in treebar
+      assert html =~ "nick-owner"
+      assert html =~ "treebar-users"
     end
 
     test "7.2 prefixes: @ for op, + for voiced", %{conn: conn} do
@@ -691,11 +690,12 @@ defmodule RetroHexChatWeb.E2ETest do
       {:ok, view, _html} = live(chat_conn(conn, "CountE2E"), "/chat")
       send_command(view, "/join #{ch}")
       html = render(view)
-      assert html =~ "Users (1)"
+      # User count shown in treebar next to channel name
+      assert html =~ "(1)"
 
       send(view.pid, {:user_joined, %{nickname: "CountGuest", role: :regular}})
       html = render(view)
-      assert html =~ "Users (2)"
+      assert html =~ "(2)"
     end
 
     test "7.8 /whois sets whois assigns without crashing", %{conn: conn} do
@@ -744,25 +744,25 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ "tree-active"
     end
 
-    test "8.4 nicklist hides during PM, shows in channel", %{conn: conn} do
+    test "8.4 user list hides during PM, shows in channel", %{conn: conn} do
       ch = unique_channel("pmnick")
       ensure_channel(ch)
       {:ok, view, _html} = live(chat_conn(conn, "PmNick"), "/chat")
       send_command(view, "/join #{ch}")
 
-      # Open PM — nicklist should hide
+      # Open PM — user list should hide (no treebar-users)
       render_click(view, "nick_right_click", %{"nick" => "pmpal", "x" => 0, "y" => 0})
       render_click(view, "context_query", %{"nick" => "pmpal"})
       html = render(view)
-      refute html =~ "sidebar-tab-bar--right"
+      refute html =~ "treebar-users"
 
-      # Switch back to channel — nicklist should show
+      # Switch back to channel — user list should show
       html =
         view
         |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#{ch}"]))
         |> render_click()
 
-      assert html =~ "nicklist"
+      assert html =~ "treebar-users"
     end
 
     test "8.5 unread indicator for PM", %{conn: conn} do
@@ -1313,15 +1313,10 @@ defmodule RetroHexChatWeb.E2ETest do
       assert html =~ ~s(class="treebar")
     end
 
-    test "15.2 toggle nicklist hides/shows", %{conn: conn} do
-      {:ok, view, html} = live(chat_conn(conn, "NickTgl"), "/chat")
-      assert html =~ "nicklist"
-
-      html = render_click(view, "toggle_nicklist")
-      refute html =~ "sidebar-tab-bar--right"
-
-      html = render_click(view, "toggle_nicklist")
-      assert html =~ "nicklist"
+    test "15.2 treebar shows user list under active channel", %{conn: conn} do
+      {:ok, _view, html} = live(chat_conn(conn, "NickTgl"), "/chat")
+      assert html =~ "treebar-users"
+      assert html =~ "NickTgl"
     end
 
     test "15.3 show about opens dialog", %{conn: conn} do

@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.StatusBar do
   attr :nickname, :string, required: true
   attr :channel, :string, default: nil
   attr :user_count, :integer, default: 0
+  attr :tab_type, :atom, default: :channel
   attr :connection_state, :atom, default: :connected
   attr :lag_ms, :integer, default: nil
   attr :lag_status, :atom, default: :normal
@@ -22,19 +23,18 @@ defmodule RetroHexChatWeb.Components.StatusBar do
         <Icons.icon_status_user class="status-bar-icon" />
         <span data-testid="status-nick">{@nickname}</span>
         <span class="status-bar-separator">|</span>
-        <Icons.icon_tab_channel class="status-bar-icon" />
+        <Icons.icon_tab_channel :if={@tab_type == :channel} class="status-bar-icon" />
+        <Icons.icon_tab_pm :if={@tab_type == :pm} class="status-bar-icon" />
         <span data-testid="status-channel">{@channel || "No channel"}</span>
+        <span :if={@tab_type == :channel} data-testid="status-users">({@user_count})</span>
         <span class="status-bar-separator">|</span>
-        <Icons.icon_community class="status-bar-icon" />
-        <span data-testid="status-users">Users: {@user_count}</span>
-      </p>
-      <p
-        class={"status-bar-field status-bar-section--center status-bar-connection--#{@connection_state}"}
-        data-testid="status-connection"
-      >
-        {connection_indicator(@connection_state)} {connection_text(@connection_state)}
-      </p>
-      <p class="status-bar-field status-bar-section--right" data-testid="status-right">
+        <span
+          class={"status-bar-connection--#{@connection_state}"}
+          data-testid="status-connection"
+        >
+          {connection_indicator(@connection_state)} {connection_text(@connection_state)}
+        </span>
+        <span class="status-bar-separator">|</span>
         <Icons.icon_status_signal class="status-bar-icon" />
         <span
           id="lag-display"
@@ -69,11 +69,11 @@ defmodule RetroHexChatWeb.Components.StatusBar do
   defp connection_indicator(_), do: "●"
 
   @spec connection_text(atom()) :: String.t()
-  defp connection_text(:connected), do: "Connected"
-  defp connection_text(:connecting), do: "Connecting..."
-  defp connection_text(:disconnected), do: "Disconnected"
-  defp connection_text(:reconnecting), do: "Reconnecting..."
-  defp connection_text(_), do: "Connected"
+  defp connection_text(:connected), do: "On"
+  defp connection_text(:connecting), do: "..."
+  defp connection_text(:disconnected), do: "Off"
+  defp connection_text(:reconnecting), do: "..."
+  defp connection_text(_), do: "On"
 
   @spec lag_text(non_neg_integer() | nil, atom()) :: String.t()
   defp lag_text(nil, :timeout), do: "?"

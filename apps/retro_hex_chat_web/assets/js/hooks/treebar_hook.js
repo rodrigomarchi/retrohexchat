@@ -1,6 +1,6 @@
 /**
  * LiveView hook for treebar channel right-click context menu,
- * feedback toasts (server → client), and channel join flash.
+ * nick double-click → PM, feedback toasts, and channel join flash.
  */
 import { findClosestWithData } from "../lib/dom.js";
 import { showFeedbackToast } from "../lib/feedback_toast.js";
@@ -16,6 +16,14 @@ const TreebarHook = {
           x: e.clientX,
           y: e.clientY,
         });
+      }
+    });
+
+    // Double-click on nick in user list → open PM
+    this.el.addEventListener("dblclick", (e) => {
+      const nick = findClosestWithData(e.target, "li[data-nick]", "nick");
+      if (nick) {
+        this.pushEvent("nicklist_dblclick", { nick });
       }
     });
 

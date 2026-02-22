@@ -81,7 +81,7 @@ body {
   flex-shrink: 0;
 }
 
-/* MDI layout: treebar | chat+input | nicklist */
+/* MDI layout: treebar | chat+input */
 .mdi-layout {
   display: flex;
   flex: 1;
@@ -90,10 +90,10 @@ body {
   padding: 0 6px;
 }
 
-/* Treebar - sunken panel */
+/* Treebar - sunken panel (channels + inline user list) */
 .treebar {
-  width: 160px;
-  min-width: 120px;
+  width: 220px;
+  min-width: 180px;
   overflow-y: auto;
   flex-shrink: 0;
   background-color: var(--color-white, #fff);

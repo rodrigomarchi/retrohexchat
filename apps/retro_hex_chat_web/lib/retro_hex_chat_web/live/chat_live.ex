@@ -210,7 +210,6 @@ defmodule RetroHexChatWeb.ChatLive do
       address_book_tab: "contacts",
       show_nick_color_add_dialog: false,
       show_nick_color_edit_dialog: false,
-      show_nicklist: true,
       show_status_tab: false,
       status_unread: false,
       show_notify_add_dialog: false,

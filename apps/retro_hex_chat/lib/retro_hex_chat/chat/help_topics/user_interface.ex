@@ -39,9 +39,9 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
       },
       %{
         id: "ui-nicklist",
-        title: "Nicklist",
+        title: "User List",
         category: "User Interface",
-        keywords: ["nicklist", "user list", "nick list", "users", "right pane"],
+        keywords: ["nicklist", "user list", "nick list", "users", "treebar users"],
         content: File.read!(Path.join(@help_dir, "ui-nicklist.html"))
       },
       %{

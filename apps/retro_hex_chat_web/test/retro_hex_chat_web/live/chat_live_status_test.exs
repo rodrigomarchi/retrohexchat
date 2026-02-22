@@ -67,18 +67,18 @@ defmodule RetroHexChatWeb.ChatLiveStatusTest do
                ~s(id="chat-messages" phx-update="stream" phx-hook="ScrollHook" style="display: none;")
     end
 
-    test "nicklist hidden on status tab", %{conn: conn} do
+    test "user list hidden on status tab", %{conn: conn} do
       unique = uid()
       {:ok, view, _html} = live(chat_conn(conn, "StNick#{unique}"), "/chat")
 
-      # Nicklist should be visible initially
+      # User list should be visible initially in treebar
       html = render(view)
-      assert html =~ "nicklist"
+      assert html =~ "treebar-users"
 
-      # Switch to status tab — nicklist should be hidden
+      # Switch to status tab — user list should be hidden
       render_click(view, "switch_to_status")
       html = render(view)
-      refute html =~ "nicklist-list"
+      refute html =~ "treebar-users"
     end
 
     test "plain text on status tab shows error", %{conn: conn} do

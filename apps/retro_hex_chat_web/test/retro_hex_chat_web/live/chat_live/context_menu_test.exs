@@ -659,12 +659,12 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuTest do
       assert html =~ ~s(id="treebar-context-menu")
     end
 
-    test "nicklist context menu has shortcut hints", %{conn: conn, channel: channel} do
+    test "user context menu has shortcut hints", %{conn: conn, channel: channel} do
       nick = "CtxHk3#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
-      # The nicklist context menu is opened via nick_right_click event
+      # The user context menu is opened via nick_right_click event
       render_click(view, "nick_right_click", %{
         "nick" => "SomeUser",
         "x" => 100,

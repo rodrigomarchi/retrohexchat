@@ -1,5 +1,5 @@
 /* Empty state placeholders — shared base styles for containers with no content.
-   Used by channel messages, nicklist, treebar, and URL catcher. */
+   Used by channel messages, treebar, and URL catcher. */
 
 .empty-state {
   display: flex;
@@ -21,10 +21,6 @@
 }
 
 /* Component-specific empty states — extend .empty-state for per-container tweaks */
-.nicklist-empty-state {
-  padding: var(--space-8);
-}
-
 .treebar-empty-state {
   padding: var(--space-8);
 }

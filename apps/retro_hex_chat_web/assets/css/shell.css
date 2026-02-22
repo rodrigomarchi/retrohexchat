@@ -6,28 +6,13 @@
   font-size: var(--text-sm);
 }
 
-/* ── Status bar 3-section layout ── */
+/* ── Status bar single-row layout ── */
 .status-bar-section--left {
   flex: 1 1 auto;
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.status-bar-section--center {
-  flex: 0 0 auto;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.status-bar-section--right {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 4px;
   white-space: nowrap;
 }
 
@@ -108,6 +93,72 @@
   width: 20px;
   height: 20px;
   flex-shrink: 0;
+}
+
+/* ── Toolbar Groups ────────────────────────────────────── */
+.toolbar-group {
+  position: relative;
+  display: inline-flex;
+}
+
+.toolbar-group-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.toolbar-group-toggle {
+  width: auto;
+  min-width: 30px;
+  padding: 0 3px;
+  gap: 1px;
+}
+
+.toolbar-group-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  flex-direction: column;
+  min-width: 170px;
+  padding: 2px;
+  background: var(--color-surface);
+  border: 2px outset var(--color-gray-200);
+  z-index: var(--z-dropdown);
+}
+
+.toolbar-group-dropdown:not(.u-hidden) {
+  display: flex;
+}
+
+.toolbar-group-dropdown .toolbar-btn {
+  width: 100%;
+  min-width: auto;
+  justify-content: flex-start;
+  gap: 6px;
+  height: auto;
+  padding: 3px 6px;
+  border: 1px solid transparent;
+}
+
+.toolbar-group-dropdown .toolbar-btn:hover {
+  background-color: var(--color-link);
+  color: #fff;
+  border-color: transparent;
+}
+
+.toolbar-group-dropdown .toolbar-btn:hover .toolbar-group-label {
+  color: #fff;
+}
+
+.toolbar-group-dropdown .toolbar-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.toolbar-group-label {
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  color: #222;
 }
 
 /* ── Mute Toggle ────────────────────────────────────────── */

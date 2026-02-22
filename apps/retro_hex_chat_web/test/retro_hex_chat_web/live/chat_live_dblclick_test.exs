@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.ChatLiveDblclickTest do
     {:ok, conn: conn, channel: channel}
   end
 
-  describe "US2: Nicklist double-click → PM" do
+  describe "US2: User double-click → PM" do
     test "nicklist_dblclick with online nick opens PM conversation", %{
       conn: conn,
       channel: channel
@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.ChatLiveDblclickTest do
       {:ok, _view2, _} = live(chat_conn(conn, nick2), "/chat")
       join_channel(view1, channel)
 
-      # Simulate nicklist double-click event
+      # Simulate user double-click event from treebar
       render_click(view1, "nicklist_dblclick", %{"nick" => nick2})
       html = render(view1)
 

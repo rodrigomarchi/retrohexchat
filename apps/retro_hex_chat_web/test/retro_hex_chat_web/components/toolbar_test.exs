@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
     render_component(&Toolbar.toolbar/1, assigns)
   end
 
-  describe "connection group" do
+  describe "connection group (solo, no dropdown)" do
     test "shows Disconnect when connected" do
       html = render_toolbar(connected: true)
       assert html =~ ~s(data-testid="toolbar-disconnect")
@@ -27,6 +27,34 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
       html = render_toolbar(connected: false)
       assert html =~ ~s(data-testid="toolbar-connect")
       refute html =~ ~s(data-testid="toolbar-disconnect")
+    end
+  end
+
+  describe "group structure" do
+    test "renders toolbar-group wrappers for each group" do
+      html = render_toolbar()
+      assert html =~ ~s(class="toolbar-group")
+    end
+
+    test "renders group toggle buttons with data-toolbar-group" do
+      html = render_toolbar()
+      assert html =~ ~s(data-toolbar-group="view")
+      assert html =~ ~s(data-toolbar-group="tools")
+      assert html =~ ~s(data-toolbar-group="notifications")
+      assert html =~ ~s(data-toolbar-group="help")
+    end
+
+    test "renders toolbar-group-dropdown containers" do
+      html = render_toolbar()
+      assert html =~ ~s(class="toolbar-group-dropdown u-hidden")
+    end
+
+    test "renders group toggle test ids" do
+      html = render_toolbar()
+      assert html =~ ~s(data-testid="toolbar-group-view")
+      assert html =~ ~s(data-testid="toolbar-group-tools")
+      assert html =~ ~s(data-testid="toolbar-group-notifications")
+      assert html =~ ~s(data-testid="toolbar-group-help")
     end
   end
 
@@ -53,6 +81,12 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
       html = render_toolbar()
       assert html =~ ~s(data-testid="toolbar-find")
       assert html =~ ~s(phx-click="open_search")
+    end
+
+    test "dropdown items have labels" do
+      html = render_toolbar()
+      assert html =~ ~s(class="toolbar-group-label">Channel List</span>)
+      assert html =~ ~s(class="toolbar-group-label">Find</span>)
     end
   end
 
@@ -129,6 +163,12 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
       assert html =~ ~s(data-testid="toolbar-help")
       assert html =~ ~s(href="/chat/help")
       assert html =~ ~s(target="_blank")
+    end
+
+    test "renders Keyboard Shortcuts button" do
+      html = render_toolbar()
+      assert html =~ ~s(data-testid="toolbar-cheatsheet")
+      assert html =~ ~s(phx-click="toggle_cheatsheet")
     end
   end
 end
