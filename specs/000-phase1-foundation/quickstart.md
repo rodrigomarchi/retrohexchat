@@ -8,7 +8,7 @@
 - Elixir 1.17+ (`elixir --version`)
 - Erlang/OTP 27+ (`erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().'`)
 - PostgreSQL 16+ (`psql --version`)
-- Node.js 18+ (`node --version`) — for 98.css npm install and esbuild
+- Node.js 18+ (`node --version`) — for retro design system npm install and esbuild
 - Git
 
 ## Setup
@@ -21,7 +21,7 @@ cd retro_hex_chat
 # Install Elixir dependencies
 mix deps.get
 
-# Install Node.js dependencies (for 98.css)
+# Install Node.js dependencies (for retro design system)
 cd apps/retro_hex_chat_web/assets && npm install && cd ../../..
 
 # Create and migrate the database
@@ -32,7 +32,7 @@ mix phx.server
 ```
 
 Visit [`http://localhost:4000`](http://localhost:4000) — you should see
-the Windows 98-style connection dialog.
+the retro-style connection dialog.
 
 ## Project Structure
 
@@ -94,7 +94,7 @@ mix dialyzer
 ### Adding a New LiveView Component
 
 1. Create `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/mycomponent.ex`
-2. Use 98.css semantic HTML classes
+2. Use retro design system semantic HTML classes
 3. Zero business logic — delegate to domain contexts
 4. Write component tests with Floki
 

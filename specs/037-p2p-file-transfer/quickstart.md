@@ -111,7 +111,7 @@
 3. **Modify `webrtc_hook.js`** — create DataChannel, coordinate with FileTransferHook
 4. **Add LiveView component UI** — file button, drop zone, offer display, progress bar
 5. **Add LiveView event handlers** — thin handlers that update assigns for UI rendering
-6. **Add CSS** — file-transfer.css with 98.css progress bar, drop zone styling
+6. **Add CSS** — file-transfer.css with retro progress bar, drop zone styling
 7. **Add configuration** — env vars in runtime.exs
 
 ## Validation

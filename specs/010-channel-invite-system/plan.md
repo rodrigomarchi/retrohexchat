@@ -5,12 +5,12 @@
 
 ## Summary
 
-Add a `/invite` command that allows channel operators to invite users to invite-only (+i) channels. The invite is delivered as a real-time PubSub notification to the invitee's `"user:#{nickname}"` topic, rendered as a Windows 98-style dialog with Join/Ignore buttons. Invites are ephemeral (in-memory only via socket assigns), expire after 5 minutes, and integrate with the existing `invite_exceptions` MapSet in `Channel.Server` to temporarily grant join permission. An optional "Auto-join on invite" preference is stored in Session.
+Add a `/invite` command that allows channel operators to invite users to invite-only (+i) channels. The invite is delivered as a real-time PubSub notification to the invitee's `"user:#{nickname}"` topic, rendered as a retro-style dialog with Join/Ignore buttons. Invites are ephemeral (in-memory only via socket assigns), expire after 5 minutes, and integrate with the existing `invite_exceptions` MapSet in `Channel.Server` to temporarily grant join permission. An optional "Auto-join on invite" preference is stored in Session.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro design system
 **Storage**: In-memory only (socket assigns for pending invites, Session struct for auto-join preference). No PostgreSQL changes. The existing `invite_exceptions` MapSet in Channel.Server is used transiently to authorize the join.
 **Testing**: ExUnit with `@tag :unit`, `@tag :integration`, `@tag :liveview`
 **Target Platform**: Web (Phoenix LiveView)
@@ -25,14 +25,14 @@ Add a `/invite` command that allows channel operators to invite users to invite-
 
 | # | Principle | Status | Notes |
 |---|-----------|--------|-------|
-| I | Elixir & Phoenix Exclusive Stack | PASS | Pure Elixir + LiveView. No JS frameworks. 98.css for styling. |
+| I | Elixir & Phoenix Exclusive Stack | PASS | Pure Elixir + LiveView. No JS frameworks. retro design system for styling. |
 | II | Umbrella with Bounded Contexts | PASS | Command handler in `RetroHexChat.Commands`. Invite logic in `RetroHexChat.Channels`. Dialog component in `RetroHexChatWeb.Components`. Session preference in `RetroHexChat.Accounts`. |
 | III | OTP Process Architecture | PASS | Uses existing `Channel.Server` GenServer for `invite_exceptions` MapSet. No new processes needed — invites are ephemeral and tracked in LiveView socket assigns. |
 | IV | Test-First Development | PASS | Unit tests for command handler validation/execution. Integration tests for invite flow through Channel.Server. LiveView tests for dialog rendering and Join/Ignore interactions. |
 | V | Contracts and Behaviours | PASS | `/invite` command implements existing `Handler` behaviour with `validate/1`, `execute/2`, `help/0`. |
 | VI | Static Analysis from Day One | PASS | All public functions will have `@spec`. Credo + Dialyxir compliance. |
 | VII | Lean LiveViews & Components | PASS | Dialog is a function component. LiveView delegates to domain contexts. PubSub uses `"user:#{nickname}"` topic per convention. |
-| VIII | Windows 98 Design Fidelity | PASS | Invite dialog uses 98.css `.window`, `.title-bar`, `.title-bar-text` classes. Cascading window offset for multiple simultaneous invites. |
+| VIII | retro Design Fidelity | PASS | Invite dialog uses retro `.window`, `.title-bar`, `.title-bar-text` classes. Cascading window offset for multiple simultaneous invites. |
 | IX | Hot/Cold Data Separation | PASS | Invites are hot data only (socket assigns). No cold data — no database persistence for invites. Auto-join preference stored in Session (hot). |
 | X | Scalable Architecture | PASS | Per-user invite state in socket assigns scales with LiveView processes. No shared mutable state introduced. Uses existing PubSub which spans nodes. |
 | XI | User-Facing Documentation | PASS | Help topics for `/invite` command and channel invite feature. Update "See Also" in related topics (channel modes, `/join`). |
@@ -82,7 +82,7 @@ apps/retro_hex_chat/
 apps/retro_hex_chat_web/
 ├── lib/retro_hex_chat_web/
 │   ├── components/
-│   │   └── invite_dialog.ex           # NEW: Windows 98 invite dialog component
+│   │   └── invite_dialog.ex           # NEW: retro invite dialog component
 │   └── live/
 │       └── chat_live.ex               # MODIFIED: handle invite ui_actions, PubSub handlers, dialog assigns
 ├── test/retro_hex_chat_web/

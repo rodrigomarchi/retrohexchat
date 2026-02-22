@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Icons do
   @moduledoc """
-  Pixel-art SVG icon library for RetroHexChat's Windows 98 interface.
+  Pixel-art SVG icon library for RetroHexChat's retro interface.
 
   This module is a **facade** — every public function delegates to a
   subject-based submodule under `RetroHexChatWeb.Icons.*`. Consumers

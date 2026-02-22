@@ -2,23 +2,23 @@
 
 ## Documento de Design, Conteúdo e Estrutura
 
-### Design System: 98.css (https://jdan.github.io/98.css/)
+### Design System: retro CSS framework (based on https://jdan.github.io/98.css/)
 
 ---
 
 ## I. Conceito Visual
 
-A landing page inteira é um "desktop" do Windows 98. Cada seção é uma
-`window` do 98.css que o usuário encontra ao scrollar. O fundo é o
+A landing page inteira é um "desktop" do retro. Cada seção é uma
+`window` do retro design system que o usuário encontra ao scrollar. O fundo é o
 teal clássico (#008080). A UX por baixo é moderna: scroll suave,
 responsivo, animações de abertura de janela.
 
-### Componentes 98.css que Usamos
+### Componentes retro design system que Usamos
 
 ```
-  Mapeamento direto para os componentes do 98.css:
+  Mapeamento direto para os componentes do retro design system:
 
-  COMPONENTE 98.css            ONDE USAMOS
+  COMPONENTE retro design system            ONDE USAMOS
   ─────────────────            ──────────────────────────────
   .window                      Cada seção da landing
   .title-bar                   Cabeçalho de cada seção
@@ -43,14 +43,14 @@ responsivo, animações de abertura de janela.
 
   CORES DO DESKTOP (fora das windows):
   ─────────────────────────────────────
-  Background:  #008080 (teal Win98 clássico)
-  Taskbar:     Componente custom usando 98.css tokens
+  Background:  #008080 (teal retro clássico)
+  Taskbar:     Componente custom usando retro design system tokens
 
   TIPOGRAFIA:
   ──────────
-  98.css já define a fonte padrão (Arial / MS Sans Serif).
+  retro design system já define a fonte padrão (Arial / MS Sans Serif).
   Para blocos de "terminal" e código: usamos <pre> que o
-  98.css estiliza com fonte monospace.
+  retro design system estiliza com fonte monospace.
 ```
 
 ### Responsividade
@@ -136,7 +136,7 @@ responsivo, animações de abertura de janela.
 ## III. Taskbar (Fixa no Topo)
 
 A taskbar é fixa e acompanha o scroll. Usa a estética da barra
-de tarefas do Windows 98 mas funciona como navbar moderna.
+de tarefas do retro mas funciona como navbar moderna.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
@@ -153,10 +153,10 @@ de tarefas do Windows 98 mas funciona como navbar moderna.
   ─ Links centrais: scroll suave até a seção correspondente
     Estilo: texto simples, sem botão, sublinhado no hover
 
-  ─ [Entrar] e [Criar conta]: componentes <button> do 98.css
+  ─ [Entrar] e [Criar conta]: componentes <button> do retro design system
     [Entrar] = botão default
     [Criar conta] = botão com destaque (pode usar estilo
-    "default focused" do 98.css)
+    "default focused" do retro design system)
 
   ─ No mobile: taskbar colapsa, links viram menu "Start"
     que abre ao clicar no [🖥 Retro Hex Chat]
@@ -186,7 +186,7 @@ no desktop teal. Impacto imediato.
 ```
   ┌─ BACKGROUND: #008080 (teal) ─ desktop wallpaper ─────────────────┐
   │                                                                   │
-  │   Ícones decorativos no desktop (estilo Win98):                   │
+  │   Ícones decorativos no desktop (estilo retro):                   │
   │   [📁 Meus Chats]  [🌐 Rede]  [📝 README.txt]  [🗑 Lixeira]    │
   │                                                                   │
   │   ┌─────────────────────────────────────────────────────────┐     │
@@ -317,7 +317,7 @@ Título da janela: `C:\VERDADE\sobre_o_chat_moderno.txt`
 
 Headline: "⚠ Sua comunidade não é sua."
 
-Os 5 pontos (estilizados como items de uma lista sunken do 98.css, usando
+Os 5 pontos (estilizados como items de uma lista sunken do retro design system, usando
 uma `<ul>` dentro de um `fieldset` sunken):
 
 1. "O Discord pode banir seu servidor amanhã. Sem aviso. Sem apelação. Sem backup."
@@ -410,7 +410,7 @@ Abaixo das duas janelas, uma terceira janela com a analogia visual:
 
 ## VII. Seção 4 — COMO FUNCIONA
 
-Seção mais técnica, mas ainda acessível. Usa abas do 98.css para
+Seção mais técnica, mas ainda acessível. Usa abas do retro design system para
 separar conceitos.
 
 ```
@@ -818,7 +818,7 @@ Se possível, animada com nós pulsando.
   ─ Ou SVG com animação CSS (nós pulsando)
   ─ Dados puxados do endpoint público de saúde da rede
   ─ Cada nó ao hover mostra: nome, descrição, nº de usuários
-  ─ Estética: nós como ícones de "computador" pixelados (Win98),
+  ─ Estética: nós como ícones de "computador" pixelados (retro),
     linhas pontilhadas conectando
 ```
 
@@ -891,7 +891,7 @@ Para quem quer hospedar um servidor. Tom: empoderador, prático.
 
 ## XI. Seção 8 — FAQ
 
-Formato de tree-view do 98.css. Cada pergunta expande.
+Formato de tree-view do retro design system. Cada pergunta expande.
 
 ```
   ┌───────────────────────────────────────────────────────────────┐
@@ -961,7 +961,7 @@ Formato de tree-view do 98.css. Cada pergunta expande.
 
   IMPLEMENTAÇÃO:
   ──────────────
-  Usar o componente tree-view do 98.css.
+  Usar o componente tree-view do retro design system.
   Cada item começa colapsado (só mostra a pergunta).
   Ao clicar, expande e mostra a resposta.
   A interação é click para toggle (não accordion).
@@ -999,7 +999,7 @@ Formato de tree-view do 98.css. Cada pergunta expande.
   │  v0.1.0 │ Feito por humanos │ 2025-2026                      │
   └───────────────────────────────────────────────────────────────┘
 
-  ABAIXO DO FOOTER, a "taskbar" do Windows 98:
+  ABAIXO DO FOOTER, a "taskbar" do retro:
 
   ┌───────────────────────────────────────────────────────────────┐
   │ [🖥 Retro Hex Chat]                                         4:20 PM   │
@@ -1064,7 +1064,7 @@ Aparece como uma janela de diálogo modal sobre o desktop.
   ─ Nickname ou email: aceita ambos
   ─ Enter no campo de senha = submit
   ─ Animação de "loading" no botão Entrar ao submeter
-  ─ Erro: caixa de diálogo Win98 com ícone ⚠
+  ─ Erro: caixa de diálogo retro com ícone ⚠
 
   ERRO (exemplo):
   ┌──────────────────────────────────────┐
@@ -1137,7 +1137,7 @@ Acessada ao clicar "Criar conta". Também janela modal.
   ─ Feedback do domínio: ao digitar o nick, mostra abaixo
     em tempo real: "Você será @alice@alpha.chat na rede."
 
-  ─ Senha: barra de progress do 98.css mostrando "força"
+  ─ Senha: barra de progress do retro design system mostrando "força"
     ┌──────────────────────────────────────┐
     │ Força: ████████░░░░░░░ Boa           │
     └──────────────────────────────────────┘
@@ -1161,7 +1161,7 @@ Acessada ao clicar "Criar conta". Também janela modal.
 ## XV. Tela de Onboarding (Pós-Registro)
 
 Após criar a conta, o usuário passa por um onboarding rápido antes
-de cair no chat. São janelas sequenciais estilo "wizard" do Win98.
+de cair no chat. São janelas sequenciais estilo "wizard" do retro.
 
 ### Passo 1: Personalizar Perfil
 
@@ -1202,7 +1202,7 @@ de cair no chat. São janelas sequenciais estilo "wizard" do Win98.
   ────────────────────
   Ao clicar "Escolher avatar", abre uma sub-janela com:
   ─ Upload de imagem própria
-  ─ OU galeria de avatares pixelados pré-feitos (tema Win98):
+  ─ OU galeria de avatares pixelados pré-feitos (tema retro):
     smiley faces, animais pixel, ícones clássicos do PC
   ─ O avatar é exibido como 32x32 ou 48x48 pixel art style
 ```
@@ -1246,8 +1246,8 @@ de cair no chat. São janelas sequenciais estilo "wizard" do Win98.
   ─ #general e #elixir vêm pré-selecionados (recomendados)
   ─ O 🔗 indica canais federados
   ─ "N on" mostra usuários online agora
-  ─ Checkboxes são componentes nativos do 98.css
-  ─ A barra de progresso é o componente <progress> do 98.css
+  ─ Checkboxes são componentes nativos do retro design system
+  ─ A barra de progresso é o componente <progress> do retro design system
 ```
 
 ### Passo 3: Primeiros Passos
@@ -1301,19 +1301,19 @@ Detalhes que tornam a experiência memorável.
 
   1. SOM DE CLICK DO WINDOWS 98
      ─ Opcional (toggle no footer: "🔊 Sons retrô")
-     ─ Click em botão: som de click do Win98
-     ─ Abrir janela: som de "ding" do Win98
-     ─ Erro: som de "critical stop" do Win98
+     ─ Click em botão: som de click do retro
+     ─ Abrir janela: som de "ding" do retro
+     ─ Erro: som de "critical stop" do retro
      ─ Sucesso no registro: som do "tada.wav"
 
   2. CURSOR CUSTOMIZADO
-     ─ Cursor padrão do Win98 (seta branca)
-     ─ Loading: ampulheta do Win98
-     ─ Links: mãozinha do Win98
-     ─ Texto: cursor I-beam do Win98
+     ─ Cursor padrão do retro (seta branca)
+     ─ Loading: ampulheta do retro
+     ─ Links: mãozinha do retro
+     ─ Texto: cursor I-beam do retro
 
   3. ANIMAÇÃO DE JANELA
-     ─ Janelas "abrem" como no Win98: surgem do centro
+     ─ Janelas "abrem" como no retro: surgem do centro
        com uma animação rápida de expand
      ─ Ao scrollar para uma nova seção, a janela "aparece"
        com essa animação
@@ -1330,7 +1330,7 @@ Detalhes que tornam a experiência memorável.
 
   5. TASKBAR RELÓGIO
      ─ O relógio na taskbar mostra a hora real
-     ─ Ao clicar, abre um calendário (como no Win98)
+     ─ Ao clicar, abre um calendário (como no retro)
        com a data de lançamento do Retro Hex Chat destacada
 
   6. README.txt EASTER EGG
@@ -1389,7 +1389,7 @@ Detalhes que tornam a experiência memorável.
   og:description → Seus dados. Suas regras. Sua comunidade.
                    Chat em tempo real com federação entre
                    servidores independentes.
-  og:image       → Preview do desktop Win98 com a janela hero
+  og:image       → Preview do desktop retro com a janela hero
   og:type        → website
 
   TWITTER CARD:
@@ -1400,7 +1400,7 @@ Detalhes que tornam a experiência memorável.
   image          → Mesmo do og:image
 
   FAVICON:
-  Ícone pixelado do Retro Hex Chat (16x16), estilo ícone Win98
+  Ícone pixelado do Retro Hex Chat (16x16), estilo ícone retro
 ```
 
 ---
@@ -1410,18 +1410,18 @@ Detalhes que tornam a experiência memorável.
 ```
   PERFORMANCE:
   ────────────
-  ─ 98.css é TINY (~10kb gzipped) — quase zero overhead
+  ─ retro design system é TINY (~10kb gzipped) — quase zero overhead
   ─ Nenhum framework JS pesado na landing (apenas LiveView ou
     vanilla JS para interações)
   ─ Imagens: pixel art é leve por natureza
-  ─ Fontes: usar system fonts (98.css já faz isso)
+  ─ Fontes: usar system fonts (retro design system já faz isso)
   ─ Grafo da rede: canvas leve ou SVG simples
   ─ Sons: lazy load, só carrega se ativado
 
   ACESSIBILIDADE:
   ────────────────
-  ─ 98.css já tem bom suporte a aria labels
-  ─ Contraste: Win98 tem alto contraste natural
+  ─ retro design system já tem bom suporte a aria labels
+  ─ Contraste: retro tem alto contraste natural
     (texto preto em fundo cinza claro)
   ─ Tab navigation: todas as janelas e botões são focáveis
   ─ Screen reader: title-bar-text serve como heading

@@ -39,7 +39,7 @@ PROBLEM: When a channel is set to invite-only (+i), there is currently no way fo
 
 EXISTING CONTEXT: The +i (invite-only) channel mode is already implemented — channels with +i reject all join attempts. This feature adds the ability for operators to grant individual users permission to bypass that restriction.
 
-USER JOURNEY: An operator in the invite-only channel #private wants to bring in their colleague 'Alice'. They type '/invite Alice #private'. Alice, wherever she is, receives a notification: '* Operator has invited you to #private'. A Windows 98-style dialog popup appears asking: 'OperatorNick has invited you to join #private — Join / Ignore'. If Alice clicks Join, she enters the channel. If she clicks Ignore, the invitation is dismissed.
+USER JOURNEY: An operator in the invite-only channel #private wants to bring in their colleague 'Alice'. They type '/invite Alice #private'. Alice, wherever she is, receives a notification: '* Operator has invited you to #private'. A retro-style dialog popup appears asking: 'OperatorNick has invited you to join #private — Join / Ignore'. If Alice clicks Join, she enters the channel. If she clicks Ignore, the invitation is dismissed.
 
 Users can optionally enable 'Auto-join on invite' in their preferences, which skips the dialog and joins immediately when invited. This is off by default for security.
 

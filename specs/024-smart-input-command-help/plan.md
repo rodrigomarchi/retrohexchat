@@ -10,7 +10,7 @@ Add intelligent command syntax guidance, contextual input behavior, and enhanced
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro CSS framework, esbuild
 **Storage**: PostgreSQL 16+ (user_preferences JSON column — no migration needed), localStorage (client-side history)
 **Testing**: ExUnit with Mox, ExMachina, Floki for LiveView tests
 **Target Platform**: Web (modern browsers, desktop-focused)
@@ -32,7 +32,7 @@ Add intelligent command syntax guidance, contextual input behavior, and enhanced
 | V | Contracts and Behaviours | Yes | PASS | `syntax_definition/0` added as optional callback to Handler behaviour. CommandSyntax/Parameter/SubOption are typed structs with @spec. |
 | VI | Static Analysis from Day One | Yes | PASS | All new public functions have @spec. Credo + Dialyzer + format enforced. |
 | VII | Lean LiveViews & Components | Yes | PASS | LiveView delegates to Commands context for syntax data. Tooltip is a function component. JS hooks handle only positioning/keyboard/DOM. |
-| VIII | Windows 98 Design Fidelity | Yes | PASS | Tooltip styled with 98.css conventions (sunken panel, system font). Textarea matches existing input styling. |
+| VIII | retro Design Fidelity | Yes | PASS | Tooltip styled with retro conventions (sunken panel, system font). Textarea matches existing input styling. |
 | IX | Hot/Cold Data Separation | Yes | PASS | Syntax data is compile-time (hot). Preferences in PostgreSQL (cold). Client history in localStorage (client-local). |
 | X | Scalable Architecture | No | N/A | No architectural decisions that affect scaling. |
 | XI | User-Facing Documentation | Yes | PASS | Help topics added for: Command Syntax Tooltip, Smart Input, Enhanced History, new keyboard shortcuts. |

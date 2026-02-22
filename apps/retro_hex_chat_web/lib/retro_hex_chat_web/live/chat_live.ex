@@ -475,7 +475,7 @@ defmodule RetroHexChatWeb.ChatLive do
   defp show_welcome_message(socket) do
     lines = [
       "Welcome to RetroHexChat!",
-      "A real-time chat platform with a Windows 98 look and feel.",
+      "A real-time chat platform with a retro look and feel.",
       "",
       "Useful commands:",
       "  /join #channel   — Join a channel",

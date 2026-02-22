@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.URLCatcherWindow do
   @moduledoc """
-  98.css styled URL Catcher window.
+  Retro-styled URL Catcher window.
   Displays URLs captured from chat messages with sortable columns,
   channel filtering, and URL search.
   """

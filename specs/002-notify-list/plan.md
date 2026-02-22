@@ -12,7 +12,7 @@ Key technical approach: introduce a global presence topic (`"presence:global"`) 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (new `notify_list_entries` table) + in-memory Session state for guests
 **Testing**: ExUnit, Mox, ExMachina, StreamData, Floki (full pyramid: unit, integration, liveview, e2e)
 **Target Platform**: Web (Linux/macOS server, browser client)
@@ -34,7 +34,7 @@ Key technical approach: introduce a global presence topic (`"presence:global"`) 
 | V. Contracts and Behaviours | Yes | PASS | `/notify` command implements existing `Handler` behaviour. NotifyList context exposes @spec'd public API. |
 | VI. Static Analysis from Day One | Yes | PASS | All new modules will have @spec, pass Credo strict, Dialyxir, mix format. |
 | VII. Lean LiveViews & Components | Yes | PASS | ChatLive delegates to `Presence.NotifyList` context. New function components for Status window and Notify List window. PubSub topic `"presence:global"` follows naming convention. |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Both windows use 98.css. Status window and Notify List window match MDI layout. |
+| VIII. retro Design Fidelity | Yes | PASS | Both windows use retro design system. Status window and Notify List window match MDI layout. |
 | IX. Hot/Cold Data Separation | Yes | PASS | Hot: in-memory notify list in Session assigns + PubSub events. Cold: `notify_list_entries` table in PostgreSQL for registered users. |
 | X. Scalable Architecture | Yes | PASS | Global presence topic scales via Phoenix PubSub (pg adapter). No process-per-user — events are broadcast, filtered locally. |
 

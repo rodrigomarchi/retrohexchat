@@ -187,7 +187,7 @@ Users can re-enable tips from the Settings dialog after having disabled them wit
 ### In Scope
 
 - 5 contextual tip triggers (first message, first join, first PM, first highlight, idle)
-- Reusable toast component styled with 98.css (dismiss button + global toggle checkbox)
+- Reusable toast component styled with retro design system (dismiss button + global toggle checkbox)
 - Per-tip seen tracking in localStorage
 - Global tips toggle in Settings dialog
 - Tip queuing system with 2-second gap

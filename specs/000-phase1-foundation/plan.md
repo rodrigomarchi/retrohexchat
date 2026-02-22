@@ -6,11 +6,11 @@
 ## Summary
 
 Build the complete Phase 1 of RetroHexChat: a web-based IRC client with
-mIRC-style interface and Windows 98 dark theme. The system is an Elixir
+mIRC-style interface and retro dark theme. The system is an Elixir
 Phoenix LiveView umbrella application with real-time chat, channels
 managed by OTP GenServers, private messaging, a full "/" command system
 (18 commands), NickServ/ChanServ services, channel modes, chat search,
-and a faithful 98.css-based dark theme UI. All real-time communication
+and a faithful retro-styled dark theme UI. All real-time communication
 flows through Phoenix PubSub, user presence through Phoenix Presence,
 and messages are persisted in PostgreSQL with cursor-based pagination.
 
@@ -18,7 +18,7 @@ and messages are persisted in PostgreSQL with cursor-based pagination.
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
 **Primary Dependencies**: Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x,
-  Phoenix PubSub, Phoenix Presence, 98.css (npm), bcrypt_elixir, esbuild
+  Phoenix PubSub, Phoenix Presence, retro CSS framework, bcrypt_elixir, esbuild
 **Storage**: PostgreSQL 16+ via Ecto (cursor-based pagination, GIN/trigram
   indexes for search)
 **Testing**: ExUnit (async sandbox), Mox, ExMachina, StreamData, Floki
@@ -41,14 +41,14 @@ and messages are persisted in PostgreSQL with cursor-based pagination.
 
 | Principle | Status | Evidence |
 |-----------|--------|----------|
-| I. Elixir & Phoenix Exclusive Stack | PASS | Elixir 1.17+, Phoenix 1.7+, LiveView 1.0+, PostgreSQL 16+, 98.css. Zero JS UI frameworks. |
+| I. Elixir & Phoenix Exclusive Stack | PASS | Elixir 1.17+, Phoenix 1.7+, LiveView 1.0+, PostgreSQL 16+, retro design system. Zero JS UI frameworks. |
 | II. Umbrella App with Bounded Contexts | PASS | `apps/retro_hex_chat` (domain) + `apps/retro_hex_chat_web` (web). 7 bounded contexts: Accounts, Chat, Channels, Services, Presence, Commands, RateLimit. Layers per context declared below (N/A where inapplicable). |
 | III. OTP Process Architecture | PASS | DynamicSupervisor for channels, GenServer per channel, Registry via `via_tuple`, GenServers for NickServ and ChanServ. Supervision tree from day zero. |
 | IV. Test-First Development | PASS | ExUnit async, Mox (behaviour-based), ExMachina factories, StreamData for parsers, Floki for HTML. Tags: @tag :unit, :integration, :liveview. Time budgets: <60s full, <10s unit. |
 | V. Contracts and Behaviours | PASS | `Handler` behaviour for each "/" command (execute/2, validate/1, help/0). 18 separate command modules. Protocols for message formatting. |
 | VI. Static Analysis from Day One | PASS | Credo, Dialyxir, mix format configured from first commit. @spec on all public functions. |
 | VII. Lean LiveViews & Component Architecture | PASS | 3 thin LiveViews delegating to contexts. ~15 function components. 4 minimal JS hooks (scroll, sound, keyboard, command palette). PubSub topics: "channel:#{name}", "user:#{nickname}", "service:nickserv/chanserv". LiveView streams for messages. |
-| VIII. Windows 98 Design Fidelity | PASS | 98.css as base, dark theme via CSS custom properties, 3D borders, monospace fonts, 16x16 icons, semantic HTML. |
+| VIII. retro Design Fidelity | PASS | retro design system as base, dark theme via CSS custom properties, 3D borders, monospace fonts, 16x16 icons, semantic HTML. |
 | IX. Hot/Cold Data Separation | PASS | GenServer/ETS for active channels, presence, rate limits (hot). PostgreSQL for messages, registered nicks, registered channels, access lists (cold). Environment-aware config. |
 | X. Scalable Architecture | PASS | Process-per-channel via DynamicSupervisor, Phoenix PubSub (pg adapter for future clustering), schemas designed for partitioning. |
 
@@ -188,7 +188,7 @@ apps/
     │   │   └── channel_list_live.ex   # Channel list modal
     │   ├── components/
     │   │   ├── layouts.ex             # Root/app layouts
-    │   │   ├── window.ex              # 98.css Window wrapper
+    │   │   ├── window.ex              # retro design system Window wrapper
     │   │   ├── title_bar.ex
     │   │   ├── status_bar.ex
     │   │   ├── menu_bar.ex
@@ -206,7 +206,7 @@ apps/
     ├── assets/
     │   ├── css/
     │   │   ├── app.css                # Main CSS entry
-    │   │   └── dark-theme.css         # 98.css dark theme overrides
+    │   │   └── dark-theme.css         # retro design system dark theme overrides
     │   ├── js/
     │   │   ├── app.js                 # Main JS entry
     │   │   └── hooks/
@@ -217,7 +217,7 @@ apps/
     │   ├── static/
     │   │   ├── sounds/                # .wav notification sounds
     │   │   └── icons/                 # 16x16 pixel art icons
-    │   └── vendor/                    # (98.css copied here by esbuild)
+    │   └── vendor/                    # (retro design system copied here by esbuild)
     └── test/
         ├── retro_hex_chat_web/
         │   ├── live/                  # LiveView tests

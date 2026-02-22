@@ -33,7 +33,7 @@
 - [x] T002 Add project dependencies to `apps/retro_hex_chat/mix.exs`: `bcrypt_elixir`, `mox`, `ex_machina`, `stream_data`; and to `apps/retro_hex_chat_web/mix.exs`: `floki`; then run `mix deps.get`
 - [x] T003 [P] Configure Credo with strict rules in `.credo.exs` at umbrella root
 - [x] T004 [P] Configure Dialyxir in umbrella root `mix.exs` with `plt_add_apps` for Phoenix and Ecto
-- [x] T005 [P] Install 98.css via npm in `apps/retro_hex_chat_web/assets/package.json` and configure esbuild to bundle it
+- [x] T005 [P] Install retro design system via npm in `apps/retro_hex_chat_web/assets/package.json` and configure esbuild to bundle it
 - [x] T006 [P] Configure ExUnit with tags (`:unit`, `:integration`, `:liveview`) in `apps/retro_hex_chat/test/test_helper.exs` and `apps/retro_hex_chat_web/test/test_helper.exs`; configure async Ecto sandbox
 - [x] T007 [P] Create test support files: `apps/retro_hex_chat/test/support/factory.ex` (ExMachina), `apps/retro_hex_chat/test/support/mocks.ex` (Mox definitions for Handler behaviour and service behaviours)
 - [x] T008 [P] Configure bcrypt reduced rounds (log_rounds: 4) for test environment in `apps/retro_hex_chat/config/test.exs`
@@ -113,7 +113,7 @@
 
 ## Phase 3: User Story 1 — Connect and Chat in #lobby (Priority: P1) MVP
 
-**Goal**: User connects via Win98 dialog, auto-joins #lobby, exchanges messages in real time with full MDI layout
+**Goal**: User connects via retro dialog, auto-joins #lobby, exchanges messages in real time with full MDI layout
 
 **Independent Test**: Open two browser tabs, connect with different nicknames, exchange messages in #lobby. Verify layout (treebar, chat, nicklist, status bar), message format `[HH:MM] <nick> msg`, system messages for joins, and /me actions.
 
@@ -147,7 +147,7 @@
 
 #### Web Layer — Components
 
-- [x] T072 [P] [US1] Implement Window component (98.css window wrapper with title bar, borders) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/window.ex`
+- [x] T072 [P] [US1] Implement Window component (retro window wrapper with title bar, borders) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/window.ex`
 - [x] T073 [P] [US1] Implement TitleBar component (gradient title bar with window controls) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/title_bar.ex`
 - [x] T074 [P] [US1] Implement StatusBar component (nickname, active channel, user count, connection status) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/status_bar.ex`
 - [x] T075 [P] [US1] Implement MenuBar component (File, Edit, View, Help dropdowns — structure only, handlers in US12) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/menu_bar.ex`
@@ -159,14 +159,14 @@
 #### Web Layer — CSS
 
 - [x] T080 [P] [US1] Create dark theme CSS with custom properties overlay (windows #1a1a2e, chat #0d0d1a, text #c0c0c0, 3D borders, monospace fonts) in `apps/retro_hex_chat_web/assets/css/dark-theme.css`
-- [x] T081 [P] [US1] Create main CSS entry importing 98.css and dark-theme.css, with layout grid for MDI (treebar | chat+input | nicklist) in `apps/retro_hex_chat_web/assets/css/app.css`
+- [x] T081 [P] [US1] Create main CSS entry importing retro design system and dark-theme.css, with layout grid for MDI (treebar | chat+input | nicklist) in `apps/retro_hex_chat_web/assets/css/app.css`
 
 #### Web Layer — LiveViews
 
-- [x] T082 [US1] Implement ConnectLive (Win98 connection dialog: nickname/alt-nickname fields, real-time validation via NicknameValidator, uniqueness check via Presence, connect button, Guest_XXXXX fallback) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/connect_live.ex`
+- [x] T082 [US1] Implement ConnectLive (retro connection dialog: nickname/alt-nickname fields, real-time validation via NicknameValidator, uniqueness check via Presence, connect button, Guest_XXXXX fallback) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/connect_live.ex`
 - [x] T083 [US1] Implement ChatLive (main MDI layout: mount with session assigns, auto-join #lobby, subscribe to PubSub "channel:#lobby" and "user:#{nickname}", render components: treebar, chat area with LiveView streams, nicklist, status bar, input field; handle_event for send_input delegating to Parser → message or command; handle_info for PubSub messages rendering into stream; terminate/2 for disconnect cleanup per services.md contract) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [x] T084 [US1] Configure router: ConnectLive at "/", ChatLive at "/chat" (with session plug) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/router.ex`
-- [x] T085 [US1] Update root/app layouts in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/layouts.ex` to apply dark theme class and load 98.css
+- [x] T085 [US1] Update root/app layouts in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/layouts.ex` to apply dark theme class and load retro design system
 
 #### Seed Data
 
@@ -174,7 +174,7 @@
 
 - [x] T087 [US1] Run full test suite and verify all US1 tests pass: `mix test --only unit && mix test --only integration && mix test --only liveview`
 
-**Checkpoint**: US1 complete — two users can connect, chat in #lobby in real time with full Win98 MDI layout. Core value delivered.
+**Checkpoint**: US1 complete — two users can connect, chat in #lobby in real time with full retro MDI layout. Core value delivered.
 
 ---
 
@@ -199,7 +199,7 @@
 - [x] T093 [P] [US2] Implement Handlers.Part (validate, call Channels.Server.part, return {:ok, :part, channel, message}) in `apps/retro_hex_chat/lib/retro_hex_chat/commands/handlers/part.ex`
 - [x] T094 [P] [US2] Implement Handlers.List (return {:ok, :ui_action, :open_channel_list, %{}}) in `apps/retro_hex_chat/lib/retro_hex_chat/commands/handlers/list.ex`
 - [x] T095 [US2] Extend ChatLive to handle :join and :part results (subscribe/unsubscribe PubSub, update treebar assigns, switch active channel, load initial messages, enforce 10-channel limit per FR-013) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
-- [x] T096 [US2] Implement ChannelListLive (Win98 dialog listing all active channels with name, topic, user count; search/filter input) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/channel_list_live.ex`
+- [x] T096 [US2] Implement ChannelListLive (retro dialog listing all active channels with name, topic, user count; search/filter input) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/channel_list_live.ex`
 - [x] T097 [US2] Extend Channels.Server to handle channel destruction when last user leaves an unregistered channel in `apps/retro_hex_chat/lib/retro_hex_chat/channels/server.ex`
 
 - [x] T098 [US2] Run tests and verify all US1 + US2 tests pass
@@ -270,14 +270,14 @@
 
 #### Command Palette UI
 
-- [x] T124 [P] [US4] Implement CommandPalette component (98.css listbox popup above input, shows all commands with descriptions, real-time filtering as user types) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/command_palette.ex`
+- [x] T124 [P] [US4] Implement CommandPalette component (retro design system listbox popup above input, shows all commands with descriptions, real-time filtering as user types) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/command_palette.ex`
 - [x] T125 [P] [US4] Implement command_palette_hook.js (open on "/" keystroke, filter list, Enter/click to select, Esc to close, push selected command to LiveView) in `apps/retro_hex_chat_web/assets/js/hooks/command_palette_hook.js`
 - [x] T126 [P] [US4] Implement keyboard_hook.js (↑/↓ command history navigation from assigns.command_history, Tab nickname completion cycling through nicklist matches) in `apps/retro_hex_chat_web/assets/js/hooks/keyboard_hook.js`
 
 #### LiveView Integration
 
 - [x] T127 [US4] Extend ChatLive to handle :nick_change (update assigns.nickname, update Presence metadata, resubscribe PM topics with new nick, broadcast nick_changed to shared channels), :quit (full disconnect cleanup per services.md, redirect to ConnectLive), :ui_action variants (:clear_chat resets stream, :open_whois shows dialog, :show_help displays text), and command_history tracking (last 50) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
-- [x] T128 [P] [US4] Implement Dialog component (reusable Win98 dialog: title, body, OK/Cancel buttons) for Whois display in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/dialog.ex`
+- [x] T128 [P] [US4] Implement Dialog component (reusable retro dialog: title, body, OK/Cancel buttons) for Whois display in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/dialog.ex`
 
 - [x] T129 [US4] Run tests and verify all US1–US4 pass
 
@@ -393,7 +393,7 @@
 ### Implementation for User Story 8
 
 - [x] T167 [P] [US8] Implement scroll_hook.js (detect scroll-to-top → push "load_more" event, auto-scroll to bottom when at bottom and new message arrives, "New messages" button when scrolled up, preserve scroll position during prepend) in `apps/retro_hex_chat_web/assets/js/hooks/scroll_hook.js`
-- [x] T168 [P] [US8] Implement ScrollLoader component (hourglass/98.css progress indicator shown during page load) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/scroll_loader.ex`
+- [x] T168 [P] [US8] Implement ScrollLoader component (hourglass/retro design system progress indicator shown during page load) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/scroll_loader.ex`
 - [x] T169 [US8] Extend ChatLive with handle_event "load_more" (cursor pagination via Chat.Queries, prepend to stream, loading state), "scroll_to_bottom" event, and "new_messages" floating button logic in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 
 - [x] T170 [US8] Run tests and verify all US1–US8 pass
@@ -404,7 +404,7 @@
 
 ## Phase 11: User Story 9 — Chat Search (Priority: P9)
 
-**Goal**: Ctrl+F opens Win98 search dialog, text highlighted in yellow, Find Next/Previous, result counter, database search for older messages
+**Goal**: Ctrl+F opens retro search dialog, text highlighted in yellow, Find Next/Previous, result counter, database search for older messages
 
 **Independent Test**: Send messages with keyword, search, verify highlighting, navigation, counter.
 
@@ -418,7 +418,7 @@
 ### Implementation for User Story 9
 
 - [x] T173 [US9] Implement Chat.Search (trigram ILIKE query on messages/private_messages content column using GIN index, case sensitivity toggle, result pagination) in `apps/retro_hex_chat/lib/retro_hex_chat/chat/search.ex`
-- [x] T174 [P] [US9] Implement SearchBar component (Win98 dialog: text input, Find Next/Previous buttons, Case Sensitive checkbox, "X of Y" counter) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/search_bar.ex`
+- [x] T174 [P] [US9] Implement SearchBar component (retro dialog: text input, Find Next/Previous buttons, Case Sensitive checkbox, "X of Y" counter) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/search_bar.ex`
 - [x] T175 [US9] Extend ChatLive with search state: handle Ctrl+F (open dialog), search query (call Chat.Search, highlight matches in stream, navigate between matches, load DB results for older matches), Esc to close and clear highlights in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 
 - [x] T176 [US9] Run tests and verify all US1–US9 pass
@@ -442,7 +442,7 @@
 
 ### Implementation for User Story 10
 
-- [x] T179 [P] [US10] Implement ContextMenu component (Win98-style popup on right-click: Query, Whois, separator, Kick, Ban, Give/Take Op, Give/Take Voice — conditionally shown based on viewer's operator status) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/context_menu.ex`
+- [x] T179 [P] [US10] Implement ContextMenu component (retro-style popup on right-click: Query, Whois, separator, Kick, Ban, Give/Take Op, Give/Take Voice — conditionally shown based on viewer's operator status) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/context_menu.ex`
 - [x] T180 [US10] Extend Nicklist component with real-time Presence diff handling: joins add to correct group, parts remove, nick changes update position, away status dims icon in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/nicklist.ex`
 - [x] T181 [US10] Extend ChatLive to handle context menu events: right-click nickname → show context menu, menu item clicks dispatch corresponding commands (/query, /whois, /kick, /ban, /mode +o/-o, /mode +v/-v) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 
@@ -452,11 +452,11 @@
 
 ---
 
-## Phase 13: User Story 11 — Windows 98 Design System and Dark Theme (Priority: P11)
+## Phase 13: User Story 11 — retro Design System and Dark Theme (Priority: P11)
 
-**Goal**: Full dark theme polish, all components consistent with 98.css, monospace chat fonts, color palette, 3D borders, hourglass cursors
+**Goal**: Full dark theme polish, all components consistent with retro design system, monospace chat fonts, color palette, 3D borders, hourglass cursors
 
-**Independent Test**: Visual inspection of every component against Windows 98 reference. Dark theme consistent throughout.
+**Independent Test**: Visual inspection of every component against retro reference. Dark theme consistent throughout.
 
 **FRs covered**: FR-061 through FR-064
 
@@ -466,13 +466,13 @@
 
 ### Implementation for User Story 11
 
-- [x] T184 [P] [US11] Refine dark-theme.css with complete custom property set: all 98.css overrides for dark backgrounds, borders, text colors, scrollbar styling, button states, input styling in `apps/retro_hex_chat_web/assets/css/dark-theme.css`
+- [x] T184 [P] [US11] Refine dark-theme.css with complete custom property set: all retro design system overrides for dark backgrounds, borders, text colors, scrollbar styling, button states, input styling in `apps/retro_hex_chat_web/assets/css/dark-theme.css`
 - [x] T185 [P] [US11] Add 16x16 pixel art icons for treebar items (channel, PM, services, user roles) in `apps/retro_hex_chat_web/assets/static/icons/`
-- [x] T186 [US11] Polish all components for design consistency: verify 3D beveled borders on all panels, sunken panels for text areas, raised panels for toolbars, proper font stacks (monospace for chat, 98.css pixel font for UI), color palette validation (system #666680, service #d4a017, error #cc4444, action #9b59b6), nickname 12-color palette for dark backgrounds in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/`
+- [x] T186 [US11] Polish all components for design consistency: verify 3D beveled borders on all panels, sunken panels for text areas, raised panels for toolbars, proper font stacks (monospace for chat, retro design system pixel font for UI), color palette validation (system #666680, service #d4a017, error #cc4444, action #9b59b6), nickname 12-color palette for dark backgrounds in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/`
 
 - [x] T187 [US11] Visual verification: all US1–US11 pass with consistent dark theme
 
-**Checkpoint**: US11 complete — pixel-perfect Windows 98 dark theme across all components.
+**Checkpoint**: US11 complete — pixel-perfect retro dark theme across all components.
 
 ---
 
@@ -622,13 +622,13 @@ T082 → T083 → T084 → T085
 1. Complete Phase 1: Setup
 2. Complete Phase 2: Foundational (CRITICAL — blocks all stories)
 3. Complete Phase 3: User Story 1
-4. **STOP and VALIDATE**: Two users can connect and chat in #lobby with full Win98 UI
+4. **STOP and VALIDATE**: Two users can connect and chat in #lobby with full retro UI
 5. Deploy/demo if ready
 
 ### Incremental Delivery
 
 1. Setup + Foundational → Foundation ready
-2. US1 → **MVP: real-time chat with Win98 layout** (deploy!)
+2. US1 → **MVP: real-time chat with retro layout** (deploy!)
 3. US2 → Multi-channel support (deploy!)
 4. US3 → Private messaging (deploy!)
 5. US4 → Full command system with palette (deploy!)

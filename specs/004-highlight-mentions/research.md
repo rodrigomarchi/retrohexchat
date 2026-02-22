@@ -52,7 +52,7 @@
 **Rationale**: SoundHook already exists with a "mention" sound type (880Hz sine wave, 150ms duration, 0.3 volume). It uses Web Audio API oscillators (no audio files needed). The hook listens for `play_sound` handleEvent. ChatLive just needs to push this event when a highlight is detected. Zero new JS code required.
 
 **Alternatives considered**:
-- **New audio file (WAV/MP3)**: Increases bundle size, adds asset management. Synthesized tones are period-appropriate for the Windows 98 aesthetic.
+- **New audio file (WAV/MP3)**: Increases bundle size, adds asset management. Synthesized tones are period-appropriate for the retro aesthetic.
 - **Browser Notification API**: Out of scope. Sound is the specified notification mechanism.
 
 ## R6: Persistence Pattern
@@ -72,7 +72,7 @@
 **Rationale**: The 16-color IRC palette is already defined in CSS (`.irc-bg-0` through `.irc-bg-15`) and has a color picker UI in the FormatToolbar. Reusing these colors for highlight word backgrounds keeps the design consistent and avoids creating a new color system. The `HighlightWord` struct stores `bg_color` as an integer index (0-15) or nil for default.
 
 **Alternatives considered**:
-- **Full RGB color picker**: Overly complex for a Windows 98 aesthetic. The 16-color palette is period-appropriate.
+- **Full RGB color picker**: Overly complex for a retro aesthetic. The 16-color palette is period-appropriate.
 - **Hardcoded highlight colors only**: Too restrictive. Per-word colors are a spec requirement (FR-012).
 
 ## R8: Muted Notifications

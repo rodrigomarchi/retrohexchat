@@ -10,7 +10,7 @@ Implement mIRC-style Perform (auto-execute commands on connect), auto-join chann
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (3 new tables: `perform_entries`, `autojoin_entries`, `perform_settings`) + in-memory Session state for guests + browser localStorage for reconnection
 **Testing**: ExUnit with `@tag :unit`, `@tag :integration`, `@tag :liveview`, `@tag :e2e`
 **Target Platform**: Web (desktop browsers)
@@ -32,7 +32,7 @@ Implement mIRC-style Perform (auto-execute commands on connect), auto-join chann
 | V. Contracts and Behaviours | Yes | PASS | `/perform` and `/autojoin` implement `Handler` behaviour. Ecto schemas with changesets. |
 | VI. Static Analysis from Day One | Yes | PASS | `@spec` on all public functions. Credo strict. Dialyzer clean. |
 | VII. Lean LiveViews & Components | Yes | PASS | ChatLive delegates to PerformList/AutoJoinList CRUD. PerformDialog is a function component. |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | PerformDialog uses 98.css (window, title-bar, sunken-panel). Reconnect overlay styled as 98.css dialog. |
+| VIII. retro Design Fidelity | Yes | PASS | PerformDialog uses retro design system (window, title-bar, sunken-panel). Reconnect overlay styled as retro dialog. |
 | IX. Hot/Cold Data Separation | Yes | PASS | Hot: Session struct (in-memory). Cold: PostgreSQL (3 tables). localStorage for reconnection bridge. |
 | X. Scalable Architecture | Yes | PASS | Per-user data, no shared state. PubSub patterns unchanged. |
 | XI. User-Facing Documentation | Yes | PASS | Help topics for `/perform`, `/autojoin`, Perform feature, Auto-reconnect. Keyboard shortcuts updated. |
@@ -96,7 +96,7 @@ apps/retro_hex_chat_web/                          # Web layer
 │   │   └── chat_live.ex                          # MODIFIED: perform execution, dialog events,
 │   │                                             #   reconnect state, Alt+P, restore_session
 │   └── components/
-│       ├── perform_dialog.ex                     # NEW: 98.css dialog (2 tabs)
+│       ├── perform_dialog.ex                     # NEW: retro dialog (2 tabs)
 │       └── menu_bar.ex                           # MODIFIED: +Perform menu item
 ├── assets/
 │   ├── js/
@@ -219,7 +219,7 @@ apps/retro_hex_chat_web/                          # Web layer
 
 ### Phase 5: Perform Dialog UI
 
-**Goal**: 98.css dialog for visual perform/autojoin management.
+**Goal**: retro dialog for visual perform/autojoin management.
 
 **New files**:
 - `components/perform_dialog.ex` — Two-tab dialog (Commands, Auto-Join)
@@ -229,7 +229,7 @@ apps/retro_hex_chat_web/                          # Web layer
 - `chat_live.ex` — `window_keydown` handler for Alt+P
 - `chat_live.ex` — `assign_defaults/2` for dialog state assigns
 - `components/menu_bar.ex` — Add "Perform" item under Tools menu
-- `css/layout.css` — Dialog styles (if needed beyond 98.css)
+- `css/layout.css` — Dialog styles (if needed beyond retro design system)
 - `css/dark-theme.css` — Dark theme counterparts
 
 **Dialog structure**:
@@ -252,7 +252,7 @@ apps/retro_hex_chat_web/                          # Web layer
 - `assets/js/app.js` — Register ReconnectHook, customize `reconnectAfterMs`
 - `chat_live.ex` — `push_event("intentional_disconnect")` in quit/disconnect handlers
 - `chat_live.ex` — `push_event("save_reconnect_state", state)` on state changes
-- `css/layout.css` — Reconnect overlay styles (98.css themed window)
+- `css/layout.css` — Reconnect overlay styles (retro themed window)
 - `css/dark-theme.css` — Dark theme overlay styles
 
 **ReconnectHook behavior**:

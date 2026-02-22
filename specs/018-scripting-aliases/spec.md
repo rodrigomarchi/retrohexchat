@@ -97,7 +97,7 @@ A user wants to automatically respond to events like someone joining a specific 
 
 ### User Story 5 - Alias Editor Dialog UI (Priority: P2)
 
-A user interacts with the Alias Editor through a Windows 98-styled dialog that provides CRUD operations for aliases. The dialog is accessible via the Tools menu and the `/alias` command with no arguments.
+A user interacts with the Alias Editor through a 2000s-erad dialog that provides CRUD operations for aliases. The dialog is accessible via the Tools menu and the `/alias` command with no arguments.
 
 **Why this priority**: The dialog is essential for P1 alias functionality — while aliases can be managed via commands (`/alias add`, `/alias remove`, `/alias list`), the dialog provides the primary user-friendly interface expected in a mIRC-style client.
 
@@ -199,7 +199,7 @@ A user interacts with the Alias Editor through a Windows 98-styled dialog that p
 - **SC-004**: Timer commands fire within 2 seconds of their scheduled time, providing reliable automation for users.
 - **SC-005**: Custom popup menu items appear in context menus without displacing or hiding any built-in menu options.
 - **SC-006**: Auto-respond rules fire reliably for the specified trigger events while respecting the rate limit, preventing any user from being spammed more than once per minute per rule.
-- **SC-007**: All editor dialogs (Alias, Custom Menus, Auto-Respond) are visually consistent with existing 98.css-styled dialogs in the application.
+- **SC-007**: All editor dialogs (Alias, Custom Menus, Auto-Respond) are visually consistent with existing retro-styled dialogs in the application.
 - **SC-008**: Registered users' aliases, custom menus, and auto-respond rules persist across sessions with zero data loss.
 - **SC-009**: Guest users can use all features during their session without errors, understanding that data is session-only.
 
@@ -216,7 +216,7 @@ A user interacts with the Alias Editor through a Windows 98-styled dialog that p
 
 **In Scope**:
 - Alias system with full variable expansion ($1–$9, $nick, $chan)
-- Alias Editor dialog (98.css styled)
+- Alias Editor dialog (retro-styled)
 - `/alias` command (add, remove, list subcommands)
 - `/timer` command (one-shot, repeat, list, stop)
 - Custom popup menu editor and integration with existing context menus

@@ -80,7 +80,7 @@
 
 ## Phase 4: User Story 5 — Alias Editor Dialog UI (Priority: P2)
 
-**Goal**: Windows 98-styled Alias Editor dialog with full CRUD operations, accessible via Tools menu and `/alias` command.
+**Goal**: 2000s-erad Alias Editor dialog with full CRUD operations, accessible via Tools menu and `/alias` command.
 
 **Independent Test**: Open dialog via Tools > Alias Editor, add/edit/remove aliases visually, verify changes take effect in alias expansion.
 
@@ -90,7 +90,7 @@
 
 ### Implementation for User Story 5
 
-- [X] T023 [US5] Create `RetroHexChatWeb.Components.AliasDialog` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/alias_dialog.ex` — 98.css dialog with: title bar "Alias Editor", list of aliases (name + expansion columns), Add/Edit/Remove/Close buttons, inline add/edit form (name field, expansion field, Save/Cancel). Props: `visible`, `aliases`, `selected_alias`, `editing_mode`, `draft_name`, `draft_expansion`, `warning_message`, `error_message`. Follow existing dialog patterns (PerformDialog, FavoriteDialog).
+- [X] T023 [US5] Create `RetroHexChatWeb.Components.AliasDialog` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/alias_dialog.ex` — retro dialog with: title bar "Alias Editor", list of aliases (name + expansion columns), Add/Edit/Remove/Close buttons, inline add/edit form (name field, expansion field, Save/Cancel). Props: `visible`, `aliases`, `selected_alias`, `editing_mode`, `draft_name`, `draft_expansion`, `warning_message`, `error_message`. Follow existing dialog patterns (PerformDialog, FavoriteDialog).
 - [X] T024 [US5] Add "Alias Editor" entry to Tools menu in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/menu_bar.ex` — add `<div class="menu-dropdown-item" data-testid="menu-alias-editor" phx-click="open_alias_dialog">Alias Editor</div>` to the Tools dropdown. Position after existing items.
 - [X] T025 [US5] Render AliasDialog component in ChatLive template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — add `<RetroHexChatWeb.Components.AliasDialog.alias_dialog ... />` to the template section where other dialogs are rendered. Pass all required assigns. Make LiveView tests from T022 pass.
 
@@ -137,7 +137,7 @@
 - [X] T035 [US3] Implement `RetroHexChat.Chat.CustomMenus` in `apps/retro_hex_chat/lib/retro_hex_chat/chat/custom_menus.ex` — follow AliasList pattern. `new/0`, `add_entry/4`, `remove_entry/3`, `update_entry/5`, `entries_for/2`, `save/2`, `load/1`. Max 10 per menu_type. Case-insensitive label uniqueness per menu_type per owner. Make tests from T033 pass.
 - [X] T036 [US3] Implement `/popups` command handler `RetroHexChat.Commands.Handlers.Popups` in `apps/retro_hex_chat/lib/retro_hex_chat/commands/handlers/popups.ex` — simple handler: no args → open dialog. Make tests from T034 pass.
 - [X] T037 [US3] Register `/popups` command in `apps/retro_hex_chat/lib/retro_hex_chat/commands/registry.ex` — add `"popups" => RetroHexChat.Commands.Handlers.Popups`.
-- [X] T038 [US3] Create `RetroHexChatWeb.Components.CustomMenusDialog` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/custom_menus_dialog.ex` — 98.css dialog with two tabs (Nicklist, Channel). Each tab shows list of items (label + command), Add/Edit/Remove buttons, inline form (label field, command field). Follow PerformDialog tabbed pattern.
+- [X] T038 [US3] Create `RetroHexChatWeb.Components.CustomMenusDialog` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/custom_menus_dialog.ex` — retro dialog with two tabs (Nicklist, Channel). Each tab shows list of items (label + command), Add/Edit/Remove buttons, inline form (label field, command field). Follow PerformDialog tabbed pattern.
 - [X] T039 [US3] Add custom menu items to nicklist context menu in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/context_menu.ex` — after existing menu items, add a `<li class="separator">` divider followed by a `:for` loop rendering custom nicklist items from `@custom_nicklist_items`. Each item: `phx-click="custom_menu_execute"`, `phx-value-command={item.command}`, `phx-value-target={@target_nick}`.
 - [X] T040 [US3] Add custom menu items to channel context menu in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/treebar_context_menu.ex` — after existing "Add to Favorites" item, add separator + custom channel items from `@custom_channel_items`. Each item: `phx-click="custom_menu_execute"`, `phx-value-command={item.command}`, `phx-value-target={@channel}`.
 - [X] T041 [US3] Add custom menu event handlers and dialog wiring in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — handle `custom_menu_execute` event: expand command via `AliasExpander.expand/3` with `$1` = target, parse and dispatch. Handle dialog CRUD events for custom menus. Add `maybe_persist_custom_menus/2`. Add custom menus to `load_persisted_data/2`. Pass `custom_nicklist_items` and `custom_channel_items` to context menu components via assigns. Add "Custom Menus" to Tools menu in `menu_bar.ex`. Render CustomMenusDialog in template.
@@ -162,7 +162,7 @@
 - [X] T044 [US4] Implement `RetroHexChat.Chat.AutoRespondRules` in `apps/retro_hex_chat/lib/retro_hex_chat/chat/auto_respond_rules.ex` — follow AliasList pattern. `new/0`, `add_entry/4`, `remove_entry/2`, `update_entry/3`, `toggle_entry/2`, `matching_rules/3`, `entries/1`, `save/2`, `load/1`. Max 10 rules. Trigger validation for `:on_join`, `:on_part`, `:on_nick_change`. Channel filter validation (must start with `#` if present). Make tests from T042 pass.
 - [X] T045 [US4] Implement `/autorespond` command handler `RetroHexChat.Commands.Handlers.AutoRespond` in `apps/retro_hex_chat/lib/retro_hex_chat/commands/handlers/auto_respond.ex` — Handler behaviour. Subcommands: `add <trigger> [channel] <command>`, `remove <position>`, `list`, no args → open dialog. Make tests from T043 pass.
 - [X] T046 [US4] Register `/autorespond` command in `apps/retro_hex_chat/lib/retro_hex_chat/commands/registry.ex` — add `"autorespond" => RetroHexChat.Commands.Handlers.AutoRespond`.
-- [X] T047 [US4] Create `RetroHexChatWeb.Components.AutoRespondDialog` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/auto_respond_dialog.ex` — 98.css dialog with: list of rules (trigger, channel, command, enabled checkbox), Add/Edit/Remove/Close buttons, add/edit form with trigger event dropdown (on join/on part/on nick change), channel filter field, command field. Follow existing dialog patterns.
+- [X] T047 [US4] Create `RetroHexChatWeb.Components.AutoRespondDialog` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/auto_respond_dialog.ex` — retro dialog with: list of rules (trigger, channel, command, enabled checkbox), Add/Edit/Remove/Close buttons, add/edit form with trigger event dropdown (on join/on part/on nick change), channel filter field, command field. Follow existing dialog patterns.
 - [X] T048 [US4] Implement `maybe_fire_autorespond/4` helper and hook into PubSub event handlers in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — create helper function `maybe_fire_autorespond(socket, event_type, channel, event_data)` that: gets rules from session, calls `AutoRespondRules.matching_rules/3`, skips if triggering nick == own nick (FR-029), checks `autorespond_cooldowns` map for rate limit (60s per rule+nick combo, FR-030), expands command via `AliasExpander.expand/3` with `$nick` = triggering nick and `$chan` = channel, parses and dispatches (marked as auto-generated to prevent cascading, FR-031), updates cooldowns map. Add call to `maybe_fire_autorespond` at end of `handle_info({:user_joined, ...})`, `handle_info({:user_left, ...})`, and `handle_info({:nick_changed, ...})` handlers.
 - [X] T049 [US4] Add auto-respond dialog CRUD handlers and persistence in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — handle dialog events (open, close, add, edit, save, delete, toggle). Add `maybe_persist_autorespond_rules/2`. Add auto-respond rules to `load_persisted_data/2`. Add "Auto-Respond" to Tools menu in `menu_bar.ex`. Render AutoRespondDialog in template.
 
@@ -281,5 +281,5 @@ Phase 1 → Phase 2 → Phase 3 (US1) → Phase 4 (US5) → Phase 5 (US2) → Ph
 - All command handlers implement `Handler` behaviour (Principle V)
 - All public functions have `@spec` (Principle VI)
 - LiveView delegates all logic to domain modules (Principle VII)
-- 98.css styling on all dialogs (Principle VIII)
+- retro styling on all dialogs (Principle VIII)
 - Help topics for all commands and features (Principle XI)

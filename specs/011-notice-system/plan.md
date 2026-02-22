@@ -10,7 +10,7 @@ Implement IRC-style NOTICE as a lightweight, transient message type for RetroHex
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (1 new table: `notice_routing_settings`) + in-memory Session state for guests
 **Testing**: ExUnit with async: true, Mox, ExMachina, Floki
 **Target Platform**: Web (Phoenix LiveView)
@@ -25,14 +25,14 @@ Implement IRC-style NOTICE as a lightweight, transient message type for RetroHex
 
 | # | Principle | Status | Notes |
 |---|-----------|--------|-------|
-| I | Elixir & Phoenix Exclusive Stack | PASS | Pure Elixir + Phoenix LiveView. No JS frameworks. PostgreSQL for persistence. 98.css for styling. |
+| I | Elixir & Phoenix Exclusive Stack | PASS | Pure Elixir + Phoenix LiveView. No JS frameworks. PostgreSQL for persistence. retro design system for styling. |
 | II | Umbrella App with Bounded Contexts | PASS | Domain logic in `retro_hex_chat` (Commands context for handlers, Chat context for notice routing settings). Web layer in `retro_hex_chat_web` (ChatLive handle_info, ChatMessage component). |
 | III | OTP Process Architecture | PASS | No new GenServers needed. Channel notices use existing Channel.Server broadcast. User notices use existing `user:#{nickname}` PubSub topic. |
 | IV | Test-First Development | PASS | Unit tests for handlers, routing logic, ignore integration. Integration tests for persistence. LiveView tests for rendering and routing. |
 | V | Contracts and Behaviours | PASS | Both `/notice` and `/notice_routing` handlers implement existing `Handler` behaviour. |
 | VI | Static Analysis from Day One | PASS | `@spec` on all public functions. Credo/Dialyxir compliance. |
 | VII | Lean LiveViews & Component Architecture | PASS | ChatLive only handles PubSub routing. Notice formatting delegated to ChatMessage component. PubSub topics follow convention: `user:#{nickname}`, `channel:#{name}`. |
-| VIII | Windows 98 Design Fidelity | PASS | Notice rendering uses 98.css-compatible styling. New `.chat-notice` CSS class with distinct color. `-Nick-` prefix follows retro IRC convention. |
+| VIII | retro Design Fidelity | PASS | Notice rendering uses retro design system-compatible styling. New `.chat-notice` CSS class with distinct color. `-Nick-` prefix follows retro IRC convention. |
 | IX | Hot/Cold Data Separation | PASS | Notices are hot data only (transient PubSub messages, never persisted). Routing preference is cold data (persisted for registered users). |
 | X | Scalable Architecture | PASS | PubSub-based delivery scales with Phoenix PubSub (pg adapter). No new state to manage. |
 | XI | User-Facing Documentation | PASS | Help topics for `/notice` command, `/notice_routing` command, and "Notices" feature topic. |

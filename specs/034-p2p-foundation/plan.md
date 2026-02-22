@@ -32,7 +32,7 @@ Build the foundational domain layer for peer-to-peer sessions in RetroHexChat. T
 | V. Contracts and Behaviours | Yes | PASS | @spec on all public functions, Dialyzer-verified |
 | VI. Static Analysis | Yes | PASS | Credo, Dialyxir, mix format enforced |
 | VII. Lean LiveViews | N/A | — | No LiveView code in this plan (domain only) |
-| VIII. Windows 98 Fidelity | N/A | — | No UI in this plan |
+| VIII. retro Fidelity | N/A | — | No UI in this plan |
 | IX. Hot/Cold Data Separation | Yes | PASS | GenServer = hot cache, PostgreSQL = authoritative cold store |
 | X. Scalable Architecture | Yes | PASS | Process-per-session scales via DynamicSupervisor, DB indexed for lookups |
 | XI. User Documentation | N/A | — | No user-facing features (infrastructure only); help topics deferred to command/UI plans |

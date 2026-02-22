@@ -227,7 +227,7 @@ defmodule Mix.Tasks.Lint.CssConsistencyTest do
       assert MapSet.size(defined) > 0
     end
 
-    test "extract_vendor_classes returns known 98.css classes" do
+    test "extract_vendor_classes returns known retro design system classes" do
       vendor = CssConsistency.extract_vendor_classes()
       assert MapSet.member?(vendor, "window")
       assert MapSet.member?(vendor, "title-bar")

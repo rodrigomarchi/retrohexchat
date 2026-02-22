@@ -5,14 +5,14 @@
 
 ## Summary
 
-Client-side ignore system allowing users to locally filter unwanted messages by nickname. Supports five ignore types (all/messages/pms/invites/actions), temporary timed ignores with auto-expiry, `/ignore` and `/unignore` commands, a standalone 98.css dialog for visual management, context menu integration, and persistence for registered users via the existing NickServ identify pattern.
+Client-side ignore system allowing users to locally filter unwanted messages by nickname. Supports five ignore types (all/messages/pms/invites/actions), temporary timed ignores with auto-expiry, `/ignore` and `/unignore` commands, a standalone retro dialog for visual management, context menu integration, and persistence for registered users via the existing NickServ identify pattern.
 
 The system operates entirely in the LiveView process — ignored messages are still delivered by the server but filtered before display in `handle_info` clauses. This follows the IRC convention where ignore is a client feature. Timer management uses `Process.send_after` in the LiveView process with refs stored in socket assigns.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (new `ignore_list_entries` table) + in-memory Session state for guests
 **Testing**: ExUnit (unit, integration, liveview, e2e tags), Floki for HTML assertions
 **Target Platform**: Web (Phoenix LiveView)
@@ -27,14 +27,14 @@ The system operates entirely in the LiveView process — ignored messages are st
 
 | Principle | Status | Notes |
 |-----------|--------|-------|
-| I. Elixir & Phoenix Exclusive | PASS | Pure Elixir domain, LiveView UI, PostgreSQL persistence, 98.css dialog |
+| I. Elixir & Phoenix Exclusive | PASS | Pure Elixir domain, LiveView UI, PostgreSQL persistence, retro dialog |
 | II. Umbrella with Bounded Contexts | PASS | IgnoreEntry/IgnoreList in Chat context (message filtering), Ecto schema in Chat schemas, web layer in ChatLive + new component |
 | III. OTP Process Architecture | PASS | No new GenServers needed — ignore is per-session state in LiveView process. Timers via `Process.send_after` in LiveView |
 | IV. Test-First Development | PASS | Unit tests for IgnoreEntry/IgnoreList, integration for persistence, LiveView tests for filtering/commands/dialog, E2E for full flows |
 | V. Contracts and Behaviours | PASS | `/ignore` and `/unignore` handlers implement existing Handler behaviour |
 | VI. Static Analysis | PASS | @spec on all public functions, Credo strict, Dialyxir clean |
 | VII. Lean LiveViews | PASS | All CRUD in Chat.IgnoreList domain module; LiveView only calls domain + updates assigns |
-| VIII. Windows 98 Fidelity | PASS | IgnoreListDialog uses 98.css window, sunken-panel table, standard button layout |
+| VIII. retro Fidelity | PASS | IgnoreListDialog uses retro window, sunken-panel table, standard button layout |
 | IX. Hot/Cold Data Separation | PASS | Runtime ignore list in Session (hot); PostgreSQL for persistence (cold) |
 | X. Scalable Architecture | PASS | Per-session state, no shared mutable state, no GenServer bottleneck |
 | XI. User-Facing Documentation | PASS | Help topics for /ignore command, /unignore command, Ignore List feature, Keyboard Shortcuts updated |
@@ -91,7 +91,7 @@ apps/retro_hex_chat_web/                      # Web layer
 │   ├── live/
 │   │   └── chat_live.ex                      # MODIFY: Filtering + events
 │   └── components/
-│       ├── ignore_list_dialog.ex             # NEW: 98.css dialog
+│       ├── ignore_list_dialog.ex             # NEW: retro dialog
 │       └── context_menu.ex                   # MODIFY: Add Ignore option
 └── test/retro_hex_chat_web/
     ├── live/

@@ -32,5 +32,5 @@
 ## Notes
 
 - All items pass. Spec is ready for `/speckit.clarify` or `/speckit.plan`.
-- The spec references "98.css-styled" in User Story 1 — this is a design system reference (like "Material Design-styled"), not an implementation detail. Acceptable.
+- The spec references "retro-styled" in User Story 1 — this is a design system reference (like "Material Design-styled"), not an implementation detail. Acceptable.
 - Assumptions section documents reasonable defaults for integration points (URL list, channel settings, keybinding system).

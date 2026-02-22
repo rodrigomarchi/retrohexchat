@@ -10,7 +10,7 @@ Extend RetroHexChat's channel system with advanced IRC features: a 5-tier user h
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (1 migration: add `mode_join_throttle` column to `registered_channels` table) + in-memory GenServer state for channel modes, membership, join throttle timestamps
 **Testing**: ExUnit with async: true, Mox, ExMachina, StreamData (for mode parsing), Floki (for nicklist component tests)
 **Target Platform**: Web (Phoenix LiveView, all browsers)
@@ -25,14 +25,14 @@ Extend RetroHexChat's channel system with advanced IRC features: a 5-tier user h
 
 | # | Principle | Status | Notes |
 |---|-----------|--------|-------|
-| I | Elixir & Phoenix Exclusive Stack | PASS | Pure Elixir/Phoenix/LiveView. No JS frameworks. PostgreSQL only. 98.css for UI. |
+| I | Elixir & Phoenix Exclusive Stack | PASS | Pure Elixir/Phoenix/LiveView. No JS frameworks. PostgreSQL only. retro design system. |
 | II | Umbrella App with Bounded Contexts | PASS | All domain changes in `retro_hex_chat` (Channels, Commands contexts). Web changes in `retro_hex_chat_web`. No cross-context coupling. |
 | III | OTP Process Architecture | PASS | Channel GenServer holds new mode state and join timestamps. No new processes needed. Knock is transient (PubSub broadcast, no state). |
 | IV | Test-First Development | PASS | Unit tests for Membership, Modes, Policy (rank functions, new predicates, permission checks). Integration tests for Server (join/kick/ban with hierarchy). LiveView tests for nicklist grouping. |
 | V | Contracts and Behaviours | PASS | `/knock` implements Handler behaviour. New Policy functions have @spec. Membership role type extended. |
 | VI | Static Analysis from Day One | PASS | All new public functions have @spec. `mix credo --strict` and `mix dialyzer` enforced. |
 | VII | Lean LiveViews & Component Architecture | PASS | LiveView delegates to Server/Policy for all permission logic. Nicklist component handles display grouping only. PubSub topics follow convention. |
-| VIII | Windows 98 Design Fidelity | PASS | Nicklist extends existing 98.css-based component. New CSS classes (nick-owner, nick-halfop) follow existing pattern. |
+| VIII | retro Design Fidelity | PASS | Nicklist extends existing retro-styled component. New CSS classes (nick-owner, nick-halfop) follow existing pattern. |
 | IX | Hot/Cold Data Separation | PASS | Mode flags, membership, join timestamps: in-memory (hot). Mode persistence via `registered_channels` table (cold). Knock: transient PubSub only. |
 | X | Scalable Architecture | PASS | Per-channel GenServer naturally distributes. No global state added. Join throttle is per-process (scales with channels). |
 | XI | User-Facing Documentation | PASS | Help topics for all 9 new modes (+q, +h, +n, +s, +p, +c, +R, +j, +K) and /knock command. Updated overview topic. |

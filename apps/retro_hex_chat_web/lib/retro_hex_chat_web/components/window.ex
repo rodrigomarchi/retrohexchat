@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.Window do
   @moduledoc """
-  98.css window wrapper component with title bar and borders.
+  Retro window wrapper component with title bar and borders.
   """
   use Phoenix.Component
 

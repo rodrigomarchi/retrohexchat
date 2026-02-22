@@ -24,19 +24,19 @@
 
 ### D3: Multi-Line Paste Strategy
 - **Decision**: JS hook intercepts `paste` event, LiveView handles confirmation dialog and message dispatch
-- **Rationale**: Paste detection must happen client-side (clipboard API). The confirmation dialog should be a LiveView component (98.css style, consistent with existing dialogs). Message dispatch with 300ms pacing uses `Process.send_after` chain server-side.
+- **Rationale**: Paste detection must happen client-side (clipboard API). The confirmation dialog should be a LiveView component (retro style, consistent with existing dialogs). Message dispatch with 300ms pacing uses `Process.send_after` chain server-side.
 - **Alternatives considered**:
-  - Fully client-side dialog (JS prompt/confirm) — breaks 98.css aesthetic
+  - Fully client-side dialog (JS prompt/confirm) — breaks retro aesthetic
   - TextArea instead of input — massive template change, breaks existing hooks
 - **Implementation**: `PasteHook` captures paste, sends lines to LiveView via `push_event`. LiveView shows `PasteConfirmDialog` component. On confirm, dispatches lines with 300ms delay chain.
 
 ### D4: Right-Click Copy Strategy
-- **Decision**: Custom 98.css context menu via JS hook on chat area, using `document.execCommand('copy')` / Clipboard API
+- **Decision**: Custom retro design system context menu via JS hook on chat area, using `document.execCommand('copy')` / Clipboard API
 - **Rationale**: The existing context menu pattern (nick right-click) is LiveView-driven, but clipboard operations require JS. A lightweight JS-only context menu on the chat area is cleaner since no server state is needed.
 - **Alternatives considered**:
-  - Browser native context menu — can't be styled with 98.css
+  - Browser native context menu — can't be styled with retro design system
   - LiveView-driven menu with push_event for copy — unnecessary roundtrip
-- **Implementation**: `ChatCopyHook` on `.chat-messages` container. Right-click checks `window.getSelection()`, shows/hides 98.css styled menu, copies on click.
+- **Implementation**: `ChatCopyHook` on `.chat-messages` container. Right-click checks `window.getSelection()`, shows/hides retro-styled menu, copies on click.
 
 ### D5: Double-Click Handler Strategy
 - **Decision**: JS `dblclick` event listeners + LiveView events for server actions
@@ -75,7 +75,7 @@
 
 ### D9: Emoji Picker Architecture
 - **Decision**: Static Elixir module with curated emoji dataset, LiveView component for picker, JS hook for insertion
-- **Rationale**: Bundling ~300 common emojis as a static module avoids external dependencies. The picker is a 98.css popup component with category tabs and search. Unicode emojis already render correctly in modern browsers — no special rendering needed.
+- **Rationale**: Bundling ~300 common emojis as a static module avoids external dependencies. The picker is a retro design system popup component with category tabs and search. Unicode emojis already render correctly in modern browsers — no special rendering needed.
 - **Alternatives considered**:
   - External emoji library/CDN — adds dependency, offline risk
   - Full Unicode emoji set (3000+) — too large, slow search
@@ -84,7 +84,7 @@
 
 ### D10: About Dialog Enhancement
 - **Decision**: Replace inline `<p>` tags with dedicated `AboutDialog` component featuring ASCII art logo
-- **Rationale**: The existing about dialog uses the generic `Dialog` component with raw HTML. A dedicated component allows proper layout with logo, version, and credits sections styled like Windows 98 "About" boxes.
+- **Rationale**: The existing about dialog uses the generic `Dialog` component with raw HTML. A dedicated component allows proper layout with logo, version, and credits sections styled like retro "About" boxes.
 - **Alternatives considered**:
   - SVG/image logo — adds asset complexity
   - Keep generic Dialog with more HTML — less maintainable

@@ -10,7 +10,7 @@ Add four server communication mechanisms to RetroHexChat: Message of the Day (MO
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (2 new tables: `server_settings`, `channel_welcome_messages`) + in-memory Session state for user modes and welcome tracking + in-memory cache for MOTD
 **Testing**: ExUnit with async: true, Mox, ExMachina, Floki (for styled message tests)
 **Target Platform**: Web (Phoenix LiveView, all browsers)
@@ -25,14 +25,14 @@ Add four server communication mechanisms to RetroHexChat: Message of the Day (MO
 
 | # | Principle | Status | Notes |
 |---|-----------|--------|-------|
-| I | Elixir & Phoenix Exclusive Stack | PASS | Pure Elixir/Phoenix/LiveView. No JS frameworks. PostgreSQL for persistence. 98.css for UI styling. |
+| I | Elixir & Phoenix Exclusive Stack | PASS | Pure Elixir/Phoenix/LiveView. No JS frameworks. PostgreSQL for persistence. retro design system styling. |
 | II | Umbrella App with Bounded Contexts | PASS | Domain logic in `retro_hex_chat` (Accounts, Services, Commands, Channels contexts). Web layer in `retro_hex_chat_web`. New `ServerRoles` in Accounts, new schemas in Services. No cross-context coupling. |
 | III | OTP Process Architecture | PASS | No new processes. Reuses existing Channel.Server for welcome messages. MOTD cache uses Application env or Agent (single value). PubSub for transient messages (wallops, announcements). |
 | IV | Test-First Development | PASS | Unit tests for ServerRoles, Session helpers, Motd service, command handlers. Integration tests for DB operations. LiveView tests for MOTD display, welcome message flow, announcement delivery. |
 | V | Contracts and Behaviours | PASS | 8 new command handlers, each implementing Handler behaviour. All new public functions have @spec. ServerRoles module has clear function contracts. |
 | VI | Static Analysis from Day One | PASS | All new modules have @spec on public functions. `mix credo --strict` and `mix dialyzer` enforced. |
 | VII | Lean LiveViews & Component Architecture | PASS | ChatLive delegates to Services.Motd, Channels.Server, and command handlers. PubSub handlers are routing-only. New PubSub topics follow convention: `"server:announcements"`, `"server:wallops"`, `"server:settings"`. |
-| VIII | Windows 98 Design Fidelity | PASS | MOTD uses bordered container matching 98.css patterns. Announcements use amber/yellow background matching Windows 98 warning dialogs. Wallops uses italic text in Status Window. |
+| VIII | retro Design Fidelity | PASS | MOTD uses bordered container matching retro design patterns. Announcements use amber/yellow background matching retro warning dialogs. Wallops uses italic text in Status Window. |
 | IX | Hot/Cold Data Separation | PASS | MOTD text: cold (PostgreSQL) + hot (in-memory cache). Welcome messages: cold (PostgreSQL) + hot (Channel.Server state). User modes, welcome tracking: hot only (Session struct, session-scoped). Wallops/announcements: transient (PubSub, no storage). |
 | X | Scalable Architecture | PASS | PubSub-based delivery scales across nodes. Per-channel welcome messages cached in existing GenServers. No global mutable state beyond MOTD cache (single value, rarely changes). Config-based roles are node-local but consistent across cluster. |
 | XI | User-Facing Documentation | PASS | 9 new help topics: 8 commands (/motd, /setmotd, /clearmotd, /setwelcome, /clearwelcome, /wallops, /announce, /umode) + 1 feature overview (Special Messages). Commands overview topic updated. |

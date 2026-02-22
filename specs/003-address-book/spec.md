@@ -3,13 +3,13 @@
 **Feature Branch**: `003-address-book`
 **Created**: 2026-02-11
 **Status**: Draft
-**Input**: User description: "Address Book for RetroHexChat — unified tabbed dialog (Alt+B) for managing contacts, notify list, nick colors, and ignore rules in a single Windows 98-style interface."
+**Input**: User description: "Address Book for RetroHexChat — unified tabbed dialog (Alt+B) for managing contacts, notify list, nick colors, and ignore rules in a single retro-style interface."
 
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 — Address Book Dialog Shell (Priority: P1)
 
-A connected user presses Alt+B (or clicks the Address Book toolbar icon) and a tabbed Windows 98-style dialog opens centered on screen. The dialog has four tabs: Contacts, Notify, Nick Colors, and Control. The user can switch between tabs by clicking the tab headers. Pressing Alt+B again or clicking the close button dismisses the dialog. Only one Address Book dialog can be open at a time.
+A connected user presses Alt+B (or clicks the Address Book toolbar icon) and a tabbed retro-style dialog opens centered on screen. The dialog has four tabs: Contacts, Notify, Nick Colors, and Control. The user can switch between tabs by clicking the tab headers. Pressing Alt+B again or clicking the close button dismisses the dialog. Only one Address Book dialog can be open at a time.
 
 **Why this priority**: The dialog shell is the foundation — without it, none of the four tab features can be accessed. It also establishes the Alt+B shortcut, toolbar icon, and tabbed navigation pattern.
 
@@ -122,7 +122,7 @@ A user opens the Address Book and switches to the Control tab. They see a list o
 
 - **FR-001**: System MUST provide a tabbed Address Book dialog accessible via Alt+B keyboard shortcut and a toolbar icon.
 - **FR-002**: The Address Book dialog MUST display four tabs: Contacts, Notify, Nick Colors, and Control.
-- **FR-003**: The dialog MUST open centered on screen with a Windows 98-style appearance using 98.css tab control styling.
+- **FR-003**: The dialog MUST open centered on screen with a 2000s-era appearance using retro tab control styling.
 - **FR-004**: Only one Address Book dialog instance MUST be open at a time (toggle open/close).
 - **FR-005**: The Contacts tab MUST display a scrollable list with columns: Nickname, Notes, First Contact Date, sorted alphabetically by nickname (case-insensitive).
 - **FR-006**: Users MUST be able to add, edit (notes only), and remove contacts from the Contacts tab.

@@ -10,7 +10,7 @@ Add P2P audio and video calling over WebRTC to RetroHexChat. Create a `media.js`
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend)
-**Primary Dependencies**: Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild. Browser-native WebRTC APIs (getUserMedia, addTrack, replaceTrack, getStats, enumerateDevices, Picture-in-Picture). Zero new npm/Elixir dependencies.
+**Primary Dependencies**: Phoenix 1.8+, LiveView 1.0+, retro CSS framework, esbuild. Browser-native WebRTC APIs (getUserMedia, addTrack, replaceTrack, getStats, enumerateDevices, Picture-in-Picture). Zero new npm/Elixir dependencies.
 **Storage**: N/A — all call state is ephemeral (LiveView assigns + JS variables). No database migrations.
 **Testing**: Vitest + jsdom (JS), ExUnit (Elixir E2E). Mock navigator.mediaDevices and RTCPeerConnection.getStats().
 **Target Platform**: Modern browsers (Chrome, Firefox, Safari, Edge) with WebRTC support.
@@ -32,7 +32,7 @@ Add P2P audio and video calling over WebRTC to RetroHexChat. Create a `media.js`
 | V. Contracts and Behaviours | Yes | PASS | media.js API contract defined. Hook event contract defined. |
 | VI. Static Analysis | Yes | PASS | ESLint, Prettier, Credo, Dialyzer enforced. @spec on all new public Elixir functions. |
 | VII. Lean LiveViews | Yes | PASS | LiveView handlers only update assigns and push events. All media logic in JS. |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Call UI uses 98.css components and design tokens. |
+| VIII. retro Design Fidelity | Yes | PASS | Call UI uses retro components and design tokens. |
 | IX. Hot/Cold Data Separation | Yes | PASS | All call state is ephemeral (hot). No persistent data. |
 | X. Scalable Architecture | No | N/A | 1-to-1 calls only. No scaling concerns for this feature. |
 | XI. User-Facing Documentation | Yes | PASS | Help topics for audio calls, video calls, and device management. |

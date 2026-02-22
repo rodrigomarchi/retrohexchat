@@ -36,7 +36,7 @@
 
 PROBLEM: Users who regularly visit the same channels must remember channel names and passwords and manually type /join every time they connect. There is no way to bookmark frequently visited channels for quick access. Classic mIRC provides a Favorites system (like browser bookmarks) that makes channel navigation effortless.
 
-USER JOURNEY: A user is in #elixir and wants to bookmark it. They right-click the channel in the treebar and select 'Add to Favorites'. A small Windows 98-style dialog appears with pre-filled channel name, an optional description field ('Elixir language discussion'), an optional password field (for +k channels), and an 'Auto-join on connect' checkbox. They save it.
+USER JOURNEY: A user is in #elixir and wants to bookmark it. They right-click the channel in the treebar and select 'Add to Favorites'. A small retro-style dialog appears with pre-filled channel name, an optional description field ('Elixir language discussion'), an optional password field (for +k channels), and an 'Auto-join on connect' checkbox. They save it.
 
 Now, the 'Favorites' menu in the menu bar shows #elixir in the list. Clicking it joins the channel instantly (or switches to it if already joined). The user adds several more favorites over time.
 

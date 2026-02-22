@@ -9,7 +9,7 @@
 
 ### User Story 1 - First-Time Welcome Wizard (Priority: P1)
 
-A first-time user opens RetroHexChat and is greeted by a Windows 98-style wizard dialog that guides them through initial setup in 3 steps: choosing a nickname, configuring the server connection, and optionally joining channels. The wizard only appears once — on subsequent visits, the user goes directly to the chat interface.
+A first-time user opens RetroHexChat and is greeted by a retro-style wizard dialog that guides them through initial setup in 3 steps: choosing a nickname, configuring the server connection, and optionally joining channels. The wizard only appears once — on subsequent visits, the user goes directly to the chat interface.
 
 **Why this priority**: The wizard is the primary onboarding touchpoint. Without it, new users face a blank interface with no guidance, leading to immediate abandonment. This story delivers the core "first impression" value.
 
@@ -118,7 +118,7 @@ When the URL catcher has no captured URLs, it shows an explanatory message inste
 - **FR-013**: System MUST display a message in empty URL catchers: "Nenhuma URL capturada. URLs mencionadas no chat aparecerão aqui."
 - **FR-014**: All empty state messages MUST disappear instantly when content arrives (first message, first user, first channel, first URL).
 - **FR-015**: Empty state text MUST NOT be selectable or copyable — it must not behave as chat message content.
-- **FR-016**: The wizard MUST be styled as a Windows 98-style wizard dialog, consistent with 98.css design language.
+- **FR-016**: The wizard MUST be styled as a retro-style wizard dialog, consistent with retro design system design language.
 - **FR-017**: Guest users MUST see the onboarding wizard and all empty states.
 
 ### Key Entities
@@ -135,7 +135,7 @@ When the URL catcher has no captured URLs, it shows an explanatory message inste
 - First-run detection via localStorage
 - Post-wizard tip banner in chat
 - 4 empty states: channel messages, nicklist, treebar, URL catcher
-- Windows 98-style wizard dialog design
+- retro-style wizard dialog design
 - Guest user support
 
 ### Out of Scope
@@ -152,7 +152,7 @@ When the URL catcher has no captured URLs, it shows an explanatory message inste
 - The channel list feature (for Step 3's popular channels and the "Explorar canais" button) is already available or can be invoked programmatically.
 - The post-wizard banner is a transient UI element that appears once per session after wizard completion (not persisted).
 - "Popular channels" in Step 3 refers to channels sorted by user count in descending order, limited to a reasonable number (e.g., top 10).
-- The wizard dialog follows standard 98.css dialog patterns (title bar with X button, "Back"/"Next"/"Cancel" navigation buttons).
+- The wizard dialog follows standard retro dialog patterns (title bar with X button, "Back"/"Next"/"Cancel" navigation buttons).
 
 ## Success Criteria *(mandatory)*
 

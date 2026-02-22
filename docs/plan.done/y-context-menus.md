@@ -20,7 +20,7 @@
 
 ## Dependencies Detail
 
-- Y1 (existing) provides the base context menu component, positioning logic, and 98.css styling
+- Y1 (existing) provides the base context menu component, positioning logic, and retro styling
 - Y2 (existing) provides treebar-specific menu infrastructure
 - Y3 extends Y1's menu to work on nicks rendered inside chat messages (different DOM target)
 - Y4 (URL menu) relates to E (URL Catcher) for "Save to URL List" action
@@ -30,10 +30,10 @@
 
 ## Technical Notes
 
-- Existing context_menu.ex renders a 98.css-styled menu with PM, Whois options and op actions (kick, ban)
+- Existing context_menu.ex renders a retro-styled menu with PM, Whois options and op actions (kick, ban)
 - Existing treebar_context_menu.ex renders Add to Favorites option for channel items
 - Context menu positioning: must handle edge cases near viewport boundaries (flip up/left if needed)
-- All context menus share the same 98.css visual pattern: raised border, separator lines, icons
+- All context menus share the same retro design system visual pattern: raised border, separator lines, icons
 - Nick detection in chat messages: need to identify nick text in rendered HTML — use data attributes on nick spans
 - Browser default context menu must be suppressed (preventDefault) only on recognized targets
 - Browser default context menu must be preserved for the input field (paste, spell-check)
@@ -47,9 +47,9 @@
 
 PROBLEM: While basic right-click menus exist for the nicklist and treebar, there are no context menus for elements within the chat area itself — nicknames, URLs, channels, and the general message area. This forces users to manually type commands for common actions that should be one right-click away. Additionally, the existing treebar menu is minimal (only 'Add to Favorites'), menus don't show keyboard shortcuts, and there's no visual distinction for unavailable actions.
 
-EXISTING CONTEXT: Two context menu components exist. (1) context_menu.ex provides a right-click menu on nicknames in the nicklist with PM, Whois, and operator actions (kick, ban). (2) treebar_context_menu.ex provides a right-click menu on channels in the treebar with 'Add to Favorites'. These provide the foundational 98.css styling, positioning logic, and DOM infrastructure for all new menus.
+EXISTING CONTEXT: Two context menu components exist. (1) context_menu.ex provides a right-click menu on nicknames in the nicklist with PM, Whois, and operator actions (kick, ban). (2) treebar_context_menu.ex provides a right-click menu on channels in the treebar with 'Add to Favorites'. These provide the foundational retro styling, positioning logic, and DOM infrastructure for all new menus.
 
-USER JOURNEY — NICK CONTEXT MENU IN CHAT: A user right-clicks on a nickname in the chat area. A 98.css-styled context menu appears with: Private Message, Whois, Copy Nick, separator, Ignore, Add to Address Book, Set Nick Color. If the user is a channel operator, additional items appear below a separator: Kick, Ban, Give Voice (+v), Give Op (+o). Each menu item shows its keyboard shortcut aligned to the right. Items that are not available (e.g., Kick when not an op) appear grayed out and are not clickable.
+USER JOURNEY — NICK CONTEXT MENU IN CHAT: A user right-clicks on a nickname in the chat area. A retro-styled context menu appears with: Private Message, Whois, Copy Nick, separator, Ignore, Add to Address Book, Set Nick Color. If the user is a channel operator, additional items appear below a separator: Kick, Ban, Give Voice (+v), Give Op (+o). Each menu item shows its keyboard shortcut aligned to the right. Items that are not available (e.g., Kick when not an op) appear grayed out and are not clickable.
 
 USER JOURNEY — URL AND CHANNEL CONTEXT MENUS: Right-clicking a URL in chat shows: Open Link, Copy URL, Save to URL List. Right-clicking a #channel name shows: Join Channel, Add to Favorites, Copy Channel Name, Channel Info.
 

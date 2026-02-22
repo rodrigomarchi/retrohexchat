@@ -132,7 +132,7 @@
 ### Dialog Component
 
 - [x] T031 [P] [US5] Write component tests for HighlightDialog: renders word list, shows own nick as non-removable, add/edit/remove buttons, color picker in apps/retro_hex_chat_web/test/retro_hex_chat_web/components/highlight_dialog_test.exs
-- [x] T032 [US5] Create HighlightDialog function component (98.css window chrome, title "Highlight Words", word list with color indicators, own nick non-removable first row, Add/Edit/Remove buttons, 16-color IRC palette picker) in apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/highlight_dialog.ex
+- [x] T032 [US5] Create HighlightDialog function component (retro window chrome, title "Highlight Words", word list with color indicators, own nick non-removable first row, Add/Edit/Remove buttons, 16-color IRC palette picker) in apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/highlight_dialog.ex
 - [x] T033 [US5] Add show_highlight_dialog assign (false), open_highlight_dialog and close_highlight_dialog event handlers to ChatLive in apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex
 - [x] T034 [US5] Add highlight:add, highlight:edit, highlight:remove event handlers to ChatLive (update session.highlight_words via HighlightWords CRUD, call maybe_persist_highlight_words) in apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex
 - [x] T035 [US5] Wire HighlightDialog into ChatLive template (:if show_highlight_dialog), add menu bar "Highlight" item and Alt+H keyboard shortcut in apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex

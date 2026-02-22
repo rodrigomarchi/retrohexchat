@@ -9,7 +9,7 @@
 
 ### User Story 1 — Options Dialog Shell + Display Panel (Priority: P1)
 
-A user presses Alt+O (or selects Tools > Options from the menu bar). A Windows 98-style dialog opens with a tree-view navigation panel on the left listing categories: Connect, IRC Messages, Display, Fonts, Colors, Key Bindings. The Display category is selected by default. The right panel shows Display settings: toggles for toolbar visibility, treebar visibility, switchbar (tab bar) visibility, status bar visibility, compact mode, and line shading. Toggling line shading adds subtle alternating row backgrounds to chat messages. The user clicks Apply — changes take effect immediately without closing the dialog. OK applies and closes. Cancel discards unapplied changes and closes.
+A user presses Alt+O (or selects Tools > Options from the menu bar). A retro-style dialog opens with a tree-view navigation panel on the left listing categories: Connect, IRC Messages, Display, Fonts, Colors, Key Bindings. The Display category is selected by default. The right panel shows Display settings: toggles for toolbar visibility, treebar visibility, switchbar (tab bar) visibility, status bar visibility, compact mode, and line shading. Toggling line shading adds subtle alternating row backgrounds to chat messages. The user clicks Apply — changes take effect immediately without closing the dialog. OK applies and closes. Cancel discards unapplied changes and closes.
 
 **Why this priority**: The dialog shell is the foundation for all other panels. The Display panel provides immediate, visible value — users can customize their workspace density. Line shading improves readability for long conversations. This story also establishes the Apply/OK/Cancel pattern reused by every other panel.
 
@@ -46,7 +46,7 @@ A user navigates to the Fonts category in the Options dialog. They see settings 
 
 ### User Story 3 — Colors Panel (Priority: P3)
 
-A user navigates to the Colors category. They see customizable color slots for: chat background, default text color, own messages, system messages, timestamps, error messages, and the 16-color nick palette. Each slot shows the current color as a swatch. Clicking a slot opens a Windows 98-style color picker grid (16 preset IRC colors plus 8 additional presets, totaling 24 colors). Clicking Apply updates all visible UI elements with the new colors in real time.
+A user navigates to the Colors category. They see customizable color slots for: chat background, default text color, own messages, system messages, timestamps, error messages, and the 16-color nick palette. Each slot shows the current color as a swatch. Clicking a slot opens a 2000s-era color picker grid (16 preset IRC colors plus 8 additional presets, totaling 24 colors). Clicking Apply updates all visible UI elements with the new colors in real time.
 
 **Why this priority**: Color customization personalizes the experience and supports accessibility needs (contrast preferences). It builds on the existing 16-color IRC palette already used for nick colors and formatting.
 
@@ -137,7 +137,7 @@ A user navigates to the Key Bindings category. They see a scrollable list of all
 - **FR-008**: The Fonts panel MUST allow selection of font family (from available monospace fonts) and size for: chat messages, input box, nicklist, and treebar.
 - **FR-009**: The Fonts panel MUST include a live preview that updates in real time as the user changes font settings.
 - **FR-010**: The Colors panel MUST allow customization of: chat background, default text color, own messages color, system messages color, timestamps color, error messages color, and the nick color palette.
-- **FR-011**: The Colors panel MUST provide a Windows 98-style color picker grid with 24 preset colors (16 IRC + 8 additional).
+- **FR-011**: The Colors panel MUST provide a 2000s-era color picker grid with 24 preset colors (16 IRC + 8 additional).
 - **FR-012**: The Connect panel MUST provide settings for: auto-reconnect enable/disable, retry interval, maximum retries, and connection timeout.
 - **FR-013**: The IRC Messages panel MUST provide routing preferences for: whois results, notices, and PM messages.
 - **FR-014**: The Key Bindings panel MUST display all application actions with their current shortcut, and allow reassignment by key capture.
@@ -173,7 +173,7 @@ A user navigates to the Key Bindings category. They see a scrollable list of all
 ## Assumptions
 
 - **Font availability**: The Fonts panel will offer a curated list of web-safe monospace fonts (Fixedsys, Courier New, Consolas, Lucida Console, monospace) rather than enumerating system fonts, since JavaScript font enumeration is unreliable and a privacy concern.
-- **Color picker simplicity**: The color picker uses a fixed 24-color grid rather than a full hex/RGB picker, matching the Windows 98 aesthetic and keeping implementation focused.
+- **Color picker simplicity**: The color picker uses a fixed 24-color grid rather than a full hex/RGB picker, matching the retro aesthetic and keeping implementation focused.
 - **Compact mode**: Reduces padding and margins throughout the UI (smaller tab bars, tighter chat line spacing, smaller nicklist entries) — a single toggle that applies a CSS class.
 - **Switchbar**: Refers to the tab bar component (Status/Channel/PM tabs) — consistent with mIRC terminology.
 - **Status bar**: Refers to the bottom status bar area showing connection info — currently always visible.

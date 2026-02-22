@@ -3,7 +3,7 @@
 **Feature Branch**: `002-notify-list`
 **Created**: 2026-02-11
 **Status**: Draft
-**Input**: User description: "Notify List (Buddy List) for RetroHexChat — persistent buddy list that alerts users to friends' presence changes, with a dedicated Windows 98-style window."
+**Input**: User description: "Notify List (Buddy List) for RetroHexChat — persistent buddy list that alerts users to friends' presence changes, with a dedicated retro-style window."
 
 ## Clarifications
 
@@ -59,7 +59,7 @@ If a buddy rapidly connects and disconnects (e.g., connection issues), notificat
 
 ### User Story 3 - Notify List Window (Priority: P3)
 
-The Notify List window is a dedicated Windows 98-style window (consistent with the MDI layout) showing all buddies in a sortable list with columns: Nickname, Status (online/offline icon), Notes, Last Seen. Online buddies appear at the top of the list by default. The window has toolbar buttons for Add, Remove, and Edit. Double-clicking an online buddy opens a private message conversation with them.
+The Notify List window is a dedicated retro-style window (consistent with the MDI layout) showing all buddies in a sortable list with columns: Nickname, Status (online/offline icon), Notes, Last Seen. Online buddies appear at the top of the list by default. The window has toolbar buttons for Add, Remove, and Edit. Double-clicking an online buddy opens a private message conversation with them.
 
 **Why this priority**: The window provides the visual interface for the feature. The underlying functionality (stories 1 and 2) can work via commands alone, but the window makes it accessible and matches the mIRC experience.
 
@@ -67,7 +67,7 @@ The Notify List window is a dedicated Windows 98-style window (consistent with t
 
 **Acceptance Scenarios**:
 
-1. **Given** a user clicks the Notify List toolbar button (or uses the menu), **When** the window opens, **Then** it displays a Windows 98-style window with columns: Nickname, Status, Notes, Last Seen.
+1. **Given** a user clicks the Notify List toolbar button (or uses the menu), **When** the window opens, **Then** it displays a retro-style window with columns: Nickname, Status, Notes, Last Seen.
 2. **Given** a notify list with 3 online and 2 offline buddies, **When** the window renders, **Then** online buddies appear above offline buddies, each group sorted alphabetically.
 3. **Given** the user double-clicks an online buddy "Alice", **When** the action fires, **Then** a PM conversation opens with Alice.
 4. **Given** the user double-clicks an offline buddy "Bob", **When** the action fires, **Then** nothing happens (or a tooltip shows "Bob is offline").
@@ -172,7 +172,7 @@ Users can manage the notify list entirely via slash commands, consistent with th
 - The existing PubSub infrastructure and `"user:#{nickname}"` topic can be extended to support global presence events for notify list tracking.
 - Nickname rename tracking leverages the existing `:nick_changed` broadcast that already propagates through channels.
 - Sound notifications are referenced in the user description but sound file selection UI is explicitly out of scope. The feature will trigger sound events that can be handled by a future sound system; for now, visual notifications are the primary feedback mechanism.
-- The Notify List window follows the same MDI (Multiple Document Interface) pattern used by the existing chat windows in the 98.css design system.
+- The Notify List window follows the same MDI (Multiple Document Interface) pattern used by the existing chat windows in the retro design system.
 - Auto-whois reuses the existing whois data gathering logic already present in the `/whois` command handler.
 
 ## Out of Scope

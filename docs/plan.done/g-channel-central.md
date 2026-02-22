@@ -41,7 +41,7 @@ PROBLEM: Channel operators currently manage channel settings only through slash 
 
 EXISTING CONTEXT: Channel modes +m (moderated), +i (invite-only), +t (topic lock), +k (key), +l (limit) are already fully implemented. The ban system is also in place. This feature provides a visual management surface for existing functionality, plus two new mode types.
 
-USER JOURNEY: An operator double-clicks the channel name in the treebar (or right-clicks and selects 'Channel Central'). A Windows 98-style dialog opens showing comprehensive channel information organized into sections:
+USER JOURNEY: An operator double-clicks the channel name in the treebar (or right-clicks and selects 'Channel Central'). A retro-style dialog opens showing comprehensive channel information organized into sections:
 
 INFO section — Channel name, creation date, creator nickname, current member count.
 

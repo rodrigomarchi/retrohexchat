@@ -5,12 +5,12 @@
 
 ## Summary
 
-Implement comprehensive right-click context menus for the chat area (nicknames, URLs, channels, general messages) and extend the existing treebar context menu. The approach leverages existing context menu infrastructure (98.css styling, fixed positioning, phx-click events) with a new unified chat context menu component, enhanced JS hooks for element detection and keyboard navigation, and viewport repositioning logic. No new database migrations — mute state persists in the existing `user_preferences` JSON column.
+Implement comprehensive right-click context menus for the chat area (nicknames, URLs, channels, general messages) and extend the existing treebar context menu. The approach leverages existing context menu infrastructure (retro styling, fixed positioning, phx-click events) with a new unified chat context menu component, enhanced JS hooks for element detection and keyboard navigation, and viewport repositioning logic. No new database migrations — mute state persists in the existing `user_preferences` JSON column.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro CSS framework, esbuild
 **Storage**: PostgreSQL 16+ (user_preferences.message_settings JSON column — no new migration needed)
 **Testing**: ExUnit, Floki (HTML parsing), Wallaby (E2E)
 **Target Platform**: Web (desktop browsers)
@@ -32,7 +32,7 @@ Implement comprehensive right-click context menus for the chat area (nicknames, 
 | V. Contracts and Behaviours | Marginal | PASS | No new behaviours needed — menu items are not polymorphic command handlers. Event contracts documented in `contracts/`. |
 | VI. Static Analysis | Yes | PASS | @spec on all public functions. Credo/Dialyzer/format enforced. |
 | VII. Lean LiveViews | Yes | PASS | LiveView handles events by delegating to context functions. Menu rendering in function components. JS hooks minimal (keyboard nav, clipboard, viewport). |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | 98.css `.window` class, beveled borders, existing context menu styling. Keyboard navigation matches Win98 behavior. |
+| VIII. retro Design Fidelity | Yes | PASS | retro `.window` class, beveled borders, existing context menu styling. Keyboard navigation matches classic desktop behavior. |
 | IX. Hot/Cold Data Separation | Yes | PASS | Menu state in socket assigns (hot). Mute preferences in PostgreSQL JSON (cold). |
 | X. Scalable Architecture | No | N/A | UI feature, no scaling concerns. |
 | XI. User-Facing Documentation | Yes | PASS | Help topic for context menus added to HelpTopics. Keyboard shortcuts topic updated. |

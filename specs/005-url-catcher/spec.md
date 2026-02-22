@@ -69,18 +69,18 @@ When a message containing a URL is displayed, the system asynchronously fetches 
 
 ### User Story 4 - URL Catcher Access via Menu and Keyboard (Priority: P4)
 
-The user can open the URL Catcher window via the menu bar (under a "Tools" or similar menu) and via a keyboard shortcut. The window follows the 98.css MDI window style consistent with other windows in the application (Notify List, Address Book, etc.). The window can be closed, and reopening it preserves the current session's captured URLs.
+The user can open the URL Catcher window via the menu bar (under a "Tools" or similar menu) and via a keyboard shortcut. The window follows the retro MDI window style consistent with other windows in the application (Notify List, Address Book, etc.). The window can be closed, and reopening it preserves the current session's captured URLs.
 
 **Why this priority**: This is an accessibility and polish story. The window must be reachable, but the access mechanism is straightforward once the window itself exists (US2).
 
-**Independent Test**: Can be tested by verifying the menu item exists, the keyboard shortcut opens the window, and the window matches 98.css styling.
+**Independent Test**: Can be tested by verifying the menu item exists, the keyboard shortcut opens the window, and the window matches retro styling.
 
 **Acceptance Scenarios**:
 
 1. **Given** the user is on the chat screen, **When** the user selects "URL Catcher" from the menu bar, **Then** the URL Catcher window opens.
 2. **Given** the user is on the chat screen, **When** the user presses the designated keyboard shortcut, **Then** the URL Catcher window opens.
 3. **Given** the URL Catcher window is open, **When** the user closes it and reopens it, **Then** all previously captured URLs in the current session are still present.
-4. **Given** the URL Catcher window is open, **Then** it follows the 98.css MDI window styling consistent with other application windows.
+4. **Given** the URL Catcher window is open, **Then** it follows the retro MDI window styling consistent with other application windows.
 
 ---
 
@@ -103,7 +103,7 @@ The user can open the URL Catcher window via the menu bar (under a "Tools" or si
 - **FR-001**: System MUST automatically detect URLs (http:// and https:// schemes) within chat message text and render them as clickable hyperlinks.
 - **FR-002**: System MUST open clicked URLs in a new browser tab (target="_blank" behavior with appropriate security attributes).
 - **FR-003**: System MUST correctly handle URL boundary detection — trailing punctuation (period, comma, exclamation mark, question mark, closing parenthesis when unbalanced) must not be included in the URL.
-- **FR-004**: System MUST visually distinguish URLs from regular text with underline and a distinct link color that fits the 98.css/Windows 98 aesthetic.
+- **FR-004**: System MUST visually distinguish URLs from regular text with underline and a distinct link color that fits the retro aesthetic.
 - **FR-005**: System MUST visually truncate URLs longer than 100 characters in chat display while preserving the full URL as the link target.
 - **FR-006**: System MUST detect and linkify URLs in both channel messages and private messages.
 - **FR-007**: System MUST provide a URL Catcher window that lists all URLs captured from the user's joined channels and active PMs during the current session.
@@ -121,7 +121,7 @@ The user can open the URL Catcher window via the menu bar (under a "Tools" or si
 - **FR-019**: Link preview fetch MUST time out after a reasonable period (assumption: 5 seconds) to avoid indefinite waiting.
 - **FR-020**: System MUST support URLs containing query parameters, fragments, and special characters.
 - **FR-021**: URL Catcher window MUST be accessible via the menu bar and a keyboard shortcut.
-- **FR-022**: URL Catcher window MUST follow 98.css MDI window styling consistent with existing application windows.
+- **FR-022**: URL Catcher window MUST follow retro MDI window styling consistent with existing application windows.
 - **FR-023**: System MUST handle multiple URLs in a single message, detecting and linkifying each independently.
 - **FR-024**: URL detection MUST work correctly when URLs appear within or adjacent to IRC formatting codes (bold, italic, underline, color).
 
@@ -160,7 +160,7 @@ The user can open the URL Catcher window via the menu bar (under a "Tools" or si
 - URL auto-detection and clickable rendering in chat messages (channels and PMs)
 - URL Catcher window with table view, sorting, filtering, and search
 - Inline link preview showing page title only (plain text)
-- 98.css-styled window and link rendering
+- retro-styled window and link rendering
 - Real-time URL Catcher updates as new messages arrive
 
 ### Out of Scope

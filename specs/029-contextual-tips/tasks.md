@@ -17,7 +17,7 @@
 
 **Purpose**: Create new files, register hook, import CSS
 
-- [ ] T001 Create toast CSS file with 98.css window styling, fixed bottom-right positioning, fade animations in `apps/retro_hex_chat_web/assets/css/toast.css`
+- [ ] T001 Create toast CSS file with retro window styling, fixed bottom-right positioning, fade animations in `apps/retro_hex_chat_web/assets/css/toast.css`
 - [ ] T002 Import `toast.css` in Layer 4 (Components) section of `apps/retro_hex_chat_web/assets/css/app.css`
 - [ ] T003 Create Phoenix function component `toast.ex` with a container div that attaches the `ContextualTipsHook` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/toast.ex`
 - [ ] T004 Register `ContextualTipsHook` in the hooks index file at `apps/retro_hex_chat_web/assets/js/hooks/index.js`
@@ -34,7 +34,7 @@
 ### Tests (write FIRST, ensure they FAIL)
 
 - [ ] T006 [P] Write unit tests for `tips.js` in `apps/retro_hex_chat_web/assets/test/lib/tips.test.js` — cover `isSuppressed`, `setSuppressed` (primary + backup keys), `isTipSeen`, `markTipSeen`, `shouldShowTip`, `markPreempted`, `getTipById`, localStorage full error handling, and resilient suppression backup
-- [ ] T007 [P] Write unit tests for `toast.js` in `apps/retro_hex_chat_web/assets/test/lib/toast.test.js` — cover `createToastElement` (98.css window structure, title-bar, dismiss button, checkbox, callback invocation), `positionToast`, `animateIn`, `animateOut`
+- [ ] T007 [P] Write unit tests for `toast.js` in `apps/retro_hex_chat_web/assets/test/lib/toast.test.js` — cover `createToastElement` (retro window structure, title-bar, dismiss button, checkbox, callback invocation), `positionToast`, `animateIn`, `animateOut`
 
 ### Implementation
 

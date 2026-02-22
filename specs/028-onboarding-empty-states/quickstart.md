@@ -12,7 +12,7 @@
 
 ## What This Feature Adds
 
-1. **Welcome Wizard** — A 3-step Windows 98-style wizard dialog in ConnectLive for first-time users
+1. **Welcome Wizard** — A 3-step retro-style wizard dialog in ConnectLive for first-time users
 2. **Empty States** — Friendly placeholder messages in 4 empty containers (channel, nicklist, treebar, URL catcher)
 3. **Post-Wizard Banner** — A one-time tip banner shown in ChatLive after wizard completion
 

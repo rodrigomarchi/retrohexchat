@@ -10,7 +10,7 @@ Implement a Log Viewer dialog that lets registered users search, browse, filter,
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (existing `messages` and `private_messages` tables, read-only — no new migrations)
 **Testing**: ExUnit with async: true, Floki for LiveView tests, TDD per Principle IV
 **Target Platform**: Web (Phoenix LiveView)
@@ -32,7 +32,7 @@ Implement a Log Viewer dialog that lets registered users search, browse, filter,
 | V. Contracts and Behaviours | Yes | PASS | LogFilter, DisplayPreferences, LogPage have @spec on all public functions. No new behaviours needed (no polymorphic dispatch) |
 | VI. Static Analysis | Yes | PASS | Credo strict, Dialyxir, mix format enforced. @spec on all public functions |
 | VII. Lean LiveViews | Yes | PASS | ChatLive delegates to LogQueries, LogExporter, DisplayPreferences. Component encapsulates Log Viewer UI. DownloadHook is minimal JS |
-| VIII. Windows 98 Fidelity | Yes | PASS | 98.css dialog pattern (consistent with Channel Central, Address Book, etc.) |
+| VIII. retro Fidelity | Yes | PASS | retro dialog pattern (consistent with Channel Central, Address Book, etc.) |
 | IX. Hot/Cold Data Separation | Yes | PASS | Reads cold data (PostgreSQL) for historical logs. DisplayPreferences stored in Session struct (hot, in-memory). No new persistence |
 | X. Scalable Architecture | Yes | PASS | Offset pagination with existing indexes. Optional GIN trigram index noted for future if needed. No architectural dead-ends |
 | XI. User-Facing Documentation | Yes | PASS | Help topics planned: feature-log-viewer, feature-log-export, cmd-log (if command added). Keyboard shortcuts topic updated |
@@ -79,7 +79,7 @@ apps/retro_hex_chat/
 apps/retro_hex_chat_web/
 ├── lib/retro_hex_chat_web/
 │   ├── components/
-│   │   └── log_viewer_dialog.ex    # NEW: 98.css dialog component
+│   │   └── log_viewer_dialog.ex    # NEW: retro dialog component
 │   └── live/
 │       └── chat_live.ex            # Extended: ~15 log viewer event handlers
 ├── assets/
@@ -87,7 +87,7 @@ apps/retro_hex_chat_web/
 │   │   └── hooks/
 │   │       └── download_hook.js    # NEW: Browser-side file download from push_event
 │   └── css/
-│       └── layout.css              # Extended: Log viewer dialog styles (if needed beyond 98.css)
+│       └── layout.css              # Extended: Log viewer dialog styles (if needed beyond retro design system)
 └── test/retro_hex_chat_web/
     └── live/
         ├── log_viewer_test.exs     # Integration tests for LiveView events

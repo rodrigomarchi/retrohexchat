@@ -39,7 +39,7 @@ RetroHexChat MUST be built exclusively in Elixir with the Phoenix Framework.
 No alternative backend language or framework will be considered. Phoenix
 LiveView MUST be used for all reactive UI — zero JavaScript UI frameworks
 (no React, Vue, Svelte, or similar). PostgreSQL MUST be the sole relational
-database. 98.css MUST serve as the base design system for the Windows 98
+database. The retro design system MUST serve as the base for the 2000s-era
 aesthetic.
 
 **Rationale**: A single, cohesive stack eliminates integration friction and
@@ -180,14 +180,14 @@ LiveView streams MUST be used for long message lists to ensure performance.
 layer a pure presentation concern. Consistent PubSub topics prevent
 subscription bugs. Streams prevent memory bloat on high-traffic channels.
 
-### VIII. Windows 98 Design Fidelity
+### VIII. Retro Design Fidelity
 
-The UI MUST faithfully reproduce the Windows 98 aesthetic:
+The UI MUST faithfully reproduce the retro aesthetic:
 
-- 98.css as the base design system.
+- Retro design system as the base.
 - 3D beveled borders, pixelated fonts, 16x16 icons.
 - Monospace fonts in chat areas (Fixedsys / Consolas / Courier New).
-- Semantic HTML as required by 98.css for accessibility.
+- Semantic HTML for accessibility.
 - Telemetry events MUST be emitted at critical interaction points.
 
 **Rationale**: The retro aesthetic is the product's identity. Cutting
@@ -249,8 +249,8 @@ Requirements:
   inaccurate documentation is a defect.
 
 **Rationale**: A feature that users cannot discover or learn to use
-delivers zero value. The Windows 98 CHM-style help system is a core part
-of the retro aesthetic and must grow alongside the application. Treating
+delivers zero value. The CHM-style help system is a core part
+of the 2000s-era aesthetic and must grow alongside the application. Treating
 documentation as a first-class deliverable ensures the help system
 remains comprehensive and trustworthy.
 
@@ -262,7 +262,7 @@ remains comprehensive and trustworthy.
 | Framework | Phoenix | Latest stable |
 | Reactive UI | Phoenix LiveView | No JS UI frameworks |
 | Database | PostgreSQL | Primary persistent store |
-| Design System | 98.css | Windows 98 aesthetic |
+| Design System | Custom retro CSS | 2000s-era aesthetic |
 | Process Management | OTP (GenServer, DynamicSupervisor, Registry) | Core architecture |
 | Testing (Elixir) | ExUnit, Mox, ExMachina, StreamData, Floki | Full pyramid |
 | Testing (JS) | Vitest, jsdom | Hook + lib tests |

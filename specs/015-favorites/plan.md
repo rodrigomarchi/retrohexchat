@@ -10,7 +10,7 @@ Implement a channel favorites/bookmarks system allowing users to save, organize,
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css, Plug.Crypto (transitive, for password encryption)
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system, Plug.Crypto (transitive, for password encryption)
 **Storage**: PostgreSQL 16+ (new `favorites` table) + in-memory Session state for guests
 **Testing**: ExUnit with LiveView testing, async: false for LiveView tests
 **Target Platform**: Web browser (Phoenix LiveView)
@@ -32,7 +32,7 @@ Implement a channel favorites/bookmarks system allowing users to save, organize,
 | V. Contracts and Behaviours | PASS | No new commands or behaviours needed |
 | VI. Static Analysis from Day One | PASS | @spec on all public functions, Credo/Dialyzer/format enforced |
 | VII. Lean LiveViews | PASS | All logic in domain module (Favorites), LiveView delegates only |
-| VIII. Windows 98 Design Fidelity | PASS | 98.css dialogs, context menus, menu bar styling |
+| VIII. retro Design Fidelity | PASS | retro dialogs, context menus, menu bar styling |
 | IX. Hot/Cold Data Separation | PASS | In-memory session for runtime, PostgreSQL for persistence |
 | X. Scalable Architecture | PASS | Simple list data, no process bottlenecks |
 | XI. User-Facing Documentation | PASS | Help topics for Favorites, Organize Favorites |

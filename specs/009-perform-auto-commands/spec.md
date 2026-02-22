@@ -46,7 +46,7 @@ Users can open a Perform dialog from the menu bar (Tools > Perform) or via Alt+P
 - An "Enable on connect" checkbox (checked by default) to globally toggle perform execution
 - Changes take effect immediately (no separate save action needed)
 
-The dialog follows 98.css styling consistent with other dialogs (Address Book, Highlight, Ignore List).
+The dialog follows retro styling consistent with other dialogs (Address Book, Highlight, Ignore List).
 
 **Why this priority**: While `/perform` provides CLI management, most users expect a graphical interface. This dialog makes the feature accessible to users who prefer point-and-click over commands.
 

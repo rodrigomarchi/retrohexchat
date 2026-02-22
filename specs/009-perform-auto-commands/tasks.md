@@ -84,7 +84,7 @@
 
 ## Phase 4: User Story 2 — Perform Dialog (Priority: P2)
 
-**Goal**: Users can manage perform commands via a 98.css dialog with visual CRUD, accessible via Alt+P and menu bar.
+**Goal**: Users can manage perform commands via a retro dialog with visual CRUD, accessible via Alt+P and menu bar.
 
 **Independent Test**: Open dialog, add/edit/remove/reorder commands, verify password masking, toggle enable checkbox.
 
@@ -99,7 +99,7 @@
 - [X] T029 [US2] Add dialog event handlers (open_perform_dialog, close_perform_dialog, perform_dialog_tab, perform_select, perform_dialog_add/edit/remove/move_up/move_down, perform_toggle_enabled, confirm/close sub-dialogs) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [X] T030 [US2] Add Alt+P keyboard shortcut to `window_keydown` handler in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [X] T031 [US2] Add "Perform" item under Tools menu in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/menu_bar.ex`
-- [X] T032 [US2] Add dialog CSS (if needed beyond 98.css) to `apps/retro_hex_chat_web/assets/css/layout.css` and dark theme counterparts to `apps/retro_hex_chat_web/assets/css/dark-theme.css`
+- [X] T032 [US2] Add dialog CSS (if needed beyond retro design system) to `apps/retro_hex_chat_web/assets/css/layout.css` and dark theme counterparts to `apps/retro_hex_chat_web/assets/css/dark-theme.css`
 - [X] T033 [US2] Write LiveView tests for dialog interactions (open/close, CRUD via dialog, tab switch, keyboard shortcut, menu bar) in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_perform_dialog_test.exs`
 
 **Checkpoint**: Perform dialog fully functional. Users can visually manage commands.
@@ -145,7 +145,7 @@
 - [X] T044 [US4] Register ReconnectHook in hooks and customize `reconnectAfterMs` for exponential backoff (1s, 2s, 4s, 8s, 16s, 30s cap) in `apps/retro_hex_chat_web/assets/js/app.js`
 - [X] T045 [US4] Add `push_event("intentional_disconnect")` in quit/disconnect handlers to set localStorage flag suppressing auto-reconnect in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [X] T046 [US4] Add `push_event("save_reconnect_state", state)` on significant state changes (join, part, perform/autojoin modification) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
-- [X] T047 [US4] Add reconnect overlay CSS (98.css themed window, centered, z-index 300, countdown text, cancel button) to `apps/retro_hex_chat_web/assets/css/layout.css` and dark theme to `apps/retro_hex_chat_web/assets/css/dark-theme.css`
+- [X] T047 [US4] Add reconnect overlay CSS (retro themed window, centered, z-index 300, countdown text, cancel button) to `apps/retro_hex_chat_web/assets/css/layout.css` and dark theme to `apps/retro_hex_chat_web/assets/css/dark-theme.css`
 - [X] T048 [US4] Write LiveView tests for reconnect push_events (verify `push_event("intentional_disconnect")` is called in quit handler, verify `push_event("save_reconnect_state")` includes expected fields on join/part) in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_perform_test.exs`
 
 **Checkpoint**: Auto-reconnect overlay shows on unexpected disconnect. Intentional `/quit` suppresses it.

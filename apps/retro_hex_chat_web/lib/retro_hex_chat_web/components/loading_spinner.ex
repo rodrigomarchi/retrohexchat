@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.LoadingSpinner do
   @moduledoc """
-  Centered loading spinner with 98.css-styled progress bar.
+  Centered loading spinner with retro-styled progress bar.
 
   Shown while channel message history is loading. Non-blocking (pointer-events: none).
   """

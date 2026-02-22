@@ -3,20 +3,20 @@
 ## Active Technologies
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x
 - PostgreSQL 16+ (28 migrations, 29 schemas) with cursor-based pagination and GIN/trigram indexes
-- 98.css (npm) for Windows 98 UI, esbuild for asset bundling
+- Retro CSS framework, esbuild for asset bundling
 - bcrypt_elixir for password hashing, Plug.Crypto for encryption
 - Req 0.5+ (HTTP client for link previews)
 - In-memory: GenServer/ETS for runtime, Session structs for guests, localStorage for client state
-- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild (024-smart-input-command-help)
+- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, esbuild (024-smart-input-command-help)
 - PostgreSQL 16+ (user_preferences JSON column — no migration needed), localStorage (client-side history) (024-smart-input-command-help)
 - PostgreSQL 16+ (user_preferences.key_bindings JSON column — no new migration needed) (025-shortcuts-chat-search)
 - PostgreSQL 16+ (user_preferences.message_settings JSON column — no new migration needed) (026-context-menus)
-- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild (027-interactive-chat-elements)
+- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, esbuild (027-interactive-chat-elements)
 - PostgreSQL 16+ (link preview cache via ETS, channel state via GenServer — no new migrations) (027-interactive-chat-elements)
 - localStorage (client-side onboarding flag) — no PostgreSQL changes (028-onboarding-empty-states)
-- Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild (029-contextual-tips)
+- Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, Phoenix LiveView 1.0+, esbuild (029-contextual-tips)
 - localStorage (tip seen state + global suppression) — no PostgreSQL changes (029-contextual-tips)
-- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild + Phoenix LiveView (streams, push_event), 98.css, existing toast component (Z2) (030-visual-feedback-unread)
+- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, esbuild + Phoenix LiveView (streams, push_event), existing toast component (Z2) (030-visual-feedback-unread)
 - No new PostgreSQL migrations — all state is ephemeral (socket assigns, client-side) (030-visual-feedback-unread)
 - No new PostgreSQL migrations — all state is ephemeral (socket assigns, client-side timers) (031-statusbar-loading-states)
 - PostgreSQL 16+ (existing `user_preferences.message_settings` JSONB — no new migration), localStorage (guest preferences, DND state) (032-notification-system)
@@ -24,16 +24,16 @@
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, Phoenix.Token (already in use) (034-p2p-foundation)
 - PostgreSQL 16+ (1 new migration: `p2p_sessions` table) (034-p2p-foundation)
 - PostgreSQL 16+ (existing `p2p_sessions` table, existing `private_messages` table — no new migrations). GenServer state for ephemeral lobby data. (035-p2p-session-ui)
-- Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, ex_stun ~> 0.1 (NEW), 98.css (036-webrtc-signaling)
+- Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, ex_stun ~> 0.1 (NEW) (036-webrtc-signaling)
 - PostgreSQL 16+ (existing `p2p_sessions` table — no new migrations) (036-webrtc-signaling)
-- Elixir 1.17+ / OTP 27+ (backend, minimal changes), JavaScript ES2020+ (frontend, bulk of implementation) + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), existing WebRTC infrastructure (034-036) (037-p2p-file-transfer)
+- Elixir 1.17+ / OTP 27+ (backend, minimal changes), JavaScript ES2020+ (frontend, bulk of implementation) + Phoenix 1.8+, LiveView 1.0+, existing WebRTC infrastructure (034-036) (037-p2p-file-transfer)
 - No new database tables — all transfer state is ephemeral (client-side JS memory) (037-p2p-file-transfer)
-- Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild. Browser-native WebRTC APIs (getUserMedia, addTrack, replaceTrack, getStats, enumerateDevices, Picture-in-Picture). Zero new npm/Elixir dependencies. (038-audio-video-calls)
+- Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, esbuild. Browser-native WebRTC APIs (getUserMedia, addTrack, replaceTrack, getStats, enumerateDevices, Picture-in-Picture). Zero new npm/Elixir dependencies. (038-audio-video-calls)
 - N/A — all call state is ephemeral (LiveView assigns + JS variables). No database migrations. (038-audio-video-calls)
-- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild, ExSTUN ~> 0.1 (existing) (039-p2p-security-help-polish)
+- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, esbuild, ExSTUN ~> 0.1 (existing) (039-p2p-security-help-polish)
 - PostgreSQL 16+ (existing `user_preferences.message_settings` JSONB — no new migrations), ETS (rate limit state) (039-p2p-security-help-polish)
 - N/A — no new migrations, all state is ephemeral (socket assigns) (040-p2p-context-menus)
-- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css (npm), esbuild (041-session-persistence)
+- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, esbuild (041-session-persistence)
 - PostgreSQL 16+ (existing `private_messages` table, existing `autojoin_list_entries` table — no new migrations) (041-session-persistence)
 
 ## Project Structure
@@ -49,7 +49,7 @@ apps/
 └── retro_hex_chat_web/       # Web layer (Phoenix + LiveView)
     ├── lib/retro_hex_chat_web/
     │   ├── live/             # ConnectLive, ChatLive, ChannelListLive
-    │   └── components/       # ~40 function components (98.css-based)
+    │   └── components/       # ~40 function components (retro-styled)
     ├── assets/               # CSS, JS hooks, static
     └── test/
 ```
@@ -153,10 +153,10 @@ Every new feature MUST include corresponding help documentation:
 
 See `.specify/memory/constitution.md` for 11 governing principles.
 Key non-negotiables: TDD, umbrella separation, OTP process architecture,
-static analysis from day one, 98.css design fidelity, mandatory help documentation.
+static analysis from day one, retro design fidelity, mandatory help documentation.
 
 
 ## Recent Changes
-- 041-session-persistence: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css (npm), esbuild
-- 040-p2p-context-menus: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild
-- 039-p2p-security-help-polish: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild, ExSTUN ~> 0.1 (existing)
+- 041-session-persistence: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, esbuild
+- 040-p2p-context-menus: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, esbuild
+- 039-p2p-security-help-polish: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, esbuild, ExSTUN ~> 0.1 (existing)

@@ -5,12 +5,12 @@
 
 ## Summary
 
-Implement simulated CTCP (Client-to-Client Protocol) for RetroHexChat, enabling users to query information about other users' clients and measure connection latency via `/ctcp <target> <type>` supporting PING, VERSION, TIME, and FINGER. The system uses PubSub user-to-user messaging for request/reply delivery, Process.send_after for 10-second timeouts, socket assigns for pending request tracking, and a per-sender-target rate limiter. A Win98-styled settings dialog allows customization of reply strings and enable/disable toggling, with Ecto-backed persistence for registered users.
+Implement simulated CTCP (Client-to-Client Protocol) for RetroHexChat, enabling users to query information about other users' clients and measure connection latency via `/ctcp <target> <type>` supporting PING, VERSION, TIME, and FINGER. The system uses PubSub user-to-user messaging for request/reply delivery, Process.send_after for 10-second timeouts, socket assigns for pending request tracking, and a per-sender-target rate limiter. A retro-styled settings dialog allows customization of reply strings and enable/disable toggling, with Ecto-backed persistence for registered users.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (new `ctcp_settings` table) + in-memory Session state for guests
 **Testing**: ExUnit with `async: true`, Floki for LiveView tests
 **Target Platform**: Web (Phoenix LiveView)
@@ -32,7 +32,7 @@ Implement simulated CTCP (Client-to-Client Protocol) for RetroHexChat, enabling 
 | V. Contracts and Behaviours | PASS | `/ctcp` command implements existing `Handler` behaviour |
 | VI. Static Analysis | PASS | @spec on all public functions, Credo/Dialyxir clean |
 | VII. Lean LiveViews | PASS | LiveView delegates to domain modules (CtcpSettings, handler). PubSub via `user:#{nickname}` topic |
-| VIII. Windows 98 Design Fidelity | PASS | Settings dialog uses 98.css pattern matching existing dialogs |
+| VIII. retro Design Fidelity | PASS | Settings dialog uses retro design system pattern matching existing dialogs |
 | IX. Hot/Cold Data Separation | PASS | Hot: Session struct (in-memory settings + pending requests). Cold: PostgreSQL for registered user settings |
 | X. Scalable Architecture | PASS | PubSub-based, no single bottleneck. Rate limiting is per-socket (scales with connections) |
 | XI. User-Facing Documentation | PASS | Help topics for /ctcp command, CTCP feature overview, CTCP settings |
@@ -85,7 +85,7 @@ apps/
     │   ├── live/
     │   │   └── chat_live.ex                     # MODIFY: handle_dispatch_result, handle_info, handle_event
     │   └── components/
-    │       ├── ctcp_settings_dialog.ex          # NEW: Win98 settings dialog component
+    │       ├── ctcp_settings_dialog.ex          # NEW: retro-styled settings dialog component
     │       └── menu_bar.ex                      # MODIFY: Add "CTCP Settings" to Tools menu
     ├── assets/css/
     │   └── layout.css                           # MODIFY: Add .chat-ctcp styles (if needed)

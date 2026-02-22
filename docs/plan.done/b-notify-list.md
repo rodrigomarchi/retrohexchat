@@ -38,7 +38,7 @@ PROBLEM: Users have no way to know when their friends come online or go offline.
 
 USER JOURNEY: A user wants to track when their friend 'Alice' is online. They open the Notify List window (via menu or toolbar) and add 'Alice' to the list with an optional personal note ('Works on Elixir projects'). Later, when Alice connects, the user receives a system notification: '* Alice is now online' with a distinct sound. The Notify List window updates to show Alice's status as online. When Alice disconnects, the user sees '* Alice has gone offline' with a different sound.
 
-The Notify List window is a dedicated Windows 98-style window showing all buddies in a list with columns: Nickname, Status (online/offline icon), Notes, Last Seen. The user can add, remove, and edit entries. Double-clicking an online buddy opens a PM conversation.
+The Notify List window is a dedicated retro-style window showing all buddies in a list with columns: Nickname, Status (online/offline icon), Notes, Last Seen. The user can add, remove, and edit entries. Double-clicking an online buddy opens a PM conversation.
 
 Optionally, when a buddy comes online, the system can automatically fetch and display their /whois information as a system message, so the user sees what channels they are in.
 

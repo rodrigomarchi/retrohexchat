@@ -43,7 +43,7 @@
 
 ### Web Layer (US1)
 
-- [x] T007 [US1] Create LogViewerDialog component — 98.css dialog (z-index 200) with: channel/PM grouped dropdown, date range inputs (type="date"), nickname + text search fields, Search button, Refresh button, results area with message list (timestamps, nicknames, content), system event styling (.log-system-event), pagination controls (Previous/Next + "Page X of Y"), empty state ("No results found — try broadening your search criteria"), loading indicator in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/log_viewer_dialog.ex`
+- [x] T007 [US1] Create LogViewerDialog component — retro dialog (z-index 200) with: channel/PM grouped dropdown, date range inputs (type="date"), nickname + text search fields, Search button, Refresh button, results area with message list (timestamps, nicknames, content), system event styling (.log-system-event), pagination controls (Previous/Next + "Page X of Y"), empty state ("No results found — try broadening your search criteria"), loading indicator in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/log_viewer_dialog.ex`
 - [x] T008 [US1] Add log viewer assigns to ChatLive assign_defaults (show_log_viewer, log_filter, log_source_options, log_page, log_loading, log_preferences, log_exporting, log_error) + implement open_log_viewer (populate source_options from LogQueries.list_user_channels/list_user_pm_partners or session data for guests), close_log_viewer (reset assigns), Alt+L toggle in window_keydown, Escape close in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [x] T009 [US1] Implement ChatLive filter/search/pagination handlers — log_set_source (set source + source_type, trigger search), log_set_date_from/log_set_date_to (parse date, validate via LogFilter.validate, trigger search), log_search (set nickname + text, reset to page 1, trigger search), log_page (navigate to page N), log_refresh (re-run current query) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [x] T010 [US1] Add LogViewerDialog to ChatLive template with all attrs bound (visible, filter, page, preferences, source_options, loading, exporting, error) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.html.heex`
@@ -182,4 +182,4 @@ T021 (Pref controls) ──┘  after US1 completes
 - Export uses push_event + DownloadHook JS (base64 Blob pattern)
 - DisplayPreferences stored in Session struct (per-session, not persisted to DB)
 - LogQueries uses composable Ecto queries with offset-based pagination
-- 98.css dialog pattern consistent with Channel Central, Address Book, etc.
+- retro dialog pattern consistent with Channel Central, Address Book, etc.

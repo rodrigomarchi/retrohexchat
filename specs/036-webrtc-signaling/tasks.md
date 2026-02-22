@@ -145,7 +145,7 @@
 - [x] T037 [US4] Add `webrtc_state` assign (default: nil) and `handle_event("p2p_state_change")` to `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_session_live.ex` — update assign with state label
 - [x] T038 [US4] Push `p2p_state_change` events from `webrtc_hook.js` on connectionState transitions in `apps/retro_hex_chat_web/assets/js/hooks/webrtc_hook.js`
 - [x] T039 [US4] Add connection state indicator component to P2P lobby in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/p2p_lobby.ex` — show "Conectando...", "Conectado", "Reconectando..." (with attempt), "Falha na conexão" + "Try again" button
-- [x] T040 [US4] Add connection state CSS styles to `apps/retro_hex_chat_web/assets/css/p2p-lobby.css` — indicator colors, retry progress, 98.css status bar style
+- [x] T040 [US4] Add connection state CSS styles to `apps/retro_hex_chat_web/assets/css/p2p-lobby.css` — indicator colors, retry progress, retro status bar style
 
 **Checkpoint**: Connection state indicator visible and accurate during all connection phases.
 

@@ -1,7 +1,7 @@
 defmodule RetroHexChatWeb.Components.EmojiPicker do
   @moduledoc """
   Emoji picker popup with category tabs, search, and scrollable grid.
-  98.css styled, positioned above the chat input area.
+  Retro-styled, positioned above the chat input area.
   """
   use Phoenix.Component
 

@@ -5,7 +5,7 @@
  * Auto-dismisses after DISMISS_MS. Click-to-navigate callback support.
  * P2P invite toasts have action buttons and no auto-dismiss.
  *
- * Reuses toast.js DOM builders for 98.css-styled toasts.
+ * Reuses toast.js DOM builders for retro-styled toasts.
  */
 
 import { createToastElement, animateIn, animateOut } from "./toast.js";

@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.AutoRespondDialog do
   @moduledoc """
-  98.css dialog for managing event-triggered auto-respond rules.
+  Retro-styled dialog for managing event-triggered auto-respond rules.
   """
   use Phoenix.Component
 

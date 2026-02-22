@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.KickDialog do
   @moduledoc """
-  Windows 98-style kick notification dialog.
+  Retro-style kick notification dialog.
   Displays queued kick events one at a time. User must click OK to dismiss.
   """
   use Phoenix.Component

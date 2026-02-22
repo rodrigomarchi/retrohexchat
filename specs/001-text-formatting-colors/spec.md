@@ -139,7 +139,7 @@ A user who prefers clean, unformatted text enables the "Strip formatting codes" 
 - **FR-012**: Format code parsing and rendering MUST work identically for channel messages and private messages.
 - **FR-013**: System-generated messages (type: system, service, error) MUST NOT have their content parsed for user format codes.
 - **FR-014**: Malformed color codes (Ctrl+K followed by non-numeric characters) MUST degrade gracefully — display subsequent text as plain text without crashing.
-- **FR-015**: The formatting toolbar MUST be styled consistently with the Windows 98 aesthetic using 98.css conventions (raised panel, small icon-like buttons).
+- **FR-015**: The formatting toolbar MUST be styled consistently with the retro aesthetic using retro conventions (raised panel, small icon-like buttons).
 - **FR-016**: System MUST enforce a soft limit of 128 format codes per message — if a message contains more than 128 format control codes, excess codes beyond the 128th are stripped at display time while preserving the visible text content.
 
 ### Key Entities

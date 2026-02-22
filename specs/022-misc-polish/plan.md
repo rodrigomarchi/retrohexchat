@@ -5,12 +5,12 @@
 
 ## Summary
 
-Implement 12 polish features that collectively improve daily usability: nick column alignment (CSS grid), double-click actions (nicklist→PM, channel→join, URL→open), right-click copy (JS clipboard API), character counter (JS hook with hard cap at 1000), multi-line paste dialog (JS paste detection + LiveView 98.css dialog + 300ms paced send with 100-line hard cap), quit message broadcast (PubSub to all channels), away auto-reply (MapSet tracking, once per sender), timestamp format configuration (extend UserPreferences + Options Dialog), emoji picker (static dataset + component + toolbar button), about dialog enhancement (ASCII art + credits), and help menu quick access (open help at specific topics). No new database migrations — extends existing `user_preferences` JSONB column.
+Implement 12 polish features that collectively improve daily usability: nick column alignment (CSS grid), double-click actions (nicklist→PM, channel→join, URL→open), right-click copy (JS clipboard API), character counter (JS hook with hard cap at 1000), multi-line paste dialog (JS paste detection + LiveView retro dialog + 300ms paced send with 100-line hard cap), quit message broadcast (PubSub to all channels), away auto-reply (MapSet tracking, once per sender), timestamp format configuration (extend UserPreferences + Options Dialog), emoji picker (static dataset + component + toolbar button), about dialog enhancement (ASCII art + credits), and help menu quick access (open help at specific topics). No new database migrations — extends existing `user_preferences` JSONB column.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (existing `user_preferences` table, `display_settings` JSONB column extended with `timestamp_format` and `quit_message` keys) + in-memory socket assigns for runtime state
 **Testing**: ExUnit (unit, integration, liveview, e2e tags), Floki for HTML assertions
 **Target Platform**: Web (modern browsers)
@@ -32,7 +32,7 @@ Implement 12 polish features that collectively improve daily usability: nick col
 | V. Contracts and Behaviours | Yes | PASS | EmojiData has `@spec` on all functions. No new behaviours needed (features don't add commands requiring Handler). |
 | VI. Static Analysis from Day One | Yes | PASS | All new code must pass `mix format`, `mix credo --strict`, `mix dialyzer`. `@spec` on all public functions. |
 | VII. Lean LiveViews & Components | Yes | PASS | JS hooks limited to: clipboard, paste detection, character counting, emoji cursor insertion. LiveViews delegate to contexts. |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Paste dialog, emoji picker, about dialog all use 98.css styling. Nick column uses monospace font. Context menu matches existing 98.css pattern. Dark theme counterparts for all new CSS. |
+| VIII. retro Design Fidelity | Yes | PASS | Paste dialog, emoji picker, about dialog all use retro styling. Nick column uses monospace font. Context menu matches existing retro design system pattern. Dark theme counterparts for all new CSS. |
 | IX. Hot/Cold Data Separation | Yes | PASS | Runtime state (away_replied_to, paste_lines, quit_reason) in socket assigns. Preferences in JSONB (existing). No new hot/cold boundaries. |
 | X. Scalable Architecture | No | N/A | No architectural changes. All features are per-connection. |
 | XI. User-Facing Documentation | Yes | PASS | Help topics for: nick alignment, copy, paste dialog, character counter, quit messages, away auto-reply, emoji picker, timestamp format. Keyboard shortcuts topic updated. |

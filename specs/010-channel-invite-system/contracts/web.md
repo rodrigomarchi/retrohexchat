@@ -114,7 +114,7 @@ defmodule RetroHexChatWeb.Components.InviteDialog do
   use Phoenix.Component
 
   @doc """
-  Renders cascading Windows 98-style invite dialog(s).
+  Renders cascading retro-style invite dialog(s).
   Each pending invite renders as a separate dialog with CSS offset.
   """
 end

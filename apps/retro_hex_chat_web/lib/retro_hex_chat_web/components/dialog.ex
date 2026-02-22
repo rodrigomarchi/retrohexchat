@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.Dialog do
   @moduledoc """
-  Reusable modal dialog using 98.css window styling.
+  Reusable modal dialog using retro window styling.
   Supports info (default) and confirm modes.
   """
   use Phoenix.Component

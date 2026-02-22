@@ -10,7 +10,7 @@ Add four P2P action items ("Sessão P2P", "Chamada de Áudio", "Chamada de Víde
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+, JavaScript ES2020+
-**Primary Dependencies**: Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, LiveView 1.0+, retro CSS framework, esbuild
 **Storage**: N/A — no new migrations, all state is ephemeral (socket assigns)
 **Testing**: ExUnit (LiveView tests, unit tests), Vitest (if JS changes needed)
 **Target Platform**: Web browser (desktop, any modern browser)
@@ -32,7 +32,7 @@ Add four P2P action items ("Sessão P2P", "Chamada de Áudio", "Chamada de Víde
 | V. Contracts and Behaviours | Yes | PASS | Reuses existing Handler behaviour via P2p.do_execute/3 |
 | VI. Static Analysis | Yes | PASS | @spec on all new public functions, Credo/Dialyzer clean |
 | VII. Lean LiveViews | Yes | PASS | Event handlers delegate to P2p.do_execute/3, components are function components |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Uses 98.css menu patterns, disabled class, existing separator style |
+| VIII. retro Design Fidelity | Yes | PASS | Uses retro menu patterns, disabled class, existing separator style |
 | IX. Hot/Cold Data Separation | No | N/A | No new data storage |
 | X. Scalable Architecture | No | N/A | UI feature, no architectural impact |
 | XI. User-Facing Documentation | Yes | PASS | Help topic update for context menu P2P actions |

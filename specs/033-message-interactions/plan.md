@@ -10,7 +10,7 @@ Add message reply, edit, and delete capabilities to RetroHexChat. Users can repl
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+, JavaScript ES2020+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro CSS framework, esbuild
 **Storage**: PostgreSQL 16+ (new columns on `messages` and `private_messages` tables — 1 migration)
 **Testing**: ExUnit (unit, integration, liveview, e2e), Vitest + jsdom (JS hooks/lib)
 **Target Platform**: Web (Phoenix LiveView)
@@ -32,7 +32,7 @@ Add message reply, edit, and delete capabilities to RetroHexChat. Users can repl
 | V. Contracts and Behaviours | PASS | No new "/" commands. Existing patterns preserved. |
 | VI. Static Analysis | PASS | @spec on all new public functions. ESLint + Prettier for JS. |
 | VII. Lean LiveViews | PASS | LiveView delegates to Chat.Service. Components handle rendering. |
-| VIII. Windows 98 Design Fidelity | PASS | 98.css styling for reply blocks, edit indicators, delete dialog. |
+| VIII. retro Design Fidelity | PASS | retro styling for reply blocks, edit indicators, delete dialog. |
 | IX. Hot/Cold Data Separation | PASS | Edit/delete persisted in PostgreSQL. Edit mode is ephemeral (socket assigns). |
 | X. Scalable Architecture | PASS | PubSub broadcasts for real-time sync. No architectural dead-ends. |
 | XI. User-Facing Documentation | PASS | Help topics for reply, edit, delete features. |

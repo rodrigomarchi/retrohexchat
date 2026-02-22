@@ -1,7 +1,7 @@
 /**
  * LiveView hook for contextual tips and progressive disclosure.
  *
- * Manages a queue of tips, shows 98.css-styled toast notifications,
+ * Manages a queue of tips, shows retro-styled toast notifications,
  * persists seen state in localStorage, and handles idle detection.
  * All tip logic lives in lib/tips.js; DOM creation in lib/toast.js.
  */

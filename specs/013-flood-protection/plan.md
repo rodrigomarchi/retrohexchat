@@ -12,7 +12,7 @@ The feature follows the receiver-side filtering pattern established by the ignor
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (1 new table: `flood_protection_settings`) + in-memory socket assigns for trackers
 **Testing**: ExUnit with Mox, ExMachina, StreamData, Floki; `@tag :unit`, `@tag :integration`, `@tag :liveview`
 **Target Platform**: Web (server-rendered via LiveView)
@@ -27,14 +27,14 @@ The feature follows the receiver-side filtering pattern established by the ignor
 
 | Principle | Status | Notes |
 |-----------|--------|-------|
-| I. Elixir & Phoenix Exclusive Stack | PASS | Elixir/Phoenix/LiveView/PostgreSQL/98.css only |
+| I. Elixir & Phoenix Exclusive Stack | PASS | Elixir/Phoenix/LiveView/PostgreSQL/retro CSS framework only |
 | II. Umbrella App with Bounded Contexts | PASS | Domain logic in `RetroHexChat.Chat` context (FloodProtection module). Web layer in `RetroHexChatWeb`. Trackers live in socket assigns (LiveView state), consistent with how CTCP rate limiting is already tracked. |
 | III. OTP Process Architecture | PASS | No new GenServers needed — flood tracking is per-LiveView-process state (socket assigns), consistent with existing CTCP rate limiting pattern. Auto-ignore timers use `Process.send_after` (same pattern as existing ignore timers). |
 | IV. Test-First Development | PASS | Unit tests for FloodProtection domain module, FloodTracker, DuplicateTracker. Integration tests for DB persistence. LiveView tests for dialog and message filtering. |
 | V. Contracts and Behaviours | PASS | FloodProtection module follows the established settings pattern (new/load/save). No new commands, so no new Handler modules needed. |
 | VI. Static Analysis | PASS | @spec on all public functions. Credo/Dialyxir compliance. |
 | VII. Lean LiveViews & Component Architecture | PASS | All flood logic delegated to domain modules (FloodProtection, FloodTracker, DuplicateTracker). LiveView only calls domain functions and manages assigns. Dialog is a separate function component. |
-| VIII. Windows 98 Design Fidelity | PASS | Settings dialog follows 98.css patterns (window, title-bar, fieldsets, buttons) matching existing CTCP/Ignore dialogs. |
+| VIII. retro Design Fidelity | PASS | Settings dialog follows retro design patterns (window, title-bar, fieldsets, buttons) matching existing CTCP/Ignore dialogs. |
 | IX. Hot/Cold Data Separation | PASS | Trackers (hot) in socket assigns. Settings (cold, user config) in PostgreSQL. Clean separation. |
 | X. Scalable Architecture | PASS | Per-process state scales naturally with LiveView processes. No shared mutable state. DB table uses owner_nickname primary key referencing registered_nicks. |
 | XI. User-Facing Documentation | PASS | Help topic for flood protection feature. Cross-references to ignore list, CTCP. |
@@ -83,7 +83,7 @@ apps/retro_hex_chat/
 apps/retro_hex_chat_web/
 ├── lib/retro_hex_chat_web/
 │   ├── components/
-│   │   └── flood_protection_dialog.ex   # Win98-styled settings dialog
+│   │   └── flood_protection_dialog.ex   # retro-styled settings dialog
 │   └── live/
 │       └── chat_live.ex                 # Extended: handle_info filtering, dialog events
 └── test/

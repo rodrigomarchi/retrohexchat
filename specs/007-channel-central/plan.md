@@ -5,18 +5,18 @@
 
 ## Summary
 
-Channel Central is a Windows 98-style tabbed dialog that provides a visual hub for all channel administration. It surfaces existing channel state (info, topic, modes, bans) in a read-only view for all members, and provides an editable view for operators. Two new backend concepts are introduced: ban exceptions (+e) and invite exceptions (+I), which modify join policy to allow specific users to bypass bans or invite-only restrictions. The dialog receives real-time updates via existing PubSub subscriptions and four new exception-related broadcast events.
+Channel Central is a retro-style tabbed dialog that provides a visual hub for all channel administration. It surfaces existing channel state (info, topic, modes, bans) in a read-only view for all members, and provides an editable view for operators. Two new backend concepts are introduced: ban exceptions (+e) and invite exceptions (+I), which modify join policy to allow specific users to bypass bans or invite-only restrictions. The dialog receives real-time updates via existing PubSub subscriptions and four new exception-related broadcast events.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (two new tables: `ban_exceptions`, `invite_exceptions`) + in-memory GenServer state extension
 **Testing**: ExUnit with async, Floki for component tests, @tag :unit / :integration / :liveview / :e2e
 **Target Platform**: Web (browser)
 **Project Type**: Umbrella (Elixir umbrella app with domain + web)
 **Performance Goals**: Dialog opens in <2s, real-time updates within 1s
-**Constraints**: Follows existing patterns (98.css dialogs, GenServer-backed channels, PubSub broadcasts)
+**Constraints**: Follows existing patterns (retro dialogs, GenServer-backed channels, PubSub broadcasts)
 **Scale/Scope**: 1 new component, ~15 new event handlers, 2 DB tables, 4 new Server API functions, 1 Policy extension
 
 ## Constitution Check
@@ -25,14 +25,14 @@ Channel Central is a Windows 98-style tabbed dialog that provides a visual hub f
 
 | Principle | Relevant? | Status | Notes |
 |-----------|-----------|--------|-------|
-| I. Elixir & Phoenix Exclusive | Yes | PASS | Elixir + Phoenix LiveView + PostgreSQL + 98.css only |
+| I. Elixir & Phoenix Exclusive | Yes | PASS | Elixir + Phoenix LiveView + PostgreSQL + retro CSS framework only |
 | II. Umbrella with Bounded Contexts | Yes | PASS | Domain logic in `retro_hex_chat` (Channels, Services), UI in `retro_hex_chat_web` |
 | III. OTP Process Architecture | Yes | PASS | Extends existing GenServer-per-channel pattern. Exception state in Server GenServer. No new processes. |
 | IV. Test-First Development | Yes | PASS | Tests written alongside implementation per TDD. Unit → integration → liveview → e2e. |
 | V. Contracts and Behaviours | Yes | PASS | New Server functions have @spec. Policy extension has @spec. No new behaviours needed (dialog is a function component, not a handler). |
 | VI. Static Analysis | Yes | PASS | All new code will have @spec, pass Credo strict, and pass Dialyzer. |
 | VII. Lean LiveViews | Yes | PASS | Dialog component renders state from Server.get_state. ChatLive delegates to Server/Policy. Zero business logic in web layer. New PubSub events follow existing `"channel:#{name}"` convention. |
-| VIII. Win98 Design Fidelity | Yes | PASS | 98.css tabbed dialog with title-bar, window-body, sunken-panel tables, field-row checkboxes. Dark theme CSS counterparts. |
+| VIII. Retro Design Fidelity | Yes | PASS | retro tabbed dialog with title-bar, window-body, sunken-panel tables, field-row checkboxes. Dark theme CSS counterparts. |
 | IX. Hot/Cold Data Separation | Yes | PASS | Exception lists in GenServer MapSets (hot) + PostgreSQL tables (cold). Same pattern as existing bans. |
 | X. Scalable Architecture | Yes | PASS | No architectural changes. Exceptions stored per-channel in same GenServer process. DB tables indexed by channel_name. |
 | XI. User-Facing Documentation | Yes | PASS | Help topics for Channel Central dialog, ban exceptions, invite exceptions. Keyboard shortcuts topic updated. |

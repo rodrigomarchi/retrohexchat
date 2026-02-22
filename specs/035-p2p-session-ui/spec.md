@@ -29,7 +29,7 @@ A registered user types `/p2p mario` in the chat input to request a peer-to-peer
 
 ### User Story 2 - P2P Lobby with Peer Presence and Ephemeral Chat (Priority: P2)
 
-Both peers navigate to `/p2p/:token` and enter the lobby. The lobby is a dedicated page styled as a Windows 98 window showing both peers' names, online/offline presence indicators, and an ephemeral chat area. Peers can exchange messages in real-time within the lobby. These messages are not persisted to the database — they exist only in the session process memory. The lobby also displays system messages for events like peer joining, peer leaving, and session status changes.
+Both peers navigate to `/p2p/:token` and enter the lobby. The lobby is a dedicated page styled as a retro window showing both peers' names, online/offline presence indicators, and an ephemeral chat area. Peers can exchange messages in real-time within the lobby. These messages are not persisted to the database — they exist only in the session process memory. The lobby also displays system messages for events like peer joining, peer leaving, and session status changes.
 
 **Why this priority**: The lobby is the core meeting space where peers interact before initiating any P2P action. Without it, peers have no shared context.
 
@@ -37,7 +37,7 @@ Both peers navigate to `/p2p/:token` and enter the lobby. The lobby is a dedicat
 
 **Acceptance Scenarios**:
 
-1. **Given** a valid session token, **When** both the creator and peer navigate to `/p2p/:token`, **Then** both see a Windows 98-style lobby window with each other's nicknames and green "online" presence indicators.
+1. **Given** a valid session token, **When** both the creator and peer navigate to `/p2p/:token`, **Then** both see a 2000s-era lobby window with each other's nicknames and green "online" presence indicators.
 2. **Given** both peers are in the lobby, **When** rodrigo types a message in the lobby chat, **Then** mario sees the message appear immediately, and vice versa.
 3. **Given** both peers are in the lobby, **When** rodrigo refreshes the page, **Then** previous chat messages are gone (ephemeral — not persisted).
 4. **Given** a valid session in pending state, **When** only one peer has joined the lobby, **Then** the other peer's presence indicator shows "offline/awaiting" and a system message indicates the peer has not yet arrived.
@@ -139,7 +139,7 @@ Users can use `/call <nick>` and `/sendfile <nick>` as shortcuts that create a P
 - **FR-018**: System MUST handle permission denial gracefully with a user-friendly error and retry option, without proceeding with the action.
 - **FR-019**: Command handlers MUST delegate all business logic to the P2P domain context — no business logic in handlers.
 - **FR-020**: The P2PSessionLive MUST delegate all business logic to the P2P domain context — no business logic in the LiveView.
-- **FR-021**: The lobby UI MUST follow 98.css Windows 98 aesthetic with dark theme support, consistent with the rest of the application.
+- **FR-021**: The lobby UI MUST follow retro design system retro aesthetic with dark theme support, consistent with the rest of the application.
 - **FR-022**: The PM invitation message MUST clearly indicate the session type (generic P2P, audio call, or file transfer) and include the clickable lobby link.
 - **FR-023**: Action requests MUST expire after 60 seconds if the peer does not respond. Upon expiry, the requesting peer sees "Pedido expirou" and the lobby returns to its normal state, allowing either peer to initiate a new request.
 
@@ -188,7 +188,7 @@ Users can use `/call <nick>` and `/sendfile <nick>` as shortcuts that create a P
 - `/p2p`, `/call`, `/sendfile` command handlers following Handler behaviour
 - Invitation delivery via dual channel: PM message with lobby link (persisted in chat) + toast notification with accept/reject/ignore actions
 - Ephemeral lobby chat (in-process only, not persisted)
-- 98.css lobby layout with Windows 98 aesthetic and dark theme
+- retro design system lobby layout with retro aesthetic and dark theme
 - Peer presence indicators (online/offline)
 - Bilateral consent UI for action requests (request/accept/reject)
 - Browser capability detection via JS hook (async, non-blocking)

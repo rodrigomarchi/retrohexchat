@@ -25,7 +25,7 @@ P2: Search Highlighting ──→ P5: Search Filters ──→ P6: History Searc
 **Recommended implementation sequence**:
 
 1. **KeyBindings registry extension** (domain) — add categories, metadata, new actions
-2. **Cheatsheet dialog component** (web) — 98.css modal, reads from registry
+2. **Cheatsheet dialog component** (web) — retro design system modal, reads from registry
 3. **ShortcutDispatcherHook** (JS) — global keydown, bubble-up, push to server
 4. **Search highlighting** (JS + LiveView) — SearchHighlightHook, push_event coordination
 5. **Window navigation** (LiveView) — NavigationEvents module, window_list assign

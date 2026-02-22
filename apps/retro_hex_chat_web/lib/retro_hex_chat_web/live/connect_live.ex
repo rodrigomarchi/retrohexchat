@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.ConnectLive do
   @moduledoc """
-  Win98-style connection dialog. Users enter nickname and connect.
+  Retro-style connection dialog. Users enter nickname and connect.
   If the nickname is registered, a password step is shown for inline authentication.
 
   On successful validation, a hidden form is submitted via POST to `/chat/session`,
@@ -235,7 +235,9 @@ defmodule RetroHexChatWeb.ConnectLive do
                 id="clock-display"
                 phx-hook="ClockHook"
                 data-testid="status-clock"
-              >--:--</span>
+              >
+                --:--
+              </span>
               <span class="status-bar-separator">|</span>
               <span class="status-bar-text--disabled">
                 <.icon_dialog_sound class="status-bar-icon status-bar-icon--disabled" />

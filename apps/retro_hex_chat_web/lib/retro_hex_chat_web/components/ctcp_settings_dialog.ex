@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.CtcpSettingsDialog do
   @moduledoc """
-  Windows 98-styled CTCP settings dialog for customizing CTCP responses.
+  Retro-styled CTCP settings dialog for customizing CTCP responses.
   """
   use Phoenix.Component
 

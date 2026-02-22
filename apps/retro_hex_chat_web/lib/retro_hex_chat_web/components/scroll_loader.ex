@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.ScrollLoader do
   @moduledoc """
-  Phoenix component showing a 98.css progress indicator when loading older messages.
+  Phoenix component showing a retro progress indicator when loading older messages.
   """
   use Phoenix.Component
 

@@ -9,8 +9,8 @@ O logotipo do RetroHexChat combina dois elementos centrais da marca:
    do nome e evoca solidez, comunidade (células de colmeia) e a estética pixel-art
    da época.
 
-2. **O Balão de Chat Win98** — dentro da gema, um balão de diálogo com as bordas 3D
-   características do Windows 98 (bevel claro no topo-esquerda, escuro no
+2. **O Balão de Chat retro** — dentro da gema, um balão de diálogo com as bordas 3D
+   características do retro (bevel claro no topo-esquerda, escuro no
    canto inferior-direito). As linhas de texto dentro do balão usam as cores
    primárias do projeto (navy, teal, cinza).
 
@@ -29,7 +29,7 @@ Pequenos brilhos pixelados no canto superior-direito da gema adicionam o toque
 |-------------------|-----------|-----------------------------------------|
 | **Teal Desktop**  | `#008080` | Cor principal da marca, fundo desktop   |
 | **Navy Selection**| `#000080` | Destaques, seleções, links ativos       |
-| **Surface Gray**  | `#c0c0c0` | Superfícies Win98, elementos de UI      |
+| **Surface Gray**  | `#c0c0c0` | Superfícies retro, elementos de UI      |
 
 ### Cores Secundárias
 
@@ -47,7 +47,7 @@ Pequenos brilhos pixelados no canto superior-direito da gema adicionam o toque
 | **Black**         | `#000000` | Texto principal, bordas                 |
 | **White**         | `#ffffff` | Texto sobre escuro, highlights          |
 | **Medium Gray**   | `#808080` | Bordas, texto muted, separadores        |
-| **Win98 Beige**   | `#d4d0c8` | Botões, tabs, elementos de interface    |
+| **retro Beige**   | `#d4d0c8` | Botões, tabs, elementos de interface    |
 
 ### Cores Semânticas (do projeto)
 
@@ -67,7 +67,7 @@ Pequenos brilhos pixelados no canto superior-direito da gema adicionam o toque
 ### 1. Logo Principal (`logo.svg`)
 - 512×512px, fundo transparente
 - Uso: avatar, ícone de app, favicon (reduzido), og:image
-- A gema teal com balão Win98 centralizado
+- A gema teal com balão retro centralizado
 
 ### 2. Logo Dark (`logo-dark.svg`)
 - 512×512px, fundo `#0a0a0a`
@@ -93,7 +93,7 @@ Pequenos brilhos pixelados no canto superior-direito da gema adicionam o toque
 ## Tipografia
 
 ### Primária (UI do app)
-- **MS Sans Serif** (Win98 nativo via 98.css)
+- **MS Sans Serif** (retro nativo via retro design system)
 - Fallback: `Segoe UI → Tahoma → Geneva → Verdana → sans-serif`
 
 ### Secundária (código, logs)
@@ -159,7 +159,7 @@ largura do hexágono em cada direção.
 
 A identidade do RetroHexChat vive na tensão criativa entre:
 
-- **Nostalgia Win98** — bordas 3D bevel, cinza `#c0c0c0`, pixels nítidos
+- **Nostalgia retro** — bordas 3D bevel, cinza `#c0c0c0`, pixels nítidos
 - **Energia Y2K** — teal vibrante, sparkles pixelados, formas geométricas
 - **Modernidade** — gradientes suaves nas facetas, SVG escalável, design system
 

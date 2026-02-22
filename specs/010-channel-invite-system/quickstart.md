@@ -7,7 +7,7 @@
 
 - Branch `010-channel-invite-system` checked out
 - `make setup` completed (no new migrations for this feature)
-- Familiarity with: Command handlers (`/ban`, `/kick`), Channel.Server, Session struct, 98.css dialog components
+- Familiarity with: Command handlers (`/ban`, `/kick`), Channel.Server, Session struct, retro dialog components
 
 ## Implementation Order
 
@@ -103,7 +103,7 @@ defmodule RetroHexChatWeb.Components.InviteDialog do
   def invite_dialog(assigns) do
     ~H"""
     <%= for {invite, index} <- Enum.with_index(@pending_invites) do %>
-      <!-- Win98 dialog with cascading offset -->
+      <!-- retro dialog with cascading offset -->
     <% end %>
     """
   end
@@ -241,7 +241,7 @@ Manual smoke test:
 | Command handler structure | `handlers/ban.ex` | `validate/1`, `execute/2`, `help/0`, `require_channel/1` |
 | Registry entry | `registry.ex` | Add `"invite" => Handlers.Invite` to `@commands` |
 | Session getter/setter | `session.ex` | `get_/set_/toggle_` function naming |
-| Dialog component | `perform_dialog.ex` | 98.css `.window` structure, overlay, z-index |
+| Dialog component | `perform_dialog.ex` | retro `.window` structure, overlay, z-index |
 | UI action dispatch | `chat_live.ex` | `handle_ui_action/3` clause pattern |
 | PubSub broadcast | `chat_live.ex` | `"user:#{nickname}"` topic pattern |
 | System messages | `chat_live.ex` | `system_message/1`, `error_message/1` helpers |

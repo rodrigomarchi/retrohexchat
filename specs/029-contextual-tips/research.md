@@ -73,14 +73,14 @@
 - `requestIdleCallback` — rejected because it detects CPU idle, not user idle.
 - Server-side idle detection via `Process.send_after` — rejected because this is a client-side UX concern.
 
-## R7: Toast Component Design (98.css)
+## R7: Toast Component Design (retro design system)
 
-**Decision**: Toast uses 98.css `window` class with `title-bar` for the tip title and `window-body` for content. The dismiss button uses 98.css's standard button styling. The checkbox uses 98.css's standard checkbox input.
+**Decision**: Toast uses retro design system `window` class with `title-bar` for the tip title and `window-body` for content. The dismiss button uses retro design system's standard button styling. The checkbox uses retro design system's standard checkbox input.
 
-**Rationale**: Maintains Windows 98 design fidelity (Constitution VIII). The `window` class provides the characteristic 3D beveled border and title bar. Using standard 98.css elements ensures visual consistency.
+**Rationale**: Maintains retro design fidelity (Constitution VIII). The `window` class provides the characteristic 3D beveled border and title bar. Using standard retro design system elements ensures visual consistency.
 
 **Alternatives considered**:
-- Custom flat toast design — rejected because it would break the Windows 98 aesthetic.
+- Custom flat toast design — rejected because it would break the retro aesthetic.
 - Using the existing `onboarding-tip-banner` pattern — rejected because a fixed-position floating window better matches the "tooltip/notification" metaphor than a page-embedded banner.
 
 ## R8: Hook vs. LiveComponent for Toast

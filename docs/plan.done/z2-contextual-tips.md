@@ -13,7 +13,7 @@
 | Z12 | Contextual tip: first PM received | New | On first PM: "PMs aparecem como janelas separadas no treebar" |
 | Z13 | Contextual tip: first highlight | New | On first mention: "Seu nick foi mencionado! Configure alertas em Settings" |
 | Z14 | Contextual tip: idle user | New | After 30s idle: "Digite /help para ver todos os comandos" |
-| Z15 | Tip toast component | New | Reusable 98.css toast: message text, "Entendi!" button, "Não mostrar mais" checkbox. Used also by AB and AC. |
+| Z15 | Tip toast component | New | Reusable retro toast: message text, "Entendi!" button, "Não mostrar mais" checkbox. Used also by AB and AC. |
 | Z16 | Tip seen tracking | New | Each tip shown at most once via localStorage keys, global toggle in Settings |
 
 ## Dependencies Detail
@@ -44,7 +44,7 @@ PROBLEM: After the initial onboarding wizard (Category Z), users have no way to 
 
 EXISTING CONTEXT: No contextual tip system exists. The onboarding wizard (Category Z) handles first-run guidance. Various features that tips would reference are already implemented: command palette, nick autocomplete, history navigation, highlight system, etc.
 
-USER JOURNEY: A user sends their first message in a channel. A small 98.css toast appears in the bottom-right corner: 'Use ↑ para editar sua última mensagem'. The toast has an 'Entendi!' dismiss button and a small 'Não mostrar mais dicas' checkbox. It auto-dismisses after 8 seconds if the user does not interact with it.
+USER JOURNEY: A user sends their first message in a channel. A small retro toast appears in the bottom-right corner: 'Use ↑ para editar sua última mensagem'. The toast has an 'Entendi!' dismiss button and a small 'Não mostrar mais dicas' checkbox. It auto-dismisses after 8 seconds if the user does not interact with it.
 
 Later, when they join their first channel via /join, another tip appears: 'Canais que você entra aparecem no painel esquerdo'. When they receive their first PM: 'PMs aparecem como janelas separadas no treebar'. When someone mentions their nick for the first time: 'Seu nick foi mencionado! Configure alertas em Settings'. If they are idle for 30 seconds: 'Digite /help para ver todos os comandos'.
 
@@ -56,5 +56,5 @@ EDGE CASES: If multiple tips would trigger at the same moment (e.g., first messa
 
 NEGATIVE REQUIREMENTS: Tips must NOT appear more than once per type — ever. Tips must NOT block or overlay important UI elements (positioned in bottom-right corner). Tips must NOT interrupt the user's typing — never steal focus from the input. The 'Não mostrar mais' toggle must NOT reset when localStorage is cleared for other reasons (it should be the most resilient setting). Tips must NOT appear during the onboarding wizard flow.
 
-SCOPE: In scope — 5 contextual tip triggers (first message, first join, first PM, first highlight, idle), reusable toast component (98.css styled with dismiss button and global toggle checkbox), per-tip seen tracking in localStorage, global tips toggle in Settings. Out of scope — tip content customization, more than 5 initial tips (can be extended later), tip analytics, tips in languages other than Portuguese."
+SCOPE: In scope — 5 contextual tip triggers (first message, first join, first PM, first highlight, idle), reusable toast component (retro-styled with dismiss button and global toggle checkbox), per-tip seen tracking in localStorage, global tips toggle in Settings. Out of scope — tip content customization, more than 5 initial tips (can be extended later), tip analytics, tips in languages other than Portuguese."
 ```

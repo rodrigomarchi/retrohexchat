@@ -5,15 +5,15 @@
 
 ## Summary
 
-Add a 3-step Windows 98-style welcome wizard for first-time users and contextual empty states for 4 UI containers. The wizard extends ConnectLive with localStorage-based first-run detection. Empty states use conditional rendering in existing components with shared CSS. No database migrations required.
+Add a 3-step 2000s-era welcome wizard for first-time users and contextual empty states for 4 UI containers. The wizard extends ConnectLive with localStorage-based first-run detection. Empty states use conditional rendering in existing components with shared CSS. No database migrations required.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+, JavaScript ES2020+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro CSS framework, esbuild
 **Storage**: localStorage (client-side onboarding flag) — no PostgreSQL changes
 **Testing**: ExUnit (unit, integration, LiveView), Vitest + jsdom (JS lib/hook tests)
-**Target Platform**: Web browser (desktop-first, Windows 98 aesthetic)
+**Target Platform**: Web browser (desktop-first, retro aesthetic)
 **Project Type**: Umbrella (retro_hex_chat + retro_hex_chat_web)
 **Performance Goals**: Empty states disappear within same render cycle as content arrival
 **Constraints**: Wizard must not re-trigger on subsequent visits; all empty state text non-selectable
@@ -32,7 +32,7 @@ Add a 3-step Windows 98-style welcome wizard for first-time users and contextual
 | V. Contracts and Behaviours | No | N/A | No new behaviours needed — wizard is a UI concern. |
 | VI. Static Analysis | Yes | PASS | All public functions will have @spec. ESLint + Prettier for JS. |
 | VII. Lean LiveViews | Yes | PASS | ConnectLive delegates to existing domain contexts. Wizard is presentation-only. JS hook is minimal (localStorage wiring). |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Wizard uses 98.css dialog patterns. Empty states use design tokens (--color-muted, --text-sm). |
+| VIII. retro Design Fidelity | Yes | PASS | Wizard uses retro dialog patterns. Empty states use design tokens (--color-muted, --text-sm). |
 | IX. Hot/Cold Data Separation | No | N/A | No persistent data. localStorage is browser-side. |
 | X. Scalable Architecture | No | N/A | Feature is purely presentational. |
 | XI. User-Facing Documentation | Yes | PASS | Help topics planned for wizard and empty states. |

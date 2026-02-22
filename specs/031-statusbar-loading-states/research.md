@@ -83,8 +83,8 @@
 
 Use fixed minimum widths for the lag and clock fields to prevent layout shifts when values change (e.g., "Lag: 45ms" vs "Lag: 250ms"). The mute toggle moves to the right section or becomes a small icon.
 
-**Rationale**: The current status bar has 5 separate `status-bar-field` elements with no grouping. The 98.css `.status-bar` uses flexbox. Grouping into 3 sections matches the IRC-style status bar layout described in the spec.
+**Rationale**: The current status bar has 5 separate `status-bar-field` elements with no grouping. The retro design system `.status-bar` uses flexbox. Grouping into 3 sections matches the IRC-style status bar layout described in the spec.
 
 **Alternatives considered**:
 - **Keep flat 5-field layout and add more fields**: Would be too crowded and hard to scan. Rejected.
-- **Two-row status bar**: Breaks the Windows 98 aesthetic (single-row status bar). Rejected.
+- **Two-row status bar**: Breaks the retro aesthetic (single-row status bar). Rejected.

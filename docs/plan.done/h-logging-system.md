@@ -38,7 +38,7 @@ PROBLEM: Although chat messages are persisted, users have no way to browse, sear
 
 EXISTING CONTEXT: All chat messages (channels and PMs) are already persisted in the database with full history. This feature is about surfacing that data to users through a dedicated interface.
 
-USER JOURNEY: A user needs to find something discussed in #project last Thursday. They open the Log Viewer (via menu or toolbar). A Windows 98-style window appears with filter controls at the top: a date range picker, a channel/PM selector dropdown, a nickname filter field, and a text search box. They select #project, set the date range to last Thursday, and type a search term. The matching messages appear in a scrollable list with timestamps, nicknames, and message content. System events (joins, parts, kicks, topic changes) are shown in a distinct style.
+USER JOURNEY: A user needs to find something discussed in #project last Thursday. They open the Log Viewer (via menu or toolbar). A retro-style window appears with filter controls at the top: a date range picker, a channel/PM selector dropdown, a nickname filter field, and a text search box. They select #project, set the date range to last Thursday, and type a search term. The matching messages appear in a scrollable list with timestamps, nicknames, and message content. System events (joins, parts, kicks, topic changes) are shown in a distinct style.
 
 The user can then click 'Export' to download the filtered results as a .txt file (plain text with timestamps) or an .html file (styled to look like the chat with colors and formatting preserved). The export respects the current filter — only the visible results are exported.
 

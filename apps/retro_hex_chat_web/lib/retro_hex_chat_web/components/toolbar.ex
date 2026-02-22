@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
   @moduledoc """
   Collapsible toolbar with grouped icon buttons. Each group shows a single
   representative icon; clicking it reveals a dropdown with all group buttons
-  and text labels (Win98 menu style). Single-button groups stay standalone.
+  and text labels (classic menu style). Single-button groups stay standalone.
   """
   use Phoenix.Component
 

@@ -9,7 +9,7 @@
 
 ### User Story 1 - Add and Use Favorites (Priority: P1)
 
-A user regularly visits #elixir and wants quick access to it. They right-click the channel in the treebar and select "Add to Favorites". A Windows 98-style dialog appears with the channel name pre-filled, an optional description field, an optional password field (masked), and an "Auto-join on connect" checkbox. They fill in a description and save.
+A user regularly visits #elixir and wants quick access to it. They right-click the channel in the treebar and select "Add to Favorites". A retro-style dialog appears with the channel name pre-filled, an optional description field, an optional password field (masked), and an "Auto-join on connect" checkbox. They fill in a description and save.
 
 Now the "Favorites" menu in the menu bar shows #elixir. Clicking it joins the channel instantly. If the user is already in the channel, clicking the favorite switches to it instead of attempting to rejoin. The Favorites menu shows a checkmark next to channels the user is currently in.
 

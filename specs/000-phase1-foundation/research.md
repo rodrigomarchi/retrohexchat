@@ -80,17 +80,17 @@ precedent).
 
 **Decision**: esbuild (Phoenix default)
 **Rationale**: Zero-config with Phoenix 1.7+. Fast builds. Supports
-importing 98.css from node_modules. No need for Webpack/Vite complexity.
+importing retro design system from node_modules. No need for Webpack/Vite complexity.
 **Alternatives considered**: Webpack (unnecessary complexity), Vite
 (overkill for CSS + minimal JS hooks).
 
-## 8. 98.css Integration
+## 8. retro design system Integration
 
 **Decision**: Install via npm, import in Phoenix assets pipeline
-**Rationale**: 98.css is a pure CSS library with no JS dependencies.
+**Rationale**: retro design system is a pure CSS library with no JS dependencies.
 Install via npm for versioning, import in `app.css`. Dark theme
 implemented as a separate CSS file with custom properties overriding
-98.css defaults.
+retro design system defaults.
 **Alternatives considered**: CDN (rejected — no offline support, version
 pinning issues), copy-paste (rejected — no update path).
 

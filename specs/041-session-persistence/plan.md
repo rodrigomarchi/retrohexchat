@@ -10,7 +10,7 @@ Make the chat feel stateful across sessions by: (1) restoring PM conversation pa
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+, JavaScript ES2020+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro CSS framework, esbuild
 **Storage**: PostgreSQL 16+ (existing `private_messages` table, existing `autojoin_list_entries` table — no new migrations)
 **Testing**: ExUnit (unit, integration, liveview, e2e), Vitest + jsdom (JS)
 **Target Platform**: Web (modern browsers)
@@ -32,7 +32,7 @@ Make the chat feel stateful across sessions by: (1) restoring PM conversation pa
 | V. Contracts and Behaviours | PASS | No new modules requiring behaviours. Extends existing `Queries` module. |
 | VI. Static Analysis | PASS | `@spec` on all new public functions. Credo, Dialyzer, format enforced. |
 | VII. Lean LiveViews | PASS | Query lives in domain layer. LiveView only wires restore result to assigns. |
-| VIII. Windows 98 Design Fidelity | PASS | No UI changes — reuses existing treebar component and notification infrastructure. |
+| VIII. retro Design Fidelity | PASS | No UI changes — reuses existing treebar component and notification infrastructure. |
 | IX. Hot/Cold Data Separation | PASS | PM partners queried from PostgreSQL (cold), held in-memory as `pm_conversations` list (hot). |
 | X. Scalable Architecture | PASS | Query uses existing composite index `idx_pm_conversation`. Capped at 50 results. |
 | XI. User-Facing Documentation | PASS | Help topics for PM persistence and auto-join behavior. |

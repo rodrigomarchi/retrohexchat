@@ -25,7 +25,7 @@ An operator in an invite-only channel (#private, mode +i) wants to bring in a co
 
 ### User Story 2 - Invited User Receives Notification and Joins (Priority: P1)
 
-Alice is connected to the server (in any channel or no channel). She receives a real-time notification that an operator has invited her to #private. A Windows 98-style dialog popup appears with the message: "OperatorNick has invited you to join #private" and two buttons: "Join" and "Ignore". If Alice clicks "Join", she is automatically joined to #private. If she clicks "Ignore", the invitation is dismissed and the dialog closes.
+Alice is connected to the server (in any channel or no channel). She receives a real-time notification that an operator has invited her to #private. A retro-style dialog popup appears with the message: "OperatorNick has invited you to join #private" and two buttons: "Join" and "Ignore". If Alice clicks "Join", she is automatically joined to #private. If she clicks "Ignore", the invitation is dismissed and the dialog closes.
 
 **Why this priority**: Equally critical as Story 1 — the invite is useless without the recipient being able to act on it. Together with Story 1, this forms the complete minimum viable feature.
 
@@ -33,7 +33,7 @@ Alice is connected to the server (in any channel or no channel). She receives a 
 
 **Acceptance Scenarios**:
 
-1. **Given** Alice is connected and an operator invites her to #private, **When** the invite is delivered, **Then** Alice sees a Windows 98-style dialog with the operator's name, the channel name, and "Join" / "Ignore" buttons.
+1. **Given** Alice is connected and an operator invites her to #private, **When** the invite is delivered, **Then** Alice sees a retro-style dialog with the operator's name, the channel name, and "Join" / "Ignore" buttons.
 2. **Given** Alice sees the invite dialog for #private, **When** she clicks "Join", **Then** she is joined to #private and the dialog closes.
 3. **Given** Alice sees the invite dialog for #private, **When** she clicks "Ignore", **Then** the dialog closes and she remains where she is.
 4. **Given** Alice receives an invite, **When** the invite dialog is displayed, **Then** it does not block the rest of the chat interface — Alice can continue chatting behind the dialog.
@@ -81,7 +81,7 @@ A user can enable an "Auto-join on invite" preference. When enabled, receiving a
 - **Inviting to a non-invite-only channel**: The operator sees: `* #general is not invite-only — anyone can join`.
 - **Channel mode changes during pending invite**: If #private has its +i mode removed while Alice has a pending invite, the invite becomes irrelevant — Alice can join freely. The pending invite dialog (if still open) should still work (clicking "Join" joins her), but the invite is no longer necessary.
 - **Multiple pending invites to the same channel**: If Alice receives a second invite to #private while one is already pending, the existing invite timer resets (extends the expiration). Only one dialog is shown at a time for the same channel.
-- **Multiple invites to different channels**: Alice can have pending invites to multiple channels simultaneously. Each appears as a separate Windows 98-style dialog, stacked with a slight offset (cascading windows effect), so all are visible and independently actionable.
+- **Multiple invites to different channels**: Alice can have pending invites to multiple channels simultaneously. Each appears as a separate retro-style dialog, stacked with a slight offset (cascading windows effect), so all are visible and independently actionable.
 - **Operator leaves channel after sending invite**: The invite remains valid — it was authorized at send time.
 - **Invited user disconnects and reconnects**: Pending invites are lost on disconnect. The invite was an ephemeral, real-time notification.
 
@@ -93,7 +93,7 @@ A user can enable an "Auto-join on invite" preference. When enabled, receiving a
 - **FR-002**: The `/invite` command MUST only be executable by channel operators who are current members of the target channel (having +o status alone is not sufficient — the operator must be in the channel).
 - **FR-003**: The `/invite` command MUST only work on channels with invite-only mode (+i) enabled.
 - **FR-004**: When an invite is sent, the system MUST deliver a real-time notification to the invited user, regardless of which channel or conversation they are currently viewing.
-- **FR-005**: The invite notification MUST be displayed as a Windows 98-style dialog popup with the inviter's nickname, the channel name, and "Join" / "Ignore" action buttons.
+- **FR-005**: The invite notification MUST be displayed as a retro-style dialog popup with the inviter's nickname, the channel name, and "Join" / "Ignore" action buttons.
 - **FR-006**: When the invited user clicks "Join", the system MUST join them to the target channel immediately.
 - **FR-007**: When the invited user clicks "Ignore", the system MUST dismiss the dialog with no further action.
 - **FR-008**: The operator who sends the invite MUST see a confirmation system message: `* Inviting <nickname> to <channel>`.
@@ -131,14 +131,14 @@ A user can enable an "Auto-join on invite" preference. When enabled, receiving a
 
 ### Session 2026-02-12
 
-- Q: How should multiple simultaneous invite dialogs be presented? → A: Stack simultaneously — all invite dialogs appear at once, slightly offset like cascading Win98 windows.
+- Q: How should multiple simultaneous invite dialogs be presented? → A: Stack simultaneously — all invite dialogs appear at once, slightly offset like cascading retro windows.
 - Q: Must the operator be a current member of the channel to send an invite? → A: Yes — the operator must be currently in the channel, not just have +o status from a previous session.
 
 ## Assumptions
 
 - The invite system is **ephemeral and in-memory only**. No database tables are needed. Invites are not persisted across server restarts or user reconnections. This matches the real-time, session-based nature of IRC invitations.
 - The "Auto-join on invite" preference is stored in the user's in-memory Session (for guests) and can optionally be persisted to the database for registered users. The initial implementation uses in-memory Session only.
-- The invite dialog follows the same Windows 98-style pattern as existing dialogs in the application (PerformDialog, ChannelCentralDialog, etc.).
+- The invite dialog follows the same 2000s-era pattern as existing dialogs in the application (PerformDialog, ChannelCentralDialog, etc.).
 - The `/invite` command follows the same Handler behaviour pattern as all other commands in the system.
 - Channel operators include the channel owner and any users with +o status in the channel.
 - Invite exceptions list (+I mode) and the /knock command are explicitly **out of scope** for this feature.

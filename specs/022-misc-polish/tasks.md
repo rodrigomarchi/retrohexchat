@@ -97,10 +97,10 @@
 
 ### Implementation
 
-- [x] T022 [US3] Integrated copy context menu into ScrollHook in `apps/retro_hex_chat_web/assets/js/hooks/scroll_hook.js` — contextmenu listener, window.getSelection(), 98.css-styled copy menu, Copy with navigator.clipboard, mousedown/Escape dismiss, disabled state when no selection. Merged into ScrollHook since LiveView only allows one phx-hook per element.
+- [x] T022 [US3] Integrated copy context menu into ScrollHook in `apps/retro_hex_chat_web/assets/js/hooks/scroll_hook.js` — contextmenu listener, window.getSelection(), retro-styled copy menu, Copy with navigator.clipboard, mousedown/Escape dismiss, disabled state when no selection. Merged into ScrollHook since LiveView only allows one phx-hook per element.
 - [x] T023 [US3] SKIPPED — No separate ChatCopyHook needed; merged into existing ScrollHook.
 - [x] T024 [US3] SKIPPED — `.chat-messages` already has `phx-hook="ScrollHook"` which now includes copy functionality.
-- [x] T025 [US3] Add CSS for copy context menu in `apps/retro_hex_chat_web/assets/css/chat.css` — `.copy-context-menu`, `.copy-menu-item`, `.copy-menu-item--disabled` with 98.css styling.
+- [x] T025 [US3] Add CSS for copy context menu in `apps/retro_hex_chat_web/assets/css/chat.css` — `.copy-context-menu`, `.copy-menu-item`, `.copy-menu-item--disabled` with retro styling.
 - [x] T026 [US3] E2E tests covered by LiveView tests in chat_live_copy_test.exs — hook presence and text selection enabled assertions.
 
 **Checkpoint**: US3 complete — users can copy text from chat via right-click or Ctrl+C.
@@ -142,7 +142,7 @@
 
 ### Implementation
 
-- [x] T035 [US5] Create PasteConfirmDialog component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/paste_confirm_dialog.ex` — 98.css window dialog with title "Paste Confirmation", body showing "You are about to send N lines.", flood warning text (bold red) when >50, pastebin suggestion when >100, "Send All" button (disabled when >100) and "Cancel" button. Attrs: `visible`, `line_count`, `flood_warning`, `send_disabled`.
+- [x] T035 [US5] Create PasteConfirmDialog component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/paste_confirm_dialog.ex` — retro window dialog with title "Paste Confirmation", body showing "You are about to send N lines.", flood warning text (bold red) when >50, pastebin suggestion when >100, "Send All" button (disabled when >100) and "Cancel" button. Attrs: `visible`, `line_count`, `flood_warning`, `send_disabled`.
 - [x] T036 [US5] Create PasteHook JS in `apps/retro_hex_chat_web/assets/js/hooks/paste_hook.js` — on `mounted()`: listen for `paste` event on `#chat-input`, read `e.clipboardData.getData("text/plain")`, split by `\n`, filter empty lines, if 2+ non-empty lines: `e.preventDefault()` and `this.pushEvent("paste_lines", {lines})`. Single line: allow normal paste.
 - [x] T037 [US5] Register PasteHook in `apps/retro_hex_chat_web/assets/js/hooks/index.js`.
 - [x] T038 [US5] Add paste event handlers in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/core_events.ex` — `handle_event("paste_lines", %{"lines" => lines})`: filter empty lines, set `paste_lines` assign, compute `flood_warning` (>50) and `send_disabled` (>100). `handle_event("paste_cancel")`: reset `paste_lines` to nil. `handle_event("paste_send")`: start 300ms paced message chain via `Process.send_after(self(), {:paste_next, remaining_lines}, 0)`.
@@ -240,13 +240,13 @@
 ### Implementation
 
 - [x] T068 [US9] Create EmojiData module in `apps/retro_hex_chat/lib/retro_hex_chat/chat/emoji_data.ex` — static module with `@emojis` module attribute containing ~300 curated Unicode emojis organized in 8 categories. Each emoji: `%{char: "😀", name: "grinning face", keywords: ["smile", "happy"]}`. Functions: `all/0`, `search/1` (case-insensitive match on name and keywords, min 2 chars), `by_category/1`, `categories/0`. All with `@spec`.
-- [x] T069 [US9] Create EmojiPicker component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/emoji_picker.ex` — 98.css styled popup window with: category tabs across top (8 categories), search input field, scrollable emoji grid (6-8 columns), each emoji as a button with `phx-click="emoji_select"` and `phx-value-emoji={char}`. Attrs: `visible`, `categories`, `active_category`, `search_query`, `search_results`.
+- [x] T069 [US9] Create EmojiPicker component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/emoji_picker.ex` — retro-styled popup window with: category tabs across top (8 categories), search input field, scrollable emoji grid (6-8 columns), each emoji as a button with `phx-click="emoji_select"` and `phx-value-emoji={char}`. Attrs: `visible`, `categories`, `active_category`, `search_query`, `search_results`.
 - [x] T070 [US9] Create EmojiPickerHook JS in `apps/retro_hex_chat_web/assets/js/hooks/emoji_picker_hook.js` — listen for `insert_emoji` push_event from server, find `#chat-input`, insert emoji character at cursor position (using selectionStart/selectionEnd pattern from FormatToolbarHook), dispatch `input` event for counter update, focus input.
 - [x] T071 [US9] Register EmojiPickerHook in `apps/retro_hex_chat_web/assets/js/hooks/index.js`.
 - [x] T072 [US9] Add emoji picker event handlers in ChatLive — in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/core_events.ex` or new `emoji_events.ex`: `toggle_emoji_picker` (toggle `show_emoji_picker` assign), `emoji_category` (set `emoji_category` assign), `emoji_search` (set `emoji_search` + compute results via `EmojiData.search/1`), `emoji_select` (push_event `"insert_emoji"` with char to JS hook, close picker).
 - [x] T073 [US9] Add emoji picker button to formatting toolbar in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/formatting_toolbar.ex` — add emoji button (smiley face icon) with `phx-click="toggle_emoji_picker"`.
 - [x] T074 [US9] Add EmojiPicker + EmojiPickerHook to template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.html.heex` — render emoji picker component with assigns, add `phx-hook="EmojiPickerHook"` to picker container.
-- [x] T075 [US9] Add CSS for emoji picker in `apps/retro_hex_chat_web/assets/css/chat.css` — `.emoji-picker` positioned above input area, 98.css window styling. `.emoji-grid` grid layout. `.emoji-btn` for individual emojis. `.emoji-category-tabs` for category navigation. `.emoji-search` for search input. Dismiss on click outside / Escape (JS in hook). Add dark theme counterparts.
+- [x] T075 [US9] Add CSS for emoji picker in `apps/retro_hex_chat_web/assets/css/chat.css` — `.emoji-picker` positioned above input area, retro window styling. `.emoji-grid` grid layout. `.emoji-btn` for individual emojis. `.emoji-category-tabs` for category navigation. `.emoji-search` for search input. Dismiss on click outside / Escape (JS in hook). Add dark theme counterparts.
 - [x] T076 [US9] Write E2E tests for emoji picker in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/e2e/emoji_e2e_test.exs` — test emoji picker toggle, test category tabs render, test emoji buttons render, test search field renders.
 
 **Checkpoint**: US9 complete — emoji picker with 8 categories, search, and cursor insertion.
@@ -265,7 +265,7 @@
 
 ### Implementation
 
-- [x] T078 [US10] Create AboutDialog component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/about_dialog.ex` — 98.css dialog with: ASCII art logo in `<pre>` tag (pixelated "RHC" or hexagonal pattern), "RetroHexChat v1.0" title, "A retro IRC-style chat with Windows 98 aesthetics." description, "Built with Elixir, Phoenix LiveView, and 98.css." credits, OK button with `phx-click` close event. Styled like Windows 98 About boxes (icon + text layout).
+- [x] T078 [US10] Create AboutDialog component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/about_dialog.ex` — retro dialog with: ASCII art logo in `<pre>` tag (pixelated "RHC" or hexagonal pattern), "RetroHexChat v1.0" title, "A retro IRC-style chat with retro aesthetics." description, "Built with Elixir, Phoenix LiveView, and retro design system." credits, OK button with `phx-click` close event. Styled like retro About boxes (icon + text layout).
 - [x] T079 [US10] Replace inline about dialog in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.html.heex` — remove the existing generic `Dialog` usage for about and replace with `<AboutDialog visible={@show_about} on_close="close_dialog" />`.
 - [x] T080 [US10] Add CSS for about dialog in `apps/retro_hex_chat_web/assets/css/chat.css` — `.about-dialog` layout, `.about-logo` monospace pre styling, `.about-credits` text styling. Add dark theme counterparts.
 - [x] T081 [US10] Write E2E test for about dialog in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/e2e/about_e2e_test.exs` — test show_about renders AboutDialog with version and credits.

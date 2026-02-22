@@ -1,7 +1,7 @@
 defmodule RetroHexChatWeb.Components.OptionsDialog do
   @moduledoc """
   Options dialog component with tree-view navigation and settings panels.
-  Windows 98-style dialog with OK/Cancel/Apply pattern using draft state.
+  Retro-style dialog with OK/Cancel/Apply pattern using draft state.
   """
   use Phoenix.Component
 

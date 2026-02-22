@@ -1,12 +1,12 @@
 /**
  * Toast DOM creation and animation.
  *
- * Pure functions for building 98.css-styled toast elements.
+ * Pure functions for building retro-styled toast elements.
  * No localStorage access — used by ContextualTipsHook for rendering.
  */
 
 /**
- * Create a 98.css-styled toast notification element.
+ * Create a retro-styled toast notification element.
  *
  * @param {Object} tip - Tip definition with id and text
  * @param {Object} options

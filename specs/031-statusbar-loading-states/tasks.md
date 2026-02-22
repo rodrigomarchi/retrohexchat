@@ -20,7 +20,7 @@
 **Purpose**: CSS files and shared components needed by multiple user stories
 
 - [x] T001 [P] Create connection banner CSS in `apps/retro_hex_chat_web/assets/css/connection-banner.css` — red/green banner styles, fade-out animation, non-blocking positioning at top of chat area, z-index below reconnect overlay
-- [x] T002 [P] Create loading spinner CSS in `apps/retro_hex_chat_web/assets/css/loading-spinner.css` — centered spinner with 98.css progress bar animation, descriptive text, retry button styles
+- [x] T002 [P] Create loading spinner CSS in `apps/retro_hex_chat_web/assets/css/loading-spinner.css` — centered spinner with retro progress bar animation, descriptive text, retry button styles
 - [x] T003 [P] Create connection progress CSS in `apps/retro_hex_chat_web/assets/css/connection-progress.css` — step indicator styles with checkmark/hourglass states, centered layout
 - [x] T004 Import new CSS files in `apps/retro_hex_chat_web/assets/css/app.css` — add connection-banner.css, loading-spinner.css, connection-progress.css in the correct layers (Components layer)
 
@@ -133,7 +133,7 @@
 
 ### Implementation for User Story 4
 
-- [x] T036 [US4] Create loading spinner Elixir component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/loading_spinner.ex` — function component with attrs: loading (boolean), text (string, default "Loading messages..."), timeout (boolean, default false). Renders centered 98.css progress bar with text. Shows retry button when timeout. pointer-events: none on container to not block UI. Add @spec
+- [x] T036 [US4] Create loading spinner Elixir component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/loading_spinner.ex` — function component with attrs: loading (boolean), text (string, default "Loading messages..."), timeout (boolean, default false). Renders centered retro progress bar with text. Shows retry button when timeout. pointer-events: none on container to not block UI. Add @spec
 - [x] T037 [US4] Add loading_channel assign management to channel helper in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex` — set `loading_channel: channel_name` at start of join_channel, set `loading_channel: nil` after messages are streamed. Each new join_channel call naturally overwrites the previous loading_channel value
 - [x] T038 [US4] Add loading spinner to chat template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.html.heex` — render loading_spinner component conditionally when @loading_channel is not nil, position centered within the chat message area. Add 30s timeout via Process.send_after for loading timeout
 
@@ -156,7 +156,7 @@
 ### Implementation for User Story 5
 
 - [x] T040 [US5] Refactor ChannelListLive to async loading in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/channel_list_live.ex` — change mount/3 to assign loading: true, channel_count: 0, channels: []. Use send(self(), :load_channels) pattern to defer channel loading. Implement handle_info(:load_channels) to call Autocomplete.list_visible_channels and update assigns (loading: false, channels: result, channel_count: length(result)). Add 30s timeout with retry
-- [x] T041 [US5] Update ChannelListLive template to show progress bar — add 98.css progress bar element when @loading is true, show "Fetching channels... {@channel_count} found" text, show retry button on timeout. Hide progress bar and show channel table when @loading is false
+- [x] T041 [US5] Update ChannelListLive template to show progress bar — add retro progress bar element when @loading is true, show "Fetching channels... {@channel_count} found" text, show retry button on timeout. Hide progress bar and show channel table when @loading is false
 
 **Checkpoint**: Channel list page shows progress bar during load, full list when complete. Retry on 30s timeout.
 

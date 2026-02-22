@@ -134,4 +134,4 @@ make lint                         # format + credo + dialyzer
 - `NickColors.hex_for_index/1` — convert IRC color index to CSS hex
 - `FormatToolbar` color picker pattern — reuse for highlight word color selection
 - `NotifyList`/`ContactList` persistence pattern — save/load/maybe_persist helpers
-- `AddressBookDialog` component pattern — dialog shell with 98.css chrome
+- `AddressBookDialog` component pattern — dialog shell with retro design system chrome

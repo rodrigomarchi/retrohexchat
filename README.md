@@ -1,8 +1,8 @@
 # RetroHexChat
 
-A real-time IRC client for the web — built with Elixir, Phoenix LiveView, and OTP — wearing a Windows 98 skin.
+A real-time IRC client for the web — built with Elixir, Phoenix LiveView, and OTP — wearing a retro skin.
 
-RetroHexChat recreates the experience of classic IRC clients like mIRC, complete with multi-channel chat, private messaging, NickServ/ChanServ services, moderation tools, and a faithful Windows 98 UI powered by [98.css](https://jdan.github.io/98.css/).
+RetroHexChat recreates the experience of classic IRC clients like mIRC, complete with multi-channel chat, private messaging, NickServ/ChanServ services, moderation tools, and a faithful retro UI with custom retro CSS.
 
 ---
 
@@ -80,13 +80,13 @@ RetroHexChat recreates the experience of classic IRC clients like mIRC, complete
 ### Automation
 - **Perform commands** — Auto-execute commands on connect (NickServ identify, join channels)
 - **Auto-join** — Automatically join channels on connect with optional keys
-- **Auto-reconnect** — Exponential backoff (1-30s) with Win98-style overlay
+- **Auto-reconnect** — Exponential backoff (1-30s) with retro-style overlay
 - **Aliases** — Custom commands with `$1`-`$9` variable expansion
 - **Timers** — Recurring/one-shot command execution
 - **Auto-respond** — Pattern-matched automatic replies
 
 ### Communication
-- **Channel invites** — `/invite` with Win98 dialog, 5-minute expiry
+- **Channel invites** — `/invite` with retro dialog, 5-minute expiry
 - **Notices** — `/notice` with configurable routing (channel/status/active window)
 - **CTCP** — PING/VERSION/TIME/FINGER with configurable responses
 - **Special messages** — MOTD, channel welcome messages, `/wallops`, `/announce`
@@ -104,7 +104,7 @@ RetroHexChat recreates the experience of classic IRC clients like mIRC, complete
 - **Help system** — CHM-style dialog with Contents/Index/Search tabs, F1 shortcut
 
 ### UI
-- **Windows 98 aesthetic** — 98.css for authentic Windows 98 look
+- **Retro aesthetic** — 2000s-era look and feel with 3D bevels and classic UI chrome
 - **MDI layout** — TreeBar (channels/PMs) | Tab bar | Topic bar | Chat area | Nicklist
 - **Context menus** — Right-click users for Query, Whois, Kick, Ban, Op, Voice, Ignore, Nick Color, Add to Contacts
 - **Command palette** — `Ctrl+/` to browse all slash commands
@@ -125,7 +125,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
 ┌─────────────────────────────────────────────────────────┐
 │                    Browser (LiveView)                    │
 │  ConnectLive ──→ ChatLive ──→ ChannelListLive           │
-│  41 function components · 16 JS hooks · 98.css     │
+│  41 function components · 16 JS hooks · retro CSS   │
 └─────────────────────┬───────────────────────────────────┘
                       │ Phoenix.PubSub
 ┌─────────────────────▼───────────────────────────────────┐
@@ -176,7 +176,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
 | Framework | **Phoenix 1.8** | HTTP, WebSocket, PubSub |
 | Reactive UI | **Phoenix LiveView 1.0+** | Server-rendered reactive UI, zero JS frameworks |
 | Database | **PostgreSQL 16+** | Persistent storage, full-text search |
-| Design System | **98.css** | Windows 98 aesthetic |
+| Design System | **Custom retro CSS** | 2000s-era aesthetic |
 | Assets | **esbuild** | JS/CSS bundling |
 | HTTP Server | **Bandit** | HTTP/1.1 + WebSocket |
 | HTTP Client | **Req 0.5+** | Link preview fetching |
@@ -213,7 +213,7 @@ retro_hex_chat/
 │       │   │   ├── chat_live.ex         # Main chat MDI screen
 │       │   │   └── channel_list_live.ex # Channel browser screen
 │       │   └── components/             # ~40 function components
-│       │       ├── window.ex            # Win98 window chrome
+│       │       ├── window.ex            # Retro window chrome
 │       │       ├── title_bar.ex         # Blue gradient title bar
 │       │       ├── menu_bar.ex          # File/Edit/View/Help menus
 │       │       ├── toolbar.ex           # Icon button toolbar
@@ -509,7 +509,7 @@ Every slash command implements the `Handler` behaviour:
 
 ## UI Components
 
-The interface is built with ~40 function components rendering semantic HTML styled by 98.css.
+The interface is built with ~40 function components rendering semantic HTML with retro styling.
 
 ### Screen Flow
 
@@ -713,7 +713,7 @@ ChatLive
 - **Elixir** >= 1.17
 - **Erlang/OTP** >= 27
 - **PostgreSQL** >= 16
-- **Node.js** (for 98.css npm package in assets)
+- **Node.js** (for npm packages in assets)
 - **Docker** (optional — for running PostgreSQL via Docker Compose)
 
 ### Setup
@@ -886,7 +886,7 @@ This project is governed by a [Constitution](.specify/memory/constitution.md) �
 | V | **Contracts & Behaviours** | `@callback` contracts. One module per command. |
 | VI | **Static Analysis from Day One** | Credo + Dialyxir + `mix format` enforced from first commit |
 | VII | **Lean LiveViews** | Zero business logic in web layer. Streams for performance. |
-| VIII | **Windows 98 Design Fidelity** | 98.css, 3D bevels, monospace fonts |
+| VIII | **Retro Design Fidelity** | 3D bevels, monospace fonts |
 | IX | **Hot/Cold Data Separation** | GenServer/ETS for runtime. PostgreSQL for persistence. |
 | X | **Scalable Architecture** | Process-per-channel scales via distributed Erlang |
 | XI | **User-Facing Documentation** | Every feature must include help topics and keyboard shortcut updates |

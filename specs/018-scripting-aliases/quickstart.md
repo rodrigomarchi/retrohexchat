@@ -48,7 +48,7 @@ This creates:
 
 | Module | Purpose |
 |--------|---------|
-| `Components.AliasDialog` | Alias Editor dialog (98.css styled) |
+| `Components.AliasDialog` | Alias Editor dialog (retro-styled) |
 | `Components.CustomMenusDialog` | Custom Menus editor dialog |
 | `Components.AutoRespondDialog` | Auto-Respond editor dialog |
 

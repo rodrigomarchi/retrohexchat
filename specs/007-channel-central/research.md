@@ -64,7 +64,7 @@
 
 **Decision**: Add `phx-dblclick` event on channel items in the treebar, and add "Channel Central" to the channel context menu.
 
-**Rationale**: The treebar currently only handles `phx-click="switch_channel"`. Double-click is a natural gesture for "open properties" in the Windows 98 paradigm. The context menu provides discoverability. There is currently no right-click context menu on channel names in the treebar (only on nicknames in the nicklist).
+**Rationale**: The treebar currently only handles `phx-click="switch_channel"`. Double-click is a natural gesture for "open properties" in the classic desktop paradigm. The context menu provides discoverability. There is currently no right-click context menu on channel names in the treebar (only on nicknames in the nicklist).
 
 **Alternatives considered**:
 - Adding a "Properties" button to the topic bar — rejected because it doesn't follow mIRC convention.
@@ -77,9 +77,9 @@
 
 ## R6: Dialog Layout Approach
 
-**Decision**: Use a single-window dialog with tabbed sections (98.css tab control), not a scrollable single page.
+**Decision**: Use a single-window dialog with tabbed sections (retro tab control), not a scrollable single page.
 
-**Rationale**: mIRC's Channel Central dialog uses a tabbed interface. With six sections (Info, Topic, Modes, Bans, Ban Exceptions, Invite Exceptions), a single scrollable page would be overwhelming. Tabs match the Windows 98 aesthetic and allow each section to use the full dialog area. The AddressBookDialog already implements a 4-tab pattern we can follow.
+**Rationale**: mIRC's Channel Central dialog uses a tabbed interface. With six sections (Info, Topic, Modes, Bans, Ban Exceptions, Invite Exceptions), a single scrollable page would be overwhelming. Tabs match the retro aesthetic and allow each section to use the full dialog area. The AddressBookDialog already implements a 4-tab pattern we can follow.
 
 **Tabs**:
 1. **General** — Info + Topic (combined, as they're both lightweight)
@@ -90,7 +90,7 @@
 
 **Alternatives considered**:
 - Six tabs (one per section) — rejected because Info and Topic are small enough to share a tab, and too many tabs clutters the tab bar.
-- Accordion/expandable fieldsets — rejected because it doesn't match the Windows 98 tabbed dialog convention.
+- Accordion/expandable fieldsets — rejected because it doesn't match the retro tabbed dialog convention.
 
 ---
 

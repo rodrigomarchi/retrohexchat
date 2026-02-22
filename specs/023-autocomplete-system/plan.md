@@ -5,12 +5,12 @@
 
 ## Summary
 
-Unified autocomplete system for commands, nicknames, and channels. Enhances the existing command palette with fuzzy search, categories, and recent commands. Adds new `@` and `#` triggers for nick/channel autocomplete dropdowns. Adds IRC-style Tab-cycling for nick completion. Implements context-aware argument completion for commands like `/join`, `/msg`, `/kick`. All dropdowns share 98.css-styled UI with keyboard navigation. The architecture splits into: (1) a domain-level `Autocomplete` module for fuzzy matching and data aggregation, (2) enhanced LiveView components for rendering, (3) a unified JS hook replacing the current `CommandPaletteHook` with cursor-aware trigger detection.
+Unified autocomplete system for commands, nicknames, and channels. Enhances the existing command palette with fuzzy search, categories, and recent commands. Adds new `@` and `#` triggers for nick/channel autocomplete dropdowns. Adds IRC-style Tab-cycling for nick completion. Implements context-aware argument completion for commands like `/join`, `/msg`, `/kick`. All dropdowns share retro-styled UI with keyboard navigation. The architecture splits into: (1) a domain-level `Autocomplete` module for fuzzy matching and data aggregation, (2) enhanced LiveView components for rendering, (3) a unified JS hook replacing the current `CommandPaletteHook` with cursor-aware trigger detection.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css, esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro design system, esbuild
 **Storage**: localStorage (recent commands client-side), PostgreSQL (no new tables — all data from existing Presence/Channels)
 **Testing**: ExUnit (unit, integration, liveview, e2e tags), Mox, Floki
 **Target Platform**: Web browser (Phoenix LiveView)
@@ -32,7 +32,7 @@ Unified autocomplete system for commands, nicknames, and channels. Enhances the 
 | V. Contracts and Behaviours | Yes | PASS | Autocomplete providers can follow a common pattern. Handler.help() already provides command metadata. |
 | VI. Static Analysis | Yes | PASS | @spec on all new public functions. Credo/Dialyzer enforced. |
 | VII. Lean LiveViews | Yes | PASS | LiveView delegates to domain context for matching/filtering. Components handle rendering only. JS hook is minimal (trigger detection, cursor management). |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Dropdowns use 98.css window/tree-view styling. Consistent with existing command palette. |
+| VIII. retro Design Fidelity | Yes | PASS | Dropdowns use retro window/tree-view styling. Consistent with existing command palette. |
 | IX. Hot/Cold Data Separation | Yes | PASS | All autocomplete data is hot (Presence, Channel GenServers, Command Registry). No cold storage queries for autocomplete. |
 | X. Scalable Architecture | Marginal | PASS | In-memory matching scales with existing data. No new bottlenecks introduced. |
 | XI. User-Facing Documentation | Yes | PASS | Help topic required for autocomplete feature + keyboard shortcuts update. |

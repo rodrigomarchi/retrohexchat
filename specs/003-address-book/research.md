@@ -43,14 +43,14 @@
 - Pass raw `nick_colors` map to every component — leaks domain structure into components, each component would need the resolution logic.
 - Shared helper module imported by each component — works but the function approach is more LiveView-idiomatic (assigns drive rendering).
 
-## R5: 98.css tab control implementation
+## R5: retro tab control implementation
 
-**Decision**: Use native 98.css tab controls with `menu[role=tablist]` + `div[role=tabpanel]` semantic HTML.
+**Decision**: Use native retro tab controls with `menu[role=tablist]` + `div[role=tabpanel]` semantic HTML.
 
-**Rationale**: 98.css v0.1.21 natively supports tabbed interfaces via `<menu role="tablist">` with `<li aria-selected="true|false">` items. No custom CSS needed. Tab switching is managed by a LiveView assign (`address_book_tab`) and `phx-click` events.
+**Rationale**: retro design system v0.1.21 natively supports tabbed interfaces via `<menu role="tablist">` with `<li aria-selected="true|false">` items. No custom CSS needed. Tab switching is managed by a LiveView assign (`address_book_tab`) and `phx-click` events.
 
 **Alternatives considered**:
-- Custom tab implementation — unnecessary; 98.css tabs are well-styled and semantically correct.
+- Custom tab implementation — unnecessary; retro tabs are well-styled and semantically correct.
 - JS-based tabs — violates constitution principle I (zero JS UI frameworks). LiveView event-driven tabs are the correct approach.
 
 ## R6: Alt+B keyboard shortcut implementation
@@ -71,7 +71,7 @@
 
 **Alternatives considered**:
 - Open Address Book → Nick Colors tab pre-filled — too many steps for a quick action.
-- Sub-menu in context menu — 98.css doesn't natively support nested menus; a dropdown is simpler.
+- Sub-menu in context menu — retro design system doesn't natively support nested menus; a dropdown is simpler.
 
 ## R8: Address Book dialog as component vs inline template
 

@@ -2,13 +2,13 @@
 
 **Priority**: Green (Low impact)
 **Dependencies**: None for core; B for notify sounds
-**Existing**: O1 basic event sounds already implemented (new message, PM, user joined — Windows 98 wavs)
+**Existing**: O1 basic event sounds already implemented (new message, PM, user joined — retro wavs)
 
 ## Items
 
 | # | Feature | Status | Description |
 |---|---------|--------|-------------|
-| O1 | Basic event sounds | Existing | New message, PM, user joined sounds (Windows 98 wavs) |
+| O1 | Basic event sounds | Existing | New message, PM, user joined sounds (retro wavs) |
 | O2 | Configurable sounds per event | New | Choose which sound plays for each event type |
 | O3 | Connect/disconnect sounds | New | Sound when connecting to or disconnecting from the server |
 | O4 | Sound mute toggle | New | Global button to mute/unmute all sounds |
@@ -40,7 +40,7 @@
 
 PROBLEM: While basic event sounds exist, users cannot customize which sounds play for which events, cannot mute all sounds at once, and have no visual indicators for activity in background windows. Additionally, PM conversations lack the typing indicator that modern users expect. The notification experience is incomplete compared to both classic mIRC and modern chat applications.
 
-EXISTING CONTEXT: Basic event sounds are already implemented — new message, PM received, and user joined events play Windows 98 WAV-style sounds.
+EXISTING CONTEXT: Basic event sounds are already implemented — new message, PM received, and user joined events play retro WAV-style sounds.
 
 USER JOURNEY: A user wants to customize their notification experience. They open the Sounds configuration dialog and see a list of all event types: message, PM, highlight, join, part, kick, connect, disconnect, buddy online, buddy offline. Each event has a dropdown to select from available sounds or 'None' to disable. They assign a subtle 'ding' to regular messages but a louder 'alert' sound to highlights and PMs.
 

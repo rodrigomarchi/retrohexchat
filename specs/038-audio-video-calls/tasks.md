@@ -69,7 +69,7 @@
 - [X] T018 [US1] Implement audio call LiveView handlers in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_session_live.ex`: handle_event media_call_started sets call assign, handle_event media_call_ended clears call assign and adds system message. handle_event media_mute_changed broadcasts {:media_mute, muted} via PubSub. handle_info {:media_mute, muted} pushes media_peer_muted to hook. handle_event media_duration_tick updates call.duration assign
 - [X] T019 [US1] Implement consent flow integration in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_session_live.ex`: after action "audio_call" accepted, push_event "media_start_audio" to hook. Wire the existing respond_action handler to trigger media start
 - [X] T020 [US1] Implement audio call UI components in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/p2p_lobby.ex`: p2p_media_call component with audio layout showing peer name, mute button (with muted/unmuted state), duration timer display (@call.duration), remote mute indicator ("[peer] silenciou o microfone"), end call button ("Encerrar Chamada")
-- [X] T021 [US1] Style audio call UI in `apps/retro_hex_chat_web/assets/css/media-call.css`: .media-call container, .media-call__controls with mute and end-call buttons using 98.css button styles, .media-call__timer with monospace font, .media-call__info with peer name, .media-call__mute-indicator for remote mute notification, .media-call__btn--active for toggled mute state
+- [X] T021 [US1] Style audio call UI in `apps/retro_hex_chat_web/assets/css/media-call.css`: .media-call container, .media-call__controls with mute and end-call buttons using retro button styles, .media-call__timer with monospace font, .media-call__info with peer name, .media-call__mute-indicator for remote mute notification, .media-call__btn--active for toggled mute state
 - [X] T022 [US1] Handle permission errors in `apps/retro_hex_chat_web/assets/js/hooks/media_hook.js`: if acquireMedia rejects, pushEvent media_error with categorized error code and localized message. LiveView shows error and does not proceed with call
 
 **Checkpoint**: Audio calls fully functional — peers can call, hear each other, mute/unmute, see timer, end call
@@ -158,7 +158,7 @@
 - [X] T043 [US5] Wire device selection in `apps/retro_hex_chat_web/assets/js/hooks/media_hook.js`: on device settings open, call enumerateDevices and populate selectors. On device selection change, call switchAudioInput/switchVideoInput/setSinkId. Listen for navigator.mediaDevices.ondevicechange to detect disconnection, auto-fallback to default device, pushEvent media_device_fallback with notification message
 - [X] T044 [US5] Add device selector UI to `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/p2p_lobby.ex`: device settings button that toggles device panel. Three select dropdowns (audio input, audio output, video input). Hide audio output if setSinkId not supported. Device fallback notification area
 - [X] T045 [US5] Add device LiveView handler in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_session_live.ex`: handle_event media_device_fallback shows notification to user
-- [X] T046 [US5] Style device selector in `apps/retro_hex_chat_web/assets/css/media-call.css`: .media-call__devices panel with 98.css select elements, .media-call__device-label, .media-call__device-fallback notification style
+- [X] T046 [US5] Style device selector in `apps/retro_hex_chat_web/assets/css/media-call.css`: .media-call__devices panel with retro design system select elements, .media-call__device-label, .media-call__device-fallback notification style
 
 **Checkpoint**: Device selection works — can switch mic/camera/speaker mid-call, auto-fallback on disconnect
 
@@ -179,7 +179,7 @@
 - [X] T048 [US6] Implement PiP functions in `apps/retro_hex_chat_web/assets/js/lib/media.js`: supportsPiP() checking document.pictureInPictureEnabled. togglePiP(videoElement) calling requestPictureInPicture() or document.exitPictureInPicture()
 - [X] T049 [US6] Wire PiP in `apps/retro_hex_chat_web/assets/js/hooks/media_hook.js`: wire PiP button to togglePiP(remoteVideoElement). On call end, exit PiP if active. On leavepictureinpicture event, update button state
 - [X] T050 [US6] Add PiP button to video call UI in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/p2p_lobby.ex`: PiP button visible only during video calls when supportsPiP is true (passed as capability). Hide button if not supported
-- [X] T051 [US6] Style PiP button in `apps/retro_hex_chat_web/assets/css/media-call.css`: .media-call__pip-btn using 98.css button style
+- [X] T051 [US6] Style PiP button in `apps/retro_hex_chat_web/assets/css/media-call.css`: .media-call__pip-btn using retro button style
 
 **Checkpoint**: PiP works — remote video pops out, persists across tabs, exits on call end
 

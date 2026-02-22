@@ -59,10 +59,10 @@
 
 **Decision**: Store a "draft" copy of settings in socket assigns when the dialog opens. Apply writes the draft to session + persists. OK does the same and closes. Cancel restores the original from session and closes.
 
-**Rationale**: This is the standard Windows 98 dialog pattern. The existing dialogs use Save/Cancel (no Apply). Adding Apply is a minor extension: keep a `sound_settings_draft` assign that's initialized from `session.sound_settings` on open, mutated by form changes, and committed by Apply/OK.
+**Rationale**: This is the standard retro dialog pattern. The existing dialogs use Save/Cancel (no Apply). Adding Apply is a minor extension: keep a `sound_settings_draft` assign that's initialized from `session.sound_settings` on open, mutated by form changes, and committed by Apply/OK.
 
 **Alternatives considered**:
-- Two-way binding with automatic save: Not Windows 98 pattern. Rejected per clarification.
+- Two-way binding with automatic save: Not retro pattern. Rejected per clarification.
 - Form submission only on OK: Would not support Apply behavior. Rejected.
 
 ## R7: Treebar Flash — Per-Event Configurability

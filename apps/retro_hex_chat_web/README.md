@@ -1,6 +1,6 @@
 # RetroHexChatWeb
 
-Phoenix LiveView web layer with Windows 98 aesthetic.
+Phoenix LiveView web layer with retro aesthetic.
 
 ### LiveView Screens
 
@@ -10,7 +10,7 @@ Phoenix LiveView web layer with Windows 98 aesthetic.
 
 ### Components
 
-15 function components rendering semantic HTML styled by 98.css: Window, TitleBar, MenuBar, Toolbar, Treebar, ChatMessage, Nicklist, StatusBar, CommandPalette, ContextMenu, SearchBar, ScrollLoader, Dialog.
+15 function components rendering retro-styled semantic HTML: Window, TitleBar, MenuBar, Toolbar, Treebar, ChatMessage, Nicklist, StatusBar, CommandPalette, ContextMenu, SearchBar, ScrollLoader, Dialog.
 
 ### JavaScript Hooks
 

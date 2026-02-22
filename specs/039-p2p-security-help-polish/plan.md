@@ -10,7 +10,7 @@ Harden the existing P2P stack (features 034-038) with server-side rate limiting 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+, JavaScript ES2020+
-**Primary Dependencies**: Phoenix 1.8+, LiveView 1.0+, 98.css (npm), esbuild, ExSTUN ~> 0.1 (existing)
+**Primary Dependencies**: Phoenix 1.8+, LiveView 1.0+, retro CSS framework, esbuild, ExSTUN ~> 0.1 (existing)
 **Storage**: PostgreSQL 16+ (existing `user_preferences.message_settings` JSONB — no new migrations), ETS (rate limit state)
 **Testing**: ExUnit (async, Mox, ExMachina), Vitest with jsdom
 **Target Platform**: Web (modern browsers with WebRTC support)
@@ -32,7 +32,7 @@ Harden the existing P2P stack (features 034-038) with server-side rate limiting 
 | V. Contracts and Behaviours | Yes | PASS | Implements existing `SignalingRateLimit` behaviour with ETS module |
 | VI. Static Analysis | Yes | PASS | @spec on all new public functions, Credo/Dialyzer/ESLint enforced |
 | VII. Lean LiveViews | Yes | PASS | LiveView delegates to P2P context for rate limiting and preferences |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Privacy mode checkbox uses 98.css checkbox styling |
+| VIII. retro Design Fidelity | Yes | PASS | Privacy mode checkbox uses retro design system checkbox styling |
 | IX. Hot/Cold Data Separation | Yes | PASS | Rate limits in ETS (hot), preferences in PostgreSQL (cold) |
 | X. Scalable Architecture | Yes | PASS | ETS rate limits are per-node; works with future clustering |
 | XI. User-Facing Documentation | Yes | PASS | 4 new help topics + keyboard shortcuts update |

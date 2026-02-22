@@ -279,7 +279,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
 
       html = render_click(view, "show_about")
       assert html =~ "About RetroHexChat"
-      assert html =~ "Windows 98"
+      assert html =~ "retro look and feel"
 
       html = render_click(view, "close_dialog")
       refute html =~ "dialog-overlay"
@@ -2147,7 +2147,7 @@ defmodule RetroHexChatWeb.ChatLiveTest do
       assert html =~ ~s(data-testid="format-btn-color")
     end
 
-    test "toolbar has correct 98.css button styling", %{conn: conn} do
+    test "toolbar has correct retro button styling", %{conn: conn} do
       {:ok, _view, html} = live(chat_conn(conn, "TbStyle"), "/chat")
       assert html =~ "formatting-toolbar"
       assert html =~ "format-btn"

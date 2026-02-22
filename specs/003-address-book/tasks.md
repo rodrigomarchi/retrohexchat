@@ -68,7 +68,7 @@
 
 ## Phase 3: User Story 1 — Address Book Dialog Shell (Priority: P1) 🎯 MVP
 
-**Goal**: Render the tabbed dialog with 98.css tab controls, Alt+B toggle, toolbar icon, and menu bar item
+**Goal**: Render the tabbed dialog with retro tab controls, Alt+B toggle, toolbar icon, and menu bar item
 
 **Independent Test**: Press Alt+B → dialog opens with 4 tabs → switch tabs → close dialog
 
@@ -78,7 +78,7 @@
 
 ### Implementation for US1
 
-- [x] T012 [US1] Create AddressBookDialog component shell in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/address_book_dialog.ex`. Function component with attrs: `visible` (boolean), `active_tab` (string, default "contacts"). Render a centered dialog overlay (z-index 200, fixed position) with 98.css window styling. Implement 4-tab layout using `<menu role="tablist">` with `<li aria-selected={...}>` items for Contacts, Notify, Nick Colors, Control. Each tab header uses `phx-click="address_book_tab"` with `phx-value-tab`. Tab panel area (`<div role="tabpanel">`) shows content based on `@active_tab` using `:if`. Title bar: "Address Book" with close button (`phx-click="toggle_address_book"`). For now, each tab panel shows placeholder text ("Contacts tab", "Notify tab", etc.). Add `@spec` on the public function.
+- [x] T012 [US1] Create AddressBookDialog component shell in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/address_book_dialog.ex`. Function component with attrs: `visible` (boolean), `active_tab` (string, default "contacts"). Render a centered dialog overlay (z-index 200, fixed position) with retro window styling. Implement 4-tab layout using `<menu role="tablist">` with `<li aria-selected={...}>` items for Contacts, Notify, Nick Colors, Control. Each tab header uses `phx-click="address_book_tab"` with `phx-value-tab`. Tab panel area (`<div role="tabpanel">`) shows content based on `@active_tab` using `:if`. Title bar: "Address Book" with close button (`phx-click="toggle_address_book"`). For now, each tab panel shows placeholder text ("Contacts tab", "Notify tab", etc.). Add `@spec` on the public function.
 
 - [x] T013 [US1] Add Address Book assigns and toggle event handler in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`. Add to assign_defaults: `show_address_book: false`, `address_book_tab: "contacts"`, `contacts_selected: nil`, `nick_colors_selected: nil`, `show_contact_add_dialog: false`, `show_contact_edit_dialog: false`, `show_nick_color_add_dialog: false`, `show_nick_color_edit_dialog: false`, `show_context_color_picker: false`. Add `handle_event("toggle_address_book", ...)` that toggles `show_address_book` and resets `address_book_tab` to "contacts" when closing (also resets all sub-dialog assigns). Add `handle_event("address_book_tab", %{"tab" => tab}, ...)` that sets `address_book_tab` and closes any open sub-dialogs. Render `AddressBookDialog` component in template after the NotifyListWindow, passing `visible={@show_address_book}` and `active_tab={@address_book_tab}`.
 

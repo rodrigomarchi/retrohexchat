@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.AboutE2ETest do
       assert html =~ "RetroHexChat"
       assert html =~ "v1.0"
       assert html =~ "data-testid=\"about-logo\""
-      assert html =~ "Built with Elixir, Phoenix LiveView, and 98.css"
+      assert html =~ "Built with Elixir, Phoenix LiveView, and a retro design system"
     end
 
     test "close_dialog dismisses about", %{conn: conn} do

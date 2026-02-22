@@ -12,7 +12,7 @@
 | AB10 | Status bar lag display | New | Real-time latency indicator (e.g., "Lag: 45ms") in status bar |
 | AB11 | Status bar connection states | New | 🟢 Conectado, 🟡 Conectando, 🔴 Desconectado, 🔄 Reconectando with server name |
 | AB12 | Status bar clock | New | Current time display in the rightmost section of status bar |
-| AB13 | Reconnect overlay | Existing | Auto-reconnect with countdown, attempt tracking, 98.css styled overlay |
+| AB13 | Reconnect overlay | Existing | Auto-reconnect with countdown, attempt tracking, retro-styled overlay |
 | AB14 | Connection progress indicator | New | Visual progress during initial connection: DNS, connecting, authenticating steps |
 | AB15 | Channel history loading | New | Spinner/loading indicator while loading message history for a channel |
 | AB16 | Channel list loading | New | Progress bar while fetching channel list from server |
@@ -33,7 +33,7 @@
 - Existing reconnect_hook.js watches phx-loading class, shows overlay with countdown (max 10 attempts, 30s max delay)
 - Lag measurement: use LiveView push_event/handle_event ping-pong with timestamp comparison
 - Connection progress: track connection stages in LiveView assigns, render progressive steps with ✓/⏳ icons
-- Channel history loading: 98.css animated spinner centered in chat area while messages load
+- Channel history loading: retro design system animated spinner centered in chat area while messages load
 - Channel list loading: progress bar with count of channels found so far
 - Disconnection banner: fixed position at top of chat area, red background, shows countdown to next reconnect attempt
 - Reconnection banner: green background, auto-fades after 3 seconds using CSS transition
@@ -48,11 +48,11 @@
 
 PROBLEM: The status bar exists but lacks real-time latency information, detailed connection states, and a clock. Users have no idea about network lag or the exact connection state. When loading content (initial connection, channel history, channel list), users see blank areas with no progress indication. While a reconnect overlay exists for full disconnections, there is no subtle feedback for brief connection issues — no banner for disconnection/reconnection events. Users feel blind about the system's state.
 
-EXISTING CONTEXT: (1) status_bar.ex shows the current nickname, active channel name, user count, connection status indicator, and a mute toggle field ([MUTE]/[SND]). (2) reconnect_hook.js provides an auto-reconnect overlay that watches the phx-loading class, shows a countdown timer and attempt counter (max 10 attempts, max 30s delay) in a 98.css-styled full overlay.
+EXISTING CONTEXT: (1) status_bar.ex shows the current nickname, active channel name, user count, connection status indicator, and a mute toggle field ([MUTE]/[SND]). (2) reconnect_hook.js provides an auto-reconnect overlay that watches the phx-loading class, shows a countdown timer and attempt counter (max 10 attempts, max 30s delay) in a retro-styled full overlay.
 
 USER JOURNEY — STATUS BAR: The status bar at the bottom of the screen shows rich real-time information. Left section: '#general — 15 usuários'. Center: '🟢 Conectado a irc.retro.chat'. Right: 'Lag: 45ms | 14:32'. The lag updates in real-time, measuring the round-trip time between client and server. When the connection degrades, the lag number increases and may change color (yellow above 200ms, red above 500ms). When the connection drops, the center changes to '🔴 Desconectado' and then '🔄 Reconectando (5s)' with a countdown. When reconnected: '🟢 Conectado' returns. The clock shows the current local time.
 
-USER JOURNEY — LOADING STATES: During initial connection, a progress indicator shows steps: '✓ DNS resolvido | ⏳ Conectando na porta 6697... | Aguardando resposta...'. Each step shows ✓ when complete and ⏳ when in progress. When switching to a channel with message history to load, a 98.css spinner appears centered in the chat area: 'Carregando mensagens...' — the spinner disappears when messages appear. When fetching the full channel list, a progress bar shows: 'Buscando canais... 1,247 encontrados' with a growing bar.
+USER JOURNEY — LOADING STATES: During initial connection, a progress indicator shows steps: '✓ DNS resolvido | ⏳ Conectando na porta 6697... | Aguardando resposta...'. Each step shows ✓ when complete and ⏳ when in progress. When switching to a channel with message history to load, a retro spinner appears centered in the chat area: 'Carregando mensagens...' — the spinner disappears when messages appear. When fetching the full channel list, a progress bar shows: 'Buscando canais... 1,247 encontrados' with a growing bar.
 
 USER JOURNEY — CONNECTION BANNERS: When the WebSocket disconnects (after having been connected), a red banner appears at the top of the chat area: '⚠️ Desconectado — Reconectando em 5s...' with a countdown. This is more subtle than the full reconnect overlay — it appears for brief interruptions. When successfully reconnected, the banner turns green: '✓ Reconectado!' and fades out after 3 seconds.
 

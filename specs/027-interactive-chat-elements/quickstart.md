@@ -33,7 +33,7 @@
 ### Step 3: Nick Hover Card (P3)
 
 1. **Add nick hover listener in `scroll_hook.js`**: On `mouseenter` of `.chat-nick`, start 500ms idle timer. On `mousemove` within nick, reset timer. On `mouseleave`, cancel timer and push dismiss.
-2. **Create `hover_card.ex` component**: Render nick hover card with 98.css window styling.
+2. **Create `hover_card.ex` component**: Render nick hover card with retro window styling.
 3. **Add `hover_card` assign** to `ChatLive.mount/3` and template.
 4. **Handle `"nick_hover"` in `hover_events.ex`**: Gather whois data, update assign.
 5. **Add nick click handler**: Insert "Nick: " into input (client-side only).

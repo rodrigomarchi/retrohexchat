@@ -7,7 +7,7 @@
 import { animateIn, animateOut } from "./toast.js";
 
 /**
- * Create a 98.css-styled feedback toast element (Info window, no checkbox).
+ * Create a retro-styled feedback toast element (Info window, no checkbox).
  *
  * @param {string} message - Toast text to display
  * @returns {HTMLElement}

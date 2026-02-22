@@ -7,7 +7,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   - **Unused** — classes defined in our CSS but never referenced anywhere
   - **Missing** — classes referenced in templates/JS but never defined in any CSS
 
-  Vendor classes (98.css) are parsed automatically and count as "known" definitions.
+  Vendor classes (retro design system) are parsed automatically and count as "known" definitions.
   Phoenix framework classes (phx-*) are hardcoded as known.
 
   An allowlist file at `scripts/css_consistency_allowlist.txt` supports three sections:
@@ -134,7 +134,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     |> Enum.uniq()
   end
 
-  # -- Phase A (vendor): Extract 98.css classes --
+  # -- Phase A (vendor): Extract retro design system classes --
 
   @doc false
   @spec extract_vendor_classes() :: MapSet.t()
@@ -541,7 +541,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     IO.puts("#{IO.ANSI.cyan()}Summary:#{IO.ANSI.reset()}")
     IO.puts("  CSS classes defined:      #{MapSet.size(defined)}")
     IO.puts("  Classes referenced:       #{MapSet.size(referenced)}")
-    IO.puts("  Vendor classes (98.css):  #{MapSet.size(vendor)}")
+    IO.puts("  Vendor classes (retro):   #{MapSet.size(vendor)}")
     IO.puts("  Allowlisted (unused):     #{MapSet.size(unused_allow)}")
     IO.puts("  Allowlisted (missing):    #{MapSet.size(missing_allow)}")
     IO.puts("")

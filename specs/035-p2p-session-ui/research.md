@@ -105,7 +105,7 @@
 - Class prefixes: `.p2p-session-*` for layout, `.p2p-lobby-*` for lobby components
 - Import in `app.css` Layer 4 (Components), alphabetical
 - Use design tokens for colors, spacing, z-index
-- 98.css window component for lobby container
+- retro window component for lobby container
 - Dark theme support via existing CSS variable system
 
 ## R8: JS Hook Architecture for P2P

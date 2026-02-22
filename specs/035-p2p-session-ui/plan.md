@@ -10,7 +10,7 @@ Build the user-facing layer for P2P sessions: slash commands (`/p2p`, `/call`, `
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+, JavaScript ES2020+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro CSS framework, esbuild
 **Storage**: PostgreSQL 16+ (existing `p2p_sessions` table, existing `private_messages` table — no new migrations). GenServer state for ephemeral lobby data.
 **Testing**: ExUnit (unit/integration/liveview), Vitest + jsdom (JS hooks/lib)
 **Target Platform**: Web (modern browsers with WebRTC support)
@@ -32,7 +32,7 @@ Build the user-facing layer for P2P sessions: slash commands (`/p2p`, `/call`, `
 | V. Contracts and Behaviours | Yes | PASS | Command handlers implement Handler behaviour |
 | VI. Static Analysis | Yes | PASS | All new functions with @spec, Credo/Dialyzer enforced |
 | VII. Lean LiveViews | Yes | PASS | P2PSessionLive delegates to P2P context, thin components |
-| VIII. Windows 98 Fidelity | Yes | PASS | 98.css window for lobby, dark theme support |
+| VIII. retro Fidelity | Yes | PASS | retro window for lobby, dark theme support |
 | IX. Hot/Cold Data Separation | Yes | PASS | Ephemeral chat in GenServer (hot), sessions in PostgreSQL (cold) |
 | X. Scalable Architecture | Yes | PASS | PubSub per-session topic, process-per-session via DynamicSupervisor |
 | XI. Help Documentation | N/A | DEFERRED | Explicitly out of scope per spec — separate feature |

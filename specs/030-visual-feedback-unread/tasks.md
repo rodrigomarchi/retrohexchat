@@ -71,7 +71,7 @@
 
 ## Phase 4: User Story 2 — Kick Notification Dialog (Priority: P2)
 
-**Goal**: Show a 98.css modal dialog when user is kicked, with channel/operator/reason info. Queue multiple kicks. Require OK to dismiss.
+**Goal**: Show a retro design system modal dialog when user is kicked, with channel/operator/reason info. Queue multiple kicks. Require OK to dismiss.
 
 **Independent Test**: Have an operator kick a user, verify dialog appears with correct info. Kick from 2 channels, verify dialogs queue.
 
@@ -82,7 +82,7 @@
 
 ### Implementation for US2
 
-- [X] T020 [US2] Create KickDialog function component (98.css window, OK button, conditional reason) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/kick_dialog.ex`
+- [X] T020 [US2] Create KickDialog function component (retro window, OK button, conditional reason) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/kick_dialog.ex`
 - [X] T021 [US2] Add `kick_queue` assign (list) to ChatLive in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [X] T022 [US2] Render KickDialog conditionally in chat_live.html.heex when kick_queue is non-empty in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.html.heex`
 - [X] T023 [US2] Update channel_state.ex `:user_kicked` handler to enqueue kick events into `kick_queue` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex`

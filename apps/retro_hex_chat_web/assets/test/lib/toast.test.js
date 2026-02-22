@@ -31,7 +31,7 @@ describe("toast", () => {
       expect(el.dataset.tipId).toBe("first_join");
     });
 
-    it("contains a 98.css window with title-bar", () => {
+    it("contains a retro-styled window with title-bar", () => {
       const el = createToastElement(makeTip(), { onDismiss: vi.fn() });
       const win = el.querySelector(".window");
       expect(win).not.toBeNull();

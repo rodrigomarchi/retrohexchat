@@ -54,7 +54,7 @@
 
 ### Implementation for User Story 1
 
-- [x] T013 [US1] Add `.chat-link` CSS styles to `apps/retro_hex_chat_web/assets/css/dark-theme.css` — underline, distinct blue color fitting 98.css aesthetic, cursor pointer, hover state
+- [x] T013 [US1] Add `.chat-link` CSS styles to `apps/retro_hex_chat_web/assets/css/dark-theme.css` — underline, distinct blue color fitting retro aesthetic, cursor pointer, hover state
 - [x] T014 [US1] Extend `format_content/2` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — when `strip_formatting` is true: call `URLDetector.linkify/1` on stripped+escaped text; when false: call `URLDetector.linkify_html/1` on Formatter HTML output. Also update `/me` action rendering to use `format_content`.
 - [x] T015 [US1] Run `mix format`, `mix credo --strict`, `mix dialyzer`, `mix test` — fix any issues
 
@@ -71,7 +71,7 @@
 ### Tests for User Story 2
 
 - [x] T016 [P] [US2] Write unit tests for `CapturedURL` struct in `apps/retro_hex_chat/test/retro_hex_chat/chat/captured_url_test.exs` — cover: `new/1` creates struct with auto-generated id and nil preview_title; `set_preview_title/2` updates title; `filter_by_source/2` filters by channel/PM and nil returns all; `filter_by_url/2` case-insensitive URL text search; `sort_by/3` sorts by :url, :source, :posted_by, :timestamp in both :asc and :desc
-- [x] T017 [P] [US2] Write LiveView tests for URL Catcher window in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_url_catcher_test.exs` — cover: window opens with `toggle_url_catcher` event; window shows table with URL/Channel/Posted By/Time columns; window closes on toggle; real-time update (new message with URL appears in open window); empty window shows appropriate message; 98.css styling classes present
+- [x] T017 [P] [US2] Write LiveView tests for URL Catcher window in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_url_catcher_test.exs` — cover: window opens with `toggle_url_catcher` event; window shows table with URL/Channel/Posted By/Time columns; window closes on toggle; real-time update (new message with URL appears in open window); empty window shows appropriate message; retro styling classes present
 
 ### Implementation for User Story 2
 
@@ -80,7 +80,7 @@
 - [x] T020 [US2] Implement URL extraction in ChatLive `handle_info` for channel and PM messages in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — call `URLDetector.extract_urls/1` on message content, create `CapturedURL` entries, prepend to `@url_catcher_entries`
 - [x] T021 [US2] Create `URLCatcherHook` JS in `apps/retro_hex_chat_web/assets/js/hooks/url_catcher_hook.js` — listen for `dblclick` on rows with `data-url` attribute, call `window.open(url, '_blank', 'noopener,noreferrer')`
 - [x] T022 [US2] Register `URLCatcherHook` in `apps/retro_hex_chat_web/assets/js/hooks/index.js` (or app.js hooks object)
-- [x] T023 [US2] Implement `URLCatcherWindow` component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/url_catcher_window.ex` — floating 98.css window (absolute position, z-index 150, 500x350px); title bar with close button; filter dropdown + search input; sortable table with URL/Channel/Posted By/Time columns; status bar with entry count; `data-url` attribute on rows for hook; visibility controlled by `:visible` attribute
+- [x] T023 [US2] Implement `URLCatcherWindow` component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/url_catcher_window.ex` — floating retro window (absolute position, z-index 150, 500x350px); title bar with close button; filter dropdown + search input; sortable table with URL/Channel/Posted By/Time columns; status bar with entry count; `data-url` attribute on rows for hook; visibility controlled by `:visible` attribute
 - [x] T024 [US2] Add event handlers to ChatLive in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — `toggle_url_catcher`, `url_catcher_sort` (toggle column + direction), `url_catcher_filter` (set channel filter), `url_catcher_search` (set search query). Apply CapturedURL filter/sort before passing to component.
 - [x] T025 [US2] Write LiveView tests for sort, filter, and search in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_url_catcher_test.exs` — cover: clicking column header sorts entries; clicking same header toggles direction; selecting channel filter shows only that channel's URLs; typing in search field filters by URL content; filter + search combined
 - [x] T026 [US2] Render `URLCatcherWindow` in ChatLive template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — pass filtered/sorted entries, sort state, filter state, search query, channel list, entry count
@@ -127,7 +127,7 @@
 
 ### Tests for User Story 4
 
-- [x] T041 [P] [US4] Write LiveView tests for menu bar and keyboard shortcut in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_url_catcher_test.exs` — cover: Alt+U opens URL Catcher window; Alt+U again closes it; menu bar "URL Catcher" item triggers toggle; close and reopen preserves entries; window has 98.css MDI styling
+- [x] T041 [P] [US4] Write LiveView tests for menu bar and keyboard shortcut in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_url_catcher_test.exs` — cover: Alt+U opens URL Catcher window; Alt+U again closes it; menu bar "URL Catcher" item triggers toggle; close and reopen preserves entries; window has retro MDI styling
 
 ### Implementation for User Story 4
 

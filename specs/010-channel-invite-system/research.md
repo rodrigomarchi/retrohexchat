@@ -58,7 +58,7 @@
 
 **Decision**: Store pending invites as a list in socket assigns: `pending_invites: [%{channel: String.t(), inviter: String.t(), invited_at: DateTime.t(), timer_ref: reference()}]`. Each invite renders as a separate dialog component instance with CSS offset based on list index (e.g., `top: #{20 * index}px; left: #{20 * index}px`).
 
-**Rationale**: Clarification session confirmed cascading windows effect. The list naturally supports multiple invites. CSS offset provides the Win98 cascading aesthetic without JavaScript.
+**Rationale**: Clarification session confirmed cascading windows effect. The list naturally supports multiple invites. CSS offset provides the retro cascading aesthetic without JavaScript.
 
 **Alternatives considered**:
 - **Single dialog with list view**: Rejected in clarification — user chose cascading.

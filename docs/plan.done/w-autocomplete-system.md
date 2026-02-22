@@ -8,7 +8,7 @@
 
 | # | Feature | Status | Description |
 |---|---------|--------|-------------|
-| W1 | Command palette dropdown | Existing | Slash-command autocomplete palette displayed above input, 98.css-styled |
+| W1 | Command palette dropdown | Existing | Slash-command autocomplete palette displayed above input, retro-styled |
 | W2 | Fuzzy match for commands | New | Fuzzy search so "/jo" matches "/join", not just prefix match |
 | W3 | Command categories in dropdown | New | Group commands by category (Básicos, Canal, Usuário, Configuração, Avançado) |
 | W4 | Recent commands priority | New | Last 5 used commands appear first in a "Recentes" section |
@@ -28,13 +28,13 @@
 
 ## Technical Notes
 
-- Existing command_palette.ex renders a 98.css-styled window above input with filtered command list
+- Existing command_palette.ex renders a retro-styled window above input with filtered command list
 - Existing command_palette_hook.js handles / trigger, ↑↓ navigation, Tab/Enter confirm, Esc dismiss
 - Fuzzy match should use substring matching (not just prefix) — "jo" matches "/join" and "/autojoin"
 - Nick autocomplete classic IRC behavior: at start of line `Mar<Tab>` → `Mario: ` (with colon), mid-line `Mar<Tab>` → `Mario ` (without colon)
 - Tab-Tab cycles through multiple matches (IRC convention)
 - Channel autocomplete dropdown should show channel name + user count, with joined channels sorted first
-- All three autocomplete types share the same 98.css dropdown pattern and ↑↓/Tab/Esc keyboard navigation
+- All three autocomplete types share the same retro dropdown pattern and ↑↓/Tab/Esc keyboard navigation
 
 ---
 
@@ -45,7 +45,7 @@
 
 PROBLEM: Users must currently type commands, nicknames, and channel names from memory with no assistance. The existing command palette provides basic slash-command listing but lacks fuzzy search, categorization, recent command tracking, and context-aware argument completion. There is no autocomplete for nicknames or channel names at all. In classic mIRC, Tab-completion for nicks was essential — without it, busy channels with many users become frustrating. Modern chat applications go further with rich autocomplete dropdowns.
 
-EXISTING CONTEXT: A command palette (command_palette.ex + command_palette_hook.js) is already implemented. It shows a 98.css-styled dropdown above the input when the user types '/', lists available commands with descriptions, supports ↑↓ keyboard navigation, Tab/Enter to confirm, and Esc to dismiss. This provides the foundational UI pattern and hook infrastructure for all autocomplete features.
+EXISTING CONTEXT: A command palette (command_palette.ex + command_palette_hook.js) is already implemented. It shows a retro-styled dropdown above the input when the user types '/', lists available commands with descriptions, supports ↑↓ keyboard navigation, Tab/Enter to confirm, and Esc to dismiss. This provides the foundational UI pattern and hook infrastructure for all autocomplete features.
 
 USER JOURNEY — COMMAND AUTOCOMPLETE: A user types '/' in the input. The existing command palette appears showing all commands. As they type '/jo', the list filters using fuzzy match to show '/join' and '/autojoin'. Commands are organized by category (Básicos, Canal, Usuário, Configuração, Avançado). Their 5 most recently used commands appear in a 'Recentes' section at the top. They select '/join' with Tab — the input fills with '/join ' and the autocomplete dropdown closes. As they continue typing '/join #', a new sub-dropdown appears listing available channels with user counts, allowing them to select a channel argument.
 
@@ -59,5 +59,5 @@ EDGE CASES: Empty channel list or no matching nicks should show a 'No results' m
 
 NEGATIVE REQUIREMENTS: Autocomplete must NOT send any messages — it only assists with input composition. The dropdown must NOT steal focus from the input field. Nick autocomplete must NOT show the user's own nick as the first suggestion. Channel autocomplete must NOT show secret/hidden channels (+s) the user is not a member of.
 
-SCOPE: In scope — fuzzy command search, command categories, recent commands, context-aware argument completion (nicks after /msg, channels after /join, channel nicks after /kick), nick autocomplete with @ trigger and Tab-completion, channel autocomplete with # trigger, shared 98.css dropdown UI. Out of scope — inline syntax hints after command selection (that belongs to Category X Smart Input), emoji autocomplete, custom autocomplete providers, autocomplete in dialogs (only in chat input)."
+SCOPE: In scope — fuzzy command search, command categories, recent commands, context-aware argument completion (nicks after /msg, channels after /join, channel nicks after /kick), nick autocomplete with @ trigger and Tab-completion, channel autocomplete with # trigger, shared retro dropdown UI. Out of scope — inline syntax hints after command selection (that belongs to Category X Smart Input), emoji autocomplete, custom autocomplete providers, autocomplete in dialogs (only in chat input)."
 ```

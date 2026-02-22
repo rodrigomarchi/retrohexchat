@@ -5,12 +5,12 @@
 
 ## Summary
 
-Implement mIRC-compatible text formatting for RetroHexChat: a server-side parser (`Chat.Formatter`) that converts mIRC control codes (bold, italic, underline, strikethrough, reverse, color, reset) into safe HTML spans with CSS classes; keyboard shortcuts (Ctrl+B/I/U/K/R/O) via a JS hook that inserts control characters into the input; a Windows 98-style formatting toolbar with a dropdown color picker; per-user strip-formatting session preference; and validation to reject format-code-only messages. No database migrations required — format codes are stored inline in the existing `content` field.
+Implement mIRC-compatible text formatting for RetroHexChat: a server-side parser (`Chat.Formatter`) that converts mIRC control codes (bold, italic, underline, strikethrough, reverse, color, reset) into safe HTML spans with CSS classes; keyboard shortcuts (Ctrl+B/I/U/K/R/O) via a JS hook that inserts control characters into the input; a retro-style formatting toolbar with a dropdown color picker; per-user strip-formatting session preference; and validation to reject format-code-only messages. No database migrations required — format codes are stored inline in the existing `content` field.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.7+, Phoenix LiveView 1.0+, 98.css
+**Primary Dependencies**: Phoenix 1.7+, Phoenix LiveView 1.0+, retro design system
 **Storage**: PostgreSQL 16+ (existing schema, no migrations)
 **Testing**: ExUnit, Mox, ExMachina, StreamData, Floki
 **Target Platform**: Web (LiveView server-rendered)
@@ -32,7 +32,7 @@ Implement mIRC-compatible text formatting for RetroHexChat: a server-side parser
 | V. Contracts and Behaviours | PASS | Formatter contract defined; no new command handlers |
 | VI. Static Analysis | PASS | @spec on all public functions, Credo/Dialyzer enforced |
 | VII. Lean LiveViews | PASS | ChatLive delegates to Formatter; JS hooks for keyboard/toolbar only |
-| VIII. Windows 98 Fidelity | PASS | Toolbar uses 98.css conventions; monospace font in formatted text |
+| VIII. retro Fidelity | PASS | Toolbar uses retro conventions; monospace font in formatted text |
 | IX. Hot/Cold Data Separation | PASS | strip_formatting in Session (hot); format codes in DB content (cold) |
 | X. Scalable Architecture | PASS | Stateless parser, no new processes, no new tables |
 
@@ -190,7 +190,7 @@ Format codes are standard Unicode control characters (0x02–0x1F range) that th
 **Goal**: Visual toolbar with B/I/U buttons and color picker dropdown.
 
 8. **FormattingToolbar component** — Function component with B/I/U/Color buttons
-   - Styled with 98.css conventions
+   - Styled with retro conventions
    - Color picker: hidden dropdown toggled by Color button, 4x4 grid of swatches
    - `data-testid` attributes for E2E testing
 

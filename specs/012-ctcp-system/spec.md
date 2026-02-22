@@ -70,7 +70,7 @@ A user wants to customize what their CTCP replies contain, or disable CTCP respo
 
 Settings are persisted for registered (identified) users. Guest users can modify settings for their current session only.
 
-The dialog follows the Windows 98 aesthetic consistent with other RetroHexChat dialogs.
+The dialog follows the retro aesthetic consistent with other RetroHexChat dialogs.
 
 **Why this priority**: Customization adds personality and privacy control but is not needed for the core CTCP functionality to work. Users can use CTCP with defaults before configuring custom replies.
 
@@ -152,7 +152,7 @@ The dialog follows the Windows 98 aesthetic consistent with other RetroHexChat d
 - `/ctcp` command supporting PING, VERSION, TIME, FINGER
 - Automatic, invisible CTCP reply handling
 - CTCP reply customization (VERSION string, FINGER text, enable/disable toggle)
-- CTCP settings dialog with Windows 98 aesthetic
+- CTCP settings dialog with retro aesthetic
 - CTCP settings persistence for registered users
 - Rate limiting (3 requests per target per 30 seconds)
 - 10-second reply timeout
@@ -170,7 +170,7 @@ The dialog follows the Windows 98 aesthetic consistent with other RetroHexChat d
 
 - All connected users are reachable via the same messaging infrastructure used for notices and PMs.
 - "Idle time" for FINGER default text is calculated as time since the user's last sent message.
-- The CTCP settings dialog is a new dialog opened from the Tools menu, following the same Windows 98 pattern as existing dialogs (Highlight Words, Ignore List, etc.).
+- The CTCP settings dialog is a new dialog opened from the Tools menu, following the same retro pattern as existing dialogs (Highlight Words, Ignore List, etc.).
 - CTCP requests and replies use the same user-to-user messaging channel (not the channel broadcast system).
 - The VERSION default string ("RetroHexChat v1.0") uses the application's current version if available.
 - TIME returns the server's UTC time (simpler, consistent, no browser JS hooks needed).
@@ -181,5 +181,5 @@ The dialog follows the Windows 98 aesthetic consistent with other RetroHexChat d
 - Existing online user detection (via #lobby membership check).
 - Existing Session struct for storing per-user CTCP settings in memory.
 - Existing persistence patterns (Ecto schemas, registered_nicks FK) for storing CTCP settings.
-- Existing Windows 98 dialog component patterns for the settings UI.
+- Existing retro dialog component patterns for the settings UI.
 - Existing command Handler behaviour for the `/ctcp` command.

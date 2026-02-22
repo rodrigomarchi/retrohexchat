@@ -11,7 +11,7 @@ defmodule RetroHexChat.Chat.HelpTopics.GettingStarted do
         keywords: ["welcome", "introduction", "about", "overview"],
         icon: :icon_lightbulb,
         description:
-          "Get started with RetroHexChat, a web-based IRC client with an authentic Windows 98 look and feel."
+          "Get started with RetroHexChat, a web-based IRC client with a faithful retro look and feel."
       },
       %{
         id: "connecting",

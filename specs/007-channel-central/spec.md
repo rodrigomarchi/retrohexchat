@@ -197,7 +197,7 @@ The Channel Central dialog reflects changes made by other users or via slash com
 
 - Topic metadata (who set it, when) is not currently tracked in the server state. The implementation will need to extend the server state to store this metadata. The spec assumes this enrichment will be part of the feature work.
 - Ban exception and invite exception lists are new concepts that will require new data structures in the server state and new database tables for persistence.
-- The dialog follows the same Windows 98-style aesthetic as all other dialogs in the application (using 98.css).
+- The dialog follows the same 2000s-era aesthetic as all other dialogs in the application (using retro design system).
 - The Channel Central dialog is modal (blocks interaction with the main chat window while open), consistent with other dialogs in the application.
 - Keyboard shortcut for opening Channel Central will be determined during planning (e.g., Alt+C or similar, avoiding conflicts with existing shortcuts).
 - The "creation date" in the Info section refers to when the channel's server process was started (already stored as `created_at` in server state), not a persistent historical date.

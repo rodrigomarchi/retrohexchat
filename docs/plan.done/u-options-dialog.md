@@ -43,7 +43,7 @@
 
 PROBLEM: Users currently have no centralized place to configure the application. Preferences like font sizes, colors, message routing, keyboard shortcuts, and display toggles are either hardcoded or scattered. Classic mIRC provides a comprehensive Options dialog (Alt+O) as the single hub for all user preferences. This is the most impactful quality-of-life feature — it makes every other feature configurable.
 
-USER JOURNEY: A user presses Alt+O (or selects Options from the menu). A Windows 98-style dialog opens with a tree-view navigation panel on the left and a settings panel on the right. The tree shows categories: Connect, IRC Messages, Display, Fonts, Colors, Key Bindings. Clicking a category loads its settings panel.
+USER JOURNEY: A user presses Alt+O (or selects Options from the menu). A retro-style dialog opens with a tree-view navigation panel on the left and a settings panel on the right. The tree shows categories: Connect, IRC Messages, Display, Fonts, Colors, Key Bindings. Clicking a category loads its settings panel.
 
 CONNECT panel — Settings for auto-reconnect behavior: enable/disable, retry interval, maximum retries, connection timeout.
 
@@ -53,7 +53,7 @@ DISPLAY panel — Toggle visibility of UI elements: toolbar (on/off), treebar (o
 
 FONTS panel — Select font family (from available monospace fonts) and size for: chat messages, input box, nicklist, treebar. A live preview shows how text will look with the selected settings before applying.
 
-COLORS panel — Customize the color palette for: chat background, default text color, own messages, system messages, timestamps, error messages. A simple color picker grid (Windows 98 style, 16-24 preset colors plus custom) is provided. Users can also adjust the nick color palette here.
+COLORS panel — Customize the color palette for: chat background, default text color, own messages, system messages, timestamps, error messages. A simple color picker grid (retro style, 16-24 preset colors plus custom) is provided. Users can also adjust the nick color palette here.
 
 KEY BINDINGS panel — View and customize all keyboard shortcuts. Shows a list of actions with their current key binding. Click an action, then press a key combination to reassign it. A 'Reset to Defaults' button restores all original bindings.
 

@@ -66,7 +66,7 @@
 .dialog-window--320 { width: var(--dialog-sub-w); }
 .dialog-window--450 { min-width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); display: flex; flex-direction: column; }
 
-/* Tab items without <a> wrappers need explicit padding (98.css supplies it via li > a) */
+/* Tab items without <a> wrappers need explicit padding (retro design system supplies it via li > a) */
 menu[role="tablist"] > li[role="tab"] {
   padding: 6px 10px;
   cursor: pointer;

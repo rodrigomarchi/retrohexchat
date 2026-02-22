@@ -9,14 +9,14 @@ Add comprehensive visual feedback to RetroHexChat: treebar unread indicators wit
 
 ## Technical Context
 
-**Language/Version**: Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
-**Primary Dependencies**: Phoenix LiveView (streams, push_event), 98.css, existing toast component (Z2)
+**Language/Version**: Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, retro CSS framework, esbuild
+**Primary Dependencies**: Phoenix LiveView (streams, push_event), retro design system, existing toast component (Z2)
 **Storage**: No new PostgreSQL migrations — all state is ephemeral (socket assigns, client-side)
 **Testing**: ExUnit (E2E via LiveViewTest), Vitest + jsdom (JS hooks/libs)
-**Target Platform**: Web browser (desktop-optimized, Windows 98 aesthetic)
+**Target Platform**: Web browser (desktop-optimized, retro aesthetic)
 **Project Type**: Phoenix umbrella (retro_hex_chat + retro_hex_chat_web)
 **Performance Goals**: Optimistic messages appear < 100ms; treebar updates < 50ms; 20+ channels tracked simultaneously
-**Constraints**: No database changes; toast reuse from Z2; 98.css design fidelity
+**Constraints**: No database changes; toast reuse from Z2; retro design system design fidelity
 **Scale/Scope**: 26 functional requirements, 5 user stories, ~15 files modified/created
 
 ## Constitution Check
@@ -32,7 +32,7 @@ Add comprehensive visual feedback to RetroHexChat: treebar unread indicators wit
 | V | Contracts and Behaviours | No | N/A | No new behaviours needed. |
 | VI | Static Analysis from Day One | Yes | PASS | All 9 CI checks enforced. |
 | VII | Lean LiveViews & Component Architecture | Yes | PASS | LiveView delegates to domain. Components for treebar badges and kick dialog. |
-| VIII | Windows 98 Design Fidelity | Yes | PASS | 98.css dialogs, badges styled to match aesthetic. |
+| VIII | retro Design Fidelity | Yes | PASS | retro dialogs, badges styled to match aesthetic. |
 | IX | Hot/Cold Data Separation | Yes | PASS | All new state is hot (socket assigns, client-side). No DB changes. |
 | X | Scalable Architecture | No | N/A | Unread tracking is per-socket — scales with LiveView processes. |
 | XI | User-Facing Documentation | Yes | PASS | Help topics for unread indicators, kick dialog, copy feedback. |

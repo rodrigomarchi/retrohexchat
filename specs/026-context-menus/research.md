@@ -19,7 +19,7 @@
 
 ## R2: Existing Context Menu Infrastructure
 
-**Decision**: Extend the existing context menu pattern (fixed positioning, 98.css `.window` class, `phx-click` events) with a unified chat area context menu component that handles all 4 menu types (nick, URL, channel, message). The existing scroll_hook.js copy menu will be replaced by the new system.
+**Decision**: Extend the existing context menu pattern (fixed positioning, retro `.window` class, `phx-click` events) with a unified chat area context menu component that handles all 4 menu types (nick, URL, channel, message). The existing scroll_hook.js copy menu will be replaced by the new system.
 
 **Rationale**: The nicklist context menu (`context_menu.ex`) and treebar context menu (`treebar_context_menu.ex`) already establish the pattern. A new `chat_context_menu.ex` component handles the 4 chat area menu types as variants. The scroll_hook.js simple copy menu is superseded.
 
@@ -31,7 +31,7 @@
 
 **Decision**: Implement viewport boundary detection in a JS hook attached to the context menu container. After the menu is rendered (mounted/updated), measure its dimensions and flip position if it would overflow the viewport.
 
-**Rationale**: LiveView renders with fixed `left/top` from mouse coordinates. The JS hook runs post-render to adjust position. This is the same approach used by native Windows 98 context menus and avoids a two-render-cycle flash.
+**Rationale**: LiveView renders with fixed `left/top` from mouse coordinates. The JS hook runs post-render to adjust position. This is the same approach used by native retro context menus and avoids a two-render-cycle flash.
 
 **Algorithm**:
 ```

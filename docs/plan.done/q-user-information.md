@@ -38,7 +38,7 @@
 
 PROBLEM: The current /whois dialog shows basic user information, but users cannot see who was recently online (just missed someone), cannot view shared channels with another user, cannot see how long someone has been idle, and have no way to express their identity through a profile or bio. The user information experience is minimal compared to both classic mIRC and modern chat applications.
 
-EXISTING CONTEXT: The /whois dialog is already implemented, showing basic user information (nickname, channels, away status) in a Windows 98-style dialog.
+EXISTING CONTEXT: The /whois dialog is already implemented, showing basic user information (nickname, channels, away status) in a retro-style dialog.
 
 USER JOURNEY: A user types '/whois Alice' and sees an expanded User Central dialog. Beyond the existing basic info, it now shows: channels they share with Alice, Alice's total online time for the current session, her away message (if set), whether she is registered with NickServ, her idle time ('idle for 15 minutes'), and her profile bio ('Elixir enthusiast from Brazil').
 

@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.CustomMenusDialog do
   @moduledoc """
-  98.css dialog for managing custom popup menu items for nicklist and channel context menus.
+  Retro-styled dialog for managing custom popup menu items for nicklist and channel context menus.
   """
   use Phoenix.Component
 

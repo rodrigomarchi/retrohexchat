@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.Components.AboutDialogTest do
     test "renders credits text" do
       html = render_component(&AboutDialog.about_dialog/1, visible: true)
 
-      assert html =~ "Built with Elixir, Phoenix LiveView, and 98.css"
+      assert html =~ "Built with Elixir, Phoenix LiveView, and a retro design system"
     end
 
     test "renders OK button" do

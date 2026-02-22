@@ -18,7 +18,7 @@
 **Purpose**: Create new files and shared utilities that all user stories depend on
 
 - [x] T001 [P] Create `interactive.js` lib module with shared utility functions (click-vs-drag detection, tooltip create/remove, context menu open flag, viewport boundary repositioning) in `apps/retro_hex_chat_web/assets/js/lib/interactive.js`
-- [x] T002 [P] Create `hover-card.css` with 98.css-styled tooltip and nick hover card styles in `apps/retro_hex_chat_web/assets/css/hover-card.css` and add import to `apps/retro_hex_chat_web/assets/css/app.css` in the Components layer
+- [x] T002 [P] Create `hover-card.css` with retro-styled tooltip and nick hover card styles in `apps/retro_hex_chat_web/assets/css/hover-card.css` and add import to `apps/retro_hex_chat_web/assets/css/app.css` in the Components layer
 - [x] T003 [P] Create `hover_events.ex` event handler module with initial structure (module, `handle_event/3` function heads that return `{:cont, socket}` for unmatched events) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/hover_events.ex`
 - [x] T004 Attach `hover_events` hook in `ChatLive.attach_all_hooks/1` and add `hover_card` default assign to `ChatLive.mount/3` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 
@@ -80,12 +80,12 @@
 
 ### Implementation for User Story 3
 
-- [x] T016 [US3] Create `hover_card.ex` function component: render nick hover card with 98.css window styling (`title-bar`, `window-body`), showing nickname, hostname, online duration, channels list, and interaction hints text. Include loading state variant. in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/hover_card.ex`
+- [x] T016 [US3] Create `hover_card.ex` function component: render nick hover card with retro window styling (`title-bar`, `window-body`), showing nickname, hostname, online duration, channels list, and interaction hints text. Include loading state variant. in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/hover_card.ex`
 - [x] T017 [US3] Add nick hover card component to `chat_live.html.heex` template: render `<HoverCard.nick_hover_card>` conditionally when `@hover_card.visible` is true, positioned absolutely at `@hover_card.x`/`@hover_card.y` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.html.heex`
 - [x] T018 [US3] Implement `handle_event("nick_hover", ...)` in `hover_events.ex`: validate nick is not own nick (FR-014), gather whois data using `Whois.gather_whois_data/4` pattern, format online duration, update `hover_card` assign with loading→data transition in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/hover_events.ex`
 - [x] T019 [US3] Implement `handle_event("nick_hover_dismiss", ...)` and `handle_event("nick_dblclick", ...)` in `hover_events.ex`: dismiss resets `hover_card` assign to default; dblclick calls `PM.open_pm_conversation/2` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/hover_events.ex`
 - [x] T020 [US3] Add nick hover/click/dblclick event listeners in `scroll_hook.js`: mouseenter on `.chat-nick` starts 500ms idle timer (reset on mousemove, cancel on mouseleave), timer fires pushEvent `"nick_hover"`, mouseleave pushes `"nick_hover_dismiss"`. Click inserts "Nick: " using `insertAtCursor` from `input.js` (client-only, no server event). Dblclick pushes `"nick_dblclick"` in `apps/retro_hex_chat_web/assets/js/hooks/scroll_hook.js`
-- [x] T021 [US3] Style the nick hover card in `hover-card.css`: 98.css window borders, compact layout, channel list, interaction hints in muted text, loading spinner/placeholder, viewport boundary repositioning in `apps/retro_hex_chat_web/assets/css/hover-card.css`
+- [x] T021 [US3] Style the nick hover card in `hover-card.css`: retro window borders, compact layout, channel list, interaction hints in muted text, loading spinner/placeholder, viewport boundary repositioning in `apps/retro_hex_chat_web/assets/css/hover-card.css`
 
 **Checkpoint**: Nick hover card shows whois data after 500ms. Click inserts nick. Double-click opens PM.
 
@@ -190,5 +190,5 @@ Task: "T015 — LiveView tests for nick hover events"
 - All new Elixir functions MUST have `@spec` annotations (Constitution VI)
 - JS follows "hook = wiring, lib = logic" pattern (Constitution IV)
 - No new database migrations — all data from in-memory sources
-- Nick hover card uses 98.css window styling for design fidelity (Constitution VIII)
+- Nick hover card uses retro window styling for design fidelity (Constitution VIII)
 - Help topic required for feature completeness (Constitution XI)

@@ -71,7 +71,7 @@ Users can view and manage their ignore list through a dialog window accessible f
 
 **Acceptance Scenarios**:
 
-1. **Given** a connected user, **When** they open the Ignore List dialog from the menu, **Then** a 98.css-styled dialog appears showing all current ignores in a list with columns: Nickname, Type, Expires.
+1. **Given** a connected user, **When** they open the Ignore List dialog from the menu, **Then** a retro-styled dialog appears showing all current ignores in a list with columns: Nickname, Type, Expires.
 2. **Given** the dialog is open and the user has ignored 3 users, **When** they view the list, **Then** all 3 entries appear with correct nicknames, types, and expiration info.
 3. **Given** the dialog is open, **When** the user clicks "Add" and enters a nickname, **Then** a new ignore entry is created with type `all` and permanent duration by default.
 4. **Given** the dialog is open with entries, **When** the user selects an entry and clicks "Remove", **Then** the ignore is removed and the list updates.
@@ -153,7 +153,7 @@ Registered users who have identified with NickServ have their ignore list saved 
 - **A-002**: Timer precision is at the minute level for display purposes, though internal tracking uses seconds.
 - **A-003**: The persistence model follows the existing pattern used by notify list and highlight words (database table + NickServ identify trigger for loading).
 - **A-004**: Maximum ignore list size is 100 entries per user — a reasonable limit to prevent abuse.
-- **A-005**: The Ignore List dialog is a modal 98.css window consistent with other dialogs (Address Book, Highlight, etc.).
+- **A-005**: The Ignore List dialog is a modal retro window consistent with other dialogs (Address Book, Highlight, etc.).
 - **A-006**: The context menu on nicknames in the nicklist and chat area will include an "Ignore" option for quick access.
 
 ## Scope

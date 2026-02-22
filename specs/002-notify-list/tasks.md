@@ -98,7 +98,7 @@
 
 ## Phase 5: User Story 3 — Notify List Window (Priority: P3)
 
-**Goal**: Dedicated Windows 98-style window showing all buddies with columns (Nickname, Status, Notes, Last Seen), sorted online-first. Toolbar buttons for Add/Remove/Edit. Double-click online buddy opens PM.
+**Goal**: Dedicated retro-style window showing all buddies with columns (Nickname, Status, Notes, Last Seen), sorted online-first. Toolbar buttons for Add/Remove/Edit. Double-click online buddy opens PM.
 
 **Independent Test**: Open window, verify columns and sort order. Add/remove via toolbar. Double-click online buddy to PM.
 
@@ -108,13 +108,13 @@
 
 ### Implementation
 
-- [x] T028 [US3] Create `NotifyListWindow` function component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/notify_list_window.ex` — 98.css styled window with title "Notify List". Columns: Nickname, Status (green/grey circle icon), Notes, Last Seen (formatted datetime or "Never"). Toolbar with Add, Remove, Edit buttons. Accepts assigns: `entries` (sorted list from `NotifyList.sorted_entries/1`), `visible` (boolean), `selected_entry` (String.t() | nil). Emits events: `"toggle_notify_list"`, `"notify_add_dialog"`, `"notify_remove"`, `"notify_edit_dialog"`, `"notify_dblclick"`.
+- [x] T028 [US3] Create `NotifyListWindow` function component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/notify_list_window.ex` — retro-styled window with title "Notify List". Columns: Nickname, Status (green/grey circle icon), Notes, Last Seen (formatted datetime or "Never"). Toolbar with Add, Remove, Edit buttons. Accepts assigns: `entries` (sorted list from `NotifyList.sorted_entries/1`), `visible` (boolean), `selected_entry` (String.t() | nil). Emits events: `"toggle_notify_list"`, `"notify_add_dialog"`, `"notify_remove"`, `"notify_edit_dialog"`, `"notify_dblclick"`.
 - [x] T029 [US3] Create Add/Edit dialog sub-component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/notify_list_window.ex` — modal dialog (reuse Dialog pattern) with fields: Nickname (text input, required, max 16 chars) and Notes (text input, optional, max 200 chars). For Edit mode, pre-fill current values with nickname read-only. Submit triggers `"notify_add"` or `"notify_edit"` event.
 - [x] T030 [US3] Create `NotifyListHook` JS hook in `apps/retro_hex_chat_web/assets/js/hooks/notify_list_hook.js` — handle double-click on buddy rows: push `"notify_dblclick"` event with `{nickname: row.dataset.nickname}`. Handle row selection on single click: push `"notify_select"` with nickname.
 - [x] T031 [US3] Wire Notify List window into ChatLive template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — add assigns: `show_notify_list: false`, `notify_selected: nil`, `show_notify_add_dialog: false`, `show_notify_edit_dialog: false`. Add `handle_event` for: `"toggle_notify_list"`, `"notify_select"`, `"notify_dblclick"` (open PM if buddy online), `"notify_add_dialog"` / `"notify_edit_dialog"` (show/hide dialogs). Render `<NotifyListWindow>` component in template. Add toolbar button to open window.
 - [x] T032 [US3] Register JS hook in `apps/retro_hex_chat_web/assets/js/app.js` — import and register `NotifyListHook` in the LiveSocket hooks configuration.
 
-**Checkpoint**: US3 complete — Notify List window fully functional with add/remove/edit/double-click-to-PM. 98.css styled. All tests green. `make lint` clean.
+**Checkpoint**: US3 complete — Notify List window fully functional with add/remove/edit/double-click-to-PM. retro-styled. All tests green. `make lint` clean.
 
 ---
 
@@ -172,7 +172,7 @@
 
 ### Implementation
 
-- [x] T044 Create `StatusWindow` function component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/status_window.ex` — 98.css styled window with title "Status". Scrollable message area using LiveView stream `:status_messages`. Each message is a system message with timestamp. Online notifications styled green, offline styled grey. No close button (always present). Accepts assigns: `status_messages` (stream).
+- [x] T044 Create `StatusWindow` function component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/status_window.ex` — retro-styled window with title "Status". Scrollable message area using LiveView stream `:status_messages`. Each message is a system message with timestamp. Online notifications styled green, offline styled grey. No close button (always present). Accepts assigns: `status_messages` (stream).
 - [x] T045 Wire Status window into ChatLive in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — initialize `:status_messages` stream in `mount/3`. Render `<StatusWindow>` component in template (always visible, positioned in MDI layout). Add private helper `push_status_message/3` that inserts a timestamped message into the stream with type (:notify_online, :notify_offline, :notify_rename, :system).
 - [x] T046 Refactor notification delivery to use Status window in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — update all notify event handlers (from T024, T025) to use `push_status_message/3` instead of direct stream_insert. Ensure whois messages (T036) also route through status window.
 

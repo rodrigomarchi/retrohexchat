@@ -10,7 +10,7 @@ Enhance the existing status bar component with real-time latency measurement (pi
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+, JavaScript ES2020+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro CSS framework, esbuild
 **Storage**: No new PostgreSQL migrations — all state is ephemeral (socket assigns, client-side timers)
 **Testing**: ExUnit (unit/integration/liveview/e2e), Vitest + jsdom (JS hooks + lib)
 **Target Platform**: Web (modern browsers)
@@ -32,7 +32,7 @@ Enhance the existing status bar component with real-time latency measurement (pi
 | V. Contracts & Behaviours | Marginal | PASS | No new "/" commands. No new behaviours needed — this is component + hook work. |
 | VI. Static Analysis | Yes | PASS | All new public functions get @spec. ESLint + Prettier for JS. Credo + Dialyzer for Elixir. |
 | VII. Lean LiveViews & Components | Yes | PASS | Status bar remains a function component. LiveView only manages assigns (connection_state, lag_ms, loading states). JS hooks handle timers/DOM. |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Uses 98.css status-bar, progress bar. Banners styled with 98.css window borders. |
+| VIII. retro Design Fidelity | Yes | PASS | Uses retro design system status-bar, progress bar. Banners styled with retro window borders. |
 | IX. Hot/Cold Data Separation | Yes | PASS | All new state is hot (socket assigns, client timers). No database changes. |
 | X. Scalable Architecture | No | N/A | Per-socket state only. No shared state implications. |
 | XI. User-Facing Documentation | Yes | PASS | Help topics needed for status bar features (lag indicator, connection states, clock). |

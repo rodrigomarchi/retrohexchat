@@ -11,7 +11,7 @@
 | AC1 | Title bar flash | Existing | Browser title alternates with activity indicator when tab is in background |
 | AC2 | Sound system | Existing | Web Audio API synthesized sounds with 14 named sounds, respects mute from localStorage |
 | AC3 | Notification routing to treebar | New | Event routing logic that decides when to update AB7's unread badges based on message type and channel |
-| AC4 | Toast notification popup | New | 98.css mini-window popup for events like PM received, mentioned (reuses Z15 toast component) |
+| AC4 | Toast notification popup | New | retro design system mini-window popup for events like PM received, mentioned (reuses Z15 toast component) |
 | AC5 | Browser notifications | New | Request permission + send native browser Notification API notifications when tab is in background |
 | AC6 | Favicon badge | New | Red dot overlay on favicon via canvas when there are unread notifications |
 | AC7 | Notification center | New | Panel listing recent notifications in reverse chronological order with mark-as-read |
@@ -35,7 +35,7 @@
 - Existing title_flash_hook.js alternates browser title between original and activity indicator on non-active channels
 - Existing sound_hook.js uses Web Audio API with 14 synthesized sounds, respects localStorage mute setting
 - Notification routing: centralized GenServer or module that receives events and dispatches to notification channels
-- Toast notifications: reuse Z15 component, 98.css mini-window at bottom-right, stacked, auto-dismiss after 5s, max 3 visible
+- Toast notifications: reuse Z15 component, retro design system mini-window at bottom-right, stacked, auto-dismiss after 5s, max 3 visible
 - Browser Notification API: request permission in Settings, fall back to toast-only if denied
 - Favicon badge: create canvas, draw existing favicon, overlay red dot, update link[rel=icon] href
 - Notification center: dropdown panel from bell icon in toolbar, lists last 50 notifications

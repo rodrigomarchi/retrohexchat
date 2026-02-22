@@ -33,7 +33,7 @@ The 11 user stories are organized into 7 phases. Each phase is independently tes
 ### Phase 3: Right-Click Copy (US3) — P1
 **Files**: New `chat_copy_hook.js`, `chat_live.html.heex`, `chat.css`
 - JS hook on `.chat-messages` for `contextmenu` event
-- 98.css styled context menu with "Copy" item
+- retro-styled context menu with "Copy" item
 - Clipboard API for plain text copy
 - Disabled state when no selection
 - **Test**: Select text, right-click, Copy → clipboard contains selected text
@@ -42,7 +42,7 @@ The 11 user stories are organized into 7 phases. Each phase is independently tes
 **Files**: New `char_counter_hook.js`, new `paste_hook.js`, new `paste_confirm_dialog.ex`, `chat_live.html.heex`, `chat.css`, ChatLive event handlers
 - Character counter: JS hook updates counter span, `maxlength="1000"` for hard cap
 - Multi-line paste: JS paste event → LiveView dialog → 300ms paced send
-- Paste dialog: 98.css component with line count, flood warning, send/cancel
+- Paste dialog: retro design system component with line count, flood warning, send/cancel
 - **Test**: Type → counter updates. Paste 5 lines → dialog appears.
 
 ### Phase 5: Server Features (US6 + US7) — P2

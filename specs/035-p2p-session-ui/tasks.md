@@ -79,7 +79,7 @@
 
 ## Phase 4: User Story 2 — P2P Lobby with Peer Presence and Ephemeral Chat (Priority: P2)
 
-**Goal**: Both peers navigate to `/p2p/:token` and see a Windows 98-style lobby with each other's nicknames, presence indicators, and ephemeral real-time chat.
+**Goal**: Both peers navigate to `/p2p/:token` and see a 2000s-era lobby with each other's nicknames, presence indicators, and ephemeral real-time chat.
 
 **Independent Test**: Two users navigate to the same `/p2p/:token` — they see each other's names, presence indicators update, and chat messages exchange instantly. Refreshing clears messages.
 
@@ -96,8 +96,8 @@
 - [x] T023 [US2] Create `P2PSessionLive` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_session_live.ex` with mount/3: extract nickname from http_session, verify registered, fetch session by token (Queries.get_session_by_token), verify participant (creator_id or peer_id matches), check not terminal, call P2P.join_session, subscribe to `"p2p:#{token}"`, initialize assigns per liveview-api.md contract. Implement render/1 using p2p_lobby component.
 - [x] T024 [US2] Add handle_info clauses to P2PSessionLive for PubSub events: `p2p_status_changed` (update session_status, redirect if terminal), `p2p_lobby_message` (append to messages), `p2p_session_closed` (redirect to /chat with flash), `p2p_inactivity_warning` (set warning flag)
 - [x] T025 [US2] Add handle_event clauses to P2PSessionLive: `send_lobby_message` (delegate to P2P.send_lobby_message), `p2p_capabilities` (assign capabilities map), `p2p_leave` (delegate to P2P.close_session with "tab_closed")
-- [x] T026 [US2] Create lobby UI components in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/p2p_lobby.ex`: `p2p_lobby/1` (main container as 98.css window), `p2p_presence/1` (peer names with online/offline indicators using `--color-online`/`--color-offline` tokens), `p2p_chat/1` (message list + input form with phx-submit="send_lobby_message")
-- [x] T027 [US2] Style lobby layout in `apps/retro_hex_chat_web/assets/css/p2p-session.css`: `.p2p-session` container using 98.css window class, title bar with session info, full-height layout. Style lobby components in `apps/retro_hex_chat_web/assets/css/p2p-lobby.css`: `.p2p-lobby-chat` message area with scrollable list, `.p2p-lobby-presence` with status indicators, `.p2p-lobby-input` form styling. Use design tokens throughout, support dark theme.
+- [x] T026 [US2] Create lobby UI components in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/p2p_lobby.ex`: `p2p_lobby/1` (main container as retro window), `p2p_presence/1` (peer names with online/offline indicators using `--color-online`/`--color-offline` tokens), `p2p_chat/1` (message list + input form with phx-submit="send_lobby_message")
+- [x] T027 [US2] Style lobby layout in `apps/retro_hex_chat_web/assets/css/p2p-session.css`: `.p2p-session` container using retro window class, title bar with session info, full-height layout. Style lobby components in `apps/retro_hex_chat_web/assets/css/p2p-lobby.css`: `.p2p-lobby-chat` message area with scrollable list, `.p2p-lobby-presence` with status indicators, `.p2p-lobby-input` form styling. Use design tokens throughout, support dark theme.
 - [x] T028 [US2] Implement P2PCapabilityHook in `apps/retro_hex_chat_web/assets/js/hooks/p2p_capability_hook.js`: on mounted, call `detectCapabilities()` from lib/p2p.js async, then pushEvent("p2p_capabilities", results). Implement P2PSessionHook in `apps/retro_hex_chat_web/assets/js/hooks/p2p_session_hook.js`: on mounted, add beforeunload listener that calls pushEvent("p2p_leave"). On destroyed, remove listener.
 
 **Checkpoint**: Both peers can enter the lobby, see each other's presence, exchange ephemeral chat messages. Auth/access control works for all edge cases (guest, unauthorized, expired token). All US2 tests pass.
@@ -145,7 +145,7 @@
 
 - [x] T037 [US4] Add handle_event("close_session", ...) to P2PSessionLive: call P2P.close_session(token, user_id, "user_closed"), redirect to /chat with flash "Sessao P2P encerrada"
 - [x] T038 [US4] Implement terminate/2 in P2PSessionLive: if session still active (not terminal), call P2P.close_session(token, user_id, "disconnected"). Guard against double-close race by checking session status before closing.
-- [x] T039 [US4] Add "Encerrar Sessao" button to lobby UI in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/p2p_lobby.ex` — styled as 98.css button with phx-click="close_session". Add inactivity warning banner when `inactivity_warning` assign is true, showing countdown message.
+- [x] T039 [US4] Add "Encerrar Sessao" button to lobby UI in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/p2p_lobby.ex` — styled as retro button with phx-click="close_session". Add inactivity warning banner when `inactivity_warning` assign is true, showing countdown message.
 
 **Checkpoint**: Session close works via button, tab close, and navigation. Remaining peer redirected with message. Inactivity warning displays. All US4 tests pass.
 

@@ -5,12 +5,12 @@
 
 ## Summary
 
-Implement a simplified scripting system inspired by mIRC: user-defined command aliases with variable expansion ($1–$9, $nick, $chan), session-only timers (one-shot and repeating via Process.send_after), custom popup menu items for nicklist and channel context menus, and event-triggered auto-respond rules with rate limiting. Three new PostgreSQL tables persist aliases, custom menus, and auto-respond rules for registered users. All subsystems share a centralized variable expansion engine. Four new slash commands (/alias, /timer, /popups, /autorespond), three 98.css-styled editor dialogs, and comprehensive help documentation.
+Implement a simplified scripting system inspired by mIRC: user-defined command aliases with variable expansion ($1–$9, $nick, $chan), session-only timers (one-shot and repeating via Process.send_after), custom popup menu items for nicklist and channel context menus, and event-triggered auto-respond rules with rate limiting. Three new PostgreSQL tables persist aliases, custom menus, and auto-respond rules for registered users. All subsystems share a centralized variable expansion engine. Four new slash commands (/alias, /timer, /popups, /autorespond), three retro-styled editor dialogs, and comprehensive help documentation.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (3 new tables: `aliases`, `custom_menu_items`, `autorespond_rules`) + in-memory Session state for guests + socket assigns for timers and rate limit cooldowns
 **Testing**: ExUnit with async: true, Mox, ExMachina, StreamData, Floki
 **Target Platform**: Web (Phoenix LiveView)
@@ -32,7 +32,7 @@ Implement a simplified scripting system inspired by mIRC: user-defined command a
 | V. Contracts and Behaviours | PASS | 4 new command handlers implement Handler behaviour. All public functions have @spec. |
 | VI. Static Analysis from Day One | PASS | All new modules will have @spec, pass Credo strict, Dialyzer, and format checks. |
 | VII. Lean LiveViews | PASS | All business logic in domain modules. LiveView delegates to Chat context. Dialog components are function components. |
-| VIII. Windows 98 Design Fidelity | PASS | 3 new editor dialogs use 98.css classes (window, title-bar, tree-view, tablist). |
+| VIII. retro Design Fidelity | PASS | 3 new editor dialogs use retro CSS classes (window, title-bar, tree-view, tablist). |
 | IX. Hot/Cold Data Separation | PASS | Timers + rate limit cooldowns in memory (hot). Aliases, custom menus, auto-respond rules in PostgreSQL (cold). Session state bridges both. |
 | X. Scalable Architecture | PASS | No new processes or global state. Per-user Session state scales with LiveView connections. |
 | XI. User-Facing Documentation | PASS | Help topics for /alias, /timer, /popups, /autorespond commands + Aliases, Timers, Custom Menus, Auto-Respond feature topics. |

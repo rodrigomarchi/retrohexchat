@@ -9,7 +9,7 @@
 
 ### User Story 1 - Keyboard Shortcut Cheatsheet Dialog (Priority: P1)
 
-A user wants to discover what keyboard shortcuts are available. They press Ctrl+Shift+/ to open a cheatsheet — a read-only 98.css-styled dialog that lists all shortcuts organized by category (Navigation, Chat, Formatting, System). The dialog shows both default bindings and any user-customized bindings. Closing the dialog returns focus to the chat input.
+A user wants to discover what keyboard shortcuts are available. They press Ctrl+Shift+/ to open a cheatsheet — a read-only retro-styled dialog that lists all shortcuts organized by category (Navigation, Chat, Formatting, System). The dialog shows both default bindings and any user-customized bindings. Closing the dialog returns focus to the chat input.
 
 **Why this priority**: Discoverability is the #1 barrier to keyboard-driven usage. Without knowing what's available, no other keyboard feature delivers value. This also provides the foundation (shortcut registry) that all other stories depend on.
 
@@ -17,7 +17,7 @@ A user wants to discover what keyboard shortcuts are available. They press Ctrl+
 
 **Acceptance Scenarios**:
 
-1. **Given** a user in a chat channel, **When** they press Ctrl+Shift+/, **Then** a 98.css-styled modal dialog opens listing all keyboard shortcuts organized by category.
+1. **Given** a user in a chat channel, **When** they press Ctrl+Shift+/, **Then** a retro-styled modal dialog opens listing all keyboard shortcuts organized by category.
 2. **Given** the cheatsheet dialog is open, **When** the user presses Escape or clicks the X button, **Then** the dialog closes and focus returns to the chat input.
 3. **Given** a registered user has customized a shortcut binding, **When** they open the cheatsheet, **Then** the customized binding is shown instead of the default.
 4. **Given** the cheatsheet dialog is open, **When** the user tries to type or edit content, **Then** no text input is possible — the dialog is read-only.

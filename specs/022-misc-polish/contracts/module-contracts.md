@@ -106,7 +106,7 @@ handleDblClick(e) → pushEvent("nicklist_dblclick", {nick})
 ### Components
 
 ```elixir
-# PasteConfirmDialog — 98.css confirmation dialog
+# PasteConfirmDialog — retro design system confirmation dialog
 attr :visible, :boolean, required: true
 attr :line_count, :integer, required: true
 attr :flood_warning, :boolean, default: false
@@ -119,7 +119,7 @@ attr :active_category, :string, required: true
 attr :search_query, :string, default: ""
 attr :search_results, :list, default: []
 
-# AboutDialog — enhanced Windows 98-style about box
+# AboutDialog — enhanced retro-style about box
 attr :visible, :boolean, required: true
 # (replaces inline about dialog in chat_live.html.heex)
 ```

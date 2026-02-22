@@ -91,7 +91,7 @@ make server
 - **Session field**: See NotifyList/HighlightWords for getter/setter pattern
 - **CRUD module**: See `Chat.HighlightWords` for in-memory + persistence pattern
 - **Command handler**: See `Commands.Handlers.Notify` for subcommand pattern
-- **Dialog component**: See `Components.HighlightDialog` for 98.css window pattern
+- **Dialog component**: See `Components.HighlightDialog` for retro window pattern
 - **Context menu**: See `Components.ContextMenu` for menu item pattern
 - **Persistence wiring**: See `load_persisted_data/2` and `maybe_persist_*` in ChatLive
 - **Help topics**: See `Chat.HelpTopics` for topic structure and cross-references

@@ -2,7 +2,7 @@
  * LiveView hook for auto-reconnect overlay.
  *
  * Observes the `phx-loading` class that Phoenix LiveView adds to the
- * main container when the WebSocket is disconnected. Shows a 98.css-styled
+ * main container when the WebSocket is disconnected. Shows a 2000s-era styled
  * overlay with countdown and attempt tracking. Phoenix LiveView handles
  * the actual reconnection logic — this hook is purely visual.
  */

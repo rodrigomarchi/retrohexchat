@@ -5,12 +5,12 @@
 
 ## Summary
 
-Implement a comprehensive notification system with four pillars: (1) per-event sound configuration with a catalog of 14+ synthesized sounds and a Windows 98-styled dialog with OK/Cancel/Apply, (2) global mute toggle in the status bar persisted via localStorage, (3) visual activity indicators (treebar flash via CSS animation + browser title bar alternation via JS hook), and (4) PM typing indicators broadcast over PubSub with 5-second timeout. Sound preferences persist in PostgreSQL (JSONB) for registered users, in-memory for guests.
+Implement a comprehensive notification system with four pillars: (1) per-event sound configuration with a catalog of 14+ synthesized sounds and a 2000s-erad dialog with OK/Cancel/Apply, (2) global mute toggle in the status bar persisted via localStorage, (3) visual activity indicators (treebar flash via CSS animation + browser title bar alternation via JS hook), and (4) PM typing indicators broadcast over PubSub with 5-second timeout. Sound preferences persist in PostgreSQL (JSONB) for registered users, in-memory for guests.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (1 new table: `sound_settings` with JSONB columns) + in-memory Session state for guests + localStorage for mute state
 **Testing**: ExUnit (unit, integration, liveview, e2e tags), Mox, Floki
 **Target Platform**: Web (modern browsers with Web Audio API support)
@@ -32,7 +32,7 @@ Implement a comprehensive notification system with four pillars: (1) per-event s
 | V. Contracts and Behaviours | PASS | SoundSettings follows existing settings module pattern (new/get/set/save/load). All public functions have @spec |
 | VI. Static Analysis | PASS | @spec on all public functions. Credo/Dialyzer/format enforced |
 | VII. Lean LiveViews | PASS | Dialog is a function component. LiveView delegates to SoundSettings domain module. JS hooks minimal and isolated (sound, title flash, typing debounce) |
-| VIII. Windows 98 Design Fidelity | PASS | Dialog uses 98.css window/fieldset/button. OK/Cancel/Apply button pattern. Mute icon in status bar. Treebar flash uses existing retro-styled CSS animation |
+| VIII. retro Design Fidelity | PASS | Dialog uses retro window/fieldset/button. OK/Cancel/Apply button pattern. Mute icon in status bar. Treebar flash uses existing retro-styled CSS animation |
 | IX. Hot/Cold Data Separation | PASS | Sound settings in PostgreSQL (cold). Mute state in localStorage (client). Typing state transient in socket assigns (hot). No ETS needed |
 | X. Scalable Architecture | PASS | PubSub-based typing works across nodes. No single-point bottlenecks. JSONB allows easy schema evolution |
 | XI. User-Facing Documentation | PASS | Help topics for: Sounds configuration, Mute, Visual notifications, Typing indicator. Cross-references to related topics |

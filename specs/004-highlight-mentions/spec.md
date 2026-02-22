@@ -79,7 +79,7 @@ Users can configure a list of custom words that trigger highlighting in addition
 
 ### User Story 5 - Highlight Configuration Dialog (Priority: P5)
 
-Users can open a Highlight configuration dialog to manage their custom highlight words. The dialog allows adding, editing, and removing highlight words, setting per-word custom colors, and previewing the highlight appearance. The dialog follows the Windows 98 aesthetic using 98.css.
+Users can open a Highlight configuration dialog to manage their custom highlight words. The dialog allows adding, editing, and removing highlight words, setting per-word custom colors, and previewing the highlight appearance. The dialog follows the retro aesthetic using retro design system.
 
 **Why this priority**: Configuration UI is needed for US4 but the underlying highlight engine (US1) works independently. This is the delivery mechanism for customization.
 
@@ -122,7 +122,7 @@ Users can open a Highlight configuration dialog to manage their custom highlight
 - **FR-011**: System MUST allow users to add custom highlight words beyond their own nickname.
 - **FR-012**: System MUST allow users to set an optional custom background color for each highlight word.
 - **FR-013**: When a message matches multiple highlight words, the system MUST apply the highest-priority color: own nickname highlight takes precedence over custom words; among custom words, the first match in list order wins.
-- **FR-014**: System MUST provide a configuration dialog (Windows 98 aesthetic) for managing the highlight word list (add, edit, remove) and per-word colors.
+- **FR-014**: System MUST provide a configuration dialog (retro aesthetic) for managing the highlight word list (add, edit, remove) and per-word colors.
 - **FR-015**: System MUST persist highlight word configuration across sessions for registered users (loaded upon NickServ identification).
 - **FR-016**: System MUST support highlight words for the duration of the session for guest users (no persistence).
 - **FR-017**: System MUST update own-nick highlighting immediately when the user changes their nickname.
@@ -165,7 +165,7 @@ Users can open a Highlight configuration dialog to manage their custom highlight
 - Custom highlight word list with per-word optional colors
 - Notification sound on highlight
 - Treebar and switchbar flash on highlight in non-active channels
-- Highlight configuration dialog (98.css aesthetic)
+- Highlight configuration dialog (retro aesthetic)
 - Persistence for registered users, session-only for guests
 - Whole-word, case-insensitive matching
 - URL exclusion and system message exclusion

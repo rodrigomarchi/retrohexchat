@@ -10,10 +10,10 @@ Make chat messages interactive by adding hover tooltips and click actions to thr
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+, JavaScript ES2020+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro CSS framework, esbuild
 **Storage**: PostgreSQL 16+ (link preview cache via ETS, channel state via GenServer — no new migrations)
 **Testing**: ExUnit (Elixir), Vitest + jsdom (JavaScript)
-**Target Platform**: Web browser (desktop-first, Windows 98 aesthetic)
+**Target Platform**: Web browser (desktop-first, retro aesthetic)
 **Project Type**: Umbrella web application (retro_hex_chat + retro_hex_chat_web)
 **Performance Goals**: Hover feedback within 100ms, nick hover card within 600ms (500ms delay + 100ms render)
 **Constraints**: Must not interfere with text selection; must coexist with context menu system; no new database migrations
@@ -32,7 +32,7 @@ Make chat messages interactive by adding hover tooltips and click actions to thr
 | V. Contracts & Behaviours | Marginal | No new behaviours needed — feature extends existing rendering and event handling. |
 | VI. Static Analysis | Yes | All new Elixir functions get `@spec`. ESLint + Prettier for JS. Credo + Dialyzer pass. |
 | VII. Lean LiveViews | Yes | LiveView delegates to existing helpers (Whois, Channel, PM). New component for hover card rendering only. |
-| VIII. Windows 98 Design Fidelity | Yes | Hover card uses 98.css window styling (3D beveled borders). Tooltip uses system font. |
+| VIII. retro Design Fidelity | Yes | Hover card uses retro window styling (3D beveled borders). Tooltip uses system font. |
 | IX. Hot/Cold Data Separation | Yes | All data for hover cards comes from in-memory sources (GenServer state, Tracker presence, ETS cache). No DB queries on hover. |
 | X. Scalable Architecture | N/A | No new architectural patterns introduced. |
 | XI. User-Facing Documentation | Yes | Help topic for interactive elements must be added to HelpTopics. |
@@ -69,7 +69,7 @@ apps/retro_hex_chat_web/
 │   │   └── hooks/
 │   │       └── scroll_hook.js         # MODIFIED — add hover/click listeners for interactive elements
 │   ├── css/
-│   │   ├── hover-card.css             # NEW — nick hover card + tooltip styles (98.css aesthetic)
+│   │   ├── hover-card.css             # NEW — nick hover card + tooltip styles (retro aesthetic)
 │   │   └── app.css                    # MODIFIED — add hover-card.css import
 │   └── test/
 │       └── lib/

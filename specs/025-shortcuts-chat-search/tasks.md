@@ -57,7 +57,7 @@
 
 ## Phase 3: User Story 1 - Keyboard Shortcut Cheatsheet Dialog (Priority: P1) MVP
 
-**Goal**: Users can press Ctrl+Shift+/ to open a read-only 98.css-styled dialog showing all keyboard shortcuts organized by category. Dialog closes on Escape/X, reflects custom bindings.
+**Goal**: Users can press Ctrl+Shift+/ to open a read-only retro-styled dialog showing all keyboard shortcuts organized by category. Dialog closes on Escape/X, reflects custom bindings.
 
 **Independent Test**: Open cheatsheet, verify all 4 categories render with correct shortcuts, close dialog, verify focus returns to input.
 
@@ -68,7 +68,7 @@
 
 ### Implementation for User Story 1
 
-- [x] T012 [US1] Create `CheatsheetDialog` function component with 98.css window styling, 4 category sections, shortcut table (Action | Binding), accepts `bindings` assign in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/cheatsheet_dialog.ex`
+- [x] T012 [US1] Create `CheatsheetDialog` function component with retro window styling, 4 category sections, shortcut table (Action | Binding), accepts `bindings` assign in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/cheatsheet_dialog.ex`
 - [x] T013 [US1] Add `cheatsheet_visible` assign (default: false) to ChatLive `assign_defaults` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [x] T014 [US1] Add `toggle_cheatsheet` handler to `KeyboardEvents` that toggles `cheatsheet_visible` assign, and add cheatsheet to the Escape dismiss hierarchy in `dismiss_topmost/1` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/keyboard_events.ex`
 - [x] T015 [US1] Render `CheatsheetDialog` component in ChatLive template, passing `@cheatsheet_visible` and current keybindings in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.html.heex`

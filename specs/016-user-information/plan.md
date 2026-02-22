@@ -10,7 +10,7 @@ Expand the existing `/whois` command to display comprehensive user information a
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (1 new table: `user_bios`) + in-memory ETS for whowas cache + socket assigns for idle tracking
 **Testing**: ExUnit with async: true, LiveView tests, property-based tests for time formatting
 **Target Platform**: Web (Phoenix LiveView)
@@ -32,7 +32,7 @@ Expand the existing `/whois` command to display comprehensive user information a
 | V. Contracts and Behaviours | PASS | /bio and /whowas implement Handler behaviour. /whois handler enhanced. |
 | VI. Static Analysis | PASS | @spec on all public functions, Credo/Dialyzer enforced. |
 | VII. Lean LiveViews | PASS | LiveView delegates to domain modules. New fields are socket assigns. Double-click via phx-click on nicklist. |
-| VIII. Windows 98 Design Fidelity | PASS | No new UI dialogs — /whois output is text in chat stream (consistent with mIRC's /whois). |
+| VIII. retro Design Fidelity | PASS | No new UI dialogs — /whois output is text in chat stream (consistent with mIRC's /whois). |
 | IX. Hot/Cold Data Separation | PASS | Bios in PostgreSQL (cold). Whowas cache + idle tracking in memory (hot). |
 | X. Scalable Architecture | PASS | ETS table for whowas (fast lookup, bounded). Bio persisted in DB. |
 | XI. User-Facing Documentation | PASS | Help topics for /whois (updated), /whowas (new), /bio (new). |

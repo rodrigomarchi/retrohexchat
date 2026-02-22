@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.SoundSettingsDialog do
   @moduledoc """
-  Windows 98-styled dialog for per-event sound and flash configuration.
+  2000s-era styled dialog for per-event sound and flash configuration.
   OK/Cancel/Apply button pattern with draft state management.
   """
   use Phoenix.Component

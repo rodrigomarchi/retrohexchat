@@ -559,7 +559,7 @@ Seguindo o Princípio XI (Help Documentation), novos help topics:
 | V. Contracts e Behaviours | ✓ | Handlers para `/p2p`, `/call`, `/sendfile` implementando Handler behaviour. |
 | VI. Static Analysis | ✓ | @spec em todas as funções públicas. Credo, Dialyzer, ESLint, Prettier. |
 | VII. Lean LiveViews | ✓ | P2PSessionLive delega para P2P context. Hooks são wiring, lógica em lib/. |
-| VIII. Windows 98 Fidelity | ✓ | 98.css para lobby, controles, diálogos. Estética consistente com o resto. |
+| VIII. retro Fidelity | ✓ | retro design system para lobby, controles, diálogos. Estética consistente com o resto. |
 | IX. Hot/Cold Data | ✓ | SessionServer (GenServer) para estado ativo, PostgreSQL para histórico. |
 | X. Scalable Architecture | ✓ | PubSub escala via pg adapter. GenServer por sessão isola falhas. |
 | XI. Help Documentation | ✓ | Help topics para P2P Sessions, File Transfer, Audio/Video Calls. |

@@ -68,7 +68,7 @@ The core auto-execute logic.
 
 Visual management interface.
 
-1. **PerformDialog component** — Two tabs (Commands, Auto-Join), 98.css styling
+1. **PerformDialog component** — Two tabs (Commands, Auto-Join), retro styling
 2. **Sub-dialogs** — Add/Edit for both tabs
 3. **ChatLive integration** — Alt+P shortcut, menu bar item, event handlers
 4. **CSS** — layout.css + dark-theme.css for dialog styles
@@ -82,7 +82,7 @@ Client-side reconnection with overlay.
 1. **ReconnectHook** — Disconnect detection, overlay UI, countdown, cancel
 2. **app.js** — Register hook, customize `reconnectAfterMs` for exponential backoff
 3. **ChatLive** — `push_event("intentional_disconnect")` in quit handler
-4. **CSS** — Reconnect overlay styles (98.css themed)
+4. **CSS** — Reconnect overlay styles (retro themed)
 
 **Test**: `mix test --only e2e` — intentional disconnect does not trigger reconnect
 

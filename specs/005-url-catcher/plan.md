@@ -5,12 +5,12 @@
 
 ## Summary
 
-URL Catcher adds three capabilities to RetroHexChat: (1) automatic URL detection and clickable link rendering in chat messages, (2) a URL Catcher floating window that aggregates all URLs shared in the user's channels/PMs with sort/filter/search, and (3) asynchronous inline link previews showing page titles. All data is in-memory (per-session, no DB persistence). The URL detection engine lives in the domain layer as pure functions; the URL Catcher window follows the existing 98.css MDI floating window pattern; link previews use Req for HTTP fetching with ETS-based caching.
+URL Catcher adds three capabilities to RetroHexChat: (1) automatic URL detection and clickable link rendering in chat messages, (2) a URL Catcher floating window that aggregates all URLs shared in the user's channels/PMs with sort/filter/search, and (3) asynchronous inline link previews showing page titles. All data is in-memory (per-session, no DB persistence). The URL detection engine lives in the domain layer as pure functions; the URL Catcher window follows the existing retro MDI floating window pattern; link previews use Req for HTTP fetching with ETS-based caching.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css, Req 0.5+ (HTTP client, already in mix.lock)
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro design system, Req 0.5+ (HTTP client, already in mix.lock)
 **Storage**: In-memory only (socket assigns + ETS cache). No PostgreSQL changes.
 **Testing**: ExUnit, Mox (for LinkPreview behaviour), StreamData (property-based URL detection), Floki (HTML assertions)
 **Target Platform**: Web browser (Phoenix LiveView)
@@ -32,7 +32,7 @@ URL Catcher adds three capabilities to RetroHexChat: (1) automatic URL detection
 | **V. Contracts and Behaviours** | PASS | `Chat.LinkPreview` behaviour with `fetch_title/1` callback. HTTP implementation module. Mox-testable. |
 | **VI. Static Analysis** | PASS | `@spec` on all public functions. Credo strict. Dialyxir. mix format. |
 | **VII. Lean LiveViews** | PASS | URL detection logic in domain `Chat.URLDetector`. Filtering/sorting in domain `CapturedURL`. ChatLive delegates to domain functions. |
-| **VIII. Windows 98 Fidelity** | PASS | URLCatcherWindow uses 98.css classes. Floating window matches NotifyListWindow pattern. Link styling fits retro aesthetic. |
+| **VIII. retro Fidelity** | PASS | URLCatcherWindow uses retro CSS classes. Floating window matches NotifyListWindow pattern. Link styling fits retro aesthetic. |
 | **IX. Hot/Cold Data Separation** | PASS | All URL Catcher data is hot (in-memory). Link preview cache in ETS. No PostgreSQL persistence needed (spec requirement). |
 | **X. Scalable Architecture** | PASS | ETS cache is per-node (scales with clustering). Task.Supervisor handles concurrent fetches. No architectural dead-ends. |
 
@@ -79,7 +79,7 @@ apps/retro_hex_chat/
 apps/retro_hex_chat_web/
 ├── lib/retro_hex_chat_web/
 │   ├── components/
-│   │   └── url_catcher_window.ex  # 98.css floating window
+│   │   └── url_catcher_window.ex  # retro design system floating window
 │   └── live/
 │       └── chat_live.ex           # Modified: linkification, catcher state, previews
 ├── assets/js/hooks/
@@ -121,7 +121,7 @@ apps/retro_hex_chat_web/
 **Key design decisions**:
 - Linkification happens at render time in `format_content/2`, not at message storage time
 - Links open in new tab with `rel="noopener noreferrer"` for security
-- Link color fits 98.css aesthetic (blue, underlined — classic web link style)
+- Link color fits retro aesthetic (blue, underlined — classic web link style)
 
 **Tests**: LiveView tests for clickable link rendering, multiple URLs, trailing punctuation exclusion, long URL truncation, format code interaction.
 
@@ -135,7 +135,7 @@ apps/retro_hex_chat_web/
 **Web changes**:
 - `ChatLive`: New assigns (`url_catcher_entries`, `show_url_catcher`, `url_catcher_sort_column`, `url_catcher_sort_direction`, `url_catcher_filter_channel`, `url_catcher_search_query`)
 - URL extraction in `handle_info` for `:new_message` — extract URLs, create `CapturedURL` entries, append to assigns
-- `Components.URLCatcherWindow` — floating window component (98.css)
+- `Components.URLCatcherWindow` — floating window component (retro design system)
 - `Components.MenuBar` — add "URL Catcher" item
 - `Alt+U` keyboard shortcut
 - `URLCatcherHook` JS — double-click opens URL in new tab

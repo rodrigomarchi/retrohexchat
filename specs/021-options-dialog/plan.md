@@ -5,12 +5,12 @@
 
 ## Summary
 
-Centralized Options dialog (Alt+O) serving as the single hub for all user preferences. Windows 98-style dialog with tree-view navigation (left) and settings panel (right). Six panels: Connect, IRC Messages, Display, Fonts, Colors, Key Bindings. Uses a draft state pattern (Apply/OK/Cancel) matching existing SoundSettingsDialog. Introduces CSS custom properties for real-time font and color customization. Refactors hardcoded keyboard shortcuts to a dynamic lookup system. Persists all preferences in a single `user_preferences` table with JSONB columns.
+Centralized Options dialog (Alt+O) serving as the single hub for all user preferences. retro-style dialog with tree-view navigation (left) and settings panel (right). Six panels: Connect, IRC Messages, Display, Fonts, Colors, Key Bindings. Uses a draft state pattern (Apply/OK/Cancel) matching existing SoundSettingsDialog. Introduces CSS custom properties for real-time font and color customization. Refactors hardcoded keyboard shortcuts to a dynamic lookup system. Persists all preferences in a single `user_preferences` table with JSONB columns.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (1 new table: `user_preferences` with 6 JSONB columns) + in-memory Session state for guests
 **Testing**: ExUnit (unit, integration, LiveView, E2E), Floki for HTML parsing
 **Target Platform**: Web browser (desktop)
@@ -32,7 +32,7 @@ Centralized Options dialog (Alt+O) serving as the single hub for all user prefer
 | V. Contracts and Behaviours | PASS | No new "/" commands. Event contracts documented in contracts/liveview-events.md. |
 | VI. Static Analysis | PASS | @spec on all public functions. Credo strict, Dialyxir, mix format enforced. |
 | VII. Lean LiveViews | PASS | OptionsDialog is a function component. All logic delegated to UserPreferences/KeyBindings domain modules. OptionsEvents handler is thin. |
-| VIII. Windows 98 Design Fidelity | PASS | Tree-view uses 98.css `.tree-view` class. Dialog uses standard 98.css `.window` pattern. Color picker uses 4×6 grid matching existing formatting toolbar approach. |
+| VIII. retro Design Fidelity | PASS | Tree-view uses retro design system `.tree-view` class. Dialog uses standard retro `.window` pattern. Color picker uses 4×6 grid matching existing formatting toolbar approach. |
 | IX. Hot/Cold Data Separation | PASS | Runtime preferences in Session (hot). Persistence in PostgreSQL `user_preferences` table (cold). |
 | X. Scalable Architecture | PASS | Per-user row in `user_preferences` table. No shared state concerns. |
 | XI. User-Facing Documentation | PASS | Help topics planned for Options dialog, all 6 panels, keyboard shortcuts update. |

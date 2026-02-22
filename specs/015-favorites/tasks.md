@@ -59,7 +59,7 @@
 - [X] T013 [US1] Add `phx-contextmenu` event to treebar channel items and render TreebarContextMenu in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/treebar.ex`
 - [X] T014 [US1] Add "Favorites" top-level menu to MenuBar with dynamic favorites list, checkmarks for joined channels, and "Organize Favorites..." / "Add to Favorites" items in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/menu_bar.ex`
 - [X] T015 [US1] Add socket assigns (favorites-related: show_favorite_dialog, favorite_dialog_mode, favorite_dialog_channel, favorite_dialog_data, treebar_context_menu) and event handlers (channel_right_click, close_treebar_context_menu, add_to_favorites, save_favorite, close_favorite_dialog, join_favorite) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
-- [X] T016 [US1] Add treebar context menu CSS styles (absolute positioning, z-index) in `apps/retro_hex_chat_web/assets/css/layout.css` (if needed beyond 98.css defaults)
+- [X] T016 [US1] Add treebar context menu CSS styles (absolute positioning, z-index) in `apps/retro_hex_chat_web/assets/css/layout.css` (if needed beyond retro design system defaults)
 
 **Checkpoint**: User Story 1 fully functional — users can add favorites and join/switch channels via the Favorites menu
 

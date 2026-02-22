@@ -10,7 +10,7 @@ Centralized keyboard shortcut system with cheatsheet dialog, global dispatch, wi
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro CSS framework, esbuild
 **Storage**: PostgreSQL 16+ (user_preferences.key_bindings JSON column — no new migration needed)
 **Testing**: ExUnit (unit, integration, liveview, e2e tags), Floki for HTML, Mox for behaviours
 **Target Platform**: Web browser (all modern browsers)
@@ -32,7 +32,7 @@ Centralized keyboard shortcut system with cheatsheet dialog, global dispatch, wi
 | V. Contracts and Behaviours | Yes | PASS | KeyBindings already defines contracts. New actions follow existing pattern. No new behaviours needed — extending existing ones. |
 | VI. Static Analysis | Yes | PASS | @spec on all new public functions. Credo strict, Dialyxir, mix format enforced. |
 | VII. Lean LiveViews | Yes | PASS | ChatLive delegates to KeyBindings and Search contexts. Cheatsheet is a function component. JS hooks minimal and isolated. |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Cheatsheet dialog uses 98.css window styling. Search bar retains Win98 aesthetic. Yellow highlight via CSS class. |
+| VIII. retro Design Fidelity | Yes | PASS | Cheatsheet dialog uses retro window styling. Search bar retains retro aesthetic. Yellow highlight via CSS class. |
 | IX. Hot/Cold Data Separation | Yes | PASS | Search filters operate on in-memory DOM (hot). History search queries PostgreSQL (cold). Keybindings persist to user_preferences JSON. |
 | X. Scalable Architecture | No | N/A | Feature is client-session scoped. No distributed state implications. |
 | XI. User-Facing Documentation | Yes | PASS | Help topics for: cheatsheet dialog, search enhancements, window navigation shortcuts. Update existing keyboard shortcuts topic. |

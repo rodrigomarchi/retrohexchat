@@ -103,7 +103,7 @@ A user is in a PM conversation with another user. When the other user starts typ
 - **FR-002**: Each event type in the Sounds dialog MUST have a dropdown to select from a catalog of 12+ built-in sounds (with variations such as Ding Low/High, Chime Short/Long) or "None" to disable.
 - **FR-003**: Each event type in the Sounds dialog MUST have a "Flash" toggle to enable/disable visual flash for that event type.
 - **FR-004**: The Sounds dialog MUST include a "Preview" button for each event so users can hear the selected sound before applying.
-- **FR-005**: The Sounds dialog MUST use OK/Cancel/Apply buttons following the Windows 98 convention: OK saves changes and closes the dialog, Apply saves changes and keeps the dialog open, Cancel discards unsaved changes and closes the dialog. Sound preferences take effect upon OK or Apply (no restart or page reload required).
+- **FR-005**: The Sounds dialog MUST use OK/Cancel/Apply buttons following the classic desktop convention: OK saves changes and closes the dialog, Apply saves changes and keeps the dialog open, Cancel discards unsaved changes and closes the dialog. Sound preferences take effect upon OK or Apply (no restart or page reload required).
 - **FR-006**: Sound preferences MUST persist across sessions for registered users.
 - **FR-007**: Sound preferences MUST be held in memory for guest users during their session.
 - **FR-008**: System MUST provide a global mute toggle accessible in the status bar area.
@@ -137,7 +137,7 @@ A user is in a PM conversation with another user. When the other user starts typ
 ### Session 2026-02-12
 
 - Q: What built-in sounds should be available in the sound catalog? → A: Large catalog (~12+ sounds) including variations (e.g., Ding Low/High, Chime Short/Long) for maximum customization.
-- Q: How should the Sounds dialog handle saving changes? → A: OK/Cancel/Apply — classic Windows 98 pattern. OK saves & closes, Apply saves & keeps open, Cancel reverts.
+- Q: How should the Sounds dialog handle saving changes? → A: OK/Cancel/Apply — classic retro pattern. OK saves & closes, Apply saves & keeps open, Cancel reverts.
 
 ## Assumptions
 

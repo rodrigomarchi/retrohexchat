@@ -17,7 +17,7 @@
 4. **Message menu** (chat area) — Copy Message, Copy Selection, Quote/Reply (disabled), Ignore Sender
 5. **Extended treebar menu** — Mark Read, Mute, Favorites, Copy, Leave, Settings
 
-All menus: 98.css styling, keyboard shortcut hints, disabled states, keyboard navigation (arrow keys), viewport repositioning.
+All menus: retro styling, keyboard shortcut hints, disabled states, keyboard navigation (arrow keys), viewport repositioning.
 
 ## Key Files to Modify
 

@@ -1,7 +1,7 @@
 defmodule RetroHexChatWeb.Components.AutocompleteDropdown do
   @moduledoc """
   Unified autocomplete dropdown for commands, nicks, and channels.
-  Renders above the chat input with 98.css window styling.
+  Renders above the chat input with retro window styling.
   """
   use Phoenix.Component
 

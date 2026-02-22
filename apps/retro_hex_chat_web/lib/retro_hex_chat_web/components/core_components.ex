@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.CoreComponents do
   @moduledoc """
   Provides core UI components for RetroHexChat.
 
-  Uses 98.css for Windows 98 aesthetic styling.
+  Uses a retro design system for 2000s-era aesthetic styling.
   Custom components for the chat interface are defined in separate modules.
   """
   use Phoenix.Component

@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.AliasDialog do
   @moduledoc """
-  98.css dialog for managing user-defined command aliases.
+  Retro-styled dialog for managing user-defined command aliases.
   """
   use Phoenix.Component
 

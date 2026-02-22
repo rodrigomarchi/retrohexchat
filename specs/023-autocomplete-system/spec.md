@@ -121,7 +121,7 @@ A user types `#de` anywhere in their message. A dropdown appears showing matchin
 - **FR-010**: System MUST exclude secret channels (+s) from autocomplete results for users who are not members of those channels.
 - **FR-011**: System MUST deprioritize the current user's own nickname in nick autocomplete results (shown last, not first).
 - **FR-012**: System MUST update nick autocomplete results in real-time when users join, leave, or change their nicknames in the channel.
-- **FR-013**: System MUST render all autocomplete dropdowns using 98.css styling consistent with the existing command palette appearance.
+- **FR-013**: System MUST render all autocomplete dropdowns using retro styling consistent with the existing command palette appearance.
 - **FR-014**: System MUST limit autocomplete to the chat input field only — dropdowns do not appear in dialog inputs.
 - **FR-015**: System MUST display a "No results" message in the dropdown when no items match the current input.
 - **FR-016**: System MUST reposition the dropdown if it would extend beyond the visible viewport area.
@@ -169,7 +169,7 @@ A user types `#de` anywhere in their message. A dropdown appears showing matchin
 - Nick autocomplete with `@` trigger and visual dropdown
 - IRC-style Tab-completion for nicks with cycling
 - Channel autocomplete with `#` trigger
-- Shared 98.css-styled dropdown UI across all autocomplete types
+- Shared retro-styled dropdown UI across all autocomplete types
 - Help documentation for the autocomplete feature
 
 ### Out of Scope

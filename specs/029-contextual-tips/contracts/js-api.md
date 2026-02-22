@@ -67,7 +67,7 @@ Clears all seen state (for testing/debugging only).
 ### Functions
 
 #### `createToastElement(tip: TipDefinition, options: ToastOptions) → HTMLElement`
-Creates a 98.css-styled toast window element with title bar, tip text, dismiss button, and optional checkbox.
+Creates a retro-styled toast window element with title bar, tip text, dismiss button, and optional checkbox.
 
 **ToastOptions**:
 | Field | Type | Default | Description |

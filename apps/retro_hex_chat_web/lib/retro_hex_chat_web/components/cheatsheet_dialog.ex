@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.CheatsheetDialog do
   @moduledoc """
-  Windows 98-style keyboard shortcut cheatsheet dialog.
+  Retro-style keyboard shortcut cheatsheet dialog.
 
   Displays all shortcuts organized by category (Navigation, Chat, Formatting,
   System) with a table showing Action and Binding columns. Read-only.

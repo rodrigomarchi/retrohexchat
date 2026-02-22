@@ -2,7 +2,7 @@
 
 **Module**: `RetroHexChatWeb.Components.FormattingToolbar`
 **File**: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/formatting_toolbar.ex`
-**Purpose**: Render a Windows 98-style formatting toolbar above the chat input.
+**Purpose**: Render a retro-style formatting toolbar above the chat input.
 
 ## Component Interface
 
@@ -47,12 +47,12 @@ Function component. No required assigns. Purely presentational — all interacti
 
 | Class                        | Purpose                                        |
 |------------------------------|-------------------------------------------------|
-| `.formatting-toolbar`        | Container, flex row, 98.css raised panel style  |
-| `.format-btn`                | Individual button, 98.css button style, 20x20px |
+| `.formatting-toolbar`        | Container, flex row, retro raised panel style  |
+| `.format-btn`                | Individual button, retro button style, 20x20px |
 | `.format-color-btn`          | Color button with colored underline indicator   |
 | `.format-color-picker-wrapper` | Relative-positioned wrapper for dropdown      |
-| `.format-color-dropdown`     | Absolute-positioned 4x4 grid, 98.css sunken panel |
-| `.color-swatch`              | 16x16px color square, 98.css button style       |
+| `.format-color-dropdown`     | Absolute-positioned 4x4 grid, retro sunken panel |
+| `.color-swatch`              | 16x16px color square, retro button style       |
 
 ### Placement
 

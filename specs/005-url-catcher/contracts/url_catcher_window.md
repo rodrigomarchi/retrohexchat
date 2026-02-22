@@ -2,7 +2,7 @@
 
 **Module**: `RetroHexChatWeb.Components.URLCatcherWindow`
 **Layer**: Web (`retro_hex_chat_web`)
-**Type**: Function component (98.css styled)
+**Type**: Function component (retro-styled)
 
 ## Component Attributes
 
@@ -51,7 +51,7 @@
 - Position: `position: absolute; bottom: 40px; right: 10px;`
 - Size: `width: 500px; height: 350px;`
 - Z-index: 150 (same level as NotifyListWindow)
-- Table: 98.css table with sortable column headers
+- Table: retro design system table with sortable column headers
 - Status bar: Entry count at bottom
 - Row hover: Highlighted background
 - Double-click: Opens URL in new tab (via JS hook)

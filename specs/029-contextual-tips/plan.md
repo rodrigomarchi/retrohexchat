@@ -5,15 +5,15 @@
 
 ## Summary
 
-Implement a contextual tip system that shows 98.css-styled toast notifications at specific user milestones (first message, first join, first PM, first highlight, idle). Tips fire once per user, queue when simultaneous, respect dialog/modal state, and persist seen state in localStorage. The toast component is reusable by other features. A global "Não mostrar mais dicas" toggle is available both on the toast and in Settings.
+Implement a contextual tip system that shows retro-styled toast notifications at specific user milestones (first message, first join, first PM, first highlight, idle). Tips fire once per user, queue when simultaneous, respect dialog/modal state, and persist seen state in localStorage. The toast component is reusable by other features. A global "Não mostrar mais dicas" toggle is available both on the toast and in Settings.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend)
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro CSS framework, esbuild
 **Storage**: localStorage (tip seen state + global suppression) — no PostgreSQL changes
 **Testing**: ExUnit (Elixir), Vitest + jsdom (JavaScript)
-**Target Platform**: Web browser (desktop-first, Windows 98 aesthetic)
+**Target Platform**: Web browser (desktop-first, retro aesthetic)
 **Project Type**: Phoenix umbrella (retro_hex_chat + retro_hex_chat_web)
 **Performance Goals**: Tips display within 500ms of trigger; no UI jank
 **Constraints**: Toast must not steal input focus; max 1 toast visible at a time
@@ -32,7 +32,7 @@ Implement a contextual tip system that shows 98.css-styled toast notifications a
 | V. Contracts and Behaviours | No | N/A | No new commands or polymorphic dispatch |
 | VI. Static Analysis from Day One | Yes | PASS | ESLint/Prettier for JS, Credo/Dialyzer for Elixir, @spec on all public functions |
 | VII. Lean LiveViews & Components | Yes | PASS | Toast is a function component; LiveView only pushes events to JS hook |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Toast styled with 98.css window class, 3D beveled borders, dark theme |
+| VIII. retro Design Fidelity | Yes | PASS | Toast styled with retro window class, 3D beveled borders, dark theme |
 | IX. Hot/Cold Data Separation | Yes | PASS | Tip state in localStorage (hot, client-side) — no database needed |
 | X. Scalable Architecture | No | N/A | Client-only feature — no server-side scaling concern |
 | XI. User-Facing Documentation | Yes | PASS | Help topic for "Contextual Tips" in Features category |

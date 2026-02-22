@@ -229,5 +229,5 @@ T013 → T014 → T015 → T016 → T017
 - [Story] label maps task to specific user story for traceability
 - T001 (shared helper extraction) is the only refactoring task — must not break existing `/p2p`, `/call`, `/sendfile` commands
 - The disabled item pattern follows the existing `chat_context_menu.ex` approach: conditional `class="disabled"` + conditional `phx-click`
-- No new CSS needed — 98.css `.disabled` class provides the grayed-out styling
+- No new CSS needed — retro `.disabled` class provides the grayed-out styling
 - No JavaScript changes — all behavior is server-side LiveView events

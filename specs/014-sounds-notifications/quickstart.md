@@ -24,7 +24,7 @@ make setup  # if first time
 
 | File | Purpose |
 |------|---------|
-| `lib/retro_hex_chat_web/components/sound_settings_dialog.ex` | Windows 98-styled Sounds dialog component |
+| `lib/retro_hex_chat_web/components/sound_settings_dialog.ex` | 2000s-erad Sounds dialog component |
 | `assets/js/hooks/title_flash_hook.js` | JS hook for document.title alternation |
 | `test/retro_hex_chat_web/live/sound_settings_test.exs` | LiveView tests for dialog |
 | `test/retro_hex_chat_web/live/typing_indicator_test.exs` | LiveView tests for typing |

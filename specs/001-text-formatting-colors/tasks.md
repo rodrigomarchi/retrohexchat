@@ -71,13 +71,13 @@
 
 ### Tests First
 
-- [x] T019 [P] [US3] Write LiveView tests: formatting toolbar is rendered in chat view with Bold, Italic, Underline, and Color buttons (verify `data-testid` attributes); toolbar has correct 98.css styling classes in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs`
+- [x] T019 [P] [US3] Write LiveView tests: formatting toolbar is rendered in chat view with Bold, Italic, Underline, and Color buttons (verify `data-testid` attributes); toolbar has correct retro styling classes in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs`
 - [x] T020 [P] [US3] Write LiveView tests: color picker dropdown contains 16 color swatches in a grid; each swatch has `data-color-code` attribute with correct index (0-15) in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs`
 
 ### Implementation
 
-- [x] T021 [US3] Create `FormattingToolbar` function component with Bold (B), Italic (I), Underline (U) buttons and Color button with hidden 4x4 dropdown grid of 16 color swatches. Use `data-format-code` attributes for format buttons, `data-color-code` for swatches, `data-testid` for testing. Style with 98.css conventions (raised panel, button styling) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/formatting_toolbar.ex`
-- [x] T022 [US3] Add formatting toolbar and color picker CSS styles: `.formatting-toolbar` container, `.format-btn` buttons (22x22px, 98.css style), `.format-color-picker-wrapper` relative container, `.format-color-dropdown` absolute 4x4 grid, `.color-swatch` 16x16px buttons with hover state in `apps/retro_hex_chat_web/assets/css/dark-theme.css`
+- [x] T021 [US3] Create `FormattingToolbar` function component with Bold (B), Italic (I), Underline (U) buttons and Color button with hidden 4x4 dropdown grid of 16 color swatches. Use `data-format-code` attributes for format buttons, `data-color-code` for swatches, `data-testid` for testing. Style with retro conventions (raised panel, button styling) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/formatting_toolbar.ex`
+- [x] T022 [US3] Add formatting toolbar and color picker CSS styles: `.formatting-toolbar` container, `.format-btn` buttons (22x22px, retro style), `.format-color-picker-wrapper` relative container, `.format-color-dropdown` absolute 4x4 grid, `.color-swatch` 16x16px buttons with hover state in `apps/retro_hex_chat_web/assets/css/dark-theme.css`
 - [x] T023 [US3] Create `FormatToolbarHook` JS hook: handle `mousedown` (not click) on `.format-btn` elements with `preventDefault()` to avoid input blur; read `data-format-code` and insert at `#chat-input` cursor position; toggle color dropdown on Color button mousedown; insert `\x03` + swatch `data-color-code` on swatch mousedown; dismiss dropdown on outside click or Escape in `apps/retro_hex_chat_web/assets/js/hooks/format_toolbar_hook.js`
 - [x] T024 [US3] Register `FormatToolbarHook` in app.js and render `<.formatting_toolbar />` in ChatLive template between chat messages area and input form. Import component in ChatLive in `apps/retro_hex_chat_web/assets/js/app.js` and `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [x] T025 [US3] Run `make test` and `make lint` to verify US3 tests pass and static analysis is clean

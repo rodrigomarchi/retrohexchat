@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.SearchBar do
   @moduledoc """
-  Win98-styled search dialog with text input, Find Next/Prev buttons,
+  Retro-styled search dialog with text input, Find Next/Prev buttons,
   arrow key navigation, error display, and an X of Y result counter.
   """
   use Phoenix.Component

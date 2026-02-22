@@ -102,18 +102,18 @@
 
 ## Phase 5: User Story 4 — Ignore List Management Dialog (Priority: P4)
 
-**Goal**: Visual dialog for managing ignore list — 98.css window with Nickname/Type/Expires columns, Add/Remove buttons. Accessible via menu bar and Alt+I shortcut.
+**Goal**: Visual dialog for managing ignore list — retro window with Nickname/Type/Expires columns, Add/Remove buttons. Accessible via menu bar and Alt+I shortcut.
 
 **Independent Test**: Open dialog, verify it shows current ignores, add a new ignore via dialog, remove one, verify list updates.
 
 ### Tests for User Story 4
 
-- [x] T027 [P] [US4] Write component tests for IgnoreListDialog: renders 98.css window with correct structure, displays entries with nickname/type/expires columns, empty state message, selected row highlighting, Add/Remove button states in apps/retro_hex_chat_web/test/retro_hex_chat_web/components/ignore_list_dialog_test.exs
+- [x] T027 [P] [US4] Write component tests for IgnoreListDialog: renders retro window with correct structure, displays entries with nickname/type/expires columns, empty state message, selected row highlighting, Add/Remove button states in apps/retro_hex_chat_web/test/retro_hex_chat_web/components/ignore_list_dialog_test.exs
 - [x] T028 [P] [US4] Write LiveView integration tests for dialog: Alt+I opens dialog, menu bar item opens dialog, close button closes, select entry, add via dialog creates ignore entry, remove via dialog removes entry, dialog reflects timed ignore countdown in apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_ignore_test.exs
 
 ### Implementation for User Story 4
 
-- [x] T029 [US4] Create IgnoreListDialog component: 98.css window with title "Ignore List", sunken-panel table (Nickname, Type, Expires columns), row selection with highlight, Add/Remove buttons (Remove disabled when no selection), empty state "No users ignored", permanent entries show "Permanent", timed entries show remaining time. Attrs: ignore_entries, ignore_selected, show_ignore_add_dialog. Add sub-dialog for Add (nickname input field, type select dropdown, optional duration input) in apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ignore_list_dialog.ex
+- [x] T029 [US4] Create IgnoreListDialog component: retro window with title "Ignore List", sunken-panel table (Nickname, Type, Expires columns), row selection with highlight, Add/Remove buttons (Remove disabled when no selection), empty state "No users ignored", permanent entries show "Permanent", timed entries show remaining time. Attrs: ignore_entries, ignore_selected, show_ignore_add_dialog. Add sub-dialog for Add (nickname input field, type select dropdown, optional duration input) in apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ignore_list_dialog.ex
 - [x] T030 [US4] Wire IgnoreListDialog into ChatLive template: render conditionally on show_ignore_dialog assign, pass session.ignore_list entries + ignore_selected + show_ignore_add_dialog as attrs in apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex
 - [x] T031 [US4] Add ChatLive event handlers: "open_ignore_dialog" (set show_ignore_dialog=true), "close_ignore_dialog" (set false + clear selection), "ignore_select" (set ignore_selected), "ignore_dialog_add" (open add sub-dialog), "ignore_dialog_add_confirm" (add entry from dialog inputs, close sub-dialog), "ignore_dialog_remove" (remove selected entry) in apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex
 - [x] T032 [US4] Add Alt+I keyboard shortcut in ChatLive handle_event("keydown") and menu bar "Ignore List" item with phx-click="open_ignore_dialog" in apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex

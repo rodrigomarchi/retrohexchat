@@ -10,7 +10,7 @@ Establish WebRTC peer-to-peer connections between browsers by implementing: (1) 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend)
-**Primary Dependencies**: Phoenix 1.8+, LiveView 1.0+, ex_stun ~> 0.1 (NEW), 98.css
+**Primary Dependencies**: Phoenix 1.8+, LiveView 1.0+, ex_stun ~> 0.1 (NEW), retro design system
 **Storage**: PostgreSQL 16+ (existing `p2p_sessions` table — no new migrations)
 **Testing**: ExUnit (Elixir), Vitest + jsdom (JS), mocked RTCPeerConnection
 **Target Platform**: Web (all modern browsers with WebRTC support)
@@ -32,7 +32,7 @@ Establish WebRTC peer-to-peer connections between browsers by implementing: (1) 
 | V. Contracts and Behaviours | PASS | `SignalingRateLimit` behaviour defined. TURN auth is a well-defined contract. |
 | VI. Static Analysis from Day One | PASS | @spec on all public functions, Credo/Dialyxir/ESLint/Prettier enforced |
 | VII. Lean LiveViews | PASS | LiveView only relays signals via PubSub, delegates state transitions to P2P context. PubSub topic `p2p:#{token}` already exists. |
-| VIII. Windows 98 Design Fidelity | PASS | Connection state UI uses 98.css components (status bar, labels) |
+| VIII. retro Design Fidelity | PASS | Connection state UI uses retro components (status bar, labels) |
 | IX. Hot/Cold Data Separation | PASS | All signaling data is ephemeral (GenServer/PubSub). Only session status persisted to DB. |
 | X. Scalable Architecture | PASS | TURN server is process-per-allocation, signaling is PubSub-based. Both scale naturally. |
 | XI. Help Documentation | DEFERRED | Help topics deferred to separate pass per spec scope |
@@ -169,7 +169,7 @@ config/
 1. Add `webrtc_state` assign to P2PSessionLive (default: nil)
 2. Add `handle_event("p2p_state_change")` — update assign
 3. Add connection state indicator component to P2P lobby
-4. Style with 98.css (status bar / label)
+4. Style with retro design system (status bar / label)
 5. Add retry progress indicator ("Tentativa 2 de 3...")
 6. Add "Try again" button on permanent failure (creates new session)
 7. CSS: connection state styles in `p2p-lobby.css`

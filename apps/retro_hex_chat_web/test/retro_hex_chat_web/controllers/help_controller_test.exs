@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.HelpControllerTest do
       assert html =~ "Quick Start"
     end
 
-    test "has 98.css classes present", %{conn: conn} do
+    test "has retro design system classes present", %{conn: conn} do
       conn = get(conn, "/chat/help")
       html = html_response(conn, 200)
 

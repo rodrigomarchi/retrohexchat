@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.LogViewerDialog do
   @moduledoc """
-  Log Viewer dialog — Windows 98-style window for searching, browsing,
+  Log Viewer dialog — 2000s-era styled window for searching, browsing,
   and exporting chat history. Supports channel and PM logs with filters
   for date range, nickname, and text content.
   """

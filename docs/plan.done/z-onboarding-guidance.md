@@ -8,7 +8,7 @@
 
 | # | Feature | Status | Description |
 |---|---------|--------|-------------|
-| Z1 | Welcome wizard - nickname step | New | First-run 98.css wizard dialog: welcome message, nickname input with tip |
+| Z1 | Welcome wizard - nickname step | New | First-run retro wizard dialog: welcome message, nickname input with tip |
 | Z2 | Welcome wizard - server step | New | Server address/port pre-filled, SSL checkbox, "leave default" guidance |
 | Z3 | Welcome wizard - channel step | New | List of popular channels with user counts, checkboxes to join, manual input |
 | Z4 | First-run detection | New | Detect first visit via localStorage flag, trigger wizard only once |
@@ -27,7 +27,7 @@
 
 ## Technical Notes
 
-- Welcome wizard: 98.css wizard pattern (multi-step dialog with Back/Next/Finish buttons)
+- Welcome wizard: retro wizard pattern (multi-step dialog with Back/Next/Finish buttons)
 - First-run detection: check localStorage key "retro_hex_chat_onboarded" — if absent, show wizard
 - Empty states: rendered as centered content within the normally-empty container
 - Empty states should use friendly language and actionable guidance (not just "nothing here")
@@ -41,11 +41,11 @@
 ```
 /speckit.specify "Onboarding & Empty States for RetroHexChat.
 
-PROBLEM: New users face a blank, intimidating interface with no guidance. Classic IRC had a brutal learning curve — dozens of slash commands, obscure shortcuts, no visual hints. RetroHexChat looks like Windows 98 but should feel welcoming. Currently, a first-time user sees an empty chat, does not know what to type, does not know that commands start with /, and may not even know how to join a channel. Empty screens throughout the app (empty channel, empty nicklist, empty treebar, empty URL list) provide no guidance — just blank space.
+PROBLEM: New users face a blank, intimidating interface with no guidance. Classic IRC had a brutal learning curve — dozens of slash commands, obscure shortcuts, no visual hints. RetroHexChat looks like retro but should feel welcoming. Currently, a first-time user sees an empty chat, does not know what to type, does not know that commands start with /, and may not even know how to join a channel. Empty screens throughout the app (empty channel, empty nicklist, empty treebar, empty URL list) provide no guidance — just blank space.
 
 EXISTING CONTEXT: No onboarding or empty state features are currently implemented. The app launches directly into the chat view. The connect flow (ConnectLive) exists but has no first-run wizard.
 
-USER JOURNEY — ONBOARDING WIZARD: A first-time user opens RetroHexChat. A Windows 98-style wizard dialog appears. Step 1: Welcome message with ASCII/pixel art logo, nickname input field with a tip explaining what a nick is ('Seu nick é como seu nome no chat. Pode mudar depois com /nick'). Step 2: Server configuration with sensible defaults pre-filled — the tip says 'Não sabe o que escolher? Deixe o padrão!'. SSL checkbox. Step 3: After connecting, a list of popular channels with user counts appears as checkboxes, plus a text field to type a custom channel name. A 'Pular' (skip) button lets the user skip this step. The user selects #general and clicks 'Entrar!'. The wizard closes, they join the selected channels, and a subtle banner appears in the chat: 'Dica: digite / para ver comandos disponíveis. Use ↑↓ para navegar o histórico.'
+USER JOURNEY — ONBOARDING WIZARD: A first-time user opens RetroHexChat. A retro-style wizard dialog appears. Step 1: Welcome message with ASCII/pixel art logo, nickname input field with a tip explaining what a nick is ('Seu nick é como seu nome no chat. Pode mudar depois com /nick'). Step 2: Server configuration with sensible defaults pre-filled — the tip says 'Não sabe o que escolher? Deixe o padrão!'. SSL checkbox. Step 3: After connecting, a list of popular channels with user counts appears as checkboxes, plus a text field to type a custom channel name. A 'Pular' (skip) button lets the user skip this step. The user selects #general and clicks 'Entrar!'. The wizard closes, they join the selected channels, and a subtle banner appears in the chat: 'Dica: digite / para ver comandos disponíveis. Use ↑↓ para navegar o histórico.'
 
 The wizard only appears once. On subsequent visits, the user goes directly to the chat.
 

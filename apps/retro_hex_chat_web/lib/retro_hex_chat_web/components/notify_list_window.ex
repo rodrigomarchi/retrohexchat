@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.NotifyListWindow do
   @moduledoc """
-  98.css styled buddy/notify list window.
+  Retro-styled buddy/notify list window.
   Displays tracked nicknames with online/offline status, notes, and last-seen times.
   Supports add, remove, edit operations and an auto-whois toggle.
   """

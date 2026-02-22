@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.FloodProtectionDialog do
   @moduledoc """
-  Windows 98-styled dialog for configuring flood protection settings.
+  Retro-styled dialog for configuring flood protection settings.
   """
   use Phoenix.Component
 

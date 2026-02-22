@@ -89,7 +89,7 @@ end
 
 **Rationale**: The spec says "Ignore management within Address Book Control tab" is out of scope. A standalone dialog follows the HighlightDialog pattern — simpler to implement and test independently.
 
-**UI pattern**: 98.css window with sunken-panel list table (Nickname, Type, Expires columns), Add/Remove buttons, selected row highlighting. Opened via menu bar item + Alt+I keyboard shortcut.
+**UI pattern**: retro window with sunken-panel list table (Nickname, Type, Expires columns), Add/Remove buttons, selected row highlighting. Opened via menu bar item + Alt+I keyboard shortcut.
 
 **Alternatives considered**:
 - Address Book Control tab integration — explicitly out of scope per spec.

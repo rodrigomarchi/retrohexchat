@@ -73,6 +73,6 @@ coordena; os peers se conectam.
 | III. OTP Process Architecture | GenServer por sessão P2P, sob DynamicSupervisor. |
 | IV. TDD | Testes para signaling, GenServer de sessão, políticas de acesso. |
 | VII. Lean LiveViews | LiveView `P2PSessionLive` delega para contexto `P2P`. Hooks JS isolados. |
-| VIII. Windows 98 Fidelity | UI do lobby e controles seguem estética 98.css. |
+| VIII. retro Fidelity | UI do lobby e controles seguem estética retro design system. |
 | IX. Hot/Cold Data | Sessão ativa em GenServer (hot), histórico em PostgreSQL (cold). |
 | XI. Help Documentation | Help topics para `/p2p`, `/call`, `/sendfile`. |

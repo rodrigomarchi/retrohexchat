@@ -72,7 +72,7 @@ _No setup tasks required._
 
 ## Phase 4: User Story 2 — Invited User Receives Notification and Joins (Priority: P1)
 
-**Goal**: When the invitee's ChatLive receives the `{:channel_invite, payload}` broadcast, it renders a Windows 98-style dialog with Join/Ignore buttons. Clicking Join joins the channel; clicking Ignore dismisses the dialog.
+**Goal**: When the invitee's ChatLive receives the `{:channel_invite, payload}` broadcast, it renders a retro-style dialog with Join/Ignore buttons. Clicking Join joins the channel; clicking Ignore dismisses the dialog.
 
 **Independent Test**: Simulate receiving a `:channel_invite` PubSub message → verify dialog renders with correct inviter/channel. Click Join → verify user joins channel and dialog disappears. Click Ignore → verify dialog disappears without joining.
 
@@ -83,11 +83,11 @@ _No setup tasks required._
 - [x] T014 [P] [US2] Write test for `handle_info({:channel_invite, ...})` — invite added to `pending_invites`, dialog renders with inviter name and channel in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_invite_test.exs`
 - [x] T015 [P] [US2] Write test for `"invite_accept"` event — user joins channel, invite removed from `pending_invites`, invite_exception removed in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_invite_test.exs`
 - [x] T016 [P] [US2] Write test for `"invite_ignore"` event — dialog dismissed, invite removed from `pending_invites`, invite_exception removed, user NOT joined in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_invite_test.exs`
-- [x] T017 [P] [US2] Write test for cascading dialogs — multiple invites to different channels render as stacked Win98 dialogs with offset in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_invite_test.exs`
+- [x] T017 [P] [US2] Write test for cascading dialogs — multiple invites to different channels render as stacked retro dialogs with offset in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_invite_test.exs`
 
 ### Implementation for User Story 2
 
-- [x] T018 [P] [US2] Create `InviteDialog` function component with `attr :pending_invites` — Win98 `.window`/`.title-bar` structure, cascading offset per index, Join/Ignore buttons with `phx-value-channel` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/invite_dialog.ex`
+- [x] T018 [P] [US2] Create `InviteDialog` function component with `attr :pending_invites` — retro `.window`/`.title-bar` structure, cascading offset per index, Join/Ignore buttons with `phx-value-channel` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/invite_dialog.ex`
 - [x] T019 [US2] Implement `handle_info({:channel_invite, payload})` — add invite to `pending_invites` (dedup by channel per FR-020) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [x] T020 [US2] Implement `handle_event("invite_accept", params)` — find invite, join channel via existing join flow, remove from `pending_invites`, call `Channel.Server.remove_invite_exception/3` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [x] T021 [US2] Implement `handle_event("invite_ignore", params)` — find invite, remove from `pending_invites`, call `Channel.Server.remove_invite_exception/3` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`

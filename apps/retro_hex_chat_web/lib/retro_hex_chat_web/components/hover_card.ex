@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.HoverCard do
   @moduledoc """
-  Nick hover card component with 98.css window styling.
+  Nick hover card component with retro window styling.
 
   Shows user info (nickname, hostname, online duration, channels, away status,
   role, contact/ignore badges) in a compact floating card positioned near the

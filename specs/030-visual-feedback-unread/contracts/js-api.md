@@ -60,7 +60,7 @@ Create and show a simple feedback toast (no checkbox, no suppress logic).
 Create the DOM element for a feedback toast.
 
 - **Input**: `message: string`.
-- **Output**: `HTMLElement` — a 98.css window with title "Info", body text, and no checkbox.
+- **Output**: `HTMLElement` — a retro window with title "Info", body text, and no checkbox.
 
 ## TreebarHook Modifications
 

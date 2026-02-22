@@ -194,7 +194,7 @@ When a channel is successfully joined, its treebar entry flashes with a green hi
 
 - Optimistic message send with pending state, failure detection, and retry
 - Channel join flash in treebar (green highlight, ~1 second)
-- Kick dialog (98.css styled, queued, requires OK to dismiss)
+- Kick dialog (retro-styled, queued, requires OK to dismiss)
 - Copy confirmation toast ("Copiado!", 2 seconds, via Z2 toast component)
 - Settings save confirmation toast ("Configurações salvas", 2 seconds, via Z2 toast component)
 - 6 treebar visual states: normal, unread, highlight, active, muted, disconnected

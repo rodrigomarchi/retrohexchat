@@ -10,7 +10,7 @@ Implement peer-to-peer file transfer over WebRTC DataChannel. Users in a P2P lob
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+ (backend, minimal changes), JavaScript ES2020+ (frontend, bulk of implementation)
-**Primary Dependencies**: Phoenix 1.8+, LiveView 1.0+, 98.css (npm), existing WebRTC infrastructure (034-036)
+**Primary Dependencies**: Phoenix 1.8+, LiveView 1.0+, retro CSS framework, existing WebRTC infrastructure (034-036)
 **Storage**: No new database tables — all transfer state is ephemeral (client-side JS memory)
 **Testing**: Vitest + jsdom (JS), ExUnit (Elixir — LiveView component tests)
 **Target Platform**: Modern browsers with WebRTC DataChannel + crypto.subtle support
@@ -32,7 +32,7 @@ Implement peer-to-peer file transfer over WebRTC DataChannel. Users in a P2P lob
 | V. Contracts and Behaviours | Minimal | PASS | No new Elixir behaviours needed (no new commands). DataChannel protocol is the contract. |
 | VI. Static Analysis from Day One | Yes | PASS | ESLint, Prettier, Credo, Dialyxir all enforced. |
 | VII. Lean LiveViews | Yes | PASS | LiveView handles only event routing and assigns. All transfer logic in JS lib. |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Uses 98.css progress-indicator, standard buttons, window styling. |
+| VIII. retro Design Fidelity | Yes | PASS | Uses retro design system progress-indicator, standard buttons, window styling. |
 | IX. Hot/Cold Data Separation | Yes | PASS | All state is ephemeral (hot — JS memory). No cold storage needed. |
 | X. Scalable Architecture | Minimal | PASS | P2P by nature — no server scaling concerns for file data. |
 | XI. User-Facing Documentation | No | N/A | Help documentation explicitly out of scope per spec. |
@@ -104,7 +104,7 @@ apps/retro_hex_chat/
 | V. Contracts and Behaviours | PASS | No change |
 | VI. Static Analysis from Day One | PASS | No change |
 | VII. Lean LiveViews | PASS | No change — LiveView only routes events and renders assigns |
-| VIII. Windows 98 Design Fidelity | PASS | No change — 98.css progress-indicator used |
+| VIII. retro Design Fidelity | PASS | No change — retro design system progress-indicator used |
 | IX. Hot/Cold Data Separation | PASS | No change |
 | X. Scalable Architecture | PASS | No change |
 

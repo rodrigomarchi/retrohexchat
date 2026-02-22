@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.ChannelCentralDialog do
   @moduledoc """
-  Channel Central dialog — Windows 98-style tabbed dialog for channel
+  Channel Central dialog — retro-style tabbed dialog for channel
   administration. Shows channel info, topic, modes, bans, ban exceptions,
   and invite exceptions. Operators see editable controls; non-operators
   see a fully read-only view.

@@ -34,7 +34,7 @@ mix ecto.migrate
 
 ### Phase 2: UI Components
 
-8. **ChannelCentralDialog Component**: 98.css tabbed dialog with 5 tabs
+8. **ChannelCentralDialog Component**: retro tabbed dialog with 5 tabs
 9. **Treebar Extension**: Double-click handler + context menu
 10. **ChatLive Integration**: Assigns, event handlers, PubSub handlers
 11. **Menu Bar**: Add Channel Central entry under Tools (or Channel) menu

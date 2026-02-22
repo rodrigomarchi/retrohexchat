@@ -31,7 +31,7 @@ COPY apps/retro_hex_chat_web/mix.exs apps/retro_hex_chat_web/
 RUN --mount=type=cache,target=/root/.hex \
     mix deps.get && mix deps.compile
 
-# Copy all application source (98.css is vendored, no npm needed)
+# Copy all application source (CSS is vendored, no npm needed)
 COPY apps apps
 COPY rel rel
 

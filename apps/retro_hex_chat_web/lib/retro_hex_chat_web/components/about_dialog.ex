@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.AboutDialog do
   @moduledoc """
-  Windows 98-style About dialog with ASCII art logo, version, and credits.
+  Retro-style About dialog with ASCII art logo, version, and credits.
   """
   use Phoenix.Component
 
@@ -40,10 +40,12 @@ defmodule RetroHexChatWeb.Components.AboutDialog do
     ║  RetroHexChat v1.0   ║
     ╚══════════════════════╝</pre>
             <p class="about-title">RetroHexChat v1.0</p>
-            <p class="about-description">A retro IRC-style chat client with Windows 98 aesthetics.</p>
+            <p class="about-description">
+              A retro IRC-style chat client with a classic 2000s-era aesthetic.
+            </p>
             <hr />
             <p class="about-credits">
-              Built with Elixir, Phoenix LiveView, and 98.css.
+              Built with Elixir, Phoenix LiveView, and a retro design system.
             </p>
             <p class="about-credits">
               Inspired by mIRC and the golden age of IRC.

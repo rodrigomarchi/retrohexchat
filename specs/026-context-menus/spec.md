@@ -9,7 +9,7 @@
 
 ### User Story 1 - Nick Context Menu in Chat Area (Priority: P1)
 
-A user right-clicks on a nickname displayed in the chat message area. A 98.css-styled context menu appears at the cursor position with actions relevant to that user: Private Message, Whois, Copy Nick, a separator, then Ignore, Add to Address Book, and Set Nick Color. If the right-clicking user is a channel operator, additional items appear below a second separator: Kick, Ban, Give Voice (+v), Give Op (+o). Each menu item displays its keyboard shortcut (if any) right-aligned. Items unavailable in the current context appear grayed out and are not clickable.
+A user right-clicks on a nickname displayed in the chat message area. A retro-styled context menu appears at the cursor position with actions relevant to that user: Private Message, Whois, Copy Nick, a separator, then Ignore, Add to Address Book, and Set Nick Color. If the right-clicking user is a channel operator, additional items appear below a second separator: Kick, Ban, Give Voice (+v), Give Op (+o). Each menu item displays its keyboard shortcut (if any) right-aligned. Items unavailable in the current context appear grayed out and are not clickable.
 
 **Why this priority**: Nicknames are the most frequently right-clicked element in any IRC client. This delivers the highest-value context menu since it enables the most common user actions (PM, whois, ignore) without typing commands. It also establishes the shared menu infrastructure (positioning, shortcuts display, disabled states) that all other menus build upon.
 
@@ -158,7 +158,7 @@ A user right-clicks on a channel in the treebar sidebar. The existing minimal me
 
 ## Assumptions
 
-- The existing context menu infrastructure (98.css styling, fixed positioning, phx-click event handling) will be reused and extended for new menu types.
+- The existing context menu infrastructure (retro styling, fixed positioning, phx-click event handling) will be reused and extended for new menu types.
 - Chat messages already render nicknames, URLs, and channel references as distinct, identifiable elements (or can be enhanced to do so with data attributes).
 - The "Save to URL List" action integrates with the existing URL catcher/list feature if present, or creates a simple saved URLs collection.
 - "Channel Settings" opens the existing channel settings dialog. "Channel Info" opens the existing channel info/whois-style display.

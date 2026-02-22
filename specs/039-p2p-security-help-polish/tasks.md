@@ -98,7 +98,7 @@
 - [x] T020 [US3] Update `P2PSessionLive.mount/3` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_session_live.ex` — load user's `message_settings.p2p_settings.turn_only` preference (default `false`), assign as `:turn_only`
 - [x] T021 [US3] Update `handle_info` for `p2p_status_changed` → `"connecting"` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_session_live.ex` — include `turn_only: socket.assigns.turn_only` in `p2p_start_offer`/`p2p_start_answer` push_event payloads. If `turn_only` is true but `P2P.turn_configured?()` is false, push warning system message and set `turn_only: false` in payload
 - [x] T022 [US3] Add `handle_event("toggle_privacy_mode", ...)` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/p2p_session_live.ex` — persist `message_settings.p2p_settings.turn_only` to user_preferences via existing preference persistence mechanism, update socket assign
-- [x] T023 [US3] Add "Modo privado (TURN-only)" checkbox to P2P lobby component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/p2p_lobby.ex` — 98.css styled checkbox, bound to `turn_only` assign, sends `toggle_privacy_mode` event on change. Show warning text if TURN not configured. Only visible when `turn_configured?` is true or preference is already enabled
+- [x] T023 [US3] Add "Modo privado (TURN-only)" checkbox to P2P lobby component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/p2p_lobby.ex` — retro-styled checkbox, bound to `turn_only` assign, sends `toggle_privacy_mode` event on change. Show warning text if TURN not configured. Only visible when `turn_configured?` is true or preference is already enabled
 
 **Checkpoint**: Privacy mode toggle works end-to-end; relay-only transport enforced when enabled
 

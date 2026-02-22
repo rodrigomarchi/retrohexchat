@@ -186,7 +186,7 @@ Unicode emojis render properly in chat messages. An optional emoji picker popup 
 
 ### User Story 10 — About Dialog Enhancement (Priority: P3)
 
-The Help > About dialog is enhanced to show a proper Windows 98-style about box with application name, version, credits, and a retro-style logo.
+The Help > About dialog is enhanced to show a proper retro-style about box with application name, version, credits, and a retro-style logo.
 
 **Why this priority**: The About dialog already exists but is minimal. A polished about box adds professional feel and is a quick win.
 
@@ -195,7 +195,7 @@ The Help > About dialog is enhanced to show a proper Windows 98-style about box 
 **Acceptance Scenarios**:
 
 1. **Given** the user opens Help > About, **When** the dialog renders, **Then** it displays "RetroHexChat" as the application name.
-2. **Given** the About dialog is open, **When** viewing credits, **Then** it shows "Built with Elixir, Phoenix LiveView, and 98.css" and the version number.
+2. **Given** the About dialog is open, **When** viewing credits, **Then** it shows "Built with Elixir, Phoenix LiveView, and retro design system" and the version number.
 3. **Given** the About dialog is open, **When** viewing the logo area, **Then** a pixelated retro-style logo or ASCII art is displayed.
 4. **Given** the About dialog is open, **When** the user clicks "OK", **Then** the dialog closes.
 

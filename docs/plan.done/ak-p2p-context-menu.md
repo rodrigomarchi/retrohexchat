@@ -30,7 +30,7 @@ Both existing context menus already support: PM, Whois, Ignore, Add Contact, Set
 - P2P requires registered users — menu items MUST check `@identified` (or equivalent assign) and only render for identified users
 - Target must also be registered — if target nick is a guest, items should be disabled with tooltip "Usuário não registrado"
 - Self-targeting: items disabled with no tooltip (same as Ignore behavior)
-- Submenu pattern: 98.css supports nested menus via `.tree-view` nesting. Alternative: flat items with separator (simpler, matches existing patterns)
+- Submenu pattern: retro design system supports nested menus via `.tree-view` nesting. Alternative: flat items with separator (simpler, matches existing patterns)
 - Event flow: `context_p2p` → resolve target nick → call `P2P.create_session/3` → on success, navigate to `/p2p/{token}` and close context menu
 - Error handling: rate limit errors, block errors, etc. shown as flash messages (same as slash command errors)
 - The chat context menu (`chat_context_menu.ex`) uses a different component structure than the nicklist menu (`context_menu.ex`) — both need the same items but wired differently

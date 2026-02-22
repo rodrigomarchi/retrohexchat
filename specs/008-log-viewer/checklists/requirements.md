@@ -33,4 +33,4 @@
 
 - All items pass validation. Spec is ready for `/speckit.clarify` or `/speckit.plan`.
 - FR-011 mentions "existing Formatter module" — this is a reference to existing product capability, not an implementation detail.
-- SC-006 references "98.css" as a design standard name, not a technology choice — acceptable.
+- SC-006 references "retro design system" as a design standard name, not a technology choice — acceptable.

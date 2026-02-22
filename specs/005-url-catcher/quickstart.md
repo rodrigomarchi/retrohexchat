@@ -36,7 +36,7 @@ Then: `mix deps.get`
 
 | Module | Purpose | File |
 |--------|---------|------|
-| `Components.URLCatcherWindow` | 98.css floating window component | `lib/retro_hex_chat_web/components/url_catcher_window.ex` |
+| `Components.URLCatcherWindow` | retro design system floating window component | `lib/retro_hex_chat_web/components/url_catcher_window.ex` |
 
 ## New Assets
 

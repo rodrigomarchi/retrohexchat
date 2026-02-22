@@ -33,7 +33,7 @@
 
 **Alternatives considered**:
 - **Deliver to active channel**: Ambiguous when no channel is active. Mixes notify events with channel conversation.
-- **Toast/popup notifications**: Not faithful to mIRC's Windows 98 UI paradigm.
+- **Toast/popup notifications**: Not faithful to mIRC's retro UI paradigm.
 - **Separate LiveView/route**: Unnecessary complexity — a component within ChatLive is sufficient.
 
 ## R4: Debounce Strategy

@@ -5,12 +5,12 @@
 
 ## Summary
 
-Implement a unified Address Book dialog (Alt+B) with four tabs — Contacts, Notify, Nick Colors, and Control — providing a single Windows 98-style interface for managing per-user relationships. Introduces two new domain concepts (ContactList, NickColors) with in-memory CRUD and async DB persistence following the established NotifyList pattern. The Notify tab reuses the existing NotifyList context; the Control tab shows a placeholder pending Cat F (Ignore System). Nick color overrides propagate to all nickname displays (chat, nicklist, whois, notify list, context menu). Context menu gains "Add to Contacts" and "Set Nick Color" quick actions.
+Implement a unified Address Book dialog (Alt+B) with four tabs — Contacts, Notify, Nick Colors, and Control — providing a single retro-style interface for managing per-user relationships. Introduces two new domain concepts (ContactList, NickColors) with in-memory CRUD and async DB persistence following the established NotifyList pattern. The Notify tab reuses the existing NotifyList context; the Control tab shows a placeholder pending Cat F (Ignore System). Nick color overrides propagate to all nickname displays (chat, nicklist, whois, notify list, context menu). Context menu gains "Add to Contacts" and "Set Nick Color" quick actions.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (new `contacts` + `nick_color_overrides` tables) + in-memory Session state for guests
 **Testing**: ExUnit (unit, integration, liveview, e2e tags), Floki for HTML assertions
 **Target Platform**: Web (localhost:4000, Docker-ready)
@@ -25,14 +25,14 @@ Implement a unified Address Book dialog (Alt+B) with four tabs — Contacts, Not
 
 | Principle | Status | Notes |
 |-----------|--------|-------|
-| I. Elixir & Phoenix Exclusive | PASS | Pure Elixir domain + LiveView UI, 98.css styling, PostgreSQL storage |
+| I. Elixir & Phoenix Exclusive | PASS | Pure Elixir domain + LiveView UI, retro styling, PostgreSQL storage |
 | II. Umbrella with Bounded Contexts | PASS | New modules in `Accounts` context (user-scoped data). No new bounded context. |
 | III. OTP Process Architecture | PASS | No new GenServers needed — data is per-session, not per-channel. In-memory via Session struct. |
 | IV. Test-First Development | PASS | Tests written before/alongside each module. Unit (domain CRUD), integration (persistence), liveview (dialog + events), e2e (full flows). |
 | V. Contracts and Behaviours | PASS | No new "/" commands needed. Existing Handler behaviour pattern not affected. |
 | VI. Static Analysis | PASS | All new public functions get `@spec`. Credo + Dialyxir + format enforced. |
 | VII. Lean LiveViews | PASS | AddressBookDialog is a dedicated component. ChatLive delegates to domain contexts. Nick color resolution is a domain function. |
-| VIII. Windows 98 Fidelity | PASS | Uses native 98.css `menu[role=tablist]` tab controls, sunken panels, 3D beveled borders. |
+| VIII. retro Fidelity | PASS | Uses native retro design system `menu[role=tablist]` tab controls, sunken panels, 3D beveled borders. |
 | IX. Hot/Cold Data Separation | PASS | Hot: Session-embedded maps. Cold: PostgreSQL via async Task.start writes. Follows NotifyList pattern exactly. |
 | X. Scalable Architecture | PASS | Per-user data, no shared state. FK cascade deletes. Case-insensitive indexes for efficient lookups. |
 
@@ -113,7 +113,7 @@ apps/retro_hex_chat_web/                      # Web layer
 
 ### Phase 2: Address Book Dialog Shell (US1)
 
-**Goal**: Render the tabbed dialog with 98.css tab controls, Alt+B toggle, toolbar icon.
+**Goal**: Render the tabbed dialog with retro tab controls, Alt+B toggle, toolbar icon.
 
 1. `AddressBookDialog` component with 4-tab layout using `menu[role=tablist]`
 2. ChatLive assigns: `show_address_book`, `address_book_tab`

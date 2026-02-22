@@ -9,7 +9,7 @@
 
 ### User Story 1 - Search and Browse Chat History (Priority: P1)
 
-A registered user wants to find a specific conversation from a past channel discussion. They open the Log Viewer from the Tools menu or toolbar. A Windows 98-style dialog appears with filter controls: a date range picker, a channel/PM selector dropdown, a nickname filter field, and a text search box. The user selects a channel, optionally narrows by date and nickname, and types a search term. Matching messages appear in a scrollable, paginated list with timestamps, nicknames, and message content. System events (joins, parts, kicks, topic changes) are visually distinct from regular messages.
+A registered user wants to find a specific conversation from a past channel discussion. They open the Log Viewer from the Tools menu or toolbar. A retro-style dialog appears with filter controls: a date range picker, a channel/PM selector dropdown, a nickname filter field, and a text search box. The user selects a channel, optionally narrows by date and nickname, and types a search term. Matching messages appear in a scrollable, paginated list with timestamps, nicknames, and message content. System events (joins, parts, kicks, topic changes) are visually distinct from regular messages.
 
 **Why this priority**: This is the core value proposition — without search and browse, no other feature (export, configuration) is useful. A functional log viewer with filters delivers immediate value.
 
@@ -114,7 +114,7 @@ A user wants to customize what information appears in the Log Viewer. They acces
 - **SC-003**: Exported .txt files contain correctly formatted timestamps, nicknames, and content for 100% of filtered messages with no data loss.
 - **SC-004**: Exported .html files preserve all formatting codes (bold, italic, underline, colors) present in the original messages.
 - **SC-005**: All 5 system event toggles correctly show/hide their respective event types in both the viewer display and exports.
-- **SC-006**: The Log Viewer renders in the Windows 98 visual style (98.css) consistent with all other dialogs in the application.
+- **SC-006**: The Log Viewer renders in the retro visual style (retro design system) consistent with all other dialogs in the application.
 - **SC-007**: Guest users see only current-session messages, with zero leakage of historical data from other users or previous sessions.
 
 ## Assumptions
@@ -123,7 +123,7 @@ A user wants to customize what information appears in the Log Viewer. They acces
 - The existing database schema supports queries by channel, date range, and text content; performance indexes may need to be added during implementation.
 - The "current session" for guest users is defined as messages received since their LiveView mount (connection time).
 - Default display preferences: all system event types visible, timestamp format [HH:MM:SS].
-- The Log Viewer follows the same dialog pattern as Channel Central, Address Book, and other 98.css windows in the application.
+- The Log Viewer follows the same dialog pattern as Channel Central, Address Book, and other retro windows in the application.
 - Export downloads are triggered via the browser (client-side download), not server-side file storage.
 - The nickname filter in FR-004 uses case-insensitive partial matching (e.g., "ali" matches "Alice" and "Malice") to be consistent with search UX patterns.
 

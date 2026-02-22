@@ -3,7 +3,7 @@
 **Feature Branch**: `001-phase1-foundation`
 **Created**: 2026-02-09
 **Status**: Draft
-**Input**: User description: "Fase 1 do RetroHexChat — fundação completa do cliente IRC web com design Windows 98 dark theme"
+**Input**: User description: "Fase 1 do RetroHexChat — fundação completa do cliente IRC web com design retro dark theme"
 
 ## Scope & Exclusions
 
@@ -32,7 +32,7 @@ notifications, end-to-end encryption, multi-server support.
 
 ### User Story 1 — Connect and Chat in #lobby (Priority: P1)
 
-A user opens the application and sees a Windows 98-style "Connect to
+A user opens the application and sees a 2000s-era "Connect to
 Server" dialog centered on screen. They enter a nickname (e.g., "Rodrigo"),
 click Connect, and are immediately placed in the `#lobby` channel. The
 full mIRC-style layout appears: treebar on the left showing #lobby under
@@ -54,7 +54,7 @@ Delivers the core value: real-time IRC-style chat with retro UI.
 **Acceptance Scenarios**:
 
 1. **Given** a user visits the app for the first time, **When** the page
-   loads, **Then** they see a Windows 98-style connection dialog centered
+   loads, **Then** they see a retro-style connection dialog centered
    on screen with Nickname and Alt Nickname fields.
 
 2. **Given** the connection dialog is shown, **When** the user enters a
@@ -126,7 +126,7 @@ operator badge, and channel lifecycle.
    channel no longer appears in `/list`.
 
 6. **Given** a user types `/list`, **When** the command executes, **Then**
-   a Windows 98-style Channel List dialog opens showing channel name,
+   a 2000s-era Channel List dialog opens showing channel name,
    topic, user count, with a search/filter input.
 
 7. **Given** a user is in #lobby and a message arrives in #elixir,
@@ -189,7 +189,7 @@ bidirectionally, verify persistence and treebar indicators.
 ### User Story 4 — Slash Commands System (Priority: P4)
 
 When a user types "/" in the input field, a command palette popup appears
-above the input (styled as a 98.css listbox). It shows all available
+above the input (styled as a retro design system listbox). It shows all available
 commands with brief descriptions. As the user continues typing (e.g.,
 "/jo"), the list filters in real time. Selecting a command via Enter or
 click fills the input and shows syntax hints. The up/down arrow keys
@@ -235,7 +235,7 @@ history and Tab nickname completion independently.
    `* OldName is now known as NewName` appears in all shared channels.
 
 8. **Given** a user types `/whois Rodrigo`, **When** the command executes,
-   **Then** a Windows 98 dialog opens showing: nickname, channels,
+   **Then** a retro dialog opens showing: nickname, channels,
    connection time, away status.
 
 9. **Given** a user types `/clear`, **When** the command executes,
@@ -442,7 +442,7 @@ empties.
 ### User Story 8 — Infinite Scroll and Chat Persistence (Priority: P8)
 
 When a user joins a channel, they see the 50 most recent messages. As
-they scroll up, older messages load automatically with a Windows 98
+they scroll up, older messages load automatically with a retro
 hourglass/progress indicator. The scroll position is preserved — no
 jumping. If the user has scrolled up and new messages arrive, a floating
 "New messages ↓" button appears at the bottom. Clicking it scrolls to
@@ -465,7 +465,7 @@ new messages arrive, verify "New messages" button appears.
 
 2. **Given** the user is viewing the chat, **When** they scroll to the
    top of the loaded messages, **Then** the next batch of older messages
-   loads with a progress indicator (hourglass or 98.css segmented
+   loads with a progress indicator (hourglass or retro segmented
    progress bar).
 
 3. **Given** older messages are loading, **When** they finish loading,
@@ -491,7 +491,7 @@ new messages arrive, verify "New messages" button appears.
 
 ### User Story 9 — Chat Search (Priority: P9)
 
-A user presses `Ctrl+F` (or uses Edit > Find menu) and a Windows 98-style
+A user presses `Ctrl+F` (or uses Edit > Find menu) and a 2000s-era
 search dialog appears. They type a search term and matching text is
 highlighted in yellow within the visible chat. "Find Next" / "Find
 Previous" buttons (and Enter / Shift+Enter) navigate between matches.
@@ -508,7 +508,7 @@ search, verify highlighting, navigation, and result counter independently.
 **Acceptance Scenarios**:
 
 1. **Given** a user presses Ctrl+F, **When** the search dialog opens,
-   **Then** it's styled as a Windows 98 dialog with TextBox, "Find Next",
+   **Then** it's styled as a retro dialog with TextBox, "Find Next",
    "Find Previous" buttons, and "Case sensitive" checkbox.
 
 2. **Given** the search dialog is open, **When** the user types "elixir",
@@ -539,7 +539,7 @@ search, verify highlighting, navigation, and result counter independently.
 The nicklist panel on the right side of a channel shows all members
 grouped by role: operators (@) first, then voiced (+), then regular
 users — alphabetically sorted within each group. A user count is shown
-at the top. Right-clicking a nickname opens a Windows 98-style context
+at the top. Right-clicking a nickname opens a 2000s-era context
 menu with options: Query, Whois, and (for operators) Kick, Ban, Give/Take
 Op, Give/Take Voice. User presence updates in real time — joins, parts,
 nick changes, away status all reflect instantly.
@@ -587,33 +587,33 @@ user go away and verify icon change.
 
 ---
 
-### User Story 11 — Windows 98 Design System and Dark Theme (Priority: P11)
+### User Story 11 — retro Design System and Dark Theme (Priority: P11)
 
-The entire application uses 98.css as the base design system with a custom
+The entire application uses retro design system as the base design system with a custom
 dark theme overlay via CSS custom properties. The dark theme is the
 default. Windows have 3D beveled borders, title bars with gradients,
 sunken panels for text areas. Fonts are monospace in the chat (Fixedsys /
-Consolas / Courier New) and the standard 98.css pixel font for UI
+Consolas / Courier New) and the standard retro design system pixel font for UI
 elements. All custom components (chat message, treebar, command palette,
-context menu, dialogs) are styled consistently with the 98.css foundation.
+context menu, dialogs) are styled consistently with the retro design system foundation.
 
 **Why this priority**: Visual design can be refined iteratively. Core
-98.css integration happens naturally in P1, but the full dark theme with
+retro design system integration happens naturally in P1, but the full dark theme with
 all custom properties, custom components, and pixel-perfect polish is a
 dedicated effort.
 
 **Independent Test**: Visual inspection of every component against
-Windows 98 reference screenshots. Verify dark theme colors, 3D borders,
+Retro reference screenshots. Verify dark theme colors, 3D borders,
 font rendering, and component consistency.
 
 **Acceptance Scenarios**:
 
 1. **Given** the app loads, **When** displayed, **Then** the overall
-   appearance matches the Windows 98 dark theme aesthetic: dark blue
+   appearance matches the retro dark theme aesthetic: dark blue
    backgrounds (#1a1a2e), silver text (#c0c0c0), 3D beveled borders.
 
 2. **Given** any window/panel, **When** inspected, **Then** it uses
-   standard 98.css Window component with title bar, borders, and
+   standard retro design system Window component with title bar, borders, and
    appropriate raised/sunken styling.
 
 3. **Given** the chat area, **When** a message is displayed, **Then**
@@ -636,19 +636,19 @@ font rendering, and component consistency.
 8. **Given** scrollbars, buttons, inputs, **When** inspected, **Then**
    they all use the dark theme colors while maintaining 3D styling.
 
-9. **Given** loading states, **When** active, **Then** a Windows 98
-   hourglass cursor or 98.css segmented progress indicator is shown.
+9. **Given** loading states, **When** active, **Then** a retro
+   hourglass cursor or retro segmented progress indicator is shown.
 
 ---
 
 ### User Story 12 — UX Polish: Sounds, Dialogs, Menu Bar (Priority: P12)
 
 The menu bar is fully functional with keyboard shortcuts (Alt+F for File,
-etc.). Confirmation dialogs (kick, ban, drop) use Windows 98-style
+etc.). Confirmation dialogs (kick, ban, drop) use 2000s-era
 dialog windows. Optional notification sounds (wav-style) play for new
 messages, PMs, and user joins. The toolbar provides quick access to
 Connect/Disconnect, Channel List, and Settings. All interaction feedback
-follows the Windows 98 paradigm — hourglass on loading, beveled buttons
+follows the classic desktop paradigm — hourglass on loading, beveled buttons
 with press states, proper focus management.
 
 **Why this priority**: Polish and sounds are the final layer that make
@@ -674,17 +674,17 @@ Enable sounds and verify playback on relevant events.
    treebar panel shows or hides.
 
 5. **Given** an operator clicks Kick on a user, **When** the action
-   triggers, **Then** a Windows 98 confirmation dialog appears: "Kick
+   triggers, **Then** a retro confirmation dialog appears: "Kick
    user from #channel? [OK] [Cancel]" with optional reason field.
 
 6. **Given** sounds are enabled, **When** a new PM arrives, **Then** a
-   Windows 98-style notification sound plays.
+   retro-style notification sound plays.
 
 7. **Given** the toolbar, **When** the user clicks the Channel List
    icon, **Then** the channel list dialog opens (same as `/list`).
 
 8. **Given** any button in the UI, **When** pressed, **Then** it shows a
-   proper Windows 98 "pressed" state (sunken 3D border).
+   proper retro "pressed" state (sunken 3D border).
 
 ---
 
@@ -734,7 +734,7 @@ Enable sounds and verify playback on relevant events.
 ### Functional Requirements
 
 #### Identity & Connection
-- **FR-001**: System MUST display a Windows 98-style connection dialog
+- **FR-001**: System MUST display a retro-style connection dialog
   on first visit with Nickname and Alt Nickname fields.
 - **FR-002**: System MUST validate nicknames in real time: max 16 chars,
   no spaces, must start with letter or allowed special char (not number),
@@ -857,7 +857,7 @@ Enable sounds and verify playback on relevant events.
   (joins, parts, nick changes, away status).
 
 #### Design System
-- **FR-061**: UI MUST use 98.css as base design system with dark theme
+- **FR-061**: UI MUST use retro design system as base design system with dark theme
   as default.
 - **FR-062**: Dark theme MUST use the specified color palette: windows
   #1a1a2e, chat #0d0d1a, text #c0c0c0, etc.
@@ -871,7 +871,7 @@ Enable sounds and verify playback on relevant events.
 - **FR-065**: Hourglass cursor MUST display during loading states.
 - **FR-066**: Optional notification sounds (wav-style) for PM, new
   message, user join.
-- **FR-067**: Confirmation dialogs (kick, ban, drop) MUST use Windows 98
+- **FR-067**: Confirmation dialogs (kick, ban, drop) MUST use retro
   dialog style.
 - **FR-068**: Toolbar MUST provide Connect/Disconnect, Channel List,
   Settings quick actions.
@@ -954,8 +954,8 @@ Enable sounds and verify playback on relevant events.
   modes, and moderate the channel using only "/" commands — all
   functioning correctly.
 
-- **SC-003**: The UI passes visual comparison against mIRC/Windows 98
-  reference screenshots at a reasonable fidelity level — 98.css
+- **SC-003**: The UI passes visual comparison against mIRC/retro
+  reference screenshots at a reasonable fidelity level — retro design system
   components are used correctly with dark theme applied consistently.
 
 - **SC-004**: Infinite scroll loads 50-message pages in under 100ms for

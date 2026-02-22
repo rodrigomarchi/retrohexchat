@@ -177,6 +177,6 @@ Users can navigate their command/message history using Ctrl+Up and Ctrl+Down whi
 
 - Spell-checking or grammar suggestions
 - Message drafts per channel (saving drafts when switching channels)
-- Input themes or styling beyond 98.css
+- Input themes or styling beyond retro design system
 - Autocomplete improvements (already covered by feature 023)
 - Command validation or error checking while typing (the tooltip is informational only)

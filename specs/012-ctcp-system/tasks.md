@@ -93,7 +93,7 @@
 
 ## Phase 5: User Story 3 — CTCP Settings Dialog (Priority: P2)
 
-**Goal**: Users can customize CTCP replies and disable CTCP responses via a Win98 settings dialog accessible from the Tools menu. Settings persist for registered users.
+**Goal**: Users can customize CTCP replies and disable CTCP responses via a retro settings dialog accessible from the Tools menu. Settings persist for registered users.
 
 **Independent Test**: Open settings dialog, modify values, verify CTCP replies reflect changes. Reconnect identified user and verify persistence.
 
@@ -105,7 +105,7 @@
 
 ### Implementation for User Story 3
 
-- [X] T024 [US3] Create `RetroHexChatWeb.Components.CtcpSettingsDialog` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ctcp_settings_dialog.ex` — Win98 dialog with: enable/disable checkbox, version string text input, finger text text input, Save/Cancel buttons
+- [X] T024 [US3] Create `RetroHexChatWeb.Components.CtcpSettingsDialog` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ctcp_settings_dialog.ex` — retro dialog with: enable/disable checkbox, version string text input, finger text text input, Save/Cancel buttons
 - [X] T025 [US3] Add "CTCP Settings" menu item to Tools menu in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/menu_bar.ex` with phx-click="open_ctcp_settings_dialog"
 - [X] T026 [US3] Add socket assigns for dialog state (`show_ctcp_settings_dialog: false`) and render CtcpSettingsDialog component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`
 - [X] T027 [US3] Implement handle_event handlers for CTCP settings dialog in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex`: open_ctcp_settings_dialog, close_ctcp_settings_dialog, ctcp_save_settings (update session, persist for identified users via Task.start)

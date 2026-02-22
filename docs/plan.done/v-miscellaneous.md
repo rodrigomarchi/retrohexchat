@@ -8,7 +8,7 @@
 
 | # | Feature | Status | Description |
 |---|---------|--------|-------------|
-| W1 | About dialog | New | "Help -> About" with credits, version, pixelated Windows 98 style logo |
+| W1 | About dialog | New | "Help -> About" with credits, version, pixelated retro style logo |
 | W2 | IRC commands reference | New | "Help -> IRC Commands" with complete reference accessible within the app |
 | W3 | Keyboard shortcuts reference | New | Dialog listing all available keyboard shortcuts |
 | W4 | Customizable quit message | New | Configure the message displayed when doing /quit |
@@ -67,7 +67,7 @@ RIGHT-CLICK COPY (Red priority): A user selects text in the chat area by clickin
 
 NICK COLUMN ALIGNMENT (Red priority): All nicknames in the chat are rendered in a fixed-width column. Whether the nick is 3 characters or 15, all message text starts at the same horizontal position. This dramatically improves readability in busy channels. The column width adjusts to the longest visible nick or can be set to a fixed width.
 
-ABOUT DIALOG: Help > About opens a Windows 98-style dialog showing: application name (RetroHexChat), version number, credits, and a pixelated retro logo.
+ABOUT DIALOG: Help > About opens a retro-style dialog showing: application name (RetroHexChat), version number, credits, and a pixelated retro logo.
 
 IRC COMMANDS REFERENCE: Help > IRC Commands opens a scrollable dialog with a complete reference of all available slash commands, their syntax, parameters, and examples.
 

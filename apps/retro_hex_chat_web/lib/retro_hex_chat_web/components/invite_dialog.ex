@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.InviteDialog do
   @moduledoc """
-  Windows 98-style invite dialog(s) for channel invitations.
+  Retro-style invite dialog(s) for channel invitations.
   Renders cascading dialogs when multiple invites are pending.
   """
   use Phoenix.Component

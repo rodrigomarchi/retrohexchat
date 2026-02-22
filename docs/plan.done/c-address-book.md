@@ -38,7 +38,7 @@ PROBLEM: Users currently manage friends, ignored users, and nick color preferenc
 
 EXISTING CONTEXT: Nick colors by hash (Cat A1) are already implemented. The Notify List (Cat B) and Ignore System (Cat F) must be implemented before this category, as the Address Book provides an alternative management UI for both.
 
-USER JOURNEY: A user presses Alt+B (or clicks the Address Book toolbar icon) and a tabbed Windows 98-style dialog opens with four tabs:
+USER JOURNEY: A user presses Alt+B (or clicks the Address Book toolbar icon) and a tabbed retro-style dialog opens with four tabs:
 
 1. CONTACTS tab — Shows a list of saved contacts with columns: Nickname, Notes, First Contact Date. The user can add new contacts, edit notes, and remove entries. This is their personal rolodex of people they have interacted with.
 

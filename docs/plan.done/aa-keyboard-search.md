@@ -10,12 +10,12 @@
 |---|---------|--------|-------------|
 | AA1 | Keyboard hook | Existing | LiveView hook handling Arrow Up/Down for history and Tab for nick completion |
 | AA2 | Global shortcut system | New | Centralized shortcut registry with web-safe key combos (Ctrl+Shift+Key pattern) |
-| AA3 | Shortcut cheatsheet dialog | New | Ctrl+/ opens 98.css dialog listing all shortcuts organized by category |
+| AA3 | Shortcut cheatsheet dialog | New | Ctrl+/ opens retro dialog listing all shortcuts organized by category |
 | AA4 | Navigation shortcuts | New | Ctrl+Tab / Ctrl+Shift+Tab for window cycling, Alt+1..9 for window N |
 | AA5 | Channel navigation | New | Alt+↑/↓ to navigate between channels in treebar |
 | AA6 | System shortcuts | New | Alt+O (Options), Alt+B (Address Book), Alt+R (Script Editor), F1 (Help), F5 (Refresh channel list) |
 | AA7 | Customizable shortcuts | New | Settings dialog where users can rebind keyboard shortcuts |
-| AA8 | Search bar component | Existing | Win98-styled search dialog with input, Find Next/Prev, "X of Y" counter |
+| AA8 | Search bar component | Existing | retro-styled search dialog with input, Find Next/Prev, "X of Y" counter |
 | AA9 | Search highlight in chat | New | Matching text in chat messages highlighted with yellow background |
 | AA10 | Search result navigation | New | ↑↓ arrows in search bar navigate between matches, scrolling chat to each result |
 | AA11 | Search filters | New | Checkboxes: Case-sensitive, Regex, Only my nick (messages mentioning me) |
@@ -34,10 +34,10 @@
 ## Technical Notes
 
 - Existing keyboard_hook.js handles Arrow Up/Down for command history and Tab for nick completion
-- Existing search_bar.ex renders a Win98-styled search dialog with text input, Find Next/Prev buttons, and "X of Y" counter
+- Existing search_bar.ex renders a retro-styled search dialog with text input, Find Next/Prev buttons, and "X of Y" counter
 - Global shortcuts must use web-safe combinations — Ctrl+Shift+Key pattern avoids browser conflicts
 - Many shortcuts already implemented in Feature 022: Ctrl+Shift+F (search), Ctrl+Shift+B (bold), etc.
-- Cheatsheet dialog: organized by category (Navigation, Chat, Formatting, System) in a scrollable 98.css window
+- Cheatsheet dialog: organized by category (Navigation, Chat, Formatting, System) in a scrollable retro window
 - Search highlighting: use CSS class on matching text spans, yellow background with smooth transitions
 - Search result navigation: maintain array of match positions, scroll to nth match on ↑↓
 - Regex search: use JavaScript RegExp with error handling for invalid patterns
@@ -52,9 +52,9 @@
 
 PROBLEM: While basic keyboard handling exists (history navigation, Tab completion, some Ctrl+Shift shortcuts), there is no centralized shortcut system, no cheatsheet for users to discover available shortcuts, and no way to customize key bindings. The search feature has a basic bar component but lacks result highlighting in the chat, navigation between matches, and advanced filters. Power users who prefer keyboard-driven workflows cannot efficiently navigate windows, switch channels, or access dialogs without the mouse.
 
-EXISTING CONTEXT: (1) keyboard_hook.js handles Arrow Up/Down for command history navigation and Tab for nick completion in the chat input. (2) search_bar.ex provides a Win98-styled search dialog with text input, Find Next/Previous buttons, and an 'X of Y' result counter. (3) Several keyboard shortcuts already exist from Feature 022: Ctrl+Shift+F (search), Ctrl+Shift+B (bold), Ctrl+Shift+I (italic), Ctrl+Shift+U (underline), Ctrl+Shift+K (color), Ctrl+Shift+L (clear), Ctrl+Shift+M (mute). These use the web-safe Ctrl+Shift+Key pattern to avoid browser shortcut conflicts.
+EXISTING CONTEXT: (1) keyboard_hook.js handles Arrow Up/Down for command history navigation and Tab for nick completion in the chat input. (2) search_bar.ex provides a retro-styled search dialog with text input, Find Next/Previous buttons, and an 'X of Y' result counter. (3) Several keyboard shortcuts already exist from Feature 022: Ctrl+Shift+F (search), Ctrl+Shift+B (bold), Ctrl+Shift+I (italic), Ctrl+Shift+U (underline), Ctrl+Shift+K (color), Ctrl+Shift+L (clear), Ctrl+Shift+M (mute). These use the web-safe Ctrl+Shift+Key pattern to avoid browser shortcut conflicts.
 
-USER JOURNEY — KEYBOARD SHORTCUTS: A new user presses Ctrl+/ (or Ctrl+Shift+/) to see what shortcuts are available. A 98.css-styled dialog opens with shortcuts organized by category: Navigation (Ctrl+Tab for next window, Ctrl+Shift+Tab for previous, Alt+1..9 for window N, Alt+↑/↓ for treebar navigation), Chat (↑/↓ for history, Tab for autocomplete, Ctrl+Shift+F for search, Ctrl+Shift+L for clear), Formatting (Ctrl+Shift+B/I/U/K), System (Alt+O for Options, Alt+B for Address Book, F1 for Help, F5 for Refresh channels). They close the dialog and press Ctrl+Tab — the focus switches to the next channel. Alt+1 takes them to the first window. Alt+↓ moves down the treebar.
+USER JOURNEY — KEYBOARD SHORTCUTS: A new user presses Ctrl+/ (or Ctrl+Shift+/) to see what shortcuts are available. A retro-styled dialog opens with shortcuts organized by category: Navigation (Ctrl+Tab for next window, Ctrl+Shift+Tab for previous, Alt+1..9 for window N, Alt+↑/↓ for treebar navigation), Chat (↑/↓ for history, Tab for autocomplete, Ctrl+Shift+F for search, Ctrl+Shift+L for clear), Formatting (Ctrl+Shift+B/I/U/K), System (Alt+O for Options, Alt+B for Address Book, F1 for Help, F5 for Refresh channels). They close the dialog and press Ctrl+Tab — the focus switches to the next channel. Alt+1 takes them to the first window. Alt+↓ moves down the treebar.
 
 A power user opens Settings and navigates to the Keyboard Shortcuts section. They see a list of all shortcuts with their current bindings. They click on a shortcut and press a new key combination to rebind it. Conflicts are detected and shown as warnings.
 

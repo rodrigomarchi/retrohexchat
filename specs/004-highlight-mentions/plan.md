@@ -5,12 +5,12 @@
 
 ## Summary
 
-Add highlight/mention detection to RetroHexChat so users see visually distinct messages when their nickname or custom words are mentioned. The implementation adds a pure-function highlight matching engine in the domain layer (`Chat.Highlight`), a custom highlight words CRUD module (`Chat.HighlightWords`) with persistence, Session extension for in-memory storage, ChatLive integration for message decoration + treebar flash + sound triggering, a configuration dialog (98.css), and CSS highlight styling.
+Add highlight/mention detection to RetroHexChat so users see visually distinct messages when their nickname or custom words are mentioned. The implementation adds a pure-function highlight matching engine in the domain layer (`Chat.Highlight`), a custom highlight words CRUD module (`Chat.HighlightWords`) with persistence, Session extension for in-memory storage, ChatLive integration for message decoration + treebar flash + sound triggering, a configuration dialog (retro design system), and CSS highlight styling.
 
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+
-**Primary Dependencies**: Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, 98.css
+**Primary Dependencies**: Phoenix 1.7+, Phoenix LiveView 1.0+, Ecto 3.x, retro design system
 **Storage**: PostgreSQL 16+ (new `highlight_words` table) + in-memory Session state for guests
 **Testing**: ExUnit (unit, integration, liveview, e2e tags), Mox, ExMachina, StreamData, Floki
 **Target Platform**: Web (browser)
@@ -32,7 +32,7 @@ Add highlight/mention detection to RetroHexChat so users see visually distinct m
 | V. Contracts and Behaviours | Yes | PASS | HighlightWords follows existing domain module patterns. No new "/" command needed (dialog-based config), but `/highlight` command could be added following Handler behaviour if desired. |
 | VI. Static Analysis | Yes | PASS | All public functions get @spec. Credo + Dialyzer + format enforced. |
 | VII. Lean LiveViews | Yes | PASS | ChatLive delegates to `Chat.Highlight.check/3` for matching. Dialog component is a function component. JS hook interaction is minimal (push_event for sound). |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Dialog uses 98.css. Color picker reuses existing 16-color IRC palette. |
+| VIII. retro Design Fidelity | Yes | PASS | Dialog uses retro design system. Color picker reuses existing 16-color IRC palette. |
 | IX. Hot/Cold Data Separation | Yes | PASS | Runtime highlight state in Session (hot). Persistent highlight words in PostgreSQL (cold). Loaded on NickServ identify. |
 | X. Scalable Architecture | Yes | PASS | Pure function matching scales with message volume. No shared state between users. |
 
@@ -196,7 +196,7 @@ apps/retro_hex_chat_web/
 
 4. **NickServ identify integration** — load highlight words alongside notify_list/contacts/nick_colors
 
-5. **`HighlightDialog` component** (98.css):
+5. **`HighlightDialog` component** (retro design system):
    - Window chrome with title "Highlight Words"
    - List showing current words with color indicators
    - Own nick shown as non-removable first entry

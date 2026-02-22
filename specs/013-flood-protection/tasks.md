@@ -118,7 +118,7 @@
 
 ## Phase 6: User Story 4 — Flood Protection Settings Dialog (Priority: P4)
 
-**Goal**: Provide a Win98-styled dialog for users to customize all flood protection thresholds, with DB persistence for registered users.
+**Goal**: Provide a retro-styled dialog for users to customize all flood protection thresholds, with DB persistence for registered users.
 
 **Independent Test**: Open dialog, modify thresholds, save, verify changes persist after reconnection (registered users) and are applied to flood detection.
 
@@ -130,7 +130,7 @@
 
 ### Implementation for User Story 4
 
-- [x] T026 [P] [US4] Create `RetroHexChatWeb.Components.FloodProtectionDialog` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/flood_protection_dialog.ex` — Win98-styled dialog matching CTCP/Ignore dialog pattern: overlay, window with title-bar "Flood Protection", fieldsets for "Message Flood" (threshold + window), "Anti-Spam" (duplicate threshold + window), "Auto-Ignore" (duration), "CTCP Reply Limit" (limit + window), number inputs with min/max constraints, Save/Reset Defaults/Cancel buttons, `phx-submit="flood_save_settings"`, `phx-click="flood_reset_defaults"`, `phx-click="close_flood_protection_dialog"`
+- [x] T026 [P] [US4] Create `RetroHexChatWeb.Components.FloodProtectionDialog` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/flood_protection_dialog.ex` — retro-styled dialog matching CTCP/Ignore dialog pattern: overlay, window with title-bar "Flood Protection", fieldsets for "Message Flood" (threshold + window), "Anti-Spam" (duplicate threshold + window), "Auto-Ignore" (duration), "CTCP Reply Limit" (limit + window), number inputs with min/max constraints, Save/Reset Defaults/Cancel buttons, `phx-submit="flood_save_settings"`, `phx-click="flood_reset_defaults"`, `phx-click="close_flood_protection_dialog"`
 - [x] T027 [US4] Add dialog event handlers in ChatLive in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — implement `handle_event("open_flood_protection_dialog")`, `handle_event("close_flood_protection_dialog")`, `handle_event("flood_save_settings", params)` (parse all 7 fields from string params, validate, update session, persist if identified via `Task.start`), `handle_event("flood_reset_defaults")` (reset to `FloodProtection.new()`, persist if identified); add `show_flood_protection_dialog: false` to `assign_defaults`
 - [x] T028 [US4] Render dialog component in ChatLive template in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — add `<RetroHexChatWeb.Components.FloodProtectionDialog.flood_protection_dialog visible={@show_flood_protection_dialog} flood_protection={@session.flood_protection} />` in the render function, following the CTCP/Ignore dialog placement pattern
 - [x] T029 [US4] Add "Flood Protection" menu item to Tools menu in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/menu_bar.ex` — add `<div class="menu-dropdown-item" data-testid="menu-flood-protection" phx-click="open_flood_protection_dialog">Flood Protection</div>` in the Tools menu section

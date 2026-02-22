@@ -86,7 +86,7 @@
 
 ## R9: MOTD Display Styling
 
-**Decision**: Display the MOTD as a bordered system message in the Status Window using a new message type `:motd`. The MOTD content is wrapped in a container with a distinctive border (double-line style via 98.css classes) and a "Message of the Day" header. The existing `push_status_message/3` function handles the insertion; CSS styling differentiates it from regular system messages.
+**Decision**: Display the MOTD as a bordered system message in the Status Window using a new message type `:motd`. The MOTD content is wrapped in a container with a distinctive border (double-line style via retro CSS classes) and a "Message of the Day" header. The existing `push_status_message/3` function handles the insertion; CSS styling differentiates it from regular system messages.
 
 **Rationale**: The Status Window already renders different message types with different styling (`:system`, `:error`, `:service`). Adding `:motd` as a new type allows CSS-targeted styling without changing the rendering pipeline. The bordered container provides the "distinctive" display required by the spec.
 
@@ -96,9 +96,9 @@
 
 ## R10: Announcement Styling
 
-**Decision**: Display announcements with a new message type `:announcement`. CSS provides bold text, colored background (amber/yellow to match Windows 98 warning dialogs), and high contrast. The announcement is inserted into the active window's message stream (channel or PM, whichever is focused) rather than the Status Window.
+**Decision**: Display announcements with a new message type `:announcement`. CSS provides bold text, colored background (amber/yellow to match retro warning dialogs), and high contrast. The announcement is inserted into the active window's message stream (channel or PM, whichever is focused) rather than the Status Window.
 
-**Rationale**: The spec explicitly requires announcements to appear in the "currently active window" with distinctive styling. This differs from wallops/MOTD which go to the Status Window. Using the active channel/PM stream ensures visibility. The amber/yellow styling matches Windows 98 warning dialog conventions (Principle VIII).
+**Rationale**: The spec explicitly requires announcements to appear in the "currently active window" with distinctive styling. This differs from wallops/MOTD which go to the Status Window. Using the active channel/PM stream ensures visibility. The amber/yellow styling matches retro warning dialog conventions (Principle VIII).
 
 **Alternatives considered**:
 - Popup/modal: Would be more intrusive but also more annoying. A styled inline message in the active window balances visibility with usability.

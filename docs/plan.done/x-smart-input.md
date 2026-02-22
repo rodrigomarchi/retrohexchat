@@ -14,7 +14,7 @@
 | X4 | Configurable detail level | New | Toggle in Settings: Beginner (full help) / Expert (syntax only) / Off |
 | X5 | Multi-line paste detection | Existing | Dialog when pasting 3+ lines with Send All / Send 1-by-1 / Preview / Cancel |
 | X6 | Contextual placeholder text | New | Input placeholder changes by context: "#general — / para comandos", "Mensagem para Mario", "Digite um comando" |
-| X7 | Formatting toolbar | Existing | B/I/U/S/Color/Monospace buttons above input, 98.css styled |
+| X7 | Formatting toolbar | Existing | B/I/U/S/Color/Monospace buttons above input, retro-styled |
 | X8 | Character counter | Existing | Real-time counter showing current/max chars with color warnings |
 | X9 | Input vertical expansion | New | Input grows up to 5 visible lines for long text, scroll after that |
 | X10 | Enhanced history navigation | New | Ctrl+↑/↓ to navigate history without erasing current text, Ctrl+R for reverse search |
@@ -66,5 +66,5 @@ EDGE CASES: The syntax tooltip must not overlap with the autocomplete dropdown �
 
 NEGATIVE REQUIREMENTS: The syntax tooltip must NOT block the chat view — it appears in a small area above the input. The tooltip must NOT appear for regular messages (only after /). Input expansion must NOT exceed 5 visible lines before scrolling. History persistence must NOT store passwords or sensitive command arguments (/identify, /nickserv).
 
-SCOPE: In scope — inline command syntax tooltip with parameter highlighting (activating both after autocomplete selection and on manual command typing), mode helper for /mode, configurable detail level (Beginner/Expert/Off), contextual placeholder text, input vertical expansion up to 5 lines, Ctrl+Up/Down history navigation preserving current text, Ctrl+R reverse history search, localStorage history persistence (100 entries). Out of scope — spell-checking, grammar suggestions, message drafts per channel, input themes/styling beyond 98.css."
+SCOPE: In scope — inline command syntax tooltip with parameter highlighting (activating both after autocomplete selection and on manual command typing), mode helper for /mode, configurable detail level (Beginner/Expert/Off), contextual placeholder text, input vertical expansion up to 5 lines, Ctrl+Up/Down history navigation preserving current text, Ctrl+R reverse history search, localStorage history persistence (100 entries). Out of scope — spell-checking, grammar suggestions, message drafts per channel, input themes/styling beyond retro design system."
 ```

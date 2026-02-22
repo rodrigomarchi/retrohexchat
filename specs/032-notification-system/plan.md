@@ -10,7 +10,7 @@ Unified notification system that routes chat events (mentions, PMs, channel mess
 ## Technical Context
 
 **Language/Version**: Elixir 1.17+ / OTP 27+, JavaScript ES2020+
-**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, 98.css (npm), esbuild
+**Primary Dependencies**: Phoenix 1.8+, Phoenix LiveView 1.0+, retro CSS framework, esbuild
 **Storage**: PostgreSQL 16+ (existing `user_preferences.message_settings` JSONB — no new migration), localStorage (guest preferences, DND state)
 **Testing**: ExUnit (unit, integration, LiveView, e2e), Vitest + jsdom (JS lib + hook tests)
 **Target Platform**: Modern browsers (Chrome, Firefox, Safari, Edge)
@@ -32,7 +32,7 @@ Unified notification system that routes chat events (mentions, PMs, channel mess
 | V. Contracts and Behaviours | Yes | PASS | No new behaviours needed — notification routing is a pure function module, not a polymorphic dispatch. |
 | VI. Static Analysis | Yes | PASS | `@spec` on all public functions. ESLint + Prettier for JS. Credo + Dialyzer for Elixir. |
 | VII. Lean LiveViews & Components | Yes | PASS | ChatLive delegates to helpers/notifications.ex. Notification routing logic in domain layer. PubSub topics unchanged. |
-| VIII. Windows 98 Design Fidelity | Yes | PASS | Notification center styled as 98.css window dropdown. Toasts use existing 98.css window styling. Bell icon is 16x16 pixel art. |
+| VIII. retro Design Fidelity | Yes | PASS | Notification center styled as retro window dropdown. Toasts use existing retro window styling. Bell icon is 16x16 pixel art. |
 | IX. Hot/Cold Data Separation | Yes | PASS | Notification entries are ephemeral (socket assigns — hot). Preferences persisted in PostgreSQL (cold). No new migrations. |
 | X. Scalable Architecture | Yes | PASS | Per-session state in socket assigns scales naturally with Phoenix. No shared mutable state. |
 | XI. User-Facing Documentation | Yes | PASS | Help topics for: Notifications, Do Not Disturb, Notification Center, per-channel notification settings. |
