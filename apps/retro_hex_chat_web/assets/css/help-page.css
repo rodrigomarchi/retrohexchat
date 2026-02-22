@@ -1,27 +1,17 @@
 /* RetroHexChat — Dedicated help page: full-viewport 98.css layout */
 
-.help-page-body {
-  margin: 0;
-  padding: 0;
-  background-color: #008080;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 20px;
-}
-
 .help-page {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .help-page-window {
-  width: 100%;
-  height: calc(100vh - 40px);
+  flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .help-page-split {
@@ -180,12 +170,12 @@
 /* Scroll containers for nav pane lists */
 .help-index-scroll {
   overflow-y: auto;
-  max-height: calc(100vh - 150px);
+  flex: 1;
 }
 
 .help-search-scroll {
   overflow-y: auto;
-  max-height: calc(100vh - 200px);
+  flex: 1;
 }
 
 /* Empty state */

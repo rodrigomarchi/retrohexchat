@@ -77,12 +77,14 @@ defmodule RetroHexChatWeb.Components.HoverCard do
         <span class="nick-hover-card-label">Channels:</span>
         <span class="nick-hover-card-channels">{Enum.join(@data.channels, ", ")}</span>
       </div>
-      <div :if={@data[:is_contact] || @data[:is_ignored]} class="nick-hover-card-badges">
-        <span :if={@data[:is_contact]} class="hover-card-badge hover-card-badge--contact">
-          <Icons.icon_tab_contacts class="hover-card-badge-icon" /> Contact
+      <div class="nick-hover-card-badges">
+        <span class={contact_badge_class(@data[:is_contact])}>
+          <Icons.icon_tab_contacts class="hover-card-badge-icon" />
+          {if @data[:is_contact], do: "Contact", else: "Not a contact"}
         </span>
-        <span :if={@data[:is_ignored]} class="hover-card-badge hover-card-badge--ignored">
-          <Icons.icon_btn_ignore class="hover-card-badge-icon" /> Ignored
+        <span class={ignore_badge_class(@data[:is_ignored])}>
+          <Icons.icon_btn_ignore class="hover-card-badge-icon" />
+          {if @data[:is_ignored], do: "Ignored", else: "Not ignored"}
         </span>
       </div>
     </div>
@@ -91,6 +93,14 @@ defmodule RetroHexChatWeb.Components.HoverCard do
     </p>
     """
   end
+
+  @spec contact_badge_class(boolean() | nil) :: String.t()
+  defp contact_badge_class(true), do: "hover-card-badge hover-card-badge--contact"
+  defp contact_badge_class(_), do: "hover-card-badge hover-card-badge--inactive"
+
+  @spec ignore_badge_class(boolean() | nil) :: String.t()
+  defp ignore_badge_class(true), do: "hover-card-badge hover-card-badge--ignored"
+  defp ignore_badge_class(_), do: "hover-card-badge hover-card-badge--inactive"
 
   defp role_badge(%{role: nil} = assigns), do: ~H""
   defp role_badge(%{role: :regular} = assigns), do: ~H""

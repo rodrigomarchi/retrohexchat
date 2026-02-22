@@ -200,9 +200,9 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   defp get_role_in_active_channel(nick, channel) do
     with {:ok, state} <- Server.get_state(channel),
          nick_lower = String.downcase(nick),
-         {_nick, info} <-
+         {_nick, role} <-
            Enum.find(state.members, fn {m, _} -> String.downcase(m) == nick_lower end) do
-      info.role
+      role
     else
       _ -> nil
     end

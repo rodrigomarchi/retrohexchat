@@ -66,7 +66,13 @@
     <%!-- CSS (same app.css — reuse 98.css and tokens) --%>
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
   </head>
-  <body class="help-page-body">
-    {@inner_content}
+  <body>
+    <div class="app-container">
+      <div class="app-header">
+        <img src="/images/header-logo.svg" alt="RetroHexChat" class="app-header-wordmark" />
+        <div class="app-header-panels"></div>
+      </div>
+      {@inner_content}
+    </div>
   </body>
 </html>
