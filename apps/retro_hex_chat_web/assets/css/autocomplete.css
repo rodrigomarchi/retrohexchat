@@ -50,12 +50,12 @@
 
 .autocomplete-status-online::before {
   content: "●";
-  color: #00a000;
+  color: var(--color-online);
   margin-right: 4px;
 }
 
 .autocomplete-status-away::before {
   content: "●";
-  color: #c0a000;
+  color: var(--color-status-away);
   margin-right: 4px;
 }

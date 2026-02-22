@@ -13,7 +13,7 @@
 /* ── Drop Zone ── */
 
 .file-transfer-drop-zone--active {
-  outline: 2px dashed var(--color-primary);
+  outline: 2px dashed var(--color-selection-bg);
   outline-offset: -2px;
   background: var(--color-surface);
 }
@@ -93,7 +93,7 @@
 
 .file-transfer__bar-fill {
   height: 100%;
-  background: var(--color-primary);
+  background: var(--color-selection-bg);
   transition: width 0.25s ease;
 }
 

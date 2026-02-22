@@ -86,12 +86,12 @@
   gap: 10px;
   padding: 8px 10px;
   margin-bottom: 12px;
-  background: #fffff0;
+  background: var(--color-warning-bg);
   border: 1px solid var(--color-warning-alt);
 }
 
 .connect-dialog .auth-banner--success {
-  background: #f0fff0;
+  background: var(--color-success-bg);
   border-color: var(--color-success);
 }
 
@@ -135,7 +135,7 @@
   gap: 8px;
   padding: 8px 10px;
   margin-bottom: 12px;
-  background: #fff0f0;
+  background: var(--color-error-bg);
   border: 1px solid var(--color-error);
   font-size: var(--text-sm);
   color: var(--color-error);

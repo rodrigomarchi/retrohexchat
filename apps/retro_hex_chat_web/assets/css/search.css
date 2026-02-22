@@ -12,7 +12,7 @@
 
 .search-bar .search-error {
   font-size: var(--text-sm);
-  color: #ff4444;
+  color: var(--color-error);
   white-space: nowrap;
 }
 
@@ -33,12 +33,12 @@
 
 /* Search highlighting */
 .search-highlight {
-  background-color: #ffff00;
+  background-color: var(--color-search-highlight);
   color: var(--color-black);
 }
 
 .search-highlight-active {
-  background-color: #ff9632;
+  background-color: var(--color-search-active);
   color: var(--color-black);
   outline: 2px solid #ff6400;
 }

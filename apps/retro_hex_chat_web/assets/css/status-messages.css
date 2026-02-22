@@ -3,7 +3,7 @@
 .chat-status { padding: 1px 0; }
 .chat-status--notify_online { color: var(--color-success); }
 .chat-status--notify_offline { color: var(--color-muted); font-style: italic; }
-.chat-status--notify_rename { color: #009393; }
+.chat-status--notify_rename { color: var(--color-teal); }
 .chat-status--system { color: var(--color-muted); font-style: italic; }
 .chat-status--error { color: var(--color-error); font-weight: bold; }
 
@@ -25,6 +25,6 @@
 
 /* Wallops — italic status message */
 .chat-status--wallops {
-  color: var(--highlight-color, #9b59b6);
+  color: var(--color-highlight-accent);
   font-style: italic;
 }

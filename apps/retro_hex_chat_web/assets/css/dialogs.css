@@ -39,14 +39,8 @@
   width: var(--dialog-sub-w);
 }
 
-/* Address book and channel central specific sizes */
-.dialog-window--address-book {
-  width: var(--dialog-config-min-w);
-  height: var(--dialog-config-min-h);
-  display: flex;
-  flex-direction: column;
-}
-
+/* Config-sized dialogs (address book, channel central) */
+.dialog-window--address-book,
 .dialog-window--channel-central {
   width: var(--dialog-config-min-w);
   height: var(--dialog-config-min-h);
@@ -62,7 +56,8 @@
 .dialog-window--cheatsheet { width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); }
 .dialog-window--log-viewer { width: 750px; height: 550px; }
 .dialog-window--generic { min-width: 300px; max-width: 500px; }
-.dialog-window--360 { width: var(--dialog-sub-w); }
+/* Aliases — same as --sm, kept for template compatibility */
+.dialog-window--360,
 .dialog-window--320 { width: var(--dialog-sub-w); }
 .dialog-window--450 { min-width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); display: flex; flex-direction: column; }
 

@@ -75,10 +75,6 @@
   );
   animation: progress-scroll 1s linear infinite;
 }
-@keyframes progress-scroll {
-  from { background-position: 0 0; }
-  to { background-position: 20px 0; }
-}
 
 /* ── Toolbar icons ─────────────────────────────────────── */
 
@@ -91,14 +87,14 @@
   height: 28px;
   min-height: 28px;
   padding: 0;
-  color: #222;
+  color: var(--color-text);
   border: 1px outset var(--color-gray-200);
   background-color: var(--color-gray-300);
   cursor: pointer;
 }
 
 .toolbar-btn:hover {
-  background-color: #e8e4dc;
+  background-color: var(--color-hover-bg);
 }
 
 .toolbar-btn:active {
@@ -158,12 +154,12 @@
 
 .toolbar-group-dropdown .toolbar-btn:hover {
   background-color: var(--color-link);
-  color: #fff;
+  color: var(--color-white);
   border-color: transparent;
 }
 
 .toolbar-group-dropdown .toolbar-btn:hover .toolbar-group-label {
-  color: #fff;
+  color: var(--color-white);
 }
 
 .toolbar-group-dropdown .toolbar-btn svg {
@@ -174,7 +170,7 @@
 .toolbar-group-label {
   font-size: var(--text-sm);
   white-space: nowrap;
-  color: #222;
+  color: var(--color-text);
 }
 
 /* ── Mute Toggle ────────────────────────────────────────── */

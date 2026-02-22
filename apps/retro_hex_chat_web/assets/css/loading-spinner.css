@@ -12,6 +12,11 @@
   pointer-events: none;
 }
 
+@keyframes progress-scroll {
+  from { background-position: 0 0; }
+  to { background-position: 20px 0; }
+}
+
 .loading-spinner__bar {
   width: 200px;
   height: 14px;

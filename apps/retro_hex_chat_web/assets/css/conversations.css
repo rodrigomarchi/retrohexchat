@@ -23,7 +23,7 @@
 }
 
 .conversations-section-header:hover {
-  background-color: var(--color-gray-100, #f0f0f0);
+  background-color: var(--color-gray-100);
 }
 
 .conversations-section-arrow {
@@ -51,7 +51,7 @@
 }
 
 .conversations-list > li:hover {
-  background-color: var(--color-gray-200, #dfdfdf);
+  background-color: var(--color-gray-200);
 }
 
 /* ── Conversations icons ───────────────────────────────────── */
@@ -70,16 +70,16 @@
   font-weight: bold;
   line-height: 14px;
   text-align: center;
-  color: #fff;
-  background-color: var(--color-badge, #808080);
-  border-radius: 7px;
+  color: var(--color-white);
+  background-color: var(--color-gray-500);
+  border-radius: var(--radius-badge);
   vertical-align: middle;
 }
 
 /* ── Highlight badge (red dot for mentions) ────────────────── */
 
 .conversations-badge--highlight {
-  background-color: var(--color-badge-highlight, #c00);
+  background-color: var(--color-error);
 }
 
 /* ── User count next to channel ────────────────────────────── */
@@ -115,7 +115,7 @@
 }
 
 .conversations-users li:hover {
-  background-color: var(--color-gray-200, #dfdfdf);
+  background-color: var(--color-gray-200);
 }
 
 /* ── Role icons ────────────────────────────────────────────── */
@@ -155,7 +155,7 @@
 /* ── Muted state — grayed-out, no visual emphasis ──────────── */
 
 .conversations-muted {
-  color: var(--color-muted, #999);
+  color: var(--color-muted);
 }
 
 .conversations-muted .conversations-badge {
@@ -165,7 +165,7 @@
 /* ── Disconnected state — lightning icon + gray text ───────── */
 
 .conversations-disconnected {
-  color: var(--color-disconnected, #999);
+  color: var(--color-disabled);
   font-style: italic;
 }
 
@@ -238,5 +238,5 @@
 }
 
 .conversations-browse-all-btn:hover {
-  color: var(--color-link-hover, #0000cc);
+  color: var(--color-link-hover);
 }

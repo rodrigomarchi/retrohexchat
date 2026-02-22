@@ -37,7 +37,7 @@
   padding: 2px 4px;
   font-size: var(--text-lg);
   line-height: 1;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .emoji-category-tab:hover {
@@ -45,7 +45,7 @@
 }
 
 .emoji-category-tab.active {
-  background: #c0c0c0;
+  background: var(--color-surface);
   box-shadow: inset 1px 1px 2px var(--color-gray-500);
 }
 
@@ -62,13 +62,13 @@
   border: none;
   background: none;
   cursor: pointer;
-  font-size: 20px;
+  font-size: var(--text-2xl);
   line-height: 1;
   padding: 2px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   text-align: center;
 }
 
 .emoji-btn:hover {
-  background: #c0c0c0;
+  background: var(--color-surface);
 }

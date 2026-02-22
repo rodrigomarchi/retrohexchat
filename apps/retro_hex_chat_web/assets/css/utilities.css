@@ -19,6 +19,9 @@
 .u-gap-8 { gap: 8px; }
 .u-gap-12 { gap: 12px; }
 
+/* ── Text Overflow ── */
+.u-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
 /* ── Overflow ── */
 .u-overflow-y-auto { overflow-y: auto; }
 .u-overflow-hidden { overflow: hidden; }

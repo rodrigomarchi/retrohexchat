@@ -25,12 +25,12 @@
   cursor: pointer;
   border: 1px outset var(--color-gray-200);
   background-color: var(--color-gray-300);
-  color: #222;
+  color: var(--color-text);
   user-select: none;
 }
 
 .format-btn:hover {
-  background-color: #e8e4dc;
+  background-color: var(--color-hover-bg);
 }
 
 .format-btn:active {
@@ -67,7 +67,7 @@
   padding: 4px;
   background: var(--color-surface);
   border: 2px outset var(--color-gray-200);
-  z-index: 100;
+  z-index: var(--z-dropdown);
 }
 
 .color-swatch {

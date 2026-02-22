@@ -61,7 +61,7 @@
 
 /* ── Edit Mode ── */
 .chat-message--editing {
-  border: 1px dashed var(--highlight-color, #9b59b6);
+  border: 1px dashed var(--color-highlight-accent);
 }
 
 /* ── Edited Tag ── */
@@ -74,7 +74,7 @@
 
 /* ── Deleted Message ── */
 .chat-message--deleted .chat-message-content {
-  color: #808080;
+  color: var(--color-gray-500);
   font-style: italic;
 }
 
@@ -114,6 +114,6 @@
   animation: scroll-highlight-fade 2s ease-out;
 }
 @keyframes scroll-highlight-fade {
-  0% { background-color: #ffffd0; }
+  0% { background-color: var(--color-highlight-bg); }
   100% { background-color: transparent; }
 }

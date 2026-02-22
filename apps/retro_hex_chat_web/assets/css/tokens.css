@@ -33,14 +33,49 @@
   /* ── Colors: Status ── */
   --color-online: #00a000;
   --color-offline: #808080;
+  --color-status-away: #c0a000;
 
   /* ── Colors: UI ── */
+  --color-error-dark: #990000;
+  --color-success-dark: #006000;
+  --color-highlight-accent: #9b59b6;
   --color-overlay-bg: rgba(0, 0, 0, 0.3);
   --color-overlay-bg-dark: rgba(0, 0, 0, 0.5);
   --color-overlay-bg-light: rgba(0, 0, 0, 0.2);
   --color-border: #808080;
   --color-separator: #666666;
   --color-surface: #c0c0c0;
+  --color-desktop: #008080;
+  --color-hover-bg: #e8e4dc;
+  --color-highlight-bg: #ffffd0;
+  --color-error-bg: #fff0f0;
+  --color-warning-bg: #fffff0;
+  --color-success-bg: #f0fff0;
+  --color-tooltip-bg: #ffffe1;
+
+  /* ── Colors: IRC Message Types ── */
+  --color-action: #800080;
+  --color-notice: #cc6699;
+  --color-service: #996600;
+  --color-teal: #009393;
+
+  /* ── Colors: Search ── */
+  --color-search-highlight: #ffff00;
+  --color-search-active: #ff9632;
+
+  /* ── Colors: Links ── */
+  --color-link-hover: #0044aa;
+  --color-link-visited: #551a8b;
+
+  /* ── Colors: Roles (hover-card badges) ── */
+  --color-role-owner-bg: #fff3cd;
+  --color-role-owner-fg: #856404;
+  --color-role-operator-bg: #f8d7da;
+  --color-role-operator-fg: #721c24;
+  --color-role-halfop-bg: #d4edda;
+  --color-role-halfop-fg: #155724;
+  --color-role-voiced-bg: #d1ecf1;
+  --color-role-voiced-fg: #0c5460;
 
   /* ── Spacing ── */
   --space-1: 1px;
@@ -51,6 +86,9 @@
   --space-10: 10px;
   --space-12: 12px;
   --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
 
   /* ── Dialog Sizes ── */
   --dialog-config-min-w: 560px;
@@ -61,8 +99,10 @@
   --text-xs: 10px;
   --text-sm: 11px;
   --text-base: 12px;
+  --text-md: 13px;
   --text-lg: 14px;
   --text-xl: 18px;
+  --text-2xl: 20px;
   --font-system: "Source Code Pro", "Courier New", monospace;
   --font-mono: "Source Code Pro", "Courier New", monospace;
 
@@ -72,7 +112,12 @@
   --z-modal: 200;
   --z-modal-above: 210;
   --z-context-menu: 300;
+  --z-tooltip: 9000;
   --z-toast: 10000;
+
+  /* ── Border Radius ── */
+  --radius-sm: 2px;
+  --radius-badge: 7px;
 
   /* ── Retro Primitives: Geometry ── */
   --radio-width: 12px;

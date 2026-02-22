@@ -4,13 +4,13 @@
 
 .interactive-tooltip {
   position: fixed;
-  z-index: var(--z-tooltip, 9000);
+  z-index: var(--z-tooltip);
   padding: 3px 6px;
   font-size: var(--text-sm);
   font-family: var(--font-system);
-  background: var(--tooltip-bg, #ffffe1);
-  color: var(--tooltip-fg, #000000);
-  border: 1px solid #000000;
+  background: var(--color-tooltip-bg);
+  color: var(--color-black);
+  border: 1px solid var(--color-black);
   white-space: nowrap;
   pointer-events: none;
   max-width: 400px;
@@ -22,7 +22,7 @@
 
 .nick-hover-card {
   position: fixed;
-  z-index: var(--z-tooltip, 9000);
+  z-index: var(--z-tooltip);
   font-size: var(--text-base);
   font-family: var(--font-system);
   min-width: 220px;
@@ -107,15 +107,15 @@
   margin-left: 4px;
   padding: 0 4px;
   font-size: var(--text-xs);
-  border-radius: 2px;
-  background: var(--color-gray-200, #e0e0e0);
+  border-radius: var(--radius-sm);
+  background: var(--color-gray-200);
   color: var(--color-fg);
 }
 
-.hover-card-role--owner { background: #fff3cd; color: #856404; }
-.hover-card-role--operator { background: #f8d7da; color: #721c24; }
-.hover-card-role--half_operator { background: #d4edda; color: #155724; }
-.hover-card-role--voiced { background: #d1ecf1; color: #0c5460; }
+.hover-card-role--owner { background: var(--color-role-owner-bg); color: var(--color-role-owner-fg); }
+.hover-card-role--operator { background: var(--color-role-operator-bg); color: var(--color-role-operator-fg); }
+.hover-card-role--half_operator { background: var(--color-role-halfop-bg); color: var(--color-role-halfop-fg); }
+.hover-card-role--voiced { background: var(--color-role-voiced-bg); color: var(--color-role-voiced-fg); }
 
 .hover-card-role-icon {
   width: 10px;
@@ -144,22 +144,22 @@
   gap: 3px;
   padding: 1px 5px;
   font-size: var(--text-xs);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .hover-card-badge--contact {
-  background: #d4edda;
-  color: #155724;
+  background: var(--color-role-halfop-bg);
+  color: var(--color-role-halfop-fg);
 }
 
 .hover-card-badge--ignored {
-  background: #f8d7da;
-  color: #721c24;
+  background: var(--color-role-operator-bg);
+  color: var(--color-role-operator-fg);
 }
 
 .hover-card-badge--inactive {
-  background: var(--color-gray-200, #e0e0e0);
-  color: var(--color-muted, #808080);
+  background: var(--color-gray-200);
+  color: var(--color-muted);
 }
 
 .hover-card-badge-icon {
@@ -173,7 +173,7 @@
 .nick-hover-card-hints {
   margin-top: 6px;
   padding-top: 4px;
-  border-top: 1px solid var(--color-border, #808080);
+  border-top: 1px solid var(--color-border);
   font-size: var(--text-xs);
   color: var(--color-muted);
   text-align: center;
@@ -195,6 +195,6 @@
 /* ── Away badge ─── */
 
 .nick-hover-card-away {
-  color: var(--color-warning-alt, #996600);
+  color: var(--color-warning-alt);
   font-style: italic;
 }

@@ -21,7 +21,7 @@ body {
   padding: 0;
   overflow: hidden;
   height: 100vh;
-  background-color: #008080;
+  background-color: var(--color-desktop);
 }
 
 /* ─── Application Layout ─── */
@@ -96,13 +96,13 @@ body {
   min-width: 180px;
   overflow-y: auto;
   flex-shrink: 0;
-  background-color: var(--color-white, #fff);
+  background-color: var(--color-white);
   box-shadow: inset 1px 1px var(--color-gray-500), inset -1px -1px var(--color-gray-200);
   padding: 1px 0 0 1px;
 }
 
 .conversations-active {
-  background-color: var(--color-gray-200, #dfdfdf);
+  background-color: var(--color-gray-200);
   font-weight: bold;
 }
 
