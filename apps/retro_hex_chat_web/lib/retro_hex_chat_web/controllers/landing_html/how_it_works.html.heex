@@ -1,0 +1,729 @@
+<%!-- ══════════════ HOW IT WORKS ══════════════ --%>
+<section id="how-it-works" class="landing-section" aria-labelledby="how-it-works-heading">
+  <div class="window landing-window landing-window--reveal">
+    <div class="title-bar">
+      <div class="title-bar-text">How it works</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" disabled></button>
+        <button aria-label="Maximize" disabled></button>
+        <button aria-label="Close" disabled></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <h2 id="how-it-works-heading" class="u-sr-only">How It Works</h2>
+
+      <menu role="tablist" class="landing-tabs" aria-label="How it works concepts">
+        <button
+          role="tab"
+          aria-selected="true"
+          aria-controls="tab-server"
+          id="tab-btn-server"
+          class="landing-tab active"
+          type="button"
+        >
+          <.icon_server class="licon licon-14" /> Your Server
+        </button>
+        <button
+          role="tab"
+          aria-selected="false"
+          aria-controls="tab-p2p"
+          id="tab-btn-p2p"
+          class="landing-tab"
+          type="button"
+        >
+          <.icon_p2p class="licon licon-14" /> P2P
+        </button>
+        <button
+          role="tab"
+          aria-selected="false"
+          aria-controls="tab-privacy"
+          id="tab-btn-privacy"
+          class="landing-tab"
+          type="button"
+        >
+          <.icon_shield class="licon licon-14" /> Privacy
+        </button>
+        <button
+          role="tab"
+          aria-selected="false"
+          aria-controls="tab-security"
+          id="tab-btn-security"
+          class="landing-tab"
+          type="button"
+        >
+          <.icon_security class="licon licon-14" /> Security
+        </button>
+      </menu>
+
+      <div
+        id="tab-server"
+        role="tabpanel"
+        aria-labelledby="tab-btn-server"
+        class="landing-tab-panel"
+      >
+        <h3>One server. Fully yours.</h3>
+        <div class="landing-server-cards">
+          <div class="sunken-panel landing-server-card">
+            <strong><.icon_database class="licon licon-16" /> Your database</strong> <br />
+            Messages, users, channels &mdash; all stored on your machine.
+          </div>
+          <div class="sunken-panel landing-server-card">
+            <strong><.icon_rules class="licon licon-16" /> Your rules</strong> <br />
+            You decide who joins, what channels exist, and how moderation works.
+          </div>
+          <div class="sunken-panel landing-server-card">
+            <strong><.icon_backup class="licon licon-16" /> Your backups</strong> <br />
+            Export, restore, migrate &mdash; your data is always accessible.
+          </div>
+        </div>
+        <p>
+          Anyone can run a server. Install it on a $5/month VPS,
+          a Raspberry Pi, or your own hardware. You control everything.
+        </p>
+        <p>
+          <strong>Public:</strong> open to anyone who wants to join.<br />
+          <strong>Private:</strong> invite-only, for your company or group.
+        </p>
+      </div>
+
+      <div
+        id="tab-p2p"
+        role="tabpanel"
+        aria-labelledby="tab-btn-p2p"
+        class="landing-tab-panel"
+        hidden
+      >
+        <h3>Direct connections via WebRTC.</h3>
+        <div
+          class="sunken-panel landing-p2p-diagram"
+          aria-label="WebRTC signaling and data flow diagram"
+        >
+          <svg
+            class="landing-svg-diagram"
+            viewBox="0 0 420 340"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="Vertical flowchart showing 4 steps: Alice calls Bob, server exchanges signaling, P2P connection established, then direct data flow with server out of the loop"
+          >
+            <!-- Step 1 -->
+            <rect
+              x="60"
+              y="10"
+              width="300"
+              height="36"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="2"
+            />
+            <rect x="62" y="12" width="20" height="14" rx="0" fill="#008080" />
+            <text
+              x="72"
+              y="23"
+              text-anchor="middle"
+              fill="#fff"
+              font-size="10"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              1
+            </text>
+            <text
+              x="210"
+              y="33"
+              text-anchor="middle"
+              fill="#000"
+              font-size="12"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              Alice wants to call Bob
+            </text>
+            
+<!-- Arrow 1→2 -->
+            <line x1="210" y1="46" x2="210" y2="72" stroke="#808080" stroke-width="2" />
+            <polygon points="210,72 205,64 215,64" fill="#808080" />
+            
+<!-- Step 2 -->
+            <rect
+              x="60"
+              y="74"
+              width="300"
+              height="36"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="2"
+            />
+            <rect x="62" y="76" width="20" height="14" rx="0" fill="#008080" />
+            <text
+              x="72"
+              y="87"
+              text-anchor="middle"
+              fill="#fff"
+              font-size="10"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              2
+            </text>
+            <text
+              x="210"
+              y="97"
+              text-anchor="middle"
+              fill="#000"
+              font-size="12"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              Server exchanges signaling (SDP/ICE)
+            </text>
+            
+<!-- Arrow 2→3 -->
+            <line x1="210" y1="110" x2="210" y2="136" stroke="#808080" stroke-width="2" />
+            <polygon points="210,136 205,128 215,128" fill="#808080" />
+            
+<!-- Step 3 -->
+            <rect
+              x="60"
+              y="138"
+              width="300"
+              height="36"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="2"
+            />
+            <rect x="62" y="140" width="20" height="14" rx="0" fill="#008080" />
+            <text
+              x="72"
+              y="151"
+              text-anchor="middle"
+              fill="#fff"
+              font-size="10"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              3
+            </text>
+            <text
+              x="210"
+              y="161"
+              text-anchor="middle"
+              fill="#000"
+              font-size="12"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              Direct P2P connection established
+            </text>
+            
+<!-- Arrow 3→4 -->
+            <line x1="210" y1="174" x2="210" y2="200" stroke="#008080" stroke-width="2" />
+            <polygon points="210,200 205,192 215,192" fill="#008080" />
+            
+<!-- Step 4 (highlighted) -->
+            <rect
+              x="60"
+              y="202"
+              width="300"
+              height="36"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#008080"
+              stroke-width="2"
+            />
+            <rect x="62" y="204" width="20" height="14" rx="0" fill="#008080" />
+            <text
+              x="72"
+              y="215"
+              text-anchor="middle"
+              fill="#fff"
+              font-size="10"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              4
+            </text>
+            <text
+              x="210"
+              y="225"
+              text-anchor="middle"
+              fill="#000"
+              font-size="12"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              Voice, video, and files flow directly
+            </text>
+            
+<!-- Alice ↔ Bob arrow -->
+            <rect
+              x="80"
+              y="258"
+              width="70"
+              height="32"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="1.5"
+            />
+            <text
+              x="115"
+              y="278"
+              text-anchor="middle"
+              fill="#000"
+              font-size="11"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              Alice
+            </text>
+            <rect
+              x="270"
+              y="258"
+              width="70"
+              height="32"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="1.5"
+            />
+            <text
+              x="305"
+              y="278"
+              text-anchor="middle"
+              fill="#000"
+              font-size="11"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              Bob
+            </text>
+            <line x1="155" y1="274" x2="265" y2="274" stroke="#008080" stroke-width="3" />
+            <polygon points="265,274 257,269 257,279" fill="#008080" />
+            <polygon points="155,274 163,269 163,279" fill="#008080" />
+            
+<!-- "server is out of the loop" -->
+            <text
+              x="210"
+              y="316"
+              text-anchor="middle"
+              fill="#808080"
+              font-size="10"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-style="italic"
+            >
+              (server is out of the loop)
+            </text>
+          </svg>
+        </div>
+        <p>
+          The server only handles <strong>signaling</strong> &mdash;
+          helping users find each other. Once connected, all data flows
+          directly between browsers via WebRTC.
+        </p>
+        <p>
+          If a direct connection isn&rsquo;t possible (strict firewalls),
+          a <strong>TURN relay</strong> is used as fallback &mdash;
+          still encrypted end-to-end.
+        </p>
+      </div>
+
+      <div
+        id="tab-privacy"
+        role="tabpanel"
+        aria-labelledby="tab-btn-privacy"
+        class="landing-tab-panel"
+        hidden
+      >
+        <h3>Big Tech vs. Retro Hex Chat.</h3>
+        <div class="sunken-panel landing-privacy-comparison">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Big Tech</th>
+                <th>Retro Hex Chat</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Messages</strong></td>
+                <td>Stored on their servers, mined for ads</td>
+                <td>Stored on YOUR server, never leaves</td>
+              </tr>
+              <tr>
+                <td><strong>Calls</strong></td>
+                <td>Routed through corporate infrastructure</td>
+                <td>Direct P2P &mdash; server never sees them</td>
+              </tr>
+              <tr>
+                <td><strong>Your data</strong></td>
+                <td>Trains their AI, sold to advertisers</td>
+                <td>Stays in your database, period</td>
+              </tr>
+              <tr>
+                <td><strong>Code</strong></td>
+                <td>Closed source &mdash; trust us</td>
+                <td>Open source &mdash; verify yourself</td>
+              </tr>
+              <tr>
+                <td><strong>Control</strong></td>
+                <td>They can ban you anytime</td>
+                <td>You own the server &mdash; nobody can</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          No tracking. No profiling. No algorithms.
+          Your conversations are <strong>your business</strong>.
+        </p>
+      </div>
+
+      <div
+        id="tab-security"
+        role="tabpanel"
+        aria-labelledby="tab-btn-security"
+        class="landing-tab-panel"
+        hidden
+      >
+        <h3>Security at every layer.</h3>
+        <div class="sunken-panel" aria-label="Security layers diagram">
+          <svg
+            class="landing-svg-diagram"
+            viewBox="0 0 520 290"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="Two security layers: browser to server via HTTPS/WSS with TLS, and browser to browser via DTLS-SRTP for P2P calls"
+          >
+            <!-- Layer 1 label -->
+            <text
+              x="260"
+              y="18"
+              text-anchor="middle"
+              fill="#005c5c"
+              font-size="11"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              LAYER 1 — Server Connection
+            </text>
+            
+<!-- Browser box (left) -->
+            <rect
+              x="30"
+              y="30"
+              width="120"
+              height="50"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="2"
+            />
+            <rect x="32" y="32" width="116" height="16" fill="#000080" />
+            <text
+              x="90"
+              y="44"
+              text-anchor="middle"
+              fill="#fff"
+              font-size="10"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              Browser
+            </text>
+            <!-- Lock icon -->
+            <rect
+              x="74"
+              y="56"
+              width="12"
+              height="10"
+              rx="1"
+              fill="#008080"
+              stroke="#005c5c"
+              stroke-width="1"
+            />
+            <path
+              d="M77,56 V52 a3,3 0 0 1 6,0 V56"
+              fill="none"
+              stroke="#005c5c"
+              stroke-width="1.5"
+            />
+            <text
+              x="90"
+              y="72"
+              text-anchor="middle"
+              fill="#000"
+              font-size="9"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              TLS 1.3
+            </text>
+            
+<!-- Server box (right) -->
+            <rect
+              x="370"
+              y="30"
+              width="120"
+              height="50"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="2"
+            />
+            <rect x="372" y="32" width="116" height="16" fill="#000080" />
+            <text
+              x="430"
+              y="44"
+              text-anchor="middle"
+              fill="#fff"
+              font-size="10"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              Server
+            </text>
+            <!-- Shield icon -->
+            <path
+              d="M425,54 L430,51 L435,54 L435,62 C435,66 430,69 430,69 C430,69 425,66 425,62 Z"
+              fill="#008080"
+              stroke="#005c5c"
+              stroke-width="1"
+            />
+            <text
+              x="430"
+              y="72"
+              text-anchor="middle"
+              fill="#000"
+              font-size="9"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              Protected
+            </text>
+            
+<!-- HTTPS/WSS connection line -->
+            <line x1="155" y1="55" x2="365" y2="55" stroke="#008080" stroke-width="2" />
+            <polygon points="365,55 357,50 357,60" fill="#008080" />
+            <polygon points="155,55 163,50 163,60" fill="#008080" />
+            <rect x="200" y="43" width="120" height="16" rx="2" fill="#008080" />
+            <text
+              x="260"
+              y="55"
+              text-anchor="middle"
+              fill="#fff"
+              font-size="10"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              HTTPS / WSS
+            </text>
+            
+<!-- Server features -->
+            <text
+              x="430"
+              y="100"
+              text-anchor="middle"
+              fill="#444"
+              font-size="9"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              bcrypt hashing
+            </text>
+            <text
+              x="430"
+              y="112"
+              text-anchor="middle"
+              fill="#444"
+              font-size="9"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              rate limiting
+            </text>
+            <text
+              x="430"
+              y="124"
+              text-anchor="middle"
+              fill="#444"
+              font-size="9"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              CSRF protection
+            </text>
+            
+<!-- Separator line -->
+            <line
+              x1="30"
+              y1="145"
+              x2="490"
+              y2="145"
+              stroke="#c0c0c0"
+              stroke-width="1"
+              stroke-dasharray="4,3"
+            />
+            
+<!-- Layer 2 label -->
+            <text
+              x="260"
+              y="168"
+              text-anchor="middle"
+              fill="#005c5c"
+              font-size="11"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              LAYER 2 — P2P Calls (end-to-end)
+            </text>
+            
+<!-- Browser box (left) -->
+            <rect
+              x="30"
+              y="180"
+              width="120"
+              height="50"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="2"
+            />
+            <rect x="32" y="182" width="116" height="16" fill="#000080" />
+            <text
+              x="90"
+              y="194"
+              text-anchor="middle"
+              fill="#fff"
+              font-size="10"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              Browser
+            </text>
+            <rect
+              x="74"
+              y="206"
+              width="12"
+              height="10"
+              rx="1"
+              fill="#008080"
+              stroke="#005c5c"
+              stroke-width="1"
+            />
+            <path
+              d="M77,206 V202 a3,3 0 0 1 6,0 V206"
+              fill="none"
+              stroke="#005c5c"
+              stroke-width="1.5"
+            />
+            <text
+              x="90"
+              y="222"
+              text-anchor="middle"
+              fill="#000"
+              font-size="9"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              E2E encrypted
+            </text>
+            
+<!-- Browser box (right) -->
+            <rect
+              x="370"
+              y="180"
+              width="120"
+              height="50"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="2"
+            />
+            <rect x="372" y="182" width="116" height="16" fill="#000080" />
+            <text
+              x="430"
+              y="194"
+              text-anchor="middle"
+              fill="#fff"
+              font-size="10"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              Browser
+            </text>
+            <rect
+              x="414"
+              y="206"
+              width="12"
+              height="10"
+              rx="1"
+              fill="#008080"
+              stroke="#005c5c"
+              stroke-width="1"
+            />
+            <path
+              d="M417,206 V202 a3,3 0 0 1 6,0 V206"
+              fill="none"
+              stroke="#005c5c"
+              stroke-width="1.5"
+            />
+            <text
+              x="430"
+              y="222"
+              text-anchor="middle"
+              fill="#000"
+              font-size="9"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              E2E encrypted
+            </text>
+            
+<!-- DTLS-SRTP connection line -->
+            <line x1="155" y1="205" x2="365" y2="205" stroke="#008080" stroke-width="2" />
+            <polygon points="365,205 357,200 357,210" fill="#008080" />
+            <polygon points="155,205 163,200 163,210" fill="#008080" />
+            <rect x="200" y="193" width="120" height="16" rx="2" fill="#008080" />
+            <text
+              x="260"
+              y="205"
+              text-anchor="middle"
+              fill="#fff"
+              font-size="10"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              DTLS-SRTP
+            </text>
+            
+<!-- P2P description -->
+            <text
+              x="260"
+              y="260"
+              text-anchor="middle"
+              fill="#444"
+              font-size="9"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              P2P calls encrypted end-to-end via WebRTC
+            </text>
+            <text
+              x="260"
+              y="275"
+              text-anchor="middle"
+              fill="#808080"
+              font-size="9"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-style="italic"
+            >
+              Server never sees voice/video data
+            </text>
+          </svg>
+        </div>
+        <p>
+          <strong>Server connection:</strong> HTTPS and WSS with TLS encryption.<br />
+          <strong>P2P calls:</strong> DTLS-SRTP encryption built into WebRTC.<br />
+          <strong>Passwords:</strong> bcrypt hashing, never stored in plain text.<br />
+          <strong>Open source:</strong> anyone can audit the code. No backdoors.
+        </p>
+      </div>
+    </div>
+    <div class="status-bar">
+      <p class="status-bar-field">4 concepts</p>
+      <p class="status-bar-field">~2 min read</p>
+    </div>
+  </div>
+</section>

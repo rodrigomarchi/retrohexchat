@@ -1,0 +1,161 @@
+<%!-- ══════════════ FAQ ══════════════ --%>
+<section id="faq" class="landing-section" aria-labelledby="faq-heading">
+  <div class="window landing-window landing-window--reveal">
+    <div class="title-bar">
+      <div class="title-bar-text">Frequently Asked Questions</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" disabled></button>
+        <button aria-label="Maximize" disabled></button>
+        <button aria-label="Close" disabled></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <h2 id="faq-heading" class="u-sr-only">Frequently Asked Questions</h2>
+
+      <ul class="tree-view landing-faq-tree">
+        <li>
+          <details>
+            <summary><.icon_question class="licon licon-14" /> What is P2P?</summary>
+            <p>
+              P2P (peer-to-peer) means data goes directly between users without
+              passing through a server. Retro Hex Chat uses WebRTC for voice calls,
+              video calls, and file transfers. The server only helps users find
+              each other (signaling), then steps out of the way.
+            </p>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary>
+              <.icon_question class="licon licon-14" /> Do I need to run my own server?
+            </summary>
+            <p>
+              Not necessarily! You can create an account on any public server.
+              Running your own server is for those who want total control.
+            </p>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary><.icon_question class="licon licon-14" /> Is it free?</summary>
+            <p>
+              Yes, the software is 100% free and open source (MIT).
+              If you run your own server, you only pay for hosting
+              (a $5/month VPS is enough).
+            </p>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary>
+              <.icon_question class="licon licon-14" /> How is it different from Discord?
+            </summary>
+            <p>
+              On Discord, your data lives on their servers and your communities
+              can be removed at any time. On Retro Hex Chat, you control your
+              data, voice and video calls go directly between users via P2P,
+              and the code is open source &mdash; you can audit every line.
+            </p>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary>
+              <.icon_question class="licon licon-14" /> What if my server goes down?
+            </summary>
+            <p>
+              Your data lives in your PostgreSQL database. Regular backups mean
+              you can restore on any new machine. Active P2P calls continue
+              working even if the server has a brief interruption, since they
+              connect directly between users.
+            </p>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary><.icon_question class="licon licon-14" /> Is it secure?</summary>
+            <p>
+              Yes. Server connections use HTTPS/WSS with TLS encryption.
+              P2P calls are encrypted end-to-end via DTLS-SRTP (built into WebRTC).
+              Passwords are hashed with bcrypt. And the code is open source
+              &mdash; anyone can audit it for vulnerabilities.
+            </p>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary>
+              <.icon_question class="licon licon-14" /> What technologies are used?
+            </summary>
+            <p>
+              Elixir and Phoenix on the backend, PostgreSQL for data, 98.css for the
+              retro look, WebSocket for real-time messaging, and WebRTC for P2P.
+              Everything is open source.
+            </p>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary><.icon_question class="licon licon-14" /> How can I contribute?</summary>
+            <p>
+              Check out our contributing guide on GitHub! We accept code, documentation,
+              translation, design, testing, and bug reports. Issues marked
+              &ldquo;good first issue&rdquo; are a great place to start.
+            </p>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary>
+              <.icon_question class="licon licon-14" /> How can I support financially?
+            </summary>
+            <p>
+              Through GitHub Sponsors. Every contribution, no matter how small,
+              helps keep the project alive and in active development.
+            </p>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary><.icon_question class="licon licon-14" /> Does it work on mobile?</summary>
+            <p>
+              Yes! The interface is responsive and works on any modern browser.
+              Native apps are planned for the future.
+            </p>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary>
+              <.icon_question class="licon licon-14" /> Can I use it for my company or team?
+            </summary>
+            <p>
+              Absolutely. Run a private server, create invite-only channels,
+              and keep all your team&rsquo;s communication on your own infrastructure.
+              No per-seat pricing, no message limits.
+            </p>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary>
+              <.icon_question class="licon licon-14" /> How do sessions work?
+            </summary>
+            <p>
+              Each nickname can only have <strong>one active session</strong> at a time.
+              If you connect from another browser or tab, the previous session is
+              automatically disconnected. If your connection drops, the client attempts
+              to reconnect up to 10 times with exponential backoff. After all attempts
+              fail, the session expires and you&rsquo;re redirected to the login screen.
+              Registered nicknames are protected by password &mdash; only the owner
+              can connect with that nick.
+            </p>
+          </details>
+        </li>
+      </ul>
+    </div>
+    <div class="status-bar">
+      <p class="status-bar-field">12 questions</p>
+    </div>
+  </div>
+</section>

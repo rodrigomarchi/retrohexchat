@@ -31,6 +31,13 @@ defmodule RetroHexChatWeb.Router do
     pipe_through :landing
 
     get "/", LandingController, :index
+    get "/about", LandingController, :about
+    get "/how-it-works", LandingController, :how_it_works
+    get "/features", LandingController, :features
+    get "/privacy", LandingController, :privacy
+    get "/install", LandingController, :install
+    get "/community", LandingController, :community
+    get "/faq", LandingController, :faq
   end
 
   pipeline :help do

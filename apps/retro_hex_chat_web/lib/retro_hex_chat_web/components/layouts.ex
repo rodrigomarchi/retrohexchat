@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.Layouts do
   """
   use RetroHexChatWeb, :html
 
+  import RetroHexChatWeb.Icons
+
   embed_templates "layouts/*"
 
   @doc """

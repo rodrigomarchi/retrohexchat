@@ -1,0 +1,313 @@
+<%!-- ══════════════ FEATURES ══════════════ --%>
+<section id="features" class="landing-section" aria-labelledby="features-heading">
+  <div class="window landing-window landing-window--reveal">
+    <div class="title-bar">
+      <div class="title-bar-text">What you can do</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" disabled></button>
+        <button aria-label="Maximize" disabled></button>
+        <button aria-label="Close" disabled></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <h2 id="features-heading" class="u-sr-only">Features</h2>
+
+      <menu role="tablist" class="landing-tabs" aria-label="Features">
+        <button
+          role="tab"
+          aria-selected="true"
+          aria-controls="feat-chat"
+          id="feat-btn-chat"
+          class="landing-tab active"
+          type="button"
+        >
+          <.icon_chat class="licon licon-14" /> Chat
+        </button>
+        <button
+          role="tab"
+          aria-selected="false"
+          aria-controls="feat-channels"
+          id="feat-btn-channels"
+          class="landing-tab"
+          type="button"
+        >
+          <.icon_channels class="licon licon-14" /> Channels
+        </button>
+        <button
+          role="tab"
+          aria-selected="false"
+          aria-controls="feat-p2p"
+          id="feat-btn-p2p"
+          class="landing-tab"
+          type="button"
+        >
+          <.icon_p2p class="licon licon-14" /> P2P
+        </button>
+        <button
+          role="tab"
+          aria-selected="false"
+          aria-controls="feat-admin"
+          id="feat-btn-admin"
+          class="landing-tab"
+          type="button"
+        >
+          <.icon_rules class="licon licon-14" /> Admin
+        </button>
+        <button
+          role="tab"
+          aria-selected="false"
+          aria-controls="feat-commands"
+          id="feat-btn-commands"
+          class="landing-tab"
+          type="button"
+        >
+          <.icon_terminal class="licon licon-14" /> Commands
+        </button>
+      </menu>
+
+      <div
+        id="feat-chat"
+        role="tabpanel"
+        aria-labelledby="feat-btn-chat"
+        class="landing-tab-panel"
+      >
+        <h3>Real-time chat. Zero refresh. Zero loading.</h3>
+        <div class="sunken-panel landing-feature-mockup">
+          <pre>
+  #elixir
+  ───────────────────
+
+  ● alice                           10:23
+    Good morning! Anyone tried Phoenix 1.8?
+
+  ● bob                             10:24
+    Yes! LiveView is amazing
+
+  ● carol                           10:25
+    Agreed, performance is way better</pre>
+        </div>
+        <ul>
+          <li>Real-time messages via WebSocket</li>
+          <li>Emoji reactions</li>
+          <li>Threads (nested replies)</li>
+          <li>Markdown and IRC formatting</li>
+          <li>Link previews with metadata</li>
+        </ul>
+      </div>
+
+      <div
+        id="feat-channels"
+        role="tabpanel"
+        aria-labelledby="feat-btn-channels"
+        class="landing-tab-panel"
+        hidden
+      >
+        <h3>Channels are chat rooms.</h3>
+        <ul>
+          <li>Create as many channels as you want</li>
+          <li><strong>Public:</strong> anyone can join</li>
+          <li><strong>Private:</strong> invite-only</li>
+          <li><strong>Protected:</strong> password for restricted channels</li>
+          <li>Topic, modes, slow mode &mdash; you control it</li>
+        </ul>
+      </div>
+
+      <div
+        id="feat-p2p"
+        role="tabpanel"
+        aria-labelledby="feat-btn-p2p"
+        class="landing-tab-panel"
+        hidden
+      >
+        <h3>Direct connection between people. Peer-to-peer.</h3>
+        <div class="sunken-panel landing-feature-mockup" aria-label="Voice call mockup">
+          <svg
+            class="landing-svg-diagram"
+            viewBox="0 0 340 150"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="Windows 98 style voice call window showing timer, mute, camera, screen share, and end call buttons"
+          >
+            <!-- Window frame -->
+            <rect
+              x="10"
+              y="10"
+              width="320"
+              height="130"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="2"
+            />
+            <!-- Title bar -->
+            <rect x="12" y="12" width="316" height="20" fill="#000080" />
+            <text
+              x="22"
+              y="26"
+              fill="#fff"
+              font-size="11"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              Voice Call with Bob
+            </text>
+            <!-- Title bar buttons -->
+            <rect
+              x="290"
+              y="15"
+              width="14"
+              height="14"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="1"
+            />
+            <line x1="293" y1="18" x2="301" y2="26" stroke="#000" stroke-width="1.5" />
+            <line x1="301" y1="18" x2="293" y2="26" stroke="#000" stroke-width="1.5" />
+            <rect
+              x="272"
+              y="15"
+              width="14"
+              height="14"
+              rx="0"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="1"
+            />
+            
+<!-- Timer area -->
+            <circle cx="80" cy="62" r="5" fill="#cc0000" />
+            <text
+              x="95"
+              y="66"
+              fill="#000"
+              font-size="18"
+              font-family="'Source Code Pro','Courier New',monospace"
+              font-weight="bold"
+            >
+              00:03:42
+            </text>
+            
+<!-- Call buttons -->
+            <!-- Mute -->
+            <rect x="30" y="90" width="60" height="28" rx="0" fill="#c0c0c0" />
+            <line x1="30" y1="90" x2="90" y2="90" stroke="#fff" stroke-width="1" />
+            <line x1="30" y1="90" x2="30" y2="118" stroke="#fff" stroke-width="1" />
+            <line x1="90" y1="90" x2="90" y2="118" stroke="#808080" stroke-width="1" />
+            <line x1="30" y1="118" x2="90" y2="118" stroke="#808080" stroke-width="1" />
+            <text
+              x="60"
+              y="108"
+              text-anchor="middle"
+              fill="#000"
+              font-size="11"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              Mute
+            </text>
+            
+<!-- Camera -->
+            <rect x="100" y="90" width="60" height="28" rx="0" fill="#c0c0c0" />
+            <line x1="100" y1="90" x2="160" y2="90" stroke="#fff" stroke-width="1" />
+            <line x1="100" y1="90" x2="100" y2="118" stroke="#fff" stroke-width="1" />
+            <line x1="160" y1="90" x2="160" y2="118" stroke="#808080" stroke-width="1" />
+            <line x1="100" y1="118" x2="160" y2="118" stroke="#808080" stroke-width="1" />
+            <text
+              x="130"
+              y="108"
+              text-anchor="middle"
+              fill="#000"
+              font-size="11"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              Camera
+            </text>
+            
+<!-- Screen -->
+            <rect x="170" y="90" width="60" height="28" rx="0" fill="#c0c0c0" />
+            <line x1="170" y1="90" x2="230" y2="90" stroke="#fff" stroke-width="1" />
+            <line x1="170" y1="90" x2="170" y2="118" stroke="#fff" stroke-width="1" />
+            <line x1="230" y1="90" x2="230" y2="118" stroke="#808080" stroke-width="1" />
+            <line x1="170" y1="118" x2="230" y2="118" stroke="#808080" stroke-width="1" />
+            <text
+              x="200"
+              y="108"
+              text-anchor="middle"
+              fill="#000"
+              font-size="11"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+            >
+              Screen
+            </text>
+            
+<!-- End (reddish) -->
+            <rect x="240" y="90" width="60" height="28" rx="0" fill="#d4a0a0" />
+            <line x1="240" y1="90" x2="300" y2="90" stroke="#e8c0c0" stroke-width="1" />
+            <line x1="240" y1="90" x2="240" y2="118" stroke="#e8c0c0" stroke-width="1" />
+            <line x1="300" y1="90" x2="300" y2="118" stroke="#993333" stroke-width="1" />
+            <line x1="240" y1="118" x2="300" y2="118" stroke="#993333" stroke-width="1" />
+            <text
+              x="270"
+              y="108"
+              text-anchor="middle"
+              fill="#660000"
+              font-size="11"
+              font-family="'Segoe UI',Tahoma,sans-serif"
+              font-weight="bold"
+            >
+              End
+            </text>
+          </svg>
+        </div>
+        <ul>
+          <li>Voice calls &mdash; direct P2P via WebRTC</li>
+          <li>Video calls with camera toggle</li>
+          <li>File transfer &mdash; send files directly, no server upload</li>
+          <li>Picture-in-Picture mode for multitasking</li>
+          <li>Media controls: mute, camera, screen share</li>
+          <li>End-to-end encrypted by default</li>
+          <li>TURN relay fallback for strict firewalls</li>
+        </ul>
+      </div>
+
+      <div
+        id="feat-admin"
+        role="tabpanel"
+        aria-labelledby="feat-btn-admin"
+        class="landing-tab-panel"
+        hidden
+      >
+        <h3>Your server, your rules.</h3>
+        <ul>
+          <li>Full administration panel</li>
+          <li>User and channel management</li>
+          <li>Rate limiting and moderation</li>
+          <li>Real-time logs and metrics</li>
+          <li>Backup and restore</li>
+        </ul>
+      </div>
+
+      <div
+        id="feat-commands"
+        role="tabpanel"
+        aria-labelledby="feat-btn-commands"
+        class="landing-tab-panel"
+        hidden
+      >
+        <h3>Powerful IRC-style commands.</h3>
+        <div class="sunken-panel">
+          <pre>
+  /join #channel     → join a channel
+  /msg @nick text    → direct message
+  /nick new_nick     → change nickname
+  /help              → see all commands
+  /whois @nick       → info about a user</pre>
+        </div>
+        <p>Over 20 commands with smart autocomplete.</p>
+      </div>
+    </div>
+    <div class="status-bar">
+      <p class="status-bar-field">5 categories</p>
+    </div>
+  </div>
+</section>

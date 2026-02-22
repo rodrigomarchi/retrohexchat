@@ -1,0 +1,43 @@
+<%!-- ══════════════ RUN YOUR OWN ══════════════ --%>
+<section id="install" class="landing-section" aria-labelledby="install-heading">
+  <div class="window landing-window landing-window--reveal">
+    <div class="title-bar">
+      <div class="title-bar-text">C:\SETUP\install_server.exe</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" disabled></button>
+        <button aria-label="Maximize" disabled></button>
+        <button aria-label="Close" disabled></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <h2 id="install-heading">Want your own server? Three steps.</h2>
+
+      <div class="landing-install-steps">
+        <fieldset>
+          <legend><.icon_git class="licon licon-14" /> Step 1 &mdash; Clone</legend>
+          <pre class="landing-terminal">$ git clone https://github.com/rodrigomarchi/retro_hex_chat.git
+$ cd retro_hex_chat</pre>
+        </fieldset>
+
+        <fieldset>
+          <legend><.icon_wrench class="licon licon-14" /> Step 2 &mdash; Setup</legend>
+          <pre class="landing-terminal">$ make setup</pre>
+        </fieldset>
+
+        <fieldset>
+          <legend><.icon_terminal class="licon licon-14" /> Step 3 &mdash; Run</legend>
+          <pre class="landing-terminal">$ make server
+[info] Running RetroHexChatWeb.Endpoint at http://localhost:4000</pre>
+        </fieldset>
+      </div>
+
+      <p>
+        <strong>Requirements:</strong>
+        Elixir 1.17+, PostgreSQL 16+, Node.js 20+.<br /> A $5/month VPS handles it just fine.
+      </p>
+    </div>
+    <div class="status-bar">
+      <p class="status-bar-field">Installation complete</p>
+    </div>
+  </div>
+</section>
