@@ -11,6 +11,7 @@ defmodule RetroHexChat.Admin do
 
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Admin.{AuditLogs, GlobalMutes, RoleCache, ServerBans}
+  alias RetroHexChat.Bots
   alias RetroHexChat.Channels
   alias RetroHexChat.Commands.Duration
   alias RetroHexChat.Services.{ChanServ, NickServ, Queries}
@@ -361,6 +362,7 @@ defmodule RetroHexChat.Admin do
 
     case Repo.transaction(multi) do
       {:ok, results} ->
+        shutdown_all_bots()
         shutdown_all_channels()
         broadcast_system_nuke()
 
@@ -376,6 +378,12 @@ defmodule RetroHexChat.Admin do
       {:error, failed_step, _changeset, _completed} ->
         {:error, "Nuke failed at step: #{failed_step}"}
     end
+  end
+
+  defp shutdown_all_bots do
+    Bots.Supervisor.stop_all()
+  rescue
+    e -> Logger.warning("Bot shutdown during nuke failed: #{inspect(e)}")
   end
 
   defp shutdown_all_channels do

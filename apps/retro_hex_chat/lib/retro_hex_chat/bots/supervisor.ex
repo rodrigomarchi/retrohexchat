@@ -31,4 +31,12 @@ defmodule RetroHexChat.Bots.Supervisor do
         {:error, :not_found}
     end
   end
+
+  @spec stop_all() :: :ok
+  def stop_all do
+    DynamicSupervisor.which_children(__MODULE__)
+    |> Enum.each(fn {_, pid, _, _} ->
+      if is_pid(pid), do: DynamicSupervisor.terminate_child(__MODULE__, pid)
+    end)
+  end
 end

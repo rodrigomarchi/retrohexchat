@@ -694,12 +694,14 @@ defmodule RetroHexChat.Bots.Server do
   @spec log_event_async(integer(), String.t(), String.t() | nil, map()) :: :ok
   defp log_event_async(bot_id, event_type, channel, metadata \\ %{}) do
     Task.start(fn ->
-      Queries.log_event(bot_id, event_type, channel, metadata)
+      try do
+        Queries.log_event(bot_id, event_type, channel, metadata)
+      rescue
+        _ -> :ok
+      end
     end)
 
     :ok
-  rescue
-    _ -> :ok
   end
 
   @spec via(String.t()) :: {:via, Elixir.Registry, {atom(), String.t()}}
