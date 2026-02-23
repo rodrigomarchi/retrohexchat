@@ -1,4 +1,4 @@
-/* P2P Lobby components: presence, chat, actions, consent */
+/* P2P Lobby components: toolbar, chat, consent */
 
 /* ── Lobby Window (larger than chat — matches landing page scale) ── */
 
@@ -18,42 +18,6 @@
   padding: var(--space-16);
 }
 
-.p2p-lobby__content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-12);
-}
-
-.p2p-lobby__footer {
-  padding-top: var(--space-12);
-  border-top: 1px solid var(--color-border);
-  text-align: center;
-}
-
-.p2p-lobby__privacy {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  margin-bottom: var(--space-8);
-  font-size: var(--text-base);
-}
-
-.p2p-lobby__privacy-label {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  cursor: pointer;
-}
-
-.p2p-lobby__privacy-warning {
-  color: var(--color-warning-alt);
-  font-size: var(--text-sm);
-}
-
-.p2p-lobby__close-btn {
-  min-width: 160px;
-}
-
 .p2p-lobby__warning {
   background: var(--color-warning);
   color: var(--color-white);
@@ -67,41 +31,52 @@
   color: var(--color-muted);
 }
 
-/* ── Presence ── */
+/* ── Toolbar ── */
 
-.p2p-lobby-presence {
-  display: flex;
-  gap: var(--space-16);
-  padding: var(--space-8) 0;
-}
-
-.p2p-lobby-presence__user {
+.p2p-lobby-toolbar {
   display: flex;
   align-items: center;
   gap: var(--space-6);
+  padding: var(--space-6) var(--space-8);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
-.p2p-lobby-presence__indicator {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+.p2p-lobby-toolbar__actions {
+  display: flex;
+  gap: var(--space-4);
 }
 
-.p2p-lobby-presence__indicator--online {
-  background: var(--color-online);
+.p2p-lobby-toolbar__btn {
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-sm);
 }
 
-.p2p-lobby-presence__indicator--offline {
-  background: var(--color-offline);
+.p2p-lobby-toolbar__btn:disabled {
+  color: var(--color-disabled);
+  cursor: not-allowed;
 }
 
-.p2p-lobby-presence__nick {
+.p2p-lobby-toolbar__separator {
+  flex: 1;
+}
+
+.p2p-lobby-toolbar__privacy {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  font-size: var(--text-sm);
+}
+
+.p2p-lobby-toolbar__privacy-warning {
+  color: var(--color-warning-alt);
   font-weight: bold;
+  font-size: var(--text-xs);
 }
 
-.p2p-lobby-presence__label {
-  color: var(--color-muted);
+.p2p-lobby-toolbar__end {
+  padding: var(--space-4) var(--space-8);
   font-size: var(--text-sm);
 }
 
@@ -158,35 +133,6 @@
   min-width: 80px;
 }
 
-/* ── Actions ── */
-
-.p2p-lobby-actions {
-  padding: var(--space-8) 0;
-}
-
-.p2p-lobby-actions__buttons {
-  display: flex;
-  gap: var(--space-12);
-  flex-wrap: wrap;
-}
-
-.p2p-lobby-actions__btn {
-  flex: 1;
-  min-width: 140px;
-  padding: var(--space-6) var(--space-12);
-}
-
-.p2p-lobby-actions__btn:disabled {
-  color: var(--color-disabled);
-  cursor: not-allowed;
-}
-
-.p2p-lobby-actions__waiting {
-  text-align: center;
-  color: var(--color-muted);
-  padding: var(--space-12);
-}
-
 /* ── Consent Banner ── */
 
 .p2p-lobby-consent {
@@ -214,43 +160,12 @@
   font-weight: bold;
 }
 
-/* ── Connection State ── */
+/* ── Waiting Indicator ── */
 
-.p2p-lobby-connection {
-  display: flex;
-  align-items: center;
-  gap: var(--space-6);
-  padding: var(--space-6) var(--space-12);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-}
-
-.p2p-lobby-connection__indicator {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--color-muted);
-}
-
-.p2p-lobby-connection--connecting .p2p-lobby-connection__indicator {
-  background: var(--color-warning-alt);
-}
-
-.p2p-lobby-connection--connected .p2p-lobby-connection__indicator {
-  background: var(--color-online);
-}
-
-.p2p-lobby-connection--retrying .p2p-lobby-connection__indicator {
-  background: var(--color-warning-alt);
-}
-
-.p2p-lobby-connection--failed .p2p-lobby-connection__indicator {
-  background: var(--color-error);
-}
-
-.p2p-lobby-connection--failed .p2p-lobby-connection__label {
-  color: var(--color-error);
+.p2p-lobby-actions__waiting {
+  text-align: center;
+  color: var(--color-muted);
+  padding: var(--space-12);
 }
 
 /* ── Expired State ── */

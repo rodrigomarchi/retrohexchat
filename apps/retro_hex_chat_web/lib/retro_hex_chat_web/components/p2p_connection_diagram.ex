@@ -31,6 +31,8 @@ defmodule RetroHexChatWeb.Components.P2pConnectionDiagram do
       data-state={@diagram_state.id}
       data-direction={@diagram_state[:direction] || "none"}
       data-percent={@diagram_state[:percent] || "0"}
+      data-dots={@diagram_state[:dots] || "3"}
+      data-cycle-ms={@diagram_state[:cycle_ms] || "1200"}
     >
       <div class="p2p-diagram__peers">
         <.peer_panel
@@ -325,7 +327,9 @@ defmodule RetroHexChatWeb.Components.P2pConnectionDiagram do
           sub_label: "#{ft[:speed] || "0 B/s"} — #{percent}%",
           progress: percent,
           direction: direction,
-          percent: percent
+          percent: percent,
+          dots: 5,
+          cycle_ms: 800
         }
 
       "verifying" ->
@@ -343,10 +347,26 @@ defmodule RetroHexChatWeb.Components.P2pConnectionDiagram do
 
     case call[:type] do
       "video" ->
-        %{id: "video-call", label: "Video Call", icon: "📹", sub_label: sub, direction: "bidi"}
+        %{
+          id: "video-call",
+          label: "Video Call",
+          icon: "📹",
+          sub_label: sub,
+          direction: "bidi",
+          dots: 5,
+          cycle_ms: 1000
+        }
 
       "audio" ->
-        %{id: "audio-call", label: "Audio Call", icon: "🎤", sub_label: sub, direction: "bidi"}
+        %{
+          id: "audio-call",
+          label: "Audio Call",
+          icon: "🎤",
+          sub_label: sub,
+          direction: "bidi",
+          dots: 4,
+          cycle_ms: 1400
+        }
 
       _ ->
         %{id: "call-init", label: "Starting call...", icon: "📞"}

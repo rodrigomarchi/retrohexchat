@@ -151,17 +151,15 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       {:ok, _view, html} = live(conn, "/p2p/#{session.token}")
 
       assert html =~ "p2p-lobby-chat"
-      assert html =~ "End Session"
-      assert html =~ "Send File"
-      assert html =~ "Audio Call"
-      assert html =~ "Video Call"
+      assert html =~ "End"
+      assert html =~ "p2p-lobby-toolbar"
     end
 
-    test "renders presence indicators", %{conn: conn, session: session} do
+    test "renders peer nicks in diagram", %{conn: conn, session: session} do
       conn = chat_conn(conn, "p2p_lv_a6")
       {:ok, _view, html} = live(conn, "/p2p/#{session.token}")
 
-      assert html =~ "p2p-lobby-presence"
+      assert html =~ "p2p-diagram"
       assert html =~ "p2p_lv_a6"
       assert html =~ "p2p_lv_b6"
     end
@@ -259,10 +257,8 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       conn = chat_conn(conn, "p2p_lv_a8")
       {:ok, _view, html} = live(conn, "/p2p/#{session.token}")
 
-      # Capabilities default to nil (not yet detected), buttons should be disabled
-      assert html =~ "Send File"
-      assert html =~ "Audio Call"
-      assert html =~ "Video Call"
+      # Toolbar buttons should be present (capabilities default to nil = disabled)
+      assert html =~ "p2p-lobby-toolbar"
     end
 
     test "p2p_capabilities event updates assigns", %{conn: conn, session: session} do
@@ -276,9 +272,8 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       })
 
       html = render(view)
-      # Buttons should still be present after capabilities update
-      assert html =~ "Send File"
-      assert html =~ "Audio Call"
+      # Toolbar should still be present after capabilities update
+      assert html =~ "p2p-lobby-toolbar"
     end
 
     test "action response clears consent banner", %{
@@ -444,7 +439,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
 
       html = render(view)
       # Action buttons should not be visible when file transfer is active
-      refute html =~ "p2p-lobby-actions__buttons"
+      refute html =~ "p2p-lobby-toolbar"
     end
 
     test "file_transfer ready state shows file selection prompt", %{
@@ -609,7 +604,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       {:ok, view, html} = live(conn, "/p2p/#{session.token}")
 
       # In lobby state, action buttons should be visible (no file_transfer yet)
-      assert html =~ "p2p-lobby-actions__buttons"
+      assert html =~ "p2p-lobby-toolbar"
       refute html =~ "p2p-file-transfer"
 
       # Simulate the full action consent flow via GenServer
@@ -934,7 +929,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
 
       html = render(view)
       # Action buttons should not be visible when call is active
-      refute html =~ "p2p-lobby-actions__buttons"
+      refute html =~ "p2p-lobby-toolbar"
     end
   end
 

@@ -266,6 +266,7 @@
 
 .p2p-diagram__link--connected .p2p-diagram__line {
   background: var(--color-online);
+  box-shadow: 0 0 6px var(--color-online);
   animation: diagram-flash 0.6s ease-out;
 }
 
@@ -314,6 +315,7 @@
 
 .p2p-diagram__link--transferring .p2p-diagram__line {
   background: var(--color-online);
+  box-shadow: 0 0 8px var(--color-highlight-light);
 }
 
 .p2p-diagram__link--transferring .p2p-diagram__dot {
@@ -340,12 +342,11 @@
 
 .p2p-diagram__link--audio-call .p2p-diagram__line {
   background: var(--color-online);
+  box-shadow: 0 0 6px var(--color-success);
 }
 
 .p2p-diagram__link--audio-call .p2p-diagram__dot {
   background: var(--color-success);
-  width: 6px;
-  height: 6px;
 }
 
 .p2p-diagram__badge--audio-call {
@@ -356,11 +357,14 @@
 
 .p2p-diagram__link--video-call .p2p-diagram__line {
   background: var(--color-online);
-  height: 6px;
+  height: 8px;
+  box-shadow: 0 0 12px var(--color-highlight-light);
 }
 
 .p2p-diagram__link--video-call .p2p-diagram__dot {
   background: var(--color-highlight-light);
+  width: 10px;
+  height: 10px;
 }
 
 .p2p-diagram__badge--video-call {

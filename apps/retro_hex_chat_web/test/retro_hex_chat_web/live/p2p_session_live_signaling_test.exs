@@ -192,7 +192,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveSignalingTest do
       render_hook(view, "p2p_state_change", %{"state" => "failed"})
 
       html = render(view)
-      assert html =~ "Connection failed"
+      assert html =~ "Failed"
     end
   end
 end

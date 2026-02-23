@@ -54,11 +54,6 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
           peer_info={@peer_info}
         />
         <.p2p_inactivity_warning :if={@inactivity_warning} />
-        <.p2p_connection_state
-          :if={@webrtc_state}
-          webrtc_state={@webrtc_state}
-          retry_attempt={@retry_attempt}
-        />
 
         <div
           :if={@session_status == "connecting" && !@webrtc_state && !@call}
@@ -67,55 +62,49 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
           <p>Waiting for connection...</p>
         </div>
 
+        <.p2p_consent_banner
+          :if={
+            @action_request && @action_request[:status] == "pending" &&
+              @action_request[:requester_nick] != @nickname
+          }
+          action_request={@action_request}
+          peer_nick={@peer_nick}
+        />
+        <.p2p_waiting_indicator
+          :if={
+            @action_request && @action_request[:status] == "pending" &&
+              @action_request[:requester_nick] == @nickname
+          }
+          action_request={@action_request}
+        />
+
+        <.p2p_toolbar
+          :if={@session_status != "connecting" && !@call && !@file_transfer}
+          capabilities={@capabilities}
+          action_request={@action_request}
+          nickname={@nickname}
+          turn_only={@turn_only}
+          turn_configured={@turn_configured}
+        />
+
         <.p2p_media_call
           :if={@call}
           call={@call}
           peer_nick={@peer_nick}
         />
 
-        <div :if={@session_status != "connecting" && !@call} class="p2p-lobby__content">
-          <.p2p_presence nickname={@nickname} peer_nick={@peer_nick} peer_online={@peer_online} />
+        <.p2p_file_transfer
+          :if={@file_transfer && !@call}
+          file_transfer={@file_transfer}
+          nickname={@nickname}
+          peer_nick={@peer_nick}
+        />
 
-          <.p2p_chat messages={@messages} nickname={@nickname} />
-
-          <.p2p_file_transfer
-            :if={@file_transfer}
-            file_transfer={@file_transfer}
-            nickname={@nickname}
-            peer_nick={@peer_nick}
-          />
-
-          <.p2p_actions
-            :if={!@file_transfer}
-            capabilities={@capabilities}
-            action_request={@action_request}
-            nickname={@nickname}
-            peer_nick={@peer_nick}
-            session_status={@session_status}
-          />
-        </div>
-
-        <div :if={!@call && !@file_transfer} class="p2p-lobby__footer">
-          <div
-            :if={@turn_configured || @turn_only}
-            class="p2p-lobby__privacy"
-          >
-            <label class="p2p-lobby__privacy-label">
-              <input
-                type="checkbox"
-                checked={@turn_only}
-                phx-click="toggle_privacy_mode"
-              />
-              <Icons.icon_privacy class="btn-icon__svg" /> Private mode (TURN-only)
-            </label>
-            <span :if={!@turn_configured} class="p2p-lobby__privacy-warning">
-              TURN server not configured
-            </span>
-          </div>
-          <button class="p2p-lobby__close-btn btn-icon" phx-click="close_session">
-            <Icons.icon_close class="btn-icon__svg" /> End Session
-          </button>
-        </div>
+        <.p2p_chat
+          :if={@session_status != "connecting"}
+          messages={@messages}
+          nickname={@nickname}
+        />
       </div>
     </div>
     """
@@ -141,24 +130,72 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     """
   end
 
+  attr :capabilities, :map, required: true
+  attr :action_request, :map, default: nil
   attr :nickname, :string, required: true
-  attr :peer_nick, :string, required: true
-  attr :peer_online, :boolean, required: true
+  attr :turn_only, :boolean, default: false
+  attr :turn_configured, :boolean, default: false
 
-  defp p2p_presence(assigns) do
+  defp p2p_toolbar(assigns) do
+    show_buttons = !assigns.action_request || assigns.action_request[:status] != "pending"
+    assigns = assign(assigns, :show_buttons, show_buttons)
+
     ~H"""
-    <div class="p2p-lobby-presence">
-      <div class="p2p-lobby-presence__user p2p-lobby-presence__user--online">
-        <span class="p2p-lobby-presence__indicator p2p-lobby-presence__indicator--online"></span>
-        <span class="p2p-lobby-presence__nick">{@nickname}</span>
-        <span class="p2p-lobby-presence__label">(you)</span>
+    <div class="p2p-lobby-toolbar">
+      <div :if={@show_buttons} class="p2p-lobby-toolbar__actions">
+        <button
+          phx-click="request_action"
+          phx-value-action_type="file_transfer"
+          disabled={!@capabilities[:dataChannel]}
+          title={
+            if !@capabilities[:dataChannel],
+              do: "Browser does not support file transfers",
+              else: "Send file"
+          }
+          class="p2p-lobby-toolbar__btn btn-icon"
+        >
+          <Icons.icon_file_send class="btn-icon__svg" /> File
+        </button>
+        <button
+          phx-click="request_action"
+          phx-value-action_type="audio_call"
+          disabled={!@capabilities[:getUserMedia]}
+          title={
+            if !@capabilities[:getUserMedia],
+              do: "Browser does not support audio calls",
+              else: "Audio call"
+          }
+          class="p2p-lobby-toolbar__btn btn-icon"
+        >
+          <Icons.icon_microphone class="btn-icon__svg" /> Audio
+        </button>
+        <button
+          phx-click="request_action"
+          phx-value-action_type="video_call"
+          disabled={!@capabilities[:getUserMedia]}
+          title={
+            if !@capabilities[:getUserMedia],
+              do: "Browser does not support video calls",
+              else: "Video call"
+          }
+          class="p2p-lobby-toolbar__btn btn-icon"
+        >
+          <Icons.icon_camera class="btn-icon__svg" /> Video
+        </button>
       </div>
-      <div class={"p2p-lobby-presence__user #{if @peer_online, do: "p2p-lobby-presence__user--online", else: "p2p-lobby-presence__user--offline"}"}>
-        <span class={"p2p-lobby-presence__indicator #{if @peer_online, do: "p2p-lobby-presence__indicator--online", else: "p2p-lobby-presence__indicator--offline"}"}>
-        </span>
-        <span class="p2p-lobby-presence__nick">{@peer_nick}</span>
-        <span :if={!@peer_online} class="p2p-lobby-presence__label">(waiting)</span>
-      </div>
+      <span class="p2p-lobby-toolbar__separator"></span>
+      <label
+        :if={@turn_configured || @turn_only}
+        class="p2p-lobby-toolbar__privacy"
+        title="Route traffic through TURN relay for enhanced privacy"
+      >
+        <input type="checkbox" checked={@turn_only} phx-click="toggle_privacy_mode" />
+        <Icons.icon_privacy class="btn-icon__svg" />
+        <span :if={!@turn_configured} class="p2p-lobby-toolbar__privacy-warning">!</span>
+      </label>
+      <button class="p2p-lobby-toolbar__end btn-icon" phx-click="close_session">
+        <Icons.icon_close class="btn-icon__svg" /> End
+      </button>
     </div>
     """
   end
@@ -326,79 +363,6 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
   defp quality_bars_active("fair"), do: 2
   defp quality_bars_active("poor"), do: 1
   defp quality_bars_active(_), do: 0
-
-  attr :capabilities, :map, required: true
-  attr :action_request, :map, default: nil
-  attr :nickname, :string, required: true
-  attr :peer_nick, :string, required: true
-  attr :session_status, :string, required: true
-
-  defp p2p_actions(assigns) do
-    ~H"""
-    <div class="p2p-lobby-actions">
-      <.p2p_consent_banner
-        :if={
-          @action_request && @action_request[:status] == "pending" &&
-            @action_request[:requester_nick] != @nickname
-        }
-        action_request={@action_request}
-        peer_nick={@peer_nick}
-      />
-      <.p2p_waiting_indicator
-        :if={
-          @action_request && @action_request[:status] == "pending" &&
-            @action_request[:requester_nick] == @nickname
-        }
-        action_request={@action_request}
-      />
-
-      <div
-        :if={!@action_request || @action_request[:status] != "pending"}
-        class="p2p-lobby-actions__buttons"
-      >
-        <button
-          phx-click="request_action"
-          phx-value-action_type="file_transfer"
-          disabled={!@capabilities[:dataChannel]}
-          title={
-            if !@capabilities[:dataChannel],
-              do: "Browser does not support file transfers",
-              else: "Send file"
-          }
-          class="p2p-lobby-actions__btn btn-icon"
-        >
-          <Icons.icon_file_send class="btn-icon__svg" /> Send File
-        </button>
-        <button
-          phx-click="request_action"
-          phx-value-action_type="audio_call"
-          disabled={!@capabilities[:getUserMedia]}
-          title={
-            if !@capabilities[:getUserMedia],
-              do: "Browser does not support audio calls",
-              else: "Audio call"
-          }
-          class="p2p-lobby-actions__btn btn-icon"
-        >
-          <Icons.icon_microphone class="btn-icon__svg" /> Audio Call
-        </button>
-        <button
-          phx-click="request_action"
-          phx-value-action_type="video_call"
-          disabled={!@capabilities[:getUserMedia]}
-          title={
-            if !@capabilities[:getUserMedia],
-              do: "Browser does not support video calls",
-              else: "Video call"
-          }
-          class="p2p-lobby-actions__btn btn-icon"
-        >
-          <Icons.icon_camera class="btn-icon__svg" /> Video Call
-        </button>
-      </div>
-    </div>
-    """
-  end
 
   attr :file_transfer, :map, required: true
   attr :nickname, :string, required: true
@@ -691,29 +655,6 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
     </div>
     """
   end
-
-  attr :webrtc_state, :string, required: true
-  attr :retry_attempt, :integer, default: nil
-
-  defp p2p_connection_state(assigns) do
-    ~H"""
-    <div class={"p2p-lobby-connection #{connection_state_class(@webrtc_state)}"}>
-      <span class="p2p-lobby-connection__indicator"></span>
-      <span class="p2p-lobby-connection__label">
-        {@webrtc_state}
-        <span :if={@retry_attempt && String.contains?(@webrtc_state, "Reconnecting")}>
-          (attempt {@retry_attempt}/3)
-        </span>
-      </span>
-    </div>
-    """
-  end
-
-  defp connection_state_class("Connected"), do: "p2p-lobby-connection--connected"
-  defp connection_state_class("Connecting..."), do: "p2p-lobby-connection--connecting"
-  defp connection_state_class("Reconnecting..."), do: "p2p-lobby-connection--retrying"
-  defp connection_state_class("Connection failed"), do: "p2p-lobby-connection--failed"
-  defp connection_state_class(_), do: ""
 
   defp action_label("audio_call"), do: "Audio Call"
   defp action_label("video_call"), do: "Video Call"
