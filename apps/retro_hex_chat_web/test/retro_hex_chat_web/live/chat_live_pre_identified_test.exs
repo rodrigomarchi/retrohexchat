@@ -20,13 +20,7 @@ defmodule RetroHexChatWeb.ChatLivePreIdentifiedTest do
 
   defp register_and_cleanup(nick) do
     {:ok, _} = SvcQueries.insert_registered_nick(nick, "pass123")
-
-    on_exit(fn ->
-      case SvcQueries.find_by_nickname(nick) do
-        nil -> :ok
-        reg -> SvcQueries.delete_registered_nick(reg)
-      end
-    end)
+    # DB cleanup is handled by Ecto sandbox rollback — no on_exit needed
   end
 
   # ── Pre-identified user loads persisted data on mount ────────────

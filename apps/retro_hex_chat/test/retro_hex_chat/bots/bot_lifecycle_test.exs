@@ -25,13 +25,11 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
     end
 
     on_exit(fn ->
+      # Stop bot processes (in-memory cleanup)
       for nickname <- Registry.registered_bots() do
         Supervisor.stop_bot(nickname)
       end
-
-      for bot <- Queries.list_bots() do
-        Queries.delete_bot(bot)
-      end
+      # DB cleanup is handled by Ecto sandbox rollback
     end)
 
     :ok

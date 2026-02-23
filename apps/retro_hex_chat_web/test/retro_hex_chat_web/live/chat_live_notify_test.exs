@@ -95,15 +95,7 @@ defmodule RetroHexChatWeb.ChatLiveNotifyTest do
       # Register nick with NickServ so we can save a notify list
       {:ok, _} = SvcQueries.insert_registered_nick(nick, "password123")
 
-      on_exit(fn ->
-        # Delete entries/settings before the registered nick (FK cascade)
-        NotifyList.delete_entry(nick, "SavedBuddy")
-
-        case SvcQueries.find_by_nickname(nick) do
-          nil -> :ok
-          reg -> SvcQueries.delete_registered_nick(reg)
-        end
-      end)
+      # DB cleanup is handled by Ecto sandbox rollback — no on_exit needed
 
       # Pre-save a notify list to DB
       notify_list = NotifyList.new()

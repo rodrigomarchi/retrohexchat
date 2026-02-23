@@ -7,11 +7,11 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
 
   setup do
     on_exit(fn ->
-      # Clean up any bots created during tests
-      for bot <- Queries.list_bots() do
-        Supervisor.stop_bot(bot.nickname)
-        Queries.delete_bot(bot)
+      # Stop bot processes (in-memory cleanup)
+      for nickname <- RetroHexChat.Bots.Registry.registered_bots() do
+        Supervisor.stop_bot(nickname)
       end
+      # DB cleanup is handled by Ecto sandbox rollback
 
       Application.delete_env(:retro_hex_chat, :admins)
     end)
