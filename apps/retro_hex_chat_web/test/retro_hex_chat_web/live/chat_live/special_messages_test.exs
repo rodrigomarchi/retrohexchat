@@ -12,15 +12,19 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
   alias RetroHexChat.Services.Motd
-  alias RetroHexChat.Services.Queries, as: ServiceQueries
 
   setup do
     ensure_channel("#lobby")
 
+    # Reset MOTD cache at the start of each test to avoid stale state
+    # from concurrent or previous test modules
+    Application.delete_env(:retro_hex_chat, :motd_cache)
+
     on_exit(fn ->
       Application.delete_env(:retro_hex_chat, :motd_cache)
       Application.delete_env(:retro_hex_chat, :admins)
-      ServiceQueries.delete_setting("motd")
+      # DB cleanup is handled by Ecto sandbox rollback; no need to call
+      # ServiceQueries.delete_setting here (sandbox may already be stopped)
     end)
 
     :ok
@@ -34,7 +38,10 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
       Motd.set("Server rules: be nice to everyone!", "Admin")
 
       nick = "E2EMotd#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      # Re-render to capture stream inserts from connected mount
+      html = render(view)
 
       # Status tab is active on mount, MOTD should be visible
       assert html =~ "Server rules: be nice to everyone!"
@@ -45,7 +52,10 @@ defmodule RetroHexChatWeb.ChatLive.SpecialMessagesTest do
       Motd.clear("Admin")
 
       nick = "E2ENoMtd#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      # Re-render to capture stream inserts from connected mount
+      html = render(view)
 
       # Should not contain any MOTD-related content
       refute html =~ "chat-status--motd"
