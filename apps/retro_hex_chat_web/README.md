@@ -10,10 +10,10 @@ Phoenix LiveView web layer with retro aesthetic.
 
 ### Components
 
-15 function components rendering retro-styled semantic HTML: Window, TitleBar, MenuBar, Toolbar, Treebar, ChatMessage, Nicklist, StatusBar, CommandPalette, ContextMenu, SearchBar, ScrollLoader, Dialog.
+57 function components rendering retro-styled semantic HTML including Window, Dialog, ChatMessage, Nicklist, StatusBar, Toolbar, TabBar, EmojiPicker, ContextMenu, and many more.
 
 ### JavaScript Hooks
 
-4 minimal hooks (all UI logic lives server-side via LiveView): ScrollHook, CommandPaletteHook, KeyboardHook, SoundHook.
+31 hooks following the "hook = wiring, lib = logic" pattern with 34 extracted lib modules. Core UI logic lives server-side via LiveView.
 
 See the [project README](../../README.md) for full documentation.

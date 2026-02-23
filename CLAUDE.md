@@ -2,7 +2,7 @@
 
 ## Active Technologies
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x
-- PostgreSQL 16+ (28 migrations, 29 schemas) with cursor-based pagination and GIN/trigram indexes
+- PostgreSQL 16+ (39 migrations, 36 schemas) with cursor-based pagination and GIN/trigram indexes
 - Retro CSS framework, esbuild for asset bundling
 - bcrypt_elixir for password hashing, Plug.Crypto for encryption
 - Req 0.5+ (HTTP client for link previews)
@@ -41,15 +41,15 @@
 ```text
 apps/
 ├── retro_hex_chat/           # Domain (pure Elixir, zero Phoenix deps)
-│   ├── lib/retro_hex_chat/   # 7 bounded contexts: Accounts, Chat,
-│   │                         # Channels, Services, Presence, Commands,
-│   │                         # RateLimit
+│   ├── lib/retro_hex_chat/   # 11 bounded contexts: Accounts, Admin,
+│   │                         # Bots, Channels, Chat, Commands, Config,
+│   │                         # P2P, Presence, RateLimit, Services
 │   ├── priv/repo/migrations/
 │   └── test/
 └── retro_hex_chat_web/       # Web layer (Phoenix + LiveView)
     ├── lib/retro_hex_chat_web/
     │   ├── live/             # ConnectLive, ChatLive, ChannelListLive
-    │   └── components/       # ~40 function components (retro-styled)
+    │   └── components/       # ~57 function components (retro-styled)
     ├── assets/               # CSS, JS hooks, static
     └── test/
 ```

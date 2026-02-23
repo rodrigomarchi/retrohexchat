@@ -125,7 +125,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
 ┌─────────────────────────────────────────────────────────┐
 │                    Browser (LiveView)                    │
 │  ConnectLive ──→ ChatLive ──→ ChannelListLive           │
-│  41 function components · 16 JS hooks · retro CSS   │
+│  57 function components · 31 JS hooks · retro CSS   │
 └─────────────────────┬───────────────────────────────────┘
                       │ Phoenix.PubSub
 ┌─────────────────────▼───────────────────────────────────┐
@@ -134,7 +134,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌───────────┐  │
 │  │ Accounts │ │   Chat   │ │ Channels │ │  Commands  │  │
 │  │          │ │          │ │          │ │            │  │
-│  │ Sessions │ │ Messages │ │ Server   │ │ 45 Handlers│  │
+│  │ Sessions │ │ Messages │ │ Server   │ │ 65 Handlers│  │
 │  │ NickValid│ │ History  │ │ Modes    │ │ Parser     │  │
 │  │ Policy   │ │ Search   │ │ Policy   │ │ Dispatcher │  │
 │  └──────────┘ └──────────┘ └──────────┘ └───────────┘  │
@@ -151,7 +151,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
         ┌─────────────▼──────────────┐
         │       PostgreSQL 16+       │
         │                            │
-        │  28 migrations · 29 schemas│
+        │  39 migrations · 36 schemas│
         │  GIN trigram indexes       │
         └────────────────────────────┘
 ```
@@ -199,11 +199,11 @@ retro_hex_chat/
 │   │   │   ├── channels/               # GenServer per channel, modes, policy
 │   │   │   ├── chat/                   # Messages, history, search, formatter,
 │   │   │   │                           # highlight, help topics, URL detector
-│   │   │   ├── commands/               # Parser, dispatcher, 45 handlers
+│   │   │   ├── commands/               # Parser, dispatcher, 65 handlers
 │   │   │   ├── presence/               # Phoenix.Presence tracker
 │   │   │   ├── rate_limit/             # ETS-backed flood control
 │   │   │   └── services/               # NickServ + ChanServ bots
-│   │   ├── priv/repo/migrations/       # 28 database migrations
+│   │   ├── priv/repo/migrations/       # 39 database migrations
 │   │   └── test/                       # Domain tests (unit + integration)
 │   │
 │   └── retro_hex_chat_web/             # Web app (Phoenix + LiveView)
@@ -212,7 +212,7 @@ retro_hex_chat/
 │       │   │   ├── connect_live.ex      # Nickname entry screen
 │       │   │   ├── chat_live.ex         # Main chat MDI screen
 │       │   │   └── channel_list_live.ex # Channel browser screen
-│       │   └── components/             # ~40 function components
+│       │   └── components/             # ~57 function components
 │       │       ├── window.ex            # Retro window chrome
 │       │       ├── title_bar.ex         # Blue gradient title bar
 │       │       ├── menu_bar.ex          # File/Edit/View/Help menus
@@ -241,7 +241,7 @@ retro_hex_chat/
 │       │       └── url_catcher_window.ex # URL capture/search
 │       ├── assets/
 │       │   ├── css/                    # Component and layout styles
-│       │   └── js/hooks/               # 16 LiveView hooks
+│       │   └── js/hooks/               # 31 LiveView hooks
 │       └── test/                        # Web tests (LiveView + E2E)
 │
 ├── config/                              # Environment configs (dev/test/prod)
@@ -362,7 +362,7 @@ Chat
 ├── Search          — PostgreSQL pg_trgm trigram full-text search
 ├── Formatter       — mIRC color/bold/italic/underline parser → safe HTML
 ├── Highlight       — Mention detection engine (nick + custom words)
-├── HelpTopics      — 90+ help topics across 8 categories
+├── HelpTopics      — 179 help topics across 10 categories
 ├── URLDetector     — URL extraction, linkify, HTML linkification
 └── LinkPreview     — Behaviour + Cache + HTTP fetcher for URL metadata
 ```
@@ -392,10 +392,10 @@ IRC slash-command system with a clean `Handler` behaviour contract.
 Commands
 ├── Parser          — Splits "/command args" from plain messages
 ├── Dispatcher      — Routes command name → handler module
-├── Registry        — Command lookup table (45 commands)
+├── Registry        — Command lookup table (65 commands)
 ├── Policy          — Permission checks before execution
 ├── Handler         — @behaviour: execute/2, validate/1, help/0
-└── Handlers/       — 45 handler modules (see Command System section)
+└── Handlers/       — 65 handler modules (see Command System section)
 ```
 
 ### Services
@@ -508,7 +508,7 @@ Every slash command implements the `Handler` behaviour:
 
 ## UI Components
 
-The interface is built with ~40 function components rendering semantic HTML with retro styling.
+The interface is built with ~57 function components rendering semantic HTML with retro styling.
 
 ### Screen Flow
 
@@ -607,7 +607,7 @@ ChatLive
 
 ### JavaScript Hooks
 
-16 hooks — all core UI logic lives in the server via LiveView:
+31 hooks — all core UI logic lives in the server via LiveView:
 
 | Hook | Purpose |
 |------|---------|
@@ -631,7 +631,7 @@ ChatLive
 
 ## Database Schema
 
-28 migrations, 29 Ecto schemas. Core tables:
+39 migrations, 36 Ecto schemas. Core tables:
 
 ```
 ┌──────────────────────┐     ┌──────────────────────────┐
@@ -878,7 +878,7 @@ This project is governed by a [Constitution](.specify/memory/constitution.md) �
 | # | Principle | Summary |
 |---|-----------|---------|
 | I | **Elixir & Phoenix Exclusive** | No JS frameworks. LiveView only. PostgreSQL only. |
-| II | **Umbrella with Bounded Contexts** | 7 contexts, strict domain/web separation |
+| II | **Umbrella with Bounded Contexts** | 11 contexts, strict domain/web separation |
 | III | **OTP Process Architecture** | GenServer per channel, DynamicSupervisor, Registry |
 | IV | **TDD (Non-Negotiable)** | Tests first. Full pyramid. Suite < 60s. |
 | V | **Contracts & Behaviours** | `@callback` contracts. One module per command. |
