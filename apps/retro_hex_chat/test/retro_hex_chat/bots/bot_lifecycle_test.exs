@@ -130,14 +130,70 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
           ]
         })
 
-      # Simulate first message — the bot will try to respond (channel process absent, caught)
-      send(pid, {:new_message, %{nickname: "user", channel: "#cooltest", content: "CoolBot hi"}})
+      # Simulate first message using real PubSub map format
+      send(pid, %{
+        event: "new_message",
+        payload: %{
+          id: 1,
+          channel: "#cooltest",
+          author: "user",
+          content: "CoolBot hi",
+          type: :message,
+          timestamp: DateTime.utc_now(),
+          reply_to_id: nil,
+          reply_to_author: nil,
+          reply_to_preview: nil
+        }
+      })
+
       Process.sleep(50)
 
       assert Process.alive?(pid)
       state = :sys.get_state(pid)
       # Should have recorded a last_response_at for the channel
       assert Map.has_key?(state.last_response_at, "#cooltest")
+    end
+
+    test "bot handles PubSub map-format new_message (real broadcast format)" do
+      {:ok, bot} =
+        Queries.create_bot(%{
+          name: "PubBot",
+          nickname: "PubBot",
+          created_by: "admin",
+          cooldown_ms: 500,
+          capabilities: %{"mention" => %{"response" => "Hi!", "enabled" => true}}
+        })
+
+      {:ok, pid} =
+        start_bot(bot, %{
+          cooldown_ms: 100,
+          channel_configs: [
+            %{channel_name: "#pubtest", enabled: true, capability_overrides: %{}}
+          ]
+        })
+
+      # Send message in the ACTUAL PubSub format (map with :author, not tuple with :nickname)
+      send(pid, %{
+        event: "new_message",
+        payload: %{
+          id: 1,
+          channel: "#pubtest",
+          author: "user",
+          content: "PubBot hi",
+          type: :message,
+          timestamp: DateTime.utc_now(),
+          reply_to_id: nil,
+          reply_to_author: nil,
+          reply_to_preview: nil
+        }
+      })
+
+      Process.sleep(50)
+
+      assert Process.alive?(pid)
+      state = :sys.get_state(pid)
+      # Bot should have processed the message and recorded cooldown
+      assert Map.has_key?(state.last_response_at, "#pubtest")
     end
 
     test "bot survives unknown messages" do
@@ -276,8 +332,21 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
           ]
         })
 
-      # Simulate a message to trigger event logging
-      send(pid, {:new_message, %{nickname: "user", channel: "#logtest", content: "LogBot hi"}})
+      # Simulate a message to trigger event logging (real PubSub format)
+      send(pid, %{
+        event: "new_message",
+        payload: %{
+          id: 1,
+          channel: "#logtest",
+          author: "user",
+          content: "LogBot hi",
+          type: :message,
+          timestamp: DateTime.utc_now(),
+          reply_to_id: nil,
+          reply_to_author: nil,
+          reply_to_preview: nil
+        }
+      })
 
       # Give async Task time to log
       Process.sleep(300)

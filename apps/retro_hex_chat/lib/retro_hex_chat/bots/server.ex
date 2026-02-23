@@ -186,6 +186,15 @@ defmodule RetroHexChat.Bots.Server do
   end
 
   @impl true
+  # PubSub map format (actual broadcast from channel server)
+  def handle_info(%{event: "new_message", payload: payload}, state) do
+    # Channel broadcasts :author, bot code expects :nickname
+    normalized = Map.put(payload, :nickname, payload.author)
+    state = handle_channel_message(normalized, state)
+    {:noreply, state}
+  end
+
+  # Legacy tuple format (used by direct sends / tests)
   def handle_info({:new_message, payload}, state) do
     state = handle_channel_message(payload, state)
     {:noreply, state}
