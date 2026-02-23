@@ -40,8 +40,6 @@ const MediaHook = {
     this.muted = false;
     this.cameraOff = false;
 
-    console.log("[Media] Hook mounted");
-
     // Listen for PeerConnection from WebRTCHook on #p2p-webrtc element
     // (CustomEvents have bubbles:false, so we must listen on the dispatching element)
     this._onPcReady = (e) => this._handlePcReady(e.detail.pc);
@@ -71,7 +69,6 @@ const MediaHook = {
   },
 
   destroyed() {
-    console.log("[Media] Hook destroyed");
     this._cleanup();
     if (this._webrtcEl) {
       this._webrtcEl.removeEventListener("media_pc_ready", this._onPcReady);
@@ -82,13 +79,11 @@ const MediaHook = {
   // --- PeerConnection lifecycle ---
 
   _handlePcReady(pc) {
-    console.log("[Media] PeerConnection ready");
     this.pc = pc;
     this.pc.ontrack = (event) => this._handleRemoteTrack(event);
   },
 
   _handlePcClosed() {
-    console.log("[Media] PeerConnection closed");
     if (this.callType) {
       this._endCall("Peer desconectou");
     }
@@ -97,7 +92,6 @@ const MediaHook = {
   // --- Call start/end ---
 
   async _startCall(type) {
-    console.log(`[Media] Starting ${type} call`);
     if (!this.pc) return;
 
     const constraints = {};
@@ -109,7 +103,6 @@ const MediaHook = {
     try {
       this.localStream = await acquireMedia(constraints);
     } catch (error) {
-      console.log(`[Media] Media error: ${error.message}`);
       this.pushEvent("media_error", error);
       return;
     }
@@ -134,12 +127,10 @@ const MediaHook = {
     this._startQualityPolling();
     this._setupDeviceChangeListener();
 
-    console.log(`[Media] Call started: ${type}, tracks: ${this.localStream.getTracks().length}`);
     this.pushEvent("media_call_started", { type });
   },
 
   _endCall(reason) {
-    console.log(`[Media] Ending call: ${reason}`);
     this._stopTimers();
 
     if (this.localStream) {
@@ -173,7 +164,6 @@ const MediaHook = {
   // --- Remote track handling ---
 
   _handleRemoteTrack(event) {
-    console.log(`[Media] Remote track received: ${event.track.kind}`);
     const [stream] = event.streams;
     if (!stream) return;
 
@@ -236,7 +226,6 @@ const MediaHook = {
   _toggleMute() {
     if (!this.localStream) return;
     this.muted = !this.muted;
-    console.log(`[Media] Mute toggled: ${this.muted}`);
     toggleTrack(this.localStream, "audio", !this.muted);
     this.pushEvent("media_mute_changed", { muted: this.muted });
   },
@@ -244,7 +233,6 @@ const MediaHook = {
   _toggleCamera() {
     if (!this.localStream) return;
     this.cameraOff = !this.cameraOff;
-    console.log(`[Media] Camera toggled: off=${this.cameraOff}`);
     toggleTrack(this.localStream, "video", !this.cameraOff);
     this.pushEvent("media_camera_changed", { off: this.cameraOff });
   },
@@ -262,7 +250,6 @@ const MediaHook = {
   // --- Audio-to-Video Upgrade ---
 
   async _handleUpgradeAccepted() {
-    console.log("[Media] Upgrade to video accepted");
     if (!this.pc || !this.localStream) return;
 
     try {
@@ -320,7 +307,6 @@ const MediaHook = {
   },
 
   async _switchDevice(kind, deviceId) {
-    console.log(`[Media] Switching device: ${kind} → ${deviceId}`);
     if (!this.localStream) return;
     try {
       switch (kind) {
@@ -353,9 +339,6 @@ const MediaHook = {
       try {
         const snapshot = await getQualitySnapshot(this.pc);
         const level = mapQualityLevel(snapshot);
-        console.log(
-          `[Media] Quality: ${QUALITY_LABELS[level]} (RTT: ${snapshot.rtt}ms, loss: ${snapshot.packetLoss}%)`,
-        );
         this.pushEvent("media_quality_update", {
           level,
           label: QUALITY_LABELS[level],
@@ -432,7 +415,6 @@ const MediaHook = {
   // --- Cleanup ---
 
   _cleanup() {
-    console.log("[Media] Cleanup");
     this._stopTimers();
 
     if (this._onDeviceChange) {

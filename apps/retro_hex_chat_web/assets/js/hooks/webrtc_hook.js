@@ -29,15 +29,12 @@ const WebRTCHook = {
     this.role = null;
     this.dataChannel = null;
 
-    console.log("[WebRTC] Hook mounted");
-
     this.handleEvent("p2p_start_offer", (data) => this._handleStartOffer(data));
     this.handleEvent("p2p_start_answer", (data) => this._handleStartAnswer(data));
     this.handleEvent("p2p_signal", (data) => this._handleSignal(data));
   },
 
   destroyed() {
-    console.log("[WebRTC] Hook destroyed");
     this._cleanup();
   },
 
@@ -47,7 +44,6 @@ const WebRTCHook = {
     this.iceServers = ice_servers;
     this.turnOnly = !!turn_only;
     this.role = "initiator";
-    console.log(`[WebRTC] Starting offer (role: initiator, turnOnly: ${this.turnOnly})`);
     await this._createConnection();
 
     const offer = await createOffer(this.pc);
@@ -58,12 +54,10 @@ const WebRTCHook = {
     this.iceServers = ice_servers;
     this.turnOnly = !!turn_only;
     this.role = "answerer";
-    console.log(`[WebRTC] Waiting for offer (role: answerer, turnOnly: ${this.turnOnly})`);
     // Wait for offer to arrive via p2p_signal
   },
 
   async _handleSignal(data) {
-    console.log(`[WebRTC] Signal received: ${data.type}`);
     switch (data.type) {
       case "offer":
         await this._handleRemoteOffer(data);
@@ -80,7 +74,6 @@ const WebRTCHook = {
   // --- Signal processing ---
 
   async _handleRemoteOffer(data) {
-    console.log("[WebRTC] Remote offer received, creating answer");
     // Answerer receives offer — create PC, set offer, create answer
     if (!this.pc) {
       await this._createConnection();
@@ -94,14 +87,12 @@ const WebRTCHook = {
   },
 
   async _handleRemoteAnswer(data) {
-    console.log("[WebRTC] Remote answer received");
     if (this.pc) {
       await handleAnswer(this.pc, { type: "answer", sdp: data.sdp });
     }
   },
 
   async _handleRemoteCandidate(data) {
-    console.log(`[WebRTC] ICE candidate received`);
     if (this.pc && data.candidate) {
       await addIceCandidate(this.pc, data.candidate);
     }
@@ -115,16 +106,12 @@ const WebRTCHook = {
     }
 
     const servers = this.iceServers || [];
-    console.log(
-      `[WebRTC] Creating peer connection (iceServers: ${servers.length}, turnOnly: ${this.turnOnly})`,
-    );
     this.pc = createPeerConnection(servers, {
       turnOnly: this.turnOnly,
     });
 
     onIceCandidate(this.pc, (candidate) => {
       if (candidate) {
-        console.log(`[WebRTC] Local ICE candidate: ${candidate.candidate?.substring(0, 60)}`);
         this.pushEvent("p2p_signal", {
           type: "ice-candidate",
           candidate: {
@@ -142,7 +129,6 @@ const WebRTCHook = {
 
     this._negotiating = false;
     this.pc.onnegotiationneeded = async () => {
-      console.log(`[WebRTC] Negotiation needed (role: ${this.role})`);
       if (this.role === "initiator" && !this._negotiating) {
         this._negotiating = true;
         try {
@@ -171,12 +157,10 @@ const WebRTCHook = {
 
   _setupDataChannel(channel) {
     channel.onopen = () => {
-      console.log(`[WebRTC] DataChannel opened: ${channel.label}`);
       this.el._fileTransferChannel = channel;
       this._dispatchDataChannelEvent("ft_channel_ready", channel);
     };
     channel.onclose = () => {
-      console.log("[WebRTC] DataChannel closed");
       this.el._fileTransferChannel = null;
       this._dispatchDataChannelEvent("ft_channel_closed", null);
     };
@@ -193,7 +177,6 @@ const WebRTCHook = {
   },
 
   _handleConnectionStateChange(state) {
-    console.log(`[WebRTC] Connection state: ${state}`);
     this.pushEvent("p2p_state_change", { state });
 
     switch (state) {
@@ -237,9 +220,6 @@ const WebRTCHook = {
       const delay = RETRY_CONFIG.delays[this.retryCount];
       this.retryCount = attempt;
 
-      console.log(
-        `[WebRTC] Connection failed, retry ${attempt}/${RETRY_CONFIG.maxAttempts} (delay: ${delay}ms)`,
-      );
       this.pushEvent("p2p_retry", { attempt });
 
       setTimeout(async () => {
@@ -253,7 +233,6 @@ const WebRTCHook = {
         }
       }, delay);
     } else {
-      console.log("[WebRTC] Max retries exhausted");
       this.pushEvent("p2p_failed", { reason: "max_retries_exhausted" });
     }
   },
@@ -266,7 +245,6 @@ const WebRTCHook = {
   },
 
   _cleanup() {
-    console.log("[WebRTC] Cleanup");
     this._clearDisconnectedTimer();
     this.el._peerConnection = null;
     this._dispatchMediaEvent("media_pc_closed", {});

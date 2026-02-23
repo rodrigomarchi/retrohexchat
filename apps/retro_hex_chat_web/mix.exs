@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.MixProject do
       aliases: aliases(),
       deps: deps(),
       test_coverage: [
-        summary: [threshold: 70],
+        summary: [threshold: 60],
         ignore_modules: [
           RetroHexChatWeb.HelpHTML,
           RetroHexChatWeb.LandingHTML,

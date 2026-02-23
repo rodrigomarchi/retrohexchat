@@ -43,9 +43,6 @@ const FileTransferHook = {
     this._sending = false;
     this._progressTimer = null;
     this._objectUrl = null;
-    this._lastLoggedPercent = -10;
-
-    console.log("[FileTransfer] Hook mounted");
 
     // Register server-pushed events
     this.handleEvent("ft_channel_ready", ({ channel }) => {
@@ -116,14 +113,12 @@ const FileTransferHook = {
 
       // Check for already-open channel (hook mounted after DataChannel opened)
       if (webrtcEl._fileTransferChannel && webrtcEl._fileTransferChannel.readyState === "open") {
-        console.log("[FileTransfer] Found existing open channel, setting up");
         this._setupChannel(webrtcEl._fileTransferChannel);
       }
     }
   },
 
   destroyed() {
-    console.log("[FileTransfer] Hook destroyed");
     this._stopProgressUpdates();
     if (this._objectUrl) {
       URL.revokeObjectURL(this._objectUrl);
@@ -142,7 +137,6 @@ const FileTransferHook = {
   _setupChannel(channel) {
     this._channel = channel;
     channel.binaryType = "arraybuffer";
-    console.log(`[FileTransfer] Channel setup (readyState: ${channel.readyState})`);
 
     channel.onmessage = (event) => {
       this._handleChannelMessage(event.data);
@@ -180,7 +174,6 @@ const FileTransferHook = {
   // --- File Selection & Validation ---
 
   _enqueueOrSend(file) {
-    console.log(`[FileTransfer] File selected: ${file.name} (${file.size} bytes)`);
     if (isTransferActive(this._session)) {
       this._queue.push(createQueueEntry(file));
       this.pushEvent("ft_queued", { fileName: file.name });
@@ -191,7 +184,6 @@ const FileTransferHook = {
 
   async _handleFileSelected(file) {
     if (!this._config) {
-      console.log("[FileTransfer] Config not loaded, rejecting file selection");
       this.pushEvent("ft_validation_error", {
         error: "Aguarde a configuracao carregar e tente novamente.",
       });
@@ -200,7 +192,6 @@ const FileTransferHook = {
 
     const result = validateFile(file, this._config);
     if (!result.valid) {
-      console.log(`[FileTransfer] Validation failed: ${result.error}`);
       this.pushEvent("ft_validation_error", { error: result.error });
       return;
     }
@@ -210,10 +201,6 @@ const FileTransferHook = {
     const sha256 = await computeHash(buffer);
 
     this._session = createSenderSession(file, sha256);
-
-    console.log(
-      `[FileTransfer] Sender session created: ${file.name}, ${this._session.totalChunks} chunks, hash: ${sha256.substring(0, 16)}...`,
-    );
 
     this.pushEvent("ft_offer_sent", {
       fileName: file.name,
@@ -231,10 +218,6 @@ const FileTransferHook = {
   _sendFileOffer() {
     if (!this._session || !this._channel) return;
 
-    console.log(
-      `[FileTransfer] Sending FILE_OFFER: ${this._session.fileName} (${this._session.fileSize} bytes, ${this._session.totalChunks} chunks)`,
-    );
-
     const offer = encodeControlMessage(MSG.FILE_OFFER, {
       transferId: this._session.transferId,
       fileName: this._session.fileName,
@@ -251,8 +234,6 @@ const FileTransferHook = {
 
   _handleChannelMessage(data) {
     const msg = decodeMessage(data);
-
-    console.log(`[FileTransfer] Message received: type=0x${msg.type.toString(16)}`);
 
     switch (msg.type) {
       case MSG.FILE_OFFER:
@@ -288,7 +269,6 @@ const FileTransferHook = {
   // --- Receiver: Incoming Offer ---
 
   _handleIncomingOffer(offer) {
-    console.log(`[FileTransfer] Offer received: ${offer.fileName} (${offer.fileSize} bytes)`);
     this._session = createReceiverSession(offer);
     this.pushEvent("ft_offer_received", {
       fileName: offer.fileName,
@@ -317,7 +297,6 @@ const FileTransferHook = {
     this._session.state = STATE.TRANSFERRING;
     this._session.startTime = Date.now();
     this._startProgressUpdates();
-    console.log("[FileTransfer] Peer accepted, starting transfer");
     this.pushEvent("ft_accepted", {});
     this._startSending();
   },
@@ -325,7 +304,6 @@ const FileTransferHook = {
   // --- Sender: Peer Rejected ---
 
   _handlePeerReject() {
-    console.log("[FileTransfer] Peer rejected transfer");
     if (this._session && this._session.role === "sender") {
       this._session.state = STATE.REJECTED;
       this.pushEvent("ft_rejected", {});
@@ -351,9 +329,6 @@ const FileTransferHook = {
     while (this._session && this._session.state === STATE.TRANSFERRING) {
       // Backpressure check
       if (this._channel.bufferedAmount >= HIGH_WATER_MARK) {
-        console.log(
-          `[FileTransfer] Backpressure: buffered=${this._channel.bufferedAmount}, pausing`,
-        );
         this._sending = false;
         return; // Will be resumed by onbufferedamountlow
       }
@@ -381,7 +356,6 @@ const FileTransferHook = {
   },
 
   _resumeSending() {
-    console.log("[FileTransfer] Resuming send");
     this._startSending();
   },
 
@@ -399,7 +373,6 @@ const FileTransferHook = {
   async _handleTransferDone() {
     if (!this._session || this._session.role !== "receiver") return;
 
-    console.log("[FileTransfer] Transfer done, verifying hash...");
     this._session.state = STATE.VERIFYING;
     this._stopProgressUpdates();
     this.pushEvent("ft_progress", { percent: 100, speed: "0 B/s", eta: "0s" });
@@ -425,7 +398,6 @@ const FileTransferHook = {
   },
 
   _handleHashResult(match, blob) {
-    console.log(`[FileTransfer] Hash verification: ${match ? "OK" : "FAILED"}`);
     if (match && blob) {
       this._session.state = STATE.COMPLETED;
       this._triggerDownload(blob, this._session.fileName);
@@ -467,7 +439,6 @@ const FileTransferHook = {
   _handleCancel(nickname) {
     if (!this._session) return;
 
-    console.log(`[FileTransfer] Cancelled by ${nickname}`);
     if (this._channel && this._channel.readyState === "open") {
       this._channel.send(
         encodeControlMessage(MSG.CANCEL, {
@@ -503,7 +474,6 @@ const FileTransferHook = {
       this._session &&
       (this._session.state === STATE.TRANSFERRING || this._session.state === STATE.OFFERING)
     ) {
-      console.log("[FileTransfer] Channel closed during transfer, pausing");
       this._session.state = STATE.PAUSED;
       this._sending = false;
       this._stopProgressUpdates();
@@ -587,11 +557,6 @@ const FileTransferHook = {
       const speed = formatSpeed(progress.speedBps);
       const eta = formatEta(progress.etaSeconds);
 
-      if (percent >= this._lastLoggedPercent + 10) {
-        console.log(`[FileTransfer] Progress: ${percent}%, speed: ${speed}, ETA: ${eta}`);
-        this._lastLoggedPercent = percent;
-      }
-
       this.pushEvent("ft_progress", { percent, speed, eta });
     }, PROGRESS_THROTTLE_MS);
   },
@@ -606,7 +571,6 @@ const FileTransferHook = {
   // --- Download ---
 
   _triggerDownload(blob, fileName) {
-    console.log(`[FileTransfer] Triggering download: ${fileName}`);
     if (this._objectUrl) {
       URL.revokeObjectURL(this._objectUrl);
     }
