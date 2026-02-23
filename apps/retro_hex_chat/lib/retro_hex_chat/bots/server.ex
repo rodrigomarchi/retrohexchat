@@ -82,6 +82,11 @@ defmodule RetroHexChat.Bots.Server do
     GenServer.call(via(bot_nickname), {:update_config, updates})
   end
 
+  @spec reload_capabilities(String.t(), map()) :: :ok
+  def reload_capabilities(bot_nickname, capabilities) do
+    GenServer.call(via(bot_nickname), {:reload_capabilities, capabilities})
+  end
+
   @spec reload_commands(String.t(), map()) :: :ok
   def reload_commands(bot_nickname, commands) do
     GenServer.cast(via(bot_nickname), {:reload_commands, commands})
@@ -168,6 +173,11 @@ defmodule RetroHexChat.Bots.Server do
 
   def handle_call({:set_enabled, enabled}, _from, state) do
     {:reply, :ok, %{state | enabled: enabled}}
+  end
+
+  def handle_call({:reload_capabilities, capabilities}, _from, state) do
+    new_capabilities = build_capabilities(capabilities)
+    {:reply, :ok, %{state | capabilities: new_capabilities}}
   end
 
   @impl true
@@ -663,16 +673,25 @@ defmodule RetroHexChat.Bots.Server do
     # Ensure channel process exists, then join as bot
     case Channels.Registry.lookup(channel_name) do
       {:ok, _pid} ->
-        Channels.Server.join(channel_name, nickname, nil, bot: true)
         :ok
 
       {:error, :not_found} ->
         Channels.Supervisor.start_child(channel_name)
-        Channels.Server.join(channel_name, nickname, nil, bot: true)
+    end
+
+    case Channels.Server.join(channel_name, nickname, nil, bot: true) do
+      {:ok, _} ->
+        Logger.debug("Bot #{nickname} joined #{channel_name}")
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("Bot #{nickname} failed to join #{channel_name}: #{inspect(reason)}")
         :ok
     end
   rescue
-    _ -> :ok
+    e ->
+      Logger.warning("Bot #{nickname} join #{channel_name} crashed: #{inspect(e)}")
+      :ok
   end
 
   @spec part_channel_process(String.t(), String.t()) :: :ok

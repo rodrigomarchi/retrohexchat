@@ -325,6 +325,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     greeting = if value == "none", do: nil, else: value
     caps = Map.update(bot.capabilities, "greeter", %{}, &Map.put(&1, "greeting", greeting))
     Queries.update_bot(bot, %{capabilities: caps})
+    reload_bot_capabilities(bot)
     {:ok, "Greeting #{if greeting, do: "set to '#{greeting}'", else: "disabled"}."}
   end
 
@@ -332,12 +333,14 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     farewell = if value == "none", do: nil, else: value
     caps = Map.update(bot.capabilities, "greeter", %{}, &Map.put(&1, "farewell", farewell))
     Queries.update_bot(bot, %{capabilities: caps})
+    reload_bot_capabilities(bot)
     {:ok, "Farewell #{if farewell, do: "set to '#{farewell}'", else: "disabled"}."}
   end
 
   defp apply_setting(bot, "mention_response", value) do
     caps = Map.update(bot.capabilities, "mention", %{}, &Map.put(&1, "response", value))
     Queries.update_bot(bot, %{capabilities: caps})
+    reload_bot_capabilities(bot)
     {:ok, "Mention response updated."}
   end
 
@@ -435,6 +438,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp update_capability_field(bot, cap_name, field, value) do
     caps = Map.update(bot.capabilities, cap_name, %{}, &Map.put(&1, field, value))
     Queries.update_bot(bot, %{capabilities: caps})
+    reload_bot_capabilities(bot)
     display = if is_list(value), do: Enum.join(value, ", "), else: inspect(value)
     {:ok, "#{cap_name}.#{field} set to #{display}."}
   end
@@ -533,6 +537,14 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
         end)
 
       Server.reload_commands(nickname, cmd_map)
+    end)
+  end
+
+  @spec reload_bot_capabilities(map()) :: :ok
+  defp reload_bot_capabilities(bot) do
+    notify_bot_if_running(bot.nickname, fn nickname ->
+      fresh = Queries.get_bot_by_name(bot.name)
+      if fresh, do: Server.reload_capabilities(nickname, fresh.capabilities)
     end)
   end
 
