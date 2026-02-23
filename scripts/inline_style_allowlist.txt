@@ -12,10 +12,6 @@ retro_hex_chat_web/components/conversations.ex:style={nick_style(
 # Highlight dialog: color_swatch_style/1 returns dynamic background-color by index
 retro_hex_chat_web/components/highlight_dialog.ex:style={color_swatch_style(
 
-# Log viewer: @color assign is dynamic per-nick color from log parser
-# Matches 2 lines: style={@color}
-retro_hex_chat_web/components/log_viewer_dialog.ex:style={@color}
-
 # Notify list: notify_nick_style/2 returns dynamic color from nick_color_fn assign
 retro_hex_chat_web/components/notify_list_window.ex:style={notify_nick_style(
 

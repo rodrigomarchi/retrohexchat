@@ -270,31 +270,6 @@ defmodule RetroHexChatWeb.Components.Toolbar do
         <button
           type="button"
           class="toolbar-btn"
-          title="Log Viewer (Ctrl+Shift+L)"
-          data-testid="toolbar-log-viewer"
-          phx-click="open_log_viewer"
-        >
-          <svg viewBox="0 0 16 16">
-            <rect
-              x="2"
-              y="1"
-              width="12"
-              height="14"
-              rx="1"
-              fill="#fff"
-              stroke="#000"
-              stroke-width="1"
-            />
-            <line x1="4" y1="4" x2="12" y2="4" stroke="#000080" stroke-width="1" />
-            <line x1="4" y1="6" x2="12" y2="6" stroke="#000080" stroke-width="1" />
-            <line x1="4" y1="8" x2="12" y2="8" stroke="#000080" stroke-width="1" />
-            <line x1="4" y1="10" x2="9" y2="10" stroke="#000080" stroke-width="1" />
-          </svg>
-          <span class="toolbar-group-label">Log Viewer</span>
-        </button>
-        <button
-          type="button"
-          class="toolbar-btn"
           title="Perform (Ctrl+Shift+E)"
           data-testid="toolbar-perform"
           phx-click="open_perform_dialog"

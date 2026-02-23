@@ -235,7 +235,6 @@ retro_hex_chat/
 │       │       ├── highlight_dialog.ex  # Highlight words config
 │       │       ├── ignore_list_dialog.ex # Ignore list management
 │       │       ├── channel_central_dialog.ex # Channel settings (5 tabs)
-│       │       ├── log_viewer_dialog.ex # Log search/export
 │       │       ├── perform_dialog.ex    # Perform/Auto-join config
 │       │       ├── favorites_dialog.ex  # Bookmark management
 │       │       ├── notify_list_window.ex # Buddy list window
@@ -619,7 +618,6 @@ ChatLive
 | `FormatToolbarHook` | Formatting toolbar interactions, color picker, insert format codes |
 | `NotifyListHook` | Double-click to open PM from buddy list |
 | `URLCatcherHook` | Double-click to open URL in new tab |
-| `DownloadHook` | Base64 decode + Blob download for log exports |
 | `ReconnectHook` | Auto-reconnect overlay, exponential backoff, session restore |
 | `EmojiPickerHook` | Emoji category browsing and insertion |
 | `PasteDialogHook` | Multi-line paste detection and dialog |

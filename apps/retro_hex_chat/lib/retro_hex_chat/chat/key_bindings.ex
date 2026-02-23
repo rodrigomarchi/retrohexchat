@@ -27,7 +27,6 @@ defmodule RetroHexChat.Chat.KeyBindings do
     toggle_ignore_dialog: %{key: "g", modifiers: [:ctrl, :shift]},
     toggle_highlight_dialog: %{key: "h", modifiers: [:ctrl, :shift]},
     toggle_url_catcher: %{key: "s", modifiers: [:ctrl, :shift]},
-    toggle_log_viewer: %{key: "l", modifiers: [:ctrl, :shift]},
     toggle_perform_dialog: %{key: "e", modifiers: [:ctrl, :shift]},
     toggle_options_dialog: %{key: "o", modifiers: [:ctrl, :shift]},
     open_help: nil,
@@ -75,12 +74,6 @@ defmodule RetroHexChat.Chat.KeyBindings do
       category: :system,
       label: "Open URL Catcher",
       description: "Open/close the URL catcher",
-      customizable: true
-    },
-    toggle_log_viewer: %{
-      category: :system,
-      label: "Open Log Viewer",
-      description: "Open/close the log viewer",
       customizable: true
     },
     toggle_perform_dialog: %{

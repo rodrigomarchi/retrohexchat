@@ -71,20 +71,6 @@ const ScrollHook = {
       });
     });
 
-    // Listen for file download (log export)
-    this.handleEvent("download_file", ({ content, filename, mime_type }) => {
-      const bytes = Uint8Array.from(atob(content), (c) => c.charCodeAt(0));
-      const blob = new Blob([bytes], { type: mime_type });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    });
-
     // ── Interactive elements: Channel hover/click ───────────────
 
     // Channel tooltip response from server

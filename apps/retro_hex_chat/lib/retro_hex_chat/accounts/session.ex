@@ -8,7 +8,6 @@ defmodule RetroHexChat.Accounts.Session do
   alias RetroHexChat.Accounts.NickColors
   alias RetroHexChat.Chat.AutoJoinList
   alias RetroHexChat.Chat.CtcpSettings
-  alias RetroHexChat.Chat.DisplayPreferences
   alias RetroHexChat.Chat.FloodProtection
   alias RetroHexChat.Chat.HighlightWords
   alias RetroHexChat.Chat.IgnoreList
@@ -33,7 +32,6 @@ defmodule RetroHexChat.Accounts.Session do
           nick_colors: map(),
           highlight_words: map(),
           ignore_list: map(),
-          log_preferences: map(),
           perform_list: map(),
           autojoin_list: map(),
           auto_join_on_invite: boolean(),
@@ -68,7 +66,6 @@ defmodule RetroHexChat.Accounts.Session do
     nick_colors: nil,
     highlight_words: nil,
     ignore_list: nil,
-    log_preferences: nil,
     perform_list: nil,
     autojoin_list: nil,
     auto_join_on_invite: false,
@@ -96,7 +93,6 @@ defmodule RetroHexChat.Accounts.Session do
       nick_colors: NickColors.new(),
       highlight_words: HighlightWords.new(),
       ignore_list: IgnoreList.new(),
-      log_preferences: DisplayPreferences.new(),
       perform_list: PerformList.new(),
       autojoin_list: AutoJoinList.new(),
       ctcp_settings: CtcpSettings.new(),
@@ -237,16 +233,6 @@ defmodule RetroHexChat.Accounts.Session do
   @spec get_ignore_list(t()) :: map()
   def get_ignore_list(%__MODULE__{ignore_list: ignore_list}) do
     ignore_list
-  end
-
-  @spec set_log_preferences(t(), DisplayPreferences.t()) :: t()
-  def set_log_preferences(%__MODULE__{} = session, %DisplayPreferences{} = prefs) do
-    %{session | log_preferences: prefs}
-  end
-
-  @spec log_preferences(t()) :: DisplayPreferences.t()
-  def log_preferences(%__MODULE__{log_preferences: prefs}) do
-    prefs
   end
 
   @spec set_perform_list(t(), map()) :: t()

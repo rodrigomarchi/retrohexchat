@@ -54,7 +54,6 @@
 .dialog-window--custom-menus { width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); max-height: 80vh; }
 .dialog-window--perform { width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); }
 .dialog-window--cheatsheet { width: var(--dialog-config-min-w); min-height: var(--dialog-config-min-h); }
-.dialog-window--log-viewer { width: 750px; height: 550px; }
 .dialog-window--generic { min-width: 300px; max-width: 500px; }
 /* Aliases — same as --sm, kept for template compatibility */
 .dialog-window--360,
@@ -199,30 +198,6 @@ menu[role="tablist"] > li[role="tab"] {
 }
 
 .cheatsheet-body { max-height: 400px; }
-
-/* Log Viewer Dialog */
-.log-results-area {
-  flex: 1;
-  overflow-y: auto;
-  border: 1px solid var(--color-border);
-  background: var(--color-white);
-  padding: 2px;
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-}
-
-.log-entry--system {
-  padding: 1px 0;
-  color: var(--color-muted);
-  font-style: italic;
-}
-
-.log-entry--message {
-  padding: 1px 0;
-}
-
-.log-date-input { width: 130px; }
-.log-nick-input { width: 120px; }
 
 /* Perform Dialog */
 .perform-tab-panel { min-height: 220px; }

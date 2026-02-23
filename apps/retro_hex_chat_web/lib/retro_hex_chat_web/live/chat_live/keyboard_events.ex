@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   import Phoenix.LiveView, only: [push_event: 3]
 
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Chat.{KeyBindings, LogFilter}
+  alias RetroHexChat.Chat.KeyBindings
   alias RetroHexChatWeb.ChatLive.NavigationEvents
 
   # Escape — always hardcoded to dismiss topmost dialog/overlay
@@ -96,14 +96,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     assign(socket, show_url_catcher: !socket.assigns.show_url_catcher)
   end
 
-  defp dispatch_action(:toggle_log_viewer, socket) do
-    if socket.assigns.show_log_viewer do
-      close_log_viewer(socket)
-    else
-      open_log_viewer(socket)
-    end
-  end
-
   defp dispatch_action(:toggle_perform_dialog, socket) do
     if socket.assigns.show_perform_dialog do
       close_perform_dialog(socket)
@@ -168,9 +160,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       socket.assigns.show_perform_dialog ->
         close_perform_dialog(socket)
 
-      socket.assigns.show_log_viewer ->
-        close_log_viewer(socket)
-
       true ->
         dismiss_secondary(socket)
     end
@@ -203,50 +192,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   # ---------------------------------------------------------------------------
   # Private helpers
   # ---------------------------------------------------------------------------
-
-  defp open_log_viewer(socket) do
-    session = socket.assigns.session
-    source_options = build_log_source_options(session)
-
-    assign(socket,
-      show_log_viewer: true,
-      log_source_options: source_options,
-      log_filter: %LogFilter{},
-      log_page: nil,
-      log_loading: false,
-      log_error: nil,
-      log_timestamp_format: "relative"
-    )
-  end
-
-  defp close_log_viewer(socket) do
-    assign(socket,
-      show_log_viewer: false,
-      log_filter: %LogFilter{},
-      log_page: nil,
-      log_loading: false,
-      log_error: nil,
-      log_source_options: []
-    )
-  end
-
-  defp build_log_source_options(session) do
-    channels =
-      session.channels
-      |> Enum.sort()
-      |> Enum.map(fn ch -> %{value: ch, label: ch, type: "channel"} end)
-
-    pms =
-      if session.pm_conversations do
-        session.pm_conversations
-        |> Enum.sort()
-        |> Enum.map(fn nick -> %{value: nick, label: nick, type: "pm"} end)
-      else
-        []
-      end
-
-    channels ++ pms
-  end
 
   defp close_perform_dialog(socket) do
     assign(socket,

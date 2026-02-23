@@ -250,34 +250,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     end
   end
 
-  describe "feature-log-viewer topic" do
-    test "exists with correct id and category" do
-      topic = HelpTopics.get_topic("feature-log-viewer")
-      assert topic != nil
-      assert topic.id == "feature-log-viewer"
-      assert topic.category == "Features"
-    end
-
-    test "has correct title" do
-      topic = HelpTopics.get_topic("feature-log-viewer")
-      assert topic.title == "Log Viewer"
-    end
-  end
-
-  describe "feature-log-export topic" do
-    test "exists with correct id and category" do
-      topic = HelpTopics.get_topic("feature-log-export")
-      assert topic != nil
-      assert topic.id == "feature-log-export"
-      assert topic.category == "Features"
-    end
-
-    test "has correct title" do
-      topic = HelpTopics.get_topic("feature-log-export")
-      assert topic.title == "Log Export"
-    end
-  end
-
   describe "status bar help topic" do
     test "topic exists" do
       topic = HelpTopics.get_topic("feature-status-bar")

@@ -177,21 +177,6 @@ defmodule RetroHexChatWeb.Icons.Files do
 
   attr :class, :string, default: nil
 
-  @spec icon_dialog_log(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_dialog_log(assigns) do
-    ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="3" y="1" width="10" height="14" rx="1" fill="#fff" stroke="#555" stroke-width="1" />
-      <line x1="5" y1="4" x2="11" y2="4" stroke="#000080" stroke-width="0.8" />
-      <line x1="5" y1="6.5" x2="11" y2="6.5" stroke="#000080" stroke-width="0.8" />
-      <line x1="5" y1="9" x2="11" y2="9" stroke="#000080" stroke-width="0.8" />
-      <line x1="5" y1="11.5" x2="9" y2="11.5" stroke="#000080" stroke-width="0.8" />
-    </svg>
-    """
-  end
-
-  attr :class, :string, default: nil
-
   @spec icon_dialog_paste(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_dialog_paste(assigns) do
     ~H"""

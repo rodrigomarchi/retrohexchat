@@ -599,19 +599,6 @@
 
   <RetroHexChatWeb.Components.CheatsheetDialog.cheatsheet_dialog visible={@cheatsheet_visible} />
 
-  <RetroHexChatWeb.Components.LogViewerDialog.log_viewer_dialog
-    visible={@show_log_viewer}
-    filter={@log_filter}
-    page={@log_page}
-    preferences={@log_preferences}
-    source_options={@log_source_options}
-    loading={@log_loading}
-    exporting={@log_exporting}
-    error={@log_error}
-    nick_color_fn={@nick_color_fn}
-    timezone={@timezone}
-  />
-
   <RetroHexChatWeb.Components.PasteConfirmDialog.paste_confirm_dialog
     visible={@paste_lines != nil}
     line_count={if @paste_lines, do: length(@paste_lines), else: 0}

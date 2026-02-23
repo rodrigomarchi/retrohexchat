@@ -127,23 +127,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "Find text in the current channel using search with regex and case-sensitive options."
       },
       %{
-        id: "feature-log-viewer",
-        title: "Log Viewer",
-        category: "Features",
-        keywords: ["log", "viewer", "search", "history", "browse", "export", "logs"],
-        icon: :icon_dialog_log,
-        description:
-          "Browse and search chat history with filtering, pagination, and export options."
-      },
-      %{
-        id: "feature-log-export",
-        title: "Log Export",
-        category: "Features",
-        keywords: ["export", "download", "txt", "html", "log", "save"],
-        icon: :icon_btn_export,
-        description: "Export chat logs in plain text or HTML format for archival or sharing."
-      },
-      %{
         id: "feature-perform",
         title: "Perform / Auto-Commands",
         category: "Features",

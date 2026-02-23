@@ -139,7 +139,6 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_choose_file(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_dialog_cheatsheet(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_dialog_delete(assigns), to: RetroHexChatWeb.Icons.Files
-  defdelegate icon_dialog_log(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_copy(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_dialog_paste(assigns), to: RetroHexChatWeb.Icons.Files
 

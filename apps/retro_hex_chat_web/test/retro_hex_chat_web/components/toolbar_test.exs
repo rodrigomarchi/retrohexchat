@@ -97,7 +97,6 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
       {"toolbar-ignore-list", "open_ignore_dialog"},
       {"toolbar-url-catcher", "toggle_url_catcher"},
       {"toolbar-channel-central", "open_channel_central"},
-      {"toolbar-log-viewer", "open_log_viewer"},
       {"toolbar-perform", "open_perform_dialog"},
       {"toolbar-sounds", "open_sound_settings_dialog"},
       {"toolbar-ctcp-settings", "open_ctcp_settings_dialog"},
