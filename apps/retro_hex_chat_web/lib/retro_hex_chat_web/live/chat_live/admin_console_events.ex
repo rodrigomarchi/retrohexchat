@@ -1,12 +1,16 @@
 defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   @moduledoc """
   Handle Admin Console dialog events: open, close, execute batch commands, clear results.
+
+  Commands are executed sequentially and context flows between them — e.g. `/join #general`
+  updates `active_channel` so the next `/cs register` operates on `#general`.
   """
 
   import Phoenix.Component, only: [assign: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [error_event: 2]
 
   alias RetroHexChat.Accounts.ServerRoles
+  alias RetroHexChat.Channels.{Registry, Server, Supervisor}
   alias RetroHexChat.Commands.{Dispatcher, Parser}
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
@@ -44,32 +48,102 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   defp execute_batch(input, socket) do
     session = socket.assigns.session
 
+    # Include active_channel in operator_in so /mode works on the initial channel.
+    # Use empty channels list to bypass the per-user channel limit — the admin console
+    # is a provisioning tool, not a real user session.
+    initial_ops = if session.active_channel, do: [session.active_channel], else: []
+
     context = %{
       nickname: session.nickname,
       active_channel: session.active_channel,
-      channels: session.channels,
+      channels: [],
       identified: session.identified,
-      operator_in: [],
+      operator_in: initial_ops,
       half_operator_in: [],
       is_admin: true,
       is_server_operator: ServerRoles.server_operator?(session.nickname, session.identified)
     }
 
-    input
-    |> String.split("\n")
-    |> Enum.map(&String.trim/1)
-    |> Enum.reject(&(blank?(&1) or comment?(&1)))
-    |> Enum.map(&execute_line(&1, context))
+    lines =
+      input
+      |> String.split("\n")
+      |> Enum.map(&String.trim/1)
+      |> Enum.reject(&(blank?(&1) or comment?(&1)))
+
+    {results, _final_context} =
+      Enum.map_reduce(lines, context, fn line, ctx ->
+        {result_entry, new_ctx} = execute_line(line, ctx)
+        {result_entry, new_ctx}
+      end)
+
+    results
   end
 
   defp execute_line(line, context) do
     case Parser.parse(line) do
       {:command, name, args} ->
         result = Dispatcher.dispatch(name, args, context)
-        %{line: line, status: result_status(result), message: result_message(result)}
+        new_ctx = apply_side_effects(result, context)
+        entry = %{line: line, status: result_status(result), message: result_message(result)}
+        {entry, new_ctx}
 
       {:message, _text} ->
-        %{line: line, status: :error, message: "Not a command (must start with /)"}
+        entry = %{line: line, status: :error, message: "Not a command (must start with /)"}
+        {entry, context}
+    end
+  end
+
+  # When /join succeeds, actually join the channel server-side and update context
+  defp apply_side_effects({:ok, :join, channel_name}, ctx) do
+    do_join_channel(channel_name, ctx)
+  end
+
+  defp apply_side_effects({:ok, :join, channel_name, _password}, ctx) do
+    do_join_channel(channel_name, ctx)
+  end
+
+  # When /topic set is dispatched, execute the topic change server-side
+  defp apply_side_effects({:ok, :ui_action, :set_topic, %{channel: ch, topic: topic}}, ctx) do
+    Server.set_topic(ch, ctx.nickname, topic)
+    ctx
+  end
+
+  # When /mode is dispatched, execute the mode change server-side
+  defp apply_side_effects(
+         {:ok, :ui_action, :set_mode, %{channel: ch, mode_string: ms, params: params}},
+         ctx
+       ) do
+    Server.set_mode(ch, ctx.nickname, ms, params)
+    ctx
+  end
+
+  defp apply_side_effects(_result, ctx), do: ctx
+
+  defp do_join_channel(channel_name, ctx) do
+    ensure_channel_exists(channel_name)
+    Server.join(channel_name, ctx.nickname, nil, identified: ctx.identified)
+
+    %{
+      ctx
+      | active_channel: channel_name,
+        channels: Enum.uniq([channel_name | ctx.channels]),
+        operator_in: Enum.uniq([channel_name | ctx.operator_in])
+    }
+  end
+
+  @spec ensure_channel_exists(String.t()) :: :ok | {:error, term()}
+  defp ensure_channel_exists(channel_name) do
+    case Registry.lookup(channel_name) do
+      {:ok, _pid} -> :ok
+      {:error, :not_found} -> start_channel(channel_name)
+    end
+  end
+
+  defp start_channel(channel_name) do
+    case Supervisor.start_child(channel_name) do
+      {:ok, _pid} -> :ok
+      {:error, {:already_started, _pid}} -> :ok
+      {:error, reason} -> {:error, reason}
     end
   end
 
@@ -77,6 +151,11 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   defp result_status(_), do: :ok
 
   defp result_message({:ok, :system, %{content: text}}), do: text
+  defp result_message({:ok, :join, channel}), do: "Joined #{channel}"
+  defp result_message({:ok, :join, channel, _pw}), do: "Joined #{channel}"
+  defp result_message({:ok, :ui_action, :set_topic, %{topic: t}}), do: "Topic set: #{t}"
+  defp result_message({:ok, :ui_action, :set_mode, %{mode_string: m}}), do: "Mode set: #{m}"
+  defp result_message({:ok, :ui_action, :view_topic, _}), do: "Done"
   defp result_message({:error, msg}), do: msg
 
   defp result_message({:ok, _type, payload}) when is_map(payload) do

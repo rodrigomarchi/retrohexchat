@@ -11,6 +11,8 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEventsTest do
     :ok
   end
 
+  alias RetroHexChat.Services.NickServ
+
   defp make_admin(nick) do
     current = Application.get_env(:retro_hex_chat, :admins, [])
     Application.put_env(:retro_hex_chat, :admins, [nick | current])
@@ -104,6 +106,51 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEventsTest do
       html = render(view)
       assert html =~ "[ERR]"
       assert html =~ "Not a command"
+    end
+  end
+
+  describe "context tracking" do
+    test "join updates active_channel for subsequent commands", %{conn: conn} do
+      nick = "AcCtx#{uid()}"
+      make_admin(nick)
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+
+      channel = "#acctx#{uid()}"
+
+      render_click(view, "open_admin_console")
+
+      # /topic and /mode depend on active_channel being set by /join
+      render_submit(view, "execute_admin_console", %{
+        "input" => "/join #{channel}\n/topic Test topic\n/mode +tn"
+      })
+
+      html = render(view)
+      refute html =~ "[ERR]"
+      assert html =~ "Joined #{channel}"
+      assert html =~ "Topic set:"
+      assert html =~ "Mode set:"
+    end
+
+    test "chanserv register works after join with identified user", %{conn: conn} do
+      nick = "AcCsR#{uid()}"
+      make_admin(nick)
+      NickServ.register(nick, "pass123")
+      NickServ.identify(nick, "pass123")
+
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+
+      channel = "#accsr#{uid()}"
+
+      render_click(view, "open_admin_console")
+
+      render_submit(view, "execute_admin_console", %{
+        "input" => "/join #{channel}\n/cs register"
+      })
+
+      html = render(view)
+      refute html =~ "[ERR]"
+      assert html =~ "Joined #{channel}"
+      assert html =~ "registered"
     end
   end
 
