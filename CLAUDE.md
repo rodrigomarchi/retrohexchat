@@ -138,6 +138,14 @@ If any of these 9 checks fail, the task is NOT complete.
 - Within each layer, alphabetical order
 - New component → add import in the correct layer
 
+### No Hardcoded Colors or CSS Values in Elixir/JS
+- **NEVER** put hex colors (`#fff`, `#3a3500`) in Elixir code — colors live in CSS only
+- Use CSS classes (`irc-bg-4`, `highlight-bg-default`, `nick-color-3`) instead of inline `background-color` / `color`
+- For dynamic values use CSS custom properties: `style={"--progress: #{percent}%"}` + CSS `width: var(--progress)`
+- Inline `style=` is acceptable ONLY for dynamic `left`/`top` positioning and CSS custom properties
+- Run `mix audit.styles` to verify — must show 0 LOW, 0 MEDIUM, 0 HIGH findings
+- Exception: `log_exporter.ex` embeds CSS for standalone HTML exports (must stay self-contained)
+
 ## Help System (mandatory)
 
 Every new feature MUST include corresponding help documentation:
