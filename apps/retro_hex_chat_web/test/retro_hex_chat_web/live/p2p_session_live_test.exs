@@ -944,15 +944,16 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       %{alice: alice, bob: bob, session: session, conn: conn}
     end
 
-    test "close_session event redirects to /chat", %{conn: conn, session: session} do
+    test "close_session event pushes p2p_close_tab", %{conn: conn, session: session} do
       conn = chat_conn(conn, "p2p_lv_a7")
       {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
 
-      assert {:error, {:live_redirect, %{to: "/chat"}}} =
-               render_click(view, "close_session", %{})
+      render_click(view, "close_session", %{})
+
+      assert_push_event(view, "p2p_close_tab", %{})
     end
 
-    test "p2p_session_closed broadcast redirects remaining peer", %{conn: conn, session: session} do
+    test "p2p_session_closed broadcast pushes p2p_close_tab", %{conn: conn, session: session} do
       conn = chat_conn(conn, "p2p_lv_b7")
       {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
 
@@ -966,10 +967,10 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
         }
       )
 
-      assert_redirect(view, "/chat")
+      assert_push_event(view, "p2p_close_tab", %{})
     end
 
-    test "p2p_status_changed to terminal redirects", %{conn: conn, session: session} do
+    test "p2p_status_changed to terminal pushes p2p_close_tab", %{conn: conn, session: session} do
       conn = chat_conn(conn, "p2p_lv_a7")
       {:ok, view, _html} = live(conn, "/p2p/#{session.token}")
 
@@ -982,7 +983,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
         }
       )
 
-      assert_redirect(view, "/chat")
+      assert_push_event(view, "p2p_close_tab", %{})
     end
   end
 end

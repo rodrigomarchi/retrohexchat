@@ -390,6 +390,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         description: "Query the audit log of admin actions with optional filters."
       },
       %{
+        id: "cmd-admin-turn",
+        title: "/admin turn",
+        category: "Commands",
+        keywords: ["admin", "turn", "stun", "webrtc", "allocations", "relay", "p2p"],
+        icon: :icon_shield,
+        description:
+          "View TURN server stats (active allocations, relay ports in use) and list active allocations."
+      },
+      %{
         id: "cmd-op",
         title: "/op",
         category: "Commands",

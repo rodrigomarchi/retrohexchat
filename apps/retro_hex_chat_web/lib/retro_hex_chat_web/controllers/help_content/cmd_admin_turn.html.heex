@@ -1,0 +1,31 @@
+<p>
+  View TURN server status, active allocations, and relay port usage.
+  Requires server administrator role. Read-only, no side effects.
+</p>
+
+<.help_h4 icon={:icon_code}>Syntax</.help_h4>
+<pre>/admin turn stats
+/admin turn allocations</pre>
+
+<.help_h4 icon={:icon_tag}>Subcommands</.help_h4>
+<ul>
+  <li>
+    <code>stats</code>
+    — Show TURN server overview: relay IP, listeners, active allocations, port usage
+  </li>
+  <li>
+    <code>allocations</code>
+    — List all active TURN allocations with client addresses and relay ports
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>/admin turn stats
+/admin turn allocations</pre>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-admin">/admin</.help_link>
+  · <.help_link topic="cmd-admin-debug">/admin debug</.help_link>
+  · <.help_link topic="feature-privacy-mode">Privacy Mode</.help_link>
+</p>

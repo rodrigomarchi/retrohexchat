@@ -24,8 +24,16 @@ config :retro_hex_chat,
     {String.to_integer(System.get_env("TURN_RELAY_PORT_MIN") || "49152"),
      String.to_integer(System.get_env("TURN_RELAY_PORT_MAX") || "49651")},
   turn_listener_count: System.schedulers_online(),
-  turn_auth_secret: :crypto.strong_rand_bytes(64),
-  turn_nonce_secret: :crypto.strong_rand_bytes(64)
+  turn_auth_secret:
+    (case System.get_env("TURN_SECRET") do
+       nil -> :crypto.strong_rand_bytes(64)
+       secret -> secret
+     end),
+  turn_nonce_secret:
+    (case System.get_env("TURN_NONCE_SECRET") do
+       nil -> :crypto.strong_rand_bytes(64)
+       secret -> secret
+     end)
 
 # Root admins (all environments) — immutable, cannot be removed via /admin commands
 config :retro_hex_chat,

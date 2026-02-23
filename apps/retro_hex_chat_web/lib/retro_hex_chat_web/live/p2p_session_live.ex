@@ -175,8 +175,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
       {:noreply,
        socket
        |> assign(session_closed: true)
-       |> put_flash(:info, "P2P session ended.")
-       |> push_navigate(to: ~p"/chat")}
+       |> push_event("p2p_close_tab", %{})}
     else
       socket = assign(socket, session_status: status)
 
@@ -250,14 +249,11 @@ defmodule RetroHexChatWeb.P2PSessionLive do
      |> assign(messages: socket.assigns.messages ++ [expired_msg])}
   end
 
-  def handle_info(%{event: "p2p_session_closed", payload: %{reason: reason}}, socket) do
-    msg = close_reason_message(reason)
-
+  def handle_info(%{event: "p2p_session_closed", payload: %{reason: _reason}}, socket) do
     {:noreply,
      socket
      |> assign(session_closed: true)
-     |> put_flash(:info, msg)
-     |> push_navigate(to: ~p"/chat")}
+     |> push_event("p2p_close_tab", %{})}
   end
 
   def handle_info(
@@ -435,8 +431,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
     {:noreply,
      socket
      |> assign(session_closed: true)
-     |> put_flash(:info, "P2P session ended.")
-     |> push_navigate(to: ~p"/chat")}
+     |> push_event("p2p_close_tab", %{})}
   end
 
   def handle_event("p2p_capabilities", capabilities, socket) do
@@ -1113,12 +1108,6 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   defp webrtc_state_label("disconnected", _attempt), do: "Reconnecting..."
   defp webrtc_state_label("failed", _attempt), do: "Connection failed"
   defp webrtc_state_label(_state, _attempt), do: nil
-
-  defp close_reason_message("user_closed"), do: "P2P session closed."
-  defp close_reason_message("rejected"), do: "P2P invite rejected."
-  defp close_reason_message("tab_closed"), do: "Peer disconnected."
-  defp close_reason_message("disconnected"), do: "Peer disconnected."
-  defp close_reason_message(_reason), do: "P2P session ended."
 
   defp expired_reason_label("user_closed"), do: "Session closed by user."
   defp expired_reason_label("rejected"), do: "P2P invite was rejected."
