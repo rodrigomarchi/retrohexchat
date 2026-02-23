@@ -158,7 +158,7 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
         description: "Strip all color and formatting codes from messages sent to the channel."
       },
       %{
-        id: "mode-R",
+        id: "mode-r",
         title: "+R Registered Only",
         category: "Channel Modes",
         keywords: ["registered only", "identified", "nickserv", "auth"],
@@ -166,7 +166,7 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
         description: "Restrict the channel to users who have identified with NickServ."
       },
       %{
-        id: "mode-K",
+        id: "mode-nk",
         title: "+K No Knock",
         category: "Channel Modes",
         keywords: ["no knock", "disable knock", "block knock"],
