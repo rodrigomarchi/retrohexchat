@@ -154,7 +154,7 @@ defmodule RetroHexChatWeb.Components.Conversations do
               phx-value-channel={ch.name}
               title={"Join #{ch.name}"}
             >
-              [+]
+              <Icons.icon_btn_add class="conversations-join-icon" />
             </button>
           </li>
           <li class="conversations-browse-all">
@@ -163,7 +163,8 @@ defmodule RetroHexChatWeb.Components.Conversations do
               class="conversations-browse-all-btn"
               phx-click="conversations_browse_all"
             >
-              Browse All Channels...
+              <Icons.icon_dialog_channel_list class="conversations-browse-icon" />
+              <span>Browse All Channels...</span>
             </button>
           </li>
         </ul>
