@@ -354,12 +354,12 @@ defmodule RetroHexChatWeb.ConnectLive do
                         <.icon_lock class="licon licon-14" /> Password:
                       </label>
                       <input
-                        type="password"
+                        type="text"
+                        class="input-masked"
                         id="password"
                         name="password"
                         value={@password}
                         autofocus
-                        autocomplete="off"
                         placeholder="Enter your password..."
                         phx-mounted={JS.focus()}
                       />
@@ -393,11 +393,11 @@ defmodule RetroHexChatWeb.ConnectLive do
                         <.icon_lock class="licon licon-14" /> Password:
                       </label>
                       <input
-                        type="password"
+                        type="text"
+                        class="input-masked"
                         id="reg-password"
                         name="password"
                         value={@password}
-                        autocomplete="off"
                         placeholder="Choose a password (min. 5 characters)..."
                         phx-mounted={JS.focus()}
                       />
@@ -407,11 +407,11 @@ defmodule RetroHexChatWeb.ConnectLive do
                         <.icon_lock class="licon licon-14" /> Confirm password:
                       </label>
                       <input
-                        type="password"
+                        type="text"
+                        class="input-masked"
                         id="reg-password-confirm"
                         name="password_confirm"
                         value={@password_confirm}
-                        autocomplete="off"
                         placeholder="Repeat your password..."
                       />
                     </div>

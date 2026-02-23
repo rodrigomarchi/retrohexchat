@@ -143,7 +143,6 @@ input[type="checkbox"][disabled]:checked + label::after {
 }
 
 input[type="text"],
-input[type="password"],
 input[type="email"],
 input[type="url"],
 input[type="tel"],
@@ -162,8 +161,12 @@ textarea {
   border-radius: 0;
 }
 
+.input-masked {
+  -webkit-text-security: disc;
+  input-security: auto;
+}
+
 input[type="text"],
-input[type="password"],
 input[type="email"],
 input[type="url"],
 input[type="tel"],
@@ -198,7 +201,6 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 input[type="text"],
-input[type="password"],
 input[type="email"],
 input[type="url"],
 input[type="tel"],
@@ -211,14 +213,12 @@ input[type="search"] {
 input[type="email"]:disabled,
 input[type="url"]:disabled,
 input[type="tel"]:disabled,
-input[type="password"]:disabled,
 input[type="text"]:disabled,
 input[type="number"]:disabled,
 input[type="search"]:disabled,
 input[type="email"]:read-only,
 input[type="url"]:read-only,
 input[type="tel"]:read-only,
-input[type="password"]:read-only,
 input[type="text"]:read-only,
 input[type="number"]:read-only,
 input[type="search"]:read-only,
@@ -240,7 +240,6 @@ select {
 
 select:focus,
 input[type="text"]:focus,
-input[type="password"]:focus,
 input[type="email"]:focus,
 input[type="url"]:focus,
 input[type="tel"]:focus,

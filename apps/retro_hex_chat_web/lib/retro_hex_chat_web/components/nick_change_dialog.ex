@@ -42,7 +42,8 @@ defmodule RetroHexChatWeb.Components.NickChangeDialog do
             </p>
             <div class="nick-change-dialog__password-row">
               <input
-                type="password"
+                type="text"
+                class="input-masked"
                 name="password"
                 value={@password}
                 phx-keyup="update_nick_change_password"

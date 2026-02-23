@@ -38,7 +38,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  font-size: var(--text-base);
+  font-size: var(--text-lg);
   font-family: var(--font-system);
 }
 
@@ -104,12 +104,15 @@
 .conversations-users {
   list-style: none;
   margin: 0;
-  padding: 0 0 0 12px;
-  font-size: var(--text-base);
+  padding: 0 0 0 24px;
+  font-size: var(--text-lg);
   font-family: var(--font-mono);
 }
 
 .conversations-users li {
+  display: flex;
+  align-items: center;
+  gap: 3px;
   padding: 1px 4px;
   cursor: pointer;
 }
@@ -120,7 +123,8 @@
 
 /* ── Role icons ────────────────────────────────────────────── */
 
-.nick-icon { width: 12px; height: 12px; flex-shrink: 0; vertical-align: middle; margin-right: 2px; }
+.nick-icon { width: 12px; height: 12px; flex-shrink: 0; vertical-align: middle; }
+.nick-badge { width: 12px; height: 12px; flex-shrink: 0; margin-left: auto; }
 
 /* ── Role colors ───────────────────────────────────────────── */
 

@@ -254,7 +254,9 @@ defmodule RetroHexChatWeb.Components.Conversations do
           data-nick={user.nickname}
           style={nick_style(@nick_color_fn, user.nickname)}
         >
-          <.role_icon role={user.role} /> {user.nickname}
+          <Icons.icon_role_regular class="nick-icon" />
+          {user.nickname}
+          <.role_badge role={user.role} />
         </li>
       </ul>
     </li>
@@ -272,40 +274,38 @@ defmodule RetroHexChatWeb.Components.Conversations do
 
   attr :role, :atom, required: true
 
-  defp role_icon(%{role: :owner} = assigns) do
+  defp role_badge(%{role: :owner} = assigns) do
     ~H"""
-    <Icons.icon_role_owner class="nick-icon" />
+    <Icons.icon_role_owner class="nick-badge" />
     """
   end
 
-  defp role_icon(%{role: :operator} = assigns) do
+  defp role_badge(%{role: :operator} = assigns) do
     ~H"""
-    <Icons.icon_role_operator class="nick-icon" />
+    <Icons.icon_role_operator class="nick-badge" />
     """
   end
 
-  defp role_icon(%{role: :half_operator} = assigns) do
+  defp role_badge(%{role: :half_operator} = assigns) do
     ~H"""
-    <Icons.icon_role_halfop class="nick-icon" />
+    <Icons.icon_role_halfop class="nick-badge" />
     """
   end
 
-  defp role_icon(%{role: :voiced} = assigns) do
+  defp role_badge(%{role: :voiced} = assigns) do
     ~H"""
-    <Icons.icon_role_voiced class="nick-icon" />
+    <Icons.icon_role_voiced class="nick-badge" />
     """
   end
 
-  defp role_icon(%{role: :bot} = assigns) do
+  defp role_badge(%{role: :bot} = assigns) do
     ~H"""
-    <span class="nick-icon nick-icon--bot" title="Bot">&#9881;</span>
+    <span class="nick-badge nick-icon--bot" title="Bot">&#9881;</span>
     """
   end
 
-  defp role_icon(%{role: _} = assigns) do
-    ~H"""
-    <Icons.icon_role_regular class="nick-icon" />
-    """
+  defp role_badge(%{role: _} = assigns) do
+    ~H""
   end
 
   @spec badge_class(boolean()) :: String.t()
