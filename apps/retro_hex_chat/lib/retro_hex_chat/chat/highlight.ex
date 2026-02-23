@@ -14,7 +14,7 @@ defmodule RetroHexChat.Chat.Highlight do
   alias RetroHexChat.Chat.Formatter
   alias RetroHexChat.Chat.HighlightWord
 
-  @default_color "#3a3500"
+  @default_color "#ffffd0"
   @url_pattern ~r{https?://\S+}i
 
   @spec default_color() :: String.t()

@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
   use Phoenix.Component
 
   alias RetroHexChat.Accounts.NickColors
+  alias RetroHexChat.Chat.Highlight
   alias RetroHexChatWeb.Icons
 
   attr :visible, :boolean, default: false
@@ -245,7 +246,7 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
     """
   end
 
-  defp default_color, do: "#3a3500"
+  defp default_color, do: Highlight.default_color()
 
   defp color_swatch_style(nil) do
     "background-color: #{default_color()};"
