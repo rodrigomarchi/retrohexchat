@@ -37,6 +37,13 @@
         connected={true}
         dnd_enabled={@dnd_enabled}
         notification_count={@notification_count}
+        is_admin={
+          RetroHexChat.Accounts.ServerRoles.admin?(@session.nickname, @session.identified) or
+            RetroHexChat.Accounts.ServerRoles.server_operator?(
+              @session.nickname,
+              @session.identified
+            )
+        }
       />
       <RetroHexChatWeb.Components.StatusBar.status_bar
         :if={@show_statusbar}
@@ -655,5 +662,10 @@
   <RetroHexChatWeb.Components.BotFormDialog.add_command_dialog
     visible={@show_add_command_dialog}
     bot_name={if @bot_dialog_selected, do: @bot_dialog_selected.name, else: ""}
+  />
+
+  <RetroHexChatWeb.Components.AdminConsoleDialog.admin_console_dialog
+    visible={@show_admin_console}
+    results={@admin_console_results}
   />
 </div>

@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.Components.Toolbar do
   attr :connected, :boolean, default: false
   attr :dnd_enabled, :boolean, default: false
   attr :notification_count, :integer, default: 0
+  attr :is_admin, :boolean, default: false
   @spec toolbar(map()) :: Phoenix.LiveView.Rendered.t()
   def toolbar(assigns) do
     ~H"""
@@ -449,6 +450,29 @@ defmodule RetroHexChatWeb.Components.Toolbar do
             <circle cx="8" cy="8" r="2" fill="#fff" />
           </svg>
           <span class="toolbar-group-label">Bot Management</span>
+        </button>
+        <button
+          :if={@is_admin}
+          type="button"
+          class="toolbar-btn"
+          title="Admin Console"
+          data-testid="toolbar-admin-console"
+          phx-click="open_admin_console"
+        >
+          <svg viewBox="0 0 16 16">
+            <rect
+              x="1"
+              y="2"
+              width="14"
+              height="12"
+              rx="1"
+              fill="#000080"
+              stroke="#000"
+              stroke-width="0.3"
+            />
+            <text x="3" y="10" font-size="6" fill="#c0c0c0" font-family="monospace">&gt;_</text>
+          </svg>
+          <span class="toolbar-group-label">Admin Console</span>
         </button>
       </div>
     </div>

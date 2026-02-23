@@ -965,6 +965,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         icon: :icon_clock,
         description:
           "Registered nicknames expire after 7 days of inactivity and become available again."
+      },
+      %{
+        id: "feature-admin-console",
+        title: "Admin Console",
+        category: "Features",
+        keywords: [
+          "admin",
+          "console",
+          "batch",
+          "script",
+          "commands",
+          "bulk",
+          "configure",
+          "setup"
+        ],
+        icon: :icon_terminal,
+        description:
+          "Execute multiple commands at once by pasting them into the Admin Console (admin only)."
       }
     ]
   end
