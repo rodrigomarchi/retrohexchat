@@ -12,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, "Usage: /admin <server|user|channel|ns|cs|debug|log|turn> <subcommand> [args]"}
+    {:error, "Usage: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> [args]"}
   end
 
   def execute(args, context) do
@@ -31,10 +31,11 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
   defp dispatch(["debug" | rest], context), do: Sub.Debug.execute(rest, context)
   defp dispatch(["log" | rest], context), do: Sub.Log.execute(rest, context)
   defp dispatch(["turn" | rest], context), do: Sub.Turn.execute(rest, context)
+  defp dispatch(["nuke" | rest], context), do: Sub.Nuke.execute(rest, context)
 
   defp dispatch([subcmd | _], _context) do
     {:error,
-     "Unknown admin subcommand: #{subcmd}. Try: server, user, channel, ns, cs, debug, log, turn"}
+     "Unknown admin subcommand: #{subcmd}. Try: server, user, channel, ns, cs, debug, log, turn, nuke"}
   end
 
   @impl true
@@ -44,7 +45,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
       syntax: "/admin <subcommand> [args]",
       description:
         "Server administration commands. Requires admin privilege.\n" <>
-          "Subcommands: server, user, channel, ns, cs, debug, log, turn.\n" <>
+          "Subcommands: server, user, channel, ns, cs, debug, log, turn, nuke.\n" <>
           "Type /admin <subcommand> for usage details.",
       examples: [
         "/admin server info",
@@ -55,7 +56,9 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
         "/admin cs transfer #canal @nick",
         "/admin debug memory",
         "/admin log --last 20",
-        "/admin turn stats"
+        "/admin turn stats",
+        "/admin nuke",
+        "/admin nuke --confirm"
       ]
     }
   end
@@ -80,7 +83,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
           required: true,
           type: :text,
           position: 0,
-          description: "server, user, channel, ns, cs, debug, log, or turn"
+          description: "server, user, channel, ns, cs, debug, log, turn, or nuke"
         },
         %Parameter{
           name: "args",
@@ -95,7 +98,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
         "/admin user list",
         "/admin user ban @nick",
         "/admin log",
-        "/admin turn stats"
+        "/admin turn stats",
+        "/admin nuke --confirm"
       ],
       subcommands: [
         %{name: "server", description: "Server info and settings"},
@@ -105,7 +109,11 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
         %{name: "cs", description: "ChanServ admin (drop, info, transfer, access)"},
         %{name: "debug", description: "Debug info (connections, processes, memory)"},
         %{name: "log", description: "View audit log"},
-        %{name: "turn", description: "TURN server status and allocations"}
+        %{name: "turn", description: "TURN server status and allocations"},
+        %{
+          name: "nuke",
+          description: "Factory reset — destroy all data except admin infrastructure"
+        }
       ]
     }
   end

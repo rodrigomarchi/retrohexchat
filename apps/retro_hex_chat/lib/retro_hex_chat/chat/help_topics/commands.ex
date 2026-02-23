@@ -399,6 +399,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "View TURN server stats (active allocations, relay ports in use) and list active allocations."
       },
       %{
+        id: "cmd-admin-nuke",
+        title: "/admin nuke",
+        category: "Commands",
+        keywords: [
+          "admin",
+          "nuke",
+          "wipe",
+          "reset",
+          "factory",
+          "destroy",
+          "clean",
+          "delete all"
+        ],
+        icon: :icon_shield,
+        description:
+          "Factory reset — destroys ALL data (users, channels, messages, preferences, bots, P2P sessions) " <>
+            "except admin roles, audit logs, and server bans. " <>
+            "Run without --confirm for a preview; with --confirm to execute. IRREVERSIBLE."
+      },
+      %{
         id: "cmd-op",
         title: "/op",
         category: "Commands",

@@ -293,6 +293,107 @@ defmodule RetroHexChat.Admin do
     end
   end
 
+  # ── System Nuke ─────────────────────────────────────────────
+
+  @nuke_schemas [
+    {"messages", RetroHexChat.Chat.Message},
+    {"private_messages", RetroHexChat.Chat.PrivateMessage},
+    {"p2p_sessions", RetroHexChat.P2P.Schema.Session},
+    {"bans", RetroHexChat.Services.Ban},
+    {"ban_exceptions", RetroHexChat.Services.BanException},
+    {"invite_exceptions", RetroHexChat.Services.InviteException},
+    {"access_list_entries", RetroHexChat.Services.AccessListEntry},
+    {"channel_welcome_messages", RetroHexChat.Services.ChannelWelcomeMessage},
+    {"autojoin_entries", RetroHexChat.Chat.Schemas.AutojoinListEntry},
+    {"aliases", RetroHexChat.Chat.Schemas.AliasEntry},
+    {"custom_menu_items", RetroHexChat.Chat.Schemas.CustomMenuItem},
+    {"autorespond_rules", RetroHexChat.Chat.Schemas.AutoRespondRule},
+    {"perform_entries", RetroHexChat.Chat.Schemas.PerformListEntry},
+    {"contacts", RetroHexChat.Accounts.ContactEntry},
+    {"nick_color_overrides", RetroHexChat.Accounts.NickColorEntry},
+    {"highlight_words", RetroHexChat.Accounts.HighlightWordEntry},
+    {"ignore_list_entries", RetroHexChat.Chat.Schemas.IgnoreListEntry},
+    {"notify_list_entries", RetroHexChat.Presence.NotifyListEntry},
+    {"notify_list_settings", RetroHexChat.Presence.NotifyListSettings},
+    {"user_bios", RetroHexChat.Chat.Schemas.UserBio},
+    {"perform_settings", RetroHexChat.Chat.Schemas.PerformSettings},
+    {"ctcp_settings", RetroHexChat.Chat.Schemas.CtcpSetting},
+    {"flood_protection_settings", RetroHexChat.Chat.Schemas.FloodProtectionSetting},
+    {"sound_settings", RetroHexChat.Chat.Schemas.SoundSetting},
+    {"notice_routing_settings", RetroHexChat.Chat.Schemas.NoticeRoutingSetting},
+    {"user_preferences", RetroHexChat.Chat.Schemas.UserPreference},
+    {"bot_event_log", RetroHexChat.Bots.BotEventLog},
+    {"bot_custom_commands", RetroHexChat.Bots.BotCustomCommand},
+    {"bot_channel_configs", RetroHexChat.Bots.BotChannelConfig},
+    {"bots", RetroHexChat.Bots.Bot},
+    {"registered_channels", RetroHexChat.Services.RegisteredChannel},
+    {"registered_nicks", RetroHexChat.Services.RegisteredNick}
+  ]
+
+  @spec nuke_preview(String.t()) ::
+          {:ok, [{String.t(), non_neg_integer()}]} | {:error, String.t()}
+  def nuke_preview(admin) do
+    import Ecto.Query
+    alias RetroHexChat.Repo
+
+    AuditLogs.log(admin, "system.nuke_preview")
+
+    counts =
+      Enum.map(@nuke_schemas, fn {name, schema} ->
+        count = Repo.aggregate(from(_ in schema), :count)
+        {name, count}
+      end)
+
+    {:ok, counts}
+  end
+
+  @spec nuke_system(String.t()) :: {:ok, [{String.t(), non_neg_integer()}]} | {:error, String.t()}
+  def nuke_system(admin) do
+    import Ecto.Query
+    alias RetroHexChat.Repo
+
+    AuditLogs.log(admin, "system.nuke", {"system", "all"}, %{action: "factory_reset"})
+
+    multi =
+      Enum.reduce(@nuke_schemas, Ecto.Multi.new(), fn {name, schema}, multi ->
+        Ecto.Multi.delete_all(multi, String.to_atom(name), from(_ in schema))
+      end)
+
+    case Repo.transaction(multi) do
+      {:ok, results} ->
+        shutdown_all_channels()
+        broadcast_system_nuke()
+
+        summary =
+          Enum.map(@nuke_schemas, fn {name, _schema} ->
+            {count, _} = Map.get(results, String.to_atom(name), {0, nil})
+            {name, count}
+          end)
+
+        Logger.warning("SYSTEM NUKE executed by #{admin}")
+        {:ok, summary}
+
+      {:error, failed_step, _changeset, _completed} ->
+        {:error, "Nuke failed at step: #{failed_step}"}
+    end
+  end
+
+  defp shutdown_all_channels do
+    children = DynamicSupervisor.which_children(Channels.Supervisor)
+
+    Enum.each(children, fn {_, pid, _, _} ->
+      if is_pid(pid), do: Channels.Supervisor.stop_child(pid)
+    end)
+  rescue
+    e -> Logger.warning("Channel shutdown during nuke failed: #{inspect(e)}")
+  end
+
+  defp broadcast_system_nuke do
+    Phoenix.PubSub.broadcast(@pubsub, "server:settings", {:system_nuked, %{}})
+  rescue
+    e -> Logger.warning("Nuke broadcast failed: #{inspect(e)}")
+  end
+
   # ── Private ─────────────────────────────────────────────────
 
   defp add_role(nickname, role, admin) do
