@@ -29,6 +29,7 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
       for nickname <- Registry.registered_bots() do
         Supervisor.stop_bot(nickname)
       end
+
       # DB cleanup is handled by Ecto sandbox rollback
     end)
 

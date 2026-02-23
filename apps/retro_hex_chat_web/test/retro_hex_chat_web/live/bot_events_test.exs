@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
       for nickname <- RetroHexChat.Bots.Registry.registered_bots() do
         Supervisor.stop_bot(nickname)
       end
+
       # DB cleanup is handled by Ecto sandbox rollback
 
       Application.delete_env(:retro_hex_chat, :admins)
