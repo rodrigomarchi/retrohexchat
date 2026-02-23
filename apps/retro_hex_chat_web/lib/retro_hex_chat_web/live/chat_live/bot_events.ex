@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   import Phoenix.Component, only: [assign: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [system_event: 2, error_event: 2]
 
+  alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Dice, Greeter, Help, Mention, Moderation}
   alias RetroHexChat.Bots.Capabilities.{RSS, Scheduler, Trivia}
   alias RetroHexChat.Bots.{Queries, Server, Supervisor}
@@ -14,8 +15,14 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
           {:cont | :halt, Phoenix.LiveView.Socket.t()}
 
   def handle_event("open_bot_dialog", _params, socket) do
-    bots = Queries.list_bots()
-    {:halt, assign(socket, show_bot_dialog: true, bot_dialog_bots: bots)}
+    session = socket.assigns.session
+
+    if admin?(session) do
+      bots = Queries.list_bots()
+      {:halt, assign(socket, show_bot_dialog: true, bot_dialog_bots: bots)}
+    else
+      {:halt, error_event(socket, "Bot management is restricted to server administrators.")}
+    end
   end
 
   def handle_event("close_bot_dialog", _params, socket) do
@@ -538,5 +545,10 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       {n, _} -> n
       :error -> default
     end
+  end
+
+  defp admin?(session) do
+    ServerRoles.admin?(session.nickname, session.identified) or
+      ServerRoles.server_operator?(session.nickname, session.identified)
   end
 end

@@ -12,14 +12,34 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
         Supervisor.stop_bot(bot.nickname)
         Queries.delete_bot(bot)
       end
+
+      Application.delete_env(:retro_hex_chat, :admins)
     end)
 
     :ok
   end
 
+  defp make_admin(nick) do
+    current = Application.get_env(:retro_hex_chat, :admins, [])
+    Application.put_env(:retro_hex_chat, :admins, [nick | current])
+  end
+
+  describe "admin gate" do
+    test "non-admin gets error when opening bot dialog", %{conn: conn} do
+      nick = "BotNa#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+
+      render_click(view, "open_bot_dialog")
+      html = render(view)
+      refute html =~ "bot-management-dialog"
+      assert html =~ "restricted to server administrators"
+    end
+  end
+
   describe "dialog lifecycle" do
     test "open_bot_dialog loads bots and shows dialog", %{conn: conn} do
       nick = "BotEv#{uid()}"
+      make_admin(nick)
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
 
       render_click(view, "open_bot_dialog")
@@ -29,6 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
 
     test "close_bot_dialog hides dialog", %{conn: conn} do
       nick = "BotEc#{uid()}"
+      make_admin(nick)
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
 
       render_click(view, "open_bot_dialog")
@@ -41,6 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
   describe "bot selection" do
     test "bot_select loads bot details", %{conn: conn} do
       nick = "BotSl#{uid()}"
+      make_admin(nick)
 
       {:ok, bot} =
         Queries.create_bot(%{name: "SelectBot", nickname: "SelectBot", created_by: nick})
@@ -64,6 +86,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
   describe "CRUD operations" do
     test "create_bot with valid params creates bot", %{conn: conn} do
       nick = "BotCr#{uid()}"
+      make_admin(nick)
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
 
       render_click(view, "open_bot_dialog")
@@ -86,6 +109,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
 
     test "create_bot with duplicate name fails", %{conn: conn} do
       nick = "BotDp#{uid()}"
+      make_admin(nick)
       Queries.create_bot(%{name: "DupBot", nickname: "DupBot", created_by: nick})
 
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -100,6 +124,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
 
     test "bot_delete removes bot", %{conn: conn} do
       nick = "BotDl#{uid()}"
+      make_admin(nick)
       Queries.create_bot(%{name: "DelBot", nickname: "DelBot", created_by: nick})
 
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -116,6 +141,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
   describe "enable/disable" do
     test "bot_toggle_enabled toggles and refreshes list", %{conn: conn} do
       nick = "BotTg#{uid()}"
+      make_admin(nick)
       Queries.create_bot(%{name: "TogBot", nickname: "TogBot", created_by: nick})
 
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -133,6 +159,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
   describe "channel management" do
     test "bot_add_channel adds config", %{conn: conn} do
       nick = "BotCh#{uid()}"
+      make_admin(nick)
       Queries.create_bot(%{name: "ChanBot", nickname: "ChanBot", created_by: nick})
 
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -150,6 +177,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
 
     test "bot_add_channel adds # prefix if missing", %{conn: conn} do
       nick = "BotPf#{uid()}"
+      make_admin(nick)
       Queries.create_bot(%{name: "PfxBot", nickname: "PfxBot", created_by: nick})
 
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -167,6 +195,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
 
     test "bot_remove_channel removes config", %{conn: conn} do
       nick = "BotRm#{uid()}"
+      make_admin(nick)
       {:ok, bot} = Queries.create_bot(%{name: "RmBot", nickname: "RmBot", created_by: nick})
       Queries.add_channel_config(bot.id, "#removeme")
 
@@ -187,6 +216,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
   describe "command management" do
     test "bot_add_command creates command", %{conn: conn} do
       nick = "BotAc#{uid()}"
+      make_admin(nick)
       Queries.create_bot(%{name: "CmdBot", nickname: "CmdBot", created_by: nick})
 
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -207,6 +237,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
 
     test "bot_remove_command deletes command", %{conn: conn} do
       nick = "BotRc#{uid()}"
+      make_admin(nick)
       {:ok, bot} = Queries.create_bot(%{name: "RcBot", nickname: "RcBot", created_by: nick})
 
       Queries.add_custom_command(bot.id, %{
@@ -232,6 +263,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
   describe "inline editing" do
     test "bot_edit_field sets editing mode", %{conn: conn} do
       nick = "BotEf#{uid()}"
+      make_admin(nick)
       Queries.create_bot(%{name: "EdBot", nickname: "EdBot", created_by: nick})
 
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -245,6 +277,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
 
     test "bot_update_field updates description", %{conn: conn} do
       nick = "BotUd#{uid()}"
+      make_admin(nick)
       Queries.create_bot(%{name: "UpdBot", nickname: "UpdBot", created_by: nick})
 
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -266,6 +299,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
 
     test "bot_update_field rejects invalid cooldown", %{conn: conn} do
       nick = "BotIc#{uid()}"
+      make_admin(nick)
       Queries.create_bot(%{name: "IcBot", nickname: "IcBot", created_by: nick})
 
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
@@ -286,6 +320,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEventsTest do
   describe "capability management" do
     test "bot_toggle_capability disables capability", %{conn: conn} do
       nick = "BotTc#{uid()}"
+      make_admin(nick)
 
       Queries.create_bot(%{
         name: "TcBot",
