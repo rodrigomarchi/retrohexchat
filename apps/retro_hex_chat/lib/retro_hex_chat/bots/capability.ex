@@ -70,5 +70,30 @@ defmodule RetroHexChat.Bots.Capability do
   @doc "Whether this capability is passive (processes all messages, not first-match)."
   @callback passive?() :: boolean()
 
-  @optional_callbacks [commands: 0, init_state: 1, handle_timer: 3, passive?: 0]
+  @doc """
+  Called by Server during init to set up initial timers for this capability.
+  Returns updated server state with timers scheduled.
+  """
+  @callback init_timers(
+              server_state :: map(),
+              cap_name :: atom(),
+              config :: map(),
+              cap_state :: map()
+            ) :: map()
+
+  @doc """
+  Called after a timer fires to determine if it should be rescheduled.
+  Returns `{:reschedule, delay_ms, new_payload}` or `:no_reschedule`.
+  """
+  @callback reschedule_delay(payload :: term(), cap_state :: map()) ::
+              {:reschedule, non_neg_integer(), term()} | :no_reschedule
+
+  @optional_callbacks [
+    commands: 0,
+    init_state: 1,
+    handle_timer: 3,
+    passive?: 0,
+    init_timers: 4,
+    reschedule_delay: 2
+  ]
 end

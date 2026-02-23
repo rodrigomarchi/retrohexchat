@@ -126,6 +126,17 @@ defmodule RetroHexChat.Bots.Queries do
 
   # ── Event Log ─────────────────────────────────────────────────
 
+  @spec list_event_logs(integer(), keyword()) :: [BotEventLog.t()]
+  def list_event_logs(bot_id, opts \\ []) do
+    limit = Keyword.get(opts, :limit, 50)
+
+    BotEventLog
+    |> where(bot_id: ^bot_id)
+    |> order_by([e], desc: e.inserted_at)
+    |> limit(^limit)
+    |> Repo.all()
+  end
+
   @spec log_event(integer(), String.t(), String.t() | nil, map()) ::
           {:ok, BotEventLog.t()} | {:error, Ecto.Changeset.t()}
   def log_event(bot_id, event_type, channel \\ nil, metadata \\ %{}) do

@@ -453,6 +453,45 @@
   margin-top: var(--space-xs);
 }
 
+/* Inline edit form */
+.bot-mgmt-inline-edit {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+  flex: 1;
+}
+
+.bot-mgmt-edit-btn {
+  opacity: 0.5;
+  margin-left: var(--space-xs);
+}
+
+.bot-mgmt-edit-btn:hover {
+  opacity: 1;
+}
+
+/* Stats */
+.bot-mgmt-stats {
+  font-size: var(--font-xs);
+}
+
+.bot-mgmt-offline {
+  color: var(--color-text-secondary);
+  font-style: italic;
+  font-size: var(--font-xs);
+}
+
+/* Event log */
+.bot-mgmt-event-log {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.bot-mgmt-event-time {
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
 /* Nicklist bot icon */
 .nick-icon--bot {
   font-size: 10px;

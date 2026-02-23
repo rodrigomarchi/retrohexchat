@@ -12,8 +12,11 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
   attr :selected, :any, default: nil
   attr :channels, :list, default: []
   attr :commands, :list, default: []
+  attr :events, :list, default: []
+  attr :stats, :any, default: nil
   attr :active_tab, :atom, default: :general
   attr :is_admin, :boolean, default: false
+  attr :editing_field, :any, default: nil
 
   @spec bot_management_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def bot_management_dialog(assigns) do
@@ -94,7 +97,13 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
                 <%!-- Tab content --%>
                 <div class="bot-mgmt-tab-content">
-                  <.general_tab :if={@active_tab == :general} bot={@selected} is_admin={@is_admin} />
+                  <.general_tab
+                    :if={@active_tab == :general}
+                    bot={@selected}
+                    is_admin={@is_admin}
+                    stats={@stats}
+                    editing_field={@editing_field}
+                  />
                   <.capabilities_tab
                     :if={@active_tab == :capabilities}
                     bot={@selected}
@@ -112,7 +121,12 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
                     commands={@commands}
                     is_admin={@is_admin}
                   />
-                  <.events_tab :if={@active_tab == :events} bot={@selected} is_admin={@is_admin} />
+                  <.events_tab
+                    :if={@active_tab == :events}
+                    bot={@selected}
+                    is_admin={@is_admin}
+                    events={@events}
+                  />
                 </div>
               </div>
             </div>
@@ -156,6 +170,8 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
   attr :bot, :any, required: true
   attr :is_admin, :boolean, default: false
+  attr :stats, :any, default: nil
+  attr :editing_field, :any, default: nil
 
   defp general_tab(assigns) do
     ~H"""
@@ -169,22 +185,34 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
         <span class="bot-mgmt-label">Nickname:</span>
         <span class="bot-mgmt-value">{@bot.nickname}</span>
       </div>
-      <div class="bot-mgmt-field">
-        <span class="bot-mgmt-label">Description:</span>
-        <span class="bot-mgmt-value">{@bot.description || "—"}</span>
-      </div>
+      <.editable_field
+        label="Description"
+        field={:description}
+        value={@bot.description || "—"}
+        bot_name={@bot.name}
+        is_admin={@is_admin}
+        editing_field={@editing_field}
+      />
     </fieldset>
 
     <fieldset class="bot-mgmt-fieldset">
       <legend>Behavior</legend>
-      <div class="bot-mgmt-field">
-        <span class="bot-mgmt-label">Prefix:</span>
-        <span class="bot-mgmt-value">{@bot.command_prefix}</span>
-      </div>
-      <div class="bot-mgmt-field">
-        <span class="bot-mgmt-label">Cooldown:</span>
-        <span class="bot-mgmt-value">{@bot.cooldown_ms}ms</span>
-      </div>
+      <.editable_field
+        label="Prefix"
+        field={:prefix}
+        value={@bot.command_prefix}
+        bot_name={@bot.name}
+        is_admin={@is_admin}
+        editing_field={@editing_field}
+      />
+      <.editable_field
+        label="Cooldown"
+        field={:cooldown}
+        value={"#{@bot.cooldown_ms}ms"}
+        bot_name={@bot.name}
+        is_admin={@is_admin}
+        editing_field={@editing_field}
+      />
       <div class="bot-mgmt-field">
         <span class="bot-mgmt-label">Status:</span>
         <span class={"bot-mgmt-value #{if @bot.enabled, do: "bot-mgmt-status--on", else: "bot-mgmt-status--off"}"}>
@@ -194,6 +222,27 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
       <div class="bot-mgmt-field">
         <span class="bot-mgmt-label">Created by:</span>
         <span class="bot-mgmt-value">{@bot.created_by}</span>
+      </div>
+    </fieldset>
+
+    <fieldset class="bot-mgmt-fieldset">
+      <legend>Statistics</legend>
+      <div :if={@stats} class="bot-mgmt-stats">
+        <div class="bot-mgmt-field">
+          <span class="bot-mgmt-label">Messages:</span>
+          <span class="bot-mgmt-value">{@stats.messages_handled}</span>
+        </div>
+        <div class="bot-mgmt-field">
+          <span class="bot-mgmt-label">Commands:</span>
+          <span class="bot-mgmt-value">{@stats.commands_processed}</span>
+        </div>
+        <div class="bot-mgmt-field">
+          <span class="bot-mgmt-label">Uptime:</span>
+          <span class="bot-mgmt-value">{format_uptime(@stats.started_at)}</span>
+        </div>
+      </div>
+      <div :if={is_nil(@stats)} class="bot-mgmt-offline">
+        Bot offline
       </div>
     </fieldset>
 
@@ -224,7 +273,22 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
         <tbody>
           <tr :for={ch <- @channels} data-testid={"bot-channel-#{ch.channel_name}"}>
             <td>{ch.channel_name}</td>
-            <td>{if ch.enabled, do: "Yes", else: "No"}</td>
+            <td>
+              <%= if @is_admin do %>
+                <button
+                  type="button"
+                  class="bot-mgmt-btn-sm"
+                  phx-click="bot_toggle_channel"
+                  phx-value-channel={ch.channel_name}
+                  phx-value-bot_name={@bot.name}
+                  data-testid={"bot-toggle-channel-#{ch.channel_name}"}
+                >
+                  {if ch.enabled, do: "Enabled", else: "Disabled"}
+                </button>
+              <% else %>
+                {if ch.enabled, do: "Yes", else: "No"}
+              <% end %>
+            </td>
             <td :if={@is_admin}>
               <button
                 type="button"
@@ -317,6 +381,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
   attr :bot, :any, required: true
   attr :is_admin, :boolean, default: false
+  attr :events, :list, default: []
 
   defp events_tab(assigns) do
     greeter = Map.get(assigns.bot.capabilities || %{}, "greeter", %{})
@@ -354,6 +419,31 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
         <em>Placeholders: {"{nickname}"}, {"{channel}"}, {"{topic}"}, {"{prefix}"}, {"{botname}"}</em>
       </div>
     </fieldset>
+
+    <fieldset class="bot-mgmt-fieldset">
+      <legend>Recent Events</legend>
+      <div class="bot-mgmt-event-log" data-testid="bot-event-log">
+        <table :if={@events != []} class="bot-mgmt-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Event</th>
+              <th>Channel</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr :for={event <- @events}>
+              <td class="bot-mgmt-event-time">{format_event_time(event.inserted_at)}</td>
+              <td>{event.event_type}</td>
+              <td>{event.channel || "—"}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div :if={@events == []} class="bot-mgmt-empty-cell">
+          No events recorded
+        </div>
+      </div>
+    </fieldset>
     """
   end
 
@@ -368,23 +458,36 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
     ~H"""
     <div class="bot-mgmt-caps-config">
-      <.dice_config :if={Map.has_key?(@caps, "dice")} config={@caps["dice"]} is_admin={@is_admin} />
+      <.dice_config
+        :if={Map.has_key?(@caps, "dice")}
+        config={@caps["dice"]}
+        is_admin={@is_admin}
+        bot_name={@bot.name}
+      />
       <.moderation_config
         :if={Map.has_key?(@caps, "moderation")}
         config={@caps["moderation"]}
         is_admin={@is_admin}
+        bot_name={@bot.name}
       />
       <.trivia_config
         :if={Map.has_key?(@caps, "trivia")}
         config={@caps["trivia"]}
         is_admin={@is_admin}
+        bot_name={@bot.name}
       />
       <.scheduler_config
         :if={Map.has_key?(@caps, "scheduler")}
         config={@caps["scheduler"]}
         is_admin={@is_admin}
+        bot_name={@bot.name}
       />
-      <.rss_config :if={Map.has_key?(@caps, "rss")} config={@caps["rss"]} is_admin={@is_admin} />
+      <.rss_config
+        :if={Map.has_key?(@caps, "rss")}
+        config={@caps["rss"]}
+        is_admin={@is_admin}
+        bot_name={@bot.name}
+      />
 
       <div
         :if={
@@ -402,6 +505,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
   attr :config, :map, required: true
   attr :is_admin, :boolean, default: false
+  attr :bot_name, :string, default: ""
 
   defp dice_config(assigns) do
     config = assigns.config
@@ -421,12 +525,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
     ~H"""
     <fieldset class="bot-mgmt-fieldset">
       <legend>&#127922; Dice</legend>
-      <div class="bot-mgmt-field">
-        <span class="bot-mgmt-label">Status:</span>
-        <span class={cap_status_class(@enabled)}>
-          {if @enabled, do: "Enabled", else: "Disabled"}
-        </span>
-      </div>
+      <.cap_toggle_row enabled={@enabled} cap_name="dice" bot_name={@bot_name} is_admin={@is_admin} />
       <div class="bot-mgmt-field">
         <span class="bot-mgmt-label">Max Dice:</span>
         <span class="bot-mgmt-value">{@max_dice}</span>
@@ -448,6 +547,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
   attr :config, :map, required: true
   attr :is_admin, :boolean, default: false
+  attr :bot_name, :string, default: ""
 
   defp moderation_config(assigns) do
     config = assigns.config
@@ -469,12 +569,12 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
     ~H"""
     <fieldset class="bot-mgmt-fieldset">
       <legend>&#128737; Moderation</legend>
-      <div class="bot-mgmt-field">
-        <span class="bot-mgmt-label">Status:</span>
-        <span class={cap_status_class(@enabled)}>
-          {if @enabled, do: "Enabled", else: "Disabled"}
-        </span>
-      </div>
+      <.cap_toggle_row
+        enabled={@enabled}
+        cap_name="moderation"
+        bot_name={@bot_name}
+        is_admin={@is_admin}
+      />
       <div class="bot-mgmt-field">
         <span class="bot-mgmt-label">Action:</span>
         <span class="bot-mgmt-value">{@action}</span>
@@ -500,6 +600,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
   attr :config, :map, required: true
   attr :is_admin, :boolean, default: false
+  attr :bot_name, :string, default: ""
 
   defp trivia_config(assigns) do
     config = assigns.config
@@ -521,12 +622,12 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
     ~H"""
     <fieldset class="bot-mgmt-fieldset">
       <legend>&#10068; Trivia</legend>
-      <div class="bot-mgmt-field">
-        <span class="bot-mgmt-label">Status:</span>
-        <span class={cap_status_class(@enabled)}>
-          {if @enabled, do: "Enabled", else: "Disabled"}
-        </span>
-      </div>
+      <.cap_toggle_row
+        enabled={@enabled}
+        cap_name="trivia"
+        bot_name={@bot_name}
+        is_admin={@is_admin}
+      />
       <div class="bot-mgmt-field">
         <span class="bot-mgmt-label">Category:</span>
         <span class="bot-mgmt-value">{@category}</span>
@@ -552,6 +653,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
   attr :config, :map, required: true
   attr :is_admin, :boolean, default: false
+  attr :bot_name, :string, default: ""
 
   defp scheduler_config(assigns) do
     config = assigns.config
@@ -572,12 +674,12 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
     ~H"""
     <fieldset class="bot-mgmt-fieldset">
       <legend>&#128339; Scheduler</legend>
-      <div class="bot-mgmt-field">
-        <span class="bot-mgmt-label">Status:</span>
-        <span class={cap_status_class(@enabled)}>
-          {if @enabled, do: "Enabled", else: "Disabled"}
-        </span>
-      </div>
+      <.cap_toggle_row
+        enabled={@enabled}
+        cap_name="scheduler"
+        bot_name={@bot_name}
+        is_admin={@is_admin}
+      />
       <div class="bot-mgmt-field">
         <span class="bot-mgmt-label">Max:</span>
         <span class="bot-mgmt-value">{@max_sched} schedules</span>
@@ -615,6 +717,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
   attr :config, :map, required: true
   attr :is_admin, :boolean, default: false
+  attr :bot_name, :string, default: ""
 
   defp rss_config(assigns) do
     config = assigns.config
@@ -637,12 +740,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
     ~H"""
     <fieldset class="bot-mgmt-fieldset">
       <legend>&#128246; RSS</legend>
-      <div class="bot-mgmt-field">
-        <span class="bot-mgmt-label">Status:</span>
-        <span class={cap_status_class(@enabled)}>
-          {if @enabled, do: "Enabled", else: "Disabled"}
-        </span>
-      </div>
+      <.cap_toggle_row enabled={@enabled} cap_name="rss" bot_name={@bot_name} is_admin={@is_admin} />
       <div class="bot-mgmt-field">
         <span class="bot-mgmt-label">Poll:</span>
         <span class="bot-mgmt-value">every {@interval} min</span>
@@ -682,7 +780,104 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
     """
   end
 
+  # ── Editable Field Component ──
+
+  attr :label, :string, required: true
+  attr :field, :atom, required: true
+  attr :value, :string, required: true
+  attr :bot_name, :string, required: true
+  attr :is_admin, :boolean, default: false
+  attr :editing_field, :any, default: nil
+
+  defp editable_field(assigns) do
+    ~H"""
+    <div class="bot-mgmt-field">
+      <span class="bot-mgmt-label">{@label}:</span>
+      <%= if @editing_field == @field do %>
+        <form phx-submit="bot_update_field" class="bot-mgmt-inline-edit">
+          <input type="hidden" name="bot_name" value={@bot_name} />
+          <input type="hidden" name="field" value={@field} />
+          <input
+            type="text"
+            name="value"
+            value={raw_value(@value)}
+            class="bot-mgmt-input"
+            autofocus
+            data-testid={"edit-#{@field}"}
+          />
+          <button type="submit" class="bot-mgmt-btn-sm">Save</button>
+          <button type="button" class="bot-mgmt-btn-sm" phx-click="bot_cancel_edit">Cancel</button>
+        </form>
+      <% else %>
+        <span class="bot-mgmt-value">{@value}</span>
+        <button
+          :if={@is_admin}
+          type="button"
+          class="bot-mgmt-btn-sm bot-mgmt-edit-btn"
+          phx-click="bot_edit_field"
+          phx-value-field={@field}
+          data-testid={"edit-btn-#{@field}"}
+        >
+          Edit
+        </button>
+      <% end %>
+    </div>
+    """
+  end
+
+  @spec raw_value(String.t()) :: String.t()
+  defp raw_value(value) do
+    # Strip "ms" suffix for cooldown, "—" for empty description
+    value
+    |> String.replace(~r/ms$/, "")
+    |> String.replace("—", "")
+  end
+
+  @spec format_uptime(DateTime.t()) :: String.t()
+  defp format_uptime(started_at) do
+    diff = DateTime.diff(DateTime.utc_now(), started_at, :second)
+
+    cond do
+      diff < 60 -> "#{diff}s"
+      diff < 3600 -> "#{div(diff, 60)}m #{rem(diff, 60)}s"
+      diff < 86_400 -> "#{div(diff, 3600)}h #{div(rem(diff, 3600), 60)}m"
+      true -> "#{div(diff, 86_400)}d #{div(rem(diff, 86_400), 3600)}h"
+    end
+  end
+
   # ── Helpers ──
+
+  attr :enabled, :boolean, required: true
+  attr :cap_name, :string, required: true
+  attr :bot_name, :string, required: true
+  attr :is_admin, :boolean, default: false
+
+  defp cap_toggle_row(assigns) do
+    ~H"""
+    <div class="bot-mgmt-field">
+      <span class="bot-mgmt-label">Status:</span>
+      <span class={cap_status_class(@enabled)}>
+        {if @enabled, do: "Enabled", else: "Disabled"}
+      </span>
+      <button
+        :if={@is_admin}
+        type="button"
+        class="bot-mgmt-btn-sm bot-mgmt-edit-btn"
+        phx-click="bot_toggle_capability"
+        phx-value-capability={@cap_name}
+        phx-value-bot_name={@bot_name}
+        data-testid={"toggle-cap-#{@cap_name}"}
+      >
+        {if @enabled, do: "Disable", else: "Enable"}
+      </button>
+    </div>
+    """
+  end
+
+  @spec format_event_time(DateTime.t()) :: String.t()
+  defp format_event_time(dt) do
+    Calendar.strftime(dt, "%Y-%m-%d %H:%M:%S")
+  end
 
   @spec cap_status_class(boolean()) :: String.t()
   defp cap_status_class(true), do: "bot-mgmt-value bot-mgmt-status--on"

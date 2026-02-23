@@ -27,6 +27,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec init_state(map()) :: map()
   def init_state(config) do
     feeds = Map.get(config, "feeds", [])
+    poll_interval_ms = Map.get(config, "poll_interval_min", 30) * 60 * 1000
 
     %{
       feeds:
@@ -35,13 +36,12 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
             %{"last_seen_link" => nil, "etag" => nil, "last_modified" => nil, "title" => nil},
             f
           )
-        end)
+        end),
+      poll_interval_ms: poll_interval_ms
     }
   end
 
-  @doc """
-  Called by Server during init to set up polling timers.
-  """
+  @impl true
   @spec init_timers(map(), atom(), map(), map()) :: map()
   def init_timers(server_state, cap_name, config, cap_state) do
     interval = Map.get(config, "poll_interval_min", 30) * 60 * 1000
@@ -92,6 +92,18 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   end
 
   def handle_timer(_payload, state, _ctx), do: {:ignore, state}
+
+  @impl true
+  @spec reschedule_delay(map(), map()) :: {:reschedule, non_neg_integer(), map()} | :no_reschedule
+  def reschedule_delay(%{type: :poll, feed_id: feed_id} = payload, cap_state) do
+    if find_feed(cap_state.feeds, feed_id) do
+      {:reschedule, cap_state.poll_interval_ms, payload}
+    else
+      :no_reschedule
+    end
+  end
+
+  def reschedule_delay(_payload, _cap_state), do: :no_reschedule
 
   @impl true
   @spec default_config() :: map()

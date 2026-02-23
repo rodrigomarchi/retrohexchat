@@ -11,7 +11,7 @@ defmodule RetroHexChat.Bots.Server do
 
   require Logger
 
-  alias RetroHexChat.Bots.Registry
+  alias RetroHexChat.Bots.{Queries, Registry}
   alias RetroHexChat.Channels
 
   @pubsub RetroHexChat.PubSub
@@ -279,6 +279,7 @@ defmodule RetroHexChat.Bots.Server do
       {result, state} =
         dispatch_active_capabilities(:event, event, payload, context, state)
 
+      log_event_async(state.bot_id, "channel_#{event}", channel, %{nickname: nickname})
       maybe_respond(state, channel, result)
     else
       state
@@ -291,7 +292,8 @@ defmodule RetroHexChat.Bots.Server do
     |> Enum.filter(fn {_name, cap_mod, _config} -> capability_passive?(cap_mod) end)
     |> Enum.reduce(state, fn {name, cap_mod, config}, acc ->
       cap_state = Map.get(acc.capability_states, name, %{})
-      ctx = %{context | config: config, capability_state: cap_state}
+      merged_config = apply_channel_overrides(config, name, context)
+      ctx = %{context | config: merged_config, capability_state: cap_state}
 
       case cap_mod.handle_message(content, author, ctx) do
         {:side_effect, %{state_update: new_cap_state}} ->
@@ -337,7 +339,13 @@ defmodule RetroHexChat.Bots.Server do
 
   defp dispatch_message_to_cap(name, cap_mod, config, content, author, context, acc) do
     cap_state = Map.get(acc.capability_states, name, %{})
-    ctx = %{context | config: merge_command_config(config, acc), capability_state: cap_state}
+    merged_config = apply_channel_overrides(config, name, context)
+
+    ctx = %{
+      context
+      | config: merge_command_config(merged_config, acc),
+        capability_state: cap_state
+    }
 
     case cap_mod.handle_message(content, author, ctx) do
       :ignore ->
@@ -353,7 +361,8 @@ defmodule RetroHexChat.Bots.Server do
 
   defp dispatch_event_to_cap(name, cap_mod, config, event, payload, context, acc) do
     cap_state = Map.get(acc.capability_states, name, %{})
-    ctx = %{context | config: config, capability_state: cap_state}
+    merged_config = apply_channel_overrides(config, name, context)
+    ctx = %{context | config: merged_config, capability_state: cap_state}
 
     case cap_mod.handle_event(event, payload, ctx) do
       :ignore -> {:cont, {:ignore, acc}}
@@ -373,6 +382,7 @@ defmodule RetroHexChat.Bots.Server do
         if function_exported?(cap_mod, :handle_timer, 3) do
           {result, new_cap_state} = cap_mod.handle_timer(payload, cap_state, ctx)
           state = update_capability_state(state, cap_name, new_cap_state)
+          state = maybe_reschedule_timer(state, cap_name, cap_mod, payload, new_cap_state)
           maybe_respond_timer(state, channel, result)
         else
           state
@@ -380,6 +390,21 @@ defmodule RetroHexChat.Bots.Server do
 
       nil ->
         state
+    end
+  end
+
+  @spec maybe_reschedule_timer(state(), atom(), module(), term(), map()) :: state()
+  defp maybe_reschedule_timer(state, cap_name, cap_mod, payload, cap_state) do
+    if function_exported?(cap_mod, :reschedule_delay, 2) do
+      case cap_mod.reschedule_delay(payload, cap_state) do
+        {:reschedule, delay_ms, new_payload} ->
+          schedule_capability_timer(state, cap_name, new_payload, delay_ms)
+
+        :no_reschedule ->
+          state
+      end
+    else
+      state
     end
   end
 
@@ -405,6 +430,12 @@ defmodule RetroHexChat.Bots.Server do
   @spec update_capability_state(state(), atom(), map()) :: state()
   defp update_capability_state(state, cap_name, new_state) do
     %{state | capability_states: Map.put(state.capability_states, cap_name, new_state)}
+  end
+
+  @spec apply_channel_overrides(map(), atom(), map()) :: map()
+  defp apply_channel_overrides(config, cap_name, context) do
+    overrides = Map.get(context.channel_overrides, to_string(cap_name), %{}) || %{}
+    Map.merge(config, overrides)
   end
 
   @spec merge_command_config(map(), state()) :: map()
@@ -463,12 +494,16 @@ defmodule RetroHexChat.Bots.Server do
       :ok -> :ok
       {:error, reason} -> Logger.warning("Bot #{nickname} failed to send: #{inspect(reason)}")
     end
+  catch
+    :exit, reason ->
+      Logger.warning("Bot #{nickname} failed to send (channel unavailable): #{inspect(reason)}")
   end
 
   @spec update_cooldown(state(), String.t()) :: state()
   defp update_cooldown(state, channel) do
     now = DateTime.utc_now()
     stats = %{state.stats | messages_handled: state.stats.messages_handled + 1}
+    log_event_async(state.bot_id, "message_response", channel)
     %{state | last_response_at: Map.put(state.last_response_at, channel, now), stats: stats}
   end
 
@@ -494,13 +529,16 @@ defmodule RetroHexChat.Bots.Server do
 
   @spec build_context(state(), String.t()) :: map()
   defp build_context(state, channel) do
+    channel_data = Map.get(state.channels, channel, %{capability_overrides: %{}})
+
     %{
       bot_nickname: state.nickname,
       bot_name: state.name,
       channel: channel,
       command_prefix: state.command_prefix,
       config: %{},
-      capability_state: %{}
+      capability_state: %{},
+      channel_overrides: Map.get(channel_data, :capability_overrides, %{})
     }
   end
 
@@ -565,6 +603,7 @@ defmodule RetroHexChat.Bots.Server do
       module = Map.get(@capability_modules, atom_name)
 
       if module do
+        Code.ensure_loaded!(module)
         {atom_name, module, config}
       else
         nil
@@ -650,6 +689,17 @@ defmodule RetroHexChat.Bots.Server do
       nil -> state
       value -> Map.put(state, key, value)
     end
+  end
+
+  @spec log_event_async(integer(), String.t(), String.t() | nil, map()) :: :ok
+  defp log_event_async(bot_id, event_type, channel, metadata \\ %{}) do
+    Task.start(fn ->
+      Queries.log_event(bot_id, event_type, channel, metadata)
+    end)
+
+    :ok
+  rescue
+    _ -> :ok
   end
 
   @spec via(String.t()) :: {:via, Elixir.Registry, {atom(), String.t()}}

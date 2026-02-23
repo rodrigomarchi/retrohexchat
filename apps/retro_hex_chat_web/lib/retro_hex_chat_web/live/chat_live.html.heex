@@ -640,11 +640,14 @@
     selected={@bot_dialog_selected}
     channels={@bot_dialog_channels}
     commands={@bot_dialog_commands}
+    events={@bot_dialog_events}
+    stats={@bot_dialog_stats}
     active_tab={@bot_dialog_tab}
     is_admin={
       RetroHexChat.Accounts.ServerRoles.admin?(@session.nickname, @session.identified) or
         RetroHexChat.Accounts.ServerRoles.server_operator?(@session.nickname, @session.identified)
     }
+    editing_field={@bot_dialog_editing_field}
   />
 
   <RetroHexChatWeb.Components.BotFormDialog.new_bot_dialog visible={@show_new_bot_dialog} />

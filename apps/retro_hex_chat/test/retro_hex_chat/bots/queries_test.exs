@@ -124,4 +124,47 @@ defmodule RetroHexChat.Bots.QueriesTest do
       assert log.channel == "#general"
     end
   end
+
+  describe "list_event_logs/2" do
+    test "returns events for bot ordered by newest first" do
+      {:ok, bot} = Queries.create_bot(@valid_bot_attrs)
+      {:ok, _} = Queries.log_event(bot.id, "first", "#general")
+      {:ok, _} = Queries.log_event(bot.id, "second", "#general")
+      {:ok, _} = Queries.log_event(bot.id, "third", "#general")
+
+      events = Queries.list_event_logs(bot.id)
+      assert length(events) == 3
+      assert hd(events).event_type == "third"
+    end
+
+    test "respects limit parameter" do
+      {:ok, bot} = Queries.create_bot(@valid_bot_attrs)
+
+      for i <- 1..5 do
+        Queries.log_event(bot.id, "event_#{i}", "#general")
+      end
+
+      events = Queries.list_event_logs(bot.id, limit: 2)
+      assert length(events) == 2
+    end
+
+    test "returns empty list for bot with no events" do
+      {:ok, bot} = Queries.create_bot(@valid_bot_attrs)
+      assert Queries.list_event_logs(bot.id) == []
+    end
+
+    test "returns only events for the specified bot_id" do
+      {:ok, bot1} = Queries.create_bot(@valid_bot_attrs)
+
+      {:ok, bot2} =
+        Queries.create_bot(%{name: "OtherBot", nickname: "OtherBot", created_by: "admin"})
+
+      {:ok, _} = Queries.log_event(bot1.id, "bot1_event", "#general")
+      {:ok, _} = Queries.log_event(bot2.id, "bot2_event", "#general")
+
+      events = Queries.list_event_logs(bot1.id)
+      assert length(events) == 1
+      assert hd(events).event_type == "bot1_event"
+    end
+  end
 end

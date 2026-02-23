@@ -1,0 +1,71 @@
+<p>
+  The Trivia capability adds interactive quiz games to your bot. Start a round, answer questions,
+  and compete for the highest score.
+</p>
+
+<.help_h4 icon={:icon_code}>Commands</.help_h4>
+<table class="help-table">
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>!Bot trivia start</code></td>
+      <td>Start a new trivia round</td>
+    </tr>
+    <tr>
+      <td><code>!Bot trivia start &lt;category&gt;</code></td>
+      <td>Start with a specific category</td>
+    </tr>
+    <tr>
+      <td><code>!Bot trivia stop</code></td>
+      <td>Stop the current round</td>
+    </tr>
+    <tr>
+      <td><code>!Bot trivia score</code></td>
+      <td>Show current scores</td>
+    </tr>
+    <tr>
+      <td><code>!Bot answer &lt;text&gt;</code></td>
+      <td>Answer the current question</td>
+    </tr>
+  </tbody>
+</table>
+
+<.help_h4 icon={:icon_star}>Categories</.help_h4>
+<p>Available trivia categories:</p>
+<ul>
+  <li><strong>general</strong> — Mixed general knowledge</li>
+  <li><strong>science</strong> — Science and nature</li>
+  <li><strong>history</strong> — Historical events and figures</li>
+  <li><strong>geography</strong> — Countries, capitals, and landmarks</li>
+  <li><strong>technology</strong> — Computers, software, and tech</li>
+  <li><strong>entertainment</strong> — Movies, music, and pop culture</li>
+</ul>
+
+<.help_h4 icon={:icon_wrench}>Configuration</.help_h4>
+<p>Admins can configure via <code>/bot set</code>:</p>
+<ul>
+  <li><code>trivia_category</code> — Default category (default: general)</li>
+  <li><code>trivia_time</code> — Seconds per question (default: 30)</li>
+  <li><code>trivia_questions</code> — Questions per round (default: 10)</li>
+  <li><code>trivia_points</code> — Points per correct answer (default: 10)</li>
+</ul>
+
+<.help_h4 icon={:icon_rules}>Rules</.help_h4>
+<ul>
+  <li>Only one round can be active per channel at a time</li>
+  <li>Each question has a time limit — unanswered questions are skipped</li>
+  <li>Answers are case-insensitive</li>
+  <li>Scores reset when a new round starts</li>
+</ul>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="botservice">BotService Overview</.help_link>
+  · <.help_link topic="bot-command">/bot Command Reference</.help_link>
+  · <.help_link topic="bot-dice">Bot Dice</.help_link>
+</p>

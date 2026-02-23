@@ -37,10 +37,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
     }
   end
 
-  @doc """
-  Called by Server during init to set up initial timers for active schedules.
-  Not a behaviour callback — invoked directly by Server.init_capability_timers.
-  """
+  @impl true
   @spec init_timers(map(), atom(), map(), map()) :: map()
   def init_timers(server_state, cap_name, _config, cap_state) do
     schedules = cap_state.schedules
@@ -107,6 +104,24 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   end
 
   def handle_timer(_payload, state, _ctx), do: {:ignore, state}
+
+  @impl true
+  @spec reschedule_delay(map(), map()) :: {:reschedule, non_neg_integer(), map()} | :no_reschedule
+  def reschedule_delay(%{schedule_id: sched_id} = payload, cap_state) do
+    case find_schedule(cap_state.schedules, sched_id) do
+      nil ->
+        :no_reschedule
+
+      schedule ->
+        delay = calculate_next_delay(schedule)
+
+        if delay > 0,
+          do: {:reschedule, delay, payload},
+          else: :no_reschedule
+    end
+  end
+
+  def reschedule_delay(_payload, _cap_state), do: :no_reschedule
 
   @impl true
   @spec default_config() :: map()

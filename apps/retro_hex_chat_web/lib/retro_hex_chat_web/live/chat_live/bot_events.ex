@@ -28,12 +28,16 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     if bot do
       channels = Queries.list_channel_configs(bot.id)
       commands = Queries.list_custom_commands(bot.id)
+      events = Queries.list_event_logs(bot.id, limit: 50)
+      stats = fetch_runtime_stats(bot.nickname)
 
       {:halt,
        assign(socket,
          bot_dialog_selected: bot,
          bot_dialog_channels: channels,
          bot_dialog_commands: commands,
+         bot_dialog_events: events,
+         bot_dialog_stats: stats,
          bot_dialog_tab: :general
        )}
     else
@@ -232,6 +236,84 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     {:halt, assign(socket, show_add_command_dialog: false)}
   end
 
+  # ── Inline Editing ──
+
+  def handle_event("bot_edit_field", %{"field" => field}, socket) do
+    {:halt, assign(socket, bot_dialog_editing_field: String.to_existing_atom(field))}
+  end
+
+  def handle_event("bot_cancel_edit", _params, socket) do
+    {:halt, assign(socket, bot_dialog_editing_field: nil)}
+  end
+
+  def handle_event("bot_update_field", params, socket) do
+    bot_name = Map.get(params, "bot_name", "")
+    field = Map.get(params, "field", "")
+    value = Map.get(params, "value", "") |> String.trim()
+    bot = Queries.get_bot_by_name(bot_name)
+
+    if bot do
+      handle_field_update(bot, field, value, socket)
+    else
+      {:halt, error_event(socket, "Bot not found.")}
+    end
+  end
+
+  # ── Capability Toggle ──
+
+  def handle_event(
+        "bot_toggle_capability",
+        %{"capability" => cap_name, "bot_name" => bot_name},
+        socket
+      ) do
+    bot = Queries.get_bot_by_name(bot_name)
+    {:halt, do_toggle_capability(bot, cap_name, socket)}
+  end
+
+  # ── Capability Config Editing ──
+
+  def handle_event("bot_update_cap_config", params, socket) do
+    bot_name = Map.get(params, "bot_name", "")
+    cap_name = Map.get(params, "capability", "")
+    bot = Queries.get_bot_by_name(bot_name)
+
+    if bot do
+      caps = bot.capabilities || %{}
+      cap_config = Map.get(caps, cap_name, %{})
+
+      # Merge only the provided config fields (exclude meta fields)
+      config_updates =
+        params
+        |> Map.drop(["bot_name", "capability", "_target"])
+        |> Enum.into(%{}, fn {k, v} -> {k, coerce_config_value(v)} end)
+
+      new_config = Map.merge(cap_config, config_updates)
+      new_caps = Map.put(caps, cap_name, new_config)
+
+      case Queries.update_bot(bot, %{capabilities: new_caps}) do
+        {:ok, updated_bot} ->
+          restart_bot_if_running(updated_bot)
+
+          {:halt,
+           socket
+           |> assign(bot_dialog_selected: updated_bot)
+           |> system_event("[BotService] #{cap_name} config updated.")}
+
+        {:error, _} ->
+          {:halt, error_event(socket, "Failed to update config.")}
+      end
+    else
+      {:halt, socket}
+    end
+  end
+
+  # ── Per-Channel Toggle ──
+
+  def handle_event("bot_toggle_channel", %{"channel" => channel, "bot_name" => bot_name}, socket) do
+    bot = Queries.get_bot_by_name(bot_name)
+    {:halt, do_toggle_channel(bot, channel, bot_name, socket)}
+  end
+
   def handle_event(_event, _params, socket) do
     {:cont, socket}
   end
@@ -298,6 +380,153 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     case RetroHexChat.Bots.Registry.lookup(nickname) do
       {:ok, _} -> fun.(nickname)
       {:error, :not_found} -> :ok
+    end
+  end
+
+  defp handle_field_update(bot, "description", value, socket) do
+    desc = if value == "", do: nil, else: value
+
+    case Queries.update_bot(bot, %{description: desc}) do
+      {:ok, updated_bot} ->
+        {:halt,
+         socket
+         |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
+         |> system_event("[BotService] Description updated.")}
+
+      {:error, _} ->
+        {:halt, error_event(socket, "Failed to update description.")}
+    end
+  end
+
+  defp handle_field_update(bot, "prefix", value, socket) do
+    if value == "" do
+      {:halt, error_event(socket, "Prefix cannot be empty.")}
+    else
+      case Queries.update_bot(bot, %{command_prefix: value}) do
+        {:ok, updated_bot} ->
+          notify_bot_if_running(bot.nickname, &Server.update_config(&1, %{command_prefix: value}))
+
+          {:halt,
+           socket
+           |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
+           |> system_event("[BotService] Prefix updated to '#{value}'.")}
+
+        {:error, _} ->
+          {:halt, error_event(socket, "Failed to update prefix.")}
+      end
+    end
+  end
+
+  defp handle_field_update(bot, "cooldown", value, socket) do
+    case Integer.parse(value) do
+      {n, _} when n >= 500 ->
+        case Queries.update_bot(bot, %{cooldown_ms: n}) do
+          {:ok, updated_bot} ->
+            notify_bot_if_running(bot.nickname, &Server.update_config(&1, %{cooldown_ms: n}))
+
+            {:halt,
+             socket
+             |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
+             |> system_event("[BotService] Cooldown updated to #{n}ms.")}
+
+          {:error, _} ->
+            {:halt, error_event(socket, "Failed to update cooldown.")}
+        end
+
+      {_, _} ->
+        {:halt, error_event(socket, "Cooldown must be at least 500ms.")}
+
+      :error ->
+        {:halt, error_event(socket, "Cooldown must be a number.")}
+    end
+  end
+
+  defp handle_field_update(_bot, _field, _value, socket) do
+    {:halt, error_event(socket, "Unknown field.")}
+  end
+
+  defp do_toggle_capability(nil, _cap_name, socket), do: socket
+
+  defp do_toggle_capability(bot, cap_name, socket) do
+    caps = bot.capabilities || %{}
+    cap_config = Map.get(caps, cap_name, %{})
+    currently_enabled = Map.get(cap_config, "enabled", true)
+    new_config = Map.put(cap_config, "enabled", !currently_enabled)
+    new_caps = Map.put(caps, cap_name, new_config)
+
+    case Queries.update_bot(bot, %{capabilities: new_caps}) do
+      {:ok, updated_bot} ->
+        restart_bot_if_running(updated_bot)
+        action = if currently_enabled, do: "disabled", else: "enabled"
+
+        socket
+        |> assign(bot_dialog_selected: updated_bot)
+        |> system_event("[BotService] Capability '#{cap_name}' #{action}.")
+
+      {:error, _} ->
+        error_event(socket, "Failed to update capability.")
+    end
+  end
+
+  defp do_toggle_channel(nil, _channel, _bot_name, socket), do: socket
+
+  defp do_toggle_channel(bot, channel, bot_name, socket) do
+    configs = Queries.list_channel_configs(bot.id)
+
+    case Enum.find(configs, &(&1.channel_name == channel)) do
+      nil ->
+        socket
+
+      config ->
+        new_enabled = !config.enabled
+        Queries.update_channel_config(config, %{enabled: new_enabled})
+        channels = Queries.list_channel_configs(bot.id)
+        action = if new_enabled, do: "enabled", else: "disabled"
+
+        socket
+        |> assign(bot_dialog_channels: channels)
+        |> system_event("[BotService] #{bot_name} #{action} in #{channel}.")
+    end
+  end
+
+  defp restart_bot_if_running(bot) do
+    case RetroHexChat.Bots.Registry.lookup(bot.nickname) do
+      {:ok, _} ->
+        Supervisor.stop_bot(bot.nickname)
+
+        bot_with_assocs = %{
+          id: bot.id,
+          name: bot.name,
+          nickname: bot.nickname,
+          command_prefix: bot.command_prefix,
+          created_by: bot.created_by,
+          enabled: bot.enabled,
+          cooldown_ms: bot.cooldown_ms,
+          capabilities: bot.capabilities,
+          channel_configs: Queries.list_channel_configs(bot.id),
+          custom_commands: Queries.list_custom_commands(bot.id)
+        }
+
+        Supervisor.start_bot(bot_with_assocs)
+
+      {:error, :not_found} ->
+        :ok
+    end
+  end
+
+  defp coerce_config_value(value) when is_binary(value) do
+    case Integer.parse(value) do
+      {n, ""} -> n
+      _ -> value
+    end
+  end
+
+  defp coerce_config_value(value), do: value
+
+  defp fetch_runtime_stats(nickname) do
+    case Server.get_state(nickname) do
+      {:ok, state} -> state.stats
+      {:error, :not_found} -> nil
     end
   end
 

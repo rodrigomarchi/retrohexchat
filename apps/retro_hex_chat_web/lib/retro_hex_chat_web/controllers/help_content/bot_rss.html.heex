@@ -1,0 +1,71 @@
+<p>
+  The RSS capability monitors RSS and Atom feeds and automatically posts new items
+  to designated channels.
+</p>
+
+<.help_h4 icon={:icon_code}>Commands</.help_h4>
+<table class="help-table">
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>!Bot rss add &lt;url&gt; &lt;#channel&gt;</code></td>
+      <td>Add an RSS/Atom feed</td>
+    </tr>
+    <tr>
+      <td><code>!Bot rss list</code></td>
+      <td>List all configured feeds</td>
+    </tr>
+    <tr>
+      <td><code>!Bot rss remove &lt;id&gt;</code></td>
+      <td>Remove a feed by ID</td>
+    </tr>
+    <tr>
+      <td><code>!Bot rss check &lt;id&gt;</code></td>
+      <td>Force-check a feed immediately</td>
+    </tr>
+  </tbody>
+</table>
+
+<.help_h4 icon={:icon_star}>How It Works</.help_h4>
+<ul>
+  <li>Feeds are polled at a configurable interval (default: every 30 minutes)</li>
+  <li>Only new items since the last check are posted</li>
+  <li>Uses HTTP conditional requests (ETag/Last-Modified) for efficiency</li>
+  <li>Feed titles are auto-detected from the feed metadata</li>
+  <li>Items are posted in the format: <code>[Feed Title] Item Title — Link</code></li>
+</ul>
+
+<.help_h4 icon={:icon_wrench}>Configuration</.help_h4>
+<p>Admins can configure via <code>/bot set</code>:</p>
+<ul>
+  <li><code>rss_interval</code> — Poll interval in minutes (default: 30)</li>
+  <li><code>rss_max_feeds</code> — Maximum feeds per bot (default: 5)</li>
+  <li><code>rss_max_items</code> — Maximum items posted per poll (default: 3)</li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
+<pre>!MyBot rss add https://blog.example.com/feed.xml #news
+!MyBot rss add https://example.com/rss news
+!MyBot rss list
+!MyBot rss check f1a2b3
+!MyBot rss remove f1a2b3</pre>
+
+<.help_h4 icon={:icon_rules}>Notes</.help_h4>
+<ul>
+  <li>URLs must start with <code>http://</code> or <code>https://</code></li>
+  <li>The <code>#</code> prefix on channel names is added automatically if missing</li>
+  <li>Polling timers automatically reschedule after each poll</li>
+  <li>Fetch errors are logged but do not stop future polls</li>
+</ul>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="botservice">BotService Overview</.help_link>
+  · <.help_link topic="bot-command">/bot Command Reference</.help_link>
+  · <.help_link topic="bot-scheduler">Bot Scheduler</.help_link>
+</p>

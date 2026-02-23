@@ -221,6 +221,56 @@ defmodule RetroHexChat.Bots.Capabilities.SchedulerTest do
     end
   end
 
+  describe "reschedule_delay/2" do
+    test "returns interval delay for existing schedule" do
+      state = %{
+        schedules: [
+          %{
+            "id" => "s1",
+            "type" => "interval",
+            "interval_min" => 10,
+            "channel" => "#general",
+            "message" => "hi"
+          }
+        ]
+      }
+
+      payload = %{schedule_id: "s1", channel: "#general"}
+      assert {:reschedule, 600_000, ^payload} = Scheduler.reschedule_delay(payload, state)
+    end
+
+    test "returns :no_reschedule for unknown schedule_id" do
+      state = %{schedules: []}
+      payload = %{schedule_id: "nonexistent", channel: "#general"}
+      assert :no_reschedule == Scheduler.reschedule_delay(payload, state)
+    end
+
+    test "returns correct daily delay (positive, <86400000ms)" do
+      state = %{
+        schedules: [
+          %{
+            "id" => "s1",
+            "type" => "daily",
+            "time" => "00:00",
+            "channel" => "#general",
+            "message" => "Good morning!"
+          }
+        ]
+      }
+
+      payload = %{schedule_id: "s1", channel: "#general"}
+      assert {:reschedule, delay, ^payload} = Scheduler.reschedule_delay(payload, state)
+      assert delay > 0
+      assert delay <= 86_400_000
+    end
+
+    test "returns :no_reschedule when schedules list is empty" do
+      state = %{schedules: []}
+      payload = %{schedule_id: "s1", channel: "#general"}
+      assert :no_reschedule == Scheduler.reschedule_delay(payload, state)
+    end
+  end
+
   describe "ignores unrelated messages" do
     test "ignores non-schedule messages" do
       assert :ignore == Scheduler.handle_message("hello", "user", @ctx)

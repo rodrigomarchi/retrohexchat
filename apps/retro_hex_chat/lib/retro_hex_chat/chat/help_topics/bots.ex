@@ -59,6 +59,95 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
         icon: :icon_star,
         description:
           "How to create and use custom bot commands (!prefix trigger) for automated responses."
+      },
+      %{
+        id: "bot-dice",
+        title: "Bot Dice Capability",
+        category: "Features",
+        keywords: [
+          "dice",
+          "roll",
+          "d20",
+          "rpg",
+          "random",
+          "bot dice",
+          "dice notation",
+          "keep highest",
+          "keep lowest"
+        ],
+        icon: :icon_star,
+        description:
+          "RPG dice rolling with standard notation (NdS, modifiers, keep highest/lowest)."
+      },
+      %{
+        id: "bot-trivia",
+        title: "Bot Trivia Capability",
+        category: "Features",
+        keywords: [
+          "trivia",
+          "quiz",
+          "questions",
+          "score",
+          "bot trivia",
+          "categories",
+          "game",
+          "answer"
+        ],
+        icon: :icon_star,
+        description:
+          "Interactive trivia quiz with multiple categories, scoring, and configurable timers."
+      },
+      %{
+        id: "bot-scheduler",
+        title: "Bot Scheduler Capability",
+        category: "Features",
+        keywords: [
+          "scheduler",
+          "schedule",
+          "interval",
+          "daily",
+          "periodic",
+          "bot scheduler",
+          "cron",
+          "timer"
+        ],
+        icon: :icon_star,
+        description: "Schedule periodic or daily messages to channels automatically."
+      },
+      %{
+        id: "bot-rss",
+        title: "Bot RSS Capability",
+        category: "Features",
+        keywords: [
+          "rss",
+          "feed",
+          "atom",
+          "news",
+          "bot rss",
+          "poll",
+          "syndication",
+          "updates"
+        ],
+        icon: :icon_star,
+        description: "Monitor RSS/Atom feeds and post new items to channels automatically."
+      },
+      %{
+        id: "bot-moderation",
+        title: "Bot Moderation Capability",
+        category: "Features",
+        keywords: [
+          "moderation",
+          "mod",
+          "filter",
+          "spam",
+          "flood",
+          "blocked words",
+          "bot moderation",
+          "auto-mod"
+        ],
+        icon: :icon_star,
+        description:
+          "Auto-moderation: word filtering, spam/flood detection, caps lock abuse prevention."
       }
     ]
   end

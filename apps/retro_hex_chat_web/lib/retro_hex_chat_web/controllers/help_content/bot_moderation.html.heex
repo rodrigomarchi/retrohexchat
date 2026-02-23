@@ -1,0 +1,70 @@
+<p>
+  The Moderation capability provides automatic chat moderation. It runs as a passive capability,
+  processing every message without blocking other bot features.
+</p>
+
+<.help_h4 icon={:icon_star}>Detection Types</.help_h4>
+<ul>
+  <li>
+    <strong>Word Filter</strong> — Detects messages containing blocked words or phrases.
+    Matches are case-insensitive.
+  </li>
+  <li>
+    <strong>Spam Detection</strong> — Detects repeated identical messages from the same user.
+    Configurable threshold (default: 3 messages).
+  </li>
+  <li>
+    <strong>Flood Detection</strong> — Detects too many messages in a short time from one user.
+    Configurable threshold (default: 5 messages).
+  </li>
+  <li>
+    <strong>Caps Lock Abuse</strong> — Detects messages that are mostly uppercase
+    (potential shouting).
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_wrench}>Configuration</.help_h4>
+<p>Admins can configure via <code>/bot set</code>:</p>
+<ul>
+  <li>
+    <code>mod_words</code> — Comma-separated list of blocked words
+    (e.g., <code>badword1,badword2</code>)
+  </li>
+  <li>
+    <code>mod_action</code>
+    — Action on violation: <code>warn</code>, <code>mute</code>, or <code>kick</code>
+    (default: warn)
+  </li>
+  <li><code>mod_spam</code> — Spam detection threshold (default: 3)</li>
+  <li><code>mod_flood</code> — Flood detection threshold (default: 5)</li>
+</ul>
+<pre>/bot set MyBot mod_words spam,offensive,banned
+/bot set MyBot mod_action warn
+/bot set MyBot mod_spam 3
+/bot set MyBot mod_flood 5</pre>
+
+<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>
+  Moderation runs as a <strong>passive</strong> capability — it processes every message
+  before active capabilities (like dice or trivia). This means:
+</p>
+<ul>
+  <li>It does not consume the message — other capabilities still process it</li>
+  <li>It runs even during cooldown periods</li>
+  <li>Multiple violations in one message trigger only one action</li>
+  <li>The bot sends a warning or takes action in the same channel</li>
+</ul>
+
+<.help_h4 icon={:icon_rules}>Actions</.help_h4>
+<ul>
+  <li><strong>warn</strong> — Bot sends a warning message to the channel</li>
+  <li><strong>mute</strong> — Bot requests the user be muted (requires channel operator)</li>
+  <li><strong>kick</strong> — Bot requests the user be kicked (requires channel operator)</li>
+</ul>
+
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="botservice">BotService Overview</.help_link>
+  · <.help_link topic="bot-command">/bot Command Reference</.help_link>
+  · <.help_link topic="chanserv">ChanServ</.help_link>
+</p>

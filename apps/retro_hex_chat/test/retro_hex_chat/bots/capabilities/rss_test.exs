@@ -141,6 +141,40 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
     end
   end
 
+  describe "reschedule_delay/2" do
+    test "returns poll_interval_ms from state" do
+      state = %{
+        feeds: [%{"id" => "f1", "url" => "https://example.com/feed", "channel" => "#news"}],
+        poll_interval_ms: 1_800_000
+      }
+
+      payload = %{type: :poll, feed_id: "f1", channel: "#news"}
+      assert {:reschedule, 1_800_000, ^payload} = RSS.reschedule_delay(payload, state)
+    end
+
+    test "returns :no_reschedule when feeds list is empty" do
+      state = %{feeds: [], poll_interval_ms: 1_800_000}
+      payload = %{type: :poll, feed_id: "f1", channel: "#news"}
+      assert :no_reschedule == RSS.reschedule_delay(payload, state)
+    end
+
+    test "preserves original payload for next poll" do
+      state = %{
+        feeds: [%{"id" => "f1", "url" => "https://example.com/feed", "channel" => "#news"}],
+        poll_interval_ms: 60_000
+      }
+
+      payload = %{type: :poll, feed_id: "f1", channel: "#news"}
+      assert {:reschedule, 60_000, returned_payload} = RSS.reschedule_delay(payload, state)
+      assert returned_payload == payload
+    end
+
+    test "returns :no_reschedule for non-poll payload" do
+      state = %{feeds: [%{"id" => "f1"}], poll_interval_ms: 60_000}
+      assert :no_reschedule == RSS.reschedule_delay(%{type: :other}, state)
+    end
+  end
+
   describe "ignores unrelated messages" do
     test "ignores non-rss messages" do
       assert :ignore == RSS.handle_message("hello", "user", @ctx)
