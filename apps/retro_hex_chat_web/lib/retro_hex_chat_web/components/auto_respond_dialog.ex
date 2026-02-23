@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.Components.AutoRespondDialog do
                         />
                       </td>
                       <td>{trigger_label(entry.trigger_event)}</td>
-                      <td style={"color: #{if entry.channel_filter, do: "inherit", else: "#808080"};"}>
+                      <td class={[!entry.channel_filter && "auto-respond-channel--all"]}>
                         {entry.channel_filter || "(all)"}
                       </td>
                       <td class="table-cell--ellipsis auto-respond-cmd-cell">

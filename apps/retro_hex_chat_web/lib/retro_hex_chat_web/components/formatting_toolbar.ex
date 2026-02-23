@@ -5,30 +5,14 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
   """
   use Phoenix.Component
 
-  @color_palette [
-    {"White", "#ffffff"},
-    {"Black", "#000000"},
-    {"Navy", "#00007f"},
-    {"Green", "#009300"},
-    {"Red", "#ff0000"},
-    {"Brown", "#7f0000"},
-    {"Purple", "#9c009c"},
-    {"Orange", "#fc7f00"},
-    {"Yellow", "#ffff00"},
-    {"Light Green", "#00fc00"},
-    {"Teal", "#009393"},
-    {"Light Cyan", "#00ffff"},
-    {"Blue", "#0000fc"},
-    {"Pink", "#ff00ff"},
-    {"Grey", "#7f7f7f"},
-    {"Light Grey", "#d2d2d2"}
-  ]
+  @color_names ~w(White Black Navy Green Red Brown Purple Orange Yellow) ++
+                 ["Light Green", "Teal", "Light Cyan", "Blue", "Pink", "Grey", "Light Grey"]
 
   attr :strip_formatting, :boolean, default: false
 
   @spec formatting_toolbar(map()) :: Phoenix.LiveView.Rendered.t()
   def formatting_toolbar(assigns) do
-    assigns = assign(assigns, :color_palette, @color_palette)
+    assigns = assign(assigns, :color_names, @color_names)
 
     ~H"""
     <div class="formatting-toolbar" id="formatting-toolbar" phx-hook="FormatToolbarHook">
@@ -85,11 +69,10 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
         </button>
         <div class="format-color-dropdown">
           <button
-            :for={{{name, hex}, i} <- Enum.with_index(@color_palette)}
+            :for={{name, i} <- Enum.with_index(@color_names)}
             type="button"
-            class="color-swatch"
+            class={"color-swatch irc-bg-#{i}"}
             data-color-code={to_string(i)}
-            style={"background-color: #{hex};"}
             title={name}
           >
           </button>

@@ -43,19 +43,23 @@ defmodule RetroHexChatWeb.Components.CustomMenusDialog do
         <div class="dialog-body--p8 u-flex-col u-gap-8 u-overflow-hidden">
           <div class="u-flex">
             <button
-              class="btn-icon"
+              class={[
+                "btn-icon custom-menus-tab",
+                @active_tab == :nicklist && "custom-menus-tab--active"
+              ]}
               phx-click="custom_menus_tab"
               phx-value-tab="nicklist"
-              style={"padding: 4px 12px; #{if @active_tab == :nicklist, do: "font-weight: bold;", else: ""}"}
               data-testid="custom-menus-tab-nicklist"
             >
               <Icons.icon_tab_nicklist class="btn-icon__svg" /> Nicklist
             </button>
             <button
-              class="btn-icon"
+              class={[
+                "btn-icon custom-menus-tab",
+                @active_tab == :channel && "custom-menus-tab--active"
+              ]}
               phx-click="custom_menus_tab"
               phx-value-tab="channel"
-              style={"padding: 4px 12px; #{if @active_tab == :channel, do: "font-weight: bold;", else: ""}"}
               data-testid="custom-menus-tab-channel"
             >
               <Icons.icon_tab_channel class="btn-icon__svg" /> Channel

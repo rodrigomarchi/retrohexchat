@@ -127,12 +127,11 @@
       <RetroHexChatWeb.Components.ScrollLoader.scroll_loader loading={@loading_more} />
 
       <div
-        class="chat-messages"
+        class={["chat-messages", @show_status_tab && "u-hidden"]}
         id="chat-messages"
         phx-update="stream"
         phx-hook="ScrollHook"
         data-interactions-hook="MessageInteractionsHook"
-        style={if @show_status_tab, do: "display: none;", else: nil}
       >
         <div
           :for={{dom_id, msg} <- @streams.chat_messages}
@@ -217,8 +216,7 @@
               </span>
               <span class="chat-p2p-invite" data-testid="p2p-invite-card">
                 <span
-                  class="chat-nick"
-                  style={"color: #{@nick_color_fn.(msg.author)}"}
+                  class={["chat-nick", @nick_color_fn.(msg.author)]}
                   data-nick={msg.author}
                 >
                   &lt;{msg.author}&gt;
@@ -245,10 +243,10 @@
                   aria-label={"Replying to #{Map.get(msg, :reply_to_author, "?")}"}
                   data-testid="reply-block"
                 >
-                  <span
-                    class="chat-reply-block__author"
-                    style={"color: #{@nick_color_fn.(Map.get(msg, :reply_to_author, ""))}"}
-                  >
+                  <span class={[
+                    "chat-reply-block__author",
+                    @nick_color_fn.(Map.get(msg, :reply_to_author, ""))
+                  ]}>
                     {Map.get(msg, :reply_to_author, "?")}
                   </span>
                   <%= if Map.get(msg, :reply_to_preview) do %>
@@ -279,8 +277,7 @@
                     {format_time(msg.timestamp, @timestamp_format, @timezone)}
                   </span>
                   <span
-                    class="chat-nick"
-                    style={"color: #{@nick_color_fn.(msg.author)}"}
+                    class={["chat-nick", @nick_color_fn.(msg.author)]}
                     data-nick={msg.author}
                   >
                     &lt;{msg.author}&gt;
@@ -317,10 +314,9 @@
       </div>
 
       <div
-        class="chat-messages"
+        class={["chat-messages", !@show_status_tab && "u-hidden"]}
         id="status-messages"
         phx-update="stream"
-        style={if @show_status_tab, do: nil, else: "display: none;"}
         data-testid="status-messages"
       >
         <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
@@ -345,7 +341,7 @@
         />
       </div>
 
-      <div style={if @show_status_tab, do: "display: none;", else: nil}>
+      <div class={[@show_status_tab && "u-hidden"]}>
         <RetroHexChatWeb.Components.FormattingToolbar.formatting_toolbar strip_formatting={
           @session.strip_formatting
         } />

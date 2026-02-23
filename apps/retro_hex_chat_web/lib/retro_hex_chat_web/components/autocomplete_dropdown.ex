@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdown do
         class={"autocomplete-item #{if idx == @selected, do: "selected"}"}
       >
         <span class={"autocomplete-status-#{result.status}"}></span>
-        <span style={if result.color, do: "color: #{result.color}"}>{result.nickname}</span>
+        <span class={result.color_class}>{result.nickname}</span>
       </li>
     <% end %>
     """

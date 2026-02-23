@@ -6,8 +6,6 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
   """
   use Phoenix.Component
 
-  alias RetroHexChat.Accounts.NickColors
-  alias RetroHexChat.Chat.Highlight
   alias RetroHexChatWeb.Icons
 
   attr :visible, :boolean, default: false
@@ -53,11 +51,7 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
               class="highlight-entry highlight-entry--own form-row--gap-8 u-p-4"
               data-testid="highlight-own-nick"
             >
-              <span
-                class="highlight-color-swatch"
-                style={"background-color: #{default_color()};"}
-              >
-              </span>
+              <span class="highlight-color-swatch highlight-bg-default"></span>
               <span>{@own_nick}</span>
               <span class="u-text-muted u-ml-auto">(default)</span>
             </div>
@@ -76,11 +70,7 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
                 phx-click="highlight_select"
                 phx-value-word={entry.word}
               >
-                <span
-                  class="highlight-color-swatch"
-                  style={color_swatch_style(entry.bg_color)}
-                >
-                </span>
+                <span class={["highlight-color-swatch", swatch_bg_class(entry.bg_color)]}></span>
                 <span>{entry.word}</span>
               </div>
               <div
@@ -210,23 +200,15 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
   end
 
   defp color_picker_grid(assigns) do
-    colors =
-      for i <- 0..15 do
-        {i, NickColors.hex_for_index(i)}
-      end
-
-    assigns = assign(assigns, :colors, colors)
-
     ~H"""
     <div
       class="highlight-color-grid"
       data-testid="highlight-color-grid"
     >
       <button
-        :for={{idx, hex} <- @colors}
+        :for={idx <- 0..15}
         type="button"
-        class="highlight-color-btn"
-        style={"background-color: #{hex};"}
+        class={"highlight-color-btn irc-bg-#{idx}"}
         phx-click="highlight_color_pick"
         phx-value-color={to_string(idx)}
         data-testid={"highlight-color-#{idx}"}
@@ -246,15 +228,6 @@ defmodule RetroHexChatWeb.Components.HighlightDialog do
     """
   end
 
-  defp default_color, do: Highlight.default_color()
-
-  defp color_swatch_style(nil) do
-    "background-color: #{default_color()};"
-  end
-
-  defp color_swatch_style(color_index) do
-    hex = NickColors.hex_for_index(color_index) || default_color()
-
-    "background-color: #{hex};"
-  end
+  defp swatch_bg_class(nil), do: "highlight-bg-default"
+  defp swatch_bg_class(color_index), do: "irc-bg-#{color_index}"
 end

@@ -643,15 +643,17 @@ defmodule RetroHexChatWeb.ChatLive do
     |> Enum.sort()
   end
 
+  @nick_color_count 12
+
   @spec build_nick_color_fn(Session.t()) :: (String.t() -> String.t())
   defp build_nick_color_fn(session) do
     fn nickname ->
-      NickColors.color_for(session.nick_colors, nickname) || nick_color(nickname)
+      case NickColors.color_index_for(session.nick_colors, nickname) do
+        nil -> "nick-color-#{:erlang.phash2(nickname, @nick_color_count)}"
+        irc_index -> "irc-fg-#{irc_index}"
+      end
     end
   end
-
-  # All colors ≥4.5:1 contrast on white (WCAG AA)
-  @nick_colors ~w(#c0392b #2471a3 #1e8449 #b9770e #7d3c98 #148f77 #b7950b #c2185b #00838f #558b2f #d84315 #455a64)
 
   @spec format_content(String.t(), boolean()) :: String.t()
   defp format_content(content, strip_formatting) do
@@ -703,11 +705,6 @@ defmodule RetroHexChatWeb.ChatLive do
   end
 
   defp format_edit_timestamp(_, _tz), do: "--:--"
-
-  defp nick_color(nickname) do
-    index = :erlang.phash2(nickname, length(@nick_colors))
-    Enum.at(@nick_colors, index)
-  end
 
   @spec extract_p2p_label(String.t()) :: String.t()
   defp extract_p2p_label(content) when is_binary(content) do

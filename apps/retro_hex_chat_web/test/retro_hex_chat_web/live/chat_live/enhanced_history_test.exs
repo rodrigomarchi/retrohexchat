@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.EnhancedHistoryTest do
       {:ok, _view, html} = live(chat_conn(conn, "HistSearch"), "/chat")
 
       assert html =~ "hist-search-panel"
-      assert html =~ ~s(style="display: none;")
+      refute html =~ "hist-search-panel--open"
     end
 
     test "history search bar contains search input and label", %{conn: conn} do

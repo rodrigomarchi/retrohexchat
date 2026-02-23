@@ -5,8 +5,7 @@ defmodule RetroHexChatWeb.Components.ChatMessage do
   """
   use Phoenix.Component
 
-  # All colors ≥4.5:1 contrast on white (WCAG AA)
-  @nick_colors ~w(#c0392b #2471a3 #1e8449 #b9770e #7d3c98 #148f77 #b7950b #c2185b #00838f #558b2f #d84315 #455a64)
+  @nick_color_count 12
 
   attr :message, :map, required: true
   attr :timezone, :string, default: "Etc/UTC"
@@ -16,7 +15,7 @@ defmodule RetroHexChatWeb.Components.ChatMessage do
     assigns =
       assign(assigns, :formatted_time, format_time(assigns.message.timestamp, assigns.timezone))
 
-    assigns = assign(assigns, :nick_color_value, nick_color(assigns.message.author))
+    assigns = assign(assigns, :nick_color_class, nick_color_class(assigns.message.author))
 
     ~H"""
     <div
@@ -65,7 +64,7 @@ defmodule RetroHexChatWeb.Components.ChatMessage do
 
   defp render_message_body(assigns) do
     ~H"""
-    <span class="chat-nick" style={"color: #{@nick_color_value}"}>&lt;{@message.author}&gt;</span>
+    <span class={["chat-nick", @nick_color_class]}>&lt;{@message.author}&gt;</span>
     <span class="chat-content">{@message.content}</span>
     """
   end
@@ -77,9 +76,8 @@ defmodule RetroHexChatWeb.Components.ChatMessage do
 
   defp format_time(_, _tz), do: "--:--"
 
-  @spec nick_color(String.t()) :: String.t()
-  defp nick_color(nickname) do
-    index = :erlang.phash2(nickname, length(@nick_colors))
-    Enum.at(@nick_colors, index)
+  @spec nick_color_class(String.t()) :: String.t()
+  defp nick_color_class(nickname) do
+    "nick-color-#{:erlang.phash2(nickname, @nick_color_count)}"
   end
 end

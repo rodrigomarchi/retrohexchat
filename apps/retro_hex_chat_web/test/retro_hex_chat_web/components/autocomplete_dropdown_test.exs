@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdownTest do
 
     test "renders nick mode with status indicators" do
       results = [
-        %{nickname: "Mario", status: :online, color: "#ff0000", joined?: false, score: 500}
+        %{nickname: "Mario", status: :online, color_class: "nick-color-3", joined?: false, score: 500}
       ]
 
       html =

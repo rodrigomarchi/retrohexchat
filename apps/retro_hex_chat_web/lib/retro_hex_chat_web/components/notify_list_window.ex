@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
                 <td class="u-text-center">
                   {status_dot(entry.online)}
                 </td>
-                <td style={notify_nick_style(@nick_color_fn, entry.tracked_nickname)}>
+                <td class={@nick_color_fn && @nick_color_fn.(entry.tracked_nickname)}>
                   {entry.tracked_nickname}
                 </td>
                 <td>{entry.note || ""}</td>
@@ -246,8 +246,4 @@ defmodule RetroHexChatWeb.Components.NotifyListWindow do
 
   defp format_last_seen(%DateTime{} = dt, tz),
     do: dt |> RetroHexChatWeb.Timezone.shift(tz) |> Calendar.strftime("%Y-%m-%d %H:%M")
-
-  @spec notify_nick_style((String.t() -> String.t()) | nil, String.t()) :: String.t()
-  defp notify_nick_style(nil, _nickname), do: ""
-  defp notify_nick_style(color_fn, nickname), do: "color: #{color_fn.(nickname)};"
 end

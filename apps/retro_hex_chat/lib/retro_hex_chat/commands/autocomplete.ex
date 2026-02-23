@@ -150,7 +150,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
           nickname: user.nickname,
           status: if(user.away, do: :away, else: :online),
           away_message: Map.get(user, :away_message),
-          color: Map.get(user, :color),
+          color_class: Map.get(user, :color_class),
           self?: user.nickname == own_nickname,
           score: score,
           matched_chars: matched_chars

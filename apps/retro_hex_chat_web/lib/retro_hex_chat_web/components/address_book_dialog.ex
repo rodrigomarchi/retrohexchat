@@ -313,8 +313,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
                       <td>{entry.target_nickname}</td>
                       <td>
                         <span
-                          class="highlight-color-swatch"
-                          style={"background: #{color_hex(entry.color_index)}; vertical-align: middle;"}
+                          class={"highlight-color-swatch irc-bg-#{entry.color_index}"}
                           title={color_name(entry.color_index)}
                         >
                         </span>
@@ -726,14 +725,6 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
     15 => {"Silver", "#d2d2d2"}
   }
 
-  @spec color_hex(non_neg_integer()) :: String.t()
-  defp color_hex(index) do
-    case Map.get(@irc_colors, index) do
-      {_name, hex} -> hex
-      nil -> "#808080"
-    end
-  end
-
   @spec color_name(non_neg_integer()) :: String.t()
   defp color_name(index) do
     case Map.get(@irc_colors, index) do
@@ -744,8 +735,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
 
   @spec color_picker_grid(map(), String.t()) :: Phoenix.LiveView.Rendered.t()
   defp color_picker_grid(assigns, prefix) do
-    colors =
-      for i <- 0..15, do: {i, elem(Map.get(@irc_colors, i), 0), elem(Map.get(@irc_colors, i), 1)}
+    colors = for i <- 0..15, do: {i, color_name(i)}
 
     assigns = assign(assigns, :colors, colors) |> assign(:prefix, prefix)
 
@@ -755,7 +745,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
       data-testid={"#{@prefix}-color-grid"}
     >
       <label
-        :for={{idx, name, hex} <- @colors}
+        :for={{idx, name} <- @colors}
         class="ab-color-label"
         title={name}
       >
@@ -767,9 +757,11 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
           class="u-hidden"
         />
         <span
-          class="ab-color-swatch"
+          class={[
+            "ab-color-swatch irc-bg-#{idx}",
+            idx == @selected_color_index && "ab-color-swatch--selected"
+          ]}
           data-testid={"#{@prefix}-swatch-#{idx}"}
-          style={"border: #{if idx == @selected_color_index, do: "2px solid #000080", else: "1px solid #808080"}; background: #{hex};"}
         >
         </span>
       </label>

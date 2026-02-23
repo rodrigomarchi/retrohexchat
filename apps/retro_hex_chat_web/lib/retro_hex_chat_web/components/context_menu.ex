@@ -177,43 +177,18 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
         </div>
         <div class="ab-color-grid">
           <button
-            :for={{idx, hex} <- irc_color_list()}
+            :for={idx <- 0..15}
             type="button"
             phx-click="context_pick_color"
             phx-value-color_index={idx}
             data-testid={"ctx-color-swatch-#{idx}"}
-            class="nick-palette-swatch"
-            style={"background: #{hex};"}
+            class={"nick-palette-swatch irc-bg-#{idx}"}
           >
           </button>
         </div>
       </div>
     </div>
     """
-  end
-
-  @irc_colors %{
-    0 => "#ffffff",
-    1 => "#000000",
-    2 => "#00007f",
-    3 => "#009300",
-    4 => "#ff0000",
-    5 => "#7f0000",
-    6 => "#9c009c",
-    7 => "#fc7f00",
-    8 => "#ffff00",
-    9 => "#00fc00",
-    10 => "#009393",
-    11 => "#00ffff",
-    12 => "#0000fc",
-    13 => "#ff00ff",
-    14 => "#7f7f7f",
-    15 => "#d2d2d2"
-  }
-
-  @spec irc_color_list() :: [{non_neg_integer(), String.t()}]
-  defp irc_color_list do
-    for i <- 0..15, do: {i, Map.fetch!(@irc_colors, i)}
   end
 
   defp shortcut_hint(%{bindings: bindings, action: action} = assigns) do

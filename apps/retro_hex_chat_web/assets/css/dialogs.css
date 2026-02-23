@@ -167,9 +167,12 @@ menu[role="tablist"] > li[role="tab"] {
 
 /* Auto-Respond Dialog */
 .auto-respond-check-col { width: 20px; }
+.auto-respond-channel--all { color: var(--color-muted); }
 .auto-respond-cmd-cell { max-width: 200px; }
 
 /* Custom Menus Dialog */
+.custom-menus-tab { padding: var(--space-4) var(--space-12); }
+.custom-menus-tab--active { font-weight: bold; }
 .custom-menus-list { max-height: 180px; }
 .custom-menus-cmd-cell { max-width: 260px; }
 

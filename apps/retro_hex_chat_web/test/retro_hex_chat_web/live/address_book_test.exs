@@ -523,7 +523,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
       html = render(view)
 
       assert html =~ "Blue"
-      assert html =~ "#0000fc"
+      assert html =~ "irc-bg-12"
       refute html =~ "Edit Nick Color</div>"
     end
 

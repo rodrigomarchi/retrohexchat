@@ -132,6 +132,18 @@ defmodule RetroHexChat.Accounts.NickColors do
     end
   end
 
+  @spec color_index_for(map(), String.t()) :: non_neg_integer() | nil
+  def color_index_for(nick_colors, nickname) do
+    downcased = String.downcase(nickname)
+
+    case Enum.find(nick_colors.entries, fn e ->
+           String.downcase(e.target_nickname) == downcased
+         end) do
+      nil -> nil
+      entry -> entry.color_index
+    end
+  end
+
   @spec sorted_entries(map()) :: [NickColor.t()]
   def sorted_entries(nick_colors) do
     Enum.sort_by(nick_colors.entries, &String.downcase(&1.target_nickname))

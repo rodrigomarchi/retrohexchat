@@ -284,7 +284,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
 
       assert html =~ "ColorBud"
       assert html =~ "Red"
-      assert html =~ "#ff0000"
+      assert html =~ "irc-bg-4"
     end
 
     test "edit color", %{conn: conn} do
@@ -306,7 +306,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
       html = render(view)
 
       assert html =~ "Blue"
-      assert html =~ "#0000fc"
+      assert html =~ "irc-bg-12"
     end
 
     test "remove override", %{conn: conn} do

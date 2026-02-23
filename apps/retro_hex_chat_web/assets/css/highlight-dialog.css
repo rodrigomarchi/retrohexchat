@@ -5,6 +5,7 @@
   width: 16px;
   height: 16px;
   border: 1px solid var(--color-border);
+  vertical-align: middle;
   flex-shrink: 0;
 }
 
@@ -47,6 +48,10 @@
   border: 2px solid var(--color-border);
   cursor: pointer;
   padding: 0;
+}
+
+.highlight-bg-default {
+  background-color: #ffffd0;
 }
 
 .highlight-no-color {

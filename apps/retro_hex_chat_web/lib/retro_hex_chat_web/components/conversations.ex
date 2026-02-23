@@ -249,11 +249,10 @@ defmodule RetroHexChatWeb.Components.Conversations do
       <ul class="conversations-users" data-testid="conversations-users">
         <li
           :for={user <- @channel_users}
-          class={user_item_class(user)}
+          class={[user_item_class(user), @nick_color_fn && @nick_color_fn.(user.nickname)]}
           phx-click="nick_right_click"
           phx-value-nick={user.nickname}
           data-nick={user.nickname}
-          style={nick_style(@nick_color_fn, user.nickname)}
         >
           <Icons.icon_role_regular class="nick-icon" />
           {user.nickname}
@@ -312,10 +311,6 @@ defmodule RetroHexChatWeb.Components.Conversations do
   @spec badge_class(boolean()) :: String.t()
   defp badge_class(true), do: "conversations-badge conversations-badge--highlight"
   defp badge_class(false), do: "conversations-badge"
-
-  @spec nick_style((String.t() -> String.t()) | nil, String.t()) :: String.t()
-  defp nick_style(nil, _nickname), do: ""
-  defp nick_style(color_fn, nickname), do: "color: #{color_fn.(nickname)};"
 
   @spec user_item_class(map()) :: String.t()
   defp user_item_class(user) do

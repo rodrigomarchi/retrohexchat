@@ -233,7 +233,10 @@ defmodule Mix.Tasks.Audit.Styles do
 
     IO.puts("#{cyan()}Summary:#{reset()}")
     IO.puts("  Total findings: #{total}")
-    IO.puts("  #{green()}LOW:#{reset()} #{low}  #{yellow()}MEDIUM:#{reset()} #{med}  #{red()}HIGH:#{reset()} #{high}  INFO: #{info}")
+
+    IO.puts(
+      "  #{green()}LOW:#{reset()} #{low}  #{yellow()}MEDIUM:#{reset()} #{med}  #{red()}HIGH:#{reset()} #{high}  INFO: #{info}"
+    )
 
     if total == 0 do
       IO.puts("\n#{green()}All styles are in CSS!#{reset()}\n")

@@ -343,20 +343,20 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
 
       "action" ->
         nick = get_nick(entry)
-        color = nick_color(nick, nick_color_fn)
-        assigns = %{nick: nick, content: content, color: color}
+        nick_class = nick_color_class(nick, nick_color_fn)
+        assigns = %{nick: nick, content: content, nick_class: nick_class}
 
         ~H"""
-        <span> * <span style={@color}>{@nick}</span> {@content}</span>
+        <span> * <span class={@nick_class}>{@nick}</span> {@content}</span>
         """
 
       _ ->
         nick = get_nick(entry)
-        color = nick_color(nick, nick_color_fn)
-        assigns = %{nick: nick, content: content, color: color}
+        nick_class = nick_color_class(nick, nick_color_fn)
+        assigns = %{nick: nick, content: content, nick_class: nick_class}
 
         ~H"""
-        <span> &lt;<span style={@color}>{@nick}</span>&gt; {@content}</span>
+        <span> &lt;<span class={@nick_class}>{@nick}</span>&gt; {@content}</span>
         """
     end
   end
@@ -365,14 +365,8 @@ defmodule RetroHexChatWeb.Components.LogViewerDialog do
     Map.get(entry, :author_nickname) || Map.get(entry, :sender_nickname, "")
   end
 
-  defp nick_color(_nick, nil), do: nil
-
-  defp nick_color(nick, color_fn) when is_function(color_fn, 1) do
-    case color_fn.(nick) do
-      nil -> nil
-      color -> "color: #{color};"
-    end
-  end
+  defp nick_color_class(_nick, nil), do: nil
+  defp nick_color_class(nick, color_fn) when is_function(color_fn, 1), do: color_fn.(nick)
 
   defp export_disabled?(nil), do: true
   defp export_disabled?(%{entries: []}), do: true

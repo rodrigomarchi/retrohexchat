@@ -28,13 +28,15 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   # ── Nick color functions ───────────────────────────────────
 
-  # All colors ≥4.5:1 contrast on white (WCAG AA)
-  @nick_colors ~w(#c0392b #2471a3 #1e8449 #b9770e #7d3c98 #148f77 #b7950b #c2185b #00838f #558b2f #d84315 #455a64)
+  @nick_color_count 12
 
   @spec build_nick_color_fn(Session.t()) :: (String.t() -> String.t())
   def build_nick_color_fn(session) do
     fn nickname ->
-      NickColors.color_for(session.nick_colors, nickname) || nick_color(nickname)
+      case NickColors.color_index_for(session.nick_colors, nickname) do
+        nil -> "nick-color-#{:erlang.phash2(nickname, @nick_color_count)}"
+        irc_index -> "irc-fg-#{irc_index}"
+      end
     end
   end
 
@@ -42,11 +44,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
           Phoenix.LiveView.Socket.t()
   def rebuild_nick_color_fn(socket, session) do
     assign(socket, nick_color_fn: build_nick_color_fn(session))
-  end
-
-  defp nick_color(nickname) do
-    index = :erlang.phash2(nickname, length(@nick_colors))
-    Enum.at(@nick_colors, index)
   end
 
   # ── URL capture ────────────────────────────────────────────

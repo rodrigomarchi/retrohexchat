@@ -353,9 +353,9 @@ defmodule RetroHexChatWeb.Components.ConversationsTest do
     end
 
     @tag :unit
-    test "applies nick_color_fn inline style" do
+    test "applies nick_color_fn as CSS class" do
       users = [%{nickname: "alice", role: :regular, away: false}]
-      color_fn = fn _nick -> "#ff0000" end
+      color_fn = fn _nick -> "nick-color-3" end
 
       html =
         render_conversations(
@@ -365,7 +365,7 @@ defmodule RetroHexChatWeb.Components.ConversationsTest do
           nick_color_fn: color_fn
         )
 
-      assert html =~ "color: #ff0000;"
+      assert html =~ "nick-color-3"
     end
 
     @tag :unit
