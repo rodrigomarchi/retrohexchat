@@ -450,7 +450,7 @@ defmodule RetroHexChatWeb.Components.ConversationsTest do
       assert html =~ "(42)"
       assert html =~ "#music"
       assert html =~ "(28)"
-      assert html =~ "[+]"
+      assert html =~ "conversations-join-btn"
       assert html =~ "Browse All Channels..."
     end
 

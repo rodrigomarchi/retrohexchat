@@ -178,6 +178,7 @@ defmodule RetroHexChat.Bots.Capabilities.Moderation do
 
   @spec record_message(map(), String.t(), String.t(), integer()) :: map()
   defp record_message(state, author, content, now) do
+    state = ensure_state(state)
     history = get_user_history(state, author)
     # Keep only last 20 messages per user
     history = Enum.take([{content, now} | history], 20)
@@ -186,11 +187,21 @@ defmodule RetroHexChat.Bots.Capabilities.Moderation do
 
   @spec get_user_history(map(), String.t()) :: [{String.t(), integer()}]
   defp get_user_history(state, author) do
-    Map.get(state.message_history, author, [])
+    state
+    |> Map.get(:message_history, %{})
+    |> Map.get(author, [])
+  end
+
+  @spec ensure_state(map()) :: map()
+  defp ensure_state(state) do
+    state
+    |> Map.put_new(:message_history, %{})
+    |> Map.put_new(:warnings, %{})
   end
 
   @spec apply_action(map(), String.t(), String.t(), map()) :: {String.t(), map()}
   defp apply_action(state, author, reason, config) do
+    state = ensure_state(state)
     warn_count = Map.get(state.warnings, author, 0) + 1
     new_state = put_in(state, [:warnings, author], warn_count)
 

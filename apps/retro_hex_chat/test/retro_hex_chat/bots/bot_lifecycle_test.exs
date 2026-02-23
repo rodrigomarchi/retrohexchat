@@ -98,13 +98,19 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
           capabilities: @base_caps
         })
 
+      # Add command in DB so it's loaded during init
+      {:ok, _} =
+        Queries.add_custom_command(bot.id, %{
+          trigger: "rules",
+          response: "Read #rules",
+          description: "Rules",
+          added_by: "admin"
+        })
+
       {:ok, _pid} =
         start_bot(bot, %{
           command_prefix: "!",
-          cooldown_ms: 100,
-          custom_commands: [
-            %{trigger: "rules", response: "Read #rules", description: "Rules", enabled: true}
-          ]
+          cooldown_ms: 100
         })
 
       # Verify bot state has the commands
@@ -122,13 +128,9 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
           capabilities: %{"mention" => %{"response" => "Hi!", "enabled" => true}}
         })
 
-      {:ok, pid} =
-        start_bot(bot, %{
-          cooldown_ms: 5000,
-          channel_configs: [
-            %{channel_name: "#cooltest", enabled: true, capability_overrides: %{}}
-          ]
-        })
+      {:ok, _} = Queries.add_channel_config(bot.id, "#cooltest")
+
+      {:ok, pid} = start_bot(bot, %{cooldown_ms: 5000})
 
       # Simulate first message using real PubSub map format
       send(pid, %{
@@ -164,13 +166,9 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
           capabilities: %{"mention" => %{"response" => "Hi!", "enabled" => true}}
         })
 
-      {:ok, pid} =
-        start_bot(bot, %{
-          cooldown_ms: 100,
-          channel_configs: [
-            %{channel_name: "#pubtest", enabled: true, capability_overrides: %{}}
-          ]
-        })
+      {:ok, _} = Queries.add_channel_config(bot.id, "#pubtest")
+
+      {:ok, pid} = start_bot(bot, %{cooldown_ms: 100})
 
       # Send message in the ACTUAL PubSub format (map with :author, not tuple with :nickname)
       send(pid, %{
@@ -314,6 +312,90 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
     end
   end
 
+  describe "DB reload on init" do
+    test "bot loads channels from DB even when channel_configs is empty" do
+      {:ok, bot} =
+        Queries.create_bot(%{
+          name: "ReloadBot",
+          nickname: "ReloadBot",
+          created_by: "admin",
+          capabilities: %{
+            "mention" => %{"response" => "Hi!", "enabled" => true}
+          }
+        })
+
+      # Add channel configs directly in DB
+      {:ok, _} = Queries.add_channel_config(bot.id, "#reload-ch1")
+      {:ok, _} = Queries.add_channel_config(bot.id, "#reload-ch2")
+
+      # Start with empty channel_configs (simulates supervisor restart)
+      {:ok, pid} = start_bot(bot, %{cooldown_ms: 100, channel_configs: []})
+
+      state = :sys.get_state(pid)
+      # Should have loaded channels from DB
+      assert Map.has_key?(state.channels, "#reload-ch1")
+      assert Map.has_key?(state.channels, "#reload-ch2")
+    end
+
+    test "bot loads capabilities from DB on restart" do
+      {:ok, bot} =
+        Queries.create_bot(%{
+          name: "CapReload",
+          nickname: "CapReload",
+          created_by: "admin",
+          capabilities: %{
+            "mention" => %{"response" => "Hi!", "enabled" => true},
+            "moderation" => %{
+              "enabled" => true,
+              "spam_threshold" => 5,
+              "flood_threshold" => 8,
+              "warn_message" => "Behave!"
+            }
+          }
+        })
+
+      # Start with only mention (simulates original start before moderation was added)
+      {:ok, pid} =
+        start_bot(bot, %{
+          cooldown_ms: 100,
+          capabilities: %{"mention" => %{"response" => "Hi!", "enabled" => true}}
+        })
+
+      state = :sys.get_state(pid)
+      # Should have loaded moderation from DB even though bot_data only had mention
+      cap_names = Enum.map(state.capabilities, fn {name, _, _} -> name end)
+      assert :moderation in cap_names
+      # And moderation state should be properly initialized
+      assert Map.has_key?(state.capability_states.moderation, :message_history)
+    end
+
+    test "bot loads custom commands from DB on restart" do
+      {:ok, bot} =
+        Queries.create_bot(%{
+          name: "CmdReload",
+          nickname: "CmdReload",
+          created_by: "admin",
+          capabilities: %{
+            "custom_commands" => %{"enabled" => true}
+          }
+        })
+
+      # Add commands directly in DB
+      {:ok, _} =
+        Queries.add_custom_command(bot.id, %{
+          trigger: "rules",
+          response: "Read #rules",
+          added_by: "admin"
+        })
+
+      # Start with empty custom_commands
+      {:ok, pid} = start_bot(bot, %{cooldown_ms: 100, custom_commands: []})
+
+      state = :sys.get_state(pid)
+      assert Map.has_key?(state.custom_commands, "rules")
+    end
+  end
+
   describe "event logging E2E" do
     test "events are logged during bot operation" do
       {:ok, bot} =
@@ -324,13 +406,9 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
           capabilities: %{"mention" => %{"response" => "Hi!", "enabled" => true}}
         })
 
-      {:ok, pid} =
-        start_bot(bot, %{
-          cooldown_ms: 100,
-          channel_configs: [
-            %{channel_name: "#logtest", enabled: true, capability_overrides: %{}}
-          ]
-        })
+      {:ok, _} = Queries.add_channel_config(bot.id, "#logtest")
+
+      {:ok, pid} = start_bot(bot, %{cooldown_ms: 100})
 
       # Simulate a message to trigger event logging (real PubSub format)
       send(pid, %{

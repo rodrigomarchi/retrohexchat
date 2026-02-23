@@ -208,4 +208,33 @@ defmodule RetroHexChat.Bots.Capabilities.ModerationTest do
       assert nil == Moderation.detect_violation("hello", "user1", state, @default_config, now)
     end
   end
+
+  describe "handles empty/uninitialized state" do
+    test "handle_message with empty map state does not crash" do
+      ctx = %{@ctx | capability_state: %{}}
+      result = Moderation.handle_message("hello world", "user1", ctx)
+      assert {:side_effect, %{state_update: state}} = result
+      assert Map.has_key?(state, :message_history)
+      assert Map.has_key?(state, :warnings)
+    end
+
+    test "handle_message with empty state detects blocked words" do
+      config = Map.put(@default_config, "blocked_words", ["badword"])
+      ctx = %{@ctx | config: config, capability_state: %{}}
+      result = Moderation.handle_message("badword here", "user1", ctx)
+      assert {:reply, msg, state} = result
+      assert msg =~ "blocked words"
+      assert Map.has_key?(state, :warnings)
+    end
+
+    test "handle_message with empty state tracks messages correctly" do
+      ctx = %{@ctx | capability_state: %{}}
+      {:side_effect, %{state_update: state1}} = Moderation.handle_message("msg1", "user1", ctx)
+
+      ctx2 = %{@ctx | capability_state: state1}
+      {:side_effect, %{state_update: state2}} = Moderation.handle_message("msg2", "user1", ctx2)
+
+      assert length(state2.message_history["user1"]) == 2
+    end
+  end
 end

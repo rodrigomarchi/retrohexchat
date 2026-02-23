@@ -92,6 +92,93 @@ defmodule RetroHexChat.Bots.ServerTest do
     end
   end
 
+  describe "reload_capabilities/2" do
+    test "initializes state for newly added capabilities" do
+      {:ok, _} = Supervisor.start_bot(@bot_data)
+
+      # Initially no moderation
+      {:ok, cap_state} = Server.get_capability_state("ServerTestBot", :moderation)
+      assert cap_state == %{}
+
+      # Add moderation via reload
+      new_caps =
+        Map.put(@bot_data.capabilities, "moderation", %{
+          "enabled" => true,
+          "spam_threshold" => 5,
+          "flood_threshold" => 8,
+          "warn_message" => "Behave!"
+        })
+
+      :ok = Server.reload_capabilities("ServerTestBot", new_caps)
+
+      # Moderation state should now be properly initialized
+      {:ok, cap_state} = Server.get_capability_state("ServerTestBot", :moderation)
+      assert Map.has_key?(cap_state, :message_history)
+      assert Map.has_key?(cap_state, :warnings)
+    end
+
+    test "preserves existing capability states on reload" do
+      {:ok, pid} = Supervisor.start_bot(@bot_data)
+
+      # Inject some state into greeter capability
+      :sys.replace_state(pid, fn s ->
+        %{s | capability_states: Map.put(s.capability_states, :greeter, %{some: :data})}
+      end)
+
+      # Reload capabilities (same set)
+      :ok = Server.reload_capabilities("ServerTestBot", @bot_data.capabilities)
+
+      # Greeter state should be preserved
+      {:ok, cap_state} = Server.get_capability_state("ServerTestBot", :greeter)
+      assert cap_state == %{some: :data}
+    end
+
+    test "bot survives message after moderation added via reload" do
+      bot_data = %{
+        @bot_data
+        | id: 995,
+          name: "ReloadModBot",
+          nickname: "ReloadModBot",
+          channel_configs: [
+            %{channel_name: "#reloadtest", enabled: true, capability_overrides: %{}}
+          ]
+      }
+
+      {:ok, pid} = Supervisor.start_bot(bot_data)
+      on_exit(fn -> Supervisor.stop_bot("ReloadModBot") end)
+
+      # Add moderation
+      new_caps =
+        Map.put(bot_data.capabilities, "moderation", %{
+          "enabled" => true,
+          "spam_threshold" => 5,
+          "flood_threshold" => 8,
+          "warn_message" => "Behave, {nickname}!"
+        })
+
+      :ok = Server.reload_capabilities("ReloadModBot", new_caps)
+
+      # Send a message — should NOT crash
+      send(pid, %{
+        event: "new_message",
+        payload: %{
+          id: 1,
+          channel: "#reloadtest",
+          author: "user",
+          content: "hello world",
+          type: :message,
+          timestamp: DateTime.utc_now(),
+          reply_to_id: nil,
+          reply_to_author: nil,
+          reply_to_preview: nil
+        }
+      })
+
+      Process.sleep(50)
+      assert Process.alive?(pid)
+    end
+  end
+
   describe "capability_overrides" do
     @overrides_bot %{
       id: 996,

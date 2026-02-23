@@ -114,9 +114,10 @@ defmodule RetroHexChat.Bots.Server do
   def init(bot_data) do
     state = build_initial_state(bot_data)
 
-    # Subscribe to channels
+    # Subscribe to channels and join channel processes
     Enum.each(state.channels, fn {channel_name, _} ->
       Phoenix.PubSub.subscribe(@pubsub, "channel:#{channel_name}")
+      join_channel_process(channel_name, state.nickname)
     end)
 
     # Initialize capability timers (scheduler, rss, etc.)
@@ -177,7 +178,13 @@ defmodule RetroHexChat.Bots.Server do
 
   def handle_call({:reload_capabilities, capabilities}, _from, state) do
     new_capabilities = build_capabilities(capabilities)
-    {:reply, :ok, %{state | capabilities: new_capabilities}}
+    # Initialize states for newly added capabilities, keep existing states
+    new_states = init_capability_states(new_capabilities)
+
+    merged_states =
+      Map.merge(new_states, state.capability_states, fn _k, _new, existing -> existing end)
+
+    {:reply, :ok, %{state | capabilities: new_capabilities, capability_states: merged_states}}
   end
 
   @impl true
@@ -563,9 +570,8 @@ defmodule RetroHexChat.Bots.Server do
 
   @spec build_initial_state(map()) :: state()
   defp build_initial_state(bot_data) do
-    capabilities = build_capabilities(bot_data.capabilities || %{})
-    channels = build_channels(bot_data[:channel_configs] || [])
-    custom_commands = build_custom_commands(bot_data[:custom_commands] || [])
+    # Always reload from DB to recover from crashes (supervisor restarts with original data)
+    {capabilities, channels, custom_commands} = reload_from_db(bot_data)
     capability_states = init_capability_states(capabilities)
 
     %{
@@ -584,6 +590,28 @@ defmodule RetroHexChat.Bots.Server do
       capability_timers: %{},
       stats: %{messages_handled: 0, commands_processed: 0, started_at: DateTime.utc_now()}
     }
+  end
+
+  @spec reload_from_db(map()) :: {[{atom(), module(), map()}], map(), map()}
+  defp reload_from_db(bot_data) do
+    case Queries.get_bot(bot_data.id) do
+      nil ->
+        # Bot not in DB (e.g., test scenarios) — use provided data
+        {
+          build_capabilities(bot_data.capabilities || %{}),
+          build_channels(bot_data[:channel_configs] || []),
+          build_custom_commands(bot_data[:custom_commands] || [])
+        }
+
+      db_bot ->
+        db_bot = Queries.preload_associations(db_bot)
+
+        {
+          build_capabilities(db_bot.capabilities || %{}),
+          build_channels(db_bot.channel_configs || []),
+          build_custom_commands(db_bot.custom_commands || [])
+        }
+    end
   end
 
   @spec init_capability_states([{atom(), module(), map()}]) :: %{atom() => map()}

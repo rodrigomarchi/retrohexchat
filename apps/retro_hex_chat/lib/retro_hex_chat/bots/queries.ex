@@ -48,6 +48,11 @@ defmodule RetroHexChat.Bots.Queries do
     |> Repo.all()
   end
 
+  @spec preload_associations(Bot.t()) :: Bot.t()
+  def preload_associations(%Bot{} = bot) do
+    Repo.preload(bot, [:channel_configs, :custom_commands])
+  end
+
   @spec update_bot(Bot.t(), map()) :: {:ok, Bot.t()} | {:error, Ecto.Changeset.t()}
   def update_bot(%Bot{} = bot, attrs) do
     bot
