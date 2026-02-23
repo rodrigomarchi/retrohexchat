@@ -48,6 +48,57 @@ defmodule RetroHexChat.Chat.ServiceTest do
     end
   end
 
+  describe "send_private_message with mixed-case nicks" do
+    test "persists PM when sender nick starts with lowercase" do
+      assert {:ok, pm} = Service.send_private_message("rod", "Troll", "Hello!")
+      assert pm.sender_nickname == "rod"
+      assert pm.recipient_nickname == "Troll"
+    end
+
+    test "persists PM when both nicks start with lowercase" do
+      assert {:ok, pm} = Service.send_private_message("rod", "alice", "Hey")
+      assert pm.sender_nickname == "rod"
+      assert pm.recipient_nickname == "alice"
+    end
+
+    test "persists p2p_invite PM with lowercase sender" do
+      content = "P2P session started. Join the lobby: /p2p/abc123"
+
+      assert {:ok, pm} =
+               Service.send_private_message("rod", "Troll", content, "p2p_invite")
+
+      assert pm.type == "p2p_invite"
+      assert pm.sender_nickname == "rod"
+
+      # Verify it can be read back
+      messages = Queries.list_private_messages("rod", "Troll")
+      assert length(messages) == 1
+      assert hd(messages).content =~ "/p2p/"
+    end
+
+    test "list_private_messages finds PMs with mixed-case nicks" do
+      {:ok, _} = Service.send_private_message("rod", "Troll", "msg1")
+      {:ok, _} = Service.send_private_message("Troll", "rod", "msg2")
+
+      messages = Queries.list_private_messages("rod", "Troll")
+      assert length(messages) == 2
+    end
+
+    test "list_pm_partners includes lowercase nick sender" do
+      {:ok, _} = Service.send_private_message("rod", "Troll", "hi there")
+
+      partners = Queries.list_pm_partners("Troll")
+      assert Enum.any?(partners, &(&1.nickname == "rod"))
+    end
+
+    test "list_pm_partners includes lowercase nick recipient" do
+      {:ok, _} = Service.send_private_message("Troll", "rod", "hi there")
+
+      partners = Queries.list_pm_partners("rod")
+      assert Enum.any?(partners, &(&1.nickname == "Troll"))
+    end
+  end
+
   describe "send_message/5 with reply" do
     test "persists message with reply fields" do
       {:ok, parent} = Service.send_message("#lobby", "Mario", "eu acho que devíamos usar Elixir")

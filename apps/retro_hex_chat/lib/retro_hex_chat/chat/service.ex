@@ -240,7 +240,7 @@ defmodule RetroHexChat.Chat.Service do
       sender: pm.sender_nickname,
       recipient: pm.recipient_nickname,
       content: pm.content,
-      type: String.to_existing_atom(pm.type),
+      type: safe_type_atom(pm.type),
       timestamp: pm.inserted_at,
       id: pm.id,
       reply_to_id: pm.reply_to_id,
@@ -262,7 +262,7 @@ defmodule RetroHexChat.Chat.Service do
       channel: channel_name,
       author: message.author_nickname,
       content: message.content,
-      type: String.to_existing_atom(message.type),
+      type: safe_type_atom(message.type),
       timestamp: message.inserted_at,
       id: message.id,
       reply_to_id: message.reply_to_id,
@@ -329,6 +329,15 @@ defmodule RetroHexChat.Chat.Service do
       }
     )
   end
+
+  @known_types ~w(message action system service error p2p_invite)a
+  @known_type_strings Enum.map(@known_types, &Atom.to_string/1)
+
+  defp safe_type_atom(type) when type in @known_type_strings do
+    String.to_existing_atom(type)
+  end
+
+  defp safe_type_atom(type), do: type
 
   defp pm_topic(nick_a, nick_b) do
     [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")

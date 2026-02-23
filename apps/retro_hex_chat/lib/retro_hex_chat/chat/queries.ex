@@ -140,13 +140,8 @@ defmodule RetroHexChat.Chat.Queries do
     PrivateMessage
     |> where(
       [pm],
-      fragment("least(?, ?)", pm.sender_nickname, pm.recipient_nickname) ==
-        ^Enum.min([nick_a, nick_b])
-    )
-    |> where(
-      [pm],
-      fragment("greatest(?, ?)", pm.sender_nickname, pm.recipient_nickname) ==
-        ^Enum.max([nick_a, nick_b])
+      (pm.sender_nickname == ^nick_a and pm.recipient_nickname == ^nick_b) or
+        (pm.sender_nickname == ^nick_b and pm.recipient_nickname == ^nick_a)
     )
     |> maybe_before(before_id)
     |> order_by([pm], desc: pm.id)
