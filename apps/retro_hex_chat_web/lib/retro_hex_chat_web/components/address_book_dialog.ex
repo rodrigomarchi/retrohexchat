@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChat.Accounts.NickColors
   alias RetroHexChatWeb.Icons
 
   attr :visible, :boolean, default: false
@@ -706,31 +707,9 @@ defmodule RetroHexChatWeb.Components.AddressBookDialog do
   defp format_last_seen(%DateTime{} = dt, tz),
     do: dt |> RetroHexChatWeb.Timezone.shift(tz) |> Calendar.strftime("%Y-%m-%d %H:%M")
 
-  @irc_colors %{
-    0 => {"White", "#ffffff"},
-    1 => {"Black", "#000000"},
-    2 => {"Navy", "#00007f"},
-    3 => {"Green", "#009300"},
-    4 => {"Red", "#ff0000"},
-    5 => {"Maroon", "#7f0000"},
-    6 => {"Purple", "#9c009c"},
-    7 => {"Orange", "#fc7f00"},
-    8 => {"Yellow", "#ffff00"},
-    9 => {"Lime", "#00fc00"},
-    10 => {"Teal", "#009393"},
-    11 => {"Cyan", "#00ffff"},
-    12 => {"Blue", "#0000fc"},
-    13 => {"Magenta", "#ff00ff"},
-    14 => {"Grey", "#7f7f7f"},
-    15 => {"Silver", "#d2d2d2"}
-  }
-
   @spec color_name(non_neg_integer()) :: String.t()
   defp color_name(index) do
-    case Map.get(@irc_colors, index) do
-      {name, _hex} -> name
-      nil -> "Unknown"
-    end
+    NickColors.name_for_index(index) || "Unknown"
   end
 
   @spec color_picker_grid(map(), String.t()) :: Phoenix.LiveView.Rendered.t()

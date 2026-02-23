@@ -92,6 +92,7 @@
 }
 
 .file-transfer__bar-fill {
+  width: var(--progress, 0%);
   height: 100%;
   background: var(--color-selection-bg);
   transition: width 0.25s ease;

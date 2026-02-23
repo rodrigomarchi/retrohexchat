@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
     <div
       :if={@menu.visible}
       class="context-menu"
-      style={"position: fixed; left: #{@menu.x}px; top: #{@menu.y}px; z-index: 300;"}
+      style={"left: #{@menu.x}px; top: #{@menu.y}px;"}
       phx-hook="ContextMenuHook"
       id="chat-context-menu"
     >

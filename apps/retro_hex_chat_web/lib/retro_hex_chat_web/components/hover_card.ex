@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.Components.HoverCard do
     <div
       :if={@hover_card.visible}
       class={"nick-hover-card window#{if @hover_card.loading, do: " nick-hover-card--loading", else: ""}"}
-      style={"position: fixed; left: #{@hover_card.x}px; top: #{@hover_card.y}px; z-index: var(--z-tooltip, 9999);"}
+      style={"left: #{@hover_card.x}px; top: #{@hover_card.y}px;"}
       data-testid="nick-hover-card"
     >
       <div class="title-bar">

@@ -5,8 +5,6 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
 
-  @default_color RetroHexChat.Chat.Highlight.default_color()
-
   # ── US1: Own-nick highlighting ───────────────────────────────
 
   describe "US1: own-nick highlight in active channel" do
@@ -76,14 +74,14 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
       refute html =~ "chat-message--highlighted"
     end
 
-    test "highlight applies inline background-color style", %{conn: conn} do
+    test "highlight applies default background CSS class", %{conn: conn} do
       nick = "StyleHL#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       send_new_message(view, "OtherUser", "hey #{nick}!", "#lobby")
 
       html = render(view)
-      assert html =~ "background-color: #{@default_color}"
+      assert html =~ "highlight-bg-default"
     end
 
     test "action type (/me) mentioning nick is highlighted", %{conn: conn} do
@@ -261,8 +259,8 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
       html = render(view)
       assert html =~ "chat-message--highlighted"
-      # Color 4 = #ff0000
-      assert html =~ "background-color: #ff0000"
+      # Color 4 = Red → irc-bg-4 CSS class
+      assert html =~ "irc-bg-4"
     end
 
     test "own nick takes priority over custom word", %{conn: conn} do
@@ -277,7 +275,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightTest do
 
       html = render(view)
       assert html =~ "chat-message--highlighted"
-      assert html =~ "background-color: #{@default_color}"
+      assert html =~ "highlight-bg-default"
     end
 
     test "removed highlight word no longer triggers", %{conn: conn} do

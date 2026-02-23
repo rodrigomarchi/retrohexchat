@@ -208,6 +208,7 @@
 }
 
 .p2p-diagram__badge-bar-fill {
+  width: var(--progress, 0%);
   height: 100%;
   background: var(--color-online);
   transition: width 0.3s ease;

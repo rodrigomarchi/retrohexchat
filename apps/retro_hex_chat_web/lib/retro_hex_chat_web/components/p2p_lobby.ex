@@ -504,7 +504,7 @@ defmodule RetroHexChatWeb.Components.P2pLobby do
         aria-valuemin="0"
         aria-valuemax="100"
       >
-        <div class="file-transfer__bar-fill" style={"width: #{@percent}%"}></div>
+        <div class="file-transfer__bar-fill" style={"--progress: #{@percent}%"}></div>
       </div>
       <div class="file-transfer__progress-info">
         <span>{@percent}%</span>

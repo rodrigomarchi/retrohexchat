@@ -3,32 +3,29 @@ defmodule RetroHexChat.Chat.Highlight do
   Pure-function highlight matching engine.
 
   Checks message content against a user's own nickname and custom
-  highlight words. Returns `{:highlight, color}` or `:no_highlight`.
+  highlight words. Returns `{:highlight, color_index}` or `:no_highlight`.
 
   All matching is whole-word, case-insensitive, and ignores:
   - IRC formatting codes (stripped before matching)
   - Text inside URLs (masked before matching)
   """
 
-  alias RetroHexChat.Accounts.NickColors
   alias RetroHexChat.Chat.Formatter
   alias RetroHexChat.Chat.HighlightWord
 
-  @default_color "#ffffd0"
   @url_pattern ~r{https?://\S+}i
-
-  @spec default_color() :: String.t()
-  def default_color, do: @default_color
 
   @doc """
   Checks if `content` contains the user's own nick or any custom highlight words.
 
-  Returns `{:highlight, color}` with the winning color, or `:no_highlight`.
+  Returns `{:highlight, color_index}` with the winning color index, or `:no_highlight`.
+  A `nil` color index means "use the default highlight color" (CSS class `highlight-bg-default`).
+  A numeric index (0–15) maps to an IRC color (CSS class `irc-bg-N`).
 
   ## Priority
 
-  1. Own nick match → default highlight color
-  2. Custom words in list order → word's custom color or default
+  1. Own nick match → default highlight color (`nil`)
+  2. Custom words in list order → word's custom color index or default (`nil`)
 
   ## Exclusions
 
@@ -37,7 +34,7 @@ defmodule RetroHexChat.Chat.Highlight do
   - Formatting: IRC format codes are stripped before matching
   """
   @spec check(String.t(), String.t(), [HighlightWord.t()], String.t()) ::
-          {:highlight, String.t()} | :no_highlight
+          {:highlight, non_neg_integer() | nil} | :no_highlight
   def check("", _own_nick, _highlight_words, _sender_nick), do: :no_highlight
 
   def check(content, own_nick, highlight_words, sender_nick) do
@@ -50,23 +47,22 @@ defmodule RetroHexChat.Chat.Highlight do
   end
 
   @spec check_words(String.t(), String.t(), [HighlightWord.t()]) ::
-          {:highlight, String.t()} | :no_highlight
+          {:highlight, non_neg_integer() | nil} | :no_highlight
   defp check_words(plain, own_nick, highlight_words) do
     if whole_word_match?(plain, own_nick) do
-      {:highlight, @default_color}
+      {:highlight, nil}
     else
       check_custom_words(plain, highlight_words)
     end
   end
 
   @spec check_custom_words(String.t(), [HighlightWord.t()]) ::
-          {:highlight, String.t()} | :no_highlight
+          {:highlight, non_neg_integer() | nil} | :no_highlight
   defp check_custom_words(_plain, []), do: :no_highlight
 
   defp check_custom_words(plain, [word | rest]) do
     if whole_word_match?(plain, word.word) do
-      color = color_for_word(word)
-      {:highlight, color}
+      {:highlight, word.bg_color}
     else
       check_custom_words(plain, rest)
     end
@@ -88,12 +84,5 @@ defmodule RetroHexChat.Chat.Highlight do
     Regex.replace(@url_pattern, text, fn match ->
       String.duplicate(" ", String.length(match))
     end)
-  end
-
-  @spec color_for_word(HighlightWord.t()) :: String.t()
-  defp color_for_word(%HighlightWord{bg_color: nil}), do: @default_color
-
-  defp color_for_word(%HighlightWord{bg_color: index}) do
-    NickColors.hex_for_index(index) || @default_color
   end
 end

@@ -13,32 +13,32 @@ defmodule RetroHexChat.Accounts.NickColors do
 
   @max_entries 50
 
-  @irc_colors %{
-    0 => "#ffffff",
-    1 => "#000000",
-    2 => "#00007f",
-    3 => "#009300",
-    4 => "#ff0000",
-    5 => "#7f0000",
-    6 => "#9c009c",
-    7 => "#fc7f00",
-    8 => "#ffff00",
-    9 => "#00fc00",
-    10 => "#009393",
-    11 => "#00ffff",
-    12 => "#0000fc",
-    13 => "#ff00ff",
-    14 => "#7f7f7f",
-    15 => "#d2d2d2"
+  @irc_color_names %{
+    0 => "White",
+    1 => "Black",
+    2 => "Navy",
+    3 => "Green",
+    4 => "Red",
+    5 => "Maroon",
+    6 => "Purple",
+    7 => "Orange",
+    8 => "Yellow",
+    9 => "Lime",
+    10 => "Teal",
+    11 => "Cyan",
+    12 => "Blue",
+    13 => "Magenta",
+    14 => "Grey",
+    15 => "Silver"
   }
 
   # ---------------------------------------------------------------------------
   # Color Lookup
   # ---------------------------------------------------------------------------
 
-  @spec hex_for_index(non_neg_integer()) :: String.t() | nil
-  def hex_for_index(index) do
-    Map.get(@irc_colors, index)
+  @spec name_for_index(non_neg_integer()) :: String.t() | nil
+  def name_for_index(index) do
+    Map.get(@irc_color_names, index)
   end
 
   # ---------------------------------------------------------------------------
@@ -117,18 +117,6 @@ defmodule RetroHexChat.Accounts.NickColors do
       update_color(nick_colors, target_nickname, color_index)
     else
       add_entry(nick_colors, target_nickname, color_index)
-    end
-  end
-
-  @spec color_for(map(), String.t()) :: String.t() | nil
-  def color_for(nick_colors, nickname) do
-    downcased = String.downcase(nickname)
-
-    case Enum.find(nick_colors.entries, fn e ->
-           String.downcase(e.target_nickname) == downcased
-         end) do
-      nil -> nil
-      entry -> hex_for_index(entry.color_index)
     end
   end
 

@@ -721,4 +721,9 @@ defmodule RetroHexChatWeb.ChatLive do
       _ -> "#"
     end
   end
+
+  @spec highlight_bg_class(map()) :: String.t()
+  defp highlight_bg_class(%{highlighted: true, highlight_color: nil}), do: " highlight-bg-default"
+  defp highlight_bg_class(%{highlighted: true, highlight_color: idx}), do: " irc-bg-#{idx}"
+  defp highlight_bg_class(_), do: ""
 end

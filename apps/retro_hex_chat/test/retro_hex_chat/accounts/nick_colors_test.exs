@@ -161,19 +161,19 @@ defmodule RetroHexChat.Accounts.NickColorsTest do
     end
   end
 
-  describe "color_for/2" do
+  describe "color_index_for/2" do
     @tag :unit
-    test "returns hex string for existing override" do
+    test "returns color index for existing override" do
       nc = NickColors.new()
       {:ok, nc} = NickColors.add_entry(nc, "Alice", 4)
 
-      assert NickColors.color_for(nc, "Alice") == "#ff0000"
+      assert NickColors.color_index_for(nc, "Alice") == 4
     end
 
     @tag :unit
     test "returns nil when no override exists" do
       nc = NickColors.new()
-      assert NickColors.color_for(nc, "Alice") == nil
+      assert NickColors.color_index_for(nc, "Alice") == nil
     end
 
     @tag :unit
@@ -181,7 +181,7 @@ defmodule RetroHexChat.Accounts.NickColorsTest do
       nc = NickColors.new()
       {:ok, nc} = NickColors.add_entry(nc, "Alice", 11)
 
-      assert NickColors.color_for(nc, "ALICE") == "#00ffff"
+      assert NickColors.color_index_for(nc, "ALICE") == 11
     end
   end
 
@@ -239,18 +239,18 @@ defmodule RetroHexChat.Accounts.NickColorsTest do
     end
   end
 
-  describe "hex_for_index/1" do
+  describe "name_for_index/1" do
     @tag :unit
-    test "returns hex string for valid indices" do
-      assert NickColors.hex_for_index(0) == "#ffffff"
-      assert NickColors.hex_for_index(4) == "#ff0000"
-      assert NickColors.hex_for_index(15) == "#d2d2d2"
+    test "returns color name for valid indices" do
+      assert NickColors.name_for_index(0) == "White"
+      assert NickColors.name_for_index(4) == "Red"
+      assert NickColors.name_for_index(15) == "Silver"
     end
 
     @tag :unit
     test "returns nil for invalid index" do
-      assert NickColors.hex_for_index(16) == nil
-      assert NickColors.hex_for_index(-1) == nil
+      assert NickColors.name_for_index(16) == nil
+      assert NickColors.name_for_index(-1) == nil
     end
   end
 

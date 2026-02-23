@@ -1,7 +1,14 @@
 /* RetroHexChat — Context menu: items, states, shortcut hints */
 
 .context-menu {
+  position: fixed;
+  z-index: var(--z-context-menu);
   font-size: var(--text-base);
+}
+
+.context-color-picker {
+  position: fixed;
+  z-index: calc(var(--z-context-menu) + 10);
 }
 
 .context-menu .window {

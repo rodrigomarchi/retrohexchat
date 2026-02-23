@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
     <div
       :if={@visible}
       class="context-menu"
-      style={"position: fixed; left: #{@x}px; top: #{@y}px; z-index: 300;"}
+      style={"left: #{@x}px; top: #{@y}px;"}
     >
       <div class="window u-p-2">
         <ul class="tree-view">
@@ -169,7 +169,7 @@ defmodule RetroHexChatWeb.Components.ContextMenu do
       :if={@show_color_picker}
       class="context-color-picker"
       data-testid="ctx-color-picker"
-      style={"position: fixed; left: #{@x}px; top: #{@y + 30}px; z-index: 310;"}
+      style={"left: #{@x}px; top: #{@y + 30}px;"}
     >
       <div class="window u-p-4">
         <div class="u-text-sm u-mb-4 u-text-bold">

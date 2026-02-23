@@ -139,16 +139,11 @@
           class={
             "chat-message chat-message--#{msg.type}" <>
               if(Map.get(msg, :highlighted), do: " chat-message--highlighted", else: "") <>
+              highlight_bg_class(msg) <>
               if(Map.get(msg, :status) == :pending, do: " chat-message--pending", else: "") <>
               if(Map.get(msg, :status) == :failed, do: " chat-message--failed", else: "") <>
               if(Map.get(msg, :deleted_at), do: " chat-message--deleted", else: "") <>
               if(Map.get(msg, :id) == @edit_mode_message_id, do: " chat-message--editing", else: "")
-          }
-          style={
-            if(Map.get(msg, :highlighted) && Map.get(msg, :highlight_color),
-              do: "background-color: #{msg.highlight_color}",
-              else: nil
-            )
           }
           data-testid={if(Map.get(msg, :highlighted), do: "highlighted-message", else: nil)}
           data-author={Map.get(msg, :author)}

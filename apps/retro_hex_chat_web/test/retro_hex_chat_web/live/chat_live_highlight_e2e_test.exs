@@ -157,7 +157,7 @@ defmodule RetroHexChatWeb.ChatLiveHighlightE2ETest do
 
       html = render(view)
       assert html =~ "chat-message--highlighted"
-      assert html =~ "background-color: #ff0000"
+      assert html =~ "irc-bg-4"
     end
 
     test "removed word no longer triggers highlighting", %{conn: conn} do

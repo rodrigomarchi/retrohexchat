@@ -196,7 +196,8 @@ defmodule RetroHexChatWeb.Components.P2pConnectionDiagram do
       </div>
       <div :if={@diagram_state[:progress]} class="p2p-diagram__badge-progress">
         <div class="p2p-diagram__badge-bar">
-          <div class="p2p-diagram__badge-bar-fill" style={"width: #{@diagram_state.progress}%"}></div>
+          <div class="p2p-diagram__badge-bar-fill" style={"--progress: #{@diagram_state.progress}%"}>
+          </div>
         </div>
       </div>
     </div>

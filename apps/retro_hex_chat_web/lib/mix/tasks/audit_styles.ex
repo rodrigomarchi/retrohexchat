@@ -120,28 +120,24 @@ defmodule Mix.Tasks.Audit.Styles do
   defp color_context?(line) do
     trimmed = String.trim(line)
 
-    cond do
-      # Module attributes with color data
-      String.starts_with?(trimmed, "@") and has_hex_color?(trimmed) ->
-        true
+    module_attr_with_color?(trimmed) or
+      css_style_property?(trimmed) or
+      palette_literal?(trimmed) or
+      (String.contains?(trimmed, "border:") and has_hex_color?(trimmed))
+  end
 
-      # String interpolation building style values
-      String.contains?(trimmed, "color:") or String.contains?(trimmed, "background:") or
-          String.contains?(trimmed, "background-color:") ->
-        true
+  defp module_attr_with_color?(trimmed) do
+    String.starts_with?(trimmed, "@") and has_hex_color?(trimmed)
+  end
 
-      # Map/list literals with hex color values (color palettes)
-      (String.contains?(trimmed, "=>") or String.contains?(trimmed, "{\"")) and
-          has_hex_color?(trimmed) ->
-        true
+  defp css_style_property?(trimmed) do
+    String.contains?(trimmed, "color:") or String.contains?(trimmed, "background:") or
+      String.contains?(trimmed, "background-color:")
+  end
 
-      # border style strings with hardcoded colors
-      String.contains?(trimmed, "border:") and has_hex_color?(trimmed) ->
-        true
-
-      true ->
-        false
-    end
+  defp palette_literal?(trimmed) do
+    (String.contains?(trimmed, "=>") or String.contains?(trimmed, "{\"")) and
+      has_hex_color?(trimmed)
   end
 
   defp comment_line?(line) do
@@ -162,36 +158,61 @@ defmodule Mix.Tasks.Audit.Styles do
   # ── Risk classification ───────────────────────────────────────────────
 
   defp classify_inline_style({_file, _line, content}) do
-    trimmed = String.downcase(content)
+    inline_style_risk(content, String.downcase(content))
+  end
 
+  defp inline_style_risk(content, trimmed) do
     cond do
-      String.contains?(trimmed, "style=\"display: none") -> :low
-      String.contains?(trimmed, "style=\"display:none") -> :low
-      String.contains?(trimmed, "style=\"position: relative") -> :low
-      String.contains?(trimmed, "style=\"position:relative") -> :low
+      css_custom_property?(content) -> :info
+      position_only?(content, trimmed) -> :info
+      dynamic_stacking?(content) -> :info
+      static_display_none?(trimmed) -> :low
+      static_position_relative?(trimmed) -> :low
       String.contains?(trimmed, "position: fixed") -> :info
       true -> :medium
     end
   end
 
+  defp css_custom_property?(content), do: Regex.match?(~r/style=\{"--/, content)
+
+  defp position_only?(content, trimmed) do
+    Regex.match?(~r/style=\{"left:.*top:/, content) and
+      not String.contains?(trimmed, "position:")
+  end
+
+  defp dynamic_stacking?(content), do: Regex.match?(~r/style=\{"z-index:.*--/, content)
+
+  defp static_display_none?(trimmed) do
+    String.contains?(trimmed, "style=\"display: none") or
+      String.contains?(trimmed, "style=\"display:none")
+  end
+
+  defp static_position_relative?(trimmed) do
+    String.contains?(trimmed, "style=\"position: relative") or
+      String.contains?(trimmed, "style=\"position:relative")
+  end
+
   defp classify_js_style_prop({file, _line, content}) do
+    js_style_risk(file, content)
+  end
+
+  defp js_style_risk(file, content) do
     cond do
-      # Display toggles are easy to replace with class toggle
       String.contains?(content, "style.display") -> :low
-      # Auto-resize textarea needs JS
-      String.contains?(content, "style.height") and String.contains?(file, "input") -> :info
-      String.contains?(content, "style.overflowY") -> :info
-      # Dynamic positioning needs JS
-      String.contains?(content, "style.left") -> :info
-      String.contains?(content, "style.top") -> :info
-      String.contains?(content, "style.maxHeight") -> :info
-      # Position context for reply button
       String.contains?(content, "style.position") -> :low
-      # Animation props
-      String.contains?(content, "style.opacity") -> :medium
-      String.contains?(content, "style.width") -> :medium
+      # RAF animation in p2p diagram hook — data-driven, can't use CSS
+      String.contains?(file, "p2p_diagram") -> :info
+      js_viewport_property?(file, content) -> :info
       true -> :medium
     end
+  end
+
+  defp js_viewport_property?(file, content) do
+    (String.contains?(content, "style.height") and String.contains?(file, "input")) or
+      String.contains?(content, "style.overflowY") or
+      String.contains?(content, "style.left") or
+      String.contains?(content, "style.top") or
+      String.contains?(content, "style.maxHeight")
   end
 
   defp classify_js_color({file, _line, _content}) do
@@ -254,6 +275,14 @@ defmodule Mix.Tasks.Audit.Styles do
         classify_category(:js_color, findings.js_color, &classify_js_color/1)
 
     Enum.group_by(all_entries, fn {risk, _cat, _f, _l, _c} -> risk end)
+  end
+
+  defp classify_category(:color_attr, items, _classifier) do
+    Enum.map(items, fn {file, _line, _content} = item ->
+      # Log exporter embeds CSS for standalone HTML exports — always INFO
+      risk = if String.contains?(file, "log_exporter"), do: :info, else: :high
+      {risk, :color_attr, elem(item, 0), elem(item, 1), elem(item, 2)}
+    end)
   end
 
   defp classify_category(category, items, classifier) do

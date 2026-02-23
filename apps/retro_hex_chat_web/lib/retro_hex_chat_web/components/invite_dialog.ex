@@ -14,14 +14,11 @@ defmodule RetroHexChatWeb.Components.InviteDialog do
     ~H"""
     <%= for {invite, index} <- Enum.with_index(@pending_invites) do %>
       <div
-        class="dialog-overlay"
+        class={["invite-overlay", index == 0 && "invite-overlay--backdrop"]}
         data-testid={"invite-dialog-#{invite.channel}"}
-        style={"position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: #{200 + index}; background: #{if index == 0, do: "rgba(0,0,0,0.3)", else: "transparent"};"}
+        style={"z-index: #{200 + index}; --invite-offset: #{20 * index}px;"}
       >
-        <div
-          class="window"
-          style={"width: 320px; position: absolute; top: calc(50% - 80px + #{20 * index}px); left: calc(50% - 160px + #{20 * index}px);"}
-        >
+        <div class="invite-window window">
           <div class="title-bar">
             <Icons.icon_dialog_invite class="title-bar-icon" />
             <div class="title-bar-text">Channel Invitation</div>

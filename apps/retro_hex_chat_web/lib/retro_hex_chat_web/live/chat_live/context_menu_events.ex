@@ -222,7 +222,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     case NickColors.add_or_update(session.nick_colors, target, color_index) do
       {:ok, updated} ->
         new_session = Session.set_nick_colors(session, updated)
-        color_name = NickColors.hex_for_index(color_index)
+        color_name = NickColors.name_for_index(color_index)
 
         {:halt,
          socket
