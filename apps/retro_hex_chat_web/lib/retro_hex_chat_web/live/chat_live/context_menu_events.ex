@@ -20,12 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2]
-
-  use Phoenix.VerifiedRoutes,
-    endpoint: RetroHexChatWeb.Endpoint,
-    router: RetroHexChatWeb.Router,
-    statics: RetroHexChatWeb.static_paths()
+  import Phoenix.LiveView, only: [push_event: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
@@ -41,7 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
       maybe_persist_nick_colors: 2
     ]
 
-  alias RetroHexChat.Accounts.{ContactList, NickColors, Session}
+  alias RetroHexChat.Accounts.{ContactList, NickColors, ServerRoles, Session}
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
   alias RetroHexChat.Commands.Handlers.P2p
@@ -625,22 +620,41 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
       identified: session.identified,
       active_channel: session.active_channel,
       channels: session.channels,
-      operator_in: session.operator_in || [],
-      half_operator_in: session.half_operator_in || [],
-      is_admin: session.is_admin || false,
-      is_server_operator: session.is_server_operator || false
+      operator_in: channels_where_operator(session),
+      half_operator_in: channels_where_half_operator(session),
+      is_admin: ServerRoles.admin?(session.nickname, session.identified),
+      is_server_operator: ServerRoles.server_operator?(session.nickname, session.identified)
     }
 
     case P2p.do_execute(nick, session_type, context) do
       {:ok, :ui_action, :p2p_invite, payload} ->
-        socket
-        |> P2pInvite.handle_p2p_invite(session, payload)
-        |> push_navigate(to: ~p"/p2p/#{payload.token}")
+        P2pInvite.handle_p2p_invite(socket, session, payload)
 
       {:error, message} ->
-        socket
-        |> error_event(message)
+        error_event(socket, message)
     end
+  end
+
+  defp channels_where_operator(session) do
+    Enum.filter(session.channels, fn channel_name ->
+      case Server.get_state(channel_name) do
+        {:ok, state} ->
+          session.nickname in state.operators or
+            session.nickname in Map.get(state, :owners, [])
+
+        {:error, _} ->
+          false
+      end
+    end)
+  end
+
+  defp channels_where_half_operator(session) do
+    Enum.filter(session.channels, fn channel_name ->
+      case Server.get_state(channel_name) do
+        {:ok, state} -> session.nickname in Map.get(state, :half_operators, [])
+        {:error, _} -> false
+      end
+    end)
   end
 
   defp cancel_auto_ignore_with_cooldown(socket, nick) do
