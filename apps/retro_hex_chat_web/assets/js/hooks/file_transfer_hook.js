@@ -578,7 +578,7 @@ const FileTransferHook = {
     const a = document.createElement("a");
     a.href = this._objectUrl;
     a.download = fileName;
-    a.style.display = "none";
+    a.className = "u-hidden";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

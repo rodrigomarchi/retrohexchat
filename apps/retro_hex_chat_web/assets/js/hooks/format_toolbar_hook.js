@@ -22,8 +22,7 @@ const FormatToolbarHook = {
       if (!formatCode) return;
 
       if (formatCode === "color") {
-        const isHidden = dropdown.style.display === "none" || !dropdown.style.display;
-        dropdown.style.display = isHidden ? "grid" : "none";
+        dropdown.classList.toggle("format-color-dropdown--open");
         return;
       }
 
@@ -50,19 +49,19 @@ const FormatToolbarHook = {
           insertAtCursor(input, "\x03" + colorCode);
           input.focus();
         }
-        dropdown.style.display = "none";
+        dropdown.classList.remove("format-color-dropdown--open");
       }
     });
 
     document.addEventListener("mousedown", (e) => {
       if (!this.el.contains(e.target)) {
-        dropdown.style.display = "none";
+        dropdown.classList.remove("format-color-dropdown--open");
       }
     });
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
-        dropdown.style.display = "none";
+        dropdown.classList.remove("format-color-dropdown--open");
       }
     });
   },

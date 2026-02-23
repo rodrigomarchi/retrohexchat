@@ -1,6 +1,6 @@
-<div id="reconnect-hook" phx-hook="ReconnectHook" style="display: none;"></div>
-<div id="title-flash" phx-hook="TitleFlashHook" style="display: none;"></div>
-<div id="nick-change-hook" phx-hook="NickChangeFormHook" style="display: none;"></div>
+<div id="reconnect-hook" phx-hook="ReconnectHook" class="u-hidden"></div>
+<div id="title-flash" phx-hook="TitleFlashHook" class="u-hidden"></div>
+<div id="nick-change-hook" phx-hook="NickChangeFormHook" class="u-hidden"></div>
 <form id="nick-change-session-form" action={~p"/chat/session"} method="post" class="u-hidden">
   <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
   <input type="hidden" name="nickname" value={@nick_change_target || ""} />
@@ -12,13 +12,13 @@
   />
   <input type="hidden" name="timezone" value={@timezone} />
 </form>
-<div id="search-highlight-hook" phx-hook="SearchHighlightHook" style="display: none;"></div>
-<div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" style="display: none;"></div>
+<div id="search-highlight-hook" phx-hook="SearchHighlightHook" class="u-hidden"></div>
+<div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" class="u-hidden"></div>
 <div
   id="notification-dispatcher"
   phx-hook="NotificationDispatcherHook"
   data-active-channel={@session.active_channel}
-  style="display: none;"
+  class="u-hidden"
 >
 </div>
 <div id="notification-toasts" class="notification-toast-container"></div>
@@ -81,7 +81,7 @@
       sections={@conversations_sections}
     />
 
-    <div class="chat-area" style="position: relative;">
+    <div class="chat-area u-relative">
       <RetroHexChatWeb.Components.ConnectionProgress.connection_progress
         :if={!@connection_ready}
         step={@connection_progress_step}
@@ -362,8 +362,7 @@
       </div>
 
       <div
-        class="chat-input-area"
-        style="position: relative;"
+        class="chat-input-area u-relative"
         id="chat-input-area"
         phx-hook="CharCounterHook"
       >
@@ -629,7 +628,7 @@
     send_disabled={@paste_send_disabled}
   />
 
-  <div id="paste-hook" phx-hook="PasteHook" style="display: none;"></div>
+  <div id="paste-hook" phx-hook="PasteHook" class="u-hidden"></div>
 
   <RetroHexChatWeb.Components.InviteDialog.invite_dialog pending_invites={@pending_invites} />
 

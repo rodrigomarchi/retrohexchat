@@ -79,6 +79,9 @@
 }
 
 /* ── Hover Reply Button ── */
+.chat-message--message {
+  position: relative;
+}
 .chat-reply-btn {
   position: absolute;
   right: var(--space-4);

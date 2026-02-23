@@ -375,13 +375,13 @@ const ScrollHook = {
       });
       this.chatEl.parentElement.appendChild(btn);
     }
-    btn.style.display = "block";
+    btn.classList.add("new-messages-btn--visible");
   },
 
   hideNewMessagesButton() {
     const btn = this.chatEl.parentElement.querySelector(".new-messages-btn");
     if (btn) {
-      btn.style.display = "none";
+      btn.classList.remove("new-messages-btn--visible");
     }
   },
 

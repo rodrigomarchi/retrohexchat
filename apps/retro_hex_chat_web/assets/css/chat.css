@@ -209,6 +209,7 @@
 /* ─── History Search Bar ─── */
 
 .hist-search-panel {
+  display: none;
   align-items: center;
   gap: 4px;
   padding: 2px 4px;
@@ -216,6 +217,9 @@
   font-family: var(--font-system);
   background: var(--color-surface);
   border-top: 1px solid var(--color-border);
+}
+.hist-search-panel--open {
+  display: flex;
 }
 .history-search-label {
   white-space: nowrap;
@@ -228,13 +232,18 @@
   font-family: var(--font-mono);
 }
 .history-no-match {
+  display: none;
   color: var(--color-error);
   font-size: var(--text-sm);
   white-space: nowrap;
 }
+.history-no-match--visible {
+  display: inline;
+}
 
 /* ── New Messages Button ──────────────────────────────── */
 .new-messages-btn {
+  display: none;
   position: absolute;
   bottom: 4px;
   left: 50%;
@@ -242,6 +251,9 @@
   z-index: 10;
   font-size: var(--text-sm);
   cursor: pointer;
+}
+.new-messages-btn--visible {
+  display: block;
 }
 
 /* ─── Typing Indicator ─── */

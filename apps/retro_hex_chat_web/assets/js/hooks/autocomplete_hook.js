@@ -400,7 +400,7 @@ const AutocompleteHook = {
 
     const bar = document.getElementById("hist-search-panel");
     if (bar) {
-      bar.style.display = "flex";
+      bar.classList.add("hist-search-panel--open");
       const searchInput = bar.querySelector(".history-search-input");
       if (searchInput) {
         searchInput.value = "";
@@ -433,7 +433,7 @@ const AutocompleteHook = {
   closeHistorySearch(cancel) {
     this.historySearchActive = false;
     const bar = document.getElementById("hist-search-panel");
-    if (bar) bar.style.display = "none";
+    if (bar) bar.classList.remove("hist-search-panel--open");
 
     if (cancel && this.historySearchOriginal !== undefined) {
       this.inputEl.value = this.historySearchOriginal;
@@ -449,7 +449,7 @@ const AutocompleteHook = {
     const noMatch = bar ? bar.querySelector(".history-no-match") : null;
 
     if (!query) {
-      if (noMatch) noMatch.style.display = "none";
+      if (noMatch) noMatch.classList.remove("history-no-match--visible");
       return;
     }
 
@@ -459,9 +459,9 @@ const AutocompleteHook = {
       this.inputEl.value = match;
       this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
       autoResize(this.inputEl, this.maxHeight);
-      if (noMatch) noMatch.style.display = "none";
+      if (noMatch) noMatch.classList.remove("history-no-match--visible");
     } else {
-      if (noMatch) noMatch.style.display = "inline";
+      if (noMatch) noMatch.classList.add("history-no-match--visible");
     }
   },
 

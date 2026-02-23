@@ -65,7 +65,6 @@ const MessageInteractionsHook = {
       this.pushEvent("reply_to_message", { message_id: messageId });
     });
 
-    msgEl.style.position = "relative";
     msgEl.appendChild(btn);
   },
 

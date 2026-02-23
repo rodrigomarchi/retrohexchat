@@ -83,7 +83,7 @@ defmodule RetroHexChatWeb.Components.FormattingToolbar do
             <rect x="1" y="9" width="12" height="4" fill="#555" />
           </svg>
         </button>
-        <div class="format-color-dropdown u-hidden">
+        <div class="format-color-dropdown">
           <button
             :for={{{name, hex}, i} <- Enum.with_index(@color_palette)}
             type="button"

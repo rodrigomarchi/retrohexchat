@@ -19,7 +19,7 @@ describe("FormatToolbarHook", () => {
         <button class="format-btn" data-format-code="italic">I</button>
         <button class="format-btn" data-format-code="underline">U</button>
         <button class="format-btn" data-format-code="color">C</button>
-        <div class="format-color-dropdown" style="display: none;">
+        <div class="format-color-dropdown">
           <button class="color-swatch" data-color-code="4">Red</button>
         </div>
       `,
@@ -46,9 +46,13 @@ describe("FormatToolbarHook", () => {
     const btn = hook.el.querySelector("[data-format-code='color']");
     const dropdown = hook.el.querySelector(".format-color-dropdown");
     btn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
-    expect(dropdown.style.display).toBe("grid");
+    expect(dropdown.classList.contains("format-color-dropdown--open")).toBe(
+      true,
+    );
     btn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
-    expect(dropdown.style.display).toBe("none");
+    expect(dropdown.classList.contains("format-color-dropdown--open")).toBe(
+      false,
+    );
   });
 
   it("inserts color code on swatch mousedown", () => {
