@@ -265,7 +265,7 @@ defmodule RetroHexChat.Bots.Server do
     channel = payload.channel
 
     if payload.nickname == state.nickname or not state.enabled or
-         not channel_enabled?(state, channel) do
+         not channel_enabled?(state, channel) or bot_nickname?(payload.nickname) do
       state
     else
       context = build_context(state, channel)
@@ -298,6 +298,7 @@ defmodule RetroHexChat.Bots.Server do
 
     if state.enabled and
          nickname != state.nickname and
+         not bot_nickname?(nickname) and
          channel != nil and
          channel_enabled?(state, channel) do
       context = build_context(state, channel)
@@ -543,6 +544,13 @@ defmodule RetroHexChat.Bots.Server do
         diff = DateTime.diff(DateTime.utc_now(), last_at, :millisecond)
         diff < state.cooldown_ms
     end
+  end
+
+  @spec bot_nickname?(String.t() | nil) :: boolean()
+  defp bot_nickname?(nil), do: false
+
+  defp bot_nickname?(nickname) do
+    nickname in Registry.registered_bots()
   end
 
   @spec channel_enabled?(state(), String.t()) :: boolean()

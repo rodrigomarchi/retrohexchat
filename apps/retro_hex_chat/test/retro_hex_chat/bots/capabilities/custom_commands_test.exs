@@ -64,6 +64,32 @@ defmodule RetroHexChat.Bots.Capabilities.CustomCommandsTest do
     end
   end
 
+  describe "handle_message/3 short format (!trigger without bot name)" do
+    test "responds to !trigger directly" do
+      assert {:reply, "Please read #rules"} =
+               CustomCommands.handle_message("!rules", "Alice", @ctx)
+    end
+
+    test "responds to !trigger with extra whitespace" do
+      assert {:reply, "Please read #rules"} =
+               CustomCommands.handle_message("  !rules  ", "Alice", @ctx)
+    end
+
+    test "case insensitive trigger matching" do
+      assert {:reply, "Please read #rules"} =
+               CustomCommands.handle_message("!RULES", "Alice", @ctx)
+    end
+
+    test "ignores unknown short trigger" do
+      assert :ignore == CustomCommands.handle_message("!unknown", "Alice", @ctx)
+    end
+
+    test "long format still works alongside short format" do
+      assert {:reply, "Please read #rules"} =
+               CustomCommands.handle_message("!HelpBot rules", "Alice", @ctx)
+    end
+  end
+
   describe "handle_event/3" do
     test "always ignores events" do
       assert :ignore == CustomCommands.handle_event(:user_joined, %{}, @ctx)

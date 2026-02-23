@@ -49,17 +49,31 @@ defmodule RetroHexChat.Bots.Capabilities.CustomCommands do
   @spec parse_command(String.t(), String.t(), String.t()) :: {:ok, String.t()} | :not_a_command
   defp parse_command(content, prefix, bot_name) do
     trimmed = String.trim(content)
+
+    # Try long format first: !BotName trigger
     full_prefix = prefix <> bot_name
 
-    if String.starts_with?(trimmed, full_prefix) do
-      rest = String.trim_leading(trimmed, full_prefix) |> String.trim()
-      trigger = rest |> String.split(" ", parts: 2) |> hd()
+    cond do
+      String.starts_with?(trimmed, full_prefix) ->
+        rest = String.trim_leading(trimmed, full_prefix) |> String.trim()
+        extract_trigger(rest)
 
-      if trigger != "" do
-        {:ok, String.downcase(trigger)}
-      else
+      String.starts_with?(trimmed, prefix) ->
+        # Short format: !trigger (without bot name)
+        rest = String.slice(trimmed, String.length(prefix)..-1//1) |> String.trim()
+        extract_trigger(rest)
+
+      true ->
         :not_a_command
-      end
+    end
+  end
+
+  @spec extract_trigger(String.t()) :: {:ok, String.t()} | :not_a_command
+  defp extract_trigger(rest) do
+    trigger = rest |> String.split(" ", parts: 2) |> hd()
+
+    if trigger != "" do
+      {:ok, String.downcase(trigger)}
     else
       :not_a_command
     end

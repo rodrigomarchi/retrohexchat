@@ -21,9 +21,13 @@ defmodule RetroHexChat.Bots.Capabilities.Help do
     full_prefix = prefix <> bot_name
 
     trimmed = String.trim(content)
+    lower = String.downcase(trimmed)
 
-    if String.downcase(trimmed) == String.downcase(full_prefix <> " help") or
-         String.downcase(trimmed) == String.downcase(full_prefix <> "help") do
+    long_form_a = String.downcase(full_prefix <> " help")
+    long_form_b = String.downcase(full_prefix <> "help")
+    short_form = String.downcase(prefix <> "help")
+
+    if lower == long_form_a or lower == long_form_b or lower == short_form do
       commands = Map.get(ctx.config, "commands", %{})
       {:multi_reply, build_help_lines(bot_name, prefix, commands)}
     else
@@ -62,10 +66,10 @@ defmodule RetroHexChat.Bots.Capabilities.Help do
       |> Enum.sort_by(fn {trigger, _} -> trigger end)
       |> Enum.map(fn {trigger, cmd} ->
         desc = Map.get(cmd, "description", "")
-        "  #{prefix}#{bot_name} #{trigger} — #{desc}"
+        "  #{prefix}#{trigger} — #{desc}"
       end)
 
-    help_line = "  #{prefix}#{bot_name} help — Show this help message"
+    help_line = "  #{prefix}help — Show this help message"
 
     if cmd_lines == [] do
       [header, help_line]

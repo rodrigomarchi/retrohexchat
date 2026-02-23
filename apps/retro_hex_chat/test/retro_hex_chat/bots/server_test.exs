@@ -92,6 +92,106 @@ defmodule RetroHexChat.Bots.ServerTest do
     end
   end
 
+  describe "bot-to-bot message isolation" do
+    @isolation_bot_a %{
+      id: 993,
+      name: "BotAlpha",
+      nickname: "BotAlpha",
+      command_prefix: "!",
+      created_by: "admin",
+      enabled: true,
+      cooldown_ms: 100,
+      capabilities: %{
+        "mention" => %{"response" => "Hi {nickname}!", "enabled" => true}
+      },
+      channel_configs: [
+        %{channel_name: "#isotest", enabled: true, capability_overrides: %{}}
+      ],
+      custom_commands: []
+    }
+
+    @isolation_bot_b %{
+      id: 994,
+      name: "BotBeta",
+      nickname: "BotBeta",
+      command_prefix: "!",
+      created_by: "admin",
+      enabled: true,
+      cooldown_ms: 100,
+      capabilities: %{
+        "mention" => %{"response" => "Hi {nickname}!", "enabled" => true}
+      },
+      channel_configs: [
+        %{channel_name: "#isotest", enabled: true, capability_overrides: %{}}
+      ],
+      custom_commands: []
+    }
+
+    setup do
+      on_exit(fn ->
+        Supervisor.stop_bot("BotAlpha")
+        Supervisor.stop_bot("BotBeta")
+      end)
+
+      :ok
+    end
+
+    test "bot ignores messages from other bots" do
+      {:ok, _} = Supervisor.start_bot(@isolation_bot_a)
+      {:ok, pid_b} = Supervisor.start_bot(@isolation_bot_b)
+
+      # BotAlpha sends a message — BotBeta should ignore it
+      send(pid_b, %{
+        event: "new_message",
+        payload: %{
+          id: 1,
+          channel: "#isotest",
+          author: "BotAlpha",
+          content: "BotBeta hi",
+          type: :message,
+          timestamp: DateTime.utc_now(),
+          reply_to_id: nil,
+          reply_to_author: nil,
+          reply_to_preview: nil
+        }
+      })
+
+      Process.sleep(50)
+
+      assert Process.alive?(pid_b)
+      state = :sys.get_state(pid_b)
+      # Should NOT have responded (no cooldown recorded)
+      refute Map.has_key?(state.last_response_at, "#isotest")
+    end
+
+    test "bot still responds to human messages" do
+      {:ok, _} = Supervisor.start_bot(@isolation_bot_a)
+      {:ok, pid_b} = Supervisor.start_bot(@isolation_bot_b)
+
+      # Human sends a message — BotBeta should respond
+      send(pid_b, %{
+        event: "new_message",
+        payload: %{
+          id: 2,
+          channel: "#isotest",
+          author: "HumanUser",
+          content: "BotBeta hi",
+          type: :message,
+          timestamp: DateTime.utc_now(),
+          reply_to_id: nil,
+          reply_to_author: nil,
+          reply_to_preview: nil
+        }
+      })
+
+      Process.sleep(50)
+
+      assert Process.alive?(pid_b)
+      state = :sys.get_state(pid_b)
+      assert Map.has_key?(state.last_response_at, "#isotest")
+    end
+  end
+
   describe "reload_capabilities/2" do
     test "initializes state for newly added capabilities" do
       {:ok, _} = Supervisor.start_bot(@bot_data)

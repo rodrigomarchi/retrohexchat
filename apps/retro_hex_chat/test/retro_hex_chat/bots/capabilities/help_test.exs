@@ -47,6 +47,11 @@ defmodule RetroHexChat.Bots.Capabilities.HelpTest do
       assert text =~ "help"
     end
 
+    test "responds to short format !help" do
+      assert {:multi_reply, lines} = Help.handle_message("!help", "Alice", @ctx)
+      assert hd(lines) =~ "HelpBot"
+    end
+
     test "ignores non-help messages" do
       assert :ignore == Help.handle_message("hello", "Alice", @ctx)
       assert :ignore == Help.handle_message("!HelpBot rules", "Alice", @ctx)
@@ -56,6 +61,15 @@ defmodule RetroHexChat.Bots.Capabilities.HelpTest do
       ctx = put_in(@ctx.config["commands"], %{})
       assert {:multi_reply, lines} = Help.handle_message("!HelpBot help", "Alice", ctx)
       assert length(lines) == 2
+    end
+
+    test "help output uses short format for commands" do
+      assert {:multi_reply, lines} = Help.handle_message("!help", "Alice", @ctx)
+      text = Enum.join(lines, "\n")
+      # Should show !faq, not !HelpBot faq
+      assert text =~ "!faq"
+      assert text =~ "!rules"
+      refute text =~ "!HelpBot faq"
     end
   end
 
