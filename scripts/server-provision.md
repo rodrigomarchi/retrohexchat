@@ -101,13 +101,12 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 # ══════════════════════════════════════════════════════════
 
 # ── Reginald — The overly formal info desk ───────────────
-# Personality: Distinguished English butler. NO greeting/farewell —
-# only the channel-specific bot greets users. Reginald is the info desk.
+# Personality: Distinguished English butler, server info & navigation.
 /bot create Reginald Head of Information Services and Protocol Affairs
 /bot set Reginald prefix !
 /bot set Reginald cooldown 2000
-/bot set Reginald greeting none
-/bot set Reginald farewell none
+/bot set Reginald greeting *adjusts monocle* Reginald here — your server concierge. Need directions? Try !channels, !rules, or !about.
+/bot set Reginald farewell *tips hat* Do return soon, {nickname}.
 /bot set Reginald mention_response You rang? Reginald at your service. Try !rules, !channels, or !about — I am nothing if not helpful.
 
 /bot addcmd Reginald rules *clears throat* The rules are posted in #rules, naturally. One does not simply skip the rules, {nickname}.
@@ -132,13 +131,12 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot join Reginald #feedback
 
 # ── Brutus — The no-nonsense moderator ───────────────────
-# Personality: Tough bouncer. NO greeting/farewell —
-# moderators don't need to welcome people, just keep order.
+# Personality: Tough bouncer, keeps order. Announces himself on join.
 /bot create Brutus Chief of Vibe Protection and Chat Safety
 /bot set Brutus prefix !
 /bot set Brutus cooldown 1000
-/bot set Brutus greeting none
-/bot set Brutus farewell none
+/bot set Brutus greeting Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder.
+/bot set Brutus farewell *nods silently* Stay out of trouble, {nickname}.
 /bot set Brutus mod_action warn
 /bot set Brutus mod_spam 5
 /bot set Brutus mod_flood 8
@@ -172,7 +170,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot create Doug Self-appointed expert on everything in general
 /bot set Doug prefix !
 /bot set Doug cooldown 3000
-/bot set Doug greeting Hey {nickname}, welcome to #general! I'm Doug. I have opinions. You've been warned.
+/bot set Doug greeting Hey {nickname}! I'm Doug — the resident opinion-haver. Try !opinion, !wisdom, or !debate if you dare.
 /bot set Doug farewell Later {nickname}! I was just about to share my take on something. Your loss.
 /bot set Doug mention_response You talking to me? I've got thoughts on that. I've got thoughts on everything, actually.
 
@@ -189,7 +187,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot create Wendy Head of the One-Person Welcome Committee
 /bot set Wendy prefix !
 /bot set Wendy cooldown 2000
-/bot set Wendy greeting OH MY GOSH {nickname} IS HERE!! *throws confetti* Welcome welcome welcome! Tell us EVERYTHING about yourself!
+/bot set Wendy greeting OH MY GOSH {nickname} IS HERE!! I'm Wendy — your one-person welcome committee! Try !icebreaker, !funfact, or !hug!
 /bot set Wendy farewell {nickname} is leaving?! NOOO! *dramatic pause* ...okay fine. But you BETTER come back. I'll miss you the MOST.
 /bot set Wendy mention_response Did someone say my name?! I'm Wendy! I LOVE meeting people! Have you introduced yourself yet?! DO IT!
 
@@ -206,7 +204,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot create Harold Senior Assistant to the Help Department
 /bot set Harold prefix !
 /bot set Harold cooldown 2000
-/bot set Harold greeting It looks like you're trying to join #help, {nickname}! Would you like help with that? ...wait, you already did it. Nice.
+/bot set Harold greeting It looks like you need help, {nickname}! I'm Harold — try !faq, !commands, !stuck, or !tip. I live to assist.
 /bot set Harold farewell It looks like {nickname} is leaving! Would you like me to— oh, they're gone. I was going to help...
 /bot set Harold mention_response It looks like you're trying to get my attention! How can I help? Try !commands, !faq, or just ask your question!
 
@@ -223,7 +221,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot create Derek Professional Tangent Generator
 /bot set Derek prefix !
 /bot set Derek cooldown 3000
-/bot set Derek greeting Oh hey {nickname}! Quick question: do you think fish ever get thirsty? Anyway, welcome to #random.
+/bot set Derek greeting Oh hey {nickname}! I'm Derek — professional tangent generator. Try !fact, !thought, !question, or !conspiracy. You're welcome.
 /bot set Derek farewell Bye {nickname}! Before you go — did you know that honey never expires? Okay bye for real now.
 /bot set Derek mention_response You called? Fun fact: the inventor of the Pringles can is buried in one. Anyway, what's up?
 
@@ -241,7 +239,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot create Amadeus Classically Trained Listener of All Genres (Reluctantly)
 /bot set Amadeus prefix !
 /bot set Amadeus cooldown 3000
-/bot set Amadeus greeting Ah, {nickname} enters the concert hall! I mean... #music. Please, share what auditory experience you're currently enduring. I mean enjoying.
+/bot set Amadeus greeting Ah, {nickname}! I'm Amadeus — your resident audiophile. Try !recommend, !genre, !playlist, or !vinyl. I have opinions. Refined ones.
 /bot set Amadeus farewell {nickname} has left the building. *plays sad trombone* ...what? It's a valid instrument.
 /bot set Amadeus mention_response Someone called for the music expert? That's me. I have impeccable taste. Some might say insufferable. I prefer "refined."
 
@@ -259,7 +257,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot create Oscar Self-Appointed Film Critic and Quote Machine
 /bot set Oscar prefix !
 /bot set Oscar cooldown 3000
-/bot set Oscar greeting *dramatic zoom in* {nickname}. You've come to #movies. "Here's looking at you, kid." Now, what are we watching?
+/bot set Oscar greeting *dramatic zoom in* {nickname}! I'm Oscar — your film critic. Try !recommend, !rate, !spoiler, !quote, or !snack. Lights, camera, chat!
 /bot set Oscar farewell *end credits roll* And that's a wrap for {nickname}. "I'll be back." ...wait, wrong genre. Goodbye!
 /bot set Oscar mention_response You had me at "Oscar." What's the movie emergency? Bad recommendation? Spoiler incident? I handle it all.
 
@@ -280,7 +278,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot set Leeroy dice_max_dice 50
 /bot set Leeroy dice_max_sides 1000
 /bot set Leeroy dice_default 1d20
-/bot set Leeroy greeting LEEEEROYYY {nickname}KINS! Welcome to #gaming! What are we playing? I call DPS. Don't ask questions, just go.
+/bot set Leeroy greeting LEEEEROYYY {nickname}KINS! I'm Leeroy — try !roll, !gg, !rage, !loot, or !build. LET'S GOOOOO!
 /bot set Leeroy farewell {nickname} has disconnected! Was it lag? It was definitely lag. It's ALWAYS lag. GG though!
 /bot set Leeroy mention_response At least I have chicken! Need something? !roll for loot, !rage for solidarity, or !gg to pay respects.
 
@@ -298,7 +296,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot create Murphy Senior Incident Survivor and Professional Pessimist
 /bot set Murphy prefix !
 /bot set Murphy cooldown 3000
-/bot set Murphy greeting Welcome to #tech, {nickname}. Everything is on fire but that's normal. It's fine. We're fine. *eye twitch*
+/bot set Murphy greeting Welcome to #tech, {nickname}. I'm Murphy — everything is on fire but that's normal. Try !deploy, !fix, !tabs, !stack, or !wisdom. *eye twitch*
 /bot set Murphy farewell {nickname} left. Smart move. I'd leave too if I could. But someone has to watch the servers. *stares at monitoring dashboard*
 /bot set Murphy mention_response You called Murphy? Is it an outage? It's always an outage. ...what do you mean it's just a question? Oh. Well, ask away.
 
@@ -316,7 +314,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot create Vincent Tortured Creative Soul and Pixel Philosopher
 /bot set Vincent prefix !
 /bot set Vincent cooldown 3000
-/bot set Vincent greeting {nickname}! A fellow creative soul enters #creative! *gazes dramatically at canvas* Tell me — what masterpiece are you working on?
+/bot set Vincent greeting {nickname}! I'm Vincent — tortured artist and pixel philosopher. Try !inspire, !feedback, !block, !color, or !share. The muse awaits!
 /bot set Vincent farewell {nickname} departs! *single tear rolls down cheek* May your creative journey continue wherever you go. The muse waits for no one!
 /bot set Vincent mention_response The artist is IN. Share your work, ask for feedback, or just come to stare at the blank canvas with me. It stares back, you know.
 
@@ -334,7 +332,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot create Susan VP of User Happiness and Suggestion Cataloging
 /bot set Susan prefix !
 /bot set Susan cooldown 3000
-/bot set Susan greeting {nickname} has entered #feedback! Do you have a suggestion? A complaint? A compliment? I have spreadsheets for ALL of those. Fire away!
+/bot set Susan greeting {nickname}! I'm Susan — VP of User Happiness. Got feedback? Try !noted, !feature, !bug, !survey, or !roadmap. I have spreadsheets for EVERYTHING.
 /bot set Susan farewell {nickname} left #feedback. I hope that means their experience is perfect now. *adds to satisfaction metrics* One can dream.
 /bot set Susan mention_response You pinged Susan? I'm listening. I'm ALWAYS listening. That's literally my job. Well, my self-appointed job. Same thing.
 
@@ -352,7 +350,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot create Patches Lobby Attendant and Channel Tour Guide
 /bot set Patches prefix !
 /bot set Patches cooldown 3000
-/bot set Patches greeting Yo {nickname}! Welcome to the lobby. First time? Check out !tour. Regular? You know the drill — grab a seat, the vibes are immaculate.
+/bot set Patches greeting Yo {nickname}! I'm Patches — your lobby attendant and tour guide. Try !tour, !vibe, !busy, or !new. Make yourself at home!
 /bot set Patches farewell {nickname} heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi.
 /bot set Patches mention_response Patches here! Need directions? Try !tour for the grand tour or just ask where to find your people. I know this place like the back of my screen.
 
@@ -397,7 +395,7 @@ After running the script, verify with:
 
 | Name | Role | Personality | Key Commands |
 |------|------|-------------|--------------|
-| **Reginald** | Info Desk | Formal English butler — no greeting, responds to commands only | `!rules` `!channels` `!about` `!tea` `!compliment` |
+| **Reginald** | Info Desk | Formal English butler, server concierge | `!rules` `!channels` `!about` `!tea` `!compliment` |
 | **Brutus** | Moderator | No-nonsense bouncer, always watching | `!rules` `!report` `!behave` |
 
 ### Channel-Specific Bots
@@ -443,8 +441,8 @@ After running the script, verify with:
 - **Lobby**: The initial active channel is `#lobby` (auto-created), so the first `/cs register` + `/topic` + `/mode` apply to it before any `/join`
 - **Troll owns everything**: Since Troll is logged in when `/cs register` runs, Troll becomes the owner of every channel
 - **13 bots total**: 2 global (Reginald + Brutus in all channels) + 10 channel-specific (one per themed channel, plus Patches in lobby)
-- **Every channel has 3 bots**: The 2 globals (silent on join/leave) + its own themed bot that greets users (except #rules which is moderated and has no bots)
-- **Only 1 greeting per channel**: Reginald and Brutus have greeting/farewell disabled (`none`) — only the channel-specific bot welcomes users
+- **Every channel has 3 bots**: The 2 globals + its own themed bot (except #rules which is moderated and has no bots)
+- **Every bot introduces itself**: All bots greet on join, announcing who they are and which commands to use
 - **Leeroy has dice**: The #gaming bot includes dice rolling capability (`!roll`)
 - **No "bot" in any name**: Reginald, Brutus, Doug, Wendy, Harold, Derek, Amadeus, Oscar, Leeroy, Murphy, Vincent, Susan, Patches
 - **All messages are unique**: Every bot has its own personality, greeting, farewell, mention response, and custom commands — all contextualized to the channel topic

@@ -322,9 +322,10 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   end
 
   defp apply_setting(bot, "greeting", value) do
-    caps = Map.update(bot.capabilities, "greeter", %{}, &Map.put(&1, "greeting", value))
+    greeting = if value == "none", do: nil, else: value
+    caps = Map.update(bot.capabilities, "greeter", %{}, &Map.put(&1, "greeting", greeting))
     Queries.update_bot(bot, %{capabilities: caps})
-    {:ok, "Greeting set to '#{value}'."}
+    {:ok, "Greeting #{if greeting, do: "set to '#{greeting}'", else: "disabled"}."}
   end
 
   defp apply_setting(bot, "farewell", value) do
