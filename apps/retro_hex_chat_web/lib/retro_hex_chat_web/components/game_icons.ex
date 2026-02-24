@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.GameIcons do
   @moduledoc """
-  Retro pixel-art SVG icons for the 12 P2P games.
+  Retro pixel-art SVG icons for the 16 P2P games.
   Each icon is 32×32 and follows the project icon conventions.
   """
 
@@ -26,6 +26,10 @@ defmodule RetroHexChatWeb.Components.GameIcons do
   def game_icon(%{game_id: "hex_raid_pacifist"} = assigns), do: icon_game_raid(assigns)
   def game_icon(%{game_id: "hex_raid_blitz"} = assigns), do: icon_game_raid(assigns)
   def game_icon(%{game_id: "hex_boxing"} = assigns), do: icon_game_boxing(assigns)
+  def game_icon(%{game_id: "hex_outlaw"} = assigns), do: icon_game_outlaw(assigns)
+  def game_icon(%{game_id: "hex_outlaw_ricochet"} = assigns), do: icon_game_outlaw(assigns)
+  def game_icon(%{game_id: "hex_outlaw_stagecoach"} = assigns), do: icon_game_outlaw(assigns)
+  def game_icon(%{game_id: "hex_outlaw_nml"} = assigns), do: icon_game_outlaw(assigns)
   def game_icon(assigns), do: icon_game_generic(assigns)
 
   # -- Hex Pong: paddle + ball --
@@ -326,6 +330,35 @@ defmodule RetroHexChatWeb.Components.GameIcons do
       <line x1="18" y1="16" x2="14" y2="16" stroke="#00cccc" stroke-width="2" stroke-linecap="round" />
       <circle cx="20" cy="15" r="1.5" fill="#FFD700" />
       <circle cx="14" cy="17" r="1.5" fill="#FFD700" />
+    </svg>
+    """
+  end
+
+  # -- Hex Outlaw: crossed revolvers --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_outlaw(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_outlaw(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect
+        x="1"
+        y="1"
+        width="30"
+        height="30"
+        rx="2"
+        fill="#1a0a1e"
+        stroke="#c4956a"
+        stroke-width="1"
+      />
+      <line x1="8" y1="24" x2="24" y2="8" stroke="#aaa" stroke-width="2" stroke-linecap="round" />
+      <line x1="24" y1="24" x2="8" y2="8" stroke="#aaa" stroke-width="2" stroke-linecap="round" />
+      <rect x="6" y="22" width="5" height="3" rx="1" fill="#8b6914" />
+      <rect x="21" y="22" width="5" height="3" rx="1" fill="#8b6914" />
+      <circle cx="10" cy="10" r="2" fill="none" stroke="#aaa" stroke-width="1" />
+      <circle cx="22" cy="10" r="2" fill="none" stroke="#aaa" stroke-width="1" />
+      <circle cx="16" cy="16" r="2" fill="#ff4444" />
     </svg>
     """
   end

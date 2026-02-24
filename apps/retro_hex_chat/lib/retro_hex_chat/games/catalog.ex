@@ -134,6 +134,46 @@ defmodule RetroHexChat.Games.Catalog do
           "Push-and-pull until KO or decision by points. Best of 3 rounds.",
       icon: "game_boxing",
       controls: "Arrow keys or WASD to move, Space or Shift to punch"
+    },
+    %{
+      id: "hex_outlaw",
+      name: "Hex Outlaw",
+      tagline: "Draw at high noon",
+      description:
+        "Western duel — two gunslingers and a cactus. " <>
+          "Dodge bullets you can see coming. First to 10. Best of 3 rounds.",
+      icon: "game_outlaw",
+      controls: "Arrow keys or WASD to move, Space or Shift to fire"
+    },
+    %{
+      id: "hex_outlaw_ricochet",
+      name: "Hex Outlaw: Ricochet",
+      tagline: "Bullets bounce back",
+      description:
+        "Western duel with bouncing bullets — fire at angles to bypass the wall. " <>
+          "Bullets ricochet once off ceiling/floor. First to 10. Best of 3 rounds.",
+      icon: "game_outlaw",
+      controls: "Arrow keys or WASD to move/aim, Space or Shift to fire"
+    },
+    %{
+      id: "hex_outlaw_stagecoach",
+      name: "Hex Outlaw: Stagecoach",
+      tagline: "Moving cover",
+      description:
+        "Western duel with a stagecoach rolling across the arena. " <>
+          "Time your shots around the moving obstacle. First to 10. Best of 3 rounds.",
+      icon: "game_outlaw",
+      controls: "Arrow keys or WASD to move, Space or Shift to fire"
+    },
+    %{
+      id: "hex_outlaw_nml",
+      name: "Hex Outlaw: No Man's Land",
+      tagline: "Nowhere to hide",
+      description:
+        "Western duel in open field — no obstacle, full horizontal movement. " <>
+          "Dodge freely in your half. First to 10. Best of 3 rounds.",
+      icon: "game_outlaw",
+      controls: "Arrow keys or WASD to move, Space or Shift to fire"
     }
   ]
 

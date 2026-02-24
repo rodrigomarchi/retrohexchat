@@ -997,7 +997,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-raid",
           "feature-hex-raid-pacifist",
           "feature-hex-raid-blitz",
-          "feature-hex-boxing"
+          "feature-hex-boxing",
+          "feature-hex-outlaw",
+          "feature-hex-outlaw-ricochet",
+          "feature-hex-outlaw-stagecoach",
+          "feature-hex-outlaw-nml"
         ]
       },
       %{
@@ -1238,6 +1242,110 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "medium 2, far 1. First to 100 is KO! Best of 3 rounds, 2 minutes each. " <>
             "Controls: Arrow keys or WASD to move, Space or Shift to punch.",
         see_also: ["feature-p2p-games"]
+      },
+      %{
+        id: "feature-hex-outlaw",
+        title: "Hex Outlaw",
+        category: "Features",
+        keywords: [
+          "hex outlaw",
+          "outlaw",
+          "western",
+          "duel",
+          "gunslinger",
+          "cowboy",
+          "shooter",
+          "quick draw",
+          "cactus",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Western duel — two gunslingers face off across a cactus obstacle. " <>
+            "Dodge visible bullets and shoot your opponent. First to 10, best of 3 rounds. " <>
+            "Controls: Arrow keys or WASD to move, Space or Shift to fire.",
+        see_also: [
+          "feature-hex-outlaw-ricochet",
+          "feature-hex-outlaw-stagecoach",
+          "feature-hex-outlaw-nml",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-outlaw-ricochet",
+        title: "Hex Outlaw: Ricochet",
+        category: "Features",
+        keywords: [
+          "hex outlaw",
+          "ricochet",
+          "bounce",
+          "western",
+          "duel",
+          "angle",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Western duel with bouncing bullets — fire at angles to bypass the wall. " <>
+            "Bullets ricochet once off ceiling/floor. Aim up or down with arrow keys. " <>
+            "First to 10, best of 3 rounds. " <>
+            "Controls: Arrow keys or WASD to move/aim, Space or Shift to fire.",
+        see_also: [
+          "feature-hex-outlaw",
+          "feature-hex-outlaw-stagecoach",
+          "feature-hex-outlaw-nml",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-outlaw-stagecoach",
+        title: "Hex Outlaw: Stagecoach",
+        category: "Features",
+        keywords: [
+          "hex outlaw",
+          "stagecoach",
+          "moving",
+          "western",
+          "duel",
+          "obstacle",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Western duel with a stagecoach rolling across the arena. " <>
+            "Time your shots around the moving obstacle. First to 10, best of 3 rounds. " <>
+            "Controls: Arrow keys or WASD to move, Space or Shift to fire.",
+        see_also: [
+          "feature-hex-outlaw",
+          "feature-hex-outlaw-ricochet",
+          "feature-hex-outlaw-nml",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-outlaw-nml",
+        title: "Hex Outlaw: No Man's Land",
+        category: "Features",
+        keywords: [
+          "hex outlaw",
+          "no man's land",
+          "open",
+          "western",
+          "duel",
+          "free",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Western duel in open field — no obstacle, full horizontal movement. " <>
+            "Dodge freely in your half of the arena. First to 10, best of 3 rounds. " <>
+            "Controls: Arrow keys or WASD to move, Space or Shift to fire.",
+        see_also: [
+          "feature-hex-outlaw",
+          "feature-hex-outlaw-ricochet",
+          "feature-hex-outlaw-stagecoach",
+          "feature-p2p-games"
+        ]
       }
     ]
   end

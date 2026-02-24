@@ -6,7 +6,7 @@ defmodule RetroHexChat.Games.CatalogTest do
   describe "list_games/0" do
     test "returns all games" do
       games = Catalog.list_games()
-      assert length(games) == 12
+      assert length(games) == 16
     end
 
     test "each game has required fields" do
@@ -39,6 +39,10 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert "hex_raid_pacifist" in ids
       assert "hex_raid_blitz" in ids
       assert "hex_boxing" in ids
+      assert "hex_outlaw" in ids
+      assert "hex_outlaw_ricochet" in ids
+      assert "hex_outlaw_stagecoach" in ids
+      assert "hex_outlaw_nml" in ids
     end
   end
 
@@ -67,6 +71,10 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.valid_game_id?("hex_raid_pacifist")
       assert Catalog.valid_game_id?("hex_raid_blitz")
       assert Catalog.valid_game_id?("hex_boxing")
+      assert Catalog.valid_game_id?("hex_outlaw")
+      assert Catalog.valid_game_id?("hex_outlaw_ricochet")
+      assert Catalog.valid_game_id?("hex_outlaw_stagecoach")
+      assert Catalog.valid_game_id?("hex_outlaw_nml")
     end
 
     test "returns false for invalid ids" do
@@ -78,7 +86,7 @@ defmodule RetroHexChat.Games.CatalogTest do
   describe "game_ids/0" do
     test "returns list of all game id strings" do
       ids = Catalog.game_ids()
-      assert length(ids) == 12
+      assert length(ids) == 16
       assert Enum.all?(ids, &is_binary/1)
     end
   end

@@ -13,6 +13,7 @@ import { WarlordEngine } from "../../lib/games/warlords/engine.js";
 import { PixelTanksEngine } from "../../lib/games/pixel_tanks/engine.js";
 import { HexRaidEngine } from "../../lib/games/hex_raid/engine.js";
 import { BoxingEngine } from "../../lib/games/hex_boxing/engine.js";
+import { OutlawEngine } from "../../lib/games/hex_outlaw/engine.js";
 
 /**
  * Create the appropriate engine for the given game ID.
@@ -45,6 +46,11 @@ function createEngine(canvas, channel, gameId, isHost, onGameEnd) {
       return new HexRaidEngine(canvas, channel, gameId, isHost, onGameEnd);
     case "hex_boxing":
       return new BoxingEngine(canvas, channel, gameId, isHost, onGameEnd);
+    case "hex_outlaw":
+    case "hex_outlaw_ricochet":
+    case "hex_outlaw_stagecoach":
+    case "hex_outlaw_nml":
+      return new OutlawEngine(canvas, channel, gameId, isHost, onGameEnd);
     default:
       return new GameEngine(canvas, channel, gameId, isHost);
   }

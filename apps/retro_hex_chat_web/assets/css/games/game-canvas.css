@@ -77,6 +77,22 @@
   --game-hit-color: #ffffff;
 }
 
+/* Hex Outlaw: cyberpunk post-apocalyptic western duel */
+.game-canvas[data-game-id="hex_outlaw"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_outlaw_ricochet"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_outlaw_stagecoach"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_outlaw_nml"] .game-canvas__surface {
+  --game-bg-color: #1a0a1e;
+  --game-fg-color: #39ff14;
+  --game-accent-color: #00e5ff;
+  --game-muted-color: #3d1f0a;
+  --game-glow-color: rgba(255, 140, 0, 0.15);
+  --game-warning-color: #ff4444;
+  --game-rope-color: #c4956a;
+  --game-ring-color: #2a1508;
+  --game-hit-color: #ffffff;
+}
+
 /* Star Duel trilogy: cyberpunk post-apocalyptic space combat */
 .game-canvas[data-game-id="star_duel"] .game-canvas__surface,
 .game-canvas[data-game-id="gravity_well"] .game-canvas__surface,
