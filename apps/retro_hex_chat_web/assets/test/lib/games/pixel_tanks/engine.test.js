@@ -116,10 +116,10 @@ describe("PixelTanksEngine", () => {
   });
 
   afterEach(() => {
-    // Restore RAF/CAF mocks before stopping, in case fake timers cleared them
+    // Restore real timers first, then re-apply RAF/CAF mocks for stop()
+    vi.useRealTimers();
     globalThis.requestAnimationFrame = vi.fn(() => 42);
     globalThis.cancelAnimationFrame = vi.fn();
-    vi.useRealTimers();
     if (engine) engine.stop();
     globalThis.requestAnimationFrame = originalRAF;
     globalThis.cancelAnimationFrame = originalCAF;
@@ -474,6 +474,8 @@ describe("PixelTanksEngine", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       setupPlaying(engine, channel);
 
+      // Clear walls so barrel tip is never blocked by a random maze
+      engine.walls = new Uint8Array(40 * 30);
       engine.localInputs.fire = true;
       getLoopFn()(0); // should fire
       expect(engine.gameState.m1Active).toBe(true);
