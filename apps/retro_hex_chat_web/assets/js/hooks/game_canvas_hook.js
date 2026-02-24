@@ -6,6 +6,7 @@
  */
 import { GameEngine } from "../lib/game_engine.js";
 import { PongEngine } from "../lib/games/pong_engine.js";
+import { BreakoutEngine } from "../lib/games/breakout_engine.js";
 
 /**
  * Create the appropriate engine for the given game ID.
@@ -20,6 +21,8 @@ function createEngine(canvas, channel, gameId, isHost, onGameEnd) {
   switch (gameId) {
     case "hex_pong":
       return new PongEngine(canvas, channel, gameId, isHost, onGameEnd);
+    case "block_breakers":
+      return new BreakoutEngine(canvas, channel, gameId, isHost, onGameEnd);
     default:
       return new GameEngine(canvas, channel, gameId, isHost);
   }

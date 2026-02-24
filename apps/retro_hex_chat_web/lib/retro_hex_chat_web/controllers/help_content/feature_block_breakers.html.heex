@@ -1,23 +1,25 @@
 <p>
-  Cooperative Breakout with two paddles — one at the top, one at the bottom. Work together to destroy all blocks before running out of lives.
+  Cooperative Breakout with cyberpunk post-apocalyptic visuals — neon glow, CRT scanlines, and synth audio. Player 1 (host) controls the bottom paddle, Player 2 controls the top paddle. Work together to destroy all 50 blocks before running out of lives.
 </p>
 <.help_h4 icon={:icon_star}>Controls</.help_h4>
 <ul>
-  <li><strong>Arrow Left / Right</strong> — Move paddle</li>
+  <li><strong>Arrow Left / Right</strong> or <strong>A / D</strong> — Move paddle</li>
 </ul>
 <.help_h4 icon={:icon_star}>Rules</.help_h4>
 <ul>
-  <li>One player controls the top paddle, the other the bottom</li>
-  <li>Keep the ball in play by deflecting it with your paddle</li>
-  <li>Destroy all blocks to complete the level</li>
-  <li>Shared lives — if either player misses, you both lose a life</li>
-  <li>Blocks have different colors and point values</li>
-  <li>Levels get progressively harder with more complex patterns</li>
+  <li>3 shared lives — if the ball exits top or bottom, both players lose a life</li>
+  <li>50 blocks arranged in 5 rows with different colors and point values</li>
+  <li>Top rows are worth more: 50, 40, 30, 20, 10 points per block</li>
+  <li>Ball speeds up every 5 blocks destroyed</li>
+  <li>Paddle hit angle affects ball direction — edges create steeper bounces</li>
+  <li>Ball bounces off left/right walls but NOT top/bottom</li>
+  <li>Destroy all blocks to win together, or lose all lives for game over</li>
 </ul>
 <.help_h4 icon={:icon_star}>Inspiration</.help_h4>
-<p>Inspired by Breakout and Warlords — cooperative brick-breaking fun.</p>
+<p>Inspired by Breakout and Warlords — cooperative brick-breaking with a cyberpunk twist.</p>
 <.help_h4 icon={:icon_link}>See Also</.help_h4>
 <p>
   <.help_link topic="feature-p2p-games">P2P Games</.help_link>
+  · <.help_link topic="feature-hex-pong">Hex Pong</.help_link>
   · <.help_link topic="cmd-game">/game</.help_link>
 </p>

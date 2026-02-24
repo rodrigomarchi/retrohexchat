@@ -1024,10 +1024,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         id: "feature-block-breakers",
         title: "Block Breakers",
         category: "Features",
-        keywords: ["block breakers", "breakout", "cooperative", "blocks", "paddle", "game"],
+        keywords: [
+          "block breakers",
+          "breakout",
+          "cooperative",
+          "coop",
+          "blocks",
+          "paddle",
+          "game",
+          "lives",
+          "cyberpunk"
+        ],
         icon: :icon_star,
         description:
-          "Cooperative Breakout with two paddles — work together to destroy all blocks."
+          "Cooperative Breakout with cyberpunk visuals. P1 controls the bottom paddle, P2 the top. " <>
+            "3 shared lives, 50 neon blocks (5 rows), ball speeds up. Arrow keys or A/D to move."
       }
     ]
   end
