@@ -10,7 +10,7 @@ import {
   initScrollReveal,
   initDesktopIcons,
   initKonamiCode,
-} from "./lib/landing.js";
+} from "./lib/pages/landing.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initSmoothScroll();

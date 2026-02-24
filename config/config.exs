@@ -65,7 +65,7 @@ config :esbuild,
   ],
   retro_hex_chat_web_landing_css: [
     args:
-      ~w(css/landing.css --bundle --target=es2022 --outdir=../priv/static/assets/css --loader:.woff=file --loader:.woff2=file),
+      ~w(css/pages/landing.css --bundle --target=es2022 --outdir=../priv/static/assets/css --loader:.woff=file --loader:.woff2=file),
     cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
     env: %{}
   ]

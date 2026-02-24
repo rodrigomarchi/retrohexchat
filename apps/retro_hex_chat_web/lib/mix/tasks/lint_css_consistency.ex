@@ -29,7 +29,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   @domain_app_dir "apps/retro_hex_chat"
 
   defp css_dir, do: Path.join(web_app_root(), "assets/css")
-  defp retro_css_dir, do: Path.join(web_app_root(), "assets/css")
+  defp retro_css_dir, do: Path.join(web_app_root(), "assets/css/retro")
   defp web_lib, do: Path.join(web_app_root(), "lib")
   defp js_dir, do: Path.join(web_app_root(), "assets/js")
   defp domain_lib, do: Path.join(project_root(), "#{@domain_app_dir}/lib")
@@ -95,21 +95,13 @@ defmodule Mix.Tasks.Lint.CssConsistency do
 
   # -- Phase A: Extract defined CSS classes --
 
-  @retro_files ~w(
-    retro-base.css retro-buttons.css retro-form-controls.css retro-panels.css
-    retro-range.css retro-scrollbar.css retro-tabs.css retro-tree-view.css
-    retro-window.css
-  )
-
   @doc false
   @spec extract_defined_classes() :: MapSet.t()
   def extract_defined_classes do
-    retro_set = MapSet.new(@retro_files)
-
     Path.wildcard("#{css_dir()}/**/*.css")
     |> Enum.reject(fn path ->
       String.ends_with?(path, "app.css") or
-        MapSet.member?(retro_set, Path.basename(path))
+        String.contains?(path, "/retro/")
     end)
     |> Enum.reduce(%{}, fn file, acc ->
       extract_classes_from_css(File.read!(file), short_css_path(file))
@@ -150,18 +142,12 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   @doc false
   @spec extract_vendor_classes() :: MapSet.t()
   def extract_vendor_classes do
-    @retro_files
-    |> Enum.flat_map(fn file ->
-      path = Path.join(retro_css_dir(), file)
-
-      if File.exists?(path) do
-        path
-        |> File.read!()
-        |> remove_css_comments()
-        |> extract_selectors()
-      else
-        []
-      end
+    Path.wildcard("#{retro_css_dir()}/*.css")
+    |> Enum.flat_map(fn path ->
+      path
+      |> File.read!()
+      |> remove_css_comments()
+      |> extract_selectors()
     end)
     |> MapSet.new()
   end
