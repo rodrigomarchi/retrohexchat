@@ -4,7 +4,7 @@
  * @module games/warlords_renderer
  */
 
-import { PHASE } from "./protocol.js";
+import { PHASE, INITIAL_LIVES } from "./protocol.js";
 import {
   CANVAS_W,
   CANVAS_H,
@@ -18,7 +18,6 @@ import {
   P1_KING_Y,
   P2_KING_X,
   P2_KING_Y,
-  INITIAL_LIVES,
 } from "./physics.js";
 
 /**
