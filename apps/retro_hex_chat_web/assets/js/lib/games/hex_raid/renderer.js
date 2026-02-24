@@ -15,6 +15,7 @@ import {
   SECTION_HEIGHT,
   getBankAt,
   formatFuel,
+  worldToScreenY,
 } from "./physics.js";
 
 /**
@@ -277,12 +278,13 @@ function drawEnemies(ctx, state, colors, time) {
   for (let i = 0; i < state.enemyCount; i++) {
     const e = state.enemies[i];
     if (!e || !e.alive) continue;
-    drawEnemy(ctx, e, colors, time);
+    const screenY = worldToScreenY(e.y, state.scrollY);
+    if (screenY < -20 || screenY > CANVAS_H + 20) continue;
+    drawEnemy(ctx, e.x, screenY, e.type, colors, time);
   }
 }
 
-function drawEnemy(ctx, enemy, colors, time) {
-  const { x, y, type } = enemy;
+function drawEnemy(ctx, x, y, type, colors, time) {
   ctx.save();
   ctx.translate(x, y);
 
@@ -329,10 +331,13 @@ function drawFuelStations(ctx, state, colors, time) {
     const f = state.fuels[i];
     if (!f || !f.available) continue;
 
+    const screenY = worldToScreenY(f.y, state.scrollY);
+    if (screenY < -20 || screenY > CANVAS_H + 20) continue;
+
     const pulse = 0.7 + Math.sin(time * 0.005) * 0.3;
 
     ctx.save();
-    ctx.translate(f.x, f.y);
+    ctx.translate(f.x, screenY);
     ctx.shadowColor = colors.warning;
     ctx.shadowBlur = 8 * pulse;
     ctx.globalAlpha = pulse;
@@ -361,8 +366,8 @@ function drawFuelStations(ctx, state, colors, time) {
 function drawBridge(ctx, state, colors) {
   if (!state.bridgeActive) return;
 
-  const y = state.bridgeY;
-  if (y < 0 || y > CANVAS_H) return;
+  const y = worldToScreenY(state.bridgeY, state.scrollY);
+  if (y < -20 || y > CANVAS_H + 20) return;
 
   // Industrial bridge bars spanning the canal
   ctx.save();

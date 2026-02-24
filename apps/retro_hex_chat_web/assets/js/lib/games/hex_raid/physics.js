@@ -63,6 +63,20 @@ export const RIVER_MIN_WIDTH = 200;
 export const RIVER_MAX_WIDTH = 440;
 const BANK_SEGMENTS = 18; // control points per section
 
+/**
+ * Convert a world-space Y coordinate to screen-space Y.
+ * In the vertical scroller: worldY 0 = bottom of section, SECTION_HEIGHT = top.
+ * Screen: 0 = top, CANVAS_H = bottom.
+ * As scrollY increases, higher worldY values come into view from above.
+ * @param {number} worldY - Y position in section coordinates
+ * @param {number} scrollY - current scroll offset
+ * @returns {number} screen Y coordinate
+ */
+export function worldToScreenY(worldY, scrollY) {
+  const sectionOffset = scrollY % SECTION_HEIGHT;
+  return CANVAS_H - (worldY - sectionOffset);
+}
+
 // --- Seeded PRNG (mulberry32) ---
 
 /**
@@ -491,19 +505,20 @@ export function updateMines(state, scrollDelta) {
 
 /**
  * Update enemy positions.
- * Boats move laterally, helis reverse at banks, jets move toward screen top.
+ * Enemies stay in world coordinates; the scroll camera reveals them.
+ * Boats/helis move laterally, enemy jets fly toward the player (decrease worldY).
  * @param {object} state
- * @param {number} scrollDelta
+ * @param {number} _scrollDelta - unused (kept for API compat)
  * @returns {object}
  */
-export function updateEnemies(state, scrollDelta) {
+export function updateEnemies(state, _scrollDelta) {
   if (state.enemyCount === 0) return state;
 
   const enemies = state.enemies.map((e) => {
     if (!e.alive) return e;
 
-    const newX = e.x + (e.vx || 0);
-    const newY = e.y + scrollDelta * 0.3; // Enemies drift with partial scroll
+    let newX = e.x + (e.vx || 0);
+    let newY = e.y;
 
     // Bounce off approximate river boundaries
     const bank = getBankAt(state.banks, e.y);
@@ -511,16 +526,20 @@ export function updateEnemies(state, scrollDelta) {
       return { ...e, x: e.x, y: newY, vx: -(e.vx || 0) };
     }
 
-    // Enemy jets move toward screen center-bottom
+    // Enemy jets fly toward the player (lower worldY = closer to bottom)
     if (e.type === ENEMY_TYPE.JET) {
-      return { ...e, x: newX, y: newY + 2 };
+      newY = e.y - 2;
     }
 
     return { ...e, x: newX, y: newY };
   });
 
-  // Remove off-screen enemies
-  const visible = enemies.filter((e) => !e.alive || e.y < CANVAS_H + 50);
+  // Remove enemies that scrolled off-screen (below bottom or above top)
+  const visible = enemies.filter((e) => {
+    if (!e.alive) return false;
+    const screenY = worldToScreenY(e.y, state.scrollY);
+    return screenY > -100 && screenY < CANVAS_H + 100;
+  });
 
   return {
     ...state,
@@ -607,10 +626,8 @@ export function checkRiverCollision(state, player) {
 
   if (!state[aliveKey] || state[invulnKey]) return false;
 
-  // Convert screen Y to section-local Y
-  const sectionOffset = (state.section - 1) * SECTION_HEIGHT;
-  const worldY = state.scrollY + (CANVAS_H - state[yKey]);
-  const localY = worldY - sectionOffset;
+  // Convert screen Y to section-local Y (scrollY resets per section)
+  const localY = (state.scrollY % SECTION_HEIGHT) + (CANVAS_H - state[yKey]);
 
   const bank = getBankAt(state.banks, localY);
   const x = state[xKey];
@@ -639,7 +656,8 @@ export function checkMissileHits(state) {
       if (!enemies[i].alive) continue;
 
       const dx = mx - enemies[i].x;
-      const dy = my - enemies[i].y;
+      const enemyScreenY = worldToScreenY(enemies[i].y, s.scrollY);
+      const dy = my - enemyScreenY;
       const hitDist = MISSILE_RADIUS + 8; // enemy ~8px radius
 
       if (dx * dx + dy * dy < hitDist * hitDist) {
@@ -680,9 +698,10 @@ export function checkBridgeHits(state) {
     if (!s[`${prefix}Active`]) continue;
 
     const my = s[`${prefix}Y`];
+    const bridgeScreenY = worldToScreenY(s.bridgeY, s.scrollY);
 
     // Bridge spans full river width; check Y proximity
-    if (Math.abs(my - s.bridgeY) < BRIDGE_HEIGHT) {
+    if (Math.abs(my - bridgeScreenY) < BRIDGE_HEIGHT) {
       s = { ...s, [`${prefix}Active`]: false };
       const newHp = s.bridgeHp - 1;
       events.bridgeHit = true;
@@ -727,7 +746,8 @@ export function checkEnemyCollisions(state) {
     for (const e of s.enemies) {
       if (!e.alive) continue;
       const dx = s[xKey] - e.x;
-      const dy = s[yKey] - e.y;
+      const enemyScreenY = worldToScreenY(e.y, s.scrollY);
+      const dy = s[yKey] - enemyScreenY;
       const hitDist = JET_RADIUS + 8;
 
       if (dx * dx + dy * dy < hitDist * hitDist) {
@@ -762,7 +782,8 @@ export function checkFuelCapture(state) {
       if (!s[aliveKey]) continue;
 
       const dx = s[xKey] - fuels[i].x;
-      const dy = s[yKey] - fuels[i].y;
+      const fuelScreenY = worldToScreenY(fuels[i].y, s.scrollY);
+      const dy = s[yKey] - fuelScreenY;
 
       if (dx * dx + dy * dy < 15 * 15) {
         // Capture!
@@ -784,7 +805,8 @@ export function checkFuelCapture(state) {
       if (!s[`${prefix}Active`]) continue;
 
       const dx = s[`${prefix}X`] - fuels[i].x;
-      const dy = s[`${prefix}Y`] - fuels[i].y;
+      const fScreenY = worldToScreenY(fuels[i].y, s.scrollY);
+      const dy = s[`${prefix}Y`] - fScreenY;
 
       if (dx * dx + dy * dy < 12 * 12) {
         fuels[i] = { ...fuels[i], available: false };
@@ -855,6 +877,7 @@ export function checkBridgeCollision(state) {
 
   const s = { ...state };
   const events = { ...s.events };
+  const bridgeScreenY = worldToScreenY(s.bridgeY, s.scrollY);
 
   for (const player of [1, 2]) {
     const yKey = player === 1 ? "jet1Y" : "jet2Y";
@@ -863,7 +886,7 @@ export function checkBridgeCollision(state) {
 
     if (!s[aliveKey] || s[invulnKey]) continue;
 
-    if (Math.abs(s[yKey] - s.bridgeY) < BRIDGE_HEIGHT + JET_RADIUS) {
+    if (Math.abs(s[yKey] - bridgeScreenY) < BRIDGE_HEIGHT + JET_RADIUS) {
       events.death = player;
     }
   }

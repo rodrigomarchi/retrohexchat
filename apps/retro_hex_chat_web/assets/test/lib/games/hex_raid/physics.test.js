@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   CANVAS_W,
+  CANVAS_H,
   INITIAL_LIVES,
   INITIAL_FUEL,
   SECTION_HEIGHT,
@@ -38,6 +39,7 @@ import {
   clearEvents,
   getTotalSections,
   getMineCooldown,
+  worldToScreenY,
 } from "../../../../js/lib/games/hex_raid/physics.js";
 import {
   PHASE,
@@ -238,15 +240,22 @@ describe("Hex Raid Physics", () => {
   });
 
   describe("missile collision with enemies", () => {
+    // Enemies use world coords; missiles use screen coords.
+    // worldToScreenY(worldY, 0) = CANVAS_H - worldY
+    // So enemy at worldY = CANVAS_H - screenY maps to screenY.
+    const missileScreenY = 200;
+    const enemyWorldY = CANVAS_H - missileScreenY; // 280
+
     it("destroys enemy and awards correct score", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
         phase: PHASE.FLYING,
+        scrollY: 0,
         m1Active: true,
         m1X: 100,
-        m1Y: 100,
-        enemies: [{ type: ENEMY_TYPE.BOAT, x: 100, y: 100, alive: true }],
+        m1Y: missileScreenY,
+        enemies: [{ type: ENEMY_TYPE.BOAT, x: 100, y: enemyWorldY, alive: true }],
         enemyCount: 1,
       };
       const result = checkMissileHits(state);
@@ -264,10 +273,11 @@ describe("Hex Raid Physics", () => {
         let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
         state = {
           ...state,
+          scrollY: 0,
           m1Active: true,
           m1X: 100,
-          m1Y: 100,
-          enemies: [{ type, x: 100, y: 100, alive: true }],
+          m1Y: missileScreenY,
+          enemies: [{ type, x: 100, y: enemyWorldY, alive: true }],
           enemyCount: 1,
         };
         const result = checkMissileHits(state);
@@ -279,10 +289,11 @@ describe("Hex Raid Physics", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
+        scrollY: 0,
         m1Active: true,
         m1X: 100,
-        m1Y: 100,
-        enemies: [{ type: ENEMY_TYPE.BOAT, x: 100, y: 100, alive: false }],
+        m1Y: missileScreenY,
+        enemies: [{ type: ENEMY_TYPE.BOAT, x: 100, y: enemyWorldY, alive: false }],
         enemyCount: 1,
       };
       const result = checkMissileHits(state);
@@ -291,13 +302,21 @@ describe("Hex Raid Physics", () => {
   });
 
   describe("bridge mechanics", () => {
+    // Bridge is at worldY = SECTION_HEIGHT - 50 = 1750.
+    // To bring it on-screen, set scrollY so worldToScreenY gives a visible position.
+    // worldToScreenY(1750, scrollY) = CANVAS_H - (1750 - scrollY)
+    // For screenY=240: scrollY = 1750 - (CANVAS_H - 240) = 1750 - 240 = 1510
+    const bridgeScrollY = 1510;
+    const bridgeOnScreen = 240; // approx screen Y when scrollY=1510
+
     it("bridge hit decrements HP", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
+        scrollY: bridgeScrollY,
         m1Active: true,
         m1X: CANVAS_W / 2,
-        m1Y: state.bridgeY,
+        m1Y: bridgeOnScreen,
         bridgeActive: true,
         bridgeHp: BRIDGE_HP,
       };
@@ -310,9 +329,10 @@ describe("Hex Raid Physics", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
+        scrollY: bridgeScrollY,
         m1Active: true,
         m1X: CANVAS_W / 2,
-        m1Y: state.bridgeY,
+        m1Y: bridgeOnScreen,
         bridgeActive: true,
         bridgeHp: 1,
       };
@@ -327,7 +347,8 @@ describe("Hex Raid Physics", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
-        jet1Y: state.bridgeY,
+        scrollY: bridgeScrollY,
+        jet1Y: bridgeOnScreen,
         bridgeActive: true,
         bridgeHp: 3,
       };
@@ -339,7 +360,8 @@ describe("Hex Raid Physics", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
-        jet1Y: state.bridgeY,
+        scrollY: bridgeScrollY,
+        jet1Y: bridgeOnScreen,
         bridgeActive: false,
       };
       const result = checkBridgeCollision(state);
@@ -348,13 +370,18 @@ describe("Hex Raid Physics", () => {
   });
 
   describe("fuel mechanics", () => {
+    // Fuel uses world coords; jet uses screen coords.
+    // worldToScreenY(worldY, 0) = CANVAS_H - worldY
+    // Jet is at screenY ~420 (CANVAS_H - 60). So fuel worldY = CANVAS_H - 420 = 60.
+
     it("captures fuel station (first come first served)", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       const fuelX = state.jet1X;
-      const fuelY = state.jet1Y;
+      const fuelWorldY = CANVAS_H - state.jet1Y; // world Y that maps to jet screen Y
       state = {
         ...state,
-        fuels: [{ x: fuelX, y: fuelY, available: true }],
+        scrollY: 0,
+        fuels: [{ x: fuelX, y: fuelWorldY, available: true }],
         fuelCount: 1,
         jet1Fuel: 100,
       };
@@ -366,9 +393,11 @@ describe("Hex Raid Physics", () => {
 
     it("does not capture unavailable fuel", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      const fuelWorldY = CANVAS_H - state.jet1Y;
       state = {
         ...state,
-        fuels: [{ x: state.jet1X, y: state.jet1Y, available: false }],
+        scrollY: 0,
+        fuels: [{ x: state.jet1X, y: fuelWorldY, available: false }],
         fuelCount: 1,
         jet1Fuel: 100,
       };
@@ -609,6 +638,25 @@ describe("Hex Raid Physics", () => {
       const { state: newState, scrollDelta } = updateScroll(state);
       expect(newState.scrollY).toBeGreaterThan(0);
       expect(scrollDelta).toBeGreaterThan(0);
+    });
+  });
+
+  describe("worldToScreenY", () => {
+    it("converts world Y to screen Y at scrollY=0", () => {
+      // At scroll 0, worldY=0 maps to bottom of screen
+      expect(worldToScreenY(0, 0)).toBe(CANVAS_H);
+      // worldY=CANVAS_H maps to top of screen
+      expect(worldToScreenY(CANVAS_H, 0)).toBe(0);
+    });
+
+    it("scrolling brings higher worldY into view", () => {
+      // Enemy at worldY=1000, scroll=800: screenY = 480 - (1000-800) = 280
+      expect(worldToScreenY(1000, 800)).toBe(CANVAS_H - 200);
+    });
+
+    it("wraps around SECTION_HEIGHT for sectionOffset", () => {
+      // scrollY = SECTION_HEIGHT should be same as scrollY = 0
+      expect(worldToScreenY(100, SECTION_HEIGHT)).toBe(worldToScreenY(100, 0));
     });
   });
 
