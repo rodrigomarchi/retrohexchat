@@ -43,7 +43,7 @@ defmodule RetroHexChat.Games.Catalog do
         "Top-down tank combat in a destructible maze. " <>
           "Shots ricochet off walls — use geometry to your advantage.",
       icon: "game_tanks",
-      controls: "Arrow keys to move, Space to fire"
+      controls: "Arrow keys (Left/Right rotate, Up forward), Space to fire"
     },
     %{
       id: "star_duel",

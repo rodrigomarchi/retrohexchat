@@ -992,7 +992,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-star-duel",
           "feature-gravity-well",
           "feature-debris-field",
-          "feature-hex-warlords"
+          "feature-hex-warlords",
+          "feature-pixel-tanks"
         ]
       },
       %{
@@ -1019,9 +1020,22 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         id: "feature-pixel-tanks",
         title: "Pixel Tanks",
         category: "Features",
-        keywords: ["pixel tanks", "tank", "combat", "maze", "ricochet", "game"],
+        keywords: [
+          "pixel tanks",
+          "tank",
+          "combat",
+          "maze",
+          "ricochet",
+          "game",
+          "shooter",
+          "missile"
+        ],
         icon: :icon_star,
-        description: "Top-down tank combat in a destructible maze with ricocheting shots.",
+        description:
+          "Top-down tank combat in a maze arena. Rotate your tank, drive forward, and fire " <>
+            "missiles to hit your opponent. One missile at a time — miss and you're vulnerable. " <>
+            "2-minute rounds, best of 3. Modes: Classic (open field) and Maze Battle. " <>
+            "Controls: Arrow keys (Left/Right rotate, Up forward) or A/D/W, Space or Shift to fire.",
         see_also: ["feature-p2p-games"]
       },
       %{

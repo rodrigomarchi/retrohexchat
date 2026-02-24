@@ -10,6 +10,7 @@ import { BreakoutEngine } from "../../lib/games/breakout/engine.js";
 import { SurroundEngine } from "../../lib/games/surround/engine.js";
 import { StarDuelEngine } from "../../lib/games/star_duel/engine.js";
 import { WarlordEngine } from "../../lib/games/warlords/engine.js";
+import { PixelTanksEngine } from "../../lib/games/pixel_tanks/engine.js";
 
 /**
  * Create the appropriate engine for the given game ID.
@@ -34,6 +35,8 @@ function createEngine(canvas, channel, gameId, isHost, onGameEnd) {
       return new StarDuelEngine(canvas, channel, gameId, isHost, onGameEnd);
     case "hex_warlords":
       return new WarlordEngine(canvas, channel, gameId, isHost, onGameEnd);
+    case "pixel_tanks":
+      return new PixelTanksEngine(canvas, channel, gameId, isHost, onGameEnd);
     default:
       return new GameEngine(canvas, channel, gameId, isHost);
   }
