@@ -94,6 +94,10 @@ defmodule RetroHexChatWeb.ChatLive.NotificationEvents do
     {:halt, Phoenix.LiveView.push_navigate(socket, to: "/p2p/#{token}")}
   end
 
+  def handle_event("accept_game", %{"token" => token}, socket) do
+    {:halt, Phoenix.LiveView.push_navigate(socket, to: "/game/#{token}")}
+  end
+
   def handle_event("reject_p2p", %{"token" => token, "from" => from}, socket) do
     session = socket.assigns.session
 

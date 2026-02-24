@@ -186,6 +186,50 @@
   border-bottom: var(--border-width) solid var(--color-border);
 }
 
+/* ── Game result (expired screen) ─────────────── */
+
+.game-result {
+  margin: var(--space-sm) 0;
+  padding: var(--space-sm);
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.game-result__title {
+  font-weight: bold;
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-xs);
+}
+
+.game-result__scores {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-lg, 1.25rem);
+  font-weight: bold;
+}
+
+.game-result__player {
+  min-width: 2ch;
+}
+
+.game-result__player--winner {
+  color: var(--color-success, var(--color-text));
+}
+
+.game-result__score {
+  font-variant-numeric: tabular-nums;
+}
+
+.game-result__winner {
+  margin-top: var(--space-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
 /* ── Inactivity warning ────────────────────────── */
 
 .game-inactivity {

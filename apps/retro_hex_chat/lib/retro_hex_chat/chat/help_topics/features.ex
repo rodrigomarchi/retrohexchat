@@ -990,10 +990,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         id: "feature-hex-pong",
         title: "Hex Pong",
         category: "Features",
-        keywords: ["hex pong", "pong", "paddle", "ball", "game"],
+        keywords: ["hex pong", "pong", "paddle", "ball", "game", "cyberpunk", "neon"],
         icon: :icon_star,
         description:
-          "Classic Pong with hexagonal paddles and power-ups. Ball accelerates progressively."
+          "Cyberpunk Pong with neon visuals, CRT effects, and synth audio. First to 11 (win by 2). Use Arrow keys or W/S."
       },
       %{
         id: "feature-light-trails",

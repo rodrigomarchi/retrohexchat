@@ -82,6 +82,7 @@ defmodule RetroHexChatWeb.Components.GameLobby do
   # --- Expired state ---
 
   attr :reason, :string, required: true
+  attr :game_result, :map, default: nil
 
   @spec game_expired(map()) :: Phoenix.LiveView.Rendered.t()
   def game_expired(assigns) do
@@ -94,6 +95,7 @@ defmodule RetroHexChatWeb.Components.GameLobby do
         <div class="p2p-lobby-expired">
           <Icons.icon_clock class="p2p-lobby-expired__icon" />
           <p class="p2p-lobby-expired__title">Session Unavailable</p>
+          <.game_result_card :if={@game_result} result={@game_result} />
           <p class="p2p-lobby-expired__reason">{@reason}</p>
         </div>
       </div>
@@ -230,6 +232,35 @@ defmodule RetroHexChatWeb.Components.GameLobby do
           <Icons.icon_send class="btn-icon__svg" /> Send
         </button>
       </form>
+    </div>
+    """
+  end
+
+  attr :result, :map, required: true
+
+  defp game_result_card(assigns) do
+    score = assigns.result["score"] || %{}
+    p1 = score["p1"] || 0
+    p2 = score["p2"] || 0
+    winner = assigns.result["winner"]
+
+    assigns = assign(assigns, p1: p1, p2: p2, winner: winner)
+
+    ~H"""
+    <div class="game-result">
+      <div class="game-result__title">FINAL SCORE</div>
+      <div class="game-result__scores">
+        <span class={"game-result__player #{if @winner == 1, do: "game-result__player--winner"}"}>
+          P1
+        </span>
+        <span class="game-result__score">{@p1} &times; {@p2}</span>
+        <span class={"game-result__player #{if @winner == 2, do: "game-result__player--winner"}"}>
+          P2
+        </span>
+      </div>
+      <div :if={@winner} class="game-result__winner">
+        Player {@winner} wins!
+      </div>
     </div>
     """
   end

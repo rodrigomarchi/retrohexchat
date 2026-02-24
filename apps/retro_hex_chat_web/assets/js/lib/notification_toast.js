@@ -49,7 +49,7 @@ export function createNotificationToastManager(options = {}) {
   function displayToast(notification) {
     if (!container) return;
 
-    if (notification.type === "p2p_invite") {
+    if (notification.type === "p2p_invite" || notification.type === "game_invite") {
       displayP2pInviteToast(notification);
       return;
     }
@@ -108,9 +108,10 @@ export function createNotificationToastManager(options = {}) {
       e.stopPropagation();
       dismiss(el, notification.id);
       if (onP2pAction) {
-        onP2pAction({ action: "accept", token: notification.token });
+        onP2pAction({ action: "accept", token: notification.token, type: notification.type });
       } else {
-        window.open(`/p2p/${notification.token}`, "_blank");
+        const prefix = notification.type === "game_invite" ? "/game/" : "/p2p/";
+        window.open(`${prefix}${notification.token}`, "_blank");
       }
     });
 

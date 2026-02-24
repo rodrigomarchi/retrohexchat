@@ -48,7 +48,7 @@ defmodule RetroHexChat.Games.Schema.GameSession do
   @spec status_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def status_changeset(session, attrs) do
     session
-    |> cast(attrs, [:status, :game_id, :closed_at, :closed_reason])
+    |> cast(attrs, [:status, :game_id, :metadata, :closed_at, :closed_reason])
     |> validate_required([:status])
     |> validate_inclusion(:status, @status_values)
     |> validate_terminal_fields()

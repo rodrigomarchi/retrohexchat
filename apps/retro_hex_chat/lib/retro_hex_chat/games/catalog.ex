@@ -18,12 +18,12 @@ defmodule RetroHexChat.Games.Catalog do
     %{
       id: "hex_pong",
       name: "Hex Pong",
-      tagline: "Pong with a twist",
+      tagline: "Cyberpunk Pong",
       description:
-        "Classic Pong reimagined with hexagonal paddles and power-ups. " <>
-          "The ball accelerates progressively — how long can you keep up?",
+        "Pong reimagined as cyberpunk arcade — neon glow, CRT scanlines, synth audio. " <>
+          "First to 11 points (win by 2). Ball speeds up on each rally.",
       icon: "game_pong",
-      controls: "Arrow keys (Up/Down) to move paddle"
+      controls: "Arrow keys or W/S to move paddle"
     },
     %{
       id: "light_trails",

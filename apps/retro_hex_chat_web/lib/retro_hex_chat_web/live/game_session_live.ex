@@ -28,8 +28,13 @@ defmodule RetroHexChatWeb.GameSessionLive do
          :ok <- verify_not_terminal(db_session) do
       mount_game_lobby(socket, token, nickname, user_id, db_session)
     else
-      {:expired, reason} ->
-        {:ok, assign(socket, expired: true, expired_reason: expired_reason_label(reason))}
+      {:expired, reason, metadata} ->
+        {:ok,
+         assign(socket,
+           expired: true,
+           expired_reason: expired_reason_label(reason),
+           game_result: metadata["result"]
+         )}
 
       {:redirect, redirect_socket} when is_struct(redirect_socket) ->
         {:ok, redirect_socket}
@@ -56,7 +61,7 @@ defmodule RetroHexChatWeb.GameSessionLive do
         </:panels>
       </RetroHexChatWeb.Components.AppHeader.app_header>
       <div class="game-lobby">
-        <GameLobby.game_expired reason={@expired_reason} />
+        <GameLobby.game_expired reason={@expired_reason} game_result={@game_result} />
       </div>
     </div>
     """
@@ -284,6 +289,12 @@ defmodule RetroHexChatWeb.GameSessionLive do
     end
   end
 
+  def handle_event("game_result", %{"score" => score, "winner" => winner}, socket) do
+    result = %{"score" => score, "winner" => winner}
+    Games.finish_game(socket.assigns.token, socket.assigns.user_id, result)
+    {:noreply, socket}
+  end
+
   def handle_event("game_connected", _params, socket) do
     Logger.info("Game WebRTC connected: token=#{socket.assigns.token}")
 
@@ -405,7 +416,7 @@ defmodule RetroHexChatWeb.GameSessionLive do
 
   defp verify_not_terminal(session) do
     if GameSession.terminal?(session.status) do
-      {:expired, session.closed_reason || session.status}
+      {:expired, session.closed_reason || session.status, session.metadata || %{}}
     else
       :ok
     end

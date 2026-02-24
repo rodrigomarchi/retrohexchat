@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.GameInvite do
     pm_content = "Game session started! Join the lobby: /game/#{token}"
 
     socket =
-      case Service.send_private_message(session.nickname, target, pm_content, "game_invite") do
+      case Service.send_private_message(session.nickname, target, pm_content, "p2p_invite") do
         {:ok, _pm} ->
           Phoenix.PubSub.broadcast(
             RetroHexChat.PubSub,
@@ -27,13 +27,19 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.GameInvite do
             {:incoming_pm_notify, %{sender: session.nickname}}
           )
 
+          # Toast notification so receiver can Accept → push_navigate (same tab)
+          Phoenix.PubSub.broadcast(
+            RetroHexChat.PubSub,
+            "user:#{target}",
+            %{event: "game_invite", payload: %{token: token, from: session.nickname}}
+          )
+
           socket
           |> PM.open_pm_conversation(target)
           |> Messages.system_event("Game invite sent to #{target}. Waiting for response...")
 
-        {:error, reason} ->
-          msg = "Failed to send game invite to #{target}: #{reason}"
-          Messages.system_event(socket, msg)
+        {:error, _reason} ->
+          Messages.system_event(socket, "Failed to send game invite to #{target}.")
       end
 
     push_event(socket, "scroll_to_bottom", %{})

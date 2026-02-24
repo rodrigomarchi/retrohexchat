@@ -96,7 +96,7 @@ describe("GameCanvasHook", () => {
 
       // Simulate game_start event
       const startHandler = ctx.handleEvent.mock.calls.find((c) => c[0] === "game_start")[1];
-      startHandler({ game_id: "hex_pong", role: "creator" });
+      startHandler({ game_id: "hex_pong", is_host: true });
 
       expect(hook.engine).toBeNull();
     });

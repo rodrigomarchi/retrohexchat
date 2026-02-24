@@ -91,6 +91,14 @@ defmodule RetroHexChat.Games.SessionServer do
     end
   end
 
+  @spec finish_game(String.t(), integer(), map()) :: :ok | {:error, atom()}
+  def finish_game(token, user_id, result) do
+    case Registry.lookup(token) do
+      {:ok, pid} -> GenServer.call(pid, {:finish_game, user_id, result})
+      {:error, :not_found} -> {:error, :not_found}
+    end
+  end
+
   # --- GenServer Callbacks ---
 
   @impl true
@@ -244,6 +252,20 @@ defmodule RetroHexChat.Games.SessionServer do
     end
   end
 
+  def handle_call({:finish_game, user_id, result}, _from, state) do
+    cond do
+      state.session.status != "playing" ->
+        {:reply, {:error, :not_playing}, state}
+
+      user_id != state.session.creator_id ->
+        {:reply, {:error, :not_host}, state}
+
+      true ->
+        state = do_finish(state, result)
+        {:stop, :normal, :ok, state}
+    end
+  end
+
   @impl true
   def handle_cast(:activity, state) do
     if state.session.status == "lobby" do
@@ -349,6 +371,27 @@ defmodule RetroHexChat.Games.SessionServer do
       })
 
     broadcast(state.token, "game_status_changed", %{status: "finished", reason: "game_over"})
+    %{state | session: session}
+  end
+
+  defp do_finish(state, result) do
+    Logger.info("Game finished: token=#{state.token}, result=#{inspect(result)}")
+    state = cancel_all_timers(state)
+    now = DateTime.utc_now()
+
+    {:ok, session} =
+      Queries.update_status(state.session, "finished", %{
+        metadata: %{"result" => result},
+        closed_at: now,
+        closed_reason: "game_over"
+      })
+
+    broadcast(state.token, "game_status_changed", %{
+      status: "finished",
+      reason: "game_over",
+      result: result
+    })
+
     %{state | session: session}
   end
 

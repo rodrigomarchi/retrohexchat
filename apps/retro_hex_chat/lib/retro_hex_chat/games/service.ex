@@ -85,6 +85,11 @@ defmodule RetroHexChat.Games.Service do
     SessionServer.respond_game(token, user_id, nick || "unknown", accepted?)
   end
 
+  @spec finish_game(String.t(), integer(), map()) :: :ok | {:error, atom()}
+  def finish_game(token, user_id, result) do
+    SessionServer.finish_game(token, user_id, result)
+  end
+
   # --- Private Helpers ---
 
   defp generate_token do

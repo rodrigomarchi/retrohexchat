@@ -41,6 +41,11 @@ defmodule RetroHexChat.Games do
   @spec respond_game(String.t(), integer(), boolean()) :: :ok | {:error, atom()}
   defdelegate respond_game(token, user_id, accepted?), to: Service
 
+  # --- Game result ---
+
+  @spec finish_game(String.t(), integer(), map()) :: :ok | {:error, atom()}
+  defdelegate finish_game(token, user_id, result), to: Service
+
   # --- State transitions ---
 
   @spec transition_status(String.t(), atom()) :: :ok | {:error, String.t()}

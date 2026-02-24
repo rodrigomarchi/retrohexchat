@@ -30,9 +30,13 @@ const NotificationDispatcherHook = {
           this.pushEvent("navigate_to_channel", { channel });
         }
       },
-      onP2pAction: ({ action, token, from }) => {
+      onP2pAction: ({ action, token, from, type }) => {
         if (action === "accept") {
-          this.pushEvent("accept_p2p", { token });
+          if (type === "game_invite") {
+            this.pushEvent("accept_game", { token });
+          } else {
+            this.pushEvent("accept_p2p", { token });
+          }
         } else if (action === "reject") {
           this.pushEvent("reject_p2p", { token, from: from || "" });
         }

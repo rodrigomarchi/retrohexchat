@@ -697,15 +697,15 @@ defmodule RetroHexChatWeb.ChatLive do
 
   @spec extract_p2p_label(String.t()) :: String.t()
   defp extract_p2p_label(content) when is_binary(content) do
-    case String.split(content, ". Join the lobby:") do
-      [label | _] -> label
+    case Regex.run(~r{^(.+?)[.!?]?\s*Join the lobby:}, content) do
+      [_, label] -> label
       _ -> content
     end
   end
 
   @spec extract_p2p_link(String.t()) :: String.t()
   defp extract_p2p_link(content) when is_binary(content) do
-    case Regex.run(~r{(/p2p/[^\s]+)}, content) do
+    case Regex.run(~r{(/(?:p2p|game)/[^\s]+)}, content) do
       [_, path] -> path
       _ -> "#"
     end

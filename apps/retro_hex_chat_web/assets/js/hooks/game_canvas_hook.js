@@ -5,6 +5,25 @@
  * Listens for the game_channel_ready event from GameWebRTCHook.
  */
 import { GameEngine } from "../lib/game_engine.js";
+import { PongEngine } from "../lib/games/pong_engine.js";
+
+/**
+ * Create the appropriate engine for the given game ID.
+ * @param {HTMLCanvasElement} canvas
+ * @param {RTCDataChannel} channel
+ * @param {string} gameId
+ * @param {boolean} isHost
+ * @param {function|null} onGameEnd
+ * @returns {GameEngine}
+ */
+function createEngine(canvas, channel, gameId, isHost, onGameEnd) {
+  switch (gameId) {
+    case "hex_pong":
+      return new PongEngine(canvas, channel, gameId, isHost, onGameEnd);
+    default:
+      return new GameEngine(canvas, channel, gameId, isHost);
+  }
+}
 
 const GameCanvasHook = {
   mounted() {
@@ -25,9 +44,9 @@ const GameCanvasHook = {
       }
     }
 
-    this.handleEvent("game_start", ({ game_id, role }) => {
+    this.handleEvent("game_start", ({ game_id, is_host }) => {
       this._gameId = game_id;
-      this._role = role;
+      this._isHost = is_host;
       this._maybeInitGame();
     });
 
@@ -42,8 +61,11 @@ const GameCanvasHook = {
     const canvas = this.el.querySelector("canvas");
     if (!canvas) return;
 
-    const isHost = this._role === "creator";
-    this.engine = new GameEngine(canvas, this.channel, this._gameId, isHost);
+    const isHost = !!this._isHost;
+    const onGameEnd = (result) => {
+      this.pushEvent("game_result", result);
+    };
+    this.engine = createEngine(canvas, this.channel, this._gameId, isHost, onGameEnd);
     this.engine.start();
   },
 
