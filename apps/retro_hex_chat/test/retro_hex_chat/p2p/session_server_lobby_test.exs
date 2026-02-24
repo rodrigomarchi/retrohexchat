@@ -164,12 +164,17 @@ defmodule RetroHexChat.P2P.SessionServerLobbyTest do
                SessionServer.send_message(token, alice.id, alice.nickname, long)
     end
 
-    test "rejects messages when not in lobby status", %{alice: alice, token: token} do
-      # Transition to connecting
+    test "allows messages during connecting status", %{alice: alice, token: token} do
       :ok = SessionServer.transition(token, :connecting)
 
-      assert {:error, :not_in_lobby} =
-               SessionServer.send_message(token, alice.id, alice.nickname, "hi")
+      assert :ok = SessionServer.send_message(token, alice.id, alice.nickname, "hi")
+    end
+
+    test "allows messages during active status", %{alice: alice, token: token} do
+      :ok = SessionServer.transition(token, :connecting)
+      :ok = SessionServer.transition(token, :active)
+
+      assert :ok = SessionServer.send_message(token, alice.id, alice.nickname, "hi")
     end
 
     test "resets activity timer on message", %{alice: alice, token: token} do
