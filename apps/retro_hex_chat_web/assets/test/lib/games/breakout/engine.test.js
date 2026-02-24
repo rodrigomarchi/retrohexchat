@@ -538,6 +538,81 @@ describe("BreakoutEngine", () => {
     });
   });
 
+  describe("_gameLoop phases", () => {
+    it("keeps rAF running during LIFE_LOST", () => {
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
+      engine.start();
+      engine.running = true;
+      engine.colors = getColors(canvas);
+      engine.gameState.phase = PHASE.LIFE_LOST;
+      engine.gameState.lives = 2;
+
+      engine._gameLoop(0);
+
+      expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
+    });
+
+    it("schedules serve timeout only once during LIFE_LOST", () => {
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
+      engine.start();
+      engine.running = true;
+      engine.colors = getColors(canvas);
+      engine.gameState.phase = PHASE.LIFE_LOST;
+      engine.gameState.lives = 2;
+
+      engine._gameLoop(0);
+      const timer1 = engine.phaseTimer;
+
+      // Second call should not create a new timer
+      engine._gameLoop(0);
+      const timer2 = engine.phaseTimer;
+
+      expect(timer1).toBe(timer2);
+    });
+
+    it("does not schedule rAF when FINISHED", () => {
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
+      engine.start();
+      engine.running = true;
+      engine.colors = getColors(canvas);
+      engine.gameState.phase = PHASE.FINISHED;
+      engine.gameState.won = true;
+      globalThis.requestAnimationFrame.mockClear();
+
+      engine._gameLoop(0);
+
+      expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
+    });
+
+    it("tracks exit side as bottom when ball exits bottom", () => {
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
+      engine.start();
+      engine.running = true;
+      engine.colors = getColors(canvas);
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.ballY = CANVAS_H + 10;
+      engine.gameState.ballVY = 5;
+
+      engine._gameLoop(0);
+
+      expect(engine.lastExitSide).toBe("bottom");
+    });
+
+    it("tracks exit side as top when ball exits top", () => {
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
+      engine.start();
+      engine.running = true;
+      engine.colors = getColors(canvas);
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.ballY = -10;
+      engine.gameState.ballVY = -5;
+
+      engine._gameLoop(0);
+
+      expect(engine.lastExitSide).toBe("top");
+    });
+  });
+
   describe("countdown flow (host)", () => {
     beforeEach(() => {
       vi.useFakeTimers();

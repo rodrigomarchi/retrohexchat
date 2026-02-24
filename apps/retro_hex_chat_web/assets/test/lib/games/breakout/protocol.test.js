@@ -49,6 +49,27 @@ describe("breakout_protocol", () => {
       const decoded = decodeBlockBitmap(bitmap);
       expect(decoded).toHaveLength(TOTAL_BLOCKS);
     });
+
+    it("encodes alternating alive/dead pattern", () => {
+      const blocks = Array.from({ length: TOTAL_BLOCKS }, (_, i) => ({
+        alive: i % 2 === 0,
+      }));
+      const bitmap = encodeBlockBitmap(blocks);
+      const decoded = decodeBlockBitmap(bitmap);
+      for (let i = 0; i < TOTAL_BLOCKS; i++) {
+        expect(decoded[i]).toBe(i % 2 === 0);
+      }
+    });
+
+    it("handles single block alive at last position", () => {
+      const blocks = Array.from({ length: TOTAL_BLOCKS }, (_, i) => ({
+        alive: i === TOTAL_BLOCKS - 1,
+      }));
+      const bitmap = encodeBlockBitmap(blocks);
+      const decoded = decodeBlockBitmap(bitmap);
+      expect(decoded[TOTAL_BLOCKS - 1]).toBe(true);
+      expect(decoded[0]).toBe(false);
+    });
   });
 
   describe("encodeGameState / decodeGameState", () => {
@@ -115,6 +136,30 @@ describe("breakout_protocol", () => {
       const view = new DataView(buf);
       view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
       expect(decodeGameState(buf)).toBeNull();
+    });
+
+    it("round-trips zero score and max lives accurately", () => {
+      const state = {
+        ballX: 0,
+        ballY: 0,
+        ballVX: 0,
+        ballVY: 0,
+        paddle1X: 0,
+        paddle2X: 0,
+        score: 0,
+        lives: 3,
+        phase: PHASE.WAITING,
+        countdown: 3,
+        blocksRemaining: TOTAL_BLOCKS,
+        blocks: Array.from({ length: TOTAL_BLOCKS }, () => ({ alive: true })),
+      };
+      const buf = encodeGameState(state);
+      const decoded = decodeGameState(buf);
+      expect(decoded.score).toBe(0);
+      expect(decoded.lives).toBe(3);
+      expect(decoded.countdown).toBe(3);
+      expect(decoded.blocksRemaining).toBe(TOTAL_BLOCKS);
+      expect(decoded.blocksAlive.every((v) => v === true)).toBe(true);
     });
   });
 

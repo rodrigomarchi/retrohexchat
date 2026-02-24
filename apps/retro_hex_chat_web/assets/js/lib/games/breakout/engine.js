@@ -19,6 +19,7 @@ import {
   getMessageType,
 } from "./protocol.js";
 import {
+  BALL_SIZE,
   createInitialState,
   updatePaddle,
   updateBall,
@@ -53,6 +54,7 @@ export class BreakoutEngine extends GameEngine {
     this.remoteInputs = { left: false, right: false };
     this.frameCount = 0;
     this.phaseTimer = null;
+    this.lastExitSide = null; // "top" or "bottom" — tracks where ball exited
     this.audio = new BreakoutAudio();
     this.colors = null;
     this.peerReady = false;
@@ -248,7 +250,16 @@ export class BreakoutEngine extends GameEngine {
     this._renderState();
 
     this.phaseTimer = setTimeout(() => {
-      this.gameState = serveBall(this.gameState);
+      // Serve toward opposite side of last exit, or random for first serve
+      let direction;
+      if (this.lastExitSide === "bottom") {
+        direction = -1; // serve upward (toward P2)
+      } else if (this.lastExitSide === "top") {
+        direction = 1; // serve downward (toward P1)
+      } else {
+        direction = Math.random() < 0.5 ? 1 : -1;
+      }
+      this.gameState = serveBall(this.gameState, direction);
       this._broadcastState();
       this._startGameLoop();
     }, SERVE_DELAY);
@@ -290,10 +301,11 @@ export class BreakoutEngine extends GameEngine {
       this.audio.playBlockHit(this.gameState.hitBlockRow);
       this.gameState.particles = [
         ...(this.gameState.particles || []),
-        ...createBlockParticles(this.gameState.hitBlockX, this.gameState.hitBlockY).map((p) => ({
-          ...p,
-          color: this.gameState.hitBlockColor,
-        })),
+        ...createBlockParticles(
+          this.gameState.hitBlockX,
+          this.gameState.hitBlockY,
+          this.gameState.hitBlockColor,
+        ),
       ];
       this.gameState.blockHit = false;
     }
@@ -303,6 +315,8 @@ export class BreakoutEngine extends GameEngine {
 
     if (this.gameState.lifeLost) {
       this.audio.playLifeLost();
+      // Track which side the ball exited for serve direction
+      this.lastExitSide = this.gameState.ballY <= 0 + BALL_SIZE / 2 ? "top" : "bottom";
       this.gameState.lifeLost = false;
     }
 
@@ -329,15 +343,18 @@ export class BreakoutEngine extends GameEngine {
       return;
     }
 
-    if (this.gameState.phase === PHASE.LIFE_LOST) {
-      // Pause then serve again
+    if (this.gameState.phase === PHASE.LIFE_LOST && !this.phaseTimer) {
+      // Schedule serve after pause (only once)
       this.phaseTimer = setTimeout(() => {
+        this.phaseTimer = null;
         this._startServing();
       }, LIFE_LOST_PAUSE);
-      return;
     }
 
-    this.animFrame = requestAnimationFrame(this._boundGameLoop);
+    // Keep loop running for particles/rendering during LIFE_LOST
+    if (this.gameState.phase !== PHASE.FINISHED) {
+      this.animFrame = requestAnimationFrame(this._boundGameLoop);
+    }
   }
 
   /** Host: handle game end. */

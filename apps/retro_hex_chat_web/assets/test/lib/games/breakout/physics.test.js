@@ -9,6 +9,8 @@ import {
   PADDLE_SPEED,
   BALL_SIZE,
   INITIAL_BALL_SPEED,
+  MAX_BALL_SPEED,
+  SPEED_INCREMENT,
   INITIAL_LIVES,
   ROW_POINTS,
   createBlockGrid,
@@ -269,6 +271,38 @@ describe("breakout_physics", () => {
       expect(result.paddleHit).toBeFalsy();
     });
 
+    it("increments ball speed on paddle hit", () => {
+      const paddleCenterX = (CANVAS_W - PADDLE_W) / 2 + PADDLE_W / 2;
+      const p1Top = CANVAS_H - PADDLE_MARGIN - PADDLE_H;
+      const state = {
+        ...createInitialState(),
+        ballX: paddleCenterX,
+        ballY: p1Top - BALL_SIZE / 2 + 1,
+        ballVX: 0,
+        ballVY: 5,
+        ballSpeed: INITIAL_BALL_SPEED,
+        phase: PHASE.PLAYING,
+      };
+      const result = checkPaddleCollision(state);
+      expect(result.ballSpeed).toBe(INITIAL_BALL_SPEED + SPEED_INCREMENT);
+    });
+
+    it("does not exceed MAX_BALL_SPEED on paddle hit", () => {
+      const paddleCenterX = (CANVAS_W - PADDLE_W) / 2 + PADDLE_W / 2;
+      const p1Top = CANVAS_H - PADDLE_MARGIN - PADDLE_H;
+      const state = {
+        ...createInitialState(),
+        ballX: paddleCenterX,
+        ballY: p1Top - BALL_SIZE / 2 + 1,
+        ballVX: 0,
+        ballVY: MAX_BALL_SPEED,
+        ballSpeed: MAX_BALL_SPEED,
+        phase: PHASE.PLAYING,
+      };
+      const result = checkPaddleCollision(state);
+      expect(result.ballSpeed).toBeLessThanOrEqual(MAX_BALL_SPEED);
+    });
+
     it("creates steeper angle on edge hit", () => {
       const paddleLeft = (CANVAS_W - PADDLE_W) / 2;
       const p1Top = CANVAS_H - PADDLE_MARGIN - PADDLE_H;
@@ -389,6 +423,72 @@ describe("breakout_physics", () => {
       const result = checkBlockCollision(collisionState);
       expect(result.blockHit).toBeFalsy();
     });
+
+    it("speeds up ball every 5 blocks destroyed", () => {
+      const state = createInitialState();
+      const block = state.blocks[0];
+      const collisionState = {
+        ...state,
+        ballX: block.x + block.w / 2,
+        ballY: block.y + block.h / 2,
+        ballVX: 0,
+        ballVY: -INITIAL_BALL_SPEED,
+        ballSpeed: INITIAL_BALL_SPEED,
+        blocksDestroyed: 4, // This will be the 5th
+        phase: PHASE.PLAYING,
+      };
+      const result = checkBlockCollision(collisionState);
+      expect(result.ballSpeed).toBeGreaterThan(INITIAL_BALL_SPEED);
+    });
+
+    it("does not exceed MAX_BALL_SPEED from block speedup", () => {
+      const state = createInitialState();
+      const block = state.blocks[0];
+      const collisionState = {
+        ...state,
+        ballX: block.x + block.w / 2,
+        ballY: block.y + block.h / 2,
+        ballVX: 0,
+        ballVY: -MAX_BALL_SPEED,
+        ballSpeed: MAX_BALL_SPEED,
+        blocksDestroyed: 4,
+        phase: PHASE.PLAYING,
+      };
+      const result = checkBlockCollision(collisionState);
+      expect(result.ballSpeed).toBeLessThanOrEqual(MAX_BALL_SPEED);
+    });
+
+    it("bounces ball horizontally on side collision", () => {
+      const state = createInitialState();
+      const block = state.blocks[0];
+      // Hit from the left side of the block
+      const collisionState = {
+        ...state,
+        ballX: block.x - BALL_SIZE / 2 + 1,
+        ballY: block.y + block.h / 2,
+        ballVX: 3,
+        ballVY: -1,
+        phase: PHASE.PLAYING,
+      };
+      const result = checkBlockCollision(collisionState);
+      expect(result.blockHit).toBe(true);
+      expect(result.ballVX).toBe(-3);
+    });
+
+    it("provides hit block color for particles", () => {
+      const state = createInitialState();
+      const block = state.blocks[0];
+      const collisionState = {
+        ...state,
+        ballX: block.x + block.w / 2,
+        ballY: block.y + block.h / 2,
+        ballVX: 0,
+        ballVY: -4,
+        phase: PHASE.PLAYING,
+      };
+      const result = checkBlockCollision(collisionState);
+      expect(result.hitBlockColor).toBe(block.color);
+    });
   });
 
   describe("checkLifeLost", () => {
@@ -507,6 +607,24 @@ describe("breakout_physics", () => {
       const speed = Math.sqrt(result.ballVX ** 2 + result.ballVY ** 2);
       expect(speed).toBeCloseTo(INITIAL_BALL_SPEED, 1);
     });
+
+    it("serves downward with direction 1", () => {
+      const state = createInitialState();
+      const result = serveBall(state, 1);
+      expect(result.ballVY).toBeGreaterThan(0);
+    });
+
+    it("serves upward with direction -1", () => {
+      const state = createInitialState();
+      const result = serveBall(state, -1);
+      expect(result.ballVY).toBeLessThan(0);
+    });
+
+    it("defaults to downward serve without direction", () => {
+      const state = createInitialState();
+      const result = serveBall(state);
+      expect(result.ballVY).toBeGreaterThan(0);
+    });
   });
 
   describe("createBlockParticles", () => {
@@ -529,6 +647,20 @@ describe("breakout_physics", () => {
         expect(typeof p.vx).toBe("number");
         expect(typeof p.vy).toBe("number");
         expect(p.life).toBe(1.0);
+      }
+    });
+
+    it("particles use provided color", () => {
+      const particles = createBlockParticles(100, 200, "#ff0066");
+      for (const p of particles) {
+        expect(p.color).toBe("#ff0066");
+      }
+    });
+
+    it("particles use default color when none provided", () => {
+      const particles = createBlockParticles(100, 200);
+      for (const p of particles) {
+        expect(p.color).toBe("#ffaa00");
       }
     });
   });

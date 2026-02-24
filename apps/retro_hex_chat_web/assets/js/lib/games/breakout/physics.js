@@ -14,9 +14,9 @@ export const PADDLE_W = 80;
 export const PADDLE_H = 12;
 export const PADDLE_MARGIN = 20;
 export const BALL_SIZE = 8;
-export const INITIAL_BALL_SPEED = 4;
-export const SPEED_INCREMENT = 0.15;
-export const MAX_BALL_SPEED = 8;
+export const INITIAL_BALL_SPEED = 2.5;
+export const SPEED_INCREMENT = 0.12;
+export const MAX_BALL_SPEED = 5.5;
 export const PADDLE_SPEED = 7;
 export const INITIAL_LIVES = 3;
 export const MAX_BOUNCE_ANGLE = (60 * Math.PI) / 180;
@@ -330,11 +330,12 @@ export function checkWin(state) {
 }
 
 /**
- * Serve the ball from center downward.
+ * Serve the ball from center in the given direction.
  * @param {object} state
+ * @param {number} direction - 1 = downward (toward P1), -1 = upward (toward P2)
  * @returns {object} new state
  */
-export function serveBall(state) {
+export function serveBall(state, direction = 1) {
   const angle = ((Math.random() * 60 - 30) * Math.PI) / 180;
   const speed = INITIAL_BALL_SPEED;
 
@@ -343,7 +344,7 @@ export function serveBall(state) {
     ballX: CANVAS_W / 2,
     ballY: CANVAS_H / 2,
     ballVX: speed * Math.sin(angle),
-    ballVY: speed * Math.cos(angle),
+    ballVY: direction * speed * Math.cos(angle),
     ballSpeed: speed,
     phase: PHASE.PLAYING,
   };
@@ -353,9 +354,10 @@ export function serveBall(state) {
  * Generate block destruction particles.
  * @param {number} x - origin x
  * @param {number} y - origin y
+ * @param {string} color - particle color
  * @returns {Array} particle array
  */
-export function createBlockParticles(x, y) {
+export function createBlockParticles(x, y, color) {
   const particles = [];
   for (let i = 0; i < 8; i++) {
     const angle = Math.random() * Math.PI * 2;
@@ -366,6 +368,7 @@ export function createBlockParticles(x, y) {
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       life: 1.0,
+      color: color || "#ffaa00",
     });
   }
   return particles;
