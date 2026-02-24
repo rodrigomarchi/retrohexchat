@@ -123,6 +123,7 @@ describe("game_engine", () => {
       });
 
       channel = {
+        readyState: "open",
         addEventListener: vi.fn(),
         removeEventListener: vi.fn(),
         send: vi.fn(),

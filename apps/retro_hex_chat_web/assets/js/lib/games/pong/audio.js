@@ -12,10 +12,14 @@ export class PongAudio {
   /** Lazy-init AudioContext on first sound (browser requires user gesture). */
   _ensureContext() {
     if (!this._ctx) {
-      this._ctx = new (window.AudioContext || window.webkitAudioContext)();
+      try {
+        this._ctx = new (window.AudioContext || window.webkitAudioContext)();
+      } catch {
+        return null;
+      }
     }
     if (this._ctx.state === "suspended") {
-      this._ctx.resume();
+      this._ctx.resume().catch(() => {});
     }
     return this._ctx;
   }
@@ -33,6 +37,7 @@ export class PongAudio {
   /** Score — descending 300→100Hz sawtooth, 300ms. */
   playScore() {
     const ctx = this._ensureContext();
+    if (!ctx) return;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.type = "sawtooth";
@@ -48,6 +53,7 @@ export class PongAudio {
   /** Win — ascending arpeggio 400→600→800→1000Hz, 500ms total. */
   playWin() {
     const ctx = this._ensureContext();
+    if (!ctx) return;
     const notes = [400, 600, 800, 1000];
     const noteLen = 0.12;
 
@@ -79,6 +85,7 @@ export class PongAudio {
    */
   _playTone(freq, duration, type, volume) {
     const ctx = this._ensureContext();
+    if (!ctx) return;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.type = type;

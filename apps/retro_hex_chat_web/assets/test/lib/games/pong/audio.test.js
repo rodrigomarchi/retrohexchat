@@ -24,7 +24,7 @@ function createMockAudioContext() {
     state: "running",
     currentTime: 0,
     destination: {},
-    resume: vi.fn(),
+    resume: vi.fn(() => Promise.resolve()),
     createOscillator: vi.fn(() => ({
       ...mockOsc,
       _gain: { ...mockGain, gain: { ...mockGain.gain } },
@@ -81,6 +81,22 @@ describe("PongAudio", () => {
   it("plays countdown sound without throwing", () => {
     const audio = new PongAudio();
     expect(() => audio.playCountdown()).not.toThrow();
+  });
+
+  it("handles AudioContext creation failure gracefully", () => {
+    const origWebkit = globalThis.webkitAudioContext;
+    globalThis.AudioContext = undefined;
+    globalThis.webkitAudioContext = undefined;
+
+    const audio = new PongAudio();
+    expect(() => audio.playPaddleHit()).not.toThrow();
+    expect(() => audio.playWallBounce()).not.toThrow();
+    expect(() => audio.playScore()).not.toThrow();
+    expect(() => audio.playWin()).not.toThrow();
+    expect(() => audio.playCountdown()).not.toThrow();
+    expect(audio._ctx).toBeNull();
+
+    globalThis.webkitAudioContext = origWebkit;
   });
 
   it("resumes suspended context", () => {

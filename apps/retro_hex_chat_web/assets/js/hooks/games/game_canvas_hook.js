@@ -7,6 +7,7 @@
 import { GameEngine } from "../../lib/game_engine.js";
 import { PongEngine } from "../../lib/games/pong/engine.js";
 import { BreakoutEngine } from "../../lib/games/breakout/engine.js";
+import { SurroundEngine } from "../../lib/games/surround/engine.js";
 
 /**
  * Create the appropriate engine for the given game ID.
@@ -23,6 +24,8 @@ function createEngine(canvas, channel, gameId, isHost, onGameEnd) {
       return new PongEngine(canvas, channel, gameId, isHost, onGameEnd);
     case "block_breakers":
       return new BreakoutEngine(canvas, channel, gameId, isHost, onGameEnd);
+    case "light_trails":
+      return new SurroundEngine(canvas, channel, gameId, isHost, onGameEnd);
     default:
       return new GameEngine(canvas, channel, gameId, isHost);
   }

@@ -106,10 +106,10 @@ export class GameEngine {
       const msg = encodeGameMessage(GAME_MSG.GAME_START, {
         gameId: this.gameId,
       });
-      this.channel.send(msg);
+      this._safeSend(msg);
     } else {
       const msg = encodeGameMessage(GAME_MSG.GAME_READY, {});
-      this.channel.send(msg);
+      this._safeSend(msg);
     }
   }
 
@@ -166,7 +166,7 @@ export class GameEngine {
           key,
           pressed: true,
         });
-        this.channel.send(msg);
+        this._safeSend(msg);
       }
     }
   }
@@ -180,7 +180,18 @@ export class GameEngine {
           key,
           pressed: false,
         });
-        this.channel.send(msg);
+        this._safeSend(msg);
+      }
+    }
+  }
+
+  /** Safely send data over DataChannel, ignoring errors on closed channels. */
+  _safeSend(data) {
+    if (this.channel.readyState === "open") {
+      try {
+        this.channel.send(data);
+      } catch {
+        // Channel closed between readyState check and send — ignore
       }
     }
   }

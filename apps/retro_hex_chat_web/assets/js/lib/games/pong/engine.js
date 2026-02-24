@@ -70,7 +70,7 @@ export class PongEngine extends GameEngine {
       this._renderState();
     } else {
       // Peer sends ready signal
-      this.channel.send(encodeGameReady());
+      this._safeSend(encodeGameReady());
       this._renderState();
     }
   }
@@ -160,7 +160,7 @@ export class PongEngine extends GameEngine {
     if (keyCode === INPUT_KEY.DOWN) this.localInputs.down = true;
 
     if (!this.isHost) {
-      this.channel.send(encodePlayerInput(keyCode, true));
+      this._safeSend(encodePlayerInput(keyCode, true));
     }
   }
 
@@ -172,7 +172,7 @@ export class PongEngine extends GameEngine {
     if (keyCode === INPUT_KEY.DOWN) this.localInputs.down = false;
 
     if (!this.isHost) {
-      this.channel.send(encodePlayerInput(keyCode, false));
+      this._safeSend(encodePlayerInput(keyCode, false));
     }
   }
 
@@ -187,8 +187,8 @@ export class PongEngine extends GameEngine {
   _handleBlur() {
     this.localInputs = { up: false, down: false };
     if (!this.isHost) {
-      this.channel.send(encodePlayerInput(INPUT_KEY.UP, false));
-      this.channel.send(encodePlayerInput(INPUT_KEY.DOWN, false));
+      this._safeSend(encodePlayerInput(INPUT_KEY.UP, false));
+      this._safeSend(encodePlayerInput(INPUT_KEY.DOWN, false));
     }
   }
 
@@ -307,7 +307,7 @@ export class PongEngine extends GameEngine {
     this.audio.playWin();
 
     // Send game end to peer
-    this.channel.send(encodeGameEnd(score1, score2, winner));
+    this._safeSend(encodeGameEnd(score1, score2, winner));
     this._broadcastState();
 
     // Notify LiveView
@@ -321,9 +321,7 @@ export class PongEngine extends GameEngine {
 
   /** Send game state over DataChannel. */
   _broadcastState() {
-    if (this.channel.readyState === "open") {
-      this.channel.send(encodeGameState(this.gameState));
-    }
+    this._safeSend(encodeGameState(this.gameState));
   }
 
   /** Render current state to canvas. */

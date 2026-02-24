@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { BreakoutAudio } from "../../../../js/lib/games/breakout/audio.js";
+import { SurroundAudio } from "../../../../js/lib/games/surround/audio.js";
 
 function createMockAudioContext() {
   const mockOsc = {
@@ -33,7 +33,7 @@ function createMockAudioContext() {
   };
 }
 
-describe("BreakoutAudio", () => {
+describe("SurroundAudio", () => {
   let originalAudioContext;
 
   beforeEach(() => {
@@ -48,51 +48,44 @@ describe("BreakoutAudio", () => {
   });
 
   it("creates instance without AudioContext", () => {
-    const audio = new BreakoutAudio();
+    const audio = new SurroundAudio();
     expect(audio._ctx).toBeNull();
   });
 
   it("lazy-inits AudioContext on first sound", () => {
-    const audio = new BreakoutAudio();
-    audio.playPaddleHit();
+    const audio = new SurroundAudio();
+    audio.playMove();
     expect(audio._ctx).not.toBeNull();
   });
 
-  it("plays paddle hit without throwing", () => {
-    const audio = new BreakoutAudio();
-    expect(() => audio.playPaddleHit()).not.toThrow();
+  it("plays move without throwing", () => {
+    const audio = new SurroundAudio();
+    expect(() => audio.playMove()).not.toThrow();
   });
 
-  it("plays wall bounce without throwing", () => {
-    const audio = new BreakoutAudio();
-    expect(() => audio.playWallBounce()).not.toThrow();
-  });
-
-  it("plays block hit for each row without throwing", () => {
-    const audio = new BreakoutAudio();
-    for (let row = 0; row < 5; row++) {
-      expect(() => audio.playBlockHit(row)).not.toThrow();
-    }
-  });
-
-  it("plays life lost without throwing", () => {
-    const audio = new BreakoutAudio();
-    expect(() => audio.playLifeLost()).not.toThrow();
+  it("plays crash without throwing", () => {
+    const audio = new SurroundAudio();
+    expect(() => audio.playCrash()).not.toThrow();
   });
 
   it("plays countdown without throwing", () => {
-    const audio = new BreakoutAudio();
+    const audio = new SurroundAudio();
     expect(() => audio.playCountdown()).not.toThrow();
   });
 
-  it("plays win without throwing", () => {
-    const audio = new BreakoutAudio();
-    expect(() => audio.playWin()).not.toThrow();
+  it("plays round win without throwing", () => {
+    const audio = new SurroundAudio();
+    expect(() => audio.playRoundWin()).not.toThrow();
   });
 
-  it("plays lose without throwing", () => {
-    const audio = new BreakoutAudio();
-    expect(() => audio.playLose()).not.toThrow();
+  it("plays match win without throwing", () => {
+    const audio = new SurroundAudio();
+    expect(() => audio.playMatchWin()).not.toThrow();
+  });
+
+  it("plays match lose without throwing", () => {
+    const audio = new SurroundAudio();
+    expect(() => audio.playMatchLose()).not.toThrow();
   });
 
   it("handles AudioContext creation failure gracefully", () => {
@@ -100,14 +93,13 @@ describe("BreakoutAudio", () => {
     globalThis.AudioContext = undefined;
     globalThis.webkitAudioContext = undefined;
 
-    const audio = new BreakoutAudio();
-    expect(() => audio.playPaddleHit()).not.toThrow();
-    expect(() => audio.playWallBounce()).not.toThrow();
-    expect(() => audio.playBlockHit(0)).not.toThrow();
-    expect(() => audio.playLifeLost()).not.toThrow();
+    const audio = new SurroundAudio();
+    expect(() => audio.playMove()).not.toThrow();
+    expect(() => audio.playCrash()).not.toThrow();
     expect(() => audio.playCountdown()).not.toThrow();
-    expect(() => audio.playWin()).not.toThrow();
-    expect(() => audio.playLose()).not.toThrow();
+    expect(() => audio.playRoundWin()).not.toThrow();
+    expect(() => audio.playMatchWin()).not.toThrow();
+    expect(() => audio.playMatchLose()).not.toThrow();
     expect(audio._ctx).toBeNull();
 
     globalThis.webkitAudioContext = origWebkit;
@@ -120,8 +112,8 @@ describe("BreakoutAudio", () => {
       return mockCtx;
     };
 
-    const audio = new BreakoutAudio();
-    audio.playPaddleHit();
+    const audio = new SurroundAudio();
+    audio.playMove();
     expect(mockCtx.resume).toHaveBeenCalled();
   });
 
@@ -131,8 +123,8 @@ describe("BreakoutAudio", () => {
       return mockCtx;
     };
 
-    const audio = new BreakoutAudio();
-    audio.playPaddleHit();
+    const audio = new SurroundAudio();
+    audio.playMove();
     expect(mockCtx.createOscillator).toHaveBeenCalled();
     expect(mockCtx.createGain).toHaveBeenCalled();
   });

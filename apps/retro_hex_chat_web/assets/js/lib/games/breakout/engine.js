@@ -72,7 +72,7 @@ export class BreakoutEngine extends GameEngine {
       this._renderState();
     } else {
       // Peer sends ready signal
-      this.channel.send(encodeGameReady());
+      this._safeSend(encodeGameReady());
       this._renderState();
     }
   }
@@ -187,7 +187,7 @@ export class BreakoutEngine extends GameEngine {
     if (keyCode === INPUT_KEY.RIGHT) this.localInputs.right = true;
 
     if (!this.isHost) {
-      this.channel.send(encodePlayerInput(keyCode, true));
+      this._safeSend(encodePlayerInput(keyCode, true));
     }
   }
 
@@ -199,7 +199,7 @@ export class BreakoutEngine extends GameEngine {
     if (keyCode === INPUT_KEY.RIGHT) this.localInputs.right = false;
 
     if (!this.isHost) {
-      this.channel.send(encodePlayerInput(keyCode, false));
+      this._safeSend(encodePlayerInput(keyCode, false));
     }
   }
 
@@ -214,8 +214,8 @@ export class BreakoutEngine extends GameEngine {
   _handleBlur() {
     this.localInputs = { left: false, right: false };
     if (!this.isHost) {
-      this.channel.send(encodePlayerInput(INPUT_KEY.LEFT, false));
-      this.channel.send(encodePlayerInput(INPUT_KEY.RIGHT, false));
+      this._safeSend(encodePlayerInput(INPUT_KEY.LEFT, false));
+      this._safeSend(encodePlayerInput(INPUT_KEY.RIGHT, false));
     }
   }
 
@@ -368,7 +368,7 @@ export class BreakoutEngine extends GameEngine {
     }
 
     // Send game end to peer
-    this.channel.send(encodeGameEnd(score, won));
+    this._safeSend(encodeGameEnd(score, won));
     this._broadcastState();
 
     // Notify LiveView
@@ -382,9 +382,7 @@ export class BreakoutEngine extends GameEngine {
 
   /** Send game state over DataChannel. */
   _broadcastState() {
-    if (this.channel.readyState === "open") {
-      this.channel.send(encodeGameState(this.gameState));
-    }
+    this._safeSend(encodeGameState(this.gameState));
   }
 
   /** Render current state to canvas. */
