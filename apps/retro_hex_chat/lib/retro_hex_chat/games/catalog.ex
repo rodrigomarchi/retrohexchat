@@ -84,6 +84,16 @@ defmodule RetroHexChat.Games.Catalog do
           "Work together to destroy all blocks before running out of lives.",
       icon: "game_breakout",
       controls: "Arrow keys (Left/Right) to move paddle"
+    },
+    %{
+      id: "hex_warlords",
+      name: "Hex Warlords",
+      tagline: "Defend your castle",
+      description:
+        "Versus Breakout battle — each player defends a brick castle with a king inside. " <>
+          "Deflect or catch the fireball to smash your opponent's walls. Last king standing wins.",
+      icon: "game_warlords",
+      controls: "Arrow keys (Up/Down) to move shield, Space to catch/release fireball"
     }
   ]
 

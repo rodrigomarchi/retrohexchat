@@ -9,6 +9,7 @@ import { PongEngine } from "../../lib/games/pong/engine.js";
 import { BreakoutEngine } from "../../lib/games/breakout/engine.js";
 import { SurroundEngine } from "../../lib/games/surround/engine.js";
 import { StarDuelEngine } from "../../lib/games/star_duel/engine.js";
+import { WarlordEngine } from "../../lib/games/warlords/engine.js";
 
 /**
  * Create the appropriate engine for the given game ID.
@@ -31,6 +32,8 @@ function createEngine(canvas, channel, gameId, isHost, onGameEnd) {
     case "gravity_well":
     case "debris_field":
       return new StarDuelEngine(canvas, channel, gameId, isHost, onGameEnd);
+    case "hex_warlords":
+      return new WarlordEngine(canvas, channel, gameId, isHost, onGameEnd);
     default:
       return new GameEngine(canvas, channel, gameId, isHost);
   }

@@ -991,7 +991,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-block-breakers",
           "feature-star-duel",
           "feature-gravity-well",
-          "feature-debris-field"
+          "feature-debris-field",
+          "feature-hex-warlords"
         ]
       },
       %{
@@ -1104,6 +1105,30 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "Cooperative Breakout with cyberpunk visuals. P1 controls the bottom paddle, P2 the top. " <>
             "3 shared lives, 50 neon blocks (5 rows), ball speeds up. Arrow keys or A/D to move.",
         see_also: ["feature-p2p-games"]
+      },
+      %{
+        id: "feature-hex-warlords",
+        title: "Hex Warlords",
+        category: "Features",
+        keywords: [
+          "hex warlords",
+          "warlords",
+          "castle",
+          "fireball",
+          "shield",
+          "catch",
+          "versus",
+          "game",
+          "bricks",
+          "king"
+        ],
+        icon: :icon_star,
+        description:
+          "Versus Breakout battle — each player defends a brick castle with a king inside. " <>
+            "Deflect or catch the fireball with your shield to smash your opponent's walls. " <>
+            "Hold Space to catch, release to aim. Best of 3 lives. " <>
+            "Controls: Arrow keys (Up/Down) to move shield, Space to catch/release fireball.",
+        see_also: ["feature-block-breakers", "feature-p2p-games"]
       }
     ]
   end
