@@ -2,7 +2,7 @@ defmodule RetroHexChat.Games.Catalog do
   @moduledoc """
   Registry of available P2P games.
   Each game has an id, name, description, and icon identifier.
-  All games are real-time action for two players (11 games total).
+  All games are real-time action for two players (12 games total).
   """
 
   @type game :: %{
@@ -124,6 +124,16 @@ defmodule RetroHexChat.Games.Catalog do
           "fuel is scarce, mines recharge faster. Quick and chaotic.",
       icon: "game_raid",
       controls: "Arrow keys to move/speed, Space to fire, Shift to drop mine"
+    },
+    %{
+      id: "hex_boxing",
+      name: "Hex Boxing",
+      tagline: "Fists of fury",
+      description:
+        "Top-down boxing — close punches score more. " <>
+          "Push-and-pull until KO or decision by points. Best of 3 rounds.",
+      icon: "game_boxing",
+      controls: "Arrow keys or WASD to move, Space or Shift to punch"
     }
   ]
 

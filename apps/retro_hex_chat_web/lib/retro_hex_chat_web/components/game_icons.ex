@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.GameIcons do
   @moduledoc """
-  Retro pixel-art SVG icons for the 11 P2P games.
+  Retro pixel-art SVG icons for the 12 P2P games.
   Each icon is 32×32 and follows the project icon conventions.
   """
 
@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.Components.GameIcons do
   def game_icon(%{game_id: "hex_raid"} = assigns), do: icon_game_raid(assigns)
   def game_icon(%{game_id: "hex_raid_pacifist"} = assigns), do: icon_game_raid(assigns)
   def game_icon(%{game_id: "hex_raid_blitz"} = assigns), do: icon_game_raid(assigns)
+  def game_icon(%{game_id: "hex_boxing"} = assigns), do: icon_game_boxing(assigns)
   def game_icon(assigns), do: icon_game_generic(assigns)
 
   # -- Hex Pong: paddle + ball --
@@ -296,6 +297,35 @@ defmodule RetroHexChatWeb.Components.GameIcons do
       <circle cx="12" cy="12" r="1.5" fill="#ff8c00" />
       <circle cx="20" cy="22" r="1.5" fill="#ff8c00" />
       <rect x="9" y="26" width="14" height="2" fill="#555" />
+    </svg>
+    """
+  end
+
+  # -- Hex Boxing: top-down ring with two fists --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_boxing(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_boxing(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect
+        x="1"
+        y="1"
+        width="30"
+        height="30"
+        rx="2"
+        fill="#000033"
+        stroke="#008080"
+        stroke-width="1"
+      />
+      <rect x="5" y="5" width="22" height="22" fill="none" stroke="#aaa" stroke-width="1.5" />
+      <circle cx="12" cy="16" r="4" fill="#008000" stroke="#000" stroke-width="0.5" />
+      <line x1="16" y1="16" x2="20" y2="16" stroke="#00cc00" stroke-width="2" stroke-linecap="round" />
+      <circle cx="22" cy="16" r="4" fill="#008080" stroke="#000" stroke-width="0.5" />
+      <line x1="18" y1="16" x2="14" y2="16" stroke="#00cccc" stroke-width="2" stroke-linecap="round" />
+      <circle cx="20" cy="15" r="1.5" fill="#FFD700" />
+      <circle cx="14" cy="17" r="1.5" fill="#FFD700" />
     </svg>
     """
   end

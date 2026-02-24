@@ -996,7 +996,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-pixel-tanks",
           "feature-hex-raid",
           "feature-hex-raid-pacifist",
-          "feature-hex-raid-blitz"
+          "feature-hex-raid-blitz",
+          "feature-hex-boxing"
         ]
       },
       %{
@@ -1215,6 +1216,28 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "fuel is scarce, mines recharge faster. Quick and chaotic. " <>
             "Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine.",
         see_also: ["feature-hex-raid", "feature-hex-raid-pacifist", "feature-p2p-games"]
+      },
+      %{
+        id: "feature-hex-boxing",
+        title: "Hex Boxing",
+        category: "Features",
+        keywords: [
+          "hex boxing",
+          "boxing",
+          "fight",
+          "punch",
+          "fists",
+          "ko",
+          "knockout",
+          "ring",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Top-down boxing in a cyberpunk ring — close punches score 3 points, " <>
+            "medium 2, far 1. First to 100 is KO! Best of 3 rounds, 2 minutes each. " <>
+            "Controls: Arrow keys or WASD to move, Space or Shift to punch.",
+        see_also: ["feature-p2p-games"]
       }
     ]
   end

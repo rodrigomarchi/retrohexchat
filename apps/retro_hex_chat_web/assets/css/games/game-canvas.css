@@ -64,6 +64,19 @@
   --game-explosion-color: #ff4444;
 }
 
+/* Hex Boxing: underground fight ring */
+.game-canvas[data-game-id="hex_boxing"] .game-canvas__surface {
+  --game-bg-color: #0a0808;
+  --game-fg-color: #39ff14;
+  --game-accent-color: #00e5ff;
+  --game-muted-color: #2a1a1a;
+  --game-glow-color: rgba(57, 255, 20, 0.15);
+  --game-warning-color: #ff4444;
+  --game-rope-color: #aaaaaa;
+  --game-ring-color: #1a1208;
+  --game-hit-color: #ffffff;
+}
+
 /* Star Duel trilogy: cyberpunk post-apocalyptic space combat */
 .game-canvas[data-game-id="star_duel"] .game-canvas__surface,
 .game-canvas[data-game-id="gravity_well"] .game-canvas__surface,
