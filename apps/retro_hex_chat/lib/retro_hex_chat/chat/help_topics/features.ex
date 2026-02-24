@@ -993,7 +993,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-gravity-well",
           "feature-debris-field",
           "feature-hex-warlords",
-          "feature-pixel-tanks"
+          "feature-pixel-tanks",
+          "feature-hex-raid",
+          "feature-hex-raid-pacifist",
+          "feature-hex-raid-blitz"
         ]
       },
       %{
@@ -1143,6 +1146,75 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Hold Space to catch, release to aim. Best of 3 lives. " <>
             "Controls: Arrow keys (Up/Down) to move shield, Space to catch/release fireball.",
         see_also: ["feature-block-breakers", "feature-p2p-games"]
+      },
+      %{
+        id: "feature-hex-raid",
+        title: "Hex Raid",
+        category: "Features",
+        keywords: [
+          "hex raid",
+          "river raid",
+          "river",
+          "raid",
+          "plane",
+          "jet",
+          "fuel",
+          "mine",
+          "bridge",
+          "scroll",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "River Raid reimagined for two — race through a scrolling toxic canal, " <>
+            "destroy enemies for points, steal fuel, and drop mines on your rival. " <>
+            "10 sections of increasing difficulty. Destroy bridges to advance. " <>
+            "Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine.",
+        see_also: [
+          "feature-hex-raid-pacifist",
+          "feature-hex-raid-blitz",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-raid-pacifist",
+        title: "Hex Raid: Pacifist",
+        category: "Features",
+        keywords: [
+          "hex raid",
+          "pacifist",
+          "river raid",
+          "no mines",
+          "pure",
+          "skill",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "River Raid without sabotage — no mines allowed. " <>
+            "Pure competition for points, fuel, and survival across 10 sections. " <>
+            "Controls: Arrow keys to move/speed, Space to fire.",
+        see_also: ["feature-hex-raid", "feature-hex-raid-blitz", "feature-p2p-games"]
+      },
+      %{
+        id: "feature-hex-raid-blitz",
+        title: "Hex Raid: Blitz",
+        category: "Features",
+        keywords: [
+          "hex raid",
+          "blitz",
+          "river raid",
+          "fast",
+          "quick",
+          "intense",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "5 sections of intense River Raid action — river starts narrow, " <>
+            "fuel is scarce, mines recharge faster. Quick and chaotic. " <>
+            "Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine.",
+        see_also: ["feature-hex-raid", "feature-hex-raid-pacifist", "feature-p2p-games"]
       }
     ]
   end

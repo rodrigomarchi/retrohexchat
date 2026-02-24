@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.GameIcons do
   @moduledoc """
-  Retro pixel-art SVG icons for the 7 P2P games.
+  Retro pixel-art SVG icons for the 11 P2P games.
   Each icon is 32×32 and follows the project icon conventions.
   """
 
@@ -21,6 +21,10 @@ defmodule RetroHexChatWeb.Components.GameIcons do
   def game_icon(%{game_id: "gravity_well"} = assigns), do: icon_game_gravity(assigns)
   def game_icon(%{game_id: "debris_field"} = assigns), do: icon_game_debris(assigns)
   def game_icon(%{game_id: "block_breakers"} = assigns), do: icon_game_breakout(assigns)
+  def game_icon(%{game_id: "hex_warlords"} = assigns), do: icon_game_warlords(assigns)
+  def game_icon(%{game_id: "hex_raid"} = assigns), do: icon_game_raid(assigns)
+  def game_icon(%{game_id: "hex_raid_pacifist"} = assigns), do: icon_game_raid(assigns)
+  def game_icon(%{game_id: "hex_raid_blitz"} = assigns), do: icon_game_raid(assigns)
   def game_icon(assigns), do: icon_game_generic(assigns)
 
   # -- Hex Pong: paddle + ball --
@@ -229,6 +233,69 @@ defmodule RetroHexChatWeb.Components.GameIcons do
       <rect x="20" y="11" width="5" height="3" fill="#FFD700" />
       <rect x="12" y="26" width="8" height="2" fill="#C0C0C0" />
       <circle cx="16" cy="22" r="1.5" fill="#fff" />
+    </svg>
+    """
+  end
+
+  # -- Hex Warlords: shield + fireball --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_warlords(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_warlords(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect
+        x="1"
+        y="1"
+        width="30"
+        height="30"
+        rx="2"
+        fill="#000033"
+        stroke="#008080"
+        stroke-width="1"
+      />
+      <rect x="4" y="8" width="3" height="16" fill="#C0C0C0" rx="1" />
+      <rect x="25" y="8" width="3" height="16" fill="#C0C0C0" rx="1" />
+      <rect x="9" y="6" width="2" height="4" fill="#ff4444" />
+      <rect x="9" y="12" width="2" height="4" fill="#ff4444" />
+      <rect x="9" y="18" width="2" height="4" fill="#ff4444" />
+      <rect x="21" y="6" width="2" height="4" fill="#00e5ff" />
+      <rect x="21" y="12" width="2" height="4" fill="#00e5ff" />
+      <rect x="21" y="18" width="2" height="4" fill="#00e5ff" />
+      <circle cx="16" cy="16" r="3" fill="#FFD700" />
+      <circle cx="16" cy="16" r="1.5" fill="#ff8c00" />
+    </svg>
+    """
+  end
+
+  # -- Hex Raid: jet + river --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_raid(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_raid(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect
+        x="1"
+        y="1"
+        width="30"
+        height="30"
+        rx="2"
+        fill="#000033"
+        stroke="#008080"
+        stroke-width="1"
+      />
+      <rect x="1" y="1" width="8" height="30" fill="#1a2a1a" />
+      <rect x="23" y="1" width="8" height="30" fill="#1a2a1a" />
+      <rect x="9" y="1" width="14" height="30" fill="#0a1a2a" />
+      <polygon points="16,8 13,16 14,15 16,18 18,15 19,16" fill="#39ff14" />
+      <polygon points="16,20 14,26 15,25 16,27 17,25 18,26" fill="#00e5ff" />
+      <rect x="15" y="5" width="2" height="2" fill="#ffee00" />
+      <circle cx="12" cy="12" r="1.5" fill="#ff8c00" />
+      <circle cx="20" cy="22" r="1.5" fill="#ff8c00" />
+      <rect x="9" y="26" width="14" height="2" fill="#555" />
     </svg>
     """
   end

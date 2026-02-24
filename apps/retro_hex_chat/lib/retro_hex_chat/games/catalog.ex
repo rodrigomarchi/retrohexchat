@@ -2,7 +2,7 @@ defmodule RetroHexChat.Games.Catalog do
   @moduledoc """
   Registry of available P2P games.
   Each game has an id, name, description, and icon identifier.
-  All games are real-time action for two players (7 games total).
+  All games are real-time action for two players (11 games total).
   """
 
   @type game :: %{
@@ -94,6 +94,36 @@ defmodule RetroHexChat.Games.Catalog do
           "Deflect or catch the fireball to smash your opponent's walls. Last king standing wins.",
       icon: "game_warlords",
       controls: "Arrow keys (Up/Down) to move shield, Space to catch/release fireball"
+    },
+    %{
+      id: "hex_raid",
+      name: "Hex Raid",
+      tagline: "Two pilots, one river",
+      description:
+        "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies, " <>
+          "steal fuel, and drop mines on your rival. 10 sections of pure chaos.",
+      icon: "game_raid",
+      controls: "Arrow keys to move/speed, Space to fire, Shift to drop mine"
+    },
+    %{
+      id: "hex_raid_pacifist",
+      name: "Hex Raid: Pacifist",
+      tagline: "No mines, pure skill",
+      description:
+        "River Raid without sabotage — no mines allowed. " <>
+          "Pure competition for points, fuel, and survival across 10 sections.",
+      icon: "game_raid",
+      controls: "Arrow keys to move/speed, Space to fire"
+    },
+    %{
+      id: "hex_raid_blitz",
+      name: "Hex Raid: Blitz",
+      tagline: "Fast and furious",
+      description:
+        "5 sections of intense River Raid action — river starts narrow, " <>
+          "fuel is scarce, mines recharge faster. Quick and chaotic.",
+      icon: "game_raid",
+      controls: "Arrow keys to move/speed, Space to fire, Shift to drop mine"
     }
   ]
 
