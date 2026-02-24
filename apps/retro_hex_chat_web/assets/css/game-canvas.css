@@ -1,0 +1,48 @@
+/* Game canvas: active game rendering surface */
+
+.game-canvas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: var(--space-sm);
+}
+
+.game-canvas__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 640px;
+  margin-bottom: var(--space-xs);
+}
+
+.game-canvas__title {
+  font-weight: bold;
+}
+
+.game-canvas__vs {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.game-canvas__surface {
+  border: var(--border-width) solid var(--color-border);
+  image-rendering: pixelated;
+  --game-bg-color: var(--color-canvas-bg);
+  --game-fg-color: var(--color-canvas-fg);
+  --game-muted-color: var(--color-canvas-muted);
+}
+
+.game-canvas__stub {
+  margin-top: var(--space-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  font-size: var(--font-size-sm);
+}
+
+.game-canvas__controls {
+  margin-top: var(--space-sm);
+  display: flex;
+  gap: var(--space-sm);
+}

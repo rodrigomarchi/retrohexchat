@@ -148,6 +148,16 @@ defmodule RetroHexChatWeb.Components.ChatContextMenu do
       <Icons.icon_file_send class="ctx-icon" /> Send File
     </li>
     <li
+      :if={@viewer_is_identified}
+      class={if !@is_target_registered || @is_target_self, do: "disabled"}
+      title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
+      data-testid="ctx-chat-game"
+      phx-click={if @is_target_registered && !@is_target_self, do: "ctx_chat_game"}
+      phx-value-nick={@menu.target_nick}
+    >
+      <Icons.icon_star class="ctx-icon" /> Play Game
+    </li>
+    <li
       :if={@viewer_is_op}
       class="separator"
     >

@@ -1,0 +1,197 @@
+/* Game lobby: session header, game picker grid, consent, chat */
+
+.game-lobby {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.game-lobby--expired {
+  opacity: 0.8;
+}
+
+.game-lobby__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.game-lobby__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.game-lobby__title {
+  font-weight: bold;
+}
+
+.game-lobby__status {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* ── Game picker grid ──────────────────────────── */
+
+.game-picker {
+  padding: var(--space-sm);
+}
+
+.game-picker__title {
+  margin-bottom: var(--space-xs);
+  font-weight: bold;
+  font-size: var(--font-size-sm);
+}
+
+.game-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: var(--space-xs);
+}
+
+.game-picker__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xxs);
+  padding: var(--space-sm) var(--space-xs);
+  text-align: center;
+  cursor: pointer;
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.game-picker__card:hover:not(:disabled) {
+  background: var(--color-surface-hover);
+}
+
+.game-picker__card:active:not(:disabled) {
+  background: var(--color-surface-active, var(--color-surface-hover));
+}
+
+.game-picker__card:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.game-picker__icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-picker__name {
+  font-weight: bold;
+  font-size: var(--font-size-sm);
+  line-height: 1.2;
+}
+
+.game-picker__tagline {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: 1.2;
+}
+
+/* ── Consent banner ────────────────────────────── */
+
+.game-consent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--border-width) solid var(--color-border);
+  background: var(--color-highlight-bg, var(--color-surface));
+}
+
+.game-consent__text {
+  flex: 1;
+  font-size: var(--font-size-sm);
+}
+
+.game-consent__actions {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+/* ── Waiting indicator ─────────────────────────── */
+
+.game-waiting {
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--border-width) solid var(--color-border);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* ── Lobby chat ────────────────────────────────── */
+
+.game-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.game-chat__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.game-chat__msg {
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+.game-chat__msg--system {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.game-chat__nick {
+  font-weight: bold;
+}
+
+.game-chat__empty {
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: var(--space-md);
+}
+
+.game-chat__form {
+  display: flex;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.game-chat__input {
+  flex: 1;
+}
+
+/* ── Toolbar ───────────────────────────────────── */
+
+.game-lobby__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+/* ── Inactivity warning ────────────────────────── */
+
+.game-inactivity {
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-warning-bg, var(--color-surface));
+  border-bottom: var(--border-width) solid var(--color-border);
+  font-size: var(--font-size-sm);
+  color: var(--color-warning-text, var(--color-text));
+}

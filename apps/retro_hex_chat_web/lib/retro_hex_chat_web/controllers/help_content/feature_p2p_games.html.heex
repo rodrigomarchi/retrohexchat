@@ -1,0 +1,48 @@
+<p>
+  P2P Games lets you play retro arcade games directly with another user. Games run in real-time over WebRTC DataChannel — no server relay, minimal latency.
+</p>
+<.help_h4 icon={:icon_star}>Starting a Game</.help_h4>
+<pre>/game &lt;nickname&gt;</pre>
+<p>
+  This creates a game session and sends an invite via PM. The target user clicks the link to join the game lobby.
+</p>
+<.help_h4 icon={:icon_star}>Game Lobby</.help_h4>
+<p>
+  The lobby is where both players meet before starting a game. You can:
+</p>
+<ul>
+  <li>Chat with your opponent</li>
+  <li>Browse and select from 5 available games</li>
+  <li>Wait for your opponent to accept or decline</li>
+</ul>
+<p>
+  Game selection requires <strong>bilateral consent</strong>
+  — one player picks a game, the other must accept before it starts.
+</p>
+<.help_h4 icon={:icon_star}>Available Games</.help_h4>
+<ul>
+  <li><strong>Hex Pong</strong> — Pong with hexagonal paddles and power-ups</li>
+  <li><strong>Light Trails</strong> — Leave a trail, trap your opponent</li>
+  <li><strong>Pixel Tanks</strong> — Tank combat in a destructible maze</li>
+  <li><strong>Star Duel</strong> — Space dogfight with inertial physics</li>
+  <li><strong>Block Breakers</strong> — Cooperative Breakout with two paddles</li>
+</ul>
+<.help_h4 icon={:icon_star}>Architecture</.help_h4>
+<p>
+  The session creator acts as <strong>host</strong>
+  and runs the game loop at ~60fps. The peer sends keyboard inputs via DataChannel and receives game state snapshots. This keeps both players in sync with minimal bandwidth.
+</p>
+<.help_h4 icon={:icon_clock}>Timeouts</.help_h4>
+<p>
+  Pending sessions expire in 5 minutes. The lobby expires after 15 minutes of inactivity (with a warning at 10 minutes).
+</p>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="cmd-game">/game</.help_link>
+  · <.help_link topic="feature-hex-pong">Hex Pong</.help_link>
+  · <.help_link topic="feature-light-trails">Light Trails</.help_link>
+  · <.help_link topic="feature-pixel-tanks">Pixel Tanks</.help_link>
+  · <.help_link topic="feature-star-duel">Star Duel</.help_link>
+  · <.help_link topic="feature-block-breakers">Block Breakers</.help_link>
+  · <.help_link topic="feature-p2p-sessions">P2P Sessions</.help_link>
+</p>

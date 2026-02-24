@@ -95,6 +95,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         description: "Send Client-to-Client Protocol queries like PING, VERSION, and TIME."
       },
       %{
+        id: "cmd-game",
+        title: "/game",
+        category: "Commands",
+        keywords: ["game", "play", "p2p", "games", "arcade", "retro"],
+        icon: :icon_star,
+        description: "Start a peer-to-peer game session with another user for retro arcade games."
+      },
+      %{
         id: "cmd-help",
         title: "/help",
         category: "Commands",

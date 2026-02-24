@@ -1,32 +1,25 @@
 <!--
   Sync Impact Report
   ==================
-  Version change: 1.2.0 → 1.3.0 (MINOR: new P2P bounded context + expanded principles)
+  Version change: 1.3.0 → 1.4.0 (MINOR: new Games bounded context + expanded principles)
 
   Modified principles:
-    - Principle II: Added 8th bounded context (RetroHexChat.P2P)
-    - Principle III: Added P2P session GenServer to OTP process architecture
-    - Principle VII: Added "p2p:#{token}" PubSub topic
+    - Principle II: Added 9th bounded context (RetroHexChat.Games)
+    - Principle III: Added game session GenServer to OTP process architecture
+    - Principle VII: Added "game:#{token}" PubSub topic
 
-  Added sections:
-    - Technology Stack: P2P Transport row (WebRTC browser-native API)
-
+  Added sections: None
   Removed sections: None
 
   Templates requiring updates:
     - .specify/templates/plan-template.md: ✅ No update needed
-      (Constitution Check is dynamically filled from this file by /speckit.plan)
     - .specify/templates/spec-template.md: ✅ No update needed
     - .specify/templates/tasks-template.md: ✅ No update needed
     - .specify/templates/checklist-template.md: ✅ No update needed
 
   Runtime guidance updates:
-    - CLAUDE.md: ⚠️ Update needed when P2P implementation begins
-    - MEMORY.md: ⚠️ Update needed when P2P implementation begins
-
-  Follow-up TODOs:
-    - Update CLAUDE.md Active Technologies when P2P plans are implemented
-    - Update MEMORY.md bounded contexts count (7 → 8)
+    - CLAUDE.md: ✅ Updated (PubSub topics)
+    - MEMORY.md: ⚠️ Update bounded contexts count (8 → 9)
 -->
 
 # RetroHexChat Constitution
@@ -69,6 +62,8 @@ Within `retro_hex_chat`, the following bounded contexts MUST exist:
 - `RetroHexChat.RateLimit` — Flood control.
 - `RetroHexChat.P2P` — Peer-to-peer sessions, file transfer, audio/video
   calls via WebRTC.
+- `RetroHexChat.Games` — P2P game sessions, lobby, bilateral consent,
+  real-time games via WebRTC DataChannel.
 
 Each context MUST maintain internal layering: Schema, Queries,
 Service/UseCase, Policy, Events.
@@ -89,6 +84,8 @@ A well-defined supervision tree MUST exist from day zero:
 - Dedicated GenServers MUST back NickServ and ChanServ services.
 - One GenServer per active P2P session holding state (peers, status,
   lobby messages).
+- One GenServer per active game session holding state (peers, status,
+  game selection, lobby chat).
 
 **Rationale**: OTP supervision is the core advantage of the BEAM. Explicit
 process architecture ensures fault isolation per channel and graceful
@@ -173,6 +170,7 @@ PubSub topics MUST follow a clear naming convention:
 - `"user:#{nickname}"` for user-scoped events.
 - `"service:nickserv"`, `"service:chanserv"` for service events.
 - `"p2p:#{token}"` for P2P session events.
+- `"game:#{token}"` for game session events.
 
 LiveView streams MUST be used for long message lists to ensure performance.
 
@@ -339,4 +337,4 @@ For day-to-day development guidance that supplements this constitution,
 refer to `CLAUDE.md` and project-level documentation. This constitution
 defines *what* is non-negotiable; runtime guidance addresses *how*.
 
-**Version**: 1.3.0 | **Ratified**: 2026-02-09 | **Last Amended**: 2026-02-16
+**Version**: 1.4.0 | **Ratified**: 2026-02-09 | **Last Amended**: 2026-02-24

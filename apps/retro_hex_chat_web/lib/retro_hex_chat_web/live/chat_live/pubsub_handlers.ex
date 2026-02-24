@@ -190,6 +190,27 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     {:halt, socket}
   end
 
+  # ── Games: invite notification ────────────────────────────
+
+  def handle_info(%{event: "game_invite"} = msg, socket) do
+    import Phoenix.LiveView, only: [push_event: 3]
+
+    %{payload: %{token: token, from: from}} = msg
+
+    socket =
+      push_event(socket, "notify", %{
+        id: "game_invite_#{token}",
+        title: "Game Invite",
+        body: "#{from} wants to play a game",
+        type: "game_invite",
+        token: token,
+        from: from,
+        persistent: true
+      })
+
+    {:halt, socket}
+  end
+
   # ── Task/DOWN catch-all ───────────────────────────────────
 
   def handle_info({_ref, _result}, socket), do: {:halt, socket}

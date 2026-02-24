@@ -33,6 +33,9 @@ import P2PDiagramHook from "./hooks/p2p_diagram_hook";
 import P2PSessionHook from "./hooks/p2p_session_hook";
 import URLCatcherHook from "./hooks/url_catcher_hook";
 import FileTransferHook from "./hooks/file_transfer_hook";
+import GameCanvasHook from "./hooks/game_canvas_hook";
+import GameSessionHook from "./hooks/game_session_hook";
+import GameWebRTCHook from "./hooks/game_webrtc_hook";
 import WebRTCHook from "./hooks/webrtc_hook";
 import MediaHook from "./hooks/media_hook";
 import { getClientInfo } from "./lib/client_info";
@@ -54,6 +57,9 @@ const Hooks = {
   AutocompleteHook: AutocompleteHook,
   EmojiPickerHook: EmojiPickerHook,
   FileTransferHook: FileTransferHook,
+  GameCanvasHook: GameCanvasHook,
+  GameSessionHook: GameSessionHook,
+  GameWebRTCHook: GameWebRTCHook,
   FormatToolbarHook: FormatToolbarHook,
   KeyboardHook: KeyboardHook,
   LagHook: LagHook,

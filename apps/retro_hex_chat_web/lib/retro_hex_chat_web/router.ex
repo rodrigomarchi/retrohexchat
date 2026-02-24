@@ -66,6 +66,7 @@ defmodule RetroHexChatWeb.Router do
     get "/chat/session/clear", SessionController, :delete
     live "/chat", ChatLive
     live "/p2p/:token", P2PSessionLive
+    live "/game/:token", GameSessionLive
   end
 
   scope "/", RetroHexChatWeb do

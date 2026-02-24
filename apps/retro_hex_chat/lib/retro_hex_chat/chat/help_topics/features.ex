@@ -966,6 +966,68 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         icon: :icon_terminal,
         description:
           "Execute multiple commands at once by pasting them into the Admin Console (admin only)."
+      },
+      %{
+        id: "feature-p2p-games",
+        title: "P2P Games",
+        category: "Features",
+        keywords: [
+          "game",
+          "games",
+          "p2p",
+          "arcade",
+          "retro",
+          "multiplayer",
+          "pong",
+          "lobby",
+          "play"
+        ],
+        icon: :icon_star,
+        description:
+          "Play retro arcade games directly with other users via peer-to-peer WebRTC connections."
+      },
+      %{
+        id: "feature-hex-pong",
+        title: "Hex Pong",
+        category: "Features",
+        keywords: ["hex pong", "pong", "paddle", "ball", "game"],
+        icon: :icon_star,
+        description:
+          "Classic Pong with hexagonal paddles and power-ups. Ball accelerates progressively."
+      },
+      %{
+        id: "feature-light-trails",
+        title: "Light Trails",
+        category: "Features",
+        keywords: ["light trails", "tron", "trails", "grid", "arena", "game"],
+        icon: :icon_star,
+        description:
+          "Race across a grid leaving a glowing trail. Hit a trail or wall and you lose."
+      },
+      %{
+        id: "feature-pixel-tanks",
+        title: "Pixel Tanks",
+        category: "Features",
+        keywords: ["pixel tanks", "tank", "combat", "maze", "ricochet", "game"],
+        icon: :icon_star,
+        description: "Top-down tank combat in a destructible maze with ricocheting shots."
+      },
+      %{
+        id: "feature-star-duel",
+        title: "Star Duel",
+        category: "Features",
+        keywords: ["star duel", "space", "spaceship", "dogfight", "asteroids", "game"],
+        icon: :icon_star,
+        description: "Space dogfight with inertial physics and asteroid obstacles."
+      },
+      %{
+        id: "feature-block-breakers",
+        title: "Block Breakers",
+        category: "Features",
+        keywords: ["block breakers", "breakout", "cooperative", "blocks", "paddle", "game"],
+        icon: :icon_star,
+        description:
+          "Cooperative Breakout with two paddles — work together to destroy all blocks."
       }
     ]
   end

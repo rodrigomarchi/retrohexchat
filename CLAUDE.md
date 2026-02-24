@@ -95,7 +95,7 @@ If any of these 9 checks fail, the task is NOT complete.
 - Every public function MUST have @spec
 - LiveViews MUST be thin — delegate to domain contexts
 - Each "/" command is a separate Handler module
-- PubSub topics: "channel:#{name}", "pm:#{sorted_ids}", "user:#{nickname}"
+- PubSub topics: "channel:#{name}", "pm:#{sorted_ids}", "user:#{nickname}", "game:#{token}"
 - Test tags: @tag :unit, @tag :integration, @tag :liveview, @tag :e2e
 
 ## CSS Architecture

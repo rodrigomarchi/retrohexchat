@@ -1,0 +1,105 @@
+defmodule RetroHexChat.Games.Policy do
+  @moduledoc """
+  Authorization rules for game session operations.
+  """
+
+  import Ecto.Query
+
+  alias RetroHexChat.Games.Queries
+  alias RetroHexChat.Games.Schema.GameSession
+  alias RetroHexChat.Repo
+
+  @spec can_create?(integer(), integer()) :: :ok | {:error, String.t()}
+  def can_create?(creator_id, peer_id) do
+    with :ok <- check_not_self(creator_id, peer_id),
+         :ok <- check_registered(creator_id, :creator),
+         :ok <- check_registered(peer_id, :peer),
+         :ok <- check_no_active_session(creator_id, peer_id),
+         :ok <- check_no_block(creator_id, peer_id) do
+      :ok
+    end
+  end
+
+  @spec can_join?(integer(), GameSession.t()) :: :ok | {:error, String.t()}
+  def can_join?(user_id, session) do
+    with :ok <- check_participant(user_id, session),
+         :ok <- check_not_terminal(session) do
+      :ok
+    end
+  end
+
+  @spec can_close?(integer(), GameSession.t()) :: :ok | {:error, String.t()}
+  def can_close?(user_id, session) do
+    with :ok <- check_participant(user_id, session),
+         :ok <- check_not_terminal(session) do
+      :ok
+    end
+  end
+
+  defp check_not_self(id, id), do: {:error, "Cannot start a game with yourself"}
+  defp check_not_self(_, _), do: :ok
+
+  defp check_registered(user_id, role) do
+    exists =
+      from(r in "registered_nicks", where: r.id == ^user_id, select: true)
+      |> Repo.exists?()
+
+    if exists do
+      :ok
+    else
+      case role do
+        :creator -> {:error, "You must be registered to play games"}
+        :peer -> {:error, "Target user must be registered"}
+      end
+    end
+  end
+
+  defp check_no_active_session(creator_id, peer_id) do
+    if Queries.active_session_exists?(creator_id, peer_id) do
+      {:error, "An active game session already exists with this user"}
+    else
+      :ok
+    end
+  end
+
+  defp check_no_block(creator_id, peer_id) do
+    creator_nick = get_nickname(creator_id)
+    peer_nick = get_nickname(peer_id)
+
+    blocked =
+      from(e in "ignore_list_entries",
+        where:
+          (e.owner_nickname == ^creator_nick and e.ignored_nickname == ^peer_nick) or
+            (e.owner_nickname == ^peer_nick and e.ignored_nickname == ^creator_nick),
+        select: true
+      )
+      |> Repo.exists?()
+
+    if blocked do
+      {:error, "User not available"}
+    else
+      :ok
+    end
+  end
+
+  defp check_participant(user_id, session) do
+    if user_id == session.creator_id or user_id == session.peer_id do
+      :ok
+    else
+      {:error, "You are not a participant in this game session"}
+    end
+  end
+
+  defp check_not_terminal(session) do
+    if GameSession.terminal?(session.status) do
+      {:error, "Game session is no longer active"}
+    else
+      :ok
+    end
+  end
+
+  defp get_nickname(user_id) do
+    from(r in "registered_nicks", where: r.id == ^user_id, select: r.nickname)
+    |> Repo.one()
+  end
+end

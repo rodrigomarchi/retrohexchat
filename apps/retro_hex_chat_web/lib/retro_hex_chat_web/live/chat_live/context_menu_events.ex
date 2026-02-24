@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   context_query, context_whois, context_kick, context_ban, context_op,
   context_voice, context_add_contact, context_set_nick_color, context_ignore,
   context_unignore, context_pick_color, context_p2p, context_call,
-  context_video_call, context_sendfile.
+  context_video_call, context_sendfile, context_game.
 
   Covers chat area: chat_context_menu, close_chat_context_menu, ctx_chat_pm,
   ctx_chat_whois, ctx_chat_copy_nick, ctx_chat_ignore, ctx_chat_add_contact,
@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   ctx_chat_open_url, ctx_chat_copy_url, ctx_chat_save_url, ctx_chat_join,
   ctx_chat_copy_channel, ctx_chat_channel_info,
   ctx_chat_copy_message, ctx_chat_copy_selection, ctx_chat_ignore_sender,
-  ctx_chat_p2p, ctx_chat_call, ctx_chat_video_call, ctx_chat_sendfile.
+  ctx_chat_p2p, ctx_chat_call, ctx_chat_video_call, ctx_chat_sendfile, ctx_chat_game.
 
   Attached as `attach_hook(:context_menu_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -39,10 +39,10 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChat.Accounts.{ContactList, NickColors, ServerRoles, Session}
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
-  alias RetroHexChat.Commands.Handlers.P2p
+  alias RetroHexChat.Commands.Handlers.{Game, P2p}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
-  alias RetroHexChatWeb.ChatLive.Helpers.P2pInvite
+  alias RetroHexChatWeb.ChatLive.Helpers.{GameInvite, P2pInvite}
 
   def handle_event("nick_right_click", %{"nick" => nick} = params, socket) do
     if nick == socket.assigns.session.nickname do
@@ -256,6 +256,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
 
   def handle_event("context_sendfile", %{"nick" => nick}, socket),
     do: {:halt, handle_p2p_action(socket, nick, "file_transfer", :nicklist)}
+
+  def handle_event("context_game", %{"nick" => nick}, socket),
+    do: {:halt, handle_game_action(socket, nick, :nicklist)}
 
   # ---------------------------------------------------------------------------
   # Chat Area Context Menu Events
@@ -498,6 +501,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   def handle_event("ctx_chat_sendfile", %{"nick" => nick}, socket),
     do: {:halt, handle_p2p_action(socket, nick, "file_transfer", :chat)}
 
+  def handle_event("ctx_chat_game", %{"nick" => nick}, socket),
+    do: {:halt, handle_game_action(socket, nick, :chat)}
+
   # Catch-all: not our event, pass it along
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
@@ -629,6 +635,35 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     case P2p.do_execute(nick, session_type, context) do
       {:ok, :ui_action, :p2p_invite, payload} ->
         P2pInvite.handle_p2p_invite(socket, session, payload)
+
+      {:error, message} ->
+        error_event(socket, message)
+    end
+  end
+
+  defp handle_game_action(socket, nick, source) do
+    session = socket.assigns.session
+
+    socket =
+      case source do
+        :nicklist -> close_context_menu(socket)
+        :chat -> close_chat_context_menu(socket)
+      end
+
+    context = %{
+      nickname: session.nickname,
+      identified: session.identified,
+      active_channel: session.active_channel,
+      channels: session.channels,
+      operator_in: [],
+      half_operator_in: [],
+      is_admin: false,
+      is_server_operator: false
+    }
+
+    case Game.execute([nick], context) do
+      {:ok, :ui_action, :game_invite, payload} ->
+        GameInvite.handle_game_invite(socket, session, payload)
 
       {:error, message} ->
         error_event(socket, message)
