@@ -109,7 +109,9 @@ defmodule RetroHexChatWeb.GameSessionLive do
         nickname={@nickname}
         peer_nick={@peer_nick}
         peer_online={@peer_online}
-        messages={@messages}
+        role={@role}
+        local_info={@local_info}
+        peer_info={@peer_info}
         games={@games}
         game_request={@game_request}
         session_status={@session_status}
@@ -124,7 +126,28 @@ defmodule RetroHexChatWeb.GameSessionLive do
   @impl true
   def handle_info(%{event: "game_peer_joined", payload: %{user_id: uid}}, socket) do
     if uid != socket.assigns.user_id do
+      # Re-broadcast our client info so the newly joined peer gets it
+      Phoenix.PubSub.broadcast(
+        @pubsub,
+        "game:#{socket.assigns.token}",
+        %{
+          event: "game_client_info",
+          payload: %{from: socket.assigns.user_id, info: socket.assigns.local_info}
+        }
+      )
+
       {:noreply, assign(socket, peer_online: true)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(
+        %{event: "game_client_info", payload: %{from: from_id, info: info}},
+        socket
+      ) do
+    if from_id != socket.assigns.user_id do
+      {:noreply, assign(socket, peer_info: info)}
     else
       {:noreply, socket}
     end
@@ -170,11 +193,6 @@ defmodule RetroHexChatWeb.GameSessionLive do
     end
   end
 
-  def handle_info(%{event: "game_lobby_message", payload: msg}, socket) do
-    messages = socket.assigns.messages ++ [msg]
-    {:noreply, assign(socket, messages: messages)}
-  end
-
   def handle_info(%{event: "game_select_request", payload: request}, socket) do
     {:noreply, assign(socket, game_request: request)}
   end
@@ -189,18 +207,7 @@ defmodule RetroHexChatWeb.GameSessionLive do
   end
 
   def handle_info(%{event: "game_select_expired"}, socket) do
-    expired_msg = %{
-      id: System.unique_integer([:positive]),
-      sender_nick: "System",
-      content: "Game selection expired.",
-      type: "system",
-      timestamp: DateTime.utc_now()
-    }
-
-    {:noreply,
-     socket
-     |> assign(game_request: nil)
-     |> assign(messages: socket.assigns.messages ++ [expired_msg])}
+    {:noreply, assign(socket, game_request: nil)}
   end
 
   def handle_info(%{event: "game_session_closed", payload: %{reason: _reason}}, socket) do
@@ -234,11 +241,6 @@ defmodule RetroHexChatWeb.GameSessionLive do
   # --- Client Event Handlers ---
 
   @impl true
-  def handle_event("send_lobby_message", %{"content" => content}, socket) do
-    Games.send_lobby_message(socket.assigns.token, socket.assigns.user_id, content)
-    {:noreply, socket}
-  end
-
   def handle_event("select_game", %{"game_id" => game_id}, socket) do
     Games.select_game(socket.assigns.token, socket.assigns.user_id, game_id)
     {:noreply, socket}
@@ -351,13 +353,22 @@ defmodule RetroHexChatWeb.GameSessionLive do
   defp mount_game_lobby(socket, token, nickname, user_id, db_session) do
     role = if user_id == db_session.creator_id, do: :creator, else: :peer
 
+    local_info = parse_client_info(get_connect_params(socket))
+
     if connected?(socket) do
       Phoenix.PubSub.subscribe(@pubsub, "game:#{token}")
       Games.join_session(token, user_id)
+
+      # Broadcast our client info so the peer can display it
+      Phoenix.PubSub.broadcast(
+        @pubsub,
+        "game:#{token}",
+        %{event: "game_client_info", payload: %{from: user_id, info: local_info}}
+      )
     end
 
     peer_nick = resolve_peer_nick(user_id, db_session)
-    {messages, peer_online} = fetch_session_state(token, role)
+    peer_online = fetch_peer_online(token, role)
 
     games = Games.list_games()
 
@@ -372,7 +383,8 @@ defmodule RetroHexChatWeb.GameSessionLive do
         peer_nick: peer_nick,
         peer_online: peer_online,
         role: role,
-        messages: messages,
+        local_info: local_info,
+        peer_info: %{},
         games: games,
         game_request: nil,
         session_status: db_session.status,
@@ -431,18 +443,13 @@ defmodule RetroHexChatWeb.GameSessionLive do
     end
   end
 
-  defp fetch_session_state(token, role) do
+  defp fetch_peer_online(token, role) do
     case Games.session_info(token) do
       {:ok, state} ->
-        peer_online =
-          if role == :creator,
-            do: state.peer_joined,
-            else: state.creator_joined
-
-        {state.messages, peer_online}
+        if role == :creator, do: state.peer_joined, else: state.creator_joined
 
       _ ->
-        {[], false}
+        false
     end
   end
 
@@ -494,4 +501,47 @@ defmodule RetroHexChatWeb.GameSessionLive do
   defp expired_reason_label("pending_timeout"), do: "Session expired — peer did not join."
   defp expired_reason_label("lobby_inactivity"), do: "Session expired due to inactivity."
   defp expired_reason_label(_reason), do: "Game session ended."
+
+  # --- Client Info Parsing ---
+
+  @allowed_client_keys %{
+    "browser" => :browser,
+    "os" => :os,
+    "language" => :language,
+    "screen" => :screen,
+    "color_depth" => :color_depth,
+    "touch" => :touch,
+    "cores" => :cores,
+    "timezone" => :timezone
+  }
+  @max_string_length 100
+
+  @spec parse_client_info(map() | nil) :: map()
+  defp parse_client_info(nil), do: %{}
+
+  defp parse_client_info(params) do
+    case params["client_info"] do
+      json when is_binary(json) -> decode_client_json(json)
+      _ -> %{}
+    end
+  end
+
+  defp decode_client_json(json) do
+    case Jason.decode(json) do
+      {:ok, data} when is_map(data) ->
+        Map.new(@allowed_client_keys, fn {str_key, atom_key} ->
+          {atom_key, sanitize_client_value(data[str_key])}
+        end)
+
+      _ ->
+        %{}
+    end
+  end
+
+  defp sanitize_client_value(val) when is_binary(val),
+    do: String.slice(val, 0, @max_string_length)
+
+  defp sanitize_client_value(val) when is_integer(val), do: val
+  defp sanitize_client_value(val) when is_boolean(val), do: val
+  defp sanitize_client_value(_), do: nil
 end

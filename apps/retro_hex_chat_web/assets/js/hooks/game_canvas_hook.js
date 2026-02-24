@@ -67,6 +67,10 @@ const GameCanvasHook = {
     };
     this.engine = createEngine(canvas, this.channel, this._gameId, isHost, onGameEnd);
     this.engine.start();
+
+    // Hide the initialization stub text
+    const stub = this.el.querySelector(".game-canvas__stub");
+    if (stub) stub.style.display = "none";
   },
 
   _cleanup() {

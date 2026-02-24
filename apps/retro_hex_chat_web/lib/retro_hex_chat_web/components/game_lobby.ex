@@ -1,14 +1,13 @@
 defmodule RetroHexChatWeb.Components.GameLobby do
   @moduledoc """
   Function components for the game session lobby UI.
-  Includes game picker grid, consent banner, waiting indicator, lobby chat,
-  and session status header.
+  Includes game picker grid, consent banner, waiting indicator,
+  and P2P connection diagram header with host indicator.
   """
 
   use Phoenix.Component
 
-  alias Phoenix.LiveView.JS
-  alias RetroHexChatWeb.Components.GameIcons
+  alias RetroHexChatWeb.Components.{GameIcons, P2pConnectionDiagram}
   alias RetroHexChatWeb.Icons
 
   # --- Main lobby component ---
@@ -16,7 +15,9 @@ defmodule RetroHexChatWeb.Components.GameLobby do
   attr :nickname, :string, required: true
   attr :peer_nick, :string, required: true
   attr :peer_online, :boolean, required: true
-  attr :messages, :list, required: true
+  attr :role, :atom, required: true
+  attr :local_info, :map, default: %{}
+  attr :peer_info, :map, default: %{}
   attr :games, :list, required: true
   attr :game_request, :map, default: nil
   attr :session_status, :string, required: true
@@ -24,6 +25,10 @@ defmodule RetroHexChatWeb.Components.GameLobby do
 
   @spec game_lobby(map()) :: Phoenix.LiveView.Rendered.t()
   def game_lobby(assigns) do
+    host_nick = if assigns.role == :creator, do: assigns.nickname, else: assigns.peer_nick
+
+    assigns = assign(assigns, :host_nick, host_nick)
+
     ~H"""
     <div class="game-lobby window">
       <div class="title-bar">
@@ -35,12 +40,16 @@ defmodule RetroHexChatWeb.Components.GameLobby do
         </div>
       </div>
       <div class="window-body game-lobby__body">
-        <.game_lobby_header
+        <P2pConnectionDiagram.p2p_connection_diagram
           nickname={@nickname}
           peer_nick={@peer_nick}
           peer_online={@peer_online}
           session_status={@session_status}
+          local_info={@local_info}
+          peer_info={@peer_info}
         />
+
+        <.game_host_badge host_nick={@host_nick} />
 
         <.game_inactivity_warning :if={@inactivity_warning} />
 
@@ -69,11 +78,6 @@ defmodule RetroHexChatWeb.Components.GameLobby do
         />
 
         <.game_lobby_toolbar />
-
-        <.game_lobby_chat
-          messages={@messages}
-          nickname={@nickname}
-        />
       </div>
     </div>
     """
@@ -105,18 +109,12 @@ defmodule RetroHexChatWeb.Components.GameLobby do
 
   # --- Sub-components ---
 
-  attr :nickname, :string, required: true
-  attr :peer_nick, :string, required: true
-  attr :peer_online, :boolean, required: true
-  attr :session_status, :string, required: true
+  attr :host_nick, :string, required: true
 
-  defp game_lobby_header(assigns) do
+  defp game_host_badge(assigns) do
     ~H"""
-    <div class="game-lobby__header">
-      <span class="game-lobby__title">{@nickname} vs {@peer_nick}</span>
-      <span class="game-lobby__status">
-        {status_label(@session_status, @peer_online)}
-      </span>
+    <div class="game-host-badge">
+      {@host_nick} is the host (Player 1)
     </div>
     """
   end
@@ -139,7 +137,6 @@ defmodule RetroHexChatWeb.Components.GameLobby do
             <GameIcons.game_icon game_id={game.id} />
           </div>
           <span class="game-picker__name">{game.name}</span>
-          <span class="game-picker__tagline">{game.tagline}</span>
         </button>
       </div>
     </div>
@@ -159,18 +156,10 @@ defmodule RetroHexChatWeb.Components.GameLobby do
         {@game_request.requester_nick} wants to play: {@game_name}
       </p>
       <div class="game-consent__actions">
-        <button
-          phx-click="respond_game"
-          phx-value-accepted="true"
-          class="btn-icon"
-        >
+        <button phx-click="respond_game" phx-value-accepted="true" class="btn-icon">
           <Icons.icon_accept class="btn-icon__svg" /> Accept
         </button>
-        <button
-          phx-click="respond_game"
-          phx-value-accepted="false"
-          class="btn-icon"
-        >
+        <button phx-click="respond_game" phx-value-accepted="false" class="btn-icon">
           <Icons.icon_reject class="btn-icon__svg" /> Decline
         </button>
       </div>
@@ -194,44 +183,6 @@ defmodule RetroHexChatWeb.Components.GameLobby do
       <button class="btn-icon" phx-click="close_session">
         <Icons.icon_close class="btn-icon__svg" /> Leave
       </button>
-    </div>
-    """
-  end
-
-  attr :messages, :list, required: true
-  attr :nickname, :string, required: true
-
-  defp game_lobby_chat(assigns) do
-    ~H"""
-    <div class="game-chat">
-      <div class="game-chat__messages" id="game-chat-messages">
-        <div
-          :for={msg <- @messages}
-          class={"game-chat__msg #{if msg.type == "system", do: "game-chat__msg--system"}"}
-        >
-          <span :if={msg.type != "system"} class="game-chat__nick">{msg.sender_nick}:</span>
-          {msg.content}
-        </div>
-        <div :if={@messages == []} class="game-chat__empty">
-          No messages yet. Say hi!
-        </div>
-      </div>
-      <form
-        id="game-chat-form"
-        class="game-chat__form"
-        phx-submit={JS.push("send_lobby_message") |> JS.dispatch("reset", to: "#game-chat-form")}
-      >
-        <input
-          type="text"
-          name="content"
-          placeholder="Type a message..."
-          autocomplete="off"
-          class="game-chat__input"
-        />
-        <button type="submit" class="btn-icon">
-          <Icons.icon_send class="btn-icon__svg" /> Send
-        </button>
-      </form>
     </div>
     """
   end
@@ -272,11 +223,4 @@ defmodule RetroHexChatWeb.Components.GameLobby do
     </div>
     """
   end
-
-  @spec status_label(String.t(), boolean()) :: String.t()
-  defp status_label("pending", false), do: "Waiting for peer..."
-  defp status_label("pending", true), do: "Joining..."
-  defp status_label("lobby", _), do: "Pick a game"
-  defp status_label("playing", _), do: "Playing"
-  defp status_label(_, _), do: ""
 end

@@ -192,7 +192,7 @@ defmodule RetroHexChatWeb.GameSessionLiveTest do
       stop_server(session.token)
     end
 
-    test "lobby chat works", %{conn: conn} do
+    test "shows host badge for creator", %{conn: conn} do
       alice = create_nick("gm_lv_a9")
       bob = create_nick("gm_lv_b9")
 
@@ -202,13 +202,26 @@ defmodule RetroHexChatWeb.GameSessionLiveTest do
       Process.sleep(50)
 
       conn = chat_conn(conn, "gm_lv_a9")
-      {:ok, view, _html} = live(conn, "/game/#{session.token}")
+      {:ok, _view, html} = live(conn, "/game/#{session.token}")
 
-      render_submit(view, "send_lobby_message", %{"content" => "hello!"})
+      assert html =~ "gm_lv_a9 is the host (Player 1)"
+      stop_server(session.token)
+    end
+
+    test "shows host badge for peer pointing to creator", %{conn: conn} do
+      alice = create_nick("gm_lv_a10")
+      bob = create_nick("gm_lv_b10")
+
+      session = create_game_session(alice.id, bob.id)
+      SessionServer.join(session.token, alice.id)
+      SessionServer.join(session.token, bob.id)
       Process.sleep(50)
 
-      html = render(view)
-      assert html =~ "hello!"
+      conn = chat_conn(conn, "gm_lv_b10")
+      {:ok, _view, html} = live(conn, "/game/#{session.token}")
+
+      # Creator (alice) is always the host, even when viewed by peer (bob)
+      assert html =~ "gm_lv_a10 is the host (Player 1)"
       stop_server(session.token)
     end
   end
