@@ -2,7 +2,7 @@ defmodule RetroHexChat.Games.Catalog do
   @moduledoc """
   Registry of available P2P games.
   Each game has an id, name, description, and icon identifier.
-  All games are real-time action for two players.
+  All games are real-time action for two players (7 games total).
   """
 
   @type game :: %{
@@ -48,12 +48,32 @@ defmodule RetroHexChat.Games.Catalog do
     %{
       id: "star_duel",
       name: "Star Duel",
-      tagline: "Dogfight among the stars",
+      tagline: "Dogfight in the void",
       description:
-        "Space dogfight with inertial physics and asteroid obstacles. " <>
-          "Thrust, rotate, and fire — but watch your momentum.",
+        "Newtonian space combat — thrust, rotate, and fire missiles in open vacuum. " <>
+          "Wraparound edges, hyperspace warp (20% death chance), first to 7 wins.",
       icon: "game_space",
-      controls: "Arrow keys to thrust/rotate, Space to fire"
+      controls: "Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp"
+    },
+    %{
+      id: "gravity_well",
+      name: "Gravity Well",
+      tagline: "Orbit the dying star",
+      description:
+        "Orbital combat around a central gravity star. " <>
+          "Use gravity slingshots, but fly too close and the star kills you. First to 7 wins.",
+      icon: "game_gravity",
+      controls: "Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp"
+    },
+    %{
+      id: "debris_field",
+      name: "Debris Field",
+      tagline: "Navigate the wreckage",
+      description:
+        "Fight through a field of floating asteroids that block missiles and kill on contact. " <>
+          "Use the debris for cover — or watch it destroy you. First to 7 wins.",
+      icon: "game_debris",
+      controls: "Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp"
     },
     %{
       id: "block_breakers",

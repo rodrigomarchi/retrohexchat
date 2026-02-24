@@ -79,17 +79,9 @@ export class SurroundEngine extends GameEngine {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
     }
-    if (this.animFrame) {
-      cancelAnimationFrame(this.animFrame);
-      this.animFrame = null;
-    }
-    this.running = false;
-    this.channel.removeEventListener("message", this._boundOnMessage);
-    document.removeEventListener("keydown", this._boundOnKeyDown);
-    document.removeEventListener("keyup", this._boundOnKeyUp);
+    super.stop();
   }
 
-  /** Override base engine message handler to use binary protocol. */
   _handleMessage(event) {
     if (!(event.data instanceof ArrayBuffer)) return;
     const buf = event.data;
@@ -191,7 +183,7 @@ export class SurroundEngine extends GameEngine {
     this.gameState.round = decoded.round;
   }
 
-  /** Override: direction queuing (sticky — no keyUp needed). */
+  /** Direction queuing (sticky — no keyUp needed). */
   _handleKeyDown(e) {
     const keyCode = this._mapKey(e.key);
     if (keyCode === null) return;

@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.GameIcons do
   @moduledoc """
-  Retro pixel-art SVG icons for the 5 P2P games.
+  Retro pixel-art SVG icons for the 7 P2P games.
   Each icon is 32×32 and follows the project icon conventions.
   """
 
@@ -18,6 +18,8 @@ defmodule RetroHexChatWeb.Components.GameIcons do
   def game_icon(%{game_id: "light_trails"} = assigns), do: icon_game_trails(assigns)
   def game_icon(%{game_id: "pixel_tanks"} = assigns), do: icon_game_tanks(assigns)
   def game_icon(%{game_id: "star_duel"} = assigns), do: icon_game_space(assigns)
+  def game_icon(%{game_id: "gravity_well"} = assigns), do: icon_game_gravity(assigns)
+  def game_icon(%{game_id: "debris_field"} = assigns), do: icon_game_debris(assigns)
   def game_icon(%{game_id: "block_breakers"} = assigns), do: icon_game_breakout(assigns)
   def game_icon(assigns), do: icon_game_generic(assigns)
 
@@ -123,6 +125,80 @@ defmodule RetroHexChatWeb.Components.GameIcons do
       <circle cx="8" cy="10" r="1" fill="#FFD700" />
       <circle cx="25" cy="22" r="0.8" fill="#FFD700" />
       <circle cx="22" cy="6" r="0.6" fill="#fff" />
+    </svg>
+    """
+  end
+
+  # -- Gravity Well: star with gravity rings --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_gravity(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_gravity(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect
+        x="1"
+        y="1"
+        width="30"
+        height="30"
+        rx="2"
+        fill="#000033"
+        stroke="#008080"
+        stroke-width="1"
+      />
+      <circle cx="16" cy="16" r="4" fill="#ff8c00" />
+      <circle cx="16" cy="16" r="4" fill="none" stroke="#FFD700" stroke-width="0.5" opacity="0.8" />
+      <circle
+        cx="16"
+        cy="16"
+        r="8"
+        fill="none"
+        stroke="#ff8c00"
+        stroke-width="0.5"
+        opacity="0.4"
+        stroke-dasharray="2,2"
+      />
+      <circle
+        cx="16"
+        cy="16"
+        r="12"
+        fill="none"
+        stroke="#ff8c00"
+        stroke-width="0.3"
+        opacity="0.2"
+        stroke-dasharray="3,3"
+      />
+      <polygon points="8,8 6,12 9,11" fill="#C0C0C0" stroke="#000" stroke-width="0.3" />
+      <polygon points="24,22 26,26 23,25" fill="#C0C0C0" stroke="#000" stroke-width="0.3" />
+    </svg>
+    """
+  end
+
+  # -- Debris Field: ship among rocks --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_debris(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_debris(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect
+        x="1"
+        y="1"
+        width="30"
+        height="30"
+        rx="2"
+        fill="#000033"
+        stroke="#008080"
+        stroke-width="1"
+      />
+      <polygon points="16,12 19,20 16,18 13,20" fill="#C0C0C0" stroke="#000" stroke-width="0.3" />
+      <polygon points="6,6 10,5 9,9 5,8" fill="#555" stroke="#8b4513" stroke-width="0.5" />
+      <polygon points="22,4 27,5 26,9 23,8" fill="#555" stroke="#8b4513" stroke-width="0.5" />
+      <polygon points="4,20 8,19 7,24 3,23" fill="#666" stroke="#8b4513" stroke-width="0.5" />
+      <polygon points="24,18 28,17 27,22 23,21" fill="#555" stroke="#8b4513" stroke-width="0.5" />
+      <polygon points="12,25 16,24 15,28 11,27" fill="#666" stroke="#8b4513" stroke-width="0.5" />
     </svg>
     """
   end

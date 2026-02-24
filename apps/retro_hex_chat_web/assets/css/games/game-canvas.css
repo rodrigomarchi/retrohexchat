@@ -49,3 +49,17 @@
   display: flex;
   gap: var(--space-sm);
 }
+
+/* Star Duel trilogy: cyberpunk post-apocalyptic space combat */
+.game-canvas[data-game-id="star_duel"] .game-canvas__surface,
+.game-canvas[data-game-id="gravity_well"] .game-canvas__surface,
+.game-canvas[data-game-id="debris_field"] .game-canvas__surface {
+  --game-bg-color: #0a0a12;
+  --game-fg-color: #39ff14;
+  --game-accent-color: #00e5ff;
+  --game-muted-color: #1a2a3a;
+  --game-glow-color: rgba(57, 255, 20, 0.2);
+  --game-warning-color: #ffaa00;
+  --game-star-color: #ff8c00;
+  --game-asteroid-color: #8b4513;
+}

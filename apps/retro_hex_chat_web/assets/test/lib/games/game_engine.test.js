@@ -1,102 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import {
-  encodeGameMessage,
-  decodeGameMessage,
-  isGameMessage,
-  GAME_MSG,
-  GameEngine,
-} from "../../../js/lib/game_engine.js";
+import { GameEngine } from "../../../js/lib/game_engine.js";
 
 describe("game_engine", () => {
-  describe("encodeGameMessage", () => {
-    it("encodes type byte + JSON payload", () => {
-      const buffer = encodeGameMessage(GAME_MSG.GAME_STATE, { tick: 42 });
-      const view = new Uint8Array(buffer);
-
-      expect(view[0]).toBe(0x80);
-      const json = new TextDecoder().decode(view.slice(1));
-      expect(JSON.parse(json)).toEqual({ tick: 42 });
-    });
-
-    it("encodes empty payload", () => {
-      const buffer = encodeGameMessage(GAME_MSG.GAME_READY, {});
-      const view = new Uint8Array(buffer);
-
-      expect(view[0]).toBe(0x84);
-      const json = new TextDecoder().decode(view.slice(1));
-      expect(JSON.parse(json)).toEqual({});
-    });
-  });
-
-  describe("decodeGameMessage", () => {
-    it("decodes valid game message", () => {
-      const buffer = encodeGameMessage(GAME_MSG.PLAYER_INPUT, {
-        key: "ArrowUp",
-        pressed: true,
-      });
-      const msg = decodeGameMessage(buffer);
-
-      expect(msg).not.toBeNull();
-      expect(msg.type).toBe(GAME_MSG.PLAYER_INPUT);
-      expect(msg.payload).toEqual({ key: "ArrowUp", pressed: true });
-    });
-
-    it("returns null for non-game message (type < 0x80)", () => {
-      const buffer = new ArrayBuffer(5);
-      const view = new Uint8Array(buffer);
-      view[0] = 0x01; // file transfer type
-      expect(decodeGameMessage(buffer)).toBeNull();
-    });
-
-    it("returns null for empty buffer", () => {
-      expect(decodeGameMessage(new ArrayBuffer(0))).toBeNull();
-    });
-
-    it("handles message with only type byte (no payload)", () => {
-      const buffer = new ArrayBuffer(1);
-      const view = new Uint8Array(buffer);
-      view[0] = 0x84;
-      const msg = decodeGameMessage(buffer);
-
-      expect(msg).not.toBeNull();
-      expect(msg.type).toBe(0x84);
-      expect(msg.payload).toEqual({});
-    });
-  });
-
-  describe("isGameMessage", () => {
-    it("returns true for game messages (type >= 0x80)", () => {
-      const buffer = encodeGameMessage(GAME_MSG.GAME_STATE, {});
-      expect(isGameMessage(buffer)).toBe(true);
-    });
-
-    it("returns false for file transfer messages (type < 0x80)", () => {
-      const buffer = new ArrayBuffer(5);
-      const view = new Uint8Array(buffer);
-      view[0] = 0x01;
-      expect(isGameMessage(buffer)).toBe(false);
-    });
-
-    it("returns false for empty buffer", () => {
-      expect(isGameMessage(new ArrayBuffer(0))).toBe(false);
-    });
-  });
-
-  describe("GAME_MSG constants", () => {
-    it("has correct values", () => {
-      expect(GAME_MSG.GAME_STATE).toBe(0x80);
-      expect(GAME_MSG.PLAYER_INPUT).toBe(0x81);
-      expect(GAME_MSG.GAME_START).toBe(0x82);
-      expect(GAME_MSG.GAME_END).toBe(0x83);
-      expect(GAME_MSG.GAME_READY).toBe(0x84);
-    });
-  });
-
   describe("GameEngine", () => {
     let canvas;
     let channel;
     let engine;
-
     let ctx;
 
     beforeEach(() => {
@@ -143,33 +52,30 @@ describe("game_engine", () => {
       expect(engine.gameId).toBe("hex_pong");
       expect(engine.isHost).toBe(true);
       expect(engine.running).toBe(false);
+      expect(engine.animFrame).toBeNull();
     });
 
-    it("starts and sends GAME_START as host", () => {
+    it("start() wires event listeners and sets running", () => {
       engine = new GameEngine(canvas, channel, "hex_pong", true);
       engine.start();
 
       expect(engine.running).toBe(true);
       expect(channel.addEventListener).toHaveBeenCalledWith("message", expect.any(Function));
-      expect(channel.send).toHaveBeenCalledTimes(1);
-
-      // Decode the sent message
-      const sent = channel.send.mock.calls[0][0];
-      const msg = decodeGameMessage(sent);
-      expect(msg.type).toBe(GAME_MSG.GAME_START);
-      expect(msg.payload.gameId).toBe("hex_pong");
     });
 
-    it("starts and sends GAME_READY as peer", () => {
+    it("start() does not send any messages (no protocol in base)", () => {
+      engine = new GameEngine(canvas, channel, "hex_pong", true);
+      engine.start();
+      expect(channel.send).not.toHaveBeenCalled();
+    });
+
+    it("start() does not send messages as peer either", () => {
       engine = new GameEngine(canvas, channel, "hex_pong", false);
       engine.start();
-
-      const sent = channel.send.mock.calls[0][0];
-      const msg = decodeGameMessage(sent);
-      expect(msg.type).toBe(GAME_MSG.GAME_READY);
+      expect(channel.send).not.toHaveBeenCalled();
     });
 
-    it("stops cleanly", () => {
+    it("stop() cleans up listeners and sets running false", () => {
       engine = new GameEngine(canvas, channel, "hex_pong", true);
       engine.start();
       engine.stop();
@@ -178,46 +84,76 @@ describe("game_engine", () => {
       expect(channel.removeEventListener).toHaveBeenCalledWith("message", expect.any(Function));
     });
 
-    it("renders stub on start", () => {
+    it("stop() cancels animation frame", () => {
       engine = new GameEngine(canvas, channel, "hex_pong", true);
       engine.start();
+      engine.animFrame = 42;
+      const cancelSpy = vi.spyOn(globalThis, "cancelAnimationFrame").mockImplementation(() => {});
+      engine.stop();
 
-      const ctx = canvas.getContext();
+      expect(cancelSpy).toHaveBeenCalledWith(42);
+      expect(engine.animFrame).toBeNull();
+    });
+
+    it("_renderStub draws to canvas", () => {
+      engine = new GameEngine(canvas, channel, "hex_pong", true);
+      engine._renderStub();
+
       expect(ctx.fillRect).toHaveBeenCalled();
       expect(ctx.fillText).toHaveBeenCalled();
     });
 
-    it("sends input as peer on keydown", () => {
-      engine = new GameEngine(canvas, channel, "light_trails", false);
-      engine.start();
-
-      // Simulate keydown
-      const event = new KeyboardEvent("keydown", { key: "ArrowUp" });
-      Object.defineProperty(event, "preventDefault", {
-        value: vi.fn(),
-      });
-      document.dispatchEvent(event);
-
-      // Should have sent GAME_READY + PLAYER_INPUT
-      expect(channel.send).toHaveBeenCalledTimes(2);
-      const inputMsg = decodeGameMessage(channel.send.mock.calls[1][0]);
-      expect(inputMsg.type).toBe(GAME_MSG.PLAYER_INPUT);
-      expect(inputMsg.payload.key).toBe("ArrowUp");
-      expect(inputMsg.payload.pressed).toBe(true);
+    it("_render calls _renderStub by default", () => {
+      engine = new GameEngine(canvas, channel, "hex_pong", true);
+      const spy = vi.spyOn(engine, "_renderStub");
+      engine._render();
+      expect(spy).toHaveBeenCalled();
     });
 
-    it("does not send input as host", () => {
+    it("_safeSend sends when channel is open", () => {
       engine = new GameEngine(canvas, channel, "hex_pong", true);
-      engine.start();
+      const data = new ArrayBuffer(4);
+      engine._safeSend(data);
+      expect(channel.send).toHaveBeenCalledWith(data);
+    });
 
-      const event = new KeyboardEvent("keydown", { key: "ArrowUp" });
-      Object.defineProperty(event, "preventDefault", {
-        value: vi.fn(),
-      });
-      document.dispatchEvent(event);
+    it("_safeSend does not send when channel is closed", () => {
+      channel.readyState = "closed";
+      engine = new GameEngine(canvas, channel, "hex_pong", true);
+      engine._safeSend(new ArrayBuffer(1));
+      expect(channel.send).not.toHaveBeenCalled();
+    });
 
-      // Only GAME_START was sent, not PLAYER_INPUT
-      expect(channel.send).toHaveBeenCalledTimes(1);
+    it("_safeSend catches errors on send", () => {
+      channel.send = () => {
+        throw new Error("closed");
+      };
+      engine = new GameEngine(canvas, channel, "hex_pong", true);
+      expect(() => engine._safeSend(new ArrayBuffer(1))).not.toThrow();
+    });
+
+    it("_handleMessage is a no-op stub", () => {
+      engine = new GameEngine(canvas, channel, "hex_pong", true);
+      // Should not throw
+      expect(() => engine._handleMessage({ data: new ArrayBuffer(1) })).not.toThrow();
+    });
+
+    it("_handleKeyDown is a no-op stub", () => {
+      engine = new GameEngine(canvas, channel, "hex_pong", true);
+      expect(() => engine._handleKeyDown(new Event("keydown"))).not.toThrow();
+    });
+
+    it("_handleKeyUp is a no-op stub", () => {
+      engine = new GameEngine(canvas, channel, "hex_pong", true);
+      expect(() => engine._handleKeyUp(new Event("keyup"))).not.toThrow();
+    });
+
+    it("bound handlers reference instance methods", () => {
+      engine = new GameEngine(canvas, channel, "hex_pong", true);
+      // The bound functions should exist and be callable
+      expect(typeof engine._boundOnMessage).toBe("function");
+      expect(typeof engine._boundOnKeyDown).toBe("function");
+      expect(typeof engine._boundOnKeyUp).toBe("function");
     });
   });
 });

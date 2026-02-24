@@ -51,6 +51,7 @@ export class BreakoutEngine extends GameEngine {
     super(canvas, channel, gameId, isHost);
     this.onGameEnd = onGameEnd || null;
     this.gameState = createInitialState();
+    this.localInputs = { left: false, right: false };
     this.remoteInputs = { left: false, right: false };
     this.frameCount = 0;
     this.phaseTimer = null;
@@ -83,17 +84,9 @@ export class BreakoutEngine extends GameEngine {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
     }
-    if (this.animFrame) {
-      cancelAnimationFrame(this.animFrame);
-      this.animFrame = null;
-    }
-    this.running = false;
-    this.channel.removeEventListener("message", this._boundOnMessage);
-    document.removeEventListener("keydown", this._boundOnKeyDown);
-    document.removeEventListener("keyup", this._boundOnKeyUp);
+    super.stop();
   }
 
-  /** Override base engine message handler to use binary protocol. */
   _handleMessage(event) {
     if (!(event.data instanceof ArrayBuffer)) return;
     const buf = event.data;
@@ -177,7 +170,6 @@ export class BreakoutEngine extends GameEngine {
     }
   }
 
-  /** Override base key handling to send binary input on peer side. */
   _handleKeyDown(e) {
     const keyCode = this._mapKey(e.key);
     if (keyCode === null) return;

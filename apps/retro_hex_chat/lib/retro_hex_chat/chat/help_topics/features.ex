@@ -984,7 +984,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_star,
         description:
-          "Play retro arcade games directly with other users via peer-to-peer WebRTC connections."
+          "Play retro arcade games directly with other users via peer-to-peer WebRTC connections.",
+        see_also: [
+          "feature-hex-pong",
+          "feature-light-trails",
+          "feature-block-breakers",
+          "feature-star-duel",
+          "feature-gravity-well",
+          "feature-debris-field"
+        ]
       },
       %{
         id: "feature-hex-pong",
@@ -993,7 +1001,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         keywords: ["hex pong", "pong", "paddle", "ball", "game", "cyberpunk", "neon"],
         icon: :icon_star,
         description:
-          "Cyberpunk Pong with neon visuals, CRT effects, and synth audio. First to 11 (win by 2). Use Arrow keys or W/S."
+          "Cyberpunk Pong with neon visuals, CRT effects, and synth audio. First to 11 (win by 2). Use Arrow keys or W/S.",
+        see_also: ["feature-p2p-games"]
       },
       %{
         id: "feature-light-trails",
@@ -1002,7 +1011,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         keywords: ["light trails", "tron", "trails", "grid", "arena", "game"],
         icon: :icon_star,
         description:
-          "Race across a grid leaving a glowing trail. Hit a trail or wall and you lose."
+          "Race across a grid leaving a glowing trail. Hit a trail or wall and you lose.",
+        see_also: ["feature-p2p-games"]
       },
       %{
         id: "feature-pixel-tanks",
@@ -1010,15 +1020,69 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         category: "Features",
         keywords: ["pixel tanks", "tank", "combat", "maze", "ricochet", "game"],
         icon: :icon_star,
-        description: "Top-down tank combat in a destructible maze with ricocheting shots."
+        description: "Top-down tank combat in a destructible maze with ricocheting shots.",
+        see_also: ["feature-p2p-games"]
       },
       %{
         id: "feature-star-duel",
         title: "Star Duel",
         category: "Features",
-        keywords: ["star duel", "space", "spaceship", "dogfight", "asteroids", "game"],
+        keywords: [
+          "star duel",
+          "space",
+          "spaceship",
+          "dogfight",
+          "game",
+          "newtonian",
+          "warp",
+          "hyperspace"
+        ],
         icon: :icon_star,
-        description: "Space dogfight with inertial physics and asteroid obstacles."
+        description:
+          "Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles. " <>
+            "Wraparound edges, hyperspace warp with 20% death chance. First to 7 wins. " <>
+            "Controls: Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp.",
+        see_also: ["feature-gravity-well", "feature-debris-field", "feature-p2p-games"]
+      },
+      %{
+        id: "feature-gravity-well",
+        title: "Gravity Well",
+        category: "Features",
+        keywords: [
+          "gravity well",
+          "gravity",
+          "orbital",
+          "star",
+          "slingshot",
+          "game",
+          "space"
+        ],
+        icon: :icon_star,
+        description:
+          "Orbital combat around a central gravity star. Ships are pulled toward the star — " <>
+            "use gravity slingshots for speed, but fly too close and you die. Same controls " <>
+            "as Star Duel. First to 7 wins.",
+        see_also: ["feature-star-duel", "feature-debris-field", "feature-p2p-games"]
+      },
+      %{
+        id: "feature-debris-field",
+        title: "Debris Field",
+        category: "Features",
+        keywords: [
+          "debris field",
+          "debris",
+          "asteroids",
+          "obstacles",
+          "wreckage",
+          "game",
+          "space"
+        ],
+        icon: :icon_star,
+        description:
+          "Space combat through floating asteroid obstacles. Asteroids block missiles and " <>
+            "kill ships on contact. Use debris for cover or it destroys you. Same controls " <>
+            "as Star Duel. First to 7 wins.",
+        see_also: ["feature-star-duel", "feature-gravity-well", "feature-p2p-games"]
       },
       %{
         id: "feature-block-breakers",
@@ -1038,7 +1102,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         icon: :icon_star,
         description:
           "Cooperative Breakout with cyberpunk visuals. P1 controls the bottom paddle, P2 the top. " <>
-            "3 shared lives, 50 neon blocks (5 rows), ball speeds up. Arrow keys or A/D to move."
+            "3 shared lives, 50 neon blocks (5 rows), ball speeds up. Arrow keys or A/D to move.",
+        see_also: ["feature-p2p-games"]
       }
     ]
   end
