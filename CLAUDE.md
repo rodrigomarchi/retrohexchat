@@ -183,6 +183,56 @@ If any check fails, the task is NOT complete.
 - Run `mix audit.styles` to verify — must show 0 LOW, 0 MEDIUM, 0 HIGH findings
 - Exception: `log_exporter.ex` embeds CSS for standalone HTML exports (must stay self-contained)
 
+## SVG Architecture (mandatory — NO inline SVGs)
+
+**NEVER** write inline `<svg>` tags in LiveViews, components, templates, or layouts.
+All SVGs MUST live in dedicated modules. The CSS lint (`make lint.css`) enforces this.
+
+### Icons → `RetroHexChatWeb.Icons` facade
+
+All icons are function components in submodules under `components/icons/`:
+
+| Submodule | Subject |
+|-----------|---------|
+| `Icons.People` | Users, contacts, social |
+| `Icons.Communication` | Chat, channels, networking |
+| `Icons.Media` | Audio, video, devices |
+| `Icons.Files` | Documents, folders, clipboard |
+| `Icons.Hardware` | Servers, databases, platforms |
+| `Icons.Code` | Terminal, scripting, automation |
+| `Icons.Security` | Locks, shields, bans |
+| `Icons.Arrows` | Directional, navigation |
+| `Icons.Marks` | Checkmarks, X marks, status |
+| `Icons.Tools` | Settings, editing, search |
+| `Icons.Alerts` | Notifications, info, warnings |
+| `Icons.Symbols` | Currency, stars, misc |
+| `Icons.Formatting` | Text formatting (bold, italic, etc.) — 14×14 |
+| `Icons.Games` | P2P game icons — 32×32 |
+
+**Adding a new icon:**
+1. Choose submodule by **what the icon depicts** (not where it's used)
+2. Add `attr :class, :string, default: nil` + `@spec` + `~H""" <svg> """`
+3. Add `defdelegate` in `components/icons.ex` facade
+4. Use `<Icons.icon_name />` in templates (or `<.icon_name />` if imported)
+
+**Naming:** `icon_<name>`, `icon_btn_<name>` (buttons), `icon_dialog_<name>` (title bars), `icon_tab_<name>` (tabs), `icon_group_<name>` (32×32 groups), `icon_fmt_<name>` (formatting), `icon_game_<name>` (games)
+
+**Sizes:** 32×32 (desktop/game), 16×16 (toolbar/tab/dialog), 14×14 (formatting)
+
+### Diagrams → `RetroHexChatWeb.Components.Diagrams`
+
+Complex SVG illustrations (flowcharts, architecture diagrams, mockups) go in `components/diagrams.ex`.
+Same pattern: `attr :class` + `@spec` + `~H""" <svg> """`.
+
+### Exceptions
+
+- `components/p2p_connection_diagram.ex` — data-driven SVGs with dynamic paths (private helpers, not standalone)
+- `log_exporter.ex` — embeds CSS/SVG for standalone HTML exports
+
+### Catalog
+
+See `docs/svg-catalog.md` for full inventory. Visit `/icons` (dev only) to browse all icons visually.
+
 ## Help System (mandatory)
 
 Every new feature MUST include corresponding help documentation:
