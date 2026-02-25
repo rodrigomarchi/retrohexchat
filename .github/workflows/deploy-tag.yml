@@ -1,10 +1,8 @@
 name: Deploy (tag)
 
 on:
-  push:
-    tags:
-      - 'sun-*'
-      - 'moon-*'
+  # TEMPORARILY DISABLED — out of GitHub Actions credits (re-enable later)
+  workflow_dispatch:
 
 concurrency:
   group: deploy-tag-${{ github.ref }}
