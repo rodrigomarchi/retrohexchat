@@ -294,6 +294,36 @@ defmodule RetroHexChat.Games.Catalog do
           "Fastest time down the mountain wins.",
       icon: "game_skiing",
       controls: "Arrow keys (←/→) or A/D to steer"
+    },
+    %{
+      id: "hex_frost",
+      name: "Hex Frost",
+      tagline: "Build or be frozen",
+      description:
+        "Arctic construction race — jump on floating ice blocks to build your igloo. " <>
+          "Steal your opponent's blocks for a 2-piece swing. Best of 5 rounds with polar bears, crabs, geese, and clams.",
+      icon: "game_frost",
+      controls: "Arrow keys or WASD to move, Up/Down to jump between rows"
+    },
+    %{
+      id: "hex_frost_blizzard",
+      name: "Hex Frost: Blizzard",
+      tagline: "One epic round",
+      description:
+        "1 long round — 20-piece igloo, all enemies from the start, " <>
+          "temperature drops slowly. Epic arctic endurance.",
+      icon: "game_frost",
+      controls: "Arrow keys or WASD to move, Up/Down to jump between rows"
+    },
+    %{
+      id: "hex_frost_peaceful",
+      name: "Hex Frost: Peaceful",
+      tagline: "No stealing, pure race",
+      description:
+        "Pure construction race — no block stealing allowed. " <>
+          "First to complete the igloo wins. Fair and square.",
+      icon: "game_frost",
+      controls: "Arrow keys or WASD to move, Up/Down to jump between rows"
     }
   ]
 

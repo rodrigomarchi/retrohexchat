@@ -163,6 +163,28 @@
   --game-trail-color: rgba(57, 255, 20, 0.3);
 }
 
+/* Hex Frost: cyberpunk post-apocalyptic arctic construction race */
+.game-canvas[data-game-id="hex_frost"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_frost_blizzard"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_frost_peaceful"] .game-canvas__surface {
+  --game-bg-color: #060818;
+  --game-fg-color: #39ff14;
+  --game-accent-color: #00e5ff;
+  --game-muted-color: #0e1a2e;
+  --game-glow-color: rgba(57, 255, 20, 0.15);
+  --game-warning-color: #ff4444;
+  --game-shore-color: #2a3040;
+  --game-water-color: #0a1020;
+  --game-block-white: #c0d8e8;
+  --game-block-p1: #40ff80;
+  --game-block-p2: #40d0ff;
+  --game-igloo-p1: #30cc60;
+  --game-igloo-p2: #30a0cc;
+  --game-bear-color: #e0e0e0;
+  --game-crab-color: #ff4040;
+  --game-fish-color: #ff8800;
+}
+
 /* Star Duel trilogy: cyberpunk post-apocalyptic space combat */
 .game-canvas[data-game-id="star_duel"] .game-canvas__surface,
 .game-canvas[data-game-id="gravity_well"] .game-canvas__surface,

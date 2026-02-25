@@ -1013,7 +1013,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-tennis-sudden",
           "feature-hex-skiing",
           "feature-hex-skiing-escape",
-          "feature-hex-skiing-clean"
+          "feature-hex-skiing-clean",
+          "feature-hex-frost",
+          "feature-hex-frost-blizzard",
+          "feature-hex-frost-peaceful"
         ]
       },
       %{
@@ -1652,6 +1655,81 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-hex-skiing",
           "feature-hex-skiing-escape",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-frost",
+        title: "Hex Frost",
+        category: "Features",
+        keywords: [
+          "hex frost",
+          "frostbite",
+          "igloo",
+          "ice",
+          "arctic",
+          "block",
+          "steal",
+          "construction",
+          "game"
+        ],
+        icon: :icon_game_frost,
+        description:
+          "Arctic construction race — jump on floating ice blocks to build your igloo while " <>
+            "stealing your opponent's blocks. Blocks have 3 states: white (neutral), your color, " <>
+            "or opponent's color. Stepping on opponent's block steals it (2-piece swing!). " <>
+            "Dodge polar bears, crabs, geese, and clams. Best of 5 rounds with progressive difficulty. " <>
+            "Temperature timer adds urgency. Controls: Arrow keys or WASD to move, Up/Down to jump between rows.",
+        see_also: [
+          "feature-hex-frost-blizzard",
+          "feature-hex-frost-peaceful",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-frost-blizzard",
+        title: "Hex Frost: Blizzard",
+        category: "Features",
+        keywords: [
+          "hex frost",
+          "frostbite",
+          "blizzard",
+          "endurance",
+          "long",
+          "game"
+        ],
+        icon: :icon_game_frost,
+        description:
+          "1 long epic round — igloo needs 20 pieces, all enemies from the start, " <>
+            "temperature starts at 60° and drops slowly. Arctic endurance mode. " <>
+            "Controls: Arrow keys or WASD to move, Up/Down to jump between rows.",
+        see_also: [
+          "feature-hex-frost",
+          "feature-hex-frost-peaceful",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-frost-peaceful",
+        title: "Hex Frost: Peaceful",
+        category: "Features",
+        keywords: [
+          "hex frost",
+          "frostbite",
+          "peaceful",
+          "no steal",
+          "pure",
+          "race",
+          "game"
+        ],
+        icon: :icon_game_frost,
+        description:
+          "Pure construction race — no block stealing allowed. Stepping on opponent's blocks " <>
+            "has no effect. First to complete the igloo wins. Fair and square. " <>
+            "Controls: Arrow keys or WASD to move, Up/Down to jump between rows.",
+        see_also: [
+          "feature-hex-frost",
+          "feature-hex-frost-blizzard",
           "feature-p2p-games"
         ]
       }
