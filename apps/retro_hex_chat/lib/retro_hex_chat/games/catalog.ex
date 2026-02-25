@@ -2,7 +2,7 @@ defmodule RetroHexChat.Games.Catalog do
   @moduledoc """
   Registry of available P2P games.
   Each game has an id, name, description, and icon identifier.
-  All games are real-time action for two players (22 games total).
+  All games are real-time action for two players (25 games total).
   """
 
   @type game :: %{
@@ -234,6 +234,36 @@ defmodule RetroHexChat.Games.Catalog do
           "90 seconds to score maximum overtakes.",
       icon: "game_enduro",
       controls: "Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo"
+    },
+    %{
+      id: "hex_tennis",
+      name: "Hex Tennis",
+      tagline: "Serve, rally, win",
+      description:
+        "Top-down tennis duel — automatic hitting, shot angle depends on ball contact position. " <>
+          "Full set with tiebreak at 6-6. Deuce, advantage, the works.",
+      icon: "game_tennis",
+      controls: "Arrow keys or WASD to move, Space or Shift to serve"
+    },
+    %{
+      id: "hex_tennis_quick",
+      name: "Hex Tennis: Quick Match",
+      tagline: "First to 3 games",
+      description:
+        "Quick tennis match — first to 3 games wins. " <>
+          "Same gameplay, shorter format. No tiebreak needed.",
+      icon: "game_tennis",
+      controls: "Arrow keys or WASD to move, Space or Shift to serve"
+    },
+    %{
+      id: "hex_tennis_sudden",
+      name: "Hex Tennis: Sudden Death",
+      tagline: "One point, one game",
+      description:
+        "Every point wins a game — no 15-30-40, no deuce. " <>
+          "First to 6 games takes the set. Pure pressure.",
+      icon: "game_tennis",
+      controls: "Arrow keys or WASD to move, Space or Shift to serve"
     }
   ]
 

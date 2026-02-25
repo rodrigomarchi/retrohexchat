@@ -35,6 +35,9 @@ defmodule RetroHexChatWeb.Icons.Games do
   def game_icon(%{game_id: "hex_enduro"} = assigns), do: icon_game_enduro(assigns)
   def game_icon(%{game_id: "hex_enduro_night"} = assigns), do: icon_game_enduro(assigns)
   def game_icon(%{game_id: "hex_enduro_sprint"} = assigns), do: icon_game_enduro(assigns)
+  def game_icon(%{game_id: "hex_tennis"} = assigns), do: icon_game_tennis(assigns)
+  def game_icon(%{game_id: "hex_tennis_quick"} = assigns), do: icon_game_tennis(assigns)
+  def game_icon(%{game_id: "hex_tennis_sudden"} = assigns), do: icon_game_tennis(assigns)
   def game_icon(assigns), do: icon_game_generic(assigns)
 
   # -- Hex Pong: paddle + ball --
@@ -376,6 +379,34 @@ defmodule RetroHexChatWeb.Icons.Games do
       <rect x="21" y="19" width="3" height="4" fill="#ff8c00" />
 
       <rect x="22" y="25" width="2" height="2" fill="#ffee00" />
+    </svg>
+    """
+  end
+
+  # -- Hex Tennis: racket + ball --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_tennis(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_tennis(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#0a0a14" />
+
+      <rect x="6" y="6" width="20" height="20" fill="#0e1a0e" />
+      <rect x="6" y="15" width="20" height="2" fill="#ff006688" />
+      <path d="M6 6h20v1H6z M6 25h20v1H6z M6 6h1v20H6z M25 6h1v20h-1z" fill="#39ff1480" />
+
+      <path d="M12 19h4v6h-4z" fill="#39ff14" />
+      <rect x="13" y="17" width="2" height="2" fill="#39ff14" />
+      <rect x="11" y="25" width="2" height="2" fill="#39ff14" />
+      <rect x="15" y="25" width="2" height="2" fill="#39ff14" />
+
+      <rect x="20" y="9" width="3" height="3" fill="#ffee00" />
+      <rect x="21" y="10" width="1" height="1" fill="#fff" />
     </svg>
     """
   end

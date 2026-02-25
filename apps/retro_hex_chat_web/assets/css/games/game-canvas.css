@@ -126,6 +126,22 @@
   --game-fuel-color: #ffee00;
 }
 
+/* Hex Tennis: cyberpunk post-apocalyptic tennis duel */
+.game-canvas[data-game-id="hex_tennis"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_tennis_quick"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_tennis_sudden"] .game-canvas__surface {
+  --game-bg-color: #0a0a14;
+  --game-fg-color: #39ff14;
+  --game-accent-color: #00e5ff;
+  --game-muted-color: #1a1a2a;
+  --game-glow-color: rgba(57, 255, 20, 0.15);
+  --game-warning-color: #ffaa00;
+  --game-court-color: #0e1a0e;
+  --game-line-color: #39ff1480;
+  --game-net-color: #ff006688;
+  --game-ball-color: #ffee00;
+}
+
 /* Star Duel trilogy: cyberpunk post-apocalyptic space combat */
 .game-canvas[data-game-id="star_duel"] .game-canvas__surface,
 .game-canvas[data-game-id="gravity_well"] .game-canvas__surface,

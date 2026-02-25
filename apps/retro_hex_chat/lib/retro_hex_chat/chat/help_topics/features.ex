@@ -1007,7 +1007,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-invaders-blitz",
           "feature-hex-enduro",
           "feature-hex-enduro-night",
-          "feature-hex-enduro-sprint"
+          "feature-hex-enduro-sprint",
+          "feature-hex-tennis",
+          "feature-hex-tennis-quick",
+          "feature-hex-tennis-sudden"
         ]
       },
       %{
@@ -1501,6 +1504,77 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-hex-enduro",
           "feature-hex-enduro-night",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-tennis",
+        title: "Hex Tennis",
+        category: "Features",
+        keywords: [
+          "hex tennis",
+          "tennis",
+          "serve",
+          "rally",
+          "deuce",
+          "tiebreak",
+          "court",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Top-down tennis duel — automatic hitting where shot angle depends on contact position. " <>
+            "Full set with deuce, advantage, and tiebreak at 6-6. " <>
+            "Controls: Arrow keys or WASD to move, Space or Shift to serve.",
+        see_also: [
+          "feature-hex-tennis-quick",
+          "feature-hex-tennis-sudden",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-tennis-quick",
+        title: "Hex Tennis: Quick Match",
+        category: "Features",
+        keywords: [
+          "hex tennis",
+          "tennis",
+          "quick",
+          "fast",
+          "short",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Quick tennis match — first to 3 games wins. " <>
+            "Same gameplay, shorter format. No tiebreak needed. " <>
+            "Controls: Arrow keys or WASD to move, Space or Shift to serve.",
+        see_also: [
+          "feature-hex-tennis",
+          "feature-hex-tennis-sudden",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-tennis-sudden",
+        title: "Hex Tennis: Sudden Death",
+        category: "Features",
+        keywords: [
+          "hex tennis",
+          "tennis",
+          "sudden death",
+          "one point",
+          "pressure",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Every point wins a game — no 15-30-40, no deuce. " <>
+            "First to 6 games takes the set. Pure pressure. " <>
+            "Controls: Arrow keys or WASD to move, Space or Shift to serve.",
+        see_also: [
+          "feature-hex-tennis",
+          "feature-hex-tennis-quick",
           "feature-p2p-games"
         ]
       }

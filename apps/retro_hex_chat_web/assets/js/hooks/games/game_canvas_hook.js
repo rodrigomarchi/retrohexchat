@@ -16,6 +16,7 @@ import { BoxingEngine } from "../../lib/games/hex_boxing/engine.js";
 import { OutlawEngine } from "../../lib/games/hex_outlaw/engine.js";
 import { HexInvadersEngine } from "../../lib/games/hex_invaders/engine.js";
 import { HexEnduroEngine } from "../../lib/games/hex_enduro/engine.js";
+import { TennisEngine } from "../../lib/games/hex_tennis/engine.js";
 
 /**
  * Create the appropriate engine for the given game ID.
@@ -61,6 +62,10 @@ function createEngine(canvas, channel, gameId, isHost, onGameEnd) {
     case "hex_enduro_night":
     case "hex_enduro_sprint":
       return new HexEnduroEngine(canvas, channel, gameId, isHost, onGameEnd);
+    case "hex_tennis":
+    case "hex_tennis_quick":
+    case "hex_tennis_sudden":
+      return new TennisEngine(canvas, channel, gameId, isHost, onGameEnd);
     default:
       return new GameEngine(canvas, channel, gameId, isHost);
   }
