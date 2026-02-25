@@ -1,6 +1,14 @@
 /**
  * Pure physics and game logic for Hex Raid (River Raid 2P).
  * All functions are pure — no side effects, no DOM, no network.
+ *
+ * Architecture: continuous infinite scrolling with screen-space entities.
+ * - scrollY is a monotonically increasing counter (total distance traveled)
+ * - All entities (enemies, fuel, bridges) live in screen coordinates
+ * - Entities drift downward each frame by scrollDelta
+ * - Banks are computed on-the-fly from getBankAtWorld(worldY, seed)
+ * - Difficulty scales with scrollY (total distance)
+ *
  * @module games/hex_raid_physics
  */
 
@@ -45,7 +53,6 @@ export const FUEL_REFILL = 80; // how much fuel a station gives
 // --- Respawn ---
 export const RESPAWN_DELAY = 180; // 3s at 60fps
 export const INVULN_DURATION = 180; // 3s
-export const SECTION_CLEAR_DELAY = 120; // 2s
 
 // --- Scoring ---
 export const SCORE_BOAT = 30;
@@ -55,27 +62,20 @@ export const SCORE_FUEL_DESTROYED = 80;
 export const SCORE_BRIDGE = 500;
 export const SCORE_MINE_HIT = 200;
 export const SCORE_FUEL_OUT = 150;
-export const SCORE_SECTION = 100;
 
 // --- River geometry ---
-export const SECTION_HEIGHT = 1800; // pixels per section
 export const RIVER_MIN_WIDTH = 200;
-export const RIVER_MAX_WIDTH = 440;
-const BANK_SEGMENTS = 18; // control points per section
+export const RIVER_MAX_WIDTH = 420;
+const BANK_SEGMENT_SIZE = 100; // pixels per bank control segment
 
-/**
- * Convert a world-space Y coordinate to screen-space Y.
- * In the vertical scroller: worldY 0 = bottom of section, SECTION_HEIGHT = top.
- * Screen: 0 = top, CANVAS_H = bottom.
- * As scrollY increases, higher worldY values come into view from above.
- * @param {number} worldY - Y position in section coordinates
- * @param {number} scrollY - current scroll offset
- * @returns {number} screen Y coordinate
- */
-export function worldToScreenY(worldY, scrollY) {
-  const sectionOffset = scrollY % SECTION_HEIGHT;
-  return CANVAS_H - (worldY - sectionOffset);
-}
+// --- Spawn intervals (base values, adjusted by difficulty) ---
+const ENEMY_SPAWN_BASE = 140; // scroll pixels between enemy spawns
+const ENEMY_SPAWN_MIN = 60;
+const FUEL_SPAWN_BASE = 500;
+const FUEL_SPAWN_MAX = 900;
+const BRIDGE_SPAWN_INTERVAL = 2000;
+// Initial gap before first bridge/enemies
+const INITIAL_SAFE_ZONE = 300;
 
 // --- Seeded PRNG (mulberry32) ---
 
@@ -94,164 +94,176 @@ export function mulberry32(seed) {
   };
 }
 
+// --- Difficulty ---
+
 /**
- * Get river width for a given section number.
- * @param {number} section - 1-based section number
+ * Get difficulty parameters based on total scroll distance.
+ * @param {number} scrollY - total distance scrolled
+ * @param {number} mode - GAME_MODE enum
+ * @returns {{enemyInterval: number, fuelInterval: number, enemySpeed: number, riverWidth: number}}
+ */
+export function getDifficulty(scrollY, mode) {
+  const dist = mode === GAME_MODE.BLITZ ? scrollY + 5000 : scrollY;
+
+  // Difficulty ramp: 0→1 over ~25000px
+  const t = Math.min(dist / 25000, 1);
+
+  return {
+    enemyInterval: ENEMY_SPAWN_BASE - t * (ENEMY_SPAWN_BASE - ENEMY_SPAWN_MIN),
+    fuelInterval: FUEL_SPAWN_BASE + t * (FUEL_SPAWN_MAX - FUEL_SPAWN_BASE),
+    enemySpeed: 1.0 + t * 1.5,
+    riverWidth: RIVER_MAX_WIDTH - t * (RIVER_MAX_WIDTH - RIVER_MIN_WIDTH),
+  };
+}
+
+/**
+ * Get river width at a given scroll position.
+ * @param {number} scrollY - total distance
  * @param {number} mode - GAME_MODE enum
  * @returns {number} river width in pixels
  */
-export function getRiverWidth(section, mode) {
-  const effectiveSection = mode === GAME_MODE.BLITZ ? section + 3 : section;
-  const t = Math.min((effectiveSection - 1) / 9, 1);
-  return RIVER_MAX_WIDTH - t * (RIVER_MAX_WIDTH - RIVER_MIN_WIDTH);
+export function getRiverWidthAtScroll(scrollY, mode) {
+  return getDifficulty(scrollY, mode).riverWidth;
 }
 
+// --- River bank generation (deterministic, on-the-fly) ---
+
 /**
- * Generate river bank control points for a section.
- * Returns arrays of {y, leftX, rightX} for each vertical segment.
- * @param {number} section - 1-based
- * @param {function} rng - seeded PRNG
+ * Get river bank edges at any world Y position.
+ * Pure function — deterministic from worldY + seed.
+ * Uses segment-based PRNG with interpolation for smooth banks.
+ * @param {number} worldY - absolute world Y position
+ * @param {number} seed - shared game seed
  * @param {number} mode - GAME_MODE enum
- * @returns {Array<{y: number, leftX: number, rightX: number}>}
- */
-export function generateBanks(section, rng, mode) {
-  const width = getRiverWidth(section, mode);
-  const centerX = CANVAS_W / 2;
-  const halfWidth = width / 2;
-  const banks = [];
-  const wobble = Math.max(10, 40 - section * 3);
-
-  for (let i = 0; i <= BANK_SEGMENTS; i++) {
-    const y = (i / BANK_SEGMENTS) * SECTION_HEIGHT;
-    const offset = (rng() - 0.5) * wobble;
-    banks.push({
-      y,
-      leftX: centerX - halfWidth + offset,
-      rightX: centerX + halfWidth + offset,
-    });
-  }
-  return banks;
-}
-
-/**
- * Get left and right bank X at a specific Y within a section's banks.
- * Interpolates between control points.
- * @param {Array} banks - bank control points
- * @param {number} localY - Y position within the section (0 = top of section)
  * @returns {{leftX: number, rightX: number}}
  */
-export function getBankAt(banks, localY) {
-  if (banks.length < 2) return { leftX: 0, rightX: CANVAS_W };
+export function getBankAtWorld(worldY, seed, mode) {
+  const segIndex = Math.floor(worldY / BANK_SEGMENT_SIZE);
+  const segFrac = (worldY % BANK_SEGMENT_SIZE) / BANK_SEGMENT_SIZE;
 
-  const clampedY = Math.max(0, Math.min(localY, SECTION_HEIGHT));
+  // Deterministic RNG for this segment and next
+  const rng0 = mulberry32(seed + segIndex * 7919);
+  const rng1 = mulberry32(seed + (segIndex + 1) * 7919);
 
-  // Find the segment
-  for (let i = 0; i < banks.length - 1; i++) {
-    if (clampedY >= banks[i].y && clampedY <= banks[i + 1].y) {
-      const segLen = banks[i + 1].y - banks[i].y;
-      const t = segLen > 0 ? (clampedY - banks[i].y) / segLen : 0;
-      return {
-        leftX: banks[i].leftX + t * (banks[i + 1].leftX - banks[i].leftX),
-        rightX: banks[i].rightX + t * (banks[i + 1].rightX - banks[i].rightX),
-      };
-    }
-  }
+  // Width narrows with distance
+  const width = getRiverWidthAtScroll(worldY, mode);
+  const wobble = Math.max(10, 40 - worldY * 0.001);
+  const offset0 = (rng0() - 0.5) * wobble;
+  const offset1 = (rng1() - 0.5) * wobble;
 
-  // Fallback: use last point
-  const last = banks[banks.length - 1];
-  return { leftX: last.leftX, rightX: last.rightX };
+  // Smooth interpolation between segment boundaries
+  const offset = offset0 + segFrac * (offset1 - offset0);
+  const centerX = CANVAS_W / 2;
+  const halfWidth = width / 2;
+
+  return {
+    leftX: centerX - halfWidth + offset,
+    rightX: centerX + halfWidth + offset,
+  };
+}
+
+// --- Spawn system ---
+
+/**
+ * Determine enemy type based on distance and RNG roll.
+ * @param {number} scrollY - total distance
+ * @param {number} roll - 0-1 random value
+ * @param {number} mode - GAME_MODE enum
+ * @returns {number} ENEMY_TYPE enum
+ */
+function pickEnemyType(scrollY, roll, mode) {
+  const dist = mode === GAME_MODE.BLITZ ? scrollY + 5000 : scrollY;
+
+  if (dist >= 8000 && roll < 0.3) return ENEMY_TYPE.JET;
+  if (dist >= 3000 && roll < 0.5) return ENEMY_TYPE.HELI;
+  return ENEMY_TYPE.BOAT;
 }
 
 /**
- * Generate enemies for a section.
- * @param {number} section - 1-based
- * @param {function} rng - seeded PRNG
- * @param {Array} banks - bank control points for spatial placement
- * @param {number} mode - GAME_MODE enum
- * @returns {Array<{type: number, x: number, y: number, alive: boolean, vx: number}>}
+ * Spawn new entities as scrollY advances past thresholds.
+ * Entities spawn at y = -20 (just above screen top) with screen-space coords.
+ * @param {object} state
+ * @returns {object} updated state with new entities
  */
-export function generateEnemies(section, rng, banks, mode) {
-  const effectiveSection = mode === GAME_MODE.BLITZ ? section + 3 : section;
-  const count = Math.min(MAX_ENEMIES, Math.floor(2 + effectiveSection * 0.7));
-  const enemies = [];
+export function spawnEntities(state) {
+  if (state.phase !== PHASE.FLYING) return state;
 
-  for (let i = 0; i < count; i++) {
-    // Distribute enemies across the section height
-    const y = 100 + rng() * (SECTION_HEIGHT - 300);
-    const bank = getBankAt(banks, y);
-    const margin = 20;
-    const x = bank.leftX + margin + rng() * (bank.rightX - bank.leftX - margin * 2);
+  let s = { ...state };
+  const diff = getDifficulty(s.scrollY, s.mode);
 
-    // Determine enemy type based on section difficulty
-    let type;
-    const roll = rng();
-    if (effectiveSection >= 7 && roll < 0.3) {
-      type = ENEMY_TYPE.JET;
-    } else if (effectiveSection >= 4 && roll < 0.5) {
-      type = ENEMY_TYPE.HELI;
-    } else {
-      type = ENEMY_TYPE.BOAT;
+  // --- Spawn enemies ---
+  while (s.scrollY >= s.nextEnemySpawnDist && s.enemies.length < MAX_ENEMIES) {
+    const rng = mulberry32(s.seed + Math.floor(s.nextEnemySpawnDist) * 31);
+    const worldYAtTop = s.scrollY + CANVAS_H;
+    const bank = getBankAtWorld(worldYAtTop, s.seed, s.mode);
+    const margin = 25;
+    const riverW = bank.rightX - bank.leftX - margin * 2;
+
+    // Spawn 1-3 enemies per row depending on difficulty
+    const count = Math.min(
+      MAX_ENEMIES - s.enemies.length,
+      1 + Math.floor(rng() * Math.min(3, 1 + s.scrollY / 8000)),
+    );
+
+    const newEnemies = [...s.enemies];
+    for (let i = 0; i < count; i++) {
+      const roll = rng();
+      const type = pickEnemyType(s.scrollY, roll, s.mode);
+      const x = bank.leftX + margin + rng() * Math.max(riverW, 50);
+      const speed =
+        type === ENEMY_TYPE.JET
+          ? 0
+          : type === ENEMY_TYPE.HELI
+            ? 2.0 * diff.enemySpeed
+            : 1.0 * diff.enemySpeed;
+      const vx = (rng() > 0.5 ? 1 : -1) * speed;
+
+      newEnemies.push({
+        type,
+        x,
+        y: -15 - i * 20, // stagger slightly above screen
+        alive: true,
+        vx,
+      });
     }
 
-    // Lateral velocity
-    const speed = type === ENEMY_TYPE.JET ? 0 : type === ENEMY_TYPE.HELI ? 1.5 : 0.8;
-    const vx = (rng() > 0.5 ? 1 : -1) * speed;
-
-    enemies.push({ type, x, y, alive: true, vx });
+    s = {
+      ...s,
+      enemies: newEnemies,
+      enemyCount: newEnemies.length,
+      nextEnemySpawnDist: s.nextEnemySpawnDist + diff.enemyInterval,
+    };
   }
 
-  return enemies;
-}
-
-/**
- * Generate fuel stations for a section.
- * @param {number} section - 1-based
- * @param {function} rng - seeded PRNG
- * @param {Array} banks - bank control points
- * @param {number} mode - GAME_MODE enum
- * @returns {Array<{x: number, y: number, available: boolean}>}
- */
-export function generateFuels(section, rng, banks, mode) {
-  const effectiveSection = mode === GAME_MODE.BLITZ ? section + 3 : section;
-  const count = Math.min(MAX_FUEL, Math.max(1, 3 - Math.floor(effectiveSection / 4)));
-  const fuels = [];
-
-  for (let i = 0; i < count; i++) {
-    const y = 200 + rng() * (SECTION_HEIGHT - 500);
-    const bank = getBankAt(banks, y);
+  // --- Spawn fuel depots ---
+  while (s.scrollY >= s.nextFuelSpawnDist && s.fuels.filter((f) => f.available).length < MAX_FUEL) {
+    const rng = mulberry32(s.seed + Math.floor(s.nextFuelSpawnDist) * 53);
+    const worldYAtTop = s.scrollY + CANVAS_H;
+    const bank = getBankAtWorld(worldYAtTop, s.seed, s.mode);
     const margin = 30;
-    const x = bank.leftX + margin + rng() * (bank.rightX - bank.leftX - margin * 2);
-    fuels.push({ x, y, available: true });
+    const x = bank.leftX + margin + rng() * Math.max(bank.rightX - bank.leftX - margin * 2, 40);
+
+    const newFuels = [...s.fuels.filter((f) => f.available), { x, y: -10, available: true }];
+    s = {
+      ...s,
+      fuels: newFuels,
+      fuelCount: newFuels.length,
+      nextFuelSpawnDist: s.nextFuelSpawnDist + diff.fuelInterval,
+    };
   }
 
-  return fuels;
-}
+  // --- Spawn bridge ---
+  if (!s.bridgeActive && s.scrollY >= s.nextBridgeSpawnDist) {
+    s = {
+      ...s,
+      bridgeY: -10,
+      bridgeHp: BRIDGE_HP,
+      bridgeActive: true,
+      nextBridgeSpawnDist: s.nextBridgeSpawnDist + BRIDGE_SPAWN_INTERVAL,
+    };
+  }
 
-/**
- * Generate a complete section's data.
- * @param {number} section - 1-based
- * @param {number} seed - base seed
- * @param {number} mode - GAME_MODE enum
- * @returns {{banks: Array, enemies: Array, fuels: Array, bridgeY: number}}
- */
-export function generateSection(section, seed, mode) {
-  // Derive section-specific seed
-  const rng = mulberry32(seed + section * 7919);
-  const banks = generateBanks(section, rng, mode);
-  const enemies = generateEnemies(section, rng, banks, mode);
-  const fuels = generateFuels(section, rng, banks, mode);
-  const bridgeY = SECTION_HEIGHT - 50; // Bridge at bottom of section
-
-  return { banks, enemies, fuels, bridgeY };
-}
-
-/**
- * Get total sections for a game mode.
- * @param {number} mode
- * @returns {number}
- */
-export function getTotalSections(mode) {
-  return mode === GAME_MODE.BLITZ ? 5 : 10;
+  return s;
 }
 
 /**
@@ -271,8 +283,6 @@ export function getMineCooldown(mode) {
  * @returns {object}
  */
 export function createInitialState(mode, seed) {
-  const sectionData = generateSection(1, seed, mode);
-
   return {
     // Jet 1 (host/P1)
     jet1X: CANVAS_W / 2 - 30,
@@ -310,34 +320,33 @@ export function createInitialState(mode, seed) {
     m2Y: 0,
     m2Active: false,
 
-    // Entities (from current section)
-    enemies: sectionData.enemies,
-    enemyCount: sectionData.enemies.length,
-    fuels: sectionData.fuels,
-    fuelCount: sectionData.fuels.length,
+    // Entities (screen-space, populated by spawnEntities)
+    enemies: [],
+    enemyCount: 0,
+    fuels: [],
+    fuelCount: 0,
     mines: [],
     mineCount: 0,
 
-    // Bridge
-    bridgeY: sectionData.bridgeY,
-    bridgeHp: BRIDGE_HP,
-    bridgeActive: true,
+    // Bridge (single bridge at a time)
+    bridgeY: 0,
+    bridgeHp: 0,
+    bridgeActive: false,
 
     // Meta
     score1: 0,
     score2: 0,
     phase: PHASE.WAITING,
     countdown: 3,
-    section: 1,
+    section: 0, // repurposed as distance milestone (scrollY / 2000)
     scrollY: 0,
     mode,
     seed,
 
-    // Section data (not serialized — regenerated on both sides from seed)
-    banks: sectionData.banks,
-
-    // Section clear timer (host only)
-    sectionClearTimer: 0,
+    // Spawn thresholds (host only, not serialized)
+    nextEnemySpawnDist: INITIAL_SAFE_ZONE,
+    nextFuelSpawnDist: INITIAL_SAFE_ZONE + 200,
+    nextBridgeSpawnDist: BRIDGE_SPAWN_INTERVAL,
 
     // Event flags (host only, cleared each frame)
     events: {
@@ -419,27 +428,21 @@ export function fireMissile(state, player) {
 }
 
 /**
- * Update missiles (travel upward in screen space = toward lower scrollY).
+ * Update missiles (travel upward in screen space).
  * @param {object} state
  * @returns {object}
  */
 export function updateMissiles(state) {
   const s = { ...state };
 
-  // Missile 1
   if (s.m1Active) {
     s.m1Y -= MISSILE_SPEED;
-    if (s.m1Y < 0) {
-      s.m1Active = false;
-    }
+    if (s.m1Y < 0) s.m1Active = false;
   }
 
-  // Missile 2
   if (s.m2Active) {
     s.m2Y -= MISSILE_SPEED;
-    if (s.m2Y < 0) {
-      s.m2Active = false;
-    }
+    if (s.m2Y < 0) s.m2Active = false;
   }
 
   return s;
@@ -462,13 +465,12 @@ export function deployMine(state, player) {
   if (!state[`${jetPrefix}Alive`]) return state;
   if (state[cdKey] > 0) return state;
 
-  // Check max mines per player
   const playerMines = state.mines.filter((m) => m.active && m.owner === player);
   if (playerMines.length >= MAX_MINES_PER_PLAYER) return state;
 
   const mine = {
     x: state[`${jetPrefix}X`],
-    y: state[`${jetPrefix}Y`] + 20, // Deploy behind jet
+    y: state[`${jetPrefix}Y`] + 20,
     owner: player,
     active: true,
   };
@@ -485,8 +487,7 @@ export function deployMine(state, player) {
 }
 
 /**
- * Update mines (float downstream with scroll offset).
- * Mines that scroll off-screen are deactivated.
+ * Update mines (drift downward with scroll).
  * @param {object} state
  * @param {number} scrollDelta - how much scroll moved this frame
  * @returns {object}
@@ -505,41 +506,40 @@ export function updateMines(state, scrollDelta) {
 
 /**
  * Update enemy positions.
- * Enemies stay in world coordinates; the scroll camera reveals them.
- * Boats/helis move laterally, enemy jets fly toward the player (decrease worldY).
+ * Entities are in screen-space; they drift downward by scrollDelta each frame.
+ * Boats/helis move laterally, enemy jets rush downward faster.
  * @param {object} state
- * @param {number} _scrollDelta - unused (kept for API compat)
+ * @param {number} scrollDelta - pixels scrolled this frame
  * @returns {object}
  */
-export function updateEnemies(state, _scrollDelta) {
+export function updateEnemies(state, scrollDelta) {
   if (state.enemyCount === 0) return state;
 
   const enemies = state.enemies.map((e) => {
     if (!e.alive) return e;
 
+    // Drift down with scroll
+    let newY = e.y + scrollDelta;
     let newX = e.x + (e.vx || 0);
-    let newY = e.y;
 
-    // Bounce off approximate river boundaries
-    const bank = getBankAt(state.banks, e.y);
+    // Bounce off river boundaries
+    const worldY = state.scrollY + (CANVAS_H - e.y);
+    const bank = getBankAtWorld(worldY, state.seed, state.mode);
     if (newX < bank.leftX + 20 || newX > bank.rightX - 20) {
-      return { ...e, x: e.x, y: newY, vx: -(e.vx || 0) };
+      newX = e.x;
+      return { ...e, x: newX, y: newY, vx: -(e.vx || 0) };
     }
 
-    // Enemy jets fly toward the player (lower worldY = closer to bottom)
+    // Enemy jets rush downward (toward player)
     if (e.type === ENEMY_TYPE.JET) {
-      newY = e.y - 2;
+      newY += 3;
     }
 
     return { ...e, x: newX, y: newY };
   });
 
-  // Remove enemies that scrolled off-screen (below bottom or above top)
-  const visible = enemies.filter((e) => {
-    if (!e.alive) return false;
-    const screenY = worldToScreenY(e.y, state.scrollY);
-    return screenY > -100 && screenY < CANVAS_H + 100;
-  });
+  // Remove enemies that scrolled off-screen below
+  const visible = enemies.filter((e) => e.alive && e.y < CANVAS_H + 50);
 
   return {
     ...state,
@@ -552,6 +552,7 @@ export function updateEnemies(state, _scrollDelta) {
 
 /**
  * Update scroll position based on fastest player's speed.
+ * Also updates the section display value (distance milestone).
  * @param {object} state
  * @returns {{state: object, scrollDelta: number}}
  */
@@ -560,8 +561,13 @@ export function updateScroll(state) {
   const speed2 = state.jet2Alive ? state.jet2Speed : 0;
   const scrollDelta = Math.max(speed1, speed2, SPEED_MIN);
 
+  const newScrollY = state.scrollY + scrollDelta;
   return {
-    state: { ...state, scrollY: state.scrollY + scrollDelta },
+    state: {
+      ...state,
+      scrollY: newScrollY,
+      section: Math.floor(newScrollY / 2000), // distance milestone for HUD
+    },
     scrollDelta,
   };
 }
@@ -595,11 +601,7 @@ export function drainFuel(state, frameCount) {
     if (frameCount % drainRate === 0) {
       const newFuel = s[fuelKey] - 1;
       if (newFuel <= 0) {
-        // Out of fuel = death
-        s = {
-          ...s,
-          [fuelKey]: 0,
-        };
+        s = { ...s, [fuelKey]: 0 };
         events.fuelEmpty = player;
       } else {
         s = { ...s, [fuelKey]: newFuel };
@@ -626,10 +628,9 @@ export function checkRiverCollision(state, player) {
 
   if (!state[aliveKey] || state[invulnKey]) return false;
 
-  // Convert screen Y to section-local Y (scrollY resets per section)
-  const localY = (state.scrollY % SECTION_HEIGHT) + (CANVAS_H - state[yKey]);
-
-  const bank = getBankAt(state.banks, localY);
+  // Convert screen Y to world Y for bank lookup
+  const worldY = state.scrollY + (CANVAS_H - state[yKey]);
+  const bank = getBankAtWorld(worldY, state.seed, state.mode);
   const x = state[xKey];
 
   return x - JET_RADIUS < bank.leftX || x + JET_RADIUS > bank.rightX;
@@ -637,6 +638,7 @@ export function checkRiverCollision(state, player) {
 
 /**
  * Check missile-enemy collisions.
+ * All entities are in screen space — direct comparison.
  * @param {object} state
  * @returns {object}
  */
@@ -656,15 +658,13 @@ export function checkMissileHits(state) {
       if (!enemies[i].alive) continue;
 
       const dx = mx - enemies[i].x;
-      const enemyScreenY = worldToScreenY(enemies[i].y, s.scrollY);
-      const dy = my - enemyScreenY;
-      const hitDist = MISSILE_RADIUS + 8; // enemy ~8px radius
+      const dy = my - enemies[i].y;
+      const hitDist = MISSILE_RADIUS + 8;
 
       if (dx * dx + dy * dy < hitDist * hitDist) {
         enemies[i] = { ...enemies[i], alive: false };
         s = { ...s, [`${prefix}Active`]: false };
 
-        // Score
         const scoreKey = mNum === 1 ? "score1" : "score2";
         let points = 0;
         if (enemies[i].type === ENEMY_TYPE.BOAT) points = SCORE_BOAT;
@@ -698,16 +698,13 @@ export function checkBridgeHits(state) {
     if (!s[`${prefix}Active`]) continue;
 
     const my = s[`${prefix}Y`];
-    const bridgeScreenY = worldToScreenY(s.bridgeY, s.scrollY);
 
-    // Bridge spans full river width; check Y proximity
-    if (Math.abs(my - bridgeScreenY) < BRIDGE_HEIGHT) {
+    if (Math.abs(my - s.bridgeY) < BRIDGE_HEIGHT) {
       s = { ...s, [`${prefix}Active`]: false };
       const newHp = s.bridgeHp - 1;
       events.bridgeHit = true;
 
       if (newHp <= 0) {
-        // Bridge destroyed — credit to this player
         const scoreKey = mNum === 1 ? "score1" : "score2";
         s = {
           ...s,
@@ -746,8 +743,7 @@ export function checkEnemyCollisions(state) {
     for (const e of s.enemies) {
       if (!e.alive) continue;
       const dx = s[xKey] - e.x;
-      const enemyScreenY = worldToScreenY(e.y, s.scrollY);
-      const dy = s[yKey] - enemyScreenY;
+      const dy = s[yKey] - e.y;
       const hitDist = JET_RADIUS + 8;
 
       if (dx * dx + dy * dy < hitDist * hitDist) {
@@ -782,16 +778,14 @@ export function checkFuelCapture(state) {
       if (!s[aliveKey]) continue;
 
       const dx = s[xKey] - fuels[i].x;
-      const fuelScreenY = worldToScreenY(fuels[i].y, s.scrollY);
-      const dy = s[yKey] - fuelScreenY;
+      const dy = s[yKey] - fuels[i].y;
 
       if (dx * dx + dy * dy < 15 * 15) {
-        // Capture!
         fuels[i] = { ...fuels[i], available: false };
         const newFuel = Math.min(255, s[fuelKey] + FUEL_REFILL);
         s = { ...s, [fuelKey]: newFuel };
         events.fuelCapture = player;
-        break; // First player to overlap captures
+        break;
       }
     }
   }
@@ -805,8 +799,7 @@ export function checkFuelCapture(state) {
       if (!s[`${prefix}Active`]) continue;
 
       const dx = s[`${prefix}X`] - fuels[i].x;
-      const fScreenY = worldToScreenY(fuels[i].y, s.scrollY);
-      const dy = s[`${prefix}Y`] - fScreenY;
+      const dy = s[`${prefix}Y`] - fuels[i].y;
 
       if (dx * dx + dy * dy < 12 * 12) {
         fuels[i] = { ...fuels[i], available: false };
@@ -844,7 +837,7 @@ export function checkMineCollisions(state) {
 
     for (let i = 0; i < mines.length; i++) {
       if (!mines[i].active) continue;
-      if (mines[i].owner === player) continue; // Own mines don't hurt
+      if (mines[i].owner === player) continue;
 
       const dx = s[xKey] - mines[i].x;
       const dy = s[yKey] - mines[i].y;
@@ -855,7 +848,6 @@ export function checkMineCollisions(state) {
         events.mineHit = player;
         events.death = player;
 
-        // Score for mine owner
         const ownerScoreKey = mines[i].owner === 1 ? "score1" : "score2";
         s = { ...s, [ownerScoreKey]: s[ownerScoreKey] + SCORE_MINE_HIT };
         break;
@@ -877,7 +869,6 @@ export function checkBridgeCollision(state) {
 
   const s = { ...state };
   const events = { ...s.events };
-  const bridgeScreenY = worldToScreenY(s.bridgeY, s.scrollY);
 
   for (const player of [1, 2]) {
     const yKey = player === 1 ? "jet1Y" : "jet2Y";
@@ -886,7 +877,7 @@ export function checkBridgeCollision(state) {
 
     if (!s[aliveKey] || s[invulnKey]) continue;
 
-    if (Math.abs(s[yKey] - bridgeScreenY) < BRIDGE_HEIGHT + JET_RADIUS) {
+    if (Math.abs(s[yKey] - s.bridgeY) < BRIDGE_HEIGHT + JET_RADIUS) {
       events.death = player;
     }
   }
@@ -920,7 +911,7 @@ export function handleDeath(state, player) {
 }
 
 /**
- * Process respawn timers. Respawn behind the opponent.
+ * Process respawn timers. Respawn at center bottom.
  * @param {object} state
  * @returns {object}
  */
@@ -938,7 +929,6 @@ export function processRespawns(state) {
       continue;
     }
 
-    // Respawn
     const aliveKey = player === 1 ? "jet1Alive" : "jet2Alive";
     const invulnKey = player === 1 ? "jet1Invuln" : "jet2Invuln";
     const invulnTimerKey = player === 1 ? "jet1InvulnTimer" : "jet2InvulnTimer";
@@ -961,75 +951,10 @@ export function processRespawns(state) {
   return s;
 }
 
-// --- Section management ---
-
-/**
- * Check if section is clear (bridge destroyed).
- * @param {object} state
- * @returns {object}
- */
-export function checkSectionClear(state) {
-  if (state.bridgeActive) return state;
-  if (state.phase === PHASE.SECTION_CLEAR) return state;
-
-  return {
-    ...state,
-    phase: PHASE.SECTION_CLEAR,
-    sectionClearTimer: SECTION_CLEAR_DELAY,
-    // Section bonus for both players
-    score1: state.score1 + SCORE_SECTION,
-    score2: state.score2 + SCORE_SECTION,
-  };
-}
-
-/**
- * Advance to next section.
- * @param {object} state
- * @returns {object}
- */
-export function advanceSection(state) {
-  const newSection = state.section + 1;
-  const totalSections = getTotalSections(state.mode);
-
-  if (newSection > totalSections) {
-    return {
-      ...state,
-      phase: PHASE.FINISHED,
-      enemies: [],
-      enemyCount: 0,
-      fuels: [],
-      fuelCount: 0,
-      mines: [],
-      mineCount: 0,
-      bridgeActive: false,
-    };
-  }
-
-  const sectionData = generateSection(newSection, state.seed, state.mode);
-
-  return {
-    ...state,
-    section: newSection,
-    phase: PHASE.FLYING,
-    enemies: sectionData.enemies,
-    enemyCount: sectionData.enemies.length,
-    fuels: sectionData.fuels,
-    fuelCount: sectionData.fuels.length,
-    bridgeY: sectionData.bridgeY,
-    bridgeHp: BRIDGE_HP,
-    bridgeActive: true,
-    banks: sectionData.banks,
-    scrollY: 0,
-    // Reset jet Y positions
-    jet1Y: CANVAS_H - 60,
-    jet2Y: CANVAS_H - 60,
-  };
-}
-
 // --- Game over ---
 
 /**
- * Check if the game is over.
+ * Check if the game is over (both players out of lives).
  * @param {object} state
  * @returns {{ended: boolean, winner: number}}
  */
@@ -1038,7 +963,6 @@ export function checkGameOver(state) {
   const p2Dead = state.jet2Lives <= 0 && !state.jet2Alive;
 
   if (p1Dead && p2Dead) {
-    // Both dead — higher score wins
     const winner = state.score1 >= state.score2 ? 1 : 2;
     return { ended: true, winner };
   }
@@ -1056,7 +980,7 @@ export function checkGameOver(state) {
 export function getWinner(state) {
   if (state.score1 > state.score2) return 1;
   if (state.score2 > state.score1) return 2;
-  return 1; // P1 wins ties
+  return 1;
 }
 
 // --- Timers ---
@@ -1069,7 +993,6 @@ export function getWinner(state) {
 export function tickTimers(state) {
   const s = { ...state };
 
-  // Invulnerability
   if (s.jet1InvulnTimer > 0) {
     s.jet1InvulnTimer -= 1;
     if (s.jet1InvulnTimer <= 0) s.jet1Invuln = false;
@@ -1079,16 +1002,10 @@ export function tickTimers(state) {
     if (s.jet2InvulnTimer <= 0) s.jet2Invuln = false;
   }
 
-  // Missile cooldowns
   if (s.jet1MissileCooldown > 0) s.jet1MissileCooldown -= 1;
   if (s.jet2MissileCooldown > 0) s.jet2MissileCooldown -= 1;
-
-  // Mine cooldowns
   if (s.jet1MineCooldown > 0) s.jet1MineCooldown -= 1;
   if (s.jet2MineCooldown > 0) s.jet2MineCooldown -= 1;
-
-  // Section clear timer
-  if (s.sectionClearTimer > 0) s.sectionClearTimer -= 1;
 
   return s;
 }
@@ -1124,4 +1041,36 @@ export function clearEvents(state) {
  */
 export function formatFuel(fuel) {
   return `${Math.round((fuel / 255) * 100)}%`;
+}
+
+/**
+ * Update fuel station positions (drift downward with scroll).
+ * @param {object} state
+ * @param {number} scrollDelta
+ * @returns {object}
+ */
+export function updateFuels(state, scrollDelta) {
+  if (state.fuelCount === 0) return state;
+
+  const fuels = state.fuels
+    .map((f) => (f.available ? { ...f, y: f.y + scrollDelta } : f))
+    .filter((f) => f.available && f.y < CANVAS_H + 50);
+
+  return { ...state, fuels, fuelCount: fuels.length };
+}
+
+/**
+ * Update bridge position (drifts downward with scroll).
+ * @param {object} state
+ * @param {number} scrollDelta
+ * @returns {object}
+ */
+export function updateBridge(state, scrollDelta) {
+  if (!state.bridgeActive) return state;
+
+  const newY = state.bridgeY + scrollDelta;
+  if (newY > CANVAS_H + 50) {
+    return { ...state, bridgeY: newY, bridgeActive: false };
+  }
+  return { ...state, bridgeY: newY };
 }

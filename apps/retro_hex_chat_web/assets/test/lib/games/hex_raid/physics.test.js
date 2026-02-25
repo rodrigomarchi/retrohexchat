@@ -4,7 +4,6 @@ import {
   CANVAS_H,
   INITIAL_LIVES,
   INITIAL_FUEL,
-  SECTION_HEIGHT,
   BRIDGE_HP,
   SCORE_BOAT,
   SCORE_HELI,
@@ -12,34 +11,32 @@ import {
   SCORE_BRIDGE,
   SCORE_MINE_HIT,
   mulberry32,
-  getRiverWidth,
-  generateBanks,
-  getBankAt,
-  generateEnemies,
-  generateFuels,
-  generateSection,
+  getBankAtWorld,
+  getRiverWidthAtScroll,
+  getDifficulty,
+  spawnEntities,
   createInitialState,
   moveJet,
   fireMissile,
   deployMine,
   updateScroll,
+  updateEnemies,
+  updateFuels,
+  updateBridge,
   drainFuel,
   checkMissileHits,
   checkBridgeHits,
   checkFuelCapture,
   checkMineCollisions,
   checkBridgeCollision,
+  checkRiverCollision,
   handleDeath,
   processRespawns,
-  checkSectionClear,
-  advanceSection,
   checkGameOver,
   getWinner,
   tickTimers,
   clearEvents,
-  getTotalSections,
   getMineCooldown,
-  worldToScreenY,
 } from "../../../../js/lib/games/hex_raid/physics.js";
 import {
   PHASE,
@@ -89,46 +86,179 @@ describe("Hex Raid Physics", () => {
     });
   });
 
-  describe("getRiverWidth", () => {
-    it("returns wider river for early sections", () => {
-      const w1 = getRiverWidth(1, GAME_MODE.RIVER_DUEL);
-      const w5 = getRiverWidth(5, GAME_MODE.RIVER_DUEL);
-      const w10 = getRiverWidth(10, GAME_MODE.RIVER_DUEL);
-      expect(w1).toBeGreaterThan(w5);
-      expect(w5).toBeGreaterThan(w10);
+  describe("getRiverWidthAtScroll", () => {
+    it("returns wider river at start, narrower later", () => {
+      const w0 = getRiverWidthAtScroll(0, GAME_MODE.RIVER_DUEL);
+      const w10k = getRiverWidthAtScroll(10000, GAME_MODE.RIVER_DUEL);
+      const w25k = getRiverWidthAtScroll(25000, GAME_MODE.RIVER_DUEL);
+      expect(w0).toBeGreaterThan(w10k);
+      expect(w10k).toBeGreaterThan(w25k);
     });
 
     it("BLITZ mode starts narrower", () => {
-      const normalW = getRiverWidth(1, GAME_MODE.RIVER_DUEL);
-      const blitzW = getRiverWidth(1, GAME_MODE.BLITZ);
+      const normalW = getRiverWidthAtScroll(0, GAME_MODE.RIVER_DUEL);
+      const blitzW = getRiverWidthAtScroll(0, GAME_MODE.BLITZ);
       expect(blitzW).toBeLessThan(normalW);
     });
   });
 
-  describe("bank generation and lookup", () => {
-    it("generates valid banks with correct number of segments", () => {
-      const rng = mulberry32(42);
-      const banks = generateBanks(1, rng, GAME_MODE.RIVER_DUEL);
-      expect(banks.length).toBeGreaterThan(2);
-      for (const b of banks) {
-        expect(b.leftX).toBeLessThan(b.rightX);
-        expect(b.y).toBeGreaterThanOrEqual(0);
+  describe("getBankAtWorld", () => {
+    it("returns valid bank edges (leftX < rightX)", () => {
+      const bank = getBankAtWorld(500, 42, GAME_MODE.RIVER_DUEL);
+      expect(bank.leftX).toBeLessThan(bank.rightX);
+      expect(bank.leftX).toBeGreaterThanOrEqual(0);
+      expect(bank.rightX).toBeLessThanOrEqual(CANVAS_W);
+    });
+
+    it("is deterministic — same inputs produce same result", () => {
+      const b1 = getBankAtWorld(1234, 42, GAME_MODE.RIVER_DUEL);
+      const b2 = getBankAtWorld(1234, 42, GAME_MODE.RIVER_DUEL);
+      expect(b1.leftX).toBe(b2.leftX);
+      expect(b1.rightX).toBe(b2.rightX);
+    });
+
+    it("different seeds produce different banks", () => {
+      const b1 = getBankAtWorld(500, 42, GAME_MODE.RIVER_DUEL);
+      const b2 = getBankAtWorld(500, 99, GAME_MODE.RIVER_DUEL);
+      // Banks should differ (with overwhelmingly high probability)
+      expect(b1.leftX === b2.leftX && b1.rightX === b2.rightX).toBe(false);
+    });
+
+    it("produces smooth transitions (adjacent positions are close)", () => {
+      const b1 = getBankAtWorld(1000, 42, GAME_MODE.RIVER_DUEL);
+      const b2 = getBankAtWorld(1001, 42, GAME_MODE.RIVER_DUEL);
+      // Adjacent positions should be within a few pixels
+      expect(Math.abs(b1.leftX - b2.leftX)).toBeLessThan(5);
+      expect(Math.abs(b1.rightX - b2.rightX)).toBeLessThan(5);
+    });
+
+    it("handles worldY = 0", () => {
+      const bank = getBankAtWorld(0, 42, GAME_MODE.RIVER_DUEL);
+      expect(bank.leftX).toBeDefined();
+      expect(bank.rightX).toBeDefined();
+    });
+
+    it("handles very large worldY", () => {
+      const bank = getBankAtWorld(100000, 42, GAME_MODE.RIVER_DUEL);
+      expect(bank.leftX).toBeLessThan(bank.rightX);
+    });
+  });
+
+  describe("getDifficulty", () => {
+    it("returns increasing difficulty over distance", () => {
+      const d0 = getDifficulty(0, GAME_MODE.RIVER_DUEL);
+      const d10k = getDifficulty(10000, GAME_MODE.RIVER_DUEL);
+      const d25k = getDifficulty(25000, GAME_MODE.RIVER_DUEL);
+
+      // Enemy interval decreases (more frequent spawns)
+      expect(d0.enemyInterval).toBeGreaterThan(d10k.enemyInterval);
+      expect(d10k.enemyInterval).toBeGreaterThan(d25k.enemyInterval);
+
+      // Fuel interval increases (less frequent fuel)
+      expect(d0.fuelInterval).toBeLessThan(d10k.fuelInterval);
+
+      // Enemy speed increases
+      expect(d0.enemySpeed).toBeLessThan(d25k.enemySpeed);
+
+      // River narrows
+      expect(d0.riverWidth).toBeGreaterThan(d25k.riverWidth);
+    });
+
+    it("BLITZ mode is harder at same scrollY", () => {
+      const normal = getDifficulty(0, GAME_MODE.RIVER_DUEL);
+      const blitz = getDifficulty(0, GAME_MODE.BLITZ);
+      // Blitz adds 5000 to distance, so should be harder
+      expect(blitz.enemyInterval).toBeLessThan(normal.enemyInterval);
+      expect(blitz.riverWidth).toBeLessThan(normal.riverWidth);
+    });
+  });
+
+  describe("spawnEntities", () => {
+    it("spawns enemies when scrollY passes threshold", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = { ...state, phase: PHASE.FLYING, scrollY: 400, nextEnemySpawnDist: 300 };
+      const result = spawnEntities(state);
+      expect(result.enemies.length).toBeGreaterThan(0);
+      expect(result.nextEnemySpawnDist).toBeGreaterThan(300);
+    });
+
+    it("does not spawn when scrollY has not reached threshold", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = { ...state, phase: PHASE.FLYING, scrollY: 100, nextEnemySpawnDist: 300 };
+      const result = spawnEntities(state);
+      expect(result.enemies.length).toBe(0);
+    });
+
+    it("spawns fuel depots", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = { ...state, phase: PHASE.FLYING, scrollY: 600, nextFuelSpawnDist: 500 };
+      const result = spawnEntities(state);
+      expect(result.fuels.length).toBeGreaterThan(0);
+    });
+
+    it("spawns bridge when threshold reached and no active bridge", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = {
+        ...state,
+        phase: PHASE.FLYING,
+        scrollY: 2100,
+        nextBridgeSpawnDist: 2000,
+        bridgeActive: false,
+      };
+      const result = spawnEntities(state);
+      expect(result.bridgeActive).toBe(true);
+      expect(result.bridgeHp).toBe(BRIDGE_HP);
+    });
+
+    it("does not spawn bridge when one is already active", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = {
+        ...state,
+        phase: PHASE.FLYING,
+        scrollY: 2100,
+        nextBridgeSpawnDist: 2000,
+        bridgeActive: true,
+        bridgeHp: 3,
+      };
+      const result = spawnEntities(state);
+      expect(result.bridgeActive).toBe(true);
+    });
+
+    it("does not spawn enemies past MAX_ENEMIES", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      const fullEnemies = Array.from({ length: MAX_ENEMIES }, (_, i) => ({
+        type: ENEMY_TYPE.BOAT,
+        x: 300 + i,
+        y: 200,
+        alive: true,
+        vx: 0,
+      }));
+      state = {
+        ...state,
+        phase: PHASE.FLYING,
+        scrollY: 5000,
+        nextEnemySpawnDist: 100,
+        enemies: fullEnemies,
+        enemyCount: MAX_ENEMIES,
+      };
+      const result = spawnEntities(state);
+      expect(result.enemies.length).toBe(MAX_ENEMIES);
+    });
+
+    it("does not spawn in WAITING phase", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = { ...state, phase: PHASE.WAITING, scrollY: 5000, nextEnemySpawnDist: 100 };
+      const result = spawnEntities(state);
+      expect(result.enemies.length).toBe(0);
+    });
+
+    it("enemy Y is above screen (negative)", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = { ...state, phase: PHASE.FLYING, scrollY: 400, nextEnemySpawnDist: 300 };
+      const result = spawnEntities(state);
+      for (const e of result.enemies) {
+        expect(e.y).toBeLessThan(0);
       }
-    });
-
-    it("getBankAt clamps to valid range", () => {
-      const rng = mulberry32(42);
-      const banks = generateBanks(1, rng, GAME_MODE.RIVER_DUEL);
-      const bankNeg = getBankAt(banks, -100);
-      expect(bankNeg.leftX).toBeDefined();
-      const bankOver = getBankAt(banks, SECTION_HEIGHT + 500);
-      expect(bankOver.leftX).toBeDefined();
-    });
-
-    it("getBankAt returns fallback for empty banks", () => {
-      const bank = getBankAt([], 100);
-      expect(bank.leftX).toBe(0);
-      expect(bank.rightX).toBe(CANVAS_W);
     });
   });
 
@@ -142,16 +272,19 @@ describe("Hex Raid Physics", () => {
       expect(state.jet2Fuel).toBe(INITIAL_FUEL);
       expect(state.jet1Alive).toBe(true);
       expect(state.jet2Alive).toBe(true);
-      expect(state.section).toBe(1);
+      expect(state.section).toBe(0);
       expect(state.score1).toBe(0);
       expect(state.score2).toBe(0);
-      expect(state.banks.length).toBeGreaterThan(0);
+      expect(state.enemies).toEqual([]);
+      expect(state.fuels).toEqual([]);
+      expect(state.bridgeActive).toBe(false);
     });
 
-    it("BLITZ mode uses 5 total sections", () => {
-      expect(getTotalSections(GAME_MODE.BLITZ)).toBe(5);
-      expect(getTotalSections(GAME_MODE.RIVER_DUEL)).toBe(10);
-      expect(getTotalSections(GAME_MODE.PACIFIST)).toBe(10);
+    it("has spawn thresholds", () => {
+      const state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      expect(state.nextEnemySpawnDist).toBeGreaterThan(0);
+      expect(state.nextFuelSpawnDist).toBeGreaterThan(0);
+      expect(state.nextBridgeSpawnDist).toBeGreaterThan(0);
     });
   });
 
@@ -190,7 +323,7 @@ describe("Hex Raid Physics", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = { ...state, phase: PHASE.FLYING, m1Active: true };
       const fired = fireMissile(state, 1);
-      expect(fired).toBe(state); // unchanged reference
+      expect(fired).toBe(state);
     });
 
     it("does not fire when jet is dead", () => {
@@ -239,23 +372,16 @@ describe("Hex Raid Physics", () => {
     });
   });
 
-  describe("missile collision with enemies", () => {
-    // Enemies use world coords; missiles use screen coords.
-    // worldToScreenY(worldY, 0) = CANVAS_H - worldY
-    // So enemy at worldY = CANVAS_H - screenY maps to screenY.
-    const missileScreenY = 200;
-    const enemyWorldY = CANVAS_H - missileScreenY; // 280
-
+  describe("missile collision with enemies (screen-space)", () => {
     it("destroys enemy and awards correct score", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
         phase: PHASE.FLYING,
-        scrollY: 0,
         m1Active: true,
         m1X: 100,
-        m1Y: missileScreenY,
-        enemies: [{ type: ENEMY_TYPE.BOAT, x: 100, y: enemyWorldY, alive: true }],
+        m1Y: 200,
+        enemies: [{ type: ENEMY_TYPE.BOAT, x: 100, y: 200, alive: true }],
         enemyCount: 1,
       };
       const result = checkMissileHits(state);
@@ -273,11 +399,10 @@ describe("Hex Raid Physics", () => {
         let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
         state = {
           ...state,
-          scrollY: 0,
           m1Active: true,
           m1X: 100,
-          m1Y: missileScreenY,
-          enemies: [{ type, x: 100, y: enemyWorldY, alive: true }],
+          m1Y: 200,
+          enemies: [{ type, x: 100, y: 200, alive: true }],
           enemyCount: 1,
         };
         const result = checkMissileHits(state);
@@ -289,34 +414,26 @@ describe("Hex Raid Physics", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
-        scrollY: 0,
         m1Active: true,
         m1X: 100,
-        m1Y: missileScreenY,
-        enemies: [{ type: ENEMY_TYPE.BOAT, x: 100, y: enemyWorldY, alive: false }],
+        m1Y: 200,
+        enemies: [{ type: ENEMY_TYPE.BOAT, x: 100, y: 200, alive: false }],
         enemyCount: 1,
       };
       const result = checkMissileHits(state);
-      expect(result.m1Active).toBe(true); // missile passes through
+      expect(result.m1Active).toBe(true);
     });
   });
 
-  describe("bridge mechanics", () => {
-    // Bridge is at worldY = SECTION_HEIGHT - 50 = 1750.
-    // To bring it on-screen, set scrollY so worldToScreenY gives a visible position.
-    // worldToScreenY(1750, scrollY) = CANVAS_H - (1750 - scrollY)
-    // For screenY=240: scrollY = 1750 - (CANVAS_H - 240) = 1750 - 240 = 1510
-    const bridgeScrollY = 1510;
-    const bridgeOnScreen = 240; // approx screen Y when scrollY=1510
-
+  describe("bridge mechanics (screen-space)", () => {
     it("bridge hit decrements HP", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
-        scrollY: bridgeScrollY,
         m1Active: true,
         m1X: CANVAS_W / 2,
-        m1Y: bridgeOnScreen,
+        m1Y: 200,
+        bridgeY: 200,
         bridgeActive: true,
         bridgeHp: BRIDGE_HP,
       };
@@ -329,10 +446,10 @@ describe("Hex Raid Physics", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
-        scrollY: bridgeScrollY,
         m1Active: true,
         m1X: CANVAS_W / 2,
-        m1Y: bridgeOnScreen,
+        m1Y: 200,
+        bridgeY: 200,
         bridgeActive: true,
         bridgeHp: 1,
       };
@@ -347,8 +464,8 @@ describe("Hex Raid Physics", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
-        scrollY: bridgeScrollY,
-        jet1Y: bridgeOnScreen,
+        jet1Y: 200,
+        bridgeY: 200,
         bridgeActive: true,
         bridgeHp: 3,
       };
@@ -360,28 +477,21 @@ describe("Hex Raid Physics", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = {
         ...state,
-        scrollY: bridgeScrollY,
-        jet1Y: bridgeOnScreen,
+        jet1Y: 200,
+        bridgeY: 200,
         bridgeActive: false,
       };
       const result = checkBridgeCollision(state);
-      expect(result).toBe(state); // unchanged
+      expect(result).toBe(state);
     });
   });
 
-  describe("fuel mechanics", () => {
-    // Fuel uses world coords; jet uses screen coords.
-    // worldToScreenY(worldY, 0) = CANVAS_H - worldY
-    // Jet is at screenY ~420 (CANVAS_H - 60). So fuel worldY = CANVAS_H - 420 = 60.
-
+  describe("fuel mechanics (screen-space)", () => {
     it("captures fuel station (first come first served)", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      const fuelX = state.jet1X;
-      const fuelWorldY = CANVAS_H - state.jet1Y; // world Y that maps to jet screen Y
       state = {
         ...state,
-        scrollY: 0,
-        fuels: [{ x: fuelX, y: fuelWorldY, available: true }],
+        fuels: [{ x: state.jet1X, y: state.jet1Y, available: true }],
         fuelCount: 1,
         jet1Fuel: 100,
       };
@@ -393,11 +503,9 @@ describe("Hex Raid Physics", () => {
 
     it("does not capture unavailable fuel", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      const fuelWorldY = CANVAS_H - state.jet1Y;
       state = {
         ...state,
-        scrollY: 0,
-        fuels: [{ x: state.jet1X, y: fuelWorldY, available: false }],
+        fuels: [{ x: state.jet1X, y: state.jet1Y, available: false }],
         fuelCount: 1,
         jet1Fuel: 100,
       };
@@ -409,7 +517,6 @@ describe("Hex Raid Physics", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = { ...state, phase: PHASE.FLYING, jet1Fuel: 10 };
 
-      // Drain multiple frames
       for (let i = 0; i < 20; i++) {
         state = drainFuel(state, i);
       }
@@ -420,12 +527,90 @@ describe("Hex Raid Physics", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = { ...state, phase: PHASE.FLYING, jet1Fuel: 1 };
 
-      // Drain until empty
       for (let i = 0; i < 20; i++) {
         state = drainFuel(state, i);
       }
       expect(state.jet1Fuel).toBe(0);
       expect(state.events.fuelEmpty).toBe(1);
+    });
+  });
+
+  describe("updateEnemies (screen-space drift)", () => {
+    it("drifts enemies downward by scrollDelta", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = {
+        ...state,
+        scrollY: 500,
+        enemies: [{ type: ENEMY_TYPE.BOAT, x: 320, y: 100, alive: true, vx: 0 }],
+        enemyCount: 1,
+      };
+      const result = updateEnemies(state, 2);
+      expect(result.enemies[0].y).toBe(102);
+    });
+
+    it("removes enemies that scroll off bottom", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = {
+        ...state,
+        scrollY: 500,
+        enemies: [{ type: ENEMY_TYPE.BOAT, x: 320, y: CANVAS_H + 60, alive: true, vx: 0 }],
+        enemyCount: 1,
+      };
+      const result = updateEnemies(state, 2);
+      expect(result.enemies.length).toBe(0);
+    });
+
+    it("enemy jets rush downward extra fast", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = {
+        ...state,
+        scrollY: 500,
+        enemies: [{ type: ENEMY_TYPE.JET, x: 320, y: 100, alive: true, vx: 0 }],
+        enemyCount: 1,
+      };
+      const result = updateEnemies(state, 2);
+      // scroll drift (2) + jet rush (3) = 5
+      expect(result.enemies[0].y).toBe(105);
+    });
+  });
+
+  describe("updateFuels", () => {
+    it("drifts fuel stations downward", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = {
+        ...state,
+        fuels: [{ x: 300, y: 100, available: true }],
+        fuelCount: 1,
+      };
+      const result = updateFuels(state, 2);
+      expect(result.fuels[0].y).toBe(102);
+    });
+
+    it("removes fuel that scrolls off bottom", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = {
+        ...state,
+        fuels: [{ x: 300, y: CANVAS_H + 60, available: true }],
+        fuelCount: 1,
+      };
+      const result = updateFuels(state, 2);
+      expect(result.fuels.length).toBe(0);
+    });
+  });
+
+  describe("updateBridge", () => {
+    it("drifts bridge downward", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = { ...state, bridgeY: 100, bridgeActive: true };
+      const result = updateBridge(state, 2);
+      expect(result.bridgeY).toBe(102);
+    });
+
+    it("deactivates bridge that scrolls off bottom", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = { ...state, bridgeY: CANVAS_H + 49, bridgeActive: true };
+      const result = updateBridge(state, 2);
+      expect(result.bridgeActive).toBe(false);
     });
   });
 
@@ -438,8 +623,8 @@ describe("Hex Raid Physics", () => {
         mineCount: 1,
       };
       const result = checkMineCollisions(state);
-      expect(result.events.mineHit).toBe(2); // player 2 was hit
-      expect(result.score1).toBe(SCORE_MINE_HIT); // player 1 gets points
+      expect(result.events.mineHit).toBe(2);
+      expect(result.score1).toBe(SCORE_MINE_HIT);
     });
 
     it("mine does not hit own player", () => {
@@ -466,6 +651,28 @@ describe("Hex Raid Physics", () => {
     });
   });
 
+  describe("river collision", () => {
+    it("detects jet outside river bounds", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      // Place jet at x=0 which is definitely on the left bank
+      state = { ...state, jet1X: 5, scrollY: 500 };
+      expect(checkRiverCollision(state, 1)).toBe(true);
+    });
+
+    it("no collision when jet is inside river", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      // Center of screen is definitely in the river
+      state = { ...state, jet1X: CANVAS_W / 2, scrollY: 500 };
+      expect(checkRiverCollision(state, 1)).toBe(false);
+    });
+
+    it("no collision when invulnerable", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = { ...state, jet1X: 5, jet1Invuln: true, scrollY: 500 };
+      expect(checkRiverCollision(state, 1)).toBe(false);
+    });
+  });
+
   describe("death and respawn", () => {
     it("handleDeath decrements lives and marks dead", () => {
       const state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
@@ -478,59 +685,12 @@ describe("Hex Raid Physics", () => {
     it("processRespawns restores jet after timer", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
       state = handleDeath(state, 1);
-      state = { ...state, jet1RespawnTimer: 0 }; // timer expired, respawn triggers
+      state = { ...state, jet1RespawnTimer: 0 };
 
       const result = processRespawns(state);
       expect(result.jet1Alive).toBe(true);
       expect(result.jet1Respawning).toBe(false);
       expect(result.jet1Invuln).toBe(true);
-    });
-  });
-
-  describe("section progression", () => {
-    it("checkSectionClear detects bridge destroyed", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, bridgeActive: false, phase: PHASE.FLYING };
-      const result = checkSectionClear(state);
-      expect(result.phase).toBe(PHASE.SECTION_CLEAR);
-    });
-
-    it("advanceSection moves to next section", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, section: 1 };
-      const result = advanceSection(state);
-      expect(result.section).toBe(2);
-      expect(result.phase).toBe(PHASE.FLYING);
-      expect(result.bridgeActive).toBe(true);
-      expect(result.bridgeHp).toBe(BRIDGE_HP);
-      expect(result.scrollY).toBe(0);
-    });
-
-    it("advanceSection finishes game at last section", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, section: 10 };
-      const result = advanceSection(state);
-      expect(result.phase).toBe(PHASE.FINISHED);
-      expect(result.enemies).toEqual([]);
-      expect(result.enemyCount).toBe(0);
-      expect(result.fuels).toEqual([]);
-      expect(result.mines).toEqual([]);
-      expect(result.bridgeActive).toBe(false);
-    });
-
-    it("BLITZ finishes after section 5", () => {
-      let state = createInitialState(GAME_MODE.BLITZ, 42);
-      state = { ...state, section: 5 };
-      const result = advanceSection(state);
-      expect(result.phase).toBe(PHASE.FINISHED);
-    });
-
-    it("advanceSection awards section bonus", () => {
-      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
-      state = { ...state, section: 1, score1: 100, score2: 50 };
-      const result = advanceSection(state);
-      // Both players get section bonus on advance — check it's in state
-      expect(result.section).toBe(2);
     });
   });
 
@@ -546,7 +706,7 @@ describe("Hex Raid Physics", () => {
       state = { ...state, jet1Lives: 0, jet1Alive: false, jet2Lives: 1, jet2Alive: true };
       const result = checkGameOver(state);
       expect(result.ended).toBe(true);
-      expect(result.winner).toBe(2); // surviving player wins
+      expect(result.winner).toBe(2);
     });
 
     it("game is not over while both players have lives", () => {
@@ -600,37 +760,6 @@ describe("Hex Raid Physics", () => {
     });
   });
 
-  describe("enemy generation and update", () => {
-    it("generates correct number of enemies per section difficulty", () => {
-      const rng = mulberry32(42);
-      const banks = generateBanks(1, mulberry32(42), GAME_MODE.RIVER_DUEL);
-      const enemies = generateEnemies(1, rng, banks, GAME_MODE.RIVER_DUEL);
-      expect(enemies.length).toBeGreaterThanOrEqual(2);
-      expect(enemies.length).toBeLessThanOrEqual(MAX_ENEMIES);
-    });
-
-    it("generates fewer fuel stations in later sections", () => {
-      const rng1 = mulberry32(42);
-      const banks1 = generateBanks(1, mulberry32(42), GAME_MODE.RIVER_DUEL);
-      const fuels1 = generateFuels(1, rng1, banks1, GAME_MODE.RIVER_DUEL);
-
-      const rng10 = mulberry32(42);
-      const banks10 = generateBanks(10, mulberry32(42), GAME_MODE.RIVER_DUEL);
-      const fuels10 = generateFuels(10, rng10, banks10, GAME_MODE.RIVER_DUEL);
-
-      expect(fuels1.length).toBeGreaterThanOrEqual(fuels10.length);
-    });
-
-    it("generateSection produces complete section data", () => {
-      const data = generateSection(1, 42, GAME_MODE.RIVER_DUEL);
-      expect(data.banks).toBeDefined();
-      expect(data.enemies).toBeDefined();
-      expect(data.fuels).toBeDefined();
-      expect(data.bridgeY).toBeDefined();
-      expect(data.banks.length).toBeGreaterThan(0);
-    });
-  });
-
   describe("scroll mechanics", () => {
     it("updateScroll increases scrollY", () => {
       let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
@@ -639,24 +768,12 @@ describe("Hex Raid Physics", () => {
       expect(newState.scrollY).toBeGreaterThan(0);
       expect(scrollDelta).toBeGreaterThan(0);
     });
-  });
 
-  describe("worldToScreenY", () => {
-    it("converts world Y to screen Y at scrollY=0", () => {
-      // At scroll 0, worldY=0 maps to bottom of screen
-      expect(worldToScreenY(0, 0)).toBe(CANVAS_H);
-      // worldY=CANVAS_H maps to top of screen
-      expect(worldToScreenY(CANVAS_H, 0)).toBe(0);
-    });
-
-    it("scrolling brings higher worldY into view", () => {
-      // Enemy at worldY=1000, scroll=800: screenY = 480 - (1000-800) = 280
-      expect(worldToScreenY(1000, 800)).toBe(CANVAS_H - 200);
-    });
-
-    it("wraps around SECTION_HEIGHT for sectionOffset", () => {
-      // scrollY = SECTION_HEIGHT should be same as scrollY = 0
-      expect(worldToScreenY(100, SECTION_HEIGHT)).toBe(worldToScreenY(100, 0));
+    it("updateScroll updates section milestone", () => {
+      let state = createInitialState(GAME_MODE.RIVER_DUEL, 42);
+      state = { ...state, scrollY: 1999 };
+      const { state: newState } = updateScroll(state);
+      expect(newState.section).toBe(1); // (1999+2)/2000 = 1
     });
   });
 

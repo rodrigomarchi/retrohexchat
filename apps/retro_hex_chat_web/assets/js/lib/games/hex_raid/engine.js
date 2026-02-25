@@ -2,6 +2,10 @@
  * HexRaidEngine — extends GameEngine with River Raid 2P game loop.
  * Host-authoritative: creator runs 60fps physics, peer receives state snapshots.
  * Supports 3 game modes: River Duel, Pacifist, Blitz.
+ *
+ * Architecture: continuous infinite scrolling — no discrete sections.
+ * Entities spawn continuously as scrollY advances, drift downward in screen space.
+ *
  * @module games/hex_raid_engine
  */
 
@@ -22,7 +26,6 @@ import {
 } from "./protocol.js";
 import {
   createInitialState,
-  generateSection,
   moveJet,
   accelerateJet,
   fireMissile,
@@ -31,6 +34,9 @@ import {
   updateEnemies,
   updateMissiles,
   updateMines,
+  updateFuels,
+  updateBridge,
+  spawnEntities,
   drainFuel,
   checkRiverCollision,
   checkMissileHits,
@@ -41,8 +47,6 @@ import {
   checkBridgeCollision,
   handleDeath,
   processRespawns,
-  checkSectionClear,
-  advanceSection,
   checkGameOver,
   getWinner,
   tickTimers,
@@ -100,7 +104,6 @@ export class HexRaidEngine extends GameEngine {
     this.audio = new HexRaidAudio();
     this.colors = null;
     this.peerReady = false;
-    this._lastSection = 0;
     this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
 
@@ -261,13 +264,6 @@ export class HexRaidEngine extends GameEngine {
     this.gameState.mode = decoded.mode;
     this.gameState.seed = decoded.seed;
 
-    // Regenerate banks if section changed
-    if (decoded.section !== this._lastSection) {
-      this._lastSection = decoded.section;
-      const sectionData = generateSection(decoded.section, decoded.seed, decoded.mode);
-      this.gameState.banks = sectionData.banks;
-    }
-
     this._playPhaseAudio(prevPhase, decoded.phase);
   }
 
@@ -380,31 +376,6 @@ export class HexRaidEngine extends GameEngine {
 
     let s = this.gameState;
 
-    // Handle section clear phase
-    if (s.phase === PHASE.SECTION_CLEAR) {
-      s = tickTimers(s);
-      this.gameState = s;
-      this._renderState();
-
-      if (s.sectionClearTimer <= 0) {
-        this.gameState = advanceSection(this.gameState);
-
-        if (this.gameState.phase === PHASE.FINISHED) {
-          this._handleGameOver();
-          return;
-        }
-
-        this._broadcastState();
-      }
-
-      this.frameCount++;
-      if (this.frameCount % STATE_SEND_INTERVAL === 0) {
-        this._broadcastState();
-      }
-      this.animFrame = requestAnimationFrame(this._boundGameLoop);
-      return;
-    }
-
     // Clear events
     s = clearEvents(s);
 
@@ -457,8 +428,13 @@ export class HexRaidEngine extends GameEngine {
     s = scrollResult.state;
     const scrollDelta = scrollResult.scrollDelta;
 
+    // Spawn new entities ahead of camera
+    s = spawnEntities(s);
+
     s = updateMissiles(s);
     s = updateEnemies(s, scrollDelta);
+    s = updateFuels(s, scrollDelta);
+    s = updateBridge(s, scrollDelta);
     s = updateMines(s, scrollDelta);
     s = drainFuel(s, this.frameCount);
 
@@ -533,12 +509,6 @@ export class HexRaidEngine extends GameEngine {
       return;
     }
 
-    // Check section clear (bridge destroyed)
-    s = checkSectionClear(s);
-    if (s.phase === PHASE.SECTION_CLEAR && this.gameState.phase !== PHASE.SECTION_CLEAR) {
-      this.audio.playSectionClear();
-    }
-
     // Tick timers
     s = tickTimers(s);
 
@@ -599,6 +569,5 @@ export class HexRaidEngine extends GameEngine {
   _playPhaseAudio(prevPhase, newPhase) {
     if (prevPhase === newPhase) return;
     if (newPhase === PHASE.COUNTDOWN) this.audio.playCountdown();
-    if (newPhase === PHASE.SECTION_CLEAR) this.audio.playSectionClear();
   }
 }

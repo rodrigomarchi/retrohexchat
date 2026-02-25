@@ -163,7 +163,7 @@ describe("HexRaidEngine", () => {
       expect(engine.gameState.jet2Lives).toBe(INITIAL_LIVES);
       expect(engine.gameState.m1Active).toBe(false);
       expect(engine.gameState.m2Active).toBe(false);
-      expect(engine.gameState.section).toBe(1);
+      expect(engine.gameState.section).toBe(0);
     });
 
     it("host generates a seed", () => {
@@ -663,20 +663,13 @@ describe("HexRaidEngine", () => {
     });
   });
 
-  describe("_lastSection initialization", () => {
-    it("initializes _lastSection to 0", () => {
-      engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
-      expect(engine._lastSection).toBe(0);
-    });
-  });
-
   describe("peer phase audio", () => {
-    it("plays section clear audio on phase transition", () => {
+    it("plays countdown audio on phase transition", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", false, null);
       engine.start();
 
-      // First send a FLYING state
-      const flyingState = {
+      // First send a WAITING state
+      const waitingState = {
         jet1X: 320,
         jet1Y: 400,
         jet1Speed: 2,
@@ -710,23 +703,23 @@ describe("HexRaidEngine", () => {
         bridgeActive: true,
         score1: 0,
         score2: 0,
-        phase: PHASE.FLYING,
+        phase: PHASE.WAITING,
         countdown: 0,
-        section: 1,
+        section: 0,
         scrollY: 0,
         mode: GAME_MODE.RIVER_DUEL,
         seed: 42,
       };
 
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodeGameState(flyingState) });
+      handler({ data: encodeGameState(waitingState) });
 
-      // Then send SECTION_CLEAR
+      // Then send COUNTDOWN
       handler({
-        data: encodeGameState({ ...flyingState, phase: PHASE.SECTION_CLEAR }),
+        data: encodeGameState({ ...waitingState, phase: PHASE.COUNTDOWN }),
       });
 
-      expect(engine.audio.playSectionClear).toHaveBeenCalled();
+      expect(engine.audio.playCountdown).toHaveBeenCalled();
     });
   });
 });

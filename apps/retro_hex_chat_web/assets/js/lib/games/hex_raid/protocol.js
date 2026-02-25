@@ -18,9 +18,7 @@ export const PHASE = {
   WAITING: 0,
   COUNTDOWN: 1,
   FLYING: 2,
-  SECTION_CLEAR: 3,
-  RESPAWNING: 4,
-  FINISHED: 5,
+  FINISHED: 5, // kept at 5 for protocol backward compat
 };
 
 // Input key enum
@@ -41,7 +39,7 @@ export const GAME_MODE = {
 };
 
 // --- Entity limits ---
-export const MAX_ENEMIES = 8;
+export const MAX_ENEMIES = 16;
 export const MAX_FUEL = 3;
 export const MAX_MINES = 4;
 
@@ -56,14 +54,14 @@ export const ENEMY_TYPE = {
 // --- Sizes ---
 // Jet: [x(2)][y(2)][speed(1)][fuel(1)][lives(1)][flags(1)] = 8 bytes × 2 = 16
 // Missiles: [m1x(2)][m1y(2)][m1Flags(1)][m2x(2)][m2y(2)][m2Flags(1)] = 10
-// Enemies ×8: [type(1)][x(2)][y(2)][flags(1)] = 6 × 8 = 48
+// Enemies ×16: [type(1)][x(2)][y(2)][flags(1)] = 6 × 16 = 96
 // Fuel ×3: [x(2)][y(2)][flags(1)] = 5 × 3 = 15
 // Mines ×4: [x(2)][y(2)][owner(1)][flags(1)] = 6 × 4 = 24
 // Bridge: [y(2)][hp(1)][flags(1)] = 4
 // Meta: [score1(2)][score2(2)][phase(1)][countdown(1)][section(1)][scrollY(4)]
 //       [mode(1)][seed(4)][enemyCount(1)][fuelCount(1)][mineCount(1)] = 19
-// Total: 1 + 16 + 10 + 48 + 15 + 24 + 4 + 19 = 137
-const GAME_STATE_SIZE = 137;
+// Total: 1 + 16 + 10 + 96 + 15 + 24 + 4 + 19 = 185
+const GAME_STATE_SIZE = 185;
 const PLAYER_INPUT_SIZE = 3;
 const GAME_END_SIZE = 6;
 const GAME_READY_SIZE = 1;

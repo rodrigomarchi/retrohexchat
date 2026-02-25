@@ -12,10 +12,8 @@ import {
   MISSILE_RADIUS,
   MINE_RADIUS,
   BRIDGE_HEIGHT,
-  SECTION_HEIGHT,
-  getBankAt,
+  getBankAtWorld,
   formatFuel,
-  worldToScreenY,
 } from "./physics.js";
 
 /**
@@ -69,8 +67,6 @@ export function render(ctx, state, colors, time, particles) {
     drawOverlayText(ctx, colors, "WAITING FOR OPPONENT...", colors.p1);
   } else if (state.phase === PHASE.COUNTDOWN) {
     drawOverlayText(ctx, colors, String(state.countdown), colors.warning, 64);
-  } else if (state.phase === PHASE.SECTION_CLEAR) {
-    drawOverlayText(ctx, colors, "SECTION CLEAR!", colors.p1);
   } else if (state.phase === PHASE.FINISHED) {
     drawGameOver(ctx, state, colors);
   }
@@ -90,18 +86,11 @@ function drawWater(ctx, state, colors, time) {
   // Toxic water with subtle animated wave lines
   ctx.fillStyle = colors.water;
 
-  // Draw water as the area between banks
-  if (!state.banks || state.banks.length < 2) {
-    ctx.fillRect(100, 0, CANVAS_W - 200, CANVAS_H);
-    return;
-  }
-
-  // Draw water between bank edges
-  const sectionLocalOffset = state.scrollY % SECTION_HEIGHT;
+  // Draw water as the area between banks (computed on-the-fly)
   ctx.beginPath();
   for (let screenY = 0; screenY <= CANVAS_H; screenY += 4) {
-    const localY = sectionLocalOffset + (CANVAS_H - screenY);
-    const bank = getBankAt(state.banks, localY);
+    const worldY = state.scrollY + (CANVAS_H - screenY);
+    const bank = getBankAtWorld(worldY, state.seed, state.mode);
     if (screenY === 0) {
       ctx.moveTo(bank.leftX, screenY);
     } else {
@@ -109,8 +98,8 @@ function drawWater(ctx, state, colors, time) {
     }
   }
   for (let screenY = CANVAS_H; screenY >= 0; screenY -= 4) {
-    const localY = sectionLocalOffset + (CANVAS_H - screenY);
-    const bank = getBankAt(state.banks, localY);
+    const worldY = state.scrollY + (CANVAS_H - screenY);
+    const bank = getBankAtWorld(worldY, state.seed, state.mode);
     ctx.lineTo(bank.rightX, screenY);
   }
   ctx.closePath();
@@ -132,17 +121,13 @@ function drawWater(ctx, state, colors, time) {
 }
 
 function drawBanks(ctx, state, colors) {
-  if (!state.banks || state.banks.length < 2) return;
-
-  const sectionLocalOffset = state.scrollY % SECTION_HEIGHT;
-
-  // Left bank (fills from 0 to leftX)
+  // Left bank (fills from 0 to leftX) — computed on-the-fly
   ctx.fillStyle = colors.bank;
   ctx.beginPath();
   ctx.moveTo(0, 0);
   for (let screenY = 0; screenY <= CANVAS_H; screenY += 4) {
-    const localY = sectionLocalOffset + (CANVAS_H - screenY);
-    const bank = getBankAt(state.banks, localY);
+    const worldY = state.scrollY + (CANVAS_H - screenY);
+    const bank = getBankAtWorld(worldY, state.seed, state.mode);
     ctx.lineTo(bank.leftX, screenY);
   }
   ctx.lineTo(0, CANVAS_H);
@@ -153,8 +138,8 @@ function drawBanks(ctx, state, colors) {
   ctx.beginPath();
   ctx.moveTo(CANVAS_W, 0);
   for (let screenY = 0; screenY <= CANVAS_H; screenY += 4) {
-    const localY = sectionLocalOffset + (CANVAS_H - screenY);
-    const bank = getBankAt(state.banks, localY);
+    const worldY = state.scrollY + (CANVAS_H - screenY);
+    const bank = getBankAtWorld(worldY, state.seed, state.mode);
     ctx.lineTo(bank.rightX, screenY);
   }
   ctx.lineTo(CANVAS_W, CANVAS_H);
@@ -168,8 +153,8 @@ function drawBanks(ctx, state, colors) {
   // Left edge
   ctx.beginPath();
   for (let screenY = 0; screenY <= CANVAS_H; screenY += 4) {
-    const localY = sectionLocalOffset + (CANVAS_H - screenY);
-    const bank = getBankAt(state.banks, localY);
+    const worldY = state.scrollY + (CANVAS_H - screenY);
+    const bank = getBankAtWorld(worldY, state.seed, state.mode);
     if (screenY === 0) ctx.moveTo(bank.leftX, screenY);
     else ctx.lineTo(bank.leftX, screenY);
   }
@@ -178,8 +163,8 @@ function drawBanks(ctx, state, colors) {
   // Right edge
   ctx.beginPath();
   for (let screenY = 0; screenY <= CANVAS_H; screenY += 4) {
-    const localY = sectionLocalOffset + (CANVAS_H - screenY);
-    const bank = getBankAt(state.banks, localY);
+    const worldY = state.scrollY + (CANVAS_H - screenY);
+    const bank = getBankAtWorld(worldY, state.seed, state.mode);
     if (screenY === 0) ctx.moveTo(bank.rightX, screenY);
     else ctx.lineTo(bank.rightX, screenY);
   }
@@ -201,35 +186,100 @@ function drawJet(ctx, x, y, color, invuln, time, colors) {
   // Invulnerability flash
   if (invuln && Math.floor(time / 133) % 2 === 0) return;
 
+  const r = JET_RADIUS;
   ctx.save();
   ctx.translate(x, y);
 
-  // Neon glow
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 8;
-
-  // Jet body — angular top-down shape pointing UP
-  ctx.fillStyle = color;
+  // --- Dual exhaust flames (animated, behind jet) ---
+  ctx.shadowColor = colors.warning;
+  ctx.shadowBlur = 6;
+  const f1 = 4 + Math.sin(time * 0.025) * 2.5;
+  const f2 = 4 + Math.sin(time * 0.025 + 1.5) * 2.5;
+  // Outer flame glow
+  ctx.globalAlpha = 0.4;
+  ctx.fillStyle = colors.explosion;
   ctx.beginPath();
-  ctx.moveTo(0, -JET_RADIUS * 1.2); // nose (top)
-  ctx.lineTo(-JET_RADIUS * 0.8, JET_RADIUS * 0.4); // left wing
-  ctx.lineTo(-JET_RADIUS * 0.3, JET_RADIUS * 0.2); // left inner
-  ctx.lineTo(0, JET_RADIUS * 0.6); // tail center
-  ctx.lineTo(JET_RADIUS * 0.3, JET_RADIUS * 0.2); // right inner
-  ctx.lineTo(JET_RADIUS * 0.8, JET_RADIUS * 0.4); // right wing
+  ctx.moveTo(-r * 0.45, r * 0.7);
+  ctx.lineTo(-r * 0.25, r * 0.7 + f1 + 2);
+  ctx.lineTo(-r * 0.05, r * 0.7);
   ctx.closePath();
   ctx.fill();
-
-  // Propulsion flame (behind jet, animated)
-  ctx.shadowBlur = 4;
-  const flameLen = 3 + Math.sin(time * 0.02) * 2;
+  ctx.beginPath();
+  ctx.moveTo(r * 0.05, r * 0.7);
+  ctx.lineTo(r * 0.25, r * 0.7 + f2 + 2);
+  ctx.lineTo(r * 0.45, r * 0.7);
+  ctx.closePath();
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  // Inner hot flame
   ctx.fillStyle = colors.warning;
   ctx.beginPath();
-  ctx.moveTo(-2, JET_RADIUS * 0.6);
-  ctx.lineTo(0, JET_RADIUS * 0.6 + flameLen);
-  ctx.lineTo(2, JET_RADIUS * 0.6);
+  ctx.moveTo(-r * 0.38, r * 0.7);
+  ctx.lineTo(-r * 0.25, r * 0.7 + f1);
+  ctx.lineTo(-r * 0.12, r * 0.7);
   ctx.closePath();
   ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(r * 0.12, r * 0.7);
+  ctx.lineTo(r * 0.25, r * 0.7 + f2);
+  ctx.lineTo(r * 0.38, r * 0.7);
+  ctx.closePath();
+  ctx.fill();
+
+  // --- Main body — delta-wing fighter pointing UP ---
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 10;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(0, -r * 1.6); // sharp nose
+  ctx.lineTo(-r * 0.25, -r * 0.6); // left fuselage
+  ctx.lineTo(-r * 1.3, r * 0.3); // left wingtip (wide sweep)
+  ctx.lineTo(-r * 1.1, r * 0.5); // left wing trailing edge
+  ctx.lineTo(-r * 0.35, r * 0.4); // left engine nacelle
+  ctx.lineTo(-r * 0.35, r * 0.7); // left tail
+  ctx.lineTo(0, r * 0.55); // tail center notch
+  ctx.lineTo(r * 0.35, r * 0.7); // right tail
+  ctx.lineTo(r * 0.35, r * 0.4); // right engine nacelle
+  ctx.lineTo(r * 1.1, r * 0.5); // right wing trailing edge
+  ctx.lineTo(r * 1.3, r * 0.3); // right wingtip
+  ctx.lineTo(r * 0.25, -r * 0.6); // right fuselage
+  ctx.closePath();
+  ctx.fill();
+
+  // --- Cockpit canopy (darker center stripe) ---
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+  ctx.beginPath();
+  ctx.moveTo(0, -r * 1.2);
+  ctx.lineTo(-r * 0.15, -r * 0.2);
+  ctx.lineTo(0, 0);
+  ctx.lineTo(r * 0.15, -r * 0.2);
+  ctx.closePath();
+  ctx.fill();
+
+  // --- Wing stripes (panel lines) ---
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  ctx.moveTo(-r * 0.35, -r * 0.1);
+  ctx.lineTo(-r * 1.0, r * 0.35);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(r * 0.35, -r * 0.1);
+  ctx.lineTo(r * 1.0, r * 0.35);
+  ctx.stroke();
+
+  // --- Wingtip neon dots (blinking) ---
+  const tipPulse = 0.4 + Math.sin(time * 0.01) * 0.6;
+  ctx.globalAlpha = tipPulse;
+  ctx.fillStyle = "#fff";
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 4;
+  ctx.beginPath();
+  ctx.arc(-r * 1.2, r * 0.4, 1, 0, Math.PI * 2);
+  ctx.arc(r * 1.2, r * 0.4, 1, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.globalAlpha = 1;
 
   ctx.shadowBlur = 0;
   ctx.restore();
@@ -278,9 +328,8 @@ function drawEnemies(ctx, state, colors, time) {
   for (let i = 0; i < state.enemyCount; i++) {
     const e = state.enemies[i];
     if (!e || !e.alive) continue;
-    const screenY = worldToScreenY(e.y, state.scrollY);
-    if (screenY < -20 || screenY > CANVAS_H + 20) continue;
-    drawEnemy(ctx, e.x, screenY, e.type, colors, time);
+    if (e.y < -20 || e.y > CANVAS_H + 20) continue;
+    drawEnemy(ctx, e.x, e.y, e.type, colors, time);
   }
 }
 
@@ -289,37 +338,122 @@ function drawEnemy(ctx, x, y, type, colors, time) {
   ctx.translate(x, y);
 
   if (type === ENEMY_TYPE.BOAT) {
-    // Rectangular boat — dim muted glow
+    // Patrol boat with hull, cabin, and wake
     ctx.shadowColor = colors.bankHi;
-    ctx.shadowBlur = 4;
+    ctx.shadowBlur = 5;
+    // Hull
     ctx.fillStyle = colors.bank;
-    ctx.fillRect(-6, -4, 12, 8);
-    ctx.fillStyle = colors.bankHi;
-    ctx.fillRect(-4, -3, 8, 6);
-  } else if (type === ENEMY_TYPE.HELI) {
-    // Wider with rotor animation
-    ctx.shadowColor = colors.warning;
-    ctx.shadowBlur = 4;
-    ctx.fillStyle = colors.warning;
-    ctx.fillRect(-5, -4, 10, 8);
-    // Rotor (rotating dots)
-    const angle = time * 0.015;
-    ctx.fillStyle = colors.missile;
     ctx.beginPath();
-    ctx.arc(Math.cos(angle) * 7, Math.sin(angle) * 3, 1.5, 0, Math.PI * 2);
-    ctx.arc(Math.cos(angle + Math.PI) * 7, Math.sin(angle + Math.PI) * 3, 1.5, 0, Math.PI * 2);
-    ctx.fill();
-  } else if (type === ENEMY_TYPE.JET) {
-    // Sleek triangular — fast enemy
-    ctx.shadowColor = colors.explosion;
-    ctx.shadowBlur = 6;
-    ctx.fillStyle = colors.explosion;
-    ctx.beginPath();
-    ctx.moveTo(0, -6);
-    ctx.lineTo(-5, 6);
-    ctx.lineTo(5, 6);
+    ctx.moveTo(-7, -3);
+    ctx.lineTo(-5, -5);
+    ctx.lineTo(5, -5);
+    ctx.lineTo(7, -3);
+    ctx.lineTo(6, 4);
+    ctx.lineTo(-6, 4);
     ctx.closePath();
     ctx.fill();
+    // Cabin
+    ctx.fillStyle = colors.bankHi;
+    ctx.fillRect(-3, -4, 6, 5);
+    // Wake trail
+    ctx.globalAlpha = 0.3;
+    ctx.strokeStyle = colors.bankHi;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(-4, 5);
+    ctx.lineTo(-7, 12);
+    ctx.moveTo(4, 5);
+    ctx.lineTo(7, 12);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  } else if (type === ENEMY_TYPE.HELI) {
+    // Attack helicopter with body, tail boom, rotor blades
+    ctx.shadowColor = colors.warning;
+    ctx.shadowBlur = 6;
+    // Body
+    ctx.fillStyle = colors.warning;
+    ctx.beginPath();
+    ctx.moveTo(0, -5);
+    ctx.lineTo(-4, -2);
+    ctx.lineTo(-4, 4);
+    ctx.lineTo(-2, 6);
+    ctx.lineTo(2, 6);
+    ctx.lineTo(4, 4);
+    ctx.lineTo(4, -2);
+    ctx.closePath();
+    ctx.fill();
+    // Tail boom
+    ctx.fillRect(-1, 6, 2, 5);
+    ctx.fillRect(-3, 10, 6, 2);
+    // Rotor blades (spinning)
+    const angle = time * 0.02;
+    ctx.strokeStyle = colors.missile;
+    ctx.lineWidth = 1.5;
+    ctx.shadowColor = colors.missile;
+    ctx.shadowBlur = 3;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(angle) * -10, Math.sin(angle) * -3);
+    ctx.lineTo(Math.cos(angle) * 10, Math.sin(angle) * 3);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(angle + Math.PI / 2) * -10, Math.sin(angle + Math.PI / 2) * -3);
+    ctx.lineTo(Math.cos(angle + Math.PI / 2) * 10, Math.sin(angle + Math.PI / 2) * 3);
+    ctx.stroke();
+    // Rotor hub
+    ctx.fillStyle = colors.missile;
+    ctx.beginPath();
+    ctx.arc(0, 0, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+    // Searchlight (pulsing)
+    const beamPulse = 0.2 + Math.sin(time * 0.006) * 0.15;
+    ctx.globalAlpha = beamPulse;
+    ctx.fillStyle = colors.missile;
+    ctx.beginPath();
+    ctx.arc(0, -5, 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  } else if (type === ENEMY_TYPE.JET) {
+    // Enemy interceptor — inverted, flying TOWARD player, with trail
+    ctx.shadowColor = colors.explosion;
+    ctx.shadowBlur = 8;
+    // Exhaust trail (going upward — the jet came from above)
+    ctx.globalAlpha = 0.15;
+    ctx.fillStyle = colors.explosion;
+    for (let i = 1; i <= 4; i++) {
+      ctx.beginPath();
+      ctx.arc(0, -6 - i * 5, 2 + i * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    // Body — inverted delta pointing DOWN
+    ctx.fillStyle = colors.explosion;
+    ctx.beginPath();
+    ctx.moveTo(0, 8); // nose (pointing down toward player)
+    ctx.lineTo(-7, -5); // left wing
+    ctx.lineTo(-2, -3); // left inner
+    ctx.lineTo(0, -6); // tail center
+    ctx.lineTo(2, -3); // right inner
+    ctx.lineTo(7, -5); // right wing
+    ctx.closePath();
+    ctx.fill();
+    // Cockpit
+    ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+    ctx.beginPath();
+    ctx.moveTo(0, 5);
+    ctx.lineTo(-1.5, 1);
+    ctx.lineTo(1.5, 1);
+    ctx.closePath();
+    ctx.fill();
+    // Wingtip warning lights
+    const blink = Math.floor(time / 200) % 2 === 0;
+    if (blink) {
+      ctx.fillStyle = colors.explosion;
+      ctx.shadowBlur = 6;
+      ctx.beginPath();
+      ctx.arc(-6, -4, 1, 0, Math.PI * 2);
+      ctx.arc(6, -4, 1, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 
   ctx.shadowBlur = 0;
@@ -330,14 +464,12 @@ function drawFuelStations(ctx, state, colors, time) {
   for (let i = 0; i < state.fuelCount; i++) {
     const f = state.fuels[i];
     if (!f || !f.available) continue;
-
-    const screenY = worldToScreenY(f.y, state.scrollY);
-    if (screenY < -20 || screenY > CANVAS_H + 20) continue;
+    if (f.y < -20 || f.y > CANVAS_H + 20) continue;
 
     const pulse = 0.7 + Math.sin(time * 0.005) * 0.3;
 
     ctx.save();
-    ctx.translate(f.x, screenY);
+    ctx.translate(f.x, f.y);
     ctx.shadowColor = colors.warning;
     ctx.shadowBlur = 8 * pulse;
     ctx.globalAlpha = pulse;
@@ -366,7 +498,7 @@ function drawFuelStations(ctx, state, colors, time) {
 function drawBridge(ctx, state, colors) {
   if (!state.bridgeActive) return;
 
-  const y = worldToScreenY(state.bridgeY, state.scrollY);
+  const y = state.bridgeY;
   if (y < -20 || y > CANVAS_H + 20) return;
 
   // Industrial bridge bars spanning the canal
@@ -418,8 +550,8 @@ function drawMines(ctx, state, colors, time) {
 
     // Spikes
     for (let s = 0; s < 6; s++) {
-      const angle = (Math.PI * 2 * s) / 6;
-      ctx.fillRect(Math.cos(angle) * MINE_RADIUS - 1, Math.sin(angle) * MINE_RADIUS - 1, 2, 2);
+      const sAngle = (Math.PI * 2 * s) / 6;
+      ctx.fillRect(Math.cos(sAngle) * MINE_RADIUS - 1, Math.sin(sAngle) * MINE_RADIUS - 1, 2, 2);
     }
 
     ctx.globalAlpha = 1;
@@ -461,7 +593,7 @@ function drawHUD(ctx, state, colors, time) {
   ctx.textAlign = "left";
   ctx.fillText(`P1: ${state.score1}`, 8, 5);
 
-  // Section (top center)
+  // Distance / mode (top center)
   ctx.fillStyle = colors.warning;
   ctx.shadowColor = colors.warning;
   ctx.textAlign = "center";
@@ -471,7 +603,8 @@ function drawHUD(ctx, state, colors, time) {
       : state.mode === GAME_MODE.BLITZ
         ? "BLITZ"
         : "RAID";
-  ctx.fillText(`${modeName} SEC:${state.section}`, CANVAS_W / 2, 5);
+  const dist = Math.floor(state.scrollY / 100);
+  ctx.fillText(`${modeName} ${dist}m`, CANVAS_W / 2, 5);
 
   // P2 score (top right)
   ctx.fillStyle = colors.p2;
@@ -577,7 +710,8 @@ function drawGameOver(ctx, state, colors) {
 
   ctx.font = "12px monospace";
   ctx.fillStyle = colors.bankHi;
-  ctx.fillText(`Section ${state.section} reached`, CANVAS_W / 2, CANVAS_H / 2 + 35);
+  const dist = Math.floor(state.scrollY / 100);
+  ctx.fillText(`${dist}m reached`, CANVAS_W / 2, CANVAS_H / 2 + 35);
   ctx.restore();
 }
 

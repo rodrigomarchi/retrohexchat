@@ -71,7 +71,7 @@ describe("Hex Raid Protocol", () => {
       };
 
       const buf = encodeGameState(state);
-      expect(buf.byteLength).toBe(137);
+      expect(buf.byteLength).toBe(185);
 
       const d = decodeGameState(buf);
       expect(d).not.toBeNull();
@@ -103,7 +103,7 @@ describe("Hex Raid Protocol", () => {
       expect(d.m2Y).toBe(310);
       expect(d.m2Active).toBe(false);
 
-      // Enemies (3 active + 5 empty)
+      // Enemies (3 active + 13 empty)
       expect(d.enemyCount).toBe(3);
       expect(d.enemies[0].type).toBe(ENEMY_TYPE.BOAT);
       expect(d.enemies[0].x).toBe(300);
@@ -332,7 +332,7 @@ describe("Hex Raid Protocol", () => {
     });
 
     it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(137);
+      const buf = new ArrayBuffer(185);
       new DataView(buf).setUint8(0, MSG_TYPE.PLAYER_INPUT);
       expect(decodeGameState(buf)).toBeNull();
     });
@@ -554,14 +554,7 @@ describe("Hex Raid Protocol", () => {
     });
 
     it("roundtrips all PHASE values", () => {
-      const phases = [
-        PHASE.WAITING,
-        PHASE.COUNTDOWN,
-        PHASE.FLYING,
-        PHASE.SECTION_CLEAR,
-        PHASE.RESPAWNING,
-        PHASE.FINISHED,
-      ];
+      const phases = [PHASE.WAITING, PHASE.COUNTDOWN, PHASE.FLYING, PHASE.FINISHED];
       for (const phase of phases) {
         const state = makeMinimalState({ phase });
         const d = decodeGameState(encodeGameState(state));
