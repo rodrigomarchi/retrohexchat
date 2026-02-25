@@ -38,6 +38,9 @@ defmodule RetroHexChatWeb.Icons.Games do
   def game_icon(%{game_id: "hex_tennis"} = assigns), do: icon_game_tennis(assigns)
   def game_icon(%{game_id: "hex_tennis_quick"} = assigns), do: icon_game_tennis(assigns)
   def game_icon(%{game_id: "hex_tennis_sudden"} = assigns), do: icon_game_tennis(assigns)
+  def game_icon(%{game_id: "hex_skiing"} = assigns), do: icon_game_skiing(assigns)
+  def game_icon(%{game_id: "hex_skiing_escape"} = assigns), do: icon_game_skiing(assigns)
+  def game_icon(%{game_id: "hex_skiing_clean"} = assigns), do: icon_game_skiing(assigns)
   def game_icon(assigns), do: icon_game_generic(assigns)
 
   # -- Hex Pong: paddle + ball --
@@ -407,6 +410,43 @@ defmodule RetroHexChatWeb.Icons.Games do
 
       <rect x="20" y="9" width="3" height="3" fill="#ffee00" />
       <rect x="21" y="10" width="1" height="1" fill="#fff" />
+    </svg>
+    """
+  end
+
+  # -- Hex Skiing: skier descending toxic mountain --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_skiing(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_skiing(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#0a0a14" />
+
+      <path d="M10 4h4v2h2v2h6v2H10z" fill="#151525" />
+      <path d="M8 8h6v2h4v2H6z" fill="#151525" />
+
+      <rect x="15" y="11" width="2" height="2" fill="#39ff14" />
+      <rect x="14" y="13" width="4" height="4" fill="#39ff14" />
+      <rect x="13" y="17" width="2" height="3" fill="#39ff14" />
+      <rect x="17" y="17" width="2" height="3" fill="#39ff14" />
+      <rect x="11" y="19" width="3" height="2" fill="#39ff14" />
+      <rect x="18" y="19" width="3" height="2" fill="#39ff14" />
+
+      <path d="M6 14h3v4H6z" fill="#1a3a1a" />
+      <rect x="7" y="18" width="1" height="3" fill="#3a2a1a" />
+      <path d="M23 18h3v4h-3z" fill="#1a3a1a" />
+      <rect x="24" y="22" width="1" height="2" fill="#3a2a1a" />
+
+      <rect x="4" y="25" width="4" height="2" fill="#555" />
+
+      <rect x="20" y="8" width="2" height="2" fill="#ffee00" />
+
+      <path d="M3 28h26v1H3z" fill="#2a2a3a" />
     </svg>
     """
   end

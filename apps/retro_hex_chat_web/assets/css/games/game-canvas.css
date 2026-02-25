@@ -142,6 +142,27 @@
   --game-ball-color: #ffee00;
 }
 
+/* Hex Skiing: cyberpunk post-apocalyptic alpine descent */
+.game-canvas[data-game-id="hex_skiing"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_skiing_escape"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_skiing_clean"] .game-canvas__surface {
+  --game-bg-color: #0a0a14;
+  --game-fg-color: #39ff14;
+  --game-accent-color: #00e5ff;
+  --game-muted-color: #1a1a2a;
+  --game-glow-color: rgba(57, 255, 20, 0.15);
+  --game-warning-color: #ff4444;
+  --game-snow-color: #1a1a2e;
+  --game-tree-color: #1a3a1a;
+  --game-rock-color: #555566;
+  --game-avalanche-color: #2a2a3a;
+  --game-gate-left: #4488ff;
+  --game-gate-right: #ff4444;
+  --game-boost-color: #ffee00;
+  --game-ice-color: #00ccff;
+  --game-trail-color: rgba(57, 255, 20, 0.3);
+}
+
 /* Star Duel trilogy: cyberpunk post-apocalyptic space combat */
 .game-canvas[data-game-id="star_duel"] .game-canvas__surface,
 .game-canvas[data-game-id="gravity_well"] .game-canvas__surface,

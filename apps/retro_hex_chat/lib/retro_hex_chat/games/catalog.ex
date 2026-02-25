@@ -2,7 +2,7 @@ defmodule RetroHexChat.Games.Catalog do
   @moduledoc """
   Registry of available P2P games.
   Each game has an id, name, description, and icon identifier.
-  All games are real-time action for two players (25 games total).
+  All games are real-time action for two players (28 games total).
   """
 
   @type game :: %{
@@ -264,6 +264,36 @@ defmodule RetroHexChat.Games.Catalog do
           "First to 6 games takes the set. Pure pressure.",
       icon: "game_tennis",
       controls: "Arrow keys or WASD to move, Space or Shift to serve"
+    },
+    %{
+      id: "hex_skiing",
+      name: "Hex Skiing",
+      tagline: "Race the avalanche",
+      description:
+        "Top-down alpine descent through toxic wastelands — dodge mutant trees, " <>
+          "clear slalom gates, outrun the avalanche. Best of 3 runs with rising difficulty.",
+      icon: "game_skiing",
+      controls: "Arrow keys (←/→) or A/D to steer"
+    },
+    %{
+      id: "hex_skiing_escape",
+      name: "Hex Skiing: Escape",
+      tagline: "Outrun the wasteland",
+      description:
+        "Infinite descent — the avalanche never stops accelerating. " <>
+          "Last skier standing wins. Pure survival.",
+      icon: "game_skiing",
+      controls: "Arrow keys (←/→) or A/D to steer"
+    },
+    %{
+      id: "hex_skiing_clean",
+      name: "Hex Skiing: Clean Run",
+      tagline: "Pure downhill duel",
+      description:
+        "No avalanche, no items — just trees, rocks, and gates. " <>
+          "Fastest time down the mountain wins.",
+      icon: "game_skiing",
+      controls: "Arrow keys (←/→) or A/D to steer"
     }
   ]
 

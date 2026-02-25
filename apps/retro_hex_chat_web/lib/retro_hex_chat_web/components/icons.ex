@@ -313,5 +313,6 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_game_invaders(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_enduro(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_tennis(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_skiing(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_generic(assigns), to: RetroHexChatWeb.Icons.Games
 end

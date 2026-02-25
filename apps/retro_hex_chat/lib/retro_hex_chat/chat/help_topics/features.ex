@@ -1010,7 +1010,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-enduro-sprint",
           "feature-hex-tennis",
           "feature-hex-tennis-quick",
-          "feature-hex-tennis-sudden"
+          "feature-hex-tennis-sudden",
+          "feature-hex-skiing",
+          "feature-hex-skiing-escape",
+          "feature-hex-skiing-clean"
         ]
       },
       %{
@@ -1575,6 +1578,80 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-hex-tennis",
           "feature-hex-tennis-quick",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-skiing",
+        title: "Hex Skiing",
+        category: "Features",
+        keywords: [
+          "hex skiing",
+          "skiing",
+          "alpine",
+          "avalanche",
+          "slalom",
+          "downhill",
+          "snow",
+          "game"
+        ],
+        icon: :icon_game_skiing,
+        description:
+          "Top-down alpine descent through toxic wastelands — dodge mutant trees and irradiated rocks, " <>
+            "clear slalom gates for time bonuses, and outrun the radioactive avalanche. " <>
+            "Best of 3 runs with rising difficulty. " <>
+            "Controls: Arrow keys (←/→) or A/D to steer.",
+        see_also: [
+          "feature-hex-skiing-escape",
+          "feature-hex-skiing-clean",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-skiing-escape",
+        title: "Hex Skiing: Escape",
+        category: "Features",
+        keywords: [
+          "hex skiing",
+          "skiing",
+          "escape",
+          "avalanche",
+          "survival",
+          "infinite",
+          "game"
+        ],
+        icon: :icon_game_skiing,
+        description:
+          "Infinite descent — the avalanche never stops accelerating. " <>
+            "Last skier standing wins. Pure survival mode. " <>
+            "Controls: Arrow keys (←/→) or A/D to steer.",
+        see_also: [
+          "feature-hex-skiing",
+          "feature-hex-skiing-clean",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-skiing-clean",
+        title: "Hex Skiing: Clean Run",
+        category: "Features",
+        keywords: [
+          "hex skiing",
+          "skiing",
+          "clean",
+          "pure",
+          "no avalanche",
+          "time trial",
+          "game"
+        ],
+        icon: :icon_game_skiing,
+        description:
+          "No avalanche, no items — just trees, rocks, and slalom gates. " <>
+            "Fastest time down the mountain wins. The purist mode. " <>
+            "Controls: Arrow keys (←/→) or A/D to steer.",
+        see_also: [
+          "feature-hex-skiing",
+          "feature-hex-skiing-escape",
           "feature-p2p-games"
         ]
       }
