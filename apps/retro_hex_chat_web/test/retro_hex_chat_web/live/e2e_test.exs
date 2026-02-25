@@ -1338,9 +1338,16 @@ defmodule RetroHexChatWeb.E2ETest do
       assert {:error, {:live_redirect, %{to: "/connect"}}} = result
     end
 
-    test "15.6 disconnect toolbar redirects to /", %{conn: conn} do
+    test "15.6 disconnect toolbar shows confirm dialog then redirects", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "DiscE2E"), "/chat")
-      result = render_click(view, "disconnect")
+
+      # Click disconnect — shows confirmation dialog
+      html = render_click(view, "disconnect")
+      assert html =~ "disconnect-confirm-dialog"
+      assert html =~ "Are you sure you want to disconnect?"
+
+      # Confirm — actually disconnects
+      result = render_click(view, "confirm_disconnect")
       assert {:error, {:live_redirect, %{to: "/connect"}}} = result
     end
 

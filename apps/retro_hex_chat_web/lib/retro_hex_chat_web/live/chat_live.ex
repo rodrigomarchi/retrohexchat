@@ -424,6 +424,7 @@ defmodule RetroHexChatWeb.ChatLive do
       reply_to: nil,
       edit_mode_message_id: nil,
       edit_original_input: nil,
+      show_disconnect_confirm: false,
       delete_confirm: nil,
       nick_change_dialog: nil,
       nick_change_target: nil,

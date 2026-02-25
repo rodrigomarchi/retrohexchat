@@ -1249,10 +1249,24 @@ defmodule RetroHexChatWeb.ChatLiveTest do
   # ── R3: disconnect handler ─────────────────────────────
 
   describe "disconnect toolbar" do
-    test "disconnect cleans up and redirects to /", %{conn: conn} do
+    test "disconnect shows confirm dialog and confirm redirects to /", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "DiscUser"), "/chat")
-      result = render_click(view, "disconnect")
+
+      html = render_click(view, "disconnect")
+      assert html =~ "disconnect-confirm-dialog"
+
+      result = render_click(view, "confirm_disconnect")
       assert {:error, {:live_redirect, %{to: "/connect"}}} = result
+    end
+
+    test "disconnect cancel closes dialog", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "DiscCancel"), "/chat")
+
+      html = render_click(view, "disconnect")
+      assert html =~ "disconnect-confirm-dialog"
+
+      html = render_click(view, "cancel_disconnect")
+      refute html =~ "disconnect-confirm-dialog"
     end
   end
 

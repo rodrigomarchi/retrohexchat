@@ -433,6 +433,10 @@
 
   <RetroHexChatWeb.Components.AboutDialog.about_dialog visible={@show_about} />
 
+  <RetroHexChatWeb.Components.DisconnectConfirmDialog.disconnect_confirm_dialog visible={
+    @show_disconnect_confirm
+  } />
+
   <RetroHexChatWeb.Components.DeleteConfirmDialog.delete_confirm_dialog
     visible={@delete_confirm != nil}
     message_id={@delete_confirm && @delete_confirm.message_id}
