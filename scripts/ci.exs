@@ -7,7 +7,8 @@
 #
 # Pipeline:
 #   Stage 1 (parallel): compile + JS lint + JS tests (independent)
-#   Stage 2 (parallel, after compile): format + credo + CSS lint + tests + E2E tests + dialyzer
+#   Stage 2 (parallel, after compile): format + credo + CSS lint + tests + E2E tests
+#   Stage 3 (isolated, after stage 2): dialyzer (runs alone to avoid protocol consolidation races)
 #
 # Tests are split into two parallel workers (tests + E2E) to reduce wall-clock time.
 # Ecto SQL Sandbox ensures each process gets isolated DB transactions.
@@ -20,9 +21,10 @@
 defmodule CI do
   @compile_check "compile"
   @stage1_independent ["lint_js", "js_tests"]
-  @stage2_after_compile ["format", "credo", "lint_css", "test", "test_e2e", "dialyzer"]
+  @stage2_after_compile ["format", "credo", "lint_css", "test", "test_e2e"]
+  @stage3_isolated ["dialyzer"]
 
-  @all_checks [@compile_check | @stage1_independent] ++ @stage2_after_compile
+  @all_checks [@compile_check | @stage1_independent] ++ @stage2_after_compile ++ @stage3_isolated
 
   @check_config %{
     "compile" => %{label: "Compile", cmd: "mix", args: ["compile", "--warnings-as-errors"]},
@@ -50,8 +52,9 @@ defmodule CI do
 
     stage1_results = run_stage1(checks, project_root)
     stage2_results = run_stage2(checks, stage1_results, project_root)
+    stage3_results = run_stage3(checks, stage1_results, stage2_results, project_root)
 
-    all_results = Map.merge(stage1_results, stage2_results)
+    all_results = stage1_results |> Map.merge(stage2_results) |> Map.merge(stage3_results)
     elapsed = System.monotonic_time(:millisecond) - start_time
 
     summary(all_results, elapsed)
@@ -82,6 +85,27 @@ defmodule CI do
       not compile_passed? ->
         IO.puts("\n  #{c(:red)}Compile failed — skipping Stage 2 checks#{c(:reset)}\n")
         Map.new(stage2_checks, fn check -> {check, :skipped} end)
+
+      true ->
+        %{}
+    end
+  end
+
+  defp run_stage3(checks, stage1_results, stage2_results, project_root) do
+    stage3_checks = Enum.filter(@stage3_isolated, &(&1 in checks))
+    compile_passed? = stage1_results[@compile_check] == :ok or @compile_check not in checks
+    any_prior_fail? = Enum.any?(Map.values(stage2_results), &(&1 == :fail))
+
+    cond do
+      not compile_passed? ->
+        Map.new(stage3_checks, fn check -> {check, :skipped} end)
+
+      any_prior_fail? and stage3_checks != [] ->
+        IO.puts("\n  #{c(:yellow)}Skipping Stage 3 — earlier checks failed#{c(:reset)}\n")
+        Map.new(stage3_checks, fn check -> {check, :skipped} end)
+
+      stage3_checks != [] ->
+        run_stage("Stage 3 (isolated)", stage3_checks, project_root)
 
       true ->
         %{}
