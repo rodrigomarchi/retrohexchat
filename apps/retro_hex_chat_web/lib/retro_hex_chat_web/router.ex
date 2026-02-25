@@ -62,6 +62,7 @@ defmodule RetroHexChatWeb.Router do
   scope "/", RetroHexChatWeb do
     pipe_through :browser
 
+    live "/icons", IconsLive # Temporary route for SVG icon review
     live "/connect", ConnectLive
     get "/chat/session/clear", SessionController, :delete
     live "/chat", ChatLive
