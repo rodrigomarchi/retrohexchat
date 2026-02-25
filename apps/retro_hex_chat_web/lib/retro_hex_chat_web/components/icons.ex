@@ -190,6 +190,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_tab_commands(assigns), to: RetroHexChatWeb.Icons.Code
   defdelegate icon_btn_perform(assigns), to: RetroHexChatWeb.Icons.Code
   defdelegate icon_btn_bot_management(assigns), to: RetroHexChatWeb.Icons.Code
+  defdelegate icon_dialog_bot_management(assigns), to: RetroHexChatWeb.Icons.Code
   defdelegate icon_dialog_admin_console(assigns), to: RetroHexChatWeb.Icons.Code
 
   # ── Security ────────────────────────────────────────────

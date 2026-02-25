@@ -280,6 +280,36 @@ defmodule RetroHexChatWeb.Icons.Code do
     """
   end
 
+  # -- Dialog title bar: Bot Management --
+
+  attr :class, :string, default: nil
+
+  @spec icon_dialog_bot_management(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_dialog_bot_management(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <%!-- Antenna --%>
+      <rect x="7" y="1" width="2" height="2" fill="#ffd700" />
+      <rect x="8" y="0" width="1" height="1" fill="#ffd700" />
+      <%!-- Head --%>
+      <rect x="3" y="3" width="10" height="8" fill="#c0c0c0" />
+      <rect x="3" y="3" width="10" height="1" fill="#dfdfdf" />
+      <rect x="3" y="10" width="10" height="1" fill="#808080" />
+      <%!-- Eyes --%>
+      <rect x="5" y="5" width="2" height="2" fill="#fff" />
+      <rect x="9" y="5" width="2" height="2" fill="#fff" />
+      <%!-- Pupils --%>
+      <rect x="6" y="6" width="1" height="1" fill="#000080" />
+      <rect x="10" y="6" width="1" height="1" fill="#000080" />
+      <%!-- Mouth --%>
+      <rect x="6" y="9" width="4" height="1" fill="#000080" />
+      <%!-- Body --%>
+      <rect x="4" y="12" width="8" height="3" fill="#808080" />
+      <rect x="4" y="12" width="8" height="1" fill="#c0c0c0" />
+    </svg>
+    """
+  end
+
   # -- Toolbar: Admin Console --
 
   attr :class, :string, default: nil

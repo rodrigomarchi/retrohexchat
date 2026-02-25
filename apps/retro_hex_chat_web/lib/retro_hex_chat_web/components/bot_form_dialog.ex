@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.Components.BotFormDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   # ── New Bot Dialog ──
 
   attr :visible, :boolean, default: false
@@ -19,7 +21,8 @@ defmodule RetroHexChatWeb.Components.BotFormDialog do
     >
       <div class="window bot-new-dialog">
         <div class="title-bar">
-          <div class="title-bar-text"><span>&#9881;</span> New Bot</div>
+          <Icons.icon_dialog_bot_management class="title-bar-icon" />
+          <div class="title-bar-text">New Bot</div>
           <div class="title-bar-controls">
             <button type="button" aria-label="Close" phx-click="close_new_bot_dialog"></button>
           </div>
@@ -149,11 +152,11 @@ defmodule RetroHexChatWeb.Components.BotFormDialog do
             </fieldset>
 
             <div class="bot-form-actions">
-              <button type="submit" class="bot-form-btn" data-testid="create-bot-submit">
-                Create
+              <button type="submit" class="btn-icon bot-form-btn" data-testid="create-bot-submit">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> Create
               </button>
-              <button type="button" class="bot-form-btn" phx-click="close_new_bot_dialog">
-                Cancel
+              <button type="button" class="btn-icon bot-form-btn" phx-click="close_new_bot_dialog">
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>
@@ -179,7 +182,8 @@ defmodule RetroHexChatWeb.Components.BotFormDialog do
     >
       <div class="window bot-addcmd-dialog">
         <div class="title-bar">
-          <div class="title-bar-text"><span>&#9881;</span> Add Command</div>
+          <Icons.icon_dialog_bot_management class="title-bar-icon" />
+          <div class="title-bar-text">Add Command</div>
           <div class="title-bar-controls">
             <button type="button" aria-label="Close" phx-click="close_add_command_dialog"></button>
           </div>
@@ -224,9 +228,11 @@ defmodule RetroHexChatWeb.Components.BotFormDialog do
               />
             </div>
             <div class="bot-form-actions">
-              <button type="submit" class="bot-form-btn" data-testid="add-cmd-submit">Add</button>
-              <button type="button" class="bot-form-btn" phx-click="close_add_command_dialog">
-                Cancel
+              <button type="submit" class="btn-icon bot-form-btn" data-testid="add-cmd-submit">
+                <Icons.icon_btn_ok class="btn-icon__svg" /> Add
+              </button>
+              <button type="button" class="btn-icon bot-form-btn" phx-click="close_add_command_dialog">
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
               </button>
             </div>
           </form>

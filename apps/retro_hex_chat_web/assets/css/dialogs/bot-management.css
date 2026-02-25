@@ -41,6 +41,9 @@
 }
 
 .bot-mgmt-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
   padding: 2px var(--space-xs);
   font-weight: bold;
   font-size: var(--font-xs);
@@ -76,8 +79,19 @@
   color: var(--color-highlight-text);
 }
 
-.bot-mgmt-status {
-  font-size: 8px;
+.bot-mgmt-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bot-mgmt-status-dot--on {
+  background: var(--color-success);
+}
+
+.bot-mgmt-status-dot--off {
+  background: var(--color-text-secondary);
 }
 
 .bot-mgmt-sidebar-actions {
@@ -95,9 +109,18 @@
 }
 
 .bot-mgmt-detail-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
   font-weight: bold;
   font-size: var(--font-sm);
   margin-bottom: var(--space-sm);
+}
+
+.bot-mgmt-detail-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .bot-mgmt-empty {
@@ -132,6 +155,17 @@
   background: var(--color-canvas);
   border-bottom: 1px solid var(--color-canvas);
   font-weight: bold;
+}
+
+.bot-mgmt-tab .tab-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.bot-mgmt-tab .btn-icon__svg {
+  width: 14px;
+  height: 14px;
 }
 
 .bot-mgmt-tab-content {
@@ -176,6 +210,19 @@
 
 .bot-mgmt-status--off {
   color: var(--color-error);
+}
+
+/* Legend icons for capability fieldsets */
+.bot-mgmt-legend-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.bot-mgmt-legend-svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 /* Capabilities badges */
@@ -274,6 +321,11 @@
   font-size: 10px;
   padding: 1px 4px;
   font-family: var(--font-system);
+}
+
+.bot-mgmt-btn-sm .btn-icon__svg {
+  width: 12px;
+  height: 12px;
 }
 
 /* Footer */

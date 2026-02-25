@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
   """
   use Phoenix.Component
 
-  import Phoenix.HTML, only: [raw: 1]
+  alias RetroHexChatWeb.Icons
 
   attr :visible, :boolean, default: false
   attr :bots, :list, default: []
@@ -29,9 +29,8 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
     >
       <div class="window bot-mgmt-dialog">
         <div class="title-bar">
-          <div class="title-bar-text">
-            <span>&#9881;</span> Bot Management
-          </div>
+          <Icons.icon_dialog_bot_management class="title-bar-icon" />
+          <div class="title-bar-text">Bot Management</div>
           <div class="title-bar-controls">
             <button type="button" aria-label="Close" phx-click="close_bot_dialog"></button>
           </div>
@@ -40,7 +39,9 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
           <div class="bot-mgmt-split">
             <%!-- Left panel: bot list --%>
             <div class="bot-mgmt-sidebar">
-              <div class="bot-mgmt-sidebar-header">Bots</div>
+              <div class="bot-mgmt-sidebar-header">
+                <Icons.icon_btn_bot_management class="btn-icon__svg" /> Bots
+              </div>
               <ul class="bot-mgmt-list" data-testid="bot-list">
                 <li
                   :for={bot <- @bots}
@@ -50,10 +51,9 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
                   data-testid={"bot-item-#{bot.name}"}
                 >
                   <span
-                    class="bot-mgmt-status"
+                    class={"bot-mgmt-status-dot #{if bot.enabled, do: "bot-mgmt-status-dot--on", else: "bot-mgmt-status-dot--off"}"}
                     title={if bot.enabled, do: "Enabled", else: "Disabled"}
                   >
-                    {if bot.enabled, do: raw("&#9679;"), else: raw("&#9675;")}
                   </span>
                   <span class="bot-mgmt-name">{bot.name}</span>
                 </li>
@@ -61,11 +61,11 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
               <div :if={@is_admin} class="bot-mgmt-sidebar-actions">
                 <button
                   type="button"
-                  class="bot-mgmt-btn"
+                  class="btn-icon bot-mgmt-btn"
                   phx-click="open_new_bot_dialog"
                   data-testid="new-bot-btn"
                 >
-                  New Bot...
+                  <Icons.icon_btn_add class="btn-icon__svg" /> New Bot...
                 </button>
               </div>
             </div>
@@ -78,20 +78,65 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
               <div :if={@selected != nil}>
                 <div class="bot-mgmt-detail-header">
-                  {raw("&#9881;")} {@selected.name}
+                  <Icons.icon_robot class="bot-mgmt-detail-icon" /> {@selected.name}
                 </div>
 
                 <%!-- Tab bar --%>
                 <div class="bot-mgmt-tabs">
                   <button
-                    :for={tab <- [:general, :capabilities, :channels, :commands, :events]}
                     type="button"
-                    class={"bot-mgmt-tab #{if @active_tab == tab, do: "bot-mgmt-tab--active"}"}
+                    class={"bot-mgmt-tab #{if @active_tab == :general, do: "bot-mgmt-tab--active"}"}
                     phx-click="bot_dialog_tab"
-                    phx-value-tab={tab}
-                    data-testid={"bot-tab-#{tab}"}
+                    phx-value-tab="general"
+                    data-testid="bot-tab-general"
                   >
-                    {tab_label(tab)}
+                    <span class="tab-icon">
+                      <Icons.icon_tab_general class="btn-icon__svg" /> General
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    class={"bot-mgmt-tab #{if @active_tab == :capabilities, do: "bot-mgmt-tab--active"}"}
+                    phx-click="bot_dialog_tab"
+                    phx-value-tab="capabilities"
+                    data-testid="bot-tab-capabilities"
+                  >
+                    <span class="tab-icon">
+                      <Icons.icon_tab_control class="btn-icon__svg" /> Capabilities
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    class={"bot-mgmt-tab #{if @active_tab == :channels, do: "bot-mgmt-tab--active"}"}
+                    phx-click="bot_dialog_tab"
+                    phx-value-tab="channels"
+                    data-testid="bot-tab-channels"
+                  >
+                    <span class="tab-icon">
+                      <Icons.icon_tab_channel class="btn-icon__svg" /> Channels
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    class={"bot-mgmt-tab #{if @active_tab == :commands, do: "bot-mgmt-tab--active"}"}
+                    phx-click="bot_dialog_tab"
+                    phx-value-tab="commands"
+                    data-testid="bot-tab-commands"
+                  >
+                    <span class="tab-icon">
+                      <Icons.icon_tab_commands class="btn-icon__svg" /> Commands
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    class={"bot-mgmt-tab #{if @active_tab == :events, do: "bot-mgmt-tab--active"}"}
+                    phx-click="bot_dialog_tab"
+                    phx-value-tab="events"
+                    data-testid="bot-tab-events"
+                  >
+                    <span class="tab-icon">
+                      <Icons.icon_tab_notify class="btn-icon__svg" /> Events
+                    </span>
                   </button>
                 </div>
 
@@ -146,17 +191,17 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
               </button>
               <button
                 type="button"
-                class="bot-mgmt-btn bot-mgmt-btn--danger"
+                class="btn-icon bot-mgmt-btn bot-mgmt-btn--danger"
                 phx-click="bot_delete"
                 phx-value-name={@selected.name}
                 data-testid="bot-delete-btn"
               >
-                Delete
+                <Icons.icon_btn_remove class="btn-icon__svg" /> Delete
               </button>
             </div>
             <div class="bot-mgmt-footer-right">
-              <button type="button" class="bot-mgmt-btn" phx-click="close_bot_dialog">
-                Close
+              <button type="button" class="btn-icon bot-mgmt-btn" phx-click="close_bot_dialog">
+                <Icons.icon_btn_cancel class="btn-icon__svg" /> Close
               </button>
             </div>
           </div>
@@ -277,7 +322,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
               <%= if @is_admin do %>
                 <button
                   type="button"
-                  class="bot-mgmt-btn-sm"
+                  class="btn-icon bot-mgmt-btn-sm"
                   phx-click="bot_toggle_channel"
                   phx-value-channel={ch.channel_name}
                   phx-value-bot_name={@bot.name}
@@ -292,12 +337,12 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
             <td :if={@is_admin}>
               <button
                 type="button"
-                class="bot-mgmt-btn-sm"
+                class="btn-icon bot-mgmt-btn-sm"
                 phx-click="bot_remove_channel"
                 phx-value-channel={ch.channel_name}
                 phx-value-bot_name={@bot.name}
               >
-                Remove
+                <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
               </button>
             </td>
           </tr>
@@ -319,7 +364,9 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
             class="bot-mgmt-input"
             data-testid="bot-add-channel-input"
           />
-          <button type="submit" class="bot-mgmt-btn" data-testid="bot-add-channel-btn">Add</button>
+          <button type="submit" class="btn-icon bot-mgmt-btn" data-testid="bot-add-channel-btn">
+            <Icons.icon_btn_add class="btn-icon__svg" /> Add
+          </button>
         </form>
       </div>
     </div>
@@ -348,12 +395,12 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
             <td :if={@is_admin}>
               <button
                 type="button"
-                class="bot-mgmt-btn-sm"
+                class="btn-icon bot-mgmt-btn-sm"
                 phx-click="bot_remove_command"
                 phx-value-trigger={cmd.trigger}
                 phx-value-bot_name={@bot.name}
               >
-                Remove
+                <Icons.icon_btn_remove class="btn-icon__svg" /> Remove
               </button>
             </td>
           </tr>
@@ -368,11 +415,11 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
       <div :if={@is_admin} class="bot-mgmt-cmd-actions">
         <button
           type="button"
-          class="bot-mgmt-btn"
+          class="btn-icon bot-mgmt-btn"
           phx-click="open_add_command_dialog"
           data-testid="add-command-btn"
         >
-          Add Command...
+          <Icons.icon_btn_add class="btn-icon__svg" /> Add Command...
         </button>
       </div>
     </div>
@@ -524,7 +571,9 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
     ~H"""
     <fieldset class="bot-mgmt-fieldset">
-      <legend>&#127922; Dice</legend>
+      <legend class="bot-mgmt-legend-icon">
+        <Icons.icon_dice class="bot-mgmt-legend-svg" /> Dice
+      </legend>
       <.cap_toggle_row enabled={@enabled} cap_name="dice" bot_name={@bot_name} is_admin={@is_admin} />
       <div class="bot-mgmt-field">
         <span class="bot-mgmt-label">Max Dice:</span>
@@ -568,7 +617,9 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
     ~H"""
     <fieldset class="bot-mgmt-fieldset">
-      <legend>&#128737; Moderation</legend>
+      <legend class="bot-mgmt-legend-icon">
+        <Icons.icon_shield class="bot-mgmt-legend-svg" /> Moderation
+      </legend>
       <.cap_toggle_row
         enabled={@enabled}
         cap_name="moderation"
@@ -621,7 +672,9 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
     ~H"""
     <fieldset class="bot-mgmt-fieldset">
-      <legend>&#10068; Trivia</legend>
+      <legend class="bot-mgmt-legend-icon">
+        <Icons.icon_question class="bot-mgmt-legend-svg" /> Trivia
+      </legend>
       <.cap_toggle_row
         enabled={@enabled}
         cap_name="trivia"
@@ -673,7 +726,9 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
     ~H"""
     <fieldset class="bot-mgmt-fieldset">
-      <legend>&#128339; Scheduler</legend>
+      <legend class="bot-mgmt-legend-icon">
+        <Icons.icon_clock class="bot-mgmt-legend-svg" /> Scheduler
+      </legend>
       <.cap_toggle_row
         enabled={@enabled}
         cap_name="scheduler"
@@ -739,7 +794,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
 
     ~H"""
     <fieldset class="bot-mgmt-fieldset">
-      <legend>&#128246; RSS</legend>
+      <legend class="bot-mgmt-legend-icon"><Icons.icon_rss class="bot-mgmt-legend-svg" /> RSS</legend>
       <.cap_toggle_row enabled={@enabled} cap_name="rss" bot_name={@bot_name} is_admin={@is_admin} />
       <div class="bot-mgmt-field">
         <span class="bot-mgmt-label">Poll:</span>
@@ -805,20 +860,24 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
             autofocus
             data-testid={"edit-#{@field}"}
           />
-          <button type="submit" class="bot-mgmt-btn-sm">Save</button>
-          <button type="button" class="bot-mgmt-btn-sm" phx-click="bot_cancel_edit">Cancel</button>
+          <button type="submit" class="btn-icon bot-mgmt-btn-sm">
+            <Icons.icon_btn_ok class="btn-icon__svg" /> Save
+          </button>
+          <button type="button" class="btn-icon bot-mgmt-btn-sm" phx-click="bot_cancel_edit">
+            <Icons.icon_btn_cancel class="btn-icon__svg" /> Cancel
+          </button>
         </form>
       <% else %>
         <span class="bot-mgmt-value">{@value}</span>
         <button
           :if={@is_admin}
           type="button"
-          class="bot-mgmt-btn-sm bot-mgmt-edit-btn"
+          class="btn-icon bot-mgmt-btn-sm bot-mgmt-edit-btn"
           phx-click="bot_edit_field"
           phx-value-field={@field}
           data-testid={"edit-btn-#{@field}"}
         >
-          Edit
+          <Icons.icon_btn_edit class="btn-icon__svg" /> Edit
         </button>
       <% end %>
     </div>
@@ -862,7 +921,7 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
       <button
         :if={@is_admin}
         type="button"
-        class="bot-mgmt-btn-sm bot-mgmt-edit-btn"
+        class="btn-icon bot-mgmt-btn-sm bot-mgmt-edit-btn"
         phx-click="bot_toggle_capability"
         phx-value-capability={@cap_name}
         phx-value-bot_name={@bot_name}
@@ -901,13 +960,6 @@ defmodule RetroHexChatWeb.Components.BotManagementDialog do
     </span>
     """
   end
-
-  @spec tab_label(atom()) :: String.t()
-  defp tab_label(:general), do: "General"
-  defp tab_label(:capabilities), do: "Capabilities"
-  defp tab_label(:channels), do: "Channels"
-  defp tab_label(:commands), do: "Commands"
-  defp tab_label(:events), do: "Events"
 
   @spec cap_display_name(String.t()) :: String.t()
   defp cap_display_name("mention"), do: "Mentions"
