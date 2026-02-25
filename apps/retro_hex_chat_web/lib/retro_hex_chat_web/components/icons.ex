@@ -307,5 +307,6 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_game_boxing(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_outlaw(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_invaders(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_enduro(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_generic(assigns), to: RetroHexChatWeb.Icons.Games
 end

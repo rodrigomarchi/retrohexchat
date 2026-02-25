@@ -1004,7 +1004,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-outlaw-nml",
           "feature-hex-invaders",
           "feature-hex-invaders-coop",
-          "feature-hex-invaders-blitz"
+          "feature-hex-invaders-blitz",
+          "feature-hex-enduro",
+          "feature-hex-enduro-night",
+          "feature-hex-enduro-sprint"
         ]
       },
       %{
@@ -1424,6 +1427,80 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-hex-invaders",
           "feature-hex-invaders-coop",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-enduro",
+        title: "Hex Enduro",
+        category: "Features",
+        keywords: [
+          "hex enduro",
+          "enduro",
+          "racing",
+          "road",
+          "pseudo-3d",
+          "overtake",
+          "fuel",
+          "weather",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Pseudo-3D racing duel through day, snow, fog, and night. " <>
+            "Both players race on the same road — overtake AI cars and your opponent for points. " <>
+            "Manage fuel, use turbo boosts, and draft in slipstreams. Best of 3 days. " <>
+            "Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo.",
+        see_also: [
+          "feature-hex-enduro-night",
+          "feature-hex-enduro-sprint",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-enduro-night",
+        title: "Hex Enduro: Night Race",
+        category: "Features",
+        keywords: [
+          "hex enduro",
+          "night",
+          "dark",
+          "headlights",
+          "racing",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "3-minute race in permanent darkness with fog bursts. " <>
+            "Headlights-only visibility — pure reflexes. Most overtakes wins. " <>
+            "Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo.",
+        see_also: [
+          "feature-hex-enduro",
+          "feature-hex-enduro-sprint",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-enduro-sprint",
+        title: "Hex Enduro: Sprint",
+        category: "Features",
+        keywords: [
+          "hex enduro",
+          "sprint",
+          "fast",
+          "quick",
+          "daylight",
+          "racing",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Daylight sprint — no weather changes, no fuel drain, just speed. " <>
+            "90 seconds to score maximum overtakes. " <>
+            "Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo.",
+        see_also: [
+          "feature-hex-enduro",
+          "feature-hex-enduro-night",
           "feature-p2p-games"
         ]
       }

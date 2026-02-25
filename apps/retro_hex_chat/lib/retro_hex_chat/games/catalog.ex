@@ -2,7 +2,7 @@ defmodule RetroHexChat.Games.Catalog do
   @moduledoc """
   Registry of available P2P games.
   Each game has an id, name, description, and icon identifier.
-  All games are real-time action for two players (19 games total).
+  All games are real-time action for two players (22 games total).
   """
 
   @type game :: %{
@@ -204,6 +204,36 @@ defmodule RetroHexChat.Games.Catalog do
           "5 waves of pure chaos from the start.",
       icon: "game_invaders",
       controls: "Arrow keys or A/D to move, Space to fire"
+    },
+    %{
+      id: "hex_enduro",
+      name: "Hex Enduro",
+      tagline: "Race through the wasteland",
+      description:
+        "Pseudo-3D racing duel through day, snow, fog, and night. " <>
+          "Overtake AI cars and your opponent, manage fuel, draft in slipstreams. Best of 3 days.",
+      icon: "game_enduro",
+      controls: "Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo"
+    },
+    %{
+      id: "hex_enduro_night",
+      name: "Hex Enduro: Night Race",
+      tagline: "Headlights only",
+      description:
+        "3-minute race in permanent darkness with fog bursts. " <>
+          "Pure reflexes — most overtakes wins. Headlights only visibility.",
+      icon: "game_enduro",
+      controls: "Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo"
+    },
+    %{
+      id: "hex_enduro_sprint",
+      name: "Hex Enduro: Sprint",
+      tagline: "90 seconds of fury",
+      description:
+        "Daylight sprint — no weather changes, no fuel drain, just speed. " <>
+          "90 seconds to score maximum overtakes.",
+      icon: "game_enduro",
+      controls: "Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo"
     }
   ]
 
