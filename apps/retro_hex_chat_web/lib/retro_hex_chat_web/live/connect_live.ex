@@ -162,11 +162,7 @@ defmodule RetroHexChatWeb.ConnectLive do
           >
             <%!-- Connection (disabled — not connected yet) --%>
             <span class="toolbar-btn toolbar-btn--disabled" title="Connect">
-              <svg viewBox="0 0 16 16">
-                <circle cx="4" cy="8" r="2.5" fill="#999" />
-                <circle cx="12" cy="8" r="2.5" fill="#999" />
-                <path d="M7 6l2-2 2 2-1 1-1-1v6l1-1 1 1-2 2-2-2 1-1 1 1V6L7 7z" fill="#bbb" />
-              </svg>
+              <.icon_btn_connect_disabled />
             </span>
             <%!-- View group --%>
             <span class="toolbar-btn toolbar-btn--disabled" title="View">
@@ -197,20 +193,7 @@ defmodule RetroHexChatWeb.ConnectLive do
                   href="/chat/help"
                   target="_blank"
                 >
-                  <svg viewBox="0 0 16 16">
-                    <circle cx="8" cy="8" r="7" fill="#000080" />
-                    <text
-                      x="8"
-                      y="12"
-                      text-anchor="middle"
-                      font-size="11"
-                      font-weight="bold"
-                      font-family="sans-serif"
-                      fill="#fff"
-                    >
-                      ?
-                    </text>
-                  </svg>
+                  <.icon_btn_help_topics />
                   <span class="toolbar-group-label">Help Topics</span>
                 </a>
               </div>

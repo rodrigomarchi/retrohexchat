@@ -13,21 +13,21 @@ defmodule RetroHexChatWeb.Icons.Communication do
       <!-- Shadow of connection -->
       <path d="M12 16 L20 16" stroke="#000" stroke-width="4" transform="translate(1,1)" />
       
-      <!-- Nodes Shadow -->
+    <!-- Nodes Shadow -->
       <circle cx="8" cy="16" r="6" fill="#000" transform="translate(1,1)" />
       <circle cx="24" cy="16" r="6" fill="#000" transform="translate(1,1)" />
       
-      <!-- Connection lines -->
+    <!-- Connection lines -->
       <path d="M12 16 L20 16" stroke="#008000" stroke-width="3.5" stroke-linecap="round" />
       <path d="M12 15.5 L20 15.5" stroke="#00FF00" stroke-width="1.5" stroke-linecap="round" />
       <polygon points="17,11 22,16 17,21" fill="#008000" />
       <polygon points="15,11 10,16 15,21" fill="#008000" />
       
-      <!-- Nodes Base -->
+    <!-- Nodes Base -->
       <circle cx="8" cy="16" r="6" fill="#000080" stroke="#000" stroke-width="1.5" />
       <circle cx="24" cy="16" r="6" fill="#000080" stroke="#000" stroke-width="1.5" />
       
-      <!-- Nodes Highlight -->
+    <!-- Nodes Highlight -->
       <circle cx="6" cy="14" r="2" fill="#fff" opacity="0.6" />
       <circle cx="22" cy="14" r="2" fill="#fff" opacity="0.6" />
     </svg>
@@ -41,18 +41,40 @@ defmodule RetroHexChatWeb.Icons.Communication do
     ~H"""
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow Back Bubble -->
-      <path d="M4 4 h 18 v 12 h -8 l -6 6 v -6 h -4 z" fill="#000" transform="translate(1,1)" stroke-linejoin="round" />
+      <path
+        d="M4 4 h 18 v 12 h -8 l -6 6 v -6 h -4 z"
+        fill="#000"
+        transform="translate(1,1)"
+        stroke-linejoin="round"
+      />
       <!-- Back Bubble (Navy) -->
-      <path d="M4 4 h 18 v 12 h -8 l -6 6 v -6 h -4 z" fill="#000080" stroke="#000" stroke-width="1.5" stroke-linejoin="round" />
+      <path
+        d="M4 4 h 18 v 12 h -8 l -6 6 v -6 h -4 z"
+        fill="#000080"
+        stroke="#000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
       <path d="M5 5 h 16" stroke="#fff" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
       <path d="M5 5 v 10" stroke="#fff" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
       
-      <!-- Shadow Front Bubble -->
-      <path d="M8 12 h 18 v 12 h -8 l -4 6 c -1 -1 -1 -3 -1 -6 h -5 z" fill="#000" transform="translate(1,1)" stroke-linejoin="round" />
+    <!-- Shadow Front Bubble -->
+      <path
+        d="M8 12 h 18 v 12 h -8 l -4 6 c -1 -1 -1 -3 -1 -6 h -5 z"
+        fill="#000"
+        transform="translate(1,1)"
+        stroke-linejoin="round"
+      />
       <!-- Front Bubble (White) -->
-      <path d="M8 12 h 18 v 12 h -8 l -4 6 c -1 -1 -1 -3 -1 -6 h -5 z" fill="#fff" stroke="#000" stroke-width="1.5" stroke-linejoin="round" />
+      <path
+        d="M8 12 h 18 v 12 h -8 l -4 6 c -1 -1 -1 -3 -1 -6 h -5 z"
+        fill="#fff"
+        stroke="#000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
       
-      <!-- Text Lines -->
+    <!-- Text Lines -->
       <line x1="12" y1="16" x2="22" y2="16" stroke="#000080" stroke-width="2" stroke-linecap="round" />
       <line x1="12" y1="20" x2="19" y2="20" stroke="#000080" stroke-width="2" stroke-linecap="round" />
     </svg>
@@ -71,25 +93,92 @@ defmodule RetroHexChatWeb.Icons.Communication do
       <rect x="3" y="2" width="12" height="12" rx="2" fill="#000" transform="translate(1,1)" />
       <rect x="3" y="2" width="12" height="12" rx="2" fill="#000080" stroke="#000" stroke-width="1.5" />
       <path d="M4 3 h 10" stroke="#fff" stroke-width="1.5" opacity="0.6" stroke-linecap="round" />
-      <text x="9" y="11" text-anchor="middle" font-size="10" font-family="sans-serif" font-weight="bold" fill="#fff">#</text>
+      <text
+        x="9"
+        y="11"
+        text-anchor="middle"
+        font-size="10"
+        font-family="sans-serif"
+        font-weight="bold"
+        fill="#fff"
+      >
+        #
+      </text>
       
-      <!-- Top Right -->
+    <!-- Top Right -->
       <rect x="17" y="2" width="12" height="12" rx="2" fill="#000" transform="translate(1,1)" />
-      <rect x="17" y="2" width="12" height="12" rx="2" fill="#008080" stroke="#000" stroke-width="1.5" />
+      <rect
+        x="17"
+        y="2"
+        width="12"
+        height="12"
+        rx="2"
+        fill="#008080"
+        stroke="#000"
+        stroke-width="1.5"
+      />
       <path d="M18 3 h 10" stroke="#fff" stroke-width="1.5" opacity="0.6" stroke-linecap="round" />
-      <text x="23" y="11" text-anchor="middle" font-size="10" font-family="sans-serif" font-weight="bold" fill="#fff">#</text>
+      <text
+        x="23"
+        y="11"
+        text-anchor="middle"
+        font-size="10"
+        font-family="sans-serif"
+        font-weight="bold"
+        fill="#fff"
+      >
+        #
+      </text>
       
-      <!-- Bottom Left -->
+    <!-- Bottom Left -->
       <rect x="3" y="16" width="12" height="12" rx="2" fill="#000" transform="translate(1,1)" />
-      <rect x="3" y="16" width="12" height="12" rx="2" fill="#008080" stroke="#000" stroke-width="1.5" />
+      <rect
+        x="3"
+        y="16"
+        width="12"
+        height="12"
+        rx="2"
+        fill="#008080"
+        stroke="#000"
+        stroke-width="1.5"
+      />
       <path d="M4 17 h 10" stroke="#fff" stroke-width="1.5" opacity="0.6" stroke-linecap="round" />
-      <text x="9" y="25" text-anchor="middle" font-size="10" font-family="sans-serif" font-weight="bold" fill="#fff">#</text>
+      <text
+        x="9"
+        y="25"
+        text-anchor="middle"
+        font-size="10"
+        font-family="sans-serif"
+        font-weight="bold"
+        fill="#fff"
+      >
+        #
+      </text>
       
-      <!-- Bottom Right -->
+    <!-- Bottom Right -->
       <rect x="17" y="16" width="12" height="12" rx="2" fill="#000" transform="translate(1,1)" />
-      <rect x="17" y="16" width="12" height="12" rx="2" fill="#000080" stroke="#000" stroke-width="1.5" />
+      <rect
+        x="17"
+        y="16"
+        width="12"
+        height="12"
+        rx="2"
+        fill="#000080"
+        stroke="#000"
+        stroke-width="1.5"
+      />
       <path d="M18 17 h 10" stroke="#fff" stroke-width="1.5" opacity="0.6" stroke-linecap="round" />
-      <text x="23" y="25" text-anchor="middle" font-size="10" font-family="sans-serif" font-weight="bold" fill="#fff">#</text>
+      <text
+        x="23"
+        y="25"
+        text-anchor="middle"
+        font-size="10"
+        font-family="sans-serif"
+        font-weight="bold"
+        fill="#fff"
+      >
+        #
+      </text>
     </svg>
     """
   end
@@ -101,21 +190,40 @@ defmodule RetroHexChatWeb.Icons.Communication do
     ~H"""
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow Wave -->
-      <path d="M4 16 C 8 8, 12 8, 16 16 C 20 24, 24 24, 28 16" fill="none" stroke="#000" stroke-width="4.5" transform="translate(1,1)" stroke-linecap="round" />
+      <path
+        d="M4 16 C 8 8, 12 8, 16 16 C 20 24, 24 24, 28 16"
+        fill="none"
+        stroke="#000"
+        stroke-width="4.5"
+        transform="translate(1,1)"
+        stroke-linecap="round"
+      />
       
-      <!-- Connecting Wave -->
-      <path d="M4 16 C 8 8, 12 8, 16 16 C 20 24, 24 24, 28 16" fill="none" stroke="#008000" stroke-width="3.5" stroke-linecap="round" />
-      <path d="M4 15.5 C 8 7.5, 12 7.5, 16 15.5 C 20 23.5, 24 23.5, 28 15.5" fill="none" stroke="#00FF00" stroke-width="1.5" stroke-linecap="round" />
+    <!-- Connecting Wave -->
+      <path
+        d="M4 16 C 8 8, 12 8, 16 16 C 20 24, 24 24, 28 16"
+        fill="none"
+        stroke="#008000"
+        stroke-width="3.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M4 15.5 C 8 7.5, 12 7.5, 16 15.5 C 20 23.5, 24 23.5, 28 15.5"
+        fill="none"
+        stroke="#00FF00"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
       
-      <!-- Nodes Shadow -->
+    <!-- Nodes Shadow -->
       <circle cx="4" cy="16" r="4" fill="#000" transform="translate(1,1)" />
       <circle cx="28" cy="16" r="4" fill="#000" transform="translate(1,1)" />
       
-      <!-- Nodes Base -->
+    <!-- Nodes Base -->
       <circle cx="4" cy="16" r="4" fill="#000080" stroke="#000" stroke-width="1.5" />
       <circle cx="28" cy="16" r="4" fill="#000080" stroke="#000" stroke-width="1.5" />
       
-      <!-- Nodes Bevel -->
+    <!-- Nodes Bevel -->
       <circle cx="3" cy="15" r="1.5" fill="#fff" opacity="0.6" />
       <circle cx="27" cy="15" r="1.5" fill="#fff" opacity="0.6" />
     </svg>
@@ -129,18 +237,54 @@ defmodule RetroHexChatWeb.Icons.Communication do
     ~H"""
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow Polygon -->
-      <polygon points="4,8 14,8 14,24 4,24" fill="#000" transform="translate(1,1)" stroke-linejoin="round" />
-      <polygon points="14,12 22,8 22,24 14,20" fill="#000" transform="translate(1,1)" stroke-linejoin="round" />
+      <polygon
+        points="4,8 14,8 14,24 4,24"
+        fill="#000"
+        transform="translate(1,1)"
+        stroke-linejoin="round"
+      />
+      <polygon
+        points="14,12 22,8 22,24 14,20"
+        fill="#000"
+        transform="translate(1,1)"
+        stroke-linejoin="round"
+      />
       
-      <!-- Polygon Right (Teal) -->
-      <polygon points="14,12 22,8 22,24 14,20" fill="#008080" stroke="#000" stroke-width="1.5" stroke-linejoin="round" />
-      <path d="M15 13 L 21 10 L 21 22" fill="none" stroke="#fff" stroke-width="1" opacity="0.6" stroke-linecap="round" />
+    <!-- Polygon Right (Teal) -->
+      <polygon
+        points="14,12 22,8 22,24 14,20"
+        fill="#008080"
+        stroke="#000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M15 13 L 21 10 L 21 22"
+        fill="none"
+        stroke="#fff"
+        stroke-width="1"
+        opacity="0.6"
+        stroke-linecap="round"
+      />
       
-      <!-- Polygon Left (Navy) -->
-      <polygon points="4,8 14,8 14,24 4,24" fill="#000080" stroke="#000" stroke-width="1.5" stroke-linejoin="round" />
-      <path d="M5 9 L 13 9 L 13 22" fill="none" stroke="#fff" stroke-width="1" opacity="0.6" stroke-linecap="round" />
+    <!-- Polygon Left (Navy) -->
+      <polygon
+        points="4,8 14,8 14,24 4,24"
+        fill="#000080"
+        stroke="#000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M5 9 L 13 9 L 13 22"
+        fill="none"
+        stroke="#fff"
+        stroke-width="1"
+        opacity="0.6"
+        stroke-linecap="round"
+      />
       
-      <!-- Recording Light -->
+    <!-- Recording Light -->
       <circle cx="26" cy="10" r="3" fill="#FF0000" stroke="#000" stroke-width="1.5" />
       <circle cx="26" cy="22" r="1.5" fill="#FF0000" stroke="#000" stroke-width="1" />
       <circle cx="25" cy="9" r="1" fill="#fff" opacity="0.7" />
@@ -155,21 +299,65 @@ defmodule RetroHexChatWeb.Icons.Communication do
     ~H"""
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Megaphone Shadow -->
-      <polygon points="6,12 6,20 12,20 22,26 22,6 12,12" fill="#000" transform="translate(1,1)" stroke-linejoin="round" />
+      <polygon
+        points="6,12 6,20 12,20 22,26 22,6 12,12"
+        fill="#000"
+        transform="translate(1,1)"
+        stroke-linejoin="round"
+      />
       
-      <!-- Megaphone Body -->
-      <polygon points="6,12 6,20 12,20 22,26 22,6 12,12" fill="#000080" stroke="#000" stroke-width="1.5" stroke-linejoin="round" />
-      <path d="M7 13 L 12 13 L 21 8 L 21 24 M7 13 L 7 19" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.6" stroke-linejoin="round" />
+    <!-- Megaphone Body -->
+      <polygon
+        points="6,12 6,20 12,20 22,26 22,6 12,12"
+        fill="#000080"
+        stroke="#000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M7 13 L 12 13 L 21 8 L 21 24 M7 13 L 7 19"
+        fill="none"
+        stroke="#fff"
+        stroke-width="1.5"
+        opacity="0.6"
+        stroke-linejoin="round"
+      />
       
-      <!-- Sound Waves Shadow -->
-      <path d="M26 12 A 5 5 0 0 1 26 20" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" transform="translate(1,1)" />
-      <path d="M25 8 A 9 9 0 0 1 25 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" transform="translate(1,1)" />
+    <!-- Sound Waves Shadow -->
+      <path
+        d="M26 12 A 5 5 0 0 1 26 20"
+        fill="none"
+        stroke="#000"
+        stroke-width="3"
+        stroke-linecap="round"
+        transform="translate(1,1)"
+      />
+      <path
+        d="M25 8 A 9 9 0 0 1 25 24"
+        fill="none"
+        stroke="#000"
+        stroke-width="3"
+        stroke-linecap="round"
+        transform="translate(1,1)"
+      />
       
-      <!-- Sound Waves -->
-      <path d="M26 12 A 5 5 0 0 1 26 20" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" />
-      <path d="M25 8 A 9 9 0 0 1 25 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" />
+    <!-- Sound Waves -->
+      <path
+        d="M26 12 A 5 5 0 0 1 26 20"
+        fill="none"
+        stroke="#FFD700"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+      <path
+        d="M25 8 A 9 9 0 0 1 25 24"
+        fill="none"
+        stroke="#FFD700"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
       
-      <!-- Speaker details -->
+    <!-- Speaker details -->
       <rect x="23" y="14" width="4" height="4" fill="#FFD700" stroke="#B8860B" stroke-width="1" />
     </svg>
     """
@@ -182,9 +370,20 @@ defmodule RetroHexChatWeb.Icons.Communication do
     ~H"""
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow -->
-      <polygon points="4,4 28,16 4,28 8,16" fill="#000" transform="translate(1,1)" stroke-linejoin="round" />
+      <polygon
+        points="4,4 28,16 4,28 8,16"
+        fill="#000"
+        transform="translate(1,1)"
+        stroke-linejoin="round"
+      />
       <!-- Paper plane base -->
-      <polygon points="4,4 28,16 4,28 8,16" fill="#000080" stroke="#000" stroke-width="1.5" stroke-linejoin="round" />
+      <polygon
+        points="4,4 28,16 4,28 8,16"
+        fill="#000080"
+        stroke="#000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
       <!-- Top fold -->
       <polygon points="4,4 28,16 8,16" fill="#008080" />
       <!-- Highlight -->
@@ -221,7 +420,12 @@ defmodule RetroHexChatWeb.Icons.Communication do
     ~H"""
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Pixel art globe (White wireframe to stand out over dark) -->
-      <polygon points="6,1 10,1 13,4 13,12 10,15 6,15 3,12 3,4" fill="none" stroke="#fff" stroke-width="1" />
+      <polygon
+        points="6,1 10,1 13,4 13,12 10,15 6,15 3,12 3,4"
+        fill="none"
+        stroke="#fff"
+        stroke-width="1"
+      />
       <!-- Grids -->
       <line x1="2" y1="8" x2="14" y2="8" stroke="#fff" stroke-width="1" />
       <line x1="8" y1="2" x2="8" y2="14" stroke="#fff" stroke-width="1" />
@@ -281,21 +485,66 @@ defmodule RetroHexChatWeb.Icons.Communication do
     ~H"""
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadows -->
-      <path d="M12 20 C 18 14 18 14 20 12" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round" transform="translate(1,1)" />
-      <path d="M14 20 C 8 26 2 20 8 14" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" transform="translate(1,1)" />
-      <path d="M20 12 C 26 6 32 12 26 18" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" transform="translate(1,1)" />
+      <path
+        d="M12 20 C 18 14 18 14 20 12"
+        fill="none"
+        stroke="#000"
+        stroke-width="4"
+        stroke-linecap="round"
+        transform="translate(1,1)"
+      />
+      <path
+        d="M14 20 C 8 26 2 20 8 14"
+        fill="none"
+        stroke="#000"
+        stroke-width="3"
+        stroke-linecap="round"
+        transform="translate(1,1)"
+      />
+      <path
+        d="M20 12 C 26 6 32 12 26 18"
+        fill="none"
+        stroke="#000"
+        stroke-width="3"
+        stroke-linecap="round"
+        transform="translate(1,1)"
+      />
       
-      <!-- Right Chain -->
-      <path d="M20 12 C 26 6 32 12 26 18" fill="none" stroke="#C0C0C0" stroke-width="3" stroke-linecap="round" />
-      <path d="M20 12 C 26 6 32 12 26 18" fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" />
+    <!-- Right Chain -->
+      <path
+        d="M20 12 C 26 6 32 12 26 18"
+        fill="none"
+        stroke="#C0C0C0"
+        stroke-width="3"
+        stroke-linecap="round"
+      />
+      <path
+        d="M20 12 C 26 6 32 12 26 18"
+        fill="none"
+        stroke="#000"
+        stroke-width="1"
+        stroke-linecap="round"
+      />
       
-      <!-- Connect Line -->
+    <!-- Connect Line -->
       <path d="M12 20 L 20 12" fill="none" stroke="#000080" stroke-width="3" stroke-linecap="round" />
       <path d="M12 20 L 20 12" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" />
       
-      <!-- Left Chain -->
-      <path d="M14 20 C 8 26 2 20 8 14" fill="none" stroke="#C0C0C0" stroke-width="3" stroke-linecap="round" />
-      <path d="M14 20 C 8 26 2 20 8 14" fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" />
+    <!-- Left Chain -->
+      <path
+        d="M14 20 C 8 26 2 20 8 14"
+        fill="none"
+        stroke="#C0C0C0"
+        stroke-width="3"
+        stroke-linecap="round"
+      />
+      <path
+        d="M14 20 C 8 26 2 20 8 14"
+        fill="none"
+        stroke="#000"
+        stroke-width="1"
+        stroke-linecap="round"
+      />
     </svg>
     """
   end
@@ -313,6 +562,172 @@ defmodule RetroHexChatWeb.Icons.Communication do
       <!-- Text lines -->
       <rect x="4" y="5" width="6" height="1" fill="#000080" />
       <rect x="4" y="8" width="4" height="1" fill="#000080" />
+    </svg>
+    """
+  end
+
+  # -- Disconnect --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_disconnect(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_disconnect(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="4" cy="8" r="2.5" fill="#000080" />
+      <circle cx="12" cy="8" r="2.5" fill="#000080" />
+      <line x1="6" y1="8" x2="10" y2="8" stroke="#555" stroke-width="1.5" />
+      <line x1="5" y1="5" x2="11" y2="11" stroke="#FF0000" stroke-width="2" />
+      <line x1="11" y1="5" x2="5" y2="11" stroke="#FF0000" stroke-width="2" />
+    </svg>
+    """
+  end
+
+  # -- Connect Lightning --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_connect_lightning(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_connect_lightning(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="4" cy="8" r="2.5" fill="#000080" />
+      <circle cx="12" cy="8" r="2.5" fill="#000080" />
+      <path d="M7 6l2-2 2 2-1 1-1-1v6l1-1 1 1-2 2-2-2 1-1 1 1V6L7 7z" fill="#FFD700" />
+    </svg>
+    """
+  end
+
+  # -- Connect Disabled --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_connect_disabled(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_connect_disabled(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="4" cy="8" r="2.5" fill="#999" />
+      <circle cx="12" cy="8" r="2.5" fill="#999" />
+      <path d="M7 6l2-2 2 2-1 1-1-1v6l1-1 1 1-2 2-2-2 1-1 1 1V6L7 7z" fill="#bbb" />
+    </svg>
+    """
+  end
+
+  # -- Channel List --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_channel_list(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_channel_list(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="2" y="3" width="10" height="1.5" fill="#000080" />
+      <rect x="2" y="7" width="10" height="1.5" fill="#000080" />
+      <rect x="2" y="11" width="7" height="1.5" fill="#000080" />
+      <text x="11" y="14" font-size="7" font-weight="bold" font-family="sans-serif" fill="#000080">
+        #
+      </text>
+    </svg>
+    """
+  end
+
+  # -- Toggle Conversations --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_toggle_conversations(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_toggle_conversations(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1" y="1" width="14" height="14" rx="1" fill="#fff" stroke="#000" stroke-width="1" />
+      <rect x="2" y="2" width="5" height="12" fill="#000080" />
+      <line x1="3" y1="5" x2="6" y2="5" stroke="#fff" stroke-width="1" />
+      <line x1="3" y1="7" x2="6" y2="7" stroke="#fff" stroke-width="1" />
+      <line x1="3" y1="9" x2="6" y2="9" stroke="#fff" stroke-width="1" />
+    </svg>
+    """
+  end
+
+  # -- Toggle Nicklist --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_toggle_nicklist(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_toggle_nicklist(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1" y="1" width="14" height="14" rx="1" fill="#fff" stroke="#000" stroke-width="1" />
+      <rect x="9" y="2" width="5" height="12" fill="#008000" />
+      <circle cx="11.5" cy="5" r="1.5" fill="#fff" />
+      <path d="M10 8.5c0-1 1-1.5 1.5-1.5s1.5.5 1.5 1.5v1.5h-3z" fill="#fff" />
+      <circle cx="11.5" cy="11" r="1.5" fill="#fff" />
+    </svg>
+    """
+  end
+
+  # -- Auto Respond --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_auto_respond(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_auto_respond(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M2 3h10v7H6l-2 2v-2H2z" fill="#000080" />
+      <path d="M3 4h8v5H6l-1 1v-1H3z" fill="#87CEEB" />
+      <path d="M7 6l1.5-2 1.5 2h-1v2H8V6z" fill="#FFD700" />
+    </svg>
+    """
+  end
+
+  # -- URL Catcher --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_url_catcher(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_url_catcher(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="8" cy="8" r="6" fill="none" stroke="#000080" stroke-width="1.5" />
+      <ellipse cx="8" cy="8" rx="3" ry="6" fill="none" stroke="#000080" stroke-width="1" />
+      <line x1="2" y1="8" x2="14" y2="8" stroke="#000080" stroke-width="1" />
+      <line x1="8" y1="2" x2="8" y2="14" stroke="#000080" stroke-width="1" />
+      <circle cx="8" cy="8" r="1.5" fill="#008000" />
+    </svg>
+    """
+  end
+
+  # -- CTCP --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_ctcp(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_ctcp(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M2 8h5" stroke="#008000" stroke-width="2" />
+      <polygon points="7,6 10,8 7,10" fill="#008000" />
+      <path d="M14 8h-5" stroke="#000080" stroke-width="2" />
+      <polygon points="9,6 6,8 9,10" fill="#000080" />
+    </svg>
+    """
+  end
+
+  # -- Channel Central --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_channel_central(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_channel_central(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="3" y="6" width="10" height="9" fill="#555" stroke="#000" stroke-width="0.5" />
+      <rect x="4" y="7" width="3" height="3" fill="#87CEEB" />
+      <rect x="9" y="7" width="3" height="3" fill="#87CEEB" />
+      <rect x="7" y="11" width="2" height="4" fill="#8B4513" />
+      <polygon points="2,6 8,1 14,6" fill="#FF0000" stroke="#000" stroke-width="0.5" />
+      <line x1="8" y1="1" x2="8" y2="-1" stroke="#555" stroke-width="1.5" />
+      <circle cx="8" cy="-1" r="1" fill="#FF0000" />
     </svg>
     """
   end

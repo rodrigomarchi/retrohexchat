@@ -147,21 +147,71 @@ defmodule RetroHexChatWeb.Icons.Arrows do
     ~H"""
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow -->
-      <path d="M6 16 A 10 10 0 0 1 24 10" fill="none" stroke="#000" stroke-width="5" transform="translate(1,1)" stroke-linecap="round" />
+      <path
+        d="M6 16 A 10 10 0 0 1 24 10"
+        fill="none"
+        stroke="#000"
+        stroke-width="5"
+        transform="translate(1,1)"
+        stroke-linecap="round"
+      />
       <polygon points="24,6 28,10 20,10" fill="#000" transform="translate(1,1)" />
-      
-      <path d="M26 16 A 10 10 0 0 1 8 22" fill="none" stroke="#000" stroke-width="5" transform="translate(1,1)" stroke-linecap="round" />
+
+      <path
+        d="M26 16 A 10 10 0 0 1 8 22"
+        fill="none"
+        stroke="#000"
+        stroke-width="5"
+        transform="translate(1,1)"
+        stroke-linecap="round"
+      />
       <polygon points="8,26 4,22 12,22" fill="#000" transform="translate(1,1)" />
       
-      <!-- Blue Arrows -->
-      <path d="M6 16 A 10 10 0 0 1 24 10" fill="none" stroke="#000080" stroke-width="5" stroke-linecap="round" />
-      <path d="M7 16 A 9 9 0 0 1 23 10" fill="none" stroke="#8080FF" stroke-width="1" stroke-linecap="round" />
-      <polygon points="24,4 30,12 18,12" fill="#000080" stroke="#000080" stroke-width="1" stroke-linejoin="round" />
+    <!-- Blue Arrows -->
+      <path
+        d="M6 16 A 10 10 0 0 1 24 10"
+        fill="none"
+        stroke="#000080"
+        stroke-width="5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M7 16 A 9 9 0 0 1 23 10"
+        fill="none"
+        stroke="#8080FF"
+        stroke-width="1"
+        stroke-linecap="round"
+      />
+      <polygon
+        points="24,4 30,12 18,12"
+        fill="#000080"
+        stroke="#000080"
+        stroke-width="1"
+        stroke-linejoin="round"
+      />
       <polygon points="24,7 27,11 21,11" fill="#8080FF" />
-      
-      <path d="M26 16 A 10 10 0 0 1 8 22" fill="none" stroke="#000080" stroke-width="5" stroke-linecap="round" />
-      <path d="M25 16 A 9 9 0 0 1 9 22" fill="none" stroke="#8080FF" stroke-width="1" stroke-linecap="round" />
-      <polygon points="8,28 2,20 14,20" fill="#000080" stroke="#000080" stroke-width="1" stroke-linejoin="round" />
+
+      <path
+        d="M26 16 A 10 10 0 0 1 8 22"
+        fill="none"
+        stroke="#000080"
+        stroke-width="5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M25 16 A 9 9 0 0 1 9 22"
+        fill="none"
+        stroke="#8080FF"
+        stroke-width="1"
+        stroke-linecap="round"
+      />
+      <polygon
+        points="8,28 2,20 14,20"
+        fill="#000080"
+        stroke="#000080"
+        stroke-width="1"
+        stroke-linejoin="round"
+      />
       <polygon points="8,25 5,21 11,21" fill="#8080FF" />
     </svg>
     """

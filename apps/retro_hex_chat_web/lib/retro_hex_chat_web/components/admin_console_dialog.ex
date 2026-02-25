@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.Components.AdminConsoleDialog do
   """
   use Phoenix.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :visible, :boolean, default: false
   attr :results, :list, default: []
 
@@ -21,19 +23,7 @@ defmodule RetroHexChatWeb.Components.AdminConsoleDialog do
     >
       <div class="window admin-console-window">
         <div class="title-bar">
-          <svg viewBox="0 0 16 16" class="title-bar-icon">
-            <rect
-              x="1"
-              y="2"
-              width="14"
-              height="12"
-              rx="1"
-              fill="#000080"
-              stroke="#000"
-              stroke-width="0.5"
-            />
-            <text x="3" y="10" font-size="6" fill="#c0c0c0" font-family="monospace">&gt;_</text>
-          </svg>
+          <Icons.icon_dialog_admin_console class="title-bar-icon" />
           <div class="title-bar-text">Admin Console</div>
           <div class="title-bar-controls">
             <button aria-label="Close" phx-click="close_admin_console"></button>

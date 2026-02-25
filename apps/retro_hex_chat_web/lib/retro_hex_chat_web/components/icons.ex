@@ -23,11 +23,14 @@ defmodule RetroHexChatWeb.Icons do
   | `Icons.Tools`    | Settings, editing, search, colors             |
   | `Icons.Alerts`   | Notifications, info, warnings                 |
   | `Icons.Symbols`  | Currency, stars, misc abstract symbols        |
+  | `Icons.Formatting` | Text formatting (bold, italic, color, etc.) |
+  | `Icons.Games`    | P2P game icons (32×32 pixel art)              |
 
   ## Icon Sizes
 
-  - **32×32** — desktop-style icons (folder, lock, notepad, trash)
+  - **32×32** — desktop-style icons (folder, lock, notepad, trash, game icons)
   - **16×16** — toolbar, tab, button, and dialog title bar icons
+  - **14×14** — formatting toolbar icons (bold, italic, etc.)
 
   ## SVG Template
 
@@ -115,6 +118,16 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_tab_channel(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_tab_pm(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_tab_conversations(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_disconnect(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_connect_lightning(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_connect_disabled(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_channel_list(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_toggle_conversations(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_toggle_nicklist(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_auto_respond(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_url_catcher(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_ctcp(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_channel_central(assigns), to: RetroHexChatWeb.Icons.Communication
 
   # ── Media ───────────────────────────────────────────────
   defdelegate icon_microphone(assigns), to: RetroHexChatWeb.Icons.Media
@@ -129,6 +142,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_quality_medium(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_quality_low(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_dialog_sound(assigns), to: RetroHexChatWeb.Icons.Media
+  defdelegate icon_btn_sounds(assigns), to: RetroHexChatWeb.Icons.Media
 
   # ── Files ───────────────────────────────────────────────
   defdelegate icon_folder(assigns), to: RetroHexChatWeb.Icons.Files
@@ -141,6 +155,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_dialog_delete(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_copy(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_dialog_paste(assigns), to: RetroHexChatWeb.Icons.Files
+  defdelegate icon_btn_keyboard(assigns), to: RetroHexChatWeb.Icons.Files
 
   # ── Hardware ────────────────────────────────────────────
   defdelegate icon_laptop(assigns), to: RetroHexChatWeb.Icons.Hardware
@@ -151,6 +166,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_tab_display(assigns), to: RetroHexChatWeb.Icons.Hardware
   defdelegate icon_dialog_channel_list(assigns), to: RetroHexChatWeb.Icons.Hardware
   defdelegate icon_dialog_channel_central(assigns), to: RetroHexChatWeb.Icons.Hardware
+  defdelegate icon_btn_bell(assigns), to: RetroHexChatWeb.Icons.Hardware
 
   # ── Code ────────────────────────────────────────────────
   defdelegate icon_terminal(assigns), to: RetroHexChatWeb.Icons.Code
@@ -161,6 +177,9 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_dialog_auto_respond(assigns), to: RetroHexChatWeb.Icons.Code
   defdelegate icon_dialog_perform(assigns), to: RetroHexChatWeb.Icons.Code
   defdelegate icon_tab_commands(assigns), to: RetroHexChatWeb.Icons.Code
+  defdelegate icon_btn_perform(assigns), to: RetroHexChatWeb.Icons.Code
+  defdelegate icon_btn_bot_management(assigns), to: RetroHexChatWeb.Icons.Code
+  defdelegate icon_dialog_admin_console(assigns), to: RetroHexChatWeb.Icons.Code
 
   # ── Security ────────────────────────────────────────────
   defdelegate icon_lock(assigns), to: RetroHexChatWeb.Icons.Security
@@ -174,6 +193,8 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_tab_bans(assigns), to: RetroHexChatWeb.Icons.Security
   defdelegate icon_tab_exceptions(assigns), to: RetroHexChatWeb.Icons.Security
   defdelegate icon_privacy(assigns), to: RetroHexChatWeb.Icons.Security
+  defdelegate icon_btn_ignore_list(assigns), to: RetroHexChatWeb.Icons.Security
+  defdelegate icon_btn_flood_protection(assigns), to: RetroHexChatWeb.Icons.Security
 
   # ── Arrows ──────────────────────────────────────────────
   defdelegate icon_btn_prev(assigns), to: RetroHexChatWeb.Icons.Arrows
@@ -214,6 +235,12 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_tab_colors(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_group_view(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_group_tools(assigns), to: RetroHexChatWeb.Icons.Tools
+  defdelegate icon_btn_find(assigns), to: RetroHexChatWeb.Icons.Tools
+  defdelegate icon_btn_settings(assigns), to: RetroHexChatWeb.Icons.Tools
+  defdelegate icon_btn_address_book(assigns), to: RetroHexChatWeb.Icons.Tools
+  defdelegate icon_btn_alias_editor(assigns), to: RetroHexChatWeb.Icons.Tools
+  defdelegate icon_btn_custom_menus(assigns), to: RetroHexChatWeb.Icons.Tools
+  defdelegate icon_btn_highlight_words(assigns), to: RetroHexChatWeb.Icons.Tools
 
   # ── Alerts ──────────────────────────────────────────────
   defdelegate icon_document_alert(assigns), to: RetroHexChatWeb.Icons.Alerts
@@ -229,6 +256,9 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_group_notifications(assigns), to: RetroHexChatWeb.Icons.Alerts
   defdelegate icon_group_help(assigns), to: RetroHexChatWeb.Icons.Alerts
   defdelegate icon_lightbulb(assigns), to: RetroHexChatWeb.Icons.Alerts
+  defdelegate icon_btn_dnd(assigns), to: RetroHexChatWeb.Icons.Alerts
+  defdelegate icon_btn_dnd_active(assigns), to: RetroHexChatWeb.Icons.Alerts
+  defdelegate icon_btn_help_topics(assigns), to: RetroHexChatWeb.Icons.Alerts
 
   # ── Symbols ─────────────────────────────────────────────
   defdelegate icon_dollar(assigns), to: RetroHexChatWeb.Icons.Symbols
@@ -241,4 +271,29 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_status_signal(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_dialog_kick(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_tag(assigns), to: RetroHexChatWeb.Icons.Symbols
+
+  # ── Formatting ─────────────────────────────────────────
+  defdelegate icon_fmt_bold(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_italic(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_underline(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_color(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_reverse(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_reset(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_strip(assigns), to: RetroHexChatWeb.Icons.Formatting
+  defdelegate icon_fmt_emoji(assigns), to: RetroHexChatWeb.Icons.Formatting
+
+  # ── Games ──────────────────────────────────────────────
+  defdelegate game_icon(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_pong(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_trails(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_tanks(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_space(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_gravity(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_debris(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_breakout(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_warlords(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_raid(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_boxing(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_outlaw(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_generic(assigns), to: RetroHexChatWeb.Icons.Games
 end

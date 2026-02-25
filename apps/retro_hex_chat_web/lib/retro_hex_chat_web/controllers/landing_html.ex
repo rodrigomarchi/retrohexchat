@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.LandingHTML do
   use RetroHexChatWeb, :html
 
   import RetroHexChatWeb.Icons
+  import RetroHexChatWeb.Components.Diagrams
 
   embed_templates "landing_html/*"
 end

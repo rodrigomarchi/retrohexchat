@@ -15,6 +15,12 @@ retro_hex_chat_web/components/highlight_dialog.ex:style={color_swatch_style(
 # Notify list: notify_nick_style/2 returns dynamic color from nick_color_fn assign
 retro_hex_chat_web/components/notify_list_window.ex:style={notify_nick_style(
 
+# Icons catalog: temporary dev-only page with inline layout styles
+retro_hex_chat_web/live/icons_live.ex:style=
+
+# Diagrams: SVG font-style attribute (not CSS inline style)
+retro_hex_chat_web/components/diagrams.ex:font-style="italic"
+
 [style-helpers]
 
 # Highlight dialog: two clauses of color_swatch_style/1
