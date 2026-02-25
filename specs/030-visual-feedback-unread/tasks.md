@@ -160,7 +160,7 @@
 
 - [X] T039 [P] Add help topics for "Unread Indicators", "Kick Notifications", and "Copy Feedback" in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/features.ex`
 - [X] T040 [P] Update "Keyboard Shortcuts" help topic if any new shortcuts were added in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/features.ex`
-- [ ] T041 Run full CI-equivalent validation pipeline (see CLAUDE.md "CI-Equivalent Validation")
+- [ ] T041 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

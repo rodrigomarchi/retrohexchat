@@ -197,7 +197,7 @@
 
 - [x] T049 [P] Write E2E test for full autocomplete workflow in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/autocomplete_e2e_test.exs`. Test the complete user journey: user connects → types `/jo` → verifies fuzzy results → selects `/join` → types `#` → verifies channel suggestions → selects channel. Verify no messages sent during autocomplete. Tag `@tag :e2e`.
 
-- [x] T050 Run full CI-equivalent validation pipeline: `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer`. Fix any failures. Ensure all new public functions have `@spec`. Ensure no Credo nesting depth violations (max 2 — extract helpers if needed).
+- [x] T050 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

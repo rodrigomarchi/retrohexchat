@@ -171,7 +171,7 @@
 - [x] T041 [P] Add help topics to HelpTopics: "feature-options-dialog" (overview of all 6 panels), "feature-display-settings" (toolbar/treebar/switchbar/statusbar/compact/line-shading), "feature-key-bindings" (customization how-to), update "keyboard-shortcuts" topic with note about customization via Options in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex`
 - [x] T042 [P] Add data-testid attributes to all OptionsDialog elements (tree items, panel containers, toggle checkboxes, select inputs, color swatches, action rows, buttons) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/options_dialog.ex`
 - [x] T043 Write E2E tests covering: open/close dialog, panel navigation, display toggle apply, font change apply, color change apply, connect settings apply, message routing apply, key binding reassign, conflict warning, reset to defaults, persistence for registered user, guest session persistence, duplicate prevention in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/options_dialog_e2e_test.exs`
-- [x] T044 Run full CI-equivalent validation: `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer`
+- [x] T044 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 - [x] T045 Fix any linter warnings, test failures, or dialyzer errors found in T044 (fixed: dialyzer spec for nil binding, Credo apply_font_change complexity refactor, alias in test, format)
 
 ---

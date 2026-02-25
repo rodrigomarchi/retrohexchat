@@ -168,7 +168,7 @@
 - [x] T046 [P] Update "Keyboard Shortcuts" help topic in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex` — add context menu keyboard navigation (arrow keys, Enter to select, Escape to close)
 - [x] T047 Write E2E test for viewport repositioning — right-click near bottom/right edge of viewport, verify menu flips position in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/context_menu_test.exs`
 - [x] T048 Write E2E test for keyboard navigation — open context menu, arrow down/up, Enter to select, Escape to close in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/context_menu_test.exs`
-- [x] T049 Run full CI-equivalent validation pipeline: `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer`
+- [x] T049 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

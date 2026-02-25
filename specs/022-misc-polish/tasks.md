@@ -19,7 +19,7 @@
 
 **Purpose**: Verify clean baseline on feature branch
 
-- [x] T001 Verify baseline — run `mix compile --warnings-as-errors`, `mix test --include e2e`, `mix credo --strict`, `mix dialyzer`, and `mix format --check-formatted` all pass on `022-misc-polish` branch. Record current test counts.
+- [x] T001 Verify baseline — run `make ci` (all 9 checks pass). Record current test counts.
 
 **Checkpoint**: Clean baseline confirmed, ready for implementation.
 
@@ -302,7 +302,7 @@
 - [x] T087 Add help topics for all new features in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/features.ex` — add topics: "feature-nick-alignment" (nick column alignment), "feature-copy" (right-click copy), "feature-paste-dialog" (multi-line paste), "feature-char-counter" (character counter), "feature-quit-message" (quit messages), "feature-away-reply" (away auto-reply), "feature-emoji" (emoji picker), "feature-timestamp-format" (timestamp configuration). Each with title, keywords, content with usage instructions, and "See Also" cross-references.
 - [x] T088 Update keyboard shortcuts help topic in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex` — add Ctrl+C (copy text), document emoji picker access.
 - [x] T089 Add `data-testid` attributes to all new components and interactive elements — PasteConfirmDialog (`paste-confirm-dialog`, `paste-send-btn`, `paste-cancel-btn`), EmojiPicker (`emoji-picker`, `emoji-search`, `emoji-grid`), AboutDialog (`about-dialog`, `about-logo`), character counter (`char-counter`), copy menu (`copy-context-menu`), nick column grid (`chat-msg-grid`).
-- [x] T090 Run full CI-equivalent validation pipeline — `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer`. Fix any issues until all 5 checks pass with 0 failures.
+- [x] T090 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

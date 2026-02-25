@@ -69,7 +69,7 @@ mix test --include e2e
 npm test --prefix apps/retro_hex_chat_web/assets
 
 # Full CI validation
-make precommit
+make ci            # Full CI validation (9 parallel checks)
 ```
 
 ## Key Files

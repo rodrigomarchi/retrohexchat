@@ -218,7 +218,7 @@
 
 - [x] T059 [P] Add help topics to `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex` — topics for: "Notifications" (Features category — overview of notification system), "Do Not Disturb" (Features category — DND usage), "Notification Center" (User Interface category — bell icon panel), "Notification Settings" (Features category — per-channel levels, global toggles, trigger rules). Update "See Also" in related existing topics (Sounds, Keyboard Shortcuts)
 - [x] T060 [P] Add notification-related keyboard shortcuts to help topics — document any new shortcuts (e.g., bell icon toggle) in the "Keyboard Shortcuts" topic
-- [x] T061 Run full CI-equivalent validation pipeline — compile first (`mix compile --warnings-as-errors`), then in parallel: `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`
+- [x] T061 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

@@ -212,7 +212,7 @@
 - [x] T058 [P] Update existing keyboard shortcuts help topic with new navigation shortcuts (Ctrl+Shift+]/[, Ctrl+Shift+1..9), cheatsheet reference, and cross-references to new topics in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex`
 - [x] T059 Update Options dialog Key Bindings panel to show all 21 actions (including new navigation and cheatsheet actions) with correct categories in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/options_dialog.ex`
 - [x] T060 Handle edge case: channel switch while search is active resets search state and clears highlights via `push_event("search_clear_highlights")` in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/search_events.ex` or core_events.ex
-- [x] T061 Run full CI-equivalent validation pipeline: `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer`
+- [x] T061 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 - [x] T062 Fix any CI failures from T061 — all 5 checks must pass before feature is complete
 
 ---

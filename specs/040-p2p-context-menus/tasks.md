@@ -153,7 +153,7 @@
 - [ ] T028 [P] Write error handling tests: (a) test flash error when `P2p.do_execute/3` returns `{:error, message}`, (b) test rate-limit error shows wait time. File: `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/context_menu_events_test.exs`
 - [ ] T029 Add data-testid attributes to all P2P menu items in both `context_menu.ex` and `chat_context_menu.ex` for test selectors: `data-testid="context-p2p"`, `data-testid="context-call"`, `data-testid="context-video-call"`, `data-testid="context-sendfile"` (and `ctx-chat-*` variants).
 - [ ] T030 Run quickstart.md manual validation (verify all 6 testing scenarios pass)
-- [ ] T031 Run full CI-equivalent validation pipeline (see CLAUDE.md "CI-Equivalent Validation"): compile → format + credo + dialyzer + lint.js + lint.css + JS tests + E2E tests
+- [ ] T031 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

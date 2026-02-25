@@ -114,7 +114,7 @@
 - [X] T018 [P] Add help topic "PM Persistence" to the Features category in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/features.ex` — explain that PM conversations are restored on connect for registered users, ordered by recency, limited to 50, closing is session-only. Add "See Also" cross-references to "Private Messages" and "Ignore List" topics.
 - [X] T019 [P] Add help topic "Auto-Join Channels" to the Features category in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/features.ex` — explain that channels are auto-added on `/join` and auto-removed on `/part` for registered users, 20-channel limit, #lobby excluded. Add "See Also" cross-references to "AutoJoin" command topic.
 - [X] T020 [P] Update existing `/join` and `/part` command help topics in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/commands.ex` — add note that `/join` auto-adds to auto-join list and `/part` auto-removes for identified users
-- [X] T021 Run full CI-equivalent validation pipeline: `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`
+- [X] T021 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

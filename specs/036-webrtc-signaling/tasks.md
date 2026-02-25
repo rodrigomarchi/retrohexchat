@@ -175,7 +175,7 @@
 **Purpose**: Final validation and cleanup
 
 - [x] T044 Run quickstart.md validation — start server, test P2P flow end-to-end per `specs/036-webrtc-signaling/quickstart.md`
-- [x] T045 Run full CI-equivalent validation pipeline (see CLAUDE.md "CI-Equivalent Validation") — all 8 checks must pass
+- [x] T045 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

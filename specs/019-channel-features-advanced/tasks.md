@@ -163,7 +163,7 @@
 - [X] T039 [P] Add help topics for all new modes and /knock command: +q (Owner), +h (Half-Operator), +n (No External Messages), +s (Secret), +p (Private), +c (Strip Colors), +R (Registered Only), +j (Join Throttle), +K (No Knock), /knock command — each with syntax, description, examples, and See Also cross-references in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/channel_modes.ex`
 - [X] T040 [P] Update channel modes overview help topic to include all new modes in the mode reference table in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/channel_modes.ex`
 - [X] T041 Verify all new modes persist for registered channels: set modes on registered channel → restart channel process (stop/start) → verify modes restored correctly, including join_throttle parameter in `apps/retro_hex_chat/test/retro_hex_chat/channels/server_test.exs`
-- [X] T042 Run full CI-equivalent validation pipeline: `mix compile --warnings-as-errors` FIRST, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer`
+- [X] T042 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

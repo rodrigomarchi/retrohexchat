@@ -145,7 +145,7 @@
 
 - [X] T025 [P] Add onboarding help topics to `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/` — add a "Welcome Wizard" topic in the "Getting Started" category covering the 3-step wizard flow. Add an "Empty States" topic in the "User Interface" category describing the 4 empty states and their behavior. Update "See Also" cross-references in related existing topics. Follow existing topic structure (id, title, category, keywords, content).
 - [X] T026 [P] Write E2E tests for wizard + empty states in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/connect_live_test.exs` and `chat_live_test.exs` — tag `@tag :e2e`. Test full wizard flow end-to-end: mount ConnectLive with wizard_mode → complete all 3 steps → verify navigation to ChatLive with tip banner. Test returning user bypass (wizard_mode: false → normal form). Test empty state lifecycle in ChatLive: empty channel → send message → empty state gone.
-- [X] T027 Run full CI-equivalent validation pipeline (see CLAUDE.md "CI-Equivalent Validation") — compile first (`mix compile --warnings-as-errors`), then in parallel: `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`. All 8 checks must pass.
+- [X] T027 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

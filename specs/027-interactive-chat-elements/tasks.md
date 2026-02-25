@@ -100,7 +100,7 @@
 - [x] T024 Add text selection suppression: ensure nick hover timer cancels on mousedown (text selection start), and click handlers check `window.getSelection().toString()` plus mouse movement delta before triggering actions (FR-015, FR-020) in `apps/retro_hex_chat_web/assets/js/hooks/scroll_hook.js`
 - [x] T025 Add viewport mouseleave cleanup: listen for `mouseleave` on `document.documentElement`, remove any active tooltips and cancel pending hover timers (FR-019) in `apps/retro_hex_chat_web/assets/js/hooks/scroll_hook.js`
 - [x] T026 Add help topic "Interactive Chat Elements" to HelpTopics in the "Features" category covering URL tooltips, channel click-to-join, nick hover cards, and click/double-click actions. Add "See Also" cross-references to existing related topics in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex`
-- [x] T027 Run full CI-equivalent validation pipeline: `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`
+- [x] T027 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

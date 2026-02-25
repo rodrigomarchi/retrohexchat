@@ -155,7 +155,7 @@
 **Purpose**: Final validation and cleanup
 
 - [x] T038 Verify all new public functions have `@spec` annotations — check `rate_limiter.ex`, `signaling_rate_limit/ets.ex`, new functions in `p2p.ex`, `service.ex`, `queries.ex`
-- [x] T039 Run full CI-equivalent validation pipeline per CLAUDE.md: compile first (`mix compile --warnings-as-errors`), then in parallel: `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`
+- [x] T039 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

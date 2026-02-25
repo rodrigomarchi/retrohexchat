@@ -138,7 +138,7 @@
 
 - [X] T030 [P] Add /bio and /whowas help topics, update /whois help topic with new fields documentation in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex`
 - [X] T031 [P] Handle edge cases: /whois on non-existent user ("not online" message), bio with special characters (formatting codes preserved), idle time formatting edge cases (0 seconds, large values) in relevant handlers and components
-- [X] T032 Run full CI-equivalent validation pipeline: `mix compile --warnings-as-errors` then parallel `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer`
+- [X] T032 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

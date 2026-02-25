@@ -115,7 +115,7 @@ Documentation and end-to-end testing.
 make test         # Run full test suite (excludes E2E)
 make test.all     # Run all tests including E2E
 make lint         # Format + Credo + Dialyzer
-make precommit    # Compile + Format + Test
+make ci            # Full CI validation (9 parallel checks)
 make server       # Dev server at localhost:4000
 ```
 

@@ -193,7 +193,7 @@
 - [X] T053 [P] Write media.test.js test for setCodecPreferences in `apps/retro_hex_chat_web/assets/test/lib/media.test.js`: test codec ordering with mock transceiver
 - [X] T054 [P] Add help topics for audio/video calls to `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex`: "Chamada de Audio" topic (how to start, mute, end), "Chamada de Video" topic (camera toggle, layout, PiP), "Dispositivos de Midia" topic (device selection, fallback), "Qualidade da Chamada" topic (indicator, presets). Add See Also cross-references to P2P session topic
 - [X] T055 [P] Handle peer disconnect during call in `apps/retro_hex_chat_web/assets/js/hooks/media_hook.js`: listen for media_pc_closed CustomEvent, stop all tracks, clear intervals, pushEvent media_call_ended with reason "Peer desconectou". Ensure clean state reset
-- [X] T056 Run full CI-equivalent validation pipeline per CLAUDE.md: mix compile --warnings-as-errors, then in parallel: mix format --check-formatted, mix credo --strict, make lint.js, make lint.css, npm test --prefix apps/retro_hex_chat_web/assets, mix test --include e2e, mix dialyzer
+- [X] T056 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

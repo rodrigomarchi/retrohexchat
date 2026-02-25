@@ -157,7 +157,7 @@
 - [X] T044 [P] Add help topics for Sounds & Notifications in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex` — add topics: "Sounds" (Features category: explains Sounds dialog, per-event configuration, sound catalog, OK/Cancel/Apply), "Mute" (Features category: explains global mute toggle, status bar location, localStorage persistence), "Typing Indicator" (Features category: explains PM typing indicator, 5s timeout, PM-only behavior), "Visual Notifications" (Features category: explains treebar flash, title bar alternation, per-event flash toggle). Add "See Also" cross-references between all four topics and to existing "Notifications", "Private Messages", "Ignore List" topics.
 - [X] T045 [P] Handle edge case: PM sound for active PM in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — ensure no PM sound plays when the PM is currently active (user is viewing it). Sound should only play for background PMs.
 - [X] T046 [P] Handle edge case: clear typing on new PM message in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live.ex` — in `apply_new_pm/3`, if the message sender matches `pm_typing_from`, clear the typing indicator (the user sent their message).
-- [X] T047 Run full CI-equivalent validation pipeline (see CLAUDE.md "CI-Equivalent Validation"): `mix compile --warnings-as-errors` first, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer`.
+- [X] T047 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

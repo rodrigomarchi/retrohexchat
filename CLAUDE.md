@@ -66,27 +66,39 @@ make lint                     # All static analysis (format + credo + dialyzer +
 make lint.js                  # ESLint + Prettier check on JS
 make lint.js.fix              # Auto-fix ESLint + Prettier issues
 make precommit                # compile + format + test
+make ci                       # ALL CI checks with parallel pipeline (THE standard)
+make ci.quick                 # CI without dialyzer (faster iteration)
 ```
 
 ## CI-Equivalent Validation (MANDATORY before declaring any task complete)
 
-The CI pipeline (`.github/workflows/ci.yml`) runs 9 checks. You MUST run ALL of them
-locally before considering implementation complete. No exceptions.
+**ALWAYS use `make ci`** (or `elixir scripts/ci.exs`) to validate code.
+This is a standalone Elixir script that runs all 9 CI checks with maximum parallelism.
+No other validation method is acceptable.
 
-**Execution strategy — compile first, then parallelize**:
+**Pipeline (2-stage parallel execution, 9 checks):**
 
-1. Run `mix compile --warnings-as-errors` FIRST (all other checks depend on compilation).
-2. If compilation passes, run the remaining 8 checks IN PARALLEL (use parallel Bash tool calls):
-   - `mix format --check-formatted`
-   - `mix credo --strict`
-   - `make lint.js` (ESLint + Prettier on JS/test files)
-   - `make lint.css` (inline style audit)
-   - `npm test --prefix apps/retro_hex_chat_web/assets` (JS tests)
-   - `mix test --include e2e`
-   - `mix dialyzer`
+```
+Stage 1 (parallel):        Stage 2 (parallel, after compile):
+  ├─ compile                 ├─ format
+  ├─ JS lint                 ├─ credo
+  └─ JS tests                ├─ CSS lint
+                             ├─ tests (unit + integration + liveview)
+                             ├─ E2E tests (separate worker)
+                             └─ dialyzer
+```
+
+**Performance:** ~64s parallel vs ~104s serial (**38% faster**).
+Tests are split into two parallel workers for maximum throughput.
+
+**Options:**
+- `make ci` — all 9 checks (standard)
+- `make ci.quick` — skip dialyzer (faster iteration)
+- `elixir scripts/ci.exs --only compile,credo` — specific checks only
 
 **NEVER** skip dialyzer, E2E tests, JS tests, JS lint, or CSS lint.
-If any of these 9 checks fail, the task is NOT complete.
+**NEVER** run checks individually or via manual parallel Bash calls — use the script.
+If any check fails, the task is NOT complete.
 
 ## Code Style
 

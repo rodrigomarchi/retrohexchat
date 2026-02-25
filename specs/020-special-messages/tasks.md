@@ -169,7 +169,7 @@
 - [X]T061 [P] Create help topics module in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/special_messages.ex` — add 9 help topics: /motd, /setmotd, /clearmotd, /setwelcome, /clearwelcome, /wallops, /announce, /umode, and "Special Messages" feature overview with See Also cross-references per CLAUDE.md Help System requirements
 - [X]T062 [P] Update the commands overview help topic to include the 8 new commands in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex` (or the relevant submodule)
 - [X]T063 [P] Write LiveView integration/e2e tests in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/special_messages_test.exs` — test MOTD display on connect, /motd command, welcome message on join (shown once, not to setter), wallops delivery with +w filter, announcement delivery bypassing ignore list
-- [X]T064 Run full CI-equivalent validation pipeline: `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer` per CLAUDE.md
+- [X]T064 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

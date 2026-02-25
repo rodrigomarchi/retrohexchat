@@ -73,6 +73,6 @@ mix test test/retro_hex_chat_web/live/chat_live_test.exs
 npm test --prefix apps/retro_hex_chat_web/assets
 
 # Full validation
-mix compile --warnings-as-errors && mix format --check-formatted && mix credo --strict && mix dialyzer
+make ci   # Full CI validation (9 parallel checks)
 make lint.js && make lint.css
 ```

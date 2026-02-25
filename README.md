@@ -852,21 +852,54 @@ make test.cover
 
 ---
 
-## Static Analysis
+## CI Validation
 
-All three gates must pass before any change is merged:
+All 9 checks must pass before any change is merged. Use the parallel CI runner:
 
 ```bash
-# Run all static analysis checks at once
-make lint
+# Run ALL CI checks with parallel pipeline (THE standard validation command)
+make ci
 
-# Or individually
+# Skip dialyzer for faster iteration
+make ci.quick
+
+# Run specific checks only
+elixir scripts/ci.exs --only compile,credo
+```
+
+### Pipeline Architecture
+
+The CI runner (`scripts/ci.exs`) is a standalone Elixir script that orchestrates 9
+checks in a 2-stage parallel pipeline:
+
+```
+Stage 1 (parallel — no Elixir compile dependency):
+  ├─ mix compile --warnings-as-errors
+  ├─ make lint.js    (ESLint + Prettier)
+  └─ npm test        (Vitest JS tests)
+
+Stage 2 (parallel — after compile passes):
+  ├─ mix format --check-formatted
+  ├─ mix credo --strict
+  ├─ make lint.css   (inline style + CSS consistency audit)
+  ├─ mix test                (unit + integration + liveview)
+  ├─ mix test --only e2e     (E2E tests — separate worker)
+  └─ mix dialyzer
+```
+
+**Performance:** ~64s parallel vs ~104s serial (**38% faster**). Tests are split into
+two parallel workers (tests + E2E) so the E2E suite (~24s) runs alongside the main
+test suite (~59s) instead of after it. Ecto SQL Sandbox ensures each worker gets
+isolated database transactions.
+
+### Individual Check Commands
+
+```bash
+make lint                 # Static analysis only (format + credo + dialyzer + JS lint + CSS lint)
 make format.check         # Code formatting
 make credo                # Linting (strict mode, zero warnings)
 make dialyzer             # Type checking (@spec on all public functions)
-
-# Full pre-commit pipeline (compile + format + test)
-make precommit
+make precommit            # Quick pipeline (compile + format + test)
 ```
 
 ---
@@ -895,12 +928,17 @@ This project is governed by a [Constitution](.specify/memory/constitution.md) �
 Spec → Tests (red) → Implementation (green) → Refactor → Static Analysis → Review
 ```
 
-Quality gates enforced on every change:
+Quality gates enforced on every change via `make ci` (parallel CI runner):
 
-1. `mix format --check-formatted` — no unformatted code
-2. `mix credo --strict` — no lint violations
-3. `mix dialyzer` — no typespec violations
-4. `mix test` — all green, under 60 seconds
+1. `mix compile --warnings-as-errors` — clean compilation
+2. `mix format --check-formatted` — no unformatted code
+3. `mix credo --strict` — no lint violations
+4. `make lint.js` — ESLint + Prettier compliance
+5. `make lint.css` — no inline style violations
+6. `npm test` — all JS tests pass (Vitest)
+7. `mix test` — unit, integration, and LiveView tests pass
+8. `mix test --only e2e` — E2E tests pass (parallel worker)
+9. `mix dialyzer` — no typespec violations
 
 ---
 

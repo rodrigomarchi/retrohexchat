@@ -137,7 +137,7 @@
 - [ ] T045 [P] Add help topics for "Message Reply", "Message Edit", and "Message Delete" features with usage instructions and cross-references in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/features.ex`
 - [ ] T046 [P] Update "Keyboard Shortcuts" help topic to include ↑ for edit mode in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex`
 - [ ] T047 Handle edge case: edit-to-empty triggers delete confirmation flow (from US2 submit_edit, if content is empty, redirect to delete flow with confirmation) in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/core_events.ex`
-- [ ] T048 Run full CI-equivalent validation pipeline: `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`
+- [ ] T048 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

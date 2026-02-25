@@ -111,7 +111,7 @@ mix credo --strict                # No warnings
 mix dialyzer                      # No type errors
 
 # Full verification:
-make precommit                    # compile + format + test
+make ci                            # Full CI validation (9 parallel checks)
 make lint                         # format + credo + dialyzer
 ```
 

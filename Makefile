@@ -3,6 +3,7 @@
        test test.unit test.integration test.liveview test.e2e test.all test.cover \
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
+       ci ci.quick \
        lint format format.check credo dialyzer lint.js lint.js.fix lint.css precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -176,6 +177,12 @@ dialyzer: ## Run Dialyzer type checker
 lint.css: ## Audit inline styles and CSS class consistency
 	@mix lint.inline_styles
 	@mix lint.css_consistency
+
+ci: ## Run all CI checks locally with maximum parallelism
+	elixir scripts/ci.exs
+
+ci.quick: ## Run CI checks without dialyzer (faster iteration)
+	elixir scripts/ci.exs --quick
 
 precommit: ## Run pre-commit pipeline (compile + format + test)
 	mix precommit

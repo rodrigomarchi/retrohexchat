@@ -176,7 +176,7 @@
 - [ ] T037 [P] Add "Contextual Tips" help topic to the Features category in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex` — include: what tips are, when they appear, how to dismiss, how to re-enable in Settings, "See Also" cross-references to "Keyboard Shortcuts" and "Getting Started"
 - [ ] T038 [P] Update "Keyboard Shortcuts" help topic in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex` to cross-reference the new "Contextual Tips" topic
 - [ ] T039 Run `mix compile --warnings-as-errors` to verify clean compilation
-- [ ] T040 Run full CI-equivalent validation pipeline in parallel (see CLAUDE.md): `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`
+- [ ] T040 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

@@ -144,7 +144,7 @@
 - [x] T032 [P] Add SessionServer crash recovery test in `apps/retro_hex_chat/test/retro_hex_chat/p2p/session_server_test.exs` (append) — test: kill GenServer process, verify supervisor restarts it, verify it recovers state from DB, verify timers are reset appropriately. Kill GenServer of terminal session, verify init returns :ignore. Tag: `@tag :integration`
 - [x] T033 [P] Add bidirectional duplicate session edge case test in `apps/retro_hex_chat/test/retro_hex_chat/p2p/service_test.exs` (append) — test: Alice creates session with Bob (A→B), then Bob tries to create session with Alice (B→A) → rejected. Also test that after A→B session closes (terminal), B→A creation succeeds. Tag: `@tag :integration`
 - [x] T034 Verify umbrella separation — run `mix xref graph --label compile-connected --sink RetroHexChatWeb` from `apps/retro_hex_chat/` and confirm zero results for P2P modules. Ensure no `alias RetroHexChatWeb.*` or `import RetroHexChatWeb.*` in any P2P module
-- [x] T035 Run full CI-equivalent validation pipeline per CLAUDE.md: `mix compile --warnings-as-errors` first, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`. All 9 checks must pass
+- [x] T035 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

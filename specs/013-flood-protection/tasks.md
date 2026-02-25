@@ -145,7 +145,7 @@
 
 - [x] T030 [P] Add flood protection help topic to `RetroHexChat.Chat.HelpTopics` in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex` — topic ID `feature-flood-protection`, category "Features", keywords `["flood", "spam", "duplicate", "auto-ignore", "protection", "anti-spam"]`, HTML content covering: what flood protection does, default thresholds, how duplicate detection works, how auto-ignore works, how CTCP reply limiting works, how to access settings (Tools > Flood Protection), See Also links to `feature-ignore` and `feature-ctcp`
 - [x] T031 [P] Update existing help topics with cross-references in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex` — add "Flood Protection" link (`data-help-topic="feature-flood-protection"`) to See Also section of `feature-ignore` and `feature-ctcp` topics
-- [x] T032 Run full test suite and static analysis: `make precommit` — verify all tests pass, `mix format --check-formatted`, `mix credo --strict`, `mix dialyzer`
+- [x] T032 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 - [x] T033 Run quickstart.md manual validation scenarios — verify duplicate detection, auto-ignore with expiry, CTCP reply limiting, settings dialog, and persistence for registered users
 
 ---

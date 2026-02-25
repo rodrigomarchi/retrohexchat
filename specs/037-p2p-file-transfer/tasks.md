@@ -173,7 +173,7 @@
 - [X] T049 [P] Update WebRTC hook tests for DataChannel creation changes in `apps/retro_hex_chat_web/assets/test/hooks/webrtc_hook.test.js`
 - [X] T050 [P] Add "Conexao perdida" handling: on irrecoverable connection loss, clean up and pushEvent ft_failed in `apps/retro_hex_chat_web/assets/js/hooks/file_transfer_hook.js`
 - [X] T051 [P] Add file rejection flow: on file-reject message → pushEvent ft_rejected → show "rejeitou a transferencia de arquivo" message in `apps/retro_hex_chat_web/assets/js/hooks/file_transfer_hook.js` and `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/p2p_lobby.ex`
-- [X] T052 Run full CI-equivalent validation pipeline per CLAUDE.md: `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`
+- [X] T052 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

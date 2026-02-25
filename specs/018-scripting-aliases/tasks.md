@@ -178,7 +178,7 @@
 - [X] T051 [P] Add help topics for `/timer` command and Timers feature in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex` — command topic with syntax for one-shot, repeat, list, stop. Feature topic explaining timer lifecycle, session-only behavior, limits (5 max, 10s min repeat, 24h max interval).
 - [X] T052 [P] Add help topics for `/popups` command and Custom Menus feature in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex` — command topic with syntax. Feature topic explaining nicklist/channel menu customization, variable expansion in menu commands, 10-per-type limit.
 - [X] T053 [P] Add help topics for `/autorespond` command and Auto-Respond feature in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex` — command topic with syntax for add, remove, list. Feature topic explaining trigger events, channel filters, rate limiting (60s cooldown), own-action exclusion, cascading prevention.
-- [ ] T054 Run full CI-equivalent validation pipeline: `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer`. Fix any issues found.
+- [ ] T054 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

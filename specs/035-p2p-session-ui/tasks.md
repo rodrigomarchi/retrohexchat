@@ -181,7 +181,7 @@
 - [x] T045 Add P2P invite card rendering in ChatLive message display — when a PM has type "p2p_invite", render it with a distinct card style showing session type badge and clickable lobby link instead of plain text. Update the chat message component in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/` to detect and style `p2p_invite` type PMs.
 - [x] T046 [P] Add PM content formatting for each session type in the `:p2p_invite` dispatch handler in `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex`: generic → "Sessao P2P iniciada", audio_call → "Chamada de audio iniciada", file_transfer → "Transferencia de arquivo iniciada" — each with the lobby link `/p2p/:token`
 - [x] T047 [P] Review and handle remaining edge cases: (1) rejection PM content "mario recusou o convite P2P" with correct session type description, (2) lobby redirect flash messages for expired/closed sessions, (3) lobby system messages for peer join/leave events in SessionServer broadcasts
-- [x] T048 Run full CI-equivalent validation pipeline per CLAUDE.md: `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `make lint.js`, `make lint.css`, `npm test --prefix apps/retro_hex_chat_web/assets`, `mix test --include e2e`, `mix dialyzer`
+- [x] T048 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

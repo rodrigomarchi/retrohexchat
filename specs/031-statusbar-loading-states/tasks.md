@@ -169,7 +169,7 @@
 - [x] T042 [P] Add help topics for status bar features in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex` — add topics: "Status Bar" (Features category, explains 3-section layout), "Lag Indicator" (Features category, explains color thresholds and measurement), "Connection States" (Features category, explains 4 states and visual indicators). Update "See Also" cross-references in related existing topics
 - [x] T043 [P] Write help topics tests in `apps/retro_hex_chat/test/retro_hex_chat/chat/help_topics_test.exs` — test new topics exist, test topic content includes key terms, test See Also cross-references
 - [x] T044 [P] Write E2E integration test for status bar flow in `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live_test.exs` — test full status bar renders with all sections on chat page load, test ping/pong event flow updates lag display, test connection state indicator shows "Connected"
-- [x] T045 Run full CI-equivalent validation pipeline per CLAUDE.md — compile with warnings-as-errors, then in parallel: format check, credo strict, ESLint+Prettier (make lint.js), inline style audit (make lint.css), JS tests (npm test), Elixir tests with E2E (mix test --include e2e), dialyzer
+- [x] T045 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

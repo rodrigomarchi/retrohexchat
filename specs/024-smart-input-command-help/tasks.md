@@ -160,7 +160,7 @@
 - [x] T044 [P] Add "Enhanced History" help topic in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/features.ex` — describe Ctrl+Up/Down with draft preservation, Ctrl+R reverse search, localStorage persistence (100 entries), sensitive command filtering, add keywords for search
 - [x] T045 Update "Keyboard Shortcuts" help topic in `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex` — add Ctrl+Up/Down (history with draft), Ctrl+R (reverse search), Shift+Enter (newline in input), Escape (dismiss tooltip), update existing shortcuts if any behavior changed
 - [x] T046 Update "See Also" cross-references in related existing help topics — link Autocomplete topic to Command Syntax Tooltip, link Commands topic to Syntax Tooltip, link Features overview to new topics
-- [x] T047 Run full CI-equivalent validation pipeline — `mix compile --warnings-as-errors`, then in parallel: `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer`
+- [x] T047 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 

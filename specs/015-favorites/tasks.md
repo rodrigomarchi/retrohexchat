@@ -126,7 +126,7 @@
 
 - [X] T023 [P] Add Favorites and Organize Favorites help topics to `apps/retro_hex_chat/lib/retro_hex_chat/chat/help_topics.ex`
 - [X] T024 [P] Handle edge cases: empty favorites menu ("No favorites" disabled item), Up/Down button boundary disabling, join failure messages (wrong key, banned) in relevant components and handlers
-- [X] T025 Run full CI-equivalent validation pipeline: `mix compile --warnings-as-errors` then parallel `mix format --check-formatted`, `mix credo --strict`, `mix test --include e2e`, `mix dialyzer`
+- [X] T025 Run `make ci` — full CI validation pipeline (9 parallel checks). Fix any failures.
 
 ---
 
