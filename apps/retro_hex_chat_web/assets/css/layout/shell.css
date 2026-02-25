@@ -30,7 +30,7 @@
 .status-bar-lag--timeout { color: var(--color-muted); }
 
 /* ── Status bar icons ── */
-.status-bar-icon { width: 10px; height: 10px; flex-shrink: 0; vertical-align: middle; }
+.status-bar-icon { width: 16px; height: 16px; flex-shrink: 0; vertical-align: middle; }
 
 /* ── Status bar fixed-width fields (16ch = max nick length) ── */
 .status-bar-nick,
@@ -82,10 +82,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  min-width: 30px;
-  height: 28px;
-  min-height: 28px;
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  min-height: 34px;
   padding: 0;
   color: var(--color-text);
   border: 1px outset var(--color-gray-200);
@@ -102,8 +102,8 @@
 }
 
 .toolbar-btn svg {
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
 }
 
@@ -114,8 +114,8 @@
 }
 
 .toolbar-group-icon {
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
 }
 

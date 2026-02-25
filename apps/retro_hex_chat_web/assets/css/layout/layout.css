@@ -42,30 +42,33 @@ body {
     inset -2px -2px var(--color-gray-500);
 }
 
-/* ─── App Header (wordmark left | toolbar + status bar right) ─── */
+/* ─── App Header (single row: logo | toolbar | status bar) ─── */
 .app-header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   flex-shrink: 0;
+  gap: 4px;
+  padding: 4px 4px 3px;
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-gray-500);
 }
 
+.app-header-logo {
+  height: 38px;
+  width: 38px;
+  flex-shrink: 0;
+}
+
 .app-header-wordmark {
-  height: 52px;
+  height: 32px;
   width: auto;
   flex-shrink: 0;
 }
 
-.app-header-panels {
-  display: flex;
-  flex-direction: column;
+.app-header > .status-bar {
   flex: 1;
-  min-width: 0;
-}
-
-.app-header-panels > .status-bar {
   margin: 0;
+  min-width: 0;
 }
 
 .app-footer {
@@ -76,8 +79,8 @@ body {
 /* Toolbar - raised panel */
 .toolbar {
   display: flex;
-  gap: 5px;
-  padding: 1px 0;
+  align-items: center;
+  gap: 4px;
   flex-shrink: 0;
 }
 

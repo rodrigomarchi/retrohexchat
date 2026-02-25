@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Components.AppHeader do
   use Phoenix.Component
 
   attr :logo_href, :string, default: nil, doc: "When set, wraps the logo in a link"
+  attr :logo_variant, :atom, default: :hex, values: [:hex, :full], doc: "Logo variant to display"
 
   slot :panels, doc: "Content for the panels area (toolbar, nav links, skeleton, etc.)"
 
@@ -12,15 +13,28 @@ defmodule RetroHexChatWeb.Components.AppHeader do
     <div class="app-header">
       <%= if @logo_href do %>
         <a href={@logo_href}>
-          <img src="/images/header-logo.svg" alt="RetroHexChat" class="app-header-wordmark" />
+          <.header_logo variant={@logo_variant} />
         </a>
       <% else %>
-        <img src="/images/header-logo.svg" alt="RetroHexChat" class="app-header-wordmark" />
+        <.header_logo variant={@logo_variant} />
       <% end %>
-      <div class="app-header-panels">
-        {render_slot(@panels)}
-      </div>
+      {render_slot(@panels)}
     </div>
+    """
+  end
+
+  attr :variant, :atom, required: true
+
+  @spec header_logo(map()) :: Phoenix.LiveView.Rendered.t()
+  defp header_logo(%{variant: :full} = assigns) do
+    ~H"""
+    <img src="/images/header-logo.svg" alt="RetroHexChat" class="app-header-wordmark" />
+    """
+  end
+
+  defp header_logo(assigns) do
+    ~H"""
+    <img src="/images/header-hex.svg" alt="RetroHexChat" class="app-header-logo" />
     """
   end
 end
