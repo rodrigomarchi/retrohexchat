@@ -378,17 +378,14 @@ defmodule RetroHexChatWeb.Icons.Tools do
   @spec icon_btn_find(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_find(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="7" cy="7" r="4" fill="none" stroke="#000080" stroke-width="2" />
-      <line
-        x1="10"
-        y1="10"
-        x2="14"
-        y2="14"
-        stroke="#8B4513"
-        stroke-width="2.5"
-        stroke-linecap="round"
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        d="M4 2h6v1h2v2h1v6h-1v2H9v-1H5v-1H3V5h1V3h2V2z M5 4h4v6H5V4z"
+        fill-rule="evenodd"
+        fill="#000080"
       />
+      <path d="M10 10h2v2h2v3h-3v-2h-2v-2h1z" fill="#8B4513" />
+      <rect x="6" y="5" width="2" height="2" fill="#000080" />
     </svg>
     """
   end
@@ -400,14 +397,11 @@ defmodule RetroHexChatWeb.Icons.Tools do
   @spec icon_btn_settings(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_settings(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <path
-        d="M6.5 1h3l.5 2.1a5.5 5.5 0 0 1 1.3.7L13.3 3l1.5 2.6-1.5 1.5c.1.3.1.6.1.9s0 .6-.1.9l1.5 1.5L13.3 13l-2-.8a5.5 5.5 0 0 1-1.3.7L9.5 15h-3l-.5-2.1a5.5 5.5 0 0 1-1.3-.7L2.7 13 1.2 10.4l1.5-1.5A5.3 5.3 0 0 1 2.6 8c0-.3 0-.6.1-.9L1.2 5.6 2.7 3l2 .8a5.5 5.5 0 0 1 1.3-.7L6.5 1z"
-        fill="#555"
-        stroke="#000"
-        stroke-width="0.3"
-      />
-      <circle cx="8" cy="8" r="2" fill="#000080" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M6 1h4v2h2v1h2v4h-2v2h-2v4H6v-4H4v-2H2V4h2V3h2V1z" fill="#555" />
+      <path d="M7 2h2v2h2v2h2v2h-2v2h-2v2H7v-2H5V8H3V6h2V4h2V2z" fill="#aaa" />
+      <rect x="6" y="6" width="4" height="4" fill="#000080" />
+      <rect x="7" y="7" width="2" height="2" fill="#fff" />
     </svg>
     """
   end
@@ -419,14 +413,14 @@ defmodule RetroHexChatWeb.Icons.Tools do
   @spec icon_btn_address_book(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_address_book(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="3" y="1" width="10" height="14" rx="1" fill="#000080" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="3" y="1" width="10" height="14" fill="#000080" />
       <rect x="4" y="2" width="8" height="12" fill="#FFD700" />
-      <line x1="5" y1="5" x2="11" y2="5" stroke="#000080" stroke-width="1" />
-      <line x1="5" y1="7" x2="11" y2="7" stroke="#000080" stroke-width="1" />
-      <line x1="5" y1="9" x2="9" y2="9" stroke="#000080" stroke-width="1" />
-      <rect x="1" y="4" width="2" height="2" rx="0.5" fill="#FF0000" />
-      <rect x="1" y="8" width="2" height="2" rx="0.5" fill="#FF0000" />
+      <rect x="5" y="5" width="6" height="1" fill="#000080" />
+      <rect x="5" y="7" width="6" height="1" fill="#000080" />
+      <rect x="5" y="9" width="4" height="1" fill="#000080" />
+      <rect x="1" y="4" width="2" height="2" fill="#FF0000" />
+      <rect x="1" y="8" width="2" height="2" fill="#FF0000" />
     </svg>
     """
   end
@@ -438,12 +432,19 @@ defmodule RetroHexChatWeb.Icons.Tools do
   @spec icon_btn_alias_editor(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_alias_editor(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <text x="1" y="11" font-size="10" font-weight="bold" font-family="sans-serif" fill="#000080">
-        A=
-      </text>
-      <line x1="10" y1="3" x2="14" y2="13" stroke="#FFD700" stroke-width="2" stroke-linecap="round" />
-      <polygon points="14,13 12,14 13,11" fill="#FFD700" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- A= -->
+      <path d="M2 5h2v6H2v-2H1v-2h1z M4 5h1v6H4z M1 8h3v1H1z" fill="#000080" />
+      <rect x="6" y="7" width="3" height="1" fill="#000080" />
+      <rect x="6" y="9" width="3" height="1" fill="#000080" />
+      <!-- Pencil -->
+      <path
+        d="M12 2h3v3h-1v1h-1v1h-1v1h-1v1h-1v1H9v1H8v1H7v2h3v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1V5h1V2h-3z"
+        fill="#FFD700"
+      />
+      <path d="M14 3h1v1h-1z M13 4h1v1h-1z M12 5h1v1h-1z" fill="#FF8C00" />
+      <path d="M7 12h2v2H7z" fill="#ffc0cb" />
+      <rect x="7" y="14" width="1" height="1" fill="#000" />
     </svg>
     """
   end
@@ -455,11 +456,11 @@ defmodule RetroHexChatWeb.Icons.Tools do
   @spec icon_btn_custom_menus(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_custom_menus(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <rect x="2" y="2" width="10" height="2" fill="#000080" />
       <rect x="2" y="5" width="10" height="2" fill="#000080" />
       <rect x="2" y="8" width="10" height="2" fill="#000080" />
-      <polygon points="11,11 14,13.5 11,16" fill="#FFD700" stroke="#FF8C00" stroke-width="0.5" />
+      <path d="M10 11h2v5h-2z M12 12h2v3h-2z M14 13h2v1h-2z" fill="#FFD700" />
     </svg>
     """
   end
@@ -471,10 +472,10 @@ defmodule RetroHexChatWeb.Icons.Tools do
   @spec icon_btn_highlight_words(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_highlight_words(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="2" y="10" width="12" height="3" rx="0.5" fill="#FFD700" opacity="0.7" />
-      <path d="M10 2l2 8H8L6 2z" fill="#000080" />
-      <rect x="7" y="9" width="6" height="2" fill="#FFD700" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="2" y="10" width="12" height="3" fill="#FFD700" />
+      <path d="M9 2h2v6H9z M7 2h2v4H7z M5 2h2v2H5z M6 6h1v2H6z" fill="#000080" />
+      <rect x="7" y="8" width="4" height="2" fill="#FFD700" />
     </svg>
     """
   end

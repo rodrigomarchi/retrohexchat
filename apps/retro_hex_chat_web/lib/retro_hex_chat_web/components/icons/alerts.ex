@@ -391,9 +391,9 @@ defmodule RetroHexChatWeb.Icons.Alerts do
   @spec icon_btn_dnd(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_dnd(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <path
-        d="M12 2a5 5 0 0 1 0 10c-1.3 0-2.5-.5-3.4-1.3A6.9 6.9 0 0 0 10 6a6.9 6.9 0 0 0-1.4-4.7A5 5 0 0 1 12 2z"
+        d="M9 2h2v1h1v2h1v4h-1v2h-1v1H9v1H7v-1H6v-1h2v-1h1v-2h1V6h-1V5H8V4H6V3h1V2h2z"
         fill="#000080"
       />
     </svg>
@@ -407,12 +407,15 @@ defmodule RetroHexChatWeb.Icons.Alerts do
   @spec icon_btn_dnd_active(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_dnd_active(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <path
-        d="M12 2a5 5 0 0 1 0 10c-1.3 0-2.5-.5-3.4-1.3A6.9 6.9 0 0 0 10 6a6.9 6.9 0 0 0-1.4-4.7A5 5 0 0 1 12 2z"
+        d="M9 2h2v1h1v2h1v4h-1v2h-1v1H9v1H7v-1H6v-1h2v-1h1v-2h1V6h-1V5H8V4H6V3h1V2h2z"
         fill="#000080"
       />
-      <path d="M1 14L14 1" stroke="#FF0000" stroke-width="2" />
+      <path
+        d="M2 1h2v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h-2v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1V7H7V6H6V5H5V4H4V3H3V2H2V1z"
+        fill="#FF0000"
+      />
     </svg>
     """
   end
@@ -424,19 +427,9 @@ defmodule RetroHexChatWeb.Icons.Alerts do
   @spec icon_btn_help_topics(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_help_topics(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="8" r="7" fill="#000080" />
-      <text
-        x="8"
-        y="12"
-        text-anchor="middle"
-        font-size="11"
-        font-weight="bold"
-        font-family="sans-serif"
-        fill="#fff"
-      >
-        ?
-      </text>
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M6 2h4v1h2v2h1v6h-1v2h-2v1H6v-1H4v-2H3V5h1V3h2V2z" fill="#000080" />
+      <path d="M7 4h2v1h1v2H9v1H8v2H7V8h1V7h1V6H7V4z M7 11h2v2H7v-2z" fill="#fff" />
     </svg>
     """
   end

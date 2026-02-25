@@ -573,12 +573,15 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_btn_disconnect(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_disconnect(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="4" cy="8" r="2.5" fill="#000080" />
-      <circle cx="12" cy="8" r="2.5" fill="#000080" />
-      <line x1="6" y1="8" x2="10" y2="8" stroke="#555" stroke-width="1.5" />
-      <line x1="5" y1="5" x2="11" y2="11" stroke="#FF0000" stroke-width="2" />
-      <line x1="11" y1="5" x2="5" y2="11" stroke="#FF0000" stroke-width="2" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="1" y="6" width="3" height="3" fill="#000080" />
+      <rect x="12" y="6" width="3" height="3" fill="#000080" />
+      <rect x="5" y="7" width="6" height="1" fill="#555" />
+
+      <path
+        d="M4 4h2v1h1v2h2v-2h1v-1h2v2h-1v1h-2v2h2v1h1v2h-2v-1h-1v-2h-2v2h-1v1H4v-2h1v-1h2v-2H5V7H4V4z"
+        fill="#FF5555"
+      />
     </svg>
     """
   end
@@ -590,10 +593,10 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_btn_connect_lightning(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_connect_lightning(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="4" cy="8" r="2.5" fill="#000080" />
-      <circle cx="12" cy="8" r="2.5" fill="#000080" />
-      <path d="M7 6l2-2 2 2-1 1-1-1v6l1-1 1 1-2 2-2-2 1-1 1 1V6L7 7z" fill="#FFD700" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="2" y="6" width="3" height="3" fill="#000080" />
+      <rect x="11" y="6" width="3" height="3" fill="#000080" />
+      <path d="M8 2h3v4h2v1H9v6H7V8H5V7h3V2z" fill="#FFD700" />
     </svg>
     """
   end
@@ -605,10 +608,10 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_btn_connect_disabled(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_connect_disabled(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="4" cy="8" r="2.5" fill="#999" />
-      <circle cx="12" cy="8" r="2.5" fill="#999" />
-      <path d="M7 6l2-2 2 2-1 1-1-1v6l1-1 1 1-2 2-2-2 1-1 1 1V6L7 7z" fill="#bbb" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="2" y="6" width="3" height="3" fill="#999" />
+      <rect x="11" y="6" width="3" height="3" fill="#999" />
+      <path d="M8 2h3v4h2v1H9v6H7V8H5V7h3V2z" fill="#ccc" />
     </svg>
     """
   end
@@ -620,13 +623,15 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_btn_channel_list(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_channel_list(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="2" y="3" width="10" height="1.5" fill="#000080" />
-      <rect x="2" y="7" width="10" height="1.5" fill="#000080" />
-      <rect x="2" y="11" width="7" height="1.5" fill="#000080" />
-      <text x="11" y="14" font-size="7" font-weight="bold" font-family="sans-serif" fill="#000080">
-        #
-      </text>
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="2" y="3" width="12" height="2" fill="#000080" />
+      <rect x="2" y="7" width="12" height="2" fill="#000080" />
+      <rect x="2" y="11" width="5" height="2" fill="#000080" />
+
+      <rect x="10" y="10" width="1" height="5" fill="#000080" />
+      <rect x="12" y="10" width="1" height="5" fill="#000080" />
+      <rect x="9" y="11" width="5" height="1" fill="#000080" />
+      <rect x="9" y="13" width="5" height="1" fill="#000080" />
     </svg>
     """
   end
@@ -638,12 +643,13 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_btn_toggle_conversations(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_toggle_conversations(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="1" y="1" width="14" height="14" rx="1" fill="#fff" stroke="#000" stroke-width="1" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="1" y="1" width="14" height="14" fill="#fff" />
+      <path d="M0 0h16v1H1v14h15v1H0z M15 1v14h1V1z M0 1v14h1V1z" fill="#000" />
       <rect x="2" y="2" width="5" height="12" fill="#000080" />
-      <line x1="3" y1="5" x2="6" y2="5" stroke="#fff" stroke-width="1" />
-      <line x1="3" y1="7" x2="6" y2="7" stroke="#fff" stroke-width="1" />
-      <line x1="3" y1="9" x2="6" y2="9" stroke="#fff" stroke-width="1" />
+      <rect x="3" y="4" width="3" height="1" fill="#fff" />
+      <rect x="3" y="6" width="3" height="1" fill="#fff" />
+      <rect x="3" y="8" width="3" height="1" fill="#fff" />
     </svg>
     """
   end
@@ -655,12 +661,12 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_btn_toggle_nicklist(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_toggle_nicklist(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="1" y="1" width="14" height="14" rx="1" fill="#fff" stroke="#000" stroke-width="1" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="1" y="1" width="14" height="14" fill="#fff" />
+      <path d="M0 0h16v1H1v14h15v1H0z M15 1v14h1V1z M0 1v14h1V1z" fill="#000" />
       <rect x="9" y="2" width="5" height="12" fill="#008000" />
-      <circle cx="11.5" cy="5" r="1.5" fill="#fff" />
-      <path d="M10 8.5c0-1 1-1.5 1.5-1.5s1.5.5 1.5 1.5v1.5h-3z" fill="#fff" />
-      <circle cx="11.5" cy="11" r="1.5" fill="#fff" />
+      <rect x="10" y="4" width="3" height="2" fill="#fff" />
+      <rect x="10" y="8" width="3" height="2" fill="#fff" />
     </svg>
     """
   end
@@ -672,10 +678,17 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_btn_auto_respond(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_auto_respond(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M2 3h10v7H6l-2 2v-2H2z" fill="#000080" />
-      <path d="M3 4h8v5H6l-1 1v-1H3z" fill="#87CEEB" />
-      <path d="M7 6l1.5-2 1.5 2h-1v2H8V6z" fill="#FFD700" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Background bubble -->
+      <rect x="2" y="3" width="10" height="7" fill="#000080" />
+      <rect x="4" y="10" width="2" height="2" fill="#000080" />
+      
+    <!-- Foreground bubble -->
+      <rect x="3" y="4" width="8" height="5" fill="#87CEEB" />
+      <rect x="5" y="9" width="1" height="1" fill="#87CEEB" />
+      
+    <!-- Arrow -->
+      <path d="M7 6h3V5h1V4h1v2h1v2h-1v2h-1V9h-1V8H7V6z" fill="#FFD700" />
     </svg>
     """
   end
@@ -687,12 +700,13 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_btn_url_catcher(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_url_catcher(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="8" r="6" fill="none" stroke="#000080" stroke-width="1.5" />
-      <ellipse cx="8" cy="8" rx="3" ry="6" fill="none" stroke="#000080" stroke-width="1" />
-      <line x1="2" y1="8" x2="14" y2="8" stroke="#000080" stroke-width="1" />
-      <line x1="8" y1="2" x2="8" y2="14" stroke="#000080" stroke-width="1" />
-      <circle cx="8" cy="8" r="1.5" fill="#008000" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Globe outline -->
+      <path d="M5 2h6v1H5V2z M3 4h2V3h6v1h2v2h1v6h-1v2h-2v1H5v-1H3v-2H2V6h1V4z" fill="#000080" />
+      <!-- Inner lines -->
+      <rect x="7" y="3" width="2" height="10" fill="#000080" />
+      <rect x="3" y="7" width="10" height="2" fill="#000080" />
+      <rect x="7" y="7" width="2" height="2" fill="#00ff00" />
     </svg>
     """
   end
@@ -704,11 +718,9 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_btn_ctcp(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_ctcp(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M2 8h5" stroke="#008000" stroke-width="2" />
-      <polygon points="7,6 10,8 7,10" fill="#008000" />
-      <path d="M14 8h-5" stroke="#000080" stroke-width="2" />
-      <polygon points="9,6 6,8 9,10" fill="#000080" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M2 5h6V4h1v1h1v1h1v1h-1v1H9v1H8V8H2V5z" fill="#008000" />
+      <path d="M14 10H8v1H7v-1H6v-1H5v-1h1V7h1v1h1v1h6v2z" fill="#000080" />
     </svg>
     """
   end
@@ -720,14 +732,16 @@ defmodule RetroHexChatWeb.Icons.Communication do
   @spec icon_btn_channel_central(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_channel_central(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="3" y="6" width="10" height="9" fill="#555" stroke="#000" stroke-width="0.5" />
-      <rect x="4" y="7" width="3" height="3" fill="#87CEEB" />
-      <rect x="9" y="7" width="3" height="3" fill="#87CEEB" />
-      <rect x="7" y="11" width="2" height="4" fill="#8B4513" />
-      <polygon points="2,6 8,1 14,6" fill="#FF0000" stroke="#000" stroke-width="0.5" />
-      <line x1="8" y1="1" x2="8" y2="-1" stroke="#555" stroke-width="1.5" />
-      <circle cx="8" cy="-1" r="1" fill="#FF0000" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- House Base -->
+      <path d="M3 6h10v8H3V6z" fill="#555" />
+      <rect x="5" y="8" width="2" height="2" fill="#87CEEB" />
+      <rect x="9" y="8" width="2" height="2" fill="#87CEEB" />
+      <rect x="7" y="11" width="2" height="3" fill="#8B4513" />
+      <!-- Roof -->
+      <path d="M7 2h2v1h2v1h2v1h2v1H1v-1h2V5h2V4h2V3h2V2z" fill="#FF5555" />
+      <!-- Chimney -->
+      <rect x="11" y="2" width="2" height="3" fill="#FF5555" />
     </svg>
     """
   end

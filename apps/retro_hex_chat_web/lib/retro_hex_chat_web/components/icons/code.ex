@@ -257,10 +257,9 @@ defmodule RetroHexChatWeb.Icons.Code do
   @spec icon_btn_perform(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_perform(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <polygon points="3,2 13,8 3,14" fill="#008000" />
-      <circle cx="12" cy="4" r="3" fill="none" stroke="#555" stroke-width="1.5" />
-      <circle cx="12" cy="4" r="1" fill="#555" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M4 2h1v1h1v1h1v1h1v1h1v1h1v1h-1v1H8v1H7v1H6v1H5v1H4V2z" fill="#008000" />
+      <path d="M12 2h2v1h1v2h1v2h-1v2h-1v1h-2v-1h-1v-2h-1V5h1V3h1V2z M13 5h1v2h-1V5z" fill="#555" />
     </svg>
     """
   end
@@ -272,14 +271,11 @@ defmodule RetroHexChatWeb.Icons.Code do
   @spec icon_btn_bot_management(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_bot_management(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <path
-        d="M6.5 1h3l.5 2a5 5 0 0 1 1.2.7l1.8-.7 1.5 2.6-1.4 1.4c.1.3.1.6.1.9s0 .6-.1.9l1.4 1.4L13 12.8l-1.8-.7a5 5 0 0 1-1.2.7l-.5 2h-3l-.5-2a5 5 0 0 1-1.2-.7L3 13l-1.5-2.6 1.4-1.4A5 5 0 0 1 2.8 8c0-.3 0-.6.1-.9L1.5 5.7 3 3.1l1.8.7a5 5 0 0 1 1.2-.7L6.5 1z"
+        d="M6 2h4v1h1v1h2v1h1v6h-1v1h-2v1h-1v1H6v-1H5v-1H3v-1H2V6h1V5h2V4h1V3z M7 6h2v4H7V6z"
         fill="#008080"
-        stroke="#000"
-        stroke-width="0.3"
       />
-      <circle cx="8" cy="8" r="2" fill="#fff" />
     </svg>
     """
   end
@@ -291,9 +287,9 @@ defmodule RetroHexChatWeb.Icons.Code do
   @spec icon_dialog_admin_console(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_dialog_admin_console(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="1" y="2" width="14" height="12" rx="1" fill="#000080" stroke="#000" stroke-width="0.5" />
-      <text x="3" y="10" font-size="6" fill="#c0c0c0" font-family="monospace">&gt;_</text>
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="1" y="2" width="14" height="12" fill="#000080" />
+      <path d="M3 5h1v1h1v1h1v1H5v1H4v1H3V9h1V8h1V7H4V6H3V5z M7 10h3v1H7z" fill="#c0c0c0" />
     </svg>
     """
   end

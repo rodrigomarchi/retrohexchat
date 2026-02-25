@@ -388,15 +388,16 @@ defmodule RetroHexChatWeb.Icons.Files do
   @spec icon_btn_keyboard(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_keyboard(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="1" y="3" width="14" height="10" rx="1" fill="#fff" stroke="#000" stroke-width="1" />
-      <rect x="3" y="5" width="2" height="2" rx="0.3" fill="#000080" />
-      <rect x="6" y="5" width="2" height="2" rx="0.3" fill="#000080" />
-      <rect x="9" y="5" width="2" height="2" rx="0.3" fill="#000080" />
-      <rect x="12" y="5" width="2" height="2" rx="0.3" fill="#000080" />
-      <rect x="3" y="8" width="2" height="2" rx="0.3" fill="#000080" />
-      <rect x="6" y="8" width="6" height="2" rx="0.3" fill="#000080" />
-      <rect x="12" y="8" width="2" height="2" rx="0.3" fill="#000080" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="1" y="3" width="14" height="10" fill="#fff" />
+      <path d="M0 2h16v1H1v10h15v1H0zM15 3v10h1V3z M0 3v10h1V3z" fill="#000" />
+      <rect x="3" y="5" width="2" height="2" fill="#000080" />
+      <rect x="6" y="5" width="2" height="2" fill="#000080" />
+      <rect x="9" y="5" width="2" height="2" fill="#000080" />
+      <rect x="12" y="5" width="2" height="2" fill="#000080" />
+      <rect x="3" y="8" width="2" height="2" fill="#000080" />
+      <rect x="6" y="8" width="6" height="2" fill="#000080" />
+      <rect x="13" y="8" width="1" height="2" fill="#000080" />
     </svg>
     """
   end

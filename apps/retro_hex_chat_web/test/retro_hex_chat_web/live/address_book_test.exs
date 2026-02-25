@@ -483,7 +483,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
       html = render(view)
       assert html =~ "ColorBud"
       assert html =~ "Red"
-      assert html =~ "#ff0000"
+      assert html =~ "irc-bg-4"
       refute html =~ "Add Nick Color</div>"
     end
 
@@ -581,12 +581,11 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view
       |> render_submit("nick_color_add", %{"nickname" => "SomeChatter", "color_index" => "4"})
 
-      # The nick_color_fn should now return #ff0000 for SomeChatter
-      # We can verify by checking the chat template uses @nick_color_fn
-      # (functional test — override is wired into session)
+      # The nick color entry should appear in the list with the irc-bg-4 swatch
+      # (functional test — override is wired into session via nick_color_fn)
       html = render(view)
       assert html =~ "SomeChatter"
-      assert html =~ "#ff0000"
+      assert html =~ "irc-bg-4"
     end
   end
 

@@ -474,10 +474,9 @@ defmodule RetroHexChatWeb.Icons.Media do
   @spec icon_btn_sounds(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_sounds(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M2 6h3l4-4v12l-4-4H2z" fill="#000080" />
-      <path d="M11 5.5c1 1 1 4 0 5" fill="none" stroke="#FFD700" stroke-width="1.5" />
-      <path d="M13 3.5c2 2 2 7 0 9" fill="none" stroke="#FFD700" stroke-width="1.5" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M2 6h2v-1h1v-1h1v-1h1v10H6v-1H5v-1H4v-1H2V6z" fill="#000080" />
+      <path d="M11 5h1v6h-1V5z M13 3h1v10h-1V3z" fill="#FFD700" />
     </svg>
     """
   end

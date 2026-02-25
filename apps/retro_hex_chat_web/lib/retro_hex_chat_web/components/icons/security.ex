@@ -406,11 +406,12 @@ defmodule RetroHexChatWeb.Icons.Security do
   @spec icon_btn_ignore_list(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_ignore_list(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="5" r="3" fill="#555" />
-      <path d="M4 12c0-2.5 2-4 4-4s4 1.5 4 4z" fill="#555" />
-      <circle cx="8" cy="8" r="5.5" fill="none" stroke="#FF0000" stroke-width="1.5" />
-      <line x1="4.5" y1="4.5" x2="11.5" y2="11.5" stroke="#FF0000" stroke-width="1.5" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="6" y="3" width="4" height="3" fill="#555" />
+      <path d="M4 7h8v5H4z" fill="#555" />
+      <!-- Red Ban -->
+      <path d="M4 2h8v2H4z M4 12h8v2H4z M2 4h2v8H2z M12 4h2v8h-2z" fill="#FF0000" />
+      <path d="M4 4h2v2h2v2h2v2h2v2h-2v-2h-2v-2H6V6H4V4z" fill="#FF0000" />
     </svg>
     """
   end
@@ -422,11 +423,14 @@ defmodule RetroHexChatWeb.Icons.Security do
   @spec icon_btn_flood_protection(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_flood_protection(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M8 1L2 6v5c0 3 3 4.5 6 4.5s6-1.5 6-4.5V6z" fill="#000080" />
-      <path d="M8 3L4 6.5v4c0 2 2 3 4 3s4-1 4-3v-4z" fill="#fff" />
-      <path d="M7 7h2v3H7z" fill="#000080" />
-      <circle cx="8" cy="11" r="1" fill="#000080" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        d="M8 1h1v1h2v1h2v1h1v7h-1v2h-1v1h-2v1h-1v1H7v-1H5v-1H4v-1H3v-2H2V4h1V3h2V2h2V1h1z"
+        fill="#000080"
+      />
+      <path d="M8 3h1v1h1v1h1v4h-1v1h-1v1h-1v1H7v-1H6V9H5V5h1V4h1V3h1z" fill="#fff" />
+      <rect x="7" y="6" width="2" height="3" fill="#000080" />
+      <rect x="7" y="10" width="2" height="2" fill="#000080" />
     </svg>
     """
   end

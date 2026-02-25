@@ -254,14 +254,8 @@ defmodule RetroHexChatWeb.Icons.Hardware do
   @spec icon_btn_bell(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_bell(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
-      <path
-        d="M8 1a1 1 0 0 1 1 1v1a4 4 0 0 1 3 3.87V10l2 2H2l2-2V6.87A4 4 0 0 1 7 3V2a1 1 0 0 1 1-1z"
-        fill="#FFD700"
-        stroke="#000"
-        stroke-width="0.5"
-      />
-      <path d="M6.5 13a1.5 1.5 0 0 0 3 0h-3z" fill="#FFD700" stroke="#000" stroke-width="0.5" />
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M7 1h2v1h2v2h1v3h1v4H3v-4h1V7h1V4h2V1z M7 12h2v2H7v-2z" fill="#FFD700" />
     </svg>
     """
   end

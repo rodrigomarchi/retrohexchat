@@ -38,21 +38,19 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_pong(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_pong(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#000033"
-        stroke="#008080"
-        stroke-width="1"
-      />
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
       <rect x="5" y="10" width="3" height="12" fill="#00ff00" />
       <rect x="24" y="10" width="3" height="12" fill="#00ff00" />
-      <circle cx="16" cy="16" r="2" fill="#fff" />
-      <line x1="16" y1="3" x2="16" y2="29" stroke="#006600" stroke-width="0.5" stroke-dasharray="2,2" />
+      <rect x="15" y="15" width="2" height="2" fill="#fff" />
+      <path
+        d="M15 3h2v2h-2z M15 7h2v2h-2z M15 11h2v2h-2z M15 15h2v2h-2z M15 19h2v2h-2z M15 23h2v2h-2z M15 27h2v2h-2z"
+        fill="#006600"
+      />
     </svg>
     """
   end
@@ -64,21 +62,20 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_trails(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_trails(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#000033"
-        stroke="#008080"
-        stroke-width="1"
-      />
-      <polyline points="8,24 8,12 20,12" fill="none" stroke="#00ff00" stroke-width="2" />
-      <polyline points="24,8 24,20 12,20" fill="none" stroke="#ff0000" stroke-width="2" />
-      <rect x="7" y="11" width="2" height="2" fill="#00ff00" />
-      <rect x="23" y="7" width="2" height="2" fill="#ff0000" />
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <path d="M8 2h1v28H8z M23 2h1v28h-1z M2 8h28v1H2z M2 23h28v1H2z" fill="#003366" />
+      <rect x="7" y="12" width="2" height="13" fill="#00ff00" />
+      <rect x="7" y="11" width="13" height="2" fill="#00ff00" />
+      <rect x="18" y="10" width="4" height="4" fill="#fff" />
+
+      <rect x="23" y="7" width="2" height="13" fill="#ff0000" />
+      <rect x="12" y="19" width="13" height="2" fill="#ff0000" />
+      <rect x="10" y="18" width="4" height="4" fill="#fff" />
     </svg>
     """
   end
@@ -90,22 +87,18 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_tanks(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_tanks(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#000033"
-        stroke="#008080"
-        stroke-width="1"
-      />
-      <rect x="11" y="14" width="10" height="8" fill="#008000" stroke="#000" stroke-width="0.5" />
-      <rect x="14" y="6" width="4" height="10" fill="#006600" stroke="#000" stroke-width="0.5" />
-      <rect x="9" y="15" width="2" height="6" fill="#555" />
-      <rect x="21" y="15" width="2" height="6" fill="#555" />
-      <circle cx="16" cy="5" r="1.5" fill="#FFD700" />
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <rect x="10" y="13" width="12" height="10" fill="#008000" />
+      <rect x="14" y="5" width="4" height="8" fill="#006600" />
+      <rect x="8" y="14" width="2" height="8" fill="#555" />
+      <rect x="22" y="14" width="2" height="8" fill="#555" />
+      <rect x="15" y="4" width="2" height="1" fill="#ff0000" />
+      <rect x="15" y="16" width="2" height="2" fill="#004400" />
     </svg>
     """
   end
@@ -117,22 +110,23 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_space(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_space(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#000033"
-        stroke="#008080"
-        stroke-width="1"
-      />
-      <polygon points="16,6 22,24 16,20 10,24" fill="#C0C0C0" stroke="#000" stroke-width="0.5" />
-      <polygon points="16,6 18,14 14,14" fill="#000080" />
-      <circle cx="8" cy="10" r="1" fill="#FFD700" />
-      <circle cx="25" cy="22" r="0.8" fill="#FFD700" />
-      <circle cx="22" cy="6" r="0.6" fill="#fff" />
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <rect x="15" y="6" width="2" height="4" fill="#C0C0C0" />
+      <rect x="14" y="10" width="4" height="4" fill="#C0C0C0" />
+      <rect x="12" y="14" width="8" height="4" fill="#C0C0C0" />
+      <rect x="10" y="18" width="12" height="4" fill="#C0C0C0" />
+      <rect x="8" y="22" width="16" height="2" fill="#C0C0C0" />
+
+      <rect x="15" y="12" width="2" height="4" fill="#000080" />
+      <rect x="14" y="24" width="4" height="2" fill="#ff8c00" />
+      <rect x="7" y="9" width="2" height="2" fill="#FFD700" />
+      <rect x="24" y="21" width="2" height="2" fill="#FFD700" />
+      <rect x="22" y="5" width="1" height="1" fill="#fff" />
     </svg>
     """
   end
@@ -144,41 +138,22 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_gravity(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_gravity(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#000033"
-        stroke="#008080"
-        stroke-width="1"
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <rect x="14" y="12" width="4" height="8" fill="#ff8c00" />
+      <rect x="12" y="14" width="8" height="4" fill="#ff8c00" />
+
+      <path
+        d="M15 4h2v2h-2z M22 6h2v2h-2z M26 10h2v2h-2z M28 15h2v2h-2z M26 21h2v2h-2z M21 26h2v2h-2z M15 28h2v2h-2z M10 26h2v2h-2z M6 21h2v2h-2z M4 15h2v2h-2z M6 10h2v2h-2z M10 6h2v2h-2z"
+        fill="#FFD700"
       />
-      <circle cx="16" cy="16" r="4" fill="#ff8c00" />
-      <circle cx="16" cy="16" r="4" fill="none" stroke="#FFD700" stroke-width="0.5" opacity="0.8" />
-      <circle
-        cx="16"
-        cy="16"
-        r="8"
-        fill="none"
-        stroke="#ff8c00"
-        stroke-width="0.5"
-        opacity="0.4"
-        stroke-dasharray="2,2"
-      />
-      <circle
-        cx="16"
-        cy="16"
-        r="12"
-        fill="none"
-        stroke="#ff8c00"
-        stroke-width="0.3"
-        opacity="0.2"
-        stroke-dasharray="3,3"
-      />
-      <polygon points="8,8 6,12 9,11" fill="#C0C0C0" stroke="#000" stroke-width="0.3" />
-      <polygon points="24,22 26,26 23,25" fill="#C0C0C0" stroke="#000" stroke-width="0.3" />
+
+      <rect x="7" y="8" width="3" height="3" fill="#C0C0C0" />
+      <rect x="23" y="22" width="3" height="3" fill="#C0C0C0" />
     </svg>
     """
   end
@@ -190,23 +165,19 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_debris(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_debris(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#000033"
-        stroke="#008080"
-        stroke-width="1"
-      />
-      <polygon points="16,12 19,20 16,18 13,20" fill="#C0C0C0" stroke="#000" stroke-width="0.3" />
-      <polygon points="6,6 10,5 9,9 5,8" fill="#555" stroke="#8b4513" stroke-width="0.5" />
-      <polygon points="22,4 27,5 26,9 23,8" fill="#555" stroke="#8b4513" stroke-width="0.5" />
-      <polygon points="4,20 8,19 7,24 3,23" fill="#666" stroke="#8b4513" stroke-width="0.5" />
-      <polygon points="24,18 28,17 27,22 23,21" fill="#555" stroke="#8b4513" stroke-width="0.5" />
-      <polygon points="12,25 16,24 15,28 11,27" fill="#666" stroke="#8b4513" stroke-width="0.5" />
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <path d="M15 13h2v7h-2z M13 18h6v2h-6z" fill="#C0C0C0" />
+
+      <rect x="6" y="5" width="4" height="4" fill="#555" />
+      <rect x="22" y="5" width="5" height="4" fill="#666" />
+      <rect x="4" y="20" width="4" height="4" fill="#444" />
+      <rect x="23" y="18" width="5" height="4" fill="#555" />
+      <rect x="11" y="24" width="5" height="4" fill="#666" />
     </svg>
     """
   end
@@ -218,25 +189,22 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_breakout(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_breakout(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#000033"
-        stroke="#008080"
-        stroke-width="1"
-      />
-      <rect x="6" y="6" width="5" height="3" fill="#ff0000" />
-      <rect x="13" y="6" width="5" height="3" fill="#FFD700" />
-      <rect x="20" y="6" width="5" height="3" fill="#008000" />
-      <rect x="6" y="11" width="5" height="3" fill="#000080" />
-      <rect x="13" y="11" width="5" height="3" fill="#ff0000" />
-      <rect x="20" y="11" width="5" height="3" fill="#FFD700" />
-      <rect x="12" y="26" width="8" height="2" fill="#C0C0C0" />
-      <circle cx="16" cy="22" r="1.5" fill="#fff" />
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <rect x="5" y="6" width="6" height="3" fill="#ff0000" />
+      <rect x="13" y="6" width="6" height="3" fill="#FFD700" />
+      <rect x="21" y="6" width="6" height="3" fill="#008000" />
+
+      <rect x="5" y="11" width="6" height="3" fill="#000080" />
+      <rect x="13" y="11" width="6" height="3" fill="#ff0000" />
+      <rect x="21" y="11" width="6" height="3" fill="#FFD700" />
+
+      <rect x="11" y="26" width="10" height="2" fill="#C0C0C0" />
+      <rect x="15" y="21" width="2" height="2" fill="#fff" />
     </svg>
     """
   end
@@ -248,27 +216,25 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_warlords(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_warlords(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#000033"
-        stroke="#008080"
-        stroke-width="1"
-      />
-      <rect x="4" y="8" width="3" height="16" fill="#C0C0C0" rx="1" />
-      <rect x="25" y="8" width="3" height="16" fill="#C0C0C0" rx="1" />
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <rect x="4" y="8" width="3" height="16" fill="#C0C0C0" />
+      <rect x="25" y="8" width="3" height="16" fill="#C0C0C0" />
+
       <rect x="9" y="6" width="2" height="4" fill="#ff4444" />
       <rect x="9" y="12" width="2" height="4" fill="#ff4444" />
       <rect x="9" y="18" width="2" height="4" fill="#ff4444" />
+
       <rect x="21" y="6" width="2" height="4" fill="#00e5ff" />
       <rect x="21" y="12" width="2" height="4" fill="#00e5ff" />
       <rect x="21" y="18" width="2" height="4" fill="#00e5ff" />
-      <circle cx="16" cy="16" r="3" fill="#FFD700" />
-      <circle cx="16" cy="16" r="1.5" fill="#ff8c00" />
+
+      <rect x="14" y="14" width="4" height="4" fill="#FFD700" />
+      <rect x="15" y="15" width="2" height="2" fill="#ff8c00" />
     </svg>
     """
   end
@@ -280,26 +246,22 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_raid(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_raid(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#000033"
-        stroke="#008080"
-        stroke-width="1"
-      />
-      <rect x="1" y="1" width="8" height="30" fill="#1a2a1a" />
-      <rect x="23" y="1" width="8" height="30" fill="#1a2a1a" />
-      <rect x="9" y="1" width="14" height="30" fill="#0a1a2a" />
-      <polygon points="16,8 13,16 14,15 16,18 18,15 19,16" fill="#39ff14" />
-      <polygon points="16,20 14,26 15,25 16,27 17,25 18,26" fill="#00e5ff" />
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+
+      <rect x="2" y="2" width="6" height="28" fill="#1a2a1a" />
+      <rect x="24" y="2" width="6" height="28" fill="#1a2a1a" />
+      <rect x="8" y="2" width="16" height="28" fill="#0a1a2a" />
+
+      <path d="M15 8h2v10h-2z M12 14h8v2h-8z" fill="#39ff14" />
+      <path d="M15 20h2v6h-2z M13 24h6v2h-6z" fill="#00e5ff" />
       <rect x="15" y="5" width="2" height="2" fill="#ffee00" />
-      <circle cx="12" cy="12" r="1.5" fill="#ff8c00" />
-      <circle cx="20" cy="22" r="1.5" fill="#ff8c00" />
-      <rect x="9" y="26" width="14" height="2" fill="#555" />
+      <rect x="11" y="11" width="2" height="2" fill="#ff8c00" />
+      <rect x="19" y="21" width="2" height="2" fill="#ff8c00" />
+
+      <rect x="8" y="26" width="16" height="2" fill="#555" />
     </svg>
     """
   end
@@ -311,24 +273,21 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_boxing(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_boxing(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#000033"
-        stroke="#008080"
-        stroke-width="1"
-      />
-      <rect x="5" y="5" width="22" height="22" fill="none" stroke="#aaa" stroke-width="1.5" />
-      <circle cx="12" cy="16" r="4" fill="#008000" stroke="#000" stroke-width="0.5" />
-      <line x1="16" y1="16" x2="20" y2="16" stroke="#00cc00" stroke-width="2" stroke-linecap="round" />
-      <circle cx="22" cy="16" r="4" fill="#008080" stroke="#000" stroke-width="0.5" />
-      <line x1="18" y1="16" x2="14" y2="16" stroke="#00cccc" stroke-width="2" stroke-linecap="round" />
-      <circle cx="20" cy="15" r="1.5" fill="#FFD700" />
-      <circle cx="14" cy="17" r="1.5" fill="#FFD700" />
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <rect x="4" y="4" width="24" height="24" fill="none" stroke="#aaa" stroke-width="2" />
+
+      <path d="M9 13h6v6H9z" fill="#008000" />
+      <rect x="15" y="15" width="4" height="2" fill="#00cc00" />
+      <rect x="19" y="14" width="4" height="4" fill="#FFD700" />
+
+      <path d="M17 13h6v6h-6z" fill="#008080" />
+      <rect x="13" y="15" width="4" height="2" fill="#00cccc" />
+      <rect x="9" y="14" width="4" height="4" fill="#FFD700" />
     </svg>
     """
   end
@@ -340,24 +299,20 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_outlaw(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_outlaw(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#1a0a1e"
-        stroke="#c4956a"
-        stroke-width="1"
-      />
-      <line x1="8" y1="24" x2="24" y2="8" stroke="#aaa" stroke-width="2" stroke-linecap="round" />
-      <line x1="24" y1="24" x2="8" y2="8" stroke="#aaa" stroke-width="2" stroke-linecap="round" />
-      <rect x="6" y="22" width="5" height="3" rx="1" fill="#8b6914" />
-      <rect x="21" y="22" width="5" height="3" rx="1" fill="#8b6914" />
-      <circle cx="10" cy="10" r="2" fill="none" stroke="#aaa" stroke-width="1" />
-      <circle cx="22" cy="10" r="2" fill="none" stroke="#aaa" stroke-width="1" />
-      <circle cx="16" cy="16" r="2" fill="#ff4444" />
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#1a0a1e" />
+
+      <line x1="8" y1="24" x2="24" y2="8" stroke="#aaa" stroke-width="2" />
+      <line x1="24" y1="24" x2="8" y2="8" stroke="#aaa" stroke-width="2" />
+      <rect x="6" y="22" width="4" height="4" fill="#8b6914" />
+      <rect x="22" y="22" width="4" height="4" fill="#8b6914" />
+
+      <rect x="9" y="9" width="4" height="4" fill="none" stroke="#aaa" stroke-width="1" />
+      <rect x="19" y="9" width="4" height="4" fill="none" stroke="#aaa" stroke-width="1" />
+      <rect x="15" y="15" width="2" height="2" fill="#ff4444" />
     </svg>
     """
   end
@@ -369,19 +324,15 @@ defmodule RetroHexChatWeb.Icons.Games do
   @spec icon_game_generic(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_game_generic(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
-      <rect
-        x="1"
-        y="1"
-        width="30"
-        height="30"
-        rx="2"
-        fill="#000033"
-        stroke="#008080"
-        stroke-width="1"
-      />
-      <rect x="8" y="12" width="16" height="10" rx="2" fill="#555" stroke="#000" stroke-width="0.5" />
-      <circle cx="12" cy="17" r="2" fill="#000" />
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <rect x="8" y="12" width="16" height="10" fill="#555" />
+      <path d="M11 15h2v1h1v2h-1v1h-2v-1h-1v-2h1v-1z" fill="#000" />
+      <rect x="11" y="16" width="2" height="2" fill="#111" />
       <rect x="18" y="14" width="2" height="2" fill="#000" />
       <rect x="21" y="16" width="2" height="2" fill="#000" />
     </svg>
