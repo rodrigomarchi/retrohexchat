@@ -68,7 +68,32 @@ make lint.js.fix              # Auto-fix ESLint + Prettier issues
 make precommit                # compile + format + test
 make ci                       # ALL CI checks with parallel pipeline (THE standard)
 make ci.quick                 # CI without dialyzer (faster iteration)
+make deploy                   # CI + deploy Sun & Moon in parallel (THE standard)
+make deploy.sun               # CI + deploy Sun (production) only
+make deploy.moon              # CI + deploy Moon (staging) only
+make deploy.skip-ci           # Deploy both without CI (already validated)
 ```
+
+## Deploy (MANDATORY — always use the pipeline)
+
+**ALWAYS use `make deploy`** (or `elixir scripts/deploy_all.exs`) to deploy.
+This runs the full CI pipeline first, then deploys to both environments in parallel.
+NEVER use `make deploy-sun` / `make deploy-moon` directly — those skip CI validation.
+
+```
+Phase 1: CI Validation (make ci — 9 parallel checks, ~64s)
+    ↓ (only if all checks pass)
+Phase 2: Deploy (parallel)
+    ├─ Sun (production) — scp + ssh deploy.sh
+    └─ Moon (staging)   — scp + ssh deploy.sh
+```
+
+**Options:**
+- `make deploy` — CI + deploy both (standard)
+- `make deploy.sun` — CI + deploy production only
+- `make deploy.moon` — CI + deploy staging only
+- `make deploy.skip-ci` — deploy both without CI (use only if CI was just run)
+- `make deploy REF=some-tag` — deploy a specific git ref (default: main)
 
 ## CI-Equivalent Validation (MANDATORY before declaring any task complete)
 

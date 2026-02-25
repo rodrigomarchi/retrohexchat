@@ -789,6 +789,38 @@ RetroHexChat ships with a multi-stage `Dockerfile` and a `docker-compose.prod.ym
 
 `GET /api/healthz` returns `{"status":"ok"}` with HTTP 200 when the app is running.
 
+### Deploy via CI Pipeline (recommended)
+
+The deploy pipeline (`scripts/deploy_all.exs`) runs all 9 CI checks first, then
+deploys to both environments in parallel via SSH:
+
+```bash
+# CI + deploy to both Sun (production) & Moon (staging) in parallel
+make deploy
+
+# Deploy a specific git ref
+make deploy REF=sun-2026-02-25.01
+
+# Deploy only to production or staging
+make deploy.sun
+make deploy.moon
+
+# Skip CI if you just ran it
+make deploy.skip-ci
+```
+
+```
+Phase 1: CI Validation (9 parallel checks, ~64s)
+    ↓ (only if all checks pass)
+Phase 2: Deploy (parallel)
+    ├─ Sun (production, YOUR_PRODUCTION_SERVER_IP) — scp + ssh deploy.sh
+    └─ Moon (staging, YOUR_STAGING_SERVER_IP)     — scp + ssh deploy.sh
+```
+
+Each deploy SSHs into the target server, checks out the git ref, builds a release
+tarball, and places it in the DeployEx dist directory. DeployEx picks up the new
+version within ~5 seconds and performs a rolling restart.
+
 ### Deploy with Docker Compose
 
 ```bash
