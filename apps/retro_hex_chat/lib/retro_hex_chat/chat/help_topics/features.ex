@@ -982,7 +982,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "lobby",
           "play"
         ],
-        icon: :icon_star,
+        icon: :icon_game_generic,
         description:
           "Play retro arcade games directly with other users via peer-to-peer WebRTC connections.",
         see_also: [
@@ -1018,7 +1018,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         title: "Hex Pong",
         category: "Features",
         keywords: ["hex pong", "pong", "paddle", "ball", "game", "cyberpunk", "neon"],
-        icon: :icon_star,
+        icon: :icon_game_pong,
         description:
           "Cyberpunk Pong with neon visuals, CRT effects, and synth audio. First to 11 (win by 2). Use Arrow keys or W/S.",
         see_also: ["feature-p2p-games"]
@@ -1028,7 +1028,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         title: "Light Trails",
         category: "Features",
         keywords: ["light trails", "tron", "trails", "grid", "arena", "game"],
-        icon: :icon_star,
+        icon: :icon_game_trails,
         description:
           "Race across a grid leaving a glowing trail. Hit a trail or wall and you lose.",
         see_also: ["feature-p2p-games"]
@@ -1047,7 +1047,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "shooter",
           "missile"
         ],
-        icon: :icon_star,
+        icon: :icon_game_tanks,
         description:
           "Top-down tank combat in a maze arena. Rotate your tank, drive forward, and fire " <>
             "missiles to hit your opponent. One missile at a time — miss and you're vulnerable. " <>
@@ -1069,7 +1069,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "warp",
           "hyperspace"
         ],
-        icon: :icon_star,
+        icon: :icon_game_space,
         description:
           "Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles. " <>
             "Wraparound edges, hyperspace warp with 20% death chance. First to 7 wins. " <>
@@ -1089,7 +1089,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "game",
           "space"
         ],
-        icon: :icon_star,
+        icon: :icon_game_gravity,
         description:
           "Orbital combat around a central gravity star. Ships are pulled toward the star — " <>
             "use gravity slingshots for speed, but fly too close and you die. Same controls " <>
@@ -1109,7 +1109,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "game",
           "space"
         ],
-        icon: :icon_star,
+        icon: :icon_game_debris,
         description:
           "Space combat through floating asteroid obstacles. Asteroids block missiles and " <>
             "kill ships on contact. Use debris for cover or it destroys you. Same controls " <>
@@ -1131,7 +1131,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "lives",
           "cyberpunk"
         ],
-        icon: :icon_star,
+        icon: :icon_game_breakout,
         description:
           "Cooperative Breakout with cyberpunk visuals. P1 controls the bottom paddle, P2 the top. " <>
             "3 shared lives, 50 neon blocks (5 rows), ball speeds up. Arrow keys or A/D to move.",
@@ -1153,7 +1153,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "bricks",
           "king"
         ],
-        icon: :icon_star,
+        icon: :icon_game_warlords,
         description:
           "Versus Breakout battle — each player defends a brick castle with a king inside. " <>
             "Deflect or catch the fireball with your shield to smash your opponent's walls. " <>
@@ -1178,7 +1178,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "scroll",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_raid,
         description:
           "River Raid reimagined for two — race through a scrolling toxic canal, " <>
             "destroy enemies for points, steal fuel, and drop mines on your rival. " <>
@@ -1203,7 +1203,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "skill",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_raid,
         description:
           "River Raid without sabotage — no mines allowed. " <>
             "Pure competition for points, fuel, and survival across 10 sections. " <>
@@ -1223,7 +1223,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "intense",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_raid,
         description:
           "5 sections of intense River Raid action — river starts narrow, " <>
             "fuel is scarce, mines recharge faster. Quick and chaotic. " <>
@@ -1245,7 +1245,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "ring",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_boxing,
         description:
           "Top-down boxing in a cyberpunk ring — close punches score 3 points, " <>
             "medium 2, far 1. First to 100 is KO! Best of 3 rounds, 2 minutes each. " <>
@@ -1268,7 +1268,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "cactus",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_outlaw,
         description:
           "Western duel — two gunslingers face off across a cactus obstacle. " <>
             "Dodge visible bullets and shoot your opponent. First to 10, best of 3 rounds. " <>
@@ -1293,7 +1293,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "angle",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_outlaw,
         description:
           "Western duel with bouncing bullets — fire at angles to bypass the wall. " <>
             "Bullets ricochet once off ceiling/floor. Aim up or down with arrow keys. " <>
@@ -1319,7 +1319,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "obstacle",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_outlaw,
         description:
           "Western duel with a stagecoach rolling across the arena. " <>
             "Time your shots around the moving obstacle. First to 10, best of 3 rounds. " <>
@@ -1344,7 +1344,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "free",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_outlaw,
         description:
           "Western duel in open field — no obstacle, full horizontal movement. " <>
             "Dodge freely in your half of the arena. First to 10, best of 3 rounds. " <>
@@ -1374,7 +1374,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "wave",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_invaders,
         description:
           "Split-screen Space Invaders — aliens you destroy fall on your opponent as reinforcements. " <>
             "Combos send extra drops. UFO kills send armored aliens. 10 waves of escalating chaos. " <>
@@ -1398,7 +1398,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "shared",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_invaders,
         description:
           "Classic co-op Space Invaders — two cannons fighting the same alien waves on a shared screen. " <>
             "No alien drop mechanic. Survive together or fall together. " <>
@@ -1422,7 +1422,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "space invaders",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_invaders,
         description:
           "Blitz Space Invaders — instant alien drops, easier combo thresholds, " <>
             "5 waves of pure chaos from the start. " <>
@@ -1448,7 +1448,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "weather",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_enduro,
         description:
           "Pseudo-3D racing duel through day, snow, fog, and night. " <>
             "Both players race on the same road — overtake AI cars and your opponent for points. " <>
@@ -1472,7 +1472,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "racing",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_enduro,
         description:
           "3-minute race in permanent darkness with fog bursts. " <>
             "Headlights-only visibility — pure reflexes. Most overtakes wins. " <>
@@ -1496,7 +1496,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "racing",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_enduro,
         description:
           "Daylight sprint — no weather changes, no fuel drain, just speed. " <>
             "90 seconds to score maximum overtakes. " <>
@@ -1521,7 +1521,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "court",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_tennis,
         description:
           "Top-down tennis duel — automatic hitting where shot angle depends on contact position. " <>
             "Full set with deuce, advantage, and tiebreak at 6-6. " <>
@@ -1544,7 +1544,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "short",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_tennis,
         description:
           "Quick tennis match — first to 3 games wins. " <>
             "Same gameplay, shorter format. No tiebreak needed. " <>
@@ -1567,7 +1567,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "pressure",
           "game"
         ],
-        icon: :icon_star,
+        icon: :icon_game_tennis,
         description:
           "Every point wins a game — no 15-30-40, no deuce. " <>
             "First to 6 games takes the set. Pure pressure. " <>

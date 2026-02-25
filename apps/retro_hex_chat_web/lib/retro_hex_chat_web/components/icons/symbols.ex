@@ -342,6 +342,93 @@ defmodule RetroHexChatWeb.Icons.Symbols do
 
   attr :class, :string, default: nil
 
+  @spec icon_dice(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_dice(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Shadow -->
+      <rect x="3" y="3" width="12" height="12" fill="#000" />
+      <!-- Die body -->
+      <rect x="2" y="2" width="12" height="12" fill="#fff" stroke="#000" stroke-width="1" />
+      <!-- Top-left bevel -->
+      <rect x="3" y="3" width="10" height="1" fill="#dfdfdf" />
+      <rect x="3" y="3" width="1" height="10" fill="#dfdfdf" />
+      <!-- Bottom-right shadow -->
+      <rect x="3" y="13" width="10" height="1" fill="#808080" />
+      <rect x="13" y="3" width="1" height="10" fill="#808080" />
+      <!-- Pips: showing 5 (classic die face) -->
+      <rect x="4" y="4" width="2" height="2" fill="#000080" />
+      <rect x="10" y="4" width="2" height="2" fill="#000080" />
+      <rect x="7" y="7" width="2" height="2" fill="#000080" />
+      <rect x="4" y="10" width="2" height="2" fill="#000080" />
+      <rect x="10" y="10" width="2" height="2" fill="#000080" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_joystick(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_joystick(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Base platform shadow -->
+      <rect x="2" y="11" width="13" height="5" fill="#000" />
+      <!-- Base platform -->
+      <rect x="1" y="10" width="13" height="5" fill="#808080" stroke="#000" stroke-width="1" />
+      <!-- Top bevel -->
+      <rect x="2" y="11" width="11" height="1" fill="#C0C0C0" />
+      <!-- Bottom shadow -->
+      <rect x="2" y="14" width="11" height="1" fill="#555" />
+      <!-- Stick shaft -->
+      <rect x="7" y="4" width="2" height="7" fill="#C0C0C0" />
+      <rect x="7" y="4" width="1" height="6" fill="#dfdfdf" />
+      <rect x="8" y="5" width="1" height="5" fill="#808080" />
+      <!-- Ball top -->
+      <rect x="5" y="1" width="6" height="4" rx="1" fill="#000080" stroke="#000" stroke-width="1" />
+      <rect x="6" y="2" width="3" height="1" fill="#4444cc" />
+      <!-- Fire button -->
+      <rect x="11" y="12" width="2" height="2" fill="#FF0000" />
+      <rect x="11" y="12" width="1" height="1" fill="#FF6666" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_rss(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_rss(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Orange background -->
+      <rect x="1" y="1" width="14" height="14" fill="#FF8C00" stroke="#000" stroke-width="1" />
+      <!-- Top bevel -->
+      <rect x="2" y="2" width="12" height="1" fill="#FFB347" />
+      <rect x="2" y="2" width="1" height="12" fill="#FFB347" />
+      <!-- Bottom-right shadow -->
+      <rect x="2" y="14" width="12" height="1" fill="#CC6600" />
+      <rect x="14" y="2" width="1" height="12" fill="#CC6600" />
+      <!-- Feed dot -->
+      <rect x="3" y="11" width="3" height="3" fill="#fff" />
+      <!-- Small arc (inner) -->
+      <rect x="3" y="8" width="2" height="1" fill="#fff" />
+      <rect x="5" y="7" width="2" height="1" fill="#fff" />
+      <rect x="7" y="8" width="1" height="2" fill="#fff" />
+      <rect x="6" y="10" width="1" height="1" fill="#fff" />
+      <!-- Large arc (outer) -->
+      <rect x="3" y="5" width="2" height="1" fill="#fff" />
+      <rect x="5" y="4" width="2" height="1" fill="#fff" />
+      <rect x="7" y="3" width="2" height="1" fill="#fff" />
+      <rect x="9" y="4" width="2" height="1" fill="#fff" />
+      <rect x="11" y="5" width="1" height="2" fill="#fff" />
+      <rect x="10" y="7" width="1" height="2" fill="#fff" />
+      <rect x="9" y="9" width="1" height="2" fill="#fff" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_tag(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_tag(assigns) do
     ~H"""

@@ -1,12 +1,12 @@
 <p>
   P2P Games lets you play retro arcade games directly with another user. Games run in real-time over WebRTC DataChannel — no server relay, minimal latency.
 </p>
-<.help_h4 icon={:icon_star}>Starting a Game</.help_h4>
+<.help_h4 icon={:icon_send}>Starting a Game</.help_h4>
 <pre>/game &lt;nickname&gt;</pre>
 <p>
   This creates a game session and sends an invite via PM. The target user clicks the link to join the game lobby.
 </p>
-<.help_h4 icon={:icon_star}>Game Lobby</.help_h4>
+<.help_h4 icon={:icon_community}>Game Lobby</.help_h4>
 <p>
   The lobby is where both players meet before starting a game. You can:
 </p>
@@ -19,7 +19,7 @@
   Game selection requires <strong>bilateral consent</strong>
   — one player picks a game, the other must accept before it starts.
 </p>
-<.help_h4 icon={:icon_star}>Available Games</.help_h4>
+<.help_h4 icon={:icon_game_generic}>Available Games</.help_h4>
 <ul>
   <li><strong>Hex Pong</strong> — Pong with hexagonal paddles and power-ups</li>
   <li><strong>Light Trails</strong> — Leave a trail, trap your opponent</li>
@@ -27,7 +27,7 @@
   <li><strong>Star Duel</strong> — Space dogfight with inertial physics</li>
   <li><strong>Block Breakers</strong> — Cooperative Breakout with two paddles</li>
 </ul>
-<.help_h4 icon={:icon_star}>Architecture</.help_h4>
+<.help_h4 icon={:icon_webrtc}>Architecture</.help_h4>
 <p>
   The session creator acts as <strong>host</strong>
   and runs the game loop at ~60fps. The peer sends keyboard inputs via DataChannel and receives game state snapshots. This keeps both players in sync with minimal bandwidth.

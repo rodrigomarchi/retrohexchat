@@ -56,7 +56,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           "addcmd",
           "delcmd"
         ],
-        icon: :icon_star,
+        icon: :icon_code,
         description:
           "How to create and use custom bot commands (!prefix trigger) for automated responses."
       },
@@ -75,7 +75,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           "keep highest",
           "keep lowest"
         ],
-        icon: :icon_star,
+        icon: :icon_dice,
         description:
           "RPG dice rolling with standard notation (NdS, modifiers, keep highest/lowest)."
       },
@@ -93,7 +93,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           "game",
           "answer"
         ],
-        icon: :icon_star,
+        icon: :icon_question,
         description:
           "Interactive trivia quiz with multiple categories, scoring, and configurable timers."
       },
@@ -111,7 +111,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           "cron",
           "timer"
         ],
-        icon: :icon_star,
+        icon: :icon_clock,
         description: "Schedule periodic or daily messages to channels automatically."
       },
       %{
@@ -128,7 +128,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           "syndication",
           "updates"
         ],
-        icon: :icon_star,
+        icon: :icon_rss,
         description: "Monitor RSS/Atom feeds and post new items to channels automatically."
       },
       %{
@@ -145,7 +145,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           "bot moderation",
           "auto-mod"
         ],
-        icon: :icon_star,
+        icon: :icon_shield,
         description:
           "Auto-moderation: word filtering, spam/flood detection, caps lock abuse prevention."
       }

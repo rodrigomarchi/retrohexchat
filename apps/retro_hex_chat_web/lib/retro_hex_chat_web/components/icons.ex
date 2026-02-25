@@ -281,6 +281,9 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_btn_ignore(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_status_signal(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_dialog_kick(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_dice(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_joystick(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_rss(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_tag(assigns), to: RetroHexChatWeb.Icons.Symbols
 
   # ── Formatting ─────────────────────────────────────────
