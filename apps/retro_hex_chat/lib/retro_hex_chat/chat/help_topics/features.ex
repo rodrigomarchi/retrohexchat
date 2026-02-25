@@ -1001,7 +1001,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-outlaw",
           "feature-hex-outlaw-ricochet",
           "feature-hex-outlaw-stagecoach",
-          "feature-hex-outlaw-nml"
+          "feature-hex-outlaw-nml",
+          "feature-hex-invaders",
+          "feature-hex-invaders-coop",
+          "feature-hex-invaders-blitz"
         ]
       },
       %{
@@ -1344,6 +1347,83 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-outlaw",
           "feature-hex-outlaw-ricochet",
           "feature-hex-outlaw-stagecoach",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-invaders",
+        title: "Hex Invaders",
+        category: "Features",
+        keywords: [
+          "hex invaders",
+          "space invaders",
+          "invaders",
+          "alien",
+          "aliens",
+          "cannon",
+          "shield",
+          "ufo",
+          "drop",
+          "combo",
+          "wave",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Split-screen Space Invaders — aliens you destroy fall on your opponent as reinforcements. " <>
+            "Combos send extra drops. UFO kills send armored aliens. 10 waves of escalating chaos. " <>
+            "Controls: Arrow keys or A/D to move, Space to fire.",
+        see_also: [
+          "feature-hex-invaders-coop",
+          "feature-hex-invaders-blitz",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-invaders-coop",
+        title: "Hex Invaders: Co-op",
+        category: "Features",
+        keywords: [
+          "hex invaders",
+          "coop",
+          "co-op",
+          "cooperative",
+          "space invaders",
+          "shared",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Classic co-op Space Invaders — two cannons fighting the same alien waves on a shared screen. " <>
+            "No alien drop mechanic. Survive together or fall together. " <>
+            "Controls: Arrow keys or A/D to move, Space to fire.",
+        see_also: [
+          "feature-hex-invaders",
+          "feature-hex-invaders-blitz",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-invaders-blitz",
+        title: "Hex Invaders: Blitz",
+        category: "Features",
+        keywords: [
+          "hex invaders",
+          "blitz",
+          "fast",
+          "quick",
+          "intense",
+          "space invaders",
+          "game"
+        ],
+        icon: :icon_star,
+        description:
+          "Blitz Space Invaders — instant alien drops, easier combo thresholds, " <>
+            "5 waves of pure chaos from the start. " <>
+            "Controls: Arrow keys or A/D to move, Space to fire.",
+        see_also: [
+          "feature-hex-invaders",
+          "feature-hex-invaders-coop",
           "feature-p2p-games"
         ]
       }

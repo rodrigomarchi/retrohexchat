@@ -93,6 +93,21 @@
   --game-hit-color: #ffffff;
 }
 
+/* Hex Invaders: cyberpunk post-apocalyptic alien invasion */
+.game-canvas[data-game-id="hex_invaders"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_invaders_coop"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_invaders_blitz"] .game-canvas__surface {
+  --game-bg-color: #000008;
+  --game-fg-color: #39ff14;
+  --game-accent-color: #00e5ff;
+  --game-muted-color: #0a1a0a;
+  --game-glow-color: rgba(57, 255, 20, 0.2);
+  --game-warning-color: #ff4444;
+  --game-shield-color: #39ff14;
+  --game-ufo-color: #ff00ff;
+  --game-drop-color: #ff3333;
+}
+
 /* Star Duel trilogy: cyberpunk post-apocalyptic space combat */
 .game-canvas[data-game-id="star_duel"] .game-canvas__surface,
 .game-canvas[data-game-id="gravity_well"] .game-canvas__surface,

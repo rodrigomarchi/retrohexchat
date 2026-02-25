@@ -34,12 +34,13 @@ defmodule RetroHexChatWeb.Icons do
 
   ## SVG Template
 
-      <svg class={@class} viewBox="0 0 16 16" aria-hidden="true">
+      <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
         <!-- paths, rects, circles, etc. -->
       </svg>
 
   Every icon function accepts a single `assigns` map with an optional
   `:class` attribute (default `nil`). All SVGs use `aria-hidden="true"`.
+  Most 16x16 SVGs use `shape-rendering="crispEdges"` to guarantee the retro pixel-art aesthetic.
 
   ## Color Palette
 
@@ -52,9 +53,25 @@ defmodule RetroHexChatWeb.Icons do
   | Gray      | `#808080` | Secondary, muted elements      |
   | Silver    | `#C0C0C0` | Fills, backgrounds             |
   | Dark gray | `#555`    | Subtle strokes                 |
+  | Light gray| `#DFDFDF` | Inner light bevels, contents   |
   | Gold      | `#FFD700` | Alerts, accents, folder fills  |
   | Red       | `#FF0000` | Danger, errors, close actions  |
   | Green     | `#008000` | Success, active, confirm       |
+
+  ## Retro 3D / Win95 Pixel Art Style Guidelines
+
+  We strictly follow a retro 90s OS aesthetic for all icons and diagrams.
+
+  1. **Anti-Aliasing Off:** Use `shape-rendering="crispEdges"` on the `<svg>` tag for 16x16 icons and UI components, ensuring hard, pixelated edges.
+  2. **16x16 vs 32x32:**
+     - **16x16**: Strict pixel art. Use `<rect>` and `<polyline>` snapped to integer grids.
+     - **32x32**: Classic vector clipart. Can use curves and anti-aliasing (no crispEdges), but with solid fills and thick hard strokes.
+  3. **3D Bevel / Relevo:** Create visual depth manually using 1px strokes.
+     - *Outset* (Buttons, Windows): White (`#fff`) or light gray (`#dfdfdf`) on Top/Left. Dark gray (`#808080`) or Black (`#000`) on Bottom/Right.
+     - *Inset* (Inputs, Sunken content): Dark gray (`#808080`) or Black (`#000`) on Top/Left. White (`#fff`) or light gray (`#dfdfdf`) on Bottom/Right.
+  4. **High Contrast:** Important geometries should have a solid black outline (`#000`, `stroke-width="1"` or `1.5`).
+  5. **Drop Shadows:** Use solid black (`#000`) rectangles offset by 2-4px, without blur, underneath prominent floating elements.
+  6. **Geometries:** Avoid `stroke-linecap="round"`. Prefer harsh geometric cuts.
 
   ## Contrast Rules
 
@@ -63,12 +80,6 @@ defmodule RetroHexChatWeb.Icons do
   - **Dark background** (dialog title bars): use `#fff` as primary,
     `#FFD700` gold as accent, `#FF0000` red for danger, `#008000` green
     for success. Avoid dark fills that disappear against the gradient.
-
-  ## Stroke / Fill Guidelines
-
-  - Prefer `stroke-width` of `0.5`–`1.5` for 16×16 icons.
-  - Use `fill="none"` + stroke for outlined icons.
-  - Round caps (`stroke-linecap="round"`) for friendlier appearance.
 
   ## Naming Convention
 
@@ -295,5 +306,6 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_game_raid(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_boxing(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_outlaw(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_invaders(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_generic(assigns), to: RetroHexChatWeb.Icons.Games
 end

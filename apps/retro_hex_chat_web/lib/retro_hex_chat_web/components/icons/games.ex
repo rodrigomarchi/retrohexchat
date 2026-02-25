@@ -29,6 +29,9 @@ defmodule RetroHexChatWeb.Icons.Games do
   def game_icon(%{game_id: "hex_outlaw_ricochet"} = assigns), do: icon_game_outlaw(assigns)
   def game_icon(%{game_id: "hex_outlaw_stagecoach"} = assigns), do: icon_game_outlaw(assigns)
   def game_icon(%{game_id: "hex_outlaw_nml"} = assigns), do: icon_game_outlaw(assigns)
+  def game_icon(%{game_id: "hex_invaders"} = assigns), do: icon_game_invaders(assigns)
+  def game_icon(%{game_id: "hex_invaders_coop"} = assigns), do: icon_game_invaders(assigns)
+  def game_icon(%{game_id: "hex_invaders_blitz"} = assigns), do: icon_game_invaders(assigns)
   def game_icon(assigns), do: icon_game_generic(assigns)
 
   # -- Hex Pong: paddle + ball --
@@ -313,6 +316,30 @@ defmodule RetroHexChatWeb.Icons.Games do
       <rect x="9" y="9" width="4" height="4" fill="none" stroke="#aaa" stroke-width="1" />
       <rect x="19" y="9" width="4" height="4" fill="none" stroke="#aaa" stroke-width="1" />
       <rect x="15" y="15" width="2" height="2" fill="#ff4444" />
+    </svg>
+    """
+  end
+
+  # -- Hex Invaders: classic Space Invader silhouette --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_invaders(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_invaders(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000008" />
+
+      <path
+        d="M11 7h2v2h-2z M19 7h2v2h-2z M9 9h14v2H9z M7 11h4v2H7z M15 11h2v2h-2z M21 11h4v2h-2z M7 13h18v2H7z M9 15h2v2H9z M15 15h2v2h-2z M21 15h2v2h-2z M11 17h2v2h-2z M19 17h2v2h-2z"
+        fill="#39ff14"
+      />
+      <rect x="12" y="23" width="8" height="2" fill="#008080" />
+      <rect x="15" y="21" width="2" height="2" fill="#008080" />
+      <rect x="15" y="25" width="2" height="3" fill="#fff" />
     </svg>
     """
   end

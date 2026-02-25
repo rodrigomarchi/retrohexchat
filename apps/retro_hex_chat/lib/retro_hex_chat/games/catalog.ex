@@ -2,7 +2,7 @@ defmodule RetroHexChat.Games.Catalog do
   @moduledoc """
   Registry of available P2P games.
   Each game has an id, name, description, and icon identifier.
-  All games are real-time action for two players (12 games total).
+  All games are real-time action for two players (19 games total).
   """
 
   @type game :: %{
@@ -174,6 +174,36 @@ defmodule RetroHexChat.Games.Catalog do
           "Dodge freely in your half. First to 10. Best of 3 rounds.",
       icon: "game_outlaw",
       controls: "Arrow keys or WASD to move, Space or Shift to fire"
+    },
+    %{
+      id: "hex_invaders",
+      name: "Hex Invaders",
+      tagline: "Your kills are their problem",
+      description:
+        "Split-screen Space Invaders — aliens you destroy fall on your opponent as reinforcements. " <>
+          "Combos send extra. 10 waves of escalating chaos.",
+      icon: "game_invaders",
+      controls: "Arrow keys or A/D to move, Space to fire"
+    },
+    %{
+      id: "hex_invaders_coop",
+      name: "Hex Invaders: Co-op",
+      tagline: "Defend Earth together",
+      description:
+        "Classic co-op Space Invaders — two cannons fighting the same alien waves. " <>
+          "No alien drop. Survive together or fall together.",
+      icon: "game_invaders",
+      controls: "Arrow keys or A/D to move, Space to fire"
+    },
+    %{
+      id: "hex_invaders_blitz",
+      name: "Hex Invaders: Blitz",
+      tagline: "No mercy, no delay",
+      description:
+        "Blitz Space Invaders — instant alien drops, easier combos, " <>
+          "5 waves of pure chaos from the start.",
+      icon: "game_invaders",
+      controls: "Arrow keys or A/D to move, Space to fire"
     }
   ]
 

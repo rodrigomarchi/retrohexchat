@@ -37,6 +37,7 @@ All SVGs extracted and organized in the SVG consolidation effort.
 | `icon_game_raid` | Hex Raid — jet + river **[DONE]** |
 | `icon_game_boxing` | Hex Boxing — ring with fists **[DONE]** |
 | `icon_game_outlaw` | Hex Outlaw — crossed revolvers **[DONE]** |
+| `icon_game_invaders` | Hex Invaders — Space Invader silhouette **[DONE]** |
 | `icon_game_generic` | Generic gamepad (fallback) **[DONE]** |
 
 ## New Icons in Existing Submodules (16x16)
