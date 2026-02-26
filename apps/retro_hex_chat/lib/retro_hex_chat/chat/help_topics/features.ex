@@ -1850,10 +1850,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_arcade,
         description:
-          "Play classic games in your browser via WebAssembly — 15 games including " <>
-            "Beneath a Steel Sky, Dreamweb, Drascula, Half-Life: Uplink, Wolfenstein 3D, DOOM, " <>
-            "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
-            "Start with /singleplayer.",
+          "Play classic games in your browser via WebAssembly — 16 games including " <>
+            "Beneath a Steel Sky, Dreamweb, Drascula, Flight of the Amazon Queen, " <>
+            "Half-Life: Uplink, Wolfenstein 3D, DOOM, Quake, Quake II, Freedoom, " <>
+            "Chex Quest, HacX, REKKR, and LibreQuake. Start with /singleplayer.",
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-quake",
@@ -2037,14 +2037,19 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "dreamweb",
           "creative reality",
           "top-down",
+          "flight of the amazon queen",
+          "fotaq",
+          "joe king",
+          "amazon",
+          "1995",
           "freeware",
           "wasm"
         ],
         icon: :icon_game_bass,
         description:
           "Play classic point & click adventures in your browser — Beneath a Steel Sky (1994), " <>
-            "Drascula: The Vampire Strikes Back (1996), and Dreamweb (1994) with full voice acting. " <>
-            "Powered by ScummVM (official Emscripten backend → WebAssembly).",
+            "Drascula (1996), Dreamweb (1994), and Flight of the Amazon Queen (1995) " <>
+            "with full voice acting. Powered by ScummVM (official Emscripten backend → WebAssembly).",
         see_also: [
           "feature-arcade",
           "feature-arcade-doom",

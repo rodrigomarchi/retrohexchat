@@ -188,6 +188,20 @@ defmodule RetroHexChat.Arcade.Catalog do
         "Point & click: left-click interact/walk, right-click examine. " <>
           "Inventory at top of screen. F5 save/load, Esc skip cutscene",
       icon: "game_dreamweb"
+    },
+    %{
+      id: "scummvm_fotaq",
+      name: "Flight of the Amazon Queen",
+      tagline: "Comic adventure in the Amazon (1995)",
+      description:
+        "Pilot Joe King crash-lands in the Amazon and stumbles into a mad scientist's " <>
+          "plot to turn humans into dinosaurs. A hilarious Indiana Jones-style " <>
+          "point & click adventure with full voice acting.",
+      engine: :scummvm,
+      controls:
+        "Point & click: left-click interact, right-click examine. " <>
+          "Inventory at top of screen. F5 save/load, Esc skip cutscene",
+      icon: "game_fotaq"
     }
   ]
 
