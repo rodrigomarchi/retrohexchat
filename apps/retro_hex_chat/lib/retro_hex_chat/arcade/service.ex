@@ -79,7 +79,10 @@ defmodule RetroHexChat.Arcade.Service do
         :ok
 
       session ->
-        Logger.info("Arcade closing previous session: token=#{session.token}, creator=#{creator_id}")
+        Logger.info(
+          "Arcade closing previous session: token=#{session.token}, creator=#{creator_id}"
+        )
+
         close_session(session.token, creator_id, "new_session")
     end
   end
