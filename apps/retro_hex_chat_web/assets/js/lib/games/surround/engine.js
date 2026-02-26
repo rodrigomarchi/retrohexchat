@@ -56,12 +56,15 @@ export class SurroundEngine extends GameEngine {
     this._savedScores = { score1: 0, score2: 0 };
     this._boundRenderLoop = this._renderLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
+    this._boundChannelClose = this._handleChannelClose.bind(this);
   }
 
   start() {
+    if (this.running) return;
     super.start();
     this.colors = getColors(this.canvas);
     window.addEventListener("blur", this._boundBlur);
+    this.channel.addEventListener("close", this._boundChannelClose);
 
     // Start render loop immediately (shows waiting screen)
     this.animFrame = requestAnimationFrame(this._boundRenderLoop);
@@ -74,6 +77,7 @@ export class SurroundEngine extends GameEngine {
 
   stop() {
     window.removeEventListener("blur", this._boundBlur);
+    this.channel.removeEventListener("close", this._boundChannelClose);
     this._stopTickLoop();
     if (this.phaseTimer) {
       clearTimeout(this.phaseTimer);
@@ -375,6 +379,24 @@ export class SurroundEngine extends GameEngine {
         score: { p1: score1, p2: score2 },
         winner,
       });
+    }
+  }
+
+  // ── Connection Resilience ──
+
+  _handleChannelClose() {
+    if (!this.gameState || this.gameState.phase === PHASE.MATCH_OVER) return;
+    this.gameState.phase = PHASE.MATCH_OVER;
+    if (this.onGameEnd) {
+      try {
+        this.onGameEnd({
+          score: { p1: this.gameState.score1, p2: this.gameState.score2 },
+          winner: 0,
+          disconnected: true,
+        });
+      } catch {
+        // callback error — ignore
+      }
     }
   }
 

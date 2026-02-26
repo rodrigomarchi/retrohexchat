@@ -59,12 +59,15 @@ export class PongEngine extends GameEngine {
     this.peerReady = false;
     this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
+    this._boundChannelClose = this._handleChannelClose.bind(this);
   }
 
   start() {
+    if (this.running) return;
     super.start();
     this.colors = getColors(this.canvas);
     window.addEventListener("blur", this._boundBlur);
+    this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.isHost) {
       // Host waits for peer GAME_READY, then starts countdown
@@ -78,6 +81,7 @@ export class PongEngine extends GameEngine {
 
   stop() {
     window.removeEventListener("blur", this._boundBlur);
+    this.channel.removeEventListener("close", this._boundChannelClose);
     if (this.phaseTimer) {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
@@ -307,6 +311,25 @@ export class PongEngine extends GameEngine {
         score: { p1: score1, p2: score2 },
         winner: winner,
       });
+    }
+  }
+
+  // ── Connection Resilience ──
+
+  _handleChannelClose() {
+    if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
+    this.gameState.phase = PHASE.FINISHED;
+    this._renderState();
+    if (this.onGameEnd) {
+      try {
+        this.onGameEnd({
+          score: { p1: this.gameState.score1, p2: this.gameState.score2 },
+          winner: 0,
+          disconnected: true,
+        });
+      } catch {
+        // callback error — ignore
+      }
     }
   }
 

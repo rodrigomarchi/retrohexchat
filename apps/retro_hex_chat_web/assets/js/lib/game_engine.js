@@ -38,6 +38,7 @@ export class GameEngine {
   }
 
   start() {
+    if (this.running) return;
     this.running = true;
     this.channel.addEventListener("message", this._boundOnMessage);
     document.addEventListener("keydown", this._boundOnKeyDown);

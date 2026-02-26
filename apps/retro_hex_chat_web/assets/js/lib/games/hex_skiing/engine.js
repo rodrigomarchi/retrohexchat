@@ -87,10 +87,15 @@ export class HexSkiingEngine extends GameEngine {
     this.audio = new HexSkiingAudio();
     this.colors = null;
     this.snowParticles = null;
+    this._boundBlur = this._handleBlur.bind(this);
+    this._boundChannelClose = this._handleChannelClose.bind(this);
   }
 
   start() {
+    if (this.running) return;
     super.start();
+    window.addEventListener("blur", this._boundBlur);
+    this.channel.addEventListener("close", this._boundChannelClose);
 
     this.colors = readColors(this.canvas);
     this.snowParticles = generateSnowParticles(40);
@@ -106,6 +111,8 @@ export class HexSkiingEngine extends GameEngine {
   }
 
   stop() {
+    window.removeEventListener("blur", this._boundBlur);
+    this.channel.removeEventListener("close", this._boundChannelClose);
     super.stop();
     this.audio.destroy();
     this.localInputs = { left: false, right: false };
@@ -398,6 +405,30 @@ export class HexSkiingEngine extends GameEngine {
     // Report to LiveView
     if (this.onGameEnd) {
       this.onGameEnd(result);
+    }
+  }
+
+  // ── Connection Resilience ──
+
+  _handleBlur() {
+    this.localInputs = { left: false, right: false };
+  }
+
+  _handleChannelClose() {
+    if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
+    this.gameState.phase = PHASE.FINISHED;
+    this._renderState();
+    if (this.onGameEnd) {
+      try {
+        this.onGameEnd({
+          winner: "draw",
+          score_p1: this.gameState.p1RoundWins || 0,
+          score_p2: this.gameState.p2RoundWins || 0,
+          disconnected: true,
+        });
+      } catch {
+        // callback error — ignore
+      }
     }
   }
 

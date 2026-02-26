@@ -15,6 +15,8 @@ import {
   CANVAS_W,
   CANVAS_H,
   WIN_SCORE,
+  STAR_X,
+  STAR_Y,
   generateAsteroids,
 } from "../../../../js/lib/games/star_duel/physics.js";
 
@@ -1260,6 +1262,183 @@ describe("StarDuelEngine", () => {
       expect(engine.audio.playWarp).toHaveBeenCalled();
 
       Math.random = originalRandom;
+    });
+  });
+
+  // ── Connection Resilience ──
+
+  describe("connection resilience", () => {
+    it("double-start is a no-op", () => {
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
+      engine.start();
+      const firstState = engine.gameState;
+      engine.start(); // should not reset
+      expect(engine.gameState).toBe(firstState);
+    });
+
+    it("blur clears local inputs", () => {
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
+      engine.start();
+      engine.localInputs = {
+        rotateLeft: true,
+        rotateRight: true,
+        thrust: true,
+        fire: true,
+        warp: true,
+      };
+      engine._handleBlur();
+      expect(engine.localInputs.rotateLeft).toBe(false);
+      expect(engine.localInputs.rotateRight).toBe(false);
+      expect(engine.localInputs.thrust).toBe(false);
+      expect(engine.localInputs.fire).toBe(false);
+      expect(engine.localInputs.warp).toBe(false);
+    });
+
+    it("channel close ends game with disconnect flag", () => {
+      const onEnd = vi.fn();
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, onEnd);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine._handleChannelClose();
+      expect(engine.gameState.phase).toBe(PHASE.FINISHED);
+      expect(onEnd).toHaveBeenCalledWith(expect.objectContaining({ disconnected: true }));
+    });
+
+    it("channel close is no-op when game already finished", () => {
+      const onEnd = vi.fn();
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, onEnd);
+      engine.start();
+      engine.gameState.phase = PHASE.FINISHED;
+      engine._handleChannelClose();
+      expect(onEnd).not.toHaveBeenCalled();
+    });
+  });
+
+  // ── Additional edge-case coverage ──
+
+  describe("additional edge cases", () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("P2 remote fire edge-trigger: false→true fires missile", () => {
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
+      engine.start();
+      engine._handleMessage({ data: encodeGameReady() });
+      vi.advanceTimersByTime(4500); // countdown + spawn
+      expect(engine.gameState.phase).toBe(PHASE.PLAYING);
+
+      // Ensure P2 fire was off
+      engine._p2FirePrev = false;
+      engine.remoteInputs.fire = true;
+      engine.audio.playFire.mockClear();
+
+      engine._gameLoop(performance.now());
+
+      expect(engine.audio.playFire).toHaveBeenCalled();
+      expect(engine._p2FirePrev).toBe(true);
+    });
+
+    it("P2 remote warp edge-trigger: false→true attempts warp", () => {
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
+      engine.start();
+      engine._handleMessage({ data: encodeGameReady() });
+      vi.advanceTimersByTime(4500);
+      expect(engine.gameState.phase).toBe(PHASE.PLAYING);
+
+      // Make ship2 alive with no cooldown
+      engine.gameState.ship2 = {
+        ...engine.gameState.ship2,
+        warpCooldown: 0,
+        invulnerable: false,
+        invulnTimer: 0,
+      };
+      engine._p2WarpPrev = false;
+      engine.remoteInputs.warp = true;
+      engine.audio.playWarp.mockClear();
+
+      const originalRandom = Math.random;
+      Math.random = () => 0.5; // ensure warp succeeds
+
+      engine._gameLoop(performance.now());
+
+      expect(engine.audio.playWarp).toHaveBeenCalled();
+      expect(engine._p2WarpPrev).toBe(true);
+
+      Math.random = originalRandom;
+    });
+
+    it("debris field mode: asteroid collision kills ship", () => {
+      engine = new StarDuelEngine(canvas, channel, "debris_field", true, null);
+      engine.start();
+      engine._handleMessage({ data: encodeGameReady() });
+      vi.advanceTimersByTime(4500);
+      expect(engine.gameState.phase).toBe(PHASE.PLAYING);
+
+      // Place ship1 directly on an asteroid, clearing invulnerability
+      if (engine.gameState.asteroids.length > 0) {
+        const ast = engine.gameState.asteroids[0];
+        engine.gameState.ship1 = {
+          ...engine.gameState.ship1,
+          x: ast.x,
+          y: ast.y,
+          alive: true,
+          exploding: false,
+          invulnerable: false,
+          invulnTimer: 0,
+        };
+        engine.audio.playDeath.mockClear();
+        engine._gameLoop(performance.now());
+
+        // Ship should have been killed by asteroid collision
+        expect(engine.gameState.ship1.exploding).toBe(true);
+        expect(engine.gameState.ship1.alive).toBe(false);
+      }
+    });
+
+    it("gravity well mode: star collision kills ship", () => {
+      engine = new StarDuelEngine(canvas, channel, "gravity_well", true, null);
+      engine.start();
+      engine._handleMessage({ data: encodeGameReady() });
+      vi.advanceTimersByTime(4500);
+      expect(engine.gameState.phase).toBe(PHASE.PLAYING);
+
+      // Place ship1 at the star position, clearing invulnerability
+      engine.gameState.ship1 = {
+        ...engine.gameState.ship1,
+        x: STAR_X,
+        y: STAR_Y,
+        vx: 0,
+        vy: 0,
+        alive: true,
+        exploding: false,
+        invulnerable: false,
+        invulnTimer: 0,
+      };
+      engine._gameLoop(performance.now());
+
+      // Ship should have been killed by star collision
+      expect(engine.gameState.ship1.alive).toBe(false);
+      expect(engine.gameState.ship1.exploding).toBe(true);
+    });
+
+    it("onGameEnd null callback safety in _handleGameFinished", () => {
+      engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
+      engine.start();
+      engine._handleMessage({ data: encodeGameReady() });
+      vi.advanceTimersByTime(4500);
+      expect(engine.gameState.phase).toBe(PHASE.PLAYING);
+
+      // Set score to trigger game finished
+      engine.gameState.score1 = WIN_SCORE;
+      engine.onGameEnd = null;
+
+      expect(() => engine._handleGameFinished()).not.toThrow();
+      expect(engine.gameState.phase).toBe(PHASE.FINISHED);
     });
   });
 });

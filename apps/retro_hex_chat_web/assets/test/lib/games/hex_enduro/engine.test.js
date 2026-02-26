@@ -750,6 +750,109 @@ describe("HexEnduroEngine", () => {
     });
   });
 
+  describe("_handleBlur peer sends release messages", () => {
+    it("sends 5 release messages for all input keys", () => {
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", false, null);
+      engine.start();
+      channel.send.mockClear();
+
+      engine.localInputs = { left: true, right: true, accel: true, brake: true, turbo: true };
+      engine._handleBlur();
+
+      // Should send 5 release messages (one per input key)
+      expect(channel.send).toHaveBeenCalledTimes(5);
+      // All inputs should be cleared
+      expect(engine.localInputs.left).toBe(false);
+      expect(engine.localInputs.right).toBe(false);
+      expect(engine.localInputs.accel).toBe(false);
+      expect(engine.localInputs.brake).toBe(false);
+      expect(engine.localInputs.turbo).toBe(false);
+    });
+  });
+
+  describe("game loop FINISHED phase", () => {
+    it("exits loop without requesting another frame when phase is FINISHED", () => {
+      const onGameEnd = vi.fn();
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, onGameEnd);
+      engine.start();
+      engine.running = true;
+      engine.colors = getColors(canvas);
+
+      // Set phase to FINISHED before calling game loop
+      engine.gameState.phase = PHASE.FINISHED;
+
+      globalThis.requestAnimationFrame.mockClear();
+
+      // Call _gameLoop directly
+      engine._gameLoop();
+
+      // _handleGameEnd should have been called (FINISHED check at end of loop)
+      expect(onGameEnd).toHaveBeenCalled();
+      // Should NOT request another animation frame
+      expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("_playEventsAudio individual events", () => {
+    it("plays playOvertakePlayer on OVERTAKE_PLAYER event", () => {
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
+      engine.start();
+
+      engine.audio.playOvertakePlayer.mockClear();
+      engine._playEventsAudio(EVENT.OVERTAKE_PLAYER);
+      expect(engine.audio.playOvertakePlayer).toHaveBeenCalled();
+    });
+
+    it("plays playTurbo on TURBO_ACTIVATE event", () => {
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
+      engine.start();
+
+      engine.audio.playTurbo.mockClear();
+      engine._playEventsAudio(EVENT.TURBO_ACTIVATE);
+      expect(engine.audio.playTurbo).toHaveBeenCalled();
+    });
+
+    it("plays playWeatherChange on WEATHER_CHANGE event", () => {
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
+      engine.start();
+
+      engine.audio.playWeatherChange.mockClear();
+      engine._playEventsAudio(EVENT.WEATHER_CHANGE);
+      expect(engine.audio.playWeatherChange).toHaveBeenCalled();
+    });
+  });
+
+  describe("_handleGameEnd callback error swallowing", () => {
+    it("does not throw when onGameEnd callback throws", () => {
+      const onGameEnd = vi.fn(() => {
+        throw new Error("callback error");
+      });
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, onGameEnd);
+      engine.start();
+
+      engine.gameState.phase = PHASE.FINISHED;
+      engine.gameState.p1.score = 50;
+      engine.gameState.p2.score = 30;
+
+      expect(() => engine._handleGameEnd()).not.toThrow();
+      expect(onGameEnd).toHaveBeenCalled();
+    });
+  });
+
+  describe("_gameLoop early exit when not running", () => {
+    it("exits immediately without requesting another frame", () => {
+      engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
+      engine.start();
+      engine.running = false;
+      engine.gameState.phase = PHASE.RACING;
+
+      globalThis.requestAnimationFrame.mockClear();
+      engine._gameLoop();
+
+      expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
+    });
+  });
+
   describe("engine resilience", () => {
     it("_startGameLoop guards against double-call", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);

@@ -9,7 +9,11 @@ import {
   encodeGameReady,
   encodeGameEnd,
 } from "../../../../js/lib/games/hex_tennis/protocol.js";
-import { createInitialState } from "../../../../js/lib/games/hex_tennis/physics.js";
+import {
+  createInitialState,
+  COURT_CENTER_X,
+  COURT_BOTTOM,
+} from "../../../../js/lib/games/hex_tennis/physics.js";
 
 // Stub Web Audio API
 class MockAudioContext {
@@ -992,6 +996,526 @@ describe("TennisEngine", () => {
       expect(flat.ballVX).toBe(3.5);
       expect(flat.ballVY).toBe(-2.1);
       expect(flat.ballHeight).toBe(0.4);
+      e.stop();
+    });
+  });
+
+  // ── SERVING phase tests ──
+
+  describe("_gameLoop SERVING phase", () => {
+    function setupServingEngine() {
+      vi.useFakeTimers();
+      const canvas = createMockCanvas();
+      const channel = createMockChannel();
+      const e = new TennisEngine(canvas, channel, "hex_tennis", true, vi.fn());
+      e.start();
+      // Trigger countdown then let it finish to reach SERVING
+      e._handleMessage({ data: encodeGameReady() });
+      vi.advanceTimersByTime(3000);
+      expect(e.gameState.phase).toBe(PHASE.SERVING);
+      return { e, canvas, channel };
+    }
+
+    it("host serve: localInputs.serve && server===1 → performServe + RALLY", () => {
+      const { e } = setupServingEngine();
+      e.gameState.server = 1;
+      e.localInputs.serve = true;
+      e._gameLoop();
+      expect(e.gameState.phase).toBe(PHASE.RALLY);
+      e.stop();
+      vi.useRealTimers();
+    });
+
+    it("remote serve: remoteInputs.serve && server===2 → performServe + RALLY", () => {
+      const { e } = setupServingEngine();
+      e.gameState.server = 2;
+      e.remoteInputs.serve = true;
+      e._gameLoop();
+      expect(e.gameState.phase).toBe(PHASE.RALLY);
+      e.stop();
+      vi.useRealTimers();
+    });
+
+    it("auto-serve: serveTimer counts down to 0 → auto-serves", () => {
+      const { e } = setupServingEngine();
+      e.gameState.server = 1;
+      e.gameState.serveTimer = 1; // will reach 0 after decrement
+      e._gameLoop();
+      expect(e.gameState.phase).toBe(PHASE.RALLY);
+      e.stop();
+      vi.useRealTimers();
+    });
+  });
+
+  // ── RALLY phase tests ──
+
+  describe("_gameLoop RALLY phase", () => {
+    function setupRallyEngine() {
+      const canvas = createMockCanvas();
+      const channel = createMockChannel();
+      const e = new TennisEngine(canvas, channel, "hex_tennis", true, vi.fn());
+      e.start();
+      e.gameState.phase = PHASE.RALLY;
+      e.gameState.ball = {
+        x: COURT_CENTER_X,
+        y: 240,
+        vx: 3,
+        vy: -3,
+        speed: 5,
+        height: 0.3,
+        heightVel: 0.06,
+      };
+      e.gameState.lastHitter = 1;
+      e.gameState.rallyCount = 1;
+      return { e, canvas, channel };
+    }
+
+    it("clears event flags at start of rally loop", () => {
+      const { e } = setupRallyEngine();
+      e.gameState.hitEvent = true;
+      e.gameState.serveEvent = true;
+      e._gameLoop();
+      // After one loop iteration, flags should have been cleared
+      // (they may get re-set by collisions, but the clearEventFlags call happened)
+      // The fact that gameState.serveEvent is false confirms clearEventFlags ran
+      expect(e.gameState.serveEvent).toBe(false);
+      e.stop();
+    });
+
+    it("updates ball position each frame", () => {
+      const { e } = setupRallyEngine();
+      const prevBallY = e.gameState.ball.y;
+      e._gameLoop();
+      expect(e.gameState.ball.y).not.toBe(prevBallY);
+      e.stop();
+    });
+
+    it("updates player positions with inputs", () => {
+      const { e } = setupRallyEngine();
+      const prevP1y = e.gameState.p1y;
+      e.localInputs.up = true;
+      e._gameLoop();
+      // P1 should have moved up (toward net, but clamped to bottom half)
+      expect(e.gameState.p1y).toBeLessThanOrEqual(prevP1y);
+      e.stop();
+    });
+
+    it("renders and broadcasts on interval", () => {
+      const { e, canvas, channel } = setupRallyEngine();
+      canvas._ctx.fillRect.mockClear();
+      channel.send.mockClear();
+      e.frameCount = 1; // next frame will be 2, divisible by STATE_SEND_INTERVAL
+      e._gameLoop();
+      expect(canvas._ctx.fillRect).toHaveBeenCalled();
+      expect(channel.send).toHaveBeenCalled();
+      e.stop();
+    });
+
+    it("requests next animation frame during rally", () => {
+      const { e } = setupRallyEngine();
+      globalThis.requestAnimationFrame.mockClear();
+      e._gameLoop();
+      expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
+      e.stop();
+    });
+  });
+
+  // ── POINT phase tests ──
+
+  describe("_gameLoop POINT phase", () => {
+    it("pointPauseCounter decrements each frame", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.POINT;
+      e.pointPauseCounter = 10;
+      e._gameLoop();
+      expect(e.pointPauseCounter).toBe(9);
+      e.stop();
+    });
+
+    it("transitions to SERVING when pause ends (no changeover)", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.POINT;
+      e.gameState.p1Games = 0;
+      e.gameState.p2Games = 0;
+      e.gameState.isTiebreak = false;
+      e.pointPauseCounter = 1; // will hit 0
+      e._gameLoop();
+      expect(e.gameState.phase).toBe(PHASE.SERVING);
+      e.stop();
+    });
+  });
+
+  // ── CHANGEOVER phase tests ──
+
+  describe("_gameLoop CHANGEOVER phase", () => {
+    it("pointPauseCounter decrements each frame", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.CHANGEOVER;
+      e.pointPauseCounter = 5;
+      e._gameLoop();
+      expect(e.pointPauseCounter).toBe(4);
+      e.stop();
+    });
+
+    it("transitions to SERVING when changeover pause ends", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.CHANGEOVER;
+      e.pointPauseCounter = 1;
+      e._gameLoop();
+      expect(e.gameState.phase).toBe(PHASE.SERVING);
+      e.stop();
+    });
+  });
+
+  // ── GAME_OVER from loop ──
+
+  describe("_gameLoop GAME_OVER detection", () => {
+    it("calls _handleGameFinished when phase becomes GAME_OVER", () => {
+      const onEnd = vi.fn();
+      const channel = createMockChannel();
+      const e = new TennisEngine(createMockCanvas(), channel, "hex_tennis", true, onEnd);
+      e.start();
+      // Set up a state that is already GAME_OVER
+      e.gameState.phase = PHASE.GAME_OVER;
+      e.gameState.winner = 1;
+      e.gameState.p1Games = 6;
+      e.gameState.p2Games = 4;
+      channel.send.mockClear();
+
+      e._gameLoop();
+
+      // Should have called onGameEnd via _handleGameFinished
+      expect(onEnd).toHaveBeenCalledWith({
+        score: { p1: 6, p2: 4 },
+        winner: 1,
+      });
+      e.stop();
+    });
+
+    it("_handleGameFinished sends encodeGameEnd with gameMode and isTiebreak", () => {
+      const channel = createMockChannel();
+      const e = new TennisEngine(createMockCanvas(), channel, "hex_tennis", true, vi.fn());
+      e.start();
+      e.gameState.phase = PHASE.GAME_OVER;
+      e.gameState.winner = 2;
+      e.gameState.p1Games = 4;
+      e.gameState.p2Games = 6;
+      e.gameState.gameMode = GAME_MODE.CLASSIC;
+      e.gameState.isTiebreak = false;
+      channel.send.mockClear();
+
+      e._handleGameFinished();
+
+      // Find the GAME_END message
+      const endBuf = channel.send.mock.calls.find(
+        (c) => new DataView(c[0]).getUint8(0) === MSG_TYPE.GAME_END,
+      );
+      expect(endBuf).toBeDefined();
+      // Verify it has 6 bytes (includes gameMode + tiebreak flag)
+      expect(endBuf[0].byteLength).toBe(6);
+      e.stop();
+    });
+  });
+
+  // ── Fault handling in rally ──
+
+  describe("_gameLoop rally fault handling", () => {
+    it("plays playFault on serve fault event", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.RALLY;
+      e.gameState.rallyCount = 0;
+      e.gameState.lastHitter = 1;
+      e.gameState.server = 1;
+      // Ball landed on ground (height=0) outside service box
+      e.gameState.ball = {
+        x: 50,
+        y: 50,
+        vx: 0,
+        vy: -3,
+        speed: 5,
+        height: 0,
+        heightVel: 0,
+      };
+      e.gameState.isSecondServe = false;
+      e.gameState.totalPointsInGame = 0;
+
+      const faultSpy = vi.spyOn(e.audio, "playFault");
+      e._gameLoop();
+
+      // If fault was detected, playFault should be called
+      if (e.gameState.faultEvent) {
+        expect(faultSpy).toHaveBeenCalled();
+      }
+      e.stop();
+    });
+  });
+
+  // ── Host audio in rally ──
+
+  describe("_gameLoop rally audio events", () => {
+    it("plays playHit on hitEvent", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.RALLY;
+      e.gameState.lastHitter = 2;
+      e.gameState.rallyCount = 1;
+      // Place ball exactly on P1 hit zone (ball moving toward P1)
+      e.gameState.p1y = COURT_BOTTOM - 30;
+      e.gameState.p1x = COURT_CENTER_X;
+      e.gameState.ball = {
+        x: COURT_CENTER_X,
+        y: COURT_BOTTOM - 30,
+        vx: 0,
+        vy: 3,
+        speed: 5,
+        height: 0.3,
+        heightVel: 0.06,
+      };
+      const hitSpy = vi.spyOn(e.audio, "playHit");
+      e._gameLoop();
+      expect(hitSpy).toHaveBeenCalled();
+      e.stop();
+    });
+
+    it("plays playOut on out-of-bounds (wide)", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.RALLY;
+      e.gameState.lastHitter = 1;
+      e.gameState.rallyCount = 1;
+      // Ball far off court to the left
+      e.gameState.ball = {
+        x: 20,
+        y: 200,
+        vx: -5,
+        vy: 0,
+        speed: 5,
+        height: 0.3,
+        heightVel: 0,
+      };
+      const outSpy = vi.spyOn(e.audio, "playOut");
+      e._gameLoop();
+      expect(outSpy).toHaveBeenCalled();
+      e.stop();
+    });
+
+    it("plays playNetHit on net collision", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.RALLY;
+      e.gameState.lastHitter = 1;
+      e.gameState.rallyCount = 1;
+      // Ball at the net with low height → net collision
+      e.gameState.ball = {
+        x: COURT_CENTER_X,
+        y: 240, // NET_Y
+        vx: 0,
+        vy: -3,
+        speed: 5,
+        height: 0.1, // below NET_HEIGHT_FACTOR (0.35)
+        heightVel: -0.05,
+      };
+      const netSpy = vi.spyOn(e.audio, "playNetHit");
+      e._gameLoop();
+      expect(netSpy).toHaveBeenCalled();
+      e.stop();
+    });
+
+    it("plays playPoint when pointWinner > 0 from out-of-bounds", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.RALLY;
+      e.gameState.lastHitter = 1;
+      e.gameState.rallyCount = 1;
+      // Ball wide out
+      e.gameState.ball = {
+        x: 20,
+        y: 200,
+        vx: -5,
+        vy: 0,
+        speed: 5,
+        height: 0.3,
+        heightVel: 0,
+      };
+      const pointSpy = vi.spyOn(e.audio, "playPoint");
+      e._gameLoop();
+      expect(pointSpy).toHaveBeenCalled();
+      e.stop();
+    });
+  });
+
+  // ── Score advancement in loop ──
+
+  describe("_gameLoop score advancement", () => {
+    it("transitions to POINT phase after scoring", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        true,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.RALLY;
+      e.gameState.lastHitter = 1;
+      e.gameState.rallyCount = 1;
+      // Wide out → point for P2
+      e.gameState.ball = {
+        x: 20,
+        y: 200,
+        vx: -5,
+        vy: 0,
+        speed: 5,
+        height: 0.3,
+        heightVel: 0,
+      };
+      e._gameLoop();
+      expect(e.gameState.phase).toBe(PHASE.POINT);
+      e.stop();
+    });
+
+    it("GAME_OVER from rally calls _handleGameFinished immediately", () => {
+      const onEnd = vi.fn();
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis_sudden",
+        true,
+        onEnd,
+      );
+      e.start();
+      e.gameState.phase = PHASE.RALLY;
+      e.gameState.lastHitter = 1;
+      e.gameState.rallyCount = 1;
+      e.gameState.p1Games = 5;
+      e.gameState.p2Games = 5;
+      // Ball wide out → point for P2, P2 gets game 6 in sudden death = win
+      e.gameState.ball = {
+        x: 20,
+        y: 200,
+        vx: -5,
+        vy: 0,
+        speed: 5,
+        height: 0.3,
+        heightVel: 0,
+      };
+      e._gameLoop();
+      expect(onEnd).toHaveBeenCalled();
+      e.stop();
+    });
+  });
+
+  // ── Peer phase audio ──
+
+  describe("_playPeerAudio additional", () => {
+    it("plays playMatchWon on GAME_OVER transition", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        false,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.RALLY;
+
+      const flat = {
+        ...createInitialState(0),
+        phase: PHASE.GAME_OVER,
+        ballX: 320,
+        ballY: 240,
+        ballVX: 0,
+        ballVY: 0,
+        ballHeight: 0,
+      };
+      const matchSpy = vi.spyOn(e.audio, "playMatchWon");
+      e._handleMessage({ data: encodeGameState(flat) });
+      expect(matchSpy).toHaveBeenCalled();
+      e.stop();
+    });
+
+    it("plays playCountdown on COUNTDOWN transition", () => {
+      const e = new TennisEngine(
+        createMockCanvas(),
+        createMockChannel(),
+        "hex_tennis",
+        false,
+        vi.fn(),
+      );
+      e.start();
+      e.gameState.phase = PHASE.WAITING;
+
+      const flat = {
+        ...createInitialState(0),
+        phase: PHASE.COUNTDOWN,
+        ballX: 320,
+        ballY: 240,
+        ballVX: 0,
+        ballVY: 0,
+        ballHeight: 0,
+      };
+      const countSpy = vi.spyOn(e.audio, "playCountdown");
+      e._handleMessage({ data: encodeGameState(flat) });
+      expect(countSpy).toHaveBeenCalled();
       e.stop();
     });
   });

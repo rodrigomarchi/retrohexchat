@@ -666,4 +666,355 @@ describe("WarlordEngine", () => {
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
     });
   });
+
+  // ── Connection Resilience ──
+
+  describe("connection resilience", () => {
+    it("double-start is a no-op", () => {
+      engine = new WarlordEngine(canvas, channel, "shield_wall", true, null);
+      engine.start();
+      const firstState = engine.gameState;
+      engine.start(); // should not reset
+      expect(engine.gameState).toBe(firstState);
+    });
+
+    it("blur clears local inputs", () => {
+      engine = new WarlordEngine(canvas, channel, "shield_wall", true, null);
+      engine.start();
+      engine.localInputs = { up: true, down: true, space: true };
+      engine._handleBlur();
+      expect(engine.localInputs.up).toBe(false);
+      expect(engine.localInputs.down).toBe(false);
+      expect(engine.localInputs.space).toBe(false);
+    });
+
+    it("channel close ends game with disconnect flag", () => {
+      const onEnd = vi.fn();
+      engine = new WarlordEngine(canvas, channel, "shield_wall", true, onEnd);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine._handleChannelClose();
+      expect(engine.gameState.phase).toBe(PHASE.FINISHED);
+      expect(onEnd).toHaveBeenCalledWith(expect.objectContaining({ disconnected: true }));
+    });
+
+    it("channel close is no-op when game already finished", () => {
+      const onEnd = vi.fn();
+      engine = new WarlordEngine(canvas, channel, "shield_wall", true, onEnd);
+      engine.start();
+      engine.gameState.phase = PHASE.FINISHED;
+      engine._handleChannelClose();
+      expect(onEnd).not.toHaveBeenCalled();
+    });
+  });
+
+  // ── SPACE / catch / release mechanic ──
+
+  describe("_handleMessage host: SPACE release (catch mechanic)", () => {
+    it("SPACE released while caughtBy===2 calls releaseBall for P2", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.caughtBy = 2;
+      engine.gameState.fireballSpeed = 3;
+
+      // Peer presses space first
+      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.SPACE, true) });
+      expect(engine.remoteInputs.space).toBe(true);
+
+      // Peer releases space → should release ball
+      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.SPACE, false) });
+      expect(engine.gameState.caughtBy).toBe(0);
+    });
+
+    it("SPACE released while caughtBy===2 plays playLaunch", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.caughtBy = 2;
+      engine.gameState.fireballSpeed = 3;
+
+      engine.remoteInputs.space = true;
+      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.SPACE, false) });
+
+      expect(engine.audio.playLaunch).toHaveBeenCalled();
+    });
+
+    it("SPACE released while caughtBy===0 does NOT call playLaunch", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.caughtBy = 0;
+
+      engine.remoteInputs.space = true;
+      engine._handleMessage({ data: encodePlayerInput(INPUT_KEY.SPACE, false) });
+
+      expect(engine.audio.playLaunch).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("_handleKeyUp host: SPACE release (catch mechanic)", () => {
+    it("SPACE released while caughtBy===1 calls releaseBall for P1", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.caughtBy = 1;
+      engine.gameState.fireballSpeed = 3;
+
+      // Press space first
+      engine._handleKeyDown({ key: " ", preventDefault: vi.fn() });
+      // Release space
+      engine._handleKeyUp({ key: " " });
+
+      expect(engine.gameState.caughtBy).toBe(0);
+      expect(engine.audio.playLaunch).toHaveBeenCalled();
+    });
+
+    it("SPACE released while caughtBy===0 does not release", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.caughtBy = 0;
+
+      engine._handleKeyDown({ key: " ", preventDefault: vi.fn() });
+      engine._handleKeyUp({ key: " " });
+
+      expect(engine.audio.playLaunch).not.toHaveBeenCalled();
+    });
+  });
+
+  // ── Game loop tests ──
+
+  describe("_gameLoop (host)", () => {
+    function setupPlayingEngine() {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.fireballX = CANVAS_W / 2;
+      engine.gameState.fireballY = CANVAS_H / 2;
+      engine.gameState.fireballVX = 3;
+      engine.gameState.fireballVY = -2;
+      engine.gameState.fireballSpeed = 3;
+      engine.gameState.caughtBy = 0;
+      engine.running = true;
+      engine.colors = {
+        bg: "#000",
+        fg: "#0f0",
+        accent: "#0cf",
+        muted: "#333",
+        glow: "#000",
+        warning: "#f00",
+      };
+      return engine;
+    }
+
+    it("increments frameCount each frame", () => {
+      setupPlayingEngine();
+      const before = engine.frameCount;
+      engine._gameLoop(0);
+      expect(engine.frameCount).toBe(before + 1);
+    });
+
+    it("calls render each frame", () => {
+      setupPlayingEngine();
+      render.mockClear();
+      engine._gameLoop(0);
+      expect(render).toHaveBeenCalled();
+    });
+
+    it("requests next animation frame", () => {
+      setupPlayingEngine();
+      globalThis.requestAnimationFrame.mockClear();
+      engine._gameLoop(0);
+      expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
+    });
+
+    it("plays playWallBounce on wall bounce", () => {
+      setupPlayingEngine();
+      // Place fireball at top edge to trigger bounce
+      engine.gameState.fireballY = 2;
+      engine.gameState.fireballVY = -3;
+      engine._gameLoop(0);
+      expect(engine.audio.playWallBounce).toHaveBeenCalled();
+    });
+
+    it("plays playBrickHit on brick collision", () => {
+      setupPlayingEngine();
+      // Place fireball directly on a P1 brick
+      const brick = engine.gameState.p1Bricks[0];
+      engine.gameState.fireballX = brick.x + brick.w / 2;
+      engine.gameState.fireballY = brick.y + brick.h / 2;
+      engine.gameState.fireballVX = -3;
+      engine._gameLoop(0);
+      expect(engine.audio.playBrickHit).toHaveBeenCalled();
+    });
+
+    it("does not run when running is false", () => {
+      setupPlayingEngine();
+      engine.running = false;
+      render.mockClear();
+      engine._gameLoop(0);
+      expect(render).not.toHaveBeenCalled();
+    });
+  });
+
+  // ── _handleKingHit ──
+
+  describe("_handleKingHit (host)", () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("sets KING_HIT phase and broadcasts", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.p1Lives = 3;
+      engine.gameState.p2Lives = 3;
+      engine.colors = {
+        bg: "#000",
+        fg: "#0f0",
+        accent: "#0cf",
+        muted: "#333",
+        glow: "#000",
+        warning: "#f00",
+      };
+      channel.send.mockClear();
+
+      engine._handleKingHit();
+
+      expect(engine.gameState.phase).toBe(PHASE.KING_HIT);
+      expect(channel.send).toHaveBeenCalled();
+    });
+
+    it("after KING_HIT_PAUSE with 0 lives: game over → _handleGameFinished", () => {
+      const onEnd = vi.fn();
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, onEnd);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.p1Lives = 0;
+      engine.gameState.p2Lives = 2;
+      engine.colors = {
+        bg: "#000",
+        fg: "#0f0",
+        accent: "#0cf",
+        muted: "#333",
+        glow: "#000",
+        warning: "#f00",
+      };
+
+      engine._handleKingHit();
+      // Advance past KING_HIT_PAUSE (2000ms)
+      vi.advanceTimersByTime(2100);
+
+      expect(engine.gameState.phase).toBe(PHASE.FINISHED);
+      expect(onEnd).toHaveBeenCalled();
+    });
+
+    it("after KING_HIT_PAUSE with lives remaining: rebuilds castles + restarts countdown", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.p1Lives = 2;
+      engine.gameState.p2Lives = 3;
+      engine.gameState.round = 1;
+      engine.colors = {
+        bg: "#000",
+        fg: "#0f0",
+        accent: "#0cf",
+        muted: "#333",
+        glow: "#000",
+        warning: "#f00",
+      };
+
+      engine._handleKingHit();
+      vi.advanceTimersByTime(2100);
+
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      // All bricks should be rebuilt (alive)
+      const allP1Alive = engine.gameState.p1Bricks.every((b) => b.alive);
+      expect(allP1Alive).toBe(true);
+    });
+  });
+
+  // ── Custom stop() override ──
+
+  describe("stop() custom override", () => {
+    it("removes channel message listener", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+      engine.start();
+      engine.stop();
+      expect(channel.removeEventListener).toHaveBeenCalledWith("message", expect.any(Function));
+    });
+
+    it("removes document keydown/keyup listeners", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+      engine.start();
+
+      const removeSpy = vi.spyOn(document, "removeEventListener");
+      engine.stop();
+
+      const keydownRemoved = removeSpy.mock.calls.some((call) => call[0] === "keydown");
+      const keyupRemoved = removeSpy.mock.calls.some((call) => call[0] === "keyup");
+      expect(keydownRemoved).toBe(true);
+      expect(keyupRemoved).toBe(true);
+      removeSpy.mockRestore();
+    });
+
+    it("removes channel close listener", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
+      engine.start();
+      engine.stop();
+      expect(channel.removeEventListener).toHaveBeenCalledWith("close", expect.any(Function));
+    });
+  });
+
+  // ── _playPhaseAudio peer ──
+
+  describe("_playPhaseAudio (peer)", () => {
+    it("COUNTDOWN phase plays playCountdown", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", false, null);
+      engine.start();
+
+      // Simulate receiving state transition to COUNTDOWN
+      const state = {
+        ...createInitialState(),
+        phase: PHASE.COUNTDOWN,
+        countdown: 3,
+      };
+      // First set a WAITING state so prevPhase differs
+      engine.gameState.phase = PHASE.WAITING;
+      engine._handleMessage({ data: encodeGameState(state) });
+
+      expect(engine.audio.playCountdown).toHaveBeenCalled();
+    });
+
+    it("KING_HIT phase plays playKingHit", () => {
+      engine = new WarlordEngine(canvas, channel, "hex_warlords", false, null);
+      engine.start();
+
+      // Set previous phase to PLAYING
+      const playingState = {
+        ...createInitialState(),
+        phase: PHASE.PLAYING,
+      };
+      engine._handleMessage({ data: encodeGameState(playingState) });
+      engine.audio.playKingHit.mockClear();
+
+      // Now transition to KING_HIT
+      const kingHitState = {
+        ...createInitialState(),
+        phase: PHASE.KING_HIT,
+        p1Lives: 2,
+        p2Lives: 3,
+      };
+      engine._handleMessage({ data: encodeGameState(kingHitState) });
+
+      expect(engine.audio.playKingHit).toHaveBeenCalled();
+    });
+  });
 });

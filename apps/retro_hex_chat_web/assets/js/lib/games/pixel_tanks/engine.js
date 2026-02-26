@@ -79,6 +79,7 @@ export class PixelTanksEngine extends GameEngine {
     this.peerReady = false;
     this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
+    this._boundChannelClose = this._handleChannelClose.bind(this);
 
     // Edge-trigger fire (only fire on press, not hold)
     this._localFirePressed = false;
@@ -86,6 +87,7 @@ export class PixelTanksEngine extends GameEngine {
   }
 
   start() {
+    if (this.running) return;
     super.start();
     this.localInputs = {
       rotateLeft: false,
@@ -95,6 +97,7 @@ export class PixelTanksEngine extends GameEngine {
     };
     this.colors = getColors(this.canvas);
     window.addEventListener("blur", this._boundBlur);
+    this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.isHost) {
       this._renderState();
@@ -106,6 +109,7 @@ export class PixelTanksEngine extends GameEngine {
 
   stop() {
     window.removeEventListener("blur", this._boundBlur);
+    this.channel.removeEventListener("close", this._boundChannelClose);
     if (this.phaseTimer) {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
@@ -502,6 +506,28 @@ export class PixelTanksEngine extends GameEngine {
         },
         winner,
       });
+    }
+  }
+
+  // ── Connection Resilience ──
+
+  _handleChannelClose() {
+    if (!this.gameState || this.gameState.phase === PHASE.MATCH_OVER) return;
+    this.gameState.phase = PHASE.MATCH_OVER;
+    this._renderState();
+    if (this.onGameEnd) {
+      try {
+        this.onGameEnd({
+          score: {
+            p1: this.gameState.roundWins1,
+            p2: this.gameState.roundWins2,
+          },
+          winner: 0,
+          disconnected: true,
+        });
+      } catch {
+        // callback error — ignore
+      }
     }
   }
 

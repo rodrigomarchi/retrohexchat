@@ -738,4 +738,171 @@ describe("SurroundEngine", () => {
       expect(channel.send).not.toHaveBeenCalled();
     });
   });
+
+  describe("_handleRoundOver integration", () => {
+    it("tick leading to death transitions to ROUND_OVER", () => {
+      engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine._savedScores = { score1: 0, score2: 0 };
+
+      // P1 at left edge heading left => dies
+      engine.gameState.p1.x = 0;
+      engine.gameState.p1.dir = DIR.LEFT;
+      engine.p1PendingDir = DIR.LEFT;
+
+      engine._tickLoop();
+
+      expect(engine.gameState.phase).toBe(PHASE.ROUND_OVER);
+      expect(engine.gameState.score2).toBe(1);
+      expect(engine.audio.playCrash).toHaveBeenCalled();
+    });
+
+    it("creates crash particles for P1 when P1 dies", () => {
+      engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine._savedScores = { score1: 0, score2: 0 };
+
+      engine.gameState.p1.x = 0;
+      engine.gameState.p1.dir = DIR.LEFT;
+      engine.p1PendingDir = DIR.LEFT;
+
+      engine._tickLoop();
+
+      // Particles should have been created
+      expect(engine.gameState.particles.length).toBeGreaterThan(0);
+    });
+
+    it("creates crash particles for P2 when P2 dies", () => {
+      engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine._savedScores = { score1: 0, score2: 0 };
+
+      engine.gameState.p2.x = 59; // GRID_W - 1
+      engine.gameState.p2.dir = DIR.RIGHT;
+      engine.p2PendingDir = DIR.RIGHT;
+
+      engine._tickLoop();
+
+      expect(engine.gameState.particles.length).toBeGreaterThan(0);
+      expect(engine.gameState.score1).toBe(1);
+    });
+
+    it("sets ROUND_OVER phase and schedules next countdown via phaseTimer", () => {
+      vi.useFakeTimers();
+      engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine._savedScores = { score1: 0, score2: 0 };
+
+      engine.gameState.p1.x = 0;
+      engine.gameState.p1.dir = DIR.LEFT;
+      engine.p1PendingDir = DIR.LEFT;
+
+      engine._tickLoop();
+
+      expect(engine.gameState.phase).toBe(PHASE.ROUND_OVER);
+      expect(engine.phaseTimer).not.toBeNull();
+
+      // After ROUND_OVER_DELAY (3000ms), next countdown starts
+      vi.advanceTimersByTime(3000);
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
+      vi.useRealTimers();
+    });
+
+    it("plays playRoundWin audio when P1 wins round (P2 dies)", () => {
+      engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine._savedScores = { score1: 0, score2: 0 };
+
+      // P2 dies (heading right at right edge)
+      engine.gameState.p2.x = 59;
+      engine.gameState.p2.dir = DIR.RIGHT;
+      engine.p2PendingDir = DIR.RIGHT;
+
+      engine.audio.playRoundWin.mockClear();
+      engine._tickLoop();
+
+      expect(engine.audio.playRoundWin).toHaveBeenCalled();
+    });
+  });
+
+  describe("_applyPeerState ROUND_OVER audio", () => {
+    it("plays playCrash and playRoundWin on ROUND_OVER transition when P2 wins", () => {
+      engine = new SurroundEngine(canvas, channel, "light_trails", false, null);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine.gameState.score1 = 0;
+      engine.gameState.score2 = 0;
+
+      engine.audio.playCrash.mockClear();
+      engine.audio.playRoundWin.mockClear();
+
+      // Simulate receiving ROUND_OVER state where P2 score increased
+      const state = {
+        ...createInitialState(0),
+        score1: 0,
+        score2: 1, // P2 won the round
+        phase: PHASE.ROUND_OVER,
+      };
+      const buf = encodeGameState(state);
+      engine._handleMessage({ data: buf });
+
+      expect(engine.audio.playCrash).toHaveBeenCalled();
+      expect(engine.audio.playRoundWin).toHaveBeenCalled();
+    });
+  });
+
+  describe("_renderLoop", () => {
+    it("stops when this.running is false", () => {
+      engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
+      engine.start();
+
+      // Clear RAF mock
+      globalThis.requestAnimationFrame.mockClear();
+
+      // Set running to false
+      engine.running = false;
+
+      // Call _renderLoop directly
+      engine._renderLoop(performance.now());
+
+      // Should NOT have called requestAnimationFrame
+      expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
+    });
+  });
+
+  // ── Connection Resilience ──
+
+  describe("connection resilience", () => {
+    it("double-start is a no-op", () => {
+      engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
+      engine.start();
+      const firstState = engine.gameState;
+      engine.start(); // should not reset
+      expect(engine.gameState).toBe(firstState);
+    });
+
+    it("channel close ends game with disconnect flag", () => {
+      const onEnd = vi.fn();
+      engine = new SurroundEngine(canvas, channel, "light_trails", true, onEnd);
+      engine.start();
+      engine.gameState.phase = PHASE.PLAYING;
+      engine._handleChannelClose();
+      expect(engine.gameState.phase).toBe(PHASE.MATCH_OVER);
+      expect(onEnd).toHaveBeenCalledWith(expect.objectContaining({ disconnected: true }));
+    });
+
+    it("channel close is no-op when game already finished", () => {
+      const onEnd = vi.fn();
+      engine = new SurroundEngine(canvas, channel, "light_trails", true, onEnd);
+      engine.start();
+      engine.gameState.phase = PHASE.MATCH_OVER;
+      engine._handleChannelClose();
+      expect(onEnd).not.toHaveBeenCalled();
+    });
+  });
 });
