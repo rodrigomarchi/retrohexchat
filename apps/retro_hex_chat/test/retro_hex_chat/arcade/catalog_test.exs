@@ -6,7 +6,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
   describe "list_games/0" do
     test "returns all games" do
       games = Catalog.list_games()
-      assert length(games) == 11
+      assert length(games) == 12
     end
 
     test "each game has required fields" do
@@ -15,7 +15,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
         assert is_binary(game.name)
         assert is_binary(game.tagline)
         assert is_binary(game.description)
-        assert game.engine in [:doom, :quake, :wolfenstein, :halflife]
+        assert game.engine in [:doom, :quake, :quake2, :wolfenstein, :halflife]
         assert is_binary(game.controls)
         assert is_binary(game.icon)
       end
@@ -38,6 +38,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
       assert "quake_shareware" in ids
       assert "librequake" in ids
       assert "wolfenstein_3d" in ids
+      assert "quake2_shareware" in ids
       assert "halflife_uplink" in ids
     end
   end
@@ -66,6 +67,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
       assert Catalog.valid_game_id?("quake_shareware")
       assert Catalog.valid_game_id?("librequake")
       assert Catalog.valid_game_id?("wolfenstein_3d")
+      assert Catalog.valid_game_id?("quake2_shareware")
       assert Catalog.valid_game_id?("halflife_uplink")
     end
 
@@ -78,7 +80,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
   describe "game_ids/0" do
     test "returns list of all game id strings" do
       ids = Catalog.game_ids()
-      assert length(ids) == 11
+      assert length(ids) == 12
       assert Enum.all?(ids, &is_binary/1)
     end
   end

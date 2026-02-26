@@ -1846,12 +1846,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_arcade,
         description:
-          "Play classic FPS games in your browser via WebAssembly — 11 games including " <>
-            "Half-Life: Uplink, Wolfenstein 3D, DOOM, Quake, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
+          "Play classic FPS games in your browser via WebAssembly — 12 games including " <>
+            "Half-Life: Uplink, Wolfenstein 3D, DOOM, Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
             "Start with /singleplayer.",
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-quake",
+          "feature-arcade-quake2",
           "feature-arcade-wolfenstein",
           "feature-arcade-halflife"
         ]
@@ -1884,6 +1885,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-arcade",
           "feature-arcade-quake",
+          "feature-arcade-quake2",
           "feature-arcade-wolfenstein",
           "feature-arcade-halflife"
         ]
@@ -1909,6 +1911,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-arcade",
           "feature-arcade-doom",
+          "feature-arcade-quake2",
           "feature-arcade-wolfenstein",
           "feature-arcade-halflife"
         ]
@@ -1938,6 +1941,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-arcade",
           "feature-arcade-doom",
           "feature-arcade-quake",
+          "feature-arcade-quake2",
           "feature-arcade-halflife"
         ]
       },
@@ -1967,7 +1971,38 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-arcade",
           "feature-arcade-doom",
           "feature-arcade-quake",
+          "feature-arcade-quake2",
           "feature-arcade-wolfenstein"
+        ]
+      },
+      %{
+        id: "feature-arcade-quake2",
+        title: "Quake II (Arcade)",
+        category: "Features",
+        keywords: [
+          "quake 2",
+          "quake ii",
+          "quake2",
+          "strogg",
+          "fps",
+          "shareware",
+          "demo",
+          "wasm",
+          "id software",
+          "yamagi",
+          "qwasm2",
+          "1997"
+        ],
+        icon: :icon_game_quake2,
+        description:
+          "Play the Quake II demo in your browser — Unit 1 of the singleplayer campaign. " <>
+            "Powered by Qwasm2 (Yamagi Quake II → WebAssembly).",
+        see_also: [
+          "feature-arcade",
+          "feature-arcade-quake",
+          "feature-arcade-doom",
+          "feature-arcade-wolfenstein",
+          "feature-arcade-halflife"
         ]
       }
     ]

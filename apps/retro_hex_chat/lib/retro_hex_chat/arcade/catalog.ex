@@ -9,7 +9,7 @@ defmodule RetroHexChat.Arcade.Catalog do
           name: String.t(),
           tagline: String.t(),
           description: String.t(),
-          engine: :doom | :quake | :wolfenstein | :halflife,
+          engine: :doom | :quake | :quake2 | :wolfenstein | :halflife,
           controls: String.t(),
           icon: String.t()
         }
@@ -113,6 +113,17 @@ defmodule RetroHexChat.Arcade.Catalog do
       engine: :quake,
       controls: "WASD move, Mouse aim, Left click fire, E use",
       icon: "game_librequake"
+    },
+    %{
+      id: "quake2_shareware",
+      name: "Quake II: The Invasion",
+      tagline: "Unit 1 — The Demo",
+      description:
+        "The official Quake II demo (1997) — full 3D FPS with Strogg invasion. " <>
+          "Unit 1 of the singleplayer campaign. The shareware classic that defined online FPS.",
+      engine: :quake2,
+      controls: "WASD move, Mouse aim, Left click fire, E use, Space jump, C crouch, R reload",
+      icon: "game_quake2"
     },
     %{
       id: "wolfenstein_3d",

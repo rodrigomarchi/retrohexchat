@@ -324,6 +324,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_game_hacx(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_rekkr(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_quake(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_quake2(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_librequake(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_wolfenstein(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_halflife(assigns), to: RetroHexChatWeb.Icons.Games
