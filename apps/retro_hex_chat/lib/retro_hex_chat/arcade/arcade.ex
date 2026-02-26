@@ -4,7 +4,7 @@ defmodule RetroHexChat.Arcade do
   Single-player WASM games (Doom, Quake) with isolated session management.
   """
 
-  alias RetroHexChat.Arcade.{Catalog, Queries, Service, SoloSessionServer}
+  alias RetroHexChat.Arcade.{Catalog, Content, Queries, Service, SoloSessionServer}
   alias RetroHexChat.Arcade.Schema.SoloSession
 
   # --- Session lifecycle ---
@@ -47,4 +47,9 @@ defmodule RetroHexChat.Arcade do
 
   @spec get_game(String.t()) :: {:ok, Catalog.game()} | {:error, :not_found}
   defdelegate get_game(game_id), to: Catalog
+
+  # --- Content ---
+
+  @spec get_game_content(String.t()) :: {:ok, Content.content()} | {:error, :not_found}
+  defdelegate get_game_content(game_id), to: Content, as: :get_content
 end

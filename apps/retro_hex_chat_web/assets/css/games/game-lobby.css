@@ -9,6 +9,15 @@
   font-size: var(--text-lg);
 }
 
+.game-lobby--detail {
+  max-width: 1100px;
+  max-height: calc(100vh - 60px);
+}
+
+.game-lobby--detail .game-lobby__body {
+  overflow-y: auto;
+}
+
 .game-lobby--expired {
   max-width: 500px;
   opacity: 0.8;

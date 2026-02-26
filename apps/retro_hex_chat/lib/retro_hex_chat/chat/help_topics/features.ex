@@ -1854,7 +1854,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Beneath a Steel Sky, Dreamweb, Drascula, Flight of the Amazon Queen, " <>
             "Lure of the Temptress, Soltys, Half-Life: Uplink, Wolfenstein 3D, DOOM, " <>
             "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
-            "Start with /singleplayer.",
+            "Click any game to see its detailed description, keyboard controls, and " <>
+            "gameplay tips before launching. Start with /singleplayer.",
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-quake",

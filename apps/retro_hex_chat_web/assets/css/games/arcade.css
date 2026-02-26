@@ -41,6 +41,123 @@
   line-height: 1.2;
 }
 
+/* ── Game detail screen ── */
+
+.arcade-detail__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.arcade-detail__header-actions {
+  display: flex;
+  gap: var(--space-6);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.arcade-detail__icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.arcade-detail__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 2px);
+}
+
+.arcade-detail__name {
+  font-weight: bold;
+  font-size: var(--font-size-base);
+  margin: 0;
+}
+
+.arcade-detail__tagline {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.arcade-detail__engine {
+  font-size: var(--font-size-xs, 10px);
+  color: var(--color-text-muted);
+}
+
+.arcade-detail__sections {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-12);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.arcade-detail__section {
+  padding: var(--space-8);
+  min-width: 0;
+}
+
+.arcade-detail__about p {
+  margin: 0 0 var(--space-6) 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.arcade-detail__about p:last-child {
+  margin-bottom: 0;
+}
+
+.arcade-detail__table {
+  width: 100%;
+  font-size: var(--font-size-sm);
+  border-collapse: collapse;
+}
+
+.arcade-detail__table th {
+  text-align: left;
+  font-weight: bold;
+  padding: var(--space-2) var(--space-6) var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.arcade-detail__table td {
+  padding: var(--space-2) var(--space-6) var(--space-2) 0;
+}
+
+.arcade-detail__table td:first-child {
+  white-space: nowrap;
+  width: 1%;
+}
+
+.arcade-detail__table kbd {
+  font-family: monospace;
+  font-size: var(--font-size-sm);
+  padding: 1px 4px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.arcade-detail__tips {
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  margin: 0;
+  padding-left: var(--space-16, 16px);
+}
+
+.arcade-detail__tips li {
+  margin-bottom: var(--space-4);
+}
+
+.arcade-detail__tips li:last-child {
+  margin-bottom: 0;
+}
+
+.arcade-detail__start {
+  font-weight: bold;
+}
+
 /* ── Arcade iframe frame ── */
 
 .arcade-frame {

@@ -101,6 +101,7 @@ defmodule RetroHexChatWeb.SoloSessionLive do
         games={@games}
         session_status={@session_status}
         inactivity_warning={@inactivity_warning}
+        previewed_game={@previewed_game}
       />
     </div>
     """
@@ -156,6 +157,26 @@ defmodule RetroHexChatWeb.SoloSessionLive do
   # --- Client Event Handlers ---
 
   @impl true
+  def handle_event("preview_game", %{"game_id" => game_id}, socket) do
+    case Arcade.get_game(game_id) do
+      {:ok, game} ->
+        content =
+          case Arcade.get_game_content(game_id) do
+            {:ok, c} -> c
+            {:error, _} -> %{about: [game.description], controls: [], tips: []}
+          end
+
+        {:noreply, assign(socket, previewed_game: %{game: game, content: content})}
+
+      {:error, _} ->
+        {:noreply, socket}
+    end
+  end
+
+  def handle_event("back_to_grid", _params, socket) do
+    {:noreply, assign(socket, previewed_game: nil)}
+  end
+
   def handle_event("select_game", %{"game_id" => game_id}, socket) do
     case Arcade.select_game(socket.assigns.token, socket.assigns.user_id, game_id) do
       :ok -> {:noreply, socket}
@@ -223,7 +244,8 @@ defmodule RetroHexChatWeb.SoloSessionLive do
         game_id: game_id,
         game_name: game_name,
         game_url: game_url,
-        session_closed: false
+        session_closed: false,
+        previewed_game: nil
       )
 
     {:ok, socket}
