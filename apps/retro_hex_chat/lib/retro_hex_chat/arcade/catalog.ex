@@ -9,7 +9,7 @@ defmodule RetroHexChat.Arcade.Catalog do
           name: String.t(),
           tagline: String.t(),
           description: String.t(),
-          engine: :doom | :quake | :quake2 | :wolfenstein | :halflife,
+          engine: :doom | :quake | :quake2 | :wolfenstein | :halflife | :scummvm,
           controls: String.t(),
           icon: String.t()
         }
@@ -147,6 +147,19 @@ defmodule RetroHexChat.Arcade.Catalog do
       controls:
         "WASD move, Mouse aim, Left click fire, E use, Space jump, Shift crouch, R reload",
       icon: "game_halflife"
+    },
+    %{
+      id: "scummvm_bass",
+      name: "Beneath a Steel Sky",
+      tagline: "Cyberpunk point & click adventure (1994)",
+      description:
+        "Escape Union City and uncover your past in this cyberpunk classic by " <>
+          "Revolution Software. One of the greatest point & click adventures ever made.",
+      engine: :scummvm,
+      controls:
+        "Left click interact/walk, Right click examine/verb menu, " <>
+          "Drag inventory items to combine. F5 save/load, Ctrl+F5 options, Esc skip cutscene",
+      icon: "game_bass"
     }
   ]
 
@@ -167,6 +180,21 @@ defmodule RetroHexChat.Arcade.Catalog do
   @spec game_ids() :: [String.t()]
   def game_ids, do: Enum.map(@games, & &1.id)
 
+  # ScummVM game ID → directory and ScummVM gameid mapping for URL fragment auto-start
+  @scummvm_games %{
+    "scummvm_bass" => {"bass", "sky"},
+    "scummvm_fotaq" => {"fotaq", "queen"},
+    "scummvm_lure" => {"lure", "lure"},
+    "scummvm_drascula" => {"drascula", "drascula"},
+    "scummvm_dreamweb" => {"dreamweb", "dreamweb"},
+    "scummvm_soltys" => {"soltys", "soltys"}
+  }
+
   @spec game_url(game()) :: String.t()
+  def game_url(%{id: id, engine: :scummvm}) do
+    {dir, gameid} = Map.fetch!(@scummvm_games, id)
+    "/arcade/scummvm/index.html#-p /data/games/#{dir}/ #{gameid}"
+  end
+
   def game_url(%{id: id}), do: "/arcade/#{id}/index.html"
 end

@@ -6,7 +6,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
   describe "list_games/0" do
     test "returns all games" do
       games = Catalog.list_games()
-      assert length(games) == 12
+      assert length(games) == 13
     end
 
     test "each game has required fields" do
@@ -15,7 +15,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
         assert is_binary(game.name)
         assert is_binary(game.tagline)
         assert is_binary(game.description)
-        assert game.engine in [:doom, :quake, :quake2, :wolfenstein, :halflife]
+        assert game.engine in [:doom, :quake, :quake2, :wolfenstein, :halflife, :scummvm]
         assert is_binary(game.controls)
         assert is_binary(game.icon)
       end
@@ -40,6 +40,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
       assert "wolfenstein_3d" in ids
       assert "quake2_shareware" in ids
       assert "halflife_uplink" in ids
+      assert "scummvm_bass" in ids
     end
   end
 
@@ -69,6 +70,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
       assert Catalog.valid_game_id?("wolfenstein_3d")
       assert Catalog.valid_game_id?("quake2_shareware")
       assert Catalog.valid_game_id?("halflife_uplink")
+      assert Catalog.valid_game_id?("scummvm_bass")
     end
 
     test "returns false for invalid ids" do
@@ -80,7 +82,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
   describe "game_ids/0" do
     test "returns list of all game id strings" do
       ids = Catalog.game_ids()
-      assert length(ids) == 12
+      assert length(ids) == 13
       assert Enum.all?(ids, &is_binary/1)
     end
   end
@@ -109,6 +111,11 @@ defmodule RetroHexChat.Arcade.CatalogTest do
     test "builds per-game URL for halflife game" do
       {:ok, game} = Catalog.get_game("halflife_uplink")
       assert Catalog.game_url(game) == "/arcade/halflife_uplink/index.html"
+    end
+
+    test "builds shared engine URL with fragment for scummvm game" do
+      {:ok, game} = Catalog.get_game("scummvm_bass")
+      assert Catalog.game_url(game) == "/arcade/scummvm/index.html#-p /data/games/bass/ sky"
     end
   end
 end

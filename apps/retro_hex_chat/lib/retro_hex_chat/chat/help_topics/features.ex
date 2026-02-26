@@ -1838,6 +1838,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "uplink",
           "xash3d",
           "valve",
+          "scummvm",
+          "point and click",
+          "adventure",
+          "beneath a steel sky",
           "wasm",
           "webassembly",
           "fps",
@@ -1846,15 +1850,17 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_arcade,
         description:
-          "Play classic FPS games in your browser via WebAssembly — 12 games including " <>
-            "Half-Life: Uplink, Wolfenstein 3D, DOOM, Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
+          "Play classic games in your browser via WebAssembly — 13 games including " <>
+            "Beneath a Steel Sky, Half-Life: Uplink, Wolfenstein 3D, DOOM, Quake, Quake II, " <>
+            "Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
             "Start with /singleplayer.",
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-quake",
           "feature-arcade-quake2",
           "feature-arcade-wolfenstein",
-          "feature-arcade-halflife"
+          "feature-arcade-halflife",
+          "feature-arcade-scummvm"
         ]
       },
       %{
@@ -1887,7 +1893,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-arcade-quake",
           "feature-arcade-quake2",
           "feature-arcade-wolfenstein",
-          "feature-arcade-halflife"
+          "feature-arcade-halflife",
+          "feature-arcade-scummvm"
         ]
       },
       %{
@@ -1913,7 +1920,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-arcade-doom",
           "feature-arcade-quake2",
           "feature-arcade-wolfenstein",
-          "feature-arcade-halflife"
+          "feature-arcade-halflife",
+          "feature-arcade-scummvm"
         ]
       },
       %{
@@ -1942,7 +1950,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-arcade-doom",
           "feature-arcade-quake",
           "feature-arcade-quake2",
-          "feature-arcade-halflife"
+          "feature-arcade-halflife",
+          "feature-arcade-scummvm"
         ]
       },
       %{
@@ -1972,7 +1981,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-arcade-doom",
           "feature-arcade-quake",
           "feature-arcade-quake2",
-          "feature-arcade-wolfenstein"
+          "feature-arcade-wolfenstein",
+          "feature-arcade-scummvm"
         ]
       },
       %{
@@ -2001,6 +2011,39 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-arcade",
           "feature-arcade-quake",
           "feature-arcade-doom",
+          "feature-arcade-wolfenstein",
+          "feature-arcade-halflife",
+          "feature-arcade-scummvm"
+        ]
+      },
+      # ── ScummVM (Point & Click Adventures) ──────────
+      %{
+        id: "feature-arcade-scummvm",
+        title: "ScummVM Adventures (Arcade)",
+        category: "Features",
+        keywords: [
+          "scummvm",
+          "point and click",
+          "point & click",
+          "adventure",
+          "beneath a steel sky",
+          "bass",
+          "revolution software",
+          "cyberpunk",
+          "1994",
+          "freeware",
+          "wasm"
+        ],
+        icon: :icon_game_bass,
+        description:
+          "Play classic point & click adventures in your browser — Beneath a Steel Sky (1994) " <>
+            "with full CD voice acting. " <>
+            "Powered by ScummVM (official Emscripten backend → WebAssembly).",
+        see_also: [
+          "feature-arcade",
+          "feature-arcade-doom",
+          "feature-arcade-quake",
+          "feature-arcade-quake2",
           "feature-arcade-wolfenstein",
           "feature-arcade-halflife"
         ]
