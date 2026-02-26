@@ -8,7 +8,8 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
   @default_assigns [
     connected: true,
     dnd_enabled: false,
-    notification_count: 0
+    notification_count: 0,
+    is_admin: false
   ]
 
   defp render_toolbar(overrides \\ []) do
@@ -31,34 +32,41 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
   end
 
   describe "group structure" do
-    test "renders toolbar-group wrappers for each group" do
+    test "renders toolbar-group wrapper for options" do
       html = render_toolbar()
       assert html =~ ~s(class="toolbar-group")
     end
 
-    test "renders group toggle buttons with data-toolbar-group" do
+    test "renders only the options group toggle" do
       html = render_toolbar()
-      assert html =~ ~s(data-toolbar-group="view")
-      assert html =~ ~s(data-toolbar-group="tools")
-      assert html =~ ~s(data-toolbar-group="notifications")
-      assert html =~ ~s(data-toolbar-group="help")
+      assert html =~ ~s(data-toolbar-group="options")
+      refute html =~ ~s(data-toolbar-group="view")
+      refute html =~ ~s(data-toolbar-group="tools")
+      refute html =~ ~s(data-toolbar-group="notifications")
+      refute html =~ ~s(data-toolbar-group="help")
     end
 
-    test "renders toolbar-group-dropdown containers" do
+    test "renders toolbar-group-dropdown container" do
       html = render_toolbar()
       assert html =~ ~s(class="toolbar-group-dropdown u-hidden")
     end
 
-    test "renders group toggle test ids" do
+    test "renders options group toggle test id" do
       html = render_toolbar()
-      assert html =~ ~s(data-testid="toolbar-group-view")
-      assert html =~ ~s(data-testid="toolbar-group-tools")
-      assert html =~ ~s(data-testid="toolbar-group-notifications")
-      assert html =~ ~s(data-testid="toolbar-group-help")
+      assert html =~ ~s(data-testid="toolbar-group-options")
+      refute html =~ ~s(data-testid="toolbar-group-view")
+      refute html =~ ~s(data-testid="toolbar-group-tools")
+      refute html =~ ~s(data-testid="toolbar-group-notifications")
+      refute html =~ ~s(data-testid="toolbar-group-help")
+    end
+
+    test "renders dropdown separators" do
+      html = render_toolbar()
+      assert html =~ ~s(class="toolbar-dropdown-separator")
     end
   end
 
-  describe "view group" do
+  describe "options group — view items" do
     test "renders Channel List button" do
       html = render_toolbar()
       assert html =~ ~s(data-testid="toolbar-channel-list")
@@ -90,7 +98,7 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
     end
   end
 
-  describe "tools group" do
+  describe "options group — tool items" do
     @tools_buttons [
       {"toolbar-address-book", "toggle_address_book"},
       {"toolbar-highlight", "open_highlight_dialog"},
@@ -116,7 +124,7 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
     end
   end
 
-  describe "notifications group" do
+  describe "options group — notification items" do
     test "renders DND button" do
       html = render_toolbar()
       assert html =~ ~s(data-testid="toolbar-dnd")
@@ -156,7 +164,7 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
     end
   end
 
-  describe "help group" do
+  describe "help button (solo, no dropdown)" do
     test "renders Help Topics link" do
       html = render_toolbar()
       assert html =~ ~s(data-testid="toolbar-help")
@@ -164,10 +172,10 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
       assert html =~ ~s(target="_blank")
     end
 
-    test "renders Keyboard Shortcuts button" do
+    test "does not render Keyboard Shortcuts button" do
       html = render_toolbar()
-      assert html =~ ~s(data-testid="toolbar-cheatsheet")
-      assert html =~ ~s(phx-click="toggle_cheatsheet")
+      refute html =~ ~s(data-testid="toolbar-cheatsheet")
+      refute html =~ ~s(phx-click="toggle_cheatsheet")
     end
   end
 end
