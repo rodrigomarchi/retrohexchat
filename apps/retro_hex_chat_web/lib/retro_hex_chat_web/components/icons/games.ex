@@ -60,6 +60,7 @@ defmodule RetroHexChatWeb.Icons.Games do
   def game_icon(%{game_id: "wolfenstein_3d"} = assigns), do: icon_game_wolfenstein(assigns)
   def game_icon(%{game_id: "halflife_uplink"} = assigns), do: icon_game_halflife(assigns)
   def game_icon(%{game_id: "scummvm_bass"} = assigns), do: icon_game_bass(assigns)
+  def game_icon(%{game_id: "scummvm_drascula"} = assigns), do: icon_game_drascula(assigns)
   def game_icon(assigns), do: icon_game_generic(assigns)
 
   # -- Hex Pong: paddle + ball --
@@ -1146,6 +1147,55 @@ defmodule RetroHexChatWeb.Icons.Games do
       <rect x="8" y="5" width="1" height="1" fill="#556" />
       <rect x="22" y="4" width="1" height="1" fill="#556" />
       <rect x="26" y="6" width="1" height="1" fill="#f80" />
+    </svg>
+    """
+  end
+
+  # -- Drascula: The Vampire Strikes Back: castle + moon --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_drascula(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_drascula(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#1a0a1a" />
+
+      <rect x="22" y="4" width="4" height="4" fill="#ff4" />
+      <rect x="23" y="5" width="2" height="2" fill="#ffa" />
+
+      <rect x="6" y="12" width="3" height="16" fill="#2a1a2a" />
+      <rect x="6" y="10" width="3" height="2" fill="#3a2a3a" />
+      <rect x="7" y="9" width="1" height="1" fill="#3a2a3a" />
+      <rect x="7" y="14" width="1" height="1" fill="#f82" />
+      <rect x="7" y="17" width="1" height="1" fill="#f82" />
+
+      <rect x="11" y="8" width="5" height="20" fill="#2a1a2a" />
+      <rect x="11" y="6" width="5" height="2" fill="#3a2a3a" />
+      <rect x="12" y="5" width="3" height="1" fill="#3a2a3a" />
+      <rect x="12" y="10" width="1" height="2" fill="#f82" />
+      <rect x="14" y="10" width="1" height="2" fill="#f82" />
+      <rect x="13" y="14" width="1" height="1" fill="#f82" />
+
+      <rect x="18" y="14" width="4" height="14" fill="#2a1a2a" />
+      <rect x="18" y="12" width="4" height="2" fill="#3a2a3a" />
+      <rect x="19" y="11" width="2" height="1" fill="#3a2a3a" />
+      <rect x="19" y="16" width="1" height="1" fill="#f82" />
+      <rect x="20" y="18" width="1" height="1" fill="#f82" />
+
+      <rect x="24" y="16" width="3" height="12" fill="#2a1a2a" />
+      <rect x="24" y="14" width="3" height="2" fill="#3a2a3a" />
+      <rect x="25" y="18" width="1" height="1" fill="#f82" />
+
+      <rect x="5" y="6" width="1" height="1" fill="#445" />
+      <rect x="17" y="4" width="1" height="1" fill="#445" />
+      <rect x="27" y="8" width="1" height="1" fill="#445" />
+
+      <rect x="9" y="26" width="2" height="2" fill="#a22" />
+      <rect x="10" y="25" width="1" height="1" fill="#a22" />
     </svg>
     """
   end

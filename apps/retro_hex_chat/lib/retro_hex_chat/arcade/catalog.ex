@@ -160,6 +160,20 @@ defmodule RetroHexChat.Arcade.Catalog do
         "Left click interact/walk, Right click examine/verb menu, " <>
           "Drag inventory items to combine. F5 save/load, Ctrl+F5 options, Esc skip cutscene",
       icon: "game_bass"
+    },
+    %{
+      id: "scummvm_drascula",
+      name: "Drascula: The Vampire Strikes Back",
+      tagline: "Comedic Dracula parody adventure (1996)",
+      description:
+        "British real estate agent John Hacker must defeat the vampire Drascula " <>
+          "in this hilarious Spanish point & click adventure full of pop culture " <>
+          "references and absurd humor.",
+      engine: :scummvm,
+      controls:
+        "Point & click: left-click interact, right-click examine. " <>
+          "Inventory at bottom of screen. F5 save/load, Esc skip cutscene",
+      icon: "game_drascula"
     }
   ]
 

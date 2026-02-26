@@ -2031,13 +2031,16 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "revolution software",
           "cyberpunk",
           "1994",
+          "drascula",
+          "vampire",
+          "1996",
           "freeware",
           "wasm"
         ],
         icon: :icon_game_bass,
         description:
           "Play classic point & click adventures in your browser — Beneath a Steel Sky (1994) " <>
-            "with full CD voice acting. " <>
+            "and Drascula: The Vampire Strikes Back (1996) with full voice acting. " <>
             "Powered by ScummVM (official Emscripten backend → WebAssembly).",
         see_also: [
           "feature-arcade",
