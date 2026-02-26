@@ -85,7 +85,7 @@ defmodule RetroHexChatWeb.SoloSessionLive do
 
   def render(assigns) do
     ~H"""
-    <div class="app-container">
+    <div class="app-container" id="arcade-session" phx-hook="ArcadeSession">
       <RetroHexChatWeb.Components.AppHeader.app_header>
         <:panels>
           <div class="toolbar toolbar--skeleton">

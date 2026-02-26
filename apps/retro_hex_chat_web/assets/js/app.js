@@ -33,7 +33,7 @@ import P2PDiagramHook from "./hooks/p2p/p2p_diagram_hook";
 import P2PSessionHook from "./hooks/p2p/p2p_session_hook";
 import URLCatcherHook from "./hooks/ui/url_catcher_hook";
 import FileTransferHook from "./hooks/p2p/file_transfer_hook";
-import ArcadeIframeHook from "./hooks/games/arcade_iframe_hook";
+import ArcadeIframeHook, { ArcadeSessionHook } from "./hooks/games/arcade_iframe_hook";
 import GameCanvasHook from "./hooks/games/game_canvas_hook";
 import GameSessionHook from "./hooks/games/game_session_hook";
 import GameWebRTCHook from "./hooks/games/game_webrtc_hook";
@@ -59,6 +59,7 @@ const Hooks = {
   EmojiPickerHook: EmojiPickerHook,
   FileTransferHook: FileTransferHook,
   ArcadeIframe: ArcadeIframeHook,
+  ArcadeSession: ArcadeSessionHook,
   GameCanvasHook: GameCanvasHook,
   GameSessionHook: GameSessionHook,
   GameWebRTCHook: GameWebRTCHook,
