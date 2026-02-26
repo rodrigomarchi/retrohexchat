@@ -314,11 +314,20 @@ const AutocompleteHook = {
       return;
     }
 
+    // Show tooltip as soon as command name has 2+ chars, even without space
     const spaceIdx = value.indexOf(" ");
-    if (spaceIdx <= 1) return;
+    let command, args;
 
-    const command = value.slice(1, spaceIdx);
-    const args = value.slice(spaceIdx + 1);
+    if (spaceIdx > 1) {
+      command = value.slice(1, spaceIdx);
+      args = value.slice(spaceIdx + 1);
+    } else if (spaceIdx === -1 && value.length > 2) {
+      command = value.slice(1);
+      args = "";
+    } else {
+      return;
+    }
+
     this.tooltipVisible = true;
     this.pushEvent("syntax_tooltip_query", { command, args });
   },

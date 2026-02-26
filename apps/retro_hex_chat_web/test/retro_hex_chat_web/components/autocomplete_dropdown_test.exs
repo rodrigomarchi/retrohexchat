@@ -35,7 +35,6 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdownTest do
         )
 
       assert html =~ "autocomplete-dropdown"
-      assert html =~ "Commands"
       assert html =~ "join"
       assert html =~ "part"
     end
@@ -57,7 +56,7 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdownTest do
       assert html =~ "selected"
     end
 
-    test "highlights fuzzy-matched characters with strong tags" do
+    test "renders command names as plain text without highlight markup" do
       results = [
         %{name: "join", description: "Join a channel", matched_chars: [0, 1], score: 1004}
       ]
@@ -70,64 +69,7 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdownTest do
           selected: 0
         )
 
-      assert html =~ "<strong>"
-    end
-
-    test "groups consecutive matched characters into a single strong tag" do
-      # "alias" with matched_chars [0, 1, 2] should produce <strong>ali</strong><span>as</span>
-      # NOT <strong>a</strong><strong>l</strong><strong>i</strong><span>a</span><span>s</span>
-      results = [
-        %{name: "alias", description: "Create alias", matched_chars: [0, 1, 2], score: 1000}
-      ]
-
-      html =
-        render_component(&AutocompleteDropdown.autocomplete_dropdown/1,
-          visible: true,
-          mode: :command,
-          results: results,
-          selected: 0
-        )
-
-      assert html =~ "<strong>ali</strong>"
-      assert html =~ "<span>as</span>"
-      # Must NOT have individual character wrapping
-      refute html =~ "<strong>a</strong>"
-    end
-
-    test "groups consecutive unmatched characters into a single span tag" do
-      # "away" with matched_chars [0, 3] should produce:
-      # <strong>a</strong><span>wa</span><strong>y</strong>
-      results = [
-        %{name: "away", description: "Go away", matched_chars: [0, 3], score: 1000}
-      ]
-
-      html =
-        render_component(&AutocompleteDropdown.autocomplete_dropdown/1,
-          visible: true,
-          mode: :command,
-          results: results,
-          selected: 0
-        )
-
-      assert html =~ "<strong>a</strong>"
-      assert html =~ "<span>wa</span>"
-      assert html =~ "<strong>y</strong>"
-    end
-
-    test "renders all unmatched text in a single span when no matches" do
-      results = [
-        %{name: "help", description: "Show help", matched_chars: [], score: 1000}
-      ]
-
-      html =
-        render_component(&AutocompleteDropdown.autocomplete_dropdown/1,
-          visible: true,
-          mode: :command,
-          results: results,
-          selected: 0
-        )
-
-      assert html =~ "<span>help</span>"
+      assert html =~ "/join"
       refute html =~ "<strong>"
     end
 
@@ -168,7 +110,6 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdownTest do
           selected: 0
         )
 
-      assert html =~ "Nicknames"
       assert html =~ "Mario"
       assert html =~ "autocomplete-status-online"
     end
@@ -186,7 +127,6 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdownTest do
           selected: 0
         )
 
-      assert html =~ "Channels"
       assert html =~ "#dev"
       assert html =~ "5 users"
       assert html =~ "✓"

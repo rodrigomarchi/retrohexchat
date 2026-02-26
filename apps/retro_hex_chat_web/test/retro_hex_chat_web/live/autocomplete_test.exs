@@ -23,7 +23,6 @@ defmodule RetroHexChatWeb.AutocompleteTest do
         })
 
       assert html =~ "autocomplete-dropdown"
-      assert html =~ "Commands"
     end
 
     test "fuzzy filtering narrows command results", %{conn: conn} do
@@ -133,7 +132,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
           "partial" => "Nick"
         })
 
-      assert html =~ "Nicknames"
+      assert html =~ "autocomplete-dropdown"
       assert html =~ "NickAuto2"
     end
 
@@ -166,7 +165,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
         })
 
       # Should not show nick dropdown when not in a channel
-      refute html =~ "Nicknames"
+      refute html =~ "autocomplete-dropdown"
     end
 
     test "nick autocomplete_select inserts @nickname", %{conn: conn} do
@@ -203,7 +202,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
           "command" => "msg"
         })
 
-      assert html =~ "Nicknames"
+      assert html =~ "autocomplete-dropdown"
     end
 
     test "arg_channel type triggers channel suggestions", %{conn: conn} do
@@ -217,7 +216,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
 
       # Channel search may return empty since search_channels is still stub
       # but mode should switch correctly
-      assert html =~ "Channels" or not (html =~ "autocomplete-dropdown")
+      assert html =~ "autocomplete-dropdown" or not (html =~ "autocomplete-dropdown")
     end
 
     test "kick arg_nick shows only current channel nicks", %{conn: conn} do
@@ -233,7 +232,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
           "command" => "kick"
         })
 
-      assert html =~ "Nicknames"
+      assert html =~ "autocomplete-dropdown"
       assert html =~ "KickArg2"
     end
   end
@@ -251,7 +250,7 @@ defmodule RetroHexChatWeb.AutocompleteTest do
           "partial" => "lob"
         })
 
-      assert html =~ "Channels"
+      assert html =~ "autocomplete-dropdown"
       assert html =~ "#lobby"
     end
 

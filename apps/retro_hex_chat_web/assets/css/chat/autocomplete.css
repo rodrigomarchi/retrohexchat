@@ -1,5 +1,10 @@
 /* RetroHexChat — Autocomplete dropdown: items, categories, status indicators */
 
+.autocomplete-dropdown {
+  background: var(--color-surface);
+  box-shadow: var(--border-sunken-outer);
+}
+
 .autocomplete-item {
   cursor: pointer;
   padding: 4px 8px;
@@ -8,12 +13,12 @@
   align-items: baseline;
   white-space: nowrap;
   overflow: hidden;
+  color: var(--color-text);
 }
 
 .autocomplete-item:hover,
 .autocomplete-item.selected {
-  background-color: var(--color-selection-bg);
-  color: var(--color-selection-fg);
+  background-color: var(--color-gray-350);
 }
 
 .autocomplete-category-header {
@@ -28,17 +33,21 @@
 .autocomplete-description {
   font-size: var(--text-sm);
   color: var(--color-muted);
-  margin-left: auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .autocomplete-item.selected .autocomplete-description {
-  color: var(--color-surface);
+  color: var(--color-gray-700);
 }
 
-.autocomplete-list { max-height: 250px; }
+.autocomplete-list {
+  max-height: 250px;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+}
 
 .autocomplete-no-results {
   font-style: italic;

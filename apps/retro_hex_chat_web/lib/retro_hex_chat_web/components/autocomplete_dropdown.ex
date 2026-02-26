@@ -1,7 +1,7 @@
 defmodule RetroHexChatWeb.Components.AutocompleteDropdown do
   @moduledoc """
   Unified autocomplete dropdown for commands, nicks, and channels.
-  Renders above the chat input with retro window styling.
+  Renders above the chat input as a minimal dropdown list.
   """
   use Phoenix.Component
 
@@ -15,17 +15,10 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdown do
   def autocomplete_dropdown(assigns) do
     ~H"""
     <div :if={@visible} class="autocomplete-dropdown" id="autocomplete-dropdown">
-      <div class="window">
-        <div class="title-bar">
-          <div class="title-bar-text">{mode_title(@mode)}</div>
-        </div>
-        <div class="window-body">
-          <ul class="tree-view u-overflow-y-auto autocomplete-list">
-            <li :if={@results == []} class="autocomplete-no-results">No results</li>
-            {render_results(assigns)}
-          </ul>
-        </div>
-      </div>
+      <ul class="u-overflow-y-auto autocomplete-list">
+        <li :if={@results == []} class="autocomplete-no-results">No results</li>
+        {render_results(assigns)}
+      </ul>
     </div>
     """
   end
@@ -42,9 +35,7 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdown do
           phx-value-value={result.name}
           class={"autocomplete-item #{if idx == @selected, do: "selected"}"}
         >
-          <span>
-            /<.highlight_matches text={result.name} matched_chars={result.matched_chars} />
-          </span>
+          <span>/{result.name}</span>
           <span class="autocomplete-description">{result.description}</span>
         </li>
       <% end %>
@@ -95,41 +86,9 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdown do
         phx-value-command={@command}
         class={"autocomplete-item #{if idx == @selected, do: "selected"}"}
       >
-        <span>
-          <.highlight_matches text={result.name} matched_chars={result.matched_chars} />
-        </span>
+        <span>{result.name}</span>
         <span class="autocomplete-description">{result.description}</span>
       </li>
-    <% end %>
-    """
-  end
-
-  defp mode_title(:command), do: "Commands"
-  defp mode_title(:nick), do: "Nicknames"
-  defp mode_title(:channel), do: "Channels"
-  defp mode_title(:subcommand), do: "Subcommands"
-
-  attr :text, :string, required: true
-  attr :matched_chars, :list, default: []
-
-  defp highlight_matches(assigns) do
-    matched_set = MapSet.new(assigns.matched_chars)
-
-    segments =
-      assigns.text
-      |> String.graphemes()
-      |> Enum.with_index()
-      |> Enum.chunk_by(fn {_char, idx} -> idx in matched_set end)
-      |> Enum.map(fn [{_, idx} | _] = chunk ->
-        text = Enum.map_join(chunk, fn {char, _} -> char end)
-        %{text: text, matched: idx in matched_set}
-      end)
-
-    assigns = assign(assigns, :segments, segments)
-
-    ~H"""
-    <%= for segment <- @segments do %>
-      <strong :if={segment.matched}>{segment.text}</strong><span :if={not segment.matched}>{segment.text}</span>
     <% end %>
     """
   end

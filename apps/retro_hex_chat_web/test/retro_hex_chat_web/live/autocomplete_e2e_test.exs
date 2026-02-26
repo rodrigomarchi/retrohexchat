@@ -22,7 +22,6 @@ defmodule RetroHexChatWeb.AutocompleteE2ETest do
         })
 
       assert html =~ "autocomplete-dropdown"
-      assert html =~ "Commands"
       assert html =~ "join"
 
       # Step 2: Navigate down
@@ -45,7 +44,7 @@ defmodule RetroHexChatWeb.AutocompleteE2ETest do
           "partial" => "lob"
         })
 
-      assert html =~ "Channels"
+      assert html =~ "autocomplete-dropdown"
       assert html =~ "#lobby"
 
       # Step 5: Select channel
@@ -74,7 +73,7 @@ defmodule RetroHexChatWeb.AutocompleteE2ETest do
           "partial" => "E2E"
         })
 
-      assert html =~ "Nicknames"
+      assert html =~ "autocomplete-dropdown"
       assert html =~ "E2ENick2"
 
       # Step 2: Select nick
