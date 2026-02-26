@@ -57,6 +57,7 @@ defmodule RetroHexChatWeb.Icons.Games do
   def game_icon(%{game_id: "quake_shareware"} = assigns), do: icon_game_quake(assigns)
   def game_icon(%{game_id: "librequake"} = assigns), do: icon_game_librequake(assigns)
   def game_icon(%{game_id: "wolfenstein_3d"} = assigns), do: icon_game_wolfenstein(assigns)
+  def game_icon(%{game_id: "halflife_uplink"} = assigns), do: icon_game_halflife(assigns)
   def game_icon(assigns), do: icon_game_generic(assigns)
 
   # -- Hex Pong: paddle + ball --
@@ -1018,6 +1019,38 @@ defmodule RetroHexChatWeb.Icons.Games do
       <rect x="10" y="24" width="12" height="1" fill="#6b8e23" />
       <rect x="15" y="25" width="2" height="2" fill="#222" />
       <rect x="15" y="25" width="2" height="1" fill="#444" />
+    </svg>
+    """
+  end
+
+  # -- Half-Life: lambda symbol (orange on dark) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_halflife(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_halflife(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#1a1a1a" />
+
+      <circle cx="16" cy="16" r="11" fill="#2a2a2a" />
+      <circle cx="16" cy="16" r="10" fill="#222" />
+
+      <rect x="10" y="7" width="3" height="18" fill="#ff8c00" />
+      <rect x="10" y="7" width="3" height="1" fill="#ffa500" />
+      <rect x="13" y="14" width="2" height="3" fill="#ff8c00" />
+      <rect x="15" y="16" width="2" height="3" fill="#ff8c00" />
+      <rect x="17" y="18" width="2" height="3" fill="#ff8c00" />
+      <rect x="19" y="20" width="3" height="5" fill="#ff8c00" />
+      <rect x="19" y="24" width="3" height="1" fill="#cc7000" />
+
+      <rect x="15" y="7" width="3" height="4" fill="#ff8c00" />
+      <rect x="15" y="7" width="3" height="1" fill="#ffa500" />
+      <rect x="18" y="9" width="2" height="3" fill="#ff8c00" />
+      <rect x="20" y="10" width="2" height="3" fill="#ff8c00" />
     </svg>
     """
   end

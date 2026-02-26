@@ -9,7 +9,7 @@ defmodule RetroHexChat.Arcade.Catalog do
           name: String.t(),
           tagline: String.t(),
           description: String.t(),
-          engine: :doom | :quake | :wolfenstein,
+          engine: :doom | :quake | :wolfenstein | :halflife,
           controls: String.t(),
           icon: String.t()
         }
@@ -124,6 +124,18 @@ defmodule RetroHexChat.Arcade.Catalog do
       engine: :wolfenstein,
       controls: "Arrow keys move, Ctrl fire, Space open doors, Shift run, 1-4 weapons",
       icon: "game_wolfenstein"
+    },
+    %{
+      id: "halflife_uplink",
+      name: "Half-Life: Uplink",
+      tagline: "The Official Demo — 3 Unique Missions",
+      description:
+        "The official Half-Life demo (1999) — 3 unique levels not found in the full game. " <>
+          "Fight through Black Mesa's underground labs. Freely redistributable by Valve.",
+      engine: :halflife,
+      controls:
+        "WASD move, Mouse aim, Left click fire, E use, Space jump, Shift crouch, R reload",
+      icon: "game_halflife"
     }
   ]
 

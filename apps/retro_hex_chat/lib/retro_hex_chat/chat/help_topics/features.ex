@@ -1833,6 +1833,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "hacx",
           "rekkr",
           "librequake",
+          "half-life",
+          "halflife",
+          "uplink",
+          "xash3d",
+          "valve",
           "wasm",
           "webassembly",
           "fps",
@@ -1841,13 +1846,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_arcade,
         description:
-          "Play classic FPS games in your browser via WebAssembly — 10 games including " <>
-            "Wolfenstein 3D, DOOM, Quake, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
+          "Play classic FPS games in your browser via WebAssembly — 11 games including " <>
+            "Half-Life: Uplink, Wolfenstein 3D, DOOM, Quake, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
             "Start with /singleplayer.",
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-quake",
-          "feature-arcade-wolfenstein"
+          "feature-arcade-wolfenstein",
+          "feature-arcade-halflife"
         ]
       },
       %{
@@ -1878,7 +1884,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-arcade",
           "feature-arcade-quake",
-          "feature-arcade-wolfenstein"
+          "feature-arcade-wolfenstein",
+          "feature-arcade-halflife"
         ]
       },
       %{
@@ -1902,7 +1909,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-arcade",
           "feature-arcade-doom",
-          "feature-arcade-wolfenstein"
+          "feature-arcade-wolfenstein",
+          "feature-arcade-halflife"
         ]
       },
       %{
@@ -1929,7 +1937,37 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-arcade",
           "feature-arcade-doom",
-          "feature-arcade-quake"
+          "feature-arcade-quake",
+          "feature-arcade-halflife"
+        ]
+      },
+      %{
+        id: "feature-arcade-halflife",
+        title: "Half-Life (Arcade)",
+        category: "Features",
+        keywords: [
+          "half-life",
+          "halflife",
+          "uplink",
+          "demo",
+          "fps",
+          "valve",
+          "goldsource",
+          "xash3d",
+          "black mesa",
+          "wasm",
+          "1998"
+        ],
+        icon: :icon_game_halflife,
+        description:
+          "Play Half-Life: Uplink in your browser — the official 1999 demo with 3 unique levels " <>
+            "not found in the full game. " <>
+            "Powered by Xash3D-FWGS (GoldSource reimplementation → WebAssembly).",
+        see_also: [
+          "feature-arcade",
+          "feature-arcade-doom",
+          "feature-arcade-quake",
+          "feature-arcade-wolfenstein"
         ]
       }
     ]
