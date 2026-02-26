@@ -70,6 +70,7 @@ defmodule RetroHexChatWeb.Router do
     live "/p2p/:token", P2PSessionLive
     live "/game/:token", GameSessionLive
     live "/solo/:token", SoloSessionLive
+    live "/arcade/:token/:game_id", ArcadeGameLive
   end
 
   scope "/", RetroHexChatWeb do

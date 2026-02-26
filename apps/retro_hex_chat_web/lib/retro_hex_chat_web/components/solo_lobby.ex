@@ -17,11 +17,20 @@ defmodule RetroHexChatWeb.Components.SoloLobby do
   attr :session_status, :string, required: true
   attr :inactivity_warning, :boolean, default: false
   attr :previewed_game, :map, default: nil
+  attr :game, :map, default: nil
+  attr :game_name, :string, default: nil
+  attr :game_id, :string, default: nil
+  attr :game_started_at, :string, default: nil
+  attr :game_duration, :integer, default: nil
 
   @spec solo_lobby(map()) :: Phoenix.LiveView.Rendered.t()
   def solo_lobby(assigns) do
     ~H"""
-    <div class={["game-lobby window", @previewed_game && "game-lobby--detail"]}>
+    <div class={[
+      "game-lobby window",
+      @previewed_game && "game-lobby--detail",
+      @session_status == "finished" && "game-lobby--finished"
+    ]}>
       <div class="title-bar">
         <div class="title-bar-text">
           Arcade — {@nickname}
@@ -31,7 +40,8 @@ defmodule RetroHexChatWeb.Components.SoloLobby do
         </div>
       </div>
       <div class="window-body game-lobby__body">
-        <div :if={!@previewed_game} class="arcade-header">
+        <%!-- Lobby: arcade header + game picker --%>
+        <div :if={@session_status == "lobby" && !@previewed_game} class="arcade-header">
           <Icons.icon_game_arcade class="arcade-header__icon" />
           <div class="arcade-header__text">
             <p class="arcade-header__title">Retro Arcade</p>
@@ -41,6 +51,7 @@ defmodule RetroHexChatWeb.Components.SoloLobby do
           </div>
         </div>
 
+        <%!-- Detail: game info header with actions --%>
         <div :if={@previewed_game} class="arcade-detail__header">
           <div class="arcade-detail__icon">
             <GameIcons.game_icon game_id={@previewed_game.game.id} />
@@ -71,6 +82,23 @@ defmodule RetroHexChatWeb.Components.SoloLobby do
 
         <.arcade_inactivity_warning :if={@inactivity_warning} />
 
+        <%!-- Playing state --%>
+        <.arcade_playing
+          :if={@session_status == "playing"}
+          game_name={@game_name}
+          game_id={@game_id}
+          game_started_at={@game_started_at}
+        />
+
+        <%!-- Finished state --%>
+        <.arcade_finished
+          :if={@session_status == "finished"}
+          game={@game}
+          game_name={@game_name}
+          game_id={@game_id}
+          game_duration={@game_duration}
+        />
+
         <.arcade_game_detail
           :if={@session_status == "lobby" && @previewed_game}
           content={@previewed_game.content}
@@ -81,7 +109,9 @@ defmodule RetroHexChatWeb.Components.SoloLobby do
           games={@games}
         />
 
-        <.arcade_lobby_toolbar :if={!@previewed_game} />
+        <.arcade_lobby_toolbar :if={
+          @session_status not in ["playing", "finished"] && !@previewed_game
+        } />
       </div>
     </div>
     """
@@ -152,6 +182,105 @@ defmodule RetroHexChatWeb.Components.SoloLobby do
       </fieldset>
     </div>
     """
+  end
+
+  attr :game_name, :string, required: true
+  attr :game_id, :string, required: true
+  attr :game_started_at, :string, default: nil
+
+  defp arcade_playing(assigns) do
+    ~H"""
+    <div class="arcade-status">
+      <div class="arcade-status__icon">
+        <GameIcons.game_icon game_id={@game_id} />
+      </div>
+      <div class="arcade-status__info">
+        <h2 class="arcade-status__title">{@game_name}</h2>
+        <p class="arcade-status__message">Game in progress...</p>
+        <p
+          :if={@game_started_at}
+          class="arcade-status__timer"
+          id="arcade-timer"
+          phx-hook="ArcadeTimer"
+          data-started-at={@game_started_at}
+        >
+          0:00
+        </p>
+      </div>
+      <div class="arcade-status__actions">
+        <button class="btn-icon" phx-click="close_session">
+          <Icons.icon_close class="btn-icon__svg" /> End Session
+        </button>
+      </div>
+    </div>
+    """
+  end
+
+  attr :game, :map, default: nil
+  attr :game_name, :string, required: true
+  attr :game_id, :string, required: true
+  attr :game_duration, :integer, default: nil
+
+  defp arcade_finished(assigns) do
+    ~H"""
+    <div class="arcade-finished">
+      <%!-- Header: game icon + title + tagline --%>
+      <div class="arcade-finished__header">
+        <div class="arcade-finished__icon">
+          <GameIcons.game_icon game_id={@game_id} />
+        </div>
+        <div class="arcade-finished__header-info">
+          <h2 class="arcade-finished__title">{@game_name}</h2>
+          <p :if={@game} class="arcade-finished__tagline">{@game.tagline}</p>
+        </div>
+      </div>
+
+      <hr class="arcade-finished__divider" />
+
+      <%!-- Session summary --%>
+      <div class="arcade-finished__summary">
+        <div class="arcade-finished__row">
+          <Icons.icon_checkmark class="arcade-finished__row-icon" />
+          <span>Session completed</span>
+        </div>
+        <div :if={@game_duration} class="arcade-finished__row">
+          <Icons.icon_clock class="arcade-finished__row-icon" />
+          <span>Play time: <strong>{format_duration(@game_duration)}</strong></span>
+        </div>
+        <div :if={@game} class="arcade-finished__row">
+          <Icons.icon_game_arcade class="arcade-finished__row-icon" />
+          <span>Engine: {engine_label(@game.engine)}</span>
+        </div>
+      </div>
+
+      <hr class="arcade-finished__divider" />
+
+      <%!-- Next steps --%>
+      <div class="arcade-finished__footer">
+        <p class="arcade-finished__thanks">
+          Thanks for playing! To start a new game, type <code>/arcade</code> in any channel.
+        </p>
+        <button class="btn-icon" phx-click="close_session">
+          <Icons.icon_close class="btn-icon__svg" /> Close
+        </button>
+      </div>
+    </div>
+    """
+  end
+
+  defp format_duration(seconds) when seconds < 60, do: "#{seconds}s"
+
+  defp format_duration(seconds) do
+    minutes = div(seconds, 60)
+    secs = rem(seconds, 60)
+
+    if minutes >= 60 do
+      hours = div(minutes, 60)
+      mins = rem(minutes, 60)
+      "#{hours}h #{mins}m #{secs}s"
+    else
+      "#{minutes}m #{secs}s"
+    end
   end
 
   @engine_labels %{

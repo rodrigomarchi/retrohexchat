@@ -89,7 +89,8 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
             token: token,
             session: session,
             creator_joined: false,
-            timers: %{}
+            timers: %{},
+            game_started_at: nil
           }
 
           state = schedule_timeout(state, :pending_expiry, pending_timeout())
@@ -213,8 +214,9 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   defp do_transition(state, "lobby") do
     Logger.info("Arcade transition: #{state.session.status} → lobby, token=#{state.token}")
     state = cancel_timer(state, :pending_expiry)
+    now = DateTime.utc_now()
 
-    {:ok, session} = Queries.update_status(state.session, "lobby")
+    {:ok, session} = Queries.update_status(state.session, "lobby", %{lobby_at: now})
 
     state = %{state | session: session}
     state = schedule_timeout(state, :lobby_warning, lobby_warning_timeout())
@@ -226,13 +228,24 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
 
   defp do_transition(state, "playing", game_id) do
     Logger.info("Arcade transition: #{state.session.status} → playing, token=#{state.token}")
+    now = DateTime.utc_now()
     state = cancel_timer(state, :lobby_warning)
     state = cancel_timer(state, :lobby_expiry)
 
-    {:ok, session} = Queries.update_status(state.session, "playing", %{game_id: game_id})
+    {:ok, session} =
+      Queries.update_status(state.session, "playing", %{
+        game_id: game_id,
+        game_started_at: now
+      })
 
-    state = %{state | session: session}
-    broadcast(state.token, "arcade_status_changed", %{status: "playing", game_id: game_id})
+    state = %{state | session: session, game_started_at: now}
+
+    broadcast(state.token, "arcade_status_changed", %{
+      status: "playing",
+      game_id: game_id,
+      started_at: DateTime.to_iso8601(now)
+    })
+
     state
   end
 
@@ -241,13 +254,24 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
     state = cancel_all_timers(state)
     now = DateTime.utc_now()
 
+    duration_seconds =
+      if state.game_started_at,
+        do: DateTime.diff(now, state.game_started_at),
+        else: 0
+
     {:ok, session} =
       Queries.update_status(state.session, "finished", %{
         closed_at: now,
-        closed_reason: "game_over"
+        closed_reason: "game_over",
+        duration_seconds: duration_seconds
       })
 
-    broadcast(state.token, "arcade_status_changed", %{status: "finished", reason: "game_over"})
+    broadcast(state.token, "arcade_status_changed", %{
+      status: "finished",
+      reason: "game_over",
+      duration_seconds: duration_seconds
+    })
+
     %{state | session: session}
   end
 
@@ -256,11 +280,17 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
     state = cancel_all_timers(state)
     now = DateTime.utc_now()
 
-    {:ok, session} =
-      Queries.update_status(state.session, "closed", %{
-        closed_at: now,
-        closed_reason: reason
-      })
+    duration =
+      if state.game_started_at,
+        do: DateTime.diff(now, state.game_started_at),
+        else: nil
+
+    close_attrs = %{closed_at: now, closed_reason: reason}
+
+    close_attrs =
+      if duration, do: Map.put(close_attrs, :duration_seconds, duration), else: close_attrs
+
+    {:ok, session} = Queries.update_status(state.session, "closed", close_attrs)
 
     broadcast(state.token, "arcade_session_closed", %{reason: reason, closed_by: closed_by})
     %{state | session: session}

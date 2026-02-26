@@ -33,13 +33,59 @@ const ArcadeIframeHook = {
 
 /**
  * ArcadeSession hook — attached to the solo session container,
- * handles the arcade_close_tab event when no iframe is present (lobby view).
+ * handles the arcade_close_tab event and opens game windows.
  */
 const ArcadeSessionHook = {
   mounted() {
+    this._gameWindow = null;
+    this._windowPoll = null;
+
     this.handleEvent("arcade_close_tab", () => {
+      this._stopWindowPoll();
       closeArcadeTab();
     });
+
+    this.handleEvent("open_game_window", ({ url }) => {
+      this._gameWindow = window.open(url, "_blank");
+
+      if (!this._gameWindow) {
+        this.pushEvent("game_window_blocked", {});
+        return;
+      }
+
+      this._startWindowPoll();
+    });
+  },
+
+  destroyed() {
+    this._stopWindowPoll();
+  },
+
+  _isWindowClosed() {
+    try {
+      return this._gameWindow.closed;
+    } catch {
+      // Cross-origin or detached window — treat as closed
+      return true;
+    }
+  },
+
+  _startWindowPoll() {
+    this._stopWindowPoll();
+    this._windowPoll = setInterval(() => {
+      if (this._gameWindow && this._isWindowClosed()) {
+        this._stopWindowPoll();
+        this._gameWindow = null;
+        this.pushEvent("game_window_closed", {});
+      }
+    }, 1000);
+  },
+
+  _stopWindowPoll() {
+    if (this._windowPoll) {
+      clearInterval(this._windowPoll);
+      this._windowPoll = null;
+    }
   },
 };
 

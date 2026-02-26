@@ -62,12 +62,47 @@ defmodule RetroHexChat.Arcade.SoloSessionTest do
     end
   end
 
+  describe "changeset/2 audit fields" do
+    test "accepts audit timestamp fields" do
+      now = DateTime.utc_now()
+
+      changeset =
+        SoloSession.changeset(%SoloSession{}, %{
+          token: "audit_test",
+          creator_id: 1,
+          status: "playing",
+          lobby_at: now,
+          game_started_at: now,
+          duration_seconds: 120
+        })
+
+      assert changeset.valid?
+      assert get_change(changeset, :lobby_at) == now
+      assert get_change(changeset, :game_started_at) == now
+      assert get_change(changeset, :duration_seconds) == 120
+    end
+  end
+
   describe "status_changeset/2" do
     test "valid transition to lobby" do
       session = %SoloSession{status: "pending"}
 
       changeset = SoloSession.status_changeset(session, %{status: "lobby"})
       assert changeset.valid?
+    end
+
+    test "accepts audit fields in status_changeset" do
+      session = %SoloSession{status: "pending"}
+      now = DateTime.utc_now()
+
+      changeset =
+        SoloSession.status_changeset(session, %{
+          status: "lobby",
+          lobby_at: now
+        })
+
+      assert changeset.valid?
+      assert get_change(changeset, :lobby_at) == now
     end
 
     test "terminal status requires closed_at and closed_reason" do

@@ -17,6 +17,9 @@ defmodule RetroHexChat.Arcade.Schema.SoloSession do
     field :status, :string, default: "pending"
     field :game_id, :string
     field :metadata, :map, default: %{}
+    field :lobby_at, :utc_datetime_usec
+    field :game_started_at, :utc_datetime_usec
+    field :duration_seconds, :integer
     field :closed_at, :utc_datetime_usec
     field :closed_reason, :string
 
@@ -32,6 +35,9 @@ defmodule RetroHexChat.Arcade.Schema.SoloSession do
       :status,
       :game_id,
       :metadata,
+      :lobby_at,
+      :game_started_at,
+      :duration_seconds,
       :closed_at,
       :closed_reason
     ])
@@ -46,7 +52,16 @@ defmodule RetroHexChat.Arcade.Schema.SoloSession do
   @spec status_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def status_changeset(session, attrs) do
     session
-    |> cast(attrs, [:status, :game_id, :metadata, :closed_at, :closed_reason])
+    |> cast(attrs, [
+      :status,
+      :game_id,
+      :metadata,
+      :lobby_at,
+      :game_started_at,
+      :duration_seconds,
+      :closed_at,
+      :closed_reason
+    ])
     |> validate_required([:status])
     |> validate_inclusion(:status, @status_values)
     |> validate_terminal_fields()

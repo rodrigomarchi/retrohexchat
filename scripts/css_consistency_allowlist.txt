@@ -53,6 +53,8 @@ video
 Connected
 Connection
 failed
+# False positive — "finished" is a comparison value in solo_lobby.ex class={...} expression
+finished
 
 [dynamic-prefixes]
 # Prefixes with dynamic suffixes (e.g. chat-message--#{type})

@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.SoloSessionLive do
   alias RetroHexChat.Arcade
   alias RetroHexChat.Arcade.Schema.SoloSession
   alias RetroHexChat.Services.RegisteredNick
-  alias RetroHexChatWeb.Components.{ArcadeFrame, GameLobby, SoloLobby}
+  alias RetroHexChatWeb.Components.{GameLobby, SoloLobby}
 
   @pubsub RetroHexChat.PubSub
 
@@ -61,28 +61,6 @@ defmodule RetroHexChatWeb.SoloSessionLive do
     """
   end
 
-  def render(%{session_status: "playing"} = assigns) do
-    ~H"""
-    <div class="app-container">
-      <RetroHexChatWeb.Components.AppHeader.app_header>
-        <:panels>
-          <div class="toolbar toolbar--skeleton">
-            <span class="toolbar-btn toolbar-btn--skeleton"></span>
-          </div>
-          <div class="status-bar status-bar--skeleton">
-            <p class="status-bar-field">&nbsp;</p>
-          </div>
-        </:panels>
-      </RetroHexChatWeb.Components.AppHeader.app_header>
-      <ArcadeFrame.arcade_frame
-        game_name={@game_name}
-        game_url={@game_url}
-        nickname={@nickname}
-      />
-    </div>
-    """
-  end
-
   def render(assigns) do
     ~H"""
     <div class="app-container" id="arcade-session" phx-hook="ArcadeSession">
@@ -102,6 +80,11 @@ defmodule RetroHexChatWeb.SoloSessionLive do
         session_status={@session_status}
         inactivity_warning={@inactivity_warning}
         previewed_game={@previewed_game}
+        game={@game}
+        game_name={@game_name}
+        game_id={@game_id}
+        game_started_at={@game_started_at}
+        game_duration={@game_duration}
       />
     </div>
     """
@@ -111,20 +94,46 @@ defmodule RetroHexChatWeb.SoloSessionLive do
 
   @impl true
   def handle_info(
-        %{event: "arcade_status_changed", payload: %{status: "playing", game_id: game_id}},
+        %{
+          event: "arcade_status_changed",
+          payload: %{status: "playing", game_id: game_id} = payload
+        },
         socket
       ) do
     game = resolve_game(game_id)
+    started_at = Map.get(payload, :started_at)
+
+    game_url = "/arcade/#{socket.assigns.token}/#{game_id}"
 
     socket =
-      assign(socket,
+      socket
+      |> assign(
         session_status: "playing",
+        game: game,
         game_id: game_id,
         game_name: game.name,
-        game_url: Arcade.Catalog.game_url(game)
+        game_started_at: started_at,
+        previewed_game: nil
       )
+      |> push_event("open_game_window", %{url: game_url})
 
     {:noreply, socket}
+  end
+
+  def handle_info(
+        %{
+          event: "arcade_status_changed",
+          payload: %{status: "finished"} = payload
+        },
+        socket
+      ) do
+    duration = Map.get(payload, :duration_seconds, 0)
+
+    {:noreply,
+     assign(socket,
+       session_status: "finished",
+       game_duration: duration
+     )}
   end
 
   def handle_info(%{event: "arcade_status_changed", payload: %{status: status}}, socket) do
@@ -179,8 +188,12 @@ defmodule RetroHexChatWeb.SoloSessionLive do
 
   def handle_event("select_game", %{"game_id" => game_id}, socket) do
     case Arcade.select_game(socket.assigns.token, socket.assigns.user_id, game_id) do
-      :ok -> {:noreply, socket}
-      {:error, _reason} -> {:noreply, socket}
+      :ok ->
+        # The PubSub handler for "playing" will push open_game_window
+        {:noreply, socket}
+
+      {:error, _reason} ->
+        {:noreply, socket}
     end
   end
 
@@ -191,6 +204,32 @@ defmodule RetroHexChatWeb.SoloSessionLive do
      socket
      |> assign(session_closed: true)
      |> push_event("arcade_close_tab", %{})}
+  end
+
+  def handle_event("game_window_closed", _params, socket) do
+    if socket.assigns.session_status == "playing" do
+      Arcade.finish_game(socket.assigns.token, socket.assigns.user_id)
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_event("game_window_blocked", _params, socket) do
+    # Popup was blocked — cancel the game, revert to lobby
+    if socket.assigns.session_status == "playing" do
+      Arcade.finish_game(socket.assigns.token, socket.assigns.user_id)
+    end
+
+    {:noreply,
+     assign(socket,
+       session_status: "lobby",
+       game: nil,
+       game_id: nil,
+       game_name: nil,
+       game_started_at: nil,
+       game_duration: nil,
+       previewed_game: nil
+     )}
   end
 
   def handle_event("arcade_leave", _params, socket) do
@@ -231,7 +270,7 @@ defmodule RetroHexChatWeb.SoloSessionLive do
 
     games = Arcade.list_games()
 
-    {game_id, game_name, game_url} = resolve_game_info(db_session)
+    {game_id, game_name} = resolve_game_info(db_session)
 
     socket =
       assign(socket,
@@ -241,9 +280,11 @@ defmodule RetroHexChatWeb.SoloSessionLive do
         games: games,
         session_status: db_session.status,
         inactivity_warning: false,
+        game: nil,
         game_id: game_id,
         game_name: game_name,
-        game_url: game_url,
+        game_started_at: nil,
+        game_duration: nil,
         session_closed: false,
         previewed_game: nil
       )
@@ -289,10 +330,10 @@ defmodule RetroHexChatWeb.SoloSessionLive do
 
   defp resolve_game_info(%{status: "playing", game_id: game_id}) when is_binary(game_id) do
     game = resolve_game(game_id)
-    {game_id, game.name, Arcade.Catalog.game_url(game)}
+    {game_id, game.name}
   end
 
-  defp resolve_game_info(_session), do: {nil, nil, nil}
+  defp resolve_game_info(_session), do: {nil, nil}
 
   defp resolve_game(game_id) do
     case Arcade.get_game(game_id) do
