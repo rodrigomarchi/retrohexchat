@@ -1825,6 +1825,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "solo",
           "doom",
           "quake",
+          "wolfenstein",
+          "wolf3d",
           "freedoom",
           "freedm",
           "chex quest",
@@ -1839,12 +1841,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_arcade,
         description:
-          "Play classic FPS games in your browser via WebAssembly — 9 games including DOOM, Quake, " <>
-            "Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
+          "Play classic FPS games in your browser via WebAssembly — 10 games including " <>
+            "Wolfenstein 3D, DOOM, Quake, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
             "Start with /singleplayer.",
         see_also: [
           "feature-arcade-doom",
-          "feature-arcade-quake"
+          "feature-arcade-quake",
+          "feature-arcade-wolfenstein"
         ]
       },
       %{
@@ -1874,7 +1877,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "FreeDM, Chex Quest, HacX, and REKKR. Powered by Dwasm (PrBoom+ → WebAssembly).",
         see_also: [
           "feature-arcade",
-          "feature-arcade-quake"
+          "feature-arcade-quake",
+          "feature-arcade-wolfenstein"
         ]
       },
       %{
@@ -1897,7 +1901,35 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Powered by Qwasm (QuakeSpasm → WebAssembly).",
         see_also: [
           "feature-arcade",
-          "feature-arcade-doom"
+          "feature-arcade-doom",
+          "feature-arcade-wolfenstein"
+        ]
+      },
+      %{
+        id: "feature-arcade-wolfenstein",
+        title: "Wolfenstein 3D (Arcade)",
+        category: "Features",
+        keywords: [
+          "wolfenstein",
+          "wolf3d",
+          "wolf 3d",
+          "fps",
+          "shareware",
+          "castle",
+          "wasm",
+          "id software",
+          "1992",
+          "ecwolf"
+        ],
+        icon: :icon_game_wolfenstein,
+        description:
+          "Play Wolfenstein 3D Episode 1 (shareware) in your browser — 10 levels of the " <>
+            "classic that launched the FPS genre. " <>
+            "Powered by ECWolf-JS (ECWolf → WebAssembly).",
+        see_also: [
+          "feature-arcade",
+          "feature-arcade-doom",
+          "feature-arcade-quake"
         ]
       }
     ]

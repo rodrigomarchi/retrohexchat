@@ -9,7 +9,7 @@ defmodule RetroHexChat.Arcade.Catalog do
           name: String.t(),
           tagline: String.t(),
           description: String.t(),
-          engine: :doom | :quake,
+          engine: :doom | :quake | :wolfenstein,
           controls: String.t(),
           icon: String.t()
         }
@@ -113,6 +113,17 @@ defmodule RetroHexChat.Arcade.Catalog do
       engine: :quake,
       controls: "WASD move, Mouse aim, Left click fire, E use",
       icon: "game_librequake"
+    },
+    %{
+      id: "wolfenstein_3d",
+      name: "Wolfenstein 3D: Escape from Castle",
+      tagline: "Episode 1 — The Shareware Classic",
+      description:
+        "The grandfather of FPS games (1992) — 10 levels of castle-storming action. " <>
+          "The shareware episode that launched the first-person shooter genre.",
+      engine: :wolfenstein,
+      controls: "Arrow keys move, Ctrl fire, Space open doors, Shift run, 1-4 weapons",
+      icon: "game_wolfenstein"
     }
   ]
 
