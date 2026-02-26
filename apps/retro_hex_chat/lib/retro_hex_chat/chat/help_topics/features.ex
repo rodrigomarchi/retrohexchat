@@ -1850,10 +1850,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_arcade,
         description:
-          "Play classic games in your browser via WebAssembly — 16 games including " <>
+          "Play classic games in your browser via WebAssembly — 18 games including " <>
             "Beneath a Steel Sky, Dreamweb, Drascula, Flight of the Amazon Queen, " <>
-            "Half-Life: Uplink, Wolfenstein 3D, DOOM, Quake, Quake II, Freedoom, " <>
-            "Chex Quest, HacX, REKKR, and LibreQuake. Start with /singleplayer.",
+            "Lure of the Temptress, Soltys, Half-Life: Uplink, Wolfenstein 3D, DOOM, " <>
+            "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
+            "Start with /singleplayer.",
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-quake",
@@ -2042,14 +2043,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "joe king",
           "amazon",
           "1995",
+          "lure of the temptress",
+          "lure",
+          "turnvale",
+          "selena",
+          "virtual theatre",
+          "1992",
+          "soltys",
+          "lk avalon",
+          "polish",
+          "puzzle",
+          "underground",
           "freeware",
           "wasm"
         ],
         icon: :icon_game_bass,
         description:
           "Play classic point & click adventures in your browser — Beneath a Steel Sky (1994), " <>
-            "Drascula (1996), Dreamweb (1994), and Flight of the Amazon Queen (1995) " <>
-            "with full voice acting. Powered by ScummVM (official Emscripten backend → WebAssembly).",
+            "Drascula (1996), Dreamweb (1994), Flight of the Amazon Queen (1995), " <>
+            "Lure of the Temptress (1992), and Soltys (1995). " <>
+            "Powered by ScummVM (official Emscripten backend → WebAssembly).",
         see_also: [
           "feature-arcade",
           "feature-arcade-doom",

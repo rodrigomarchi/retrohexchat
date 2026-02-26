@@ -332,6 +332,8 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_game_drascula(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_dreamweb(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_fotaq(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_lure(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_soltys(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_arcade(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_generic(assigns), to: RetroHexChatWeb.Icons.Games
 end

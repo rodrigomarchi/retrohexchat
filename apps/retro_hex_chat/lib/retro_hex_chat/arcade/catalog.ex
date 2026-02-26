@@ -202,6 +202,32 @@ defmodule RetroHexChat.Arcade.Catalog do
         "Point & click: left-click interact, right-click examine. " <>
           "Inventory at top of screen. F5 save/load, Esc skip cutscene",
       icon: "game_fotaq"
+    },
+    %{
+      id: "scummvm_lure",
+      name: "Lure of the Temptress",
+      tagline: "Medieval fantasy adventure (1992)",
+      description:
+        "Free the village of Turnvale from the sorceress Selena. Revolution Software's " <>
+          "debut game featuring the innovative Virtual Theatre system with autonomous NPCs.",
+      engine: :scummvm,
+      controls:
+        "Point & click: left-click interact, right-click verb menu. " <>
+          "NPCs follow their own schedules. F5 save/load, Esc skip cutscene",
+      icon: "game_lure"
+    },
+    %{
+      id: "scummvm_soltys",
+      name: "Soltys",
+      tagline: "Surreal Polish puzzle adventure (1995)",
+      description:
+        "Rescue your grandfather from underground pirates in this charmingly absurd " <>
+          "Polish point & click adventure full of creative puzzles and surreal humor.",
+      engine: :scummvm,
+      controls:
+        "Point & click: left-click interact, right-click examine. " <>
+          "Simple, streamlined interface. F5 save/load, Esc skip cutscene",
+      icon: "game_soltys"
     }
   ]
 
