@@ -71,7 +71,7 @@ defmodule RetroHexChatWeb.ChatLive do
             socket
             |> attach_all_hooks()
             |> assign_defaults(session)
-            |> assign(timezone: timezone, client_info: client_info, connection_ready: true)
+            |> assign(timezone: timezone, client_info: client_info)
             |> Helpers.join_channel(
               Application.get_env(:retro_hex_chat, :default_channel, "#lobby"),
               session
@@ -92,8 +92,7 @@ defmodule RetroHexChatWeb.ChatLive do
            assign_defaults(socket, session)
            |> assign(
              timezone: Timezone.validate(http_session["chat_timezone"]),
-             client_info: %{},
-             connection_progress_step: 1
+             client_info: %{}
            )}
         end
 
@@ -410,10 +409,6 @@ defmodule RetroHexChatWeb.ChatLive do
       syntax_tooltip: nil,
       command_help_level: :beginner,
       timestamp_format: :dd_mm_hh_mm,
-      connection_ready: false,
-      connection_state: :connected,
-      connection_progress_step: 1,
-      connection_timeout: false,
       lag_ms: nil,
       lag_status: :normal,
       loading_channel: nil,

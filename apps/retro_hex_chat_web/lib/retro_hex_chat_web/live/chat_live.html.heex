@@ -1,4 +1,3 @@
-<div id="reconnect-hook" phx-hook="ReconnectHook" class="u-hidden"></div>
 <div id="title-flash" phx-hook="TitleFlashHook" class="u-hidden"></div>
 <div id="nick-change-hook" phx-hook="NickChangeFormHook" class="u-hidden"></div>
 <form id="nick-change-session-form" action={~p"/chat/session"} method="post" class="u-hidden">
@@ -51,7 +50,6 @@
         channel={@session.active_pm || @session.active_channel}
         user_count={length(@channel_users)}
         tab_type={if @session.active_pm, do: :pm, else: :channel}
-        connection_state={@connection_state}
         lag_ms={@lag_ms}
         lag_status={@lag_status}
         muted={@muted}
@@ -82,12 +80,6 @@
     />
 
     <div class="chat-area u-relative">
-      <RetroHexChatWeb.Components.ConnectionProgress.connection_progress
-        :if={!@connection_ready}
-        step={@connection_progress_step}
-        timeout={@connection_timeout}
-      />
-
       <RetroHexChatWeb.Components.TabBar.tab_bar
         :if={@show_switchbar}
         active_channel={@session.active_channel}
@@ -104,7 +96,7 @@
         show_status_tab={@show_status_tab}
       />
 
-      <RetroHexChatWeb.Components.ConnectionBanner.connection_banner />
+      <RetroHexChatWeb.Components.ConnectionStatus.connection_status />
 
       <RetroHexChatWeb.Components.SearchBar.search_bar
         visible={@search_visible}

@@ -10,7 +10,6 @@ defmodule RetroHexChatWeb.Components.StatusBar do
   attr :channel, :string, default: nil
   attr :user_count, :integer, default: 0
   attr :tab_type, :atom, default: :channel
-  attr :connection_state, :atom, default: :connected
   attr :lag_ms, :integer, default: nil
   attr :lag_status, :atom, default: :normal
   attr :muted, :boolean, default: false
@@ -32,10 +31,10 @@ defmodule RetroHexChatWeb.Components.StatusBar do
         <span :if={@tab_type == :channel} data-testid="status-users">({@user_count})</span>
         <span class="status-bar-separator">|</span>
         <span
-          class={"status-bar-connection--#{@connection_state}"}
+          class="status-bar-connection--connected"
           data-testid="status-connection"
         >
-          {connection_indicator(@connection_state)} {connection_text(@connection_state)}
+          ● On
         </span>
         <span class="status-bar-separator">|</span>
         <Icons.icon_status_signal class="status-bar-icon" />
@@ -66,20 +65,6 @@ defmodule RetroHexChatWeb.Components.StatusBar do
     </div>
     """
   end
-
-  @spec connection_indicator(atom()) :: String.t()
-  defp connection_indicator(:connected), do: "●"
-  defp connection_indicator(:connecting), do: "◌"
-  defp connection_indicator(:disconnected), do: "●"
-  defp connection_indicator(:reconnecting), do: "↻"
-  defp connection_indicator(_), do: "●"
-
-  @spec connection_text(atom()) :: String.t()
-  defp connection_text(:connected), do: "On"
-  defp connection_text(:connecting), do: "..."
-  defp connection_text(:disconnected), do: "Off"
-  defp connection_text(:reconnecting), do: "..."
-  defp connection_text(_), do: "On"
 
   @spec lag_text(non_neg_integer() | nil, atom()) :: String.t()
   defp lag_text(nil, :timeout), do: "?"

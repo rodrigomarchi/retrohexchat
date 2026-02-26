@@ -10,7 +10,6 @@ defmodule RetroHexChatWeb.Components.StatusBarTest do
     channel: "#general",
     user_count: 15,
     tab_type: :channel,
-    connection_state: :connected,
     lag_ms: nil,
     lag_status: :normal,
     muted: false
@@ -63,28 +62,15 @@ defmodule RetroHexChatWeb.Components.StatusBarTest do
   end
 
   describe "status_bar/1 connection state" do
-    test "shows connected state" do
-      html = render_status_bar(%{connection_state: :connected})
+    test "renders initial connected state (JS manages runtime updates)" do
+      html = render_status_bar()
       assert html =~ "● On"
       assert html =~ "status-bar-connection--connected"
     end
 
-    test "shows connecting state" do
-      html = render_status_bar(%{connection_state: :connecting})
-      assert html =~ "◌ ..."
-      assert html =~ "status-bar-connection--connecting"
-    end
-
-    test "shows disconnected state" do
-      html = render_status_bar(%{connection_state: :disconnected})
-      assert html =~ "● Off"
-      assert html =~ "status-bar-connection--disconnected"
-    end
-
-    test "shows reconnecting state" do
-      html = render_status_bar(%{connection_state: :reconnecting})
-      assert html =~ "↻ ..."
-      assert html =~ "status-bar-connection--reconnecting"
+    test "has data-testid for JS hook targeting" do
+      html = render_status_bar()
+      assert html =~ ~s(data-testid="status-connection")
     end
   end
 

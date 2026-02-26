@@ -84,12 +84,12 @@ defmodule RetroHexChatWeb.StatusBarE2ETest do
       assert html =~ "status-bar-lag--timeout"
     end
 
-    test "connection banner is rendered", %{conn: conn} do
+    test "connection status component is rendered", %{conn: conn} do
       nick = "SBA#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
-      assert html =~ "data-testid=\"connection-banner\""
-      assert html =~ "phx-hook=\"ConnectionBannerHook\""
+      assert html =~ "data-testid=\"connection-status\""
+      assert html =~ "phx-hook=\"ConnectionStatusHook\""
     end
   end
 end

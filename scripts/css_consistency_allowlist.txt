@@ -15,8 +15,11 @@ attempt-info
 char-counter--warning
 char-counter--danger
 connection-banner--disconnected
-connection-banner--fade-out
 connection-banner--reconnected
+# Connection status — JS hook toggles these classes dynamically (ConnectionStatusHook)
+reconnect-overlay--visible
+status-bar-connection--connecting
+status-bar-connection--reconnecting
 # Conversations user list — nick-away applied dynamically via user_item_class/1 in conversations.ex
 nick-away
 # Media call device panel — rendered dynamically by JS after enumerateDevices
@@ -37,14 +40,6 @@ p2p-lobby-presence__user--online
 # Semantic container classes with no visual styling needed
 cheatsheet-dialog
 context-color-picker
-# JS-hook only — buttons created in innerHTML, class used for querySelector targeting
-reconnect-cancel-btn
-reconnect-refresh-btn
-# Semantic container classes — no visual styling needed
-connection-progress__icon
-connection-progress__label
-# JS-hook only — queried via querySelector in connection_banner_hook.js
-reconnect-overlay--visible
 # Media call — semantic container, no visual styling needed
 media-call__video-area
 # False positive — "video" parsed from dynamic class expression "media-call--video"

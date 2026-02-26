@@ -40,8 +40,7 @@
 @import "./chat/tab-bar.css";
 
 /* Layer 5: Notifications */
-@import "./notifications/connection-banner.css";
-@import "./notifications/connection-progress.css";
+@import "./notifications/connection-status.css";
 @import "./notifications/notification-center.css";
 @import "./notifications/notification-toast.css";
 
@@ -72,7 +71,7 @@
 @import "./dialogs/highlight.css";
 @import "./dialogs/invite.css";
 @import "./dialogs/options.css";
-@import "./dialogs/reconnect-overlay.css";
+
 
 /* Phoenix LiveView visibility helpers */
 [data-phx-session],

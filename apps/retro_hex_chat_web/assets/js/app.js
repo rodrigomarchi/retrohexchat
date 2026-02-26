@@ -7,7 +7,7 @@ import topbar from "../vendor/topbar";
 import CharCounterHook from "./hooks/ui/char_counter_hook";
 import ClockHook from "./hooks/connection/clock_hook";
 import ConnectFormHook from "./hooks/connection/connect_form_hook";
-import ConnectionBannerHook from "./hooks/notifications/connection_banner_hook";
+import ConnectionStatusHook from "./hooks/connection/connection_status_hook";
 import ContextMenuHook from "./hooks/ui/context_menu_hook";
 import AutocompleteHook from "./hooks/chat/autocomplete_hook";
 import EmojiPickerHook from "./hooks/chat/emoji_picker_hook";
@@ -16,7 +16,7 @@ import KeyboardHook from "./hooks/input/keyboard_hook";
 import LagHook from "./hooks/connection/lag_hook";
 import NotifyListHook from "./hooks/notifications/notify_list_hook";
 import PasteHook from "./hooks/chat/paste_hook";
-import ReconnectHook from "./hooks/connection/reconnect_hook";
+
 import ScrollHook from "./hooks/chat/scroll_hook";
 import SearchHighlightHook from "./hooks/chat/search_highlight_hook";
 import ShortcutDispatcherHook from "./hooks/input/shortcut_dispatcher_hook";
@@ -54,7 +54,7 @@ const Hooks = {
   CharCounterHook: CharCounterHook,
   ClockHook: ClockHook,
   ConnectFormHook: ConnectFormHook,
-  ConnectionBannerHook: ConnectionBannerHook,
+  ConnectionStatusHook: ConnectionStatusHook,
   ContextMenuHook: ContextMenuHook,
   ContextualTipsHook: ContextualTipsHook,
   AutocompleteHook: AutocompleteHook,
@@ -79,7 +79,7 @@ const Hooks = {
   NotificationDispatcherHook: NotificationDispatcherHook,
   NotifyListHook: NotifyListHook,
   PasteHook: PasteHook,
-  ReconnectHook: ReconnectHook,
+
   ScrollHook: ScrollHook,
   SearchHighlightHook: SearchHighlightHook,
   ShortcutDispatcherHook: ShortcutDispatcherHook,
