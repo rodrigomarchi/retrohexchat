@@ -185,6 +185,25 @@
   --game-fish-color: #ff8800;
 }
 
+/* Hex Hockey: cyberpunk post-apocalyptic neon ice arena */
+.game-canvas[data-game-id="hex_hockey"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_hockey_blitz"] .game-canvas__surface,
+.game-canvas[data-game-id="hex_hockey_showdown"] .game-canvas__surface {
+  --game-bg-color: #060812;
+  --game-fg-color: #39ff14;
+  --game-accent-color: #00e5ff;
+  --game-muted-color: #0e1420;
+  --game-glow-color: rgba(57, 255, 20, 0.15);
+  --game-warning-color: #ff4444;
+  --game-rink-line: #39ff1460;
+  --game-goal-color: #ff2222;
+  --game-goalie-p1: #20aa0a;
+  --game-goalie-p2: #0090aa;
+  --game-puck-color: #ffffff;
+  --game-puck-trail: rgba(255, 255, 255, 0.3);
+  --game-ice-scratch: #ffffff08;
+}
+
 /* Star Duel trilogy: cyberpunk post-apocalyptic space combat */
 .game-canvas[data-game-id="star_duel"] .game-canvas__surface,
 .game-canvas[data-game-id="gravity_well"] .game-canvas__surface,

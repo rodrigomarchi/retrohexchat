@@ -1016,7 +1016,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-skiing-clean",
           "feature-hex-frost",
           "feature-hex-frost-blizzard",
-          "feature-hex-frost-peaceful"
+          "feature-hex-frost-peaceful",
+          "feature-hex-hockey",
+          "feature-hex-hockey-blitz",
+          "feature-hex-hockey-showdown"
         ]
       },
       %{
@@ -1730,6 +1733,82 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-hex-frost",
           "feature-hex-frost-blizzard",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-hockey",
+        title: "Hex Hockey",
+        category: "Features",
+        keywords: [
+          "hex hockey",
+          "ice hockey",
+          "hockey",
+          "puck",
+          "goalie",
+          "goal",
+          "tackle",
+          "shoot",
+          "rink",
+          "arena",
+          "neon",
+          "game"
+        ],
+        icon: :icon_game_hockey,
+        description:
+          "Top-down ice hockey in a cyberpunk neon arena. Control your field player while " <>
+            "an AI goalie defends your net. Capture the puck, shoot with Space, or tackle " <>
+            "to steal (60% chance, fail = stun). 3 periods of 2 minutes. Tied? Sudden death. " <>
+            "Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle.",
+        see_also: [
+          "feature-hex-hockey-blitz",
+          "feature-hex-hockey-showdown",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-hockey-blitz",
+        title: "Hex Hockey: Blitz",
+        category: "Features",
+        keywords: [
+          "hex hockey",
+          "hockey",
+          "blitz",
+          "fast",
+          "puck",
+          "game"
+        ],
+        icon: :icon_game_hockey,
+        description:
+          "One intense period of 3 minutes. Puck moves 25% faster, tackles succeed 80% of the time. " <>
+            "Pure intensity from start to finish. " <>
+            "Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle.",
+        see_also: [
+          "feature-hex-hockey",
+          "feature-hex-hockey-showdown",
+          "feature-p2p-games"
+        ]
+      },
+      %{
+        id: "feature-hex-hockey-showdown",
+        title: "Hex Hockey: Showdown",
+        category: "Features",
+        keywords: [
+          "hex hockey",
+          "hockey",
+          "showdown",
+          "first to five",
+          "puck",
+          "game"
+        ],
+        icon: :icon_game_hockey,
+        description:
+          "No timer — first to 5 goals wins. The puck speeds up after every goal scored, " <>
+            "building pressure as the match intensifies. " <>
+            "Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle.",
+        see_also: [
+          "feature-hex-hockey",
+          "feature-hex-hockey-blitz",
           "feature-p2p-games"
         ]
       }

@@ -324,6 +324,36 @@ defmodule RetroHexChat.Games.Catalog do
           "First to complete the igloo wins. Fair and square.",
       icon: "game_frost",
       controls: "Arrow keys or WASD to move, Up/Down to jump between rows"
+    },
+    %{
+      id: "hex_hockey",
+      name: "Hex Hockey",
+      tagline: "Neon ice warfare",
+      description:
+        "Top-down ice hockey in a cyberpunk arena — control your field player, " <>
+          "shoot, tackle, and score while your AI goalie defends. 3 periods of 2 minutes.",
+      icon: "game_hockey",
+      controls: "Arrow keys or WASD to move, Space or Shift to shoot/tackle"
+    },
+    %{
+      id: "hex_hockey_blitz",
+      name: "Hex Hockey: Blitz",
+      tagline: "Fast and brutal",
+      description:
+        "One period of 3 minutes — faster puck, higher tackle success rate. " <>
+          "Pure intensity from start to finish.",
+      icon: "game_hockey",
+      controls: "Arrow keys or WASD to move, Space or Shift to shoot/tackle"
+    },
+    %{
+      id: "hex_hockey_showdown",
+      name: "Hex Hockey: Showdown",
+      tagline: "First to five",
+      description:
+        "No timer — first to 5 goals wins. Puck speed increases with each goal scored. " <>
+          "The pressure builds every time the net shakes.",
+      icon: "game_hockey",
+      controls: "Arrow keys or WASD to move, Space or Shift to shoot/tackle"
     }
   ]
 
