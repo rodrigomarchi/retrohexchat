@@ -174,6 +174,20 @@ defmodule RetroHexChat.Arcade.Catalog do
         "Point & click: left-click interact, right-click examine. " <>
           "Inventory at bottom of screen. F5 save/load, Esc skip cutscene",
       icon: "game_drascula"
+    },
+    %{
+      id: "scummvm_dreamweb",
+      name: "Dreamweb",
+      tagline: "Dark cyberpunk adventure (1994)",
+      description:
+        "A disturbing top-down cyberpunk adventure by Creative Reality. " <>
+          "You are Ryan, plagued by nightmares about the Dreamweb — a mystical barrier " <>
+          "protecting reality. Full CD version with voice acting.",
+      engine: :scummvm,
+      controls:
+        "Point & click: left-click interact/walk, right-click examine. " <>
+          "Inventory at top of screen. F5 save/load, Esc skip cutscene",
+      icon: "game_dreamweb"
     }
   ]
 

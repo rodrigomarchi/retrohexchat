@@ -61,6 +61,7 @@ defmodule RetroHexChatWeb.Icons.Games do
   def game_icon(%{game_id: "halflife_uplink"} = assigns), do: icon_game_halflife(assigns)
   def game_icon(%{game_id: "scummvm_bass"} = assigns), do: icon_game_bass(assigns)
   def game_icon(%{game_id: "scummvm_drascula"} = assigns), do: icon_game_drascula(assigns)
+  def game_icon(%{game_id: "scummvm_dreamweb"} = assigns), do: icon_game_dreamweb(assigns)
   def game_icon(assigns), do: icon_game_generic(assigns)
 
   # -- Hex Pong: paddle + ball --
@@ -1196,6 +1197,56 @@ defmodule RetroHexChatWeb.Icons.Games do
 
       <rect x="9" y="26" width="2" height="2" fill="#a22" />
       <rect x="10" y="25" width="1" height="1" fill="#a22" />
+    </svg>
+    """
+  end
+
+  # -- Dreamweb: dark cyberpunk top-down --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_dreamweb(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_dreamweb(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#0a0a12" />
+
+      <rect x="4" y="4" width="6" height="8" fill="#1a1a2a" />
+      <rect x="4" y="4" width="6" height="1" fill="#2a2a3a" />
+      <rect x="5" y="6" width="1" height="1" fill="#446" />
+      <rect x="8" y="6" width="1" height="1" fill="#446" />
+      <rect x="5" y="8" width="4" height="1" fill="#333" />
+
+      <rect x="22" y="4" width="6" height="10" fill="#1a1a2a" />
+      <rect x="22" y="4" width="6" height="1" fill="#2a2a3a" />
+      <rect x="23" y="7" width="1" height="1" fill="#446" />
+      <rect x="26" y="7" width="1" height="1" fill="#446" />
+
+      <rect x="12" y="14" width="8" height="10" fill="#1a1a2a" />
+      <rect x="12" y="14" width="8" height="1" fill="#2a2a3a" />
+      <rect x="14" y="17" width="1" height="1" fill="#446" />
+      <rect x="17" y="17" width="1" height="1" fill="#446" />
+      <rect x="14" y="20" width="4" height="1" fill="#333" />
+
+      <rect x="14" y="10" width="4" height="4" fill="#0f0f1f" />
+      <rect x="15" y="11" width="2" height="2" fill="#4af" />
+      <rect x="15" y="11" width="1" height="1" fill="#8cf" />
+
+      <rect x="4" y="26" width="24" height="1" fill="#222" />
+      <rect x="6" y="27" width="3" height="1" fill="#1a1a2a" />
+      <rect x="15" y="27" width="3" height="1" fill="#1a1a2a" />
+      <rect x="23" y="27" width="3" height="1" fill="#1a1a2a" />
+
+      <rect x="3" y="16" width="1" height="1" fill="#224" />
+      <rect x="28" y="10" width="1" height="1" fill="#224" />
+      <rect x="10" y="6" width="1" height="1" fill="#224" />
+
+      <rect x="8" y="22" width="2" height="3" fill="#0a1a0a" />
+      <rect x="8" y="22" width="2" height="1" fill="#1a3a1a" />
+      <rect x="9" y="23" width="1" height="1" fill="#0f2" />
     </svg>
     """
   end
