@@ -47,6 +47,15 @@ defmodule RetroHexChatWeb.Icons.Games do
   def game_icon(%{game_id: "hex_hockey"} = assigns), do: icon_game_hockey(assigns)
   def game_icon(%{game_id: "hex_hockey_blitz"} = assigns), do: icon_game_hockey(assigns)
   def game_icon(%{game_id: "hex_hockey_showdown"} = assigns), do: icon_game_hockey(assigns)
+  def game_icon(%{game_id: "doom_shareware"} = assigns), do: icon_game_doom(assigns)
+  def game_icon(%{game_id: "freedoom1"} = assigns), do: icon_game_freedoom1(assigns)
+  def game_icon(%{game_id: "freedoom2"} = assigns), do: icon_game_freedoom2(assigns)
+  def game_icon(%{game_id: "freedm"} = assigns), do: icon_game_freedm(assigns)
+  def game_icon(%{game_id: "chex_quest"} = assigns), do: icon_game_chex(assigns)
+  def game_icon(%{game_id: "hacx"} = assigns), do: icon_game_hacx(assigns)
+  def game_icon(%{game_id: "rekkr"} = assigns), do: icon_game_rekkr(assigns)
+  def game_icon(%{game_id: "quake_shareware"} = assigns), do: icon_game_quake(assigns)
+  def game_icon(%{game_id: "librequake"} = assigns), do: icon_game_librequake(assigns)
   def game_icon(assigns), do: icon_game_generic(assigns)
 
   # -- Hex Pong: paddle + ball --
@@ -543,6 +552,430 @@ defmodule RetroHexChatWeb.Icons.Games do
 
       <rect x="5" y="14" width="2" height="4" fill="#20aa0a" />
       <rect x="25" y="14" width="2" height="4" fill="#0090aa" />
+    </svg>
+    """
+  end
+
+  # -- DOOM Shareware: shotgun with muzzle flash (red/orange) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_doom(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_doom(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#1a0000" />
+
+      <rect x="4" y="14" width="18" height="4" fill="#666" />
+      <rect x="4" y="14" width="18" height="1" fill="#888" />
+      <rect x="4" y="17" width="18" height="1" fill="#444" />
+      <rect x="6" y="18" width="6" height="6" fill="#553300" />
+      <rect x="6" y="18" width="6" height="1" fill="#774400" />
+      <rect x="4" y="13" width="2" height="1" fill="#888" />
+
+      <rect x="22" y="11" width="4" height="2" fill="#ff4400" />
+      <rect x="23" y="9" width="2" height="2" fill="#ff8800" />
+      <rect x="24" y="7" width="2" height="2" fill="#ffcc00" />
+      <rect x="22" y="13" width="2" height="1" fill="#ff4400" />
+      <rect x="25" y="12" width="2" height="2" fill="#ff6600" />
+      <rect x="24" y="8" width="1" height="1" fill="#fff" />
+
+      <rect x="15" y="15" width="1" height="2" fill="#444" />
+      <rect x="18" y="15" width="1" height="2" fill="#444" />
+
+      <rect x="5" y="5" width="8" height="3" fill="#cc0000" />
+      <rect x="5" y="5" width="8" height="1" fill="#ff0000" />
+      <path d="M6 6h1v1h1v1H6z" fill="#ff0000" />
+      <rect x="10" y="6" width="2" height="1" fill="#ff0000" />
+
+      <rect x="17" y="24" width="8" height="3" fill="#cc0000" />
+      <rect x="17" y="24" width="8" height="1" fill="#ff0000" />
+    </svg>
+    """
+  end
+
+  # -- Freedoom Phase 1: liberty cap + fist (blue/teal) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_freedoom1(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_freedoom1(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#001122" />
+
+      <rect x="14" y="4" width="4" height="2" fill="#0088cc" />
+      <rect x="12" y="6" width="8" height="2" fill="#0088cc" />
+      <rect x="10" y="8" width="12" height="4" fill="#0077bb" />
+      <rect x="8" y="12" width="16" height="2" fill="#006699" />
+      <rect x="15" y="3" width="2" height="1" fill="#00aaff" />
+
+      <rect x="12" y="10" width="3" height="2" fill="#00bbff" />
+      <rect x="17" y="10" width="3" height="2" fill="#00bbff" />
+      <rect x="13" y="10" width="1" height="1" fill="#fff" />
+      <rect x="18" y="10" width="1" height="1" fill="#fff" />
+
+      <rect x="14" y="16" width="4" height="4" fill="#ddaa77" />
+      <rect x="13" y="17" width="1" height="2" fill="#ddaa77" />
+      <rect x="18" y="17" width="1" height="2" fill="#ddaa77" />
+      <rect x="12" y="20" width="3" height="4" fill="#ddaa77" />
+      <rect x="17" y="20" width="3" height="4" fill="#ddaa77" />
+      <rect x="11" y="22" width="2" height="2" fill="#ddaa77" />
+      <rect x="19" y="22" width="2" height="2" fill="#ddaa77" />
+      <rect x="14" y="20" width="4" height="2" fill="#cc9966" />
+
+      <rect x="15" y="16" width="2" height="1" fill="#eebbaa" />
+
+      <rect x="5" y="26" width="4" height="2" fill="#0077bb" />
+      <rect x="5" y="26" width="4" height="1" fill="#0088cc" />
+      <rect x="23" y="26" width="4" height="2" fill="#0077bb" />
+      <rect x="23" y="26" width="4" height="1" fill="#0088cc" />
+    </svg>
+    """
+  end
+
+  # -- Freedoom Phase 2: double-barrel shotgun (green/olive) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_freedoom2(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_freedoom2(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#0a1a00" />
+
+      <rect x="4" y="12" width="20" height="2" fill="#777" />
+      <rect x="4" y="14" width="20" height="2" fill="#666" />
+      <rect x="4" y="12" width="20" height="1" fill="#999" />
+      <rect x="4" y="15" width="20" height="1" fill="#444" />
+      <rect x="4" y="11" width="2" height="1" fill="#999" />
+      <rect x="4" y="16" width="2" height="1" fill="#444" />
+
+      <rect x="24" y="10" width="3" height="2" fill="#ff6600" />
+      <rect x="24" y="16" width="3" height="2" fill="#ff6600" />
+      <rect x="25" y="9" width="2" height="1" fill="#ffaa00" />
+      <rect x="25" y="18" width="2" height="1" fill="#ffaa00" />
+      <rect x="26" y="8" width="2" height="2" fill="#ffcc00" />
+      <rect x="26" y="18" width="2" height="2" fill="#ffcc00" />
+      <rect x="27" y="9" width="1" height="1" fill="#fff" />
+      <rect x="27" y="18" width="1" height="1" fill="#fff" />
+
+      <rect x="6" y="16" width="8" height="7" fill="#553300" />
+      <rect x="6" y="16" width="8" height="1" fill="#774400" />
+
+      <rect x="10" y="13" width="1" height="2" fill="#444" />
+      <rect x="16" y="13" width="1" height="2" fill="#444" />
+
+      <rect x="5" y="4" width="6" height="3" fill="#338833" />
+      <rect x="5" y="4" width="6" height="1" fill="#44aa44" />
+      <rect x="7" y="5" width="2" height="2" fill="#44aa44" />
+      <rect x="15" y="5" width="4" height="2" fill="#338833" />
+
+      <rect x="21" y="24" width="6" height="3" fill="#338833" />
+      <rect x="21" y="24" width="6" height="1" fill="#44aa44" />
+    </svg>
+    """
+  end
+
+  # -- Quake: dark nail with runic symbol (brown/amber) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_quake(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_quake(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#0d0d00" />
+
+      <path
+        d="M12 4h8v2h2v2h2v4h2v8h-2v4h-2v2h-2v2h-8v-2h-2v-2H8v-4H6v-8h2V8h2V6h2z"
+        fill="#3a2500"
+      />
+      <path
+        d="M14 6h4v2h2v2h2v4h2v4h-2v4h-2v2h-2v2h-4v-2h-2v-2h-2v-4H8v-4h2V8h2V6z"
+        fill="#4a3000"
+      />
+
+      <rect x="15" y="7" width="2" height="4" fill="#ffcc00" />
+      <rect x="13" y="11" width="6" height="2" fill="#ffcc00" />
+      <rect x="14" y="13" width="2" height="2" fill="#ffcc00" />
+      <rect x="16" y="13" width="2" height="2" fill="#ffcc00" />
+      <rect x="13" y="15" width="2" height="4" fill="#ffcc00" />
+      <rect x="17" y="15" width="2" height="4" fill="#ffcc00" />
+      <rect x="12" y="19" width="2" height="2" fill="#ffcc00" />
+      <rect x="18" y="19" width="2" height="2" fill="#ffcc00" />
+      <rect x="14" y="21" width="4" height="2" fill="#ffcc00" />
+
+      <rect x="15" y="8" width="1" height="1" fill="#fff" />
+      <rect x="14" y="11" width="1" height="1" fill="#fff" />
+      <rect x="18" y="11" width="1" height="1" fill="#fff" />
+      <rect x="15" y="21" width="1" height="1" fill="#fff" />
+
+      <rect x="6" y="14" width="1" height="1" fill="#ff6600" />
+      <rect x="8" y="8" width="1" height="1" fill="#ff6600" />
+      <rect x="25" y="18" width="1" height="1" fill="#ff6600" />
+      <rect x="23" y="10" width="1" height="1" fill="#ff6600" />
+      <rect x="5" y="22" width="1" height="1" fill="#ff6600" />
+      <rect x="26" y="6" width="1" height="1" fill="#ff6600" />
+    </svg>
+    """
+  end
+
+  # -- Arcade: retro arcade cabinet --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_arcade(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_arcade(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000033" />
+
+      <rect x="8" y="4" width="16" height="22" fill="#444" />
+      <rect x="8" y="4" width="16" height="1" fill="#666" />
+      <rect x="8" y="4" width="1" height="22" fill="#666" />
+      <rect x="23" y="4" width="1" height="22" fill="#222" />
+      <rect x="8" y="25" width="16" height="1" fill="#222" />
+
+      <rect x="10" y="6" width="12" height="8" fill="#001a00" />
+      <rect x="11" y="7" width="10" height="6" fill="#003300" />
+
+      <rect x="13" y="8" width="2" height="2" fill="#00ff00" />
+      <rect x="17" y="9" width="3" height="3" fill="#00ff00" />
+      <rect x="14" y="11" width="1" height="1" fill="#00ff00" />
+
+      <rect x="12" y="16" width="2" height="2" fill="#222" />
+      <rect x="13" y="15" width="1" height="1" fill="#222" />
+      <rect x="13" y="18" width="1" height="1" fill="#222" />
+      <rect x="11" y="17" width="1" height="1" fill="#222" />
+      <rect x="14" y="17" width="1" height="1" fill="#222" />
+      <rect x="13" y="17" width="1" height="1" fill="#ff0000" />
+
+      <rect x="18" y="16" width="2" height="2" fill="#ff0000" />
+      <rect x="21" y="16" width="2" height="2" fill="#0000ff" />
+      <rect x="19" y="19" width="2" height="2" fill="#ffff00" />
+
+      <rect x="10" y="22" width="4" height="1" fill="#ff6600" />
+      <rect x="18" y="22" width="4" height="1" fill="#ff6600" />
+
+      <rect x="10" y="26" width="4" height="4" fill="#333" />
+      <rect x="18" y="26" width="4" height="4" fill="#333" />
+    </svg>
+    """
+  end
+
+  # -- FreeDM: arena deathmatch flags (red/orange) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_freedm(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_freedm(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#1a0800" />
+
+      <rect x="10" y="4" width="12" height="10" fill="#2a1a0a" />
+      <rect x="10" y="4" width="12" height="1" fill="#3a2a1a" />
+
+      <rect x="8" y="6" width="2" height="18" fill="#666" />
+      <rect x="6" y="6" width="4" height="6" fill="#cc3300" />
+      <rect x="6" y="6" width="4" height="1" fill="#ff4400" />
+      <rect x="7" y="8" width="2" height="2" fill="#ff6600" />
+
+      <rect x="22" y="6" width="2" height="18" fill="#666" />
+      <rect x="22" y="6" width="4" height="6" fill="#0066cc" />
+      <rect x="22" y="6" width="4" height="1" fill="#0088ff" />
+      <rect x="23" y="8" width="2" height="2" fill="#0099ff" />
+
+      <rect x="12" y="16" width="8" height="8" fill="#333" />
+      <rect x="12" y="16" width="8" height="1" fill="#555" />
+      <rect x="14" y="18" width="4" height="4" fill="#ff6600" />
+      <rect x="15" y="19" width="2" height="2" fill="#ffcc00" />
+
+      <rect x="4" y="26" width="8" height="2" fill="#553300" />
+      <rect x="20" y="26" width="8" height="2" fill="#553300" />
+    </svg>
+    """
+  end
+
+  # -- Chex Quest: cereal zapper (yellow/green) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_chex(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_chex(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#0a1a00" />
+
+      <rect x="10" y="8" width="12" height="16" fill="#ccaa00" />
+      <rect x="10" y="8" width="12" height="2" fill="#ddbb00" />
+      <rect x="10" y="22" width="12" height="2" fill="#aa8800" />
+      <rect x="12" y="10" width="8" height="12" fill="#ddcc22" />
+
+      <rect x="14" y="12" width="4" height="4" fill="#ffee44" />
+      <rect x="15" y="13" width="2" height="2" fill="#fff" />
+
+      <rect x="14" y="18" width="4" height="2" fill="#aa8800" />
+      <rect x="13" y="17" width="6" height="1" fill="#ccaa00" />
+
+      <rect x="4" y="12" width="6" height="4" fill="#33aa33" />
+      <rect x="4" y="12" width="6" height="1" fill="#44cc44" />
+      <rect x="5" y="14" width="4" height="1" fill="#22aa22" />
+
+      <rect x="24" y="4" width="4" height="4" fill="#00ff00" />
+      <rect x="25" y="3" width="2" height="1" fill="#00ff00" />
+      <rect x="25" y="5" width="2" height="2" fill="#88ff88" />
+
+      <rect x="5" y="25" width="6" height="2" fill="#33aa33" />
+      <rect x="21" y="25" width="6" height="2" fill="#33aa33" />
+    </svg>
+    """
+  end
+
+  # -- HacX: cyberpunk terminal (cyan/purple) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_hacx(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_hacx(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#0a001a" />
+
+      <rect x="6" y="4" width="20" height="14" fill="#1a0a2a" />
+      <rect x="6" y="4" width="20" height="1" fill="#3a1a4a" />
+      <rect x="6" y="4" width="1" height="14" fill="#3a1a4a" />
+      <rect x="25" y="4" width="1" height="14" fill="#1a0a1a" />
+      <rect x="6" y="17" width="20" height="1" fill="#1a0a1a" />
+
+      <rect x="8" y="6" width="16" height="10" fill="#000" />
+      <rect x="9" y="7" width="2" height="1" fill="#00ffcc" />
+      <rect x="12" y="7" width="6" height="1" fill="#00ffcc" />
+      <rect x="9" y="9" width="8" height="1" fill="#00cc99" />
+      <rect x="9" y="11" width="10" height="1" fill="#00ffcc" />
+      <rect x="9" y="13" width="4" height="1" fill="#00cc99" />
+      <rect x="14" y="13" width="2" height="2" fill="#ff00ff" />
+
+      <rect x="21" y="7" width="2" height="2" fill="#ff00ff" />
+      <rect x="21" y="10" width="2" height="2" fill="#cc00cc" />
+
+      <rect x="10" y="20" width="12" height="4" fill="#333" />
+      <rect x="10" y="20" width="12" height="1" fill="#555" />
+      <rect x="11" y="21" width="2" height="2" fill="#00ffcc" />
+      <rect x="14" y="21" width="2" height="2" fill="#00ffcc" />
+      <rect x="17" y="21" width="2" height="2" fill="#00ffcc" />
+      <rect x="20" y="21" width="1" height="1" fill="#ff00ff" />
+
+      <rect x="4" y="26" width="6" height="2" fill="#3a1a4a" />
+      <rect x="22" y="26" width="6" height="2" fill="#3a1a4a" />
+    </svg>
+    """
+  end
+
+  # -- REKKR: Viking axe + rune (gold/brown) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_rekkr(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_rekkr(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#1a1000" />
+
+      <rect x="15" y="4" width="2" height="20" fill="#774400" />
+      <rect x="15" y="4" width="1" height="20" fill="#885500" />
+
+      <rect x="10" y="6" width="5" height="6" fill="#999" />
+      <rect x="17" y="6" width="5" height="6" fill="#999" />
+      <rect x="10" y="6" width="12" height="1" fill="#bbb" />
+      <rect x="9" y="7" width="1" height="4" fill="#aaa" />
+      <rect x="22" y="7" width="1" height="4" fill="#aaa" />
+      <rect x="8" y="8" width="1" height="2" fill="#999" />
+      <rect x="23" y="8" width="1" height="2" fill="#999" />
+
+      <rect x="12" y="8" width="2" height="2" fill="#bbb" />
+      <rect x="18" y="8" width="2" height="2" fill="#bbb" />
+
+      <rect x="13" y="24" width="6" height="4" fill="#553300" />
+      <rect x="13" y="24" width="6" height="1" fill="#774400" />
+      <rect x="14" y="25" width="4" height="2" fill="#664400" />
+
+      <rect x="4" y="14" width="4" height="4" fill="#ffcc00" />
+      <rect x="5" y="15" width="2" height="2" fill="#ffee44" />
+      <rect x="24" y="14" width="4" height="4" fill="#ffcc00" />
+      <rect x="25" y="15" width="2" height="2" fill="#ffee44" />
+
+      <rect x="5" y="20" width="2" height="2" fill="#ffcc00" />
+      <rect x="25" y="20" width="2" height="2" fill="#ffcc00" />
+    </svg>
+    """
+  end
+
+  # -- LibreQuake: open portal (blue/white) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_librequake(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_librequake(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#000022" />
+
+      <path
+        d="M12 4h8v2h2v2h2v4h2v8h-2v4h-2v2h-2v2h-8v-2h-2v-2H8v-4H6v-8h2V8h2V6h2z"
+        fill="#003366"
+      />
+      <path
+        d="M14 6h4v2h2v2h2v4h2v4h-2v4h-2v2h-2v2h-4v-2h-2v-2h-2v-4H8v-4h2V8h2V6z"
+        fill="#004488"
+      />
+      <path d="M14 8h4v2h2v2h2v4h-2v4h-2v2h-2v2h-4v-2h-2v-2h-2v-4h2v-4h2V8z" fill="#0066aa" />
+
+      <rect x="14" y="10" width="4" height="2" fill="#88ccff" />
+      <rect x="12" y="12" width="8" height="2" fill="#88ccff" />
+      <rect x="12" y="14" width="8" height="4" fill="#aaddff" />
+      <rect x="12" y="18" width="8" height="2" fill="#88ccff" />
+      <rect x="14" y="20" width="4" height="2" fill="#88ccff" />
+
+      <rect x="15" y="13" width="2" height="2" fill="#fff" />
+      <rect x="14" y="15" width="4" height="2" fill="#fff" />
+      <rect x="15" y="17" width="2" height="1" fill="#fff" />
+
+      <rect x="5" y="5" width="2" height="2" fill="#0088ff" />
+      <rect x="25" y="5" width="2" height="2" fill="#0088ff" />
+      <rect x="5" y="25" width="2" height="2" fill="#0088ff" />
+      <rect x="25" y="25" width="2" height="2" fill="#0088ff" />
     </svg>
     """
   end

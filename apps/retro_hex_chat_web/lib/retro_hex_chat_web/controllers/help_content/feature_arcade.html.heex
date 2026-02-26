@@ -1,0 +1,41 @@
+<p>
+  The Solo Arcade lets you play classic FPS games directly in your browser via WebAssembly. No downloads, no plugins — the game engine runs natively in your browser.
+</p>
+<.help_h4 icon={:icon_send}>Starting an Arcade Session</.help_h4>
+<pre>/singleplayer</pre>
+<p>
+  This creates a solo arcade session and opens the game lobby where you can browse and select a game from the catalog.
+</p>
+<.help_h4 icon={:icon_game_arcade}>Available Games — DOOM Engine</.help_h4>
+<ul>
+  <li><strong>DOOM: Knee-Deep in the Dead</strong> — The original shareware Episode 1 (1993)</li>
+  <li><strong>Freedoom: Phase 1</strong> — 36 levels of open-source DOOM (BSD license)</li>
+  <li><strong>Freedoom: Phase 2</strong> — 32 levels, Doom II compatible (BSD license)</li>
+  <li><strong>FreeDM</strong> — 32 deathmatch arenas (BSD license)</li>
+  <li><strong>Chex Quest</strong> — The 1996 cereal box classic</li>
+  <li><strong>HacX: Twitch 'n Kill</strong> — Cyberpunk total conversion</li>
+  <li><strong>REKKR: Sunken Land</strong> — Viking-themed standalone</li>
+</ul>
+<.help_h4 icon={:icon_game_quake}>Available Games — Quake Engine</.help_h4>
+<ul>
+  <li>
+    <strong>Quake: Dimension of the Doomed</strong> — The original shareware Episode 1 (1996)
+  </li>
+  <li><strong>LibreQuake</strong> — Open-source Quake replacement (BSD license)</li>
+</ul>
+<.help_h4 icon={:icon_webrtc}>Technology</.help_h4>
+<p>
+  DOOM games are powered by <strong>Dwasm</strong>
+  (PrBoom+ compiled to WebAssembly via Emscripten). Quake games are powered by
+  <strong>Qwasm</strong>
+  (QuakeSpasm compiled to WebAssembly). Both support keyboard, mouse, and gamepad input.
+</p>
+<.help_h4 icon={:icon_clock}>Session Timeouts</.help_h4>
+<p>
+  Pending sessions expire in 5 minutes. The lobby expires after 15 minutes of inactivity (with a warning at 10 minutes).
+</p>
+<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>
+  <.help_link topic="feature-arcade-doom">DOOM (Arcade)</.help_link>
+  · <.help_link topic="feature-arcade-quake">Quake (Arcade)</.help_link>
+</p>

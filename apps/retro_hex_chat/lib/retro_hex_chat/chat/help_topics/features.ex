@@ -1019,7 +1019,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-frost-peaceful",
           "feature-hex-hockey",
           "feature-hex-hockey-blitz",
-          "feature-hex-hockey-showdown"
+          "feature-hex-hockey-showdown",
+          "feature-arcade"
         ]
       },
       %{
@@ -1810,6 +1811,93 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-hockey",
           "feature-hex-hockey-blitz",
           "feature-p2p-games"
+        ]
+      },
+      # ── Solo Arcade ──────────────────────────────────
+      %{
+        id: "feature-arcade",
+        title: "Solo Arcade",
+        category: "Features",
+        keywords: [
+          "arcade",
+          "singleplayer",
+          "single player",
+          "solo",
+          "doom",
+          "quake",
+          "freedoom",
+          "freedm",
+          "chex quest",
+          "hacx",
+          "rekkr",
+          "librequake",
+          "wasm",
+          "webassembly",
+          "fps",
+          "retro",
+          "classic"
+        ],
+        icon: :icon_game_arcade,
+        description:
+          "Play classic FPS games in your browser via WebAssembly — 9 games including DOOM, Quake, " <>
+            "Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
+            "Start with /singleplayer.",
+        see_also: [
+          "feature-arcade-doom",
+          "feature-arcade-quake"
+        ]
+      },
+      %{
+        id: "feature-arcade-doom",
+        title: "DOOM (Arcade)",
+        category: "Features",
+        keywords: [
+          "doom",
+          "freedoom",
+          "freedm",
+          "chex quest",
+          "chex",
+          "hacx",
+          "rekkr",
+          "viking",
+          "cyberpunk",
+          "fps",
+          "shareware",
+          "knee deep",
+          "phobos",
+          "wasm",
+          "id software"
+        ],
+        icon: :icon_game_doom,
+        description:
+          "Play 7 DOOM-engine games in your browser — DOOM shareware, Freedoom Phase 1 & 2, " <>
+            "FreeDM, Chex Quest, HacX, and REKKR. Powered by Dwasm (PrBoom+ → WebAssembly).",
+        see_also: [
+          "feature-arcade",
+          "feature-arcade-quake"
+        ]
+      },
+      %{
+        id: "feature-arcade-quake",
+        title: "Quake (Arcade)",
+        category: "Features",
+        keywords: [
+          "quake",
+          "librequake",
+          "fps",
+          "shareware",
+          "dimension of the doomed",
+          "wasm",
+          "id software",
+          "lovecraft"
+        ],
+        icon: :icon_game_quake,
+        description:
+          "Play 2 Quake-engine games in your browser — Quake shareware and LibreQuake (open-source). " <>
+            "Powered by Qwasm (QuakeSpasm → WebAssembly).",
+        see_also: [
+          "feature-arcade",
+          "feature-arcade-doom"
         ]
       }
     ]

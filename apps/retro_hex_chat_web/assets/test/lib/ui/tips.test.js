@@ -98,7 +98,7 @@ describe("tips", () => {
     });
 
     it("handles localStorage full gracefully", () => {
-      vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      localStorage.setItem = vi.fn(() => {
         throw new DOMException("QuotaExceededError");
       });
       expect(() => setSuppressed(true)).not.toThrow();
@@ -144,7 +144,7 @@ describe("tips", () => {
     });
 
     it("handles localStorage full gracefully", () => {
-      vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      localStorage.setItem = vi.fn(() => {
         throw new DOMException("QuotaExceededError");
       });
       expect(() => markTipSeen("first_message")).not.toThrow();

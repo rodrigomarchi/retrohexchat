@@ -316,5 +316,15 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_game_skiing(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_frost(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_hockey(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_doom(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_freedoom1(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_freedoom2(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_freedm(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_chex(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_hacx(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_rekkr(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_quake(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_librequake(assigns), to: RetroHexChatWeb.Icons.Games
+  defdelegate icon_game_arcade(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_generic(assigns), to: RetroHexChatWeb.Icons.Games
 end

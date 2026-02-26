@@ -113,9 +113,23 @@ defmodule RetroHexChatWeb.Components.AutocompleteDropdown do
   attr :matched_chars, :list, default: []
 
   defp highlight_matches(assigns) do
+    matched_set = MapSet.new(assigns.matched_chars)
+
+    segments =
+      assigns.text
+      |> String.graphemes()
+      |> Enum.with_index()
+      |> Enum.chunk_by(fn {_char, idx} -> idx in matched_set end)
+      |> Enum.map(fn [{_, idx} | _] = chunk ->
+        text = Enum.map_join(chunk, fn {char, _} -> char end)
+        %{text: text, matched: idx in matched_set}
+      end)
+
+    assigns = assign(assigns, :segments, segments)
+
     ~H"""
-    <%= for {char, idx} <- String.graphemes(@text) |> Enum.with_index() do %>
-      <strong :if={idx in @matched_chars}>{char}</strong><span :if={idx not in @matched_chars}>{char}</span>
+    <%= for segment <- @segments do %>
+      <strong :if={segment.matched}>{segment.text}</strong><span :if={not segment.matched}>{segment.text}</span>
     <% end %>
     """
   end

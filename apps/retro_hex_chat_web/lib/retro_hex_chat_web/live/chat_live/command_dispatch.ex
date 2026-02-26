@@ -272,6 +272,12 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   defp handle_dispatch_result(socket, session, {:ok, :ui_action, :game_invite, payload}),
     do: GameInvite.handle_game_invite(socket, session, payload)
 
+  defp handle_dispatch_result(socket, _session, {:ok, :ui_action, :arcade_session, payload}) do
+    socket
+    |> system_event("Arcade session created! Opening lobby...")
+    |> push_navigate(to: ~p"/solo/#{payload.token}")
+  end
+
   defp handle_dispatch_result(socket, _session, {:ok, :ui_action, action, payload}),
     do: UiActionHandlers.handle_ui_action(socket, action, payload)
 

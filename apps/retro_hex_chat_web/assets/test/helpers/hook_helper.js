@@ -107,19 +107,37 @@ export function cleanupDOM() {
  */
 export function mockLocalStorage() {
   const store = {};
+  const original = globalThis.localStorage;
 
-  vi.spyOn(Storage.prototype, "getItem").mockImplementation((key) => store[key] ?? null);
-  vi.spyOn(Storage.prototype, "setItem").mockImplementation((key, value) => {
-    store[key] = String(value);
-  });
-  vi.spyOn(Storage.prototype, "removeItem").mockImplementation((key) => {
-    delete store[key];
-  });
-  vi.spyOn(Storage.prototype, "clear").mockImplementation(() => {
-    Object.keys(store).forEach((k) => delete store[k]);
+  const mock = {
+    getItem: vi.fn((key) => store[key] ?? null),
+    setItem: vi.fn((key, value) => {
+      store[key] = String(value);
+    }),
+    removeItem: vi.fn((key) => {
+      delete store[key];
+    }),
+    clear: vi.fn(() => {
+      Object.keys(store).forEach((k) => delete store[k]);
+    }),
+    get length() {
+      return Object.keys(store).length;
+    },
+    key: vi.fn((i) => Object.keys(store)[i] ?? null),
+  };
+
+  Object.defineProperty(globalThis, "localStorage", {
+    value: mock,
+    writable: true,
+    configurable: true,
   });
 
   const restore = () => {
+    Object.defineProperty(globalThis, "localStorage", {
+      value: original,
+      writable: true,
+      configurable: true,
+    });
     vi.restoreAllMocks();
   };
 

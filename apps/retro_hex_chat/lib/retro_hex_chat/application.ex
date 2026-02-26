@@ -22,6 +22,8 @@ defmodule RetroHexChat.Application do
       RetroHexChat.Games.RateLimitTable,
       RetroHexChat.Games.Supervisor,
       RetroHexChat.Games.CleanupTask,
+      {Registry, keys: :unique, name: RetroHexChat.Arcade.SessionRegistry},
+      RetroHexChat.Arcade.Supervisor,
       RetroHexChat.Admin.BanCache,
       RetroHexChat.Admin.BanExpiry,
       RetroHexChat.Admin.RoleCache,

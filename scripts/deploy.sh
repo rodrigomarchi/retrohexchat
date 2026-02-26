@@ -37,6 +37,9 @@ echo "==> Checking out ${GIT_REF}..."
 git checkout "${GIT_REF}" --
 git pull origin "${GIT_REF}" 2>/dev/null || true
 
+echo "==> Pulling Git LFS files..."
+git lfs pull
+
 FULL_SHA=$(git rev-parse HEAD)
 SHORT_SHA=$(git rev-parse --short HEAD)
 MIX_VERSION=$(grep 'version:' mix.exs | head -1 | sed 's/.*"\(.*\)".*/\1/')

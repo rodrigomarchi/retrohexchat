@@ -49,6 +49,7 @@ defmodule RetroHexChat.Commands.Registry do
     "query" => RetroHexChat.Commands.Handlers.Query,
     "quit" => RetroHexChat.Commands.Handlers.Quit,
     "sendfile" => RetroHexChat.Commands.Handlers.SendFile,
+    "singleplayer" => RetroHexChat.Commands.Handlers.SinglePlayer,
     "setmotd" => RetroHexChat.Commands.Handlers.SetMotd,
     "setwelcome" => RetroHexChat.Commands.Handlers.SetWelcome,
     "slow" => RetroHexChat.Commands.Handlers.Slow,
