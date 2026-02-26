@@ -273,9 +273,19 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     do: GameInvite.handle_game_invite(socket, session, payload)
 
   defp handle_dispatch_result(socket, _session, {:ok, :ui_action, :arcade_session, payload}) do
+    url = "/solo/#{payload.token}"
+
+    msg = %{
+      id: "system-#{System.unique_integer([:positive])}",
+      author: "System",
+      content: url,
+      type: :arcade_link,
+      timestamp: DateTime.utc_now()
+    }
+
     socket
-    |> system_event("Arcade session created! Opening lobby...")
-    |> push_navigate(to: ~p"/solo/#{payload.token}")
+    |> stream_insert(:chat_messages, msg)
+    |> push_status_message("Arcade session ready! Open: #{url}", :system)
   end
 
   defp handle_dispatch_result(socket, _session, {:ok, :ui_action, action, payload}),

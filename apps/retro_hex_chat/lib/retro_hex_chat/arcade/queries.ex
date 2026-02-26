@@ -45,6 +45,16 @@ defmodule RetroHexChat.Arcade.Queries do
     |> Repo.exists?()
   end
 
+  @spec get_active_session(integer()) :: SoloSession.t() | nil
+  def get_active_session(user_id) do
+    SoloSession
+    |> where([s], s.creator_id == ^user_id)
+    |> where([s], s.status not in ^@terminal_statuses)
+    |> order_by([s], desc: s.inserted_at)
+    |> limit(1)
+    |> Repo.one()
+  end
+
   @spec list_stale_sessions(DateTime.t()) :: [SoloSession.t()]
   def list_stale_sessions(before_datetime) do
     SoloSession

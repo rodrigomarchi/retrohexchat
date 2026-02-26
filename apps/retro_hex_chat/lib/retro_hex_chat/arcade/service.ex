@@ -12,6 +12,7 @@ defmodule RetroHexChat.Arcade.Service do
           {:ok, %{session: SoloSession.t(), token: String.t()}} | {:error, String.t()}
   def create_session(creator_id) do
     with :ok <- Policy.can_create?(creator_id),
+         :ok <- close_active_session(creator_id),
          token = generate_token(),
          {:ok, session} <- insert_session(token, creator_id),
          {:ok, _pid} <- Supervisor.start_child(session.token) do
@@ -71,6 +72,17 @@ defmodule RetroHexChat.Arcade.Service do
   end
 
   # --- Private Helpers ---
+
+  defp close_active_session(creator_id) do
+    case Queries.get_active_session(creator_id) do
+      nil ->
+        :ok
+
+      session ->
+        Logger.info("Arcade closing previous session: token=#{session.token}, creator=#{creator_id}")
+        close_session(session.token, creator_id, "new_session")
+    end
+  end
 
   defp generate_token do
     Base.url_encode64(:crypto.strong_rand_bytes(32), padding: false)

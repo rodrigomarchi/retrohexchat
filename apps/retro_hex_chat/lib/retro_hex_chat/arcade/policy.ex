@@ -5,16 +5,12 @@ defmodule RetroHexChat.Arcade.Policy do
 
   import Ecto.Query
 
-  alias RetroHexChat.Arcade.Queries
   alias RetroHexChat.Arcade.Schema.SoloSession
   alias RetroHexChat.Repo
 
   @spec can_create?(integer()) :: :ok | {:error, String.t()}
   def can_create?(creator_id) do
-    with :ok <- check_registered(creator_id),
-         :ok <- check_no_active_session(creator_id) do
-      :ok
-    end
+    check_registered(creator_id)
   end
 
   @spec can_join?(integer(), SoloSession.t()) :: :ok | {:error, String.t()}
@@ -42,14 +38,6 @@ defmodule RetroHexChat.Arcade.Policy do
       :ok
     else
       {:error, "You must be registered to play arcade games"}
-    end
-  end
-
-  defp check_no_active_session(creator_id) do
-    if Queries.active_session_exists?(creator_id) do
-      {:error, "You already have an active arcade session"}
-    else
-      :ok
     end
   end
 

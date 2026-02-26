@@ -151,7 +151,7 @@
           data-temp-id={if(Map.get(msg, :status) in [:pending, :failed], do: msg.id, else: nil)}
           data-msg-status={if(Map.get(msg, :status), do: Atom.to_string(msg.status), else: nil)}
           data-system-message={
-            if(msg.type in [:system, :service, :inline_help], do: "true", else: nil)
+            if(msg.type in [:system, :service, :inline_help, :arcade_link], do: "true", else: nil)
           }
           data-real-id={Map.get(msg, :id)}
         >
@@ -204,6 +204,21 @@
               </span>
               <span class="chat-notice">
                 <span class="chat-notice-nick">-{msg.author}-</span> {msg.content}
+              </span>
+            <% :arcade_link -> %>
+              <span class="chat-timestamp">
+                {format_time(msg.timestamp, @timestamp_format, @timezone)}
+              </span>
+              <span class="chat-system">
+                * Arcade session ready!
+                <a
+                  href={msg.content}
+                  class="chat-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open Arcade
+                </a>
               </span>
             <% :p2p_invite -> %>
               <span class="chat-timestamp">
