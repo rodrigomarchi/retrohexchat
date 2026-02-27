@@ -33,7 +33,13 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
       {Esbuild, :install_and_run, [:retro_hex_chat_web_landing, ~w(--sourcemap=inline --watch)]},
     esbuild:
       {Esbuild, :install_and_run,
-       [:retro_hex_chat_web_landing_css, ~w(--sourcemap=inline --watch)]}
+       [:retro_hex_chat_web_landing_css, ~w(--sourcemap=inline --watch)]},
+    esbuild:
+      {Esbuild, :install_and_run,
+       [:retro_hex_chat_web_showcase_js, ~w(--sourcemap=inline --watch)]},
+    npx:
+      ~w(tailwindcss -c tailwind.config.js -i css/showcase.css -o ../priv/static/assets/css/showcase.css --watch) ++
+        [cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__)]
   ]
 
 # ## SSL Support
@@ -90,6 +96,11 @@ config :phoenix_live_view,
   debug_attributes: true,
   # Enable helpful, but potentially expensive runtime checks
   enable_expensive_runtime_checks: true
+
+# SaladUI component installation path
+config :salad_ui,
+  components_path:
+    Path.join(File.cwd!(), "apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui")
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.

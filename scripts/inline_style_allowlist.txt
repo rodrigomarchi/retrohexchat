@@ -21,6 +21,15 @@ retro_hex_chat_web/live/icons_live.ex:style=
 # Diagrams: SVG font-style attribute (not CSS inline style)
 retro_hex_chat_web/components/diagrams.ex:font-style="italic"
 
+# SaladUI generated components — inline styles required by component behavior
+retro_hex_chat_web/components/ui/avatar.ex:style="display:none"
+retro_hex_chat_web/components/ui/radio_group.ex:style="outline: none;"
+retro_hex_chat_web/components/ui/scroll_area.ex:style="min-width: 100%;"
+retro_hex_chat_web/components/ui/slider.ex:style="width: calc(100% + 20px)"
+
+# Showcase layout: fixed height sidebar and content area
+retro_hex_chat_web/components/showcase_helpers.ex:max-height: calc(100vh - 80px)
+
 [style-helpers]
 
 # Highlight dialog: two clauses of color_swatch_style/1

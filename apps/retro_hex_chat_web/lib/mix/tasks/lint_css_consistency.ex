@@ -164,18 +164,33 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     MapSet.union(MapSet.union(template_refs, js_refs), domain_refs)
   end
 
+  # Paths that use Tailwind CSS (not the retro CSS system) — skip for consistency checks
+  @tailwind_paths [
+    "components/ui/",
+    "showcase_helpers.ex",
+    "live/showcase_live/",
+    "layouts/showcase.html.heex"
+  ]
+
   @doc false
   @spec extract_template_refs() :: MapSet.t()
   def extract_template_refs do
     ex_files =
       Path.wildcard("#{web_lib()}/**/*.ex")
       |> Enum.reject(&String.contains?(&1, "mix/tasks/"))
+      |> Enum.reject(&tailwind_path?/1)
 
-    heex_files = Path.wildcard("#{web_lib()}/**/*.heex")
+    heex_files =
+      Path.wildcard("#{web_lib()}/**/*.heex")
+      |> Enum.reject(&tailwind_path?/1)
 
     (ex_files ++ heex_files)
     |> Enum.flat_map(&extract_refs_from_template/1)
     |> MapSet.new()
+  end
+
+  defp tailwind_path?(path) do
+    Enum.any?(@tailwind_paths, &String.contains?(path, &1))
   end
 
   @doc false
@@ -512,8 +527,11 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     ex_files =
       Path.wildcard("#{web_lib()}/**/*.ex")
       |> Enum.reject(&String.contains?(&1, "mix/tasks/"))
+      |> Enum.reject(&tailwind_path?/1)
 
-    heex_files = Path.wildcard("#{web_lib()}/**/*.heex")
+    heex_files =
+      Path.wildcard("#{web_lib()}/**/*.heex")
+      |> Enum.reject(&tailwind_path?/1)
 
     template_sources =
       (ex_files ++ heex_files)

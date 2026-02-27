@@ -64,6 +64,7 @@ defmodule RetroHexChatWeb.MixProject do
       {:jason, "~> 1.2"},
       {:bandit, "~> 1.5"},
       {:live_dashboard_history, "~> 0.1"},
+      {:salad_ui, "~> 0.14"},
 
       # Test dependencies
       {:floki, "~> 0.37", only: :test},
@@ -84,13 +85,17 @@ defmodule RetroHexChatWeb.MixProject do
         "esbuild retro_hex_chat_web",
         "esbuild retro_hex_chat_web_css",
         "esbuild retro_hex_chat_web_landing",
-        "esbuild retro_hex_chat_web_landing_css"
+        "esbuild retro_hex_chat_web_landing_css",
+        "esbuild retro_hex_chat_web_showcase_js",
+        "cmd npx tailwindcss -c assets/tailwind.config.js -i assets/css/showcase.css -o priv/static/assets/css/showcase.css"
       ],
       "assets.deploy": [
         "esbuild retro_hex_chat_web --minify",
         "esbuild retro_hex_chat_web_css --minify",
         "esbuild retro_hex_chat_web_landing --minify",
         "esbuild retro_hex_chat_web_landing_css --minify",
+        "esbuild retro_hex_chat_web_showcase_js --minify",
+        "cmd npx tailwindcss -c assets/tailwind.config.js -i assets/css/showcase.css -o priv/static/assets/css/showcase.css --minify",
         "phx.digest"
       ]
     ]

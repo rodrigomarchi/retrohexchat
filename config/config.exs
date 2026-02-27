@@ -68,6 +68,12 @@ config :esbuild,
       ~w(css/pages/landing.css --bundle --target=es2022 --outdir=../priv/static/assets/css --loader:.woff=file --loader:.woff2=file),
     cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
     env: %{}
+  ],
+  retro_hex_chat_web_showcase_js: [
+    args:
+      ~w(js/showcase.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
 # Configure Elixir's Logger

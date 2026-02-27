@@ -1,0 +1,16 @@
+/* Showcase CSS — Tailwind + retro theme tokens
+   This file is ONLY used by the /showcase route.
+   It does NOT affect the existing retro platform (app.css). */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap");
+
+body {
+  font-family: "Source Code Pro", "Courier New", monospace;
+  font-size: 16px;
+  background-color: #008080;
+  color: #222222;
+}

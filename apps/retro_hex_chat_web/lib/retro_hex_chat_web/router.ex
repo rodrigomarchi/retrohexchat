@@ -79,6 +79,43 @@ defmodule RetroHexChatWeb.Router do
     post "/chat/session", SessionController, :create
   end
 
+  pipeline :showcase do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :showcase}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+  end
+
+  scope "/showcase", RetroHexChatWeb.ShowcaseLive do
+    pipe_through :showcase
+
+    live "/", Index
+    live "/button", Button
+    live "/input", Input
+    live "/label", Label
+    live "/textarea", Textarea
+    live "/select", Select
+    live "/checkbox", Checkbox
+    live "/radio-group", RadioGroup
+    live "/switch", Switch
+    live "/slider", Slider
+    live "/toggle", Toggle
+    live "/toggle-group", ToggleGroup
+    live "/alert", Alert
+    live "/badge", Badge
+    live "/progress", Progress
+    live "/skeleton", Skeleton
+    live "/tooltip", Tooltip
+    live "/card", Card
+    live "/separator", Separator
+    live "/tabs", Tabs
+    live "/accordion", Accordion
+    live "/avatar", Avatar
+    live "/table", Table
+  end
+
   import Phoenix.LiveDashboard.Router
 
   pipeline :admin do

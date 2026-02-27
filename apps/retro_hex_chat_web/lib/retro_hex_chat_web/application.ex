@@ -9,8 +9,8 @@ defmodule RetroHexChatWeb.Application do
   def start(_type, _args) do
     children = [
       RetroHexChatWeb.Telemetry,
-      # Start a worker by calling: RetroHexChatWeb.Worker.start_link(arg)
-      # {RetroHexChatWeb.Worker, arg},
+      # Tailwind class merging cache (used by UI primitive components)
+      TwMerge.Cache,
       # Start to serve requests, typically the last entry
       RetroHexChatWeb.Endpoint
     ]
