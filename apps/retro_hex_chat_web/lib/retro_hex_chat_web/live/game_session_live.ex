@@ -181,6 +181,8 @@ defmodule RetroHexChatWeb.GameSessionLive do
 
   def handle_info(%{event: "game_status_changed", payload: %{status: status}}, socket) do
     if GameSession.terminal?(status) do
+      notify_session_ended(socket, status)
+
       socket =
         socket
         |> push_event("game_end", %{})
@@ -210,7 +212,9 @@ defmodule RetroHexChatWeb.GameSessionLive do
     {:noreply, assign(socket, game_request: nil)}
   end
 
-  def handle_info(%{event: "game_session_closed", payload: %{reason: _reason}}, socket) do
+  def handle_info(%{event: "game_session_closed", payload: %{reason: reason}}, socket) do
+    notify_session_ended(socket, reason)
+
     {:noreply,
      socket
      |> assign(session_closed: true)
@@ -335,6 +339,8 @@ defmodule RetroHexChatWeb.GameSessionLive do
     if connected?(socket) and socket.assigns[:token] and !socket.assigns[:session_closed] do
       token = socket.assigns.token
       user_id = socket.assigns[:user_id]
+
+      notify_session_ended(socket, "disconnected")
 
       if user_id do
         try do
@@ -544,4 +550,27 @@ defmodule RetroHexChatWeb.GameSessionLive do
   defp sanitize_client_value(val) when is_integer(val), do: val
   defp sanitize_client_value(val) when is_boolean(val), do: val
   defp sanitize_client_value(_), do: nil
+
+  defp notify_session_ended(socket, reason) do
+    nickname = socket.assigns[:nickname]
+    peer_nick = socket.assigns[:peer_nick]
+    game_name = socket.assigns[:game_name]
+
+    if nickname do
+      Phoenix.PubSub.broadcast(
+        @pubsub,
+        "user:#{nickname}",
+        %{
+          event: "game_session_ended",
+          payload: %{
+            peer_nick: peer_nick || "unknown",
+            game_name: game_name,
+            reason: reason
+          }
+        }
+      )
+    end
+  rescue
+    _ -> :ok
+  end
 end

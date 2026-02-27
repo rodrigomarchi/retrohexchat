@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     only: [
       system_event: 2,
       error_event: 2,
+      push_status_message: 3,
       maybe_persist_ignore_list: 2,
       join_channel: 4,
       load_channel_users: 2,
@@ -224,7 +225,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       if expired do
         nickname = socket.assigns.session.nickname
         try_remove_invite_exception(channel, nickname)
-        socket
+        push_status_message(socket, "* Channel invite to #{channel} expired", :system)
       else
         socket
       end

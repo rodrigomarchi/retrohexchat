@@ -238,24 +238,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description: "See when someone is typing a message in a private conversation."
       },
       %{
-        id: "feature-visual-notifications",
-        title: "Visual Notifications",
-        category: "Features",
-        keywords: [
-          "visual",
-          "notifications",
-          "flash",
-          "blink",
-          "conversations",
-          "title",
-          "activity",
-          "indicator"
-        ],
-        icon: :icon_document_alert,
-        description:
-          "Visual indicators for activity including title bar flashing and conversations panel highlights."
-      },
-      %{
         id: "feature-aliases",
         title: "Aliases",
         category: "Features",
@@ -644,69 +626,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         icon: :icon_websocket,
         description:
           "Visual indicators for connection status including banners, overlays, and status bar changes."
-      },
-      %{
-        id: "feature-notifications",
-        title: "Notifications",
-        category: "Features",
-        keywords: [
-          "notifications",
-          "notification",
-          "toast",
-          "browser notification",
-          "favicon",
-          "badge",
-          "mention",
-          "alert"
-        ],
-        icon: :icon_dialog_notifications,
-        description:
-          "Multi-channel notification system with toasts, browser notifications, sounds, and favicon badges."
-      },
-      %{
-        id: "feature-dnd",
-        title: "Do Not Disturb",
-        category: "Features",
-        keywords: [
-          "do not disturb",
-          "dnd",
-          "quiet",
-          "silence",
-          "suppress",
-          "moon"
-        ],
-        icon: :icon_mute,
-        description: "Suppress all notifications while keeping messages visible in channels."
-      },
-      %{
-        id: "feature-notification-center",
-        title: "Notification Center",
-        category: "Features",
-        keywords: [
-          "notification center",
-          "bell",
-          "bell icon",
-          "recent notifications",
-          "mark all read"
-        ],
-        icon: :icon_group_notifications,
-        description:
-          "Review recent notifications in the bell dropdown with mark-all-read support."
-      },
-      %{
-        id: "feature-notification-settings",
-        title: "Notification Settings",
-        category: "Features",
-        keywords: [
-          "notification settings",
-          "notification preferences",
-          "per-channel",
-          "trigger rules",
-          "privacy mode"
-        ],
-        icon: :icon_dialog_notifications,
-        description:
-          "Fine-tune notification preferences per channel with custom trigger rules and privacy mode."
       },
       %{
         id: "feature-message-reply",

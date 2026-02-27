@@ -25,7 +25,6 @@ import TitleFlashHook from "./hooks/notifications/title_flash_hook";
 import ToolbarGroupHook from "./hooks/ui/toolbar_group_hook";
 import ConversationsHook from "./hooks/ui/conversations_hook";
 import ContextualTipsHook from "./hooks/ui/contextual_tips_hook";
-import NotificationDispatcherHook from "./hooks/notifications/notification_dispatcher_hook";
 import MessageInteractionsHook from "./hooks/chat/message_interactions_hook";
 import NickChangeFormHook from "./hooks/chat/nick_change_form_hook";
 import P2PCapabilityHook from "./hooks/p2p/p2p_capability_hook";
@@ -76,7 +75,6 @@ const Hooks = {
   P2PCapabilityHook: P2PCapabilityHook,
   P2PDiagramHook: P2PDiagramHook,
   P2PSessionHook: P2PSessionHook,
-  NotificationDispatcherHook: NotificationDispatcherHook,
   NotifyListHook: NotifyListHook,
   PasteHook: PasteHook,
 

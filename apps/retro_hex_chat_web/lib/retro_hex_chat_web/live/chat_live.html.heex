@@ -13,14 +13,6 @@
 </form>
 <div id="search-highlight-hook" phx-hook="SearchHighlightHook" class="u-hidden"></div>
 <div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" class="u-hidden"></div>
-<div
-  id="notification-dispatcher"
-  phx-hook="NotificationDispatcherHook"
-  data-active-channel={@session.active_channel}
-  class="u-hidden"
->
-</div>
-<div id="notification-toasts" class="notification-toast-container"></div>
 <RetroHexChatWeb.Components.Toast.toast_container />
 <div
   class="app-container"
@@ -34,8 +26,6 @@
       <RetroHexChatWeb.Components.Toolbar.toolbar
         :if={@show_toolbar}
         connected={true}
-        dnd_enabled={@dnd_enabled}
-        notification_count={@notification_count}
         is_admin={
           RetroHexChat.Accounts.ServerRoles.admin?(@session.nickname, @session.identified) or
             RetroHexChat.Accounts.ServerRoles.server_operator?(
@@ -129,7 +119,7 @@
           :for={{dom_id, msg} <- @streams.chat_messages}
           id={dom_id}
           class={
-            "chat-message chat-message--#{msg.type}" <>
+            "chat-message chat-message--#{Map.get(msg, :type, :normal)}" <>
               if(Map.get(msg, :highlighted), do: " chat-message--highlighted", else: "") <>
               highlight_bg_class(msg) <>
               if(Map.get(msg, :status) == :pending, do: " chat-message--pending", else: "") <>
@@ -143,11 +133,14 @@
           data-temp-id={if(Map.get(msg, :status) in [:pending, :failed], do: msg.id, else: nil)}
           data-msg-status={if(Map.get(msg, :status), do: Atom.to_string(msg.status), else: nil)}
           data-system-message={
-            if(msg.type in [:system, :service, :inline_help, :arcade_link], do: "true", else: nil)
+            if(Map.get(msg, :type, :normal) in [:system, :service, :inline_help, :arcade_link],
+              do: "true",
+              else: nil
+            )
           }
           data-real-id={Map.get(msg, :id)}
         >
-          <%= case msg.type do %>
+          <%= case Map.get(msg, :type, :normal) do %>
             <% :action -> %>
               <span class="chat-timestamp">
                 {format_time(msg.timestamp, @timestamp_format, @timezone)}
@@ -620,12 +613,6 @@
   <div id="paste-hook" phx-hook="PasteHook" class="u-hidden"></div>
 
   <RetroHexChatWeb.Components.InviteDialog.invite_dialog pending_invites={@pending_invites} />
-
-  <RetroHexChatWeb.Components.NotificationCenter.notification_center
-    visible={@show_notification_center}
-    entries={@notification_entries}
-    count={@notification_count}
-  />
 
   <RetroHexChatWeb.Components.KickDialog.kick_dialog kick_queue={@kick_queue} />
 

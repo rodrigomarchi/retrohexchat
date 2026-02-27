@@ -97,20 +97,52 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
   # ── Exception broadcasts ──────────────────────────────────
 
-  def handle_info({:ban_exception_added, %{channel: channel}}, socket) do
-    {:halt, maybe_refresh_cc(socket, channel)}
+  def handle_info(
+        {:ban_exception_added, %{channel: channel, nickname: nick, added_by: op}},
+        socket
+      ) do
+    socket =
+      socket
+      |> maybe_refresh_cc(channel)
+      |> system_event("#{op} added ban exception for #{nick} in #{channel}")
+
+    {:halt, socket}
   end
 
-  def handle_info({:ban_exception_removed, %{channel: channel}}, socket) do
-    {:halt, maybe_refresh_cc(socket, channel)}
+  def handle_info(
+        {:ban_exception_removed, %{channel: channel, nickname: nick, removed_by: op}},
+        socket
+      ) do
+    socket =
+      socket
+      |> maybe_refresh_cc(channel)
+      |> system_event("#{op} removed ban exception for #{nick} in #{channel}")
+
+    {:halt, socket}
   end
 
-  def handle_info({:invite_exception_added, %{channel: channel}}, socket) do
-    {:halt, maybe_refresh_cc(socket, channel)}
+  def handle_info(
+        {:invite_exception_added, %{channel: channel, nickname: nick, added_by: op}},
+        socket
+      ) do
+    socket =
+      socket
+      |> maybe_refresh_cc(channel)
+      |> system_event("#{op} added invite exception for #{nick} in #{channel}")
+
+    {:halt, socket}
   end
 
-  def handle_info({:invite_exception_removed, %{channel: channel}}, socket) do
-    {:halt, maybe_refresh_cc(socket, channel)}
+  def handle_info(
+        {:invite_exception_removed, %{channel: channel, nickname: nick, removed_by: op}},
+        socket
+      ) do
+    socket =
+      socket
+      |> maybe_refresh_cc(channel)
+      |> system_event("#{op} removed invite exception for #{nick} in #{channel}")
+
+    {:halt, socket}
   end
 
   # ── Topic changed ─────────────────────────────────────────

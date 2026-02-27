@@ -134,7 +134,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
         timer_ref: timer_ref
       }
 
-      {:halt, assign(socket, pending_invites: pending ++ [invite])}
+      socket =
+        socket
+        |> assign(pending_invites: pending ++ [invite])
+        |> push_status_message("* #{inviter} has invited you to #{channel}", :system)
+
+      {:halt, socket}
     end
   end
 

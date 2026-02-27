@@ -172,6 +172,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
   def handle_info(%{event: "p2p_status_changed", payload: %{status: status}}, socket) do
     if Session.terminal?(status) do
+      notify_session_ended(socket, status)
+
       {:noreply,
        socket
        |> assign(session_closed: true)
@@ -249,7 +251,9 @@ defmodule RetroHexChatWeb.P2PSessionLive do
      |> assign(messages: socket.assigns.messages ++ [expired_msg])}
   end
 
-  def handle_info(%{event: "p2p_session_closed", payload: %{reason: _reason}}, socket) do
+  def handle_info(%{event: "p2p_session_closed", payload: %{reason: reason}}, socket) do
+    notify_session_ended(socket, reason)
+
     {:noreply,
      socket
      |> assign(session_closed: true)
@@ -848,6 +852,8 @@ defmodule RetroHexChatWeb.P2PSessionLive do
       token = socket.assigns.token
       user_id = socket.assigns[:user_id]
 
+      notify_session_ended(socket, "disconnected")
+
       if user_id do
         try do
           P2P.close_session(token, user_id, "disconnected")
@@ -1184,5 +1190,31 @@ defmodule RetroHexChatWeb.P2PSessionLive do
         |> UserPreference.changeset(%{display_settings: updated})
         |> RetroHexChat.Repo.update()
     end
+  end
+
+  defp notify_session_ended(socket, reason) do
+    nickname = socket.assigns[:nickname]
+    peer_nick = socket.assigns[:peer_nick]
+    session = socket.assigns[:session]
+
+    if nickname && session do
+      duration_secs = DateTime.diff(DateTime.utc_now(), session.inserted_at)
+
+      Phoenix.PubSub.broadcast(
+        @pubsub,
+        "user:#{nickname}",
+        %{
+          event: "p2p_session_ended",
+          payload: %{
+            peer_nick: peer_nick || "unknown",
+            session_type: session.session_type,
+            reason: reason,
+            duration_seconds: duration_secs
+          }
+        }
+      )
+    end
+  rescue
+    _ -> :ok
   end
 end

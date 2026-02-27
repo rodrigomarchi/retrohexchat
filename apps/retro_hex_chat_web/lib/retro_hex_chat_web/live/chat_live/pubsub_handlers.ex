@@ -37,6 +37,15 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:incoming_pm_notify, _} = msg, socket),
     do: Messages.handle_info(msg, socket)
 
+  def handle_info(%{event: "message_edited"} = msg, socket),
+    do: Messages.handle_info(msg, socket)
+
+  def handle_info(%{event: "message_deleted"} = msg, socket),
+    do: Messages.handle_info(msg, socket)
+
+  def handle_info(%{event: "reply_quote_updated"} = msg, socket),
+    do: Messages.handle_info(msg, socket)
+
   # ── CTCP ──────────────────────────────────────────────────
 
   def handle_info({:ctcp_request, _} = msg, socket),
@@ -92,6 +101,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:user_channel_unmuted, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 
+  def handle_info({:knock, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
   # ── Membership: join/leave, nick change, disconnect ───────
 
   def handle_info({:user_joined, _} = msg, socket),
@@ -129,6 +141,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:server_setting_changed, _} = msg, socket),
     do: ServerMessages.handle_info(msg, socket)
 
+  def handle_info({:system_nuked, _} = msg, socket),
+    do: ServerMessages.handle_info(msg, socket)
+
   # ── Presence: connect/disconnect, notify, previews, invite
 
   def handle_info({:user_connected, _} = msg, socket),
@@ -163,52 +178,67 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   # ── P2P: invite notification ─────────────────────────────
 
   def handle_info(%{event: "p2p_invite"} = msg, socket) do
-    import Phoenix.LiveView, only: [push_event: 3]
+    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
 
     %{payload: %{token: token, from: from, session_type: session_type}} = msg
 
-    body =
+    label =
       case session_type do
-        "audio_call" -> "#{from} wants to start an audio call"
-        "video_call" -> "#{from} wants to start a video call"
-        "file_transfer" -> "#{from} wants to send a file"
-        _ -> "#{from} wants to start a P2P session"
+        "audio_call" -> "Audio call from #{from}"
+        "video_call" -> "Video call from #{from}"
+        "file_transfer" -> "File transfer from #{from}"
+        _ -> "P2P invite from #{from}"
       end
 
-    socket =
-      push_event(socket, "notify", %{
-        id: "p2p_invite_#{token}",
-        title: "P2P Invite",
-        body: body,
-        type: "p2p_invite",
-        token: token,
-        from: from,
-        session_type: session_type,
-        persistent: true
-      })
-
-    {:halt, socket}
+    {:halt, push_status_message(socket, "#{label} — /p2p/#{token}", :system)}
   end
 
   # ── Games: invite notification ────────────────────────────
 
   def handle_info(%{event: "game_invite"} = msg, socket) do
-    import Phoenix.LiveView, only: [push_event: 3]
+    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
 
     %{payload: %{token: token, from: from}} = msg
 
-    socket =
-      push_event(socket, "notify", %{
-        id: "game_invite_#{token}",
-        title: "Game Invite",
-        body: "#{from} wants to play a game",
-        type: "game_invite",
-        token: token,
-        from: from,
-        persistent: true
-      })
+    {:halt, push_status_message(socket, "Game invite from #{from} — /game/#{token}", :system)}
+  end
 
-    {:halt, socket}
+  # ── P2P/Game: session ended ─────────────────────────────
+
+  def handle_info(%{event: "p2p_session_ended"} = msg, socket) do
+    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
+
+    %{payload: %{peer_nick: peer, session_type: type, reason: reason, duration_seconds: secs}} =
+      msg
+
+    label =
+      case type do
+        "audio_call" -> "Audio call"
+        "video_call" -> "Video call"
+        "file_transfer" -> "File transfer"
+        _ -> "P2P session"
+      end
+
+    text = "#{label} with #{peer} ended (#{format_duration(secs)}) — #{humanize_reason(reason)}"
+    {:halt, push_status_message(socket, text, :system)}
+  end
+
+  def handle_info(%{event: "game_session_ended"} = msg, socket) do
+    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
+
+    %{payload: %{peer_nick: peer, game_name: game_name, reason: reason}} = msg
+
+    game_label = game_name || "Game"
+
+    text =
+      case reason do
+        "finished" -> "#{game_label} with #{peer} finished"
+        "game_over" -> "#{game_label} with #{peer} finished"
+        "game_ended" -> "#{game_label} with #{peer} ended"
+        _ -> "#{game_label} session with #{peer} ended — #{humanize_reason(reason)}"
+      end
+
+    {:halt, push_status_message(socket, text, :system)}
   end
 
   # ── Task/DOWN catch-all ───────────────────────────────────
@@ -219,4 +249,32 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   # ── Catch-all: pass unhandled to next hook ────────────────
 
   def handle_info(_, socket), do: {:cont, socket}
+
+  # ── Private helpers ─────────────────────────────────────
+
+  defp format_duration(secs) when is_integer(secs) and secs >= 3600 do
+    h = div(secs, 3600)
+    m = div(rem(secs, 3600), 60)
+    "#{h}h #{m}m"
+  end
+
+  defp format_duration(secs) when is_integer(secs) and secs >= 60 do
+    m = div(secs, 60)
+    s = rem(secs, 60)
+    "#{m}m #{s}s"
+  end
+
+  defp format_duration(secs) when is_integer(secs), do: "#{secs}s"
+  defp format_duration(_), do: "0s"
+
+  defp humanize_reason("user_closed"), do: "closed by user"
+  defp humanize_reason("disconnected"), do: "disconnected"
+  defp humanize_reason("expired"), do: "expired"
+  defp humanize_reason("pending_timeout"), do: "invite expired"
+  defp humanize_reason("failed"), do: "connection failed"
+  defp humanize_reason("lobby_inactivity"), do: "inactivity timeout"
+  defp humanize_reason("game_ended"), do: "ended"
+  defp humanize_reason("game_over"), do: "game over"
+  defp humanize_reason(reason) when is_binary(reason), do: reason
+  defp humanize_reason(_), do: "ended"
 end

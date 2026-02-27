@@ -5,12 +5,10 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
   """
   use Phoenix.Component
 
-  alias RetroHexChatWeb.Components.NotificationsPanel
   alias RetroHexChatWeb.Icons
 
   @panels [
-    {"display", "Display"},
-    {"notifications", "Notifications"}
+    {"display", "Display"}
   ]
 
   attr :visible, :boolean, default: false
@@ -48,7 +46,6 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
               >
                 <span class="tab-icon">
                   <Icons.icon_tab_display :if={id == "display"} class="btn-icon__svg" />
-                  <Icons.icon_tab_notifications :if={id == "notifications"} class="btn-icon__svg" />
                   {label}
                 </span>
               </li>
@@ -56,11 +53,6 @@ defmodule RetroHexChatWeb.Components.OptionsDialog do
           </div>
           <div class="options-panel" data-testid="options-panel">
             <.display_panel :if={@active_panel == "display"} draft={@options_draft} />
-            <NotificationsPanel.notifications_panel
-              :if={@active_panel == "notifications"}
-              draft={@options_draft}
-              channels={@channels}
-            />
           </div>
         </div>
         <div class="options-button-bar">

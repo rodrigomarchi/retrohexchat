@@ -8,8 +8,6 @@ defmodule RetroHexChatWeb.Components.Toolbar do
   alias RetroHexChatWeb.Icons
 
   attr :connected, :boolean, default: false
-  attr :dnd_enabled, :boolean, default: false
-  attr :notification_count, :integer, default: 0
   attr :is_admin, :boolean, default: false
   @spec toolbar(map()) :: Phoenix.LiveView.Rendered.t()
   def toolbar(assigns) do
@@ -63,8 +61,6 @@ defmodule RetroHexChatWeb.Components.Toolbar do
         {options_view_items(assigns)}
         <hr class="toolbar-dropdown-separator" />
         {options_tool_items(assigns)}
-        <hr class="toolbar-dropdown-separator" />
-        {options_notification_items(assigns)}
       </div>
     </div>
     """
@@ -267,39 +263,6 @@ defmodule RetroHexChatWeb.Components.Toolbar do
     >
       <Icons.icon_dialog_admin_console />
       <span class="toolbar-group-label">Admin Console</span>
-    </button>
-    """
-  end
-
-  defp options_notification_items(assigns) do
-    ~H"""
-    <button
-      type="button"
-      class={"toolbar-btn#{if @dnd_enabled, do: " toolbar-btn--active", else: ""}"}
-      title={if @dnd_enabled, do: "Disable Do Not Disturb", else: "Do Not Disturb"}
-      data-testid="toolbar-dnd"
-      phx-click="toggle_dnd"
-    >
-      <Icons.icon_btn_dnd :if={!@dnd_enabled} />
-      <Icons.icon_btn_dnd_active :if={@dnd_enabled} />
-      <span class="toolbar-group-label">Do Not Disturb</span>
-    </button>
-    <button
-      type="button"
-      class="toolbar-btn toolbar-btn--bell"
-      title="Notification Center"
-      data-testid="toolbar-bell"
-      phx-click="toggle_notification_center"
-    >
-      <Icons.icon_btn_bell />
-      <span class="toolbar-group-label">Notification Center</span>
-      <span
-        :if={@notification_count > 0}
-        class="toolbar-badge"
-        data-testid="notification-badge"
-      >
-        {if @notification_count > 99, do: "99+", else: @notification_count}
-      </span>
     </button>
     """
   end

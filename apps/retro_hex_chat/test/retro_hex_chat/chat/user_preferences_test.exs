@@ -5,11 +5,10 @@ defmodule RetroHexChat.Chat.UserPreferencesTest do
 
   describe "new/0" do
     @tag :unit
-    test "returns default preferences with display and notifications" do
+    test "returns default preferences with display" do
       prefs = UserPreferences.new()
 
       assert Map.has_key?(prefs, :display)
-      assert Map.has_key?(prefs, :notifications)
     end
 
     @tag :unit

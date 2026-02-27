@@ -105,14 +105,6 @@ defmodule RetroHexChatWeb.ChatLiveOptionsTest do
     end
 
     @tag :liveview
-    test "clicking Notifications tree item shows notifications panel", %{conn: conn} do
-      view = connect_user(conn) |> open_options()
-      view |> element(~s([data-testid="options-tree-notifications"])) |> render_click()
-      html = render(view)
-      assert html =~ ~s(data-testid="options-notifications-panel")
-    end
-
-    @tag :liveview
     test "selected tree item has tree-item-selected class", %{conn: conn} do
       view = connect_user(conn) |> open_options()
       html = render(view)

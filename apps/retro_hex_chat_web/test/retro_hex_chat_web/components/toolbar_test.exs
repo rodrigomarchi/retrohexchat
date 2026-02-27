@@ -7,8 +7,6 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
 
   @default_assigns [
     connected: true,
-    dnd_enabled: false,
-    notification_count: 0,
     is_admin: false
   ]
 
@@ -121,46 +119,6 @@ defmodule RetroHexChatWeb.Components.ToolbarTest do
         assert html =~ ~s(data-testid="#{unquote(testid)}")
         assert html =~ ~s(phx-click="#{unquote(event)}")
       end
-    end
-  end
-
-  describe "options group — notification items" do
-    test "renders DND button" do
-      html = render_toolbar()
-      assert html =~ ~s(data-testid="toolbar-dnd")
-      assert html =~ ~s(phx-click="toggle_dnd")
-    end
-
-    test "DND button has active class when enabled" do
-      html = render_toolbar(dnd_enabled: true)
-      assert html =~ "toolbar-btn--active"
-    end
-
-    test "DND button has no active class when disabled" do
-      html = render_toolbar(dnd_enabled: false)
-      refute html =~ "toolbar-btn--active"
-    end
-
-    test "renders Bell button" do
-      html = render_toolbar()
-      assert html =~ ~s(data-testid="toolbar-bell")
-      assert html =~ ~s(phx-click="toggle_notification_center")
-    end
-
-    test "shows notification badge when count > 0" do
-      html = render_toolbar(notification_count: 5)
-      assert html =~ ~s(data-testid="notification-badge")
-      assert html =~ "5"
-    end
-
-    test "hides notification badge when count is 0" do
-      html = render_toolbar(notification_count: 0)
-      refute html =~ ~s(data-testid="notification-badge")
-    end
-
-    test "caps notification badge at 99+" do
-      html = render_toolbar(notification_count: 150)
-      assert html =~ "99+"
     end
   end
 

@@ -2,11 +2,10 @@ defmodule RetroHexChat.Chat.UserPreferences do
   @moduledoc """
   Domain module for centralized user preferences.
 
-  Manages in-memory CRUD for display and notification preferences,
+  Manages in-memory CRUD for display preferences,
   and persistence for registered users.
   """
 
-  alias RetroHexChat.Chat.NotificationPreferences
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.Repo
 
@@ -18,22 +17,11 @@ defmodule RetroHexChat.Chat.UserPreferences do
 
   @spec new() :: map()
   def new do
-    %{
-      display: default_display(),
-      notifications: NotificationPreferences.new()
-    }
+    %{display: default_display()}
   end
 
   @spec get_display(map()) :: map()
   def get_display(%{display: display}), do: display
-
-  @spec get_notifications(map()) :: NotificationPreferences.t()
-  def get_notifications(%{notifications: notifications}), do: notifications
-
-  @spec set_notifications(map(), NotificationPreferences.t()) :: map()
-  def set_notifications(prefs, notifications) when is_map(notifications) do
-    %{prefs | notifications: notifications}
-  end
 
   @spec set_display(map(), atom(), boolean()) :: map()
   def set_display(prefs, key, value) when key in @valid_display_keys and is_boolean(value) do
@@ -48,9 +36,7 @@ defmodule RetroHexChat.Chat.UserPreferences do
   def save(owner, prefs) do
     attrs = %{
       owner_nickname: owner,
-      display_settings:
-        stringify_map(prefs.display)
-        |> Map.put("notifications", NotificationPreferences.to_map(prefs.notifications))
+      display_settings: stringify_map(prefs.display)
     }
 
     case Repo.get(UserPreference, owner) do
@@ -104,23 +90,8 @@ defmodule RetroHexChat.Chat.UserPreferences do
 
   defp from_persisted(db_entry) do
     display_data = db_entry.display_settings || %{}
-    notif_data = Map.get(display_data, "notifications", %{})
 
-    # Also check legacy message_settings for notifications (migration path)
-    notif_data =
-      if notif_data == %{} do
-        msg_settings = Map.get(db_entry, :message_settings) || %{}
-        Map.get(msg_settings, "notifications", %{})
-      else
-        notif_data
-      end
-
-    notifications = NotificationPreferences.from_map(notif_data)
-
-    %{
-      display: atomize_display(display_data),
-      notifications: notifications
-    }
+    %{display: atomize_display(display_data)}
   end
 
   defp atomize_display(data) when data == %{}, do: default_display()

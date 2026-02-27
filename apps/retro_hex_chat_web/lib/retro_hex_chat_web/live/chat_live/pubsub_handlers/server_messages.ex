@@ -37,7 +37,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
   end
 
   def handle_info({:motd_updated, _payload}, socket) do
-    {:halt, socket}
+    {:halt,
+     push_status_message(
+       socket,
+       "The server Message of the Day has been updated. Type /motd to view.",
+       :system
+     )}
   end
 
   def handle_info({:welcome_changed, %{channel: channel, message: message}}, socket) do
@@ -91,5 +96,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
 
   def handle_info({:server_setting_changed, %{key: key, value: value}}, socket) do
     {:halt, system_event(socket, "Server setting '#{key}' changed to '#{value}'.")}
+  end
+
+  def handle_info({:system_nuked, _}, socket) do
+    {:halt, system_event(socket, "System reset initiated by an administrator.")}
   end
 end

@@ -88,7 +88,6 @@ defmodule RetroHexChatWeb.OptionsDialogE2ETest do
       render_click(view, "open_options_dialog")
 
       panels = [
-        {"notifications", "options-notifications-panel"},
         {"display", "options-display-panel"}
       ]
 

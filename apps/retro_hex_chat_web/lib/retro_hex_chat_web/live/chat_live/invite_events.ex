@@ -28,6 +28,10 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
         socket =
           socket
           |> assign(pending_invites: remaining)
+          |> push_status_message(
+            "* Accepted invite to #{channel} from #{invite.inviter}",
+            :system
+          )
           |> join_channel(channel, session)
 
         {:halt, socket}
@@ -46,7 +50,13 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
         Process.cancel_timer(invite.timer_ref)
         remaining = Enum.reject(pending, &(&1.channel == channel))
         try_remove_invite_exception(channel, session.nickname)
-        {:halt, assign(socket, pending_invites: remaining)}
+
+        socket =
+          socket
+          |> assign(pending_invites: remaining)
+          |> push_status_message("* Ignored invite to #{channel}", :system)
+
+        {:halt, socket}
     end
   end
 

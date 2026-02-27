@@ -26,6 +26,20 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
     {:halt, navigate_to_index(socket, index)}
   end
 
+  def handle_event("navigate_to_channel", %{"channel" => channel}, socket) do
+    session = socket.assigns.session
+
+    socket =
+      if channel in session.channels do
+        updated_session = Session.set_active_channel(session, channel)
+        assign(socket, session: updated_session)
+      else
+        socket
+      end
+
+    {:halt, socket}
+  end
+
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
   # ---------------------------------------------------------------------------

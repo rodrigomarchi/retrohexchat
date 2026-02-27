@@ -288,7 +288,12 @@ defmodule RetroHexChat.Chat.Service do
       "channel:#{channel_name}",
       %{
         event: "message_edited",
-        payload: %{id: message.id, content: message.content, edited_at: message.edited_at}
+        payload: %{
+          id: message.id,
+          content: message.content,
+          edited_at: message.edited_at,
+          channel: channel_name
+        }
       }
     )
   end
@@ -301,7 +306,12 @@ defmodule RetroHexChat.Chat.Service do
       topic,
       %{
         event: "message_edited",
-        payload: %{id: pm.id, content: pm.content, edited_at: pm.edited_at}
+        payload: %{
+          id: pm.id,
+          content: pm.content,
+          edited_at: pm.edited_at,
+          sender: sender
+        }
       }
     )
   end
@@ -312,7 +322,7 @@ defmodule RetroHexChat.Chat.Service do
       "channel:#{channel_name}",
       %{
         event: "message_deleted",
-        payload: %{id: message.id, deleted_at: message.deleted_at}
+        payload: %{id: message.id, deleted_at: message.deleted_at, channel: channel_name}
       }
     )
   end
@@ -325,7 +335,7 @@ defmodule RetroHexChat.Chat.Service do
       topic,
       %{
         event: "message_deleted",
-        payload: %{id: pm.id, deleted_at: pm.deleted_at}
+        payload: %{id: pm.id, deleted_at: pm.deleted_at, sender: sender}
       }
     )
   end
