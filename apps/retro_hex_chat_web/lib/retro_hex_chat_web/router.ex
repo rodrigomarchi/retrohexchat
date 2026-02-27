@@ -116,6 +116,24 @@ defmodule RetroHexChatWeb.Router do
     live "/table", Table
     live "/icons", Icons
     live "/diagrams", Diagrams
+    # Win98 Shell
+    live "/window", Window
+    live "/menu", MenuPage
+    live "/toolbar", ToolbarPage
+    live "/status-bar", StatusBar
+    # Chat
+    live "/irc-tabs", IrcTabsPage
+    live "/chat-message", ChatMessagePage
+    live "/chat-input", ChatInputPage
+    live "/tree-view", TreeViewPage
+    live "/nicklist", NicklistPage
+    live "/game-cards", GameCardsPage
+    live "/fieldset", FieldsetPage
+    # Existing components
+    live "/dialog", DialogPage
+    live "/dropdown-menu", DropdownMenuPage
+    live "/breadcrumb", BreadcrumbPage
+    live "/pagination", PaginationPage
   end
 
   import Phoenix.LiveDashboard.Router

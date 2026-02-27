@@ -36,3 +36,47 @@ code.hljs { padding: 0; }
 .hljs-strong { font-weight: bold; }
 .hljs-bullet, .hljs-selector-tag, .hljs-selector-id,
 .hljs-selector-class, .hljs-selector-attr, .hljs-selector-pseudo { color: #D7BA7D; }
+
+/* ── Win98 Scrollbar ── */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+::-webkit-scrollbar-track {
+  background: #c0c0c0;
+  box-shadow: inset -1px -1px #ffffff, inset 1px 1px #808080;
+}
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff,
+    inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d4d0c8;
+}
+::-webkit-scrollbar-button {
+  background: #c0c0c0;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff,
+    inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+  width: 16px;
+  height: 16px;
+}
+::-webkit-scrollbar-corner {
+  background: #c0c0c0;
+}
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #c0c0c0 #c0c0c0;
+}
+
+/* ── Tree View: details/summary markers ── */
+details[open] .tree-view-marker-open { display: inline; }
+details[open] .tree-view-marker-closed { display: none; }
+details:not([open]) .tree-view-marker-open { display: none; }
+details:not([open]) .tree-view-marker-closed { display: inline; }
+
+/* ── Fieldset: groove border (Win98 etched frame) ── */
+.retro-fieldset {
+  border: 2px groove #d4d0c8;
+}
