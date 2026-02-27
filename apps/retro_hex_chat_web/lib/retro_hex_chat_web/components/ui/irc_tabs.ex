@@ -80,7 +80,15 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
     """
   end
 
-  defp type_icon(%{type: "channel"} = assigns), do: ~H"<Icons.icon_tab_channel class=\"w-4 h-4\" />"
-  defp type_icon(%{type: "pm"} = assigns), do: ~H"<Icons.icon_tab_pm class=\"w-4 h-4\" />"
-  defp type_icon(%{type: "status"} = assigns), do: ~H"<Icons.icon_tab_status class=\"w-4 h-4\" />"
+  defp type_icon(%{type: "channel"} = assigns) do
+    ~H'<Icons.icon_tab_channel class="w-[16px] h-[16px]" />'
+  end
+
+  defp type_icon(%{type: "pm"} = assigns) do
+    ~H'<Icons.icon_tab_pm class="w-[16px] h-[16px]" />'
+  end
+
+  defp type_icon(%{type: "status"} = assigns) do
+    ~H'<Icons.icon_tab_status class="w-[16px] h-[16px]" />'
+  end
 end

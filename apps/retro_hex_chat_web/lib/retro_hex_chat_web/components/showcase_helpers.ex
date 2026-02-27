@@ -174,29 +174,37 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
 
   attr :group, :string, required: true
 
-  defp nav_group_icon(%{group: "Design System"} = assigns),
-    do: ~H"<Icons.icon_palette class=\"w-4 h-4 flex-shrink-0\" />"
+  defp nav_group_icon(%{group: "Design System"} = assigns) do
+    ~H'<Icons.icon_palette class="w-[16px] h-[16px] flex-shrink-0" />'
+  end
 
-  defp nav_group_icon(%{group: "Form"} = assigns),
-    do: ~H"<Icons.icon_btn_edit class=\"w-4 h-4 flex-shrink-0\" />"
+  defp nav_group_icon(%{group: "Form"} = assigns) do
+    ~H'<Icons.icon_btn_edit class="w-[16px] h-[16px] flex-shrink-0" />'
+  end
 
-  defp nav_group_icon(%{group: "Feedback"} = assigns),
-    do: ~H"<Icons.icon_lightbulb class=\"w-4 h-4 flex-shrink-0\" />"
+  defp nav_group_icon(%{group: "Feedback"} = assigns) do
+    ~H'<Icons.icon_lightbulb class="w-[16px] h-[16px] flex-shrink-0" />'
+  end
 
-  defp nav_group_icon(%{group: "Layout"} = assigns),
-    do: ~H"<Icons.icon_group_view class=\"w-4 h-4 flex-shrink-0\" />"
+  defp nav_group_icon(%{group: "Layout"} = assigns) do
+    ~H'<Icons.icon_group_view class="w-[16px] h-[16px] flex-shrink-0" />'
+  end
 
-  defp nav_group_icon(%{group: "Data"} = assigns),
-    do: ~H"<Icons.icon_database class=\"w-4 h-4 flex-shrink-0\" />"
+  defp nav_group_icon(%{group: "Data"} = assigns) do
+    ~H'<Icons.icon_database class="w-[16px] h-[16px] flex-shrink-0" />'
+  end
 
-  defp nav_group_icon(%{group: "Win98 Shell"} = assigns),
-    do: ~H"<Icons.icon_laptop class=\"w-4 h-4 flex-shrink-0\" />"
+  defp nav_group_icon(%{group: "Win98 Shell"} = assigns) do
+    ~H'<Icons.icon_laptop class="w-[16px] h-[16px] flex-shrink-0" />'
+  end
 
-  defp nav_group_icon(%{group: "Chat"} = assigns),
-    do: ~H"<Icons.icon_chat class=\"w-4 h-4 flex-shrink-0\" />"
+  defp nav_group_icon(%{group: "Chat"} = assigns) do
+    ~H'<Icons.icon_chat class="w-[16px] h-[16px] flex-shrink-0" />'
+  end
 
-  defp nav_group_icon(%{group: "Assets"} = assigns),
-    do: ~H"<Icons.icon_folder class=\"w-4 h-4 flex-shrink-0\" />"
+  defp nav_group_icon(%{group: "Assets"} = assigns) do
+    ~H'<Icons.icon_folder class="w-[16px] h-[16px] flex-shrink-0" />'
+  end
 
   defp nav_group_icon(assigns), do: ~H""
 

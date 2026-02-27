@@ -26,33 +26,33 @@ defmodule RetroHexChatWeb.ShowcaseLive.ToolbarPage do
       <.showcase_card title="Default Toolbar" description="Standard toolbar with 34x34 icon buttons.">
         <.toolbar>
           <.toolbar_button label="New">
-            <Icons.icon_notepad />
+            <Icons.icon_notepad class="w-[32px] h-[32px]" />
           </.toolbar_button>
           <.toolbar_button label="Open">
-            <Icons.icon_folder />
+            <Icons.icon_folder class="w-[32px] h-[32px]" />
           </.toolbar_button>
           <.toolbar_button label="Save">
-            <Icons.icon_btn_save />
+            <Icons.icon_btn_save class="w-[16px] h-[16px]" />
           </.toolbar_button>
           <.toolbar_separator />
           <.toolbar_button label="Cut">
-            <Icons.icon_btn_edit />
+            <Icons.icon_btn_edit class="w-[16px] h-[16px]" />
           </.toolbar_button>
           <.toolbar_button label="Copy">
-            <Icons.icon_copy />
+            <Icons.icon_copy class="w-[32px] h-[32px]" />
           </.toolbar_button>
           <.toolbar_button label="Paste">
-            <Icons.icon_dialog_paste />
+            <Icons.icon_dialog_paste class="w-[16px] h-[16px]" />
           </.toolbar_button>
         </.toolbar>
         <.code_example>
           &lt;.toolbar&gt;
           &lt;.toolbar_button label="New"&gt;
-          &lt;Icons.icon_notepad /&gt;
+          &lt;Icons.icon_notepad class="w-[32px] h-[32px]" /&gt;
           &lt;/.toolbar_button&gt;
           &lt;.toolbar_separator /&gt;
           &lt;.toolbar_button label="Cut"&gt;
-          &lt;Icons.icon_btn_edit /&gt;
+          &lt;Icons.icon_btn_edit class="w-[16px] h-[16px]" /&gt;
           &lt;/.toolbar_button&gt;
           &lt;/.toolbar&gt;
         </.code_example>
@@ -64,26 +64,26 @@ defmodule RetroHexChatWeb.ShowcaseLive.ToolbarPage do
       >
         <.toolbar variant="compact">
           <.toolbar_button variant="compact" label="Bold">
-            <Icons.icon_fmt_bold class="w-3.5 h-3.5" />
+            <Icons.icon_fmt_bold class="w-[14px] h-[14px]" />
           </.toolbar_button>
           <.toolbar_button variant="compact" label="Italic">
-            <Icons.icon_fmt_italic class="w-3.5 h-3.5" />
+            <Icons.icon_fmt_italic class="w-[14px] h-[14px]" />
           </.toolbar_button>
           <.toolbar_button variant="compact" label="Underline">
-            <Icons.icon_fmt_underline class="w-3.5 h-3.5" />
+            <Icons.icon_fmt_underline class="w-[14px] h-[14px]" />
           </.toolbar_button>
           <.toolbar_separator variant="compact" />
           <.toolbar_button variant="compact" label="Text Color">
-            <Icons.icon_fmt_color class="w-3.5 h-3.5" />
+            <Icons.icon_fmt_color class="w-[14px] h-[14px]" />
           </.toolbar_button>
           <.toolbar_button variant="compact" label="Background Color">
-            <Icons.icon_fmt_reverse class="w-3.5 h-3.5" />
+            <Icons.icon_fmt_reverse class="w-[14px] h-[14px]" />
           </.toolbar_button>
         </.toolbar>
         <.code_example>
           &lt;.toolbar variant="compact"&gt;
           &lt;.toolbar_button variant="compact" label="Bold"&gt;
-          &lt;Icons.icon_fmt_bold class="w-3.5 h-3.5" /&gt;
+          &lt;Icons.icon_fmt_bold class="w-[14px] h-[14px]" /&gt;
           &lt;/.toolbar_button&gt;
           &lt;.toolbar_separator variant="compact" /&gt;
           &lt;/.toolbar&gt;
@@ -96,24 +96,24 @@ defmodule RetroHexChatWeb.ShowcaseLive.ToolbarPage do
       >
         <.toolbar>
           <.toolbar_button label="Connect">
-            <Icons.icon_btn_connect_lightning />
+            <Icons.icon_btn_connect_lightning class="w-[16px] h-[16px]" />
           </.toolbar_button>
           <.toolbar_button label="Disconnect" active>
-            <Icons.icon_btn_disconnect />
+            <Icons.icon_btn_disconnect class="w-[16px] h-[16px]" />
           </.toolbar_button>
           <.toolbar_button label="Disabled" disabled>
-            <Icons.icon_btn_connect_disabled />
+            <Icons.icon_btn_connect_disabled class="w-[16px] h-[16px]" />
           </.toolbar_button>
         </.toolbar>
         <.code_example>
           &lt;.toolbar_button label="Connect"&gt;
-          &lt;Icons.icon_btn_connect_lightning /&gt;
+          &lt;Icons.icon_btn_connect_lightning class="w-[16px] h-[16px]" /&gt;
           &lt;/.toolbar_button&gt;
           &lt;.toolbar_button label="Disconnect" active&gt;
-          &lt;Icons.icon_btn_disconnect /&gt;
+          &lt;Icons.icon_btn_disconnect class="w-[16px] h-[16px]" /&gt;
           &lt;/.toolbar_button&gt;
           &lt;.toolbar_button label="Disabled" disabled&gt;
-          &lt;Icons.icon_btn_connect_disabled /&gt;
+          &lt;Icons.icon_btn_connect_disabled class="w-[16px] h-[16px]" /&gt;
           &lt;/.toolbar_button&gt;
         </.code_example>
       </.showcase_card>
@@ -124,24 +124,24 @@ defmodule RetroHexChatWeb.ShowcaseLive.ToolbarPage do
       >
         <.toolbar>
           <.toolbar_button label="Home">
-            <Icons.icon_community />
+            <Icons.icon_community class="w-[32px] h-[32px]" />
           </.toolbar_button>
           <.toolbar_button label="Settings">
-            <Icons.icon_btn_settings />
+            <Icons.icon_btn_settings class="w-[16px] h-[16px]" />
           </.toolbar_button>
           <.toolbar_button label="Channels">
-            <Icons.icon_btn_channel_list />
+            <Icons.icon_btn_channel_list class="w-[16px] h-[16px]" />
           </.toolbar_button>
           <.toolbar_separator />
           <.toolbar_button label="Sounds">
-            <Icons.icon_btn_sounds />
+            <Icons.icon_btn_sounds class="w-[16px] h-[16px]" />
           </.toolbar_button>
           <.toolbar_button label="DND">
-            <Icons.icon_btn_dnd />
+            <Icons.icon_btn_dnd class="w-[16px] h-[16px]" />
           </.toolbar_button>
           <.toolbar_separator />
           <.toolbar_button label="Help">
-            <Icons.icon_btn_help_topics />
+            <Icons.icon_btn_help_topics class="w-[16px] h-[16px]" />
           </.toolbar_button>
         </.toolbar>
       </.showcase_card>

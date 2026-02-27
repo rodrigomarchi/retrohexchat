@@ -115,22 +115,23 @@ defmodule RetroHexChatWeb.ShowcaseLive.Icons do
   attr :size, :atom, required: true
 
   defp icon_cell(assigns) do
+    # Render icons at their exact native pixel size — never resize.
+    # Use Tailwind arbitrary-value classes matching the SVG viewBox.
     assigns =
       assign(
         assigns,
         :rendered,
-        apply(assigns.mod, assigns.name, [%{class: "w-full h-full block"}])
+        apply(assigns.mod, assigns.name, [%{class: icon_native_class(assigns.size)}])
       )
 
     ~H"""
     <div class="flex flex-col items-center gap-1 overflow-hidden" title={to_string(@name)}>
       <div class={[
-        "flex items-center justify-center shadow-retro-sunken w-10 h-10",
+        "flex items-center justify-center shadow-retro-sunken",
+        container_dim(@size),
         bg_class(@size)
       ]}>
-        <div class={icon_dim(@size)}>
-          {@rendered}
-        </div>
+        {@rendered}
       </div>
       <span class="text-[9px] text-muted-foreground text-center w-full truncate leading-tight">
         {format_name(@name)}
@@ -143,10 +144,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Icons do
   defp bg_class(:small_dark), do: "bg-gradient-to-r from-primary to-[#1084d0]"
   defp bg_class(_), do: "bg-surface"
 
-  defp icon_dim(:large), do: "w-8 h-8"
-  defp icon_dim(:small), do: "w-4 h-4"
-  defp icon_dim(:small_dark), do: "w-4 h-4"
-  defp icon_dim(:tiny), do: "w-3.5 h-3.5"
+  # Native pixel size classes — icons must not be resized
+  defp icon_native_class(:large), do: "block w-[32px] h-[32px]"
+  defp icon_native_class(:small), do: "block w-[16px] h-[16px]"
+  defp icon_native_class(:small_dark), do: "block w-[16px] h-[16px]"
+  defp icon_native_class(:tiny), do: "block w-[14px] h-[14px]"
+
+  # Container just big enough to hold the icon with some padding
+  defp container_dim(:large), do: "w-10 h-10"
+  defp container_dim(:small), do: "w-7 h-7"
+  defp container_dim(:small_dark), do: "w-7 h-7"
+  defp container_dim(:tiny), do: "w-6 h-6"
 
   defp format_name(name) do
     name

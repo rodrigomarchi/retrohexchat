@@ -54,7 +54,15 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   defp status_color("away"), do: "bg-away"
   defp status_color("offline"), do: "bg-offline"
 
-  defp role_icon(%{role: "op"} = assigns), do: ~H"<Icons.icon_role_operator class=\"w-4 h-4\" />"
-  defp role_icon(%{role: "voice"} = assigns), do: ~H"<Icons.icon_role_voiced class=\"w-4 h-4\" />"
-  defp role_icon(assigns), do: ~H"<Icons.icon_role_regular class=\"w-4 h-4\" />"
+  defp role_icon(%{role: "op"} = assigns) do
+    ~H'<Icons.icon_role_operator class="w-[16px] h-[16px]" />'
+  end
+
+  defp role_icon(%{role: "voice"} = assigns) do
+    ~H'<Icons.icon_role_voiced class="w-[16px] h-[16px]" />'
+  end
+
+  defp role_icon(assigns) do
+    ~H'<Icons.icon_role_regular class="w-[16px] h-[16px]" />'
+  end
 end
