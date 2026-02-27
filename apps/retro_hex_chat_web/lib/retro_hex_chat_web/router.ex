@@ -134,6 +134,39 @@ defmodule RetroHexChatWeb.Router do
     live "/dropdown-menu", DropdownMenuPage
     live "/breadcrumb", BreadcrumbPage
     live "/pagination", PaginationPage
+    live "/toast", ToastPage
+    live "/context-menu", ContextMenuPage
+    live "/loading-spinner", LoadingSpinnerPage
+    live "/empty-state", EmptyStatePage
+    live "/color-picker", ColorPickerPage
+    live "/scroll-area", ScrollAreaPage
+    # Composites
+    live "/conversations", ConversationsPage
+    live "/hover-card", HoverCardPage
+    live "/search-bar", SearchBarPage
+    live "/topic-bar", TopicBarPage
+    live "/formatting-toolbar", FormattingToolbarPage
+    live "/emoji-picker", EmojiPickerPage
+    live "/autocomplete", AutocompletePage
+    live "/tab-bar", TabBarPage
+    live "/reply-bar", ReplyBarPage
+    live "/connection-status", ConnectionStatusPage
+    # Dialog composites
+    live "/confirm-dialog", ConfirmDialogPage
+    live "/options-dialog", OptionsDialogPage
+    live "/channel-dialog", ChannelDialogPage
+    live "/address-book", AddressBookPage
+    live "/about-dialog", AboutDialogPage
+    live "/channel-list", ChannelListPage
+    live "/highlight-dialog", HighlightDialogPage
+    live "/config-form", ConfigFormPage
+    # Specialized composites
+    live "/p2p-lobby", P2PLobbyPage
+    live "/media-controls", MediaControlsPage
+    live "/file-transfer", FileTransferPage
+    live "/bot-manager", BotManagerPage
+    live "/admin-console", AdminConsolePage
+    live "/chat-layout", ChatLayoutPage
   end
 
   import Phoenix.LiveDashboard.Router

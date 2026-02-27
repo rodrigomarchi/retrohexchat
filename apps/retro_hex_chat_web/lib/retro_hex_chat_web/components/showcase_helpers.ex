@@ -38,7 +38,13 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
        {"Badge", "badge", "/showcase/badge"},
        {"Progress", "progress", "/showcase/progress"},
        {"Skeleton", "skeleton", "/showcase/skeleton"},
-       {"Tooltip", "tooltip", "/showcase/tooltip"}
+       {"Tooltip", "tooltip", "/showcase/tooltip"},
+       {"Toast", "toast", "/showcase/toast"},
+       {"Context Menu", "context-menu", "/showcase/context-menu"},
+       {"Loading Spinner", "loading-spinner", "/showcase/loading-spinner"},
+       {"Empty State", "empty-state", "/showcase/empty-state"},
+       {"Color Picker", "color-picker", "/showcase/color-picker"},
+       {"Scroll Area", "scroll-area", "/showcase/scroll-area"}
      ]},
     {"Layout", nil,
      [
@@ -71,7 +77,37 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
        {"Chat Input", "chat-input", "/showcase/chat-input"},
        {"Tree View", "tree-view", "/showcase/tree-view"},
        {"Nicklist", "nicklist", "/showcase/nicklist"},
-       {"Game Cards", "game-cards", "/showcase/game-cards"}
+       {"Game Cards", "game-cards", "/showcase/game-cards"},
+       {"Conversations", "conversations", "/showcase/conversations"},
+       {"Hover Card", "hover-card", "/showcase/hover-card"},
+       {"Search Bar", "search-bar", "/showcase/search-bar"},
+       {"Topic Bar", "topic-bar", "/showcase/topic-bar"},
+       {"Formatting Toolbar", "formatting-toolbar", "/showcase/formatting-toolbar"},
+       {"Emoji Picker", "emoji-picker", "/showcase/emoji-picker"},
+       {"Autocomplete", "autocomplete", "/showcase/autocomplete"},
+       {"Tab Bar", "tab-bar", "/showcase/tab-bar"},
+       {"Reply Bar", "reply-bar", "/showcase/reply-bar"},
+       {"Connection Status", "connection-status", "/showcase/connection-status"}
+     ]},
+    {"Specialized", nil,
+     [
+       {"P2P Lobby", "p2p-lobby", "/showcase/p2p-lobby"},
+       {"Media Controls", "media-controls", "/showcase/media-controls"},
+       {"File Transfer", "file-transfer", "/showcase/file-transfer"},
+       {"Bot Manager", "bot-manager", "/showcase/bot-manager"},
+       {"Admin Console", "admin-console", "/showcase/admin-console"},
+       {"Chat Layout", "chat-layout", "/showcase/chat-layout"}
+     ]},
+    {"Dialogs", nil,
+     [
+       {"Confirm Dialog", "confirm-dialog", "/showcase/confirm-dialog"},
+       {"Options Dialog", "options-dialog", "/showcase/options-dialog"},
+       {"Channel Dialog", "channel-dialog", "/showcase/channel-dialog"},
+       {"Address Book", "address-book", "/showcase/address-book"},
+       {"About Dialog", "about-dialog", "/showcase/about-dialog"},
+       {"Channel List", "channel-list", "/showcase/channel-list"},
+       {"Highlight Dialog", "highlight-dialog", "/showcase/highlight-dialog"},
+       {"Config Form", "config-form", "/showcase/config-form"}
      ]},
     {"Assets", nil,
      [
@@ -202,6 +238,14 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     ~H'<Icons.icon_chat class="w-[16px] h-[16px] flex-shrink-0" />'
   end
 
+  defp nav_group_icon(%{group: "Specialized"} = assigns) do
+    ~H'<Icons.icon_p2p class="w-[16px] h-[16px] flex-shrink-0" />'
+  end
+
+  defp nav_group_icon(%{group: "Dialogs"} = assigns) do
+    ~H'<Icons.icon_dialog_options class="w-[16px] h-[16px] flex-shrink-0" />'
+  end
+
   defp nav_group_icon(%{group: "Assets"} = assigns) do
     ~H'<Icons.icon_folder class="w-[16px] h-[16px] flex-shrink-0" />'
   end
@@ -252,7 +296,37 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     "nicklist" => :icon_tab_nicklist,
     "game-cards" => :icon_joystick,
     "icons" => :icon_star,
-    "diagrams" => :icon_code
+    "diagrams" => :icon_code,
+    "toast" => :icon_btn_bell,
+    "context-menu" => :icon_dialog_custom_menus,
+    "loading-spinner" => :icon_clock,
+    "empty-state" => :icon_group_view,
+    "color-picker" => :icon_tab_colors,
+    "scroll-area" => :icon_btn_down,
+    "conversations" => :icon_tab_conversations,
+    "hover-card" => :icon_status_user,
+    "search-bar" => :icon_btn_find,
+    "topic-bar" => :icon_tab_channel,
+    "formatting-toolbar" => :icon_fmt_bold,
+    "emoji-picker" => :icon_fmt_emoji,
+    "autocomplete" => :icon_btn_down,
+    "tab-bar" => :icon_tab_channel,
+    "reply-bar" => :icon_retry,
+    "connection-status" => :icon_status_signal,
+    "confirm-dialog" => :icon_warning,
+    "options-dialog" => :icon_dialog_options,
+    "channel-dialog" => :icon_tab_channel,
+    "address-book" => :icon_dialog_address_book,
+    "about-dialog" => :icon_lightbulb,
+    "channel-list" => :icon_channels,
+    "highlight-dialog" => :icon_star,
+    "config-form" => :icon_btn_settings,
+    "p2p-lobby" => :icon_p2p,
+    "media-controls" => :icon_microphone,
+    "file-transfer" => :icon_file_send,
+    "bot-manager" => :icon_robot,
+    "admin-console" => :icon_terminal,
+    "chat-layout" => :icon_chat
   }
 
   defp nav_item_icon(assigns) do

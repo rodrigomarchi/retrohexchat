@@ -1,0 +1,64 @@
+defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
+  @moduledoc """
+  Confirm dialog component for the showcase design system.
+
+  Composed from dialog + button primitives.
+  Reusable confirmation dialog with warning icon, message, action + cancel buttons.
+
+  ## Usage
+
+      <.confirm_dialog
+        id="delete-confirm"
+        title="Delete Channel"
+        message="Are you sure you want to delete #lobby?"
+        confirm_label="Delete"
+        variant="destructive"
+      />
+  """
+  use RetroHexChatWeb.Component
+
+  import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.Button
+
+  alias RetroHexChatWeb.Icons
+
+  @doc "Renders a reusable confirmation dialog."
+  attr :id, :string, required: true
+  attr :show, :boolean, default: false
+  attr :title, :string, default: "Confirm"
+  attr :message, :string, required: true
+  attr :confirm_label, :string, default: "OK"
+  attr :cancel_label, :string, default: "Cancel"
+  attr :variant, :string, default: "default", values: ~w(default destructive)
+  attr :class, :string, default: nil
+
+  @spec confirm_dialog(map()) :: Phoenix.LiveView.Rendered.t()
+  def confirm_dialog(assigns) do
+    ~H"""
+    <.dialog id={@id} show={@show}>
+      <.dialog_header>
+        <.dialog_icon>
+          <Icons.icon_warning class="w-8 h-8" />
+        </.dialog_icon>
+        <.dialog_title>{@title}</.dialog_title>
+        <.dialog_close id={@id} />
+      </.dialog_header>
+
+      <.dialog_body class={@class}>
+        <p class="text-xs">{@message}</p>
+      </.dialog_body>
+
+      <.dialog_footer>
+        <.button variant={@variant}>
+          <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+          {@confirm_label}
+        </.button>
+        <.button variant="outline" phx-click={hide_modal(@id)}>
+          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+          {@cancel_label}
+        </.button>
+      </.dialog_footer>
+    </.dialog>
+    """
+  end
+end

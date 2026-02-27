@@ -1,29 +1,7 @@
 defmodule RetroHexChatWeb.Components.UI.Tabs do
   @moduledoc """
-  Implementation of tabs components from https://ui.shadcn.com/docs/components/tabs
-
-  ## Example:
-
-      <.tabs default="account" id="settings" :let={builder} class="w-[400px]">
-        <.tabs_list class="grid w-full grid-cols-2">
-          <.tabs_trigger builder={builder} value="account">account</.tabs_trigger>
-          <.tabs_trigger builder={builder} value="password">password</.tabs_trigger>
-        </.tabs_list>
-        <.tabs_content value="account">
-          <.card>
-            <.card_content class="p-6">
-              Account
-            </.card_content>
-          </.card>
-        </.tabs_content>
-        <.tabs_content value="password">
-          <.card>
-            <.card_content class="p-6">
-              Password
-            </.card_content>
-          </.card>
-        </.tabs_content>
-      </.tabs>
+  Win98-style tabs component for the showcase design system.
+  Visually matches the platform's retro dialog tabs.
   """
   use RetroHexChatWeb.Component
 
@@ -43,6 +21,10 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
     """
   end
 
+  @doc """
+  Tab bar container — holds tab triggers in a flex row.
+  Bottom border acts as the separator that active tabs "break through".
+  """
   attr :class, :string, default: nil
   slot :inner_block, required: true
   attr :rest, :global
@@ -52,7 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
     <div
       class={
         classes([
-          "inline-flex h-10 items-center justify-center bg-surface p-1 text-foreground",
+          "relative flex items-end gap-0 px-retro-4 pt-retro-6 bg-surface border-b border-border",
           @class
         ])
       }
@@ -63,9 +45,15 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
     """
   end
 
+  @doc """
+  Individual tab trigger — Win98-style with mandatory icon and real borders.
+  Active tab: border-bottom matches surface color, visually merging with panel.
+  Inactive tab: slightly shorter, gray background.
+  """
   attr :builder, :map, required: true, doc: "builder instance of tabs"
   attr :value, :string, required: true, doc: "target value of tab content"
   attr :class, :string, default: nil
+  slot :icon, required: true, doc: "16×16 icon for the tab"
   slot :inner_block, required: true
   attr :rest, :global
 
@@ -75,7 +63,15 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
       class={
         classes([
           "tabs-trigger",
-          "inline-flex items-center justify-center whitespace-nowrap shadow-retro-tab px-3 py-1.5 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-black disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-surface data-[state=active]:text-foreground data-[state=active]:font-bold",
+          "relative inline-flex items-center gap-retro-4",
+          "border border-border border-b-border",
+          "px-retro-10 py-retro-2 mr-[1px]",
+          "text-xs whitespace-nowrap",
+          "bg-gray-300 text-foreground",
+          "top-[1px]",
+          "data-[state=active]:bg-surface data-[state=active]:border-b-surface data-[state=active]:font-bold data-[state=active]:z-10 data-[state=active]:top-0 data-[state=active]:pt-retro-4",
+          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
+          "disabled:pointer-events-none disabled:opacity-50",
           @class
         ])
       }
@@ -83,11 +79,17 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
       {@rest}
       phx-click={show_tab(@builder.id, @value)}
     >
+      <span class="w-[16px] h-[16px] shrink-0 inline-flex items-center justify-center">
+        {render_slot(@icon)}
+      </span>
       {render_slot(@inner_block)}
     </button>
     """
   end
 
+  @doc """
+  Tab content panel — Win98-style with 3D window border, connects to active tab above.
+  """
   attr :value, :string, required: true, doc: "unique for tab content"
   attr :class, :string, default: nil
   slot :inner_block, required: true
@@ -99,7 +101,9 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
       class={
         classes([
           "tabs-content",
-          "mt-2 shadow-retro-window bg-surface p-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
+          "border border-border bg-surface p-retro-8",
+          "border-t-0",
+          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
           @class
         ])
       }

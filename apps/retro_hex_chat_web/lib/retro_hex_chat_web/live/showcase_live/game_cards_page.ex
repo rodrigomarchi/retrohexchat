@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.GameCardsPage do
 
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -18,6 +19,27 @@ defmodule RetroHexChatWeb.ShowcaseLive.GameCardsPage do
   @impl true
   def handle_event("select-game", %{"game" => game}, socket) do
     {:noreply, assign(socket, selected: game)}
+  end
+
+  attr :name, :atom, required: true
+
+  defp game_icon(assigns) do
+    ~H"""
+    <%= case @name do %>
+      <% :doom -> %><Icons.icon_game_doom class="w-8 h-8" />
+      <% :freedoom1 -> %><Icons.icon_game_freedoom1 class="w-8 h-8" />
+      <% :freedoom2 -> %><Icons.icon_game_freedoom2 class="w-8 h-8" />
+      <% :freedm -> %><Icons.icon_game_freedm class="w-8 h-8" />
+      <% :chex -> %><Icons.icon_game_chex class="w-8 h-8" />
+      <% :hacx -> %><Icons.icon_game_hacx class="w-8 h-8" />
+      <% :rekkr -> %><Icons.icon_game_rekkr class="w-8 h-8" />
+      <% :librequake -> %><Icons.icon_game_librequake class="w-8 h-8" />
+      <% :quake2 -> %><Icons.icon_game_quake2 class="w-8 h-8" />
+      <% :wolfenstein -> %><Icons.icon_game_wolfenstein class="w-8 h-8" />
+      <% :bass -> %><Icons.icon_game_bass class="w-8 h-8" />
+      <% :dreamweb -> %><Icons.icon_game_dreamweb class="w-8 h-8" />
+    <% end %>
+    """
   end
 
   @impl true
@@ -41,19 +63,19 @@ defmodule RetroHexChatWeb.ShowcaseLive.GameCardsPage do
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
               <button
                 :for={
-                  {name, desc} <- [
-                    {"DOOM", "Episode 1 — The Original"},
-                    {"Freedoom Phase 1", "36 levels of open-source doom"},
-                    {"Freedoom Phase 2", "32 levels — Doom II compatible"},
-                    {"FreeDM", "Deathmatch arena — open source"},
-                    {"Chex Quest", "The cereal box classic"},
-                    {"HacX", "Cyberpunk total conversion"},
-                    {"REKKR", "Viking-themed standalone"},
-                    {"LibreQuake", "Open-source Quake replacement"},
-                    {"Quake II", "Unit 1 — The Demo"},
-                    {"Wolfenstein 3D", "Episode 1 — Shareware Classic"},
-                    {"Beneath a Steel Sky", "Cyberpunk point & click"},
-                    {"Dreamweb", "Dark cyberpunk adventure (1994)"}
+                  {name, desc, icon} <- [
+                    {"DOOM", "Episode 1 — The Original", :doom},
+                    {"Freedoom Phase 1", "36 levels of open-source doom", :freedoom1},
+                    {"Freedoom Phase 2", "32 levels — Doom II compatible", :freedoom2},
+                    {"FreeDM", "Deathmatch arena — open source", :freedm},
+                    {"Chex Quest", "The cereal box classic", :chex},
+                    {"HacX", "Cyberpunk total conversion", :hacx},
+                    {"REKKR", "Viking-themed standalone", :rekkr},
+                    {"LibreQuake", "Open-source Quake replacement", :librequake},
+                    {"Quake II", "Unit 1 — The Demo", :quake2},
+                    {"Wolfenstein 3D", "Episode 1 — Shareware Classic", :wolfenstein},
+                    {"Beneath a Steel Sky", "Cyberpunk point & click", :bass},
+                    {"Dreamweb", "Dark cyberpunk adventure (1994)", :dreamweb}
                   ]
                 }
                 type="button"
@@ -65,8 +87,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.GameCardsPage do
                   @selected == name && "shadow-retro-sunken bg-highlight-bg"
                 ]}
               >
-                <div class="w-[32px] h-[32px] mx-auto mb-1 bg-gray-200 shadow-retro-field flex items-center justify-center">
-                  <span class="text-xs font-mono text-gray-500">ico</span>
+                <div class="w-[32px] h-[32px] mx-auto mb-1">
+                  <.game_icon name={icon} />
                 </div>
                 <p class="text-xs font-bold truncate">{name}</p>
                 <p class="text-[10px] text-muted-foreground truncate">{desc}</p>
