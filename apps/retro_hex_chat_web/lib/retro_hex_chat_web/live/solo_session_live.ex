@@ -128,16 +128,20 @@ defmodule RetroHexChatWeb.SoloSessionLive do
         socket
       ) do
     duration = Map.get(payload, :duration_seconds, 0)
+    notify_session_ended(socket, "game_over")
 
     {:noreply,
      assign(socket,
        session_status: "finished",
+       session_closed: true,
        game_duration: duration
      )}
   end
 
   def handle_info(%{event: "arcade_status_changed", payload: %{status: status}}, socket) do
     if SoloSession.terminal?(status) do
+      unless socket.assigns[:session_closed], do: notify_session_ended(socket, status)
+
       {:noreply,
        socket
        |> assign(session_closed: true)
@@ -147,7 +151,9 @@ defmodule RetroHexChatWeb.SoloSessionLive do
     end
   end
 
-  def handle_info(%{event: "arcade_session_closed", payload: %{reason: _reason}}, socket) do
+  def handle_info(%{event: "arcade_session_closed", payload: %{reason: reason}}, socket) do
+    unless socket.assigns[:session_closed], do: notify_session_ended(socket, reason)
+
     {:noreply,
      socket
      |> assign(session_closed: true)
@@ -235,6 +241,7 @@ defmodule RetroHexChatWeb.SoloSessionLive do
   def handle_event("arcade_leave", _params, socket) do
     unless socket.assigns[:session_closed] do
       Arcade.close_session(socket.assigns.token, socket.assigns.user_id, "tab_closed")
+      notify_session_ended(socket, "tab_closed")
     end
 
     {:noreply, assign(socket, session_closed: true)}
@@ -251,6 +258,7 @@ defmodule RetroHexChatWeb.SoloSessionLive do
       if user_id do
         try do
           Arcade.close_session(token, user_id, "disconnected")
+          notify_session_ended(socket, "disconnected")
         rescue
           _ -> :ok
         end
@@ -261,6 +269,35 @@ defmodule RetroHexChatWeb.SoloSessionLive do
   end
 
   # --- Private Helpers ---
+
+  defp notify_session_ended(socket, reason) do
+    nickname = socket.assigns[:nickname]
+    game_name = socket.assigns[:game_name]
+    token = socket.assigns[:token]
+
+    if nickname && token do
+      duration_secs =
+        case Arcade.get_session(token) do
+          {:ok, s} -> s.duration_seconds
+          _ -> nil
+        end
+
+      Phoenix.PubSub.broadcast(
+        @pubsub,
+        "user:#{nickname}",
+        %{
+          event: "arcade_session_ended",
+          payload: %{
+            game_name: game_name,
+            reason: reason,
+            duration_seconds: duration_secs
+          }
+        }
+      )
+    end
+  rescue
+    _ -> :ok
+  end
 
   defp mount_arcade_lobby(socket, token, nickname, user_id, db_session) do
     if connected?(socket) do

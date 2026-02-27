@@ -188,6 +188,61 @@ defmodule RetroHexChat.P2P.Schema.SessionTest do
     end
   end
 
+  describe "status_changeset/2 audit columns" do
+    test "accepts accepted_at on lobby transition" do
+      session = %Session{
+        token: "tok",
+        creator_id: 1,
+        peer_id: 2,
+        status: "pending",
+        session_type: "generic"
+      }
+
+      now = DateTime.utc_now()
+      changeset = Session.status_changeset(session, %{status: "lobby", accepted_at: now})
+      assert changeset.valid?
+      assert Ecto.Changeset.get_change(changeset, :accepted_at) == now
+    end
+
+    test "accepts connected_at on active transition" do
+      session = %Session{
+        token: "tok",
+        creator_id: 1,
+        peer_id: 2,
+        status: "connecting",
+        session_type: "generic"
+      }
+
+      now = DateTime.utc_now()
+      changeset = Session.status_changeset(session, %{status: "active", connected_at: now})
+      assert changeset.valid?
+      assert Ecto.Changeset.get_change(changeset, :connected_at) == now
+    end
+
+    test "accepts duration_seconds on terminal transition" do
+      session = %Session{
+        token: "tok",
+        creator_id: 1,
+        peer_id: 2,
+        status: "active",
+        session_type: "generic"
+      }
+
+      now = DateTime.utc_now()
+
+      changeset =
+        Session.status_changeset(session, %{
+          status: "closed",
+          closed_at: now,
+          closed_reason: "user_closed",
+          duration_seconds: 42
+        })
+
+      assert changeset.valid?
+      assert Ecto.Changeset.get_change(changeset, :duration_seconds) == 42
+    end
+  end
+
   describe "terminal?/1" do
     test "returns true for terminal statuses" do
       for status <- ~w(closed expired failed) do

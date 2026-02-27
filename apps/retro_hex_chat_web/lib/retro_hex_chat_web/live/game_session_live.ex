@@ -555,8 +555,16 @@ defmodule RetroHexChatWeb.GameSessionLive do
     nickname = socket.assigns[:nickname]
     peer_nick = socket.assigns[:peer_nick]
     game_name = socket.assigns[:game_name]
+    token = socket.assigns[:token]
 
     if nickname do
+      # Reload from DB to get duration_seconds and result (set on close/finish)
+      {duration_secs, game_result} =
+        case token && RetroHexChat.Games.get_session(token) do
+          {:ok, s} -> {s.duration_seconds, s.metadata["result"]}
+          _ -> {nil, nil}
+        end
+
       Phoenix.PubSub.broadcast(
         @pubsub,
         "user:#{nickname}",
@@ -565,7 +573,9 @@ defmodule RetroHexChatWeb.GameSessionLive do
           payload: %{
             peer_nick: peer_nick || "unknown",
             game_name: game_name,
-            reason: reason
+            reason: reason,
+            duration_seconds: duration_secs,
+            game_result: game_result
           }
         }
       )

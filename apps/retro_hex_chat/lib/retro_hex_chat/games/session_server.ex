@@ -334,7 +334,8 @@ defmodule RetroHexChat.Games.SessionServer do
     Logger.info("Game transition: #{state.session.status} → lobby, token=#{state.token}")
     state = cancel_timer(state, :pending_expiry)
 
-    {:ok, session} = Queries.update_status(state.session, "lobby")
+    {:ok, session} =
+      Queries.update_status(state.session, "lobby", %{lobby_at: DateTime.utc_now()})
 
     state = %{state | session: session}
     state = schedule_timeout(state, :lobby_warning, lobby_warning_timeout())
@@ -352,7 +353,11 @@ defmodule RetroHexChat.Games.SessionServer do
     game_id =
       if state.game_request, do: state.game_request.game_id, else: state.session.game_id
 
-    {:ok, session} = Queries.update_status(state.session, "playing", %{game_id: game_id})
+    {:ok, session} =
+      Queries.update_status(state.session, "playing", %{
+        game_id: game_id,
+        game_started_at: DateTime.utc_now()
+      })
 
     state = %{state | session: session}
     broadcast(state.token, "game_status_changed", %{status: "playing", game_id: game_id})
@@ -367,7 +372,8 @@ defmodule RetroHexChat.Games.SessionServer do
     {:ok, session} =
       Queries.update_status(state.session, "finished", %{
         closed_at: now,
-        closed_reason: "game_over"
+        closed_reason: "game_over",
+        duration_seconds: compute_duration(state.session.game_started_at, now)
       })
 
     broadcast(state.token, "game_status_changed", %{status: "finished", reason: "game_over"})
@@ -383,7 +389,8 @@ defmodule RetroHexChat.Games.SessionServer do
       Queries.update_status(state.session, "finished", %{
         metadata: %{"result" => result},
         closed_at: now,
-        closed_reason: "game_over"
+        closed_reason: "game_over",
+        duration_seconds: compute_duration(state.session.game_started_at, now)
       })
 
     broadcast(state.token, "game_status_changed", %{
@@ -403,7 +410,8 @@ defmodule RetroHexChat.Games.SessionServer do
     {:ok, session} =
       Queries.update_status(state.session, "closed", %{
         closed_at: now,
-        closed_reason: reason
+        closed_reason: reason,
+        duration_seconds: compute_duration(state.session.game_started_at, now)
       })
 
     broadcast(state.token, "game_session_closed", %{reason: reason, closed_by: closed_by})
@@ -418,12 +426,17 @@ defmodule RetroHexChat.Games.SessionServer do
     {:ok, session} =
       Queries.update_status(state.session, "expired", %{
         closed_at: now,
-        closed_reason: reason
+        closed_reason: reason,
+        duration_seconds: compute_duration(state.session.game_started_at, now)
       })
 
     broadcast(state.token, "game_status_changed", %{status: "expired", reason: reason})
     %{state | session: session}
   end
+
+  @spec compute_duration(DateTime.t() | nil, DateTime.t()) :: integer() | nil
+  defp compute_duration(nil, _now), do: nil
+  defp compute_duration(start_time, now), do: DateTime.diff(now, start_time, :second)
 
   defp handle_send_message(state, user_id, sender_nick, content) do
     msg = %{

@@ -346,6 +346,77 @@ defmodule RetroHexChat.P2P.SessionServerTest do
     end
   end
 
+  describe "audit columns" do
+    test "accepted_at is set when transitioning to lobby" do
+      alice = create_registered_nick("alice_aud1")
+      bob = create_registered_nick("bob_aud1")
+      session = create_session_record(alice.id, bob.id)
+      _pid = start_server(session.token)
+
+      :ok = SessionServer.join(session.token, alice.id)
+      :ok = SessionServer.join(session.token, bob.id)
+
+      updated = Queries.get_session_by_token(session.token)
+      assert updated.status == "lobby"
+      assert updated.accepted_at != nil
+
+      stop_server(session.token)
+    end
+
+    test "connected_at is set when transitioning to active" do
+      alice = create_registered_nick("alice_aud2")
+      bob = create_registered_nick("bob_aud2")
+      session = create_session_record(alice.id, bob.id)
+      _pid = start_server(session.token)
+
+      :ok = SessionServer.join(session.token, alice.id)
+      :ok = SessionServer.join(session.token, bob.id)
+      :ok = SessionServer.transition(session.token, :connecting)
+      :ok = SessionServer.transition(session.token, :active)
+
+      updated = Queries.get_session_by_token(session.token)
+      assert updated.status == "active"
+      assert updated.connected_at != nil
+
+      stop_server(session.token)
+    end
+
+    test "duration_seconds is set when active session is closed" do
+      alice = create_registered_nick("alice_aud3")
+      bob = create_registered_nick("bob_aud3")
+      session = create_session_record(alice.id, bob.id)
+      _pid = start_server(session.token)
+
+      :ok = SessionServer.join(session.token, alice.id)
+      :ok = SessionServer.join(session.token, bob.id)
+      :ok = SessionServer.transition(session.token, :connecting)
+      :ok = SessionServer.transition(session.token, :active)
+
+      :ok = SessionServer.close(session.token, alice.id, "user_closed")
+      Process.sleep(50)
+
+      updated = Queries.get_session_by_token(session.token)
+      assert updated.duration_seconds != nil
+      assert updated.duration_seconds >= 0
+    end
+
+    test "duration_seconds is nil when session closes before active" do
+      alice = create_registered_nick("alice_aud4")
+      bob = create_registered_nick("bob_aud4")
+      session = create_session_record(alice.id, bob.id)
+      _pid = start_server(session.token)
+
+      :ok = SessionServer.join(session.token, alice.id)
+      :ok = SessionServer.join(session.token, bob.id)
+
+      :ok = SessionServer.close(session.token, alice.id, "user_closed")
+      Process.sleep(50)
+
+      updated = Queries.get_session_by_token(session.token)
+      assert is_nil(updated.duration_seconds)
+    end
+  end
+
   describe "crash recovery" do
     test "supervisor restarts GenServer after crash and recovers state from DB" do
       alice = create_registered_nick("alice_cr1")

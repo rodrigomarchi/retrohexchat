@@ -21,6 +21,9 @@ defmodule RetroHexChat.P2P.Schema.Session do
     field :metadata, :map, default: %{}
     field :closed_at, :utc_datetime_usec
     field :closed_reason, :string
+    field :accepted_at, :utc_datetime_usec
+    field :connected_at, :utc_datetime_usec
+    field :duration_seconds, :integer
 
     timestamps(type: :utc_datetime_usec)
   end
@@ -49,7 +52,14 @@ defmodule RetroHexChat.P2P.Schema.Session do
   @spec status_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def status_changeset(session, attrs) do
     session
-    |> cast(attrs, [:status, :closed_at, :closed_reason])
+    |> cast(attrs, [
+      :status,
+      :closed_at,
+      :closed_reason,
+      :accepted_at,
+      :connected_at,
+      :duration_seconds
+    ])
     |> validate_required([:status])
     |> validate_inclusion(:status, @status_values)
     |> validate_terminal_fields()

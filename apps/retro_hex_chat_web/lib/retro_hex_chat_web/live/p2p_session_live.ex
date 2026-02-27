@@ -1195,10 +1195,19 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   defp notify_session_ended(socket, reason) do
     nickname = socket.assigns[:nickname]
     peer_nick = socket.assigns[:peer_nick]
+    token = socket.assigns[:token]
     session = socket.assigns[:session]
 
     if nickname && session do
-      duration_secs = DateTime.diff(DateTime.utc_now(), session.inserted_at)
+      # Reload from DB to get duration_seconds (set on close)
+      duration_secs =
+        case RetroHexChat.P2P.get_session(token) do
+          {:ok, fresh} -> fresh.duration_seconds
+          _ -> nil
+        end
+
+      # Fallback to wall-clock if session never reached active
+      duration_secs = duration_secs || DateTime.diff(DateTime.utc_now(), session.inserted_at)
 
       Phoenix.PubSub.broadcast(
         @pubsub,

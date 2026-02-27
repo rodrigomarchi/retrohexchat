@@ -98,6 +98,40 @@ defmodule RetroHexChat.Games.Schema.GameSessionTest do
     end
   end
 
+  describe "status_changeset/2 audit columns" do
+    test "accepts lobby_at on lobby transition" do
+      now = DateTime.utc_now()
+      changeset = GameSession.status_changeset(%GameSession{}, %{status: "lobby", lobby_at: now})
+      assert changeset.valid?
+      assert Ecto.Changeset.get_change(changeset, :lobby_at) == now
+    end
+
+    test "accepts game_started_at on playing transition" do
+      now = DateTime.utc_now()
+
+      changeset =
+        GameSession.status_changeset(%GameSession{}, %{status: "playing", game_started_at: now})
+
+      assert changeset.valid?
+      assert Ecto.Changeset.get_change(changeset, :game_started_at) == now
+    end
+
+    test "accepts duration_seconds on finished transition" do
+      now = DateTime.utc_now()
+
+      changeset =
+        GameSession.status_changeset(%GameSession{}, %{
+          status: "finished",
+          closed_at: now,
+          closed_reason: "game_over",
+          duration_seconds: 120
+        })
+
+      assert changeset.valid?
+      assert Ecto.Changeset.get_change(changeset, :duration_seconds) == 120
+    end
+  end
+
   describe "terminal?/1" do
     test "finished, closed, expired are terminal" do
       assert GameSession.terminal?("finished")

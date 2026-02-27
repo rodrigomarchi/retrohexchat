@@ -315,6 +315,77 @@ defmodule RetroHexChat.Games.SessionServerTest do
     end
   end
 
+  describe "audit columns" do
+    test "lobby_at is set when transitioning to lobby" do
+      alice = create_registered_nick("gss_aud1")
+      bob = create_registered_nick("gss_aud2")
+      session = create_session_record(alice.id, bob.id)
+      _pid = start_server(session.token)
+
+      SessionServer.join(session.token, alice.id)
+      SessionServer.join(session.token, bob.id)
+
+      updated = Queries.get_session_by_token(session.token)
+      assert updated.status == "lobby"
+      assert updated.lobby_at != nil
+
+      stop_server(session.token)
+    end
+
+    test "game_started_at is set when transitioning to playing" do
+      alice = create_registered_nick("gss_aud3")
+      bob = create_registered_nick("gss_aud4")
+      session = create_session_record(alice.id, bob.id)
+      _pid = start_server(session.token)
+
+      SessionServer.join(session.token, alice.id)
+      SessionServer.join(session.token, bob.id)
+      SessionServer.select_game(session.token, alice.id, "gss_aud3", "hex_pong")
+      SessionServer.respond_game(session.token, bob.id, "gss_aud4", true)
+
+      updated = Queries.get_session_by_token(session.token)
+      assert updated.status == "playing"
+      assert updated.game_started_at != nil
+
+      stop_server(session.token)
+    end
+
+    test "duration_seconds is set when game finishes after playing" do
+      alice = create_registered_nick("gss_aud5")
+      bob = create_registered_nick("gss_aud6")
+      session = create_session_record(alice.id, bob.id)
+      _pid = start_server(session.token)
+
+      SessionServer.join(session.token, alice.id)
+      SessionServer.join(session.token, bob.id)
+      SessionServer.select_game(session.token, alice.id, "gss_aud5", "hex_pong")
+      SessionServer.respond_game(session.token, bob.id, "gss_aud6", true)
+
+      :ok = SessionServer.finish_game(session.token, alice.id, %{"winner" => "gss_aud5"})
+      Process.sleep(50)
+
+      updated = Queries.get_session_by_token(session.token)
+      assert updated.duration_seconds != nil
+      assert updated.duration_seconds >= 0
+    end
+
+    test "duration_seconds is nil when session closes before playing" do
+      alice = create_registered_nick("gss_aud7")
+      bob = create_registered_nick("gss_aud8")
+      session = create_session_record(alice.id, bob.id)
+      _pid = start_server(session.token)
+
+      SessionServer.join(session.token, alice.id)
+      SessionServer.join(session.token, bob.id)
+
+      :ok = SessionServer.close(session.token, alice.id, "user_left")
+      Process.sleep(50)
+
+      updated = Queries.get_session_by_token(session.token)
+      assert is_nil(updated.duration_seconds)
+    end
+  end
+
   describe "close/3" do
     test "closes the session" do
       alice = create_registered_nick("gss_alice14")

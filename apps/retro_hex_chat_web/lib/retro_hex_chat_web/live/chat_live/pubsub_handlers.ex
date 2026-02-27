@@ -226,19 +226,45 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info(%{event: "game_session_ended"} = msg, socket) do
     import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
 
-    %{payload: %{peer_nick: peer, game_name: game_name, reason: reason}} = msg
+    %{payload: payload} = msg
+    peer = payload.peer_nick
+    game_label = payload.game_name || "Game"
+    reason = payload.reason
+    duration = payload[:duration_seconds]
+    result = payload[:game_result]
 
-    game_label = game_name || "Game"
-
-    text =
+    base =
       case reason do
-        "finished" -> "#{game_label} with #{peer} finished"
-        "game_over" -> "#{game_label} with #{peer} finished"
-        "game_ended" -> "#{game_label} with #{peer} ended"
-        _ -> "#{game_label} session with #{peer} ended — #{humanize_reason(reason)}"
+        r when r in ["finished", "game_over"] -> "#{game_label} with #{peer} finished"
+        _ -> "#{game_label} with #{peer} ended — #{humanize_reason(reason)}"
       end
 
-    {:halt, push_status_message(socket, text, :system)}
+    parts = [base]
+    parts = if duration, do: parts ++ ["(#{format_duration(duration)})"], else: parts
+    result_text = format_game_result(result)
+    parts = if result_text != "", do: parts ++ [result_text], else: parts
+
+    {:halt, push_status_message(socket, Enum.join(parts, " "), :system)}
+  end
+
+  def handle_info(%{event: "arcade_session_ended"} = msg, socket) do
+    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
+
+    %{payload: payload} = msg
+    game_label = payload.game_name || "Arcade game"
+    reason = payload.reason
+    duration = payload[:duration_seconds]
+
+    base =
+      case reason do
+        r when r in ["finished", "game_over"] -> "#{game_label} finished"
+        _ -> "#{game_label} ended — #{humanize_reason(reason)}"
+      end
+
+    parts = [base]
+    parts = if duration, do: parts ++ ["(#{format_duration(duration)})"], else: parts
+
+    {:halt, push_status_message(socket, Enum.join(parts, " "), :system)}
   end
 
   # ── Task/DOWN catch-all ───────────────────────────────────
@@ -266,6 +292,18 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
   defp format_duration(secs) when is_integer(secs), do: "#{secs}s"
   defp format_duration(_), do: "0s"
+
+  defp format_game_result(%{"score" => %{"p1" => p1, "p2" => p2}, "winner" => w}),
+    do: "— #{p1} × #{p2}#{format_winner(w)}"
+
+  defp format_game_result(%{"score_p1" => p1, "score_p2" => p2, "winner" => w}),
+    do: "— #{p1} × #{p2}#{format_winner(w)}"
+
+  defp format_game_result(_), do: ""
+
+  defp format_winner("draw"), do: ", draw"
+  defp format_winner(0), do: ", draw"
+  defp format_winner(_), do: ""
 
   defp humanize_reason("user_closed"), do: "closed by user"
   defp humanize_reason("disconnected"), do: "disconnected"

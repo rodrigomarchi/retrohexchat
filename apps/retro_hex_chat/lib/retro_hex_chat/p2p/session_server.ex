@@ -322,7 +322,8 @@ defmodule RetroHexChat.P2P.SessionServer do
     Logger.info("P2P transition: #{state.session.status} → lobby, token=#{state.token}")
     state = cancel_timer(state, :pending_expiry)
 
-    {:ok, session} = Queries.update_status(state.session, "lobby")
+    {:ok, session} =
+      Queries.update_status(state.session, "lobby", %{accepted_at: DateTime.utc_now()})
 
     state = %{state | session: session}
     state = schedule_timeout(state, :lobby_warning, lobby_warning_timeout())
@@ -350,7 +351,8 @@ defmodule RetroHexChat.P2P.SessionServer do
     Logger.info("P2P transition: #{state.session.status} → active, token=#{state.token}")
     state = cancel_timer(state, :connecting_timeout)
 
-    {:ok, session} = Queries.update_status(state.session, "active")
+    {:ok, session} =
+      Queries.update_status(state.session, "active", %{connected_at: DateTime.utc_now()})
 
     state = %{state | session: session}
     broadcast(state.token, "p2p_status_changed", %{status: "active", reason: nil})
@@ -365,7 +367,8 @@ defmodule RetroHexChat.P2P.SessionServer do
     {:ok, session} =
       Queries.update_status(state.session, "closed", %{
         closed_at: now,
-        closed_reason: reason
+        closed_reason: reason,
+        duration_seconds: compute_duration(state.session.connected_at, now)
       })
 
     broadcast(state.token, "p2p_session_closed", %{reason: reason, closed_by: closed_by})
@@ -380,7 +383,8 @@ defmodule RetroHexChat.P2P.SessionServer do
     {:ok, session} =
       Queries.update_status(state.session, "expired", %{
         closed_at: now,
-        closed_reason: reason
+        closed_reason: reason,
+        duration_seconds: compute_duration(state.session.connected_at, now)
       })
 
     broadcast(state.token, "p2p_status_changed", %{status: "expired", reason: reason})
@@ -395,12 +399,17 @@ defmodule RetroHexChat.P2P.SessionServer do
     {:ok, session} =
       Queries.update_status(state.session, "failed", %{
         closed_at: now,
-        closed_reason: reason
+        closed_reason: reason,
+        duration_seconds: compute_duration(state.session.connected_at, now)
       })
 
     broadcast(state.token, "p2p_status_changed", %{status: "failed", reason: reason})
     %{state | session: session}
   end
+
+  @spec compute_duration(DateTime.t() | nil, DateTime.t()) :: integer() | nil
+  defp compute_duration(nil, _now), do: nil
+  defp compute_duration(start_time, now), do: DateTime.diff(now, start_time, :second)
 
   defp handle_send_message(state, user_id, sender_nick, content) do
     Logger.debug("P2P message: token=#{state.token}, from=#{sender_nick}")
