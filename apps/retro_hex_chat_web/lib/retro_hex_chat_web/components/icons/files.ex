@@ -401,4 +401,65 @@ defmodule RetroHexChatWeb.Icons.Files do
     </svg>
     """
   end
+
+  # -- Button: Open (folder open, 16×16) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_open(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_open(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Back folder -->
+      <path d="M1 3h5l2 2h6v2H1V3z" fill="#FFC000" stroke="#000" stroke-width="1" />
+      <!-- Open flap -->
+      <path d="M1 7h12l2-4h-12z" fill="#FFD700" stroke="#000" stroke-width="1" />
+      <!-- Bottom -->
+      <path d="M1 7v6h12l2-6H1z" fill="#FFC000" stroke="#000" stroke-width="1" />
+    </svg>
+    """
+  end
+
+  # -- Button: Page (document, 16×16) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_page(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_page(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Shadow -->
+      <rect x="4" y="2" width="10" height="13" fill="#555" />
+      <!-- Paper -->
+      <rect x="3" y="1" width="10" height="13" fill="#fff" stroke="#000" stroke-width="1" />
+      <!-- Fold -->
+      <path d="M10 1v3h3" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <!-- Lines -->
+      <rect x="5" y="6" width="5" height="1" fill="#000080" />
+      <rect x="5" y="8" width="6" height="1" fill="#000080" />
+      <rect x="5" y="10" width="4" height="1" fill="#000080" />
+    </svg>
+    """
+  end
+
+  # -- Button: Trash (trash can, 16×16) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_trash(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_trash(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Lid -->
+      <rect x="3" y="3" width="10" height="2" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <!-- Handle -->
+      <rect x="6" y="1" width="4" height="2" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <!-- Body -->
+      <rect x="4" y="5" width="8" height="9" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <!-- Ribs -->
+      <rect x="6" y="7" width="1" height="5" fill="#808080" />
+      <rect x="9" y="7" width="1" height="5" fill="#808080" />
+    </svg>
+    """
+  end
 end

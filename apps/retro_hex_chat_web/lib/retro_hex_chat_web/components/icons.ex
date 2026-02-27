@@ -336,4 +336,14 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_game_soltys(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_arcade(assigns), to: RetroHexChatWeb.Icons.Games
   defdelegate icon_game_generic(assigns), to: RetroHexChatWeb.Icons.Games
+
+  # ── New button icons (showcase design system) ──
+  defdelegate icon_btn_open(assigns), to: RetroHexChatWeb.Icons.Files
+  defdelegate icon_btn_page(assigns), to: RetroHexChatWeb.Icons.Files
+  defdelegate icon_btn_trash(assigns), to: RetroHexChatWeb.Icons.Files
+  defdelegate icon_btn_star(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_btn_play(assigns), to: RetroHexChatWeb.Icons.Media
+  defdelegate icon_btn_info(assigns), to: RetroHexChatWeb.Icons.Alerts
+  defdelegate icon_btn_link(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_btn_menu(assigns), to: RetroHexChatWeb.Icons.Tools
 end

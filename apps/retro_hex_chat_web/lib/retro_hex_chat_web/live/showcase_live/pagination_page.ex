@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.PaginationPage do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -38,6 +39,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.PaginationPage do
             phx-click="go-to-page"
             phx-value-page="1"
           >
+            <:icon><Icons.icon_btn_prev /></:icon>
             Prev
           </.button>
           <.button
@@ -47,6 +49,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.PaginationPage do
             phx-click="go-to-page"
             phx-value-page={page}
           >
+            <:icon><Icons.icon_btn_page /></:icon>
             {page}
           </.button>
           <.button
@@ -56,34 +59,58 @@ defmodule RetroHexChatWeb.ShowcaseLive.PaginationPage do
             phx-click="go-to-page"
             phx-value-page="5"
           >
+            <:icon><Icons.icon_btn_next /></:icon>
             Next
           </.button>
         </nav>
         <p class="text-xs text-muted-foreground mt-2">Current page: {@current_page}</p>
         <.code_example>
-          &lt;nav class="flex items-center gap-1"&gt;
-          &lt;.button variant="outline" size="sm"&gt;Prev&lt;/.button&gt;
-          &lt;.button :for=&#123;page &lt;- 1..5&#125;
-          variant=&#123;if(page == @current_page, do: "default", else: "outline")&#125;
-          size="sm"&gt;
-          &#123;page&#125;
+          &lt;.button variant="outline" size="sm"&gt;
+            &lt;:icon&gt;&lt;Icons.icon_btn_prev /&gt;&lt;/:icon&gt;
+            Prev
           &lt;/.button&gt;
-          &lt;.button variant="outline" size="sm"&gt;Next&lt;/.button&gt;
-          &lt;/nav&gt;
+          &lt;.button :for=&#123;page &lt;- 1..5&#125; size="sm"&gt;
+            &lt;:icon&gt;&lt;Icons.icon_btn_page /&gt;&lt;/:icon&gt;
+            &#123;page&#125;
+          &lt;/.button&gt;
         </.code_example>
       </.showcase_card>
 
       <.showcase_card title="With Ellipsis" description="Pagination showing ellipsis for many pages.">
         <nav class="flex items-center gap-1">
-          <.button variant="outline" size="sm">Prev</.button>
-          <.button variant="default" size="sm">1</.button>
-          <.button variant="outline" size="sm">2</.button>
-          <.button variant="outline" size="sm">3</.button>
+          <.button variant="outline" size="sm">
+            <:icon><Icons.icon_btn_prev /></:icon>
+            Prev
+          </.button>
+          <.button variant="default" size="sm">
+            <:icon><Icons.icon_btn_page /></:icon>
+            1
+          </.button>
+          <.button variant="outline" size="sm">
+            <:icon><Icons.icon_btn_page /></:icon>
+            2
+          </.button>
+          <.button variant="outline" size="sm">
+            <:icon><Icons.icon_btn_page /></:icon>
+            3
+          </.button>
           <span class="px-2 text-sm text-muted-foreground">...</span>
-          <.button variant="outline" size="sm">98</.button>
-          <.button variant="outline" size="sm">99</.button>
-          <.button variant="outline" size="sm">100</.button>
-          <.button variant="outline" size="sm">Next</.button>
+          <.button variant="outline" size="sm">
+            <:icon><Icons.icon_btn_page /></:icon>
+            98
+          </.button>
+          <.button variant="outline" size="sm">
+            <:icon><Icons.icon_btn_page /></:icon>
+            99
+          </.button>
+          <.button variant="outline" size="sm">
+            <:icon><Icons.icon_btn_page /></:icon>
+            100
+          </.button>
+          <.button variant="outline" size="sm">
+            <:icon><Icons.icon_btn_next /></:icon>
+            Next
+          </.button>
         </nav>
       </.showcase_card>
     </.showcase_layout>

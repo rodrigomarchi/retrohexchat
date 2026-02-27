@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Button do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -23,46 +24,77 @@ defmodule RetroHexChatWeb.ShowcaseLive.Button do
 
       <.showcase_card title="Variants" description="All button style variants.">
         <div class="flex flex-wrap gap-2">
-          <.button variant="default">Default</.button>
-          <.button variant="secondary">Secondary</.button>
-          <.button variant="destructive">Destructive</.button>
-          <.button variant="outline">Outline</.button>
-          <.button variant="ghost">Ghost</.button>
-          <.button variant="link">Link</.button>
+          <.button variant="default">
+            <:icon><Icons.icon_btn_star /></:icon>
+            Default
+          </.button>
+          <.button variant="secondary">
+            <:icon><Icons.icon_btn_settings /></:icon>
+            Secondary
+          </.button>
+          <.button variant="destructive">
+            <:icon><Icons.icon_btn_remove /></:icon>
+            Destructive
+          </.button>
+          <.button variant="outline">
+            <:icon><Icons.icon_btn_page /></:icon>
+            Outline
+          </.button>
+          <.button variant="ghost">
+            <:icon><Icons.icon_btn_info /></:icon>
+            Ghost
+          </.button>
+          <.button variant="link">
+            <:icon><Icons.icon_btn_link /></:icon>
+            Link
+          </.button>
         </div>
         <.code_example>
-          &lt;.button variant="default"&gt;Default&lt;/.button&gt;
-          &lt;.button variant="secondary"&gt;Secondary&lt;/.button&gt;
-          &lt;.button variant="destructive"&gt;Destructive&lt;/.button&gt;
-          &lt;.button variant="outline"&gt;Outline&lt;/.button&gt;
-          &lt;.button variant="ghost"&gt;Ghost&lt;/.button&gt;
-          &lt;.button variant="link"&gt;Link&lt;/.button&gt;
+          &lt;.button variant="default"&gt;
+            &lt;:icon&gt;&lt;Icons.icon_btn_star /&gt;&lt;/:icon&gt;
+            Default
+          &lt;/.button&gt;
         </.code_example>
       </.showcase_card>
 
       <.showcase_card title="Sizes" description="Available button sizes.">
         <div class="flex flex-wrap items-center gap-2">
-          <.button size="sm">Small</.button>
-          <.button size="default">Default</.button>
-          <.button size="lg">Large</.button>
-          <.button size="icon">+</.button>
+          <.button size="sm">
+            <:icon><Icons.icon_btn_star /></:icon>
+            Small
+          </.button>
+          <.button size="default">
+            <:icon><Icons.icon_btn_star /></:icon>
+            Default
+          </.button>
+          <.button size="lg">
+            <:icon><Icons.icon_btn_star /></:icon>
+            Large
+          </.button>
+          <.button size="icon">
+            <:icon><Icons.icon_btn_add /></:icon>
+          </.button>
         </div>
         <.code_example>
-          &lt;.button size="sm"&gt;Small&lt;/.button&gt;
-          &lt;.button size="default"&gt;Default&lt;/.button&gt;
-          &lt;.button size="lg"&gt;Large&lt;/.button&gt;
-          &lt;.button size="icon"&gt;+&lt;/.button&gt;
+          &lt;.button size="sm"&gt;&lt;:icon&gt;...&lt;/:icon&gt;Small&lt;/.button&gt;
+          &lt;.button size="icon"&gt;&lt;:icon&gt;...&lt;/:icon&gt;&lt;/.button&gt;
         </.code_example>
       </.showcase_card>
 
       <.showcase_card title="States" description="Disabled state.">
         <div class="flex flex-wrap gap-2">
-          <.button>Normal</.button>
-          <.button disabled>Disabled</.button>
+          <.button>
+            <:icon><Icons.icon_btn_ok /></:icon>
+            Normal
+          </.button>
+          <.button disabled>
+            <:icon><Icons.icon_btn_ok /></:icon>
+            Disabled
+          </.button>
         </div>
         <.code_example>
-          &lt;.button&gt;Normal&lt;/.button&gt;
-          &lt;.button disabled&gt;Disabled&lt;/.button&gt;
+          &lt;.button&gt;&lt;:icon&gt;...&lt;/:icon&gt;Normal&lt;/.button&gt;
+          &lt;.button disabled&gt;&lt;:icon&gt;...&lt;/:icon&gt;Disabled&lt;/.button&gt;
         </.code_example>
       </.showcase_card>
     </.showcase_layout>

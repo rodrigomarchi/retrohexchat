@@ -171,6 +171,12 @@ module.exports = {
         toast: "10000",
       },
 
+      /* ── Background Image (gradients) ── */
+      backgroundImage: {
+        "title-bar": "linear-gradient(90deg, #000080, #1084d0)",
+        "title-bar-inactive": "linear-gradient(90deg, #808080, #b5b5b5)",
+      },
+
       /* ── Box Shadow (retro 3D borders) ── */
       boxShadow: {
         "retro-raised":

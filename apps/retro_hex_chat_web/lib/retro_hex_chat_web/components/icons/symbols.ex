@@ -476,4 +476,20 @@ defmodule RetroHexChatWeb.Icons.Symbols do
     </svg>
     """
   end
+
+  # -- Button: Star (16×16) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_star(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_star(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Shadow -->
+      <polygon points="8,2 10,6 14,7 11,10 12,14 8,12 4,14 5,10 2,7 6,6" fill="#555" transform="translate(0.5,0.5)" />
+      <!-- Star -->
+      <polygon points="8,2 10,6 14,7 11,10 12,14 8,12 4,14 5,10 2,7 6,6" fill="#FFD700" stroke="#000" stroke-width="1" stroke-linejoin="round" />
+    </svg>
+    """
+  end
 end

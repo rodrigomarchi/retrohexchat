@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.DropdownMenuPage do
   import RetroHexChatWeb.Components.UI.DropdownMenu
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -28,7 +29,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.DropdownMenuPage do
       >
         <.dropdown_menu>
           <.dropdown_menu_trigger>
-            <.button variant="outline">Open Menu</.button>
+            <.button variant="outline">
+              <:icon><Icons.icon_btn_menu /></:icon>
+              Open Menu
+            </.button>
           </.dropdown_menu_trigger>
           <.dropdown_menu_content class="shadow-retro-window bg-surface p-[3px] min-w-[160px]">
             <div class="shadow-retro-field bg-white p-[2px]">
@@ -51,11 +55,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.DropdownMenuPage do
         <.code_example>
           &lt;.dropdown_menu&gt;
           &lt;.dropdown_menu_trigger&gt;
-          &lt;.button variant="outline"&gt;Open Menu&lt;/.button&gt;
+          &lt;.button variant="outline"&gt;
+            &lt;:icon&gt;&lt;Icons.icon_btn_menu /&gt;&lt;/:icon&gt;
+            Open Menu
+          &lt;/.button&gt;
           &lt;/.dropdown_menu_trigger&gt;
-          &lt;.dropdown_menu_content&gt;
-          ...items...
-          &lt;/.dropdown_menu_content&gt;
+          &lt;.dropdown_menu_content&gt;...&lt;/.dropdown_menu_content&gt;
           &lt;/.dropdown_menu&gt;
         </.code_example>
       </.showcase_card>
@@ -63,7 +68,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.DropdownMenuPage do
       <.showcase_card title="With Shortcuts" description="Menu items with keyboard shortcut hints.">
         <.dropdown_menu>
           <.dropdown_menu_trigger>
-            <.button variant="outline">Edit</.button>
+            <.button variant="outline">
+              <:icon><Icons.icon_btn_edit /></:icon>
+              Edit
+            </.button>
           </.dropdown_menu_trigger>
           <.dropdown_menu_content class="shadow-retro-window bg-surface p-[3px] min-w-[200px]">
             <div class="shadow-retro-field bg-white p-[2px]">

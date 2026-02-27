@@ -480,4 +480,20 @@ defmodule RetroHexChatWeb.Icons.Media do
     </svg>
     """
   end
+
+  # -- Button: Play (play triangle, 16×16) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_play(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_play(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Shadow -->
+      <polygon points="5,3 13,8 5,13" fill="#555" transform="translate(0.5,0.5)" />
+      <!-- Play arrow -->
+      <polygon points="5,3 13,8 5,13" fill="#009300" stroke="#000" stroke-width="1" stroke-linejoin="round" />
+    </svg>
+    """
+  end
 end

@@ -479,4 +479,19 @@ defmodule RetroHexChatWeb.Icons.Tools do
     </svg>
     """
   end
+
+  # -- Button: Menu (hamburger, 16×16) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_menu(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_menu(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="2" y="3" width="12" height="2" fill="#000080" />
+      <rect x="2" y="7" width="12" height="2" fill="#000080" />
+      <rect x="2" y="11" width="12" height="2" fill="#000080" />
+    </svg>
+    """
+  end
 end

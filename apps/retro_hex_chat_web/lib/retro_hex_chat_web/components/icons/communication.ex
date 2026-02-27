@@ -745,4 +745,24 @@ defmodule RetroHexChatWeb.Icons.Communication do
     </svg>
     """
   end
+
+  # -- Button: Link (chain link, 16×16) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_link(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_link(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Left link -->
+      <path d="M2 5h3v1h2v1H5v2h2v1H4v1H2V5z" fill="#000080" />
+      <rect x="3" y="6" width="2" height="3" fill="#C0C0C0" />
+      <!-- Right link -->
+      <path d="M9 5h3v1h2v5h-2v-1H9V9h2V7H9V5z" fill="#000080" />
+      <rect x="10" y="6" width="2" height="3" fill="#C0C0C0" />
+      <!-- Center overlap -->
+      <rect x="6" y="7" width="3" height="1" fill="#808080" />
+    </svg>
+    """
+  end
 end

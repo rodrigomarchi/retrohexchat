@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Tooltip do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Tooltip
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -25,7 +26,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Tooltip do
       <.showcase_card title="Usage" description="A popup that displays information on hover.">
         <.tooltip>
           <.tooltip_trigger>
-            <.button variant="outline">Hover me</.button>
+            <.button variant="outline">
+              <:icon><Icons.icon_btn_info /></:icon>
+              Hover me
+            </.button>
           </.tooltip_trigger>
           <.tooltip_content>
             <p>This is a tooltip</p>

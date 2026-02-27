@@ -3,12 +3,16 @@ defmodule RetroHexChatWeb.Components.UI.Button do
   use RetroHexChatWeb.Component
 
   @doc """
-  Renders a button.
+  Renders a retro button with a mandatory icon.
+
+  Every button MUST have an icon — this is a design system rule.
 
   ## Examples
 
-      <.button>Send!</.button>
-      <.button phx-click="go" class="ml-2">Send!</.button>
+      <.button>
+        <:icon><svg ...></.svg></:icon>
+        Save
+      </.button>
   """
   attr :type, :string, default: nil
   attr :class, :any, default: nil
@@ -21,9 +25,10 @@ defmodule RetroHexChatWeb.Components.UI.Button do
   attr :size, :string, values: ~w(default sm lg icon), default: "default"
   attr :rest, :global, include: ~w(disabled form name value)
 
+  slot :icon, required: true, doc: "16×16 icon SVG — mandatory for all buttons"
   slot :inner_block, required: true
 
-  def(button(assigns)) do
+  def button(assigns) do
     assigns = assign(assigns, :variant_class, button_variant(assigns))
 
     ~H"""
@@ -32,11 +37,15 @@ defmodule RetroHexChatWeb.Components.UI.Button do
       class={
         classes([
           @variant_class,
+          "gap-retro-4",
           @class
         ])
       }
       {@rest}
     >
+      <span class="w-[16px] h-[16px] shrink-0 inline-flex items-center justify-center">
+        {render_slot(@icon)}
+      </span>
       {render_slot(@inner_block)}
     </button>
     """

@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.FieldsetPage do
   import RetroHexChatWeb.Components.UI.Fieldset
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -87,7 +88,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.FieldsetPage do
                     </select>
                   </td>
                   <td class="px-2 py-1">
-                    <.button variant="outline" size="sm">Play</.button>
+                    <.button variant="outline" size="sm">
+                      <:icon><Icons.icon_btn_play /></:icon>
+                      Play
+                    </.button>
                   </td>
                 </tr>
               </tbody>

@@ -433,4 +433,23 @@ defmodule RetroHexChatWeb.Icons.Alerts do
     </svg>
     """
   end
+
+  # -- Button: Info (info circle, 16×16) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_info(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_info(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Circle -->
+      <circle cx="8" cy="8" r="6" fill="#000080" stroke="#000" stroke-width="1" />
+      <!-- Highlight -->
+      <path d="M5 4 A 5 5 0 0 1 12 5" fill="none" stroke="#fff" stroke-width="1" opacity="0.4" />
+      <!-- Letter i -->
+      <rect x="7" y="4" width="2" height="2" fill="#fff" />
+      <rect x="7" y="7" width="2" height="4" fill="#fff" />
+    </svg>
+    """
+  end
 end

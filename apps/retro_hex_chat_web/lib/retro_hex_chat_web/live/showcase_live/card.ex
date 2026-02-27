@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Card do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Card
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -36,8 +37,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Card do
               <p>This is the card content area. You can put any content here.</p>
             </.card_content>
             <.card_footer>
-              <.button variant="outline" size="sm">Cancel</.button>
-              <.button size="sm">Save</.button>
+              <.button variant="outline" size="sm">
+                <:icon><Icons.icon_btn_cancel /></:icon>
+                Cancel
+              </.button>
+              <.button size="sm">
+                <:icon><Icons.icon_btn_save /></:icon>
+                Save
+              </.button>
             </.card_footer>
           </.card>
         </div>
