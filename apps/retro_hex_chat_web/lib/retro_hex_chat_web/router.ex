@@ -114,6 +114,8 @@ defmodule RetroHexChatWeb.Router do
     live "/accordion", Accordion
     live "/avatar", Avatar
     live "/table", Table
+    live "/icons", Icons
+    live "/diagrams", Diagrams
   end
 
   import Phoenix.LiveDashboard.Router

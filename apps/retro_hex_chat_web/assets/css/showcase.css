@@ -14,3 +14,25 @@ body {
   background-color: #008080;
   color: #222222;
 }
+
+/* highlight.js — VS2015-inspired theme adapted for retro terminal */
+pre code.hljs { display: block; overflow-x: auto; }
+code.hljs { padding: 0; }
+.hljs { background: transparent; color: #DCDCDC; }
+.hljs-keyword, .hljs-literal, .hljs-symbol, .hljs-name { color: #569CD6; }
+.hljs-link { color: #569CD6; text-decoration: underline; }
+.hljs-built_in, .hljs-type { color: #4EC9B0; }
+.hljs-number, .hljs-class { color: #B8D7A3; }
+.hljs-string, .hljs-meta .hljs-string { color: #D69D85; }
+.hljs-regexp, .hljs-template-tag { color: #9A5334; }
+.hljs-subst, .hljs-function, .hljs-title, .hljs-params, .hljs-formula { color: #DCDCDC; }
+.hljs-comment, .hljs-quote { color: #57A64A; font-style: italic; }
+.hljs-doctag { color: #608B4E; }
+.hljs-meta, .hljs-meta .hljs-keyword, .hljs-tag { color: #9B9B9B; }
+.hljs-variable, .hljs-template-variable { color: #BD63C5; }
+.hljs-attr, .hljs-attribute { color: #9CDCFE; }
+.hljs-section { color: gold; }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: bold; }
+.hljs-bullet, .hljs-selector-tag, .hljs-selector-id,
+.hljs-selector-class, .hljs-selector-attr, .hljs-selector-pseudo { color: #D7BA7D; }

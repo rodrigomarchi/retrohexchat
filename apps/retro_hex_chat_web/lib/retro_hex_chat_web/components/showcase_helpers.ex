@@ -49,6 +49,11 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     {"Data", nil,
      [
        {"Table", "table", "/showcase/table"}
+     ]},
+    {"Assets", nil,
+     [
+       {"Icons", "icons", "/showcase/icons"},
+       {"Diagrams", "diagrams", "/showcase/diagrams"}
      ]}
   ]
 
@@ -122,13 +127,20 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     """
   end
 
-  @doc "Dark terminal-style code block for HEEx examples."
+  @doc "Dark terminal-style code block with syntax highlighting."
+  attr :language, :string, default: "elixir"
   slot :inner_block, required: true
 
   def code_example(assigns) do
+    assigns = assign(assigns, :uid, System.unique_integer([:positive]))
+
     ~H"""
-    <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mt-2 overflow-x-auto">
-      <pre class="text-xs font-mono whitespace-pre"><code>{render_slot(@inner_block)}</code></pre>
+    <div
+      id={"code-#{@uid}"}
+      phx-hook="Highlight"
+      class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mt-2 overflow-x-auto"
+    >
+      <pre class="text-xs font-mono whitespace-pre"><code class={"language-#{@language}"}>{render_slot(@inner_block)}</code></pre>
     </div>
     """
   end

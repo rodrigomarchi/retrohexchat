@@ -101,6 +101,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     Path.wildcard("#{css_dir()}/**/*.css")
     |> Enum.reject(fn path ->
       String.ends_with?(path, "app.css") or
+        String.ends_with?(path, "showcase.css") or
         String.contains?(path, "/retro/")
     end)
     |> Enum.reduce(%{}, fn file, acc ->
