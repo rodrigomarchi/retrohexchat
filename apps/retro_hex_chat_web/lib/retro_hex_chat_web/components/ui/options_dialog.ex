@@ -25,6 +25,10 @@ defmodule RetroHexChatWeb.Components.UI.OptionsDialog do
   attr :id, :string, required: true
   attr :show, :boolean, default: false
   attr :active_panel, :string, default: nil
+  attr :on_panel_select, :any, default: nil, doc: "Tree item click callback"
+  attr :on_ok, :any, default: nil, doc: "OK button callback"
+  attr :on_cancel, :any, default: nil, doc: "Cancel button callback (default: hide modal)"
+  attr :on_apply, :any, default: nil, doc: "Apply button callback"
 
   slot :panel, required: true do
     attr :name, :string, required: true
@@ -51,6 +55,8 @@ defmodule RetroHexChatWeb.Components.UI.OptionsDialog do
           <.tree_view_item
             :for={panel <- @panel}
             active={panel.name == @active}
+            phx-click={@on_panel_select}
+            phx-value-panel={panel.name}
           >
             {panel.name}
           </.tree_view_item>
@@ -66,13 +72,17 @@ defmodule RetroHexChatWeb.Components.UI.OptionsDialog do
       </.dialog_body>
 
       <.dialog_footer>
-        <.button variant="default">
+        <.button variant="default" phx-click={@on_ok}>
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
           OK
         </.button>
-        <.button variant="outline" phx-click={hide_modal(@id)}>
+        <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
           Cancel
+        </.button>
+        <.button variant="outline" phx-click={@on_apply} disabled={@on_apply == nil}>
+          <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+          Apply
         </.button>
       </.dialog_footer>
     </.dialog>

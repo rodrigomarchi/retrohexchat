@@ -28,6 +28,13 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
   attr :speed, :string, default: nil
   attr :size, :string, default: nil
   attr :direction, :string, default: "receiving", values: ~w(sending receiving)
+
+  attr :state, :atom,
+    default: :transferring,
+    values: [:pending, :transferring, :complete, :failed]
+
+  attr :on_cancel, :any, default: nil, doc: "Cancel transfer callback"
+  attr :on_accept, :any, default: nil, doc: "Accept incoming transfer callback"
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -41,6 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
           @class
         ])
       }
+      data-testid="file-transfer"
       {@rest}
     >
       <%!-- Header row --%>
@@ -57,11 +65,30 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
 
       <%!-- Stats row --%>
       <div class="flex items-center gap-retro-8 text-muted-foreground">
-        <span>{@progress}%</span>
-        <span :if={@speed}>{@speed}</span>
+        <span :if={@state == :transferring}>{@progress}%</span>
+        <span :if={@state == :complete} class="text-success font-bold">Complete</span>
+        <span :if={@state == :failed} class="text-error font-bold">Failed</span>
+        <span :if={@state == :pending} class="italic">Pending...</span>
+        <span :if={@speed && @state == :transferring}>{@speed}</span>
         <span :if={@size}>{@size}</span>
         <div class="flex-1" />
-        <.button size="sm" variant="outline">
+        <.button
+          :if={@state == :pending && @direction == "receiving"}
+          size="sm"
+          variant="default"
+          phx-click={@on_accept}
+          data-testid="file-transfer-accept"
+        >
+          <:icon><Icons.icon_checkmark class="w-3 h-3" /></:icon>
+          Accept
+        </.button>
+        <.button
+          :if={@state in [:pending, :transferring]}
+          size="sm"
+          variant="outline"
+          phx-click={@on_cancel}
+          data-testid="file-transfer-cancel"
+        >
           <:icon><Icons.icon_close class="w-3 h-3" /></:icon>
           Cancel
         </.button>

@@ -38,6 +38,7 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
           @class
         ])
       }
+      data-testid="topic-bar"
       {@rest}
     >
       <.topic_icon variant={@variant} />

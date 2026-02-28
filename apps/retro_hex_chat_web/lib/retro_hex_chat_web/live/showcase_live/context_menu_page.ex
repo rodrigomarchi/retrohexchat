@@ -54,12 +54,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.ContextMenuPage do
         </div>
         <.code_example>
           &lt;.context_menu id="my-menu" x={100} y={200}&gt;
-            &lt;.context_menu_item&gt;
-              &lt;:icon&gt;&lt;Icons.icon_tab_pm class="w-[14px] h-[14px]" /&gt;&lt;/:icon&gt;
-              Query (PM)
-            &lt;/.context_menu_item&gt;
-            &lt;.context_menu_separator /&gt;
-            &lt;.context_menu_item&gt;Add to Contacts&lt;/.context_menu_item&gt;
+          &lt;.context_menu_item&gt;
+          &lt;:icon&gt;&lt;Icons.icon_tab_pm class="w-[14px] h-[14px]" /&gt;&lt;/:icon&gt;
+          Query (PM)
+          &lt;/.context_menu_item&gt;
+          &lt;.context_menu_separator /&gt;
+          &lt;.context_menu_item&gt;Add to Contacts&lt;/.context_menu_item&gt;
           &lt;/.context_menu&gt;
         </.code_example>
       </.showcase_card>
@@ -90,8 +90,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.ContextMenuPage do
         </div>
         <.code_example>
           &lt;.context_menu_item disabled&gt;
-            &lt;:icon&gt;&lt;Icons.icon_camera class="w-[14px] h-[14px]" /&gt;&lt;/:icon&gt;
-            Video Call
+          &lt;:icon&gt;&lt;Icons.icon_camera class="w-[14px] h-[14px]" /&gt;&lt;/:icon&gt;
+          Video Call
           &lt;/.context_menu_item&gt;
         </.code_example>
       </.showcase_card>
@@ -122,9 +122,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.ContextMenuPage do
         </div>
         <.code_example>
           &lt;.context_menu_item&gt;
-            &lt;:icon&gt;&lt;Icons.icon_tab_pm class="w-[14px] h-[14px]" /&gt;&lt;/:icon&gt;
-            &lt;:shortcut&gt;Ctrl+Q&lt;/:shortcut&gt;
-            Query (PM)
+          &lt;:icon&gt;&lt;Icons.icon_tab_pm class="w-[14px] h-[14px]" /&gt;&lt;/:icon&gt;
+          &lt;:shortcut&gt;Ctrl+Q&lt;/:shortcut&gt;
+          Query (PM)
           &lt;/.context_menu_item&gt;
         </.code_example>
       </.showcase_card>

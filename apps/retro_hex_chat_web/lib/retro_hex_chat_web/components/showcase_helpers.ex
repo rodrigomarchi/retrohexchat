@@ -44,7 +44,9 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
        {"Loading Spinner", "loading-spinner", "/showcase/loading-spinner"},
        {"Empty State", "empty-state", "/showcase/empty-state"},
        {"Color Picker", "color-picker", "/showcase/color-picker"},
-       {"Scroll Area", "scroll-area", "/showcase/scroll-area"}
+       {"Scroll Area", "scroll-area", "/showcase/scroll-area"},
+       {"Scroll Loader", "scroll-loader", "/showcase/scroll-loader"},
+       {"History Search", "history-search", "/showcase/history-search"}
      ]},
     {"Layout", nil,
      [
@@ -68,7 +70,10 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
        {"Window", "window", "/showcase/window"},
        {"Menu", "menu", "/showcase/menu"},
        {"Toolbar", "toolbar", "/showcase/toolbar"},
-       {"Status Bar", "status-bar", "/showcase/status-bar"}
+       {"Status Bar", "status-bar", "/showcase/status-bar"},
+       {"Toolbar App", "toolbar-app", "/showcase/toolbar-app"},
+       {"Status Bar App", "status-bar-app", "/showcase/status-bar-app"},
+       {"App Header", "app-header", "/showcase/app-header"}
      ]},
     {"Chat", nil,
      [
@@ -87,16 +92,22 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
        {"Autocomplete", "autocomplete", "/showcase/autocomplete"},
        {"Tab Bar", "tab-bar", "/showcase/tab-bar"},
        {"Reply Bar", "reply-bar", "/showcase/reply-bar"},
-       {"Connection Status", "connection-status", "/showcase/connection-status"}
+       {"Connection Status", "connection-status", "/showcase/connection-status"},
+       {"Conversations Ctx Menu", "conversations-context-menu",
+        "/showcase/conversations-context-menu"},
+       {"Chat Context Menu", "chat-context-menu", "/showcase/chat-context-menu"},
+       {"Syntax Tooltip", "syntax-tooltip", "/showcase/syntax-tooltip"}
      ]},
     {"Specialized", nil,
      [
        {"P2P Lobby", "p2p-lobby", "/showcase/p2p-lobby"},
        {"Media Controls", "media-controls", "/showcase/media-controls"},
        {"File Transfer", "file-transfer", "/showcase/file-transfer"},
-       {"Bot Manager", "bot-manager", "/showcase/bot-manager"},
-       {"Admin Console", "admin-console", "/showcase/admin-console"},
-       {"Chat Layout", "chat-layout", "/showcase/chat-layout"}
+       {"Chat Layout", "chat-layout", "/showcase/chat-layout"},
+       {"Game Canvas", "game-canvas", "/showcase/game-canvas"},
+       {"Game Lobby", "game-lobby", "/showcase/game-lobby"},
+       {"Solo Lobby", "solo-lobby", "/showcase/solo-lobby"},
+       {"Arcade Frame", "arcade-frame", "/showcase/arcade-frame"}
      ]},
     {"Dialogs", nil,
      [
@@ -107,7 +118,25 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
        {"About Dialog", "about-dialog", "/showcase/about-dialog"},
        {"Channel List", "channel-list", "/showcase/channel-list"},
        {"Highlight Dialog", "highlight-dialog", "/showcase/highlight-dialog"},
-       {"Config Form", "config-form", "/showcase/config-form"}
+       {"Config Form", "config-form", "/showcase/config-form"},
+       {"Kick Dialog", "kick-dialog", "/showcase/kick-dialog"},
+       {"Delete Confirm", "delete-confirm-dialog", "/showcase/delete-confirm-dialog"},
+       {"Disconnect Confirm", "disconnect-confirm-dialog", "/showcase/disconnect-confirm-dialog"},
+       {"Alias Dialog", "alias-dialog", "/showcase/alias-dialog"},
+       {"Flood Protection", "flood-protection-dialog", "/showcase/flood-protection-dialog"},
+       {"Ignore List", "ignore-list-dialog", "/showcase/ignore-list-dialog"},
+       {"Notify List", "notify-list", "/showcase/notify-list"},
+       {"URL Catcher", "url-catcher", "/showcase/url-catcher"},
+       {"Auto Respond", "auto-respond-dialog", "/showcase/auto-respond-dialog"},
+       {"Custom Menus", "custom-menus-dialog", "/showcase/custom-menus-dialog"},
+       {"Sound Settings", "sound-settings-dialog", "/showcase/sound-settings-dialog"},
+       {"Invite Dialog", "invite-dialog", "/showcase/invite-dialog"},
+       {"Paste Confirm", "paste-confirm-dialog", "/showcase/paste-confirm-dialog"},
+       {"CTCP Settings", "ctcp-settings-dialog", "/showcase/ctcp-settings-dialog"},
+       {"Cheatsheet", "cheatsheet-dialog", "/showcase/cheatsheet-dialog"},
+       {"Nick Change", "nick-change-dialog", "/showcase/nick-change-dialog"},
+       {"Perform Dialog", "perform-dialog", "/showcase/perform-dialog"},
+       {"Channel Central", "channel-central-dialog", "/showcase/channel-central-dialog"}
      ]},
     {"Assets", nil,
      [
@@ -324,9 +353,37 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     "p2p-lobby" => :icon_p2p,
     "media-controls" => :icon_microphone,
     "file-transfer" => :icon_file_send,
-    "bot-manager" => :icon_robot,
-    "admin-console" => :icon_terminal,
-    "chat-layout" => :icon_chat
+    "chat-layout" => :icon_chat,
+    "scroll-loader" => :icon_clock,
+    "history-search" => :icon_btn_find,
+    "kick-dialog" => :icon_dialog_kick,
+    "delete-confirm-dialog" => :icon_dialog_delete,
+    "disconnect-confirm-dialog" => :icon_btn_disconnect,
+    "status-bar-app" => :icon_status_signal,
+    "conversations-context-menu" => :icon_tab_conversations,
+    "game-canvas" => :icon_joystick,
+    "alias-dialog" => :icon_dialog_alias,
+    "flood-protection-dialog" => :icon_dialog_flood,
+    "ignore-list-dialog" => :icon_dialog_ignore,
+    "notify-list" => :icon_btn_bell,
+    "url-catcher" => :icon_link,
+    "game-lobby" => :icon_joystick,
+    "auto-respond-dialog" => :icon_dialog_auto_respond,
+    "custom-menus-dialog" => :icon_dialog_custom_menus,
+    "sound-settings-dialog" => :icon_dialog_sound,
+    "invite-dialog" => :icon_btn_join,
+    "paste-confirm-dialog" => :icon_warning,
+    "arcade-frame" => :icon_joystick,
+    "app-header" => :icon_laptop,
+    "ctcp-settings-dialog" => :icon_dialog_ctcp,
+    "cheatsheet-dialog" => :icon_btn_keyboard,
+    "nick-change-dialog" => :icon_status_user,
+    "syntax-tooltip" => :icon_lightbulb,
+    "toolbar-app" => :icon_group_tools,
+    "solo-lobby" => :icon_joystick,
+    "chat-context-menu" => :icon_dialog_custom_menus,
+    "perform-dialog" => :icon_dialog_perform,
+    "channel-central-dialog" => :icon_dialog_channel_central
   }
 
   defp nav_item_icon(assigns) do

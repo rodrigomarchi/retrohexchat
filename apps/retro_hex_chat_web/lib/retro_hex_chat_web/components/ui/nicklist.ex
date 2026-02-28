@@ -12,7 +12,11 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   @spec nicklist(map()) :: Phoenix.LiveView.Rendered.t()
   def nicklist(assigns) do
     ~H"""
-    <div class={classes(["shadow-retro-field bg-white overflow-y-auto p-1", @class])} {@rest}>
+    <div
+      class={classes(["shadow-retro-field bg-white overflow-y-auto p-1", @class])}
+      data-testid="nicklist"
+      {@rest}
+    >
       {render_slot(@inner_block)}
     </div>
     """
@@ -37,6 +41,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
           @class
         ])
       }
+      data-testid={"nicklist-item-#{@nick}"}
       {@rest}
     >
       <span class={["w-2 h-2 rounded-full flex-shrink-0 inline-block", status_color(@status)]} />

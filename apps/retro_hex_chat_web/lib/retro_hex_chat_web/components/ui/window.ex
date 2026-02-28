@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   attr :title, :string, required: true
   attr :inactive, :boolean, default: false
   attr :controls, :list, default: [:minimize, :maximize, :close]
+  attr :on_close, :any, default: nil, doc: "Close button callback (wired to :close control)"
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -58,6 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
             control == :close && "ml-[2px]",
             control_bg_class(control)
           ]}
+          phx-click={control == :close && @on_close}
         />
       </div>
     </div>

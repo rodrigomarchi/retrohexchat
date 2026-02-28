@@ -21,10 +21,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.MediaControlsPage do
     <.showcase_layout active_page={@active_page}>
       <h2 class="text-lg font-bold mb-3">Media Controls</h2>
 
-      <.showcase_card title="Default" description="All controls active, mic and camera on.">
+      <.showcase_card title="Default (In Call)" description="All controls active, mic and camera on.">
         <.media_controls />
         <.code_example>
-          &lt;.media_controls muted={false} camera_on={true} /&gt;
+          &lt;.media_controls muted=&#123;false&#125; camera_on=&#123;true&#125; in_call=&#123;true&#125; /&gt;
         </.code_example>
       </.showcase_card>
 
@@ -38,6 +38,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.MediaControlsPage do
 
       <.showcase_card title="Muted + Camera Off" description="Both muted and camera off.">
         <.media_controls muted={true} camera_on={false} />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Not In Call"
+        description="Controls shown when not actively in a call. End Call button and badge are hidden."
+      >
+        <.media_controls in_call={false} />
       </.showcase_card>
     </.showcase_layout>
     """

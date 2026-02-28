@@ -1,37 +1,76 @@
 defmodule RetroHexChatWeb.Components.UI.ChatInput do
-  @moduledoc false
+  @moduledoc """
+  Chat input component for the showcase design system.
+
+  Provides a text input with optional formatting toolbar slot,
+  Send button, and character counter. Fully wired with callbacks.
+
+  ## Usage
+
+      <.chat_input
+        value={@draft}
+        on_submit="send_message"
+        on_change="update_draft"
+        on_keydown="input_keydown"
+      />
+  """
   use RetroHexChatWeb.Component
 
   @doc "Renders a combined chat input area with optional formatting toolbar, send button, and counter."
+  attr :value, :string, default: "", doc: "Current input value"
   attr :placeholder, :string, default: "Type a message..."
   attr :max_length, :integer, default: 1000
+  attr :name, :string, default: "message", doc: "Input field name"
+  attr :disabled, :boolean, default: false
   attr :show_toolbar, :boolean, default: true
+  attr :on_submit, :any, default: nil, doc: "Form submit / Send button callback"
+  attr :on_change, :any, default: nil, doc: "Input change callback"
+  attr :on_keydown, :any, default: nil, doc: "Keydown callback (for autocomplete, history, etc.)"
   attr :class, :any, default: nil
   attr :rest, :global
   slot :toolbar_buttons
 
   @spec chat_input(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_input(assigns) do
+    assigns = assign(assigns, :char_count, String.length(assigns.value || ""))
+
     ~H"""
-    <div class={classes(["flex flex-col", @class])} {@rest}>
-      <div :if={@show_toolbar} class="flex items-center bg-surface py-[2px] px-[2px] gap-0">
+    <div class={classes(["flex flex-col", @class])} data-testid="chat-input" {@rest}>
+      <div
+        :if={@show_toolbar && @toolbar_buttons != []}
+        class="flex items-center bg-surface py-[2px] px-[2px] gap-0"
+      >
         {render_slot(@toolbar_buttons)}
       </div>
-      <div class="flex items-center gap-1 p-[2px] bg-surface">
+      <form phx-submit={@on_submit} class="flex items-center gap-1 p-[2px] bg-surface">
         <input
           type="text"
+          name={@name}
+          value={@value}
           placeholder={@placeholder}
           maxlength={@max_length}
-          class="flex-1 shadow-retro-field bg-white px-2 py-[3px] text-sm font-mono focus:outline focus:outline-2 focus:outline-black"
+          disabled={@disabled}
+          autocomplete="off"
+          phx-change={@on_change}
+          phx-keydown={@on_keydown}
+          data-testid="chat-input-field"
+          class="flex-1 shadow-retro-field bg-white px-2 py-[3px] text-sm font-mono focus:outline focus:outline-2 focus:outline-black disabled:opacity-50"
         />
         <button
-          type="button"
-          class="shadow-retro-raised bg-surface px-3 py-[2px] text-sm min-w-[60px] active:shadow-retro-sunken"
+          type="submit"
+          disabled={@disabled || @char_count == 0}
+          data-testid="chat-input-send"
+          class={[
+            "shadow-retro-raised bg-surface px-3 py-[2px] text-sm min-w-[60px] active:shadow-retro-sunken",
+            "disabled:opacity-50 disabled:cursor-not-allowed"
+          ]}
         >
           Send
         </button>
+      </form>
+      <div class="text-right text-xs text-gray-500 px-1" data-testid="chat-input-counter">
+        {@char_count}/{@max_length}
       </div>
-      <div class="text-right text-xs text-gray-500 px-1">0/{@max_length}</div>
     </div>
     """
   end

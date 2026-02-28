@@ -69,9 +69,41 @@ defmodule RetroHexChatWeb.ShowcaseSmokeTest do
     "/showcase/p2p-lobby",
     "/showcase/media-controls",
     "/showcase/file-transfer",
-    "/showcase/bot-manager",
-    "/showcase/admin-console",
-    "/showcase/chat-layout"
+    "/showcase/chat-layout",
+    # New simple components
+    "/showcase/scroll-loader",
+    "/showcase/history-search",
+    "/showcase/kick-dialog",
+    "/showcase/delete-confirm-dialog",
+    "/showcase/disconnect-confirm-dialog",
+    "/showcase/invite-dialog",
+    "/showcase/paste-confirm-dialog",
+    "/showcase/arcade-frame",
+    "/showcase/app-header",
+    # New medium components
+    "/showcase/status-bar-app",
+    "/showcase/conversations-context-menu",
+    "/showcase/game-canvas",
+    "/showcase/ctcp-settings-dialog",
+    "/showcase/cheatsheet-dialog",
+    "/showcase/nick-change-dialog",
+    "/showcase/syntax-tooltip",
+    # New complex components
+    "/showcase/alias-dialog",
+    "/showcase/flood-protection-dialog",
+    "/showcase/ignore-list-dialog",
+    "/showcase/auto-respond-dialog",
+    "/showcase/custom-menus-dialog",
+    "/showcase/sound-settings-dialog",
+    "/showcase/notify-list",
+    "/showcase/url-catcher",
+    "/showcase/game-lobby",
+    # New large components
+    "/showcase/toolbar-app",
+    "/showcase/solo-lobby",
+    "/showcase/chat-context-menu",
+    "/showcase/perform-dialog",
+    "/showcase/channel-central-dialog"
   ]
 
   for route <- @showcase_routes do

@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.ReplyBar do
   @doc "Renders the reply bar."
   attr :author, :string, required: true
   attr :message, :string, default: nil
+  attr :on_dismiss, :any, default: nil, doc: "JS command or event name for dismiss"
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -32,6 +33,9 @@ defmodule RetroHexChatWeb.Components.UI.ReplyBar do
           @class
         ])
       }
+      role="status"
+      aria-live="polite"
+      data-testid="reply-bar"
       {@rest}
     >
       <Icons.icon_retry class="w-3 h-3 shrink-0 text-muted-foreground" />
@@ -39,7 +43,13 @@ defmodule RetroHexChatWeb.Components.UI.ReplyBar do
       <span :if={@message} class="flex-1 truncate text-muted-foreground">
         {@message}
       </span>
-      <.button size="icon" variant="ghost" class="w-5 h-5 shrink-0">
+      <.button
+        size="icon"
+        variant="ghost"
+        class="w-5 h-5 shrink-0"
+        phx-click={@on_dismiss}
+        data-testid="reply-bar-dismiss"
+      >
         <:icon><Icons.icon_close class="w-3 h-3" /></:icon>
       </.button>
     </div>

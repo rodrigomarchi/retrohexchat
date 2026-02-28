@@ -48,6 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
         ])
       }
       style={"left: #{@x}px; top: #{@y}px;"}
+      data-testid={"context-menu-#{@id}"}
       {@rest}
     >
       <div class="shadow-retro-window bg-surface p-[3px]">
@@ -66,6 +67,8 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
   Hover state: blue background (#000080) with white text.
   """
   attr :disabled, :boolean, default: false
+  attr :action, :string, default: nil, doc: "Action identifier passed as phx-value-action"
+  attr :on_click, :any, default: nil, doc: "JS command or event name for click"
   attr :class, :string, default: nil
   attr :rest, :global
   slot :icon
@@ -86,9 +89,15 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
           @class
         ])
       }
+      phx-click={unless(@disabled, do: @on_click)}
+      phx-value-action={unless(@disabled, do: @action)}
+      data-testid={if @action, do: "context-menu-item-#{@action}"}
       {@rest}
     >
-      <span :if={@icon != []} class="shrink-0 w-[14px] h-[14px] inline-flex items-center justify-center">
+      <span
+        :if={@icon != []}
+        class="shrink-0 w-[14px] h-[14px] inline-flex items-center justify-center"
+      >
         {render_slot(@icon)}
       </span>
       <span class="flex-1">{render_slot(@inner_block)}</span>
@@ -129,7 +138,12 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
   @spec context_menu_label(map()) :: Phoenix.LiveView.Rendered.t()
   def context_menu_label(assigns) do
     ~H"""
-    <li class={classes(["px-retro-16 py-retro-2 text-xs font-bold text-muted-foreground select-none cursor-default", @class])}>
+    <li class={
+      classes([
+        "px-retro-16 py-retro-2 text-xs font-bold text-muted-foreground select-none cursor-default",
+        @class
+      ])
+    }>
       {render_slot(@inner_block)}
     </li>
     """

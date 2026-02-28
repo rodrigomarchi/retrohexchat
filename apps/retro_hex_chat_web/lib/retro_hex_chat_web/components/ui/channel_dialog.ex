@@ -28,6 +28,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelDialog do
   attr :bans, :list, default: []
   attr :ban_exceptions, :list, default: []
   attr :invite_exceptions, :list, default: []
+  attr :modes, :map, default: %{}, doc: "Map of mode flags, e.g. %{n: true, t: true, m: false}"
+  attr :on_topic_change, :any, default: nil, doc: "Topic input change callback"
+  attr :on_mode_toggle, :any, default: nil, doc: "Mode checkbox toggle callback"
+  attr :on_ban_add, :any, default: nil, doc: "Add ban callback"
+  attr :on_ban_remove, :any, default: nil, doc: "Remove ban callback"
+  attr :on_ok, :any, default: nil, doc: "OK button callback"
+  attr :on_cancel, :any, default: nil, doc: "Cancel button callback (default: hide modal)"
 
   @spec channel_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def channel_dialog(assigns) do
@@ -62,7 +69,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelDialog do
             <div class="space-y-retro-8 p-retro-4">
               <div>
                 <label class="text-xs font-bold block mb-retro-2">Topic</label>
-                <.input type="text" value={@topic} class="w-full" />
+                <.input
+                  type="text"
+                  value={@topic}
+                  class="w-full"
+                  name="topic"
+                  phx-change={@on_topic_change}
+                />
               </div>
             </div>
           </.tabs_content>
@@ -70,20 +83,36 @@ defmodule RetroHexChatWeb.Components.UI.ChannelDialog do
           <.tabs_content value="modes">
             <div class="space-y-retro-4 p-retro-4 text-xs">
               <label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="mode_n" value={true} />
-                No external messages (+n)
+                <.checkbox
+                  name="mode_n"
+                  value={Map.get(@modes, :n, true)}
+                  phx-click={@on_mode_toggle}
+                  phx-value-mode="n"
+                /> No external messages (+n)
               </label>
               <label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="mode_t" value={true} />
-                Topic settable by ops only (+t)
+                <.checkbox
+                  name="mode_t"
+                  value={Map.get(@modes, :t, true)}
+                  phx-click={@on_mode_toggle}
+                  phx-value-mode="t"
+                /> Topic settable by ops only (+t)
               </label>
               <label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="mode_m" />
-                Moderated (+m)
+                <.checkbox
+                  name="mode_m"
+                  value={Map.get(@modes, :m, false)}
+                  phx-click={@on_mode_toggle}
+                  phx-value-mode="m"
+                /> Moderated (+m)
               </label>
               <label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="mode_i" />
-                Invite only (+i)
+                <.checkbox
+                  name="mode_i"
+                  value={Map.get(@modes, :i, false)}
+                  phx-click={@on_mode_toggle}
+                  phx-value-mode="i"
+                /> Invite only (+i)
               </label>
             </div>
           </.tabs_content>
@@ -107,11 +136,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelDialog do
                 </.table_body>
               </.table>
               <div class="flex gap-retro-4">
-                <.button size="sm" variant="outline">
+                <.button size="sm" variant="outline" phx-click={@on_ban_add}>
                   <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
                   Add
                 </.button>
-                <.button size="sm" variant="outline">
+                <.button size="sm" variant="outline" phx-click={@on_ban_remove}>
                   <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
                   Remove
                 </.button>
@@ -122,11 +151,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelDialog do
       </.dialog_body>
 
       <.dialog_footer>
-        <.button variant="default">
+        <.button variant="default" phx-click={@on_ok}>
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
           OK
         </.button>
-        <.button variant="outline" phx-click={hide_modal(@id)}>
+        <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
           Cancel
         </.button>

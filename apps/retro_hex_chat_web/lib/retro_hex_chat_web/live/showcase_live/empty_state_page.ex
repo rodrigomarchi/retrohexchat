@@ -37,9 +37,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.EmptyStatePage do
         </div>
         <.code_example>
           &lt;.empty_state&gt;
-            &lt;:icon&gt;&lt;Icons.icon_chat class="w-8 h-8" /&gt;&lt;/:icon&gt;
-            &lt;:title&gt;No messages yet&lt;/:title&gt;
-            &lt;:description&gt;Start a conversation.&lt;/:description&gt;
+          &lt;:icon&gt;&lt;Icons.icon_chat class="w-8 h-8" /&gt;&lt;/:icon&gt;
+          &lt;:title&gt;No messages yet&lt;/:title&gt;
+          &lt;:description&gt;Start a conversation.&lt;/:description&gt;
           &lt;/.empty_state&gt;
         </.code_example>
       </.showcase_card>
@@ -63,12 +63,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.EmptyStatePage do
         </div>
         <.code_example>
           &lt;.empty_state&gt;
-            &lt;:icon&gt;&lt;Icons.icon_channels class="w-8 h-8" /&gt;&lt;/:icon&gt;
-            &lt;:title&gt;No channels joined&lt;/:title&gt;
-            &lt;:description&gt;Browse and join a channel.&lt;/:description&gt;
-            &lt;:action&gt;
-              &lt;.button variant="outline" size="sm"&gt;Browse&lt;/.button&gt;
-            &lt;/:action&gt;
+          &lt;:icon&gt;&lt;Icons.icon_channels class="w-8 h-8" /&gt;&lt;/:icon&gt;
+          &lt;:title&gt;No channels joined&lt;/:title&gt;
+          &lt;:description&gt;Browse and join a channel.&lt;/:description&gt;
+          &lt;:action&gt;
+          &lt;.button variant="outline" size="sm"&gt;Browse&lt;/.button&gt;
+          &lt;/:action&gt;
           &lt;/.empty_state&gt;
         </.code_example>
       </.showcase_card>
@@ -95,9 +95,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.EmptyStatePage do
         </div>
         <.code_example>
           &lt;.empty_state&gt;
-            &lt;:icon&gt;&lt;Icons.icon_btn_search class="w-8 h-8" /&gt;&lt;/:icon&gt;
-            &lt;:title&gt;No results&lt;/:title&gt;
-            &lt;:description&gt;Try different terms.&lt;/:description&gt;
+          &lt;:icon&gt;&lt;Icons.icon_btn_search class="w-8 h-8" /&gt;&lt;/:icon&gt;
+          &lt;:title&gt;No results&lt;/:title&gt;
+          &lt;:description&gt;Try different terms.&lt;/:description&gt;
           &lt;/.empty_state&gt;
         </.code_example>
       </.showcase_card>

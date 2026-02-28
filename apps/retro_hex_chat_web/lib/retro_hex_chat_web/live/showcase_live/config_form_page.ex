@@ -24,6 +24,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.ConfigFormPage do
          %{name: "/hi", value: "/msg $1 hello!"},
          %{name: "/bye", value: "/msg $1 goodbye!"},
          %{name: "/away", value: "/away $1-"}
+       ],
+       perform_items: [
+         %{name: "connect", value: "/join #lobby"},
+         %{name: "connect", value: "/join #help"},
+         %{name: "#lobby", value: "/msg ChanBot !seen admin"}
        ]
      )}
   end
@@ -58,11 +63,70 @@ defmodule RetroHexChatWeb.ShowcaseLive.ConfigFormPage do
         </.config_form>
         <.code_example>
           &lt;.config_form id="aliases" title="Aliases" items=&#123;@aliases&#125;&gt;
-            &lt;:form&gt;
-              &lt;!-- Edit form fields --&gt;
-            &lt;/:form&gt;
+          &lt;:form&gt;
+          &lt;!-- Edit form fields --&gt;
+          &lt;/:form&gt;
           &lt;/.config_form&gt;
         </.code_example>
+      </.showcase_card>
+
+      <.showcase_card
+        title="Editing State"
+        description="Config form with a row selected and editing=true. The form header shows 'Edit' instead of 'Add'."
+      >
+        <.button variant="outline" phx-click={show_modal("config-form-editing")}>
+          <:icon><Icons.icon_btn_settings class="w-4 h-4" /></:icon>
+          Aliases (Editing)
+        </.button>
+        <.config_form
+          id="config-form-editing"
+          title="Aliases"
+          items={@aliases}
+          selected_index={1}
+          editing={true}
+        >
+          <:form>
+            <div class="space-y-retro-4">
+              <div>
+                <label class="text-xs font-bold block mb-retro-2">Name</label>
+                <.input type="text" value="/bye" class="w-full" />
+              </div>
+              <div>
+                <label class="text-xs font-bold block mb-retro-2">Value</label>
+                <.input type="text" value="/msg $1 goodbye!" class="w-full" />
+              </div>
+            </div>
+          </:form>
+        </.config_form>
+      </.showcase_card>
+
+      <.showcase_card
+        title="Custom Columns"
+        description="Config form with custom column headers (Event / Command) for a Perform config."
+      >
+        <.button variant="outline" phx-click={show_modal("config-form-perform")}>
+          <:icon><Icons.icon_btn_settings class="w-4 h-4" /></:icon>
+          Perform
+        </.button>
+        <.config_form
+          id="config-form-perform"
+          title="Perform"
+          items={@perform_items}
+          columns={["Event", "Command"]}
+        >
+          <:form>
+            <div class="space-y-retro-4">
+              <div>
+                <label class="text-xs font-bold block mb-retro-2">Event</label>
+                <.input type="text" placeholder="connect / #channel" class="w-full" />
+              </div>
+              <div>
+                <label class="text-xs font-bold block mb-retro-2">Command</label>
+                <.input type="text" placeholder="/command args" class="w-full" />
+              </div>
+            </div>
+          </:form>
+        </.config_form>
       </.showcase_card>
     </.showcase_layout>
     """

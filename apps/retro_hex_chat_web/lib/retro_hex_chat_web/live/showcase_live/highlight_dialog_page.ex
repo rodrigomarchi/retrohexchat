@@ -41,11 +41,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.HighlightDialogPage do
           <:icon><Icons.icon_star class="w-4 h-4" /></:icon>
           Highlights
         </.button>
-        <.highlight_dialog id="highlight-demo" words={@words} selected_color={4} />
+        <.highlight_dialog id="highlight-demo" words={@words} own_nick="MyNick" selected_color={4} />
         <.code_example>
           &lt;.highlight_dialog
-            id="highlights"
-            words=&#123;@words&#125;
+          id="highlights"
+          words=&#123;@words&#125;
           /&gt;
         </.code_example>
       </.showcase_card>

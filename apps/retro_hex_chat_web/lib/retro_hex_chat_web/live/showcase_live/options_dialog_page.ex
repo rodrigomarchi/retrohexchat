@@ -37,28 +37,23 @@ defmodule RetroHexChatWeb.ShowcaseLive.OptionsDialogPage do
           <:panel name="Display">
             <div class="space-y-retro-4 text-xs">
               <label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="timestamps" value={true} />
-                Show timestamps
+                <.checkbox name="timestamps" value={true} /> Show timestamps
               </label>
               <label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="joins" value={true} />
-                Show join/part messages
+                <.checkbox name="joins" value={true} /> Show join/part messages
               </label>
               <label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="colors" value={true} />
-                Enable mIRC colors
+                <.checkbox name="colors" value={true} /> Enable mIRC colors
               </label>
             </div>
           </:panel>
           <:panel name="Sounds">
             <div class="space-y-retro-4 text-xs">
               <label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="sound_msg" value={true} />
-                Message received
+                <.checkbox name="sound_msg" value={true} /> Message received
               </label>
               <label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="sound_highlight" value={true} />
-                Highlight
+                <.checkbox name="sound_highlight" value={true} /> Highlight
               </label>
             </div>
           </:panel>
@@ -68,12 +63,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.OptionsDialogPage do
         </.options_dialog>
         <.code_example>
           &lt;.options_dialog id="options" active_panel="Display"&gt;
-            &lt;:panel name="Display"&gt;
-              &lt;!-- Display settings --&gt;
-            &lt;/:panel&gt;
-            &lt;:panel name="Sounds"&gt;
-              &lt;!-- Sound settings --&gt;
-            &lt;/:panel&gt;
+          &lt;:panel name="Display"&gt;
+          &lt;!-- Display settings --&gt;
+          &lt;/:panel&gt;
+          &lt;:panel name="Sounds"&gt;
+          &lt;!-- Sound settings --&gt;
+          &lt;/:panel&gt;
           &lt;/.options_dialog&gt;
         </.code_example>
       </.showcase_card>

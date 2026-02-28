@@ -56,8 +56,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.DropdownMenuPage do
           &lt;.dropdown_menu&gt;
           &lt;.dropdown_menu_trigger&gt;
           &lt;.button variant="outline"&gt;
-            &lt;:icon&gt;&lt;Icons.icon_btn_menu /&gt;&lt;/:icon&gt;
-            Open Menu
+          &lt;:icon&gt;&lt;Icons.icon_btn_menu /&gt;&lt;/:icon&gt;
+          Open Menu
           &lt;/.button&gt;
           &lt;/.dropdown_menu_trigger&gt;
           &lt;.dropdown_menu_content&gt;...&lt;/.dropdown_menu_content&gt;

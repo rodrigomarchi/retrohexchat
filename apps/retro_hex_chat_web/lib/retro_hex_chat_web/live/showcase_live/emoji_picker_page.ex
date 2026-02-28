@@ -32,10 +32,24 @@ defmodule RetroHexChatWeb.ShowcaseLive.EmojiPickerPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Different Category"
-        description="Emoji picker opened on the Nature category."
+        title="With Selected Emoji"
+        description="Emoji picker showing a selected emoji in the preview bar."
       >
-        <.emoji_picker id="emoji-nature" active_category="Nature" />
+        <.emoji_picker id="emoji-selected" selected_emoji="🐶" active_category="Nature" />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Food Category"
+        description="Emoji picker opened on the Food category."
+      >
+        <.emoji_picker id="emoji-food" active_category="Food" />
+      </.showcase_card>
+
+      <.showcase_card
+        title="With Search Text"
+        description="Emoji picker with a search query entered."
+      >
+        <.emoji_picker id="emoji-search" search="heart" />
       </.showcase_card>
     </.showcase_layout>
     """

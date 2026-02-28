@@ -137,12 +137,14 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
     ~H"""
     <button
       type="button"
-      class={classes([
-        "bg-surface shadow-retro-raised active:shadow-retro-sunken",
-        "flex items-center justify-center shrink-0 ml-auto",
-        "w-[16px] h-[14px]",
-        @class
-      ])}
+      class={
+        classes([
+          "bg-surface shadow-retro-raised active:shadow-retro-sunken",
+          "flex items-center justify-center shrink-0 ml-auto",
+          "w-[16px] h-[14px]",
+          @class
+        ])
+      }
       phx-click={JS.exec("phx-hide-modal", to: "##{@id}")}
       aria-label="Close"
     >
@@ -181,8 +183,16 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
     """
   end
 
+  @spec show_modal(String.t()) :: Phoenix.LiveView.JS.t()
+  def show_modal(id) when is_binary(id) do
+    JS.set_attribute(%JS{}, {"data-state", "open"}, to: "##{id}")
+    |> JS.show(to: "##{id}", transition: {"_", "_", "_"}, time: 130)
+    |> JS.add_class("overflow-hidden", to: "body")
+    |> JS.focus_first(to: "##{id}-content")
+  end
+
   @spec show_modal(Phoenix.LiveView.JS.t(), String.t()) :: Phoenix.LiveView.JS.t()
-  def show_modal(js \\ %JS{}, id) when is_binary(id) do
+  def show_modal(%JS{} = js, id) when is_binary(id) do
     js
     |> JS.set_attribute({"data-state", "open"}, to: "##{id}")
     |> JS.show(to: "##{id}", transition: {"_", "_", "_"}, time: 130)
@@ -190,8 +200,16 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
     |> JS.focus_first(to: "##{id}-content")
   end
 
+  @spec hide_modal(String.t()) :: Phoenix.LiveView.JS.t()
+  def hide_modal(id) when is_binary(id) do
+    JS.set_attribute(%JS{}, {"data-state", "closed"}, to: "##{id}")
+    |> JS.hide(to: "##{id}", transition: {"_", "_", "_"}, time: 130)
+    |> JS.remove_class("overflow-hidden", to: "body")
+    |> JS.pop_focus()
+  end
+
   @spec hide_modal(Phoenix.LiveView.JS.t(), String.t()) :: Phoenix.LiveView.JS.t()
-  def hide_modal(js \\ %JS{}, id) do
+  def hide_modal(%JS{} = js, id) do
     js
     |> JS.set_attribute({"data-state", "closed"}, to: "##{id}")
     |> JS.hide(to: "##{id}", transition: {"_", "_", "_"}, time: 130)

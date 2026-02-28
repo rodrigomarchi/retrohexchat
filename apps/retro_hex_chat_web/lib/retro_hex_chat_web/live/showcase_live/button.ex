@@ -51,8 +51,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Button do
         </div>
         <.code_example>
           &lt;.button variant="default"&gt;
-            &lt;:icon&gt;&lt;Icons.icon_btn_star /&gt;&lt;/:icon&gt;
-            Default
+          &lt;:icon&gt;&lt;Icons.icon_btn_star /&gt;&lt;/:icon&gt;
+          Default
           &lt;/.button&gt;
         </.code_example>
       </.showcase_card>

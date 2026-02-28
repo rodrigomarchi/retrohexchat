@@ -22,10 +22,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.AutocompletePage do
       <h2 class="text-lg font-bold mb-3">Autocomplete</h2>
 
       <.showcase_card
-        title="Commands"
-        description="Autocomplete dropdown with command suggestions."
+        title="Command Mode"
+        description="Autocomplete dropdown with command suggestions (default mode)."
       >
         <.autocomplete
+          mode={:command}
           items={[
             %{category: "Commands", label: "/join", description: "Join a channel"},
             %{category: "Commands", label: "/part", description: "Leave current channel"},
@@ -37,42 +38,74 @@ defmodule RetroHexChatWeb.ShowcaseLive.AutocompletePage do
         />
         <.code_example>
           &lt;.autocomplete
-            items=&#123;[
-              %&#123;category: "Commands", label: "/join", description: "Join a channel"&#125;,
-              %&#123;category: "Commands", label: "/part", description: "Leave current channel"&#125;
-            ]&#125;
-            selected_index=&#123;0&#125;
+          mode=&#123;:command&#125;
+          items=&#123;[%&#123;category: "Commands", label: "/join", description: "Join a channel"&#125;]&#125;
+          selected_index=&#123;0&#125;
           /&gt;
         </.code_example>
       </.showcase_card>
 
       <.showcase_card
-        title="Nicks"
-        description="Autocomplete showing nick suggestions."
+        title="Nick Mode"
+        description="Autocomplete showing nick suggestions with online status dots."
       >
         <.autocomplete
+          mode={:nick}
           items={[
-            %{category: "Nicks", label: "alice"},
-            %{category: "Nicks", label: "alice_away"},
-            %{category: "Nicks", label: "aliceinwonderland"}
+            %{category: "Nicks", label: "alice", online: true},
+            %{category: "Nicks", label: "alice_away", online: false},
+            %{category: "Nicks", label: "aliceinwonderland", online: true}
           ]}
           selected_index={1}
         />
       </.showcase_card>
 
       <.showcase_card
-        title="Mixed Categories"
-        description="Autocomplete with both channels and nicks."
+        title="Channel Mode"
+        description="Autocomplete showing channels with joined checkmark and user counts."
       >
         <.autocomplete
+          mode={:channel}
           items={[
-            %{category: "Channels", label: "#general", description: "42 users"},
-            %{category: "Channels", label: "#gaming", description: "18 users"},
-            %{category: "Nicks", label: "gamemaster"},
-            %{category: "Nicks", label: "gamer42"}
+            %{category: "Channels", label: "#general", description: "42 users", joined: true},
+            %{category: "Channels", label: "#gaming", description: "18 users", joined: false},
+            %{category: "Channels", label: "#help", description: "7 users", joined: true},
+            %{category: "Channels", label: "#random", description: "31 users", joined: false}
+          ]}
+          selected_index={0}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Subcommand Mode"
+        description="Autocomplete for subcommands (e.g., /set options)."
+      >
+        <.autocomplete
+          mode={:subcommand}
+          items={[
+            %{category: "Settings", label: "theme", description: "Change color theme"},
+            %{category: "Settings", label: "font", description: "Change font size"},
+            %{category: "Settings", label: "timestamps", description: "Toggle timestamps"}
           ]}
           selected_index={2}
         />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Empty State"
+        description="Autocomplete with no matching results."
+      >
+        <.autocomplete items={[]} />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Hidden"
+        description="Autocomplete with visible=false (nothing renders)."
+      >
+        <div class="text-xs text-muted-foreground italic p-2">
+          (autocomplete is hidden — nothing rendered below)
+        </div>
+        <.autocomplete visible={false} items={[%{label: "test"}]} />
       </.showcase_card>
     </.showcase_layout>
     """

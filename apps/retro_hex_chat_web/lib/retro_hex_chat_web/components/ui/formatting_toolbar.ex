@@ -2,77 +2,143 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
   @moduledoc """
   Formatting toolbar component for the showcase design system.
 
-  Composed from toolbar + color_picker primitives.
-  Provides B/I/U buttons, color picker, Reverse/Reset/Strip, and emoji toggle.
+  Composed from toolbar primitives. Hook-compatible with FormatToolbarHook:
+  uses `.format-btn` class and string `data-format-code` names.
+  Color dropdown uses `.format-color-dropdown` and `.color-swatch` elements.
 
   ## Usage
 
-      <.formatting_toolbar />
+      <.formatting_toolbar
+        id="my-toolbar"
+        on_format="format-text"
+        on_toggle_emoji="toggle-emoji"
+      />
   """
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Toolbar
-  import RetroHexChatWeb.Components.UI.ColorPicker
 
   alias RetroHexChatWeb.Icons
 
+  @color_names ~w(White Black Navy Green Red Brown Purple Orange Yellow) ++
+                 ["Light Green", "Teal", "Light Cyan", "Blue", "Pink", "Grey", "Light Grey"]
+
   @doc "Renders the formatting toolbar."
-  attr :show_color_picker, :boolean, default: false
-  attr :selected_color, :integer, default: nil
+  attr :id, :string, default: "formatting-toolbar"
   attr :bold_active, :boolean, default: false
   attr :italic_active, :boolean, default: false
   attr :underline_active, :boolean, default: false
+  attr :strip_active, :boolean, default: false
+  attr :on_format, :any, default: nil, doc: "Format button callback (receives phx-value-format)"
+  attr :on_toggle_emoji, :any, default: nil, doc: "Emoji picker toggle callback"
   attr :class, :string, default: nil
   attr :rest, :global
 
   @spec formatting_toolbar(map()) :: Phoenix.LiveView.Rendered.t()
   def formatting_toolbar(assigns) do
+    assigns = assign(assigns, :color_names, @color_names)
+
     ~H"""
-    <div class={classes(["space-y-retro-2", @class])} {@rest}>
+    <div class={classes(["space-y-retro-2", @class])} phx-hook="FormatToolbarHook" id={@id} {@rest}>
       <.toolbar>
         <%!-- Text formatting buttons --%>
-        <.toolbar_button label="Bold" active={@bold_active}>
+        <.toolbar_button
+          label="Bold (Ctrl+Shift+B)"
+          active={@bold_active}
+          class="format-btn"
+          data-format-code="bold"
+          data-testid="format-btn-bold"
+        >
           <Icons.icon_fmt_bold class="w-3.5 h-3.5" />
         </.toolbar_button>
-        <.toolbar_button label="Italic" active={@italic_active}>
+        <.toolbar_button
+          label="Italic (Ctrl+Shift+Y)"
+          active={@italic_active}
+          class="format-btn"
+          data-format-code="italic"
+          data-testid="format-btn-italic"
+        >
           <Icons.icon_fmt_italic class="w-3.5 h-3.5" />
         </.toolbar_button>
-        <.toolbar_button label="Underline" active={@underline_active}>
+        <.toolbar_button
+          label="Underline (Ctrl+Shift+U)"
+          active={@underline_active}
+          class="format-btn"
+          data-format-code="underline"
+          data-testid="format-btn-underline"
+        >
           <Icons.icon_fmt_underline class="w-3.5 h-3.5" />
         </.toolbar_button>
 
         <.toolbar_separator />
 
-        <%!-- Color picker toggle --%>
-        <.toolbar_button label="Color">
-          <Icons.icon_fmt_color class="w-3.5 h-3.5" />
-        </.toolbar_button>
+        <%!-- Color picker toggle + dropdown --%>
+        <div class="format-color-picker-wrapper relative">
+          <.toolbar_button
+            label="Color (Ctrl+Shift+D)"
+            class="format-btn"
+            data-format-code="color"
+            data-testid="format-btn-color"
+          >
+            <Icons.icon_fmt_color class="w-3.5 h-3.5" />
+          </.toolbar_button>
+          <div class="format-color-dropdown">
+            <button
+              :for={{name, i} <- Enum.with_index(@color_names)}
+              type="button"
+              class={"color-swatch irc-bg-#{i}"}
+              data-color-code={to_string(i)}
+              title={name}
+            >
+            </button>
+          </div>
+        </div>
 
         <.toolbar_separator />
 
         <%!-- Control buttons --%>
-        <.toolbar_button label="Reverse">
+        <.toolbar_button
+          label="Reverse (Ctrl+Shift+V)"
+          class="format-btn"
+          data-format-code="reverse"
+          data-testid="format-btn-reverse"
+        >
           <Icons.icon_fmt_reverse class="w-3.5 h-3.5" />
         </.toolbar_button>
-        <.toolbar_button label="Reset">
+        <.toolbar_button
+          label="Reset (Ctrl+Shift+X)"
+          class="format-btn"
+          data-format-code="reset"
+          data-testid="format-btn-reset"
+        >
           <Icons.icon_fmt_reset class="w-3.5 h-3.5" />
         </.toolbar_button>
-        <.toolbar_button label="Strip formatting">
+
+        <.toolbar_separator />
+
+        <%!-- Strip formatting --%>
+        <.toolbar_button
+          label="Strip Colors"
+          active={@strip_active}
+          phx-click={@on_format}
+          phx-value-format="strip"
+          data-testid="strip-formatting-toggle"
+        >
           <Icons.icon_fmt_strip class="w-3.5 h-3.5" />
         </.toolbar_button>
 
         <.toolbar_separator />
 
         <%!-- Emoji toggle --%>
-        <.toolbar_button label="Emoji">
+        <.toolbar_button
+          label="Emoji Picker"
+          phx-click={@on_toggle_emoji}
+          data-emoji-toggle="true"
+          data-testid="emoji-picker-toggle"
+        >
           <Icons.icon_fmt_emoji class="w-3.5 h-3.5" />
         </.toolbar_button>
       </.toolbar>
-
-      <%!-- Color picker panel (shown when toggled) --%>
-      <div :if={@show_color_picker}>
-        <.color_picker id="formatting-color-picker" selected={@selected_color} />
-      </div>
     </div>
     """
   end

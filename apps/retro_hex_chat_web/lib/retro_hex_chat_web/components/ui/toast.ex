@@ -92,7 +92,13 @@ defmodule RetroHexChatWeb.Components.UI.Toast do
             "shrink-0 self-start bg-surface shadow-retro-raised active:shadow-retro-sunken",
             "flex items-center justify-center w-[16px] h-[14px]"
           ]}
-          phx-click={@on_dismiss || JS.hide(to: "##{@id}", transition: {"transition-opacity duration-150", "opacity-100", "opacity-0"})}
+          phx-click={
+            @on_dismiss ||
+              JS.hide(
+                to: "##{@id}",
+                transition: {"transition-opacity duration-150", "opacity-100", "opacity-0"}
+              )
+          }
           aria-label="Dismiss"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 7" class="w-[8px] h-[7px]">

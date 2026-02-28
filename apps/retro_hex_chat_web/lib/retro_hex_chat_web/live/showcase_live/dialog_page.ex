@@ -70,8 +70,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.DialogPage do
         </.dialog>
         <.code_example>
           &lt;.button phx-click=&#123;show_modal("basic-dialog")&#125;&gt;
-            &lt;:icon&gt;&lt;Icons.icon_btn_open /&gt;&lt;/:icon&gt;
-            Open
+          &lt;:icon&gt;&lt;Icons.icon_btn_open /&gt;&lt;/:icon&gt;
+          Open
           &lt;/.button&gt;
           &lt;.dialog id="basic-dialog"&gt;
           &lt;.dialog_header&gt;

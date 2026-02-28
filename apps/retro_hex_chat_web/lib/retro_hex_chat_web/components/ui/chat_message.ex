@@ -1,5 +1,19 @@
 defmodule RetroHexChatWeb.Components.UI.ChatMessage do
-  @moduledoc false
+  @moduledoc """
+  Chat message components for the showcase design system.
+
+  Provides `chat_message_list/1` (scrollable container) and
+  `chat_message/1` (single IRC-style message row with timestamp,
+  nick, and message body).
+
+  ## Usage
+
+      <.chat_message_list>
+        <.chat_message timestamp="12:34" nick="alice" nick_color="nick-color-3">
+          Hello world!
+        </.chat_message>
+      </.chat_message_list>
+  """
   use RetroHexChatWeb.Component
 
   @doc "Renders a scrollable chat message list container."
@@ -17,6 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
           @class
         ])
       }
+      data-testid="chat-message-list"
       {@rest}
     >
       {render_slot(@inner_block)}
@@ -25,6 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   end
 
   @doc "Renders a single IRC-style chat message."
+  attr :id, :string, default: nil, doc: "Message ID for stream compatibility"
   attr :timestamp, :string, default: nil
   attr :nick, :string, default: nil
   attr :nick_color, :string, default: nil
@@ -37,7 +53,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   def chat_message(assigns) do
     ~H"""
     <div
+      id={@id}
       class={classes(["grid grid-cols-[auto_18ch_1fr] items-baseline", type_class(@type), @class])}
+      data-message-id={@id}
       {@rest}
     >
       <span :if={@timestamp} class="text-gray-500 mr-1 font-mono text-xs whitespace-nowrap">
@@ -50,6 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
           "font-bold mr-1 font-mono text-right overflow-hidden text-ellipsis whitespace-nowrap",
           @nick_color || "text-text"
         ]}
+        data-nick={@nick}
       >
         &lt;{@nick}&gt;
       </span>
@@ -59,10 +78,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
           "font-bold mr-1 font-mono overflow-hidden text-ellipsis whitespace-nowrap",
           "text-action"
         ]}
+        data-nick={@nick}
       >
         * {@nick}
       </span>
-      <span :if={@nick && @type not in ["normal", "action"]} class="font-bold mr-1 font-mono">
+      <span
+        :if={@nick && @type not in ["normal", "action"]}
+        class="font-bold mr-1 font-mono"
+        data-nick={@nick}
+      >
         {@nick}
       </span>
       <span :if={!@nick} />

@@ -39,9 +39,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.ConfirmDialogPage do
         />
         <.code_example>
           &lt;.confirm_dialog
-            id="confirm-default"
-            title="Confirm Action"
-            message="Are you sure?"
+          id="confirm-default"
+          title="Confirm Action"
+          message="Are you sure?"
           /&gt;
         </.code_example>
       </.showcase_card>

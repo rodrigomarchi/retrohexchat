@@ -48,10 +48,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.ChannelDialogPage do
         />
         <.code_example>
           &lt;.channel_dialog
-            id="channel-demo"
-            channel="#lobby"
-            topic="Welcome!"
-            bans=&#123;@bans&#125;
+          id="channel-demo"
+          channel="#lobby"
+          topic="Welcome!"
+          bans=&#123;@bans&#125;
           /&gt;
         </.code_example>
       </.showcase_card>

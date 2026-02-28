@@ -33,6 +33,14 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
   attr :title, :string, default: "Configuration"
   attr :items, :list, default: []
   attr :columns, :list, default: ["Name", "Value"]
+  attr :selected_index, :integer, default: nil, doc: "Currently selected row index"
+  attr :editing, :boolean, default: false, doc: "True when editing (vs adding)"
+  attr :on_select, :any, default: nil, doc: "Row click callback"
+  attr :on_add, :any, default: nil, doc: "Add button callback"
+  attr :on_edit, :any, default: nil, doc: "Edit button callback"
+  attr :on_remove, :any, default: nil, doc: "Remove button callback"
+  attr :on_ok, :any, default: nil, doc: "OK button callback"
+  attr :on_cancel, :any, default: nil, doc: "Cancel button callback (default: hide modal)"
 
   slot :form
 
@@ -59,7 +67,14 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
                 </.table_row>
               </.table_header>
               <.table_body>
-                <.table_row :for={item <- @items}>
+                <.table_row
+                  :for={{item, idx} <- Enum.with_index(@items)}
+                  class={
+                    if(@selected_index == idx, do: "bg-selection-bg text-selection-fg", else: "")
+                  }
+                  phx-click={@on_select}
+                  phx-value-index={idx}
+                >
                   <.table_cell>{item.name}</.table_cell>
                   <.table_cell>{Map.get(item, :value, "")}</.table_cell>
                 </.table_row>
@@ -68,15 +83,25 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
           </div>
 
           <div class="flex gap-retro-4">
-            <.button size="sm" variant="outline">
+            <.button size="sm" variant="outline" phx-click={@on_add}>
               <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
               Add
             </.button>
-            <.button size="sm" variant="outline">
+            <.button
+              size="sm"
+              variant="outline"
+              phx-click={@on_edit}
+              disabled={@selected_index == nil}
+            >
               <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
               Edit
             </.button>
-            <.button size="sm" variant="outline">
+            <.button
+              size="sm"
+              variant="outline"
+              phx-click={@on_remove}
+              disabled={@selected_index == nil}
+            >
               <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
               Remove
             </.button>
@@ -84,18 +109,21 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
         </div>
 
         <%!-- Edit form side --%>
-        <div :if={@form != []} class="w-[200px] shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8">
-          <h3 class="font-bold text-xs mb-retro-4">Edit</h3>
+        <div
+          :if={@form != []}
+          class="w-[200px] shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
+        >
+          <h3 class="font-bold text-xs mb-retro-4">{if @editing, do: "Edit", else: "Add"}</h3>
           {render_slot(@form)}
         </div>
       </.dialog_body>
 
       <.dialog_footer>
-        <.button variant="default" phx-click={hide_modal(@id)}>
+        <.button variant="default" phx-click={@on_ok || hide_modal(@id)}>
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
           OK
         </.button>
-        <.button variant="outline" phx-click={hide_modal(@id)}>
+        <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
           Cancel
         </.button>

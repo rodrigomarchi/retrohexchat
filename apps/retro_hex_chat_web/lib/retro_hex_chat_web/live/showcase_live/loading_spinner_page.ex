@@ -76,10 +76,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.LoadingSpinnerPage do
         </.loading_spinner>
         <.code_example>
           &lt;.loading_spinner text="Connection timed out"&gt;
-            &lt;.button variant="outline" size="sm"&gt;
-              &lt;:icon&gt;&lt;span class="w-4 h-4" /&gt;&lt;/:icon&gt;
-              Retry
-            &lt;/.button&gt;
+          &lt;.button variant="outline" size="sm"&gt;
+          &lt;:icon&gt;&lt;span class="w-4 h-4" /&gt;&lt;/:icon&gt;
+          Retry
+          &lt;/.button&gt;
           &lt;/.loading_spinner&gt;
         </.code_example>
       </.showcase_card>

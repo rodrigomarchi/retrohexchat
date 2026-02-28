@@ -30,7 +30,14 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
   attr :confirm_label, :string, default: "OK"
   attr :cancel_label, :string, default: "Cancel"
   attr :variant, :string, default: "default", values: ~w(default destructive)
+  attr :on_confirm, :any, default: nil, doc: "JS command or event name for confirm"
+
+  attr :on_cancel, :any,
+    default: nil,
+    doc: "JS command or event name for cancel (default: hide modal)"
+
   attr :class, :string, default: nil
+  slot :icon, doc: "Optional custom icon (default: warning)"
 
   @spec confirm_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def confirm_dialog(assigns) do
@@ -38,7 +45,11 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
     <.dialog id={@id} show={@show}>
       <.dialog_header>
         <.dialog_icon>
-          <Icons.icon_warning class="w-8 h-8" />
+          <%= if @icon != [] do %>
+            {render_slot(@icon)}
+          <% else %>
+            <Icons.icon_warning class="w-8 h-8" />
+          <% end %>
         </.dialog_icon>
         <.dialog_title>{@title}</.dialog_title>
         <.dialog_close id={@id} />
@@ -49,11 +60,15 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
       </.dialog_body>
 
       <.dialog_footer>
-        <.button variant={@variant}>
+        <.button variant={@variant} phx-click={@on_confirm} data-testid="confirm-dialog-confirm">
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
           {@confirm_label}
         </.button>
-        <.button variant="outline" phx-click={hide_modal(@id)}>
+        <.button
+          variant="outline"
+          phx-click={@on_cancel || hide_modal(@id)}
+          data-testid="confirm-dialog-cancel"
+        >
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
           {@cancel_label}
         </.button>

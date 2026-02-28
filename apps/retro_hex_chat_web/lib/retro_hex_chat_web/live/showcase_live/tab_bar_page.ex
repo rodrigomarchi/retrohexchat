@@ -35,9 +35,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.TabBarPage do
         ]} />
         <.code_example>
           &lt;.tab_bar tabs=&#123;[
-            %&#123;type: :status, label: "Status"&#125;,
-            %&#123;type: :channel, label: "#lobby", active: true&#125;,
-            %&#123;type: :pm, label: "alice", unread: true&#125;
+          %&#123;type: :status, label: "Status"&#125;,
+          %&#123;type: :channel, label: "#lobby", active: true&#125;,
+          %&#123;type: :pm, label: "alice", unread: true&#125;
           ]&#125; /&gt;
         </.code_example>
       </.showcase_card>

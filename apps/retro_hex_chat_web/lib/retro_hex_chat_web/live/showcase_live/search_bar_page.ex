@@ -35,9 +35,29 @@ defmodule RetroHexChatWeb.ShowcaseLive.SearchBarPage do
 
       <.showcase_card
         title="Empty Search"
-        description="Search bar with no query entered."
+        description="Search bar with no query entered. Prev/Next buttons are disabled."
       >
         <.search_bar />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Zero Results"
+        description="Search bar with a query but no matches found. Navigation buttons disabled."
+      >
+        <.search_bar query="nonexistent_text_xyz" result_count={0} current_result={0} />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Regex Error"
+        description="Search bar with an invalid regex showing error message."
+      >
+        <.search_bar
+          query="[unclosed"
+          result_count={0}
+          current_result={0}
+          regex={true}
+          error="Invalid regex: missing closing bracket"
+        />
       </.showcase_card>
 
       <.showcase_card
@@ -55,13 +75,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.SearchBarPage do
         />
         <.code_example>
           &lt;.search_bar
-            query="@mention"
-            result_count={2}
-            current_result={1}
-            case_sensitive={true}
-            regex={true}
-            mentions_only={true}
-            search_history={true}
+          query="@mention"
+          result_count=&#123;2&#125;
+          current_result=&#123;1&#125;
+          case_sensitive=&#123;true&#125;
+          regex=&#123;true&#125;
+          mentions_only=&#123;true&#125;
+          search_history=&#123;true&#125;
           /&gt;
         </.code_example>
       </.showcase_card>

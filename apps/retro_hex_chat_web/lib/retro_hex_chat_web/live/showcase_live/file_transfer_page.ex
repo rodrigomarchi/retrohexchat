@@ -28,13 +28,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.FileTransferPage do
           speed="1.2 MB/s"
           size="24.5 MB"
           direction="receiving"
+          state={:transferring}
         />
         <.code_example>
           &lt;.file_transfer
-            filename="photos.zip"
-            progress={65}
-            speed="1.2 MB/s"
-            size="24.5 MB"
+          filename="photos.zip"
+          progress={65} speed="1.2 MB/s"
+          size="24.5 MB"
           /&gt;
         </.code_example>
       </.showcase_card>
@@ -46,24 +46,35 @@ defmodule RetroHexChatWeb.ShowcaseLive.FileTransferPage do
           speed="850 KB/s"
           size="8.2 MB"
           direction="sending"
+          state={:transferring}
         />
       </.showcase_card>
 
-      <.showcase_card title="Just Started" description="Transfer just beginning.">
+      <.showcase_card title="Pending (Incoming)" description="Waiting for acceptance.">
         <.file_transfer
           filename="setup.exe"
-          progress={2}
-          speed="100 KB/s"
+          progress={0}
           size="156 MB"
+          direction="receiving"
+          state={:pending}
         />
       </.showcase_card>
 
-      <.showcase_card title="Almost Done" description="Transfer nearly complete.">
+      <.showcase_card title="Complete" description="Transfer finished.">
         <.file_transfer
           filename="music.mp3"
-          progress={98}
-          speed="2.1 MB/s"
+          progress={100}
           size="4.8 MB"
+          state={:complete}
+        />
+      </.showcase_card>
+
+      <.showcase_card title="Failed" description="Transfer failed.">
+        <.file_transfer
+          filename="large_file.iso"
+          progress={42}
+          size="2.1 GB"
+          state={:failed}
         />
       </.showcase_card>
     </.showcase_layout>

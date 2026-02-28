@@ -31,13 +31,20 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
   attr :regex, :boolean, default: false
   attr :mentions_only, :boolean, default: false
   attr :search_history, :boolean, default: false
+  attr :error, :string, default: nil, doc: "Regex validation error message"
+  attr :visible, :boolean, default: true, doc: "Show/hide the search bar"
+  attr :on_search, :any, default: nil, doc: "Search input change callback"
+  attr :on_next, :any, default: nil, doc: "Next result callback"
+  attr :on_prev, :any, default: nil, doc: "Previous result callback"
+  attr :on_close, :any, default: nil, doc: "Close button callback"
+  attr :on_toggle_filter, :any, default: nil, doc: "Filter checkbox toggle callback"
   attr :class, :string, default: nil
   attr :rest, :global
 
   @spec search_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def search_bar(assigns) do
     ~H"""
-    <.window class={classes(["w-[360px]", @class])} {@rest}>
+    <.window :if={@visible} class={classes(["w-[360px]", @class])} data-testid="search-bar" {@rest}>
       <.window_title_bar title="Find" controls={[:close]}>
         <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
       </.window_title_bar>
@@ -45,19 +52,43 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
       <.window_body class="p-retro-8 space-y-retro-8">
         <%!-- Search input row --%>
         <div class="flex items-center gap-retro-4">
-          <.input type="text" value={@query} placeholder="Find text..." class="flex-1" />
+          <.input
+            type="text"
+            value={@query}
+            placeholder="Find text..."
+            class="flex-1"
+            name="query"
+            phx-change={@on_search}
+            phx-debounce="300"
+            data-testid="search-bar-input"
+          />
           <span class="text-xs text-muted-foreground whitespace-nowrap">
             {@current_result}/{@result_count}
           </span>
         </div>
 
+        <%!-- Error message --%>
+        <p :if={@error} class="text-xs text-error">{@error}</p>
+
         <%!-- Navigation buttons --%>
         <div class="flex gap-retro-4">
-          <.button size="sm" variant="outline">
+          <.button
+            size="sm"
+            variant="outline"
+            phx-click={@on_prev}
+            disabled={@result_count == 0}
+            data-testid="search-bar-prev"
+          >
             <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
             Prev
           </.button>
-          <.button size="sm" variant="outline">
+          <.button
+            size="sm"
+            variant="outline"
+            phx-click={@on_next}
+            disabled={@result_count == 0}
+            data-testid="search-bar-next"
+          >
             <:icon><Icons.icon_btn_next class="w-4 h-4" /></:icon>
             Next
           </.button>
@@ -66,20 +97,36 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
         <%!-- Filter checkboxes --%>
         <div class="grid grid-cols-2 gap-retro-4">
           <label class="flex items-center gap-retro-4 text-xs cursor-pointer">
-            <.checkbox name="case_sensitive" value={@case_sensitive} />
-            Case sensitive
+            <.checkbox
+              name="case_sensitive"
+              value={@case_sensitive}
+              phx-click={@on_toggle_filter}
+              phx-value-filter="case_sensitive"
+            /> Case sensitive
           </label>
           <label class="flex items-center gap-retro-4 text-xs cursor-pointer">
-            <.checkbox name="regex" value={@regex} />
-            Regex
+            <.checkbox
+              name="regex"
+              value={@regex}
+              phx-click={@on_toggle_filter}
+              phx-value-filter="regex"
+            /> Regex
           </label>
           <label class="flex items-center gap-retro-4 text-xs cursor-pointer">
-            <.checkbox name="mentions" value={@mentions_only} />
-            Mentions only
+            <.checkbox
+              name="mentions"
+              value={@mentions_only}
+              phx-click={@on_toggle_filter}
+              phx-value-filter="mentions"
+            /> Mentions only
           </label>
           <label class="flex items-center gap-retro-4 text-xs cursor-pointer">
-            <.checkbox name="history" value={@search_history} />
-            Search history
+            <.checkbox
+              name="history"
+              value={@search_history}
+              phx-click={@on_toggle_filter}
+              phx-value-filter="history"
+            /> Search history
           </label>
         </div>
       </.window_body>

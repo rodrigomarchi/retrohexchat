@@ -18,11 +18,31 @@ defmodule RetroHexChatWeb.ShowcaseLive.ChatLayoutPage do
        active_page: "chat-layout",
        messages: [
          %{timestamp: "14:20", nick: "alice", text: "Hey everyone!", nick_color: "text-blue-600"},
-         %{timestamp: "14:21", nick: "bob", text: "Hi alice! How's it going?", nick_color: "text-green-600"},
-         %{timestamp: "14:22", nick: "carol", text: "Welcome to #lobby!", nick_color: "text-red-600"},
-         %{timestamp: "14:23", nick: "alice", text: "Pretty good, working on some code", nick_color: "text-blue-600"},
+         %{
+           timestamp: "14:21",
+           nick: "bob",
+           text: "Hi alice! How's it going?",
+           nick_color: "text-green-600"
+         },
+         %{
+           timestamp: "14:22",
+           nick: "carol",
+           text: "Welcome to #lobby!",
+           nick_color: "text-red-600"
+         },
+         %{
+           timestamp: "14:23",
+           nick: "alice",
+           text: "Pretty good, working on some code",
+           nick_color: "text-blue-600"
+         },
          %{timestamp: "14:24", nick: "dave", text: "Anyone up for a game?"},
-         %{timestamp: "14:25", nick: "bob", text: "Sure! What game?", nick_color: "text-green-600"},
+         %{
+           timestamp: "14:25",
+           nick: "bob",
+           text: "Sure! What game?",
+           nick_color: "text-green-600"
+         },
          %{timestamp: "14:25", nick: "System", text: "eve has joined #lobby", type: "system"}
        ],
        users: [
@@ -54,11 +74,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.ChatLayoutPage do
         />
         <.code_example>
           &lt;.chat_layout
-            channels=&#123;["#lobby", "#help"]&#125;
-            active_channel="#lobby"
-            topic="Welcome!"
-            messages=&#123;@messages&#125;
-            users=&#123;@users&#125;
+          channels=&#123;["#lobby", "#help"]&#125;
+          active_channel="#lobby"
+          topic="Welcome!"
+          messages=&#123;@messages&#125;
+          users=&#123;@users&#125;
           /&gt;
         </.code_example>
       </.showcase_card>

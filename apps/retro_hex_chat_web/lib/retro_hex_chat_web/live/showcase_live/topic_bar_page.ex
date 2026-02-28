@@ -33,11 +33,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.TopicBarPage do
         />
         <.code_example>
           &lt;.topic_bar
-            variant="channel"
-            channel_name="#lobby"
-            topic="Welcome to RetroHexChat!"
-            modes={["+nt", "+l 50"]}
-          /&gt;
+          variant="channel"
+          channel_name="#lobby"
+          topic="Welcome to RetroHexChat!"
+          modes={["+nt", "+l 50"]} /&gt;
         </.code_example>
       </.showcase_card>
 

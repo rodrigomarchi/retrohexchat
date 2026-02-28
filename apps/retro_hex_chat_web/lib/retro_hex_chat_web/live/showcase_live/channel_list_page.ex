@@ -47,10 +47,44 @@ defmodule RetroHexChatWeb.ShowcaseLive.ChannelListPage do
         <.channel_list id="channel-list-demo" channels={@channels} />
         <.code_example>
           &lt;.channel_list
-            id="channel-list"
-            channels=&#123;@channels&#125;
+          id="channel-list"
+          channels=&#123;@channels&#125;
+          on_search="filter_channels"
+          on_select="select_channel"
+          on_join="join_channel"
           /&gt;
         </.code_example>
+      </.showcase_card>
+
+      <.showcase_card
+        title="With Selection"
+        description="Channel list with a channel pre-selected. Join button is enabled."
+      >
+        <.button variant="outline" phx-click={show_modal("channel-list-selected")}>
+          <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
+          Channel List (Selected)
+        </.button>
+        <.channel_list
+          id="channel-list-selected"
+          channels={@channels}
+          selected_channel="#dev"
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Loading State"
+        description="Channel list showing the 'Searching...' state while fetching channels."
+      >
+        <.button variant="outline" phx-click={show_modal("channel-list-loading")}>
+          <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
+          Channel List (Loading)
+        </.button>
+        <.channel_list
+          id="channel-list-loading"
+          channels={[]}
+          loading={true}
+          search="game"
+        />
       </.showcase_card>
     </.showcase_layout>
     """

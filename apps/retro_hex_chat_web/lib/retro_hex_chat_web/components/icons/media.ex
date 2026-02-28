@@ -492,7 +492,13 @@ defmodule RetroHexChatWeb.Icons.Media do
       <!-- Shadow -->
       <polygon points="5,3 13,8 5,13" fill="#555" transform="translate(0.5,0.5)" />
       <!-- Play arrow -->
-      <polygon points="5,3 13,8 5,13" fill="#009300" stroke="#000" stroke-width="1" stroke-linejoin="round" />
+      <polygon
+        points="5,3 13,8 5,13"
+        fill="#009300"
+        stroke="#000"
+        stroke-width="1"
+        stroke-linejoin="round"
+      />
     </svg>
     """
   end

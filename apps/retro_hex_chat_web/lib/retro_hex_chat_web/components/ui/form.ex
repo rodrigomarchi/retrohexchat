@@ -71,7 +71,7 @@ defmodule RetroHexChatWeb.Components.UI.Form do
       end
 
     ~H"""
-    <SaladUI.Label.label
+    <RetroHexChatWeb.Components.UI.Label.label
       class={
         classes([
           @error && "text-destructive",
@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.Components.UI.Form do
       {@rest}
     >
       {render_slot(@inner_block)}
-    </SaladUI.Label.label>
+    </RetroHexChatWeb.Components.UI.Label.label>
     """
   end
 

@@ -66,12 +66,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.PaginationPage do
         <p class="text-xs text-muted-foreground mt-2">Current page: {@current_page}</p>
         <.code_example>
           &lt;.button variant="outline" size="sm"&gt;
-            &lt;:icon&gt;&lt;Icons.icon_btn_prev /&gt;&lt;/:icon&gt;
-            Prev
+          &lt;:icon&gt;&lt;Icons.icon_btn_prev /&gt;&lt;/:icon&gt;
+          Prev
           &lt;/.button&gt;
           &lt;.button :for=&#123;page &lt;- 1..5&#125; size="sm"&gt;
-            &lt;:icon&gt;&lt;Icons.icon_btn_page /&gt;&lt;/:icon&gt;
-            &#123;page&#125;
+          &lt;:icon&gt;&lt;Icons.icon_btn_page /&gt;&lt;/:icon&gt;
+          &#123;page&#125;
           &lt;/.button&gt;
         </.code_example>
       </.showcase_card>

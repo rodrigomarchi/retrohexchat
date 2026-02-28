@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.ScrollAreaPage do
         </div>
         <.code_example>
           &lt;div class="overflow-y-auto retro-scrollbar h-[200px]"&gt;
-            &lt;!-- scrollable content --&gt;
+          &lt;!-- scrollable content --&gt;
           &lt;/div&gt;
         </.code_example>
       </.showcase_card>
@@ -44,13 +44,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.ScrollAreaPage do
       >
         <div class="shadow-retro-field bg-white h-[100px] overflow-x-auto retro-scrollbar p-2">
           <div class="text-xs whitespace-nowrap" style="width: 1200px;">
-            <p>This is a very long line that extends beyond the container width to demonstrate horizontal scrollbar behavior. It keeps going and going and going until you have to scroll right to read it all.</p>
-            <p class="mt-2">Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+            <p>
+              This is a very long line that extends beyond the container width to demonstrate horizontal scrollbar behavior. It keeps going and going and going until you have to scroll right to read it all.
+            </p>
+            <p class="mt-2">
+              Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ
+            </p>
           </div>
         </div>
         <.code_example>
           &lt;div class="overflow-x-auto retro-scrollbar"&gt;
-            &lt;!-- wide content --&gt;
+          &lt;!-- wide content --&gt;
           &lt;/div&gt;
         </.code_example>
       </.showcase_card>
@@ -68,7 +72,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.ScrollAreaPage do
         </div>
         <.code_example>
           &lt;div class="overflow-auto retro-scrollbar h-[200px]"&gt;
-            &lt;!-- content exceeds both axes --&gt;
+          &lt;!-- content exceeds both axes --&gt;
           &lt;/div&gt;
         </.code_example>
       </.showcase_card>

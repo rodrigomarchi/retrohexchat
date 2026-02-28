@@ -164,9 +164,45 @@ defmodule RetroHexChatWeb.Router do
     live "/p2p-lobby", P2PLobbyPage
     live "/media-controls", MediaControlsPage
     live "/file-transfer", FileTransferPage
-    live "/bot-manager", BotManagerPage
-    live "/admin-console", AdminConsolePage
     live "/chat-layout", ChatLayoutPage
+    # New simple components
+    live "/scroll-loader", ScrollLoaderPage
+    live "/history-search", HistorySearchPage
+    live "/kick-dialog", KickDialogPage
+    live "/delete-confirm-dialog", DeleteConfirmDialogPage
+    live "/disconnect-confirm-dialog", DisconnectConfirmDialogPage
+    # New composites (B-02, B-04, B-27)
+    live "/status-bar-app", StatusBarAppPage
+    live "/conversations-context-menu", ConversationsContextMenuPage
+    live "/game-canvas", GameCanvasPage
+    # New dialog composites (B-09, B-11, B-12)
+    live "/alias-dialog", AliasDialogPage
+    live "/flood-protection-dialog", FloodProtectionDialogPage
+    live "/ignore-list-dialog", IgnoreListDialogPage
+    # New composites (B-07, B-08, B-26)
+    live "/notify-list", NotifyListPage
+    live "/url-catcher", UrlCatcherPage
+    live "/game-lobby", GameLobbyPage
+    # New dialog composites (B-10, B-13, B-15)
+    live "/auto-respond-dialog", AutoRespondDialogPage
+    live "/custom-menus-dialog", CustomMenusDialogPage
+    live "/sound-settings-dialog", SoundSettingsDialogPage
+    # New simple components (B-18, B-21, B-29, B-30)
+    live "/invite-dialog", InviteDialogPage
+    live "/paste-confirm-dialog", PasteConfirmDialogPage
+    live "/arcade-frame", ArcadeFramePage
+    live "/app-header", AppHeaderPage
+    # New medium components (B-14, B-22, B-16, B-23)
+    live "/ctcp-settings-dialog", CtcpSettingsDialogPage
+    live "/cheatsheet-dialog", CheatsheetDialogPage
+    live "/nick-change-dialog", NickChangeDialogPage
+    live "/syntax-tooltip", SyntaxTooltipPage
+    # New large components (B-01, B-03, B-05, B-06, B-28)
+    live "/toolbar-app", ToolbarAppPage
+    live "/solo-lobby", SoloLobbyPage
+    live "/chat-context-menu", ChatContextMenuPage
+    live "/perform-dialog", PerformDialogPage
+    live "/channel-central-dialog", ChannelCentralDialogPage
   end
 
   import Phoenix.LiveDashboard.Router

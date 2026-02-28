@@ -23,6 +23,18 @@ defmodule RetroHexChatWeb.ShowcaseLive.AddressBookPage do
          %{nick: "alice", notes: "Friend", color: "#ff0000"},
          %{nick: "bob", notes: "Colleague", color: "#0000ff"},
          %{nick: "carol", notes: "", color: "#00cc00"}
+       ],
+       notify_list: [
+         %{nick: "alice", notify_on: true, notify_off: true},
+         %{nick: "dave", notify_on: true, notify_off: false}
+       ],
+       nick_colors: [
+         %{nick: "alice", color: "#ff0000"},
+         %{nick: "bob", color: "#0000ff"}
+       ],
+       control_list: [
+         %{nick: "spammer", level: "ignore"},
+         %{nick: "troll", level: "ban"}
        ]
      )}
   end
@@ -44,12 +56,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.AddressBookPage do
         <.address_book
           id="address-book-demo"
           contacts={@contacts}
+          notify_list={@notify_list}
+          nick_colors={@nick_colors}
+          control_list={@control_list}
           selected_color={4}
         />
         <.code_example>
           &lt;.address_book
-            id="address-book"
-            contacts=&#123;@contacts&#125;
+          id="address-book"
+          contacts=&#123;@contacts&#125;
           /&gt;
         </.code_example>
       </.showcase_card>

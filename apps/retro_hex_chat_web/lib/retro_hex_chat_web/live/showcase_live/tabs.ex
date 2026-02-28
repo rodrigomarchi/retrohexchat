@@ -55,8 +55,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Tabs do
           &lt;.tabs :let=&#123;builder&#125; id="my-tabs" default="tab1"&gt;
           &lt;.tabs_list&gt;
           &lt;.tabs_trigger builder=&#123;builder&#125; value="tab1"&gt;
-            &lt;:icon&gt;&lt;Icons.icon_tab_general /&gt;&lt;/:icon&gt;
-            Account
+          &lt;:icon&gt;&lt;Icons.icon_tab_general /&gt;&lt;/:icon&gt;
+          Account
           &lt;/.tabs_trigger&gt;
           &lt;/.tabs_list&gt;
           &lt;.tabs_content value="tab1"&gt;

@@ -33,6 +33,8 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   attr :type, :string, values: ~w(channel pm status), default: "channel"
   attr :label, :string, required: true
   attr :closeable, :boolean, default: true
+  attr :on_click, :any, default: nil, doc: "Tab click callback"
+  attr :on_close, :any, default: nil, doc: "Close button callback"
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -42,6 +44,9 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
     <div
       role="tab"
       aria-selected={to_string(@active)}
+      phx-click={@on_click}
+      phx-value-type={@type}
+      phx-value-label={@label}
       class={
         classes([
           "inline-flex items-center gap-1 px-2 py-[2px] text-sm cursor-pointer select-none",
@@ -67,6 +72,9 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
         :if={@closeable}
         type="button"
         aria-label="Close tab"
+        phx-click={@on_close}
+        phx-value-type={@type}
+        phx-value-label={@label}
         class={[
           "inline-flex items-center justify-center",
           "w-[14px] min-w-[14px] h-[14px] min-h-[14px]",

@@ -28,10 +28,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.HoverCardPage do
       >
         <.hover_card
           nick="CoolUser42"
+          real_name="Cool Person"
           away="brb lunch"
           host="cool@user.example.com"
+          server="irc.retro.chat"
           online_since="3h 42m"
+          online_for="2d 14h"
+          idle="5m"
           client="RetroHexChat v2.1"
+          registered={true}
           channels={["#lobby", "#dev", "#music"]}
           is_contact={true}
         >
@@ -42,19 +47,48 @@ defmodule RetroHexChatWeb.ShowcaseLive.HoverCardPage do
         </.hover_card>
         <.code_example>
           &lt;.hover_card
-            nick="CoolUser42"
-            away="brb lunch"
-            host="cool@user.example.com"
-            online_since="3h 42m"
-            client="RetroHexChat v2.1"
-            channels={["#lobby", "#dev"]}
-            is_contact={true}
-          &gt;
-            &lt;:role_badges&gt;
-              &lt;.badge variant="destructive"&gt;Owner&lt;/.badge&gt;
-            &lt;/:role_badges&gt;
-          &lt;/.hover_card&gt;
+          nick="CoolUser42"
+          real_name="Cool Person"
+          registered=&#123;true&#125;
+          host="cool@user.example.com"
+          online_for="2d 14h"
+          idle="5m"
+          channels=&#123;["#lobby", "#dev"]&#125;
+          is_contact=&#123;true&#125;
+          /&gt;
         </.code_example>
+      </.showcase_card>
+
+      <.showcase_card
+        title="Loading State"
+        description="Hover card in loading state while WHOIS data is being fetched."
+      >
+        <.hover_card nick="unknown_user" loading={true} />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Role Badge (via role attr)"
+        description="Hover card using the role atom attr instead of the role_badges slot."
+      >
+        <.hover_card
+          nick="ChannelOp"
+          host="op@admin.net"
+          role={:operator}
+          registered={true}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Bot User"
+        description="Hover card for a bot with the :bot role."
+      >
+        <.hover_card
+          nick="ChanBot"
+          host="bot@services.local"
+          role={:bot}
+          client="Bot Engine 1.0"
+          channels={["#lobby", "#help"]}
+        />
       </.showcase_card>
 
       <.showcase_card

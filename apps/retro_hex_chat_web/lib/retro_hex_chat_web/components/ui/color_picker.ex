@@ -35,6 +35,11 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
   """
   attr :id, :string, required: true
   attr :selected, :integer, default: nil
+
+  attr :on_select, :any,
+    default: nil,
+    doc: "Color select callback (receives phx-value-index and phx-value-picker)"
+
   attr :class, :string, default: nil
   attr :rest, :global
   slot :inner_block
@@ -68,7 +73,7 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
           style={"background-color: #{hex};"}
           title={name}
           aria-label={"Color #{idx}: #{name}"}
-          phx-click="color-select"
+          phx-click={@on_select}
           phx-value-index={idx}
           phx-value-picker={@id}
         />

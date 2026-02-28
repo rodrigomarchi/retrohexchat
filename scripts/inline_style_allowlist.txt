@@ -30,6 +30,19 @@ retro_hex_chat_web/components/ui/slider.ex:style="width: calc(100% + 20px)"
 # Showcase layout: fixed height sidebar and content area
 retro_hex_chat_web/components/showcase_helpers.ex:max-height: calc(100vh - 80px)
 
+# Hover card: dynamic absolute positioning from x/y attrs
+retro_hex_chat_web/components/ui/hover_card.ex:style={position_style(
+
+# Chat context menu: dynamic absolute positioning from x/y attrs
+retro_hex_chat_web/components/ui/chat_context_menu.ex:style={position_style(
+
+# Conversations context menu: dynamic absolute positioning from x/y attrs
+retro_hex_chat_web/components/ui/conversations_context_menu.ex:style={position_style(
+
+# Showcase scroll area page: fixed widths for overflow demo
+retro_hex_chat_web/live/showcase_live/scroll_area_page.ex:style="width: 1200px;"
+retro_hex_chat_web/live/showcase_live/scroll_area_page.ex:style="width: 800px;"
+
 [style-helpers]
 
 # Highlight dialog: two clauses of color_swatch_style/1
@@ -40,3 +53,12 @@ retro_hex_chat_web/components/conversations.ex:defp nick_style(
 
 # Notify list: two clauses of notify_nick_style/2
 retro_hex_chat_web/components/notify_list_window.ex:defp notify_nick_style(
+
+# Hover card: three clauses of position_style/2
+retro_hex_chat_web/components/ui/hover_card.ex:defp position_style(
+
+# Chat context menu: position_style/2
+retro_hex_chat_web/components/ui/chat_context_menu.ex:defp position_style(
+
+# Conversations context menu: position_style/2
+retro_hex_chat_web/components/ui/conversations_context_menu.ex:defp position_style(
