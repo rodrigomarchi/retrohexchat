@@ -52,6 +52,7 @@ defmodule RetroHexChatWeb.Components.UI.Tooltip do
   attr :class, :string, default: nil
   attr :side, :string, default: "top", values: ~w(bottom left right top)
   attr :rest, :global
+  slot :icon, doc: "Optional 16×16 icon for visual enrichment"
   slot :inner_block, required: true
 
   def tooltip_content(assigns) do
@@ -71,7 +72,15 @@ defmodule RetroHexChatWeb.Components.UI.Tooltip do
       }
       {@rest}
     >
-      {render_slot(@inner_block)}
+      <span :if={@icon != []} class="inline-flex items-center gap-1.5">
+        <span class="shrink-0 w-[16px] h-[16px] inline-flex items-center justify-center">
+          {render_slot(@icon)}
+        </span>
+        {render_slot(@inner_block)}
+      </span>
+      <span :if={@icon == []}>
+        {render_slot(@inner_block)}
+      </span>
     </div>
     """
   end

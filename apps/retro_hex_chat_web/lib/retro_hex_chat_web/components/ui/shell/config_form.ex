@@ -48,12 +48,8 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
   def config_form(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_btn_settings class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>{@title}</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title={@title}>
+        <:icon><Icons.icon_btn_settings class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body class="flex gap-retro-8 min-h-[250px]">

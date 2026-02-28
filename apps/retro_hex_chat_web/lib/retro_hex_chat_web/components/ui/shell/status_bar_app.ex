@@ -91,8 +91,10 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
           aria-label={if @muted, do: "Unmute", else: "Mute"}
           data-testid="status-bar-mute-toggle"
         >
-          <Icons.icon_mute :if={@muted} class="w-3 h-3" />
-          <Icons.icon_dialog_sound :if={!@muted} class="w-3 h-3" />
+          <:icon>
+            <Icons.icon_mute :if={@muted} class="w-3 h-3" />
+            <Icons.icon_dialog_sound :if={!@muted} class="w-3 h-3" />
+          </:icon>
         </.button>
         <span :if={!@on_mute_toggle} class="flex items-center justify-center w-full h-full">
           <Icons.icon_mute :if={@muted} class="w-3 h-3" />

@@ -36,19 +36,27 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.DropdownMenuPage do
           </.dropdown_menu_trigger>
           <.dropdown_menu_content class="shadow-retro-window bg-surface p-[3px] min-w-[160px]">
             <div class="shadow-retro-field bg-white p-[2px]">
-              <div class="px-3 py-1 text-sm hover:bg-primary hover:text-white cursor-pointer">
-                Profile
-              </div>
-              <div class="px-3 py-1 text-sm hover:bg-primary hover:text-white cursor-pointer">
-                Settings
-              </div>
-              <div class="px-3 py-1 text-sm hover:bg-primary hover:text-white cursor-pointer">
-                Keyboard Shortcuts
-              </div>
-              <div class="border-t border-separator my-[2px]" />
-              <div class="px-3 py-1 text-sm hover:bg-primary hover:text-white cursor-pointer">
+              <.dropdown_menu_label>Account</.dropdown_menu_label>
+              <.dropdown_menu_separator />
+              <.dropdown_menu_group>
+                <.dropdown_menu_item>
+                  <:icon><Icons.icon_status_user class="w-4 h-4" /></:icon>
+                  Profile
+                </.dropdown_menu_item>
+                <.dropdown_menu_item>
+                  <:icon><Icons.icon_btn_settings class="w-4 h-4" /></:icon>
+                  Settings
+                </.dropdown_menu_item>
+                <.dropdown_menu_item>
+                  <:icon><Icons.icon_btn_keyboard class="w-4 h-4" /></:icon>
+                  Keyboard Shortcuts
+                </.dropdown_menu_item>
+              </.dropdown_menu_group>
+              <.dropdown_menu_separator />
+              <.dropdown_menu_item>
+                <:icon><Icons.icon_btn_disconnect class="w-4 h-4" /></:icon>
                 Log Out
-              </div>
+              </.dropdown_menu_item>
             </div>
           </.dropdown_menu_content>
         </.dropdown_menu>
@@ -75,27 +83,32 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.DropdownMenuPage do
           </.dropdown_menu_trigger>
           <.dropdown_menu_content class="shadow-retro-window bg-surface p-[3px] min-w-[200px]">
             <div class="shadow-retro-field bg-white p-[2px]">
-              <div class="flex justify-between px-3 py-1 text-sm hover:bg-primary hover:text-white cursor-pointer">
-                <span>Undo</span>
-                <.dropdown_menu_shortcut>Ctrl+Z</.dropdown_menu_shortcut>
-              </div>
-              <div class="flex justify-between px-3 py-1 text-sm hover:bg-primary hover:text-white cursor-pointer">
-                <span>Redo</span>
-                <.dropdown_menu_shortcut>Ctrl+Y</.dropdown_menu_shortcut>
-              </div>
-              <div class="border-t border-separator my-[2px]" />
-              <div class="flex justify-between px-3 py-1 text-sm hover:bg-primary hover:text-white cursor-pointer">
-                <span>Cut</span>
-                <.dropdown_menu_shortcut>Ctrl+X</.dropdown_menu_shortcut>
-              </div>
-              <div class="flex justify-between px-3 py-1 text-sm hover:bg-primary hover:text-white cursor-pointer">
-                <span>Copy</span>
-                <.dropdown_menu_shortcut>Ctrl+C</.dropdown_menu_shortcut>
-              </div>
-              <div class="flex justify-between px-3 py-1 text-sm hover:bg-primary hover:text-white cursor-pointer">
-                <span>Paste</span>
-                <.dropdown_menu_shortcut>Ctrl+V</.dropdown_menu_shortcut>
-              </div>
+              <.dropdown_menu_item>
+                <:icon><Icons.icon_btn_reset class="w-4 h-4" /></:icon>
+                Undo
+                <:shortcut>Ctrl+Z</:shortcut>
+              </.dropdown_menu_item>
+              <.dropdown_menu_item>
+                <:icon><Icons.icon_btn_refresh class="w-4 h-4" /></:icon>
+                Redo
+                <:shortcut>Ctrl+Y</:shortcut>
+              </.dropdown_menu_item>
+              <.dropdown_menu_separator />
+              <.dropdown_menu_item>
+                <:icon><Icons.icon_copy class="w-4 h-4" /></:icon>
+                Cut
+                <:shortcut>Ctrl+X</:shortcut>
+              </.dropdown_menu_item>
+              <.dropdown_menu_item>
+                <:icon><Icons.icon_copy class="w-4 h-4" /></:icon>
+                Copy
+                <:shortcut>Ctrl+C</:shortcut>
+              </.dropdown_menu_item>
+              <.dropdown_menu_item>
+                <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
+                Paste
+                <:shortcut>Ctrl+V</:shortcut>
+              </.dropdown_menu_item>
             </div>
           </.dropdown_menu_content>
         </.dropdown_menu>

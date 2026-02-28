@@ -41,12 +41,8 @@ defmodule RetroHexChatWeb.Components.UI.NickChangeDialog do
   def nick_change_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_nick class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>Change Nickname</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="Change Nickname">
+        <:icon><Icons.icon_dialog_nick class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body>

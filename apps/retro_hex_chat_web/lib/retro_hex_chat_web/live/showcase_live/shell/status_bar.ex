@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBar do
 
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -23,7 +24,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBar do
 
       <.showcase_card title="Basic Status Bar" description="A simple status bar with text fields.">
         <.window>
-          <.window_title_bar title="Application" />
+          <.window_title_bar title="Application">
+            <:icon><Icons.icon_tab_status class="w-[16px] h-[16px]" /></:icon>
+          </.window_title_bar>
           <.window_body>
             <div class="shadow-retro-field bg-white p-2 min-h-[40px]">
               <p class="text-sm font-mono">Content area</p>
@@ -95,7 +98,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBar do
         description="Full replication of the platform's bottom status bar."
       >
         <.window>
-          <.window_title_bar title="RetroHexChat" controls={[:minimize, :maximize, :close]} />
+          <.window_title_bar title="RetroHexChat" controls={[:minimize, :maximize, :close]}>
+            <:icon><Icons.icon_chat class="w-[16px] h-[16px]" /></:icon>
+          </.window_title_bar>
           <.window_body>
             <div class="shadow-retro-field bg-white p-2 min-h-[60px]">
               <p class="text-sm font-mono text-gray-500 italic">Chat content area...</p>

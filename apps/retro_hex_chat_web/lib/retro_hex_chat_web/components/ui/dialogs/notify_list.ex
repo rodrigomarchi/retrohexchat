@@ -41,12 +41,8 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
     ~H"""
     <.dialog id={@id} show={@show}>
       <div data-testid="notify-list">
-        <.dialog_header>
-          <.dialog_icon>
-            <Icons.icon_btn_bell class="w-4 h-4" />
-          </.dialog_icon>
-          <.dialog_title>Notify List</.dialog_title>
-          <.dialog_close id={@id} />
+        <.dialog_header id={@id} title="Notify List">
+          <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
         </.dialog_header>
 
         <.dialog_body class="space-y-retro-8">

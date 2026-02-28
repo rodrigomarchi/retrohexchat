@@ -36,12 +36,8 @@ defmodule RetroHexChatWeb.Components.UI.DeleteConfirmDialog do
     ~H"""
     <span data-testid="delete-confirm-dialog">
       <.dialog id={@id} show={@show}>
-        <.dialog_header>
-          <.dialog_icon>
-            <Icons.icon_dialog_delete class="w-[16px] h-[16px]" />
-          </.dialog_icon>
-          <.dialog_title>Delete Message</.dialog_title>
-          <.dialog_close id={@id} />
+        <.dialog_header id={@id} title="Delete Message">
+          <:icon><Icons.icon_dialog_delete class="w-[16px] h-[16px]" /></:icon>
         </.dialog_header>
 
         <.dialog_body>

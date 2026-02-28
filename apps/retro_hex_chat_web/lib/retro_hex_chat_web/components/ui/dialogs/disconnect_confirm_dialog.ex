@@ -34,12 +34,8 @@ defmodule RetroHexChatWeb.Components.UI.DisconnectConfirmDialog do
     ~H"""
     <span data-testid="disconnect-confirm-dialog">
       <.dialog id={@id} show={@show}>
-        <.dialog_header>
-          <.dialog_icon>
-            <Icons.icon_btn_disconnect class="w-[16px] h-[16px]" />
-          </.dialog_icon>
-          <.dialog_title>Disconnect from Server</.dialog_title>
-          <.dialog_close id={@id} />
+        <.dialog_header id={@id} title="Disconnect from Server">
+          <:icon><Icons.icon_btn_disconnect class="w-[16px] h-[16px]" /></:icon>
         </.dialog_header>
 
         <.dialog_body>

@@ -43,16 +43,14 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
   def confirm_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
+      <.dialog_header id={@id} title={@title}>
+        <:icon>
           <%= if @icon != [] do %>
             {render_slot(@icon)}
           <% else %>
             <Icons.icon_warning class="w-8 h-8" />
           <% end %>
-        </.dialog_icon>
-        <.dialog_title>{@title}</.dialog_title>
-        <.dialog_close id={@id} />
+        </:icon>
       </.dialog_header>
 
       <.dialog_body class={@class}>

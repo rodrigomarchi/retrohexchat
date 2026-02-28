@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Card do
         <div class="max-w-sm">
           <.card>
             <.card_header>
+              <:icon><Icons.icon_notepad class="w-4 h-4" /></:icon>
               <.card_title>Card Title</.card_title>
               <.card_description>Card description goes here.</.card_description>
             </.card_header>

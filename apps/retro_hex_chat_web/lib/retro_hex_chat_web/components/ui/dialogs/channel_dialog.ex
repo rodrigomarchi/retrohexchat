@@ -40,12 +40,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelDialog do
   def channel_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_tab_channel class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>{@channel} Settings</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title={"#{@channel} Settings"}>
+        <:icon><Icons.icon_tab_channel class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body>

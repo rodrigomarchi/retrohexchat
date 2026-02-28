@@ -85,7 +85,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
           "ml-[2px] hover:bg-destructive hover:text-white hover:border-destructive"
         ]}
       >
-        x
+        <:icon><Icons.icon_close class="w-3 h-3" /></:icon>
       </.button>
     </div>
     """

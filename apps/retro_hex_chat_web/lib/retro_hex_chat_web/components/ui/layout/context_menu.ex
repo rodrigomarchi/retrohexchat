@@ -71,7 +71,7 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
   attr :on_click, :any, default: nil, doc: "JS command or event name for click"
   attr :class, :string, default: nil
   attr :rest, :global
-  slot :icon
+  slot :icon, required: true, doc: "14×14 icon SVG — mandatory for visual consistency"
   slot :shortcut
   slot :inner_block, required: true
 
@@ -94,10 +94,7 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
       data-testid={if @action, do: "context-menu-item-#{@action}"}
       {@rest}
     >
-      <span
-        :if={@icon != []}
-        class="shrink-0 w-[14px] h-[14px] inline-flex items-center justify-center"
-      >
+      <span class="shrink-0 w-[14px] h-[14px] inline-flex items-center justify-center">
         {render_slot(@icon)}
       </span>
       <span class="flex-1">{render_slot(@inner_block)}</span>

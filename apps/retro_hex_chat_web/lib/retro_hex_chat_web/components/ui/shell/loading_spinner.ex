@@ -14,6 +14,8 @@ defmodule RetroHexChatWeb.Components.UI.LoadingSpinner do
 
   import RetroHexChatWeb.Components.UI.Button
 
+  alias RetroHexChatWeb.Icons
+
   @doc """
   Renders a retro-styled loading spinner with animated progress bar.
   """
@@ -55,6 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.LoadingSpinner do
         phx-click={@on_retry}
         class="pointer-events-auto"
       >
+        <:icon><Icons.icon_retry class="w-4 h-4" /></:icon>
         Retry
       </.button>
       {render_slot(@inner_block)}

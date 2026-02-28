@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.Menu do
   attr :disabled, :boolean, default: false
   attr :class, :any, default: nil
   attr :rest, :global
-  slot :icon
+  slot :icon, required: true, doc: "16×16 icon SVG — mandatory for visual consistency"
   slot :inner_block, required: true
   slot :shortcut
 
@@ -43,10 +43,7 @@ defmodule RetroHexChatWeb.Components.UI.Menu do
       }
       {@rest}
     >
-      <span
-        :if={@icon != []}
-        class="w-[16px] h-[16px] flex-shrink-0 inline-flex items-center justify-center"
-      >
+      <span class="w-[16px] h-[16px] flex-shrink-0 inline-flex items-center justify-center">
         {render_slot(@icon)}
       </span>
       <span class="flex-1">{render_slot(@inner_block)}</span>

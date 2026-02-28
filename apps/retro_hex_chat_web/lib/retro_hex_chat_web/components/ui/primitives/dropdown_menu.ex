@@ -97,13 +97,89 @@ defmodule RetroHexChatWeb.Components.UI.DropdownMenu do
     """
   end
 
-  @doc """
-  Render
-  """
+  @doc "Renders a dropdown menu item with mandatory icon and optional shortcut."
+  attr :disabled, :boolean, default: false
+  attr :class, :string, default: nil
+  attr :rest, :global
+  slot :icon, required: true, doc: "16×16 icon SVG — mandatory for visual consistency"
+  slot :inner_block, required: true
+  slot :shortcut
+
+  @spec dropdown_menu_item(map()) :: Phoenix.LiveView.Rendered.t()
+  def dropdown_menu_item(assigns) do
+    ~H"""
+    <div
+      role="menuitem"
+      class={
+        classes([
+          "flex items-center gap-1.5 px-3 py-1 text-sm whitespace-nowrap cursor-pointer select-none",
+          if(@disabled,
+            do: "text-disabled cursor-default",
+            else: "hover:bg-primary hover:text-white"
+          ),
+          @class
+        ])
+      }
+      {@rest}
+    >
+      <span class="w-[16px] h-[16px] flex-shrink-0 inline-flex items-center justify-center">
+        {render_slot(@icon)}
+      </span>
+      <span class="flex-1">{render_slot(@inner_block)}</span>
+      <span :if={@shortcut != []} class="ml-4 text-xs opacity-60">
+        {render_slot(@shortcut)}
+      </span>
+    </div>
+    """
+  end
+
+  @doc "Renders a label for a group of dropdown menu items."
+  attr :class, :string, default: nil
+  attr :rest, :global
+  slot :inner_block, required: true
+
+  @spec dropdown_menu_label(map()) :: Phoenix.LiveView.Rendered.t()
+  def dropdown_menu_label(assigns) do
+    ~H"""
+    <div
+      class={classes(["px-3 py-1 text-xs font-bold select-none", @class])}
+      {@rest}
+    >
+      {render_slot(@inner_block)}
+    </div>
+    """
+  end
+
+  @doc "Renders a horizontal separator line in a dropdown menu."
+  attr :class, :string, default: nil
+
+  @spec dropdown_menu_separator(map()) :: Phoenix.LiveView.Rendered.t()
+  def dropdown_menu_separator(assigns) do
+    ~H"""
+    <div role="separator" class={classes(["border-t border-separator my-[2px]", @class])} />
+    """
+  end
+
+  @doc "Renders a group of dropdown menu items."
+  attr :class, :string, default: nil
+  attr :rest, :global
+  slot :inner_block, required: true
+
+  @spec dropdown_menu_group(map()) :: Phoenix.LiveView.Rendered.t()
+  def dropdown_menu_group(assigns) do
+    ~H"""
+    <div role="group" class={classes([@class])} {@rest}>
+      {render_slot(@inner_block)}
+    </div>
+    """
+  end
+
+  @doc "Renders a keyboard shortcut hint inside a dropdown menu item."
   attr(:class, :string, default: nil)
   attr(:rest, :global)
   slot(:inner_block, required: true)
 
+  @spec dropdown_menu_shortcut(map()) :: Phoenix.LiveView.Rendered.t()
   def dropdown_menu_shortcut(assigns) do
     ~H"""
     <span

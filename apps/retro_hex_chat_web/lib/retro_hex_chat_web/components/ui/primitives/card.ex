@@ -39,13 +39,19 @@ defmodule RetroHexChatWeb.Components.UI.Card do
   end
 
   attr :class, :string, default: nil
+  slot :icon, required: true, doc: "16×16 card header icon — mandatory for visual consistency"
   slot :inner_block, required: true
   attr :rest, :global
 
   def card_header(assigns) do
     ~H"""
-    <div class={classes(["flex flex-col space-y-1.5 p-6", @class])} {@rest}>
-      {render_slot(@inner_block)}
+    <div class={classes(["flex items-start gap-3 p-6", @class])} {@rest}>
+      <span class="shrink-0 w-[16px] h-[16px] inline-flex items-center justify-center mt-1">
+        {render_slot(@icon)}
+      </span>
+      <div class="flex flex-col space-y-1.5 min-w-0">
+        {render_slot(@inner_block)}
+      </div>
     </div>
     """
   end

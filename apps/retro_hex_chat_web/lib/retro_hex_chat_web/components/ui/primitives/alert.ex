@@ -3,11 +3,12 @@ defmodule RetroHexChatWeb.Components.UI.Alert do
   use RetroHexChatWeb.Component
 
   @doc """
-  Render alert
+  Render alert with mandatory icon.
 
   ## Examples
 
       <.alert variant="destructive">
+        <:icon><Icons.icon_warning /></:icon>
         <.alert_title>Alert title</.alert_title>
         <.alert_description>Alert description</.alert_description>
       </.alert>
@@ -15,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.Alert do
 
   attr :variant, :string, default: "default", values: ~w(default destructive)
   attr :class, :string, default: nil
+  slot :icon, required: true, doc: "16×16 severity icon — mandatory for visual consistency"
   slot :inner_block, required: true
   attr :rest, :global, default: %{}
 
@@ -25,13 +27,16 @@ defmodule RetroHexChatWeb.Components.UI.Alert do
     <div
       class={
         classes([
-          "relative w-full border-none shadow-retro-window p-4 [&>span~*]:pl-7 [&>span+div]:translate-y-[-3px] [&>span]:absolute [&>span]:left-4 [&>span]:top-4",
+          "relative w-full border-none shadow-retro-window p-4 pl-11",
           @variant_class,
           @class
         ])
       }
       {@rest}
     >
+      <span class="absolute left-4 top-4 w-[16px] h-[16px] inline-flex items-center justify-center">
+        {render_slot(@icon)}
+      </span>
       {render_slot(@inner_block)}
     </div>
     """

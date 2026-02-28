@@ -45,12 +45,8 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
   def cheatsheet_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} class="max-w-xl">
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_cheatsheet class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>Keyboard Shortcuts</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="Keyboard Shortcuts">
+        <:icon><Icons.icon_dialog_cheatsheet class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body class="max-h-96 overflow-y-auto">

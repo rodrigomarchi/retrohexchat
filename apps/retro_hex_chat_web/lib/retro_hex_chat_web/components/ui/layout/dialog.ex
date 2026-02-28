@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   """
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.Icons
+
   @doc """
   Dialog component — renders a Win98-style modal window.
 
@@ -68,17 +70,26 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   end
 
   @doc """
-  Dialog header — renders the Win98 blue gradient title bar.
-  Children are laid out in a single flex row. Place dialog_icon, dialog_title,
-  and dialog_close directly inside.
+  Dialog header — renders the Win98 blue gradient title bar with mandatory icon,
+  title, and close button. Guarantees visual consistency across all dialogs.
+
+  ## Examples
+
+      <.dialog_header id="my-dialog" title="Edit Profile">
+        <:icon><Icons.icon_btn_edit /></:icon>
+      </.dialog_header>
   """
+  attr :id, :string, required: true, doc: "Dialog id — used by the close button"
+  attr :title, :string, required: true, doc: "Title text displayed in the title bar"
   attr :class, :string, default: nil
-  slot :inner_block, required: true
+  slot :icon, required: true, doc: "16×16 title bar icon — mandatory"
 
   def dialog_header(assigns) do
     ~H"""
     <div class={classes(["bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2", @class])}>
-      {render_slot(@inner_block)}
+      <.dialog_icon>{render_slot(@icon)}</.dialog_icon>
+      <.dialog_title>{@title}</.dialog_title>
+      <.dialog_close id={@id} />
     </div>
     """
   end
@@ -148,9 +159,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
       phx-click={JS.exec("phx-hide-modal", to: "##{@id}")}
       aria-label="Close"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 7" class="w-[8px] h-[7px]">
-        <path d="M0 0L1 0L4 3L7 0L8 0L8 1L5 4L8 7L7 7L4 4L1 7L0 7L3 4L0 1Z" fill="#000" />
-      </svg>
+      <Icons.icon_close_pixel class="w-[8px] h-[7px]" />
     </button>
     """
   end

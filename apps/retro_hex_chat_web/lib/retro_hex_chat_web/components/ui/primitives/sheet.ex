@@ -39,6 +39,8 @@ defmodule RetroHexChatWeb.Components.UI.Sheet do
   """
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.Icons
+
   attr :class, :string, default: "inline-block"
   slot :inner_block, required: true
 
@@ -138,16 +140,7 @@ defmodule RetroHexChatWeb.Components.UI.Sheet do
               class="ring-offset-background absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-ring focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none"
               phx-click={hide_sheet(@id, @side)}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-6 no-collapse h-4 w-4"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-              </svg>
+              <Icons.icon_close_thin class="h-4 w-4" />
 
               <span class="sr-only">Close</span>
             </button>

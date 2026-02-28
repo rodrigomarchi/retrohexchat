@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
           aria-label="Hide channel list"
           data-testid="conversations-close"
         >
-          ×
+          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
         </.button>
       </div>
 
@@ -112,6 +112,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
                 phx-click={@on_browse_channels}
                 data-testid="conversations-browse-channels"
               >
+                <:icon><Icons.icon_btn_channel_list class="w-4 h-4" /></:icon>
                 Browse channels
               </.button>
             </:action>
@@ -365,7 +366,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         title={"Join #{@channel.name}"}
         data-testid={"join-#{@channel.name}"}
       >
-        <Icons.icon_btn_add class="w-3 h-3" />
+        <:icon><Icons.icon_btn_add class="w-3 h-3" /></:icon>
       </.button>
     </.tree_view_item>
     """

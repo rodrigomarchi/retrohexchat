@@ -10,6 +10,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Alert do
   import RetroHexChatWeb.Components.UI.Alert
   import RetroHexChatWeb.ShowcaseHelpers
 
+  alias RetroHexChatWeb.Icons
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, page_title: "Alert", active_page: "alert")}
@@ -24,10 +26,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Alert do
       <.showcase_card title="Variants" description="Displays a callout for user attention.">
         <div class="space-y-3">
           <.alert>
+            <:icon><Icons.icon_btn_info class="w-4 h-4" /></:icon>
             <.alert_title>Default Alert</.alert_title>
             <.alert_description>This is a default informational alert.</.alert_description>
           </.alert>
           <.alert variant="destructive">
+            <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
             <.alert_title>Error</.alert_title>
             <.alert_description>Something went wrong. Please try again.</.alert_description>
           </.alert>

@@ -49,12 +49,8 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   def address_book(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_address_book class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>Address Book</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="Address Book">
+        <:icon><Icons.icon_dialog_address_book class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body class="space-y-retro-8">

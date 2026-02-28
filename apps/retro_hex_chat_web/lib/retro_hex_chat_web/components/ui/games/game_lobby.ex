@@ -159,9 +159,11 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
               ]}
               data-testid={"game-lobby-game-#{game.id}"}
             >
-              <div class="w-8 h-8 mx-auto mb-retro-2">
-                <.game_icon icon={Map.get(game, :icon)} />
-              </div>
+              <:icon>
+                <div class="w-8 h-8 mx-auto mb-retro-2">
+                  <.game_icon icon={Map.get(game, :icon)} />
+                </div>
+              </:icon>
               <p class="text-xs font-bold truncate">{game.name}</p>
             </.button>
           </div>

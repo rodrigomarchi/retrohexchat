@@ -52,12 +52,8 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   def perform_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_perform />
-        </.dialog_icon>
-        <.dialog_title>Perform</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="Perform">
+        <:icon><Icons.icon_dialog_perform /></:icon>
       </.dialog_header>
       <.dialog_body>
         <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>

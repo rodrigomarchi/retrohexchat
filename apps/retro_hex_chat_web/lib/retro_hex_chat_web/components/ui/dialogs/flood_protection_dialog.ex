@@ -48,12 +48,8 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
 
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_flood class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>Flood Protection</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="Flood Protection">
+        <:icon><Icons.icon_dialog_flood class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body>

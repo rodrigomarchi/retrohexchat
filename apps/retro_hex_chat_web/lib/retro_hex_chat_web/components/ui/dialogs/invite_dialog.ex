@@ -42,12 +42,8 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
     ~H"""
     <span data-testid="invite-dialog">
       <.dialog id={@id} show={@show}>
-        <.dialog_header>
-          <.dialog_icon>
-            <Icons.icon_dialog_invite class="w-4 h-4" />
-          </.dialog_icon>
-          <.dialog_title>Channel Invite</.dialog_title>
-          <.dialog_close id={@id} />
+        <.dialog_header id={@id} title="Channel Invite">
+          <:icon><Icons.icon_dialog_invite class="w-4 h-4" /></:icon>
         </.dialog_header>
 
         <.dialog_body>

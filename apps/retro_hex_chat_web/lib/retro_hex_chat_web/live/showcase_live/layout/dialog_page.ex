@@ -31,12 +31,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.DialogPage do
           Open Dialog
         </.button>
         <.dialog id="basic-dialog">
-          <.dialog_header>
-            <.dialog_icon>
-              <Icons.icon_btn_edit />
-            </.dialog_icon>
-            <.dialog_title>Edit Profile</.dialog_title>
-            <.dialog_close id="basic-dialog" />
+          <.dialog_header id="basic-dialog" title="Edit Profile">
+            <:icon><Icons.icon_btn_edit /></:icon>
           </.dialog_header>
           <.dialog_body>
             <.dialog_description class="mb-retro-8">
@@ -87,12 +83,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.DialogPage do
           Delete Account
         </.button>
         <.dialog id="confirm-dialog">
-          <.dialog_header>
-            <.dialog_icon>
-              <Icons.icon_dialog_delete />
-            </.dialog_icon>
-            <.dialog_title>Are you sure?</.dialog_title>
-            <.dialog_close id="confirm-dialog" />
+          <.dialog_header id="confirm-dialog" title="Are you sure?">
+            <:icon><Icons.icon_dialog_delete /></:icon>
           </.dialog_header>
           <.dialog_body>
             <.dialog_description>

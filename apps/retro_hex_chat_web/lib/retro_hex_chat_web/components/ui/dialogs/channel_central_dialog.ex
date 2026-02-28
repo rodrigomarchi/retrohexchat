@@ -65,14 +65,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
     ~H"""
     <.dialog id={@id} show={@show} class="max-w-xl">
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_channel_central />
-        </.dialog_icon>
-        <.dialog_title>
-          Channel Central: {display_channel(@channel_name)}
-        </.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title={"Channel Central: #{display_channel(@channel_name)}"}>
+        <:icon><Icons.icon_dialog_channel_central /></:icon>
       </.dialog_header>
       <.dialog_body>
         <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>

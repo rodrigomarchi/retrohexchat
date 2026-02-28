@@ -39,12 +39,8 @@ defmodule RetroHexChatWeb.Components.UI.CtcpSettingsDialog do
   def ctcp_settings_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_ctcp class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>CTCP Settings</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="CTCP Settings">
+        <:icon><Icons.icon_dialog_ctcp class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body>

@@ -41,12 +41,8 @@ defmodule RetroHexChatWeb.Components.UI.OptionsDialog do
 
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_options class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>Options</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="Options">
+        <:icon><Icons.icon_dialog_options class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body class="flex gap-retro-8 min-h-[300px]">

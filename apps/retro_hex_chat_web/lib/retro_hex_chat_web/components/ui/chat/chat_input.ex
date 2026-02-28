@@ -19,6 +19,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
 
+  alias RetroHexChatWeb.Icons
+
   @doc "Renders a combined chat input area with optional formatting toolbar, send button, and counter."
   attr :value, :string, default: "", doc: "Current input value"
   attr :placeholder, :string, default: "Type a message..."
@@ -66,6 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
           size="sm"
           class="min-w-[60px]"
         >
+          <:icon><Icons.icon_btn_send class="w-4 h-4" /></:icon>
           Send
         </.button>
       </form>

@@ -26,12 +26,8 @@ defmodule RetroHexChatWeb.Components.UI.AboutDialog do
   def about_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_lightbulb class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>About RetroHexChat</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="About RetroHexChat">
+        <:icon><Icons.icon_lightbulb class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body class="text-center space-y-retro-8">

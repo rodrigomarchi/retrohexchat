@@ -66,7 +66,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCardsPage do
         description="Responsive grid of selectable game cards with icons and descriptions."
       >
         <.window>
-          <.window_title_bar title="Arcade — Troll" controls={[:close]} />
+          <.window_title_bar title="Arcade — Troll" controls={[:close]}>
+            <:icon><Icons.icon_joystick class="w-[16px] h-[16px]" /></:icon>
+          </.window_title_bar>
           <.window_body>
             <p class="text-sm font-bold mb-1">Retro Arcade</p>
             <p class="text-xs text-muted-foreground mb-3">
@@ -101,15 +103,16 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCardsPage do
                   @selected == name && "shadow-retro-sunken bg-highlight-bg"
                 ]}
               >
-                <div class="w-[32px] h-[32px] mx-auto mb-1">
-                  <.game_icon name={icon} />
-                </div>
+                <:icon><.game_icon name={icon} /></:icon>
                 <p class="text-xs font-bold truncate">{name}</p>
                 <p class="text-[10px] text-muted-foreground truncate">{desc}</p>
               </.button>
             </div>
             <div class="mt-3">
-              <.button variant="outline">Leave</.button>
+              <.button variant="outline">
+                <:icon><Icons.icon_btn_prev /></:icon>
+                Leave
+              </.button>
             </div>
           </.window_body>
         </.window>

@@ -36,12 +36,8 @@ defmodule RetroHexChatWeb.Components.UI.KickDialog do
     ~H"""
     <span data-testid="kick-dialog">
       <.dialog id={@id} show={@show}>
-        <.dialog_header>
-          <.dialog_icon>
-            <Icons.icon_dialog_kick class="w-[16px] h-[16px]" />
-          </.dialog_icon>
-          <.dialog_title>Kicked from Channel</.dialog_title>
-          <.dialog_close id={@id} />
+        <.dialog_header id={@id} title="Kicked from Channel">
+          <:icon><Icons.icon_dialog_kick class="w-[16px] h-[16px]" /></:icon>
         </.dialog_header>
 
         <.dialog_body>

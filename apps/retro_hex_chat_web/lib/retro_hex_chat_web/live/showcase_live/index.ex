@@ -295,6 +295,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Index do
               <p class="text-xs font-bold mb-2">Focus Ring</p>
               <div class="flex items-center gap-4">
                 <.button class="outline outline-1 outline-dotted outline-black -outline-offset-4">
+                  <:icon><Icons.icon_btn_ok /></:icon>
                   Focused Button
                 </.button>
                 <span class="text-xs text-muted-foreground">1px dotted outline, -4px offset</span>

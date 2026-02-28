@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Accordion do
 
   import RetroHexChatWeb.Components.UI.Accordion
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -25,7 +26,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Accordion do
         <div class="max-w-sm">
           <.accordion>
             <.accordion_item>
-              <.accordion_trigger group="showcase">What is RetroHexChat?</.accordion_trigger>
+              <.accordion_trigger group="showcase">
+                <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
+                What is RetroHexChat?
+              </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
                   A retro-styled chat application built with Phoenix LiveView.
@@ -33,7 +37,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Accordion do
               </.accordion_content>
             </.accordion_item>
             <.accordion_item>
-              <.accordion_trigger group="showcase">Is it responsive?</.accordion_trigger>
+              <.accordion_trigger group="showcase">
+                <:icon><Icons.icon_laptop class="w-4 h-4" /></:icon>
+                Is it responsive?
+              </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
                   Yes! These new UI components are built with Tailwind for full responsiveness.
@@ -41,7 +48,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Accordion do
               </.accordion_content>
             </.accordion_item>
             <.accordion_item>
-              <.accordion_trigger group="showcase">Can I customize it?</.accordion_trigger>
+              <.accordion_trigger group="showcase">
+                <:icon><Icons.icon_wrench class="w-4 h-4" /></:icon>
+                Can I customize it?
+              </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
                   Absolutely. All components are local source code you can modify freely.

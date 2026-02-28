@@ -127,9 +127,11 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           phx-value-game-id={game.id}
           title={game.name}
         >
-          <div class="w-[32px] h-[32px] mx-auto mb-1 bg-gray-200 shadow-retro-field flex items-center justify-center">
-            <span class="text-xs font-mono text-gray-500">ico</span>
-          </div>
+          <:icon>
+            <div class="w-[32px] h-[32px] mx-auto mb-1 bg-gray-200 shadow-retro-field flex items-center justify-center">
+              <span class="text-xs font-mono text-gray-500">ico</span>
+            </div>
+          </:icon>
           <p class="text-xs font-bold truncate">{game.name}</p>
         </.button>
       </div>
@@ -137,6 +139,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <%!-- Footer --%>
       <div class="mt-3">
         <.button variant="outline" phx-click={@on_close}>
+          <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
           Leave
         </.button>
       </div>
@@ -169,6 +172,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <%!-- Action buttons --%>
       <div class="flex gap-2 mb-3">
         <.button variant="outline" size="sm" phx-click={@on_back}>
+          <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
           Back
         </.button>
         <.button
@@ -177,6 +181,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           phx-click={@on_select_game}
           phx-value-game-id={@previewed_game.id}
         >
+          <:icon><Icons.icon_btn_join class="w-4 h-4" /></:icon>
           Start Game
         </.button>
       </div>
@@ -252,6 +257,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         </p>
       </div>
       <.button variant="outline" size="sm" class="flex-shrink-0" phx-click={@on_close}>
+        <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
         End Session
       </.button>
     </div>
@@ -297,6 +303,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <%!-- Close button --%>
       <div>
         <.button variant="outline" phx-click={@on_close}>
+          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
           Close
         </.button>
       </div>

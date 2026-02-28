@@ -38,12 +38,8 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
     ~H"""
     <span data-testid="paste-confirm-dialog">
       <.dialog id={@id} show={@show}>
-        <.dialog_header>
-          <.dialog_icon>
-            <Icons.icon_dialog_paste class="w-4 h-4" />
-          </.dialog_icon>
-          <.dialog_title>Paste Confirmation</.dialog_title>
-          <.dialog_close id={@id} />
+        <.dialog_header id={@id} title="Paste Confirmation">
+          <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
         </.dialog_header>
 
         <.dialog_body>

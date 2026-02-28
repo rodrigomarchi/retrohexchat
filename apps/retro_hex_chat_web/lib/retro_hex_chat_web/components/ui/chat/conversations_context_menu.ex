@@ -118,6 +118,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
         action={item[:action]}
         phx-value-channel={@channel}
       >
+        <:icon><Icons.icon_btn_star class="w-[14px] h-[14px]" /></:icon>
         {item[:label]}
       </.context_menu_item>
     </.context_menu>

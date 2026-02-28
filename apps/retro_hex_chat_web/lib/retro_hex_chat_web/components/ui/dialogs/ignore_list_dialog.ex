@@ -45,12 +45,8 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
   def ignore_list_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_ignore class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>Ignore List</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="Ignore List">
+        <:icon><Icons.icon_dialog_ignore class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body>

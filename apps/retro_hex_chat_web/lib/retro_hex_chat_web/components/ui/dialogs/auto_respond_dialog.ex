@@ -63,12 +63,8 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   def auto_respond_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_auto_respond class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>Auto Respond</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="Auto Respond">
+        <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body class="flex gap-retro-8 min-h-[260px]">

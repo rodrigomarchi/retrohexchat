@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Window do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -27,7 +28,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Window do
         description="A standard Win98 window with title bar and body."
       >
         <.window>
-          <.window_title_bar title="My Computer" />
+          <.window_title_bar title="My Computer">
+            <:icon><Icons.icon_group_view class="w-[16px] h-[16px]" /></:icon>
+          </.window_title_bar>
           <.window_body>
             <p class="text-sm">Window content goes here.</p>
           </.window_body>
@@ -48,21 +51,27 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Window do
       >
         <div class="space-y-3">
           <.window>
-            <.window_title_bar title="All Controls" controls={[:minimize, :maximize, :close]} />
+            <.window_title_bar title="All Controls" controls={[:minimize, :maximize, :close]}>
+              <:icon><Icons.icon_tab_status class="w-[16px] h-[16px]" /></:icon>
+            </.window_title_bar>
             <.window_body class="py-4">
               <p class="text-sm">Has minimize, maximize, and close buttons.</p>
             </.window_body>
           </.window>
 
           <.window>
-            <.window_title_bar title="Close Only" controls={[:close]} />
+            <.window_title_bar title="Close Only" controls={[:close]}>
+              <:icon><Icons.icon_tab_status class="w-[16px] h-[16px]" /></:icon>
+            </.window_title_bar>
             <.window_body class="py-4">
               <p class="text-sm">Dialog-style with close button only.</p>
             </.window_body>
           </.window>
 
           <.window>
-            <.window_title_bar title="Help & Close" controls={[:help, :close]} />
+            <.window_title_bar title="Help & Close" controls={[:help, :close]}>
+              <:icon><Icons.icon_group_help class="w-[16px] h-[16px]" /></:icon>
+            </.window_title_bar>
             <.window_body class="py-4">
               <p class="text-sm">With help and close buttons.</p>
             </.window_body>
@@ -78,14 +87,18 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Window do
       <.showcase_card title="Active vs Inactive" description="Windows change gradient when unfocused.">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <.window>
-            <.window_title_bar title="Active Window" />
+            <.window_title_bar title="Active Window">
+              <:icon><Icons.icon_tab_status class="w-[16px] h-[16px]" /></:icon>
+            </.window_title_bar>
             <.window_body>
               <p class="text-sm">This window is focused.</p>
             </.window_body>
           </.window>
 
           <.window>
-            <.window_title_bar title="Inactive Window" inactive />
+            <.window_title_bar title="Inactive Window" inactive>
+              <:icon><Icons.icon_tab_status class="w-[16px] h-[16px]" /></:icon>
+            </.window_title_bar>
             <.window_body>
               <p class="text-sm">This window is not focused.</p>
             </.window_body>
@@ -102,7 +115,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Window do
         description="Window with a segmented status bar at the bottom."
       >
         <.window>
-          <.window_title_bar title="Notepad" controls={[:minimize, :maximize, :close]} />
+          <.window_title_bar title="Notepad" controls={[:minimize, :maximize, :close]}>
+            <:icon><Icons.icon_notepad class="w-[16px] h-[16px]" /></:icon>
+          </.window_title_bar>
           <.window_body>
             <div class="shadow-retro-field bg-white p-2 min-h-[80px]">
               <p class="text-sm font-mono">Hello, World!</p>
@@ -129,13 +144,24 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Window do
       >
         <div class="max-w-md mx-auto">
           <.window>
-            <.window_title_bar title="Sounds" controls={[:close]} />
+            <.window_title_bar title="Sounds" controls={[:close]}>
+              <:icon><Icons.icon_dialog_sound class="w-[16px] h-[16px]" /></:icon>
+            </.window_title_bar>
             <.window_body>
               <p class="text-sm mb-4">Configure event sounds for the application.</p>
               <div class="flex justify-end gap-2">
-                <.button size="sm">OK</.button>
-                <.button variant="outline" size="sm">Cancel</.button>
-                <.button variant="outline" size="sm">Apply</.button>
+                <.button size="sm">
+                  <:icon><Icons.icon_btn_ok /></:icon>
+                  OK
+                </.button>
+                <.button variant="outline" size="sm">
+                  <:icon><Icons.icon_btn_cancel /></:icon>
+                  Cancel
+                </.button>
+                <.button variant="outline" size="sm">
+                  <:icon><Icons.icon_btn_apply /></:icon>
+                  Apply
+                </.button>
               </div>
             </.window_body>
           </.window>

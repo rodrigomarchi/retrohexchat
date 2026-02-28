@@ -3,19 +3,19 @@ defmodule RetroHexChatWeb.Components.UI.Button do
   use RetroHexChatWeb.Component
 
   @doc """
-  Renders a retro button with an optional icon.
+  Renders a retro button with a mandatory 16×16 icon.
 
-  Icons are the default expectation for action buttons but may be
-  omitted for structural/micro buttons (dismiss, tab-close, Send, etc.).
+  Every button must provide a `:icon` slot for Win98 visual consistency.
 
   ## Examples
 
       <.button>
-        <:icon><svg ...></.svg></:icon>
+        <:icon><Icons.icon_btn_save /></:icon>
         Save
       </.button>
 
       <.button variant="outline" size="sm">
+        <:icon><Icons.icon_retry /></:icon>
         Retry
       </.button>
   """
@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.Button do
   attr :size, :string, values: ~w(default sm lg icon), default: "default"
   attr :rest, :global, include: ~w(disabled form name value)
 
-  slot :icon, doc: "16×16 icon SVG — recommended for action buttons"
+  slot :icon, required: true, doc: "16×16 icon SVG — mandatory for all buttons"
   slot :inner_block, required: true
 
   def button(assigns) do
@@ -48,10 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.Button do
       }
       {@rest}
     >
-      <span
-        :if={@icon != []}
-        class="w-[16px] h-[16px] shrink-0 inline-flex items-center justify-center"
-      >
+      <span class="w-[16px] h-[16px] shrink-0 inline-flex items-center justify-center">
         {render_slot(@icon)}
       </span>
       {render_slot(@inner_block)}

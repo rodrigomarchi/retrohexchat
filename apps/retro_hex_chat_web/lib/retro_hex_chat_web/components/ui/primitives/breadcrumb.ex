@@ -2,6 +2,8 @@ defmodule RetroHexChatWeb.Components.UI.Breadcrumb do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.Icons
+
   @doc """
   Renders a breadcrumb.
 
@@ -161,16 +163,7 @@ defmodule RetroHexChatWeb.Components.UI.Breadcrumb do
       }
       {@rest}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="2"
-        stroke="currentColor"
-        class="size-6 w-3"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-      </svg>
+      <Icons.icon_chevron_right class="size-3.5" />
     </li>
     """
   end
@@ -192,20 +185,7 @@ defmodule RetroHexChatWeb.Components.UI.Breadcrumb do
       }
       {@rest}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="2"
-        stroke="currentColor"
-        class="size-6 w--4 h-4"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-        />
-      </svg>
+      <Icons.icon_ellipsis class="w-4 h-4" />
 
       <span class="sr-only">More</span>
     </div>

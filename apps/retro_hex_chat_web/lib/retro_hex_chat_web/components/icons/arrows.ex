@@ -216,4 +216,37 @@ defmodule RetroHexChatWeb.Icons.Arrows do
     </svg>
     """
   end
+
+  attr :class, :string, default: nil
+
+  @spec icon_chevron_down(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_chevron_down(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <polygon points="4,6 8,10 12,6 12,8 8,12 4,8" fill="#000" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_chevron_right(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_chevron_right(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <polygon points="6,4 10,8 6,12 8,12 12,8 8,4" fill="#000" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_chevron_left(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_chevron_left(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <polygon points="10,4 6,8 10,12 8,12 4,8 8,4" fill="#000" />
+    </svg>
+    """
+  end
 end

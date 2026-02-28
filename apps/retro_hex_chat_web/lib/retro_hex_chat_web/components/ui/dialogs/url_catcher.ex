@@ -44,12 +44,8 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
     ~H"""
     <.dialog id={@id} show={@show} class="max-w-2xl">
       <div data-testid="url-catcher">
-        <.dialog_header>
-          <.dialog_icon>
-            <Icons.icon_link class="w-4 h-4" />
-          </.dialog_icon>
-          <.dialog_title>URL Catcher</.dialog_title>
-          <.dialog_close id={@id} />
+        <.dialog_header id={@id} title="URL Catcher">
+          <:icon><Icons.icon_link class="w-4 h-4" /></:icon>
         </.dialog_header>
 
         <.dialog_body class="space-y-retro-8">
@@ -115,6 +111,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                       phx-click={@on_sort}
                       phx-value-column="url"
                     >
+                      <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
                       URL <.sort_indicator col={:url} active={@sort_column} dir={@sort_direction} />
                     </.button>
                   </.table_head>
@@ -127,6 +124,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                       phx-click={@on_sort}
                       phx-value-column="nick"
                     >
+                      <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
                       Nick <.sort_indicator col={:nick} active={@sort_column} dir={@sort_direction} />
                     </.button>
                   </.table_head>
@@ -139,6 +137,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                       phx-click={@on_sort}
                       phx-value-column="channel"
                     >
+                      <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
                       Channel
                       <.sort_indicator col={:channel} active={@sort_column} dir={@sort_direction} />
                     </.button>
@@ -152,6 +151,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                       phx-click={@on_sort}
                       phx-value-column="timestamp"
                     >
+                      <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
                       Time
                       <.sort_indicator col={:timestamp} active={@sort_column} dir={@sort_direction} />
                     </.button>

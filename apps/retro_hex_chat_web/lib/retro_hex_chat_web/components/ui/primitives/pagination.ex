@@ -2,6 +2,8 @@ defmodule RetroHexChatWeb.Components.UI.Pagination do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.Icons
+
   @doc """
   Renders a pagination.
 
@@ -153,16 +155,7 @@ defmodule RetroHexChatWeb.Components.UI.Pagination do
       {@rest}
     >
       <span>Next</span>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="2"
-        stroke="currentColor"
-        class="size-6 w-3.5"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-      </svg>
+      <Icons.icon_chevron_right class="w-3.5 h-3.5" />
     </.pagination_link>
     """
   end
@@ -181,16 +174,7 @@ defmodule RetroHexChatWeb.Components.UI.Pagination do
       class={classes(["gap-1 pr-2.5", @class])}
       {@rest}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="2"
-        stroke="currentColor"
-        class="size-6 w-3.5"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-      </svg>
+      <Icons.icon_chevron_left class="w-3.5 h-3.5" />
       <span>Previous</span>
     </.pagination_link>
     """
@@ -213,20 +197,7 @@ defmodule RetroHexChatWeb.Components.UI.Pagination do
       }
       {@rest}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="2"
-        stroke="currentColor"
-        class="size-6 w--4 h-4"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-        />
-      </svg>
+      <Icons.icon_ellipsis class="w-4 h-4" />
 
       <span class="sr-only">More pages</span>
     </span>

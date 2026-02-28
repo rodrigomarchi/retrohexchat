@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Tooltip do
             </.button>
           </.tooltip_trigger>
           <.tooltip_content>
+            <:icon><Icons.icon_lightbulb class="w-4 h-4" /></:icon>
             <p>This is a tooltip</p>
           </.tooltip_content>
         </.tooltip>

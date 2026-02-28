@@ -238,4 +238,65 @@ defmodule RetroHexChatWeb.Icons.Marks do
     </svg>
     """
   end
+
+  attr :class, :string, default: nil
+
+  @spec icon_ellipsis(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_ellipsis(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="3" y="7" width="2" height="2" fill="#000" />
+      <rect x="7" y="7" width="2" height="2" fill="#000" />
+      <rect x="11" y="7" width="2" height="2" fill="#000" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_radio_dot(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_radio_dot(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="6" y="6" width="4" height="4" fill="#000" />
+      <rect x="7" y="5" width="2" height="1" fill="#000" />
+      <rect x="7" y="10" width="2" height="1" fill="#000" />
+      <rect x="5" y="7" width="1" height="2" fill="#000" />
+      <rect x="10" y="7" width="1" height="2" fill="#000" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_check_thin(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_check_thin(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M4 9 L7 12 L13 5" fill="none" stroke="#000" stroke-width="2" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_close_pixel(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_close_pixel(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 8 7" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M0 0L1 0L4 3L7 0L8 0L8 1L5 4L8 7L7 7L4 4L1 7L0 7L3 4L0 1Z" fill="#000" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_close_thin(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_close_thin(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path d="M4 4 L12 12 M12 4 L4 12" fill="none" stroke="#000" stroke-width="2" />
+    </svg>
+    """
+  end
 end

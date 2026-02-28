@@ -35,12 +35,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   def channel_list(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_channels class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>Channel List</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="Channel List">
+        <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body class="space-y-retro-8">

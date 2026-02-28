@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.LoadingSpinnerPage do
   import RetroHexChatWeb.Components.UI.LoadingSpinner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -70,14 +71,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.LoadingSpinnerPage do
       >
         <.loading_spinner text="Connection timed out">
           <.button variant="outline" size="sm" class="pointer-events-auto">
-            <:icon><span class="w-4 h-4" /></:icon>
+            <:icon><Icons.icon_retry /></:icon>
             Retry
           </.button>
         </.loading_spinner>
         <.code_example>
           &lt;.loading_spinner text="Connection timed out"&gt;
           &lt;.button variant="outline" size="sm"&gt;
-          &lt;:icon&gt;&lt;span class="w-4 h-4" /&gt;&lt;/:icon&gt;
+          &lt;:icon&gt;&lt;Icons.icon_retry /&gt;&lt;/:icon&gt;
           Retry
           &lt;/.button&gt;
           &lt;/.loading_spinner&gt;

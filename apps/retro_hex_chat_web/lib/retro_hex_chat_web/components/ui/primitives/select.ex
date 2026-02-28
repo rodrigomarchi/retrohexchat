@@ -27,6 +27,8 @@ defmodule RetroHexChatWeb.Components.UI.Select do
   """
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.Icons
+
   @doc """
   Ready to use select component with all required parts.
   """
@@ -99,7 +101,7 @@ defmodule RetroHexChatWeb.Components.UI.Select do
         data-content={@builder.label || @builder.value || @builder.placeholder}
       >
       </span>
-      <span class="h-4 w-4 opacity-50" />
+      <Icons.icon_chevron_down class="h-4 w-4 opacity-50" />
     </button>
     """
   end
@@ -208,22 +210,7 @@ defmodule RetroHexChatWeb.Components.UI.Select do
       />
       <div class="absolute top-0 left-0 w-full h-full group-hover/item:bg-accent rounded"></div>
       <span class="hidden peer-checked:block absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-        <span aria-hidden="true">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-check h-4 w-4"
-          >
-            <path d="M20 6 9 17l-5-5"></path>
-          </svg>
-        </span>
+        <Icons.icon_check_thin class="h-4 w-4" />
       </span>
       <span class="z-0 peer-focus:text-accent-foreground">{@label}</span>
     </label>

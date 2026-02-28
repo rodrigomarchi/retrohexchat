@@ -24,10 +24,12 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   attr :class, :any, default: nil
   attr :rest, :global
 
-  slot :icon
+  slot :icon, required: true, doc: "16×16 title bar icon — mandatory for Win98 consistency"
 
   @spec window_title_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def window_title_bar(assigns) do
+    assigns = assign(assigns, :controls, ensure_close(assigns.controls))
+
     ~H"""
     <div
       class={
@@ -43,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
       {@rest}
     >
       <div class="flex items-center gap-1 min-w-0">
-        <span :if={@icon != []} class="flex-shrink-0">
+        <span class="flex-shrink-0 w-[16px] h-[16px] inline-flex items-center justify-center">
           {render_slot(@icon)}
         </span>
         <span class="font-bold text-white text-xs truncate mr-6">{@title}</span>
@@ -146,4 +148,8 @@ defmodule RetroHexChatWeb.Components.UI.Window do
       "bg-no-repeat [background-position:top_2px_left_5px] [background-image:url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20width='6'%20height='9'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3E%3Cpath%20fill='%23000'%20d='M0%201h2v2H0zM1%200h4v1H1zM4%201h2v2H4zM3%203h2v1H3zM2%204h2v2H2zM2%207h2v2H2z'/%3E%3C/svg%3E\")]"
 
   defp control_bg_class(_), do: ""
+
+  defp ensure_close(controls) do
+    if :close in controls, do: controls, else: controls ++ [:close]
+  end
 end

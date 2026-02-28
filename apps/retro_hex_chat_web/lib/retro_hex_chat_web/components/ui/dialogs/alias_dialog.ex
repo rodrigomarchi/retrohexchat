@@ -59,12 +59,8 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
   def alias_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_alias class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>Alias Editor</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="Alias Editor">
+        <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body class="space-y-retro-8">

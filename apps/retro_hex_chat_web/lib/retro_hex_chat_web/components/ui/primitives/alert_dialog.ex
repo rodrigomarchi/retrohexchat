@@ -110,6 +110,7 @@ defmodule RetroHexChatWeb.Components.UI.AlertDialog do
   """
   attr(:class, :string, default: nil)
   attr(:rest, :global)
+  slot :icon, required: true, doc: "16×16 alert severity icon — mandatory for visual consistency"
   slot(:inner_block, required: true)
 
   def alert_dialog_header(assigns) do
@@ -117,13 +118,18 @@ defmodule RetroHexChatWeb.Components.UI.AlertDialog do
     <div
       class={
         classes([
-          "flex flex-col space-y-2 text-center sm:text-left",
+          "flex items-start gap-3 text-left",
           @class
         ])
       }
       {@rest}
     >
-      {render_slot(@inner_block)}
+      <span class="shrink-0 w-[16px] h-[16px] inline-flex items-center justify-center mt-0.5">
+        {render_slot(@icon)}
+      </span>
+      <div class="flex flex-col space-y-2">
+        {render_slot(@inner_block)}
+      </div>
     </div>
     """
   end

@@ -63,12 +63,8 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
 
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header>
-        <.dialog_icon>
-          <Icons.icon_dialog_custom_menus class="w-4 h-4" />
-        </.dialog_icon>
-        <.dialog_title>Custom Menus</.dialog_title>
-        <.dialog_close id={@id} />
+      <.dialog_header id={@id} title="Custom Menus">
+        <:icon><Icons.icon_dialog_custom_menus class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body class="space-y-retro-8">

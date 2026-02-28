@@ -51,8 +51,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
   defp connection_connected(assigns) do
     ~H"""
     <.alert>
+      <:icon><Icons.icon_status_signal class="w-4 h-4 text-success" /></:icon>
       <div class="flex items-center gap-retro-4">
-        <Icons.icon_status_signal class="w-4 h-4 text-success" />
         <.alert_title class="flex-1">Connected</.alert_title>
         <.button
           :if={@on_dismiss}
@@ -63,7 +63,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
           phx-click={@on_dismiss}
           aria-label="Dismiss"
         >
-          ×
+          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
         </.button>
       </div>
       <.alert_description :if={@server}>
@@ -81,6 +81,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
   defp connection_reconnecting(assigns) do
     ~H"""
     <.alert variant="destructive">
+      <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
       <div class="flex items-center gap-retro-4">
         <.loading_spinner size="sm" text="" />
         <.alert_title>Reconnecting...</.alert_title>
@@ -99,8 +100,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
   defp connection_disconnected(assigns) do
     ~H"""
     <.alert variant="destructive">
+      <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
       <div class="flex items-center gap-retro-4">
-        <Icons.icon_close class="w-4 h-4" />
         <.alert_title>Disconnected</.alert_title>
       </div>
       <.alert_description>
