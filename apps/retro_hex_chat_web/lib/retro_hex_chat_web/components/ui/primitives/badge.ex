@@ -3,17 +3,19 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
   use RetroHexChatWeb.Component
 
   @doc """
-  Renders a badge component
+  Renders a badge — a small, non-interactive status label styled as a
+  Win98 status-bar panel (sunken inset, compact).
 
   ## Examples
 
-      <.badge>Badge</.badge>
-      <.badge variant="destructive">Badge</.badge>
+      <.badge>Default</.badge>
+      <.badge variant="destructive">Error</.badge>
+      <.badge variant="success">Online</.badge>
   """
   attr :class, :string, default: nil
 
   attr :variant, :string,
-    values: ~w(default secondary destructive outline),
+    values: ~w(default secondary destructive outline success),
     default: "default",
     doc: "the badge variant style"
 
@@ -24,10 +26,10 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
     assigns = assign(assigns, :variant_class, variant(assigns))
 
     ~H"""
-    <div
+    <span
       class={
         classes([
-          "inline-flex items-center border-none shadow-retro-raised px-2.5 py-0.5 text-xs font-semibold focus:outline focus:outline-2 focus:outline-black",
+          "inline-flex items-center shadow-retro-field px-1.5 py-px text-[11px] font-bold leading-tight select-none",
           @variant_class,
           @class
         ])
@@ -35,18 +37,17 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
       {@rest}
     >
       {render_slot(@inner_block)}
-    </div>
+    </span>
     """
   end
 
   @variants %{
     variant: %{
-      "default" => "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-      "secondary" =>
-        "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-      "destructive" =>
-        "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-      "outline" => "text-foreground"
+      "default" => "bg-white text-[#000080]",
+      "secondary" => "bg-white text-[#000]",
+      "destructive" => "bg-white text-[#FF0000]",
+      "outline" => "bg-transparent text-foreground",
+      "success" => "bg-white text-[#008000]"
     }
   }
 
