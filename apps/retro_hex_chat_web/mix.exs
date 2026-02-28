@@ -84,13 +84,13 @@ defmodule RetroHexChatWeb.MixProject do
         "compile",
         "esbuild retro_hex_chat_web",
         "esbuild retro_hex_chat_web_css",
-        "esbuild retro_hex_chat_web_showcase_js",
+        "esbuild retro_hex_chat_web_retrohex_content_js",
         "cmd npx tailwindcss -c assets/tailwind.config.js -i assets/css/retrohex.css -o priv/static/assets/css/retrohex.css"
       ],
       "assets.deploy": [
         "esbuild retro_hex_chat_web --minify",
         "esbuild retro_hex_chat_web_css --minify",
-        "esbuild retro_hex_chat_web_showcase_js --minify",
+        "esbuild retro_hex_chat_web_retrohex_content_js --minify",
         "cmd npx tailwindcss -c assets/tailwind.config.js -i assets/css/retrohex.css -o priv/static/assets/css/retrohex.css --minify",
         "phx.digest"
       ]
