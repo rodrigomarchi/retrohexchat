@@ -22,22 +22,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.AppHeaderPage do
       <h2 class="text-lg font-bold mb-3">App Header</h2>
 
       <.showcase_card
-        title="Hex Logo Variant"
-        description="Compact HEX logo for narrow layouts."
+        title="Default"
+        description="Responsive header with hex stone logo, app title (hidden on mobile), and toolbar buttons."
       >
-        <.app_header logo_variant={:hex} />
+        <.app_header />
         <.code_example>
-          &lt;.app_header logo_variant={:hex} /&gt;
-        </.code_example>
-      </.showcase_card>
-
-      <.showcase_card
-        title="Full Logo Variant"
-        description="Full RetroHexChat wordmark for wider layouts."
-      >
-        <.app_header logo_variant={:full} />
-        <.code_example>
-          &lt;.app_header logo_variant={:full} /&gt;
+          &lt;.app_header /&gt;
         </.code_example>
       </.showcase_card>
 
@@ -45,16 +35,19 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.AppHeaderPage do
         title="With Logo Link"
         description="Logo becomes a clickable link when logo_href is provided."
       >
-        <.app_header logo_variant={:hex} logo_href="/" />
+        <.app_header logo_href="/" />
+        <.code_example>
+          &lt;.app_header logo_href="/" /&gt;
+        </.code_example>
       </.showcase_card>
 
       <.showcase_card
         title="With Panels Slot"
-        description="Toolbar or navigation content rendered in the panels slot below the title bar."
+        description="Extra toolbar content rendered via the panels slot."
       >
-        <.app_header logo_variant={:full}>
+        <.app_header>
           <:panels>
-            <span class="text-xs px-retro-4 py-[2px] shadow-retro-raised bg-surface cursor-pointer hover:bg-gray-100">
+            <span class="text-xs px-retro-4 py-[2px] shadow-retro-raised bg-surface cursor-pointer hover:bg-gray-100 ml-2">
               File
             </span>
             <span class="text-xs px-retro-4 py-[2px] shadow-retro-raised bg-surface cursor-pointer hover:bg-gray-100">
@@ -63,17 +56,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.AppHeaderPage do
             <span class="text-xs px-retro-4 py-[2px] shadow-retro-raised bg-surface cursor-pointer hover:bg-gray-100">
               View
             </span>
-            <span class="text-xs px-retro-4 py-[2px] shadow-retro-raised bg-surface cursor-pointer hover:bg-gray-100">
-              Help
-            </span>
           </:panels>
         </.app_header>
         <.code_example>
-          &lt;.app_header logo_variant={:full}&gt;
+          &lt;.app_header&gt;
           &lt;:panels&gt;
           &lt;span&gt;File&lt;/span&gt;
           &lt;span&gt;Edit&lt;/span&gt;
-          &lt;/panels&gt;
+          &lt;/:panels&gt;
           &lt;/.app_header&gt;
         </.code_example>
       </.showcase_card>

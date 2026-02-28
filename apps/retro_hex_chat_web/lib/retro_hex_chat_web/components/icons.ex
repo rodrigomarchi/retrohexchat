@@ -294,6 +294,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_joystick(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_rss(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_tag(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_hex_stone(assigns), to: RetroHexChatWeb.Icons.Symbols
 
   # ── Formatting ─────────────────────────────────────────
   defdelegate icon_fmt_bold(assigns), to: RetroHexChatWeb.Icons.Formatting

@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
   use Phoenix.Component
 
   import RetroHexChatWeb.Components.UI.TreeView
+  import RetroHexChatWeb.Components.UI.AppHeader
 
   alias RetroHexChatWeb.Icons
 
@@ -152,17 +153,19 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     assigns = assign(assigns, :nav_items, nav_items)
 
     ~H"""
-    <div class="min-h-screen bg-desktop font-system text-text">
-      <div class="m-4">
+    <div class="min-h-screen bg-desktop font-system text-text flex flex-col">
+      <.app_header logo_href="/showcase" />
+
+      <div class="flex-1 m-4 mt-2">
         <div class="shadow-retro-window bg-surface p-1">
           <div class="bg-gradient-to-r from-primary to-highlight-light text-white px-2 py-1 font-bold text-xs">
-            RetroHexChat — Component Showcase
+            Component Showcase
           </div>
 
           <div class="flex p-1">
             <nav
               class="shadow-retro-sunken bg-white w-48 mr-2 shrink-0 overflow-y-auto p-1"
-              style="max-height: calc(100vh - 80px)"
+              style="max-height: calc(100vh - 120px)"
             >
               <.tree_view class="!shadow-none !p-0 !bg-transparent">
                 <.link navigate="/showcase" class="block no-underline">
@@ -193,7 +196,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
 
             <div
               class="shadow-retro-sunken bg-gray-100 flex-1 p-3 overflow-y-auto"
-              style="max-height: calc(100vh - 80px)"
+              style="max-height: calc(100vh - 120px)"
             >
               {render_slot(@inner_block)}
             </div>

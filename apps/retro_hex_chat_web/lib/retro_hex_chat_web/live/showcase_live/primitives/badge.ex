@@ -21,7 +21,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
     <.showcase_layout active_page={@active_page}>
       <h2 class="text-lg font-bold mb-3">Badge</h2>
 
-      <.showcase_card title="Variants" description="All badge variants — sunken status-bar panel style.">
+      <.showcase_card
+        title="Variants"
+        description="All badge variants — sunken status-bar panel style."
+      >
         <div class="flex flex-wrap items-center gap-2">
           <.badge>Default</.badge>
           <.badge variant="secondary">Secondary</.badge>
@@ -38,7 +41,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
         </.code_example>
       </.showcase_card>
 
-      <.showcase_card title="Status Indicators" description="Badges as connection or session state labels.">
+      <.showcase_card
+        title="Status Indicators"
+        description="Badges as connection or session state labels."
+      >
         <div class="flex flex-wrap items-center gap-2">
           <.badge variant="success">Connected</.badge>
           <.badge variant="secondary">Waiting</.badge>
@@ -58,7 +64,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
         </div>
       </.showcase_card>
 
-      <.showcase_card title="Metadata Tags" description="Badges as small metadata tags on channels or files.">
+      <.showcase_card
+        title="Metadata Tags"
+        description="Badges as small metadata tags on channels or files."
+      >
         <div class="flex flex-wrap items-center gap-2">
           <.badge variant="outline">+nt</.badge>
           <.badge variant="outline">+s</.badge>

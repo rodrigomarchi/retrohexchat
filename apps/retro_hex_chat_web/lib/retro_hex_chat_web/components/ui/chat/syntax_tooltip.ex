@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.SyntaxTooltip do
     >
       <%!-- Header: command + param list --%>
       <div class="flex flex-wrap items-center gap-retro-2 font-mono font-bold mb-retro-2">
-        <span class="text-title-bar-text bg-title-bar px-1">/{@tooltip.command}</span>
+        <span class="shadow-retro-field bg-white text-[#000080] px-1">/{@tooltip.command}</span>
         <.tooltip_params params={@tooltip.params} current_index={@tooltip.current_index} />
       </div>
 

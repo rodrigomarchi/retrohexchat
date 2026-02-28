@@ -16,6 +16,8 @@ defmodule RetroHexChatWeb.Components.UI.Toast do
   """
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.Icons
+
   # ── Container ──────────────────────────────────────────
 
   @doc """
@@ -82,6 +84,9 @@ defmodule RetroHexChatWeb.Components.UI.Toast do
     >
       <div class="flex gap-retro-8 p-retro-8">
         <div class={["w-[3px] shrink-0 self-stretch", accent_class(@variant)]} />
+        <span class="shrink-0 w-[16px] h-[16px] inline-flex items-center justify-center self-start mt-px">
+          {variant_icon(assigns)}
+        </span>
         <div class="flex-1 min-w-0">
           {render_slot(@inner_block)}
         </div>
@@ -101,12 +106,7 @@ defmodule RetroHexChatWeb.Components.UI.Toast do
           }
           aria-label="Dismiss"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 7" class="w-[8px] h-[7px]">
-            <path
-              d="M0 0L1 0L4 3L7 0L8 0L8 1L5 4L8 7L7 7L4 4L1 7L0 7L3 4L0 1Z"
-              fill="#000"
-            />
-          </svg>
+          <Icons.icon_close_pixel class="w-[8px] h-[7px]" />
         </button>
       </div>
     </div>
@@ -164,6 +164,21 @@ defmodule RetroHexChatWeb.Components.UI.Toast do
   defp position_classes("top-left"), do: "top-retro-8 left-retro-8 items-start"
   defp position_classes("bottom-right"), do: "bottom-[28px] right-retro-8 items-end"
   defp position_classes("bottom-left"), do: "bottom-[28px] left-retro-8 items-start"
+
+  defp variant_icon(%{variant: "success"} = assigns),
+    do: ~H|<Icons.icon_btn_ok class="w-4 h-4" />|
+
+  defp variant_icon(%{variant: "error"} = assigns),
+    do: ~H|<Icons.icon_btn_cancel class="w-4 h-4" />|
+
+  defp variant_icon(%{variant: "warning"} = assigns),
+    do: ~H|<Icons.icon_warning class="w-4 h-4" />|
+
+  defp variant_icon(%{variant: "info"} = assigns),
+    do: ~H|<Icons.icon_btn_info class="w-4 h-4" />|
+
+  defp variant_icon(assigns),
+    do: ~H|<Icons.icon_tab_status class="w-4 h-4" />|
 
   defp accent_class("success"), do: "bg-success"
   defp accent_class("error"), do: "bg-error"

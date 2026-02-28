@@ -105,12 +105,9 @@ defmodule RetroHexChatWeb.ComponentHelpers do
     variant: %{
       "default" =>
         "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken ring-1 ring-[#000]",
-      "destructive" =>
-        "bg-surface text-[#FF0000] shadow-retro-raised active:shadow-retro-sunken",
-      "outline" =>
-        "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken",
-      "secondary" =>
-        "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken",
+      "destructive" => "bg-surface text-[#FF0000] shadow-retro-raised active:shadow-retro-sunken",
+      "outline" => "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken",
+      "secondary" => "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken",
       "ghost" =>
         "bg-transparent text-foreground shadow-none hover:shadow-retro-raised hover:bg-surface active:shadow-retro-sunken",
       "link" => "text-[#000080] underline-offset-4 hover:underline"

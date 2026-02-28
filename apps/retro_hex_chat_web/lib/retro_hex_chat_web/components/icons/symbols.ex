@@ -477,6 +477,64 @@ defmodule RetroHexChatWeb.Icons.Symbols do
     """
   end
 
+  # -- Hex Stone Logo (256×256) --
+
+  attr :class, :string, default: nil
+
+  @spec icon_hex_stone(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_hex_stone(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 256 256" shape-rendering="crispEdges" aria-hidden="true">
+      <%!-- 16px grid (256/16 = 16px per cell) --%>
+      <%!-- Drop shadow (offset 4px) --%>
+      <polygon
+        points="132,12 228,68 228,180 132,236 36,180 36,68"
+        fill="#000"
+        transform="translate(4,4)"
+      />
+      <%!-- Outer hexagon — dark teal border --%>
+      <polygon
+        points="132,12 228,68 228,180 132,236 36,180 36,68"
+        fill="#006060"
+        stroke="#000"
+        stroke-width="4"
+      />
+      <%!-- Inner hexagon — main teal fill --%>
+      <polygon
+        points="132,32 212,76 212,172 132,216 52,172 52,76"
+        fill="#008080"
+      />
+      <%!-- Top-left bevel highlight --%>
+      <polygon points="132,32 212,76 132,76 52,76" fill="#00AAAA" />
+      <polygon points="132,32 52,76 52,124" fill="#00AAAA" />
+      <%!-- Bottom-right bevel shadow --%>
+      <polygon points="132,216 212,172 212,124" fill="#005050" />
+      <polygon points="132,216 52,172 212,172" fill="#005050" />
+      <%!-- Inner gem facets --%>
+      <polygon
+        points="132,64 180,92 180,156 132,184 84,156 84,92"
+        fill="#00BBBB"
+        stroke="#006060"
+        stroke-width="2"
+      />
+      <%!-- Gem center highlight --%>
+      <polygon
+        points="132,84 160,100 160,148 132,164 104,148 104,100"
+        fill="#00DDDD"
+      />
+      <%!-- Gem top facet (brightest) --%>
+      <polygon points="132,84 160,100 132,100 104,100" fill="#00FFFF" />
+      <%!-- Gem center line --%>
+      <line x1="132" y1="84" x2="132" y2="164" stroke="#008080" stroke-width="2" />
+      <line x1="104" y1="100" x2="160" y2="148" stroke="#008080" stroke-width="2" />
+      <line x1="160" y1="100" x2="104" y2="148" stroke="#008080" stroke-width="2" />
+      <%!-- Specular highlight (top-left corner) --%>
+      <rect x="96" y="88" width="16" height="8" fill="#fff" opacity="0.4" />
+      <rect x="88" y="96" width="8" height="12" fill="#fff" opacity="0.3" />
+    </svg>
+    """
+  end
+
   # -- Button: Star (16×16) --
 
   attr :class, :string, default: nil
