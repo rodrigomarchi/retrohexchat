@@ -133,14 +133,14 @@ defmodule RetroHexChatWeb.Components.UI.Select do
       class={
         classes([
           "select-content absolute hidden",
-          "z-50 max-h-96 min-w-[8rem] overflow-hidden border-none shadow-retro-window bg-popover text-popover-foreground",
+          "z-50 left-0 w-full max-h-96 overflow-hidden border-none shadow-retro-window bg-surface p-[3px]",
           @position_class,
           @class
         ])
       }
       {@rest}
     >
-      <div class="relative w-full p-1">
+      <div class="shadow-retro-field bg-white p-[2px]">
         {render_slot(@inner_block)}
       </div>
     </.focus_wrap>
@@ -165,7 +165,7 @@ defmodule RetroHexChatWeb.Components.UI.Select do
 
   def select_label(assigns) do
     ~H"""
-    <div class={classes(["py-1.5 pl-8 pr-2 text-sm font-semibold", @class])} {@rest}>
+    <div class={classes(["px-3 py-1 text-xs font-bold select-none", @class])} {@rest}>
       {render_slot(@inner_block)}
     </div>
     """
@@ -190,7 +190,7 @@ defmodule RetroHexChatWeb.Components.UI.Select do
       class={
         classes([
           "group/item",
-          "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+          "relative flex w-full cursor-default select-none items-center py-1 pl-6 pr-2 text-sm outline-none hover:bg-primary hover:text-white data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
           @class
         ])
       }
@@ -208,18 +208,17 @@ defmodule RetroHexChatWeb.Components.UI.Select do
         phx-key="Escape"
         phx-keydown={JS.exec("x-hide-select", to: "##{@builder.id}")}
       />
-      <div class="absolute top-0 left-0 w-full h-full group-hover/item:bg-accent rounded"></div>
-      <span class="hidden peer-checked:block absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-        <Icons.icon_check_thin class="h-4 w-4" />
+      <span class="hidden peer-checked:inline-flex absolute left-1 w-4 h-4 items-center justify-center">
+        <Icons.icon_check_thin class="h-3.5 w-3.5" />
       </span>
-      <span class="z-0 peer-focus:text-accent-foreground">{@label}</span>
+      <span class="z-0">{@label}</span>
     </label>
     """
   end
 
   def select_separator(assigns) do
     ~H"""
-    <div class={classes(["-mx-1 my-1 h-px bg-muted"])}></div>
+    <div role="separator" class={classes(["border-t border-separator my-[2px]"])} />
     """
   end
 
