@@ -1,0 +1,273 @@
+defmodule RetroHexChatWeb.ShowcaseLive.Layout.MenuPage do
+  @moduledoc false
+  use Phoenix.LiveView
+
+  use Phoenix.VerifiedRoutes,
+    endpoint: RetroHexChatWeb.Endpoint,
+    router: RetroHexChatWeb.Router,
+    statics: RetroHexChatWeb.static_paths()
+
+  alias RetroHexChatWeb.Icons
+
+  import RetroHexChatWeb.Components.UI.Menu
+  import RetroHexChatWeb.ShowcaseHelpers
+
+  @impl true
+  def mount(_params, _session, socket) do
+    {:ok, assign(socket, page_title: "Menu", active_page: "menu")}
+  end
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <.showcase_layout active_page={@active_page}>
+      <h2 class="text-lg font-bold mb-3">Menu</h2>
+
+      <.showcase_card title="Basic Menu" description="A simple context menu with items and icons.">
+        <div class="inline-block">
+          <.menu>
+            <.menu_item>
+              <:icon><Icons.icon_btn_channel_list class="w-[16px] h-[16px]" /></:icon>
+              Channel List
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_toggle_conversations class="w-[16px] h-[16px]" /></:icon>
+              Toggle Conversations
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_toggle_nicklist class="w-[16px] h-[16px]" /></:icon>
+              Toggle Nicklist
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_find class="w-[16px] h-[16px]" /></:icon>
+              Find
+            </.menu_item>
+          </.menu>
+        </div>
+        <.code_example>
+          &lt;.menu&gt;
+          &lt;.menu_item&gt;
+          &lt;:icon&gt;&lt;Icons.icon_btn_channel_list class="w-[16px] h-[16px]" /&gt;&lt;/:icon&gt;
+          Channel List
+          &lt;/.menu_item&gt;
+          &lt;/.menu&gt;
+        </.code_example>
+      </.showcase_card>
+
+      <.showcase_card title="With Separators" description="Menu items grouped by separators.">
+        <div class="inline-block">
+          <.menu>
+            <.menu_item>
+              <:icon><Icons.icon_btn_channel_list class="w-[16px] h-[16px]" /></:icon>
+              Channel List
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_toggle_conversations class="w-[16px] h-[16px]" /></:icon>
+              Toggle Conversations
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_toggle_nicklist class="w-[16px] h-[16px]" /></:icon>
+              Toggle Nicklist
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_find class="w-[16px] h-[16px]" /></:icon>
+              Find
+            </.menu_item>
+            <.menu_separator />
+            <.menu_item>
+              <:icon><Icons.icon_btn_address_book class="w-[16px] h-[16px]" /></:icon>
+              Address Book
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_highlight_words class="w-[16px] h-[16px]" /></:icon>
+              Highlight Words
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_ignore_list class="w-[16px] h-[16px]" /></:icon>
+              Ignore List
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_url_catcher class="w-[16px] h-[16px]" /></:icon>
+              URL Catcher
+            </.menu_item>
+            <.menu_separator />
+            <.menu_item>
+              <:icon><Icons.icon_btn_settings class="w-[16px] h-[16px]" /></:icon>
+              Settings
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
+              Bot Management
+            </.menu_item>
+          </.menu>
+        </div>
+        <.code_example>
+          &lt;.menu_item&gt;
+          &lt;:icon&gt;&lt;Icons.icon_btn_find class="w-[16px] h-[16px]" /&gt;&lt;/:icon&gt;
+          Find
+          &lt;/.menu_item&gt;
+          &lt;.menu_separator /&gt;
+          &lt;.menu_item&gt;
+          &lt;:icon&gt;&lt;Icons.icon_btn_address_book class="w-[16px] h-[16px]" /&gt;&lt;/:icon&gt;
+          Address Book
+          &lt;/.menu_item&gt;
+        </.code_example>
+      </.showcase_card>
+
+      <.showcase_card title="With Shortcuts" description="Menu items with keyboard shortcut hints.">
+        <div class="inline-block">
+          <.menu>
+            <.menu_item>
+              <:icon><Icons.icon_btn_edit class="w-[16px] h-[16px]" /></:icon>
+              Cut
+              <:shortcut>Ctrl+X</:shortcut>
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_copy class="w-[16px] h-[16px]" /></:icon>
+              Copy
+              <:shortcut>Ctrl+C</:shortcut>
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_dialog_paste class="w-[16px] h-[16px]" /></:icon>
+              Paste
+              <:shortcut>Ctrl+V</:shortcut>
+            </.menu_item>
+            <.menu_separator />
+            <.menu_item>
+              <:icon><Icons.icon_btn_search class="w-[16px] h-[16px]" /></:icon>
+              Select All
+              <:shortcut>Ctrl+A</:shortcut>
+            </.menu_item>
+          </.menu>
+        </div>
+        <.code_example>
+          &lt;.menu_item&gt;
+          &lt;:icon&gt;&lt;Icons.icon_copy class="w-[16px] h-[16px]" /&gt;&lt;/:icon&gt;
+          Copy
+          &lt;:shortcut&gt;Ctrl+C&lt;/:shortcut&gt;
+          &lt;/.menu_item&gt;
+        </.code_example>
+      </.showcase_card>
+
+      <.showcase_card title="Disabled Items" description="Some menu items can be disabled.">
+        <div class="inline-block">
+          <.menu>
+            <.menu_item>
+              <:icon><Icons.icon_folder class="w-[16px] h-[16px]" /></:icon>
+              Open
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_save class="w-[16px] h-[16px]" /></:icon>
+              Save
+            </.menu_item>
+            <.menu_item disabled>
+              <:icon><Icons.icon_btn_save class="w-[16px] h-[16px]" /></:icon>
+              Save As...
+            </.menu_item>
+            <.menu_separator />
+            <.menu_item disabled>
+              <:icon><Icons.icon_notepad class="w-[16px] h-[16px]" /></:icon>
+              Print
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_close class="w-[16px] h-[16px]" /></:icon>
+              Exit
+            </.menu_item>
+          </.menu>
+        </div>
+        <.code_example>
+          &lt;.menu_item disabled&gt;
+          &lt;:icon&gt;&lt;Icons.icon_btn_save class="w-[16px] h-[16px]" /&gt;&lt;/:icon&gt;
+          Save As...
+          &lt;/.menu_item&gt;
+        </.code_example>
+      </.showcase_card>
+
+      <.showcase_card
+        title="Platform-Style Tools Menu"
+        description="Replicating the platform's Tools dropdown menu with icons."
+      >
+        <div class="inline-block">
+          <.menu class="min-w-[200px]">
+            <.menu_item>
+              <:icon><Icons.icon_btn_channel_list class="w-[16px] h-[16px]" /></:icon>
+              Channel List
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_toggle_conversations class="w-[16px] h-[16px]" /></:icon>
+              Toggle Conversations
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_toggle_nicklist class="w-[16px] h-[16px]" /></:icon>
+              Toggle Nicklist
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_find class="w-[16px] h-[16px]" /></:icon>
+              Find
+            </.menu_item>
+            <.menu_separator />
+            <.menu_item>
+              <:icon><Icons.icon_btn_address_book class="w-[16px] h-[16px]" /></:icon>
+              Address Book
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_highlight_words class="w-[16px] h-[16px]" /></:icon>
+              Highlight Words
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_ignore_list class="w-[16px] h-[16px]" /></:icon>
+              Ignore List
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_url_catcher class="w-[16px] h-[16px]" /></:icon>
+              URL Catcher
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_channel_central class="w-[16px] h-[16px]" /></:icon>
+              Channel Central
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_perform class="w-[16px] h-[16px]" /></:icon>
+              Perform
+            </.menu_item>
+            <.menu_separator />
+            <.menu_item>
+              <:icon><Icons.icon_btn_sounds class="w-[16px] h-[16px]" /></:icon>
+              Sounds
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_ctcp class="w-[16px] h-[16px]" /></:icon>
+              CTCP Settings
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_flood_protection class="w-[16px] h-[16px]" /></:icon>
+              Flood Protection
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_alias_editor class="w-[16px] h-[16px]" /></:icon>
+              Alias Editor
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_custom_menus class="w-[16px] h-[16px]" /></:icon>
+              Custom Menus
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_auto_respond class="w-[16px] h-[16px]" /></:icon>
+              Auto-Respond
+            </.menu_item>
+            <.menu_separator />
+            <.menu_item>
+              <:icon><Icons.icon_btn_settings class="w-[16px] h-[16px]" /></:icon>
+              Settings
+            </.menu_item>
+            <.menu_item>
+              <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
+              Bot Management
+            </.menu_item>
+          </.menu>
+        </div>
+      </.showcase_card>
+    </.showcase_layout>
+    """
+  end
+end

@@ -22,26 +22,26 @@ retro_hex_chat_web/live/icons_live.ex:style=
 retro_hex_chat_web/components/diagrams.ex:font-style="italic"
 
 # SaladUI generated components — inline styles required by component behavior
-retro_hex_chat_web/components/ui/avatar.ex:style="display:none"
-retro_hex_chat_web/components/ui/radio_group.ex:style="outline: none;"
-retro_hex_chat_web/components/ui/scroll_area.ex:style="min-width: 100%;"
-retro_hex_chat_web/components/ui/slider.ex:style="width: calc(100% + 20px)"
+retro_hex_chat_web/components/ui/primitives/avatar.ex:style="display:none"
+retro_hex_chat_web/components/ui/primitives/radio_group.ex:style="outline: none;"
+retro_hex_chat_web/components/ui/layout/scroll_area.ex:style="min-width: 100%;"
+retro_hex_chat_web/components/ui/primitives/slider.ex:style="width: calc(100% + 20px)"
 
 # Showcase layout: fixed height sidebar and content area
 retro_hex_chat_web/components/showcase_helpers.ex:max-height: calc(100vh - 80px)
 
 # Hover card: dynamic absolute positioning from x/y attrs
-retro_hex_chat_web/components/ui/hover_card.ex:style={position_style(
+retro_hex_chat_web/components/ui/chat/hover_card.ex:style={position_style(
 
 # Chat context menu: dynamic absolute positioning from x/y attrs
-retro_hex_chat_web/components/ui/chat_context_menu.ex:style={position_style(
+retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:style={position_style(
 
 # Conversations context menu: dynamic absolute positioning from x/y attrs
-retro_hex_chat_web/components/ui/conversations_context_menu.ex:style={position_style(
+retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:style={position_style(
 
 # Showcase scroll area page: fixed widths for overflow demo
-retro_hex_chat_web/live/showcase_live/scroll_area_page.ex:style="width: 1200px;"
-retro_hex_chat_web/live/showcase_live/scroll_area_page.ex:style="width: 800px;"
+retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:style="width: 1200px;"
+retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:style="width: 800px;"
 
 [style-helpers]
 
@@ -55,10 +55,10 @@ retro_hex_chat_web/components/conversations.ex:defp nick_style(
 retro_hex_chat_web/components/notify_list_window.ex:defp notify_nick_style(
 
 # Hover card: three clauses of position_style/2
-retro_hex_chat_web/components/ui/hover_card.ex:defp position_style(
+retro_hex_chat_web/components/ui/chat/hover_card.ex:defp position_style(
 
 # Chat context menu: position_style/2
-retro_hex_chat_web/components/ui/chat_context_menu.ex:defp position_style(
+retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:defp position_style(
 
 # Conversations context menu: position_style/2
-retro_hex_chat_web/components/ui/conversations_context_menu.ex:defp position_style(
+retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:defp position_style(

@@ -9,106 +9,316 @@ defmodule RetroHexChatWeb.ShowcaseLive.Index do
 
   import RetroHexChatWeb.ShowcaseHelpers
 
+  alias RetroHexChatWeb.Icons
+
+  @groups [
+    {"Primitives", :icon_btn_ok, 23,
+     "SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other atomic form controls."},
+    {"Layout", :icon_group_view, 11,
+     "Structural containers — dialogs, tabs, tables, menus, tree views, windows, and scroll areas."},
+    {"Chat", :icon_chat, 21,
+     "Chat-specific components — messages, nicklist, emoji picker, formatting toolbar, context menus, and more."},
+    {"Shell", :icon_laptop, 7,
+     "Win98 app shell composites — toolbar app, status bar app, app header, config form, and empty states."},
+    {"Dialogs", :icon_dialog_options, 25,
+     "Complex dialog composites — channel settings, perform, address book, sound settings, and 20+ more."},
+    {"P2P", :icon_p2p, 3,
+     "Peer-to-peer session components — P2P lobby, file transfer, and media controls."},
+    {"Games", :icon_joystick, 5,
+     "Arcade and solo game components — game lobby, game canvas, solo lobby, and arcade frame."},
+    {"Assets", :icon_folder, 3, "Icons catalog, SVG diagrams, and design tokens reference."}
+  ]
+
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Design System", active_page: "index")}
+    {:ok, assign(socket, page_title: "Component Showcase", active_page: "index")}
   end
 
   @impl true
   def render(assigns) do
+    assigns = assign(assigns, :groups, @groups)
+
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Design System</h2>
-
-      <.showcase_card title="Colors" description="Semantic color tokens mapped to retro palette.">
-        <div class="grid grid-cols-4 gap-2">
-          <div :for={
-            {name, class} <- [
-              {"Primary", "bg-primary text-white"},
-              {"Secondary", "bg-secondary"},
-              {"Destructive", "bg-destructive text-white"},
-              {"Surface", "bg-surface"},
-              {"Desktop", "bg-desktop text-white"},
-              {"Accent", "bg-accent"},
-              {"Muted", "bg-muted"},
-              {"Canvas BG", "bg-canvas-bg text-canvas-fg"}
-            ]
-          }>
-            <div class={["p-2 text-xs text-center shadow-retro-raised", class]}>
-              {name}
+      <div class="space-y-4">
+        <%!-- Hero header --%>
+        <div class="shadow-retro-window bg-surface p-1">
+          <div class="bg-gradient-to-r from-primary to-highlight-light text-white px-3 py-2 font-bold text-sm flex items-center gap-2">
+            <Icons.icon_palette class="w-5 h-5" />
+            RetroHexChat Component Showcase
+          </div>
+          <div class="p-4 space-y-3">
+            <p class="text-sm">
+              Interactive catalog of all UI components used in RetroHexChat.
+              Each component is a reusable, self-contained building block with generic
+              callbacks — no hardcoded event names.
+            </p>
+            <div class="flex items-center gap-4 text-xs text-muted-foreground">
+              <span class="flex items-center gap-1">
+                <Icons.icon_group_view class="w-3 h-3" /> 98 components
+              </span>
+              <span class="flex items-center gap-1">
+                <Icons.icon_folder class="w-3 h-3" /> 8 categories
+              </span>
+              <span class="flex items-center gap-1">
+                <Icons.icon_code class="w-3 h-3" /> Live examples + code
+              </span>
             </div>
           </div>
         </div>
-      </.showcase_card>
 
-      <.showcase_card title="Typography" description="Font sizes using Source Code Pro monospace.">
-        <div class="space-y-2">
-          <p class="text-xs">text-xs — 12px — Caption text</p>
-          <p class="text-sm">text-sm — 14px — Small text</p>
-          <p class="text-base">text-base — 16px — Body text</p>
-          <p class="text-lg">text-lg — 18px — Large text</p>
-          <p class="text-xl">text-xl — 22px — Heading</p>
-          <p class="text-2xl">text-2xl — 26px — Title</p>
-        </div>
-        <.code_example>
-          &lt;p class="text-xs"&gt;Caption text&lt;/p&gt;
-          &lt;p class="text-base"&gt;Body text&lt;/p&gt;
-          &lt;p class="text-xl"&gt;Heading&lt;/p&gt;
-        </.code_example>
-      </.showcase_card>
-
-      <.showcase_card title="Spacing" description="Retro spacing tokens (retro-1 through retro-32).">
-        <div class="space-y-1">
-          <div :for={
-            {name, class} <- [
-              {"retro-1 (1px)", "w-[1px]"},
-              {"retro-2 (2px)", "w-[2px]"},
-              {"retro-4 (4px)", "w-retro-4"},
-              {"retro-8 (8px)", "w-retro-8"},
-              {"retro-16 (16px)", "w-retro-16"},
-              {"retro-24 (24px)", "w-retro-24"},
-              {"retro-32 (32px)", "w-retro-32"}
-            ]
-          }>
-            <div class="flex items-center gap-2">
-              <div class={["h-3 bg-primary", class]} />
-              <span class="text-xs">{name}</span>
-            </div>
-          </div>
-        </div>
-        <.code_example>
-          &lt;div class="p-retro-8"&gt;8px padding&lt;/div&gt;
-          &lt;div class="m-retro-16"&gt;16px margin&lt;/div&gt;
-          &lt;div class="gap-retro-4"&gt;4px gap&lt;/div&gt;
-        </.code_example>
-      </.showcase_card>
-
-      <.showcase_card
-        title="Shadows (3D Borders)"
-        description="Win98-style inset box shadows for retro depth."
-      >
+        <%!-- Category grid --%>
         <div class="grid grid-cols-2 gap-3">
-          <div :for={
-            {name, class} <- [
-              {"shadow-retro-raised", "shadow-retro-raised"},
-              {"shadow-retro-sunken", "shadow-retro-sunken"},
-              {"shadow-retro-window", "shadow-retro-window"},
-              {"shadow-retro-field", "shadow-retro-field"},
-              {"shadow-retro-status", "shadow-retro-status"},
-              {"shadow-retro-tab", "shadow-retro-tab"}
-            ]
-          }>
-            <div class={["bg-surface p-3 text-xs text-center", class]}>
-              {name}
+          <div
+            :for={{label, icon_fn, count, description} <- @groups}
+            class="shadow-retro-raised bg-surface p-3 space-y-2"
+          >
+            <div class="flex items-center gap-2">
+              <span class="w-5 h-5 flex-shrink-0 inline-flex items-center justify-center">
+                {apply(Icons, icon_fn, [%{class: "w-4 h-4"}])}
+              </span>
+              <span class="text-sm font-bold">{label}</span>
+              <span class="text-xs text-muted-foreground ml-auto">{count}</span>
             </div>
+            <p class="text-xs text-muted-foreground">{description}</p>
           </div>
         </div>
-        <.code_example>
-          &lt;div class="shadow-retro-raised bg-surface p-3"&gt;Raised&lt;/div&gt;
-          &lt;div class="shadow-retro-sunken bg-surface p-3"&gt;Sunken&lt;/div&gt;
-          &lt;div class="shadow-retro-window bg-surface p-3"&gt;Window&lt;/div&gt;
-        </.code_example>
-      </.showcase_card>
+
+        <%!-- Design tokens --%>
+        <.showcase_card title="Colors" description="Semantic color tokens mapped to retro palette.">
+          <div class="grid grid-cols-4 gap-2">
+            <div :for={
+              {name, class} <- [
+                {"Primary", "bg-primary text-white"},
+                {"Secondary", "bg-secondary"},
+                {"Destructive", "bg-destructive text-white"},
+                {"Surface", "bg-surface"},
+                {"Desktop", "bg-desktop text-white"},
+                {"Accent", "bg-accent"},
+                {"Muted", "bg-muted"},
+                {"Canvas BG", "bg-canvas-bg text-canvas-fg"}
+              ]
+            }>
+              <div class={["p-2 text-xs text-center shadow-retro-raised", class]}>
+                {name}
+              </div>
+            </div>
+          </div>
+        </.showcase_card>
+
+        <.showcase_card title="Typography" description="Font sizes using Source Code Pro monospace.">
+          <div class="space-y-2">
+            <p class="text-xs">text-xs — 12px — Caption text</p>
+            <p class="text-sm">text-sm — 14px — Small text</p>
+            <p class="text-base">text-base — 16px — Body text</p>
+            <p class="text-lg">text-lg — 18px — Large text</p>
+            <p class="text-xl">text-xl — 22px — Heading</p>
+            <p class="text-2xl">text-2xl — 26px — Title</p>
+          </div>
+        </.showcase_card>
+
+        <.showcase_card
+          title="Shadows (3D Borders)"
+          description="Win98-style inset box shadows for retro depth."
+        >
+          <div class="grid grid-cols-3 gap-3">
+            <div :for={
+              {name, class} <- [
+                {"raised", "shadow-retro-raised"},
+                {"sunken", "shadow-retro-sunken"},
+                {"window", "shadow-retro-window"},
+                {"field", "shadow-retro-field"},
+                {"status", "shadow-retro-status"},
+                {"tab", "shadow-retro-tab"}
+              ]
+            }>
+              <div class={["bg-surface p-3 text-xs text-center", class]}>
+                {name}
+              </div>
+            </div>
+          </div>
+        </.showcase_card>
+
+        <.showcase_card
+          title="Spacing"
+          description="Retro spacing tokens (retro-1 through retro-32)."
+        >
+          <div class="space-y-1">
+            <div :for={
+              {name, class} <- [
+                {"retro-1 (1px)", "w-[1px]"},
+                {"retro-2 (2px)", "w-[2px]"},
+                {"retro-4 (4px)", "w-retro-4"},
+                {"retro-8 (8px)", "w-retro-8"},
+                {"retro-16 (16px)", "w-retro-16"},
+                {"retro-24 (24px)", "w-retro-24"},
+                {"retro-32 (32px)", "w-retro-32"}
+              ]
+            }>
+              <div class="flex items-center gap-2">
+                <div class={["h-3 bg-primary", class]} />
+                <span class="text-xs">{name}</span>
+              </div>
+            </div>
+          </div>
+        </.showcase_card>
+
+        <%!-- Status & Semantic Colors --%>
+        <.showcase_card
+          title="Status & Semantic Colors"
+          description="Contextual colors for feedback, online status, and IRC roles."
+        >
+          <div class="space-y-3">
+            <div>
+              <p class="text-xs font-bold mb-1">Feedback</p>
+              <div class="grid grid-cols-4 gap-2">
+                <div :for={
+                  {name, class} <- [
+                    {"Error", "bg-error text-white"},
+                    {"Warning", "bg-warning"},
+                    {"Success", "bg-success text-white"},
+                    {"Link", "bg-link text-white"}
+                  ]
+                }>
+                  <div class={["p-2 text-xs text-center shadow-retro-raised", class]}>{name}</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="text-xs font-bold mb-1">Online Status</p>
+              <div class="flex items-center gap-4">
+                <div :for={
+                  {name, class} <- [
+                    {"Online", "bg-online"},
+                    {"Away", "bg-status-away"},
+                    {"Offline", "bg-offline"}
+                  ]
+                }>
+                  <div class="flex items-center gap-1">
+                    <div class={["w-2.5 h-2.5 rounded-full", class]} />
+                    <span class="text-xs">{name}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="text-xs font-bold mb-1">IRC Role Badges</p>
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-1">
+                  <Icons.icon_role_owner class="w-4 h-4" />
+                  <span class="text-xs">Owner</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <Icons.icon_role_operator class="w-4 h-4" />
+                  <span class="text-xs">Operator</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <Icons.icon_role_halfop class="w-4 h-4" />
+                  <span class="text-xs">Half-Op</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <Icons.icon_role_voiced class="w-4 h-4" />
+                  <span class="text-xs">Voiced</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <Icons.icon_role_regular class="w-4 h-4" />
+                  <span class="text-xs">Regular</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </.showcase_card>
+
+        <%!-- Z-Index Scale --%>
+        <.showcase_card
+          title="Z-Index Scale"
+          description="7-layer stacking context for overlays, modals, and tooltips."
+        >
+          <div class="space-y-1">
+            <div :for={
+              {name, value, desc} <- [
+                {"z-dropdown", "100", "Dropdown menus"},
+                {"z-floating", "150", "Floating panels"},
+                {"z-modal", "200", "Modal dialogs"},
+                {"z-modal-above", "210", "Stacked modals"},
+                {"z-context-menu", "300", "Context menus"},
+                {"z-tooltip", "9000", "Tooltips"},
+                {"z-toast", "10000", "Toast notifications"}
+              ]
+            }>
+              <div class="flex items-center gap-2 text-xs">
+                <span class="font-mono font-bold w-24">{name}</span>
+                <div class="shadow-retro-raised bg-primary text-white px-1.5 py-0.5 text-[10px] font-mono">
+                  {value}
+                </div>
+                <span class="text-muted-foreground">{desc}</span>
+              </div>
+            </div>
+          </div>
+        </.showcase_card>
+
+        <%!-- Icon Sizes --%>
+        <.showcase_card
+          title="Icon Sizes"
+          description="4 standardized SVG icon sizes used across the design system."
+        >
+          <div class="flex items-end gap-6">
+            <div :for={
+              {size, px, usage} <- [
+                {"12px", "w-3 h-3", "Inline text"},
+                {"14px", "w-3.5 h-3.5", "Formatting toolbar"},
+                {"16px", "w-4 h-4", "Toolbar / tabs / dialogs"},
+                {"32px", "w-8 h-8", "Game icons / desktop"}
+              ]
+            }>
+              <div class="flex flex-col items-center gap-1">
+                <div class={[
+                  "flex items-center justify-center shadow-retro-field bg-white",
+                  "w-12 h-12"
+                ]}>
+                  <Icons.icon_star class={px} />
+                </div>
+                <span class="text-xs font-bold">{size}</span>
+                <span class="text-[10px] text-muted-foreground text-center">{usage}</span>
+              </div>
+            </div>
+          </div>
+        </.showcase_card>
+
+        <%!-- Focus & Border Radius --%>
+        <.showcase_card
+          title="Focus & Border Radius"
+          description="Retro-style focus indicators and the two border-radius tokens."
+        >
+          <div class="space-y-3">
+            <div>
+              <p class="text-xs font-bold mb-2">Focus Ring</p>
+              <div class="flex items-center gap-4">
+                <button class="shadow-retro-raised bg-surface px-4 py-1 text-xs outline outline-1 outline-dotted outline-black -outline-offset-4">
+                  Focused Button
+                </button>
+                <span class="text-xs text-muted-foreground">1px dotted outline, -4px offset</span>
+              </div>
+            </div>
+            <div>
+              <p class="text-xs font-bold mb-2">Border Radius</p>
+              <div class="flex items-center gap-4">
+                <div :for={
+                  {name, class} <- [
+                    {"radius-sm (2px)", "rounded-sm"},
+                    {"radius-badge (7px)", "rounded-badge"}
+                  ]
+                }>
+                  <div class="flex items-center gap-2">
+                    <div class={["w-10 h-10 bg-primary shadow-retro-raised", class]} />
+                    <span class="text-xs">{name}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </.showcase_card>
+      </div>
     </.showcase_layout>
     """
   end

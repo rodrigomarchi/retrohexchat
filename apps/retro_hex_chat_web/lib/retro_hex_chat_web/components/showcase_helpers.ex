@@ -2,6 +2,8 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
   @moduledoc false
   use Phoenix.Component
 
+  import RetroHexChatWeb.Components.UI.TreeView
+
   alias RetroHexChatWeb.Icons
 
   use Phoenix.VerifiedRoutes,
@@ -13,140 +15,141 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
   attr :active_page, :string, required: true
   slot :inner_block, required: true
 
+  # Nav tree: {group_label, group_icon_fn, [{label, id, path}]}
   @nav_items [
-    {"Design System", nil,
+    {"Primitives", :icon_btn_ok,
      [
-       {"Tokens", "index", "/showcase"}
-     ]},
-    {"Form", nil,
-     [
+       {"Accordion", "accordion", "/showcase/accordion"},
+       {"Alert", "alert", "/showcase/alert"},
+       {"Avatar", "avatar", "/showcase/avatar"},
+       {"Badge", "badge", "/showcase/badge"},
+       {"Breadcrumb", "breadcrumb", "/showcase/breadcrumb"},
        {"Button", "button", "/showcase/button"},
+       {"Card", "card", "/showcase/card"},
+       {"Checkbox", "checkbox", "/showcase/checkbox"},
+       {"Dropdown Menu", "dropdown-menu", "/showcase/dropdown-menu"},
        {"Input", "input", "/showcase/input"},
        {"Label", "label", "/showcase/label"},
-       {"Textarea", "textarea", "/showcase/textarea"},
-       {"Select", "select", "/showcase/select"},
-       {"Checkbox", "checkbox", "/showcase/checkbox"},
-       {"Radio Group", "radio-group", "/showcase/radio-group"},
-       {"Switch", "switch", "/showcase/switch"},
-       {"Slider", "slider", "/showcase/slider"},
-       {"Toggle", "toggle", "/showcase/toggle"},
-       {"Toggle Group", "toggle-group", "/showcase/toggle-group"}
-     ]},
-    {"Feedback", nil,
-     [
-       {"Alert", "alert", "/showcase/alert"},
-       {"Badge", "badge", "/showcase/badge"},
-       {"Progress", "progress", "/showcase/progress"},
-       {"Skeleton", "skeleton", "/showcase/skeleton"},
-       {"Tooltip", "tooltip", "/showcase/tooltip"},
-       {"Toast", "toast", "/showcase/toast"},
-       {"Context Menu", "context-menu", "/showcase/context-menu"},
-       {"Loading Spinner", "loading-spinner", "/showcase/loading-spinner"},
-       {"Empty State", "empty-state", "/showcase/empty-state"},
-       {"Color Picker", "color-picker", "/showcase/color-picker"},
-       {"Scroll Area", "scroll-area", "/showcase/scroll-area"},
-       {"Scroll Loader", "scroll-loader", "/showcase/scroll-loader"},
-       {"History Search", "history-search", "/showcase/history-search"}
-     ]},
-    {"Layout", nil,
-     [
-       {"Card", "card", "/showcase/card"},
-       {"Separator", "separator", "/showcase/separator"},
-       {"Tabs", "tabs", "/showcase/tabs"},
-       {"Accordion", "accordion", "/showcase/accordion"},
-       {"Avatar", "avatar", "/showcase/avatar"},
-       {"Dialog", "dialog", "/showcase/dialog"},
-       {"Dropdown Menu", "dropdown-menu", "/showcase/dropdown-menu"},
-       {"Breadcrumb", "breadcrumb", "/showcase/breadcrumb"},
        {"Pagination", "pagination", "/showcase/pagination"},
-       {"Fieldset", "fieldset", "/showcase/fieldset"}
+       {"Progress", "progress", "/showcase/progress"},
+       {"Radio Group", "radio-group", "/showcase/radio-group"},
+       {"Select", "select", "/showcase/select"},
+       {"Separator", "separator", "/showcase/separator"},
+       {"Skeleton", "skeleton", "/showcase/skeleton"},
+       {"Slider", "slider", "/showcase/slider"},
+       {"Switch", "switch", "/showcase/switch"},
+       {"Textarea", "textarea", "/showcase/textarea"},
+       {"Toggle", "toggle", "/showcase/toggle"},
+       {"Toggle Group", "toggle-group", "/showcase/toggle-group"},
+       {"Tooltip", "tooltip", "/showcase/tooltip"}
      ]},
-    {"Data", nil,
+    {"Layout", :icon_group_view,
      [
-       {"Table", "table", "/showcase/table"}
-     ]},
-    {"Win98 Shell", nil,
-     [
-       {"Window", "window", "/showcase/window"},
+       {"Context Menu", "context-menu", "/showcase/context-menu"},
+       {"Dialog", "dialog", "/showcase/dialog"},
+       {"Fieldset", "fieldset", "/showcase/fieldset"},
        {"Menu", "menu", "/showcase/menu"},
+       {"Scroll Area", "scroll-area", "/showcase/scroll-area"},
+       {"Table", "table", "/showcase/table"},
+       {"Tabs", "tabs", "/showcase/tabs"},
+       {"Toast", "toast", "/showcase/toast"},
        {"Toolbar", "toolbar", "/showcase/toolbar"},
-       {"Status Bar", "status-bar", "/showcase/status-bar"},
-       {"Toolbar App", "toolbar-app", "/showcase/toolbar-app"},
-       {"Status Bar App", "status-bar-app", "/showcase/status-bar-app"},
-       {"App Header", "app-header", "/showcase/app-header"}
-     ]},
-    {"Chat", nil,
-     [
-       {"IRC Tabs", "irc-tabs", "/showcase/irc-tabs"},
-       {"Chat Message", "chat-message", "/showcase/chat-message"},
-       {"Chat Input", "chat-input", "/showcase/chat-input"},
        {"Tree View", "tree-view", "/showcase/tree-view"},
-       {"Nicklist", "nicklist", "/showcase/nicklist"},
-       {"Game Cards", "game-cards", "/showcase/game-cards"},
-       {"Conversations", "conversations", "/showcase/conversations"},
-       {"Hover Card", "hover-card", "/showcase/hover-card"},
-       {"Search Bar", "search-bar", "/showcase/search-bar"},
-       {"Topic Bar", "topic-bar", "/showcase/topic-bar"},
-       {"Formatting Toolbar", "formatting-toolbar", "/showcase/formatting-toolbar"},
-       {"Emoji Picker", "emoji-picker", "/showcase/emoji-picker"},
+       {"Window", "window", "/showcase/window"}
+     ]},
+    {"Chat", :icon_chat,
+     [
        {"Autocomplete", "autocomplete", "/showcase/autocomplete"},
-       {"Tab Bar", "tab-bar", "/showcase/tab-bar"},
-       {"Reply Bar", "reply-bar", "/showcase/reply-bar"},
+       {"Chat Context Menu", "chat-context-menu", "/showcase/chat-context-menu"},
+       {"Chat Input", "chat-input", "/showcase/chat-input"},
+       {"Chat Layout", "chat-layout", "/showcase/chat-layout"},
+       {"Chat Message", "chat-message", "/showcase/chat-message"},
+       {"Color Picker", "color-picker", "/showcase/color-picker"},
        {"Connection Status", "connection-status", "/showcase/connection-status"},
+       {"Conversations", "conversations", "/showcase/conversations"},
        {"Conversations Ctx Menu", "conversations-context-menu",
         "/showcase/conversations-context-menu"},
-       {"Chat Context Menu", "chat-context-menu", "/showcase/chat-context-menu"},
-       {"Syntax Tooltip", "syntax-tooltip", "/showcase/syntax-tooltip"}
+       {"Emoji Picker", "emoji-picker", "/showcase/emoji-picker"},
+       {"Formatting Toolbar", "formatting-toolbar", "/showcase/formatting-toolbar"},
+       {"History Search", "history-search", "/showcase/history-search"},
+       {"Hover Card", "hover-card", "/showcase/hover-card"},
+       {"IRC Tabs", "irc-tabs", "/showcase/irc-tabs"},
+       {"Nicklist", "nicklist", "/showcase/nicklist"},
+       {"Reply Bar", "reply-bar", "/showcase/reply-bar"},
+       {"Scroll Loader", "scroll-loader", "/showcase/scroll-loader"},
+       {"Search Bar", "search-bar", "/showcase/search-bar"},
+       {"Syntax Tooltip", "syntax-tooltip", "/showcase/syntax-tooltip"},
+       {"Tab Bar", "tab-bar", "/showcase/tab-bar"},
+       {"Topic Bar", "topic-bar", "/showcase/topic-bar"}
      ]},
-    {"Specialized", nil,
+    {"Shell", :icon_laptop,
      [
-       {"P2P Lobby", "p2p-lobby", "/showcase/p2p-lobby"},
-       {"Media Controls", "media-controls", "/showcase/media-controls"},
-       {"File Transfer", "file-transfer", "/showcase/file-transfer"},
-       {"Chat Layout", "chat-layout", "/showcase/chat-layout"},
-       {"Game Canvas", "game-canvas", "/showcase/game-canvas"},
-       {"Game Lobby", "game-lobby", "/showcase/game-lobby"},
-       {"Solo Lobby", "solo-lobby", "/showcase/solo-lobby"},
-       {"Arcade Frame", "arcade-frame", "/showcase/arcade-frame"}
-     ]},
-    {"Dialogs", nil,
-     [
-       {"Confirm Dialog", "confirm-dialog", "/showcase/confirm-dialog"},
-       {"Options Dialog", "options-dialog", "/showcase/options-dialog"},
-       {"Channel Dialog", "channel-dialog", "/showcase/channel-dialog"},
-       {"Address Book", "address-book", "/showcase/address-book"},
-       {"About Dialog", "about-dialog", "/showcase/about-dialog"},
-       {"Channel List", "channel-list", "/showcase/channel-list"},
-       {"Highlight Dialog", "highlight-dialog", "/showcase/highlight-dialog"},
+       {"App Header", "app-header", "/showcase/app-header"},
        {"Config Form", "config-form", "/showcase/config-form"},
-       {"Kick Dialog", "kick-dialog", "/showcase/kick-dialog"},
+       {"Empty State", "empty-state", "/showcase/empty-state"},
+       {"Loading Spinner", "loading-spinner", "/showcase/loading-spinner"},
+       {"Status Bar", "status-bar", "/showcase/status-bar"},
+       {"Status Bar App", "status-bar-app", "/showcase/status-bar-app"},
+       {"Toolbar App", "toolbar-app", "/showcase/toolbar-app"}
+     ]},
+    {"Dialogs", :icon_dialog_options,
+     [
+       {"About Dialog", "about-dialog", "/showcase/about-dialog"},
+       {"Address Book", "address-book", "/showcase/address-book"},
+       {"Alias Dialog", "alias-dialog", "/showcase/alias-dialog"},
+       {"Auto Respond", "auto-respond-dialog", "/showcase/auto-respond-dialog"},
+       {"Channel Central", "channel-central-dialog", "/showcase/channel-central-dialog"},
+       {"Channel Dialog", "channel-dialog", "/showcase/channel-dialog"},
+       {"Channel List", "channel-list", "/showcase/channel-list"},
+       {"Cheatsheet", "cheatsheet-dialog", "/showcase/cheatsheet-dialog"},
+       {"Confirm Dialog", "confirm-dialog", "/showcase/confirm-dialog"},
+       {"CTCP Settings", "ctcp-settings-dialog", "/showcase/ctcp-settings-dialog"},
+       {"Custom Menus", "custom-menus-dialog", "/showcase/custom-menus-dialog"},
        {"Delete Confirm", "delete-confirm-dialog", "/showcase/delete-confirm-dialog"},
        {"Disconnect Confirm", "disconnect-confirm-dialog", "/showcase/disconnect-confirm-dialog"},
-       {"Alias Dialog", "alias-dialog", "/showcase/alias-dialog"},
        {"Flood Protection", "flood-protection-dialog", "/showcase/flood-protection-dialog"},
+       {"Highlight Dialog", "highlight-dialog", "/showcase/highlight-dialog"},
        {"Ignore List", "ignore-list-dialog", "/showcase/ignore-list-dialog"},
-       {"Notify List", "notify-list", "/showcase/notify-list"},
-       {"URL Catcher", "url-catcher", "/showcase/url-catcher"},
-       {"Auto Respond", "auto-respond-dialog", "/showcase/auto-respond-dialog"},
-       {"Custom Menus", "custom-menus-dialog", "/showcase/custom-menus-dialog"},
-       {"Sound Settings", "sound-settings-dialog", "/showcase/sound-settings-dialog"},
        {"Invite Dialog", "invite-dialog", "/showcase/invite-dialog"},
-       {"Paste Confirm", "paste-confirm-dialog", "/showcase/paste-confirm-dialog"},
-       {"CTCP Settings", "ctcp-settings-dialog", "/showcase/ctcp-settings-dialog"},
-       {"Cheatsheet", "cheatsheet-dialog", "/showcase/cheatsheet-dialog"},
+       {"Kick Dialog", "kick-dialog", "/showcase/kick-dialog"},
        {"Nick Change", "nick-change-dialog", "/showcase/nick-change-dialog"},
+       {"Notify List", "notify-list", "/showcase/notify-list"},
+       {"Options Dialog", "options-dialog", "/showcase/options-dialog"},
+       {"Paste Confirm", "paste-confirm-dialog", "/showcase/paste-confirm-dialog"},
        {"Perform Dialog", "perform-dialog", "/showcase/perform-dialog"},
-       {"Channel Central", "channel-central-dialog", "/showcase/channel-central-dialog"}
+       {"Sound Settings", "sound-settings-dialog", "/showcase/sound-settings-dialog"},
+       {"URL Catcher", "url-catcher", "/showcase/url-catcher"}
      ]},
-    {"Assets", nil,
+    {"P2P", :icon_p2p,
      [
-       {"Icons", "icons", "/showcase/icons"},
-       {"Diagrams", "diagrams", "/showcase/diagrams"}
+       {"File Transfer", "file-transfer", "/showcase/file-transfer"},
+       {"Media Controls", "media-controls", "/showcase/media-controls"},
+       {"P2P Lobby", "p2p-lobby", "/showcase/p2p-lobby"}
+     ]},
+    {"Games", :icon_joystick,
+     [
+       {"Arcade Frame", "arcade-frame", "/showcase/arcade-frame"},
+       {"Game Canvas", "game-canvas", "/showcase/game-canvas"},
+       {"Game Cards", "game-cards", "/showcase/game-cards"},
+       {"Game Lobby", "game-lobby", "/showcase/game-lobby"},
+       {"Solo Lobby", "solo-lobby", "/showcase/solo-lobby"}
+     ]},
+    {"Assets", :icon_folder,
+     [
+       {"Diagrams", "diagrams", "/showcase/diagrams"},
+       {"Icons", "icons", "/showcase/icons"}
      ]}
   ]
 
+  @spec showcase_layout(map()) :: Phoenix.LiveView.Rendered.t()
   def showcase_layout(assigns) do
-    assigns = assign(assigns, :nav_items, @nav_items)
+    nav_items =
+      Enum.map(@nav_items, fn {label, icon_fn, items} ->
+        group_active = Enum.any?(items, fn {_, id, _} -> id == assigns.active_page end)
+        {label, icon_fn, items, group_active}
+      end)
+
+    assigns = assign(assigns, :nav_items, nav_items)
 
     ~H"""
     <div class="min-h-screen bg-desktop font-system text-text">
@@ -158,29 +161,34 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
 
           <div class="flex p-1">
             <nav
-              class="shadow-retro-sunken bg-white w-44 mr-2 p-1 shrink-0 overflow-y-auto"
+              class="shadow-retro-sunken bg-white w-48 mr-2 shrink-0 overflow-y-auto p-1"
               style="max-height: calc(100vh - 80px)"
             >
-              <div :for={{group_label, _group_id, items} <- @nav_items}>
-                <div class="flex items-center gap-1 px-2 py-1 mt-2 first:mt-0 text-xs font-bold text-muted-foreground">
-                  <.nav_group_icon group={group_label} />
-                  {group_label}
-                </div>
-                <.link
-                  :for={{label, id, path} <- items}
-                  navigate={path}
-                  class={[
-                    "flex items-center gap-1 px-2 py-1 text-xs cursor-pointer",
-                    if(@active_page == id,
-                      do: "bg-primary text-white font-bold",
-                      else: "hover:bg-primary hover:text-white"
-                    )
-                  ]}
-                >
-                  <.nav_item_icon id={id} />
-                  {label}
+              <.tree_view class="!shadow-none !p-0 !bg-transparent">
+                <.link navigate="/showcase" class="block no-underline">
+                  <.tree_view_item active={@active_page == "index"}>
+                    <:icon><Icons.icon_palette class="w-3 h-3" /></:icon>
+                    Design System
+                  </.tree_view_item>
                 </.link>
-              </div>
+                <.tree_view_group
+                  :for={{group_label, group_icon_fn, items, group_active} <- @nav_items}
+                  label={group_label}
+                  open={group_active}
+                >
+                  <:icon>{apply(Icons, group_icon_fn, [%{class: "w-4 h-4"}])}</:icon>
+                  <.link
+                    :for={{label, id, path} <- items}
+                    navigate={path}
+                    class="block no-underline"
+                  >
+                    <.tree_view_item active={@active_page == id}>
+                      <:icon><.nav_item_icon id={id} /></:icon>
+                      {label}
+                    </.tree_view_item>
+                  </.link>
+                </.tree_view_group>
+              </.tree_view>
             </nav>
 
             <div
@@ -234,52 +242,6 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     </div>
     """
   end
-
-  # ── Nav group icons ──────────────────────────────────────
-
-  attr :group, :string, required: true
-
-  defp nav_group_icon(%{group: "Design System"} = assigns) do
-    ~H'<Icons.icon_palette class="w-[16px] h-[16px] flex-shrink-0" />'
-  end
-
-  defp nav_group_icon(%{group: "Form"} = assigns) do
-    ~H'<Icons.icon_btn_edit class="w-[16px] h-[16px] flex-shrink-0" />'
-  end
-
-  defp nav_group_icon(%{group: "Feedback"} = assigns) do
-    ~H'<Icons.icon_lightbulb class="w-[16px] h-[16px] flex-shrink-0" />'
-  end
-
-  defp nav_group_icon(%{group: "Layout"} = assigns) do
-    ~H'<Icons.icon_group_view class="w-[16px] h-[16px] flex-shrink-0" />'
-  end
-
-  defp nav_group_icon(%{group: "Data"} = assigns) do
-    ~H'<Icons.icon_database class="w-[16px] h-[16px] flex-shrink-0" />'
-  end
-
-  defp nav_group_icon(%{group: "Win98 Shell"} = assigns) do
-    ~H'<Icons.icon_laptop class="w-[16px] h-[16px] flex-shrink-0" />'
-  end
-
-  defp nav_group_icon(%{group: "Chat"} = assigns) do
-    ~H'<Icons.icon_chat class="w-[16px] h-[16px] flex-shrink-0" />'
-  end
-
-  defp nav_group_icon(%{group: "Specialized"} = assigns) do
-    ~H'<Icons.icon_p2p class="w-[16px] h-[16px] flex-shrink-0" />'
-  end
-
-  defp nav_group_icon(%{group: "Dialogs"} = assigns) do
-    ~H'<Icons.icon_dialog_options class="w-[16px] h-[16px] flex-shrink-0" />'
-  end
-
-  defp nav_group_icon(%{group: "Assets"} = assigns) do
-    ~H'<Icons.icon_folder class="w-[16px] h-[16px] flex-shrink-0" />'
-  end
-
-  defp nav_group_icon(assigns), do: ~H""
 
   # ── Nav item icons ───────────────────────────────────────
 
@@ -391,9 +353,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     assigns = assign(assigns, :icon_fn, icon_fn)
 
     ~H"""
-    <span :if={@icon_fn} class="w-4 h-4 flex-shrink-0 inline-flex items-center justify-center">
-      {apply(Icons, @icon_fn, [%{class: "w-3 h-3"}])}
-    </span>
+    {if @icon_fn, do: apply(Icons, @icon_fn, [%{class: "w-3 h-3"}])}
     """
   end
 end
