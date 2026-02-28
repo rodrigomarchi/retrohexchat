@@ -5,20 +5,20 @@ defmodule RetroHexChatWeb.HelpAccessE2ETest do
   """
   use RetroHexChatWeb.ConnCase, async: true
 
+  import Phoenix.LiveViewTest
+
   @moduletag :e2e
 
   describe "Help Page Access E2E" do
     test "IRC Commands deep-link renders commands topic", %{conn: conn} do
-      conn = get(conn, "/chat/help/commands-overview")
-      html = html_response(conn, 200)
+      {:ok, _view, html} = live(conn, "/chat/help/commands-overview")
 
       assert html =~ "IRC Commands Reference"
       assert html =~ "/join"
     end
 
     test "Keyboard Shortcuts deep-link renders shortcuts topic", %{conn: conn} do
-      conn = get(conn, "/chat/help/keyboard-shortcuts")
-      html = html_response(conn, 200)
+      {:ok, _view, html} = live(conn, "/chat/help/keyboard-shortcuts")
 
       assert html =~ "Keyboard Shortcuts"
     end

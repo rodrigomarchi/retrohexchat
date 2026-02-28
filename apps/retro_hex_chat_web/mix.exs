@@ -17,7 +17,6 @@ defmodule RetroHexChatWeb.MixProject do
       test_coverage: [
         summary: [threshold: 60],
         ignore_modules: [
-          RetroHexChatWeb.HelpHTML,
           RetroHexChatWeb.LandingHTML,
           RetroHexChatWeb.Layouts,
           RetroHexChatWeb.CoreComponents,

@@ -174,7 +174,9 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     "layouts/showcase.html.heex",
     "live/landing_live/",
     "landing_helpers.ex",
-    "layouts/landing_live.html.heex"
+    "layouts/landing_live.html.heex",
+    "live/help_live/",
+    "layouts/help_live.html.heex"
   ]
 
   @doc false

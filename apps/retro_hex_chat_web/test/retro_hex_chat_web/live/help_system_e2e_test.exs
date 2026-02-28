@@ -11,10 +11,9 @@ defmodule RetroHexChatWeb.HelpSystemE2ETest do
 
   describe "Help Page E2E" do
     test "help page renders with all categories", %{conn: conn} do
-      conn = get(conn, "/chat/help")
-      html = html_response(conn, 200)
+      {:ok, _view, html} = live(conn, "/chat/help")
 
-      assert html =~ "RetroHexChat Help"
+      assert html =~ "Help Topics"
       assert html =~ "Getting Started"
       assert html =~ "Commands"
       assert html =~ "Services"
@@ -26,33 +25,29 @@ defmodule RetroHexChatWeb.HelpSystemE2ETest do
     end
 
     test "topic deep-link shows content", %{conn: conn} do
-      conn = get(conn, "/chat/help/cmd-join")
-      html = html_response(conn, 200)
+      {:ok, _view, html} = live(conn, "/chat/help/cmd-join")
 
       assert html =~ "/join"
       assert html =~ "Enter a chat channel"
     end
 
     test "cross-reference links use topic URLs", %{conn: conn} do
-      conn = get(conn, "/chat/help/welcome")
-      html = html_response(conn, 200)
+      {:ok, _view, html} = live(conn, "/chat/help/welcome")
 
       assert html =~ "Welcome to RetroHexChat"
     end
 
     test "defaults to welcome topic when no topic specified", %{conn: conn} do
-      conn = get(conn, "/chat/help")
-      html = html_response(conn, 200)
+      {:ok, _view, html} = live(conn, "/chat/help")
 
       assert html =~ "Welcome to RetroHexChat"
       assert html =~ "Quick Start"
     end
 
     test "breadcrumbs shown for selected topic", %{conn: conn} do
-      conn = get(conn, "/chat/help/cmd-join")
-      html = html_response(conn, 200)
+      {:ok, _view, html} = live(conn, "/chat/help/cmd-join")
 
-      assert html =~ "help-breadcrumbs"
+      assert html =~ "Breadcrumb"
       assert html =~ "Commands"
     end
 

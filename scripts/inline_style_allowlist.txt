@@ -30,6 +30,9 @@ retro_hex_chat_web/components/ui/primitives/slider.ex:style="width: calc(100% + 
 # Showcase layout: fixed height sidebar and content area
 retro_hex_chat_web/components/showcase_helpers.ex:max-height: calc(100vh - 120px)
 
+# Help layout: fixed height sidebar and content area (same pattern as showcase)
+retro_hex_chat_web/live/help_live/help_helpers.ex:max-height: calc(100vh - 120px)
+
 # Hover card: dynamic absolute positioning from x/y attrs
 retro_hex_chat_web/components/ui/chat/hover_card.ex:style={position_style(
 

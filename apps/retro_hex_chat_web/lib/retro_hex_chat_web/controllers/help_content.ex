@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.HelpContent do
   """
   use Phoenix.Component
 
-  import RetroHexChatWeb.HelpHTML, only: [help_h4: 1, help_link: 1]
+  import RetroHexChatWeb.HelpLive.HelpHelpers, only: [help_h4: 1, help_link: 1]
 
   embed_templates "help_content/*"
 end

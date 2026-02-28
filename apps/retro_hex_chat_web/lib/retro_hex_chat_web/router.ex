@@ -42,18 +42,20 @@ defmodule RetroHexChatWeb.Router do
     live "/faq", LandingLive.Faq
   end
 
-  pipeline :help do
+  pipeline :help_live do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :help}
+    plug :fetch_live_flash
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :help_live}
+    plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
 
   scope "/", RetroHexChatWeb do
-    pipe_through :help
+    pipe_through :help_live
 
-    get "/chat/help", HelpController, :index
-    get "/chat/help/:topic", HelpController, :index
+    live "/chat/help", HelpLive.Index, :index
+    live "/chat/help/:topic", HelpLive.Index, :show
     get "/sitemap.xml", SitemapController, :index
   end
 

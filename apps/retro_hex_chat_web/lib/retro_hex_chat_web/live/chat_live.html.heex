@@ -171,7 +171,7 @@
                 <span></span>
                 <div class="chat-inline-help" data-testid="inline-help">
                   <h3 class="chat-inline-help__title">{msg.topic_title}</h3>
-                  <RetroHexChatWeb.HelpHTML.render_topic_content id={msg.topic_id} />
+                  <RetroHexChatWeb.HelpLive.HelpHelpers.render_topic_content id={msg.topic_id} />
                   <div class="chat-inline-help__footer">
                     <a
                       href={~p"/chat/help/#{msg.topic_id}"}
