@@ -7,10 +7,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.OptionsDialogPage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
-  import RetroHexChatWeb.Components.UI.OptionsDialog
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
+  import RetroHexChatWeb.Components.UI.Label
+  import RetroHexChatWeb.Components.UI.OptionsDialog
   import RetroHexChatWeb.ShowcaseHelpers
   alias RetroHexChatWeb.Icons
 
@@ -36,25 +37,25 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.OptionsDialogPage do
         <.options_dialog id="options-demo" active_panel="Display">
           <:panel name="Display">
             <div class="space-y-retro-4 text-xs">
-              <label class="flex items-center gap-retro-4 cursor-pointer">
+              <.label class="flex items-center gap-retro-4 cursor-pointer">
                 <.checkbox name="timestamps" value={true} /> Show timestamps
-              </label>
-              <label class="flex items-center gap-retro-4 cursor-pointer">
+              </.label>
+              <.label class="flex items-center gap-retro-4 cursor-pointer">
                 <.checkbox name="joins" value={true} /> Show join/part messages
-              </label>
-              <label class="flex items-center gap-retro-4 cursor-pointer">
+              </.label>
+              <.label class="flex items-center gap-retro-4 cursor-pointer">
                 <.checkbox name="colors" value={true} /> Enable mIRC colors
-              </label>
+              </.label>
             </div>
           </:panel>
           <:panel name="Sounds">
             <div class="space-y-retro-4 text-xs">
-              <label class="flex items-center gap-retro-4 cursor-pointer">
+              <.label class="flex items-center gap-retro-4 cursor-pointer">
                 <.checkbox name="sound_msg" value={true} /> Message received
-              </label>
-              <label class="flex items-center gap-retro-4 cursor-pointer">
+              </.label>
+              <.label class="flex items-center gap-retro-4 cursor-pointer">
                 <.checkbox name="sound_highlight" value={true} /> Highlight
-              </label>
+              </.label>
             </div>
           </:panel>
           <:panel name="Notifications">

@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.Button do
   attr :size, :string, values: ~w(default sm lg icon), default: "default"
   attr :rest, :global, include: ~w(disabled form name value)
 
-  slot :icon, required: true, doc: "16×16 icon SVG — mandatory for all buttons"
+  slot :icon, doc: "16×16 icon SVG — recommended for action buttons"
   slot :inner_block, required: true
 
   def button(assigns) do
@@ -48,7 +48,10 @@ defmodule RetroHexChatWeb.Components.UI.Button do
       }
       {@rest}
     >
-      <span class="w-[16px] h-[16px] shrink-0 inline-flex items-center justify-center">
+      <span
+        :if={@icon != []}
+        class="w-[16px] h-[16px] shrink-0 inline-flex items-center justify-center"
+      >
         {render_slot(@icon)}
       </span>
       {render_slot(@inner_block)}

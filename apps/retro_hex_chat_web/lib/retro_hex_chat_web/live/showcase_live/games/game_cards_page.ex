@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCardsPage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.ShowcaseHelpers
   alias RetroHexChatWeb.Icons
@@ -73,7 +74,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCardsPage do
             </p>
             <p class="text-sm font-bold mb-2">Choose a game:</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
-              <button
+              <.button
                 :for={
                   {name, desc, icon} <- [
                     {"DOOM", "Episode 1 — The Original", :doom},
@@ -91,10 +92,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCardsPage do
                   ]
                 }
                 type="button"
+                variant="ghost"
                 phx-click="select-game"
                 phx-value-game={name}
                 class={[
-                  "shadow-retro-field bg-white p-2 text-center cursor-pointer",
+                  "shadow-retro-field bg-white p-2 text-center cursor-pointer h-auto flex-col",
                   "hover:bg-hover-bg active:shadow-retro-sunken",
                   @selected == name && "shadow-retro-sunken bg-highlight-bg"
                 ]}
@@ -104,26 +106,20 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCardsPage do
                 </div>
                 <p class="text-xs font-bold truncate">{name}</p>
                 <p class="text-[10px] text-muted-foreground truncate">{desc}</p>
-              </button>
+              </.button>
             </div>
             <div class="mt-3">
-              <button class="shadow-retro-raised bg-surface px-4 py-1 text-sm active:shadow-retro-sunken">
-                Leave
-              </button>
+              <.button variant="outline">Leave</.button>
             </div>
           </.window_body>
         </.window>
         <.code_example>
-          &lt;button
-          phx-click="select-game"
-          phx-value-game=&#123;name&#125;
-          class="shadow-retro-field bg-white p-2 text-center
-          hover:bg-hover-bg active:shadow-retro-sunken"
-          &gt;
+          &lt;.button variant="ghost" class="shadow-retro-field bg-white p-2 h-auto flex-col"
+          phx-click="select-game" phx-value-game=&#123;name&#125;&gt;
           &lt;div class="w-[32px] h-[32px] mx-auto"&gt;icon&lt;/div&gt;
           &lt;p class="text-xs font-bold"&gt;DOOM&lt;/p&gt;
           &lt;p class="text-[10px]"&gt;Episode 1&lt;/p&gt;
-          &lt;/button&gt;
+          &lt;/.button&gt;
         </.code_example>
       </.showcase_card>
 

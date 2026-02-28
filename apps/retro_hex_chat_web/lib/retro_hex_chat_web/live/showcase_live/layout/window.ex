@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Window do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.ShowcaseHelpers
 
@@ -132,15 +133,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Window do
             <.window_body>
               <p class="text-sm mb-4">Configure event sounds for the application.</p>
               <div class="flex justify-end gap-2">
-                <button class="shadow-retro-raised bg-surface px-4 py-1 text-sm active:shadow-retro-sunken">
-                  OK
-                </button>
-                <button class="shadow-retro-raised bg-surface px-4 py-1 text-sm active:shadow-retro-sunken">
-                  Cancel
-                </button>
-                <button class="shadow-retro-raised bg-surface px-4 py-1 text-sm active:shadow-retro-sunken">
-                  Apply
-                </button>
+                <.button size="sm">OK</.button>
+                <.button variant="outline" size="sm">Cancel</.button>
+                <.button variant="outline" size="sm">Apply</.button>
               </div>
             </.window_body>
           </.window>
@@ -151,8 +146,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Window do
           &lt;.window_body&gt;
           &lt;p&gt;Configure event sounds.&lt;/p&gt;
           &lt;div class="flex justify-end gap-2"&gt;
-          &lt;button class="shadow-retro-raised bg-surface px-4 py-1 text-sm"&gt;OK&lt;/button&gt;
-          &lt;button class="shadow-retro-raised bg-surface px-4 py-1 text-sm"&gt;Cancel&lt;/button&gt;
+          &lt;.button size="sm"&gt;OK&lt;/.button&gt;
+          &lt;.button variant="outline" size="sm"&gt;Cancel&lt;/.button&gt;
           &lt;/div&gt;
           &lt;/.window_body&gt;
           &lt;/.window&gt;

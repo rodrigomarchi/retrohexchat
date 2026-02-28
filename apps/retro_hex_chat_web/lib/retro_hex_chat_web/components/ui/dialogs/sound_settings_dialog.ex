@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
+  import RetroHexChatWeb.Components.UI.Select
 
   alias RetroHexChatWeb.Icons
 
@@ -106,20 +107,31 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
                 </.table_cell>
 
                 <.table_cell>
-                  <select
-                    name={"sound_#{event}"}
-                    class="flex h-8 w-full shadow-retro-field bg-white px-2 py-1 text-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-black"
-                    phx-change={@on_sound_change}
-                    phx-value-event={event}
-                  >
-                    <option
-                      :for={sound <- @available_sounds}
-                      value={sound}
-                      selected={event_sound(@settings, event) == sound}
+                  <form phx-change={@on_sound_change}>
+                    <input type="hidden" name="event" value={event} />
+                    <.select
+                      :let={builder}
+                      id={"sound-select-#{event}"}
+                      name={"sound_#{event}"}
+                      value={event_sound(@settings, event)}
+                      label={event_sound(@settings, event)}
+                      class="w-full"
                     >
-                      {sound}
-                    </option>
-                  </select>
+                      <.select_trigger builder={builder} class="h-8 text-xs" />
+                      <.select_content builder={builder}>
+                        <.select_group>
+                          <.select_item
+                            :for={sound <- @available_sounds}
+                            builder={builder}
+                            value={sound}
+                            label={sound}
+                          >
+                            {sound}
+                          </.select_item>
+                        </.select_group>
+                      </.select_content>
+                    </.select>
+                  </form>
                 </.table_cell>
 
                 <.table_cell class="text-center">

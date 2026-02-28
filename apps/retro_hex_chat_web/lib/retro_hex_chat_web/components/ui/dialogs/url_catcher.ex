@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.Select
 
   alias RetroHexChatWeb.Icons
 
@@ -55,16 +56,33 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
           <%!-- Filters row --%>
           <div class="flex items-center gap-retro-4">
             <%!-- Channel filter --%>
-            <select
-              name="filter_channel"
-              phx-change={@on_filter}
-              class="retro-select text-xs px-retro-4 py-[2px] shadow-retro-field bg-white"
-            >
-              <option value="">All Channels</option>
-              <option :for={ch <- @channels} value={ch} selected={@filter_channel == ch}>
-                {ch}
-              </option>
-            </select>
+            <form phx-change={@on_filter}>
+              <.select
+                :let={builder}
+                id="url-catcher-channel-filter"
+                name="filter_channel"
+                value={@filter_channel || ""}
+                label={@filter_channel || "All Channels"}
+                placeholder="All Channels"
+              >
+                <.select_trigger builder={builder} class="h-7 text-xs w-[140px]" />
+                <.select_content builder={builder}>
+                  <.select_group>
+                    <.select_item builder={builder} value="" label="All Channels">
+                      All Channels
+                    </.select_item>
+                    <.select_item
+                      :for={ch <- @channels}
+                      builder={builder}
+                      value={ch}
+                      label={ch}
+                    >
+                      {ch}
+                    </.select_item>
+                  </.select_group>
+                </.select_content>
+              </.select>
+            </form>
 
             <%!-- Search --%>
             <.input
@@ -89,46 +107,54 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
               <.table_header>
                 <.table_row>
                   <.table_head>
-                    <button
+                    <.button
                       type="button"
-                      class="flex items-center gap-retro-2 hover:underline"
+                      variant="ghost"
+                      size="sm"
+                      class="gap-retro-2 hover:underline p-0 h-auto"
                       phx-click={@on_sort}
                       phx-value-column="url"
                     >
                       URL <.sort_indicator col={:url} active={@sort_column} dir={@sort_direction} />
-                    </button>
+                    </.button>
                   </.table_head>
                   <.table_head>
-                    <button
+                    <.button
                       type="button"
-                      class="flex items-center gap-retro-2 hover:underline"
+                      variant="ghost"
+                      size="sm"
+                      class="gap-retro-2 hover:underline p-0 h-auto"
                       phx-click={@on_sort}
                       phx-value-column="nick"
                     >
                       Nick <.sort_indicator col={:nick} active={@sort_column} dir={@sort_direction} />
-                    </button>
+                    </.button>
                   </.table_head>
                   <.table_head>
-                    <button
+                    <.button
                       type="button"
-                      class="flex items-center gap-retro-2 hover:underline"
+                      variant="ghost"
+                      size="sm"
+                      class="gap-retro-2 hover:underline p-0 h-auto"
                       phx-click={@on_sort}
                       phx-value-column="channel"
                     >
                       Channel
                       <.sort_indicator col={:channel} active={@sort_column} dir={@sort_direction} />
-                    </button>
+                    </.button>
                   </.table_head>
                   <.table_head>
-                    <button
+                    <.button
                       type="button"
-                      class="flex items-center gap-retro-2 hover:underline"
+                      variant="ghost"
+                      size="sm"
+                      class="gap-retro-2 hover:underline p-0 h-auto"
                       phx-click={@on_sort}
                       phx-value-column="timestamp"
                     >
                       Time
                       <.sort_indicator col={:timestamp} active={@sort_column} dir={@sort_direction} />
-                    </button>
+                    </.button>
                   </.table_head>
                 </.table_row>
               </.table_header>

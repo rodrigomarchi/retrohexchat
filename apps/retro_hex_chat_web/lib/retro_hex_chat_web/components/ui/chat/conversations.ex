@@ -22,8 +22,9 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.TreeView
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.EmptyState
+  import RetroHexChatWeb.Components.UI.TreeView
 
   alias RetroHexChatWeb.Icons
 
@@ -81,17 +82,19 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       <div class="flex items-center bg-surface shadow-retro-raised px-retro-4 py-retro-2">
         <Icons.icon_tab_conversations class="w-4 h-4 mr-retro-4" />
         <span class="text-xs font-bold flex-1">Conversations</span>
-        <button
+        <.button
           :if={@on_close}
           type="button"
-          class="text-xs hover:bg-black/10 px-1"
+          variant="ghost"
+          size="icon"
+          class="w-5 h-5 min-h-0 text-xs"
           phx-click={@on_close}
           title="Hide channel list"
           aria-label="Hide channel list"
           data-testid="conversations-close"
         >
           ×
-        </button>
+        </.button>
       </div>
 
       <%!-- Tree content --%>
@@ -102,15 +105,15 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
             <:title>No channels</:title>
             <:description>/join #channel to get started</:description>
             <:action>
-              <button
+              <.button
                 :if={@on_browse_channels}
-                type="button"
-                class="shadow-retro-raised bg-surface px-3 py-[2px] text-xs active:shadow-retro-sunken"
+                variant="outline"
+                size="sm"
                 phx-click={@on_browse_channels}
                 data-testid="conversations-browse-channels"
               >
                 Browse channels
-              </button>
+              </.button>
             </:action>
           </.empty_state>
         <% else %>
@@ -186,16 +189,17 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               on_join={@on_join_popular}
             />
             <div class="px-retro-4 py-retro-2">
-              <button
+              <.button
                 :if={@on_browse_channels}
-                type="button"
-                class="flex items-center gap-retro-4 text-xs text-link hover:underline"
+                variant="link"
+                size="sm"
+                class="gap-retro-4 p-0 h-auto"
                 phx-click={@on_browse_channels}
                 data-testid="conversations-browse-all"
               >
-                <Icons.icon_dialog_channel_list class="w-3 h-3" />
-                <span>Browse All Channels...</span>
-              </button>
+                <:icon><Icons.icon_dialog_channel_list class="w-3 h-3" /></:icon>
+                Browse All Channels...
+              </.button>
             </div>
           </.tree_view_group>
         <% end %>
@@ -350,17 +354,19 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       <:icon><Icons.icon_tab_channel class="w-3 h-3" /></:icon>
       <span class="flex-1 truncate">{@channel.name}</span>
       <span class="text-[10px] text-muted-foreground">({@channel.user_count})</span>
-      <button
+      <.button
         :if={@on_join}
         type="button"
-        class="ml-1 shrink-0"
+        variant="ghost"
+        size="icon"
+        class="ml-1 shrink-0 w-4 h-4 min-h-0"
         phx-click={@on_join}
         phx-value-channel={@channel.name}
         title={"Join #{@channel.name}"}
         data-testid={"join-#{@channel.name}"}
       >
         <Icons.icon_btn_add class="w-3 h-3" />
-      </button>
+      </.button>
     </.tree_view_item>
     """
   end

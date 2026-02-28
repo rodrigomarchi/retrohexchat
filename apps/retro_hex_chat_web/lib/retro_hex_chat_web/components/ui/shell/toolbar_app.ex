@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
 
   alias RetroHexChatWeb.Icons
 
+  import RetroHexChatWeb.Components.UI.ContextMenu
   import RetroHexChatWeb.Components.UI.Toolbar
 
   @doc """
@@ -191,21 +192,10 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
 
   defp dropdown_item(assigns) do
     ~H"""
-    <button
-      type="button"
-      class={[
-        "flex items-center gap-2 w-full px-2 py-1 text-xs text-left",
-        "hover:bg-primary hover:text-white cursor-pointer"
-      ]}
-      phx-click={@on_action}
-      phx-value-action={@action}
-      title={@label}
-    >
-      <span class="w-4 h-4 flex-shrink-0 inline-flex items-center justify-center">
-        {apply(Icons, @icon_fn, [%{class: "w-[16px] h-[16px]"}])}
-      </span>
-      <span>{@label}</span>
-    </button>
+    <.context_menu_item on_click={@on_action} action={@action}>
+      <:icon>{apply(Icons, @icon_fn, [%{class: "w-[14px] h-[14px]"}])}</:icon>
+      {@label}
+    </.context_menu_item>
     """
   end
 end

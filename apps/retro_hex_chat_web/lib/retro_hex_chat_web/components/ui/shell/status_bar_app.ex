@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChatWeb.Icons
@@ -79,10 +80,12 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
 
       <%!-- Zone 5: Mute toggle --%>
       <.window_status_bar_field class="flex items-center justify-center w-[28px] shrink-0">
-        <button
+        <.button
           :if={@on_mute_toggle}
           type="button"
-          class="flex items-center justify-center w-full h-full hover:bg-black/10 active:shadow-retro-sunken"
+          variant="ghost"
+          size="icon"
+          class="w-full h-full min-h-0"
           phx-click={@on_mute_toggle}
           title={if @muted, do: "Unmute", else: "Mute"}
           aria-label={if @muted, do: "Unmute", else: "Mute"}
@@ -90,7 +93,7 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         >
           <Icons.icon_mute :if={@muted} class="w-3 h-3" />
           <Icons.icon_dialog_sound :if={!@muted} class="w-3 h-3" />
-        </button>
+        </.button>
         <span :if={!@on_mute_toggle} class="flex items-center justify-center w-full h-full">
           <Icons.icon_mute :if={@muted} class="w-3 h-3" />
           <Icons.icon_dialog_sound :if={!@muted} class="w-3 h-3" />

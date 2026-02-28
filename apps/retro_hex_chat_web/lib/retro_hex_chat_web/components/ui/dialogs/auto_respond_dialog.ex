@@ -24,6 +24,8 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Checkbox
+  import RetroHexChatWeb.Components.UI.Label
+  import RetroHexChatWeb.Components.UI.Select
 
   alias RetroHexChatWeb.Icons
 
@@ -148,23 +150,33 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
 
           <div class="space-y-retro-4">
             <div>
-              <label class="text-xs font-bold block mb-retro-2">Trigger</label>
-              <select
+              <.label class="text-xs font-bold block mb-retro-2">Trigger</.label>
+              <.select
+                :let={builder}
+                id="draft-trigger-select"
                 name="draft_trigger"
-                class="flex h-8 w-full shadow-retro-field bg-white px-2 py-1 text-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-black"
+                value={@draft_trigger}
+                label={trigger_label(@draft_trigger)}
+                class="w-full"
               >
-                <option
-                  :for={{key, label} <- trigger_options()}
-                  value={key}
-                  selected={@draft_trigger == key}
-                >
-                  {label}
-                </option>
-              </select>
+                <.select_trigger builder={builder} class="h-8 text-xs" />
+                <.select_content builder={builder}>
+                  <.select_group>
+                    <.select_item
+                      :for={{key, lbl} <- trigger_options()}
+                      builder={builder}
+                      value={key}
+                      label={lbl}
+                    >
+                      {lbl}
+                    </.select_item>
+                  </.select_group>
+                </.select_content>
+              </.select>
             </div>
 
             <div>
-              <label class="text-xs font-bold block mb-retro-2">Channel (optional)</label>
+              <.label class="text-xs font-bold block mb-retro-2">Channel (optional)</.label>
               <.input
                 type="text"
                 name="draft_channel"
@@ -175,7 +187,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
             </div>
 
             <div>
-              <label class="text-xs font-bold block mb-retro-2">Command</label>
+              <.label class="text-xs font-bold block mb-retro-2">Command</.label>
               <.input
                 type="text"
                 name="draft_command"

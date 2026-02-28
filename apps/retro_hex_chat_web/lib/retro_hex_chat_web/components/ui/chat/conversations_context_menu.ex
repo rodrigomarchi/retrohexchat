@@ -2,9 +2,9 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
   @moduledoc """
   Context menu for the conversations sidebar.
 
-  Renders a positioned context menu with standard channel actions
-  (mark as read, mute/unmute, copy name, leave, settings) plus
-  optional custom items.
+  Composed from ContextMenu primitives. Renders a positioned context menu with
+  standard channel actions (mark as read, mute/unmute, copy name, leave,
+  settings) plus optional custom items.
 
   ## Usage
 
@@ -18,6 +18,8 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
       />
   """
   use RetroHexChatWeb.Component
+
+  import RetroHexChatWeb.Components.UI.ContextMenu
 
   alias RetroHexChatWeb.Icons
 
@@ -36,122 +38,89 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
   @spec conversations_context_menu(map()) :: Phoenix.LiveView.Rendered.t()
   def conversations_context_menu(assigns) do
     ~H"""
-    <div
-      :if={@visible}
-      class={[
-        "absolute z-50 shadow-retro-window bg-surface min-w-[160px] text-xs",
-        @class
-      ]}
-      style={position_style(@x, @y)}
-      data-testid="conversations-context-menu"
+    <.context_menu
+      id="conversations-context-menu"
+      show={@visible}
+      x={@x}
+      y={@y}
+      position="absolute"
+      class={@class}
       {@rest}
     >
-      <ul class="list-none m-0 p-0">
-        <%!-- Mark as Read --%>
-        <li>
-          <button
-            type="button"
-            class={[
-              "flex items-center gap-retro-4 w-full px-retro-8 py-retro-4 text-left",
-              if(@has_unread,
-                do: "hover:bg-primary hover:text-white active:bg-primary",
-                else: "opacity-50 cursor-default pointer-events-none"
-              )
-            ]}
-            phx-click={@has_unread && @on_action}
-            phx-value-action="mark_read"
-            phx-value-channel={@channel}
-            disabled={!@has_unread}
-            data-testid="ctx-mark-read"
-          >
-            <Icons.icon_checkmark class="w-3 h-3 shrink-0" /> Mark as Read
-          </button>
-        </li>
+      <%!-- Mark as Read --%>
+      <.context_menu_item
+        on_click={@has_unread && @on_action}
+        action="mark_read"
+        disabled={!@has_unread}
+        phx-value-channel={@channel}
+        data-testid="ctx-mark-read"
+      >
+        <:icon><Icons.icon_checkmark class="w-[14px] h-[14px]" /></:icon>
+        Mark as Read
+      </.context_menu_item>
 
-        <%!-- Mute / Unmute --%>
-        <li>
-          <button
-            type="button"
-            class="flex items-center gap-retro-4 w-full px-retro-8 py-retro-4 text-left hover:bg-primary hover:text-white active:bg-primary"
-            phx-click={@on_action}
-            phx-value-action={if @is_muted, do: "unmute", else: "mute"}
-            phx-value-channel={@channel}
-            data-testid="ctx-mute-toggle"
-          >
-            <Icons.icon_mute :if={@is_muted} class="w-3 h-3 shrink-0" />
-            <Icons.icon_dialog_sound :if={!@is_muted} class="w-3 h-3 shrink-0" />
-            {if @is_muted, do: "Unmute Channel", else: "Mute Channel"}
-          </button>
-        </li>
+      <%!-- Mute / Unmute --%>
+      <.context_menu_item
+        on_click={@on_action}
+        action={if @is_muted, do: "unmute", else: "mute"}
+        phx-value-channel={@channel}
+        data-testid="ctx-mute-toggle"
+      >
+        <:icon>
+          <Icons.icon_mute :if={@is_muted} class="w-[14px] h-[14px]" />
+          <Icons.icon_dialog_sound :if={!@is_muted} class="w-[14px] h-[14px]" />
+        </:icon>
+        {if @is_muted, do: "Unmute Channel", else: "Mute Channel"}
+      </.context_menu_item>
 
-        <%!-- Separator --%>
-        <li class="border-t border-border my-[1px]" role="separator" />
+      <.context_menu_separator />
 
-        <%!-- Copy Channel Name --%>
-        <li>
-          <button
-            type="button"
-            class="flex items-center gap-retro-4 w-full px-retro-8 py-retro-4 text-left hover:bg-primary hover:text-white active:bg-primary"
-            phx-click={@on_action}
-            phx-value-action="copy_name"
-            phx-value-channel={@channel}
-            data-testid="ctx-copy-name"
-          >
-            <Icons.icon_copy class="w-3 h-3 shrink-0" /> Copy Channel Name
-          </button>
-        </li>
+      <%!-- Copy Channel Name --%>
+      <.context_menu_item
+        on_click={@on_action}
+        action="copy_name"
+        phx-value-channel={@channel}
+        data-testid="ctx-copy-name"
+      >
+        <:icon><Icons.icon_copy class="w-[14px] h-[14px]" /></:icon>
+        Copy Channel Name
+      </.context_menu_item>
 
-        <%!-- Channel Settings --%>
-        <li>
-          <button
-            type="button"
-            class="flex items-center gap-retro-4 w-full px-retro-8 py-retro-4 text-left hover:bg-primary hover:text-white active:bg-primary"
-            phx-click={@on_action}
-            phx-value-action="channel_settings"
-            phx-value-channel={@channel}
-            data-testid="ctx-channel-settings"
-          >
-            <Icons.icon_btn_settings class="w-3 h-3 shrink-0" /> Channel Settings
-          </button>
-        </li>
+      <%!-- Channel Settings --%>
+      <.context_menu_item
+        on_click={@on_action}
+        action="channel_settings"
+        phx-value-channel={@channel}
+        data-testid="ctx-channel-settings"
+      >
+        <:icon><Icons.icon_btn_settings class="w-[14px] h-[14px]" /></:icon>
+        Channel Settings
+      </.context_menu_item>
 
-        <%!-- Separator --%>
-        <li class="border-t border-border my-[1px]" role="separator" />
+      <.context_menu_separator />
 
-        <%!-- Leave Channel --%>
-        <li>
-          <button
-            type="button"
-            class="flex items-center gap-retro-4 w-full px-retro-8 py-retro-4 text-left hover:bg-error hover:text-white active:bg-error"
-            phx-click={@on_action}
-            phx-value-action="leave"
-            phx-value-channel={@channel}
-            data-testid="ctx-leave"
-          >
-            <Icons.icon_btn_disconnect class="w-3 h-3 shrink-0" /> Leave Channel
-          </button>
-        </li>
+      <%!-- Leave Channel --%>
+      <.context_menu_item
+        on_click={@on_action}
+        action="leave"
+        phx-value-channel={@channel}
+        data-testid="ctx-leave"
+      >
+        <:icon><Icons.icon_btn_disconnect class="w-[14px] h-[14px]" /></:icon>
+        Leave Channel
+      </.context_menu_item>
 
-        <%!-- Custom items --%>
-        <li :if={@custom_items != []} class="border-t border-border my-[1px]" role="separator" />
-        <li :for={item <- @custom_items}>
-          <button
-            type="button"
-            class="flex items-center gap-retro-4 w-full px-retro-8 py-retro-4 text-left hover:bg-primary hover:text-white active:bg-primary"
-            phx-click={@on_action}
-            phx-value-action={item[:action]}
-            phx-value-channel={@channel}
-          >
-            {item[:label]}
-          </button>
-        </li>
-      </ul>
-    </div>
+      <%!-- Custom items --%>
+      <.context_menu_separator :if={@custom_items != []} />
+      <.context_menu_item
+        :for={item <- @custom_items}
+        on_click={@on_action}
+        action={item[:action]}
+        phx-value-channel={@channel}
+      >
+        {item[:label]}
+      </.context_menu_item>
+    </.context_menu>
     """
   end
-
-  # ── Private helpers ───────────────────────────────────
-
-  @spec position_style(integer(), integer()) :: String.t()
-  defp position_style(x, y), do: "left: #{x}px; top: #{y}px;"
 end

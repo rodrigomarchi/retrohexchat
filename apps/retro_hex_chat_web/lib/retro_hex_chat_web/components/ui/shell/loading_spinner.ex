@@ -12,6 +12,8 @@ defmodule RetroHexChatWeb.Components.UI.LoadingSpinner do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Button
+
   @doc """
   Renders a retro-styled loading spinner with animated progress bar.
   """
@@ -46,13 +48,15 @@ defmodule RetroHexChatWeb.Components.UI.LoadingSpinner do
         "bg-[repeating-linear-gradient(90deg,theme(colors.link)_0,theme(colors.link)_8px,transparent_8px,transparent_12px)]"
       ]} />
       <span class="text-xs text-muted-foreground">{@text}</span>
-      <button
+      <.button
         :if={@show_retry}
+        variant="outline"
+        size="sm"
         phx-click={@on_retry}
-        class="shadow-retro-raised bg-surface px-retro-16 py-retro-2 text-xs text-foreground active:shadow-retro-sunken pointer-events-auto"
+        class="pointer-events-auto"
       >
         Retry
-      </button>
+      </.button>
       {render_slot(@inner_block)}
     </div>
     """

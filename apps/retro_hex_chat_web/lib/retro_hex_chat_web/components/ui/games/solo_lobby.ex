@@ -4,8 +4,9 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   alias RetroHexChatWeb.Icons
 
-  import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.Components.UI.Badge
+  import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Window
 
   @doc """
   Renders a multi-state solo arcade lobby with game picker, preview, playing, and finished states.
@@ -114,12 +115,13 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <%!-- Game grid --%>
       <p class="text-sm font-bold mb-2">Choose a game:</p>
       <div class="grid grid-cols-3 gap-2">
-        <button
+        <.button
           :for={game <- @games}
           type="button"
+          variant="ghost"
           class={[
-            "shadow-retro-field bg-white p-2 text-center cursor-pointer",
-            "hover:bg-hover-bg active:shadow-retro-sunken"
+            "shadow-retro-field bg-white p-2 text-center cursor-pointer h-auto",
+            "hover:bg-hover-bg active:shadow-retro-sunken flex-col"
           ]}
           phx-click={@on_preview_game}
           phx-value-game-id={game.id}
@@ -129,18 +131,14 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             <span class="text-xs font-mono text-gray-500">ico</span>
           </div>
           <p class="text-xs font-bold truncate">{game.name}</p>
-        </button>
+        </.button>
       </div>
 
       <%!-- Footer --%>
       <div class="mt-3">
-        <button
-          type="button"
-          class="shadow-retro-raised bg-surface px-4 py-1 text-sm active:shadow-retro-sunken"
-          phx-click={@on_close}
-        >
+        <.button variant="outline" phx-click={@on_close}>
           Leave
-        </button>
+        </.button>
       </div>
     </div>
     """
@@ -170,21 +168,17 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
       <%!-- Action buttons --%>
       <div class="flex gap-2 mb-3">
-        <button
-          type="button"
-          class="shadow-retro-raised bg-surface px-3 py-1 text-xs active:shadow-retro-sunken"
-          phx-click={@on_back}
-        >
+        <.button variant="outline" size="sm" phx-click={@on_back}>
           Back
-        </button>
-        <button
-          type="button"
-          class="shadow-retro-raised bg-surface px-3 py-1 text-xs font-bold active:shadow-retro-sunken"
+        </.button>
+        <.button
+          size="sm"
+          class="font-bold"
           phx-click={@on_select_game}
           phx-value-game-id={@previewed_game.id}
         >
           Start Game
-        </button>
+        </.button>
       </div>
 
       <%!-- Detail sections --%>
@@ -257,13 +251,9 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           Started: {@game_started_at}
         </p>
       </div>
-      <button
-        type="button"
-        class="shadow-retro-raised bg-surface px-3 py-1 text-xs active:shadow-retro-sunken flex-shrink-0"
-        phx-click={@on_close}
-      >
+      <.button variant="outline" size="sm" class="flex-shrink-0" phx-click={@on_close}>
         End Session
-      </button>
+      </.button>
     </div>
     """
   end
@@ -306,13 +296,9 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
       <%!-- Close button --%>
       <div>
-        <button
-          type="button"
-          class="shadow-retro-raised bg-surface px-4 py-1 text-sm active:shadow-retro-sunken"
-          phx-click={@on_close}
-        >
+        <.button variant="outline" phx-click={@on_close}>
           Close
-        </button>
+        </.button>
       </div>
     </div>
     """

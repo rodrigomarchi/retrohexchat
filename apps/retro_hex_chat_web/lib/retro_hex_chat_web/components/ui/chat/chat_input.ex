@@ -16,6 +16,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Input
+
   @doc "Renders a combined chat input area with optional formatting toolbar, send button, and counter."
   attr :value, :string, default: "", doc: "Current input value"
   attr :placeholder, :string, default: "Type a message..."
@@ -43,7 +46,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
         {render_slot(@toolbar_buttons)}
       </div>
       <form phx-submit={@on_submit} class="flex items-center gap-1 p-[2px] bg-surface">
-        <input
+        <.input
           type="text"
           name={@name}
           value={@value}
@@ -54,19 +57,17 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
           phx-change={@on_change}
           phx-keydown={@on_keydown}
           data-testid="chat-input-field"
-          class="flex-1 shadow-retro-field bg-white px-2 py-[3px] text-sm font-mono focus:outline focus:outline-2 focus:outline-black disabled:opacity-50"
+          class="flex-1 py-[3px] font-mono"
         />
-        <button
+        <.button
           type="submit"
           disabled={@disabled || @char_count == 0}
           data-testid="chat-input-send"
-          class={[
-            "shadow-retro-raised bg-surface px-3 py-[2px] text-sm min-w-[60px] active:shadow-retro-sunken",
-            "disabled:opacity-50 disabled:cursor-not-allowed"
-          ]}
+          size="sm"
+          class="min-w-[60px]"
         >
           Send
-        </button>
+        </.button>
       </form>
       <div class="text-right text-xs text-gray-500 px-1" data-testid="chat-input-counter">
         {@char_count}/{@max_length}

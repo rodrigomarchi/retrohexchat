@@ -7,8 +7,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.DialogPage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
-  import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.ShowcaseHelpers
   alias RetroHexChatWeb.Icons
 
@@ -41,20 +43,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.DialogPage do
               Make changes to your profile here. Click save when you're done.
             </.dialog_description>
             <div class="flex items-center gap-retro-8 mb-retro-4">
-              <label class="text-xs w-16 text-right">Name:</label>
-              <input
-                type="text"
-                class="shadow-retro-field bg-white px-retro-4 py-retro-2 text-xs flex-1"
-                value="Troll"
-              />
+              <.label class="text-xs w-16 text-right">Name:</.label>
+              <.input type="text" value="Troll" class="flex-1" />
             </div>
             <div class="flex items-center gap-retro-8">
-              <label class="text-xs w-16 text-right">Username:</label>
-              <input
-                type="text"
-                class="shadow-retro-field bg-white px-retro-4 py-retro-2 text-xs flex-1"
-                value="@troll"
-              />
+              <.label class="text-xs w-16 text-right">Username:</.label>
+              <.input type="text" value="@troll" class="flex-1" />
             </div>
           </.dialog_body>
           <.dialog_footer>

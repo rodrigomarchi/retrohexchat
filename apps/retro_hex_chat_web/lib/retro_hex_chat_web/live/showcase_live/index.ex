@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Index do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.ShowcaseHelpers
 
   alias RetroHexChatWeb.Icons
@@ -44,8 +45,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Index do
         <%!-- Hero header --%>
         <div class="shadow-retro-window bg-surface p-1">
           <div class="bg-gradient-to-r from-primary to-highlight-light text-white px-3 py-2 font-bold text-sm flex items-center gap-2">
-            <Icons.icon_palette class="w-5 h-5" />
-            RetroHexChat Component Showcase
+            <Icons.icon_palette class="w-5 h-5" /> RetroHexChat Component Showcase
           </div>
           <div class="p-4 space-y-3">
             <p class="text-sm">
@@ -294,9 +294,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Index do
             <div>
               <p class="text-xs font-bold mb-2">Focus Ring</p>
               <div class="flex items-center gap-4">
-                <button class="shadow-retro-raised bg-surface px-4 py-1 text-xs outline outline-1 outline-dotted outline-black -outline-offset-4">
+                <.button class="outline outline-1 outline-dotted outline-black -outline-offset-4">
                   Focused Button
-                </button>
+                </.button>
                 <span class="text-xs text-muted-foreground">1px dotted outline, -4px offset</span>
               </div>
             </div>

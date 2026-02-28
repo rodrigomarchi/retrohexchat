@@ -2,6 +2,8 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Button
+
   alias RetroHexChatWeb.Icons
 
   @doc "Renders an IRC-style tab bar container."
@@ -68,22 +70,23 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
       <span class="inline-block max-w-[16ch] overflow-hidden text-ellipsis whitespace-nowrap">
         {@label}
       </span>
-      <button
+      <.button
         :if={@closeable}
         type="button"
+        variant="ghost"
+        size="icon"
         aria-label="Close tab"
         phx-click={@on_close}
         phx-value-type={@type}
         phx-value-label={@label}
         class={[
-          "inline-flex items-center justify-center",
           "w-[14px] min-w-[14px] h-[14px] min-h-[14px]",
           "p-0 text-[10px] leading-none border border-gray-400 bg-gray-300",
-          "cursor-pointer ml-[2px] hover:bg-destructive hover:text-white hover:border-destructive"
+          "ml-[2px] hover:bg-destructive hover:text-white hover:border-destructive"
         ]}
       >
         x
-      </button>
+      </.button>
     </div>
     """
   end

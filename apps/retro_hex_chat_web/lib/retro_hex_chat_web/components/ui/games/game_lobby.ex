@@ -147,14 +147,15 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
         <div :if={@games != [] and @game_request == nil}>
           <p class="text-xs font-bold mb-retro-4">Choose a game:</p>
           <div class="grid grid-cols-3 gap-retro-4">
-            <button
+            <.button
               :for={game <- @games}
               type="button"
+              variant="ghost"
               phx-click={@on_select_game}
               phx-value-game_id={game.id}
               class={[
-                "shadow-retro-field bg-white p-retro-4 text-center cursor-pointer",
-                "hover:bg-hover-bg active:shadow-retro-sunken"
+                "shadow-retro-field bg-white p-retro-4 text-center cursor-pointer h-auto",
+                "hover:bg-hover-bg active:shadow-retro-sunken flex-col"
               ]}
               data-testid={"game-lobby-game-#{game.id}"}
             >
@@ -162,7 +163,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
                 <.game_icon icon={Map.get(game, :icon)} />
               </div>
               <p class="text-xs font-bold truncate">{game.name}</p>
-            </button>
+            </.button>
           </div>
         </div>
 

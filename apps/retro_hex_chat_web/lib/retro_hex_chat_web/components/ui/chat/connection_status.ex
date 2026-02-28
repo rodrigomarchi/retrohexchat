@@ -54,15 +54,17 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
       <div class="flex items-center gap-retro-4">
         <Icons.icon_status_signal class="w-4 h-4 text-success" />
         <.alert_title class="flex-1">Connected</.alert_title>
-        <button
+        <.button
           :if={@on_dismiss}
           type="button"
-          class="text-xs hover:bg-black/10 px-1"
+          variant="ghost"
+          size="icon"
+          class="w-5 h-5 min-h-0 text-xs"
           phx-click={@on_dismiss}
           aria-label="Dismiss"
         >
           ×
-        </button>
+        </.button>
       </div>
       <.alert_description :if={@server}>
         Connected to {@server}

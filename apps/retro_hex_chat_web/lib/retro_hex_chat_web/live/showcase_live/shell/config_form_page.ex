@@ -7,10 +7,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ConfigFormPage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
-  import RetroHexChatWeb.Components.UI.ConfigForm
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.ConfigForm
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
+  import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.ShowcaseHelpers
   alias RetroHexChatWeb.Icons
 
@@ -51,11 +52,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ConfigFormPage do
           <:form>
             <div class="space-y-retro-4">
               <div>
-                <label class="text-xs font-bold block mb-retro-2">Name</label>
+                <.label class="text-xs font-bold block mb-retro-2">Name</.label>
                 <.input type="text" placeholder="/alias" class="w-full" />
               </div>
               <div>
-                <label class="text-xs font-bold block mb-retro-2">Value</label>
+                <.label class="text-xs font-bold block mb-retro-2">Value</.label>
                 <.input type="text" placeholder="/command $1" class="w-full" />
               </div>
             </div>
@@ -88,11 +89,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ConfigFormPage do
           <:form>
             <div class="space-y-retro-4">
               <div>
-                <label class="text-xs font-bold block mb-retro-2">Name</label>
+                <.label class="text-xs font-bold block mb-retro-2">Name</.label>
                 <.input type="text" value="/bye" class="w-full" />
               </div>
               <div>
-                <label class="text-xs font-bold block mb-retro-2">Value</label>
+                <.label class="text-xs font-bold block mb-retro-2">Value</.label>
                 <.input type="text" value="/msg $1 goodbye!" class="w-full" />
               </div>
             </div>
@@ -117,11 +118,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ConfigFormPage do
           <:form>
             <div class="space-y-retro-4">
               <div>
-                <label class="text-xs font-bold block mb-retro-2">Event</label>
+                <.label class="text-xs font-bold block mb-retro-2">Event</.label>
                 <.input type="text" placeholder="connect / #channel" class="w-full" />
               </div>
               <div>
-                <label class="text-xs font-bold block mb-retro-2">Command</label>
+                <.label class="text-xs font-bold block mb-retro-2">Command</.label>
                 <.input type="text" placeholder="/command args" class="w-full" />
               </div>
             </div>
