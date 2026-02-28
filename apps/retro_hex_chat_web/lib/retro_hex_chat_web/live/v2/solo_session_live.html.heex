@@ -1,0 +1,38 @@
+<%!-- Expired state --%>
+<div :if={assigns[:expired]} class="flex flex-col min-h-screen bg-surface">
+  <.app_header />
+  <div class="flex-1 flex items-center justify-center p-4">
+    <div class="shadow-retro-raised bg-surface p-6 text-center max-w-sm">
+      <p class="text-sm font-bold mb-2">Session Ended</p>
+      <p class="text-xs text-muted-foreground">{@expired_reason}</p>
+    </div>
+  </div>
+</div>
+
+<%!-- Normal state --%>
+<div
+  :if={!assigns[:expired]}
+  id="arcade-session"
+  phx-hook="ArcadeSession"
+  class="flex flex-col min-h-screen bg-surface"
+>
+  <.app_header />
+  <div class="flex-1 flex items-center justify-center p-4">
+    <.solo_lobby
+      id="solo-lobby"
+      nickname={@nickname}
+      games={@games}
+      session_status={@session_status}
+      inactivity_warning={@inactivity_warning}
+      previewed_game={@previewed_game}
+      game_name={@game_name}
+      game_id={@game_id}
+      game_started_at={@game_started_at}
+      game_duration={@game_duration}
+      on_preview_game="preview_game"
+      on_select_game="select_game"
+      on_back="back_to_grid"
+      on_close="close_session"
+    />
+  </div>
+</div>

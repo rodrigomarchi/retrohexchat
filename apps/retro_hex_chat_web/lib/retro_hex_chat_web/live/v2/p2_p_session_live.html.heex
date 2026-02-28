@@ -1,0 +1,182 @@
+<%!-- Expired state --%>
+<div :if={assigns[:expired]} class="flex flex-col min-h-screen bg-surface">
+  <.app_header />
+  <div class="flex-1 flex items-center justify-center p-4">
+    <div class="shadow-retro-raised bg-surface p-6 text-center max-w-sm">
+      <p class="text-sm font-bold mb-2">P2P Session Ended</p>
+      <p class="text-xs text-muted-foreground">{@expired_reason}</p>
+    </div>
+  </div>
+</div>
+
+<%!-- Normal state --%>
+<div
+  :if={!assigns[:expired]}
+  id="p2p-session"
+  phx-hook="P2PSessionHook"
+  class="flex flex-col min-h-screen bg-surface"
+>
+  <.app_header />
+
+  <%!-- Hidden hooks --%>
+  <div id="p2p-capabilities" phx-hook="P2PCapabilityHook" class="hidden"></div>
+  <div id="p2p-webrtc" phx-hook="WebRTCHook" class="hidden"></div>
+
+  <div class="flex-1 flex flex-col items-center p-4 gap-4 overflow-y-auto">
+    <%!-- P2P connection lobby --%>
+    <.p2p_lobby
+      peer={@peer_nick}
+      state={@p2p_state}
+      on_cancel="close_session"
+      on_disconnect="close_session"
+    />
+
+    <%!-- Messages list --%>
+    <div
+      :if={@messages != []}
+      class="w-[320px] shadow-retro-field bg-white p-2 max-h-[200px] overflow-y-auto"
+    >
+      <div :for={msg <- @messages} class="text-xs py-[2px]">
+        <span :if={msg.type != "system"} class="font-bold">{msg.sender_nick}: </span>
+        <span :if={msg.type == "system"} class="text-muted-foreground italic">* </span>
+        <span>{msg.content}</span>
+      </div>
+    </div>
+
+    <%!-- Action request banner --%>
+    <div
+      :if={
+        @action_request && @action_request[:status] != "accepted" &&
+          @action_request[:status] != "rejected"
+      }
+      class="w-[320px] shadow-retro-raised bg-accent p-3"
+    >
+      <p class="text-xs font-bold mb-2">
+        Action Request: {Map.get(@action_request, :action_type, "unknown")}
+      </p>
+      <div class="flex gap-2">
+        <button
+          type="button"
+          phx-click="respond_action"
+          phx-value-accepted="true"
+          class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
+        >
+          Accept
+        </button>
+        <button
+          type="button"
+          phx-click="respond_action"
+          phx-value-accepted="false"
+          class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
+        >
+          Decline
+        </button>
+      </div>
+    </div>
+
+    <%!-- File transfer --%>
+    <.file_transfer
+      :if={@file_transfer && @file_transfer[:file_name]}
+      filename={@file_transfer[:file_name] || "unknown"}
+      progress={@file_transfer[:percent] || 0}
+      speed={@file_transfer[:speed]}
+      size={@file_transfer[:formatted_size]}
+      state={ft_state_atom(@file_transfer)}
+      direction={ft_direction(@file_transfer, @nickname)}
+      on_cancel="ft_cancel"
+      on_accept="ft_accept_offer"
+      class="w-[320px]"
+    />
+
+    <%!-- Media controls --%>
+    <.media_controls
+      :if={@call}
+      muted={@local_muted}
+      camera_on={!@local_camera_off}
+      in_call={true}
+      on_mute_toggle="media_mute_changed"
+      on_camera_toggle="media_camera_changed"
+      on_end_call="media_call_ended"
+      class="w-[320px]"
+    />
+
+    <%!-- Lobby chat input --%>
+    <div :if={@session_status in ["pending", "lobby"]} class="w-[320px]">
+      <form phx-submit="send_lobby_message" class="flex gap-2">
+        <input
+          type="text"
+          name="content"
+          placeholder="Type a message..."
+          class="shadow-retro-field bg-white flex-1 px-2 py-1 text-xs focus:outline-none"
+          autocomplete="off"
+        />
+        <button
+          type="submit"
+          class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
+        >
+          Send
+        </button>
+      </form>
+    </div>
+
+    <%!-- Session actions --%>
+    <div class="w-[320px] flex gap-2">
+      <button
+        :if={@session_status in ["pending", "lobby", "active"]}
+        type="button"
+        phx-click="close_session"
+        class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
+      >
+        Close Session
+      </button>
+      <button
+        :if={@session_status in ["pending", "lobby"] && @turn_configured}
+        type="button"
+        phx-click="toggle_privacy_mode"
+        class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
+      >
+        {if @turn_only, do: "Privacy: ON", else: "Privacy: OFF"}
+      </button>
+      <button
+        :if={@session_status == "active" && !@call}
+        type="button"
+        phx-click="request_action"
+        phx-value-action_type="audio_call"
+        class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
+      >
+        Audio Call
+      </button>
+      <button
+        :if={@session_status == "active" && !@call}
+        type="button"
+        phx-click="request_action"
+        phx-value-action_type="video_call"
+        class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
+      >
+        Video Call
+      </button>
+      <button
+        :if={@session_status == "active" && !@file_transfer}
+        type="button"
+        phx-click="request_action"
+        phx-value-action_type="file_transfer"
+        class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
+      >
+        Send File
+      </button>
+    </div>
+
+    <%!-- Connection status --%>
+    <div :if={@webrtc_state} class="text-xs text-muted-foreground">
+      WebRTC: {@webrtc_state}
+    </div>
+
+    <%!-- Inactivity warning --%>
+    <div
+      :if={@inactivity_warning}
+      class="w-[320px] shadow-retro-field bg-warning-bg p-2 text-xs text-center"
+    >
+      Session will be closed due to inactivity soon.
+    </div>
+  </div>
+</div>

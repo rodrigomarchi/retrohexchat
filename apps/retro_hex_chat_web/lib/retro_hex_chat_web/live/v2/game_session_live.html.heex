@@ -1,0 +1,61 @@
+<%!-- Expired state --%>
+<div :if={assigns[:expired]} class="flex flex-col min-h-screen bg-surface">
+  <.app_header />
+  <div class="flex-1 flex items-center justify-center p-4">
+    <div class="shadow-retro-raised bg-surface p-6 text-center max-w-sm">
+      <p class="text-sm font-bold mb-2">Game Session Ended</p>
+      <p class="text-xs text-muted-foreground mb-2">{@expired_reason}</p>
+      <p :if={@game_result} class="text-xs text-muted-foreground">
+        Result: {@game_result}
+      </p>
+    </div>
+  </div>
+</div>
+
+<%!-- Playing state --%>
+<div
+  :if={!assigns[:expired] && @session_status == "playing"}
+  id="game-session"
+  phx-hook="GameSessionHook"
+  class="flex flex-col min-h-screen bg-surface"
+>
+  <.app_header />
+  <div id="game-webrtc" phx-hook="GameWebRTCHook" class="hidden"></div>
+  <div class="flex-1 flex items-center justify-center p-4">
+    <.game_canvas
+      id="game-canvas"
+      game_id={@game_id}
+      game_name={@game_name}
+      nickname={@nickname}
+      peer_nick={@peer_nick}
+      is_host={@role == :creator}
+      on_end_game="end_game"
+    />
+  </div>
+</div>
+
+<%!-- Lobby state --%>
+<div
+  :if={!assigns[:expired] && @session_status != "playing"}
+  id="game-session"
+  phx-hook="GameSessionHook"
+  class="flex flex-col min-h-screen bg-surface"
+>
+  <.app_header />
+  <div class="flex-1 flex items-center justify-center p-4">
+    <.game_lobby
+      id="game-lobby"
+      nickname={@nickname}
+      peer_nick={@peer_nick}
+      peer_online={@peer_online}
+      role={@v2_role}
+      games={@games}
+      game_request={@game_request}
+      session_status={@session_status}
+      inactivity_warning={@inactivity_warning}
+      on_select_game="select_game"
+      on_respond_game="respond_game"
+      on_close="close_session"
+    />
+  </div>
+</div>

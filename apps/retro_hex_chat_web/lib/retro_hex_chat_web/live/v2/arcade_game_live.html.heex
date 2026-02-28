@@ -1,0 +1,15 @@
+<div
+  id="arcade-game"
+  class="fixed inset-0 w-screen h-screen overflow-hidden bg-black"
+  phx-hook="ArcadeGame"
+>
+  <iframe
+    id="arcade-game-iframe"
+    src={@game_url}
+    class="w-full h-full border-0"
+    allowfullscreen
+    allow="autoplay; gamepad; pointer-lock"
+    tabindex="0"
+  >
+  </iframe>
+</div>
