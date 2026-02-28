@@ -240,6 +240,10 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_check_thin(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_close_pixel(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_close_thin(assigns), to: RetroHexChatWeb.Icons.Marks
+  defdelegate icon_win_minimize(assigns), to: RetroHexChatWeb.Icons.Marks
+  defdelegate icon_win_maximize(assigns), to: RetroHexChatWeb.Icons.Marks
+  defdelegate icon_win_restore(assigns), to: RetroHexChatWeb.Icons.Marks
+  defdelegate icon_win_help(assigns), to: RetroHexChatWeb.Icons.Marks
 
   # ── Tools ───────────────────────────────────────────────
   defdelegate icon_wrench(assigns), to: RetroHexChatWeb.Icons.Tools

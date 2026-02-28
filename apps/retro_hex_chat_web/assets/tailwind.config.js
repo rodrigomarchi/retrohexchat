@@ -12,10 +12,19 @@ module.exports = {
     "../lib/retro_hex_chat_web/components/ui/**/*.ex",
     // Showcase LiveViews
     "../lib/retro_hex_chat_web/live/showcase_live/**/*.ex",
+    // Landing LiveViews
+    "../lib/retro_hex_chat_web/live/landing_live/**/*.ex",
     // Showcase helpers
     "../lib/retro_hex_chat_web/components/showcase_helpers.ex",
     // Showcase layout
     "../lib/retro_hex_chat_web/components/layouts/showcase.html.heex",
+    // Landing layout
+    "../lib/retro_hex_chat_web/components/layouts/landing_live.html.heex",
+    // Icon and diagram components (used by landing)
+    "../lib/retro_hex_chat_web/components/icons.ex",
+    "../lib/retro_hex_chat_web/components/icons/**/*.ex",
+    "../lib/retro_hex_chat_web/components/diagrams.ex",
+    "../lib/retro_hex_chat_web/components/diagrams/**/*.ex",
     // SaladUI dependency (for any referenced classes)
     "../../../deps/salad_ui/lib/**/*.ex",
   ],

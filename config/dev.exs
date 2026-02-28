@@ -30,15 +30,10 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
     esbuild:
       {Esbuild, :install_and_run, [:retro_hex_chat_web_css, ~w(--sourcemap=inline --watch)]},
     esbuild:
-      {Esbuild, :install_and_run, [:retro_hex_chat_web_landing, ~w(--sourcemap=inline --watch)]},
-    esbuild:
-      {Esbuild, :install_and_run,
-       [:retro_hex_chat_web_landing_css, ~w(--sourcemap=inline --watch)]},
-    esbuild:
       {Esbuild, :install_and_run,
        [:retro_hex_chat_web_showcase_js, ~w(--sourcemap=inline --watch)]},
     npx:
-      ~w(tailwindcss -c tailwind.config.js -i css/showcase.css -o ../priv/static/assets/css/showcase.css --watch) ++
+      ~w(tailwindcss -c tailwind.config.js -i css/retrohex.css -o ../priv/static/assets/css/retrohex.css --watch) ++
         [cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__)]
   ]
 

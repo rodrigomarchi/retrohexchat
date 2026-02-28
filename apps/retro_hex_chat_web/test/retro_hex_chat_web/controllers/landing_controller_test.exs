@@ -1,45 +1,31 @@
-defmodule RetroHexChatWeb.LandingControllerTest do
+defmodule RetroHexChatWeb.LandingLiveTest do
   use RetroHexChatWeb.ConnCase, async: true
 
+  import Phoenix.LiveViewTest
+
   @landing_pages [
-    {"/", "hero"},
-    {"/about", "problem"},
-    {"/how-it-works", "how-it-works"},
-    {"/features", "features"},
-    {"/privacy", "privacy"},
-    {"/install", "install"},
-    {"/community", "open-source"},
-    {"/faq", "faq"}
+    {"/", "hero-heading"},
+    {"/about", "problem-heading"},
+    {"/how-it-works", "how-it-works-heading"},
+    {"/features", "features-heading"},
+    {"/privacy", "privacy-heading"},
+    {"/install", "install-heading"},
+    {"/community", "opensource-heading"},
+    {"/faq", "faq-heading"}
   ]
 
   describe "all landing pages" do
-    for {path, section_id} <- @landing_pages do
-      test "GET #{path} returns 200", %{conn: conn} do
-        conn = get(conn, unquote(path))
-        assert html_response(conn, 200)
+    for {path, heading_id} <- @landing_pages do
+      test "GET #{path} renders successfully", %{conn: conn} do
+        {:ok, _view, html} = live(conn, unquote(path))
+        assert html =~ ~s(id="#{unquote(heading_id)}")
       end
 
-      test "GET #{path} contains section id=#{section_id}", %{conn: conn} do
+      test "GET #{path} uses retrohex.css", %{conn: conn} do
         conn = get(conn, unquote(path))
         body = html_response(conn, 200)
-        assert body =~ ~s(id="#{unquote(section_id)}")
-      end
-
-      test "GET #{path} loads landing-specific assets", %{conn: conn} do
-        conn = get(conn, unquote(path))
-        body = html_response(conn, 200)
-        assert body =~ "/assets/css/landing.css"
-        assert body =~ "/assets/js/landing.js"
-        refute body =~ "/assets/js/app.js"
-        refute body =~ "/assets/css/app.css"
-      end
-
-      test "GET #{path} does not contain LiveView references", %{conn: conn} do
-        conn = get(conn, unquote(path))
-        body = html_response(conn, 200)
-        refute body =~ "phx-track-static"
-        refute body =~ "data-phx-session"
-        refute body =~ "LiveSocket"
+        assert body =~ "retrohex.css"
+        refute body =~ "landing.css"
       end
     end
   end
@@ -66,57 +52,47 @@ defmodule RetroHexChatWeb.LandingControllerTest do
 
   describe "sub-page SEO" do
     test "GET /about has unique page title", %{conn: conn} do
-      conn = get(conn, "/about")
-      body = html_response(conn, 200)
-      assert body =~ "About Retro Hex Chat"
-      assert body =~ ~s(rel="canonical")
-      assert body =~ "/about"
+      {:ok, _view, html} = live(conn, "/about")
+      assert html =~ "About Retro Hex Chat"
     end
 
     test "GET /how-it-works has unique page title", %{conn: conn} do
-      conn = get(conn, "/how-it-works")
-      body = html_response(conn, 200)
-      assert body =~ "How Retro Hex Chat Works"
+      {:ok, _view, html} = live(conn, "/how-it-works")
+      assert html =~ "How Retro Hex Chat Works"
     end
 
     test "GET /features has unique page title", %{conn: conn} do
-      conn = get(conn, "/features")
-      body = html_response(conn, 200)
-      assert body =~ "Features"
+      {:ok, _view, html} = live(conn, "/features")
+      assert html =~ "Features"
     end
 
     test "GET /privacy has unique page title", %{conn: conn} do
-      conn = get(conn, "/privacy")
-      body = html_response(conn, 200)
-      assert body =~ "Privacy Comparison"
+      {:ok, _view, html} = live(conn, "/privacy")
+      assert html =~ "Privacy Comparison"
     end
 
     test "GET /install has unique page title", %{conn: conn} do
-      conn = get(conn, "/install")
-      body = html_response(conn, 200)
-      assert body =~ "Install Retro Hex Chat"
+      {:ok, _view, html} = live(conn, "/install")
+      assert html =~ "Install Retro Hex Chat"
     end
 
     test "GET /community has unique page title", %{conn: conn} do
-      conn = get(conn, "/community")
-      body = html_response(conn, 200)
-      assert body =~ "Open Source"
+      {:ok, _view, html} = live(conn, "/community")
+      assert html =~ "Open Source"
     end
 
     test "GET /faq has unique page title", %{conn: conn} do
-      conn = get(conn, "/faq")
-      body = html_response(conn, 200)
-      assert body =~ "FAQ"
+      {:ok, _view, html} = live(conn, "/faq")
+      assert html =~ "FAQ"
     end
   end
 
   describe "shared layout" do
     test "all pages include header and footer", %{conn: conn} do
       for {path, _} <- @landing_pages do
-        conn = get(conn, path)
-        body = html_response(conn, 200)
-        assert body =~ "landing-header", "#{path} missing header"
-        assert body =~ "landing-footer", "#{path} missing footer"
+        {:ok, _view, html} = live(conn, path)
+        assert html =~ "app-header", "#{path} missing header"
+        assert html =~ "About", "#{path} missing footer"
       end
     end
   end

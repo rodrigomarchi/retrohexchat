@@ -26,6 +26,8 @@ nick-away
 media-call__device-fallback
 media-call__device-label
 media-call__devices
+# Legacy utility — kept for backwards compat but currently unused
+licon-32
 
 [missing]
 # False positive — "system" is a comparison value inside class={...} expression
@@ -50,6 +52,8 @@ Connection
 failed
 # False positive — "finished" is a comparison value in solo_lobby.ex class={...} expression
 finished
+# Help layout — uses old app_header class from controller-era layout
+app-header-panels
 
 [dynamic-prefixes]
 # Prefixes with dynamic suffixes (e.g. chat-message--#{type})

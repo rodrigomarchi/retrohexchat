@@ -37,19 +37,8 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
       <%!-- Logo --%>
       <.logo_link href={@logo_href} />
 
-      <%!-- Toolbar buttons (left) --%>
-      <div class="flex items-center ml-[4px]">
-        <.header_button label="Disconnect" disabled>
-          <Icons.icon_btn_disconnect class="w-[32px] h-[32px]" />
-        </.header_button>
-        <.header_separator />
-        <.header_button label="Menu" disabled>
-          <Icons.icon_btn_menu class="w-[32px] h-[32px]" />
-        </.header_button>
-      </div>
-
       <%!-- Optional panels --%>
-      <div :if={@panels != []} class="flex items-center ml-[4px]">
+      <div :if={@panels != []} class="flex items-center ml-[4px] flex-1">
         {render_slot(@panels)}
       </div>
 
@@ -108,14 +97,6 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
     >
       {render_slot(@inner_block)}
     </button>
-    """
-  end
-
-  defp header_separator(assigns) do
-    assigns = assign(assigns, :dummy, nil)
-
-    ~H"""
-    <div class="mx-[1px] w-[1px] h-[24px] bg-gray-500" />
     """
   end
 end

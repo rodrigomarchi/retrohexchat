@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+
+    <%!-- SEO (dynamic per page) --%>
+    <.live_title default="Retro Hex Chat — Your server. Your conversations. Nobody in between.">
+      {assigns[:page_title]}
+    </.live_title>
+    <meta
+      name="description"
+      content={
+        assigns[:page_description] ||
+          "Run your own chat server. Your data stays with you. Voice and video calls go directly between users via P2P. Open source, self-hosted, and free as in freedom."
+      }
+    />
+    <meta name="robots" content="index, follow" />
+
+    <%!-- Open Graph --%>
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content={assigns[:page_title] || "Retro Hex Chat — Self-hosted chat with P2P calls"}
+    />
+    <meta
+      property="og:description"
+      content={
+        assigns[:page_description] ||
+          "Your data. Your rules. Your community. Real-time chat on your own server with direct P2P voice and video calls."
+      }
+    />
+    <meta property="og:site_name" content="Retro Hex Chat" />
+    <meta property="og:locale" content="en_US" />
+
+    <%!-- Twitter Card --%>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content={assigns[:page_title] || "Retro Hex Chat — Self-hosted P2P chat"}
+    />
+    <meta
+      name="twitter:description"
+      content={
+        assigns[:page_description] ||
+          "Run your own server. Talk directly with your friends. Open source and self-hosted."
+      }
+    />
+
+    <%!-- JSON-LD Structured Data --%>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Retro Hex Chat",
+        "applicationCategory": "CommunicationApplication",
+        "operatingSystem": "Web",
+        "description": "Self-hosted chat software with P2P voice and video calls, inspired by the IRC of the 2000s. Open source, licensed under MIT.",
+        "license": "https://opensource.org/licenses/MIT",
+        "url": "https://retrohexchat.com",
+        "author": {
+          "@type": "Person",
+          "name": "Rodrigo Marchi"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+
+    <%!-- Fonts --%>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <%!-- Favicon --%>
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <%!-- RetroHex CSS (Tailwind) + Showcase JS (LiveSocket) --%>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/css/retrohex.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/showcase.js"}>
+    </script>
+  </head>
+  <body class="bg-desktop font-system text-text">
+    {@inner_content}
+  </body>
+</html>

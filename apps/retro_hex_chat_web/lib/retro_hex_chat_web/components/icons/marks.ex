@@ -299,4 +299,60 @@ defmodule RetroHexChatWeb.Icons.Marks do
     </svg>
     """
   end
+
+  @doc "Win98 window minimize control — 6×2 horizontal line at bottom."
+  attr :class, :string, default: nil
+
+  @spec icon_win_minimize(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_win_minimize(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 6 2" shape-rendering="crispEdges" aria-hidden="true">
+      <path fill="#000" d="M0 0h6v2H0z" />
+    </svg>
+    """
+  end
+
+  @doc "Win98 window maximize control — 9×9 square outline."
+  attr :class, :string, default: nil
+
+  @spec icon_win_maximize(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_win_maximize(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 9 9" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M9 0H0v9h9V0zM8 2H1v6h7V2z"
+        fill="#000"
+      />
+    </svg>
+    """
+  end
+
+  @doc "Win98 window restore control — overlapping windows."
+  attr :class, :string, default: nil
+
+  @spec icon_win_restore(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_win_restore(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 8 9" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        fill="#000"
+        d="M2 0h6v2H2zM7 2h1v4H7zM2 2h1v1H2zM6 5h1v1H6zM0 3h6v2H0zM5 5h1v4H5zM0 5h1v4H0zM1 8h4v1H1z"
+      />
+    </svg>
+    """
+  end
+
+  @doc "Win98 window help control — question mark."
+  attr :class, :string, default: nil
+
+  @spec icon_win_help(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_win_help(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 6 9" shape-rendering="crispEdges" aria-hidden="true">
+      <path fill="#000" d="M0 1h2v2H0zM1 0h4v1H1zM4 1h2v2H4zM3 3h2v1H3zM2 4h2v2H2zM2 7h2v2H2z" />
+    </svg>
+    """
+  end
 end

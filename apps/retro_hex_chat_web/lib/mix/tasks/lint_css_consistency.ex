@@ -102,6 +102,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     |> Enum.reject(fn path ->
       String.ends_with?(path, "app.css") or
         String.ends_with?(path, "showcase.css") or
+        String.ends_with?(path, "retrohex.css") or
         String.contains?(path, "/retro/")
     end)
     |> Enum.reduce(%{}, fn file, acc ->
@@ -170,7 +171,10 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     "components/ui/",
     "showcase_helpers.ex",
     "live/showcase_live/",
-    "layouts/showcase.html.heex"
+    "layouts/showcase.html.heex",
+    "live/landing_live/",
+    "landing_helpers.ex",
+    "layouts/landing_live.html.heex"
   ]
 
   @doc false

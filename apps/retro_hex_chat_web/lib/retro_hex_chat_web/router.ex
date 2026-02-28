@@ -14,10 +14,12 @@ defmodule RetroHexChatWeb.Router do
     plug :accepts, ["json"]
   end
 
-  pipeline :landing do
+  pipeline :landing_live do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :landing}
+    plug :fetch_live_flash
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :landing_live}
+    plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
 
@@ -28,16 +30,16 @@ defmodule RetroHexChatWeb.Router do
   end
 
   scope "/", RetroHexChatWeb do
-    pipe_through :landing
+    pipe_through :landing_live
 
-    get "/", LandingController, :index
-    get "/about", LandingController, :about
-    get "/how-it-works", LandingController, :how_it_works
-    get "/features", LandingController, :features
-    get "/privacy", LandingController, :privacy
-    get "/install", LandingController, :install
-    get "/community", LandingController, :community
-    get "/faq", LandingController, :faq
+    live "/", LandingLive.Index
+    live "/about", LandingLive.About
+    live "/how-it-works", LandingLive.HowItWorks
+    live "/features", LandingLive.Features
+    live "/privacy", LandingLive.Privacy
+    live "/install", LandingLive.Install
+    live "/community", LandingLive.Community
+    live "/faq", LandingLive.Faq
   end
 
   pipeline :help do
