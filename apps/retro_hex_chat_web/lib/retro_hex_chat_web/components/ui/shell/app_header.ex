@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
     <header
       class={
         classes([
-          "bg-surface shadow-retro-window flex items-center h-[64px] px-[4px]",
+          "bg-surface shadow-retro-window flex items-center h-[64px] shrink-0 px-[4px]",
           @class
         ])
       }

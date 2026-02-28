@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Commands.Autocomplete
+  alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
 
   use Phoenix.VerifiedRoutes, endpoint: RetroHexChatWeb.Endpoint, router: RetroHexChatWeb.Router
 
@@ -33,7 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     {:halt,
      socket
      |> push_event("intentional_disconnect", %{})
-     |> push_navigate(to: ~p"/connect")}
+     |> push_navigate(to: PathHelpers.connect_path(socket))}
   end
 
   def handle_event("restore_session", params, socket) do
@@ -345,7 +346,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     {:halt,
      socket
      |> push_event("intentional_disconnect", %{})
-     |> push_navigate(to: ~p"/connect")}
+     |> push_navigate(to: PathHelpers.connect_path(socket))}
   end
 
   def handle_event("cancel_disconnect", _params, socket) do
@@ -354,6 +355,15 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("toggle_cheatsheet", _params, socket) do
     {:halt, assign(socket, cheatsheet_visible: !socket.assigns.cheatsheet_visible)}
+  end
+
+  def handle_event("toggle_nicklist", _params, socket) do
+    current = Map.get(socket.assigns, :show_nicklist, true)
+    {:halt, assign(socket, show_nicklist: !current)}
+  end
+
+  def handle_event("help_topics", _params, socket) do
+    {:halt, push_navigate(socket, to: ~p"/chat/help")}
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}

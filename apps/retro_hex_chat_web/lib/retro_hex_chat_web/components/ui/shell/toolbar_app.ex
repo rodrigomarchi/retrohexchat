@@ -45,11 +45,11 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
       <.toolbar_separator />
 
       <%!-- Group 2: Options (dropdown) --%>
-      <div class="relative">
-        <.toolbar_button label="Options" data-toolbar-group="options">
+      <div class="toolbar-group relative">
+        <.toolbar_button label="Options" class="toolbar-group-toggle" data-toolbar-group="options">
           <Icons.icon_group_tools class="w-[32px] h-[32px]" />
         </.toolbar_button>
-        <div class="hidden absolute left-0 top-full z-50 shadow-retro-raised bg-surface p-1 min-w-[200px]">
+        <div class="toolbar-group-dropdown u-hidden absolute left-0 top-full z-50 shadow-retro-raised bg-surface p-1 min-w-[200px]">
           <%!-- View items --%>
           <.dropdown_item
             icon_fn={:icon_btn_channel_list}

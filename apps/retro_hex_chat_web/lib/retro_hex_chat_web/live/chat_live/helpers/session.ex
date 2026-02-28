@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Persistence
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
 
@@ -375,7 +376,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     socket
     |> assign(quit_reason: quit_reason)
     |> push_event("intentional_disconnect", %{})
-    |> push_navigate(to: "/connect")
+    |> push_navigate(to: PathHelpers.connect_path(socket))
   end
 
   @spec handle_set_away(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()

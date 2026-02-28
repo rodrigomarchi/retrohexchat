@@ -40,9 +40,10 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
 
     ~H"""
     <div class={classes(["space-y-retro-2", @class])} phx-hook="FormatToolbarHook" id={@id} {@rest}>
-      <.toolbar>
+      <.toolbar variant="compact">
         <%!-- Text formatting buttons --%>
         <.toolbar_button
+          variant="compact"
           label="Bold (Ctrl+Shift+B)"
           active={@bold_active}
           class="format-btn"
@@ -52,6 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           <Icons.icon_fmt_bold class="w-3.5 h-3.5" />
         </.toolbar_button>
         <.toolbar_button
+          variant="compact"
           label="Italic (Ctrl+Shift+Y)"
           active={@italic_active}
           class="format-btn"
@@ -61,6 +63,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           <Icons.icon_fmt_italic class="w-3.5 h-3.5" />
         </.toolbar_button>
         <.toolbar_button
+          variant="compact"
           label="Underline (Ctrl+Shift+U)"
           active={@underline_active}
           class="format-btn"
@@ -70,11 +73,12 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           <Icons.icon_fmt_underline class="w-3.5 h-3.5" />
         </.toolbar_button>
 
-        <.toolbar_separator />
+        <.toolbar_separator variant="compact" />
 
         <%!-- Color picker toggle + dropdown --%>
-        <div class="format-color-picker-wrapper relative">
+        <div class="format-color-picker-wrapper relative inline-flex items-center">
           <.toolbar_button
+            variant="compact"
             label="Color (Ctrl+Shift+D)"
             class="format-btn"
             data-format-code="color"
@@ -94,10 +98,11 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           </div>
         </div>
 
-        <.toolbar_separator />
+        <.toolbar_separator variant="compact" />
 
         <%!-- Control buttons --%>
         <.toolbar_button
+          variant="compact"
           label="Reverse (Ctrl+Shift+V)"
           class="format-btn"
           data-format-code="reverse"
@@ -106,6 +111,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           <Icons.icon_fmt_reverse class="w-3.5 h-3.5" />
         </.toolbar_button>
         <.toolbar_button
+          variant="compact"
           label="Reset (Ctrl+Shift+X)"
           class="format-btn"
           data-format-code="reset"
@@ -114,10 +120,11 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           <Icons.icon_fmt_reset class="w-3.5 h-3.5" />
         </.toolbar_button>
 
-        <.toolbar_separator />
+        <.toolbar_separator variant="compact" />
 
         <%!-- Strip formatting --%>
         <.toolbar_button
+          variant="compact"
           label="Strip Colors"
           active={@strip_active}
           phx-click={@on_format}
@@ -127,10 +134,11 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           <Icons.icon_fmt_strip class="w-3.5 h-3.5" />
         </.toolbar_button>
 
-        <.toolbar_separator />
+        <.toolbar_separator variant="compact" />
 
         <%!-- Emoji toggle --%>
         <.toolbar_button
+          variant="compact"
           label="Emoji Picker"
           phx-click={@on_toggle_emoji}
           data-emoji-toggle="true"

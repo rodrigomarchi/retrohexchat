@@ -83,6 +83,33 @@ defmodule RetroHexChatWeb.Router do
     post "/chat/session", SessionController, :create
   end
 
+  pipeline :v2_app do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :v2}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+  end
+
+  scope "/v2", RetroHexChatWeb.V2 do
+    pipe_through :v2_app
+
+    live "/connect", ConnectLive
+    live "/chat", ChatLive
+    live "/p2p/:token", P2PSessionLive
+    live "/game/:token", GameSessionLive
+    live "/solo/:token", SoloSessionLive
+    live "/arcade/:token/:game_id", ArcadeGameLive
+  end
+
+  scope "/v2", RetroHexChatWeb.V2 do
+    pipe_through [:v2_app, :chat_session]
+
+    post "/chat/session", SessionController, :create
+    get "/chat/session/clear", SessionController, :delete
+  end
+
   pipeline :showcase do
     plug :accepts, ["html"]
     plug :fetch_session

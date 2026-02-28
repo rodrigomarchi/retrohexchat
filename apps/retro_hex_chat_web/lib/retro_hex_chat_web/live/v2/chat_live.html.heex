@@ -1,0 +1,727 @@
+<%!-- Hidden hooks --%>
+<div id="title-flash" phx-hook="TitleFlashHook" class="hidden"></div>
+<div id="nick-change-hook" phx-hook="NickChangeFormHook" class="hidden"></div>
+<form id="nick-change-session-form" action={~p"/v2/chat/session"} method="post" class="hidden">
+  <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+  <input type="hidden" name="nickname" value={@nick_change_target || ""} />
+  <input
+    :if={@nick_change_token}
+    type="hidden"
+    name="auth_token"
+    value={@nick_change_token}
+  />
+  <input type="hidden" name="timezone" value={@timezone} />
+</form>
+<div id="search-highlight-hook" phx-hook="SearchHighlightHook" class="hidden"></div>
+<div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" class="hidden"></div>
+<div id="paste-hook" phx-hook="PasteHook" class="hidden"></div>
+
+<%!-- Toast container --%>
+<RetroHexChatWeb.Components.Toast.toast_container />
+
+<%!-- Main app container --%>
+<div
+  class="flex flex-col fixed inset-0 overflow-hidden bg-canvas"
+  phx-click="close_context_menu"
+  phx-window-keydown="window_keydown"
+  id="app-container"
+  phx-hook="SoundHook"
+>
+  <%!-- App header with toolbar & status bar --%>
+  <.app_header logo_href={~p"/v2/chat"}>
+    <:panels>
+      <.toolbar_app
+        :if={@show_toolbar}
+        id="toolbar"
+        phx-hook="ToolbarGroupHook"
+        connected={true}
+        is_admin={admin?(@session)}
+        on_action="toolbar_action"
+      />
+      <.status_bar_app
+        :if={@show_statusbar}
+        nickname={@session.nickname}
+        channel={@session.active_pm || @session.active_channel}
+        user_count={length(@channel_users)}
+        tab_type={if @session.active_pm, do: :pm, else: :channel}
+        lag_ms={@lag_ms}
+        lag_status={@lag_status}
+        muted={@muted}
+        timezone={@timezone}
+        on_mute_toggle="toggle_mute"
+      />
+    </:panels>
+  </.app_header>
+
+  <%!-- MDI layout: conversations | chat | nicklist --%>
+  <div class="flex flex-1 min-h-0">
+    <%!-- Conversations sidebar --%>
+    <.conversations
+      :if={@show_conversations}
+      channels={@session.channels}
+      active_channel={@session.active_channel}
+      unread_counts={@unread_counts}
+      highlight_channels={MapSet.to_list(@highlight_channels)}
+      flash_channels={MapSet.to_list(@flash_channels)}
+      muted_channels={MapSet.to_list(@muted_channels)}
+      disconnected_channels={
+        MapSet.to_list(Map.get(assigns, :disconnected_channels, MapSet.new()))
+      }
+      pm_conversations={@session.pm_conversations}
+      active_pm={@session.active_pm}
+      channel_users={if !@session.active_pm && !@show_status_tab, do: @channel_users, else: []}
+      nick_color_fn={@nick_color_fn}
+      channel_user_counts={@channel_user_counts}
+      popular_channels={@popular_channels}
+      collapsed_sections={
+        for {k, expanded?} <- @conversations_sections, !expanded?, do: to_string(k)
+      }
+      on_channel_click="switch_channel"
+      on_channel_dblclick="conversations_channel_dblclick"
+      on_pm_click="switch_pm_nick"
+      on_user_click="nick_dblclick"
+      on_toggle_section="conversations_toggle_section"
+      on_close="toggle_conversations"
+      on_browse_channels="conversations_browse_all"
+      on_join_popular="conversations_join_popular"
+    />
+
+    <%!-- Chat area --%>
+    <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
+      <%!-- Tab bar (shrink, no grow) --%>
+      <.irc_tab_bar :if={@show_switchbar}>
+        <.irc_tab_item
+          :if={@show_status_tab || @status_unread}
+          type="status"
+          label="Status"
+          active={@show_status_tab}
+          unread={@status_unread}
+          closeable={@show_status_tab}
+          on_click="switch_tab"
+          on_close="close_tab"
+        />
+        <.irc_tab_item
+          :for={channel <- @session.channels}
+          type="channel"
+          label={channel}
+          active={@session.active_channel == channel && !@show_status_tab}
+          unread={Map.get(@unread_counts, channel, 0) > 0}
+          on_click="switch_tab"
+          on_close="close_tab"
+        />
+        <.irc_tab_item
+          :for={pm <- @session.pm_conversations}
+          type="pm"
+          label={pm}
+          active={@session.active_pm == pm && !@show_status_tab}
+          unread={Map.get(@unread_counts, pm, 0) > 0}
+          on_click="switch_tab"
+          on_close="close_tab"
+        />
+      </.irc_tab_bar>
+
+      <%!-- Topic bar --%>
+      <.topic_bar
+        topic={@current_topic || ""}
+        channel_name={@session.active_channel}
+        variant={
+          cond do
+            @show_status_tab -> "status"
+            @session.active_pm -> "pm"
+            true -> "channel"
+          end
+        }
+      />
+
+      <%!-- Connection status banner --%>
+      <.connection_status
+        state="connected"
+        visible={false}
+      />
+
+      <%!-- Search bar --%>
+      <.search_bar
+        :if={@search_visible}
+        query={@search_query}
+        result_count={@search_result_count}
+        current_result={@search_current_index}
+        error={@search_error}
+        case_sensitive={@search_case_sensitive}
+        regex={@search_regex}
+        mentions_only={@search_my_mentions}
+        search_history={@search_history}
+        on_search="search_input"
+        on_next="search_next"
+        on_prev="search_prev"
+        on_close="close_search"
+        on_toggle_filter="search_toggle_filter"
+      />
+
+      <%!-- Messages + Nicklist row (fills remaining space) --%>
+      <div class="flex flex-1 min-h-0">
+        <%!-- Messages column --%>
+        <div class="flex flex-col flex-1 min-w-0 min-h-0 relative">
+          <%!-- Loading spinner --%>
+          <.loading_spinner
+            :if={@loading_channel != nil}
+            text={"Loading #{@loading_channel || "messages"}..."}
+          />
+
+          <%!-- Scroll loader --%>
+          <.scroll_loader loading={@loading_more} />
+
+          <%!-- Chat messages stream --%>
+          <.chat_message_list
+            class={["flex-1 min-h-0", @show_status_tab && "hidden"]}
+            id="chat-messages"
+            phx-update="stream"
+            phx-hook="ScrollHook"
+            data-interactions-hook="MessageInteractionsHook"
+          >
+            <div
+              :for={{dom_id, msg} <- @streams.chat_messages}
+              id={dom_id}
+              class={message_classes(msg, @edit_mode_message_id)}
+              data-testid={if(Map.get(msg, :highlighted), do: "highlighted-message", else: nil)}
+              data-author={Map.get(msg, :author)}
+              data-message-id={dom_id}
+              data-temp-id={
+                if(Map.get(msg, :status) in [:pending, :failed], do: msg.id, else: nil)
+              }
+              data-msg-status={
+                if(Map.get(msg, :status), do: Atom.to_string(msg.status), else: nil)
+              }
+              data-system-message={
+                if(
+                  Map.get(msg, :type, :normal) in [
+                    :system,
+                    :service,
+                    :inline_help,
+                    :arcade_link
+                  ],
+                  do: "true",
+                  else: nil
+                )
+              }
+              data-real-id={Map.get(msg, :id)}
+            >
+              <.render_message
+                msg={msg}
+                nick_color_fn={@nick_color_fn}
+                timestamp_format={@timestamp_format}
+                timezone={@timezone}
+                strip_formatting={@session.strip_formatting}
+                edit_mode_message_id={@edit_mode_message_id}
+              />
+            </div>
+          </.chat_message_list>
+
+          <%!-- Status messages stream --%>
+          <.chat_message_list
+            class={["flex-1 min-h-0", !@show_status_tab && "hidden"]}
+            id="status-messages"
+            phx-update="stream"
+            data-testid="status-messages"
+          >
+            <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
+              <.chat_message
+                timestamp={V2Helpers.format_time(msg.timestamp, @timestamp_format, @timezone)}
+                type={to_string(msg.type)}
+              >
+                {msg.content}
+              </.chat_message>
+            </div>
+          </.chat_message_list>
+
+          <%!-- Popups (absolute positioned over messages) --%>
+          <div class="relative">
+            <.autocomplete
+              :if={@autocomplete_visible}
+              items={@autocomplete_results}
+              selected_index={@autocomplete_selected}
+              mode={@autocomplete_mode || :command}
+              on_select="autocomplete_select"
+            />
+            <.syntax_tooltip
+              tooltip={@syntax_tooltip}
+              detail_level={@command_help_level}
+            />
+          </div>
+        </div>
+
+        <%!-- Nicklist sidebar --%>
+        <.nicklist
+          :if={@show_nicklist && !@session.active_pm && !@show_status_tab}
+          class="w-[140px] shrink-0"
+        >
+          <.nicklist_item
+            :for={user <- @channel_users}
+            nick={user.nickname}
+            role={user_role(user)}
+            status={if Map.get(user, :away), do: "away", else: "online"}
+            nick_color={@nick_color_fn.(user.nickname)}
+            data-nick={user.nickname}
+          />
+        </.nicklist>
+      </div>
+
+      <%!-- Bottom panel: formatting toolbar + reply bar + typing + input (fixed at bottom) --%>
+      <div class="shrink-0">
+        <%!-- Emoji picker (positioned above input) --%>
+        <.emoji_picker
+          :if={@show_emoji_picker}
+          id="emoji-picker"
+          search={@emoji_search}
+          active_category={@emoji_category}
+          categories={
+            EmojiData.categories()
+            |> Enum.map(fn cat -> {cat, EmojiData.by_category(cat)} end)
+          }
+          on_select="emoji_select"
+          on_category="emoji_category"
+          on_search="emoji_search"
+          on_close="toggle_emoji_picker"
+        />
+
+        <%!-- Formatting toolbar --%>
+        <.formatting_toolbar
+          :if={!@show_status_tab}
+          strip_active={@session.strip_formatting}
+          on_format="toggle_strip_formatting"
+          on_toggle_emoji="toggle_emoji_picker"
+        />
+
+        <%!-- Reply bar --%>
+        <.reply_bar
+          :if={@reply_to}
+          author={@reply_to.author}
+          message={@reply_to.preview}
+          on_dismiss="cancel_reply"
+        />
+
+        <%!-- Typing indicator --%>
+        <.typing_indicator
+          :if={@session.active_pm}
+          nick={@pm_typing_from}
+        />
+
+        <%!-- Chat input --%>
+        <.chat_input
+          id="chat-input-area"
+          input_id="chat-input"
+          value={@input}
+          name="input"
+          placeholder={V2Helpers.input_placeholder(assigns)}
+          on_submit="send_input"
+          hook="AutocompleteHook"
+          wrapper_hook="CharCounterHook"
+          autofocus
+          show_toolbar={false}
+        />
+        <.history_search />
+      </div>
+    </div>
+  </div>
+</div>
+
+<%!-- Hover card --%>
+<.hover_card
+  :if={@hover_card.visible}
+  nick={@hover_card.nick || ""}
+  visible={@hover_card.visible}
+  loading={@hover_card[:loading] || false}
+  x={@hover_card[:x]}
+  y={@hover_card[:y]}
+  away={@hover_card[:away]}
+  host={@hover_card[:host]}
+  real_name={@hover_card[:real_name]}
+  registered={@hover_card[:registered] || false}
+  online_since={@hover_card[:online_since]}
+  online_for={@hover_card[:online_for]}
+  idle={@hover_card[:idle]}
+  client={@hover_card[:client]}
+  server={@hover_card[:server]}
+  channels={@hover_card[:channels] || []}
+  browser={@hover_card[:browser]}
+  os={@hover_card[:os]}
+  on_close="hover_card_close"
+/>
+
+<%!-- Context menus --%>
+<.chat_context_menu
+  visible={@chat_context_menu.visible}
+  x={@chat_context_menu.x}
+  y={@chat_context_menu.y}
+  type={@chat_context_menu.type || :nick}
+  target_nick={@chat_context_menu.target_nick}
+  target_url={@chat_context_menu.target_url}
+  target_channel={@chat_context_menu.target_channel}
+  target_message={@chat_context_menu.target_message}
+  viewer_nick={@session.nickname}
+  viewer_is_op={viewer_is_op?(@session)}
+  viewer_is_identified={@session.identified}
+  is_target_ignored={chat_context_target_ignored?(@session, @chat_context_menu)}
+  is_target_self={@chat_context_menu.target_nick == @session.nickname}
+  is_already_joined={@chat_context_menu.target_channel in (@session.channels || [])}
+  on_action="chat_context_action"
+/>
+
+<.conversations_context_menu
+  visible={@conversations_context_menu.visible}
+  x={@conversations_context_menu.x}
+  y={@conversations_context_menu.y}
+  channel={@conversations_context_menu.channel}
+  is_muted={MapSet.member?(@muted_channels, @conversations_context_menu.channel)}
+  has_unread={UnreadTracker.unread?(@unread_counts, @conversations_context_menu.channel)}
+  custom_items={CustomMenus.entries_for(@session.custom_menus, :channel)}
+  on_action="conversations_context_action"
+/>
+
+<%!-- Nicklist context menu --%>
+<.nicklist_context_menu
+  visible={@context_menu.visible}
+  x={@context_menu.x}
+  y={@context_menu.y}
+  target_nick={@context_menu.target_nick}
+  viewer_nick={@session.nickname}
+  viewer_is_op={viewer_is_op?(@session)}
+  viewer_is_identified={@session.identified}
+  is_target_ignored={context_target_ignored?(@session, @context_menu.target_nick)}
+  is_target_self={@context_menu.target_nick == @session.nickname}
+  show_color_picker={@show_context_color_picker}
+  nick_color_fn={@nick_color_fn}
+  custom_items={CustomMenus.entries_for(@session.custom_menus, :nicklist)}
+  on_action="nicklist_context_action"
+/>
+
+<%!-- Dialogs --%>
+<.about_dialog id="about-dialog" show={@show_about} />
+
+<.disconnect_confirm_dialog
+  id="disconnect-confirm-dialog"
+  show={@show_disconnect_confirm}
+  on_confirm="confirm_disconnect"
+  on_cancel="cancel_disconnect"
+/>
+
+<.delete_confirm_dialog
+  id="delete-confirm-dialog"
+  show={@delete_confirm != nil}
+  message_id={@delete_confirm && @delete_confirm.message_id}
+  on_confirm="confirm_delete"
+  on_cancel="cancel_delete"
+/>
+
+<.nick_change_dialog
+  id="nick-change-dialog"
+  show={@nick_change_dialog != nil}
+  target_nick={(@nick_change_dialog && @nick_change_dialog.target_nick) || ""}
+  registered={(@nick_change_dialog && @nick_change_dialog.registered) || false}
+  password_error={@nick_change_dialog && @nick_change_dialog.password_error}
+  on_confirm="nick_change_confirm"
+  on_cancel="nick_change_cancel"
+/>
+
+<.notify_list
+  id="notify-list-dialog"
+  show={@show_notify_list}
+  entries={NotifyList.sorted_entries(@session.notify_list)}
+  selected_entry={@notify_selected}
+  auto_whois={@session.notify_list.settings.auto_whois}
+  on_select="notify_select"
+  on_add="notify_add_dialog"
+  on_edit="notify_edit_dialog"
+  on_remove="notify_remove"
+  on_toggle_auto_whois="toggle_auto_whois"
+  on_close="toggle_notify_list"
+/>
+
+<.address_book
+  id="address-book-dialog"
+  show={@show_address_book}
+  selected_tab={@address_book_tab}
+  contacts={ContactList.sorted_entries(@session.contacts)}
+  selected_index={@contacts_selected}
+  notify_list={NotifyList.sorted_entries(@session.notify_list)}
+  nick_colors={NickColors.sorted_entries(@session.nick_colors)}
+  on_select="contact_select"
+  on_add="contact_add_dialog"
+  on_edit="contact_edit_dialog"
+  on_remove="contact_remove"
+  on_color_select="nick_color_select"
+  on_ok="toggle_address_book"
+  on_cancel="toggle_address_book"
+  on_close="toggle_address_book"
+/>
+
+<.channel_list
+  id="channel-list-dialog"
+  show={@show_channel_list}
+  channels={@channel_list_filtered}
+  search={@channel_list_search}
+  loading={@channel_list_loading}
+  on_search="channel_list_filter"
+  on_select="channel_list_filter"
+  on_join="channel_list_join"
+  on_close="toggle_channel_list"
+/>
+
+<.ignore_list_dialog
+  id="ignore-list-dialog"
+  show={@show_ignore_dialog}
+  entries={IgnoreList.sorted_entries(@session.ignore_list)}
+  selected={@ignore_selected}
+  on_select="ignore_select"
+  on_add="ignore_dialog_add"
+  on_remove="ignore_dialog_remove"
+  on_close="close_ignore_dialog"
+/>
+
+<.ctcp_settings_dialog
+  id="ctcp-settings-dialog"
+  show={@show_ctcp_settings_dialog}
+  settings={@session.ctcp_settings}
+  on_save="ctcp_save_settings"
+  on_cancel="close_ctcp_settings_dialog"
+/>
+
+<.flood_protection_dialog
+  id="flood-protection-dialog"
+  show={@show_flood_protection_dialog}
+  settings={@session.flood_protection}
+  on_save="flood_save_settings"
+  on_reset="flood_reset_defaults"
+  on_cancel="close_flood_protection_dialog"
+/>
+
+<.sound_settings_dialog
+  id="sound-settings-dialog"
+  show={@show_sound_settings_dialog}
+  settings={@sound_settings_draft || %{}}
+  on_ok="sound_settings_ok"
+  on_cancel="close_sound_settings_dialog"
+  on_apply="sound_settings_apply"
+  on_sound_change="sound_settings_change"
+  on_flash_toggle="sound_flash_toggle"
+  on_preview="sound_preview"
+/>
+
+<.options_dialog
+  id="options-dialog"
+  show={@show_options_dialog}
+  active_panel={@options_panel}
+  on_panel_select="options_select_panel"
+  on_ok="options_ok"
+  on_cancel="close_options_dialog"
+  on_apply="options_apply"
+>
+  <:panel name="display">Display settings</:panel>
+  <:panel name="messages">Message settings</:panel>
+  <:panel name="sounds">Sound settings</:panel>
+</.options_dialog>
+
+<.perform_dialog
+  id="perform-dialog"
+  show={@show_perform_dialog}
+  active_tab={@perform_dialog_tab}
+  perform_entries={PerformList.entries(@session.perform_list)}
+  perform_selected={@perform_selected}
+  perform_enabled={PerformList.enabled?(@session.perform_list)}
+  autojoin_entries={AutoJoinList.entries(@session.autojoin_list)}
+  autojoin_selected={@autojoin_selected}
+  on_tab="perform_dialog_tab"
+  on_select="perform_select"
+  on_add="perform_dialog_add"
+  on_edit="perform_dialog_edit"
+  on_remove="perform_dialog_remove"
+  on_move_up="perform_dialog_move_up"
+  on_move_down="perform_dialog_move_down"
+  on_toggle_enabled="perform_toggle_enabled"
+  on_ok="close_perform_dialog"
+  on_cancel="close_perform_dialog"
+/>
+
+<.alias_dialog
+  id="alias-dialog"
+  show={@show_alias_dialog}
+  aliases={AliasList.entries(@session.aliases)}
+  selected_alias={@alias_dialog_selected}
+  editing={@alias_dialog_editing}
+  draft_name={@alias_dialog_draft_name}
+  draft_expansion={@alias_dialog_draft_expansion}
+  warning_message={@alias_dialog_warning}
+  error_message={@alias_dialog_error}
+  on_select="alias_select"
+  on_add="alias_dialog_add"
+  on_edit="alias_dialog_edit"
+  on_delete="alias_dialog_delete"
+  on_save="alias_dialog_add"
+  on_cancel_edit="alias_dialog_cancel_edit"
+  on_close="close_alias_dialog"
+/>
+
+<.custom_menus_dialog
+  id="custom-menus-dialog"
+  show={@show_custom_menus_dialog}
+  active_tab={@custom_menus_dialog_tab}
+  entries={CustomMenus.entries_for(@session.custom_menus, @custom_menus_dialog_tab)}
+  selected_item={@custom_menus_dialog_selected}
+  editing={@custom_menus_dialog_editing}
+  draft_label={@custom_menus_dialog_draft_label}
+  draft_command={@custom_menus_dialog_draft_command}
+  error_message={@custom_menus_dialog_error}
+  on_tab="custom_menus_tab"
+  on_select="custom_menu_select"
+  on_add="custom_menu_dialog_add"
+  on_edit="custom_menu_dialog_edit"
+  on_delete="custom_menu_dialog_delete"
+  on_save="custom_menu_dialog_save"
+  on_cancel_edit="custom_menu_dialog_cancel_edit"
+  on_close="close_custom_menus_dialog"
+/>
+
+<.auto_respond_dialog
+  id="autorespond-dialog"
+  show={@show_autorespond_dialog}
+  rules={AutoRespondRules.entries(@session.autorespond_rules)}
+  selected_position={@autorespond_dialog_selected}
+  editing={@autorespond_dialog_editing}
+  draft_trigger={@autorespond_dialog_draft_trigger}
+  draft_channel={@autorespond_dialog_draft_channel}
+  draft_command={@autorespond_dialog_draft_command}
+  error_message={@autorespond_dialog_error}
+  on_select="autorespond_select"
+  on_toggle="autorespond_toggle"
+  on_add="autorespond_dialog_add"
+  on_edit="autorespond_dialog_edit"
+  on_delete="autorespond_dialog_delete"
+  on_save="autorespond_dialog_save"
+  on_cancel_edit="autorespond_dialog_cancel_edit"
+  on_close="close_autorespond_dialog"
+/>
+
+<.channel_central_dialog
+  id="channel-central-dialog"
+  show={@show_channel_central}
+  active_tab={@channel_central_tab}
+  channel_name={@channel_central_channel}
+  topic={channel_central_topic(@channel_central_state)}
+  topic_set_by={channel_central_topic_set_by(@channel_central_state)}
+  topic_set_at={channel_central_topic_set_at(@channel_central_state, @timezone)}
+  created_at={channel_central_created_at(@channel_central_state, @timezone)}
+  member_count={channel_central_member_count(@channel_central_state)}
+  operator={@channel_central_operator}
+  modes={@channel_central_modes_form}
+  bans={channel_central_bans(@channel_central_state)}
+  ban_exceptions={channel_central_ban_exceptions(@channel_central_state)}
+  invite_exceptions={channel_central_invite_exceptions(@channel_central_state)}
+  ban_selected={@channel_central_ban_selected}
+  ban_ex_selected={@channel_central_ban_ex_selected}
+  invite_ex_selected={@channel_central_invite_ex_selected}
+  on_topic_save="cc_set_topic"
+  on_mode_apply="cc_apply_modes"
+  on_ban_add="cc_open_add_ban"
+  on_ban_remove="cc_remove_ban"
+  on_ban_ex_add="cc_open_add_ban_ex"
+  on_ban_ex_remove="cc_remove_ban_exception"
+  on_invite_ex_add="cc_open_add_invite_ex"
+  on_invite_ex_remove="cc_remove_invite_exception"
+  on_close="close_channel_central"
+/>
+
+<.highlight_dialog
+  id="highlight-dialog"
+  show={@show_highlight_dialog}
+  words={HighlightWords.entries(@session.highlight_words)}
+  own_nick={@session.nickname}
+  selected_index={@highlight_selected}
+  on_select="highlight_select"
+  on_add="open_highlight_add_dialog"
+  on_edit="open_highlight_edit_dialog"
+  on_remove="highlight_remove"
+  on_color_select="highlight_color_pick"
+  on_ok="close_highlight_dialog"
+  on_cancel="close_highlight_dialog"
+/>
+
+<.url_catcher
+  id="url-catcher-dialog"
+  show={@show_url_catcher}
+  entries={filtered_url_catcher_entries(assigns)}
+  sort_column={@url_catcher_sort_column}
+  sort_direction={@url_catcher_sort_direction}
+  filter_channel={@url_catcher_filter_channel}
+  search_query={@url_catcher_search_query}
+  channels={url_catcher_channels(assigns)}
+  entry_count={length(@url_catcher_entries)}
+  on_sort="url_catcher_sort"
+  on_filter="url_catcher_filter"
+  on_search="url_catcher_search"
+  on_close="toggle_url_catcher"
+/>
+
+<.cheatsheet_dialog id="cheatsheet-dialog" show={@cheatsheet_visible} />
+
+<.paste_confirm_dialog
+  id="paste-confirm-dialog"
+  show={@paste_lines != nil}
+  line_count={if @paste_lines, do: length(@paste_lines), else: 0}
+  flood_warning={@paste_flood_warning}
+  send_disabled={@paste_send_disabled}
+  on_send="paste_send"
+  on_cancel="paste_cancel"
+/>
+
+<.invite_dialog
+  id="invite-dialog"
+  show={length(@pending_invites) > 0}
+  invites={@pending_invites}
+  on_accept="invite_accept"
+  on_ignore="invite_ignore"
+/>
+
+<.kick_dialog
+  id="kick-dialog"
+  show={length(@kick_queue) > 0}
+  kick_info={List.first(@kick_queue)}
+  on_dismiss="kick_dismiss"
+/>
+
+<%!-- Bot Management dialog --%>
+<.bot_management_dialog
+  id="bot-management-dialog"
+  show={@show_bot_dialog}
+  bots={@bot_dialog_bots}
+  selected={@bot_dialog_selected}
+  channels={@bot_dialog_channels}
+  commands={@bot_dialog_commands}
+  events={@bot_dialog_events}
+  stats={@bot_dialog_stats}
+  active_tab={@bot_dialog_tab}
+  is_admin={admin?(@session)}
+  editing_field={@bot_dialog_editing_field}
+  on_close="close_bot_dialog"
+/>
+
+<%!-- New Bot form dialog --%>
+<.new_bot_dialog
+  id="new-bot-dialog"
+  show={@show_new_bot_dialog}
+  on_close="close_new_bot_dialog"
+/>
+
+<%!-- Add Command form dialog --%>
+<.add_command_dialog
+  id="add-command-dialog"
+  show={@show_add_command_dialog}
+  bot_name={if @bot_dialog_selected, do: @bot_dialog_selected.name, else: ""}
+  on_close="close_add_command_dialog"
+/>
+
+<%!-- Admin Console dialog --%>
+<.admin_console_dialog
+  id="admin-console-dialog"
+  show={@show_admin_console}
+  results={@admin_console_results}
+  on_close="close_admin_console"
+/>

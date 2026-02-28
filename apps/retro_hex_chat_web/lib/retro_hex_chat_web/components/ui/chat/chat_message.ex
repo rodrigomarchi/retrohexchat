@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       {@rest}
     >
       <span :if={@timestamp} class="text-gray-500 mr-1 font-mono text-xs whitespace-nowrap">
-        [{@timestamp}]
+        {@timestamp}
       </span>
       <span :if={!@timestamp} />
       <span

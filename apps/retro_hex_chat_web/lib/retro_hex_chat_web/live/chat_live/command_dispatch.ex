@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Helpers.GameInvite
   alias RetroHexChatWeb.ChatLive.Helpers.P2pInvite
+  alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.UiActionHandlers
 
   require Logger
@@ -273,7 +274,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     do: GameInvite.handle_game_invite(socket, session, payload)
 
   defp handle_dispatch_result(socket, _session, {:ok, :ui_action, :arcade_session, payload}) do
-    url = "/solo/#{payload.token}"
+    url = PathHelpers.activity_path(socket, "/solo/#{payload.token}")
 
     msg = %{
       id: "system-#{System.unique_integer([:positive])}",
@@ -351,7 +352,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     socket
     |> assign(quit_reason: quit_reason)
     |> Phoenix.LiveView.push_event("intentional_disconnect", %{})
-    |> push_navigate(to: ~p"/connect")
+    |> push_navigate(to: PathHelpers.connect_path(socket))
   end
 
   defp cleanup_channels(session, reason) do

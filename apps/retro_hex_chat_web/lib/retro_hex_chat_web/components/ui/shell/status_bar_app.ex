@@ -69,13 +69,15 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         lag_class(@lag_status)
       ]}>
         <Icons.icon_status_signal class="w-3 h-3 shrink-0" />
-        <span class="text-xs">{lag_text(@lag_ms, @lag_status)}</span>
+        <span id="lag-display" phx-hook="LagHook" class="text-xs">
+          {lag_text(@lag_ms, @lag_status)}
+        </span>
       </.window_status_bar_field>
 
-      <%!-- Zone 4: Clock placeholder --%>
+      <%!-- Zone 4: Clock --%>
       <.window_status_bar_field class="flex items-center gap-retro-2 min-w-[64px]">
         <Icons.icon_clock class="w-3 h-3 shrink-0" />
-        <span class="text-xs font-mono">--:--</span>
+        <span id="clock-display" phx-hook="ClockHook" class="text-xs font-mono">--:--</span>
       </.window_status_bar_field>
 
       <%!-- Zone 5: Mute toggle --%>

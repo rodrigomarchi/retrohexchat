@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.ScrollLoader do
   def scroll_loader(assigns) do
     ~H"""
     <div
+      :if={@loading}
       class={
         classes([
           "flex flex-col items-center justify-center gap-retro-8 py-retro-12",
@@ -29,7 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.ScrollLoader do
       data-testid="scroll-loader"
       role="status"
       aria-live="polite"
-      aria-label={if @loading, do: "Loading messages", else: ""}
+      aria-label="Loading messages"
     >
       <div :if={@loading} class="flex flex-col items-center gap-retro-8">
         <div class={[
