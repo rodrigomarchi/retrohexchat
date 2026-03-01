@@ -39,7 +39,11 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         "max-w-full",
         if(@session_status == "lobby" && @previewed_game, do: "w-[1100px]", else: "w-[1050px]")
       ]}>
-        <.window_title_bar title={"Arcade \u2014 #{@nickname}"} controls={[:close]} on_close={@on_close}>
+        <.window_title_bar
+          title={"Arcade \u2014 #{@nickname}"}
+          controls={[:close]}
+          on_close={@on_close}
+        >
           <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
         </.window_title_bar>
 
@@ -50,7 +54,9 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             class="flex items-center gap-retro-4 shadow-retro-field bg-warning-light px-retro-8 py-retro-4 text-xs"
           >
             <Icons.icon_warning class="w-4 h-4 flex-shrink-0" />
-            <span>Session will be closed due to inactivity soon. Select a game to keep it active.</span>
+            <span>
+              Session will be closed due to inactivity soon. Select a game to keep it active.
+            </span>
           </div>
 
           <.lobby_picker
@@ -127,7 +133,9 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           >
             <Icons.game_icon game_id={game.id} class="w-12 h-12 shrink-0" />
             <span class="text-xs font-bold leading-tight">{game.name}</span>
-            <span class="text-[10px] text-muted-foreground leading-tight">{game.tagline}</span>
+            <span class="text-[10px] text-muted-foreground leading-tight">
+              {Map.get(game, :tagline, game.description)}
+            </span>
           </button>
         </div>
       </div>
@@ -168,7 +176,12 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
             Back
           </.button>
-          <.button size="sm" class="font-bold" phx-click={@on_select_game} phx-value-game-id={@previewed_game.id}>
+          <.button
+            size="sm"
+            class="font-bold"
+            phx-click={@on_select_game}
+            phx-value-game-id={@previewed_game.id}
+          >
             <:icon><Icons.icon_btn_join class="w-4 h-4" /></:icon>
             Start Game
           </.button>
@@ -187,7 +200,10 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           class="retro-fieldset p-retro-8 min-w-0"
         >
           <legend class="text-xs font-bold px-retro-4">About</legend>
-          <p :for={paragraph <- @previewed_game.about} class="text-xs mb-retro-6 last:mb-0 leading-relaxed">
+          <p
+            :for={paragraph <- @previewed_game.about}
+            class="text-xs mb-retro-6 last:mb-0 leading-relaxed"
+          >
             {paragraph}
           </p>
         </fieldset>
@@ -201,7 +217,9 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           <table class="w-full text-xs">
             <thead>
               <tr>
-                <th class="text-left py-retro-2 pr-retro-6 font-bold border-b border-gray-400">Key</th>
+                <th class="text-left py-retro-2 pr-retro-6 font-bold border-b border-gray-400">
+                  Key
+                </th>
                 <th class="text-left py-retro-2 font-bold border-b border-gray-400">Action</th>
               </tr>
             </thead>

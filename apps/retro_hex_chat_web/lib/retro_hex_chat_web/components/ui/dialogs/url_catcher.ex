@@ -37,6 +37,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   attr :on_sort, :any, default: nil, doc: "Sort header click callback (phx-value-column)"
   attr :on_filter, :any, default: nil, doc: "Channel filter change callback"
   attr :on_search, :any, default: nil, doc: "Search input change callback"
+  attr :timezone, :string, default: nil, doc: "Timezone for formatting timestamps"
   attr :on_close, :any, default: nil, doc: "Close button callback"
 
   @spec url_catcher(map()) :: Phoenix.LiveView.Rendered.t()
@@ -173,7 +174,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                   <.table_cell>{entry.nick}</.table_cell>
                   <.table_cell>{Map.get(entry, :channel, "")}</.table_cell>
                   <.table_cell class="text-xs text-muted-foreground whitespace-nowrap">
-                    {Map.get(entry, :timestamp, "")}
+                    {format_timestamp(Map.get(entry, :timestamp), @timezone)}
                   </.table_cell>
                 </.table_row>
               </.table_body>
@@ -212,6 +213,14 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   end
 
   defp sort_indicator(assigns), do: ~H""
+
+  @spec format_timestamp(any(), String.t() | nil) :: String.t()
+  defp format_timestamp(%DateTime{} = dt, timezone) when is_binary(timezone) do
+    dt |> RetroHexChatWeb.Timezone.shift(timezone) |> Calendar.strftime("%H:%M")
+  end
+
+  defp format_timestamp(val, _timezone) when is_binary(val), do: val
+  defp format_timestamp(_, _), do: ""
 
   @spec entry_count_label(integer()) :: String.t()
   defp entry_count_label(0), do: "No URLs captured"

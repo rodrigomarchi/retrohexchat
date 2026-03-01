@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Separator
+  import RetroHexChatWeb.Components.UI.Input
 
   alias RetroHexChatWeb.Icons
 
@@ -45,6 +46,10 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   attr :on_move_up, :any, default: nil
   attr :on_move_down, :any, default: nil
   attr :on_toggle_enabled, :any, default: nil
+  attr :show_perform_add_dialog, :boolean, default: false
+  attr :show_perform_edit_dialog, :boolean, default: false
+  attr :show_autojoin_add_dialog, :boolean, default: false
+  attr :show_autojoin_edit_dialog, :boolean, default: false
   attr :on_ok, :any, default: nil
   attr :on_cancel, :any, default: nil
 
@@ -106,6 +111,251 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         </.button>
       </.dialog_footer>
     </.dialog>
+
+    <%!-- Perform Add Sub-Dialog --%>
+    <.perform_add_sub_form :if={@show_perform_add_dialog} />
+    <%!-- Perform Edit Sub-Dialog --%>
+    <.perform_edit_sub_form
+      :if={@show_perform_edit_dialog}
+      entries={@perform_entries}
+      selected={@perform_selected}
+    />
+    <%!-- Autojoin Add Sub-Dialog --%>
+    <.autojoin_add_sub_form :if={@show_autojoin_add_dialog} />
+    <%!-- Autojoin Edit Sub-Dialog --%>
+    <.autojoin_edit_sub_form
+      :if={@show_autojoin_edit_dialog}
+      entries={@autojoin_entries}
+      selected={@autojoin_selected}
+    />
+    """
+  end
+
+  # ── Sub-Forms ─────────────────────────────────────────
+
+  defp perform_add_sub_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--360">
+        <div class="title-bar">
+          <div class="title-bar-text">Add Perform Command</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="close_perform_add_dialog" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="perform_dialog_add_confirm" data-testid="perform-add-dialog">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="perform-command-input">Command:</label>
+              <.input
+                type="text"
+                id="perform-command-input"
+                name="command"
+                maxlength="500"
+                placeholder="/join #channel"
+                required
+                autofocus
+                class="u-w-full"
+              />
+            </div>
+            <div class="dialog-buttons">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark /></:icon>
+                OK
+              </.button>
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="close_perform_add_dialog"
+              >
+                <:icon><Icons.icon_close /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :entries, :list, required: true
+  attr :selected, :integer, default: nil
+
+  defp perform_edit_sub_form(assigns) do
+    entry = Enum.find(assigns.entries, fn e -> e.position == assigns.selected end)
+    assigns = assign(assigns, :edit_command, if(entry, do: entry.command, else: ""))
+
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--360">
+        <div class="title-bar">
+          <div class="title-bar-text">Edit Perform Command</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="close_perform_edit_dialog" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="perform_dialog_edit_confirm" data-testid="perform-edit-dialog">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="perform-edit-input">Command:</label>
+              <.input
+                type="text"
+                id="perform-edit-input"
+                name="command"
+                maxlength="500"
+                value={@edit_command}
+                required
+                autofocus
+                class="u-w-full"
+              />
+            </div>
+            <div class="dialog-buttons">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark /></:icon>
+                OK
+              </.button>
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="close_perform_edit_dialog"
+              >
+                <:icon><Icons.icon_close /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  defp autojoin_add_sub_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--320">
+        <div class="title-bar">
+          <div class="title-bar-text">Add Auto-Join Channel</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="close_autojoin_add_dialog" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="autojoin_dialog_add_confirm" data-testid="autojoin-add-dialog">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="autojoin-channel-input">Channel:</label>
+              <.input
+                type="text"
+                id="autojoin-channel-input"
+                name="channel"
+                maxlength="50"
+                placeholder="#channel"
+                required
+                autofocus
+                class="u-w-full"
+              />
+            </div>
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="autojoin-key-input">Key:</label>
+              <.input
+                type="text"
+                id="autojoin-key-input"
+                name="key"
+                maxlength="50"
+                placeholder="Leave empty if no key"
+                class="u-w-full"
+              />
+            </div>
+            <div class="dialog-buttons">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark /></:icon>
+                OK
+              </.button>
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="close_autojoin_add_dialog"
+              >
+                <:icon><Icons.icon_close /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :entries, :list, required: true
+  attr :selected, :string, default: nil
+
+  defp autojoin_edit_sub_form(assigns) do
+    entry = Enum.find(assigns.entries, fn e -> e.channel_name == assigns.selected end)
+
+    assigns =
+      assign(assigns,
+        edit_channel: if(entry, do: entry.channel_name, else: ""),
+        edit_key: if(entry, do: entry.channel_key, else: "")
+      )
+
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--320">
+        <div class="title-bar">
+          <div class="title-bar-text">Edit Auto-Join Channel</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="close_autojoin_edit_dialog" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="autojoin_dialog_edit_confirm" data-testid="autojoin-edit-dialog">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="autojoin-edit-channel">Channel:</label>
+              <.input
+                type="text"
+                id="autojoin-edit-channel"
+                name="channel"
+                value={@edit_channel}
+                disabled
+                class="u-w-full"
+              />
+            </div>
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="autojoin-edit-key">Key:</label>
+              <.input
+                type="text"
+                id="autojoin-edit-key"
+                name="key"
+                maxlength="50"
+                value={@edit_key}
+                autofocus
+                class="u-w-full"
+              />
+            </div>
+            <div class="dialog-buttons">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark /></:icon>
+                OK
+              </.button>
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="close_autojoin_edit_dialog"
+              >
+                <:icon><Icons.icon_close /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     """
   end
 

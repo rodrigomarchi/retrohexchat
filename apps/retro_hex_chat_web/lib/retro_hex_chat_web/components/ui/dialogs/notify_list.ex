@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
+  import RetroHexChatWeb.Components.UI.Input
 
   alias RetroHexChatWeb.Icons
 
@@ -33,6 +34,9 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   attr :on_add, :any, default: nil, doc: "Add button callback"
   attr :on_edit, :any, default: nil, doc: "Edit button callback"
   attr :on_remove, :any, default: nil, doc: "Remove button callback"
+  attr :show_add_dialog, :boolean, default: false, doc: "Show inline add sub-form"
+  attr :show_edit_dialog, :boolean, default: false, doc: "Show inline edit sub-form"
+  attr :selected_note, :string, default: "", doc: "Note for the selected entry (for edit form)"
   attr :on_toggle_auto_whois, :any, default: nil, doc: "Auto-Whois checkbox callback"
   attr :on_close, :any, default: nil, doc: "Close button callback"
 
@@ -127,6 +131,124 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
         </.dialog_footer>
       </div>
     </.dialog>
+
+    <%!-- Notify Add Sub-Dialog --%>
+    <.notify_add_sub_form :if={@show_add_dialog} />
+    <%!-- Notify Edit Sub-Dialog --%>
+    <.notify_edit_sub_form
+      :if={@show_edit_dialog}
+      selected_entry={@selected_entry}
+      selected_note={@selected_note}
+    />
+    """
+  end
+
+  # ── Sub-Forms ────────────────────────────────────────
+
+  defp notify_add_sub_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--narrow">
+        <div class="title-bar">
+          <div class="title-bar-text">Add Notify Entry</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="notify_add_cancel" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="notify_add" data-testid="notify-add-form">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="notify-add-nickname">Nickname:</label>
+              <.input
+                type="text"
+                id="notify-add-nickname"
+                name="nickname"
+                maxlength="16"
+                required
+                autocomplete="off"
+                class="u-w-full"
+              />
+            </div>
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="notify-add-note">Note:</label>
+              <.input
+                type="text"
+                id="notify-add-note"
+                name="note"
+                maxlength="200"
+                autocomplete="off"
+                class="u-w-full"
+              />
+            </div>
+            <div class="dialog-buttons dialog-buttons--gap-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                OK
+              </.button>
+              <.button type="button" size="sm" variant="outline" phx-click="notify_add_cancel">
+                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :selected_entry, :string, default: nil
+  attr :selected_note, :string, default: ""
+
+  defp notify_edit_sub_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--narrow">
+        <div class="title-bar">
+          <div class="title-bar-text">Edit Notify Entry</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="notify_edit_cancel" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="notify_edit" data-testid="notify-edit-form">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="notify-edit-nickname">Nickname:</label>
+              <.input
+                type="text"
+                id="notify-edit-nickname"
+                name="nickname"
+                value={@selected_entry}
+                readonly
+                class="u-w-full input-readonly"
+              />
+            </div>
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="notify-edit-note">Note:</label>
+              <.input
+                type="text"
+                id="notify-edit-note"
+                name="note"
+                value={@selected_note}
+                maxlength="200"
+                autocomplete="off"
+                class="u-w-full"
+              />
+            </div>
+            <div class="dialog-buttons dialog-buttons--gap-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                OK
+              </.button>
+              <.button type="button" size="sm" variant="outline" phx-click="notify_edit_cancel">
+                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     """
   end
 

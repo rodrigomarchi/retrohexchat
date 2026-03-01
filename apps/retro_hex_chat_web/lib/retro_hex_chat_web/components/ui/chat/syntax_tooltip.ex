@@ -11,8 +11,8 @@ defmodule RetroHexChatWeb.Components.UI.SyntaxTooltip do
       <.syntax_tooltip
         tooltip={%{
           command: "join",
-          params: [%{name: "channel", required: true}, %{name: "key", required: false}],
-          current_index: 0,
+          parameters: [%{name: "channel", required: true}, %{name: "key", required: false}],
+          current_param_index: 0,
           description: "Join a channel",
           sub_options: [],
           context_message: nil,
@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.SyntaxTooltip do
   attr :tooltip, :any,
     default: nil,
     doc:
-      "Map with keys: command, params (list of maps with :name, :required), current_index, description, sub_options, context_message, examples. Can be nil to render nothing."
+      "Map with keys: command, parameters (list of maps with :name, :required), current_param_index, description, sub_options, context_message, examples. Can be nil to render nothing."
 
   attr :detail_level, :atom,
     default: :beginner,
@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.SyntaxTooltip do
       :if={@tooltip != nil && @detail_level != :off}
       class={
         classes([
-          "shadow-retro-window bg-surface border border-border p-retro-4 text-xs max-w-sm",
+          "shadow-retro-window bg-surface border border-border p-retro-4 text-xs",
           @class
         ])
       }
@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.Components.UI.SyntaxTooltip do
       <%!-- Header: command + param list --%>
       <div class="flex flex-wrap items-center gap-retro-2 font-mono font-bold mb-retro-2">
         <span class="shadow-retro-field bg-white text-[#000080] px-1">/{@tooltip.command}</span>
-        <.tooltip_params params={@tooltip.params} current_index={@tooltip.current_index} />
+        <.tooltip_params params={@tooltip.parameters} current_index={@tooltip.current_param_index} />
       </div>
 
       <%!-- Beginner-only details --%>
@@ -88,7 +88,7 @@ defmodule RetroHexChatWeb.Components.UI.SyntaxTooltip do
         >
           <code
             :for={ex <- @tooltip.examples}
-            class="shadow-retro-field bg-canvas-bg text-canvas-fg px-1 font-mono text-xs"
+            class="shadow-retro-field bg-white text-foreground px-1 font-mono text-xs"
           >
             {ex}
           </code>

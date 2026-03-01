@@ -54,6 +54,9 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_ban_remove, :any, default: nil
   attr :on_ban_ex_add, :any, default: nil
   attr :on_ban_ex_remove, :any, default: nil
+  attr :show_add_ban_dialog, :boolean, default: false
+  attr :show_add_ban_ex_dialog, :boolean, default: false
+  attr :show_add_invite_ex_dialog, :boolean, default: false
   attr :on_invite_ex_add, :any, default: nil
   attr :on_invite_ex_remove, :any, default: nil
   attr :on_close, :any, default: nil
@@ -158,6 +161,140 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         </.button>
       </.dialog_footer>
     </.dialog>
+
+    <%!-- Ban Add Sub-Dialog --%>
+    <.ban_add_sub_form :if={@show_add_ban_dialog} />
+    <%!-- Ban Exception Add Sub-Dialog --%>
+    <.ban_ex_add_sub_form :if={@show_add_ban_ex_dialog} />
+    <%!-- Invite Exception Add Sub-Dialog --%>
+    <.invite_ex_add_sub_form :if={@show_add_invite_ex_dialog} />
+    """
+  end
+
+  # ── Sub-Forms ─────────────────────────────────────────
+
+  defp ban_add_sub_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above" data-testid="cc-add-ban-dialog">
+      <div class="window dialog-window--sm">
+        <div class="title-bar">
+          <div class="title-bar-text">Add Ban</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="cc_close_add_ban" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="cc_add_ban">
+            <div class="field-row-stacked">
+              <label class="text-xs font-bold" for="cc-ban-nick">Hostmask:</label>
+              <.input
+                type="text"
+                id="cc-ban-nick"
+                name="nickname"
+                autofocus
+                class="u-w-full"
+                data-testid="cc-ban-nick-input"
+              />
+            </div>
+            <div class="u-flex-end u-gap-4 u-mt-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark /></:icon>
+                OK
+              </.button>
+              <.button type="button" size="sm" variant="outline" phx-click="cc_close_add_ban">
+                <:icon><Icons.icon_close /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  defp ban_ex_add_sub_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above" data-testid="cc-add-ban-ex-dialog">
+      <div class="window dialog-window--sm">
+        <div class="title-bar">
+          <div class="title-bar-text">Add Ban Exception</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="cc_close_add_ban_ex" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="cc_add_ban_exception">
+            <div class="field-row-stacked">
+              <label class="text-xs font-bold" for="cc-ban-ex-nick">Hostmask:</label>
+              <.input
+                type="text"
+                id="cc-ban-ex-nick"
+                name="nickname"
+                autofocus
+                class="u-w-full"
+                data-testid="cc-ban-ex-nick-input"
+              />
+            </div>
+            <div class="u-flex-end u-gap-4 u-mt-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark /></:icon>
+                OK
+              </.button>
+              <.button type="button" size="sm" variant="outline" phx-click="cc_close_add_ban_ex">
+                <:icon><Icons.icon_close /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  defp invite_ex_add_sub_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above" data-testid="cc-add-invite-ex-dialog">
+      <div class="window dialog-window--sm">
+        <div class="title-bar">
+          <div class="title-bar-text">Add Invite Exception</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="cc_close_add_invite_ex" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="cc_add_invite_exception">
+            <div class="field-row-stacked">
+              <label class="text-xs font-bold" for="cc-invite-ex-nick">Hostmask:</label>
+              <.input
+                type="text"
+                id="cc-invite-ex-nick"
+                name="nickname"
+                autofocus
+                class="u-w-full"
+                data-testid="cc-invite-ex-nick-input"
+              />
+            </div>
+            <div class="u-flex-end u-gap-4 u-mt-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark /></:icon>
+                OK
+              </.button>
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="cc_close_add_invite_ex"
+              >
+                <:icon><Icons.icon_close /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     """
   end
 

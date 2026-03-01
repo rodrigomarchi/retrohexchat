@@ -12,11 +12,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SyntaxTooltipPage do
 
   @join_tooltip %{
     command: "join",
-    params: [
+    parameters: [
       %{name: "channel", required: true},
       %{name: "key", required: false}
     ],
-    current_index: 0,
+    current_param_index: 0,
     description: "Join a channel, optionally with a password key.",
     sub_options: [],
     context_message: "Channel names begin with # or &",
@@ -25,12 +25,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SyntaxTooltipPage do
 
   @kick_tooltip %{
     command: "kick",
-    params: [
+    parameters: [
       %{name: "channel", required: true},
       %{name: "nick", required: true},
       %{name: "reason", required: false}
     ],
-    current_index: 1,
+    current_param_index: 1,
     description: "Kick a user from a channel. Requires operator status.",
     sub_options: [
       %{flag: "-q", description: "Quiet — do not display kick message"},
@@ -42,11 +42,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SyntaxTooltipPage do
 
   @msg_tooltip %{
     command: "msg",
-    params: [
+    parameters: [
       %{name: "target", required: true},
       %{name: "message", required: true}
     ],
-    current_index: nil,
+    current_param_index: nil,
     description: "Send a private message to a user or channel.",
     sub_options: [],
     context_message: nil,
@@ -80,8 +80,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SyntaxTooltipPage do
           &lt;.syntax_tooltip
           tooltip=&#123;%&#123;
           command: "join",
-          params: [%&#123;name: "channel", required: true&#125;, %&#123;name: "key", required: false&#125;],
-          current_index: 0,
+          parameters: [%&#123;name: "channel", required: true&#125;, %&#123;name: "key", required: false&#125;],
+          current_param_index: 0,
           description: "Join a channel",
           sub_options: [],
           context_message: "Channel names begin with # or &amp;",

@@ -230,22 +230,6 @@
               </.chat_message>
             </div>
           </.chat_message_list>
-
-          <%!-- Popups (absolute positioned over messages) --%>
-          <div class="relative">
-            <.autocomplete
-              :if={@autocomplete_visible}
-              items={@autocomplete_results}
-              selected_index={@autocomplete_selected}
-              mode={@autocomplete_mode || :command}
-              command={@autocomplete_command}
-              on_select="autocomplete_select"
-            />
-            <.syntax_tooltip
-              tooltip={@syntax_tooltip}
-              detail_level={@command_help_level}
-            />
-          </div>
         </div>
 
         <%!-- Nicklist sidebar --%>
@@ -263,6 +247,20 @@
           />
         </.nicklist>
       </div>
+
+      <%!-- Popups (autocomplete dropdown + syntax tooltip) --%>
+      <.autocomplete
+        visible={@autocomplete_visible}
+        items={@autocomplete_results}
+        selected_index={@autocomplete_selected}
+        mode={@autocomplete_mode || :command}
+        command={@autocomplete_command}
+        on_select="autocomplete_select"
+      />
+      <.syntax_tooltip
+        tooltip={@syntax_tooltip}
+        detail_level={@command_help_level}
+      />
 
       <%!-- Bottom panel: formatting toolbar + reply bar + typing + input (fixed at bottom) --%>
       <div class="shrink-0">
@@ -361,7 +359,9 @@
   viewer_is_identified={@session.identified}
   is_target_ignored={chat_context_target_ignored?(@session, @chat_context_menu)}
   is_target_self={@chat_context_menu.target_nick == @session.nickname}
+  is_target_registered={@chat_context_menu[:is_target_registered] || false}
   is_already_joined={@chat_context_menu.target_channel in (@session.channels || [])}
+  key_bindings={RetroHexChat.Chat.KeyBindings.defaults()}
   on_action="chat_context_action"
 />
 
@@ -390,6 +390,7 @@
   show_color_picker={@show_context_color_picker}
   nick_color_fn={@nick_color_fn}
   custom_items={CustomMenus.entries_for(@session.custom_menus, :nicklist)}
+  key_bindings={RetroHexChat.Chat.KeyBindings.defaults()}
   on_action="nicklist_context_action"
 />
 
@@ -427,6 +428,8 @@
   entries={NotifyList.sorted_entries(@session.notify_list)}
   selected_entry={@notify_selected}
   auto_whois={@session.notify_list.settings.auto_whois}
+  show_add_dialog={@show_notify_add_dialog}
+  show_edit_dialog={@show_notify_edit_dialog}
   on_select="notify_select"
   on_add="notify_add_dialog"
   on_edit="notify_edit_dialog"
@@ -443,6 +446,16 @@
   selected_index={@contacts_selected}
   notify_list={NotifyList.sorted_entries(@session.notify_list)}
   nick_colors={NickColors.sorted_entries(@session.nick_colors)}
+  show_contact_add_dialog={@show_contact_add_dialog}
+  show_contact_edit_dialog={@show_contact_edit_dialog}
+  show_notify_add_dialog={@show_notify_add_dialog}
+  show_notify_edit_dialog={@show_notify_edit_dialog}
+  show_nick_color_add_dialog={@show_nick_color_add_dialog}
+  show_nick_color_edit_dialog={@show_nick_color_edit_dialog}
+  nick_color_fn={@nick_color_fn}
+  timezone={@timezone}
+  nick_colors_selected={@nick_colors_selected}
+  notify_selected={@notify_selected}
   on_select="contact_select"
   on_add="contact_add_dialog"
   on_edit="contact_edit_dialog"
@@ -470,6 +483,7 @@
   show={@show_ignore_dialog}
   entries={IgnoreList.sorted_entries(@session.ignore_list)}
   selected={@ignore_selected}
+  show_ignore_add_dialog={@show_ignore_add_dialog}
   on_select="ignore_select"
   on_add="ignore_dialog_add"
   on_remove="ignore_dialog_remove"
@@ -528,6 +542,10 @@
   perform_enabled={PerformList.enabled?(@session.perform_list)}
   autojoin_entries={AutoJoinList.entries(@session.autojoin_list)}
   autojoin_selected={@autojoin_selected}
+  show_perform_add_dialog={@show_perform_add_dialog}
+  show_perform_edit_dialog={@show_perform_edit_dialog}
+  show_autojoin_add_dialog={@show_autojoin_add_dialog}
+  show_autojoin_edit_dialog={@show_autojoin_edit_dialog}
   on_tab="perform_dialog_tab"
   on_select="perform_select"
   on_add="perform_dialog_add"
@@ -617,6 +635,9 @@
   ban_selected={@channel_central_ban_selected}
   ban_ex_selected={@channel_central_ban_ex_selected}
   invite_ex_selected={@channel_central_invite_ex_selected}
+  show_add_ban_dialog={@show_cc_add_ban_dialog}
+  show_add_ban_ex_dialog={@show_cc_add_ban_ex_dialog}
+  show_add_invite_ex_dialog={@show_cc_add_invite_ex_dialog}
   on_topic_save="cc_set_topic"
   on_mode_apply="cc_apply_modes"
   on_ban_add="cc_open_add_ban"
@@ -634,6 +655,8 @@
   words={HighlightWords.entries(@session.highlight_words)}
   own_nick={@session.nickname}
   selected_index={@highlight_selected}
+  show_highlight_add_dialog={@show_highlight_add_dialog}
+  show_highlight_edit_dialog={@show_highlight_edit_dialog}
   on_select="highlight_select"
   on_add="open_highlight_add_dialog"
   on_edit="open_highlight_edit_dialog"
@@ -653,6 +676,7 @@
   search_query={@url_catcher_search_query}
   channels={url_catcher_channels(assigns)}
   entry_count={length(@url_catcher_entries)}
+  timezone={@timezone}
   on_sort="url_catcher_sort"
   on_filter="url_catcher_filter"
   on_search="url_catcher_search"

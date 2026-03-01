@@ -31,7 +31,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
   attr :viewer_is_identified, :boolean, default: false
   attr :is_target_ignored, :boolean, default: false
   attr :is_target_self, :boolean, default: false
+  attr :is_target_registered, :boolean, default: false
   attr :is_already_joined, :boolean, default: false
+  attr :key_bindings, :map, default: %{}
   attr :on_action, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
@@ -98,9 +100,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     <.context_menu_separator :if={@viewer_is_identified} />
     <.context_menu_item
       :if={@viewer_is_identified}
-      on_click={unless @is_target_self, do: @on_action}
+      on_click={if @is_target_registered && !@is_target_self, do: @on_action}
       action="ctx_chat_call"
-      disabled={@is_target_self}
+      disabled={!@is_target_registered || @is_target_self}
+      title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_microphone class="w-[14px] h-[14px]" /></:icon>
@@ -108,9 +111,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     </.context_menu_item>
     <.context_menu_item
       :if={@viewer_is_identified}
-      on_click={unless @is_target_self, do: @on_action}
+      on_click={if @is_target_registered && !@is_target_self, do: @on_action}
       action="ctx_chat_video_call"
-      disabled={@is_target_self}
+      disabled={!@is_target_registered || @is_target_self}
+      title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_camera class="w-[14px] h-[14px]" /></:icon>
@@ -118,9 +122,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     </.context_menu_item>
     <.context_menu_item
       :if={@viewer_is_identified}
-      on_click={unless @is_target_self, do: @on_action}
+      on_click={if @is_target_registered && !@is_target_self, do: @on_action}
       action="ctx_chat_sendfile"
-      disabled={@is_target_self}
+      disabled={!@is_target_registered || @is_target_self}
+      title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_file_send class="w-[14px] h-[14px]" /></:icon>
@@ -128,9 +133,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     </.context_menu_item>
     <.context_menu_item
       :if={@viewer_is_identified}
-      on_click={unless @is_target_self, do: @on_action}
+      on_click={if @is_target_registered && !@is_target_self, do: @on_action}
       action="ctx_chat_game"
-      disabled={@is_target_self}
+      disabled={!@is_target_registered || @is_target_self}
+      title={if !@is_target_registered && !@is_target_self, do: "User not registered"}
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_star class="w-[14px] h-[14px]" /></:icon>

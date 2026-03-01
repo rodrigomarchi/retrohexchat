@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ColorPicker
+  import RetroHexChatWeb.Components.UI.Input
 
   alias RetroHexChatWeb.Icons
 
@@ -36,6 +37,20 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :selected_index, :integer, default: nil, doc: "Currently selected row index"
   attr :selected_tab, :string, default: "contacts", doc: "Active tab key"
   attr :selected_color, :integer, default: nil
+  attr :show_contact_add_dialog, :boolean, default: false
+  attr :show_contact_edit_dialog, :boolean, default: false
+  attr :show_notify_add_dialog, :boolean, default: false
+  attr :show_notify_edit_dialog, :boolean, default: false
+  attr :show_nick_color_add_dialog, :boolean, default: false
+  attr :show_nick_color_edit_dialog, :boolean, default: false
+  attr :nick_color_fn, :any, default: nil, doc: "Function for nick color display"
+  attr :timezone, :string, default: nil, doc: "Timezone for timestamps"
+  attr :nick_palette_editing_index, :integer, default: nil, doc: "Color index in palette editor"
+  attr :contacts_selected, :string, default: nil, doc: "Selected contact nick for edit form"
+  attr :selected_contact_note, :string, default: "", doc: "Note for the selected contact (edit)"
+  attr :notify_selected, :string, default: nil, doc: "Selected notify nick for edit form"
+  attr :selected_notify_note, :string, default: "", doc: "Note for the selected notify (edit)"
+  attr :nick_colors_selected, :string, default: nil, doc: "Selected nick color nick for edit"
   attr :on_select, :any, default: nil, doc: "Row selection callback (receives phx-value-index)"
   attr :on_add, :any, default: nil, doc: "Add button callback"
   attr :on_edit, :any, default: nil, doc: "Edit button callback"
@@ -157,6 +172,340 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         </.button>
       </.dialog_footer>
     </.dialog>
+
+    <%!-- Contact Add Sub-Dialog --%>
+    <.contact_add_form :if={@show_contact_add_dialog} />
+    <%!-- Contact Edit Sub-Dialog --%>
+    <.contact_edit_form
+      :if={@show_contact_edit_dialog}
+      contacts_selected={@contacts_selected}
+      selected_contact_note={@selected_contact_note}
+    />
+    <%!-- Notify Add Sub-Dialog --%>
+    <.ab_notify_add_form :if={@show_notify_add_dialog} />
+    <%!-- Notify Edit Sub-Dialog --%>
+    <.ab_notify_edit_form
+      :if={@show_notify_edit_dialog}
+      notify_selected={@notify_selected}
+      selected_notify_note={@selected_notify_note}
+    />
+    <%!-- Nick Color Add Sub-Dialog --%>
+    <.nick_color_add_form :if={@show_nick_color_add_dialog} />
+    <%!-- Nick Color Edit Sub-Dialog --%>
+    <.nick_color_edit_form
+      :if={@show_nick_color_edit_dialog}
+      nick_colors_selected={@nick_colors_selected}
+    />
+    """
+  end
+
+  # ── Sub-Forms ──────────────────────────────────────────
+
+  defp contact_add_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--narrow">
+        <div class="title-bar">
+          <div class="title-bar-text">Add Contact</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="contact_add_cancel" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="contact_add" data-testid="contact-add-form">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="contact-add-nick">Nickname:</label>
+              <.input
+                type="text"
+                id="contact-add-nick"
+                name="nickname"
+                maxlength="16"
+                required
+                autocomplete="off"
+                class="u-w-full"
+              />
+            </div>
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="contact-add-note">Notes:</label>
+              <textarea
+                id="contact-add-note"
+                name="note"
+                maxlength="200"
+                rows="3"
+                class="textarea-resizable u-w-full"
+              />
+            </div>
+            <div class="dialog-buttons dialog-buttons--gap-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                OK
+              </.button>
+              <.button type="button" size="sm" variant="outline" phx-click="contact_add_cancel">
+                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :contacts_selected, :string, default: nil
+  attr :selected_contact_note, :string, default: ""
+
+  defp contact_edit_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--narrow">
+        <div class="title-bar">
+          <div class="title-bar-text">Edit Contact</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="contact_edit_cancel" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="contact_edit" data-testid="contact-edit-form">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="contact-edit-nick">Nickname:</label>
+              <.input
+                type="text"
+                id="contact-edit-nick"
+                name="nickname"
+                value={@contacts_selected}
+                readonly
+                class="u-w-full input-readonly"
+              />
+            </div>
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="contact-edit-note">Notes:</label>
+              <textarea
+                id="contact-edit-note"
+                name="note"
+                maxlength="200"
+                rows="3"
+                class="textarea-resizable u-w-full"
+              >{@selected_contact_note}</textarea>
+            </div>
+            <div class="dialog-buttons dialog-buttons--gap-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                OK
+              </.button>
+              <.button type="button" size="sm" variant="outline" phx-click="contact_edit_cancel">
+                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  defp ab_notify_add_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--narrow">
+        <div class="title-bar">
+          <div class="title-bar-text">Add Notify Entry</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="notify_add_cancel" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="notify_add" data-testid="ab-notify-add-form">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="ab-notify-add-nick">Nickname:</label>
+              <.input
+                type="text"
+                id="ab-notify-add-nick"
+                name="nickname"
+                maxlength="16"
+                required
+                class="u-w-full"
+              />
+            </div>
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="ab-notify-add-note">Note:</label>
+              <.input
+                type="text"
+                id="ab-notify-add-note"
+                name="note"
+                maxlength="200"
+                class="u-w-full"
+              />
+            </div>
+            <div class="dialog-buttons dialog-buttons--gap-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                OK
+              </.button>
+              <.button type="button" size="sm" variant="outline" phx-click="notify_add_cancel">
+                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :notify_selected, :string, default: nil
+  attr :selected_notify_note, :string, default: ""
+
+  defp ab_notify_edit_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--narrow">
+        <div class="title-bar">
+          <div class="title-bar-text">Edit Notify Entry</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="notify_edit_cancel" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="notify_edit" data-testid="ab-notify-edit-form">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="ab-notify-edit-nick">Nickname:</label>
+              <.input
+                type="text"
+                id="ab-notify-edit-nick"
+                name="nickname"
+                value={@notify_selected}
+                readonly
+                class="u-w-full input-readonly"
+              />
+            </div>
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="ab-notify-edit-note">Note:</label>
+              <.input
+                type="text"
+                id="ab-notify-edit-note"
+                name="note"
+                value={@selected_notify_note}
+                maxlength="200"
+                class="u-w-full"
+              />
+            </div>
+            <div class="dialog-buttons dialog-buttons--gap-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                OK
+              </.button>
+              <.button type="button" size="sm" variant="outline" phx-click="notify_edit_cancel">
+                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  defp nick_color_add_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--narrow">
+        <div class="title-bar">
+          <div class="title-bar-text">Add Nick Color</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="nick_color_add_cancel" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="nick_color_add" data-testid="nick-color-add-form">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="nick-color-add-nick">Nickname:</label>
+              <.input
+                type="text"
+                id="nick-color-add-nick"
+                name="nickname"
+                maxlength="16"
+                required
+                class="u-w-full"
+              />
+            </div>
+            <div class="field-row-stacked u-mb-12">
+              <label class="text-xs font-bold">Color:</label>
+              <.color_picker id="nick-color-add-picker" on_select="nick_color_select" />
+            </div>
+            <div class="dialog-buttons dialog-buttons--gap-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                OK
+              </.button>
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="nick_color_add_cancel"
+              >
+                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :nick_colors_selected, :string, default: nil
+
+  defp nick_color_edit_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--narrow">
+        <div class="title-bar">
+          <div class="title-bar-text">Edit Nick Color</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="nick_color_edit_cancel" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="nick_color_edit" data-testid="nick-color-edit-form">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="nick-color-edit-nick">Nickname:</label>
+              <.input
+                type="text"
+                id="nick-color-edit-nick"
+                name="nickname"
+                value={@nick_colors_selected}
+                readonly
+                class="u-w-full input-readonly"
+              />
+            </div>
+            <div class="field-row-stacked u-mb-12">
+              <label class="text-xs font-bold">Color:</label>
+              <.color_picker id="nick-color-edit-picker" on_select="nick_color_select" />
+            </div>
+            <div class="dialog-buttons dialog-buttons--gap-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                OK
+              </.button>
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="nick_color_edit_cancel"
+              >
+                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     """
   end
 

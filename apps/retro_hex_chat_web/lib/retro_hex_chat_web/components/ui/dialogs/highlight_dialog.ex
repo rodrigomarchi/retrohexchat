@@ -41,6 +41,8 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   attr :on_add, :any, default: nil, doc: "Add word callback"
   attr :on_edit, :any, default: nil, doc: "Edit word callback"
   attr :on_remove, :any, default: nil, doc: "Remove word callback"
+  attr :show_highlight_add_dialog, :boolean, default: false, doc: "Show inline add sub-form"
+  attr :show_highlight_edit_dialog, :boolean, default: false, doc: "Show inline edit sub-form"
   attr :on_color_select, :any, default: nil, doc: "Color select callback"
   attr :on_ok, :any, default: nil, doc: "OK button callback"
   attr :on_cancel, :any, default: nil, doc: "Cancel button callback"
@@ -135,6 +137,112 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
         </.button>
       </.dialog_footer>
     </.dialog>
+
+    <%!-- Highlight Add Sub-Dialog --%>
+    <.highlight_add_sub_form :if={@show_highlight_add_dialog} />
+    <%!-- Highlight Edit Sub-Dialog --%>
+    <.highlight_edit_sub_form
+      :if={@show_highlight_edit_dialog}
+      selected={@selected_index}
+      words={@words}
+    />
+    """
+  end
+
+  # ── Sub-Forms ────────────────────────────────────────
+
+  defp highlight_add_sub_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--sm">
+        <div class="title-bar">
+          <div class="title-bar-text">Add Highlight Word</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="close_highlight_add_dialog" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="highlight_add" data-testid="highlight-add-form">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="highlight-word-input">Word:</label>
+              <.input
+                type="text"
+                id="highlight-word-input"
+                name="word"
+                maxlength="50"
+                required
+                autofocus
+                class="u-w-full"
+              />
+            </div>
+            <div class="field-row-stacked u-mt-8">
+              <label class="text-xs font-bold">Background Color (optional):</label>
+              <.color_picker id="highlight-add-color" on_select="highlight_color_pick" />
+            </div>
+            <div class="field-row dialog-buttons u-mt-12">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
+                Add
+              </.button>
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="close_highlight_add_dialog"
+              >
+                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :selected, :integer, default: nil
+  attr :words, :list, default: []
+
+  defp highlight_edit_sub_form(assigns) do
+    word = if assigns.selected, do: Enum.at(assigns.words, assigns.selected)
+    assigns = assign(assigns, :word_text, if(word, do: word.text, else: ""))
+
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--sm">
+        <div class="title-bar">
+          <div class="title-bar-text">Edit Highlight Color</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="close_highlight_edit_dialog" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="highlight_edit" data-testid="highlight-edit-form">
+            <input type="hidden" name="word" value={@word_text} />
+            <div class="field-row-stacked">
+              <label class="text-xs font-bold">Background Color:</label>
+              <.color_picker id="highlight-edit-color" on_select="highlight_color_pick" />
+            </div>
+            <div class="field-row dialog-buttons u-mt-12">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                OK
+              </.button>
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="close_highlight_edit_dialog"
+              >
+                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     """
   end
 

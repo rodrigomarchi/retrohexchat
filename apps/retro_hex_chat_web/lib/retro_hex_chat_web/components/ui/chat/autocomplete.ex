@@ -36,9 +36,10 @@ defmodule RetroHexChatWeb.Components.UI.Autocomplete do
     ~H"""
     <div
       :if={@visible}
+      id="autocomplete-dropdown"
       class={
         classes([
-          "shadow-retro-window bg-surface border border-border w-[280px] max-h-[200px] overflow-y-auto retro-scrollbar",
+          "shadow-retro-window bg-surface border border-border max-h-[250px] overflow-y-auto retro-scrollbar",
           @class
         ])
       }
@@ -73,9 +74,9 @@ defmodule RetroHexChatWeb.Components.UI.Autocomplete do
       <% else %>
         <div
           class={[
-            "flex items-center gap-retro-4 px-retro-4 py-retro-2 text-xs cursor-pointer",
+            "autocomplete-item flex items-center gap-retro-4 px-retro-4 py-retro-2 text-xs cursor-pointer",
             if(selectable_idx == @selected_index,
-              do: "bg-selection-bg text-selection-fg",
+              do: "selected bg-hover-bg",
               else: "hover:bg-hover-bg"
             )
           ]}
@@ -101,9 +102,9 @@ defmodule RetroHexChatWeb.Components.UI.Autocomplete do
     <div
       :for={{result, idx} <- Enum.with_index(@items)}
       class={[
-        "flex items-center gap-retro-4 px-retro-4 py-retro-2 text-xs cursor-pointer",
+        "autocomplete-item flex items-center gap-retro-4 px-retro-4 py-retro-2 text-xs cursor-pointer",
         if(idx == @selected_index,
-          do: "bg-selection-bg text-selection-fg",
+          do: "selected bg-hover-bg",
           else: "hover:bg-hover-bg"
         )
       ]}
@@ -128,9 +129,9 @@ defmodule RetroHexChatWeb.Components.UI.Autocomplete do
     <div
       :for={{result, idx} <- Enum.with_index(@items)}
       class={[
-        "flex items-center gap-retro-4 px-retro-4 py-retro-2 text-xs cursor-pointer",
+        "autocomplete-item flex items-center gap-retro-4 px-retro-4 py-retro-2 text-xs cursor-pointer",
         if(idx == @selected_index,
-          do: "bg-selection-bg text-selection-fg",
+          do: "selected bg-hover-bg",
           else: "hover:bg-hover-bg"
         )
       ]}
@@ -153,9 +154,9 @@ defmodule RetroHexChatWeb.Components.UI.Autocomplete do
     <div
       :for={{result, idx} <- Enum.with_index(@items)}
       class={[
-        "flex items-center gap-retro-4 px-retro-4 py-retro-2 text-xs cursor-pointer",
+        "autocomplete-item flex items-center gap-retro-4 px-retro-4 py-retro-2 text-xs cursor-pointer",
         if(idx == @selected_index,
-          do: "bg-selection-bg text-selection-fg",
+          do: "selected bg-hover-bg",
           else: "hover:bg-hover-bg"
         )
       ]}

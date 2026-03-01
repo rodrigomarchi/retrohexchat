@@ -529,14 +529,14 @@ defmodule RetroHexChatWeb.P2PSessionLive do
 
   def handle_event("ft_offer_sent", params, socket) do
     Logger.info(
-      "P2P file offer: #{params["fileName"]} (#{params["formattedSize"]}), token=#{socket.assigns.token}"
+      "P2P file offer: #{params["file_name"]} (#{params["formatted_size"]}), token=#{socket.assigns.token}"
     )
 
     ft = %{
       status: "offering",
-      file_name: params["fileName"],
-      file_size: params["fileSize"],
-      formatted_size: params["formattedSize"],
+      file_name: params["file_name"],
+      file_size: params["file_size"],
+      formatted_size: params["formatted_size"],
       sender_nick: socket.assigns.nickname
     }
 
@@ -546,9 +546,9 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   def handle_event("ft_offer_received", params, socket) do
     ft = %{
       status: "offer_received",
-      file_name: params["fileName"],
-      file_size: params["fileSize"],
-      formatted_size: params["formattedSize"],
+      file_name: params["file_name"],
+      file_size: params["file_size"],
+      formatted_size: params["formatted_size"],
       sender_nick: socket.assigns.peer_nick
     }
 
@@ -597,11 +597,11 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   end
 
   def handle_event("ft_completed", params, socket) do
-    Logger.info("P2P file completed: #{params["fileName"]}, token=#{socket.assigns.token}")
+    Logger.info("P2P file completed: #{params["file_name"]}, token=#{socket.assigns.token}")
 
     ft = %{
       status: "completed",
-      file_name: params["fileName"]
+      file_name: params["file_name"]
     }
 
     {:noreply, assign(socket, file_transfer: ft)}
@@ -676,7 +676,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   def handle_event("ft_queued", params, socket) do
     ft =
       Map.merge(socket.assigns.file_transfer || %{}, %{
-        queued_file: params["fileName"]
+        queued_file: params["file_name"]
       })
 
     {:noreply, assign(socket, file_transfer: ft)}

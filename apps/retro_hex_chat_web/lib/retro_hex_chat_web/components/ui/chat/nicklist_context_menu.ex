@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
   attr :show_color_picker, :boolean, default: false
   attr :nick_color_fn, :any, default: nil
   attr :custom_items, :list, default: []
+  attr :key_bindings, :map, default: %{}
   attr :on_action, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
