@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCanvasPage do
           game_name="Tic-Tac-Toe"
           nickname="alice"
           peer_nick="bob"
-          is_host={true}
+          role={:creator}
         />
         <.code_example>
           &lt;.game_canvas
@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCanvasPage do
           game_name="Tic-Tac-Toe"
           nickname="alice"
           peer_nick="bob"
-          is_host=&#123;true&#125;
+          role=&#123;:creator&#125;
           on_end_game="end_game"
           /&gt;
         </.code_example>
@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCanvasPage do
           game_name="Checkers"
           nickname="carol"
           peer_nick="dave"
-          is_host={false}
+          role={:peer}
         />
       </.showcase_card>
     </.showcase_layout>

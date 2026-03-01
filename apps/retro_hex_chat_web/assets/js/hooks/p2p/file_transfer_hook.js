@@ -176,7 +176,7 @@ const FileTransferHook = {
   _enqueueOrSend(file) {
     if (isTransferActive(this._session)) {
       this._queue.push(createQueueEntry(file));
-      this.pushEvent("ft_queued", { fileName: file.name });
+      this.pushEvent("ft_queued", { file_name: file.name });
       return;
     }
     this._handleFileSelected(file);
@@ -203,9 +203,9 @@ const FileTransferHook = {
     this._session = createSenderSession(file, sha256);
 
     this.pushEvent("ft_offer_sent", {
-      fileName: file.name,
-      fileSize: file.size,
-      formattedSize: formatFileSize(file.size),
+      file_name: file.name,
+      file_size: file.size,
+      formatted_size: formatFileSize(file.size),
     });
 
     // If channel is already open, send offer immediately
@@ -271,9 +271,9 @@ const FileTransferHook = {
   _handleIncomingOffer(offer) {
     this._session = createReceiverSession(offer);
     this.pushEvent("ft_offer_received", {
-      fileName: offer.fileName,
-      fileSize: offer.fileSize,
-      formattedSize: formatFileSize(offer.fileSize),
+      file_name: offer.fileName,
+      file_size: offer.fileSize,
+      formatted_size: formatFileSize(offer.fileSize),
       transferId: offer.transferId,
     });
   },
@@ -401,7 +401,7 @@ const FileTransferHook = {
     if (match && blob) {
       this._session.state = STATE.COMPLETED;
       this._triggerDownload(blob, this._session.fileName);
-      this.pushEvent("ft_completed", { fileName: this._session.fileName });
+      this.pushEvent("ft_completed", { file_name: this._session.fileName });
       cleanupSession(this._session);
       this._session = null;
       this._processQueue();
@@ -422,7 +422,7 @@ const FileTransferHook = {
 
     if (payload.match) {
       this._session.state = STATE.COMPLETED;
-      this.pushEvent("ft_completed", { fileName: this._session.fileName });
+      this.pushEvent("ft_completed", { file_name: this._session.fileName });
       cleanupSession(this._session);
       this._session = null;
       this._processQueue();
@@ -450,7 +450,7 @@ const FileTransferHook = {
 
     this._session.state = STATE.CANCELLED;
     this._stopProgressUpdates();
-    this.pushEvent("ft_cancelled", { cancelledBy: nickname });
+    this.pushEvent("ft_cancelled", { cancelled_by: nickname });
     cleanupSession(this._session);
     this._session = null;
     this._processQueue();
@@ -461,7 +461,7 @@ const FileTransferHook = {
 
     this._session.state = STATE.CANCELLED;
     this._stopProgressUpdates();
-    this.pushEvent("ft_cancelled", { cancelledBy: payload.cancelledBy });
+    this.pushEvent("ft_cancelled", { cancelled_by: payload.cancelledBy });
     cleanupSession(this._session);
     this._session = null;
     this._processQueue();

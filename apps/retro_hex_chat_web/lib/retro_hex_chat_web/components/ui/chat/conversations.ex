@@ -236,7 +236,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       phx-click={@on_click}
       phx-value-channel={@name}
       phx-dblclick={@on_dblclick}
-      phx-value-cc_channel={@name}
       data-channel={@name}
       data-testid={"channel-#{@name}"}
     >
@@ -286,7 +285,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         @flash && "animate-pulse"
       ]}
       phx-click={@on_click}
-      phx-value-nick={@nick}
+      phx-value-nickname={@nick}
       data-nick={@nick}
       data-testid={"pm-#{@nick}"}
     >

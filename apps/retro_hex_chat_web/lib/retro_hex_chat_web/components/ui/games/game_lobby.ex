@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
         id="game-lobby"
         nickname="alice"
         peer_nick="bob"
-        role={:host}
+        role={:creator}
         games={@games}
       />
   """
@@ -32,9 +32,9 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
   attr :peer_online, :boolean, default: true, doc: "Whether the peer is currently online"
 
   attr :role, :atom,
-    default: :host,
-    values: [:host, :guest],
-    doc: "Local player role: :host or :guest"
+    default: :creator,
+    values: [:creator, :peer],
+    doc: "Local player role: :creator or :peer"
 
   attr :games, :list,
     default: [],
@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
 
   attr :game_request, :map,
     default: nil,
-    doc: "Active game request map with :game_id and :requester, or nil"
+    doc: "Active game request map with :game_id and :requester_nick, or nil"
 
   attr :session_status, :string, default: "lobby", doc: "Session phase label"
   attr :inactivity_warning, :boolean, default: false, doc: "Show inactivity warning bar"
@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
             <Icons.icon_status_user class="w-4 h-4" />
             <span class="text-xs font-bold">{@nickname}</span>
             <.badge variant="default">
-              {if @role == :host, do: "Host", else: "Player 2"}
+              {if @role == :creator, do: "Host", else: "Player 2"}
             </.badge>
           </div>
           <span class="text-xs text-muted-foreground">vs</span>
@@ -100,11 +100,11 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
 
         <%!-- Game consent banner (guest sees accept/decline) --%>
         <div
-          :if={@game_request != nil and @role == :guest}
+          :if={@game_request != nil and @role == :peer}
           class="flex flex-col gap-retro-4 shadow-retro-field bg-accent px-retro-8 py-retro-8"
         >
           <p class="text-xs font-bold">
-            <span class="font-normal">{@game_request.requester}</span>
+            <span class="font-normal">{@game_request.requester_nick}</span>
             wants to play <span class="font-normal">{@game_request.game_id}</span>
           </p>
           <div class="flex gap-retro-4">
@@ -133,7 +133,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
 
         <%!-- Waiting indicator (host sees this after sending a request) --%>
         <div
-          :if={@game_request != nil and @role == :host}
+          :if={@game_request != nil and @role == :creator}
           class="flex items-center gap-retro-4 shadow-retro-field bg-accent px-retro-8 py-retro-4 text-xs"
         >
           <Icons.icon_clock class="w-4 h-4 flex-shrink-0 animate-spin" />

@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
       end
 
     socket =
-      assign(socket, session_status: "connecting", p2p_state: "connecting", action_request: nil)
+      assign(socket, session_status: "connecting", action_request: nil)
 
     socket =
       case role do
@@ -111,8 +111,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
        |> assign(session_closed: true)
        |> push_event("p2p_close_tab", %{})}
     else
-      socket =
-        assign(socket, session_status: status, p2p_state: p2p_state_for_component(status, nil))
+      socket = assign(socket, session_status: status)
 
       socket =
         if status == "active" do
@@ -421,7 +420,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
       :ok ->
         socket =
           socket
-          |> assign(session_status: "active", p2p_state: "connected", webrtc_state: "Connected")
+          |> assign(session_status: "active", webrtc_state: "Connected")
           |> maybe_init_file_transfer()
           |> start_media_if_call()
 
@@ -438,8 +437,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
 
     case P2P.transition_status(socket.assigns.token, :failed) do
       :ok ->
-        {:noreply,
-         assign(socket, session_status: "failed", p2p_state: "failed", webrtc_state: "failed")}
+        {:noreply, assign(socket, session_status: "failed", webrtc_state: "failed")}
 
       {:error, _reason} ->
         {:noreply, socket}
@@ -473,14 +471,14 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
 
   def handle_event("ft_offer_sent", params, socket) do
     Logger.info(
-      "P2P file offer: #{params["fileName"]} (#{params["formattedSize"]}), token=#{socket.assigns.token}"
+      "P2P file offer: #{params["file_name"]} (#{params["formatted_size"]}), token=#{socket.assigns.token}"
     )
 
     ft = %{
       status: "offering",
-      file_name: params["fileName"],
-      file_size: params["fileSize"],
-      formatted_size: params["formattedSize"],
+      file_name: params["file_name"],
+      file_size: params["file_size"],
+      formatted_size: params["formatted_size"],
       sender_nick: socket.assigns.nickname
     }
 
@@ -490,9 +488,9 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   def handle_event("ft_offer_received", params, socket) do
     ft = %{
       status: "offer_received",
-      file_name: params["fileName"],
-      file_size: params["fileSize"],
-      formatted_size: params["formattedSize"],
+      file_name: params["file_name"],
+      file_size: params["file_size"],
+      formatted_size: params["formatted_size"],
       sender_nick: socket.assigns.peer_nick
     }
 
@@ -545,11 +543,11 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   end
 
   def handle_event("ft_completed", params, socket) do
-    Logger.info("P2P file completed: #{params["fileName"]}, token=#{socket.assigns.token}")
+    Logger.info("P2P file completed: #{params["file_name"]}, token=#{socket.assigns.token}")
 
     ft = %{
       status: "completed",
-      file_name: params["fileName"]
+      file_name: params["file_name"]
     }
 
     {:noreply, assign(socket, file_transfer: ft)}
@@ -571,7 +569,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   def handle_event("ft_cancelled", params, socket) do
     ft = %{
       status: "cancelled",
-      cancelled_by: params["cancelledBy"]
+      cancelled_by: params["cancelled_by"]
     }
 
     {:noreply, assign(socket, file_transfer: ft)}
@@ -624,7 +622,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   def handle_event("ft_queued", params, socket) do
     ft =
       Map.merge(socket.assigns.file_transfer || %{}, %{
-        queued_file: params["fileName"]
+        queued_file: params["file_name"]
       })
 
     {:noreply, assign(socket, file_transfer: ft)}
@@ -853,7 +851,6 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
         action_request: nil,
         capabilities: %{webrtc: nil, getUserMedia: nil, dataChannel: nil},
         session_status: db_session.status,
-        p2p_state: p2p_state_for_component(db_session.status, nil),
         inactivity_warning: false,
         permission_granted: %{},
         webrtc_state: nil,
@@ -879,13 +876,6 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
 
     {:ok, socket}
   end
-
-  defp p2p_state_for_component("pending", _webrtc), do: "idle"
-  defp p2p_state_for_component("lobby", _webrtc), do: "idle"
-  defp p2p_state_for_component("connecting", _webrtc), do: "connecting"
-  defp p2p_state_for_component("active", _webrtc), do: "connected"
-  defp p2p_state_for_component("failed", _webrtc), do: "failed"
-  defp p2p_state_for_component(_status, _webrtc), do: "idle"
 
   defp fetch_session(token) do
     case P2P.get_session(token) do
@@ -1035,19 +1025,6 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
       _ -> socket
     end
   end
-
-  defp ft_state_atom(%{status: "offering"}), do: :pending
-  defp ft_state_atom(%{status: "offer_received"}), do: :pending
-  defp ft_state_atom(%{status: "transferring"}), do: :transferring
-  defp ft_state_atom(%{status: "completed"}), do: :complete
-  defp ft_state_atom(%{status: "failed"}), do: :failed
-  defp ft_state_atom(%{status: "ready"}), do: :pending
-  defp ft_state_atom(%{status: "rejected"}), do: :failed
-  defp ft_state_atom(%{status: "cancelled"}), do: :failed
-  defp ft_state_atom(%{status: "validation_error"}), do: :failed
-  defp ft_state_atom(%{status: "paused"}), do: :transferring
-  defp ft_state_atom(%{status: "resuming"}), do: :transferring
-  defp ft_state_atom(_), do: :pending
 
   defp ft_direction(ft, nickname) do
     if Map.get(ft, :sender_nick) == nickname, do: "sending", else: "receiving"

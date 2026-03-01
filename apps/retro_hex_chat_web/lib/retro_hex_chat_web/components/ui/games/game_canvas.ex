@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.GameCanvas do
         game_name="Tic-Tac-Toe"
         nickname="alice"
         peer_nick="bob"
-        is_host={true}
+        role={:creator}
         on_end_game="end_game"
       />
   """
@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.GameCanvas do
   attr :game_name, :string, required: true
   attr :nickname, :string, required: true
   attr :peer_nick, :string, required: true
-  attr :is_host, :boolean, default: false
+  attr :role, :atom, default: :peer, values: [:creator, :peer]
   attr :on_end_game, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
@@ -41,7 +41,7 @@ defmodule RetroHexChatWeb.Components.UI.GameCanvas do
       class={classes(["w-[440px]", @class])}
       data-testid="game-canvas"
       data-game-id={@game_id}
-      data-is-host={to_string(@is_host)}
+      data-is-host={to_string(@role == :creator)}
       {@rest}
     >
       <.window_title_bar
@@ -64,13 +64,13 @@ defmodule RetroHexChatWeb.Components.UI.GameCanvas do
             <div class="flex items-center gap-retro-2">
               <Icons.icon_status_user class="w-3 h-3 shrink-0" />
               <span class="font-bold">{@nickname}</span>
-              <span :if={@is_host} class="text-muted-foreground">(host)</span>
+              <span :if={@role == :creator} class="text-muted-foreground">(host)</span>
             </div>
             <span class="text-muted-foreground">vs</span>
             <div class="flex items-center gap-retro-2">
               <Icons.icon_status_user class="w-3 h-3 shrink-0" />
               <span class="font-bold">{@peer_nick}</span>
-              <span :if={!@is_host} class="text-muted-foreground">(host)</span>
+              <span :if={@role != :creator} class="text-muted-foreground">(host)</span>
             </div>
           </div>
 

@@ -11,26 +11,28 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.SoloLobbyPage do
   import RetroHexChatWeb.ShowcaseHelpers
 
   @sample_games [
-    %{id: "doom", name: "DOOM", tagline: "Episode 1", engine: "DOOM Engine"},
-    %{id: "freedoom1", name: "Freedoom Phase 1", tagline: "36 levels", engine: "DOOM Engine"},
-    %{id: "quake", name: "LibreQuake", tagline: "Open-source Quake", engine: "Quake Engine"},
+    %{id: "doom", name: "DOOM", description: "Episode 1", engine: "DOOM Engine"},
+    %{id: "freedoom1", name: "Freedoom Phase 1", description: "36 levels", engine: "DOOM Engine"},
+    %{id: "quake", name: "LibreQuake", description: "Open-source Quake", engine: "Quake Engine"},
     %{
       id: "wolfenstein",
       name: "Wolfenstein 3D",
-      tagline: "Shareware Classic",
+      description: "Shareware Classic",
       engine: "Wolf3D Engine"
     },
-    %{id: "bass", name: "Beneath a Steel Sky", tagline: "Point & Click", engine: "ScummVM"},
-    %{id: "chex", name: "Chex Quest", tagline: "Cereal box classic", engine: "DOOM Engine"}
+    %{id: "bass", name: "Beneath a Steel Sky", description: "Point & Click", engine: "ScummVM"},
+    %{id: "chex", name: "Chex Quest", description: "Cereal box classic", engine: "DOOM Engine"}
   ]
 
   @sample_preview %{
     id: "doom",
     name: "DOOM",
-    tagline: "Episode 1 — The Original",
+    description: "Episode 1 — The Original",
     engine: "DOOM Engine (PrBoom+)",
-    about:
-      "The original first-person shooter that defined the genre. Fight through hordes of demons from Hell in this classic 1993 game.",
+    about: [
+      "The original first-person shooter that defined the genre.",
+      "Fight through hordes of demons from Hell in this classic 1993 game."
+    ],
     controls: [
       {"WASD", "Move"},
       {"Mouse", "Look / Aim"},

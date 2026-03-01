@@ -216,63 +216,11 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   # which are only invoked for events coming from the client. dispatch_to_hooks/3
   # simulates the hook pipeline for internally-dispatched events.
 
-  @toolbar_action_map %{
-    "connect" => "restore_session",
-    "disconnect" => "disconnect",
-    "channel_list" => "toggle_channel_list",
-    "toggle_conversations" => "toggle_conversations",
-    "toggle_nicklist" => "toggle_nicklist",
-    "open_search" => "toggle_search",
-    "toggle_address_book" => "toggle_address_book",
-    "open_highlight_dialog" => "open_highlight_dialog",
-    "open_ignore_dialog" => "open_ignore_dialog",
-    "toggle_url_catcher" => "toggle_url_catcher",
-    "open_channel_central" => "open_channel_central",
-    "open_perform_dialog" => "open_perform_dialog",
-    "open_sound_settings_dialog" => "open_sound_settings_dialog",
-    "open_ctcp_settings_dialog" => "open_ctcp_settings_dialog",
-    "open_flood_protection_dialog" => "open_flood_protection_dialog",
-    "open_alias_dialog" => "open_alias_dialog",
-    "open_custom_menus_dialog" => "open_custom_menus_dialog",
-    "open_autorespond_dialog" => "open_autorespond_dialog",
-    "settings" => "settings",
-    "open_admin_console" => "open_admin_console",
-    "help_topics" => "help_topics"
-  }
-
-  @chat_context_action_map %{
-    "pm" => "ctx_chat_pm",
-    "whois" => "ctx_chat_whois",
-    "copy_nick" => "ctx_chat_copy_nick",
-    "ignore" => "ctx_chat_ignore",
-    "unignore" => "ctx_chat_ignore",
-    "address_book" => "ctx_chat_add_contact",
-    "audio_call" => "ctx_chat_call",
-    "video_call" => "ctx_chat_video_call",
-    "send_file" => "ctx_chat_sendfile",
-    "play_game" => "ctx_chat_game",
-    "kick" => "ctx_chat_kick",
-    "ban" => "ctx_chat_ban",
-    "voice" => "ctx_chat_voice",
-    "op" => "ctx_chat_op",
-    "open_link" => "ctx_chat_open_url",
-    "copy_url" => "ctx_chat_copy_url",
-    "save_url" => "ctx_chat_save_url",
-    "join_channel" => "ctx_chat_join",
-    "copy_channel" => "ctx_chat_copy_channel",
-    "channel_info" => "ctx_chat_channel_info",
-    "copy_message" => "ctx_chat_copy_message",
-    "reply" => "reply_to_message",
-    "delete" => "ctx_chat_delete",
-    "ignore_sender" => "ctx_chat_ignore_sender"
-  }
-
   @impl true
 
-  # Toolbar actions → individual v1 events
+  # Toolbar actions — components emit v1 event names directly
   def handle_event("toolbar_action", %{"action" => action}, socket) do
-    event_name = Map.get(@toolbar_action_map, action, action)
-    dispatch_to_hooks(event_name, %{}, socket)
+    dispatch_to_hooks(action, %{}, socket)
   end
 
   # Tab bar actions → type-specific v1 events
@@ -294,110 +242,17 @@ defmodule RetroHexChatWeb.V2.ChatLive do
     end
   end
 
-  # Conversations sidebar: translate param keys
-  def handle_event("switch_pm_nick", %{"nick" => nick}, socket) do
-    dispatch_to_hooks("switch_pm", %{"nickname" => nick}, socket)
-  end
-
-  def handle_event("conversations_channel_dblclick", %{"cc_channel" => channel}, socket) do
-    dispatch_to_hooks("channel_dblclick", %{"channel" => channel}, socket)
-  end
-
-  # Chat context menu: compound action → individual ctx_chat_* events
+  # Context menus — components emit v1 event names directly
   def handle_event("chat_context_action", %{"action" => action} = params, socket) do
-    event_name = Map.get(@chat_context_action_map, action, "ctx_chat_#{action}")
-    forwarded_params = Map.delete(params, "action")
-    dispatch_to_hooks(event_name, forwarded_params, socket)
+    dispatch_to_hooks(action, Map.delete(params, "action"), socket)
   end
 
-  # Conversations context menu: compound action → individual ctx_conversations_* events
   def handle_event("conversations_context_action", %{"action" => action} = params, socket) do
-    forwarded_params = Map.delete(params, "action")
-
-    case action do
-      "mark_read" ->
-        dispatch_to_hooks("ctx_conversations_mark_read", forwarded_params, socket)
-
-      "mute" ->
-        dispatch_to_hooks("ctx_conversations_mute", forwarded_params, socket)
-
-      "unmute" ->
-        dispatch_to_hooks("ctx_conversations_mute", forwarded_params, socket)
-
-      "copy_name" ->
-        dispatch_to_hooks("ctx_conversations_copy_name", forwarded_params, socket)
-
-      "channel_settings" ->
-        dispatch_to_hooks("ctx_conversations_settings", forwarded_params, socket)
-
-      "leave" ->
-        dispatch_to_hooks("ctx_conversations_leave", forwarded_params, socket)
-
-      custom_action ->
-        # Custom menu items
-        dispatch_to_hooks(
-          "custom_menu_execute",
-          Map.put(forwarded_params, "label", custom_action),
-          socket
-        )
-    end
+    dispatch_to_hooks(action, Map.delete(params, "action"), socket)
   end
-
-  # Nicklist context menu: compound action → individual context_* events
-  @nicklist_context_action_map %{
-    "pm" => "context_query",
-    "whois" => "context_whois",
-    "add_contact" => "context_add_contact",
-    "set_nick_color" => "context_set_nick_color",
-    "ignore" => "context_ignore",
-    "unignore" => "context_unignore",
-    "p2p_session" => "context_p2p",
-    "audio_call" => "context_call",
-    "video_call" => "context_video_call",
-    "send_file" => "context_sendfile",
-    "play_game" => "context_game",
-    "kick" => "context_kick",
-    "ban" => "context_ban",
-    "give_op" => "context_op",
-    "give_voice" => "context_voice",
-    "pick_color" => "context_pick_color"
-  }
 
   def handle_event("nicklist_context_action", %{"action" => action} = params, socket) do
-    forwarded_params = Map.delete(params, "action")
-
-    case Map.get(@nicklist_context_action_map, action) do
-      nil ->
-        # Custom menu items — rename "nick" → "target" for custom_menu_execute handler
-        custom_params =
-          forwarded_params
-          |> Map.put("target", forwarded_params["nick"])
-          |> Map.delete("nick")
-
-        dispatch_to_hooks("custom_menu_execute", custom_params, socket)
-
-      event_name ->
-        dispatch_to_hooks(event_name, forwarded_params, socket)
-    end
-  end
-
-  # Hover card close → v1 event name
-  def handle_event("hover_card_close", _params, socket) do
-    dispatch_to_hooks("nick_hover_dismiss", %{}, socket)
-  end
-
-  # Nick change dialog events (v2 names → v1 names)
-  def handle_event("nick_change_confirm", params, socket) do
-    dispatch_to_hooks("confirm_nick_change", params, socket)
-  end
-
-  def handle_event("nick_change_cancel", _params, socket) do
-    dispatch_to_hooks("cancel_nick_change", %{}, socket)
-  end
-
-  # Kick dialog dismiss
-  def handle_event("kick_dismiss", _params, socket) do
-    dispatch_to_hooks("kick_dialog_dismiss", %{}, socket)
+    dispatch_to_hooks(action, Map.delete(params, "action"), socket)
   end
 
   # ── Catch-all handle_info ─────────────────────────────────────
@@ -951,12 +806,6 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   defp chat_context_target_ignored?(session, %{target_nick: nick}) do
     IgnoreList.get_entry(session.ignore_list, nick) != nil
   end
-
-  defp user_role(%{role: :operator}), do: "op"
-  defp user_role(%{role: :voiced}), do: "voice"
-  defp user_role(%{role: :owner}), do: "op"
-  defp user_role(%{role: :half_operator}), do: "op"
-  defp user_role(_), do: "normal"
 
   defp message_classes(msg, edit_mode_message_id) do
     base = "chat-message chat-message--#{Map.get(msg, :type, :normal)}"

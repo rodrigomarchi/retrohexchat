@@ -41,25 +41,33 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <%!-- Core actions --%>
       <.context_menu_item
         on_click={unless(@is_target_self, do: @on_action)}
-        action="pm"
+        action="context_query"
         disabled={@is_target_self}
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_tab_pm class="w-[14px] h-[14px]" /></:icon>
         Query (PM)
       </.context_menu_item>
-      <.context_menu_item on_click={@on_action} action="whois" phx-value-nick={@target_nick}>
+      <.context_menu_item on_click={@on_action} action="context_whois" phx-value-nick={@target_nick}>
         <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>
         Whois
       </.context_menu_item>
 
       <.context_menu_separator />
 
-      <.context_menu_item on_click={@on_action} action="add_contact" phx-value-nick={@target_nick}>
+      <.context_menu_item
+        on_click={@on_action}
+        action="context_add_contact"
+        phx-value-nick={@target_nick}
+      >
         <:icon><Icons.icon_tab_contacts class="w-[14px] h-[14px]" /></:icon>
         Add to Contacts
       </.context_menu_item>
-      <.context_menu_item on_click={@on_action} action="set_nick_color" phx-value-nick={@target_nick}>
+      <.context_menu_item
+        on_click={@on_action}
+        action="context_set_nick_color"
+        phx-value-nick={@target_nick}
+      >
         <:icon><Icons.icon_btn_settings class="w-[14px] h-[14px]" /></:icon>
         Set Nick Color
       </.context_menu_item>
@@ -75,7 +83,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
               "nick-color-#{i}"
             ]}
             phx-click={@on_action}
-            phx-value-action="pick_color"
+            phx-value-action="context_pick_color"
             phx-value-color_index={to_string(i)}
             phx-value-nick={@target_nick}
             data-testid={"color-swatch-#{i}"}
@@ -86,7 +94,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={!@is_target_self}
         on_click={@on_action}
-        action={if @is_target_ignored, do: "unignore", else: "ignore"}
+        action={if @is_target_ignored, do: "context_unignore", else: "context_ignore"}
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_btn_ignore class="w-[14px] h-[14px]" /></:icon>
@@ -98,7 +106,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
         on_click={@on_action}
-        action="p2p_session"
+        action="context_p2p"
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_p2p class="w-[14px] h-[14px]" /></:icon>
@@ -107,7 +115,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
         on_click={@on_action}
-        action="audio_call"
+        action="context_call"
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_microphone class="w-[14px] h-[14px]" /></:icon>
@@ -116,7 +124,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
         on_click={@on_action}
-        action="video_call"
+        action="context_video_call"
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_camera class="w-[14px] h-[14px]" /></:icon>
@@ -125,7 +133,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
         on_click={@on_action}
-        action="send_file"
+        action="context_sendfile"
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_file_send class="w-[14px] h-[14px]" /></:icon>
@@ -134,7 +142,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
         on_click={@on_action}
-        action="play_game"
+        action="context_game"
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_star class="w-[14px] h-[14px]" /></:icon>
@@ -146,7 +154,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={@viewer_is_op && !@is_target_self}
         on_click={@on_action}
-        action="kick"
+        action="context_kick"
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_dialog_kick class="w-[14px] h-[14px]" /></:icon>
@@ -155,7 +163,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={@viewer_is_op && !@is_target_self}
         on_click={@on_action}
-        action="ban"
+        action="context_ban"
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_ban class="w-[14px] h-[14px]" /></:icon>
@@ -164,7 +172,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={@viewer_is_op && !@is_target_self}
         on_click={@on_action}
-        action="give_voice"
+        action="context_voice"
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_role_voiced class="w-[14px] h-[14px]" /></:icon>
@@ -173,7 +181,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={@viewer_is_op && !@is_target_self}
         on_click={@on_action}
-        action="give_op"
+        action="context_op"
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_role_operator class="w-[14px] h-[14px]" /></:icon>
@@ -185,9 +193,10 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :for={item <- @custom_items}
         on_click={@on_action}
-        action={item[:label]}
-        phx-value-nick={@target_nick}
+        action="custom_menu_execute"
+        phx-value-target={@target_nick}
         phx-value-command={item[:command]}
+        phx-value-label={item[:label]}
       >
         <:icon><Icons.icon_btn_star class="w-[14px] h-[14px]" /></:icon>
         {item[:label]}

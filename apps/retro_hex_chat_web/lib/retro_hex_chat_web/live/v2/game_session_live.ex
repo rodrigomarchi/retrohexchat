@@ -126,7 +126,7 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
   end
 
   def handle_info(%{event: "game_select_request", payload: request}, socket) do
-    {:noreply, assign(socket, game_request: normalize_game_request(request))}
+    {:noreply, assign(socket, game_request: request)}
   end
 
   def handle_info(%{event: "game_select_response", payload: _response}, socket) do
@@ -310,7 +310,6 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
         peer_nick: peer_nick,
         peer_online: peer_online,
         role: role,
-        v2_role: v1_to_v2_role(role),
         local_info: local_info,
         peer_info: %{},
         games: games,
@@ -324,17 +323,6 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
       )
 
     {:ok, socket}
-  end
-
-  defp v1_to_v2_role(:creator), do: :host
-  defp v1_to_v2_role(:peer), do: :guest
-
-  defp normalize_game_request(%{requester_nick: nick} = request) do
-    Map.put(request, :requester, nick)
-  end
-
-  defp normalize_game_request(request) do
-    Map.put_new(request, :requester, Map.get(request, :requester_nick, "unknown"))
   end
 
   defp fetch_session(token) do

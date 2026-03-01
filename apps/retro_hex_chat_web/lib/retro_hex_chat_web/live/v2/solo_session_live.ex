@@ -222,7 +222,16 @@ defmodule RetroHexChatWeb.V2.SoloSessionLive do
             {:error, _} -> %{about: [game.description], controls: [], tips: []}
           end
 
-        previewed = transform_previewed_game(game, content)
+        previewed = %{
+          id: game.id,
+          name: game.name,
+          description: Map.get(game, :tagline, game.description),
+          engine: game.engine,
+          about: content.about,
+          controls: content.controls,
+          tips: content.tips
+        }
+
         {:noreply, assign(socket, previewed_game: previewed)}
 
       {:error, _} ->
@@ -235,27 +244,6 @@ defmodule RetroHexChatWeb.V2.SoloSessionLive do
       :ok -> {:noreply, socket}
       {:error, _reason} -> {:noreply, socket}
     end
-  end
-
-  defp transform_previewed_game(game, content) do
-    about = Enum.join(content.about, "\n\n")
-
-    controls =
-      Enum.map(content.controls, fn
-        {k, a} -> {k, a}
-      end)
-
-    tips = content.tips
-
-    %{
-      id: game.id,
-      name: game.name,
-      tagline: Map.get(game, :tagline, game.description),
-      engine: game.engine,
-      about: about,
-      controls: controls,
-      tips: tips
-    }
   end
 
   defp notify_session_ended(socket, reason) do

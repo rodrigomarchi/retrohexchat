@@ -23,58 +23,58 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.FileTransferPage do
 
       <.showcase_card title="Receiving" description="File being received with progress.">
         <.file_transfer
-          filename="vacation_photos.zip"
+          file_name="vacation_photos.zip"
           progress={65}
           speed="1.2 MB/s"
-          size="24.5 MB"
+          formatted_size="24.5 MB"
           direction="receiving"
-          state={:transferring}
+          state="transferring"
         />
         <.code_example>
           &lt;.file_transfer
-          filename="photos.zip"
+          file_name="photos.zip"
           progress={65} speed="1.2 MB/s"
-          size="24.5 MB"
+          formatted_size="24.5 MB"
           /&gt;
         </.code_example>
       </.showcase_card>
 
       <.showcase_card title="Sending" description="File being sent.">
         <.file_transfer
-          filename="document.pdf"
+          file_name="document.pdf"
           progress={30}
           speed="850 KB/s"
-          size="8.2 MB"
+          formatted_size="8.2 MB"
           direction="sending"
-          state={:transferring}
+          state="transferring"
         />
       </.showcase_card>
 
       <.showcase_card title="Pending (Incoming)" description="Waiting for acceptance.">
         <.file_transfer
-          filename="setup.exe"
+          file_name="setup.exe"
           progress={0}
-          size="156 MB"
+          formatted_size="156 MB"
           direction="receiving"
-          state={:pending}
+          state="offer_received"
         />
       </.showcase_card>
 
       <.showcase_card title="Complete" description="Transfer finished.">
         <.file_transfer
-          filename="music.mp3"
+          file_name="music.mp3"
           progress={100}
-          size="4.8 MB"
-          state={:complete}
+          formatted_size="4.8 MB"
+          state="completed"
         />
       </.showcase_card>
 
       <.showcase_card title="Failed" description="Transfer failed.">
         <.file_transfer
-          filename="large_file.iso"
+          file_name="large_file.iso"
           progress={42}
-          size="2.1 GB"
-          state={:failed}
+          formatted_size="2.1 GB"
+          state="failed"
         />
       </.showcase_card>
     </.showcase_layout>

@@ -528,7 +528,7 @@ defmodule RetroHexChatWeb.P2PSessionLiveTest do
       render_hook(view, "p2p_connected", %{})
       Process.sleep(20)
 
-      render_hook(view, "ft_cancelled", %{"cancelledBy" => "p2p_lv_ft_b"})
+      render_hook(view, "ft_cancelled", %{"cancelled_by" => "p2p_lv_ft_b"})
       Process.sleep(20)
 
       html = render(view)

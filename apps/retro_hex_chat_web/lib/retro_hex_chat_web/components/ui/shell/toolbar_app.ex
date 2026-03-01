@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
         :if={!@connected}
         label="Connect"
         phx-click={@on_action}
-        phx-value-action="connect"
+        phx-value-action="restore_session"
       >
         <Icons.icon_btn_connect_lightning class="w-[16px] h-[16px]" />
       </.toolbar_button>
@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
           <.dropdown_item
             icon_fn={:icon_btn_channel_list}
             label="Channel List"
-            action="channel_list"
+            action="toggle_channel_list"
             on_action={@on_action}
           />
           <.dropdown_item
@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
           <.dropdown_item
             icon_fn={:icon_btn_find}
             label="Find"
-            action="open_search"
+            action="toggle_search"
             on_action={@on_action}
           />
 

@@ -23,23 +23,45 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.AutocompletePage do
 
       <.showcase_card
         title="Command Mode"
-        description="Autocomplete dropdown with command suggestions (default mode)."
+        description="Autocomplete dropdown with command suggestions grouped by category (native backend data)."
       >
         <.autocomplete
           mode={:command}
           items={[
-            %{category: "Commands", label: "/join", description: "Join a channel"},
-            %{category: "Commands", label: "/part", description: "Leave current channel"},
-            %{category: "Commands", label: "/msg", description: "Send a private message"},
-            %{category: "Commands", label: "/nick", description: "Change your nickname"},
-            %{category: "Commands", label: "/quit", description: "Disconnect from server"}
+            "Channel",
+            %{type: :command, name: "join", description: "Join a channel", category: "Channel"},
+            %{
+              type: :command,
+              name: "part",
+              description: "Leave current channel",
+              category: "Channel"
+            },
+            "Communication",
+            %{
+              type: :command,
+              name: "msg",
+              description: "Send a private message",
+              category: "Communication"
+            },
+            %{
+              type: :command,
+              name: "nick",
+              description: "Change your nickname",
+              category: "Communication"
+            },
+            %{
+              type: :command,
+              name: "quit",
+              description: "Disconnect from server",
+              category: "Communication"
+            }
           ]}
           selected_index={0}
         />
         <.code_example>
           &lt;.autocomplete
           mode=&#123;:command&#125;
-          items=&#123;[%&#123;category: "Commands", label: "/join", description: "Join a channel"&#125;]&#125;
+          items=&#123;["Channel", %&#123;name: "join", description: "Join a channel"&#125;]&#125;
           selected_index=&#123;0&#125;
           /&gt;
         </.code_example>
@@ -47,14 +69,19 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.AutocompletePage do
 
       <.showcase_card
         title="Nick Mode"
-        description="Autocomplete showing nick suggestions with online status dots."
+        description="Autocomplete showing nick suggestions with online status dots and color classes."
       >
         <.autocomplete
           mode={:nick}
           items={[
-            %{category: "Nicks", label: "alice", online: true},
-            %{category: "Nicks", label: "alice_away", online: false},
-            %{category: "Nicks", label: "aliceinwonderland", online: true}
+            %{type: :nick, nickname: "alice", status: :online, color_class: "nick-color-3"},
+            %{type: :nick, nickname: "alice_away", status: :away, color_class: "nick-color-5"},
+            %{
+              type: :nick,
+              nickname: "aliceinwonderland",
+              status: :online,
+              color_class: "nick-color-1"
+            }
           ]}
           selected_index={1}
         />
@@ -67,10 +94,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.AutocompletePage do
         <.autocomplete
           mode={:channel}
           items={[
-            %{category: "Channels", label: "#general", description: "42 users", joined: true},
-            %{category: "Channels", label: "#gaming", description: "18 users", joined: false},
-            %{category: "Channels", label: "#help", description: "7 users", joined: true},
-            %{category: "Channels", label: "#random", description: "31 users", joined: false}
+            %{type: :channel, name: "#general", user_count: 42, joined?: true},
+            %{type: :channel, name: "#gaming", user_count: 18, joined?: false},
+            %{type: :channel, name: "#help", user_count: 7, joined?: true},
+            %{type: :channel, name: "#random", user_count: 31, joined?: false}
           ]}
           selected_index={0}
         />
@@ -78,14 +105,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.AutocompletePage do
 
       <.showcase_card
         title="Subcommand Mode"
-        description="Autocomplete for subcommands (e.g., /set options)."
+        description="Autocomplete for subcommands (e.g., /ns options)."
       >
         <.autocomplete
           mode={:subcommand}
+          command="ns"
           items={[
-            %{category: "Settings", label: "theme", description: "Change color theme"},
-            %{category: "Settings", label: "font", description: "Change font size"},
-            %{category: "Settings", label: "timestamps", description: "Toggle timestamps"}
+            %{type: :subcommand, name: "register", description: "Register your nickname"},
+            %{type: :subcommand, name: "identify", description: "Identify to NickServ"},
+            %{type: :subcommand, name: "ghost", description: "Kill a ghosted session"}
           ]}
           selected_index={2}
         />
@@ -105,7 +133,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.AutocompletePage do
         <div class="text-xs text-muted-foreground italic p-2">
           (autocomplete is hidden — nothing rendered below)
         </div>
-        <.autocomplete visible={false} items={[%{label: "test"}]} />
+        <.autocomplete visible={false} items={[]} />
       </.showcase_card>
     </.showcase_layout>
     """

@@ -164,7 +164,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         </div>
         <div class="flex-1 min-w-0">
           <h3 class="text-sm font-bold">{@previewed_game.name}</h3>
-          <p class="text-xs text-muted-foreground">{@previewed_game.tagline}</p>
+          <p class="text-xs text-muted-foreground">{@previewed_game.description}</p>
           <.badge variant="secondary" class="mt-1">{@previewed_game.engine}</.badge>
         </div>
       </div>
@@ -189,9 +189,12 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <%!-- Detail sections --%>
       <div class="space-y-2">
         <%!-- About --%>
-        <fieldset :if={@previewed_game[:about]} class="shadow-retro-field p-2">
+        <fieldset
+          :if={@previewed_game[:about] && @previewed_game.about != []}
+          class="shadow-retro-field p-2"
+        >
           <legend class="text-xs font-bold px-1">About</legend>
-          <p class="text-xs">{@previewed_game.about}</p>
+          <p :for={paragraph <- @previewed_game.about} class="text-xs">{paragraph}</p>
         </fieldset>
 
         <%!-- Controls --%>

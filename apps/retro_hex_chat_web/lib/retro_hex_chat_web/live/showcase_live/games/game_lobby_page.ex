@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
           id="game-lobby-host"
           nickname="alice"
           peer_nick="bob"
-          role={:host}
+          role={:creator}
           games={@games}
           session_status="Waiting for game selection"
         />
@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
           id="game-lobby"
           nickname="alice"
           peer_nick="bob"
-          role=&#123;:host&#125;
+          role=&#123;:creator&#125;
           games=&#123;@games&#125;
           on_select_game="select_game"
           on_close="leave_lobby"
@@ -68,9 +68,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
           id="game-lobby-waiting"
           nickname="alice"
           peer_nick="bob"
-          role={:host}
+          role={:creator}
           games={@games}
-          game_request={%{game_id: "Pong", requester: "alice"}}
+          game_request={%{game_id: "Pong", requester_nick: "alice"}}
           session_status="Waiting for acceptance"
         />
       </.showcase_card>
@@ -83,9 +83,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
           id="game-lobby-consent"
           nickname="bob"
           peer_nick="alice"
-          role={:guest}
+          role={:peer}
           games={@games}
-          game_request={%{game_id: "Pong", requester: "alice"}}
+          game_request={%{game_id: "Pong", requester_nick: "alice"}}
           session_status="Game request received"
         />
       </.showcase_card>
@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
           id="game-lobby-inactive"
           nickname="alice"
           peer_nick="bob"
-          role={:host}
+          role={:creator}
           games={@games}
           inactivity_warning={true}
           session_status="Lobby idle"
@@ -113,7 +113,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
           id="game-lobby-offline"
           nickname="alice"
           peer_nick="charlie"
-          role={:host}
+          role={:creator}
           peer_online={false}
           games={[]}
           session_status="Peer disconnected"

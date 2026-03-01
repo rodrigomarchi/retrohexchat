@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
       <%!-- Mark as Read --%>
       <.context_menu_item
         on_click={@has_unread && @on_action}
-        action="mark_read"
+        action="ctx_conversations_mark_read"
         disabled={!@has_unread}
         phx-value-channel={@channel}
         data-testid="ctx-mark-read"
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
       <%!-- Mute / Unmute --%>
       <.context_menu_item
         on_click={@on_action}
-        action={if @is_muted, do: "unmute", else: "mute"}
+        action="ctx_conversations_mute"
         phx-value-channel={@channel}
         data-testid="ctx-mute-toggle"
       >
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
       <%!-- Copy Channel Name --%>
       <.context_menu_item
         on_click={@on_action}
-        action="copy_name"
+        action="ctx_conversations_copy_name"
         phx-value-channel={@channel}
         data-testid="ctx-copy-name"
       >
@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
       <%!-- Channel Settings --%>
       <.context_menu_item
         on_click={@on_action}
-        action="channel_settings"
+        action="ctx_conversations_settings"
         phx-value-channel={@channel}
         data-testid="ctx-channel-settings"
       >
@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
       <%!-- Leave Channel --%>
       <.context_menu_item
         on_click={@on_action}
-        action="leave"
+        action="ctx_conversations_leave"
         phx-value-channel={@channel}
         data-testid="ctx-leave"
       >
@@ -115,7 +115,8 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
       <.context_menu_item
         :for={item <- @custom_items}
         on_click={@on_action}
-        action={item[:action]}
+        action="custom_menu_execute"
+        phx-value-label={item[:action]}
         phx-value-channel={@channel}
       >
         <:icon><Icons.icon_btn_star class="w-[14px] h-[14px]" /></:icon>

@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
 
       <.p2p_lobby
         peer="alice"
-        state="waiting"
+        state="lobby"
       />
   """
   use RetroHexChatWeb.Component
@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
 
   @doc "Renders the P2P lobby."
   attr :peer, :string, required: true
-  attr :state, :string, default: "idle", values: ~w(idle waiting connecting connected failed)
+  attr :state, :string, default: "pending", values: ~w(pending lobby connecting active failed)
   attr :on_connect, :any, default: nil, doc: "Connect button callback"
   attr :on_cancel, :any, default: nil, doc: "Cancel button callback"
   attr :on_disconnect, :any, default: nil, doc: "Disconnect button callback"
@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
         <%!-- Action buttons --%>
         <div class="flex gap-retro-4">
           <.button
-            :if={@state in ["idle", "failed"]}
+            :if={@state in ["pending", "lobby", "failed"]}
             variant="default"
             phx-click={@on_connect}
             data-testid="p2p-lobby-connect"
@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             Connect
           </.button>
           <.button
-            :if={@state in ["waiting", "connecting"]}
+            :if={@state == "connecting"}
             variant="destructive"
             phx-click={@on_cancel}
             data-testid="p2p-lobby-cancel"
@@ -88,7 +88,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             Cancel
           </.button>
           <.button
-            :if={@state == "connected"}
+            :if={@state == "active"}
             variant="outline"
             phx-click={@on_disconnect}
             data-testid="p2p-lobby-disconnect"
@@ -106,21 +106,21 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
 
   attr :state, :string, required: true
 
-  defp state_badge(%{state: "idle"} = assigns), do: ~H|<.badge variant="outline">Idle</.badge>|
+  defp state_badge(%{state: "pending"} = assigns), do: ~H|<.badge variant="outline">Idle</.badge>|
 
-  defp state_badge(%{state: "waiting"} = assigns),
+  defp state_badge(%{state: "lobby"} = assigns),
     do: ~H|<.badge variant="secondary">Waiting</.badge>|
 
   defp state_badge(%{state: "connecting"} = assigns),
     do: ~H|<.badge variant="secondary">Connecting</.badge>|
 
-  defp state_badge(%{state: "connected"} = assigns),
+  defp state_badge(%{state: "active"} = assigns),
     do: ~H|<.badge variant="default">Connected</.badge>|
 
   defp state_badge(%{state: "failed"} = assigns),
     do: ~H|<.badge variant="destructive">Failed</.badge>|
 
-  defp state_line_class("connected"), do: "bg-success"
+  defp state_line_class("active"), do: "bg-success"
   defp state_line_class("connecting"), do: "bg-warning-alt"
   defp state_line_class("failed"), do: "bg-error"
   defp state_line_class(_), do: "bg-border"

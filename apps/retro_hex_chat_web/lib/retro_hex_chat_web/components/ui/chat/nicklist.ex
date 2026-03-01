@@ -25,7 +25,11 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   @doc "Renders a user item in the nicklist."
   attr :nick, :string, required: true
   attr :status, :string, values: ~w(online offline away), default: "online"
-  attr :role, :string, values: ~w(op voice normal), default: "normal"
+
+  attr :role, :atom,
+    values: [:operator, :voiced, :owner, :half_operator, :normal],
+    default: :normal
+
   attr :nick_color, :string, default: nil
   attr :class, :any, default: nil
   attr :rest, :global
@@ -59,11 +63,11 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   defp status_color("away"), do: "bg-away"
   defp status_color("offline"), do: "bg-offline"
 
-  defp role_icon(%{role: "op"} = assigns) do
+  defp role_icon(%{role: role} = assigns) when role in [:operator, :owner, :half_operator] do
     ~H'<Icons.icon_role_operator class="w-[16px] h-[16px]" />'
   end
 
-  defp role_icon(%{role: "voice"} = assigns) do
+  defp role_icon(%{role: :voiced} = assigns) do
     ~H'<Icons.icon_role_voiced class="w-[16px] h-[16px]" />'
   end
 

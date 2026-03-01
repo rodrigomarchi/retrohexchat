@@ -119,7 +119,7 @@ describe("FileTransferHook", () => {
       await vi.waitFor(() => {
         const offerEvents = hook.__pushEvents.filter((e) => e.event === "ft_offer_sent");
         expect(offerEvents.length).toBe(1);
-        expect(offerEvents[0].payload.fileName).toBe("test.txt");
+        expect(offerEvents[0].payload.file_name).toBe("test.txt");
       });
     });
 
@@ -172,7 +172,7 @@ describe("FileTransferHook", () => {
       expect(channel._sent.length).toBe(1);
       const cancelled = hook.__pushEvents.filter((e) => e.event === "ft_cancelled");
       expect(cancelled.length).toBe(1);
-      expect(cancelled[0].payload.cancelledBy).toBe("rodrigo");
+      expect(cancelled[0].payload.cancelled_by).toBe("rodrigo");
     });
   });
 

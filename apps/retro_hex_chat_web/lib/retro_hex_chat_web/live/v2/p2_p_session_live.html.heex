@@ -26,7 +26,7 @@
     <%!-- P2P connection lobby --%>
     <.p2p_lobby
       peer={@peer_nick}
-      state={@p2p_state}
+      state={@session_status}
       on_cancel="close_session"
       on_disconnect="close_session"
     />
@@ -77,11 +77,11 @@
     <%!-- File transfer --%>
     <.file_transfer
       :if={@file_transfer && @file_transfer[:file_name]}
-      filename={@file_transfer[:file_name] || "unknown"}
+      file_name={@file_transfer[:file_name] || "unknown"}
       progress={@file_transfer[:percent] || 0}
       speed={@file_transfer[:speed]}
-      size={@file_transfer[:formatted_size]}
-      state={ft_state_atom(@file_transfer)}
+      formatted_size={@file_transfer[:formatted_size]}
+      state={@file_transfer[:status] || "ready"}
       direction={ft_direction(@file_transfer, @nickname)}
       on_cancel="ft_cancel"
       on_accept="ft_accept_offer"

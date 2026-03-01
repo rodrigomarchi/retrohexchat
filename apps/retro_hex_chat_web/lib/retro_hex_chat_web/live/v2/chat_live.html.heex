@@ -77,8 +77,8 @@
         for {k, expanded?} <- @conversations_sections, !expanded?, do: to_string(k)
       }
       on_channel_click="switch_channel"
-      on_channel_dblclick="conversations_channel_dblclick"
-      on_pm_click="switch_pm_nick"
+      on_channel_dblclick="channel_dblclick"
+      on_pm_click="switch_pm"
       on_user_click="nick_dblclick"
       on_toggle_section="conversations_toggle_section"
       on_close="toggle_conversations"
@@ -240,6 +240,7 @@
               items={@autocomplete_results}
               selected_index={@autocomplete_selected}
               mode={@autocomplete_mode || :command}
+              command={@autocomplete_command}
               on_select="autocomplete_select"
             />
             <.syntax_tooltip
@@ -257,7 +258,7 @@
           <.nicklist_item
             :for={user <- @channel_users}
             nick={user.nickname}
-            role={user_role(user)}
+            role={Map.get(user, :role, :normal)}
             status={if Map.get(user, :away), do: "away", else: "online"}
             nick_color={@nick_color_fn.(user.nickname)}
             data-nick={user.nickname}
@@ -344,7 +345,7 @@
   channels={@hover_card[:channels] || []}
   browser={@hover_card[:browser]}
   os={@hover_card[:os]}
-  on_close="hover_card_close"
+  on_close="nick_hover_dismiss"
 />
 
 <%!-- Context menus --%>
@@ -418,8 +419,8 @@
   target_nick={(@nick_change_dialog && @nick_change_dialog.target_nick) || ""}
   registered={(@nick_change_dialog && @nick_change_dialog.registered) || false}
   password_error={@nick_change_dialog && @nick_change_dialog.password_error}
-  on_confirm="nick_change_confirm"
-  on_cancel="nick_change_cancel"
+  on_confirm="confirm_nick_change"
+  on_cancel="cancel_nick_change"
 />
 
 <.notify_list
@@ -684,7 +685,7 @@
   id="kick-dialog"
   show={length(@kick_queue) > 0}
   kick_info={List.first(@kick_queue)}
-  on_dismiss="kick_dismiss"
+  on_dismiss="kick_dialog_dismiss"
 />
 
 <%!-- Bot Management dialog --%>

@@ -623,7 +623,7 @@ defmodule RetroHexChatWeb.P2PSessionLive do
   def handle_event("ft_cancelled", params, socket) do
     ft = %{
       status: "cancelled",
-      cancelled_by: params["cancelledBy"]
+      cancelled_by: params["cancelled_by"]
     }
 
     {:noreply, assign(socket, file_transfer: ft)}

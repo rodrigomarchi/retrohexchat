@@ -21,18 +21,18 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
     <.showcase_layout active_page={@active_page}>
       <h2 class="text-lg font-bold mb-3">P2P Lobby</h2>
 
-      <.showcase_card title="Idle" description="Waiting to connect. Shows Connect button.">
-        <.p2p_lobby peer="alice" state="idle" />
+      <.showcase_card title="Pending" description="Waiting to connect. Shows Connect button.">
+        <.p2p_lobby peer="alice" state="pending" />
         <.code_example>
-          &lt;.p2p_lobby peer="alice" state="idle" on_connect="p2p_connect" /&gt;
+          &lt;.p2p_lobby peer="alice" state="pending" on_connect="p2p_connect" /&gt;
         </.code_example>
       </.showcase_card>
 
       <.showcase_card
-        title="Waiting"
-        description="Invitation sent, waiting for peer to accept. Shows Cancel button."
+        title="Lobby"
+        description="Invitation sent, waiting for peer to accept. Shows Connect button."
       >
-        <.p2p_lobby peer="bob" state="waiting" />
+        <.p2p_lobby peer="bob" state="lobby" />
       </.showcase_card>
 
       <.showcase_card
@@ -42,8 +42,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
         <.p2p_lobby peer="carol" state="connecting" />
       </.showcase_card>
 
-      <.showcase_card title="Connected" description="Successfully connected. Shows Disconnect button.">
-        <.p2p_lobby peer="dave" state="connected" />
+      <.showcase_card title="Active" description="Successfully connected. Shows Disconnect button.">
+        <.p2p_lobby peer="dave" state="active" />
       </.showcase_card>
 
       <.showcase_card title="Failed" description="Connection attempt failed. Shows Connect to retry.">

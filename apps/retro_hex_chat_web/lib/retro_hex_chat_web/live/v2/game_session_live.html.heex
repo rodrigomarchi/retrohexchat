@@ -28,7 +28,7 @@
       game_name={@game_name}
       nickname={@nickname}
       peer_nick={@peer_nick}
-      is_host={@role == :creator}
+      role={@role}
       on_end_game="end_game"
     />
   </div>
@@ -48,7 +48,7 @@
       nickname={@nickname}
       peer_nick={@peer_nick}
       peer_online={@peer_online}
-      role={@v2_role}
+      role={@role}
       games={@games}
       game_request={@game_request}
       session_status={@session_status}
