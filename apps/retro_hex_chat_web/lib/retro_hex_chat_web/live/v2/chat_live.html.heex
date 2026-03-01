@@ -91,14 +91,12 @@
       <%!-- Tab bar (shrink, no grow) --%>
       <.irc_tab_bar :if={@show_switchbar}>
         <.irc_tab_item
-          :if={@show_status_tab || @status_unread}
           type="status"
           label="Status"
           active={@show_status_tab}
           unread={@status_unread}
-          closeable={@show_status_tab}
+          closeable={false}
           on_click="switch_tab"
-          on_close="close_tab"
         />
         <.irc_tab_item
           :for={channel <- @session.channels}

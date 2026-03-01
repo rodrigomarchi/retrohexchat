@@ -11,8 +11,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   @doc """
   Renders a multi-state solo arcade lobby with game picker, preview, playing, and finished states.
 
-  Based on the platform SoloLobby component with the same visual style but using
-  the showcase UI design system components (Window, Badge).
+  Composed entirely from platform primitives (Window, Button, Badge, Icons).
   """
   attr :id, :string, required: true
   attr :show, :boolean, default: true
@@ -36,23 +35,24 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   def solo_lobby(assigns) do
     ~H"""
     <div :if={@show} id={@id} class={@class} {@rest}>
-      <.window>
-        <.window_title_bar title={"Arcade — #{@nickname}"} controls={[:close]}>
-          <:icon>
-            <Icons.icon_joystick class="w-[16px] h-[16px]" />
-          </:icon>
+      <.window class={[
+        "max-w-full",
+        if(@session_status == "lobby" && @previewed_game, do: "w-[1100px]", else: "w-[1050px]")
+      ]}>
+        <.window_title_bar title={"Arcade \u2014 #{@nickname}"} controls={[:close]} on_close={@on_close}>
+          <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
         </.window_title_bar>
-        <.window_body>
-          <%!-- Inactivity warning overlay --%>
+
+        <.window_body class="p-retro-16 space-y-retro-12">
+          <%!-- Inactivity warning --%>
           <div
             :if={@inactivity_warning}
-            class="shadow-retro-raised bg-warning-bg p-2 mb-2 text-xs text-center"
+            class="flex items-center gap-retro-4 shadow-retro-field bg-warning-light px-retro-8 py-retro-4 text-xs"
           >
-            <Icons.icon_warning class="w-[16px] h-[16px] inline-block mr-1" />
-            Session will be closed due to inactivity soon. Select a game to keep it active.
+            <Icons.icon_warning class="w-4 h-4 flex-shrink-0" />
+            <span>Session will be closed due to inactivity soon. Select a game to keep it active.</span>
           </div>
 
-          <%!-- State: Lobby (no preview) --%>
           <.lobby_picker
             :if={@session_status == "lobby" && !@previewed_game}
             games={@games}
@@ -60,7 +60,6 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             on_close={@on_close}
           />
 
-          <%!-- State: Lobby (with preview) --%>
           <.lobby_preview
             :if={@session_status == "lobby" && @previewed_game}
             previewed_game={@previewed_game}
@@ -69,7 +68,6 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             on_close={@on_close}
           />
 
-          <%!-- State: Playing --%>
           <.playing_state
             :if={@session_status == "playing"}
             game_name={@game_name}
@@ -78,7 +76,6 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             on_close={@on_close}
           />
 
-          <%!-- State: Finished --%>
           <.finished_state
             :if={@session_status == "finished"}
             game_name={@game_name}
@@ -100,10 +97,10 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   defp lobby_picker(assigns) do
     ~H"""
-    <div>
+    <div class="space-y-retro-12">
       <%!-- Header --%>
-      <div class="flex items-center gap-2 mb-3">
-        <Icons.icon_game_arcade class="w-[32px] h-[32px] flex-shrink-0" />
+      <div class="flex items-center gap-retro-12">
+        <Icons.icon_game_arcade class="w-8 h-8 flex-shrink-0" />
         <div>
           <p class="text-sm font-bold">Retro Arcade</p>
           <p class="text-xs text-muted-foreground">
@@ -113,33 +110,32 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       </div>
 
       <%!-- Game grid --%>
-      <p class="text-sm font-bold mb-2">Choose a game:</p>
-      <div class="grid grid-cols-3 gap-2">
-        <.button
-          :for={game <- @games}
-          type="button"
-          variant="ghost"
-          class={[
-            "shadow-retro-field bg-white p-2 text-center cursor-pointer h-auto",
-            "hover:bg-hover-bg active:shadow-retro-sunken flex-col"
-          ]}
-          phx-click={@on_preview_game}
-          phx-value-game-id={game.id}
-          title={game.name}
-        >
-          <:icon>
-            <div class="w-[32px] h-[32px] mx-auto mb-1 bg-gray-200 shadow-retro-field flex items-center justify-center">
-              <span class="text-xs font-mono text-gray-500">ico</span>
-            </div>
-          </:icon>
-          <p class="text-xs font-bold truncate">{game.name}</p>
-        </.button>
+      <div>
+        <p class="text-xs font-bold mb-retro-4">Choose a game:</p>
+        <div class="grid grid-cols-5 gap-retro-8">
+          <button
+            :for={game <- @games}
+            type="button"
+            phx-click={@on_preview_game}
+            phx-value-game-id={game.id}
+            title={game.description}
+            class={[
+              "flex flex-col items-center gap-retro-4",
+              "shadow-retro-field bg-white p-retro-8 text-center cursor-pointer",
+              "hover:bg-hover-bg active:shadow-retro-sunken"
+            ]}
+          >
+            <Icons.game_icon game_id={game.id} class="w-12 h-12 shrink-0" />
+            <span class="text-xs font-bold leading-tight">{game.name}</span>
+            <span class="text-[10px] text-muted-foreground leading-tight">{game.tagline}</span>
+          </button>
+        </div>
       </div>
 
       <%!-- Footer --%>
-      <div class="mt-3">
+      <div>
         <.button variant="outline" phx-click={@on_close}>
-          <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
+          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
           Leave
         </.button>
       </div>
@@ -156,66 +152,65 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   defp lobby_preview(assigns) do
     ~H"""
-    <div>
-      <%!-- Header with game info --%>
-      <div class="flex items-start gap-3 mb-3">
-        <div class="w-[32px] h-[32px] flex-shrink-0 bg-gray-200 shadow-retro-field flex items-center justify-center">
-          <span class="text-xs font-mono text-gray-500">ico</span>
-        </div>
-        <div class="flex-1 min-w-0">
+    <div class="space-y-retro-12">
+      <%!-- Header: icon + info + action buttons --%>
+      <div class="flex items-center gap-retro-12">
+        <Icons.game_icon game_id={@previewed_game.id} class="w-8 h-8 flex-shrink-0" />
+        <div class="flex-1 min-w-0 space-y-retro-2">
           <h3 class="text-sm font-bold">{@previewed_game.name}</h3>
           <p class="text-xs text-muted-foreground">{@previewed_game.description}</p>
-          <.badge variant="secondary" class="mt-1">{@previewed_game.engine}</.badge>
+          <.badge variant="secondary">
+            {String.upcase(to_string(@previewed_game.engine))} Engine
+          </.badge>
+        </div>
+        <div class="flex gap-retro-6 flex-shrink-0">
+          <.button variant="outline" size="sm" phx-click={@on_back}>
+            <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
+            Back
+          </.button>
+          <.button size="sm" class="font-bold" phx-click={@on_select_game} phx-value-game-id={@previewed_game.id}>
+            <:icon><Icons.icon_btn_join class="w-4 h-4" /></:icon>
+            Start Game
+          </.button>
+          <.button variant="outline" size="sm" phx-click={@on_close}>
+            <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+            Leave
+          </.button>
         </div>
       </div>
 
-      <%!-- Action buttons --%>
-      <div class="flex gap-2 mb-3">
-        <.button variant="outline" size="sm" phx-click={@on_back}>
-          <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
-          Back
-        </.button>
-        <.button
-          size="sm"
-          class="font-bold"
-          phx-click={@on_select_game}
-          phx-value-game-id={@previewed_game.id}
-        >
-          <:icon><Icons.icon_btn_join class="w-4 h-4" /></:icon>
-          Start Game
-        </.button>
-      </div>
-
-      <%!-- Detail sections --%>
-      <div class="space-y-2">
+      <%!-- Detail sections — 3-column grid --%>
+      <div class="grid grid-cols-3 gap-retro-12 min-h-0">
         <%!-- About --%>
         <fieldset
           :if={@previewed_game[:about] && @previewed_game.about != []}
-          class="shadow-retro-field p-2"
+          class="retro-fieldset p-retro-8 min-w-0"
         >
-          <legend class="text-xs font-bold px-1">About</legend>
-          <p :for={paragraph <- @previewed_game.about} class="text-xs">{paragraph}</p>
+          <legend class="text-xs font-bold px-retro-4">About</legend>
+          <p :for={paragraph <- @previewed_game.about} class="text-xs mb-retro-6 last:mb-0 leading-relaxed">
+            {paragraph}
+          </p>
         </fieldset>
 
         <%!-- Controls --%>
         <fieldset
           :if={@previewed_game[:controls] && @previewed_game.controls != []}
-          class="shadow-retro-field p-2"
+          class="retro-fieldset p-retro-8 min-w-0"
         >
-          <legend class="text-xs font-bold px-1">Keyboard Controls</legend>
+          <legend class="text-xs font-bold px-retro-4">Keyboard Controls</legend>
           <table class="w-full text-xs">
             <thead>
               <tr>
-                <th class="text-left py-1 pr-2 font-bold">Key</th>
-                <th class="text-left py-1 font-bold">Action</th>
+                <th class="text-left py-retro-2 pr-retro-6 font-bold border-b border-gray-400">Key</th>
+                <th class="text-left py-retro-2 font-bold border-b border-gray-400">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr :for={{key, action} <- @previewed_game.controls}>
-                <td class="py-[2px] pr-2">
-                  <kbd class="shadow-retro-raised bg-surface px-1 text-xs font-mono">{key}</kbd>
+                <td class="py-retro-2 pr-retro-6 whitespace-nowrap">
+                  <kbd class="shadow-retro-raised bg-surface px-retro-4 text-xs font-mono">{key}</kbd>
                 </td>
-                <td class="py-[2px]">{action}</td>
+                <td class="py-retro-2">{action}</td>
               </tr>
             </tbody>
           </table>
@@ -224,10 +219,10 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         <%!-- Tips --%>
         <fieldset
           :if={@previewed_game[:tips] && @previewed_game.tips != []}
-          class="shadow-retro-field p-2"
+          class="retro-fieldset p-retro-8 min-w-0"
         >
-          <legend class="text-xs font-bold px-1">Tips</legend>
-          <ul class="list-disc list-inside text-xs space-y-1">
+          <legend class="text-xs font-bold px-retro-4">Tips</legend>
+          <ul class="list-disc pl-retro-16 text-xs space-y-retro-4 leading-relaxed">
             <li :for={tip <- @previewed_game.tips}>{tip}</li>
           </ul>
         </fieldset>
@@ -245,19 +240,12 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   defp playing_state(assigns) do
     ~H"""
-    <div class="flex items-center gap-3">
-      <div class="w-[32px] h-[32px] flex-shrink-0 bg-gray-200 shadow-retro-field flex items-center justify-center">
-        <span class="text-xs font-mono text-gray-500">ico</span>
-      </div>
-      <div class="flex-1">
+    <div class="flex items-center gap-retro-12">
+      <Icons.game_icon game_id={@game_id} class="w-8 h-8 flex-shrink-0" />
+      <div class="flex-1 space-y-retro-2">
         <h3 class="text-sm font-bold">{@game_name}</h3>
         <p class="text-xs text-muted-foreground">Game in progress...</p>
-        <p
-          :if={@game_started_at}
-          class="text-xs font-mono mt-1"
-        >
-          Started: {@game_started_at}
-        </p>
+        <p :if={@game_started_at} class="text-xs font-mono">Started: {@game_started_at}</p>
       </div>
       <.button variant="outline" size="sm" class="flex-shrink-0" phx-click={@on_close}>
         <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
@@ -276,32 +264,28 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   defp finished_state(assigns) do
     ~H"""
-    <div>
+    <div class="space-y-retro-8">
       <%!-- Game header --%>
-      <div class="flex items-center gap-3 mb-3">
-        <div class="w-[32px] h-[32px] flex-shrink-0 bg-gray-200 shadow-retro-field flex items-center justify-center">
-          <span class="text-xs font-mono text-gray-500">ico</span>
-        </div>
-        <div>
-          <h3 class="text-sm font-bold">{@game_name}</h3>
-        </div>
+      <div class="flex items-center gap-retro-10">
+        <Icons.game_icon game_id={@game_id} class="w-8 h-8 flex-shrink-0" />
+        <h3 class="text-sm font-bold">{@game_name}</h3>
       </div>
 
-      <hr class="border-t border-gray-400 my-2" />
+      <hr class="border-t border-gray-400" />
 
       <%!-- Summary --%>
-      <div class="space-y-1 mb-3">
-        <div class="flex items-center gap-2 text-xs">
-          <Icons.icon_checkmark class="w-[16px] h-[16px] flex-shrink-0" />
+      <div class="space-y-retro-6">
+        <div class="flex items-center gap-retro-6 text-xs">
+          <Icons.icon_checkmark class="w-4 h-4 flex-shrink-0" />
           <span>Session Complete</span>
         </div>
-        <div :if={@game_duration} class="flex items-center gap-2 text-xs">
-          <Icons.icon_clock class="w-[16px] h-[16px] flex-shrink-0" />
+        <div :if={@game_duration} class="flex items-center gap-retro-6 text-xs">
+          <Icons.icon_clock class="w-4 h-4 flex-shrink-0" />
           <span>Play time: <strong>{format_duration(@game_duration)}</strong></span>
         </div>
       </div>
 
-      <hr class="border-t border-gray-400 my-2" />
+      <hr class="border-t border-gray-400" />
 
       <%!-- Close button --%>
       <div>
