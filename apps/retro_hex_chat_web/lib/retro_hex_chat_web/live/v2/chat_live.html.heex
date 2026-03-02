@@ -29,7 +29,7 @@
   phx-hook="SoundHook"
 >
   <%!-- App header with toolbar & status bar --%>
-  <.app_header logo_href={~p"/v2/chat"}>
+  <.app_header on_logo_click={show_modal("about-dialog")}>
     <:panels>
       <.menu_bar_app
         id="menubar"

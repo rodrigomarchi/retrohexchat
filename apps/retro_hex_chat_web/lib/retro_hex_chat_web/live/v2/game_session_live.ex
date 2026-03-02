@@ -15,6 +15,8 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
 
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.MenuBarApp
+  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
+  import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.GameLobby
   import RetroHexChatWeb.Components.UI.GameCanvas
 

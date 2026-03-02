@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
 
   ## Usage
 
-      <.app_header logo_href="/v2/chat">
+      <.app_header on_logo_click={show_modal("about-dialog")}>
         <:panels>
           <.menu_bar_app connected={true} on_action="toolbar_action" />
           <.status_bar_app class="ml-auto" ... />
@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
 
   @doc "Renders the application header bar."
   attr :logo_href, :string, default: nil
+  attr :on_logo_click, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -40,7 +41,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
       {@rest}
     >
       <%!-- Logo --%>
-      <.logo_link href={@logo_href} />
+      <.logo_element href={@logo_href} on_click={@on_logo_click} />
 
       <%!-- Mobile action buttons --%>
       <div :if={@mobile_actions != []} class="flex items-center gap-1 ml-1 md:hidden">
@@ -61,8 +62,21 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
   # ── Private helpers ───────────────────────────────────
 
   attr :href, :string, default: nil
+  attr :on_click, :any, default: nil
 
-  defp logo_link(%{href: nil} = assigns) do
+  defp logo_element(%{on_click: on_click} = assigns) when not is_nil(on_click) do
+    ~H"""
+    <button
+      type="button"
+      class="flex items-center px-[2px] cursor-pointer border-none bg-transparent hover:opacity-80"
+      phx-click={@on_click}
+    >
+      <Icons.icon_hex_stone class="w-4 h-4 shrink-0" />
+    </button>
+    """
+  end
+
+  defp logo_element(%{href: nil} = assigns) do
     ~H"""
     <div class="flex items-center px-[2px]">
       <Icons.icon_hex_stone class="w-4 h-4 shrink-0" />
@@ -70,7 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
     """
   end
 
-  defp logo_link(assigns) do
+  defp logo_element(assigns) do
     ~H"""
     <a href={@href} class="flex items-center px-[2px] no-underline hover:opacity-80">
       <Icons.icon_hex_stone class="w-4 h-4 shrink-0" />

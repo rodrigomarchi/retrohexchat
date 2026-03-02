@@ -1,6 +1,6 @@
 <%!-- Expired state --%>
 <div :if={assigns[:expired]} class="flex flex-col min-h-screen bg-surface">
-  <.app_header>
+  <.app_header on_logo_click={show_modal("about-dialog")}>
     <:panels>
       <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
     </:panels>
@@ -11,6 +11,7 @@
       <p class="text-xs text-muted-foreground">{@expired_reason}</p>
     </div>
   </div>
+  <.about_dialog id="about-dialog" />
 </div>
 
 <%!-- Normal state --%>
@@ -20,7 +21,7 @@
   phx-hook="P2PSessionHook"
   class="flex flex-col min-h-screen bg-surface"
 >
-  <.app_header>
+  <.app_header on_logo_click={show_modal("about-dialog")}>
     <:panels>
       <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
     </:panels>
@@ -187,4 +188,5 @@
       Session will be closed due to inactivity soon.
     </div>
   </div>
+  <.about_dialog id="about-dialog" />
 </div>

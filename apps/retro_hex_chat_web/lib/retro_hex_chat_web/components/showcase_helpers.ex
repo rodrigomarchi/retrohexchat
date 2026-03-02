@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
   import RetroHexChatWeb.Components.UI.TreeView
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.MenuBarApp
+  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
+  import RetroHexChatWeb.Components.UI.AboutDialog
 
   alias RetroHexChatWeb.Icons
 
@@ -161,7 +163,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
 
     ~H"""
     <div class="min-h-screen bg-desktop font-system text-text flex flex-col">
-      <.app_header logo_href="/showcase">
+      <.app_header on_logo_click={show_modal("about-dialog")}>
         <:panels>
           <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
         </:panels>
@@ -218,6 +220,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
           </div>
         </div>
       </div>
+      <.about_dialog id="about-dialog" />
     </div>
     """
   end

@@ -19,6 +19,8 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
   import RetroHexChatWeb.Components.UI.Fieldset
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.MenuBarApp
+  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
+  import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Icons
 
   alias Phoenix.LiveView.JS
@@ -164,7 +166,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
   def render(assigns) do
     ~H"""
     <div class="flex flex-col min-h-screen">
-      <.app_header logo_href={~p"/v2/connect"}>
+      <.app_header on_logo_click={show_modal("about-dialog")}>
         <:panels>
           <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
         </:panels>
@@ -219,6 +221,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
           <input type="hidden" name="timezone" id="connect-timezone-input" value="Etc/UTC" />
         </form>
       </div>
+      <.about_dialog id="about-dialog" />
     </div>
     """
   end

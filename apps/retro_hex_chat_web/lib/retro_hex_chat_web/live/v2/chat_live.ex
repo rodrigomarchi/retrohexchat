@@ -49,6 +49,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   import RetroHexChatWeb.Components.UI.NicklistContextMenu
 
   # ── Dialog components ────────────────────────────────────────
+  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.AddressBook
   import RetroHexChatWeb.Components.UI.AliasDialog
