@@ -58,6 +58,10 @@ text-primary-foreground
 hover:bg-accent
 # Help layout — uses old app_header class from controller-era layout
 app-header-panels
+# Chat layout — Tailwind utility classes from tailwind.config.js (not in CSS files)
+bg-desktop
+font-system
+text-text
 
 [dynamic-prefixes]
 # Prefixes with dynamic suffixes (e.g. chat-message--#{type})
