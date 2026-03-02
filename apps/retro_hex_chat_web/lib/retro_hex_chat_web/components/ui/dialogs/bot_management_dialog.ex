@@ -36,9 +36,9 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
         <:icon><Icons.icon_dialog_bot_management class="w-[16px] h-[16px]" /></:icon>
       </.dialog_header>
       <.dialog_body class="min-h-[400px]">
-        <div class="flex gap-retro-8 h-[360px]">
+        <div class="flex flex-col md:flex-row gap-retro-8 md:h-[360px]">
           <%!-- Left panel: bot list --%>
-          <div class="w-[180px] shrink-0 flex flex-col">
+          <div class="w-full md:w-[180px] md:shrink-0 flex flex-col">
             <div class="text-xs font-bold mb-retro-4 flex items-center gap-retro-4">
               <Icons.icon_btn_bot_management class="w-[14px] h-[14px]" /> Bots
             </div>

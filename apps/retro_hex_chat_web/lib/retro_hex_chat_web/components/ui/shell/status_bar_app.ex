@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
       {@rest}
     >
       <%!-- Zone 1: Nick --%>
-      <.window_status_bar_field class="flex items-center gap-retro-2 min-w-[80px]">
+      <.window_status_bar_field class="flex items-center gap-retro-2 min-w-0 md:min-w-[80px]">
         <Icons.icon_status_user class="w-3 h-3 shrink-0" />
         <span class="truncate text-xs">{@nickname}</span>
       </.window_status_bar_field>
@@ -63,9 +63,9 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         </span>
       </.window_status_bar_field>
 
-      <%!-- Zone 3: Lag display --%>
+      <%!-- Zone 3: Lag display (hidden on mobile) --%>
       <.window_status_bar_field class={[
-        "flex items-center gap-retro-2 min-w-[64px]",
+        "hidden md:flex items-center gap-retro-2 min-w-[64px]",
         lag_class(@lag_status)
       ]}>
         <Icons.icon_status_signal class="w-3 h-3 shrink-0" />
@@ -74,8 +74,8 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         </span>
       </.window_status_bar_field>
 
-      <%!-- Zone 4: Clock --%>
-      <.window_status_bar_field class="flex items-center gap-retro-2 min-w-[64px]">
+      <%!-- Zone 4: Clock (hidden on mobile) --%>
+      <.window_status_bar_field class="hidden md:flex items-center gap-retro-2 min-w-[64px]">
         <Icons.icon_clock class="w-3 h-3 shrink-0" />
         <span id="clock-display" phx-hook="ClockHook" class="text-xs font-mono">--:--</span>
       </.window_status_bar_field>

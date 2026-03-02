@@ -58,10 +58,10 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
           phx-window-keydown={JS.exec("phx-hide-modal", to: "##{@id}")}
           phx-key="escape"
           phx-click-away={JS.exec("phx-hide-modal", to: "##{@id}")}
-          class={classes(["w-full max-w-lg", @class])}
+          class={classes(["w-full max-w-none md:max-w-lg p-0 md:p-4", @class])}
         >
           <%!-- Window frame (Win98 3D border) --%>
-          <div class="bg-surface shadow-retro-window p-[3px]">
+          <div class="bg-surface shadow-retro-window p-[3px] min-h-[100dvh] md:min-h-0">
             {render_slot(@inner_block)}
           </div>
         </.focus_wrap>
@@ -173,7 +173,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
 
   def dialog_body(assigns) do
     ~H"""
-    <div class={classes(["p-retro-12", @class])}>
+    <div class={classes(["p-retro-12 overflow-y-auto", @class])}>
       {render_slot(@inner_block)}
     </div>
     """

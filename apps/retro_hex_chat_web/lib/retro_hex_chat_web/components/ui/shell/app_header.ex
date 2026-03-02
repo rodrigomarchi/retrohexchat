@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
     <header
       class={
         classes([
-          "bg-surface shadow-retro-window flex items-center h-[64px] shrink-0 px-[4px]",
+          "bg-surface shadow-retro-window flex items-center h-[48px] md:h-[64px] shrink-0 px-[4px]",
           @class
         ])
       }
@@ -45,8 +45,14 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
       <%!-- Spacer --%>
       <div class="flex-1" />
 
-      <%!-- Help (right) --%>
-      <a href="/chat/help" title="Help" target="_blank" rel="noopener" class="no-underline">
+      <%!-- Help (right, hidden on mobile) --%>
+      <a
+        href="/chat/help"
+        title="Help"
+        target="_blank"
+        rel="noopener"
+        class="no-underline hidden md:inline-flex"
+      >
         <.header_button label="Help">
           <Icons.icon_btn_help_topics class="w-[32px] h-[32px]" />
         </.header_button>
@@ -62,7 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
   defp logo_link(%{href: nil} = assigns) do
     ~H"""
     <div class="flex items-center px-[2px]">
-      <Icons.icon_hex_stone class="w-[48px] h-[48px] shrink-0" />
+      <Icons.icon_hex_stone class="w-[32px] h-[32px] md:w-[48px] md:h-[48px] shrink-0" />
     </div>
     """
   end
@@ -70,7 +76,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
   defp logo_link(assigns) do
     ~H"""
     <a href={@href} class="flex items-center px-[2px] no-underline hover:opacity-80">
-      <Icons.icon_hex_stone class="w-[48px] h-[48px] shrink-0" />
+      <Icons.icon_hex_stone class="w-[32px] h-[32px] md:w-[48px] md:h-[48px] shrink-0" />
     </a>
     """
   end

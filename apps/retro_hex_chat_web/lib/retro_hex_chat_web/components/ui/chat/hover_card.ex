@@ -65,7 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
     ~H"""
     <.window
       :if={@visible}
-      class={classes(["w-[260px]", @class])}
+      class={classes(["w-[260px] max-w-[calc(100vw-1rem)]", @class])}
       style={position_style(@x, @y)}
       data-testid={"hover-card-#{@nick}"}
       {@rest}

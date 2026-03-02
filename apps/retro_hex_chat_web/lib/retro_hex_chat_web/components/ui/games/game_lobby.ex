@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
     ~H"""
     <.window
       :if={@show}
-      class={classes(["w-[420px]", @class])}
+      class={classes(["w-full max-w-[420px]", @class])}
       data-testid="game-lobby"
       {@rest}
     >

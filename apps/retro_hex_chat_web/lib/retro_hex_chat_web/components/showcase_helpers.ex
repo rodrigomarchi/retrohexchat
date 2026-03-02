@@ -156,16 +156,23 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     <div class="min-h-screen bg-desktop font-system text-text flex flex-col">
       <.app_header logo_href="/showcase" />
 
-      <div class="flex-1 m-4 mt-2">
+      <div class="flex-1 m-2 md:m-4 md:mt-2">
         <div class="shadow-retro-window bg-surface p-1">
-          <div class="bg-gradient-to-r from-primary to-highlight-light text-white px-2 py-1 font-bold text-xs">
-            Component Showcase
+          <div class="bg-gradient-to-r from-primary to-highlight-light text-white px-2 py-1 font-bold text-xs flex items-center justify-between">
+            <span>Component Showcase</span>
+            <button
+              type="button"
+              class="md:hidden text-white text-xs px-1"
+              onclick="document.getElementById('showcase-nav').classList.toggle('hidden')"
+            >
+              Menu
+            </button>
           </div>
 
-          <div class="flex p-1">
+          <div class="flex flex-col md:flex-row p-1">
             <nav
-              class="shadow-retro-sunken bg-white w-48 mr-2 shrink-0 overflow-y-auto p-1"
-              style="max-height: calc(100vh - 120px)"
+              id="showcase-nav"
+              class="hidden md:block shadow-retro-sunken bg-white w-full md:w-48 md:mr-2 md:shrink-0 overflow-y-auto p-1 max-h-[50vh] md:max-h-[calc(100vh-120px)]"
             >
               <.tree_view class="!shadow-none !p-0 !bg-transparent">
                 <.link navigate="/showcase" class="block no-underline">
@@ -194,10 +201,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
               </.tree_view>
             </nav>
 
-            <div
-              class="shadow-retro-sunken bg-gray-100 flex-1 p-3 overflow-y-auto"
-              style="max-height: calc(100vh - 120px)"
-            >
+            <div class="shadow-retro-sunken bg-gray-100 flex-1 p-2 md:p-3 overflow-y-auto max-h-[calc(100vh-120px)]">
               {render_slot(@inner_block)}
             </div>
           </div>

@@ -50,9 +50,11 @@ defmodule RetroHexChatWeb.Components.UI.Table do
 
   def table(assigns) do
     ~H"""
-    <table class={classes(["w-full caption-bottom text-sm", @class])} {@rest}>
-      {render_slot(@inner_block)}
-    </table>
+    <div class="overflow-x-auto">
+      <table class={classes(["w-full caption-bottom text-sm", @class])} {@rest}>
+        {render_slot(@inner_block)}
+      </table>
+    </div>
     """
   end
 

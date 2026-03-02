@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
   @spec p2p_lobby(map()) :: Phoenix.LiveView.Rendered.t()
   def p2p_lobby(assigns) do
     ~H"""
-    <.window class={classes(["w-[320px]", @class])} data-testid="p2p-lobby" {@rest}>
+    <.window class={classes(["w-full max-w-[320px]", @class])} data-testid="p2p-lobby" {@rest}>
       <.window_title_bar title="P2P Connection" controls={[:close]}>
         <:icon><Icons.icon_p2p class="w-4 h-4" /></:icon>
       </.window_title_bar>

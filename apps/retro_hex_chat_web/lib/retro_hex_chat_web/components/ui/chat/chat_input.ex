@@ -101,7 +101,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
             <:icon><Icons.icon_btn_send class="w-4 h-4" /></:icon>
             Send
           </.button>
-          <span class="text-[10px] text-muted-foreground" data-testid="char-counter">
+          <span class="hidden md:block text-[10px] text-muted-foreground" data-testid="char-counter">
             {@char_count}/{@max_length}
           </span>
         </div>

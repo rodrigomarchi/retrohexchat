@@ -62,9 +62,9 @@ defmodule RetroHexChatWeb.Components.UI.OptionsDialog do
         <:icon><Icons.icon_dialog_options class="w-4 h-4" /></:icon>
       </.dialog_header>
 
-      <.dialog_body class="flex gap-retro-8 min-h-[300px]">
+      <.dialog_body class="flex flex-col md:flex-row gap-retro-8 min-h-[300px]">
         <%!-- Tree navigation --%>
-        <.tree_view class="w-[160px] shrink-0">
+        <.tree_view class="w-full md:w-[160px] md:shrink-0">
           <.tree_view_item
             :for={{id, label} <- @panels}
             active={id == @active}

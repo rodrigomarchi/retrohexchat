@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.Menu do
       role="menuitem"
       class={
         classes([
-          "flex items-center gap-1.5 px-4 py-1 text-sm whitespace-nowrap cursor-pointer select-none",
+          "flex items-center gap-1.5 px-4 py-2.5 md:py-1 min-h-[44px] md:min-h-0 text-sm whitespace-nowrap cursor-pointer select-none",
           if(@disabled,
             do: "text-disabled cursor-default",
             else: "hover:bg-primary hover:text-white"

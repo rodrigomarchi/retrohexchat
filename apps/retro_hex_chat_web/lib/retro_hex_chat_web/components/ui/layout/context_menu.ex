@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
     <li
       class={
         classes([
-          "flex items-center gap-retro-6 px-retro-16 py-retro-4 whitespace-nowrap text-sm cursor-pointer select-none",
+          "flex items-center gap-retro-6 px-retro-16 py-2.5 md:py-[2px] min-h-[44px] md:min-h-0 whitespace-nowrap text-sm md:text-xs cursor-pointer select-none",
           if(@disabled,
             do: "text-disabled cursor-default",
             else: "hover:bg-selection-bg hover:text-selection-fg"

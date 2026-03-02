@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.Components.UI.GameCanvas do
   def game_canvas(assigns) do
     ~H"""
     <.window
-      class={classes(["w-[440px]", @class])}
+      class={classes(["w-full max-w-[440px]", @class])}
       data-testid="game-canvas"
       data-game-id={@game_id}
       data-is-host={to_string(@role == :creator)}

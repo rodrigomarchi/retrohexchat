@@ -39,7 +39,12 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
     assigns = assign(assigns, :color_names, @color_names)
 
     ~H"""
-    <div class={classes(["space-y-retro-2", @class])} phx-hook="FormatToolbarHook" id={@id} {@rest}>
+    <div
+      class={classes(["space-y-retro-2 hidden md:block", @class])}
+      phx-hook="FormatToolbarHook"
+      id={@id}
+      {@rest}
+    >
       <.toolbar variant="compact">
         <%!-- Text formatting buttons --%>
         <.toolbar_button

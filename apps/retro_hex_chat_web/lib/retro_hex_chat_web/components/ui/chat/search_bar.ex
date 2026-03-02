@@ -44,7 +44,12 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
   @spec search_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def search_bar(assigns) do
     ~H"""
-    <.window :if={@visible} class={classes(["w-[360px]", @class])} data-testid="search-bar" {@rest}>
+    <.window
+      :if={@visible}
+      class={classes(["w-full md:w-[360px]", @class])}
+      data-testid="search-bar"
+      {@rest}
+    >
       <.window_title_bar title="Find" controls={[:close]}>
         <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
       </.window_title_bar>

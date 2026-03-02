@@ -34,7 +34,7 @@
     <%!-- Messages list --%>
     <div
       :if={@messages != []}
-      class="w-[320px] shadow-retro-field bg-white p-2 max-h-[200px] overflow-y-auto"
+      class="w-full max-w-[320px] shadow-retro-field bg-white p-2 max-h-[200px] overflow-y-auto"
     >
       <div :for={msg <- @messages} class="text-xs py-[2px]">
         <span :if={msg.type != "system"} class="font-bold">{msg.sender_nick}: </span>
@@ -49,7 +49,7 @@
         @action_request && @action_request[:status] != "accepted" &&
           @action_request[:status] != "rejected"
       }
-      class="w-[320px] shadow-retro-raised bg-accent p-3"
+      class="w-full max-w-[320px] shadow-retro-raised bg-accent p-3"
     >
       <p class="text-xs font-bold mb-2">
         Action Request: {Map.get(@action_request, :action_type, "unknown")}
@@ -85,7 +85,7 @@
       direction={ft_direction(@file_transfer, @nickname)}
       on_cancel="ft_cancel"
       on_accept="ft_accept_offer"
-      class="w-[320px]"
+      class="w-full max-w-[320px]"
     />
 
     <%!-- Media controls --%>
@@ -97,11 +97,11 @@
       on_mute_toggle="media_mute_changed"
       on_camera_toggle="media_camera_changed"
       on_end_call="media_call_ended"
-      class="w-[320px]"
+      class="w-full max-w-[320px]"
     />
 
     <%!-- Lobby chat input --%>
-    <div :if={@session_status in ["pending", "lobby"]} class="w-[320px]">
+    <div :if={@session_status in ["pending", "lobby"]} class="w-full max-w-[320px]">
       <form phx-submit="send_lobby_message" class="flex gap-2">
         <input
           type="text"
@@ -120,7 +120,7 @@
     </div>
 
     <%!-- Session actions --%>
-    <div class="w-[320px] flex gap-2">
+    <div class="w-full max-w-[320px] flex flex-wrap gap-2">
       <button
         :if={@session_status in ["pending", "lobby", "active"]}
         type="button"
@@ -174,7 +174,7 @@
     <%!-- Inactivity warning --%>
     <div
       :if={@inactivity_warning}
-      class="w-[320px] shadow-retro-field bg-warning-bg p-2 text-xs text-center"
+      class="w-full max-w-[320px] shadow-retro-field bg-warning-bg p-2 text-xs text-center"
     >
       Session will be closed due to inactivity soon.
     </div>

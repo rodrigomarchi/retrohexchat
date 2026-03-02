@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
         <:icon><Icons.icon_btn_settings class="w-4 h-4" /></:icon>
       </.dialog_header>
 
-      <.dialog_body class="flex gap-retro-8 min-h-[250px]">
+      <.dialog_body class="flex flex-col md:flex-row gap-retro-8 min-h-[250px]">
         <%!-- List side --%>
         <div class="flex-1 space-y-retro-4">
           <div class="max-h-[200px] overflow-y-auto retro-scrollbar">
@@ -107,7 +107,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
         <%!-- Edit form side --%>
         <div
           :if={@form != []}
-          class="w-[200px] shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
+          class="w-full md:w-[200px] md:shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
         >
           <h3 class="font-bold text-xs mb-retro-4">{if @editing, do: "Edit", else: "Add"}</h3>
           {render_slot(@form)}

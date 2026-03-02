@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.Components.UI.Toast do
       role="status"
       class={
         classes([
-          "pointer-events-auto w-[280px] shadow-retro-window bg-surface p-[3px]",
+          "pointer-events-auto w-[calc(100vw-2rem)] md:w-[280px] shadow-retro-window bg-surface p-[3px]",
           @class
         ])
       }

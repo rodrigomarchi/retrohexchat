@@ -61,7 +61,12 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
       end)
 
     ~H"""
-    <.window :if={@visible} class={classes(["w-[320px]", @class])} data-testid="emoji-picker" {@rest}>
+    <.window
+      :if={@visible}
+      class={classes(["w-full md:w-[320px]", @class])}
+      data-testid="emoji-picker"
+      {@rest}
+    >
       <.window_title_bar title="Emoji" controls={[:close]} on_close={@on_close}>
         <:icon><Icons.icon_fmt_emoji class="w-4 h-4" /></:icon>
       </.window_title_bar>

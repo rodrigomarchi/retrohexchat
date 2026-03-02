@@ -37,7 +37,10 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
     <div :if={@show} id={@id} class={@class} {@rest}>
       <.window class={[
         "max-w-full",
-        if(@session_status == "lobby" && @previewed_game, do: "w-[1100px]", else: "w-[1050px]")
+        if(@session_status == "lobby" && @previewed_game,
+          do: "w-full md:w-[1100px]",
+          else: "w-full md:w-[1050px]"
+        )
       ]}>
         <.window_title_bar
           title={"Arcade \u2014 #{@nickname}"}
@@ -118,7 +121,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <%!-- Game grid --%>
       <div>
         <p class="text-xs font-bold mb-retro-4">Choose a game:</p>
-        <div class="grid grid-cols-5 gap-retro-8">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-retro-8">
           <button
             :for={game <- @games}
             type="button"
@@ -193,7 +196,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       </div>
 
       <%!-- Detail sections — 3-column grid --%>
-      <div class="grid grid-cols-3 gap-retro-12 min-h-0">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-retro-12 min-h-0">
         <%!-- About --%>
         <fieldset
           :if={@previewed_game[:about] && @previewed_game.about != []}

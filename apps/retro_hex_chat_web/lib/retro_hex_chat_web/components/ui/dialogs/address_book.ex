@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
       <.dialog_body class="space-y-retro-8">
         <.tabs :let={builder} id={"#{@id}-tabs"} default={@selected_tab}>
-          <.tabs_list>
+          <.tabs_list class="flex-wrap">
             <.tabs_trigger builder={builder} value="contacts">
               <:icon><Icons.icon_dialog_address_book class="w-4 h-4" /></:icon>
               Contacts

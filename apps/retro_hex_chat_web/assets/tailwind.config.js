@@ -20,6 +20,11 @@ module.exports = {
     "../lib/retro_hex_chat_web/components/layouts/showcase.html.heex",
     // Landing layout
     "../lib/retro_hex_chat_web/components/layouts/landing_live.html.heex",
+    // V2 LiveViews
+    "../lib/retro_hex_chat_web/live/v2/**/*.ex",
+    "../lib/retro_hex_chat_web/live/v2/**/*.heex",
+    // V2 layout
+    "../lib/retro_hex_chat_web/components/layouts/v2.html.heex",
     // Icon and diagram components (used by landing)
     "../lib/retro_hex_chat_web/components/icons.ex",
     "../lib/retro_hex_chat_web/components/icons/**/*.ex",
