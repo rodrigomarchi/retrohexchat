@@ -40,9 +40,6 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
                 <Icons.icon_connect class="w-4 h-4" /> Connect
               </button>
             </a>
-            <.nav_link href="/about" label="About" active={@active_page == :about}>
-              <Icons.icon_warning class="w-3 h-3" />
-            </.nav_link>
             <.nav_link
               href="/how-it-works"
               label="How It Works"
@@ -89,9 +86,6 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
         class="hidden lg:hidden bg-surface shadow-retro-window border-t border-gray-400 p-2"
       >
         <div class="flex flex-col gap-1">
-          <.mobile_nav_link href="/about" label="About" active={@active_page == :about}>
-            <Icons.icon_warning class="w-3 h-3" />
-          </.mobile_nav_link>
           <.mobile_nav_link
             href="/how-it-works"
             label="How It Works"

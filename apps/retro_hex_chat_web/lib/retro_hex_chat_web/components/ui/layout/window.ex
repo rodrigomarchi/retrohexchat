@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   @spec window(map()) :: Phoenix.LiveView.Rendered.t()
   def window(assigns) do
     ~H"""
-    <div class={classes(["shadow-retro-window bg-surface p-[3px]", @class])} {@rest}>
+    <div class={classes(["shadow-retro-window bg-surface p-[3px] flex flex-col", @class])} {@rest}>
       {render_slot(@inner_block)}
     </div>
     """
@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   @spec window_body(map()) :: Phoenix.LiveView.Rendered.t()
   def window_body(assigns) do
     ~H"""
-    <div class={classes(["p-2", @class])} {@rest}>
+    <div class={classes(["p-2 flex-1", @class])} {@rest}>
       {render_slot(@inner_block)}
     </div>
     """

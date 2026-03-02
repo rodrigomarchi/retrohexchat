@@ -33,7 +33,6 @@ defmodule RetroHexChatWeb.Router do
     pipe_through :landing_live
 
     live "/", LandingLive.Index
-    live "/about", LandingLive.About
     live "/how-it-works", LandingLive.HowItWorks
     live "/features", LandingLive.Features
     live "/privacy", LandingLive.Privacy

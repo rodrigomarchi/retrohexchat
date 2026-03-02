@@ -24,15 +24,94 @@ defmodule RetroHexChatWeb.LandingLive.Privacy do
     ~H"""
     <.landing_layout active_page={@active_page}>
       <section class="m-4" aria-labelledby="privacy-heading">
+        <h2 id="privacy-heading" class="sr-only">Privacy</h2>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <%!-- ══════════════ BIG TECH ══════════════ --%>
+          <.window>
+            <.window_title_bar title="Big Tech Platforms" controls={[:close]}>
+              <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
+            </.window_title_bar>
+            <.window_body>
+              <h3 class="text-sm font-bold mb-2">What they do with your data.</h3>
+              <ul class="space-y-2 text-sm">
+                <li class="flex items-start gap-2">
+                  <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>Messages stored on <strong>their</strong> servers, mined for ads</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>Calls routed through corporate infrastructure</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>Your data trains their AI, sold to advertisers</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>Closed source &mdash; &ldquo;trust us&rdquo;</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>They can ban your community at any time</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>They read your messages &mdash; and they do</span>
+                </li>
+              </ul>
+            </.window_body>
+            <.window_status_bar>
+              <.window_status_bar_field grow>Their rules</.window_status_bar_field>
+            </.window_status_bar>
+          </.window>
+
+          <%!-- ══════════════ RETRO HEX CHAT ══════════════ --%>
+          <.window>
+            <.window_title_bar title="Retro Hex Chat" controls={[:close]}>
+              <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
+            </.window_title_bar>
+            <.window_body>
+              <h3 class="text-sm font-bold mb-2">Your data stays with you. Period.</h3>
+              <ul class="space-y-2 text-sm">
+                <li class="flex items-start gap-2">
+                  <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>Messages stored on <strong>your</strong> server, never leave</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>Calls go direct P2P &mdash; server never sees them</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>Your data stays in your database, period</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>Open source &mdash; verify yourself</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>You own the server &mdash; nobody can shut you down</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>Only you have access to your messages</span>
+                </li>
+              </ul>
+            </.window_body>
+            <.window_status_bar>
+              <.window_status_bar_field grow>Your rules</.window_status_bar_field>
+            </.window_status_bar>
+          </.window>
+        </div>
+
+        <%!-- ══════════════ COMPARISON TABLE ══════════════ --%>
         <.window>
-          <.window_title_bar title="Privacy" controls={[:close]}>
+          <.window_title_bar title="Side-by-side comparison" controls={[:close]}>
             <:icon><Icons.icon_lock class="w-4 h-4" /></:icon>
           </.window_title_bar>
           <.window_body>
-            <h2 id="privacy-heading" class="text-lg font-bold mb-3">
-              Your data stays with you. Period.
-            </h2>
-
             <div class="shadow-retro-field bg-white p-2 mb-3 overflow-x-auto">
               <table class="w-full text-xs border-collapse">
                 <thead>

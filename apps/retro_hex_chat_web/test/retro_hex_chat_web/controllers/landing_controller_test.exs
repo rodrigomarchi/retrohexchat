@@ -5,12 +5,11 @@ defmodule RetroHexChatWeb.LandingLiveTest do
 
   @landing_pages [
     {"/", "hero-heading"},
-    {"/about", "problem-heading"},
     {"/how-it-works", "how-it-works-heading"},
     {"/features", "features-heading"},
     {"/privacy", "privacy-heading"},
     {"/install", "install-heading"},
-    {"/community", "opensource-heading"},
+    {"/community", "community-heading"},
     {"/faq", "faq-heading"}
   ]
 
@@ -51,11 +50,6 @@ defmodule RetroHexChatWeb.LandingLiveTest do
   end
 
   describe "sub-page SEO" do
-    test "GET /about has unique page title", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/about")
-      assert html =~ "About Retro Hex Chat"
-    end
-
     test "GET /how-it-works has unique page title", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/how-it-works")
       assert html =~ "How Retro Hex Chat Works"

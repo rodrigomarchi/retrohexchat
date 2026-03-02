@@ -24,47 +24,78 @@ defmodule RetroHexChatWeb.LandingLive.Install do
     ~H"""
     <.landing_layout active_page={@active_page}>
       <section class="m-4" aria-labelledby="install-heading">
-        <.window>
-          <.window_title_bar title="C:\SETUP\install_server.exe" controls={[:close]}>
-            <:icon><Icons.icon_terminal class="w-4 h-4" /></:icon>
-          </.window_title_bar>
-          <.window_body>
-            <h2 id="install-heading" class="text-lg font-bold mb-3">
-              Want your own server? Three steps.
-            </h2>
+        <h2 id="install-heading" class="sr-only">Installation</h2>
 
-            <div class="space-y-3 mb-3">
-              <fieldset class="border-2 border-gray-400 p-3">
-                <legend class="text-sm font-bold px-1">
-                  <Icons.icon_git class="w-4 h-4 inline" /> Step 1 &mdash; Clone
-                </legend>
-                <.step_clone />
-              </fieldset>
+        <div class="grid md:grid-cols-2 gap-4">
+          <%!-- ══════════════ STEPS ══════════════ --%>
+          <.window>
+            <.window_title_bar title="C:\SETUP\install_server.exe" controls={[:close]}>
+              <:icon><Icons.icon_terminal class="w-4 h-4" /></:icon>
+            </.window_title_bar>
+            <.window_body>
+              <h3 class="text-sm font-bold mb-3">
+                Want your own server? Three steps.
+              </h3>
 
-              <fieldset class="border-2 border-gray-400 p-3">
-                <legend class="text-sm font-bold px-1">
-                  <Icons.icon_wrench class="w-4 h-4 inline" /> Step 2 &mdash; Setup
-                </legend>
-                <.step_setup />
-              </fieldset>
+              <div class="space-y-3">
+                <fieldset class="border-2 border-gray-400 p-3">
+                  <legend class="text-sm font-bold px-1">
+                    <Icons.icon_git class="w-4 h-4 inline" /> Step 1 &mdash; Clone
+                  </legend>
+                  <.step_clone />
+                </fieldset>
 
-              <fieldset class="border-2 border-gray-400 p-3">
-                <legend class="text-sm font-bold px-1">
-                  <Icons.icon_terminal class="w-4 h-4 inline" /> Step 3 &mdash; Run
-                </legend>
-                <.step_run />
-              </fieldset>
-            </div>
+                <fieldset class="border-2 border-gray-400 p-3">
+                  <legend class="text-sm font-bold px-1">
+                    <Icons.icon_wrench class="w-4 h-4 inline" /> Step 2 &mdash; Setup
+                  </legend>
+                  <.step_setup />
+                </fieldset>
 
-            <p class="text-sm">
-              <strong>Requirements:</strong>
-              Elixir 1.17+, PostgreSQL 16+, Node.js 20+.<br /> A $5/month VPS handles it just fine.
-            </p>
-          </.window_body>
-          <.window_status_bar>
-            <.window_status_bar_field grow>Installation complete</.window_status_bar_field>
-          </.window_status_bar>
-        </.window>
+                <fieldset class="border-2 border-gray-400 p-3">
+                  <legend class="text-sm font-bold px-1">
+                    <Icons.icon_terminal class="w-4 h-4 inline" /> Step 3 &mdash; Run
+                  </legend>
+                  <.step_run />
+                </fieldset>
+              </div>
+            </.window_body>
+            <.window_status_bar>
+              <.window_status_bar_field grow>Installation complete</.window_status_bar_field>
+            </.window_status_bar>
+          </.window>
+
+          <%!-- ══════════════ REQUIREMENTS ══════════════ --%>
+          <.window>
+            <.window_title_bar title="System Requirements" controls={[:close]}>
+              <:icon><Icons.icon_server class="w-4 h-4" /></:icon>
+            </.window_title_bar>
+            <.window_body>
+              <div class="space-y-2">
+                <div class="shadow-retro-field bg-white p-3 text-sm">
+                  <strong><Icons.icon_elixir class="w-4 h-4 inline" /> Elixir</strong>
+                  &mdash; Version 1.17+
+                </div>
+                <div class="shadow-retro-field bg-white p-3 text-sm">
+                  <strong><Icons.icon_postgres class="w-4 h-4 inline" /> PostgreSQL</strong>
+                  &mdash; Version 16+
+                </div>
+                <div class="shadow-retro-field bg-white p-3 text-sm">
+                  <strong><Icons.icon_code class="w-4 h-4 inline" /> Node.js</strong>
+                  &mdash; Version 20+
+                </div>
+              </div>
+              <p class="text-sm mt-3">
+                A $5/month VPS handles it just fine.
+              </p>
+            </.window_body>
+            <.window_status_bar>
+              <.window_status_bar_field grow>
+                <Icons.icon_checkmark class="w-3 h-3 inline" /> Ready to install
+              </.window_status_bar_field>
+            </.window_status_bar>
+          </.window>
+        </div>
       </section>
     </.landing_layout>
     """
@@ -78,7 +109,7 @@ defmodule RetroHexChatWeb.LandingLive.Install do
     assigns = assign(assigns, :text, @clone_text)
 
     ~H"""
-    <pre class="bg-canvas-bg text-canvas-fg p-3 text-xs font-mono">{@text}</pre>
+    <pre class="bg-canvas-bg text-canvas-fg p-3 text-xs font-mono overflow-x-auto">{@text}</pre>
     """
   end
 
@@ -86,7 +117,7 @@ defmodule RetroHexChatWeb.LandingLive.Install do
     assigns = assign(assigns, :text, @setup_text)
 
     ~H"""
-    <pre class="bg-canvas-bg text-canvas-fg p-3 text-xs font-mono">{@text}</pre>
+    <pre class="bg-canvas-bg text-canvas-fg p-3 text-xs font-mono overflow-x-auto">{@text}</pre>
     """
   end
 
@@ -94,7 +125,7 @@ defmodule RetroHexChatWeb.LandingLive.Install do
     assigns = assign(assigns, :text, @run_text)
 
     ~H"""
-    <pre class="bg-canvas-bg text-canvas-fg p-3 text-xs font-mono">{@text}</pre>
+    <pre class="bg-canvas-bg text-canvas-fg p-3 text-xs font-mono overflow-x-auto">{@text}</pre>
     """
   end
 end

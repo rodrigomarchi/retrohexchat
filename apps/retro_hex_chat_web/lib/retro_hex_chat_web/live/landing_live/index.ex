@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.LandingLive.Index do
 
   import RetroHexChatWeb.LandingLive.LandingHelpers
   import RetroHexChatWeb.Components.UI.Window
+  import RetroHexChatWeb.Components.Diagrams
 
   alias Phoenix.LiveView.JS
   alias RetroHexChatWeb.Icons
@@ -18,92 +19,218 @@ defmodule RetroHexChatWeb.LandingLive.Index do
   def render(assigns) do
     ~H"""
     <.landing_layout active_page={@active_page}>
-      <%!-- ══════════════ HERO ══════════════ --%>
+      <%!-- ══════════════ HERO + DESKTOP ══════════════ --%>
       <section class="m-4" aria-labelledby="hero-heading">
-        <.window class="mb-4">
-          <.window_title_bar title="Retro Hex Chat — Welcome" controls={[:close]}>
-            <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
-          </.window_title_bar>
-          <.window_body class="text-center py-6">
-            <h1 id="hero-heading" class="mb-3">
-              <img
-                src="/images/landing/wordmark.svg"
-                alt="Retro Hex Chat"
-                class="inline-block max-w-[400px] w-full"
-              />
-            </h1>
+        <div class="grid md:grid-cols-[1fr_auto] gap-4">
+          <.window>
+            <.window_title_bar title="Retro Hex Chat — Welcome" controls={[:close]}>
+              <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
+            </.window_title_bar>
+            <.window_body class="text-center py-6">
+              <h1 id="hero-heading" class="mb-3">
+                <img
+                  src="/images/landing/wordmark.svg"
+                  alt="Retro Hex Chat"
+                  class="inline-block max-w-[400px] w-full"
+                />
+              </h1>
 
-            <p class="text-sm mb-2">
-              Your server. Your conversations. Nobody in between.<br />
-              Built with today&rsquo;s technology.
-            </p>
+              <p class="text-sm mb-2">
+                Your server. Your conversations. Nobody in between.<br />
+                Built with today&rsquo;s technology.
+              </p>
 
-            <p class="text-xs mb-4">
-              Run your own server. Your data stays with you.<br />
-              Voice and video calls go directly between users &mdash; no middleman.<br />
-              No corporation. No algorithms. No permission needed.<br />
-              <strong>Your data. Your rules. Your community.</strong>
-            </p>
+              <p class="text-xs mb-4">
+                Run your own server. Your data stays with you.<br />
+                Voice and video calls go directly between users &mdash; no middleman.<br />
+                No corporation. No algorithms. No permission needed.<br />
+                <strong>Your data. Your rules. Your community.</strong>
+              </p>
 
-            <div class="mb-3">
-              <a href="/connect" class="no-underline">
+              <div class="mb-3">
+                <a href="/connect" class="no-underline">
+                  <button
+                    type="button"
+                    class="inline-flex items-center gap-1 h-9 px-4 text-sm shadow-retro-raised bg-surface active:shadow-retro-sunken font-bold"
+                  >
+                    <Icons.icon_connect class="w-4 h-4" /> Connect
+                  </button>
+                </a>
+              </div>
+
+              <p class="text-xs text-gray-600">
+                Open source project &bull; Built with Elixir &amp; Phoenix
+              </p>
+            </.window_body>
+            <.window_status_bar>
+              <.window_status_bar_field grow>Ready</.window_status_bar_field>
+              <.window_status_bar_field>v0.1.0</.window_status_bar_field>
+            </.window_status_bar>
+          </.window>
+
+          <.window class="md:w-[200px]">
+            <.window_title_bar title="C:\Desktop" controls={[:close]}>
+              <:icon><Icons.icon_folder class="w-4 h-4" /></:icon>
+            </.window_title_bar>
+            <.window_body>
+              <div class="grid grid-cols-2 gap-4 justify-items-center py-2">
+                <a
+                  href="/features"
+                  class="flex flex-col items-center gap-1 text-xs no-underline text-text hover:underline"
+                >
+                  <Icons.icon_folder class="w-8 h-8" />
+                  <span>My Chats</span>
+                </a>
+                <a
+                  href="/privacy"
+                  class="flex flex-col items-center gap-1 text-xs no-underline text-text hover:underline"
+                >
+                  <Icons.icon_lock class="w-8 h-8" />
+                  <span>Privacy</span>
+                </a>
                 <button
                   type="button"
-                  class="inline-flex items-center gap-1 h-9 px-4 text-sm shadow-retro-raised bg-surface active:shadow-retro-sunken font-bold"
+                  class="flex flex-col items-center gap-1 text-xs bg-transparent border-0 cursor-pointer hover:underline"
+                  phx-click={JS.show(to: "#readme-popup")}
                 >
-                  <Icons.icon_connect class="w-4 h-4" /> Connect
+                  <Icons.icon_notepad class="w-8 h-8" />
+                  <span>README.txt</span>
                 </button>
-              </a>
-            </div>
+                <button
+                  type="button"
+                  class="flex flex-col items-center gap-1 text-xs bg-transparent border-0 cursor-pointer hover:underline"
+                  phx-click={JS.show(to: "#trash-popup")}
+                >
+                  <Icons.icon_trash class="w-8 h-8" />
+                  <span>Trash</span>
+                </button>
+              </div>
+            </.window_body>
+          </.window>
+        </div>
+      </section>
 
-            <p class="text-xs text-gray-600">
-              Open source project &bull; Built with Elixir &amp; Phoenix
+      <%!-- ══════════════ THE PROBLEM + THE SOLUTION ══════════════ --%>
+      <section class="m-4" aria-labelledby="problem-heading">
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <.window>
+            <.window_title_bar title="The Problem" controls={[:close]}>
+              <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
+            </.window_title_bar>
+            <.window_body>
+              <h2 id="problem-heading" class="text-sm font-bold mb-2">
+                Your community isn&rsquo;t yours.
+              </h2>
+
+              <div class="shadow-retro-field bg-white p-3">
+                <ul class="space-y-2 text-xs">
+                  <li class="flex items-start gap-2">
+                    <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Discord can ban your server tomorrow.</strong>
+                      No warning. No appeal. No backup.
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <Icons.icon_dollar class="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Slack charges for messages you already sent.</strong>
+                      Your history, behind a paywall.
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <Icons.icon_globe_blocked class="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Telegram can be blocked in your entire country.</strong>
+                      One court order and your community is gone.
+                    </span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <Icons.icon_robot class="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Your data trains another company&rsquo;s AI.</strong>
+                      You never consented.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </.window_body>
+            <.window_status_bar>
+              <.window_status_bar_field grow>C:\TRUTH\</.window_status_bar_field>
+            </.window_status_bar>
+          </.window>
+
+          <.window>
+            <.window_title_bar title="The Solution" controls={[:close]}>
+              <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
+            </.window_title_bar>
+            <.window_body>
+              <h3 class="text-sm font-bold mb-2">
+                Take back control.
+              </h3>
+
+              <ul class="space-y-2 text-xs mb-3">
+                <li class="flex items-start gap-2">
+                  <Icons.icon_server class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>You own the server, the data, the rules.</strong>
+                    Install on your own hardware or a $5/month VPS.
+                  </span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_p2p class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>P2P voice and video calls.</strong>
+                    Direct between users via WebRTC &mdash; no middleman.
+                  </span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_shield class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>No corporation can shut you down.</strong>
+                    Open source, MIT licensed, community-owned.
+                  </span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <Icons.icon_code class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>No &ldquo;Pro&rdquo; plan. No algorithms.</strong>
+                    Free software. Yours forever.
+                  </span>
+                </li>
+              </ul>
+            </.window_body>
+            <.window_status_bar>
+              <.window_status_bar_field grow>
+                <Icons.icon_checkmark class="w-3 h-3 inline" /> Ready
+              </.window_status_bar_field>
+            </.window_status_bar>
+          </.window>
+        </div>
+
+        <%!-- ══════════════ P2P DIAGRAM ══════════════ --%>
+        <.window class="mb-4">
+          <.window_title_bar title="Direct connection. No middleman." controls={[:close]}>
+            <:icon><Icons.icon_p2p class="w-4 h-4" /></:icon>
+          </.window_title_bar>
+          <.window_body>
+            <div
+              class="shadow-retro-field bg-white p-3 mb-2"
+              aria-label="Peer-to-peer connection diagram"
+            >
+              <.diagram_p2p_architecture class="w-full max-w-lg mx-auto" />
+            </div>
+            <p class="text-sm text-center">
+              The server only introduces users. Once connected,
+              voice, video, and files flow <strong>directly</strong>
+              between them &mdash; encrypted, private, and fast.
             </p>
           </.window_body>
           <.window_status_bar>
-            <.window_status_bar_field grow>Ready</.window_status_bar_field>
-            <.window_status_bar_field>v0.1.0</.window_status_bar_field>
+            <.window_status_bar_field grow>
+              <Icons.icon_checkmark class="w-3 h-3 inline" /> Got it
+            </.window_status_bar_field>
           </.window_status_bar>
-        </.window>
-
-        <.window>
-          <.window_title_bar title="C:\Desktop" controls={[:close]}>
-            <:icon><Icons.icon_folder class="w-4 h-4" /></:icon>
-          </.window_title_bar>
-          <.window_body>
-            <div class="flex gap-6 justify-center py-2">
-              <a
-                href="/features"
-                class="flex flex-col items-center gap-1 text-xs no-underline text-text hover:underline"
-              >
-                <Icons.icon_folder class="w-8 h-8" />
-                <span>My Chats</span>
-              </a>
-              <a
-                href="/privacy"
-                class="flex flex-col items-center gap-1 text-xs no-underline text-text hover:underline"
-              >
-                <Icons.icon_lock class="w-8 h-8" />
-                <span>Privacy</span>
-              </a>
-              <button
-                type="button"
-                class="flex flex-col items-center gap-1 text-xs bg-transparent border-0 cursor-pointer hover:underline"
-                phx-click={JS.show(to: "#readme-popup")}
-              >
-                <Icons.icon_notepad class="w-8 h-8" />
-                <span>README.txt</span>
-              </button>
-              <button
-                type="button"
-                class="flex flex-col items-center gap-1 text-xs bg-transparent border-0 cursor-pointer hover:underline"
-                phx-click={JS.show(to: "#trash-popup")}
-              >
-                <Icons.icon_trash class="w-8 h-8" />
-                <span>Trash</span>
-              </button>
-            </div>
-          </.window_body>
         </.window>
       </section>
 
