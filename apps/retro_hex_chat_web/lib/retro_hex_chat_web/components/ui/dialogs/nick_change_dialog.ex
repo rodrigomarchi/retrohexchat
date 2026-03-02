@@ -33,9 +33,11 @@ defmodule RetroHexChatWeb.Components.UI.NickChangeDialog do
     default: false,
     doc: "Whether the target nick is registered — shows password field when true"
 
+  attr :password, :string, default: "", doc: "Current password value (tracked via keyup)"
   attr :password_error, :string, default: nil, doc: "Error message for invalid password"
   attr :on_confirm, :any, default: nil, doc: "JS command or event name for confirm"
   attr :on_cancel, :any, default: nil, doc: "JS command or event name for cancel"
+  attr :on_password_change, :any, default: nil, doc: "Password keyup callback"
 
   @spec nick_change_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def nick_change_dialog(assigns) do
@@ -66,8 +68,10 @@ defmodule RetroHexChatWeb.Components.UI.NickChangeDialog do
               id={"#{@id}-password"}
               name="nickserv_password"
               type="password"
+              value={@password}
               placeholder="Enter password"
               class="text-xs h-7"
+              phx-keyup={@on_password_change}
               data-testid="nick-change-password"
             />
 
@@ -80,7 +84,12 @@ defmodule RetroHexChatWeb.Components.UI.NickChangeDialog do
       </.dialog_body>
 
       <.dialog_footer>
-        <.button variant="default" phx-click={@on_confirm} data-testid="nick-change-confirm">
+        <.button
+          variant="default"
+          phx-click={@on_confirm}
+          phx-value-password={@password}
+          data-testid="nick-change-confirm"
+        >
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
           Confirm
         </.button>

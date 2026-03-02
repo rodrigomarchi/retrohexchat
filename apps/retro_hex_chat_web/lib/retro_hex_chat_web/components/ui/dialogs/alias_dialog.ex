@@ -103,7 +103,11 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
         </div>
 
         <%!-- Edit / Add form panel --%>
-        <div :if={@editing} class="shadow-retro-field bg-white p-retro-8 space-y-retro-4">
+        <form
+          :if={@editing}
+          phx-submit={@on_save}
+          class="shadow-retro-field bg-white p-retro-8 space-y-retro-4"
+        >
           <h3 class="font-bold text-xs mb-retro-4">
             {if @selected_alias, do: "Edit Alias", else: "Add Alias"}
           </h3>
@@ -113,10 +117,11 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
               <label class="text-xs font-bold block mb-retro-2">Name</label>
               <.input
                 type="text"
-                name="alias_name"
+                name="name"
                 value={@draft_name}
                 placeholder="e.g. hi"
                 class="w-full text-xs h-7"
+                maxlength="30"
                 disabled={@selected_alias != nil}
               />
             </div>
@@ -124,10 +129,11 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
               <label class="text-xs font-bold block mb-retro-2">Expansion</label>
               <.input
                 type="text"
-                name="alias_expansion"
+                name="expansion"
                 value={@draft_expansion}
                 placeholder="e.g. /msg $1 hello!"
                 class="w-full text-xs h-7"
+                maxlength="500"
               />
             </div>
             <p class="text-[10px] text-muted-foreground">
@@ -140,16 +146,16 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
           </div>
 
           <div class="flex gap-retro-4 pt-retro-4">
-            <.button size="sm" variant="default" phx-click={@on_save}>
+            <.button type="submit" size="sm" variant="default">
               <:icon><Icons.icon_btn_save class="w-4 h-4" /></:icon>
               Save
             </.button>
-            <.button size="sm" variant="outline" phx-click={@on_cancel_edit}>
+            <.button type="button" size="sm" variant="outline" phx-click={@on_cancel_edit}>
               <:icon><Icons.icon_btn_cancel class="w-4 h-4" /></:icon>
               Cancel
             </.button>
           </div>
-        </div>
+        </form>
 
         <%!-- Action buttons --%>
         <div class="flex gap-retro-4">

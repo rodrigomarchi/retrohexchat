@@ -190,11 +190,15 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
       selected_notify_note={@selected_notify_note}
     />
     <%!-- Nick Color Add Sub-Dialog --%>
-    <.nick_color_add_form :if={@show_nick_color_add_dialog} />
+    <.nick_color_add_form
+      :if={@show_nick_color_add_dialog}
+      nick_palette_editing_index={@nick_palette_editing_index}
+    />
     <%!-- Nick Color Edit Sub-Dialog --%>
     <.nick_color_edit_form
       :if={@show_nick_color_edit_dialog}
       nick_colors_selected={@nick_colors_selected}
+      nick_palette_editing_index={@nick_palette_editing_index}
     />
     """
   end
@@ -409,6 +413,8 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
     """
   end
 
+  attr :nick_palette_editing_index, :integer, default: nil
+
   defp nick_color_add_form(assigns) do
     ~H"""
     <div class="dialog-overlay dialog-overlay--above">
@@ -432,6 +438,11 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 class="u-w-full"
               />
             </div>
+            <input
+              type="hidden"
+              name="color_index"
+              value={to_string(@nick_palette_editing_index || "")}
+            />
             <div class="field-row-stacked u-mb-12">
               <label class="text-xs font-bold">Color:</label>
               <.color_picker id="nick-color-add-picker" on_select="nick_color_select" />
@@ -459,6 +470,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   end
 
   attr :nick_colors_selected, :string, default: nil
+  attr :nick_palette_editing_index, :integer, default: nil
 
   defp nick_color_edit_form(assigns) do
     ~H"""
@@ -483,6 +495,11 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 class="u-w-full input-readonly"
               />
             </div>
+            <input
+              type="hidden"
+              name="color_index"
+              value={to_string(@nick_palette_editing_index || "")}
+            />
             <div class="field-row-stacked u-mb-12">
               <label class="text-xs font-bold">Color:</label>
               <.color_picker id="nick-color-edit-picker" on_select="nick_color_select" />

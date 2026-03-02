@@ -136,8 +136,9 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
         </div>
 
         <%!-- Edit form panel --%>
-        <div
+        <form
           :if={@editing}
+          phx-submit={@on_save}
           class="w-[220px] shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
         >
           <h3 class="font-bold text-xs mb-retro-4">
@@ -150,7 +151,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
               <.select
                 :let={builder}
                 id="draft-trigger-select"
-                name="draft_trigger"
+                name="trigger"
                 value={@draft_trigger}
                 label={trigger_label(@draft_trigger)}
                 class="w-full"
@@ -175,10 +176,11 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
               <.label class="text-xs font-bold block mb-retro-2">Channel (optional)</.label>
               <.input
                 type="text"
-                name="draft_channel"
+                name="channel"
                 value={@draft_channel}
                 placeholder="#channel"
                 class="w-full"
+                maxlength="50"
               />
             </div>
 
@@ -186,27 +188,28 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
               <.label class="text-xs font-bold block mb-retro-2">Command</.label>
               <.input
                 type="text"
-                name="draft_command"
+                name="command"
                 value={@draft_command}
                 placeholder="/say Hello!"
                 class="w-full"
+                maxlength="500"
               />
             </div>
 
             <p :if={@error_message} class="text-xs text-destructive">{@error_message}</p>
 
             <div class="flex gap-retro-4 pt-retro-4">
-              <.button size="sm" variant="default" phx-click={@on_save}>
+              <.button type="submit" size="sm" variant="default">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 Save
               </.button>
-              <.button size="sm" variant="outline" phx-click={@on_cancel_edit}>
+              <.button type="button" size="sm" variant="outline" phx-click={@on_cancel_edit}>
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 Cancel
               </.button>
             </div>
           </div>
-        </div>
+        </form>
       </.dialog_body>
 
       <.dialog_footer>

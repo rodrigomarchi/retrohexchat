@@ -35,9 +35,9 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
     default: nil,
     doc: "Current user's nick (shown as non-removable highlight)"
 
-  attr :selected_index, :integer, default: nil, doc: "Currently selected row index"
-  attr :selected_color, :integer, default: nil
-  attr :on_select, :any, default: nil, doc: "Row selection callback (receives phx-value-index)"
+  attr :selected_word, :string, default: nil, doc: "Currently selected word text"
+  attr :selected_color, :integer, default: nil, doc: "Selected color index from color picker"
+  attr :on_select, :any, default: nil, doc: "Row selection callback (receives phx-value-word)"
   attr :on_add, :any, default: nil, doc: "Add word callback"
   attr :on_edit, :any, default: nil, doc: "Edit word callback"
   attr :on_remove, :any, default: nil, doc: "Remove word callback"
@@ -88,10 +88,12 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             </.table_row>
             <%!-- User-defined words --%>
             <.table_row
-              :for={{word, idx} <- Enum.with_index(@words)}
-              class={if(@selected_index == idx, do: "bg-selection-bg text-selection-fg", else: "")}
+              :for={word <- @words}
+              class={
+                if(@selected_word == word.text, do: "bg-selection-bg text-selection-fg", else: "")
+              }
               phx-click={@on_select}
-              phx-value-index={idx}
+              phx-value-word={word.text}
             >
               <.table_cell>{word.text}</.table_cell>
               <.table_cell>
@@ -103,7 +105,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
         </.table>
 
         <div class="flex gap-retro-4">
-          <.button size="sm" variant="outline" phx-click={@on_edit} disabled={@selected_index == nil}>
+          <.button size="sm" variant="outline" phx-click={@on_edit} disabled={@selected_word == nil}>
             <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
             Edit
           </.button>
@@ -111,7 +113,8 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             size="sm"
             variant="outline"
             phx-click={@on_remove}
-            disabled={@selected_index == nil}
+            phx-value-word={@selected_word || ""}
+            disabled={@selected_word == nil}
           >
             <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
             Remove
@@ -139,17 +142,19 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
     </.dialog>
 
     <%!-- Highlight Add Sub-Dialog --%>
-    <.highlight_add_sub_form :if={@show_highlight_add_dialog} />
+    <.highlight_add_sub_form :if={@show_highlight_add_dialog} selected_color={@selected_color} />
     <%!-- Highlight Edit Sub-Dialog --%>
     <.highlight_edit_sub_form
       :if={@show_highlight_edit_dialog}
-      selected={@selected_index}
-      words={@words}
+      selected_word={@selected_word}
+      selected_color={@selected_color}
     />
     """
   end
 
   # ── Sub-Forms ────────────────────────────────────────
+
+  attr :selected_color, :integer, default: nil
 
   defp highlight_add_sub_form(assigns) do
     ~H"""
@@ -175,6 +180,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 class="u-w-full"
               />
             </div>
+            <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
             <div class="field-row-stacked u-mt-8">
               <label class="text-xs font-bold">Background Color (optional):</label>
               <.color_picker id="highlight-add-color" on_select="highlight_color_pick" />
@@ -201,13 +207,10 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
     """
   end
 
-  attr :selected, :integer, default: nil
-  attr :words, :list, default: []
+  attr :selected_word, :string, default: nil
+  attr :selected_color, :integer, default: nil
 
   defp highlight_edit_sub_form(assigns) do
-    word = if assigns.selected, do: Enum.at(assigns.words, assigns.selected)
-    assigns = assign(assigns, :word_text, if(word, do: word.text, else: ""))
-
     ~H"""
     <div class="dialog-overlay dialog-overlay--above">
       <div class="window dialog-window--sm">
@@ -219,7 +222,8 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
         </div>
         <div class="window-body dialog-body--p8">
           <form phx-submit="highlight_edit" data-testid="highlight-edit-form">
-            <input type="hidden" name="word" value={@word_text} />
+            <input type="hidden" name="word" value={@selected_word || ""} />
+            <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
             <div class="field-row-stacked">
               <label class="text-xs font-bold">Background Color:</label>
               <.color_picker id="highlight-edit-color" on_select="highlight_color_pick" />

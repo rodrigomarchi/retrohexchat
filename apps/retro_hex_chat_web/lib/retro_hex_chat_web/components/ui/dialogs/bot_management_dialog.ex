@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   attr :active_tab, :atom, default: :general
   attr :is_admin, :boolean, default: false
   attr :editing_field, :any, default: nil
+  attr :capabilities, :list, default: [], doc: "Available capability names for the selected bot"
   attr :on_close, :any, default: nil
 
   @spec bot_management_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -98,6 +99,15 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                   >
                     <:icon><Icons.icon_tab_general class="w-[16px] h-[16px]" /></:icon>
                     General
+                  </.tabs_trigger>
+                  <.tabs_trigger
+                    builder={%{id: "bot-tabs", default: "general"}}
+                    value="capabilities"
+                    phx-click="bot_dialog_tab"
+                    phx-value-tab="capabilities"
+                  >
+                    <:icon><Icons.icon_tab_control class="w-[16px] h-[16px]" /></:icon>
+                    Capabilities
                   </.tabs_trigger>
                   <.tabs_trigger
                     builder={%{id: "bot-tabs", default: "general"}}
@@ -182,6 +192,14 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                       </div>
                     </div>
                   </div>
+                </.tabs_content>
+
+                <%!-- Capabilities tab --%>
+                <.tabs_content value="capabilities">
+                  <.capabilities_tab
+                    selected={@selected}
+                    is_admin={@is_admin}
+                  />
                 </.tabs_content>
 
                 <%!-- Channels tab --%>
@@ -347,4 +365,100 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
     </.dialog>
     """
   end
+
+  # ── Capabilities Tab ─────────────────────────────────────
+
+  attr :selected, :any, required: true
+  attr :is_admin, :boolean, default: false
+
+  @spec capabilities_tab(map()) :: Phoenix.LiveView.Rendered.t()
+  defp capabilities_tab(assigns) do
+    caps = (assigns.selected && Map.get(assigns.selected, :capabilities)) || %{}
+    cap_names = Map.keys(caps)
+    assigns = assign(assigns, caps: caps, cap_names: cap_names)
+
+    ~H"""
+    <div class="p-retro-4">
+      <div
+        :if={@cap_names == []}
+        class="text-center text-muted-foreground text-sm py-retro-16"
+      >
+        No configurable capabilities enabled.
+      </div>
+      <div :if={@cap_names != []} class="space-y-retro-8">
+        <fieldset
+          :for={cap_name <- @cap_names}
+          class="shadow-retro-field p-retro-8"
+        >
+          <legend class="text-xs font-bold px-1">{cap_display_name(cap_name)}</legend>
+          <.cap_toggle_row
+            enabled={Map.get(@caps[cap_name] || %{}, "enabled", true)}
+            cap_name={cap_name}
+            bot_name={@selected.name}
+            is_admin={@is_admin}
+          />
+          <div
+            :for={{key, val} <- cap_config_fields(@caps[cap_name])}
+            class="flex items-center gap-retro-4 text-xs mt-retro-2"
+          >
+            <span class="font-bold w-[100px]">{key}:</span>
+            <span>{inspect_cap_value(val)}</span>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    """
+  end
+
+  attr :enabled, :boolean, required: true
+  attr :cap_name, :string, required: true
+  attr :bot_name, :string, required: true
+  attr :is_admin, :boolean, default: false
+
+  @spec cap_toggle_row(map()) :: Phoenix.LiveView.Rendered.t()
+  defp cap_toggle_row(assigns) do
+    ~H"""
+    <div class="flex items-center gap-retro-4 text-xs">
+      <span class="font-bold w-[100px]">Status:</span>
+      <span class={if @enabled, do: "text-green-700", else: "text-red-700"}>
+        {if @enabled, do: "Enabled", else: "Disabled"}
+      </span>
+      <button
+        :if={@is_admin}
+        type="button"
+        class="text-xs underline ml-retro-4"
+        phx-click="bot_toggle_capability"
+        phx-value-capability={@cap_name}
+        phx-value-bot_name={@bot_name}
+        data-testid={"toggle-cap-#{@cap_name}"}
+      >
+        {if @enabled, do: "Disable", else: "Enable"}
+      </button>
+    </div>
+    """
+  end
+
+  @spec cap_display_name(String.t()) :: String.t()
+  defp cap_display_name("dice"), do: "Dice"
+  defp cap_display_name("moderation"), do: "Moderation"
+  defp cap_display_name("trivia"), do: "Trivia"
+  defp cap_display_name("scheduler"), do: "Scheduler"
+  defp cap_display_name("rss"), do: "RSS"
+  defp cap_display_name("greeter"), do: "Greeter"
+  defp cap_display_name("mention"), do: "Mention"
+  defp cap_display_name(other), do: String.capitalize(other)
+
+  @spec cap_config_fields(map() | nil) :: [{String.t(), any()}]
+  defp cap_config_fields(nil), do: []
+
+  defp cap_config_fields(config) do
+    config
+    |> Map.drop(["enabled"])
+    |> Enum.sort_by(&elem(&1, 0))
+  end
+
+  @spec inspect_cap_value(any()) :: String.t()
+  defp inspect_cap_value(val) when is_list(val), do: "#{length(val)} item(s)"
+  defp inspect_cap_value(val) when is_map(val), do: "#{map_size(val)} entries"
+  defp inspect_cap_value(val), do: to_string(val)
 end

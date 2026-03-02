@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
               <.select
                 :let={builder}
                 id="url-catcher-channel-filter"
-                name="filter_channel"
+                name="channel"
                 value={@filter_channel || ""}
                 label={@filter_channel || "All Channels"}
                 placeholder="All Channels"
@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
               class="flex-1"
               phx-change={@on_search}
               phx-debounce="300"
-              name="search"
+              name="query"
               data-testid="url-catcher-search"
             />
             <.button size="sm" variant="outline" phx-click={@on_search}>

@@ -100,6 +100,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
         <.button
           variant="default"
           phx-click={@on_join}
+          phx-value-channel={@selected_channel}
           disabled={@selected_channel == nil}
           data-testid="channel-list-join"
         >

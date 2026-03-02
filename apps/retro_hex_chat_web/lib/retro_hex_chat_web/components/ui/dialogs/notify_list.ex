@@ -115,6 +115,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               size="sm"
               variant="outline"
               phx-click={@on_remove}
+              phx-value-nickname={@selected_entry}
               disabled={@selected_entry == nil}
             >
               <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>

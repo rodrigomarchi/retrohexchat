@@ -219,8 +219,9 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
       </div>
 
       <%!-- Edit form --%>
-      <div
+      <form
         :if={@editing}
+        phx-submit={@on_save}
         class="w-[200px] shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
       >
         <h3 class="font-bold text-xs mb-retro-4">
@@ -232,10 +233,11 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
             <label class="text-xs font-bold block mb-retro-2">Label</label>
             <.input
               type="text"
-              name="draft_label"
+              name="label"
               value={@draft_label}
               placeholder="Menu item text"
               class="w-full"
+              maxlength="50"
             />
           </div>
 
@@ -243,27 +245,28 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
             <label class="text-xs font-bold block mb-retro-2">Command</label>
             <.input
               type="text"
-              name="draft_command"
+              name="command"
               value={@draft_command}
               placeholder="/command $1"
               class="w-full"
+              maxlength="500"
             />
           </div>
 
           <p :if={@error_message} class="text-xs text-destructive">{@error_message}</p>
 
           <div class="flex gap-retro-4 pt-retro-4">
-            <.button size="sm" variant="default" phx-click={@on_save}>
+            <.button type="submit" size="sm" variant="default">
               <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
               Save
             </.button>
-            <.button size="sm" variant="outline" phx-click={@on_cancel_edit}>
+            <.button type="button" size="sm" variant="outline" phx-click={@on_cancel_edit}>
               <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
               Cancel
             </.button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
     """
   end

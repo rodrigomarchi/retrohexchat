@@ -417,9 +417,11 @@
   show={@nick_change_dialog != nil}
   target_nick={(@nick_change_dialog && @nick_change_dialog.target_nick) || ""}
   registered={(@nick_change_dialog && @nick_change_dialog.registered) || false}
+  password={(@nick_change_dialog && @nick_change_dialog.password) || ""}
   password_error={@nick_change_dialog && @nick_change_dialog.password_error}
   on_confirm="confirm_nick_change"
   on_cancel="cancel_nick_change"
+  on_password_change="update_nick_change_password"
 />
 
 <.notify_list
@@ -427,6 +429,7 @@
   show={@show_notify_list}
   entries={NotifyList.sorted_entries(@session.notify_list)}
   selected_entry={@notify_selected}
+  selected_note={@selected_note}
   auto_whois={@session.notify_list.settings.auto_whois}
   show_add_dialog={@show_notify_add_dialog}
   show_edit_dialog={@show_notify_edit_dialog}
@@ -456,6 +459,9 @@
   timezone={@timezone}
   nick_colors_selected={@nick_colors_selected}
   notify_selected={@notify_selected}
+  selected_contact_note={@selected_contact_note}
+  selected_notify_note={@selected_notify_note}
+  nick_palette_editing_index={@nick_palette_editing_index}
   on_select="contact_select"
   on_add="contact_add_dialog"
   on_edit="contact_edit_dialog"
@@ -473,7 +479,7 @@
   search={@channel_list_search}
   loading={@channel_list_loading}
   on_search="channel_list_filter"
-  on_select="channel_list_filter"
+  on_select="channel_list_join"
   on_join="channel_list_join"
   on_close="toggle_channel_list"
 />
@@ -523,15 +529,12 @@
   id="options-dialog"
   show={@show_options_dialog}
   active_panel={@options_panel}
+  options_draft={@options_draft}
   on_panel_select="options_select_panel"
   on_ok="options_ok"
   on_cancel="close_options_dialog"
   on_apply="options_apply"
->
-  <:panel name="display">Display settings</:panel>
-  <:panel name="messages">Message settings</:panel>
-  <:panel name="sounds">Sound settings</:panel>
-</.options_dialog>
+/>
 
 <.perform_dialog
   id="perform-dialog"
@@ -572,7 +575,7 @@
   on_add="alias_dialog_add"
   on_edit="alias_dialog_edit"
   on_delete="alias_dialog_delete"
-  on_save="alias_dialog_add"
+  on_save="alias_dialog_save"
   on_cancel_edit="alias_dialog_cancel_edit"
   on_close="close_alias_dialog"
 />
@@ -638,14 +641,18 @@
   show_add_ban_dialog={@show_cc_add_ban_dialog}
   show_add_ban_ex_dialog={@show_cc_add_ban_ex_dialog}
   show_add_invite_ex_dialog={@show_cc_add_invite_ex_dialog}
+  on_tab="channel_central_tab"
   on_topic_save="cc_set_topic"
   on_mode_apply="cc_apply_modes"
   on_ban_add="cc_open_add_ban"
   on_ban_remove="cc_remove_ban"
+  on_ban_select="cc_ban_select"
   on_ban_ex_add="cc_open_add_ban_ex"
   on_ban_ex_remove="cc_remove_ban_exception"
+  on_ban_ex_select="cc_ban_ex_select"
   on_invite_ex_add="cc_open_add_invite_ex"
   on_invite_ex_remove="cc_remove_invite_exception"
+  on_invite_ex_select="cc_invite_ex_select"
   on_close="close_channel_central"
 />
 
@@ -654,7 +661,8 @@
   show={@show_highlight_dialog}
   words={HighlightWords.entries(@session.highlight_words)}
   own_nick={@session.nickname}
-  selected_index={@highlight_selected}
+  selected_word={@highlight_selected}
+  selected_color={@highlight_selected_color}
   show_highlight_add_dialog={@show_highlight_add_dialog}
   show_highlight_edit_dialog={@show_highlight_edit_dialog}
   on_select="highlight_select"
@@ -683,7 +691,12 @@
   on_close="toggle_url_catcher"
 />
 
-<.cheatsheet_dialog id="cheatsheet-dialog" show={@cheatsheet_visible} />
+<.cheatsheet_dialog
+  id="cheatsheet-dialog"
+  show={@cheatsheet_visible}
+  bindings={cheatsheet_bindings()}
+  on_close="toggle_cheatsheet"
+/>
 
 <.paste_confirm_dialog
   id="paste-confirm-dialog"

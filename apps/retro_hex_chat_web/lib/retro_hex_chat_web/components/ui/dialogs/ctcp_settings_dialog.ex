@@ -3,16 +3,17 @@ defmodule RetroHexChatWeb.Components.UI.CtcpSettingsDialog do
   CTCP settings dialog component for the showcase design system.
 
   Composed from dialog + button + input + checkbox primitives.
-  Configures CTCP response settings: enable/disable, version/finger/time replies.
+  Form-based dialog matching v1 contract: fields `enabled`, `version_string`,
+  `finger_text` submitted via `phx-submit`.
 
   ## Usage
 
       <.ctcp_settings_dialog
         id="ctcp-settings"
         show={true}
-        settings={%{enabled: true, version_reply: "RetroHexChat", finger_reply: "", time_reply: ""}}
-        on_save="save_ctcp"
-        on_cancel="cancel_ctcp"
+        settings={%{enabled: true, version_string: "RetroHexChat", finger_text: ""}}
+        on_save="ctcp_save_settings"
+        on_cancel="close_ctcp_settings_dialog"
       />
   """
   use RetroHexChatWeb.Component
@@ -29,10 +30,10 @@ defmodule RetroHexChatWeb.Components.UI.CtcpSettingsDialog do
   attr :show, :boolean, default: false
 
   attr :settings, :map,
-    default: %{enabled: true, version_reply: "RetroHexChat", finger_reply: "", time_reply: ""},
-    doc: "CTCP settings map with keys: enabled, version_reply, finger_reply, time_reply"
+    default: %{enabled: true, version_string: "RetroHexChat", finger_text: ""},
+    doc: "CTCP settings map with keys: enabled, version_string, finger_text"
 
-  attr :on_save, :any, default: nil, doc: "JS command or event name for save"
+  attr :on_save, :any, default: nil, doc: "Form submit event name"
   attr :on_cancel, :any, default: nil, doc: "JS command or event name for cancel"
 
   @spec ctcp_settings_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -44,84 +45,85 @@ defmodule RetroHexChatWeb.Components.UI.CtcpSettingsDialog do
       </.dialog_header>
 
       <.dialog_body>
-        <div class="space-y-retro-8" data-testid="ctcp-settings-dialog">
-          <%!-- Enable CTCP toggle --%>
-          <div class="flex items-center gap-retro-4">
-            <.checkbox
-              id={"#{@id}-enabled"}
-              name="ctcp_enabled"
-              value={Map.get(@settings, :enabled, true)}
-              data-testid="ctcp-settings-enabled"
+        <form phx-submit={@on_save}>
+          <div class="space-y-retro-8" data-testid="ctcp-settings-dialog">
+            <%!-- Hidden input for enabled (v1 pattern) --%>
+            <input
+              type="hidden"
+              name="enabled"
+              value={to_string(Map.get(@settings, :enabled, true))}
             />
-            <label for={"#{@id}-enabled"} class="text-xs font-bold select-none cursor-pointer">
-              Enable CTCP responses
-            </label>
+
+            <%!-- Enable CTCP toggle --%>
+            <div class="flex items-center gap-retro-4">
+              <.checkbox
+                id={"#{@id}-enabled"}
+                name="enabled_checkbox"
+                value={Map.get(@settings, :enabled, true)}
+                phx-click={
+                  Phoenix.LiveView.JS.dispatch("ctcp-toggle-enabled",
+                    to: "##{@id} input[name=enabled]"
+                  )
+                }
+                data-testid="ctcp-settings-enabled"
+              />
+              <label for={"#{@id}-enabled"} class="text-xs font-bold select-none cursor-pointer">
+                Enable CTCP responses
+              </label>
+            </div>
+
+            <%!-- Version reply --%>
+            <div class="space-y-retro-2">
+              <label for={"#{@id}-version"} class="text-xs font-bold">
+                VERSION reply:
+              </label>
+              <.input
+                id={"#{@id}-version"}
+                name="version_string"
+                type="text"
+                value={Map.get(@settings, :version_string, "RetroHexChat")}
+                placeholder="e.g. RetroHexChat 1.0"
+                maxlength="200"
+                class="text-xs h-7"
+                data-testid="ctcp-settings-version"
+              />
+            </div>
+
+            <%!-- Finger reply --%>
+            <div class="space-y-retro-2">
+              <label for={"#{@id}-finger"} class="text-xs font-bold">
+                FINGER reply:
+              </label>
+              <.input
+                id={"#{@id}-finger"}
+                name="finger_text"
+                type="text"
+                value={Map.get(@settings, :finger_text, "")}
+                placeholder="e.g. Just a user"
+                maxlength="200"
+                class="text-xs h-7"
+                data-testid="ctcp-settings-finger"
+              />
+            </div>
           </div>
 
-          <%!-- Version reply --%>
-          <div class="space-y-retro-2">
-            <label for={"#{@id}-version"} class="text-xs font-bold">
-              VERSION reply:
-            </label>
-            <.input
-              id={"#{@id}-version"}
-              name="ctcp_version_reply"
-              type="text"
-              value={Map.get(@settings, :version_reply, "RetroHexChat")}
-              placeholder="e.g. RetroHexChat 1.0"
-              class="text-xs h-7"
-              data-testid="ctcp-settings-version"
-            />
-          </div>
-
-          <%!-- Finger reply --%>
-          <div class="space-y-retro-2">
-            <label for={"#{@id}-finger"} class="text-xs font-bold">
-              FINGER reply:
-            </label>
-            <.input
-              id={"#{@id}-finger"}
-              name="ctcp_finger_reply"
-              type="text"
-              value={Map.get(@settings, :finger_reply, "")}
-              placeholder="e.g. Just a user"
-              class="text-xs h-7"
-              data-testid="ctcp-settings-finger"
-            />
-          </div>
-
-          <%!-- Time reply --%>
-          <div class="space-y-retro-2">
-            <label for={"#{@id}-time"} class="text-xs font-bold">
-              TIME reply:
-            </label>
-            <.input
-              id={"#{@id}-time"}
-              name="ctcp_time_reply"
-              type="text"
-              value={Map.get(@settings, :time_reply, "")}
-              placeholder="Leave blank for system time"
-              class="text-xs h-7"
-              data-testid="ctcp-settings-time"
-            />
-          </div>
-        </div>
+          <.dialog_footer>
+            <.button type="submit" variant="default" data-testid="ctcp-settings-save">
+              <:icon><Icons.icon_btn_save class="w-4 h-4" /></:icon>
+              Save
+            </.button>
+            <.button
+              type="button"
+              variant="outline"
+              phx-click={@on_cancel || hide_modal(@id)}
+              data-testid="ctcp-settings-cancel"
+            >
+              <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+              Cancel
+            </.button>
+          </.dialog_footer>
+        </form>
       </.dialog_body>
-
-      <.dialog_footer>
-        <.button variant="default" phx-click={@on_save} data-testid="ctcp-settings-save">
-          <:icon><Icons.icon_btn_save class="w-4 h-4" /></:icon>
-          Save
-        </.button>
-        <.button
-          variant="outline"
-          phx-click={@on_cancel || hide_modal(@id)}
-          data-testid="ctcp-settings-cancel"
-        >
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          Cancel
-        </.button>
-      </.dialog_footer>
     </.dialog>
     """
   end

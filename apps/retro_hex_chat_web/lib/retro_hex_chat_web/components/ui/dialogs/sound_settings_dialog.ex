@@ -104,11 +104,10 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
 
                 <.table_cell>
                   <form phx-change={@on_sound_change}>
-                    <input type="hidden" name="event" value={event} />
                     <.select
                       :let={builder}
                       id={"sound-select-#{event}"}
-                      name={"sound_#{event}"}
+                      name={"event_#{event}"}
                       value={event_sound(@settings, event)}
                       label={event_sound(@settings, event)}
                       class="w-full"

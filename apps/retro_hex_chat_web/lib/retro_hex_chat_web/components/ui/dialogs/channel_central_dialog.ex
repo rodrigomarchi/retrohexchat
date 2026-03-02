@@ -5,6 +5,9 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   Provides a 5-tab dialog for viewing and managing channel properties:
   General (topic, info), Modes (moderated, invite-only, etc.),
   Bans, Ban Exceptions, and Invite Exceptions.
+
+  Matches v1 event contracts: tab switching via `on_tab`, topic save via
+  `phx-submit`, modes via `phx-submit`, ban selection via per-list callbacks.
   """
   use RetroHexChatWeb.Component
 
@@ -13,7 +16,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
-  import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Separator
 
   alias RetroHexChatWeb.Icons
@@ -29,6 +31,10 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         channel_name="#lobby"
         topic="Welcome to the lobby!"
         operator={true}
+        on_tab="channel_central_tab"
+        on_ban_select="cc_ban_select"
+        on_ban_ex_select="cc_ban_ex_select"
+        on_invite_ex_select="cc_invite_ex_select"
       />
   """
   attr :id, :string, required: true
@@ -48,17 +54,21 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :ban_selected, :string, default: nil
   attr :ban_ex_selected, :string, default: nil
   attr :invite_ex_selected, :string, default: nil
+  attr :on_tab, :any, default: nil, doc: "Tab switch event (phx-value-tab=value)"
   attr :on_topic_save, :any, default: nil
   attr :on_mode_apply, :any, default: nil
   attr :on_ban_add, :any, default: nil
   attr :on_ban_remove, :any, default: nil
+  attr :on_ban_select, :any, default: nil, doc: "Ban row select event (phx-value-nickname)"
   attr :on_ban_ex_add, :any, default: nil
   attr :on_ban_ex_remove, :any, default: nil
+  attr :on_ban_ex_select, :any, default: nil, doc: "Ban exception row select event"
+  attr :on_invite_ex_add, :any, default: nil
+  attr :on_invite_ex_remove, :any, default: nil
+  attr :on_invite_ex_select, :any, default: nil, doc: "Invite exception row select event"
   attr :show_add_ban_dialog, :boolean, default: false
   attr :show_add_ban_ex_dialog, :boolean, default: false
   attr :show_add_invite_ex_dialog, :boolean, default: false
-  attr :on_invite_ex_add, :any, default: nil
-  attr :on_invite_ex_remove, :any, default: nil
   attr :on_close, :any, default: nil
 
   @spec channel_central_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -74,23 +84,48 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       <.dialog_body>
         <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
           <.tabs_list class="flex flex-wrap">
-            <.tabs_trigger builder={builder} value="general">
+            <.tabs_trigger
+              builder={builder}
+              value="general"
+              phx-click={@on_tab}
+              phx-value-tab="general"
+            >
               <:icon><Icons.icon_tab_general class="w-4 h-4" /></:icon>
               General
             </.tabs_trigger>
-            <.tabs_trigger builder={builder} value="modes">
+            <.tabs_trigger
+              builder={builder}
+              value="modes"
+              phx-click={@on_tab}
+              phx-value-tab="modes"
+            >
               <:icon><Icons.icon_tab_modes class="w-4 h-4" /></:icon>
               Modes
             </.tabs_trigger>
-            <.tabs_trigger builder={builder} value="bans">
+            <.tabs_trigger
+              builder={builder}
+              value="bans"
+              phx-click={@on_tab}
+              phx-value-tab="bans"
+            >
               <:icon><Icons.icon_tab_bans class="w-4 h-4" /></:icon>
               Bans
             </.tabs_trigger>
-            <.tabs_trigger builder={builder} value="ban_exceptions">
+            <.tabs_trigger
+              builder={builder}
+              value="ban_exceptions"
+              phx-click={@on_tab}
+              phx-value-tab="ban_exceptions"
+            >
               <:icon><Icons.icon_tab_exceptions class="w-4 h-4" /></:icon>
               Ban Exc.
             </.tabs_trigger>
-            <.tabs_trigger builder={builder} value="invite_exceptions">
+            <.tabs_trigger
+              builder={builder}
+              value="invite_exceptions"
+              phx-click={@on_tab}
+              phx-value-tab="invite_exceptions"
+            >
               <:icon><Icons.icon_tab_exceptions class="w-4 h-4" /></:icon>
               Invite Exc.
             </.tabs_trigger>
@@ -124,8 +159,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               operator={@operator}
               on_add={@on_ban_add}
               on_remove={@on_ban_remove}
+              on_select={@on_ban_select}
               empty_label="No bans set on this channel."
-              select_param="mask"
             />
           </.tabs_content>
 
@@ -136,8 +171,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               operator={@operator}
               on_add={@on_ban_ex_add}
               on_remove={@on_ban_ex_remove}
+              on_select={@on_ban_ex_select}
               empty_label="No ban exceptions set."
-              select_param="mask"
             />
           </.tabs_content>
 
@@ -148,8 +183,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               operator={@operator}
               on_add={@on_invite_ex_add}
               on_remove={@on_invite_ex_remove}
+              on_select={@on_invite_ex_select}
               empty_label="No invite exceptions set."
-              select_param="mask"
             />
           </.tabs_content>
         </.tabs>
@@ -327,30 +362,43 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
       <.separator />
 
-      <div>
+      <form :if={@operator} phx-submit={@on_topic_save}>
         <label class="text-xs font-bold block mb-1">Topic:</label>
         <.input
           type="text"
           name="topic"
           value={@topic}
           placeholder="No topic set"
-          disabled={!@operator}
           class="text-xs h-8"
         />
         <div :if={@topic_set_by} class="text-[10px] text-muted-foreground mt-1">
           Set by {@topic_set_by}
           <span :if={@topic_set_at}>on {@topic_set_at}</span>
         </div>
+        <.button type="submit" size="sm" class="mt-2">
+          <:icon><Icons.icon_btn_set_topic /></:icon>
+          Save Topic
+        </.button>
+      </form>
+
+      <div :if={!@operator}>
+        <label class="text-xs font-bold block mb-1">Topic:</label>
+        <.input
+          type="text"
+          name="topic"
+          value={@topic}
+          placeholder="No topic set"
+          disabled
+          class="text-xs h-8"
+        />
+        <div :if={@topic_set_by} class="text-[10px] text-muted-foreground mt-1">
+          Set by {@topic_set_by}
+          <span :if={@topic_set_at}>on {@topic_set_at}</span>
+        </div>
+        <p class="text-[10px] text-muted-foreground italic mt-2">
+          You must be a channel operator to edit the topic.
+        </p>
       </div>
-
-      <.button :if={@operator} size="sm" phx-click={@on_topic_save}>
-        <:icon><Icons.icon_btn_set_topic /></:icon>
-        Save Topic
-      </.button>
-
-      <p :if={!@operator} class="text-[10px] text-muted-foreground italic">
-        You must be a channel operator to edit the topic.
-      </p>
     </div>
     """
   end
@@ -364,83 +412,118 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   defp modes_tab(assigns) do
     ~H"""
     <div class="space-y-2">
-      <div class="shadow-retro-field bg-white p-2">
+      <form :if={@operator} phx-submit={@on_mode_apply}>
+        <div class="shadow-retro-field bg-white p-2">
+          <p class="text-xs font-bold mb-2">Channel Modes:</p>
+
+          <div class="space-y-1">
+            <label class="inline-flex items-center gap-2 text-xs cursor-pointer">
+              <input
+                type="checkbox"
+                name="moderated"
+                value="true"
+                checked={@modes[:moderated] || false}
+              /> Moderated (+m)
+            </label>
+          </div>
+          <div class="space-y-1 mt-1">
+            <label class="inline-flex items-center gap-2 text-xs cursor-pointer">
+              <input
+                type="checkbox"
+                name="invite_only"
+                value="true"
+                checked={@modes[:invite_only] || false}
+              /> Invite Only (+i)
+            </label>
+          </div>
+          <div class="space-y-1 mt-1">
+            <label class="inline-flex items-center gap-2 text-xs cursor-pointer">
+              <input
+                type="checkbox"
+                name="topic_lock"
+                value="true"
+                checked={@modes[:topic_lock] || false}
+              /> Topic Lock (+t)
+            </label>
+          </div>
+
+          <div class="mt-2 flex items-center gap-2">
+            <label class="inline-flex items-center gap-2 text-xs cursor-pointer">
+              <input
+                type="checkbox"
+                name="has_key"
+                value="true"
+                checked={@modes[:key] != nil}
+              /> Key (+k):
+            </label>
+            <.input
+              type="text"
+              name="key_value"
+              value={@modes[:key] || ""}
+              class="text-xs h-7 w-24"
+              data-testid="cc-key-input"
+            />
+          </div>
+          <div class="mt-2 flex items-center gap-2">
+            <label class="inline-flex items-center gap-2 text-xs cursor-pointer">
+              <input
+                type="checkbox"
+                name="has_limit"
+                value="true"
+                checked={@modes[:limit] != nil}
+              /> Limit (+l):
+            </label>
+            <.input
+              type="number"
+              name="limit_value"
+              min="1"
+              value={@modes[:limit] || ""}
+              class="text-xs h-7 w-20"
+              data-testid="cc-limit-input"
+            />
+          </div>
+        </div>
+
+        <.button type="submit" size="sm" class="mt-2">
+          <:icon><Icons.icon_btn_apply /></:icon>
+          Apply Modes
+        </.button>
+      </form>
+
+      <div :if={!@operator} class="shadow-retro-field bg-white p-2">
         <p class="text-xs font-bold mb-2">Channel Modes:</p>
-
         <div class="space-y-1">
-          <label class={
-            classes([
-              "inline-flex items-center gap-2 text-xs",
-              if(@operator, do: "cursor-pointer", else: "opacity-50 pointer-events-none")
-            ])
-          }>
-            <.checkbox
-              name="mode_moderated"
-              value={@modes[:moderated] || false}
-            /> Moderated (+m)
+          <label class="inline-flex items-center gap-2 text-xs opacity-50">
+            <input type="checkbox" disabled checked={@modes[:moderated] || false} /> Moderated (+m)
           </label>
         </div>
         <div class="space-y-1 mt-1">
-          <label class={
-            classes([
-              "inline-flex items-center gap-2 text-xs",
-              if(@operator, do: "cursor-pointer", else: "opacity-50 pointer-events-none")
-            ])
-          }>
-            <.checkbox
-              name="mode_invite_only"
-              value={@modes[:invite_only] || false}
-            /> Invite Only (+i)
+          <label class="inline-flex items-center gap-2 text-xs opacity-50">
+            <input type="checkbox" disabled checked={@modes[:invite_only] || false} />
+            Invite Only (+i)
           </label>
         </div>
         <div class="space-y-1 mt-1">
-          <label class={
-            classes([
-              "inline-flex items-center gap-2 text-xs",
-              if(@operator, do: "cursor-pointer", else: "opacity-50 pointer-events-none")
-            ])
-          }>
-            <.checkbox
-              name="mode_topic_lock"
-              value={@modes[:topic_lock] || false}
-            /> Topic Lock (+t)
+          <label class="inline-flex items-center gap-2 text-xs opacity-50">
+            <input type="checkbox" disabled checked={@modes[:topic_lock] || false} /> Topic Lock (+t)
           </label>
         </div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <div>
-          <label class="text-xs font-bold block mb-1">Channel Key (+k):</label>
-          <.input
-            type="text"
-            name="mode_key"
-            value={@modes[:key]}
-            placeholder="No key set"
-            disabled={!@operator}
-            class="text-xs h-8"
-          />
+        <div class="mt-1">
+          <label class="inline-flex items-center gap-2 text-xs opacity-50">
+            <input type="checkbox" disabled checked={@modes[:key] != nil} /> Key (+k)
+            <span :if={@modes[:key]}>(set)</span>
+          </label>
         </div>
-        <div>
-          <label class="text-xs font-bold block mb-1">User Limit (+l):</label>
-          <.input
-            type="number"
-            name="mode_limit"
-            value={@modes[:limit]}
-            placeholder="No limit"
-            disabled={!@operator}
-            class="text-xs h-8"
-          />
+        <div class="mt-1">
+          <label class="inline-flex items-center gap-2 text-xs opacity-50">
+            <input type="checkbox" disabled checked={@modes[:limit] != nil} /> Limit (+l)
+            <span :if={@modes[:limit]}>({@modes[:limit]})</span>
+          </label>
         </div>
+        <p class="text-[10px] text-muted-foreground italic mt-2">
+          You must be a channel operator to change modes.
+        </p>
       </div>
-
-      <.button :if={@operator} size="sm" phx-click={@on_mode_apply}>
-        <:icon><Icons.icon_btn_apply /></:icon>
-        Apply Modes
-      </.button>
-
-      <p :if={!@operator} class="text-[10px] text-muted-foreground italic">
-        You must be a channel operator to change modes.
-      </p>
     </div>
     """
   end
@@ -452,8 +535,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :operator, :boolean, default: false
   attr :on_add, :any, default: nil
   attr :on_remove, :any, default: nil
+  attr :on_select, :any, default: nil, doc: "Row select event (phx-value-nickname)"
   attr :empty_label, :string, default: "No entries."
-  attr :select_param, :string, default: "mask"
 
   defp list_tab(assigns) do
     has_selection = assigns.selected != nil
@@ -475,8 +558,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             class={
               classes(["cursor-pointer text-xs", @selected == entry.mask && "bg-primary text-white"])
             }
-            phx-click={@on_add && "select_entry"}
-            phx-value-mask={entry.mask}
+            phx-click={@on_select}
+            phx-value-nickname={entry.mask}
           >
             <.table_cell class="px-2 py-1 text-xs font-mono">{entry.mask}</.table_cell>
             <.table_cell class="px-2 py-1 text-xs">{entry.set_by}</.table_cell>

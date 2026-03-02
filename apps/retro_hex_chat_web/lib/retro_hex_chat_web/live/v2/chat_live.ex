@@ -630,6 +630,10 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       show_notify_list: false,
       highlight_channels: MapSet.new(),
       highlight_selected: nil,
+      highlight_selected_color: nil,
+      selected_note: "",
+      selected_contact_note: "",
+      selected_notify_note: "",
       show_highlight_add_dialog: false,
       show_highlight_dialog: false,
       show_highlight_edit_dialog: false,
@@ -976,6 +980,29 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       ChatLive.Helpers.push_status_message(acc, line, :service)
     end)
   end
+
+  @spec cheatsheet_bindings() :: [map()]
+  defp cheatsheet_bindings do
+    KeyBindings.defaults()
+    |> KeyBindings.categories()
+    |> Enum.map(fn {category, entries} ->
+      %{
+        category: KeyBindings.category_label(category),
+        items:
+          Enum.map(entries, fn entry ->
+            %{
+              action: entry.label,
+              keys: format_binding(entry.binding),
+              description: entry.description
+            }
+          end)
+      }
+    end)
+  end
+
+  @spec format_binding(map() | nil) :: String.t()
+  defp format_binding(nil), do: "—"
+  defp format_binding(binding), do: KeyBindings.to_display_string(binding)
 
   defp push_initial_preferences(socket) do
     socket
