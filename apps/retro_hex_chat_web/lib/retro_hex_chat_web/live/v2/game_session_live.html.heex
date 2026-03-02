@@ -1,6 +1,10 @@
 <%!-- Expired state --%>
 <div :if={assigns[:expired]} class="flex flex-col min-h-screen bg-surface">
-  <.app_header />
+  <.app_header>
+    <:panels>
+      <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
+    </:panels>
+  </.app_header>
   <div class="flex-1 flex items-center justify-center p-4">
     <div class="shadow-retro-raised bg-surface p-6 text-center max-w-sm">
       <p class="text-sm font-bold mb-2">Game Session Ended</p>
@@ -19,7 +23,11 @@
   phx-hook="GameSessionHook"
   class="flex flex-col min-h-screen bg-surface"
 >
-  <.app_header />
+  <.app_header>
+    <:panels>
+      <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
+    </:panels>
+  </.app_header>
   <div id="game-webrtc" phx-hook="GameWebRTCHook" class="hidden"></div>
   <div class="flex-1 flex items-center justify-center p-4">
     <.game_canvas
@@ -41,7 +49,11 @@
   phx-hook="GameSessionHook"
   class="flex flex-col min-h-screen bg-surface"
 >
-  <.app_header />
+  <.app_header>
+    <:panels>
+      <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
+    </:panels>
+  </.app_header>
   <div class="flex-1 flex items-center justify-center p-4">
     <.game_lobby
       id="game-lobby"

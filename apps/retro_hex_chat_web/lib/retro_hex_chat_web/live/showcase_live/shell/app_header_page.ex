@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.AppHeaderPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.AppHeader
+  import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.ShowcaseHelpers
 
   @impl true
@@ -42,27 +43,36 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.AppHeaderPage do
       </.showcase_card>
 
       <.showcase_card
-        title="With Panels Slot"
-        description="Extra toolbar content rendered via the panels slot."
+        title="With Menu Bar (Disconnected)"
+        description="macOS-style menu bar with disabled menus (only Help active)."
       >
         <.app_header>
           <:panels>
-            <span class="text-xs px-retro-4 py-[2px] shadow-retro-raised bg-surface cursor-pointer hover:bg-gray-100 ml-2">
-              File
-            </span>
-            <span class="text-xs px-retro-4 py-[2px] shadow-retro-raised bg-surface cursor-pointer hover:bg-gray-100">
-              Edit
-            </span>
-            <span class="text-xs px-retro-4 py-[2px] shadow-retro-raised bg-surface cursor-pointer hover:bg-gray-100">
-              View
-            </span>
+            <.menu_bar_app id="menubar-demo-disconnected" connected={false} />
           </:panels>
         </.app_header>
         <.code_example>
           &lt;.app_header&gt;
           &lt;:panels&gt;
-          &lt;span&gt;File&lt;/span&gt;
-          &lt;span&gt;Edit&lt;/span&gt;
+          &lt;.menu_bar_app connected={false} /&gt;
+          &lt;/:panels&gt;
+          &lt;/.app_header&gt;
+        </.code_example>
+      </.showcase_card>
+
+      <.showcase_card
+        title="With Menu Bar (Connected)"
+        description="macOS-style menu bar with all menus enabled."
+      >
+        <.app_header>
+          <:panels>
+            <.menu_bar_app id="menubar-demo-connected" phx-hook="MenuBarHook" connected={true} />
+          </:panels>
+        </.app_header>
+        <.code_example>
+          &lt;.app_header&gt;
+          &lt;:panels&gt;
+          &lt;.menu_bar_app connected={true} on_action="toolbar_action" /&gt;
           &lt;/:panels&gt;
           &lt;/.app_header&gt;
         </.code_example>

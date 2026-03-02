@@ -17,6 +17,8 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
   import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.Components.UI.Alert
   import RetroHexChatWeb.Components.UI.Fieldset
+  import RetroHexChatWeb.Components.UI.AppHeader
+  import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Icons
 
   alias Phoenix.LiveView.JS
@@ -161,50 +163,62 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <div
-      class="flex items-center justify-center min-h-screen p-4"
-      id="connect-root"
-      phx-hook="ConnectFormHook"
-    >
-      <.window class="w-full max-w-md">
-        <.window_title_bar title="Connect to RetroHexChat" controls={[:close]}>
-          <:icon><.icon_connect class="w-4 h-4" /></:icon>
-        </.window_title_bar>
-        <.window_body class="p-4">
-          <.alert :if={@flash["error"]} variant="destructive" class="mb-4" data-testid="session-alert">
-            <:icon><.icon_warning /></:icon>
-            <.alert_description>{@flash["error"]}</.alert_description>
-          </.alert>
+    <div class="flex flex-col min-h-screen">
+      <.app_header logo_href={~p"/v2/connect"}>
+        <:panels>
+          <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
+        </:panels>
+      </.app_header>
+      <div
+        class="flex-1 flex items-center justify-center p-4"
+        id="connect-root"
+        phx-hook="ConnectFormHook"
+      >
+        <.window class="w-full max-w-md">
+          <.window_title_bar title="Connect to RetroHexChat" controls={[:close]}>
+            <:icon><.icon_connect class="w-4 h-4" /></:icon>
+          </.window_title_bar>
+          <.window_body class="p-4">
+            <.alert
+              :if={@flash["error"]}
+              variant="destructive"
+              class="mb-4"
+              data-testid="session-alert"
+            >
+              <:icon><.icon_warning /></:icon>
+              <.alert_description>{@flash["error"]}</.alert_description>
+            </.alert>
 
-          <%= case @step do %>
-            <% :nickname -> %>
-              <.nickname_step
-                nickname={@nickname}
-                nickname_error={@nickname_error}
-              />
-            <% :password -> %>
-              <.password_step
-                nickname={@nickname}
-                password={@password}
-                password_error={@password_error}
-              />
-            <% :register -> %>
-              <.register_step
-                nickname={@nickname}
-                password={@password}
-                password_confirm={@password_confirm}
-                password_error={@password_error}
-              />
-          <% end %>
-        </.window_body>
-      </.window>
+            <%= case @step do %>
+              <% :nickname -> %>
+                <.nickname_step
+                  nickname={@nickname}
+                  nickname_error={@nickname_error}
+                />
+              <% :password -> %>
+                <.password_step
+                  nickname={@nickname}
+                  password={@password}
+                  password_error={@password_error}
+                />
+              <% :register -> %>
+                <.register_step
+                  nickname={@nickname}
+                  password={@password}
+                  password_confirm={@password_confirm}
+                  password_error={@password_error}
+                />
+            <% end %>
+          </.window_body>
+        </.window>
 
-      <form id="connect-session-form" action={~p"/v2/chat/session"} method="post" class="hidden">
-        <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
-        <input type="hidden" name="nickname" value={@nickname} />
-        <input :if={@auth_token} type="hidden" name="auth_token" value={@auth_token} />
-        <input type="hidden" name="timezone" id="connect-timezone-input" value="Etc/UTC" />
-      </form>
+        <form id="connect-session-form" action={~p"/v2/chat/session"} method="post" class="hidden">
+          <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+          <input type="hidden" name="nickname" value={@nickname} />
+          <input :if={@auth_token} type="hidden" name="auth_token" value={@auth_token} />
+          <input type="hidden" name="timezone" id="connect-timezone-input" value="Etc/UTC" />
+        </form>
+      </div>
     </div>
     """
   end

@@ -1,14 +1,18 @@
 defmodule RetroHexChatWeb.Components.UI.AppHeader do
   @moduledoc """
-  Application header bar component for the showcase design system.
+  Compact application header bar for the V2 interface.
 
-  Renders a Win98-style application header with a hex stone logo icon
-  and toolbar buttons (disconnect, menu, help) grouped to the left.
-  Height is 42px. Icon-only — no text branding.
+  Renders a single-line header (28px) with a small hex stone logo (16px)
+  and slots for panels (menu bar, status bar) and mobile action buttons.
 
   ## Usage
 
-      <.app_header logo_href="/showcase" />
+      <.app_header logo_href="/v2/chat">
+        <:panels>
+          <.menu_bar_app connected={true} on_action="toolbar_action" />
+          <.status_bar_app class="ml-auto" ... />
+        </:panels>
+      </.app_header>
   """
   use RetroHexChatWeb.Component
 
@@ -28,7 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
     <header
       class={
         classes([
-          "bg-surface shadow-retro-window flex items-center h-[48px] md:h-[64px] shrink-0 px-[4px]",
+          "bg-surface shadow-retro-window flex items-center h-7 shrink-0 px-1",
           @class
         ])
       }
@@ -39,30 +43,17 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
       <.logo_link href={@logo_href} />
 
       <%!-- Mobile action buttons --%>
-      <div :if={@mobile_actions != []} class="flex items-center gap-1 ml-2 md:hidden">
+      <div :if={@mobile_actions != []} class="flex items-center gap-1 ml-1 md:hidden">
         {render_slot(@mobile_actions)}
       </div>
 
       <%!-- Optional panels --%>
-      <div :if={@panels != []} class="flex items-center ml-[4px] flex-1">
+      <div :if={@panels != []} class="flex items-center ml-1 flex-1">
         {render_slot(@panels)}
       </div>
 
-      <%!-- Spacer --%>
-      <div class="flex-1" />
-
-      <%!-- Help (right, hidden on mobile) --%>
-      <a
-        href="/chat/help"
-        title="Help"
-        target="_blank"
-        rel="noopener"
-        class="no-underline hidden md:inline-flex"
-      >
-        <.header_button label="Help">
-          <Icons.icon_btn_help_topics class="w-[32px] h-[32px]" />
-        </.header_button>
-      </a>
+      <%!-- Spacer (only if no panels) --%>
+      <div :if={@panels == []} class="flex-1" />
     </header>
     """
   end
@@ -74,7 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
   defp logo_link(%{href: nil} = assigns) do
     ~H"""
     <div class="flex items-center px-[2px]">
-      <Icons.icon_hex_stone class="w-[32px] h-[32px] md:w-[48px] md:h-[48px] shrink-0" />
+      <Icons.icon_hex_stone class="w-4 h-4 shrink-0" />
     </div>
     """
   end
@@ -82,33 +73,8 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
   defp logo_link(assigns) do
     ~H"""
     <a href={@href} class="flex items-center px-[2px] no-underline hover:opacity-80">
-      <Icons.icon_hex_stone class="w-[32px] h-[32px] md:w-[48px] md:h-[48px] shrink-0" />
+      <Icons.icon_hex_stone class="w-4 h-4 shrink-0" />
     </a>
-    """
-  end
-
-  attr :label, :string, required: true
-  attr :disabled, :boolean, default: false
-  slot :inner_block, required: true
-
-  defp header_button(assigns) do
-    ~H"""
-    <button
-      type="button"
-      title={@label}
-      disabled={@disabled}
-      class={[
-        "inline-flex items-center justify-center p-0",
-        "w-[32px] min-w-[32px] h-[32px] min-h-[32px]",
-        "border border-transparent focus:outline-none bg-surface",
-        if(@disabled,
-          do: "opacity-50 cursor-not-allowed",
-          else: "cursor-pointer hover:shadow-retro-raised active:shadow-retro-sunken"
-        )
-      ]}
-    >
-      {render_slot(@inner_block)}
-    </button>
     """
   end
 end

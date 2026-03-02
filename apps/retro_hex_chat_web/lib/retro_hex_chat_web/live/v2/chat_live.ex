@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
 
   # ── Shell components ──────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.AppHeader
-  import RetroHexChatWeb.Components.UI.ToolbarApp
+  import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.StatusBarApp
 
   # ── Chat components ──────────────────────────────────────────

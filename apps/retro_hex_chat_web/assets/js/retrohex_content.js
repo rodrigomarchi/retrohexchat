@@ -20,8 +20,11 @@ hljs.registerLanguage("heex", (hljs) => {
   };
 });
 
+import MenuBarHook from "./hooks/ui/menu_bar_hook";
+
 // Hook to highlight code blocks after LiveView mounts/updates.
 const Hooks = {
+  MenuBarHook: MenuBarHook,
   Highlight: {
     mounted() {
       this.highlightAll();

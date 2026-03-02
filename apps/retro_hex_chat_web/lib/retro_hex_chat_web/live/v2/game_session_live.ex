@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
   require Logger
 
   import RetroHexChatWeb.Components.UI.AppHeader
+  import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.GameLobby
   import RetroHexChatWeb.Components.UI.GameCanvas
 

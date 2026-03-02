@@ -23,6 +23,7 @@ import SearchHighlightHook from "./hooks/chat/search_highlight_hook";
 import ShortcutDispatcherHook from "./hooks/input/shortcut_dispatcher_hook";
 import SoundHook from "./hooks/input/sound_hook";
 import TitleFlashHook from "./hooks/notifications/title_flash_hook";
+import MenuBarHook from "./hooks/ui/menu_bar_hook";
 import ToolbarGroupHook from "./hooks/ui/toolbar_group_hook";
 import ConversationsHook from "./hooks/ui/conversations_hook";
 import ContextualTipsHook from "./hooks/ui/contextual_tips_hook";
@@ -85,6 +86,7 @@ const Hooks = {
   ShortcutDispatcherHook: ShortcutDispatcherHook,
   SoundHook: SoundHook,
   TitleFlashHook: TitleFlashHook,
+  MenuBarHook: MenuBarHook,
   ToolbarGroupHook: ToolbarGroupHook,
   ConversationsHook: ConversationsHook,
   URLCatcherHook: URLCatcherHook,

@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.V2.SoloSessionLive do
   require Logger
 
   import RetroHexChatWeb.Components.UI.AppHeader
+  import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.SoloLobby
 
   alias RetroHexChat.Arcade

@@ -30,39 +30,17 @@
 >
   <%!-- App header with toolbar & status bar --%>
   <.app_header logo_href={~p"/v2/chat"}>
-    <:mobile_actions>
-      <button
-        type="button"
-        phx-click="toggle_conversations"
-        class="inline-flex items-center justify-center w-8 h-8 bg-surface cursor-pointer
-               hover:shadow-retro-raised active:shadow-retro-sunken"
-        title="Channels"
-        aria-label="Toggle channels"
-      >
-        <RetroHexChatWeb.Icons.icon_tab_conversations class="w-5 h-5" />
-      </button>
-      <button
-        type="button"
-        phx-click="toggle_nicklist"
-        class="inline-flex items-center justify-center w-8 h-8 bg-surface cursor-pointer
-               hover:shadow-retro-raised active:shadow-retro-sunken"
-        title="Users"
-        aria-label="Toggle user list"
-      >
-        <RetroHexChatWeb.Icons.icon_tab_nicklist class="w-5 h-5" />
-      </button>
-    </:mobile_actions>
     <:panels>
-      <.toolbar_app
-        :if={@show_toolbar}
-        id="toolbar"
-        phx-hook="ToolbarGroupHook"
+      <.menu_bar_app
+        id="menubar"
+        phx-hook="MenuBarHook"
         connected={true}
         is_admin={admin?(@session)}
         on_action="toolbar_action"
       />
       <.status_bar_app
         :if={@show_statusbar}
+        class="ml-auto"
         nickname={@session.nickname}
         channel={@session.active_pm || @session.active_channel}
         user_count={length(@channel_users)}

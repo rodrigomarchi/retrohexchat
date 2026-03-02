@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
 
   import RetroHexChatWeb.Components.UI.TreeView
   import RetroHexChatWeb.Components.UI.AppHeader
+  import RetroHexChatWeb.Components.UI.MenuBarApp
 
   alias RetroHexChatWeb.Icons
 
@@ -160,7 +161,11 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
 
     ~H"""
     <div class="min-h-screen bg-desktop font-system text-text flex flex-col">
-      <.app_header logo_href="/showcase" />
+      <.app_header logo_href="/showcase">
+        <:panels>
+          <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
+        </:panels>
+      </.app_header>
 
       <div class="flex-1 m-2 md:m-4 md:mt-2">
         <div class="shadow-retro-window bg-surface p-1">

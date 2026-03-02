@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   require Logger
 
   import RetroHexChatWeb.Components.UI.AppHeader
+  import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.P2PLobby
   import RetroHexChatWeb.Components.UI.FileTransfer
   import RetroHexChatWeb.Components.UI.MediaControls

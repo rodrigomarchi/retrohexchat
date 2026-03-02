@@ -86,6 +86,7 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
 .toolbar-group { position: relative; display: inline-flex; }
 .toolbar-group-dropdown { position: absolute; top: 100%; left: 0; z-index: 50; }
 .toolbar-group-dropdown:not(.u-hidden) { display: flex; flex-direction: column; }
+[data-menubar-dropdown]:not(.u-hidden) { display: flex; flex-direction: column; }
 
 /* ── IRC format code styles ──────────────────────────────── */
 .irc-bold { font-weight: bold; }

@@ -52,6 +52,10 @@ Connection
 failed
 # False positive — "finished" is a comparison value in solo_lobby.ex class={...} expression
 finished
+# Menu bar — Tailwind classes toggled via classList in MenuBarHook
+bg-primary
+text-primary-foreground
+hover:bg-accent
 # Help layout — uses old app_header class from controller-era layout
 app-header-panels
 
