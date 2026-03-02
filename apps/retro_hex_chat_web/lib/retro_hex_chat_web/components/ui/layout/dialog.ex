@@ -39,6 +39,14 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
       phx-hide-modal={@on_cancel |> hide_modal(@id)}
       class="relative z-modal hidden group/dialog"
     >
+      <%!-- Server-driven show/hide trigger: mounts when show=true, removed when show=false --%>
+      <div
+        :if={@show}
+        id={"#{@id}-show-trigger"}
+        phx-mounted={JS.exec("phx-show-modal", to: "##{@id}")}
+        phx-remove={JS.exec("phx-hide-modal", to: "##{@id}")}
+        class="hidden"
+      />
       <%!-- Overlay --%>
       <div
         id={"#{@id}-bg"}
