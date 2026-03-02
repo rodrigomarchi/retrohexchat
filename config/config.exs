@@ -45,18 +45,6 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.25.4",
-  retro_hex_chat_web: [
-    args:
-      ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
-    cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
-    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
-  ],
-  retro_hex_chat_web_css: [
-    args:
-      ~w(css/app.css --bundle --target=es2022 --outdir=../priv/static/assets/css --loader:.woff=file --loader:.woff2=file),
-    cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
-    env: %{}
-  ],
   retro_hex_chat_web_retrohex_content_js: [
     args:
       ~w(js/retrohex_content.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),

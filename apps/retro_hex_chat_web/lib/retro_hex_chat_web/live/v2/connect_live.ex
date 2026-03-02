@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
   @moduledoc """
   v2 connection dialog using new UI components.
   Users enter nickname and connect. If registered, a password step is shown.
-  On success, a hidden form POSTs to `/v2/chat/session`.
+  On success, a hidden form POSTs to `/chat/session`.
   """
   use Phoenix.LiveView
 
@@ -214,7 +214,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
           </.window_body>
         </.window>
 
-        <form id="connect-session-form" action={~p"/v2/chat/session"} method="post" class="hidden">
+        <form id="connect-session-form" action={~p"/chat/session"} method="post" class="hidden">
           <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
           <input type="hidden" name="nickname" value={@nickname} />
           <input :if={@auth_token} type="hidden" name="auth_token" value={@auth_token} />

@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
       render_change(view, "search_input", %{"query" => "hello"})
 
       html = render_change(view, "search_input", %{"query" => ""})
-      assert html =~ "No results"
+      assert html =~ "0/0"
     end
   end
 
@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
       render_click(view, "toggle_search")
 
       html = render_click(view, "search_highlight_count", %{"count" => 5})
-      assert html =~ "1 of 5"
+      assert html =~ "1/5"
     end
 
     test "shows error when JS hook reports invalid regex", %{conn: conn} do
@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
         })
 
       assert html =~ "Invalid regex"
-      assert html =~ "search-error"
+      assert html =~ "text-error"
     end
   end
 
@@ -57,14 +57,14 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
 
       # Current index starts at 1, next goes to 2
       html = render_click(view, "search_next")
-      assert html =~ "2 of 3"
+      assert html =~ "2/3"
 
       html = render_click(view, "search_next")
-      assert html =~ "3 of 3"
+      assert html =~ "3/3"
 
       # Wrap to 1
       html = render_click(view, "search_next")
-      assert html =~ "1 of 3"
+      assert html =~ "1/3"
     end
 
     test "search_prev wraps around", %{conn: conn} do
@@ -74,10 +74,10 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
 
       # From 1, prev wraps to 3
       html = render_click(view, "search_prev")
-      assert html =~ "3 of 3"
+      assert html =~ "3/3"
 
       html = render_click(view, "search_prev")
-      assert html =~ "2 of 3"
+      assert html =~ "2/3"
     end
   end
 
@@ -88,7 +88,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
       render_click(view, "search_highlight_count", %{"count" => 3})
 
       html = render_click(view, "search_navigate", %{"key" => "ArrowDown"})
-      assert html =~ "2 of 3"
+      assert html =~ "2/3"
     end
 
     test "ArrowUp triggers search_prev", %{conn: conn} do
@@ -97,7 +97,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
       render_click(view, "search_highlight_count", %{"count" => 3})
 
       html = render_click(view, "search_navigate", %{"key" => "ArrowUp"})
-      assert html =~ "3 of 3"
+      assert html =~ "3/3"
     end
 
     test "other keys in search_navigate are no-op", %{conn: conn} do
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
       render_click(view, "toggle_search")
 
       html = render_click(view, "search_toggle_filter", %{"filter" => "case_sensitive"})
-      assert html =~ "search-filters"
+      assert html =~ "Case sensitive"
     end
 
     test "toggling regex with invalid query shows error", %{conn: conn} do
@@ -133,7 +133,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
       render_change(view, "search_input", %{"query" => "error|warn"})
 
       html = render_click(view, "search_toggle_filter", %{"filter" => "regex"})
-      refute html =~ "search-error"
+      refute html =~ "text-error"
     end
 
     test "toggling my_mentions updates assigns", %{conn: conn} do
@@ -141,7 +141,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
       render_click(view, "toggle_search")
 
       html = render_click(view, "search_toggle_filter", %{"filter" => "my_mentions"})
-      assert html =~ "search-filters"
+      assert html =~ "Case sensitive"
     end
   end
 
@@ -151,13 +151,14 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
       render_click(view, "toggle_search")
 
       html = render_click(view, "search_toggle_filter", %{"filter" => "history"})
-      assert html =~ "search-filters"
+      assert html =~ "Case sensitive"
     end
 
     test "history checkbox renders in search bar", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "SrchHi2"), "/chat")
-      html = render_click(view, "toggle_search")
-      assert html =~ "History"
+      render_click(view, "toggle_search")
+      html = render(view)
+      assert html =~ "Search history"
     end
   end
 

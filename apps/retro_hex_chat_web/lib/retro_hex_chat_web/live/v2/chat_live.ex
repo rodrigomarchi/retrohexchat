@@ -176,7 +176,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
         end
 
       {:error, _} ->
-        {:ok, push_navigate(socket, to: ~p"/v2/connect")}
+        {:ok, push_navigate(socket, to: ~p"/connect")}
     end
   end
 
@@ -850,13 +850,26 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   end
 
   defp channel_central_bans(nil), do: []
-  defp channel_central_bans(state), do: Map.get(state, :bans, [])
+
+  defp channel_central_bans(state) do
+    state |> Map.get(:bans, []) |> Enum.map(&to_list_entry/1)
+  end
 
   defp channel_central_ban_exceptions(nil), do: []
-  defp channel_central_ban_exceptions(state), do: Map.get(state, :ban_exceptions, [])
+
+  defp channel_central_ban_exceptions(state) do
+    state |> Map.get(:ban_exceptions, []) |> Enum.map(&to_list_entry/1)
+  end
 
   defp channel_central_invite_exceptions(nil), do: []
-  defp channel_central_invite_exceptions(state), do: Map.get(state, :invite_exceptions, [])
+
+  defp channel_central_invite_exceptions(state) do
+    state |> Map.get(:invite_exceptions, []) |> Enum.map(&to_list_entry/1)
+  end
+
+  @spec to_list_entry(map() | String.t()) :: map()
+  defp to_list_entry(%{mask: _} = map), do: map
+  defp to_list_entry(nick) when is_binary(nick), do: %{mask: nick, set_by: "—", set_at: "—"}
 
   defp channel_central_topic(nil), do: ""
   defp channel_central_topic(state), do: Map.get(state, :topic, "")

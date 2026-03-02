@@ -26,9 +26,6 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "dev_only_secret_key_base_not_for_production_run_mix_phx_gen_secret_to_replace",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:retro_hex_chat_web, ~w(--sourcemap=inline --watch)]},
-    esbuild:
-      {Esbuild, :install_and_run, [:retro_hex_chat_web_css, ~w(--sourcemap=inline --watch)]},
     esbuild:
       {Esbuild, :install_and_run,
        [:retro_hex_chat_web_retrohex_content_js, ~w(--sourcemap=inline --watch)]},

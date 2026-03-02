@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
       # Should be on #wn_test1 now; switch back to #lobby
       html = render_click(view, "window_next")
       # Verify we're no longer on #wn_test1 (wrapped or moved to next)
-      assert html =~ "chat-area"
+      assert html =~ "chat-messages"
     end
 
     test "window_prev switches to previous channel", %{conn: conn} do
@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
       Process.sleep(50)
 
       html = render_click(view, "window_prev")
-      assert html =~ "chat-area"
+      assert html =~ "chat-messages"
     end
   end
 
@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
 
       # Select window 1 (first in sorted list)
       html = render_click(view, "window_select", %{"index" => 1})
-      assert html =~ "chat-area"
+      assert html =~ "chat-messages"
     end
 
     test "window_select out of bounds is no-op", %{conn: conn} do
@@ -47,7 +47,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
 
       # Select window 99 — should be no-op
       html = render_click(view, "window_select", %{"index" => 99})
-      assert html =~ "chat-area"
+      assert html =~ "chat-messages"
     end
   end
 
@@ -63,7 +63,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
           "altKey" => false
         })
 
-      assert html =~ "chat-area"
+      assert html =~ "chat-messages"
     end
 
     test "Ctrl+Shift+[ triggers window_prev via window_keydown", %{conn: conn} do
@@ -77,14 +77,14 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
           "altKey" => false
         })
 
-      assert html =~ "chat-area"
+      assert html =~ "chat-messages"
     end
 
     test "Ctrl+Shift+1 triggers window_1 via shortcut_action", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "WinKb3"), "/chat")
 
       html = render_click(view, "shortcut_action", %{"action" => "window_1"})
-      assert html =~ "chat-area"
+      assert html =~ "chat-messages"
     end
   end
 end

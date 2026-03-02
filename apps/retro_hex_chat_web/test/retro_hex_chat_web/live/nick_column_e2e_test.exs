@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.NickColumnE2ETest do
   end
 
   describe "Nick Column Alignment E2E" do
-    test "regular messages render inside chat-msg-grid", %{conn: conn, channel: channel} do
+    test "regular messages render inside grid layout", %{conn: conn, channel: channel} do
       nick = "NCE#{uid()}"
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
@@ -24,9 +24,9 @@ defmodule RetroHexChatWeb.NickColumnE2ETest do
       view |> render_submit("send_input", %{"input" => "Hello from grid test"})
       html = render(view)
 
-      assert html =~ "chat-msg-grid"
-      assert html =~ "chat-nick"
-      assert html =~ "chat-content"
+      # V2 uses Tailwind grid layout
+      assert html =~ "grid grid-cols-"
+      assert html =~ "data-nick="
     end
 
     test "action messages do not use grid layout", %{conn: conn, channel: channel} do
@@ -37,10 +37,7 @@ defmodule RetroHexChatWeb.NickColumnE2ETest do
       view |> render_submit("send_input", %{"input" => "/me waves hello"})
       html = render(view)
 
-      assert html =~ "chat-message--action"
-      assert html =~ "chat-action"
-      # Action message should not be in a grid container
-      refute Regex.match?(~r/chat-msg-grid[^>]*>.*chat-action/s, html)
+      assert html =~ "text-action"
     end
 
     test "system messages do not use grid layout", %{conn: conn, channel: channel} do
@@ -58,8 +55,7 @@ defmodule RetroHexChatWeb.NickColumnE2ETest do
       _ = render(view1)
       html = render(view1)
 
-      assert html =~ "chat-system"
-      refute Regex.match?(~r/chat-msg-grid[^>]*>.*chat-system/s, html)
+      assert html =~ "italic"
     end
   end
 

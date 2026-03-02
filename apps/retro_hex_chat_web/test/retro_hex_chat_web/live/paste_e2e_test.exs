@@ -22,10 +22,11 @@ defmodule RetroHexChatWeb.PasteE2ETest do
       join_channel(view, channel)
 
       render_hook(view, "paste_lines", %{"lines" => ["line one", "line two", "line three"]})
-      html = render(view)
 
-      assert html =~ "Paste Confirmation"
-      assert html =~ "3 lines"
+      assert has_element?(view, "#paste-confirm-dialog-show-trigger")
+      html = render(view)
+      assert html =~ "3"
+      assert html =~ "lines"
     end
 
     test "paste_cancel clears the dialog", %{conn: conn, channel: channel} do
@@ -34,12 +35,11 @@ defmodule RetroHexChatWeb.PasteE2ETest do
       join_channel(view, channel)
 
       render_hook(view, "paste_lines", %{"lines" => ["a", "b"]})
-      assert render(view) =~ "Paste Confirmation"
+      assert has_element?(view, "#paste-confirm-dialog-show-trigger")
 
       render_click(view, "paste_cancel")
-      html = render(view)
 
-      refute html =~ "Paste Confirmation"
+      refute has_element?(view, "#paste-confirm-dialog-show-trigger")
     end
 
     test "paste_send dispatches messages and closes dialog", %{conn: conn, channel: channel} do
@@ -48,12 +48,11 @@ defmodule RetroHexChatWeb.PasteE2ETest do
       join_channel(view, channel)
 
       render_hook(view, "paste_lines", %{"lines" => ["hello world", "second line"]})
-      assert render(view) =~ "Paste Confirmation"
+      assert has_element?(view, "#paste-confirm-dialog-show-trigger")
 
       render_click(view, "paste_send")
-      html = render(view)
 
-      refute html =~ "Paste Confirmation"
+      refute has_element?(view, "#paste-confirm-dialog-show-trigger")
     end
 
     test "flood warning shown for more than 50 lines", %{conn: conn, channel: channel} do
@@ -63,9 +62,9 @@ defmodule RetroHexChatWeb.PasteE2ETest do
 
       lines = Enum.map(1..55, &"line #{&1}")
       render_hook(view, "paste_lines", %{"lines" => lines})
-      html = render(view)
 
-      assert html =~ "Paste Confirmation"
+      assert has_element?(view, "#paste-confirm-dialog-show-trigger")
+      html = render(view)
       assert html =~ "flood"
     end
   end

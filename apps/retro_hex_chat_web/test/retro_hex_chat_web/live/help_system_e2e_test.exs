@@ -63,8 +63,8 @@ defmodule RetroHexChatWeb.HelpSystemE2ETest do
       nick = "E2EHlp#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
-      assert html =~ "toolbar-help"
-      assert html =~ "/chat/help"
+      assert html =~ "Help Topics"
+      assert html =~ "help_topics"
     end
   end
 end

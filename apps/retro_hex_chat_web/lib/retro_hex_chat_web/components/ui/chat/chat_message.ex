@@ -109,4 +109,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   defp type_class("service"), do: "text-service"
   defp type_class("error"), do: "text-error font-bold"
   defp type_class("notice"), do: "text-notice"
+  defp type_class("motd"), do: "text-gray-500 italic"
+  defp type_class("wallops"), do: "text-gray-500 italic"
 end

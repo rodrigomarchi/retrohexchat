@@ -1,15 +1,6 @@
 defmodule RetroHexChatWeb.Router do
   use RetroHexChatWeb, :router
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-  end
-
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -62,26 +53,6 @@ defmodule RetroHexChatWeb.Router do
     plug RetroHexChatWeb.Plugs.CheckServerBan
   end
 
-  scope "/", RetroHexChatWeb do
-    pipe_through :browser
-
-    # Temporary route for SVG icon review
-    live "/icons", IconsLive
-    live "/connect", ConnectLive
-    get "/chat/session/clear", SessionController, :delete
-    live "/chat", ChatLive
-    live "/p2p/:token", P2PSessionLive
-    live "/game/:token", GameSessionLive
-    live "/solo/:token", SoloSessionLive
-    live "/arcade/:token/:game_id", ArcadeGameLive
-  end
-
-  scope "/", RetroHexChatWeb do
-    pipe_through [:browser, :chat_session]
-
-    post "/chat/session", SessionController, :create
-  end
-
   pipeline :v2_app do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -91,7 +62,7 @@ defmodule RetroHexChatWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  scope "/v2", RetroHexChatWeb.V2 do
+  scope "/", RetroHexChatWeb.V2 do
     pipe_through :v2_app
 
     live "/connect", ConnectLive
@@ -102,7 +73,7 @@ defmodule RetroHexChatWeb.Router do
     live "/arcade/:token/:game_id", ArcadeGameLive
   end
 
-  scope "/v2", RetroHexChatWeb.V2 do
+  scope "/", RetroHexChatWeb.V2 do
     pipe_through [:v2_app, :chat_session]
 
     post "/chat/session", SessionController, :create
@@ -249,7 +220,7 @@ defmodule RetroHexChatWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :root}
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :v2}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :admin_basic_auth

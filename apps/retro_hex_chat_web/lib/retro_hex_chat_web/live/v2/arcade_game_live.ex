@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.V2.ArcadeGameLive do
 
       {:ok, socket, layout: false}
     else
-      _ -> {:ok, push_navigate(socket, to: ~p"/v2/chat"), layout: false}
+      _ -> {:ok, push_navigate(socket, to: ~p"/chat"), layout: false}
     end
   end
 

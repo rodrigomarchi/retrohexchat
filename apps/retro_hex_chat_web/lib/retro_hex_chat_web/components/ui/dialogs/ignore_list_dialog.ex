@@ -82,7 +82,7 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
                   phx-value-nickname={entry.nickname}
                 >
                   <.table_cell class="font-bold text-xs">{entry.nickname}</.table_cell>
-                  <.table_cell class="text-xs">{entry.reason || "—"}</.table_cell>
+                  <.table_cell class="text-xs">{to_string(entry.ignore_type)}</.table_cell>
                   <.table_cell class="text-xs">{format_expires(entry.expires_at)}</.table_cell>
                 </.table_row>
               </.table_body>

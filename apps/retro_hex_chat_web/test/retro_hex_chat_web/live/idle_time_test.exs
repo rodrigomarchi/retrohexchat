@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.IdleTimeTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
       Process.sleep(50)
@@ -42,14 +42,14 @@ defmodule RetroHexChatWeb.IdleTimeTest do
 
       # Send a message to reset activity
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "hello there"})
 
       Process.sleep(50)
 
       # Self-whois to check idle time — should be very low
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{nick}"})
 
       Process.sleep(50)
@@ -67,14 +67,14 @@ defmodule RetroHexChatWeb.IdleTimeTest do
 
       # Run a command to reset activity
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/help"})
 
       Process.sleep(50)
 
       # Now self-whois — idle should be very low
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{nick}"})
 
       Process.sleep(50)

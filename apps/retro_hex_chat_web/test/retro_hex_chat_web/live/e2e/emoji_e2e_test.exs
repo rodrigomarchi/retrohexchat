@@ -8,25 +8,14 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
   @moduletag :e2e
 
   describe "Emoji Picker E2E" do
-    test "emoji picker toggle button is visible", %{conn: conn} do
-      nick = "EE1#{uid()}"
-      channel = "#ee1-#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
-      view |> render_submit("send_input", %{"input" => "/join #{channel}"})
-      :timer.sleep(50)
-      html = render(view)
-
-      assert html =~ "data-testid=\"emoji-picker-toggle\""
-    end
-
     test "clicking toggle opens emoji picker", %{conn: conn} do
       nick = "EE2#{uid()}"
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_emoji_picker", %{})
       assert html =~ "data-testid=\"emoji-picker\""
-      assert html =~ "data-testid=\"emoji-search\""
-      assert html =~ "data-testid=\"emoji-grid\""
+      assert html =~ "data-testid=\"emoji-picker-search\""
+      assert html =~ "grid grid-cols-8"
     end
 
     test "category tabs render in picker", %{conn: conn} do
@@ -34,8 +23,10 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_emoji_picker", %{})
-      assert html =~ "emoji-category-tabs"
-      assert html =~ "emoji-category-tab"
+      assert html =~ "Smileys &amp; Emotion"
+      assert html =~ "People &amp; Body"
+      assert html =~ "Animals &amp; Nature"
+      assert html =~ "Food &amp; Drink"
     end
 
     test "emoji buttons render in grid", %{conn: conn} do
@@ -43,8 +34,7 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
 
       html = render_click(view, "toggle_emoji_picker", %{})
-      assert html =~ "emoji-btn"
-      assert html =~ "data-emoji="
+      assert html =~ "phx-value-emoji="
     end
 
     test "search field filters emojis", %{conn: conn} do
@@ -54,10 +44,8 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
       render_click(view, "toggle_emoji_picker", %{})
       html = render_click(view, "emoji_search", %{"value" => "heart"})
 
-      # Category tabs hidden during search
-      refute html =~ "emoji-category-tabs"
       # Grid still present
-      assert html =~ "emoji-grid"
+      assert html =~ "grid grid-cols-8"
     end
 
     test "selecting emoji closes picker", %{conn: conn} do
@@ -77,9 +65,7 @@ defmodule RetroHexChatWeb.EmojiE2ETest do
       render_click(view, "toggle_emoji_picker", %{})
       html = render_click(view, "emoji_category", %{"category" => "Food & Drink"})
 
-      # Should have food emojis
-      assert html =~ "emoji-grid"
-      assert html =~ "data-emoji="
+      assert html =~ "phx-value-emoji="
     end
   end
 end

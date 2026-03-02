@@ -15,10 +15,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.IgnoreListDialogPage do
   alias RetroHexChatWeb.Icons
 
   @sample_entries [
-    %{nickname: "BadUser99", reason: "Spam", expires_at: nil},
-    %{nickname: "FloodBot", reason: "Message flood", expires_at: "2026-03-01"},
-    %{nickname: "TrollFace", reason: "Harassment", expires_at: nil},
-    %{nickname: "SpammerX", reason: "Advertisement spam", expires_at: "2026-04-15"}
+    %{nickname: "BadUser99", ignore_type: :all, expires_at: nil},
+    %{nickname: "FloodBot", ignore_type: :messages, expires_at: "2026-03-01"},
+    %{nickname: "TrollFace", ignore_type: :all, expires_at: nil},
+    %{nickname: "SpammerX", ignore_type: :all, expires_at: "2026-04-15"}
   ]
 
   @impl true

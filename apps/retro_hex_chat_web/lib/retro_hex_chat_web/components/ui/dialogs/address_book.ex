@@ -34,7 +34,11 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :notify_list, :list, default: [], doc: "List of %{nick, notify_on, notify_off} maps"
   attr :nick_colors, :list, default: [], doc: "List of %{nick, color} maps"
   attr :control_list, :list, default: [], doc: "List of %{nick, level} maps"
-  attr :selected_index, :integer, default: nil, doc: "Currently selected row index"
+
+  attr :selected_index, :any,
+    default: nil,
+    doc: "Currently selected row identifier (nickname or index)"
+
   attr :selected_tab, :string, default: "contacts", doc: "Active tab key"
   attr :selected_color, :integer, default: nil
   attr :show_contact_add_dialog, :boolean, default: false
@@ -93,7 +97,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           <.tabs_content value="contacts">
             <.contacts_table
               contacts={@contacts}
-              selected_index={if(@selected_tab == "contacts", do: @selected_index)}
+              selected={if(@selected_tab == "contacts", do: @selected_index)}
               on_select={@on_select}
             />
             <.crud_buttons
@@ -101,6 +105,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               on_edit={@on_edit}
               on_remove={@on_remove}
               selected={@selected_index != nil && @selected_tab == "contacts"}
+              testid_prefix="contact"
             />
             <.color_picker
               id={"#{@id}-color-picker"}
@@ -113,14 +118,15 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           <.tabs_content value="notify">
             <.notify_table
               notify_list={@notify_list}
-              selected_index={if(@selected_tab == "notify", do: @selected_index)}
+              selected={if(@selected_tab == "notify", do: @notify_selected)}
               on_select={@on_select}
             />
             <.crud_buttons
               on_add={@on_add}
               on_edit={@on_edit}
               on_remove={@on_remove}
-              selected={@selected_index != nil && @selected_tab == "notify"}
+              selected={@notify_selected != nil && @selected_tab == "notify"}
+              testid_prefix="ab-notify"
             />
           </.tabs_content>
 
@@ -128,14 +134,15 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           <.tabs_content value="colors">
             <.nick_colors_table
               nick_colors={@nick_colors}
-              selected_index={if(@selected_tab == "colors", do: @selected_index)}
+              selected={if(@selected_tab == "colors", do: @nick_colors_selected)}
               on_select={@on_select}
             />
             <.crud_buttons
               on_add={@on_add}
               on_edit={@on_edit}
               on_remove={@on_remove}
-              selected={@selected_index != nil && @selected_tab == "colors"}
+              selected={@nick_colors_selected != nil && @selected_tab == "colors"}
+              testid_prefix="nick-color"
             />
             <.color_picker
               id={"#{@id}-nick-color-picker"}
@@ -148,7 +155,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           <.tabs_content value="control">
             <.control_table
               control_list={@control_list}
-              selected_index={if(@selected_tab == "control", do: @selected_index)}
+              selected={if(@selected_tab == "control", do: @selected_index)}
               on_select={@on_select}
             />
             <.crud_buttons
@@ -156,6 +163,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               on_edit={@on_edit}
               on_remove={@on_remove}
               selected={@selected_index != nil && @selected_tab == "control"}
+              testid_prefix="control"
             />
           </.tabs_content>
         </.tabs>
@@ -529,7 +537,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   # ── Contacts Table ──────────────────────────────────
 
   attr :contacts, :list, required: true
-  attr :selected_index, :integer, default: nil
+  attr :selected, :any, default: nil
   attr :on_select, :any, default: nil
 
   defp contacts_table(assigns) do
@@ -543,14 +551,25 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         </.table_row>
       </.table_header>
       <.table_body>
+        <.table_row :if={@contacts == []}>
+          <.table_cell colspan="3" class="text-center text-muted-foreground py-4">
+            No contacts saved
+          </.table_cell>
+        </.table_row>
         <.table_row
-          :for={{contact, idx} <- Enum.with_index(@contacts)}
-          class={if(@selected_index == idx, do: "bg-selection-bg text-selection-fg", else: "")}
+          :for={contact <- @contacts}
+          id={"contact-entry-#{contact.contact_nickname}"}
+          class={
+            if(@selected == contact.contact_nickname,
+              do: "bg-selection-bg text-selection-fg",
+              else: ""
+            )
+          }
           phx-click={@on_select}
-          phx-value-index={idx}
+          phx-value-nickname={contact.contact_nickname}
         >
-          <.table_cell>{contact.nick}</.table_cell>
-          <.table_cell>{Map.get(contact, :notes, "")}</.table_cell>
+          <.table_cell>{contact.contact_nickname}</.table_cell>
+          <.table_cell>{Map.get(contact, :note, "")}</.table_cell>
           <.table_cell>
             <div
               class="w-4 h-4 border border-border"
@@ -566,7 +585,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   # ── Notify Table ────────────────────────────────────
 
   attr :notify_list, :list, required: true
-  attr :selected_index, :integer, default: nil
+  attr :selected, :any, default: nil
   attr :on_select, :any, default: nil
 
   defp notify_table(assigns) do
@@ -580,15 +599,23 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         </.table_row>
       </.table_header>
       <.table_body>
+        <.table_row :if={@notify_list == []}>
+          <.table_cell colspan="3" class="text-center text-muted-foreground py-4">
+            No entries. Click Add to track a nickname.
+          </.table_cell>
+        </.table_row>
         <.table_row
-          :for={{entry, idx} <- Enum.with_index(@notify_list)}
-          class={if(@selected_index == idx, do: "bg-selection-bg text-selection-fg", else: "")}
+          :for={entry <- @notify_list}
+          id={"ab-notify-entry-#{entry.tracked_nickname}"}
+          class={
+            if(@selected == entry.tracked_nickname, do: "bg-selection-bg text-selection-fg", else: "")
+          }
           phx-click={@on_select}
-          phx-value-index={idx}
+          phx-value-nickname={entry.tracked_nickname}
         >
-          <.table_cell>{entry.nick}</.table_cell>
-          <.table_cell>{if Map.get(entry, :notify_on, true), do: "Yes", else: "No"}</.table_cell>
-          <.table_cell>{if Map.get(entry, :notify_off, true), do: "Yes", else: "No"}</.table_cell>
+          <.table_cell>{entry.tracked_nickname}</.table_cell>
+          <.table_cell>{if entry.online, do: "Online", else: "Offline"}</.table_cell>
+          <.table_cell>{Map.get(entry, :note, "")}</.table_cell>
         </.table_row>
       </.table_body>
     </.table>
@@ -598,7 +625,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   # ── Nick Colors Table ───────────────────────────────
 
   attr :nick_colors, :list, required: true
-  attr :selected_index, :integer, default: nil
+  attr :selected, :any, default: nil
   attr :on_select, :any, default: nil
 
   defp nick_colors_table(assigns) do
@@ -611,17 +638,25 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         </.table_row>
       </.table_header>
       <.table_body>
+        <.table_row :if={@nick_colors == []}>
+          <.table_cell colspan="2" class="text-center text-muted-foreground py-4">
+            No custom colors set. Nicknames use automatic colors.
+          </.table_cell>
+        </.table_row>
         <.table_row
-          :for={{entry, idx} <- Enum.with_index(@nick_colors)}
-          class={if(@selected_index == idx, do: "bg-selection-bg text-selection-fg", else: "")}
+          :for={entry <- @nick_colors}
+          id={"nick-color-entry-#{entry.target_nickname}"}
+          class={
+            if(@selected == entry.target_nickname, do: "bg-selection-bg text-selection-fg", else: "")
+          }
           phx-click={@on_select}
-          phx-value-index={idx}
+          phx-value-nickname={entry.target_nickname}
         >
-          <.table_cell>{entry.nick}</.table_cell>
+          <.table_cell>{entry.target_nickname}</.table_cell>
           <.table_cell>
             <div
               class="w-4 h-4 border border-border"
-              class={nick_color_class(Map.get(entry, :color))}
+              class={nick_color_class(entry.color_index)}
             />
           </.table_cell>
         </.table_row>
@@ -633,7 +668,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   # ── Control Table ───────────────────────────────────
 
   attr :control_list, :list, required: true
-  attr :selected_index, :integer, default: nil
+  attr :selected, :any, default: nil
   attr :on_select, :any, default: nil
 
   defp control_table(assigns) do
@@ -646,11 +681,16 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         </.table_row>
       </.table_header>
       <.table_body>
+        <.table_row :if={@control_list == []}>
+          <.table_cell colspan="2" class="text-center text-muted-foreground py-4">
+            Ignore management will be available in a future update.
+          </.table_cell>
+        </.table_row>
         <.table_row
-          :for={{entry, idx} <- Enum.with_index(@control_list)}
-          class={if(@selected_index == idx, do: "bg-selection-bg text-selection-fg", else: "")}
+          :for={entry <- @control_list}
+          class={if(@selected == entry.nick, do: "bg-selection-bg text-selection-fg", else: "")}
           phx-click={@on_select}
-          phx-value-index={idx}
+          phx-value-nickname={entry.nick}
         >
           <.table_cell>{entry.nick}</.table_cell>
           <.table_cell>{Map.get(entry, :level, "normal")}</.table_cell>
@@ -666,19 +706,37 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
   attr :selected, :boolean, default: false
+  attr :testid_prefix, :string, default: nil
 
   defp crud_buttons(assigns) do
     ~H"""
     <div class="flex gap-retro-4 mt-retro-4">
-      <.button size="sm" variant="outline" phx-click={@on_add}>
+      <.button
+        size="sm"
+        variant="outline"
+        phx-click={@on_add}
+        data-testid={@testid_prefix && "#{@testid_prefix}-add"}
+      >
         <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
         Add
       </.button>
-      <.button size="sm" variant="outline" phx-click={@on_edit} disabled={!@selected}>
+      <.button
+        size="sm"
+        variant="outline"
+        phx-click={@on_edit}
+        disabled={!@selected}
+        data-testid={@testid_prefix && "#{@testid_prefix}-edit"}
+      >
         <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
         Edit
       </.button>
-      <.button size="sm" variant="outline" phx-click={@on_remove} disabled={!@selected}>
+      <.button
+        size="sm"
+        variant="outline"
+        phx-click={@on_remove}
+        disabled={!@selected}
+        data-testid={@testid_prefix && "#{@testid_prefix}-remove"}
+      >
         <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
         Remove
       </.button>

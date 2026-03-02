@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.WhowasTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whowas #{target}"})
 
       Process.sleep(50)
@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.WhowasTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whowas NeverOnline99999"})
 
       Process.sleep(50)
@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.WhowasTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whowas #{target}"})
 
       Process.sleep(50)
@@ -87,7 +87,7 @@ defmodule RetroHexChatWeb.WhowasTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whowas #{target}"})
 
       Process.sleep(50)

@@ -100,10 +100,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   def extract_defined_classes do
     Path.wildcard("#{css_dir()}/**/*.css")
     |> Enum.reject(fn path ->
-      String.ends_with?(path, "app.css") or
-        String.ends_with?(path, "showcase.css") or
-        String.ends_with?(path, "retrohex.css") or
-        String.contains?(path, "/retro/")
+      String.ends_with?(path, "showcase.css")
     end)
     |> Enum.reduce(%{}, fn file, acc ->
       extract_classes_from_css(File.read!(file), short_css_path(file))
@@ -144,14 +141,20 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   @doc false
   @spec extract_vendor_classes() :: MapSet.t()
   def extract_vendor_classes do
-    Path.wildcard("#{retro_css_dir()}/*.css")
-    |> Enum.flat_map(fn path ->
-      path
-      |> File.read!()
-      |> remove_css_comments()
-      |> extract_selectors()
-    end)
-    |> MapSet.new()
+    dir = retro_css_dir()
+
+    if File.dir?(dir) do
+      Path.wildcard("#{dir}/*.css")
+      |> Enum.flat_map(fn path ->
+        path
+        |> File.read!()
+        |> remove_css_comments()
+        |> extract_selectors()
+      end)
+      |> MapSet.new()
+    else
+      MapSet.new()
+    end
   end
 
   # -- Phase B: Extract referenced classes --

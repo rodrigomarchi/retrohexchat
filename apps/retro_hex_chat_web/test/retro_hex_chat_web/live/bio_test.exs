@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.BioTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio Elixir enthusiast"})
 
       Process.sleep(50)
@@ -40,14 +40,14 @@ defmodule RetroHexChatWeb.BioTest do
 
       # Set bio first
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio Hello world"})
 
       Process.sleep(50)
 
       # View bio
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio"})
 
       Process.sleep(50)
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.BioTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio"})
 
       Process.sleep(50)
@@ -78,14 +78,14 @@ defmodule RetroHexChatWeb.BioTest do
 
       # Set bio first
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio Something"})
 
       Process.sleep(50)
 
       # Clear bio
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio clear"})
 
       Process.sleep(50)
@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.BioTest do
 
       # Target sets their bio
       target_view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio I love retro computing"})
 
       Process.sleep(50)
@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.BioTest do
 
       # Whois the target
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
       Process.sleep(50)
@@ -129,7 +129,7 @@ defmodule RetroHexChatWeb.BioTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
       Process.sleep(50)
@@ -147,7 +147,7 @@ defmodule RetroHexChatWeb.BioTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/bio #{long_bio}"})
 
       Process.sleep(50)

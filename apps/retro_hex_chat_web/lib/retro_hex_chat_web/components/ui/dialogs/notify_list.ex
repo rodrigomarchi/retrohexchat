@@ -77,20 +77,20 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 <.table_row
                   :for={entry <- @entries}
                   class={
-                    if(@selected_entry == entry.nickname,
+                    if(@selected_entry == entry.tracked_nickname,
                       do: "bg-selection-bg text-selection-fg",
                       else: ""
                     )
                   }
                   phx-click={@on_select}
-                  phx-value-nickname={entry.nickname}
-                  data-testid={"notify-list-row-#{entry.nickname}"}
+                  phx-value-nickname={entry.tracked_nickname}
+                  data-testid={"notify-list-row-#{entry.tracked_nickname}"}
                 >
-                  <.table_cell class="font-bold">{entry.nickname}</.table_cell>
+                  <.table_cell class="font-bold">{entry.tracked_nickname}</.table_cell>
                   <.table_cell>
                     <.online_status online={entry.online} />
                   </.table_cell>
-                  <.table_cell class="text-xs">{Map.get(entry, :last_seen, "")}</.table_cell>
+                  <.table_cell class="text-xs">{Map.get(entry, :last_seen_at, "")}</.table_cell>
                 </.table_row>
               </.table_body>
             </.table>

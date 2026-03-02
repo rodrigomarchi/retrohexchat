@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.WhoisTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
       Process.sleep(50)
@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.WhoisTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
       Process.sleep(50)
@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.WhoisTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
       Process.sleep(50)
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.WhoisTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
       Process.sleep(50)
@@ -95,7 +95,7 @@ defmodule RetroHexChatWeb.WhoisTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{target}"})
 
       Process.sleep(50)
@@ -112,7 +112,7 @@ defmodule RetroHexChatWeb.WhoisTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois #{nick}"})
 
       Process.sleep(50)
@@ -128,7 +128,7 @@ defmodule RetroHexChatWeb.WhoisTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/whois OfflineUser12345"})
 
       Process.sleep(50)

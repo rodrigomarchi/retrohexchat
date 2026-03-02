@@ -117,9 +117,9 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
                 type="button"
                 class="w-7 h-7 flex items-center justify-center text-base hover:bg-selection-bg hover:text-selection-fg rounded-sm cursor-pointer"
                 phx-click={@on_select}
-                phx-value-emoji={emoji}
+                phx-value-emoji={emoji_char(emoji)}
               >
-                {emoji}
+                {emoji_char(emoji)}
               </button>
             </div>
           </div>
@@ -136,4 +136,8 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
     </.window>
     """
   end
+
+  @spec emoji_char(map() | String.t()) :: String.t()
+  defp emoji_char(%{char: char}), do: char
+  defp emoji_char(str) when is_binary(str), do: str
 end

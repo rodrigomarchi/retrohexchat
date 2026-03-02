@@ -70,27 +70,29 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Join second channel
-      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #{ch}"})
 
       # Switch to background channel
       view
-      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(div[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       # Send a highlight to background channel (highlight flash is enabled by default)
       send_new_message(view, "Other", "hey #{nick}!", ch)
 
       html = render(view)
-      assert html =~ "conversations-highlight"
+      assert html =~ "text-error"
 
       # Switch to that channel — flash should clear
       view
-      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#{ch}"]))
+      |> element(~s(div[phx-click="switch_channel"][phx-value-channel="#{ch}"]))
       |> render_click()
 
       html = render(view)
-      # The flash class should be gone for the switched-to channel
-      refute html =~ ~r/data-testid="channel-#{Regex.escape(ch)}"[^>]*conversations-highlight/
+      # The highlight class should be gone for the switched-to channel
+      refute html =~ ~r/data-testid="channel-#{Regex.escape(ch)}"[^>]*text-error/
     end
   end
 

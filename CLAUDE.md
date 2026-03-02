@@ -3,38 +3,11 @@
 ## Active Technologies
 - Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x
 - PostgreSQL 16+ (39 migrations, 36 schemas) with cursor-based pagination and GIN/trigram indexes
-- Retro CSS framework, esbuild for asset bundling
+- Tailwind CSS (`retrohex.css`) + esbuild for asset bundling
 - bcrypt_elixir for password hashing, Plug.Crypto for encryption
 - Req 0.5+ (HTTP client for link previews)
 - In-memory: GenServer/ETS for runtime, Session structs for guests, localStorage for client state
-- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, esbuild (024-smart-input-command-help)
-- PostgreSQL 16+ (user_preferences JSON column — no migration needed), localStorage (client-side history) (024-smart-input-command-help)
-- PostgreSQL 16+ (user_preferences.key_bindings JSON column — no new migration needed) (025-shortcuts-chat-search)
-- PostgreSQL 16+ (user_preferences.message_settings JSON column — no new migration needed) (026-context-menus)
-- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, esbuild (027-interactive-chat-elements)
-- PostgreSQL 16+ (link preview cache via ETS, channel state via GenServer — no new migrations) (027-interactive-chat-elements)
-- localStorage (client-side onboarding flag) — no PostgreSQL changes (028-onboarding-empty-states)
-- Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, Phoenix LiveView 1.0+, esbuild (029-contextual-tips)
-- localStorage (tip seen state + global suppression) — no PostgreSQL changes (029-contextual-tips)
-- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, esbuild + Phoenix LiveView (streams, push_event), existing toast component (Z2) (030-visual-feedback-unread)
-- No new PostgreSQL migrations — all state is ephemeral (socket assigns, client-side) (030-visual-feedback-unread)
-- No new PostgreSQL migrations — all state is ephemeral (socket assigns, client-side timers) (031-statusbar-loading-states)
-- PostgreSQL 16+ (existing `user_preferences.message_settings` JSONB — no new migration), localStorage (guest preferences, DND state) (032-notification-system)
-- PostgreSQL 16+ (new columns on `messages` and `private_messages` tables — 1 migration) (033-message-interactions)
-- Elixir 1.17+ / OTP 27+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, Phoenix.Token (already in use) (034-p2p-foundation)
-- PostgreSQL 16+ (1 new migration: `p2p_sessions` table) (034-p2p-foundation)
-- PostgreSQL 16+ (existing `p2p_sessions` table, existing `private_messages` table — no new migrations). GenServer state for ephemeral lobby data. (035-p2p-session-ui)
-- Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, ex_stun ~> 0.1 (NEW) (036-webrtc-signaling)
-- PostgreSQL 16+ (existing `p2p_sessions` table — no new migrations) (036-webrtc-signaling)
-- Elixir 1.17+ / OTP 27+ (backend, minimal changes), JavaScript ES2020+ (frontend, bulk of implementation) + Phoenix 1.8+, LiveView 1.0+, existing WebRTC infrastructure (034-036) (037-p2p-file-transfer)
-- No new database tables — all transfer state is ephemeral (client-side JS memory) (037-p2p-file-transfer)
-- Elixir 1.17+ / OTP 27+ (backend), JavaScript ES2020+ (frontend) + Phoenix 1.8+, LiveView 1.0+, esbuild. Browser-native WebRTC APIs (getUserMedia, addTrack, replaceTrack, getStats, enumerateDevices, Picture-in-Picture). Zero new npm/Elixir dependencies. (038-audio-video-calls)
-- N/A — all call state is ephemeral (LiveView assigns + JS variables). No database migrations. (038-audio-video-calls)
-- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, esbuild, ExSTUN ~> 0.1 (existing) (039-p2p-security-help-polish)
-- PostgreSQL 16+ (existing `user_preferences.message_settings` JSONB — no new migrations), ETS (rate limit state) (039-p2p-security-help-polish)
-- N/A — no new migrations, all state is ephemeral (socket assigns) (040-p2p-context-menus)
-- Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, esbuild (041-session-persistence)
-- PostgreSQL 16+ (existing `private_messages` table, existing `autojoin_list_entries` table — no new migrations) (041-session-persistence)
+- ExSTUN ~> 0.1 (WebRTC signaling)
 
 ## Project Structure
 
@@ -48,8 +21,9 @@ apps/
 │   └── test/
 └── retro_hex_chat_web/       # Web layer (Phoenix + LiveView)
     ├── lib/retro_hex_chat_web/
-    │   ├── live/             # ConnectLive, ChatLive, ChannelListLive
-    │   └── components/       # ~57 function components (retro-styled)
+    │   ├── live/v2/          # ConnectLive, ChatLive, P2PSessionLive, etc.
+    │   ├── live/chat_live/   # Shared event handlers, helpers, hooks
+    │   └── components/       # UI components (ui/), icons, layouts
     ├── assets/               # CSS, JS hooks, static
     └── test/
 ```
@@ -137,48 +111,12 @@ If any check fails, the task is NOT complete.
 
 ## CSS Architecture
 
-### File Organization (6 layers, imported in order)
-1. **Foundation**: tokens.css, utilities.css — design tokens and u-* utilities
-2. **Layout & Shell**: layout.css, shell.css — app structure, toolbar, status bar, floating positions
-3. **Shared Patterns**: tables.css, forms.css — reusable table/form patterns
-4. **Components**: One file per independent UI widget (nicklist, tab-bar, search, etc.)
-5. **Chat**: chat.css, syntax-tooltip.css, formatting.css, status-messages.css
-6. **Dialogs**: dialogs.css (generic patterns) + one file per complex dialog
-
-### File Naming
-- Lowercase, hyphen-separated: `component-name.css`
-- Dialog-specific files: `name-dialog.css` (e.g., `options-dialog.css`)
-- No plurals (exception: `dialogs.css` for the generic framework)
-
-### When to Create a New File
-- The concern has **40+ lines** of CSS
-- Maps to a specific component or group of related components
-- Has its own class prefix (e.g., `.emoji-`, `.tab-`, `.nicklist-`)
-
-### When to Add to an Existing File
-- Under 40 lines and closely related to an existing file
-- Minor tweak/override of parent patterns (e.g., dialog sizing tweaks stay in dialogs.css)
-
-### Target File Size
-- Sweet spot: **50–200 lines**
-- Under 40 → merge into related file
-- Over 250 → evaluate for splitting
-
-### Class Naming
-- Component: `.component-element` (e.g., `.nicklist-header`, `.tab-close`)
-- Modifier: `--suffix` (e.g., `.tab-item--active`, `.dialog-overlay--dark`)
-- Utility: `u-` prefix (e.g., `.u-flex`, `.u-text-sm`)
-- Token: `--category-name` (e.g., `--color-error`, `--z-modal`)
-
-### Import Rules
-- All imports go in `app.css` only — no file imports another
-- Within each layer, alphabetical order
-- New component → add import in the correct layer
+All styling uses **Tailwind CSS** via `retrohex.css` (entry point).
+UI components live in `components/ui/` and use Tailwind utility classes.
 
 ### No Hardcoded Colors or CSS Values in Elixir/JS
 - **NEVER** put hex colors (`#fff`, `#3a3500`) in Elixir code — colors live in CSS only
-- Use CSS classes (`irc-bg-4`, `highlight-bg-default`, `nick-color-3`) instead of inline `background-color` / `color`
-- For dynamic values use CSS custom properties: `style={"--progress: #{percent}%"}` + CSS `width: var(--progress)`
+- Use Tailwind classes or CSS custom properties for dynamic values
 - Inline `style=` is acceptable ONLY for dynamic `left`/`top` positioning and CSS custom properties
 - Run `mix audit.styles` to verify — must show 0 LOW, 0 MEDIUM, 0 HIGH findings
 - Exception: `log_exporter.ex` embeds CSS for standalone HTML exports (must stay self-contained)
@@ -226,12 +164,11 @@ Same pattern: `attr :class` + `@spec` + `~H""" <svg> """`.
 
 ### Exceptions
 
-- `components/p2p_connection_diagram.ex` — data-driven SVGs with dynamic paths (private helpers, not standalone)
 - `log_exporter.ex` — embeds CSS/SVG for standalone HTML exports
 
 ### Catalog
 
-See `docs/svg-catalog.md` for full inventory. Visit `/icons` (dev only) to browse all icons visually.
+See `docs/svg-catalog.md` for full inventory. Visit `/showcase/icons` (dev only) to browse all icons visually.
 
 ## Help System (mandatory)
 
@@ -249,9 +186,3 @@ Every new feature MUST include corresponding help documentation:
 See `.specify/memory/constitution.md` for 11 governing principles.
 Key non-negotiables: TDD, umbrella separation, OTP process architecture,
 static analysis from day one, retro design fidelity, mandatory help documentation.
-
-
-## Recent Changes
-- 041-session-persistence: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, Phoenix LiveView 1.0+, Ecto 3.x, esbuild
-- 040-p2p-context-menus: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, esbuild
-- 039-p2p-security-help-polish: Added Elixir 1.17+ / OTP 27+, JavaScript ES2020+ + Phoenix 1.8+, LiveView 1.0+, esbuild, ExSTUN ~> 0.1 (existing)

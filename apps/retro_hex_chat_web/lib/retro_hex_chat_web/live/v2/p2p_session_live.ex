@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
         {:ok, redirect_socket}
 
       {:redirect, _} ->
-        {:ok, push_navigate(socket, to: ~p"/v2/chat")}
+        {:ok, push_navigate(socket, to: ~p"/chat")}
     end
   end
 

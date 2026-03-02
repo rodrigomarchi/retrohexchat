@@ -116,8 +116,9 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
     end
   end
 
-  def handle_event("contact_remove", %{"nickname" => nick}, socket) do
+  def handle_event("contact_remove", params, socket) do
     session = socket.assigns.session
+    nick = params["nickname"] || socket.assigns.contacts_selected
 
     case ContactList.remove_entry(session.contacts, nick) do
       {:ok, updated_contacts} ->
@@ -212,8 +213,9 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
     end
   end
 
-  def handle_event("nick_color_remove", %{"nickname" => nick}, socket) do
+  def handle_event("nick_color_remove", params, socket) do
     session = socket.assigns.session
+    nick = params["nickname"] || socket.assigns.nick_colors_selected
 
     case NickColors.remove_entry(session.nick_colors, nick) do
       {:ok, updated} ->

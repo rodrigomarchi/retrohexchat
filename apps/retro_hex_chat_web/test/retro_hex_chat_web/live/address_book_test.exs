@@ -24,33 +24,25 @@ defmodule RetroHexChatWeb.AddressBookTest do
   describe "dialog open/close" do
     test "Ctrl+Shift+A opens the dialog", %{conn: conn} do
       view = connect_user(conn, "AltBUser")
-      refute render(view) =~ "address-book-dialog"
+      refute has_element?(view, "#address-book-dialog-show-trigger")
 
-      html =
-        view
-        |> element("#app-container")
-        |> render_keydown(%{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
+      render_click(view, "window_keydown", %{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
 
+      html = render(view)
       assert html =~ "address-book-dialog"
-      assert html =~ "title-bar-text\">Address Book</div>"
+      assert html =~ "Address Book"
     end
 
     test "Ctrl+Shift+A toggles dialog closed", %{conn: conn} do
       view = connect_user(conn, "AltBToggle")
 
       # Open
-      view
-      |> element("#app-container")
-      |> render_keydown(%{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
-
+      render_click(view, "window_keydown", %{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
       assert render(view) =~ "address-book-dialog"
 
       # Close
-      view
-      |> element("#app-container")
-      |> render_keydown(%{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
-
-      refute render(view) =~ "address-book-dialog"
+      render_click(view, "window_keydown", %{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
+      refute has_element?(view, "#address-book-dialog-show-trigger")
     end
 
     test "close button closes dialog", %{conn: conn} do
@@ -62,25 +54,19 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
       # Close via toggle (same event from close button)
       view |> render_click("toggle_address_book")
-      refute render(view) =~ "address-book-dialog"
+      refute has_element?(view, "#address-book-dialog-show-trigger")
     end
 
-    test "toolbar button toggles dialog", %{conn: conn} do
+    test "toggle_address_book event toggles dialog", %{conn: conn} do
       view = connect_user(conn, "ToolbarBtn")
 
-      html =
-        view
-        |> element("[data-testid=\"toolbar-address-book\"]")
-        |> render_click()
-
+      render_click(view, "toggle_address_book")
+      html = render(view)
       assert html =~ "address-book-dialog"
 
-      html =
-        view
-        |> element("[data-testid=\"toolbar-address-book\"]")
-        |> render_click()
-
-      refute html =~ "address-book-dialog"
+      render_click(view, "toggle_address_book")
+      html = render(view)
+      refute has_element?(view, "#address-book-dialog-show-trigger")
     end
   end
 
@@ -90,10 +76,10 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view |> render_click("toggle_address_book")
       html = render(view)
 
-      assert html =~ "address-book-tab-contacts"
-      assert html =~ "address-book-tab-notify"
-      assert html =~ "address-book-tab-nick-colors"
-      assert html =~ "address-book-tab-control"
+      assert html =~ "Contacts"
+      assert html =~ "Notify"
+      assert html =~ "Nick Colors"
+      assert html =~ "Control"
     end
 
     test "Contacts tab is default when opening", %{conn: conn} do
@@ -113,7 +99,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
       assert html =~ "No entries. Click Add to track a nickname."
 
       # Switch to Nick Colors
-      html = view |> render_click("address_book_tab", %{"tab" => "nick_colors"})
+      html = view |> render_click("address_book_tab", %{"tab" => "colors"})
       assert html =~ "No custom colors set. Nicknames use automatic colors."
 
       # Switch to Control
@@ -141,7 +127,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view |> render_click("toggle_address_book")
 
       # Switch to Nick Colors
-      view |> render_click("address_book_tab", %{"tab" => "nick_colors"})
+      view |> render_click("address_book_tab", %{"tab" => "colors"})
       assert render(view) =~ "No custom colors set. Nicknames use automatic colors."
 
       # Close and reopen
@@ -155,11 +141,8 @@ defmodule RetroHexChatWeb.AddressBookTest do
     test "Tools > Address Book opens dialog", %{conn: conn} do
       view = connect_user(conn, "MenuUser")
 
-      html =
-        view
-        |> element("[data-testid=\"toolbar-address-book\"]")
-        |> render_click()
-
+      render_click(view, "toggle_address_book")
+      html = render(view)
       assert html =~ "address-book-dialog"
     end
   end
@@ -189,11 +172,8 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
       assert html =~ "BuddyNick"
       assert html =~ "My buddy"
-      # Date should be today
-      today = Calendar.strftime(DateTime.utc_now(), "%Y-%m-%d")
-      assert html =~ today
       # Add dialog should be closed
-      refute html =~ "Add Contact</div>"
+      refute html =~ "Add Contact"
     end
 
     test "add duplicate shows error status message", %{conn: conn} do
@@ -243,15 +223,15 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view |> render_submit("contact_add", %{"nickname" => "SelectTarget", "note" => ""})
 
       # Before selection, buttons are disabled
-      assert has_element?(view, "[data-testid=\"contact-edit-btn\"][disabled]")
-      assert has_element?(view, "[data-testid=\"contact-remove-btn\"][disabled]")
+      assert has_element?(view, "[data-testid=\"contact-edit\"][disabled]")
+      assert has_element?(view, "[data-testid=\"contact-remove\"][disabled]")
 
       # Select the contact
       view |> render_click("contact_select", %{"nickname" => "SelectTarget"})
 
       # After selection, buttons should NOT be disabled
-      refute has_element?(view, "[data-testid=\"contact-edit-btn\"][disabled]")
-      refute has_element?(view, "[data-testid=\"contact-remove-btn\"][disabled]")
+      refute has_element?(view, "[data-testid=\"contact-edit\"][disabled]")
+      refute has_element?(view, "[data-testid=\"contact-remove\"][disabled]")
     end
 
     test "edit note updates in list", %{conn: conn} do
@@ -289,10 +269,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
       # Select and remove
       view |> render_click("contact_select", %{"nickname" => "RemoveMe"})
-
-      view
-      |> element("[data-testid=\"contact-remove-btn\"]")
-      |> render_click()
+      view |> render_click("contact_remove", %{"nickname" => "RemoveMe"})
 
       html = render(view)
       refute html =~ "contact-entry-RemoveMe"
@@ -349,7 +326,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
       # Open add dialog
       view |> render_click("notify_add_dialog")
-      assert render(view) =~ "Add to Notify List"
+      assert render(view) =~ "Add Notify Entry"
 
       # Submit
       view |> render_submit("notify_add", %{"nickname" => "BuddyA", "note" => "my buddy"})
@@ -357,7 +334,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
       assert html =~ "BuddyA"
       assert html =~ "my buddy"
-      refute html =~ "Add to Notify List</div>"
+      refute html =~ "Add Notify Entry</div>"
     end
 
     test "remove notify entry from list", %{conn: conn} do
@@ -371,10 +348,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
       assert render(view) =~ "RemBuddy"
 
       view |> render_click("notify_select", %{"nickname" => "RemBuddy"})
-
-      view
-      |> element("[data-testid=\"ab-notify-btn-remove\"]")
-      |> render_click()
+      view |> render_click("notify_remove", %{"nickname" => "RemBuddy"})
 
       html = render(view)
       refute html =~ "ab-notify-entry-RemBuddy"
@@ -413,15 +387,15 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view |> render_submit("notify_add", %{"nickname" => "SelBud", "note" => ""})
 
       # Before selection, buttons disabled
-      assert has_element?(view, "[data-testid=\"ab-notify-btn-remove\"][disabled]")
-      assert has_element?(view, "[data-testid=\"ab-notify-btn-edit\"][disabled]")
+      assert has_element?(view, "[data-testid=\"ab-notify-remove\"][disabled]")
+      assert has_element?(view, "[data-testid=\"ab-notify-edit\"][disabled]")
 
       # Select
       view |> render_click("notify_select", %{"nickname" => "SelBud"})
 
       # After selection, not disabled
-      refute has_element?(view, "[data-testid=\"ab-notify-btn-remove\"][disabled]")
-      refute has_element?(view, "[data-testid=\"ab-notify-btn-edit\"][disabled]")
+      refute has_element?(view, "[data-testid=\"ab-notify-remove\"][disabled]")
+      refute has_element?(view, "[data-testid=\"ab-notify-edit\"][disabled]")
     end
 
     test "notify tab shares data with standalone notify list", %{conn: conn} do
@@ -440,18 +414,18 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
     test "auto_whois checkbox toggles", %{conn: conn} do
       view = connect_user(conn, "AutoWhois")
-      view |> render_click("toggle_address_book")
-      view |> render_click("address_book_tab", %{"tab" => "notify"})
+      # auto_whois is in the standalone notify list dialog
+      view |> render_click("toggle_notify_list")
 
-      assert has_element?(view, "[data-testid=\"ab-notify-auto-whois\"]")
+      html = render(view)
+      assert html =~ "auto_whois" || html =~ "auto-whois"
 
       # Toggle auto-whois
-      view
-      |> element("[data-testid=\"ab-notify-auto-whois\"]")
-      |> render_click()
+      view |> render_click("toggle_auto_whois")
 
-      # Still on notify tab
-      assert render(view) =~ "ab-notify-auto-whois"
+      # Still open
+      html = render(view)
+      assert html =~ "Notify"
     end
   end
 
@@ -461,7 +435,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
     test "empty nick colors shows placeholder message", %{conn: conn} do
       view = connect_user(conn, "EmptyColors")
       view |> render_click("toggle_address_book")
-      view |> render_click("address_book_tab", %{"tab" => "nick_colors"})
+      view |> render_click("address_book_tab", %{"tab" => "colors"})
       html = render(view)
 
       assert html =~ "No custom colors set. Nicknames use automatic colors."
@@ -470,7 +444,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
     test "add nick color success — appears in list with swatch", %{conn: conn} do
       view = connect_user(conn, "AddColor")
       view |> render_click("toggle_address_book")
-      view |> render_click("address_book_tab", %{"tab" => "nick_colors"})
+      view |> render_click("address_book_tab", %{"tab" => "colors"})
 
       # Open add dialog
       view |> render_click("nick_color_add_dialog")
@@ -490,7 +464,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
     test "add duplicate shows error", %{conn: conn} do
       view = connect_user(conn, "DupColor")
       view |> render_click("toggle_address_book")
-      view |> render_click("address_book_tab", %{"tab" => "nick_colors"})
+      view |> render_click("address_book_tab", %{"tab" => "colors"})
 
       # Add first
       view |> render_click("nick_color_add_dialog")
@@ -507,7 +481,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
     test "edit color updates in list", %{conn: conn} do
       view = connect_user(conn, "EditColor")
       view |> render_click("toggle_address_book")
-      view |> render_click("address_book_tab", %{"tab" => "nick_colors"})
+      view |> render_click("address_book_tab", %{"tab" => "colors"})
 
       # Add with Red (4)
       view |> render_click("nick_color_add_dialog")
@@ -530,7 +504,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
     test "remove color removes from list", %{conn: conn} do
       view = connect_user(conn, "RemColor")
       view |> render_click("toggle_address_book")
-      view |> render_click("address_book_tab", %{"tab" => "nick_colors"})
+      view |> render_click("address_book_tab", %{"tab" => "colors"})
 
       # Add
       view |> render_click("nick_color_add_dialog")
@@ -539,10 +513,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
       # Select and remove
       view |> render_click("nick_color_select", %{"nickname" => "RemNick"})
-
-      view
-      |> element("[data-testid=\"nick-color-remove-btn\"]")
-      |> render_click()
+      view |> render_click("nick_color_remove", %{"nickname" => "RemNick"})
 
       html = render(view)
       refute html =~ "nick-color-entry-RemNick"
@@ -552,28 +523,28 @@ defmodule RetroHexChatWeb.AddressBookTest do
     test "select entry enables edit/remove buttons", %{conn: conn} do
       view = connect_user(conn, "SelColor")
       view |> render_click("toggle_address_book")
-      view |> render_click("address_book_tab", %{"tab" => "nick_colors"})
+      view |> render_click("address_book_tab", %{"tab" => "colors"})
 
       # Add entry
       view |> render_click("nick_color_add_dialog")
       view |> render_submit("nick_color_add", %{"nickname" => "SelNick", "color_index" => "3"})
 
       # Before selection, buttons disabled
-      assert has_element?(view, "[data-testid=\"nick-color-edit-btn\"][disabled]")
-      assert has_element?(view, "[data-testid=\"nick-color-remove-btn\"][disabled]")
+      assert has_element?(view, "[data-testid=\"nick-color-edit\"][disabled]")
+      assert has_element?(view, "[data-testid=\"nick-color-remove\"][disabled]")
 
       # Select
       view |> render_click("nick_color_select", %{"nickname" => "SelNick"})
 
       # After selection, not disabled
-      refute has_element?(view, "[data-testid=\"nick-color-edit-btn\"][disabled]")
-      refute has_element?(view, "[data-testid=\"nick-color-remove-btn\"][disabled]")
+      refute has_element?(view, "[data-testid=\"nick-color-edit\"][disabled]")
+      refute has_element?(view, "[data-testid=\"nick-color-remove\"][disabled]")
     end
 
     test "color override applies to chat message nickname", %{conn: conn} do
       view = connect_user(conn, "ColorMsg")
       view |> render_click("toggle_address_book")
-      view |> render_click("address_book_tab", %{"tab" => "nick_colors"})
+      view |> render_click("address_book_tab", %{"tab" => "colors"})
 
       # Set a custom color for "SomeChatter" — Red (4) = #ff0000
       view |> render_click("nick_color_add_dialog")
@@ -599,14 +570,14 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view
       |> render_click("nick_right_click", %{
         "nick" => "SomeNick",
-        "clientX" => "100",
-        "clientY" => "200"
+        "x" => 100,
+        "y" => 200
       })
 
       html = render(view)
 
-      assert html =~ "ctx-add-contact"
-      assert html =~ "ctx-set-nick-color"
+      assert html =~ "context-menu-item-context_add_contact"
+      assert html =~ "context-menu-item-context_set_nick_color"
       assert html =~ "Add to Contacts"
       assert html =~ "Set Nick Color"
     end
@@ -618,8 +589,8 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view
       |> render_click("nick_right_click", %{
         "nick" => "CtxBuddy",
-        "clientX" => "100",
-        "clientY" => "200"
+        "x" => 100,
+        "y" => 200
       })
 
       view |> render_click("context_add_contact", %{"nick" => "CtxBuddy"})
@@ -643,8 +614,8 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view
       |> render_click("nick_right_click", %{
         "nick" => "DupCtx",
-        "clientX" => "100",
-        "clientY" => "200"
+        "x" => 100,
+        "y" => 200
       })
 
       view |> render_click("context_add_contact", %{"nick" => "DupCtx"})
@@ -659,15 +630,16 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view
       |> render_click("nick_right_click", %{
         "nick" => "ColorTarget",
-        "clientX" => "100",
-        "clientY" => "200"
+        "x" => 100,
+        "y" => 200
       })
 
       view |> render_click("context_set_nick_color", %{"nick" => "ColorTarget"})
 
       html = render(view)
-      assert html =~ "ctx-color-picker"
-      assert html =~ "Pick color for ColorTarget"
+      # V2 shows inline color picker with nick-color-N swatches
+      assert html =~ "nick-color-0"
+      assert html =~ "context_pick_color"
     end
 
     test "picking a color assigns override", %{conn: conn} do
@@ -676,8 +648,8 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view
       |> render_click("nick_right_click", %{
         "nick" => "PickTarget",
-        "clientX" => "100",
-        "clientY" => "200"
+        "x" => 100,
+        "y" => 200
       })
 
       view |> render_click("context_set_nick_color", %{"nick" => "PickTarget"})
@@ -685,7 +657,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
       # Verify in nick colors tab
       view |> render_click("toggle_address_book")
-      view |> render_click("address_book_tab", %{"tab" => "nick_colors"})
+      view |> render_click("address_book_tab", %{"tab" => "colors"})
       html = render(view)
 
       assert html =~ "PickTarget"

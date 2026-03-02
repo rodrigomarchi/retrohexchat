@@ -74,6 +74,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
                 </.table_row>
               </.table_header>
               <.table_body>
+                <.table_row :if={@channels == []}>
+                  <.table_cell colspan="3" class="text-center text-muted-foreground py-4">
+                    No channels found
+                  </.table_cell>
+                </.table_row>
                 <.table_row
                   :for={ch <- @channels}
                   class={
@@ -87,7 +92,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
                   data-testid={"channel-list-row-#{ch.name}"}
                 >
                   <.table_cell class="font-bold">{ch.name}</.table_cell>
-                  <.table_cell>{ch.users}</.table_cell>
+                  <.table_cell>{ch.user_count}</.table_cell>
                   <.table_cell class="truncate max-w-[200px]">{ch.topic}</.table_cell>
                 </.table_row>
               </.table_body>

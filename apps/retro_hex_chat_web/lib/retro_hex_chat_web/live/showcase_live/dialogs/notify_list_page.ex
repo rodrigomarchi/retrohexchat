@@ -20,11 +20,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NotifyListPage do
        page_title: "Notify List",
        active_page: "notify-list",
        entries: [
-         %{nickname: "alice", online: true, last_seen: "now"},
-         %{nickname: "bob", online: false, last_seen: "2h ago"},
-         %{nickname: "carol", online: true, last_seen: "now"},
-         %{nickname: "dave", online: false, last_seen: "yesterday"},
-         %{nickname: "eve", online: false, last_seen: "3d ago"}
+         %{tracked_nickname: "alice", online: true, last_seen_at: "now"},
+         %{tracked_nickname: "bob", online: false, last_seen_at: "2h ago"},
+         %{tracked_nickname: "carol", online: true, last_seen_at: "now"},
+         %{tracked_nickname: "dave", online: false, last_seen_at: "yesterday"},
+         %{tracked_nickname: "eve", online: false, last_seen_at: "3d ago"}
        ]
      )}
   end

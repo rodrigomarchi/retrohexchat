@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       html = render(view)
-      assert html =~ "data-testid=\"mute-toggle\""
+      assert html =~ "data-testid=\"status-bar-mute-toggle\""
       assert html =~ "mute-toggle"
     end
 
@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="mute-toggle"]))
+      |> element(~s([data-testid="status-bar-mute-toggle"]))
       |> render_click()
 
       html = render(view)
@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
       # Toggle back
       view
-      |> element(~s([data-testid="mute-toggle"]))
+      |> element(~s([data-testid="status-bar-mute-toggle"]))
       |> render_click()
 
       html = render(view)
@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       view
-      |> element(~s([data-testid="mute-toggle"]))
+      |> element(~s([data-testid="status-bar-mute-toggle"]))
       |> render_click()
 
       assert_push_event(view, "toggle_mute", %{})

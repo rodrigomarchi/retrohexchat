@@ -112,10 +112,12 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       # Join second channel and switch back to #lobby
-      view |> element("form.chat-input-form") |> render_submit(%{"input" => "/join #{ch}"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #{ch}"})
 
       view
-      |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#lobby"]))
+      |> element(~s(div[phx-click="switch_channel"][phx-value-channel="#lobby"]))
       |> render_click()
 
       # Send message to background channel (not highlighted)

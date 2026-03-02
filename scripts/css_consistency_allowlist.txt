@@ -17,7 +17,6 @@ char-counter--danger
 connection-banner--disconnected
 connection-banner--reconnected
 # Connection status — JS hook toggles these classes dynamically (ConnectionStatusHook)
-reconnect-overlay--visible
 status-bar-connection--connecting
 status-bar-connection--reconnecting
 # Conversations user list — nick-away applied dynamically via user_item_class/1 in conversations.ex
@@ -28,6 +27,13 @@ media-call__device-label
 media-call__devices
 # Legacy utility — kept for backwards compat but currently unused
 licon-32
+# highlight.js theme — classes applied by highlight.js library at runtime (not in our templates)
+hljs*
+# retrohex.css components — used by V2 templates in Tailwind paths (skipped by template scanner)
+retro-fieldset
+toolbar-group
+tree-view-marker-closed
+tree-view-marker-open
 
 [missing]
 # False positive — "system" is a comparison value inside class={...} expression
@@ -62,6 +68,49 @@ app-header-panels
 bg-desktop
 font-system
 text-text
+# JS hooks — classes used by JS hooks for DOM manipulation and querySelector targeting.
+# These were previously defined in V1 retro CSS; now styled via Tailwind or used as selectors only.
+chat-action
+chat-content
+chat-link
+chat-link-preview
+chat-nick
+chat-reply-btn
+chat-timestamp
+connection-banner--visible
+reconnect-overlay--visible
+conversations-join-flash
+dialog-overlay
+disabled
+file-transfer-drop-zone--active
+file-transfer-input
+focused
+format-color-dropdown
+format-color-dropdown--open
+game-canvas__stub
+hist-search-panel--open
+history-no-match
+history-no-match--visible
+history-search-input
+interactive-tooltip
+new-messages-btn
+new-messages-btn--visible
+p2p-diagram__dot
+p2p-diagram__dots
+search-highlight
+search-highlight-active
+selected
+title-bar
+title-bar-text
+toast-actions
+toast-checkbox
+toast-container
+toast-hiding
+toast-notification
+toast-text
+toast-visible
+window
+window-body
 
 [dynamic-prefixes]
 # Prefixes with dynamic suffixes (e.g. chat-message--#{type})

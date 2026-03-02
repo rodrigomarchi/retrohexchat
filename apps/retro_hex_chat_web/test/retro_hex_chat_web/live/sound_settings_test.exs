@@ -10,24 +10,20 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       nick = "SndDlg#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      refute render(view) =~ "data-testid=\"sound-settings-dialog\""
+      refute has_element?(view, "#sound-settings-dialog-show-trigger")
 
-      view
-      |> element(~s([data-testid="toolbar-sounds"]))
-      |> render_click()
+      render_click(view, "open_sound_settings_dialog", %{})
 
       html = render(view)
-      assert html =~ "data-testid=\"sound-settings-dialog\""
-      assert html =~ "Sounds"
+      assert has_element?(view, "#sound-settings-dialog-show-trigger")
+      assert html =~ "Sound Settings"
     end
 
     test "dialog shows all 10 event types", %{conn: conn} do
       nick = "SndAll#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view
-      |> element(~s([data-testid="toolbar-sounds"]))
-      |> render_click()
+      render_click(view, "open_sound_settings_dialog", %{})
 
       html = render(view)
       assert html =~ "Channel Message"
@@ -46,9 +42,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       nick = "SndDrop#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view
-      |> element(~s([data-testid="toolbar-sounds"]))
-      |> render_click()
+      render_click(view, "open_sound_settings_dialog", %{})
 
       html = render(view)
 
@@ -68,17 +62,12 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       nick = "SndChg#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view
-      |> element(~s([data-testid="toolbar-sounds"]))
-      |> render_click()
+      render_click(view, "open_sound_settings_dialog", %{})
 
-      # Change highlight sound to "buzz" via the dropdown
-      view
-      |> element(~s(select[data-testid="sound-select-highlight"]))
-      |> render_change(%{"event_highlight" => "buzz"})
+      # Change highlight sound to "buzz" via event
+      render_click(view, "sound_settings_change", %{"event_highlight" => "buzz"})
 
       html = render(view)
-      # The dropdown for highlight should now show "buzz" selected
       assert html =~ "sound-select-highlight"
     end
 
@@ -86,18 +75,14 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       nick = "SndOK#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view
-      |> element(~s([data-testid="toolbar-sounds"]))
-      |> render_click()
+      render_click(view, "open_sound_settings_dialog", %{})
 
-      assert render(view) =~ "data-testid=\"sound-settings-dialog\""
+      assert has_element?(view, "#sound-settings-dialog-show-trigger")
 
-      view
-      |> element(~s(button[phx-click="sound_settings_ok"]))
-      |> render_click()
+      render_click(view, "sound_settings_ok")
 
       html = render(view)
-      refute html =~ "data-testid=\"sound-settings-dialog\""
+      refute has_element?(view, "#sound-settings-dialog-show-trigger")
       assert html =~ "Sound settings saved"
     end
 
@@ -105,17 +90,13 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       nick = "SndApply#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view
-      |> element(~s([data-testid="toolbar-sounds"]))
-      |> render_click()
+      render_click(view, "open_sound_settings_dialog", %{})
 
-      view
-      |> element(~s(button[phx-click="sound_settings_apply"]))
-      |> render_click()
+      render_click(view, "sound_settings_apply")
 
       html = render(view)
       # Dialog stays open
-      assert html =~ "data-testid=\"sound-settings-dialog\""
+      assert has_element?(view, "#sound-settings-dialog-show-trigger")
       # System message shown
       assert html =~ "Sound settings applied"
     end
@@ -124,18 +105,14 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       nick = "SndCancel#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view
-      |> element(~s([data-testid="toolbar-sounds"]))
-      |> render_click()
+      render_click(view, "open_sound_settings_dialog", %{})
 
-      assert render(view) =~ "data-testid=\"sound-settings-dialog\""
+      assert has_element?(view, "#sound-settings-dialog-show-trigger")
 
-      view
-      |> element(~s(button[type="button"][phx-click="close_sound_settings_dialog"]))
-      |> render_click()
+      render_click(view, "close_sound_settings_dialog")
 
       html = render(view)
-      refute html =~ "data-testid=\"sound-settings-dialog\""
+      refute has_element?(view, "#sound-settings-dialog-show-trigger")
       refute html =~ "Sound settings saved"
     end
   end
@@ -149,9 +126,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       # Consume connect sound
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
-      view
-      |> element(~s([data-testid="toolbar-sounds"]))
-      |> render_click()
+      render_click(view, "open_sound_settings_dialog", %{})
 
       view
       |> element(~s(button[data-testid="sound-preview-highlight"]))
@@ -168,14 +143,10 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       nick = "SndFlash#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      view
-      |> element(~s([data-testid="toolbar-sounds"]))
-      |> render_click()
+      render_click(view, "open_sound_settings_dialog", %{})
 
-      # Toggle join flash (starts as false)
-      view
-      |> element(~s(input[data-testid="flash-toggle-join"]))
-      |> render_click()
+      # Toggle join flash via event
+      render_click(view, "sound_flash_toggle", %{"event" => "join"})
 
       # After toggle, the checkbox state should be updated
       html = render(view)

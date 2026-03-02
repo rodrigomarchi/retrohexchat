@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.V2.SoloSessionLive do
         {:ok, redirect_socket}
 
       {:redirect, _} ->
-        {:ok, push_navigate(socket, to: ~p"/v2/chat")}
+        {:ok, push_navigate(socket, to: ~p"/chat")}
     end
   end
 
@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.V2.SoloSessionLive do
     game = resolve_game(game_id)
     started_at = Map.get(payload, :started_at)
 
-    game_url = "/v2/arcade/#{socket.assigns.token}/#{game_id}"
+    game_url = "/arcade/#{socket.assigns.token}/#{game_id}"
 
     socket =
       socket

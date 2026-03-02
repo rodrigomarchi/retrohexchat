@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.V2.SessionController do
   @moduledoc """
-  v2 session controller — identical logic to v1, but redirects to /v2/ routes.
+  Session controller — handles login/logout and redirects to chat routes.
   """
   use RetroHexChatWeb, :controller
 
@@ -17,15 +17,15 @@ defmodule RetroHexChatWeb.V2.SessionController do
       |> put_session(:chat_pre_identified, pre_identified)
       |> put_session(:chat_timezone, params["timezone"] || "Etc/UTC")
       |> maybe_put_join_channel(params["join_channel"])
-      |> redirect(to: ~p"/v2/chat")
+      |> redirect(to: ~p"/chat")
     else
       _ ->
-        redirect(conn, to: ~p"/v2/connect")
+        redirect(conn, to: ~p"/connect")
     end
   end
 
   def create(conn, _params) do
-    redirect(conn, to: ~p"/v2/connect")
+    redirect(conn, to: ~p"/connect")
   end
 
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.V2.SessionController do
 
     conn
     |> clear_session()
-    |> redirect(to: ~p"/v2/connect?reason=#{reason}")
+    |> redirect(to: ~p"/connect?reason=#{reason}")
   end
 
   @spec verify_optional_token(String.t() | nil, String.t()) :: :ok | :error

@@ -74,7 +74,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
       >
         {render_slot(@toolbar_buttons)}
       </div>
-      <form phx-submit={@on_submit} class="flex items-center gap-1 p-[2px] bg-surface">
+      <form
+        phx-submit={@on_submit}
+        class="flex items-center gap-1 p-[2px] bg-surface"
+        data-testid="chat-input-form"
+      >
         <textarea
           id={@input_id}
           name={@name}

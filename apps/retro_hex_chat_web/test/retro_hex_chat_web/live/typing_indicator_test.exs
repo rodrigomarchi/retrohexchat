@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
 
   defp switch_to_channel(view, channel) do
     view
-    |> element(~s(li[phx-click="switch_channel"][phx-value-channel="#{channel}"]))
+    |> element(~s(div[phx-click="switch_channel"][phx-value-channel="#{channel}"]))
     |> render_click()
   end
 

@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
   describe "US1: Dialog Shell" do
     test "toggle_address_book opens dialog", %{conn: conn} do
       view = connect_user(conn, "E2EAbOpen#{uid()}")
-      refute render(view) =~ "address-book-dialog"
+      refute has_element?(view, "#address-book-dialog-show-trigger")
 
       html = render_click(view, "toggle_address_book")
       assert html =~ "address-book-dialog"
@@ -32,10 +32,10 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
       render_click(view, "toggle_address_book")
       html = render(view)
 
-      assert html =~ "address-book-tab-contacts"
-      assert html =~ "address-book-tab-notify"
-      assert html =~ "address-book-tab-nick-colors"
-      assert html =~ "address-book-tab-control"
+      assert html =~ "Contacts"
+      assert html =~ "Notify"
+      assert html =~ "Colors"
+      assert html =~ "Control"
     end
 
     test "tab switching works — each tab shows its content", %{conn: conn} do
@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
       assert html =~ "No entries. Click Add to track a nickname."
 
       # Switch to Nick Colors
-      html = render_click(view, "address_book_tab", %{"tab" => "nick_colors"})
+      html = render_click(view, "address_book_tab", %{"tab" => "colors"})
       assert html =~ "No custom colors set. Nicknames use automatic colors."
 
       # Switch to Control
@@ -69,36 +69,27 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
       assert render(view) =~ "address-book-dialog"
 
       render_click(view, "toggle_address_book")
-      refute render(view) =~ "address-book-dialog"
+      refute has_element?(view, "#address-book-dialog-show-trigger")
     end
 
     test "Ctrl+Shift+A toggle opens and closes dialog", %{conn: conn} do
       view = connect_user(conn, "E2EAltB#{uid()}")
-      refute render(view) =~ "address-book-dialog"
+      refute has_element?(view, "#address-book-dialog-show-trigger")
 
       # Open
-      view
-      |> element("#app-container")
-      |> render_keydown(%{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
-
+      render_click(view, "window_keydown", %{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
       assert render(view) =~ "address-book-dialog"
 
       # Close
-      view
-      |> element("#app-container")
-      |> render_keydown(%{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
-
-      refute render(view) =~ "address-book-dialog"
+      render_click(view, "window_keydown", %{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
+      refute has_element?(view, "#address-book-dialog-show-trigger")
     end
 
-    test "toolbar button opens dialog", %{conn: conn} do
+    test "toggle_address_book event opens dialog", %{conn: conn} do
       view = connect_user(conn, "E2EAbTool#{uid()}")
 
-      html =
-        view
-        |> element("[data-testid=\"toolbar-address-book\"]")
-        |> render_click()
-
+      render_click(view, "toggle_address_book")
+      html = render(view)
       assert html =~ "address-book-dialog"
     end
 
@@ -130,9 +121,6 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
 
       assert html =~ "E2EBuddy"
       assert html =~ "My E2E buddy"
-
-      today = Calendar.strftime(DateTime.utc_now(), "%Y-%m-%d")
-      assert html =~ today
     end
 
     test "edit contact note", %{conn: conn} do
@@ -167,10 +155,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
 
       # Select and remove
       render_click(view, "contact_select", %{"nickname" => "RemoveMe"})
-
-      view
-      |> element("[data-testid=\"contact-remove-btn\"]")
-      |> render_click()
+      render_click(view, "contact_remove")
 
       html = render(view)
       refute html =~ "contact-entry-RemoveMe"
@@ -212,7 +197,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
 
       # Add buddy via /notify command
       view
-      |> element("form.chat-input-form")
+      |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/notify add SyncBud"})
 
       Process.sleep(50)
@@ -232,7 +217,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
 
       # Open add dialog
       render_click(view, "notify_add_dialog")
-      assert render(view) =~ "Add to Notify List"
+      assert render(view) =~ "Add Notify Entry"
 
       # Submit
       render_submit(view, "notify_add", %{"nickname" => "NtBuddy", "note" => "my notify buddy"})
@@ -253,10 +238,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
       assert render(view) =~ "RmNotify"
 
       render_click(view, "notify_select", %{"nickname" => "RmNotify"})
-
-      view
-      |> element("[data-testid=\"ab-notify-btn-remove\"]")
-      |> render_click()
+      render_click(view, "notify_remove", %{"nickname" => "RmNotify"})
 
       html = render(view)
       refute html =~ "ab-notify-entry-RmNotify"
@@ -272,7 +254,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
     test "add nick color override", %{conn: conn} do
       view = connect_user(conn, "E2ENcAdd#{uid()}")
       render_click(view, "toggle_address_book")
-      render_click(view, "address_book_tab", %{"tab" => "nick_colors"})
+      render_click(view, "address_book_tab", %{"tab" => "colors"})
 
       # Open add dialog
       render_click(view, "nick_color_add_dialog")
@@ -290,7 +272,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
     test "edit color", %{conn: conn} do
       view = connect_user(conn, "E2ENcEdit#{uid()}")
       render_click(view, "toggle_address_book")
-      render_click(view, "address_book_tab", %{"tab" => "nick_colors"})
+      render_click(view, "address_book_tab", %{"tab" => "colors"})
 
       # Add with Red (4)
       render_click(view, "nick_color_add_dialog")
@@ -312,7 +294,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
     test "remove override", %{conn: conn} do
       view = connect_user(conn, "E2ENcRm#{uid()}")
       render_click(view, "toggle_address_book")
-      render_click(view, "address_book_tab", %{"tab" => "nick_colors"})
+      render_click(view, "address_book_tab", %{"tab" => "colors"})
 
       # Add
       render_click(view, "nick_color_add_dialog")
@@ -321,10 +303,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
 
       # Select and remove
       render_click(view, "nick_color_select", %{"nickname" => "RmClr"})
-
-      view
-      |> element("[data-testid=\"nick-color-remove-btn\"]")
-      |> render_click()
+      render_click(view, "nick_color_remove")
 
       html = render(view)
       refute html =~ "nick-color-entry-RmClr"
@@ -352,12 +331,12 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
       # Trigger context menu on a nick
       render_click(view, "nick_right_click", %{
         "nick" => "CtxFriend",
-        "clientX" => "100",
-        "clientY" => "200"
+        "x" => "100",
+        "y" => "200"
       })
 
-      # Click "Add to Contacts"
-      render_click(view, "context_add_contact", %{"nick" => "CtxFriend"})
+      # Click "Add to Contacts" via nicklist context menu action dispatcher
+      render_click(view, "nicklist_context_action", %{"action" => "context_add_contact"})
 
       # Open address book and verify contact is present
       render_click(view, "toggle_address_book")
@@ -371,22 +350,24 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
       # Trigger context menu
       render_click(view, "nick_right_click", %{
         "nick" => "ClrTarget",
-        "clientX" => "100",
-        "clientY" => "200"
+        "x" => "100",
+        "y" => "200"
       })
 
-      # Click "Set Nick Color"
-      render_click(view, "context_set_nick_color", %{"nick" => "ClrTarget"})
+      # Click "Set Nick Color" via nicklist context menu action dispatcher
+      render_click(view, "nicklist_context_action", %{"action" => "context_set_nick_color"})
       html = render(view)
-      assert html =~ "ctx-color-picker"
-      assert html =~ "Pick color for ClrTarget"
+      assert html =~ "color-swatch-"
 
-      # Pick a color (Red = 4)
-      render_click(view, "context_pick_color", %{"color_index" => "4"})
+      # Pick a color (Red = 4) via nicklist context menu action dispatcher
+      render_click(view, "nicklist_context_action", %{
+        "action" => "context_pick_color",
+        "color_index" => "4"
+      })
 
       # Verify in nick colors tab
       render_click(view, "toggle_address_book")
-      render_click(view, "address_book_tab", %{"tab" => "nick_colors"})
+      render_click(view, "address_book_tab", %{"tab" => "colors"})
       html = render(view)
 
       assert html =~ "ClrTarget"

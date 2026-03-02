@@ -81,15 +81,11 @@ defmodule RetroHexChatWeb.MixProject do
       "assets.setup": ["esbuild.install --if-missing"],
       "assets.build": [
         "compile",
-        "esbuild retro_hex_chat_web",
-        "esbuild retro_hex_chat_web_css",
         "esbuild retro_hex_chat_web_retrohex_content_js",
         "esbuild retro_hex_chat_web_v2_app_js",
         "cmd assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/retrohex.css -o priv/static/assets/css/retrohex.css"
       ],
       "assets.deploy": [
-        "esbuild retro_hex_chat_web --minify",
-        "esbuild retro_hex_chat_web_css --minify",
         "esbuild retro_hex_chat_web_retrohex_content_js --minify",
         "esbuild retro_hex_chat_web_v2_app_js --minify",
         "cmd assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/retrohex.css -o priv/static/assets/css/retrohex.css --minify",

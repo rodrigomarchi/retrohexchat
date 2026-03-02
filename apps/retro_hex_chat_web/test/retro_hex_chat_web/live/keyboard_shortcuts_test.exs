@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
       })
 
       html = render_click(view, "window_keydown", %{"key" => "Escape"})
-      refute html =~ "cheatsheet-dialog"
+      refute has_element?(view, "#cheatsheet-dialog-show-trigger")
     end
 
     test "Ctrl+Shift+/ toggles cheatsheet off", %{conn: conn} do
@@ -47,7 +47,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
 
       render_click(view, "window_keydown", params)
       html = render_click(view, "window_keydown", params)
-      refute html =~ "cheatsheet-dialog"
+      refute has_element?(view, "#cheatsheet-dialog-show-trigger")
     end
 
     test "cheatsheet renders categories", %{conn: conn} do
@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
       })
 
       html = render_click(view, "close_dialog", %{"dialog" => "cheatsheet"})
-      refute html =~ "cheatsheet-dialog"
+      refute has_element?(view, "#cheatsheet-dialog-show-trigger")
     end
   end
 

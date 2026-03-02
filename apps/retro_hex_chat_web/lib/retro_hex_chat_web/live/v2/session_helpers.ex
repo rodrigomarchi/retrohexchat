@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.V2.SessionHelpers do
   @spec verify_nickname(Phoenix.LiveView.Socket.t(), String.t() | nil) ::
           {:ok, Phoenix.LiveView.Socket.t()} | {:redirect, Phoenix.LiveView.Socket.t()}
   def verify_nickname(socket, nil) do
-    {:redirect, Phoenix.LiveView.push_navigate(socket, to: ~p"/v2/connect")}
+    {:redirect, Phoenix.LiveView.push_navigate(socket, to: ~p"/connect")}
   end
 
   def verify_nickname(socket, _nickname), do: {:ok, socket}

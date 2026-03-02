@@ -21,54 +21,46 @@ defmodule RetroHexChatWeb.OptionsDialogE2ETest do
   describe "Dialog open/close" do
     test "1.1 Ctrl+Shift+O opens options dialog", %{conn: conn} do
       view = connect_user(conn, "E2EOpt#{uid()}")
-      refute render(view) =~ "options-dialog-overlay"
+      refute has_element?(view, "#options-dialog-show-trigger")
 
-      html =
-        view
-        |> element("#app-container")
-        |> render_keydown(%{"key" => "o", "ctrlKey" => true, "shiftKey" => true})
+      render_click(view, "window_keydown", %{"key" => "o", "ctrlKey" => true, "shiftKey" => true})
 
-      assert html =~ "options-dialog-overlay"
-      assert html =~ "Options"
+      assert has_element?(view, "#options-dialog-show-trigger")
+      assert render(view) =~ "Options"
     end
 
     test "1.2 Tools > Options menu opens dialog", %{conn: conn} do
       view = connect_user(conn, "E2EMenu#{uid()}")
-      html = render_click(view, "open_options_dialog")
-      assert html =~ "options-dialog-overlay"
+      render_click(view, "open_options_dialog")
+      assert has_element?(view, "#options-dialog-show-trigger")
     end
 
     test "1.3 Cancel closes dialog", %{conn: conn} do
       view = connect_user(conn, "E2ECncl#{uid()}")
       render_click(view, "open_options_dialog")
-      html = view |> element(~s([data-testid="options-cancel"])) |> render_click()
-      refute html =~ "options-dialog-overlay"
+      render_click(view, "close_options_dialog")
+      refute has_element?(view, "#options-dialog-show-trigger")
     end
 
     test "1.4 OK closes dialog", %{conn: conn} do
       view = connect_user(conn, "E2EOK#{uid()}")
       render_click(view, "open_options_dialog")
-      html = view |> element(~s([data-testid="options-ok"])) |> render_click()
-      refute html =~ "options-dialog-overlay"
+      render_click(view, "options_ok")
+      refute has_element?(view, "#options-dialog-show-trigger")
     end
 
     test "1.5 Escape closes dialog", %{conn: conn} do
       view = connect_user(conn, "E2EEsc#{uid()}")
       render_click(view, "open_options_dialog")
-
-      html =
-        view
-        |> element("#app-container")
-        |> render_keydown(%{"key" => "Escape"})
-
-      refute html =~ "options-dialog-overlay"
+      render_click(view, "window_keydown", %{"key" => "Escape"})
+      refute has_element?(view, "#options-dialog-show-trigger")
     end
 
     test "1.6 duplicate open is no-op", %{conn: conn} do
       view = connect_user(conn, "E2EDup#{uid()}")
       render_click(view, "open_options_dialog")
-      html = render_click(view, "open_options_dialog")
-      assert html =~ "options-dialog-overlay"
+      render_click(view, "open_options_dialog")
+      assert has_element?(view, "#options-dialog-show-trigger")
     end
   end
 
@@ -110,8 +102,10 @@ defmodule RetroHexChatWeb.OptionsDialogE2ETest do
 
       render_click(view, "open_options_dialog")
       render_click(view, "options_toggle_display", %{"setting" => "show_toolbar"})
-      html = view |> element(~s([data-testid="options-ok"])) |> render_click()
+      render_click(view, "options_ok")
 
+      html = render(view)
+      # Toolbar should be hidden after toggling off
       refute html =~ ~s(data-testid="toolbar-connect")
     end
   end
@@ -129,7 +123,7 @@ defmodule RetroHexChatWeb.OptionsDialogE2ETest do
       render_click(view, "options_toggle_display", %{"setting" => "show_toolbar"})
 
       # Cancel
-      view |> element(~s([data-testid="options-cancel"])) |> render_click()
+      render_click(view, "close_options_dialog")
 
       # Toolbar should still be visible
       html = render(view)
@@ -141,10 +135,10 @@ defmodule RetroHexChatWeb.OptionsDialogE2ETest do
       render_click(view, "open_options_dialog")
 
       render_click(view, "options_toggle_display", %{"setting" => "show_statusbar"})
-      html = view |> element(~s([data-testid="options-apply"])) |> render_click()
+      render_click(view, "options_apply")
 
       # Dialog stays open
-      assert html =~ "options-dialog-overlay"
+      assert has_element?(view, "#options-dialog-show-trigger")
     end
   end
 

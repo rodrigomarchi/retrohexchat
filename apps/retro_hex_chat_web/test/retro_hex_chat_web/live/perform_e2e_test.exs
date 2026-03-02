@@ -110,31 +110,28 @@ defmodule RetroHexChatWeb.PerformE2ETest do
     test "Ctrl+Shift+E opens and closes dialog", %{conn: conn} do
       view = connect_user(conn, "E2EDlg#{uid()}")
 
-      render_keydown(view, "window_keydown", %{
+      render_click(view, "window_keydown", %{
         "key" => "e",
         "ctrlKey" => true,
         "shiftKey" => true
       })
 
-      html = render(view)
-      assert html =~ "data-testid=\"perform-dialog\""
+      assert has_element?(view, "#perform-dialog-show-trigger")
 
-      render_keydown(view, "window_keydown", %{
+      render_click(view, "window_keydown", %{
         "key" => "e",
         "ctrlKey" => true,
         "shiftKey" => true
       })
 
-      html = render(view)
-      refute html =~ "data-testid=\"perform-dialog\""
+      refute has_element?(view, "#perform-dialog-show-trigger")
     end
 
     test "menu bar opens dialog", %{conn: conn} do
       view = connect_user(conn, "E2EMnu#{uid()}")
 
       render_click(view, "open_perform_dialog")
-      html = render(view)
-      assert html =~ "data-testid=\"perform-dialog\""
+      assert has_element?(view, "#perform-dialog-show-trigger")
     end
 
     test "add command via dialog", %{conn: conn} do
@@ -175,7 +172,7 @@ defmodule RetroHexChatWeb.PerformE2ETest do
       # Switch back to commands tab
       render_click(view, "perform_dialog_tab", %{"tab" => "commands"})
       html = render(view)
-      assert html =~ "No perform commands"
+      assert html =~ "No commands configured"
     end
 
     test "enable/disable toggle", %{conn: conn} do
@@ -197,7 +194,7 @@ defmodule RetroHexChatWeb.PerformE2ETest do
       render_submit(view, "perform_dialog_add_confirm", %{"command" => "/ns identify mysecret"})
 
       html = render(view)
-      assert html =~ "****"
+      assert html =~ "***"
       refute html =~ "mysecret"
     end
 
@@ -205,12 +202,10 @@ defmodule RetroHexChatWeb.PerformE2ETest do
       view = connect_user(conn, "E2EEsc#{uid()}")
 
       render_click(view, "open_perform_dialog")
-      html = render(view)
-      assert html =~ "data-testid=\"perform-dialog\""
+      assert has_element?(view, "#perform-dialog-show-trigger")
 
-      render_keydown(view, "window_keydown", %{"key" => "Escape"})
-      html = render(view)
-      refute html =~ "data-testid=\"perform-dialog\""
+      render_click(view, "window_keydown", %{"key" => "Escape"})
+      refute has_element?(view, "#perform-dialog-show-trigger")
     end
   end
 
@@ -344,7 +339,7 @@ defmodule RetroHexChatWeb.PerformE2ETest do
   end
 
   defp submit_command(view, command) do
-    view |> element("form.chat-input-form") |> render_submit(%{"input" => command})
+    view |> element(~s([data-testid="chat-input-form"])) |> render_submit(%{"input" => command})
   end
 
   defp ensure_channel(name) do

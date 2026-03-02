@@ -28,12 +28,12 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
   alias RetroHexChatWeb.Icons
 
   @event_labels %{
-    message: "Message",
+    message: "Channel Message",
     pm: "Private Message",
-    highlight: "Highlight",
-    join: "User Join",
-    part: "User Part",
-    kick: "Kicked",
+    highlight: "Highlight/Mention",
+    join: "User Joined",
+    part: "User Left",
+    kick: "User Kicked",
     connect: "Connected",
     disconnect: "Disconnected",
     buddy_online: "Buddy Online",
@@ -111,6 +111,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
                       value={event_sound(@settings, event)}
                       label={event_sound(@settings, event)}
                       class="w-full"
+                      data-testid={"sound-select-#{event}"}
                     >
                       <.select_trigger builder={builder} class="h-8 text-xs" />
                       <.select_content builder={builder}>
@@ -134,6 +135,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
                     value={event_flash(@settings, event)}
                     phx-click={@on_flash_toggle}
                     phx-value-event={event}
+                    data-testid={"flash-toggle-#{event}"}
                   />
                 </.table_cell>
 
@@ -143,6 +145,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
                     variant="outline"
                     phx-click={@on_preview}
                     phx-value-event={event}
+                    data-testid={"sound-preview-#{event}"}
                   >
                     <:icon><Icons.icon_btn_sounds class="w-4 h-4" /></:icon>
                     Play

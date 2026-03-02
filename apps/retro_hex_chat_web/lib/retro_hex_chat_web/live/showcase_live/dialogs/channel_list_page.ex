@@ -20,12 +20,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
        page_title: "Channel List",
        active_page: "channel-list",
        channels: [
-         %{name: "#lobby", users: 142, topic: "Welcome to RetroHexChat!"},
-         %{name: "#help", users: 38, topic: "Ask your questions here"},
-         %{name: "#dev", users: 24, topic: "Development discussion"},
-         %{name: "#music", users: 67, topic: "Share your favorite tunes"},
-         %{name: "#gaming", users: 89, topic: "Game on!"},
-         %{name: "#random", users: 53, topic: "Anything goes"}
+         %{name: "#lobby", user_count: 142, topic: "Welcome to RetroHexChat!"},
+         %{name: "#help", user_count: 38, topic: "Ask your questions here"},
+         %{name: "#dev", user_count: 24, topic: "Development discussion"},
+         %{name: "#music", user_count: 67, topic: "Share your favorite tunes"},
+         %{name: "#gaming", user_count: 89, topic: "Game on!"},
+         %{name: "#random", user_count: 53, topic: "Anything goes"}
        ]
      )}
   end

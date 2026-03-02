@@ -1,7 +1,7 @@
 <%!-- Hidden hooks --%>
 <div id="title-flash" phx-hook="TitleFlashHook" class="hidden"></div>
 <div id="nick-change-hook" phx-hook="NickChangeFormHook" class="hidden"></div>
-<form id="nick-change-session-form" action={~p"/v2/chat/session"} method="post" class="hidden">
+<form id="nick-change-session-form" action={~p"/chat/session"} method="post" class="hidden">
   <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
   <input type="hidden" name="nickname" value={@nick_change_target || ""} />
   <input

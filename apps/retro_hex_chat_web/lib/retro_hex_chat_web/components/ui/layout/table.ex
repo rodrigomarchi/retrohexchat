@@ -123,12 +123,17 @@ defmodule RetroHexChatWeb.Components.UI.Table do
   end
 
   attr :class, :string, default: nil
+  attr :colspan, :string, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
   def table_cell(assigns) do
     ~H"""
-    <td class={classes(["p-4 align-middle [&:has([role=checkbox])]:pr-0", @class])} {@rest}>
+    <td
+      class={classes(["p-4 align-middle [&:has([role=checkbox])]:pr-0", @class])}
+      colspan={@colspan}
+      {@rest}
+    >
       {render_slot(@inner_block)}
     </td>
     """
