@@ -54,7 +54,13 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
     ~H"""
     <div
       id={@id}
-      class={classes(["grid grid-cols-[auto_18ch_1fr] items-baseline", type_class(@type), @class])}
+      class={
+        classes([
+          "grid grid-cols-[auto_10ch_1fr] md:grid-cols-[auto_18ch_1fr] items-baseline",
+          type_class(@type),
+          @class
+        ])
+      }
       data-message-id={@id}
       {@rest}
     >

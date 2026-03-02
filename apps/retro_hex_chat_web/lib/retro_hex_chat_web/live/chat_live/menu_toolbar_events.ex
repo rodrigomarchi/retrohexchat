@@ -357,6 +357,12 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     {:halt, assign(socket, cheatsheet_visible: !socket.assigns.cheatsheet_visible)}
   end
 
+  def handle_event("viewport_info", %{"width" => width}, socket) when width < 768 do
+    {:halt, assign(socket, show_conversations: false, show_nicklist: false)}
+  end
+
+  def handle_event("viewport_info", _params, socket), do: {:halt, socket}
+
   def handle_event("toggle_nicklist", _params, socket) do
     current = Map.get(socket.assigns, :show_nicklist, true)
     {:halt, assign(socket, show_nicklist: !current)}

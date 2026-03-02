@@ -65,6 +65,53 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Table do
           &lt;/.table&gt;
         </.code_example>
       </.showcase_card>
+
+      <.showcase_card
+        title="Caption & Footer"
+        description="Table with caption and footer row for summaries."
+      >
+        <.table>
+          <.table_caption>Server statistics — March 2026</.table_caption>
+          <.table_header>
+            <.table_row>
+              <.table_head>Server</.table_head>
+              <.table_head>Users</.table_head>
+              <.table_head>Channels</.table_head>
+            </.table_row>
+          </.table_header>
+          <.table_body>
+            <.table_row>
+              <.table_cell>Sun</.table_cell>
+              <.table_cell>128</.table_cell>
+              <.table_cell>24</.table_cell>
+            </.table_row>
+            <.table_row>
+              <.table_cell>Moon</.table_cell>
+              <.table_cell>64</.table_cell>
+              <.table_cell>12</.table_cell>
+            </.table_row>
+          </.table_body>
+          <.table_footer>
+            <.table_row>
+              <.table_cell class="font-bold">Total</.table_cell>
+              <.table_cell class="font-bold">192</.table_cell>
+              <.table_cell class="font-bold">36</.table_cell>
+            </.table_row>
+          </.table_footer>
+        </.table>
+        <.code_example>
+          &lt;.table&gt;
+          &lt;.table_caption&gt;Server statistics&lt;/.table_caption&gt;
+          &lt;.table_header&gt;...&lt;/.table_header&gt;
+          &lt;.table_body&gt;...&lt;/.table_body&gt;
+          &lt;.table_footer&gt;
+          &lt;.table_row&gt;
+          &lt;.table_cell class="font-bold"&gt;Total&lt;/.table_cell&gt;
+          &lt;/.table_row&gt;
+          &lt;/.table_footer&gt;
+          &lt;/.table&gt;
+        </.code_example>
+      </.showcase_card>
     </.showcase_layout>
     """
   end

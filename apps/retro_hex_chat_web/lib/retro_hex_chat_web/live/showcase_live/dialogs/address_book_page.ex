@@ -20,17 +20,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AddressBookPage do
        page_title: "Address Book",
        active_page: "address-book",
        contacts: [
-         %{nick: "alice", notes: "Friend", color: "#ff0000"},
-         %{nick: "bob", notes: "Colleague", color: "#0000ff"},
-         %{nick: "carol", notes: "", color: "#00cc00"}
+         %{nick: "alice", notes: "Friend", color: 4},
+         %{nick: "bob", notes: "Colleague", color: 2},
+         %{nick: "carol", notes: "", color: 3}
        ],
        notify_list: [
          %{nick: "alice", notify_on: true, notify_off: true},
          %{nick: "dave", notify_on: true, notify_off: false}
        ],
        nick_colors: [
-         %{nick: "alice", color: "#ff0000"},
-         %{nick: "bob", color: "#0000ff"}
+         %{nick: "alice", color: 4},
+         %{nick: "bob", color: 2}
        ],
        control_list: [
          %{nick: "spammer", level: "ignore"},

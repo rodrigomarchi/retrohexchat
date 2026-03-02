@@ -33,9 +33,8 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   def dialog(assigns) do
     ~H"""
     <div
-      :if={@show}
       id={@id}
-      phx-mounted={JS.exec("phx-show-modal", to: "##{@id}")}
+      phx-mounted={@show && JS.exec("phx-show-modal", to: "##{@id}")}
       phx-show-modal={show_modal(@id)}
       phx-hide-modal={@on_cancel |> hide_modal(@id)}
       class="relative z-modal hidden group/dialog"

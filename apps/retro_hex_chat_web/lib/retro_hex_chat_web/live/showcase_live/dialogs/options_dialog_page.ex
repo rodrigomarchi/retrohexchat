@@ -8,16 +8,35 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.OptionsDialogPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
-  import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.Components.UI.OptionsDialog
   import RetroHexChatWeb.ShowcaseHelpers
   alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Options Dialog", active_page: "options-dialog")}
+    {:ok,
+     assign(socket,
+       page_title: "Options Dialog",
+       active_page: "options-dialog",
+       options_draft: %{
+         display: %{
+           show_toolbar: true,
+           show_conversations: true,
+           show_switchbar: true,
+           show_statusbar: true
+         }
+       }
+     )}
+  end
+
+  @impl true
+  def handle_event("options_toggle_display", %{"setting" => setting}, socket) do
+    key = String.to_existing_atom(setting)
+    draft = socket.assigns.options_draft
+    current = Map.get(draft.display, key)
+    new_display = Map.put(draft.display, key, !current)
+    {:noreply, assign(socket, options_draft: %{draft | display: new_display})}
   end
 
   @impl true
@@ -34,43 +53,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.OptionsDialogPage do
           <:icon><Icons.icon_dialog_options class="w-4 h-4" /></:icon>
           Open Options
         </.button>
-        <.options_dialog id="options-demo" active_panel="Display">
-          <:panel name="Display">
-            <div class="space-y-retro-4 text-xs">
-              <.label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="timestamps" value={true} /> Show timestamps
-              </.label>
-              <.label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="joins" value={true} /> Show join/part messages
-              </.label>
-              <.label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="colors" value={true} /> Enable mIRC colors
-              </.label>
-            </div>
-          </:panel>
-          <:panel name="Sounds">
-            <div class="space-y-retro-4 text-xs">
-              <.label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="sound_msg" value={true} /> Message received
-              </.label>
-              <.label class="flex items-center gap-retro-4 cursor-pointer">
-                <.checkbox name="sound_highlight" value={true} /> Highlight
-              </.label>
-            </div>
-          </:panel>
-          <:panel name="Notifications">
-            <p class="text-xs text-muted-foreground">Desktop notification settings.</p>
-          </:panel>
-        </.options_dialog>
+        <.options_dialog
+          id="options-demo"
+          active_panel="display"
+          options_draft={@options_draft}
+        />
         <.code_example>
-          &lt;.options_dialog id="options" active_panel="Display"&gt;
-          &lt;:panel name="Display"&gt;
-          &lt;!-- Display settings --&gt;
-          &lt;/:panel&gt;
-          &lt;:panel name="Sounds"&gt;
-          &lt;!-- Sound settings --&gt;
-          &lt;/:panel&gt;
-          &lt;/.options_dialog&gt;
+          &lt;.options_dialog
+          id="options"
+          active_panel="display"
+          options_draft=&#123;@options_draft&#125;
+          /&gt;
         </.code_example>
       </.showcase_card>
     </.showcase_layout>

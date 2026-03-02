@@ -148,6 +148,10 @@ defmodule RetroHexChatWeb.Router do
     live "/breadcrumb", Primitives.BreadcrumbPage
     live "/dropdown-menu", Primitives.DropdownMenuPage
     live "/pagination", Primitives.PaginationPage
+    live "/alert-dialog", Primitives.AlertDialogPage
+    live "/popover", Primitives.PopoverPage
+    live "/sheet", Primitives.SheetPage
+    live "/form", Primitives.FormPage
 
     # Layout
     live "/tabs", Layout.Tabs
@@ -220,6 +224,8 @@ defmodule RetroHexChatWeb.Router do
     live "/nick-change-dialog", Dialogs.NickChangeDialogPage
     live "/perform-dialog", Dialogs.PerformDialogPage
     live "/channel-central-dialog", Dialogs.ChannelCentralDialogPage
+    live "/admin-console-dialog", Dialogs.AdminConsoleDialogPage
+    live "/bot-management-dialog", Dialogs.BotManagementDialogPage
 
     # P2P
     live "/p2p-lobby", P2P.P2PLobbyPage

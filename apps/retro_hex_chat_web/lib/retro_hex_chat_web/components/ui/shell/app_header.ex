@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
   attr :rest, :global
 
   slot :panels, doc: "Optional extra toolbar content"
+  slot :mobile_actions, doc: "Buttons visible only on mobile (md:hidden)"
 
   @spec app_header(map()) :: Phoenix.LiveView.Rendered.t()
   def app_header(assigns) do
@@ -36,6 +37,11 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
     >
       <%!-- Logo --%>
       <.logo_link href={@logo_href} />
+
+      <%!-- Mobile action buttons --%>
+      <div :if={@mobile_actions != []} class="flex items-center gap-1 ml-2 md:hidden">
+        {render_slot(@mobile_actions)}
+      </div>
 
       <%!-- Optional panels --%>
       <div :if={@panels != []} class="flex items-center ml-[4px] flex-1">

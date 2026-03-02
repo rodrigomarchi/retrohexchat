@@ -43,9 +43,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatLayout do
     assigns = assign(assigns, :tabs, tabs)
 
     ~H"""
-    <div class={classes(["flex h-[500px] shadow-retro-window bg-surface", @class])} {@rest}>
+    <div
+      class={classes(["flex h-[300px] md:h-[500px] shadow-retro-window bg-surface", @class])}
+      {@rest}
+    >
       <%!-- Sidebar --%>
-      <div class="w-[200px] shrink-0 border-r border-border flex flex-col">
+      <div class="hidden md:flex md:w-[200px] md:shrink-0 border-r border-border flex-col">
         <.conversations
           channels={@channels}
           active_channel={@active_channel}
@@ -86,7 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatLayout do
           </.chat_message_list>
 
           <%!-- Nicklist --%>
-          <.nicklist class="w-[140px] shrink-0">
+          <.nicklist class="hidden md:flex md:w-[140px] md:shrink-0">
             <.nicklist_item
               :for={u <- @users}
               nick={u.nick}

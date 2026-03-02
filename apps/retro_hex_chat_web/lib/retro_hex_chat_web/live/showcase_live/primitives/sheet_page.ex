@@ -1,0 +1,132 @@
+defmodule RetroHexChatWeb.ShowcaseLive.Primitives.SheetPage do
+  @moduledoc false
+  use Phoenix.LiveView
+
+  use Phoenix.VerifiedRoutes,
+    endpoint: RetroHexChatWeb.Endpoint,
+    router: RetroHexChatWeb.Router,
+    statics: RetroHexChatWeb.static_paths()
+
+  import RetroHexChatWeb.Components.UI.Sheet
+  import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChatWeb.Icons
+
+  @impl true
+  def mount(_params, _session, socket) do
+    {:ok, assign(socket, page_title: "Sheet", active_page: "sheet")}
+  end
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <.showcase_layout active_page={@active_page}>
+      <h2 class="text-lg font-bold mb-3">Sheet</h2>
+
+      <.showcase_card
+        title="Right Sheet"
+        description="Sheet that slides in from the right side."
+      >
+        <.sheet>
+          <.sheet_trigger target="sheet-right">
+            <.button variant="outline">
+              <:icon><Icons.icon_group_view class="w-4 h-4" /></:icon>
+              Open Right Sheet
+            </.button>
+          </.sheet_trigger>
+          <.sheet_content id="sheet-right" side="right">
+            <.sheet_header>
+              <.sheet_title>Edit Profile</.sheet_title>
+              <.sheet_description>
+                Make changes to your profile here. Click save when done.
+              </.sheet_description>
+            </.sheet_header>
+            <div class="py-4">
+              <p class="text-sm">Sheet content goes here.</p>
+            </div>
+            <.sheet_footer>
+              <.sheet_close target="sheet-right">
+                <.button>
+                  <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                  Save Changes
+                </.button>
+              </.sheet_close>
+            </.sheet_footer>
+          </.sheet_content>
+        </.sheet>
+        <.code_example>
+          &lt;.sheet&gt;
+          &lt;.sheet_trigger target="my-sheet"&gt;
+          &lt;.button&gt;Open&lt;/.button&gt;
+          &lt;/.sheet_trigger&gt;
+          &lt;.sheet_content id="my-sheet" side="right"&gt;
+          &lt;.sheet_header&gt;
+          &lt;.sheet_title&gt;Title&lt;/.sheet_title&gt;
+          &lt;.sheet_description&gt;Description&lt;/.sheet_description&gt;
+          &lt;/.sheet_header&gt;
+          Content here
+          &lt;.sheet_footer&gt;
+          &lt;.sheet_close target="my-sheet"&gt;
+          &lt;.button&gt;Save&lt;/.button&gt;
+          &lt;/.sheet_close&gt;
+          &lt;/.sheet_footer&gt;
+          &lt;/.sheet_content&gt;
+          &lt;/.sheet&gt;
+        </.code_example>
+      </.showcase_card>
+
+      <.showcase_card
+        title="All Sides"
+        description="Sheets can slide in from any direction."
+      >
+        <div class="flex flex-wrap gap-2">
+          <.sheet>
+            <.sheet_trigger target="sheet-left">
+              <.button variant="outline" size="sm">
+                <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
+                Left
+              </.button>
+            </.sheet_trigger>
+            <.sheet_content id="sheet-left" side="left">
+              <.sheet_header>
+                <.sheet_title>Left Sheet</.sheet_title>
+              </.sheet_header>
+              <p class="text-sm py-4">This sheet slides in from the left.</p>
+            </.sheet_content>
+          </.sheet>
+
+          <.sheet>
+            <.sheet_trigger target="sheet-top">
+              <.button variant="outline" size="sm">
+                <:icon><Icons.icon_btn_up class="w-4 h-4" /></:icon>
+                Top
+              </.button>
+            </.sheet_trigger>
+            <.sheet_content id="sheet-top" side="top">
+              <.sheet_header>
+                <.sheet_title>Top Sheet</.sheet_title>
+              </.sheet_header>
+              <p class="text-sm py-4">This sheet slides in from the top.</p>
+            </.sheet_content>
+          </.sheet>
+
+          <.sheet>
+            <.sheet_trigger target="sheet-bottom">
+              <.button variant="outline" size="sm">
+                <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
+                Bottom
+              </.button>
+            </.sheet_trigger>
+            <.sheet_content id="sheet-bottom" side="bottom">
+              <.sheet_header>
+                <.sheet_title>Bottom Sheet</.sheet_title>
+              </.sheet_header>
+              <p class="text-sm py-4">This sheet slides in from the bottom.</p>
+            </.sheet_content>
+          </.sheet>
+        </div>
+      </.showcase_card>
+    </.showcase_layout>
+    """
+  end
+end

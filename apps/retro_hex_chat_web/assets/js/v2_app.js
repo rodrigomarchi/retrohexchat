@@ -41,6 +41,7 @@ import GameSessionHook from "./hooks/games/game_session_hook";
 import GameWebRTCHook from "./hooks/games/game_webrtc_hook";
 import WebRTCHook from "./hooks/p2p/webrtc_hook";
 import MediaHook from "./hooks/p2p/media_hook";
+import ViewportDetectHook from "./hooks/ui/viewport_detect_hook";
 import { getClientInfo } from "./lib/connection/client_info";
 
 const AutoFocusHook = {
@@ -87,6 +88,7 @@ const Hooks = {
   ToolbarGroupHook: ToolbarGroupHook,
   ConversationsHook: ConversationsHook,
   URLCatcherHook: URLCatcherHook,
+  ViewportDetectHook: ViewportDetectHook,
   WebRTCHook: WebRTCHook,
 };
 

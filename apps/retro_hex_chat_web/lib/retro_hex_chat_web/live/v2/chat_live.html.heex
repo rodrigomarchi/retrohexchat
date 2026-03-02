@@ -13,6 +13,7 @@
   <input type="hidden" name="timezone" value={@timezone} />
 </form>
 <div id="search-highlight-hook" phx-hook="SearchHighlightHook" class="hidden"></div>
+<div id="viewport-detect" phx-hook="ViewportDetectHook" class="hidden"></div>
 <div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" class="hidden"></div>
 <div id="paste-hook" phx-hook="PasteHook" class="hidden"></div>
 
@@ -29,6 +30,28 @@
 >
   <%!-- App header with toolbar & status bar --%>
   <.app_header logo_href={~p"/v2/chat"}>
+    <:mobile_actions>
+      <button
+        type="button"
+        phx-click="toggle_conversations"
+        class="inline-flex items-center justify-center w-8 h-8 bg-surface cursor-pointer
+               hover:shadow-retro-raised active:shadow-retro-sunken"
+        title="Channels"
+        aria-label="Toggle channels"
+      >
+        <RetroHexChatWeb.Icons.icon_tab_conversations class="w-5 h-5" />
+      </button>
+      <button
+        type="button"
+        phx-click="toggle_nicklist"
+        class="inline-flex items-center justify-center w-8 h-8 bg-surface cursor-pointer
+               hover:shadow-retro-raised active:shadow-retro-sunken"
+        title="Users"
+        aria-label="Toggle user list"
+      >
+        <RetroHexChatWeb.Icons.icon_tab_nicklist class="w-5 h-5" />
+      </button>
+    </:mobile_actions>
     <:panels>
       <.toolbar_app
         :if={@show_toolbar}
@@ -56,35 +79,47 @@
   <%!-- MDI layout: conversations | chat | nicklist --%>
   <div class="flex flex-1 min-h-0">
     <%!-- Conversations sidebar --%>
-    <.conversations
+    <div
       :if={@show_conversations}
-      channels={@session.channels}
-      active_channel={@session.active_channel}
-      unread_counts={@unread_counts}
-      highlight_channels={MapSet.to_list(@highlight_channels)}
-      flash_channels={MapSet.to_list(@flash_channels)}
-      muted_channels={MapSet.to_list(@muted_channels)}
-      disconnected_channels={
-        MapSet.to_list(Map.get(assigns, :disconnected_channels, MapSet.new()))
-      }
-      pm_conversations={@session.pm_conversations}
-      active_pm={@session.active_pm}
-      channel_users={if !@session.active_pm && !@show_status_tab, do: @channel_users, else: []}
-      nick_color_fn={@nick_color_fn}
-      channel_user_counts={@channel_user_counts}
-      popular_channels={@popular_channels}
-      collapsed_sections={
-        for {k, expanded?} <- @conversations_sections, !expanded?, do: to_string(k)
-      }
-      on_channel_click="switch_channel"
-      on_channel_dblclick="channel_dblclick"
-      on_pm_click="switch_pm"
-      on_user_click="nick_dblclick"
-      on_toggle_section="conversations_toggle_section"
-      on_close="toggle_conversations"
-      on_browse_channels="conversations_browse_all"
-      on_join_popular="conversations_join_popular"
-    />
+      class={[
+        "fixed inset-0 z-40 md:relative md:inset-auto md:z-auto",
+        "flex md:shrink-0 md:w-[220px] md:min-w-[180px]"
+      ]}
+    >
+      <div class="absolute inset-0 bg-black/30 md:hidden" phx-click="toggle_conversations" />
+      <div class="relative z-10 w-[280px] md:w-full h-full bg-surface shadow-retro-window md:shadow-none">
+        <.conversations
+          channels={@session.channels}
+          active_channel={@session.active_channel}
+          unread_counts={@unread_counts}
+          highlight_channels={MapSet.to_list(@highlight_channels)}
+          flash_channels={MapSet.to_list(@flash_channels)}
+          muted_channels={MapSet.to_list(@muted_channels)}
+          disconnected_channels={
+            MapSet.to_list(Map.get(assigns, :disconnected_channels, MapSet.new()))
+          }
+          pm_conversations={@session.pm_conversations}
+          active_pm={@session.active_pm}
+          channel_users={
+            if !@session.active_pm && !@show_status_tab, do: @channel_users, else: []
+          }
+          nick_color_fn={@nick_color_fn}
+          channel_user_counts={@channel_user_counts}
+          popular_channels={@popular_channels}
+          collapsed_sections={
+            for {k, expanded?} <- @conversations_sections, !expanded?, do: to_string(k)
+          }
+          on_channel_click="switch_channel"
+          on_channel_dblclick="channel_dblclick"
+          on_pm_click="switch_pm"
+          on_user_click="nick_dblclick"
+          on_toggle_section="conversations_toggle_section"
+          on_close="toggle_conversations"
+          on_browse_channels="conversations_browse_all"
+          on_join_popular="conversations_join_popular"
+        />
+      </div>
+    </div>
 
     <%!-- Chat area --%>
     <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
@@ -233,19 +268,27 @@
         </div>
 
         <%!-- Nicklist sidebar --%>
-        <.nicklist
+        <div
           :if={@show_nicklist && !@session.active_pm && !@show_status_tab}
-          class="w-[140px] shrink-0"
+          class={[
+            "fixed inset-0 z-40 md:relative md:inset-auto md:z-auto",
+            "flex justify-end md:justify-stretch md:w-[140px] md:shrink-0"
+          ]}
         >
-          <.nicklist_item
-            :for={user <- @channel_users}
-            nick={user.nickname}
-            role={Map.get(user, :role, :normal)}
-            status={if Map.get(user, :away), do: "away", else: "online"}
-            nick_color={@nick_color_fn.(user.nickname)}
-            data-nick={user.nickname}
-          />
-        </.nicklist>
+          <div class="absolute inset-0 bg-black/30 md:hidden" phx-click="toggle_nicklist" />
+          <div class="relative z-10 w-[200px] md:w-full h-full bg-surface shadow-retro-window md:shadow-none">
+            <.nicklist class="h-full">
+              <.nicklist_item
+                :for={user <- @channel_users}
+                nick={user.nickname}
+                role={Map.get(user, :role, :normal)}
+                status={if Map.get(user, :away), do: "away", else: "online"}
+                nick_color={@nick_color_fn.(user.nickname)}
+                data-nick={user.nickname}
+              />
+            </.nicklist>
+          </div>
+        </div>
       </div>
 
       <%!-- Popups (autocomplete dropdown + syntax tooltip) --%>
