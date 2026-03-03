@@ -518,10 +518,11 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
         case Queries.add_custom_command(bot.id, attrs) do
           {:ok, _} ->
             reload_bot_commands(bot)
-            {:ok, :system, %{content: "[BotService] Command '#{trigger}' added to #{bot_name}."}}
+            {:ok, :system, %{content: "[BotService] Command '#{trigger}' set for #{bot_name}."}}
 
-          {:error, _} ->
-            {:error, "[BotService] Command '#{trigger}' already exists for #{bot_name}."}
+          {:error, changeset} ->
+            msg = format_changeset_errors(changeset)
+            {:error, "[BotService] Failed to add command '#{trigger}': #{msg}"}
         end
     end
   end

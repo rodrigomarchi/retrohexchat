@@ -109,7 +109,10 @@ defmodule RetroHexChat.Bots.Queries do
   def add_custom_command(bot_id, attrs) do
     %BotCustomCommand{}
     |> BotCustomCommand.changeset(Map.put(attrs, :bot_id, bot_id))
-    |> Repo.insert()
+    |> Repo.insert(
+      on_conflict: {:replace, [:response, :description, :enabled, :added_by, :updated_at]},
+      conflict_target: [:bot_id, :trigger]
+    )
   end
 
   @spec remove_custom_command(integer(), String.t()) :: :ok

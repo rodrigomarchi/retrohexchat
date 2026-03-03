@@ -100,7 +100,7 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
       assert {:ok, :system, %{content: c}} =
                Bot.execute(["addcmd", "BotCmdTest", "rules", "Read", "#rules"], @admin_ctx)
 
-      assert c =~ "added"
+      assert c =~ "set for"
 
       assert {:ok, :system, %{content: c2}} =
                Bot.execute(["commands", "BotCmdTest"], @user_ctx)
