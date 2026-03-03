@@ -234,6 +234,66 @@ defmodule RetroHexChatWeb.LandingLive.Index do
         </.window>
       </section>
 
+      <%!-- ══════════════ GAMES ══════════════ --%>
+      <section class="m-4" aria-labelledby="games-heading">
+        <div class="grid md:grid-cols-2 gap-4">
+          <%!-- P2P Multiplayer Games --%>
+          <.window>
+            <.window_title_bar title="Multiplayer Games" controls={[:close]}>
+              <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
+            </.window_title_bar>
+            <.window_body>
+              <h2 id="games-heading" class="text-sm font-bold mb-2">
+                28 multiplayer games. Right from the chat.
+              </h2>
+              <div
+                class="shadow-retro-field bg-white p-3 mb-2"
+                aria-label="P2P multiplayer games flow diagram"
+              >
+                <.diagram_p2p_games class="w-full max-w-lg mx-auto" />
+              </div>
+              <p class="text-sm">
+                Type <strong>/game @nick</strong> to challenge anyone.
+                Games run on HTML5 Canvas with state synced via WebRTC DataChannel &mdash; <strong>no server involvement</strong>, just like voice calls.
+              </p>
+            </.window_body>
+            <.window_status_bar>
+              <.window_status_bar_field grow>
+                <Icons.icon_checkmark class="w-3 h-3 inline" /> 28 games
+              </.window_status_bar_field>
+            </.window_status_bar>
+          </.window>
+
+          <%!-- Solo Arcade Games --%>
+          <.window>
+            <.window_title_bar title="Solo Arcade" controls={[:close]}>
+              <:icon><Icons.icon_game_arcade class="w-4 h-4" /></:icon>
+            </.window_title_bar>
+            <.window_body>
+              <h3 class="text-sm font-bold mb-2">
+                18 classic games. Running in your browser.
+              </h3>
+              <div
+                class="shadow-retro-field bg-white p-3 mb-2"
+                aria-label="Solo arcade flow diagram"
+              >
+                <.diagram_arcade_flow class="w-full max-w-lg mx-auto" />
+              </div>
+              <p class="text-sm">
+                Type <strong>/solo</strong> to open the arcade.
+                Play DOOM, Quake, Wolfenstein 3D, Half-Life, and ScummVM adventures &mdash;
+                all running as <strong>WebAssembly</strong> in your browser. No downloads.
+              </p>
+            </.window_body>
+            <.window_status_bar>
+              <.window_status_bar_field grow>
+                <Icons.icon_checkmark class="w-3 h-3 inline" /> 18 games
+              </.window_status_bar_field>
+            </.window_status_bar>
+          </.window>
+        </div>
+      </section>
+
       <%!-- ══════════════ EASTER EGG: README.txt popup ══════════════ --%>
       <div
         id="readme-popup"

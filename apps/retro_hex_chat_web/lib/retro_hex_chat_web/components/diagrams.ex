@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.Diagrams do
   | `Diagrams.P2P`      | P2P flow and architecture diagrams         |
   | `Diagrams.Security` | Encryption layers and protocol diagrams    |
   | `Diagrams.Voice`    | Voice/video call mockups                   |
+  | `Diagrams.Games`    | P2P multiplayer and solo arcade flow       |
   """
   use Phoenix.Component
 
@@ -24,4 +25,8 @@ defmodule RetroHexChatWeb.Components.Diagrams do
 
   # ── Voice ─────────────────────────────────────────
   defdelegate diagram_voice_call_mockup(assigns), to: RetroHexChatWeb.Components.Diagrams.Voice
+
+  # ── Games ─────────────────────────────────────────
+  defdelegate diagram_p2p_games(assigns), to: RetroHexChatWeb.Components.Diagrams.Games
+  defdelegate diagram_arcade_flow(assigns), to: RetroHexChatWeb.Components.Diagrams.Games
 end
