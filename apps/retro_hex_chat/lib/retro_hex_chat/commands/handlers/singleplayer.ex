@@ -1,5 +1,5 @@
 defmodule RetroHexChat.Commands.Handlers.SinglePlayer do
-  @moduledoc "Handler for /singleplayer — start a solo arcade session."
+  @moduledoc "Handler for /singleplayer — start a solo arcade session (admin-only)."
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -11,6 +11,12 @@ defmodule RetroHexChat.Commands.Handlers.SinglePlayer do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
+  def execute(_args, %{is_admin: false}) do
+    {:error,
+     "This command is reserved for administrators. " <>
+       "Join #games and type !play to start an arcade session."}
+  end
+
   def execute(_args, context) do
     with :ok <- validate_identified(context),
          {:ok, creator_id} <- resolve_registered_nick(context.nickname),
@@ -31,13 +37,15 @@ defmodule RetroHexChat.Commands.Handlers.SinglePlayer do
       name: "singleplayer",
       syntax: "/singleplayer",
       description:
-        "Start a solo arcade session to play classic games like DOOM and Quake.\nRequires: you must be registered and identified (/ns identify).\nYou pick a game in the arcade lobby.",
+        "Start a solo arcade session (admin-only debug command).\n" <>
+          "Regular users should type !play in #games instead.\n" <>
+          "Requires: server administrator, registered and identified.",
       examples: ["/singleplayer"]
     }
   end
 
   @impl true
-  def category, do: :user
+  def category, do: :advanced
 
   @impl true
   @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
@@ -48,8 +56,8 @@ defmodule RetroHexChat.Commands.Handlers.SinglePlayer do
       command: "singleplayer",
       syntax: "/singleplayer",
       description:
-        "Start a solo arcade session to play classic games (DOOM, Quake) in your browser via WebAssembly.",
-      category: :user,
+        "Start a solo arcade session (admin-only). Regular users: type !play in #games.",
+      category: :advanced,
       parameters: [],
       examples: ["/singleplayer"]
     }

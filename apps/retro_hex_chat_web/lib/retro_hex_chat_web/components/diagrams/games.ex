@@ -440,9 +440,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.Games do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Solo arcade flow: type /singleplayer command, pick a game from catalog, new window opens, WASM game runs in browser"
+      aria-label="Solo arcade flow: type !play in #games channel, pick a game from catalog, new window opens, WASM game runs in browser"
     >
-      <%!-- ── Step 1: /singleplayer command ── --%>
+      <%!-- ── Step 1: !play command in #games ── --%>
       <%!-- Shadow --%>
       <rect x="64" y="14" width="300" height="44" fill="#000" />
       <%!-- Window --%>
@@ -472,9 +472,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.Games do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        Chat
+        #games
       </text>
-      <%!-- Input field with /singleplayer --%>
+      <%!-- Input field with !play --%>
       <rect x="70" y="34" width="178" height="14" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
         x="74"
@@ -483,7 +483,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Games do
         font-size="9"
         font-family="'Courier New',monospace"
       >
-        /singleplayer
+        !play
       </text>
       <%!-- Send button --%>
       <rect x="254" y="34" width="40" height="14" fill="#c0c0c0" stroke="#000" stroke-width="1" />

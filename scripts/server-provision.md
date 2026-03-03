@@ -13,7 +13,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 # ══════════════════════════════════════════════════════════
 #  RetroHexChat — Production Server Setup
 #  Owner: Troll (admin)
-#  12 channels, 2 global bots, 10 channel-specific bots
+#  13 channels, 2 global bots, 11 channel-specific bots
 # ══════════════════════════════════════════════════════════
 
 # ── 1. Server Settings ───────────────────────────────────
@@ -90,6 +90,12 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /topic Ideas and suggestions for RetroHexChat. We actually read these. Sometimes we even do something about them.
 /mode +tn
 
+# #games — Arcade & retro games
+/join #games
+/cs register
+/topic Retro arcade games — type !play to start a solo session. DOOM, Quake, Half-Life, and more running in your browser via WebAssembly.
+/mode +tn
+
 # #rules — Read-only info (moderated)
 /join #rules
 /cs register
@@ -129,6 +135,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot join Reginald #tech
 /bot join Reginald #creative
 /bot join Reginald #feedback
+/bot join Reginald #games
 
 # ── Brutus — The no-nonsense moderator ───────────────────
 # Personality: Tough bouncer, keeps order. Announces himself on join.
@@ -159,6 +166,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 /bot join Brutus #tech
 /bot join Brutus #creative
 /bot join Brutus #feedback
+/bot join Brutus #games
 
 # ══════════════════════════════════════════════════════════
 #  4. CHANNEL-SPECIFIC BOTS (themed & contextualized)
@@ -290,6 +298,22 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 
 /bot join Leeroy #gaming
 
+# ── Pixel — #games arcade session host ─────────────────────
+# Personality: Retro gaming enthusiast. Speaks in 8-bit culture references.
+# Has the arcade capability — responds to !play with solo session links.
+/bot create Pixel Arcade Operator and Retro Gaming Enthusiast
+/bot set Pixel prefix !
+/bot set Pixel cooldown 2000
+/bot set Pixel arcade_enabled true
+/bot set Pixel greeting Welcome to the arcade, {nickname}! I'm Pixel — type !play to start a solo session. DOOM, Quake, Half-Life, and more await!
+/bot set Pixel farewell GG {nickname}! Come back anytime — the arcade never closes. Insert coin to continue... or just type !play.
+/bot set Pixel mention_response Player {nickname} has entered the chat! Want to play? Type !play and I'll fire up the arcade for you.
+
+/bot addcmd Pixel games 18 classics available: DOOM, Quake, Quake II, Wolfenstein 3D, Half-Life, ScummVM adventures, and more — all running in your browser via WebAssembly!
+/bot addcmd Pixel controls Keyboard + mouse for FPS games, keyboard for adventures. Gamepad support available. Check each game's help screen for specific bindings.
+
+/bot join Pixel #games
+
 # ── Murphy — #tech the pessimistic sysadmin ──────────────
 # Personality: Everything that can go wrong, will go wrong.
 # Speaks from years of trauma. Loves/hates technology equally.
@@ -379,6 +403,7 @@ After running the script, verify with:
 /bot info Amadeus
 /bot info Oscar
 /bot info Leeroy
+/bot info Pixel
 /bot info Murphy
 /bot info Vincent
 /bot info Susan
@@ -410,6 +435,7 @@ After running the script, verify with:
 | #music | **Amadeus** | Pretentious audiophile, secretly likes pop | `!recommend` `!rate` `!genre` `!playlist` `!vinyl` |
 | #movies | **Oscar** | Dramatic film critic, quotes movies | `!recommend` `!rate` `!spoiler` `!quote` `!snack` |
 | #gaming | **Leeroy** | Over-the-top gamer, has dice! | `!roll` `!gg` `!rage` `!loot` `!build` |
+| #games | **Pixel** | Arcade operator, retro enthusiast | `!play` `!games` `!controls` |
 | #tech | **Murphy** | Pessimistic sysadmin, everything is on fire | `!deploy` `!fix` `!tabs` `!stack` `!wisdom` |
 | #creative | **Vincent** | Tortured artist, very supportive | `!inspire` `!feedback` `!block` `!color` `!share` |
 | #feedback | **Susan** | VP of User Happiness, has spreadsheets | `!noted` `!feature` `!bug` `!survey` `!roadmap` |
@@ -428,6 +454,7 @@ After running the script, verify with:
 | #music | +tn | Reginald, Brutus, **Amadeus** |
 | #movies | +tn | Reginald, Brutus, **Oscar** |
 | #gaming | +tn | Reginald, Brutus, **Leeroy** |
+| #games | +tn | Reginald, Brutus, **Pixel** |
 | #tech | +tn | Reginald, Brutus, **Murphy** |
 | #creative | +tn | Reginald, Brutus, **Vincent** |
 | #feedback | +tn | Reginald, Brutus, **Susan** |
@@ -440,10 +467,11 @@ After running the script, verify with:
 - **Single paste**: The entire block above can be pasted and executed in one shot — the Admin Console tracks context between commands
 - **Lobby**: The initial active channel is `#lobby` (auto-created), so the first `/cs register` + `/topic` + `/mode` apply to it before any `/join`
 - **Troll owns everything**: Since Troll is logged in when `/cs register` runs, Troll becomes the owner of every channel
-- **13 bots total**: 2 global (Reginald + Brutus in all channels) + 10 channel-specific (one per themed channel, plus Patches in lobby)
+- **14 bots total**: 2 global (Reginald + Brutus in all channels) + 11 channel-specific (one per themed channel, plus Patches in lobby)
 - **Every channel has 3 bots**: The 2 globals + its own themed bot (except #rules which is moderated and has no bots)
 - **Every bot introduces itself**: All bots greet on join, announcing who they are and which commands to use
 - **Leeroy has dice**: The #gaming bot includes dice rolling capability (`!roll`)
-- **No "bot" in any name**: Reginald, Brutus, Doug, Wendy, Harold, Derek, Amadeus, Oscar, Leeroy, Murphy, Vincent, Susan, Patches
+- **Pixel has arcade**: The #games bot includes arcade capability (`!play` creates solo sessions)
+- **No "bot" in any name**: Reginald, Brutus, Doug, Wendy, Harold, Derek, Amadeus, Oscar, Leeroy, Pixel, Murphy, Vincent, Susan, Patches
 - **All messages are unique**: Every bot has its own personality, greeting, farewell, mention response, and custom commands — all contextualized to the channel topic
 - **Adding more channels later**: `/join #newchan`, `/cs register`, create a themed bot, then also `/bot join Reginald #newchan` and `/bot join Brutus #newchan`

@@ -258,8 +258,15 @@ defmodule RetroHexChatWeb.LandingLive.Features do
               </div>
               <div class="space-y-1.5">
                 <div class="flex items-start gap-2 text-xs">
+                  <Icons.icon_channels class="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>
+                    Join <strong>#games</strong>
+                    channel (<code class="text-[10px]">/join #games</code>)
+                  </span>
+                </div>
+                <div class="flex items-start gap-2 text-xs">
                   <Icons.icon_terminal class="w-4 h-4 shrink-0 mt-0.5" />
-                  <span>Start with <strong>/singleplayer</strong> from any chat</span>
+                  <span>Type <strong>!play</strong> &mdash; the bot sends you an arcade link</span>
                 </div>
                 <div class="flex items-start gap-2 text-xs">
                   <Icons.icon_code class="w-4 h-4 shrink-0 mt-0.5" />

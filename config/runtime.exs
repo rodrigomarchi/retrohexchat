@@ -11,6 +11,10 @@ import Config
 config :retro_hex_chat,
   default_channel: System.get_env("DEFAULT_CHANNEL") || "#lobby"
 
+# Base URL for generating links in domain layer (bots, etc.)
+config :retro_hex_chat,
+  base_url: System.get_env("BASE_URL") || "http://localhost:4000"
+
 # TURN server runtime config (all environments)
 config :retro_hex_chat,
   turn_listen_ip: {0, 0, 0, 0},
@@ -100,6 +104,9 @@ if config_env() == :prod do
     secret_key_base: secret_key_base,
     server: true,
     check_origin: ["https://#{host}"]
+
+  # Override base_url for production
+  config :retro_hex_chat, base_url: "https://#{host}"
 
   # ## SSL Support
   #

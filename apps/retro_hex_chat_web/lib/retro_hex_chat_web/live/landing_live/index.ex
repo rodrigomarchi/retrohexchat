@@ -280,8 +280,9 @@ defmodule RetroHexChatWeb.LandingLive.Index do
                 <.diagram_arcade_flow class="w-full max-w-lg mx-auto" />
               </div>
               <p class="text-sm">
-                Type <strong>/singleplayer</strong> to open the arcade.
-                Play DOOM, Quake, Wolfenstein 3D, Half-Life, and ScummVM adventures &mdash;
+                Join <strong>#games</strong> and type <strong>!play</strong> &mdash;
+                the arcade bot sends you a link to the game lobby.
+                Pick from DOOM, Quake, Wolfenstein 3D, Half-Life, and ScummVM adventures &mdash;
                 all running as <strong>WebAssembly</strong> in your browser. No downloads.
               </p>
             </.window_body>

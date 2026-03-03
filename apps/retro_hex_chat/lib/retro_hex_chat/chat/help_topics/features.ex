@@ -1774,7 +1774,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Lure of the Temptress, Soltys, Half-Life: Uplink, Wolfenstein 3D, DOOM, " <>
             "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
             "Click any game to see its detailed description, keyboard controls, and " <>
-            "gameplay tips before launching. Start with /singleplayer.",
+            "gameplay tips before launching. Join #games and type !play to start.",
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-quake",

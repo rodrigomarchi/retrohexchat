@@ -427,10 +427,28 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     update_capability_int(bot, "rss", "max_items_per_poll", value, 1, 10)
   end
 
+  # ── Arcade settings ──
+
+  defp apply_setting(bot, "arcade_enabled", value) do
+    case String.downcase(value) do
+      v when v in ["true", "1", "yes", "on"] ->
+        update_capability_field(bot, "arcade", "enabled", true)
+
+      v when v in ["false", "0", "no", "off"] ->
+        caps = Map.delete(bot.capabilities, "arcade")
+        Queries.update_bot(bot, %{capabilities: caps})
+        reload_bot_capabilities(bot)
+        {:ok, "Arcade capability disabled."}
+
+      _ ->
+        {:error, "arcade_enabled must be: true or false."}
+    end
+  end
+
   defp apply_setting(_bot, key, _value) do
     {:error,
      "Unknown setting '#{key}'. Valid: prefix, cooldown, description, greeting, farewell, " <>
-       "mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*"}
+       "mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*, arcade_*"}
   end
 
   @spec update_capability_field(map(), String.t(), String.t(), term()) ::
@@ -617,7 +635,8 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
       mod_words, mod_action, mod_spam, mod_flood, mod_warn,
       trivia_category, trivia_time, trivia_questions, trivia_points,
       sched_max, sched_min_interval,
-      rss_interval, rss_max_feeds, rss_max_items\
+      rss_interval, rss_max_feeds, rss_max_items,
+      arcade_enabled\
     """
   end
 end

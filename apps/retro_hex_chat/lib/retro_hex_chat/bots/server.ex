@@ -28,7 +28,8 @@ defmodule RetroHexChat.Bots.Server do
     moderation: RetroHexChat.Bots.Capabilities.Moderation,
     rss: RetroHexChat.Bots.Capabilities.RSS,
     trivia: RetroHexChat.Bots.Capabilities.Trivia,
-    dice: RetroHexChat.Bots.Capabilities.Dice
+    dice: RetroHexChat.Bots.Capabilities.Dice,
+    arcade: RetroHexChat.Bots.Capabilities.Arcade
   }
 
   @type state :: %{
