@@ -7,32 +7,32 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
   describe "new/1" do
     test "creates a session with the given nickname" do
-      session = Session.new("Rodrigo")
-      assert session.nickname == "Rodrigo"
+      session = Session.new("Alice")
+      assert session.nickname == "Alice"
     end
 
     test "initializes with empty channels list" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert session.channels == []
     end
 
     test "initializes with nil active_channel" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert session.active_channel == nil
     end
 
     test "initializes as not identified" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert session.identified == false
     end
 
     test "sets connected_at to a DateTime" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert %DateTime{} = session.connected_at
     end
 
     test "initializes as not away" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert session.away == false
       assert session.away_message == nil
     end
@@ -54,14 +54,14 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
   describe "add_channel/2" do
     test "adds a channel to the list" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       updated = Session.add_channel(session, "#general")
       assert updated.channels == ["#general"]
     end
 
     test "appends channels in order" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.add_channel("#random")
 
@@ -70,7 +70,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "does not add duplicate channels" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.add_channel("#general")
 
@@ -81,7 +81,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
   describe "remove_channel/2" do
     test "removes a channel from the list" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.add_channel("#random")
         |> Session.remove_channel("#general")
@@ -91,7 +91,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "resets active_channel when the active channel is removed" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.add_channel("#random")
         |> Session.set_active_channel("#general")
@@ -102,7 +102,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "sets active_channel to nil when last channel is removed" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.set_active_channel("#general")
         |> Session.remove_channel("#general")
@@ -112,7 +112,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "keeps active_channel unchanged when removing a different channel" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.add_channel("#random")
         |> Session.set_active_channel("#general")
@@ -122,7 +122,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
     end
 
     test "is a no-op when removing a channel not in the list" do
-      session = Session.new("Rodrigo") |> Session.add_channel("#general")
+      session = Session.new("Alice") |> Session.add_channel("#general")
       updated = Session.remove_channel(session, "#nonexistent")
       assert updated.channels == ["#general"]
     end
@@ -130,13 +130,13 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
   describe "set_identified/2" do
     test "sets identified to true" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       updated = Session.set_identified(session, true)
       assert updated.identified == true
     end
 
     test "sets identified back to false" do
-      session = Session.new("Rodrigo") |> Session.set_identified(true)
+      session = Session.new("Alice") |> Session.set_identified(true)
       updated = Session.set_identified(session, false)
       assert updated.identified == false
     end
@@ -144,14 +144,14 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
   describe "set_active_channel/2" do
     test "sets the active channel" do
-      session = Session.new("Rodrigo") |> Session.add_channel("#general")
+      session = Session.new("Alice") |> Session.add_channel("#general")
       updated = Session.set_active_channel(session, "#general")
       assert updated.active_channel == "#general"
     end
 
     test "sets active channel to nil" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.set_active_channel("#general")
         |> Session.set_active_channel(nil)
@@ -162,7 +162,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
   describe "set_away/2" do
     test "sets the user as away with a message" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       updated = Session.set_away(session, "Gone fishing")
       assert updated.away == true
       assert updated.away_message == "Gone fishing"
@@ -170,7 +170,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "clears away status when given nil" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.set_away("Gone fishing")
         |> Session.set_away(nil)
 
@@ -181,13 +181,13 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
   describe "add_pm_conversation/2" do
     test "adds a PM conversation at the head" do
-      session = Session.new("Rodrigo") |> Session.add_pm_conversation("Alice")
+      session = Session.new("Alice") |> Session.add_pm_conversation("Alice")
       assert session.pm_conversations == ["Alice"]
     end
 
     test "prepends new conversations to the head" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_pm_conversation("Alice")
         |> Session.add_pm_conversation("Bob")
 
@@ -196,7 +196,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "moves existing conversation to the head" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_pm_conversation("Alice")
         |> Session.add_pm_conversation("Bob")
         |> Session.add_pm_conversation("Alice")
@@ -208,7 +208,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
   describe "move_pm_to_front/2" do
     test "moves existing conversation to the head" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_pm_conversation("Charlie")
         |> Session.add_pm_conversation("Bob")
         |> Session.add_pm_conversation("Alice")
@@ -220,7 +220,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "is a no-op if nick is not in the list" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_pm_conversation("Alice")
 
       updated = Session.move_pm_to_front(session, "Unknown")
@@ -229,7 +229,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "is a no-op if nick is already at the head" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_pm_conversation("Bob")
         |> Session.add_pm_conversation("Alice")
 
@@ -242,7 +242,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
   describe "remove_pm_conversation/2" do
     test "removes a PM conversation" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_pm_conversation("Alice")
         |> Session.add_pm_conversation("Bob")
         |> Session.remove_pm_conversation("Alice")
@@ -252,7 +252,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "resets active_pm when removing the active PM conversation" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_pm_conversation("Alice")
         |> Session.set_active_pm("Alice")
         |> Session.remove_pm_conversation("Alice")
@@ -262,7 +262,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "keeps active_pm when removing a different PM conversation" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_pm_conversation("Alice")
         |> Session.add_pm_conversation("Bob")
         |> Session.set_active_pm("Alice")
@@ -275,7 +275,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
   describe "set_active_pm/2" do
     test "sets the active PM and clears active_channel" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.set_active_channel("#general")
         |> Session.set_active_pm("Alice")
@@ -287,19 +287,19 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
   describe "toggle_strip_formatting/1" do
     test "defaults to false" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert session.strip_formatting == false
     end
 
     test "toggles from false to true" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       updated = Session.toggle_strip_formatting(session)
       assert updated.strip_formatting == true
     end
 
     test "toggles from true back to false" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.toggle_strip_formatting()
         |> Session.toggle_strip_formatting()
 
@@ -308,7 +308,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "preserves other fields" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.set_identified(true)
         |> Session.toggle_strip_formatting()
@@ -322,7 +322,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
   describe "set_active_channel/2 clears active_pm" do
     test "setting active_channel clears active_pm" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.set_active_pm("Alice")
         |> Session.set_active_channel("#general")
@@ -336,21 +336,21 @@ defmodule RetroHexChat.Accounts.SessionTest do
     alias RetroHexChat.Presence.NotifyList
 
     test "new/1 initializes with empty notify_list" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       expected = NotifyList.new()
       assert session.notify_list == expected
     end
 
     test "new/1 notify_list has empty entries and default settings" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert session.notify_list.entries == []
       assert session.notify_list.settings == %{auto_whois: false}
     end
 
     test "set_notify_list/2 replaces the notify list" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       list = NotifyList.new()
-      {:ok, list} = NotifyList.add_entry(list, "Rodrigo", "Alice", "A buddy")
+      {:ok, list} = NotifyList.add_entry(list, "Alice", "Bob", "A buddy")
       list = NotifyList.set_auto_whois(list, true)
 
       updated = Session.set_notify_list(session, list)
@@ -361,28 +361,28 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "set_notify_list/2 preserves other session fields" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.set_identified(true)
 
       list = NotifyList.new()
-      {:ok, list} = NotifyList.add_entry(list, "Rodrigo", "Bob", nil)
+      {:ok, list} = NotifyList.add_entry(list, "Alice", "Bob", nil)
 
       updated = Session.set_notify_list(session, list)
       assert updated.channels == ["#general"]
       assert updated.identified == true
-      assert updated.nickname == "Rodrigo"
+      assert updated.nickname == "Alice"
     end
 
     test "get_notify_list/1 returns the current notify list" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert Session.get_notify_list(session) == NotifyList.new()
     end
 
     test "get_notify_list/1 returns updated list after set" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       list = NotifyList.new()
-      {:ok, list} = NotifyList.add_entry(list, "Rodrigo", "Alice", "Friend")
+      {:ok, list} = NotifyList.add_entry(list, "Alice", "Bob", "Friend")
 
       session = Session.set_notify_list(session, list)
       result = Session.get_notify_list(session)
@@ -393,24 +393,24 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
   describe "auto_join_on_invite" do
     test "defaults to false" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert session.auto_join_on_invite == false
     end
 
     test "get_auto_join_on_invite/1 returns the current value" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert Session.get_auto_join_on_invite(session) == false
     end
 
     test "set_auto_join_on_invite/2 sets to true" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       updated = Session.set_auto_join_on_invite(session, true)
       assert updated.auto_join_on_invite == true
     end
 
     test "set_auto_join_on_invite/2 sets to false" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.set_auto_join_on_invite(true)
         |> Session.set_auto_join_on_invite(false)
 
@@ -418,14 +418,14 @@ defmodule RetroHexChat.Accounts.SessionTest do
     end
 
     test "toggle_auto_join_on_invite/1 toggles from false to true" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       updated = Session.toggle_auto_join_on_invite(session)
       assert updated.auto_join_on_invite == true
     end
 
     test "toggle_auto_join_on_invite/1 toggles from true back to false" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.toggle_auto_join_on_invite()
         |> Session.toggle_auto_join_on_invite()
 
@@ -434,7 +434,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "toggle preserves other fields" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.set_identified(true)
         |> Session.toggle_auto_join_on_invite()
@@ -447,23 +447,23 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
   describe "user_modes" do
     test "new/1 initializes with empty user_modes MapSet" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert session.user_modes == MapSet.new()
     end
 
     test "has_mode?/2 returns false for unset mode" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       refute Session.has_mode?(session, :wallops)
     end
 
     test "set_mode/2 enables a user mode" do
-      session = Session.new("Rodrigo") |> Session.set_mode(:wallops)
+      session = Session.new("Alice") |> Session.set_mode(:wallops)
       assert Session.has_mode?(session, :wallops)
     end
 
     test "unset_mode/2 disables a user mode" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.set_mode(:wallops)
         |> Session.unset_mode(:wallops)
 
@@ -472,7 +472,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "set_mode/2 is idempotent" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.set_mode(:wallops)
         |> Session.set_mode(:wallops)
 
@@ -481,30 +481,30 @@ defmodule RetroHexChat.Accounts.SessionTest do
     end
 
     test "unset_mode/2 on unset mode is noop" do
-      session = Session.new("Rodrigo") |> Session.unset_mode(:wallops)
+      session = Session.new("Alice") |> Session.unset_mode(:wallops)
       refute Session.has_mode?(session, :wallops)
     end
   end
 
   describe "welcomed_channels" do
     test "new/1 initializes with empty welcomed_channels MapSet" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert session.welcomed_channels == MapSet.new()
     end
 
     test "welcomed_channel?/2 returns false for unwelcomed channel" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       refute Session.welcomed_channel?(session, "#test")
     end
 
     test "add_welcomed_channel/2 marks a channel as welcomed" do
-      session = Session.new("Rodrigo") |> Session.add_welcomed_channel("#test")
+      session = Session.new("Alice") |> Session.add_welcomed_channel("#test")
       assert Session.welcomed_channel?(session, "#test")
     end
 
     test "add_welcomed_channel/2 is idempotent" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_welcomed_channel("#test")
         |> Session.add_welcomed_channel("#test")
 
@@ -514,7 +514,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
     test "add_welcomed_channel/2 preserves other channels" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_welcomed_channel("#one")
         |> Session.add_welcomed_channel("#two")
 
@@ -525,38 +525,38 @@ defmodule RetroHexChat.Accounts.SessionTest do
 
   describe "notice_routing" do
     test "default routing is :active" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert session.notice_routing == :active
     end
 
     test "get_notice_routing/1 returns current routing" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       assert Session.get_notice_routing(session) == :active
     end
 
     test "set_notice_routing/2 updates routing to :status" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       updated = Session.set_notice_routing(session, :status)
       assert updated.notice_routing == :status
       assert Session.get_notice_routing(updated) == :status
     end
 
     test "set_notice_routing/2 updates routing to :sender" do
-      session = Session.new("Rodrigo")
+      session = Session.new("Alice")
       updated = Session.set_notice_routing(session, :sender)
       assert updated.notice_routing == :sender
     end
 
     test "set_notice_routing/2 preserves other fields" do
       session =
-        Session.new("Rodrigo")
+        Session.new("Alice")
         |> Session.add_channel("#general")
         |> Session.set_identified(true)
 
       updated = Session.set_notice_routing(session, :status)
       assert updated.channels == ["#general"]
       assert updated.identified == true
-      assert updated.nickname == "Rodrigo"
+      assert updated.nickname == "Alice"
     end
   end
 end

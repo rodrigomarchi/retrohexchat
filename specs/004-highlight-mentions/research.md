@@ -12,7 +12,7 @@
 **Alternatives considered**:
 - **Matching at broadcast time (server-side)**: Rejected. Highlights are purely local (FR-018). Each user has different highlight words, so matching must happen in the receiving LiveView process, not in the channel GenServer.
 - **Regex pattern matching (user-configurable regex)**: Explicitly out of scope per spec. Simple word matching covers the use case.
-- **Token-based matching (tokenize then scan)**: Overengineered. Regex with word boundaries is simpler and handles punctuation boundaries correctly (e.g., "hey Rodrigo," matches "Rodrigo").
+- **Token-based matching (tokenize then scan)**: Overengineered. Regex with word boundaries is simpler and handles punctuation boundaries correctly (e.g., "hey Alice," matches "Alice").
 
 ## R2: URL Exclusion Strategy
 

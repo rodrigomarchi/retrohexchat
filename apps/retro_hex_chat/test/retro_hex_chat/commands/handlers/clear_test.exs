@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.ClearTest do
   alias RetroHexChat.Commands.Handlers.Clear
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: false,

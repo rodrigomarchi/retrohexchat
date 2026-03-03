@@ -7,7 +7,7 @@ defmodule RetroHexChat.Commands.DispatcherTest do
 
   defp default_context do
     %{
-      nickname: "Rodrigo",
+      nickname: "Alice",
       active_channel: "#lobby",
       channels: ["#lobby"],
       identified: false,

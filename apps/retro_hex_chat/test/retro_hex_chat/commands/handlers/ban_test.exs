@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.BanTest do
   alias RetroHexChat.Commands.Handlers.Ban
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: false,

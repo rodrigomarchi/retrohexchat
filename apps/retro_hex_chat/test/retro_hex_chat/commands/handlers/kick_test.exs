@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.KickTest do
   alias RetroHexChat.Commands.Handlers.Kick
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: false,

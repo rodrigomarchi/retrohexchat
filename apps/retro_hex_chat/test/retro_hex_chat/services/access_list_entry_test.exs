@@ -7,7 +7,7 @@ defmodule RetroHexChat.Services.AccessListEntryTest do
 
   describe "changeset/2" do
     test "valid attrs produce valid changeset" do
-      attrs = %{channel_name: "#elixir", nickname: "Rodrigo", level: "sop", added_by: "Admin"}
+      attrs = %{channel_name: "#elixir", nickname: "Alice", level: "sop", added_by: "Admin"}
       changeset = AccessListEntry.changeset(%AccessListEntry{}, attrs)
       assert changeset.valid?
     end
@@ -20,14 +20,14 @@ defmodule RetroHexChat.Services.AccessListEntryTest do
 
     test "validates level inclusion" do
       for valid <- ~w(founder sop aop vop) do
-        attrs = %{channel_name: "#elixir", nickname: "Rodrigo", level: valid, added_by: "Admin"}
+        attrs = %{channel_name: "#elixir", nickname: "Alice", level: valid, added_by: "Admin"}
         changeset = AccessListEntry.changeset(%AccessListEntry{}, attrs)
         assert changeset.valid?, "Expected #{valid} to be valid"
       end
     end
 
     test "rejects invalid level" do
-      attrs = %{channel_name: "#elixir", nickname: "Rodrigo", level: "admin", added_by: "Admin"}
+      attrs = %{channel_name: "#elixir", nickname: "Alice", level: "admin", added_by: "Admin"}
       changeset = AccessListEntry.changeset(%AccessListEntry{}, attrs)
       refute changeset.valid?
       assert %{level: [_]} = errors_on(changeset)

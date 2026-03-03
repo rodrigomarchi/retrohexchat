@@ -7,7 +7,7 @@ defmodule RetroHexChat.Services.RegisteredNickTest do
 
   describe "registration_changeset/2" do
     test "valid attrs with password hashing" do
-      attrs = %{nickname: "Rodrigo", password: "secret123"}
+      attrs = %{nickname: "Alice", password: "secret123"}
       changeset = RegisteredNick.registration_changeset(%RegisteredNick{}, attrs)
       assert changeset.valid?
       assert changeset.changes.password_hash
@@ -27,19 +27,19 @@ defmodule RetroHexChat.Services.RegisteredNickTest do
     end
 
     test "validates password min length 5" do
-      attrs = %{nickname: "Rodrigo", password: "ab"}
+      attrs = %{nickname: "Alice", password: "ab"}
       changeset = RegisteredNick.registration_changeset(%RegisteredNick{}, attrs)
       refute changeset.valid?
     end
 
     test "sets registered_at timestamp" do
-      attrs = %{nickname: "Rodrigo", password: "secret123"}
+      attrs = %{nickname: "Alice", password: "secret123"}
       changeset = RegisteredNick.registration_changeset(%RegisteredNick{}, attrs)
       assert changeset.changes.registered_at
     end
 
     test "sets last_seen_at timestamp" do
-      attrs = %{nickname: "Rodrigo", password: "secret123"}
+      attrs = %{nickname: "Alice", password: "secret123"}
       changeset = RegisteredNick.registration_changeset(%RegisteredNick{}, attrs)
       assert changeset.changes.last_seen_at
     end

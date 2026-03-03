@@ -7,7 +7,7 @@ defmodule RetroHexChat.Accounts.NicknameValidatorTest do
 
   describe "valid?/1" do
     test "accepts a simple alphabetic nickname" do
-      assert NicknameValidator.valid?("Rodrigo")
+      assert NicknameValidator.valid?("Alice")
     end
 
     test "accepts a nickname with underscores and digits" do
@@ -74,7 +74,7 @@ defmodule RetroHexChat.Accounts.NicknameValidatorTest do
 
   describe "validate/1" do
     test "returns :ok for a valid nickname" do
-      assert :ok = NicknameValidator.validate("Rodrigo")
+      assert :ok = NicknameValidator.validate("Alice")
     end
 
     test "returns error for empty nickname" do

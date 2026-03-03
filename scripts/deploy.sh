@@ -118,7 +118,7 @@ EOF
 
 # ------------------------------------------------------------------
 # 6. Fix permissions — DeployEx runs as the 'deployex' user and needs
-#    read access to the tarball and current.json written by 'rodrigo'.
+#    read access to the tarball and current.json written by the deploy user.
 # ------------------------------------------------------------------
 echo "==> Fixing permissions for DeployEx..."
 chmod o+rx "${DIST_DIR}" "${VERSIONS_DIR}"

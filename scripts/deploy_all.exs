@@ -14,10 +14,17 @@
 
 defmodule DeployAll do
   @ssh_port String.to_integer(System.get_env("SSH_PORT", "2222"))
-  @deploy_user System.get_env("DEPLOY_USER", "rodrigo")
+  @deploy_user System.get_env("DEPLOY_USER") ||
+                 raise("DEPLOY_USER env var is required")
   @targets %{
-    "sun" => %{label: "Sun (production)", ip: System.get_env("SUN_IP", "YOUR_PRODUCTION_SERVER_IP")},
-    "moon" => %{label: "Moon (staging)", ip: System.get_env("MOON_IP", "YOUR_STAGING_SERVER_IP")}
+    "sun" => %{
+      label: "Production",
+      ip: System.get_env("SUN_IP") || raise("SUN_IP env var is required")
+    },
+    "moon" => %{
+      label: "Staging",
+      ip: System.get_env("MOON_IP") || raise("MOON_IP env var is required")
+    }
   }
 
   def main(args) do

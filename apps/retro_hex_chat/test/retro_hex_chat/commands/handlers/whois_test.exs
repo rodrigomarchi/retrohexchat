@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.WhoisTest do
   alias RetroHexChat.Commands.Handlers.Whois
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: false,

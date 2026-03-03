@@ -460,8 +460,8 @@ All PubSub topics follow the naming convention from Constitution VII.
 | Pattern | Example | Used For |
 |---------|---------|----------|
 | `"channel:#{name}"` | `"channel:#elixir"` | Channel messages, joins, parts, kicks, mode changes, topic changes |
-| `"pm:#{sorted_nicks}"` | `"pm:Admin:Rodrigo"` | Private messages between two users (nicks sorted alphabetically, joined with `:`) |
-| `"user:#{nickname}"` | `"user:Rodrigo"` | User-scoped events: away, force_rename, service messages targeted at user |
+| `"pm:#{sorted_nicks}"` | `"pm:Admin:Alice"` | Private messages between two users (nicks sorted alphabetically, joined with `:`) |
+| `"user:#{nickname}"` | `"user:Alice"` | User-scoped events: away, force_rename, service messages targeted at user |
 | `"service:nickserv"` | `"service:nickserv"` | NickServ broadcast messages (global, not per-user) |
 | `"service:chanserv"` | `"service:chanserv"` | ChanServ broadcast messages (global, not per-user) |
 
@@ -482,24 +482,24 @@ the LiveView MUST:
 # Channel messages (broadcast to "channel:#{name}")
 %{event: "new_message", payload: %{
   channel: "#elixir",
-  author: "Rodrigo",
+  author: "Alice",
   content: "Hello!",
   type: :message,  # :message | :action | :system | :service | :error
   timestamp: ~U[2026-02-09 12:00:00Z]
 }}
 
 # User events (broadcast to "channel:#{name}")
-%{event: "user_joined", payload: %{nickname: "Rodrigo", channel: "#elixir"}}
-%{event: "user_left", payload: %{nickname: "Rodrigo", channel: "#elixir", message: "Bye!"}}
+%{event: "user_joined", payload: %{nickname: "Alice", channel: "#elixir"}}
+%{event: "user_left", payload: %{nickname: "Alice", channel: "#elixir", message: "Bye!"}}
 %{event: "user_kicked", payload: %{nickname: "BadUser", by: "Op", channel: "#elixir", reason: "Spam"}}
-%{event: "nick_changed", payload: %{old_nick: "Rodrigo", new_nick: "Rod"}}
-%{event: "topic_changed", payload: %{channel: "#elixir", topic: "New topic", by: "Rodrigo"}}
-%{event: "mode_changed", payload: %{channel: "#elixir", modes: "+mt", by: "Rodrigo"}}
+%{event: "nick_changed", payload: %{old_nick: "Alice", new_nick: "Rod"}}
+%{event: "topic_changed", payload: %{channel: "#elixir", topic: "New topic", by: "Alice"}}
+%{event: "mode_changed", payload: %{channel: "#elixir", modes: "+mt", by: "Alice"}}
 
 # Private messages (broadcast to "pm:#{sorted_nicks}")
-# Topic example: "pm:Admin:Rodrigo" (sorted alphabetically)
+# Topic example: "pm:Admin:Alice" (sorted alphabetically)
 %{event: "new_pm", payload: %{
-  sender: "Rodrigo",
+  sender: "Alice",
   recipient: "Admin",
   content: "Hey!",
   type: :message,
@@ -507,8 +507,8 @@ the LiveView MUST:
 }}
 
 # User-scoped events (broadcast to "user:#{nickname}")
-%{event: "away_changed", payload: %{nickname: "Rodrigo", away: true, message: "Gone for lunch"}}
-%{event: "force_rename", payload: %{old_nick: "Rodrigo", new_nick: "Guest_12345", reason: "NickServ timeout"}}
+%{event: "away_changed", payload: %{nickname: "Alice", away: true, message: "Gone for lunch"}}
+%{event: "force_rename", payload: %{old_nick: "Alice", new_nick: "Guest_12345", reason: "NickServ timeout"}}
 
 # Service messages (broadcast to "user:#{target_nickname}")
 # NickServ/ChanServ messages are sent to the specific target user, NOT
@@ -516,7 +516,7 @@ the LiveView MUST:
 # broadcast announcements.
 %{event: "service_message", payload: %{
   service: :nickserv,
-  content: "Nickname Rodrigo has been registered.",
+  content: "Nickname Alice has been registered.",
   type: :service
 }}
 ```

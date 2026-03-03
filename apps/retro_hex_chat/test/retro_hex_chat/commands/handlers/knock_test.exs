@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.KnockTest do
   alias RetroHexChat.Commands.Handlers.Knock
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: false,

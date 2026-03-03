@@ -9,7 +9,7 @@
 
 ### User Story 1 - Send a File to a Peer (Priority: P1)
 
-Rodrigo is in the P2P lobby with Mario. He wants to share a PDF report. He clicks the "Enviar Arquivo" button (or drags a file onto the lobby area). The system validates the file is under the size limit and has an allowed extension. A file offer appears on Mario's side showing the file name, size, and type. Mario accepts the offer. The file transfers in chunks with a progress bar showing percentage, speed, and estimated time remaining. When complete, the system verifies the file's integrity. Mario's browser automatically triggers a download of the received file. Both users see a success confirmation message.
+Alice is in the P2P lobby with Mario. He wants to share a PDF report. He clicks the "Enviar Arquivo" button (or drags a file onto the lobby area). The system validates the file is under the size limit and has an allowed extension. A file offer appears on Mario's side showing the file name, size, and type. Mario accepts the offer. The file transfers in chunks with a progress bar showing percentage, speed, and estimated time remaining. When complete, the system verifies the file's integrity. Mario's browser automatically triggers a download of the received file. Both users see a success confirmation message.
 
 **Why this priority**: This is the core value proposition — without the ability to send and receive a file end-to-end, the feature has no purpose. Every other story builds on this foundation.
 
@@ -17,13 +17,13 @@ Rodrigo is in the P2P lobby with Mario. He wants to share a PDF report. He click
 
 **Acceptance Scenarios**:
 
-1. **Given** two peers are connected in a P2P lobby with an active data channel, **When** Rodrigo clicks "Enviar Arquivo" and selects a 2.4 MB PDF file, **Then** a file offer notification appears on Mario's side showing "rodrigo quer enviar: relatorio-2026.pdf (2.4 MB)".
+1. **Given** two peers are connected in a P2P lobby with an active data channel, **When** Alice clicks "Enviar Arquivo" and selects a 2.4 MB PDF file, **Then** a file offer notification appears on Mario's side showing "alice quer enviar: relatorio-2026.pdf (2.4 MB)".
 2. **Given** Mario sees a pending file offer, **When** Mario clicks "Aceitar", **Then** the file transfer begins and both users see a progress bar with percentage, transfer speed (KB/s), and ETA.
 3. **Given** a file transfer is in progress, **When** all chunks have been sent and integrity verification succeeds, **Then** Mario's browser triggers an automatic download and both users see "Transferencia concluida com sucesso".
-4. **Given** two peers are connected in a P2P lobby, **When** Rodrigo drags a valid file onto the lobby area, **Then** the system initiates the same file offer flow as clicking the button.
-5. **Given** Rodrigo selects a file, **When** the file exceeds the maximum size limit, **Then** the system shows an error message with the file size and the allowed maximum, and no offer is sent.
-6. **Given** Rodrigo selects a file, **When** the file has a blocked extension (e.g., .exe, .bat), **Then** the system shows an error message listing the blocked type, and no offer is sent.
-7. **Given** Mario sees a pending file offer, **When** Mario clicks "Rejeitar", **Then** the offer is dismissed, Rodrigo sees "Mario rejeitou a transferencia de arquivo", and no data is transferred.
+4. **Given** two peers are connected in a P2P lobby, **When** Alice drags a valid file onto the lobby area, **Then** the system initiates the same file offer flow as clicking the button.
+5. **Given** Alice selects a file, **When** the file exceeds the maximum size limit, **Then** the system shows an error message with the file size and the allowed maximum, and no offer is sent.
+6. **Given** Alice selects a file, **When** the file has a blocked extension (e.g., .exe, .bat), **Then** the system shows an error message listing the blocked type, and no offer is sent.
+7. **Given** Mario sees a pending file offer, **When** Mario clicks "Rejeitar", **Then** the offer is dismissed, Alice sees "Mario rejeitou a transferencia de arquivo", and no data is transferred.
 
 ---
 
@@ -45,7 +45,7 @@ During an active file transfer at 45% progress, Mario decides he no longer wants
 
 ### User Story 3 - Resume Transfer After Disconnection (Priority: P3)
 
-At 60% through a file transfer, the connection between Rodrigo and Mario drops unexpectedly. The existing reconnection mechanism attempts to re-establish the connection. Upon reconnection, the receiver reports which chunks it has already received. The sender transmits only the missing chunks. The progress bar continues from where it left off rather than starting over.
+At 60% through a file transfer, the connection between Alice and Mario drops unexpectedly. The existing reconnection mechanism attempts to re-establish the connection. Upon reconnection, the receiver reports which chunks it has already received. The sender transmits only the missing chunks. The progress bar continues from where it left off rather than starting over.
 
 **Why this priority**: Resume prevents frustration from lost progress on large transfers. While not strictly required for basic functionality, it significantly improves the experience for larger files where re-transferring from scratch would be unacceptable.
 
@@ -78,7 +78,7 @@ After all chunks are transmitted, the system computes a hash of the received fil
 
 ### User Story 5 - Concurrent Transfer Queueing (Priority: P5)
 
-While a transfer is already in progress between Rodrigo and Mario, one of them tries to initiate a second file transfer. The system informs them that only one transfer can be active at a time and queues the new request until the current transfer completes.
+While a transfer is already in progress between Alice and Mario, one of them tries to initiate a second file transfer. The system informs them that only one transfer can be active at a time and queues the new request until the current transfer completes.
 
 **Why this priority**: This is a constraint-handling story. The one-transfer-at-a-time limit is straightforward, and queueing provides a clean user experience without blocking the user from planning their next send.
 

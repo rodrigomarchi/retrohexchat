@@ -167,12 +167,12 @@ describe("FileTransferHook", () => {
         role: "sender",
       };
 
-      hook._handleCancel("rodrigo");
+      hook._handleCancel("alice");
 
       expect(channel._sent.length).toBe(1);
       const cancelled = hook.__pushEvents.filter((e) => e.event === "ft_cancelled");
       expect(cancelled.length).toBe(1);
-      expect(cancelled[0].payload.cancelled_by).toBe("rodrigo");
+      expect(cancelled[0].payload.cancelled_by).toBe("alice");
     });
   });
 

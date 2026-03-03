@@ -8,7 +8,7 @@ defmodule RetroHexChat.Commands.Handlers.ListTest do
   describe "execute/2" do
     test "returns ui_action to open channel list" do
       ctx = %{
-        nickname: "Rodrigo",
+        nickname: "Alice",
         active_channel: nil,
         channels: [],
         identified: false,

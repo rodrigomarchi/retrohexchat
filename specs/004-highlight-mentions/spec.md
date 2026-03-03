@@ -17,12 +17,12 @@ A connected user receives messages in any channel. When another user sends a mes
 
 **Acceptance Scenarios**:
 
-1. **Given** user "Rodrigo" is connected and viewing #elixir, **When** another user sends "hey Rodrigo, check this out", **Then** the entire message line is rendered with the default highlight background color.
-2. **Given** user "Rodrigo" is connected to #elixir, **When** Rodrigo sends a message containing "Rodrigo", **Then** the message is NOT highlighted (no self-highlight).
-3. **Given** user "Rodrigo" is connected, **When** another user sends "Rod is great", **Then** the message is NOT highlighted (whole-word matching only — "Rod" does not match "Rodrigo").
-4. **Given** user "Rodrigo" is connected, **When** another user sends "hey RODRIGO", **Then** the message IS highlighted (case-insensitive matching).
-5. **Given** a message contains the user's nick inside a URL (e.g., "https://example.com/Rodrigo/profile"), **Then** the message is NOT highlighted.
-6. **Given** a system message contains the user's nick (e.g., "Rodrigo has joined #elixir"), **Then** the system message is NOT highlighted.
+1. **Given** user "Alice" is connected and viewing #elixir, **When** another user sends "hey Alice, check this out", **Then** the entire message line is rendered with the default highlight background color.
+2. **Given** user "Alice" is connected to #elixir, **When** Alice sends a message containing "Alice", **Then** the message is NOT highlighted (no self-highlight).
+3. **Given** user "Alice" is connected, **When** another user sends "Ali is great", **Then** the message is NOT highlighted (whole-word matching only — "Ali" does not match "Alice").
+4. **Given** user "Alice" is connected, **When** another user sends "hey ALICE", **Then** the message IS highlighted (case-insensitive matching).
+5. **Given** a message contains the user's nick inside a URL (e.g., "https://example.com/Alice/profile"), **Then** the message is NOT highlighted.
+6. **Given** a system message contains the user's nick (e.g., "Alice has joined #elixir"), **Then** the system message is NOT highlighted.
 
 ---
 
@@ -36,8 +36,8 @@ When a highlight occurs in a channel that is not the user's currently active/foc
 
 **Acceptance Scenarios**:
 
-1. **Given** user "Rodrigo" has joined #elixir and #general, and #elixir is the active channel, **When** another user mentions "Rodrigo" in #general, **Then** the treebar entry and switchbar tab for #general flash visually.
-2. **Given** user "Rodrigo" is viewing #elixir (active), **When** another user mentions "Rodrigo" in #elixir, **Then** the treebar/switchbar for #elixir do NOT flash (it's already active and visible).
+1. **Given** user "Alice" has joined #elixir and #general, and #elixir is the active channel, **When** another user mentions "Alice" in #general, **Then** the treebar entry and switchbar tab for #general flash visually.
+2. **Given** user "Alice" is viewing #elixir (active), **When** another user mentions "Alice" in #elixir, **Then** the treebar/switchbar for #elixir do NOT flash (it's already active and visible).
 3. **Given** a channel's treebar entry is flashing, **When** the user switches to that channel, **Then** the flashing stops immediately.
 
 ---
@@ -99,7 +99,7 @@ Users can open a Highlight configuration dialog to manage their custom highlight
 ### Edge Cases
 
 - What happens when the user's nickname changes (via /nick)? Highlighting must update to the new nickname immediately.
-- What happens when a highlight word is a substring of the user's nick (e.g., word "Rod" and nick "Rodrigo")? Both are evaluated independently with whole-word matching — "Rod" matches "Rod" but not "Rodrigo".
+- What happens when a highlight word is a substring of the user's nick (e.g., word "Ali" and nick "Alice")? Both are evaluated independently with whole-word matching — "Ali" matches "Ali" but not "Alice".
 - What happens when the highlight word list is very long (e.g., 50+ words)? Performance must remain acceptable — matching should complete within the message rendering pipeline without visible delay.
 - What happens when a message contains formatting codes (bold, color) around the highlighted word? Matching should work on the plain text content, ignoring formatting codes.
 - What happens when a channel has muted notifications? Sound and flash are suppressed, but visual text highlighting still applies.

@@ -7,25 +7,25 @@ defmodule RetroHexChat.Chat.ServiceTest do
 
   describe "send_message/4" do
     test "persists and returns message for valid input" do
-      assert {:ok, msg} = Service.send_message("#lobby", "Rodrigo", "Hello!")
+      assert {:ok, msg} = Service.send_message("#lobby", "Alice", "Hello!")
       assert msg.channel_name == "#lobby"
-      assert msg.author_nickname == "Rodrigo"
+      assert msg.author_nickname == "Alice"
       assert msg.content == "Hello!"
       assert msg.type == "message"
     end
 
     test "supports custom type" do
-      assert {:ok, msg} = Service.send_message("#lobby", "Rodrigo", "does something", "action")
+      assert {:ok, msg} = Service.send_message("#lobby", "Alice", "does something", "action")
       assert msg.type == "action"
     end
 
     test "rejects empty content" do
-      assert {:error, "Message cannot be empty"} = Service.send_message("#lobby", "Rodrigo", "")
+      assert {:error, "Message cannot be empty"} = Service.send_message("#lobby", "Alice", "")
     end
 
     test "rejects content exceeding 1000 characters" do
       long_content = String.duplicate("a", 1001)
-      assert {:error, _} = Service.send_message("#lobby", "Rodrigo", long_content)
+      assert {:error, _} = Service.send_message("#lobby", "Alice", long_content)
     end
   end
 
@@ -104,7 +104,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
       {:ok, parent} = Service.send_message("#lobby", "Mario", "eu acho que devíamos usar Elixir")
 
       assert {:ok, reply} =
-               Service.send_message("#lobby", "Rodrigo", "Concordo!", "message",
+               Service.send_message("#lobby", "Alice", "Concordo!", "message",
                  reply_to_id: parent.id
                )
 
@@ -118,9 +118,7 @@ defmodule RetroHexChat.Chat.ServiceTest do
       {:ok, parent} = Service.send_message("#lobby", "Mario", long_content)
 
       assert {:ok, reply} =
-               Service.send_message("#lobby", "Rodrigo", "Reply", "message",
-                 reply_to_id: parent.id
-               )
+               Service.send_message("#lobby", "Alice", "Reply", "message", reply_to_id: parent.id)
 
       assert String.length(reply.reply_to_preview) <= 100
       assert String.ends_with?(reply.reply_to_preview, "...")
@@ -128,19 +126,19 @@ defmodule RetroHexChat.Chat.ServiceTest do
 
     test "reply to non-existent message returns error" do
       assert {:error, _} =
-               Service.send_message("#lobby", "Rodrigo", "Reply", "message", reply_to_id: 999_999)
+               Service.send_message("#lobby", "Alice", "Reply", "message", reply_to_id: 999_999)
     end
 
     test "reply without reply_to_id works normally" do
-      assert {:ok, msg} = Service.send_message("#lobby", "Rodrigo", "Normal message")
+      assert {:ok, msg} = Service.send_message("#lobby", "Alice", "Normal message")
       assert msg.reply_to_id == nil
     end
   end
 
   describe "edit_message/3" do
     test "edits own message within window" do
-      {:ok, msg} = Service.send_message("#lobby", "Rodrigo", "Original")
-      assert {:ok, edited} = Service.edit_message(msg.id, "Rodrigo", "Updated")
+      {:ok, msg} = Service.send_message("#lobby", "Alice", "Original")
+      assert {:ok, edited} = Service.edit_message(msg.id, "Alice", "Updated")
       assert edited.content == "Updated"
       assert edited.edited_at != nil
     end
@@ -149,11 +147,11 @@ defmodule RetroHexChat.Chat.ServiceTest do
       {:ok, msg} = Service.send_message("#lobby", "Mario", "Mario's message")
 
       assert {:error, "You cannot edit other users' messages."} =
-               Service.edit_message(msg.id, "Rodrigo", "Hacked")
+               Service.edit_message(msg.id, "Alice", "Hacked")
     end
 
     test "rejects editing after 5-minute window" do
-      {:ok, msg} = Service.send_message("#lobby", "Rodrigo", "Old message")
+      {:ok, msg} = Service.send_message("#lobby", "Alice", "Old message")
 
       # Manually backdate inserted_at
       import Ecto.Query
@@ -165,14 +163,14 @@ defmodule RetroHexChat.Chat.ServiceTest do
       )
 
       assert {:error, "Edit window has expired."} =
-               Service.edit_message(msg.id, "Rodrigo", "Too late")
+               Service.edit_message(msg.id, "Alice", "Too late")
     end
 
     test "updates reply_to_preview in child messages on edit" do
       {:ok, parent} = Service.send_message("#lobby", "Mario", "Original content")
 
       {:ok, _reply} =
-        Service.send_message("#lobby", "Rodrigo", "I agree", "message", reply_to_id: parent.id)
+        Service.send_message("#lobby", "Alice", "I agree", "message", reply_to_id: parent.id)
 
       {:ok, _} = Service.edit_message(parent.id, "Mario", "Edited content")
 
@@ -182,15 +180,15 @@ defmodule RetroHexChat.Chat.ServiceTest do
     end
 
     test "empty content returns error" do
-      {:ok, msg} = Service.send_message("#lobby", "Rodrigo", "Original")
-      assert {:error, "Message cannot be empty"} = Service.edit_message(msg.id, "Rodrigo", "")
+      {:ok, msg} = Service.send_message("#lobby", "Alice", "Original")
+      assert {:error, "Message cannot be empty"} = Service.edit_message(msg.id, "Alice", "")
     end
   end
 
   describe "delete_message/2" do
     test "soft-deletes own message within window" do
-      {:ok, msg} = Service.send_message("#lobby", "Rodrigo", "To delete")
-      assert {:ok, deleted} = Service.delete_message(msg.id, "Rodrigo")
+      {:ok, msg} = Service.send_message("#lobby", "Alice", "To delete")
+      assert {:ok, deleted} = Service.delete_message(msg.id, "Alice")
       assert deleted.deleted_at != nil
     end
 
@@ -198,15 +196,15 @@ defmodule RetroHexChat.Chat.ServiceTest do
       {:ok, msg} = Service.send_message("#lobby", "Mario", "Mario's message")
 
       assert {:error, "You cannot delete other users' messages."} =
-               Service.delete_message(msg.id, "Rodrigo")
+               Service.delete_message(msg.id, "Alice")
     end
 
     test "rejects deleting already-deleted message" do
-      {:ok, msg} = Service.send_message("#lobby", "Rodrigo", "To delete")
-      {:ok, _} = Service.delete_message(msg.id, "Rodrigo")
+      {:ok, msg} = Service.send_message("#lobby", "Alice", "To delete")
+      {:ok, _} = Service.delete_message(msg.id, "Alice")
 
       assert {:error, "Message has already been deleted."} =
-               Service.delete_message(msg.id, "Rodrigo")
+               Service.delete_message(msg.id, "Alice")
     end
   end
 

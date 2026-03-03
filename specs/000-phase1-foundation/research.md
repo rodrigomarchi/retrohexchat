@@ -121,7 +121,7 @@ with timers and "reconnecting" state management — deferred to future).
 **Decision**: Structured topic strings —
 - `"channel:#{name}"` for channel events
 - `"pm:#{sorted_nicks}"` for private messages (nicknames sorted
-  alphabetically, joined with `:`, e.g., `"pm:Admin:Rodrigo"`)
+  alphabetically, joined with `:`, e.g., `"pm:Admin:Alice"`)
 - `"user:#{nickname}"` for user-scoped events (nick changes, away)
 - `"service:nickserv"` / `"service:chanserv"` for service messages
 **Rationale**: Consistent naming prevents subscription bugs. Sorted

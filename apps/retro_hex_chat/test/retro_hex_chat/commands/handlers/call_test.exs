@@ -7,7 +7,7 @@ defmodule RetroHexChat.Commands.Handlers.CallTest do
   @moduletag :integration
 
   @base_context %{
-    nickname: "rodrigo",
+    nickname: "alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: true,

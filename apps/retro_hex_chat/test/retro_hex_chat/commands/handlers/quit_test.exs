@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.QuitTest do
   alias RetroHexChat.Commands.Handlers.Quit
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: false,

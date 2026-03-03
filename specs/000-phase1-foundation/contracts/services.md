@@ -51,34 +51,34 @@ When a user connects with a registered nickname, the following sequence
 executes:
 
 ```text
-1. User connects as "Rodrigo"
-2. System checks: is "Rodrigo" registered? → YES
-3. NickServ.start_identify_timer("Rodrigo") is called
-4. NickServ sends message to user via PubSub "user:Rodrigo":
+1. User connects as "Alice"
+2. System checks: is "Alice" registered? → YES
+3. NickServ.start_identify_timer("Alice") is called
+4. NickServ sends message to user via PubSub "user:Alice":
    "[NickServ] This nickname is registered. You have 60 seconds
    to identify via /ns identify <password> or you will be renamed."
 5. Timer starts via Process.send_after(self(), {:identify_timeout,
-   "Rodrigo"}, 60_000)
+   "Alice"}, 60_000)
 6. NickServ tracks active timers in GenServer state:
-   %{identify_timers: %{"Rodrigo" => timer_ref}}
+   %{identify_timers: %{"Alice" => timer_ref}}
 
    Path A — User identifies in time:
    7a. User types /ns identify <correct_password>
-   8a. NickServ.identify("Rodrigo", password) → {:ok, :identified}
-   9a. NickServ.cancel_identify_timer("Rodrigo") →
+   8a. NickServ.identify("Alice", password) → {:ok, :identified}
+   9a. NickServ.cancel_identify_timer("Alice") →
        Process.cancel_timer(timer_ref), remove from state
-   10a. NickServ sends: "[NickServ] You are now identified as Rodrigo."
+   10a. NickServ sends: "[NickServ] You are now identified as Alice."
 
    Path B — Timer expires:
-   7b. GenServer receives {:identify_timeout, "Rodrigo"}
-   8b. NickServ checks: is "Rodrigo" still connected AND not identified?
+   7b. GenServer receives {:identify_timeout, "Alice"}
+   8b. NickServ checks: is "Alice" still connected AND not identified?
    9b. If yes → generate Guest_XXXXX nickname:
        - Generate random 5 digits
        - Check uniqueness against connected users
        - If taken, retry (max 10 attempts, then Guest_XXXXXXXXXX with 10 digits)
-   10b. Broadcast force_rename via PubSub "user:Rodrigo":
+   10b. Broadcast force_rename via PubSub "user:Alice":
         %{event: "force_rename", payload: %{
-          old_nick: "Rodrigo",
+          old_nick: "Alice",
           new_nick: "Guest_12345",
           reason: "NickServ identification timeout"
         }}
@@ -87,7 +87,7 @@ executes:
 
    Path C — User disconnects before timer:
    7c. Socket disconnect triggers cleanup (FR-073)
-   8c. Cleanup calls NickServ.cancel_identify_timer("Rodrigo")
+   8c. Cleanup calls NickServ.cancel_identify_timer("Alice")
    9c. Timer cancelled, no further action
 ```
 
@@ -175,7 +175,7 @@ coordinates with ChanServ to apply automatic privileges:
        ChanServ sends no message.
 
    If identified:
-   5b. Server calls ChanServ.check_access("#elixir", "Rodrigo")
+   5b. Server calls ChanServ.check_access("#elixir", "Alice")
    6b. ChanServ queries access_list_entries for (channel, nickname)
    7b. Returns {:ok, :founder} | {:ok, :sop} | {:ok, :aop} | {:ok, :vop}
        | {:error, :no_access}

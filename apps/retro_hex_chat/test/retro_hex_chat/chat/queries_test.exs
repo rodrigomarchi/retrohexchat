@@ -9,7 +9,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
     test "inserts a valid message" do
       attrs = %{
         channel_name: "#lobby",
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         content: "Hello!",
         type: "message"
       }
@@ -96,7 +96,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
       {:ok, msg} =
         Queries.insert_message(%{
           channel_name: "#lobby",
-          author_nickname: "Rodrigo",
+          author_nickname: "Alice",
           content: "Hello!",
           type: "message"
         })
@@ -115,7 +115,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
       {:ok, msg} =
         Queries.insert_message(%{
           channel_name: "#lobby",
-          author_nickname: "Rodrigo",
+          author_nickname: "Alice",
           content: "Original",
           type: "message"
         })
@@ -132,7 +132,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
       {:ok, msg} =
         Queries.insert_message(%{
           channel_name: "#lobby",
-          author_nickname: "Rodrigo",
+          author_nickname: "Alice",
           content: "To be deleted",
           type: "message"
         })
@@ -156,7 +156,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
       {:ok, reply} =
         Queries.insert_reply_message(%{
           channel_name: "#lobby",
-          author_nickname: "Rodrigo",
+          author_nickname: "Alice",
           content: "I agree!",
           type: "message",
           reply_to_id: parent.id,
@@ -329,7 +329,7 @@ defmodule RetroHexChat.Chat.QueriesTest do
       {:ok, reply} =
         Queries.insert_reply_message(%{
           channel_name: "#lobby",
-          author_nickname: "Rodrigo",
+          author_nickname: "Alice",
           content: "Reply!",
           type: "message",
           reply_to_id: parent.id,

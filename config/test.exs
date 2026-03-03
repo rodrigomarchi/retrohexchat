@@ -54,4 +54,4 @@ config :retro_hex_chat,
   signaling_rate_limiter: RetroHexChat.P2P.SignalingRateLimit.Noop
 
 # Basic auth for LiveDashboard
-config :retro_hex_chat_web, :basic_auth, username: "admin", password: "retroforever"
+config :retro_hex_chat_web, :basic_auth, username: "admin", password: "test"

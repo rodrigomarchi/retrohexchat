@@ -75,7 +75,9 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   ]
 
 # Basic auth for LiveDashboard
-config :retro_hex_chat_web, :basic_auth, username: "admin", password: "retroforever"
+config :retro_hex_chat_web, :basic_auth,
+  username: System.get_env("DASHBOARD_USER", "admin"),
+  password: System.get_env("DASHBOARD_PASSWORD", "admin")
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :default_formatter, format: "[$level] $message\n"

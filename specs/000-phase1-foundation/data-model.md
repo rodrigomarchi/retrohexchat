@@ -151,8 +151,8 @@ Persisted bans for registered channels only.
 ```elixir
 # Stored in LiveView socket assigns
 %{
-  nickname: "Rodrigo",
-  alt_nickname: "Rodrigo_",
+  nickname: "Alice",
+  alt_nickname: "Alice_",
   connected_at: ~U[2026-02-09 12:00:00Z],
   away: false,
   away_message: nil,
@@ -181,13 +181,13 @@ Persisted bans for registered channels only.
     limit: nil           # +l <N>
   },
   members: %{
-    "Rodrigo" => %{role: :operator, joined_at: ~U[2026-02-09 12:00:00Z]},
+    "Alice" => %{role: :operator, joined_at: ~U[2026-02-09 12:00:00Z]},
     "Helper"  => %{role: :voiced,   joined_at: ~U[2026-02-09 12:01:00Z]},
     "Newbie"  => %{role: :regular,  joined_at: ~U[2026-02-09 12:02:00Z]}
   },
   bans: MapSet.new(["BadUser"]),
   registered: true,
-  founder: "Rodrigo",
+  founder: "Alice",
   created_at: ~U[2026-02-09 12:00:00Z]
 }
 ```
@@ -198,14 +198,14 @@ Persisted bans for registered channels only.
 # ETS table: :retro_hex_chat_rate_limits
 # Key: {nickname, :message | :command}
 # Value: {count, window_start_timestamp}
-{{"Rodrigo", :message}, {3, 1707480000}}
-{{"Rodrigo", :command}, {1, 1707480000}}
+{{"Alice", :message}, {3, 1707480000}}
+{{"Alice", :command}, {1, 1707480000}}
 
 # Mute entries (set when rate limit is exceeded)
 # Key: {nickname, :muted}
 # Value: {true, muted_until_timestamp}
 # Absent key or expired timestamp = not muted
-{{"Rodrigo", :muted}, {true, 1707480005}}
+{{"Alice", :muted}, {true, 1707480005}}
 ```
 
 **Mute State Design**: When a user exceeds the rate limit (5 msg/sec

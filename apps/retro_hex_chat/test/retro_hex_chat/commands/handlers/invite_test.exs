@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.InviteTest do
   alias RetroHexChat.Commands.Handlers.Invite
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#private",
     channels: ["#private"],
     identified: false,

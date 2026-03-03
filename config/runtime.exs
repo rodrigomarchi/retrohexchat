@@ -154,6 +154,7 @@ if config_env() == :prod do
   config :retro_hex_chat, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
   config :retro_hex_chat_web, :basic_auth,
-    username: System.get_env("DASHBOARD_USER") || "admin",
-    password: System.get_env("DASHBOARD_PASSWORD") || "retroforever"
+    username: System.get_env("DASHBOARD_USER") || raise("DASHBOARD_USER env var is required"),
+    password:
+      System.get_env("DASHBOARD_PASSWORD") || raise("DASHBOARD_PASSWORD env var is required")
 end

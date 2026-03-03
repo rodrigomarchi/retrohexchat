@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.QueryTest do
   alias RetroHexChat.Commands.Handlers.Query
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: false,

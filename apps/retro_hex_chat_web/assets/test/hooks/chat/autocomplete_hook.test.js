@@ -146,8 +146,8 @@ describe("AutocompleteHook", () => {
     });
 
     it("tab_matches event sets input value", () => {
-      simulateEvent(hook, "tab_matches", { matches: ["rodrigo", "robot"], is_start: true });
-      expect(hook.el.value).toBe("rodrigo: ");
+      simulateEvent(hook, "tab_matches", { matches: ["alice", "robot"], is_start: true });
+      expect(hook.el.value).toBe("alice: ");
     });
   });
 

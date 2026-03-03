@@ -37,7 +37,7 @@
 
 PROBLEM: In a busy channel with many messages flowing quickly, users have no way to know when someone mentions them by name or discusses a topic they care about. Messages mentioning their nickname scroll by unnoticed. This is one of the most impactful UX gaps — every IRC client since the 1990s highlights the user's own nick.
 
-USER JOURNEY: A user named 'Rodrigo' is reading messages in #elixir. Someone types 'hey Rodrigo, check this out'. The message line is rendered with a distinct highlight color (e.g., bright yellow background), a notification sound plays, and if #elixir is not the active channel, the treebar entry for #elixir flashes to draw attention.
+USER JOURNEY: A user named 'Alice' is reading messages in #elixir. Someone types 'hey Alice, check this out'. The message line is rendered with a distinct highlight color (e.g., bright yellow background), a notification sound plays, and if #elixir is not the active channel, the treebar entry for #elixir flashes to draw attention.
 
 Beyond their own nickname (which is highlighted by default with no setup), the user can configure custom highlight words. They open a Highlight configuration dialog and add 'phoenix', 'liveview', and 'deploy'. Now any message containing these words in any channel also triggers highlighting, sound, and flashing.
 
@@ -45,7 +45,7 @@ Each highlight word can optionally have its own custom colors. For example, 'dep
 
 ACTORS: Any connected user (guest or registered). Highlight preferences are per-user and persist across sessions for registered users.
 
-EDGE CASES: Highlight matching must be case-insensitive and should match whole words only ('Rod' should not highlight 'Rodrigo'). The user's own messages should NOT trigger self-highlights. If a message contains multiple highlight words, the highest-priority color should win (own nick > custom words). Channels where the user has muted notifications should not produce sound or flash, but should still visually highlight the message text. An empty highlight word list (besides own nick) should be the default.
+EDGE CASES: Highlight matching must be case-insensitive and should match whole words only ('Rod' should not highlight 'Alice'). The user's own messages should NOT trigger self-highlights. If a message contains multiple highlight words, the highest-priority color should win (own nick > custom words). Channels where the user has muted notifications should not produce sound or flash, but should still visually highlight the message text. An empty highlight word list (besides own nick) should be the default.
 
 NEGATIVE REQUIREMENTS: Highlights must NOT generate any visible signal to other users — they are purely local. The system must NOT highlight words inside URLs or system messages.
 

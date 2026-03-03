@@ -55,13 +55,13 @@ defmodule RetroHexChat.Chat.PolicyTest do
   describe "can_edit?/2" do
     test "allows editing own message within 5-minute window" do
       message = %RetroHexChat.Chat.Message{
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         inserted_at: DateTime.utc_now(),
         deleted_at: nil,
         edited_at: nil
       }
 
-      assert :ok = Policy.can_edit?(message, "Rodrigo")
+      assert :ok = Policy.can_edit?(message, "Alice")
     end
 
     test "rejects editing another user's message" do
@@ -73,83 +73,83 @@ defmodule RetroHexChat.Chat.PolicyTest do
       }
 
       assert {:error, "You cannot edit other users' messages."} =
-               Policy.can_edit?(message, "Rodrigo")
+               Policy.can_edit?(message, "Alice")
     end
 
     test "rejects editing a deleted message" do
       message = %RetroHexChat.Chat.Message{
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         inserted_at: DateTime.utc_now(),
         deleted_at: DateTime.utc_now(),
         edited_at: nil
       }
 
-      assert {:error, _} = Policy.can_edit?(message, "Rodrigo")
+      assert {:error, _} = Policy.can_edit?(message, "Alice")
     end
 
     test "rejects editing after 5-minute window" do
       six_minutes_ago = DateTime.add(DateTime.utc_now(), -360, :second)
 
       message = %RetroHexChat.Chat.Message{
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         inserted_at: six_minutes_ago,
         deleted_at: nil,
         edited_at: nil
       }
 
-      assert {:error, "Edit window has expired."} = Policy.can_edit?(message, "Rodrigo")
+      assert {:error, "Edit window has expired."} = Policy.can_edit?(message, "Alice")
     end
 
     test "allows editing at exactly 5 minutes (inclusive)" do
       exactly_five = DateTime.add(DateTime.utc_now(), -300, :second)
 
       message = %RetroHexChat.Chat.Message{
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         inserted_at: exactly_five,
         deleted_at: nil,
         edited_at: nil
       }
 
-      assert :ok = Policy.can_edit?(message, "Rodrigo")
+      assert :ok = Policy.can_edit?(message, "Alice")
     end
 
     test "rejects editing within 3-second debounce" do
       one_second_ago = DateTime.add(DateTime.utc_now(), -1, :second)
 
       message = %RetroHexChat.Chat.Message{
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         inserted_at: DateTime.utc_now(),
         deleted_at: nil,
         edited_at: one_second_ago
       }
 
       assert {:error, "Please wait a few seconds before editing again."} =
-               Policy.can_edit?(message, "Rodrigo")
+               Policy.can_edit?(message, "Alice")
     end
 
     test "allows editing after 3-second debounce" do
       four_seconds_ago = DateTime.add(DateTime.utc_now(), -4, :second)
 
       message = %RetroHexChat.Chat.Message{
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         inserted_at: DateTime.utc_now(),
         deleted_at: nil,
         edited_at: four_seconds_ago
       }
 
-      assert :ok = Policy.can_edit?(message, "Rodrigo")
+      assert :ok = Policy.can_edit?(message, "Alice")
     end
   end
 
   describe "can_delete?/2" do
     test "allows deleting own message within 5-minute window" do
       message = %RetroHexChat.Chat.Message{
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         inserted_at: DateTime.utc_now(),
         deleted_at: nil
       }
 
-      assert :ok = Policy.can_delete?(message, "Rodrigo")
+      assert :ok = Policy.can_delete?(message, "Alice")
     end
 
     test "rejects deleting another user's message" do
@@ -165,36 +165,36 @@ defmodule RetroHexChat.Chat.PolicyTest do
 
     test "rejects deleting already-deleted message" do
       message = %RetroHexChat.Chat.Message{
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         inserted_at: DateTime.utc_now(),
         deleted_at: DateTime.utc_now()
       }
 
-      assert {:error, _} = Policy.can_delete?(message, "Rodrigo")
+      assert {:error, _} = Policy.can_delete?(message, "Alice")
     end
 
     test "rejects deleting after 5-minute window (no grace period)" do
       six_minutes_ago = DateTime.add(DateTime.utc_now(), -360, :second)
 
       message = %RetroHexChat.Chat.Message{
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         inserted_at: six_minutes_ago,
         deleted_at: nil
       }
 
-      assert {:error, "Delete window has expired."} = Policy.can_delete?(message, "Rodrigo")
+      assert {:error, "Delete window has expired."} = Policy.can_delete?(message, "Alice")
     end
 
     test "allows deleting at exactly 5 minutes (inclusive)" do
       exactly_five = DateTime.add(DateTime.utc_now(), -300, :second)
 
       message = %RetroHexChat.Chat.Message{
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         inserted_at: exactly_five,
         deleted_at: nil
       }
 
-      assert :ok = Policy.can_delete?(message, "Rodrigo")
+      assert :ok = Policy.can_delete?(message, "Alice")
     end
   end
 

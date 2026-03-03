@@ -8,62 +8,62 @@ defmodule RetroHexChat.Chat.HighlightTest do
     @tag :unit
     test "highlights when own nick is present as a whole word" do
       assert {:highlight, nil} =
-               Highlight.check("hey Rodrigo, check this out", "Rodrigo", [], "Alice")
+               Highlight.check("hey Bob, check this out", "Bob", [], "Alice")
     end
 
     @tag :unit
     test "case-insensitive matching" do
       assert {:highlight, nil} =
-               Highlight.check("hey RODRIGO", "Rodrigo", [], "Alice")
+               Highlight.check("hey BOB", "Bob", [], "Alice")
 
       assert {:highlight, nil} =
-               Highlight.check("hey rodrigo", "Rodrigo", [], "Alice")
+               Highlight.check("hey bob", "Bob", [], "Alice")
     end
 
     @tag :unit
     test "does not match partial words" do
-      assert :no_highlight = Highlight.check("Rod is great", "Rodrigo", [], "Alice")
-      assert :no_highlight = Highlight.check("Rodrigos house", "Rodrigo", [], "Alice")
+      assert :no_highlight = Highlight.check("Bo is great", "Bob", [], "Alice")
+      assert :no_highlight = Highlight.check("Bobs house", "Bob", [], "Alice")
     end
 
     @tag :unit
     test "does not self-highlight" do
       assert :no_highlight =
-               Highlight.check("I said Rodrigo", "Rodrigo", [], "Rodrigo")
+               Highlight.check("I said Bob", "Bob", [], "Bob")
     end
 
     @tag :unit
     test "does not highlight when nick not present" do
-      assert :no_highlight = Highlight.check("hello world", "Rodrigo", [], "Alice")
+      assert :no_highlight = Highlight.check("hello world", "Bob", [], "Alice")
     end
 
     @tag :unit
     test "does not highlight empty content" do
-      assert :no_highlight = Highlight.check("", "Rodrigo", [], "Alice")
+      assert :no_highlight = Highlight.check("", "Bob", [], "Alice")
     end
 
     @tag :unit
     test "matches nick adjacent to punctuation" do
       assert {:highlight, nil} =
-               Highlight.check("hey Rodrigo!", "Rodrigo", [], "Alice")
+               Highlight.check("hey Bob!", "Bob", [], "Alice")
 
       assert {:highlight, nil} =
-               Highlight.check("Rodrigo: check this", "Rodrigo", [], "Alice")
+               Highlight.check("Bob: check this", "Bob", [], "Alice")
 
       assert {:highlight, nil} =
-               Highlight.check("(Rodrigo)", "Rodrigo", [], "Alice")
+               Highlight.check("(Bob)", "Bob", [], "Alice")
 
       assert {:highlight, nil} =
-               Highlight.check("hey, Rodrigo, hello", "Rodrigo", [], "Alice")
+               Highlight.check("hey, Bob, hello", "Bob", [], "Alice")
     end
 
     @tag :unit
     test "matches nick at start and end of content" do
       assert {:highlight, nil} =
-               Highlight.check("Rodrigo", "Rodrigo", [], "Alice")
+               Highlight.check("Bob", "Bob", [], "Alice")
 
       assert {:highlight, nil} =
-               Highlight.check("hello Rodrigo", "Rodrigo", [], "Alice")
+               Highlight.check("hello Bob", "Bob", [], "Alice")
     end
   end
 
@@ -72,8 +72,8 @@ defmodule RetroHexChat.Chat.HighlightTest do
     test "does not highlight nick inside HTTP URL" do
       assert :no_highlight =
                Highlight.check(
-                 "see https://example.com/Rodrigo/profile",
-                 "Rodrigo",
+                 "see https://example.com/Bob/profile",
+                 "Bob",
                  [],
                  "Alice"
                )
@@ -83,8 +83,8 @@ defmodule RetroHexChat.Chat.HighlightTest do
     test "does not highlight nick inside HTTPS URL" do
       assert :no_highlight =
                Highlight.check(
-                 "check http://rodrigo.dev/page",
-                 "Rodrigo",
+                 "check http://bob.dev/page",
+                 "Bob",
                  [],
                  "Alice"
                )
@@ -94,8 +94,8 @@ defmodule RetroHexChat.Chat.HighlightTest do
     test "highlights nick outside URL even if URL also contains it" do
       assert {:highlight, nil} =
                Highlight.check(
-                 "Rodrigo see https://example.com/Rodrigo",
-                 "Rodrigo",
+                 "Bob see https://example.com/Bob",
+                 "Bob",
                  [],
                  "Alice"
                )
@@ -106,19 +106,19 @@ defmodule RetroHexChat.Chat.HighlightTest do
     @tag :unit
     test "matches nick through bold formatting codes" do
       # \x02 = bold toggle
-      content = "\x02Rodrigo\x02 check this"
+      content = "\x02Bob\x02 check this"
 
       assert {:highlight, nil} =
-               Highlight.check(content, "Rodrigo", [], "Alice")
+               Highlight.check(content, "Bob", [], "Alice")
     end
 
     @tag :unit
     test "matches nick through color formatting codes" do
       # \x03 followed by color number
-      content = "\x034Rodrigo\x03 is here"
+      content = "\x034Bob\x03 is here"
 
       assert {:highlight, nil} =
-               Highlight.check(content, "Rodrigo", [], "Alice")
+               Highlight.check(content, "Bob", [], "Alice")
     end
   end
 
@@ -128,7 +128,7 @@ defmodule RetroHexChat.Chat.HighlightTest do
       words = [HighlightWord.new(word: "phoenix", bg_color: nil, position: 0)]
 
       assert {:highlight, nil} =
-               Highlight.check("I love phoenix framework", "Rodrigo", words, "Alice")
+               Highlight.check("I love phoenix framework", "Bob", words, "Alice")
     end
 
     @tag :unit
@@ -136,17 +136,17 @@ defmodule RetroHexChat.Chat.HighlightTest do
       words = [HighlightWord.new(word: "deploy", bg_color: 4, position: 0)]
 
       assert {:highlight, color} =
-               Highlight.check("we need to deploy now", "Rodrigo", words, "Alice")
+               Highlight.check("we need to deploy now", "Bob", words, "Alice")
 
       assert color == 4
     end
 
     @tag :unit
     test "own nick takes priority over custom words" do
-      words = [HighlightWord.new(word: "Rodrigo", bg_color: 4, position: 0)]
+      words = [HighlightWord.new(word: "Bob", bg_color: 4, position: 0)]
 
       assert {:highlight, nil} =
-               Highlight.check("hey Rodrigo", "Rodrigo", words, "Alice")
+               Highlight.check("hey Bob", "Bob", words, "Alice")
     end
 
     @tag :unit
@@ -157,7 +157,7 @@ defmodule RetroHexChat.Chat.HighlightTest do
       ]
 
       {:highlight, color} =
-        Highlight.check("phoenix and elixir rock", "Rodrigo", words, "Alice")
+        Highlight.check("phoenix and elixir rock", "Bob", words, "Alice")
 
       # Should use first match (phoenix, color 12 = blue)
       assert color == 12
@@ -168,10 +168,10 @@ defmodule RetroHexChat.Chat.HighlightTest do
       words = [HighlightWord.new(word: "go", bg_color: nil, position: 0)]
 
       assert {:highlight, _} =
-               Highlight.check("let's go!", "Rodrigo", words, "Alice")
+               Highlight.check("let's go!", "Bob", words, "Alice")
 
       assert :no_highlight =
-               Highlight.check("going forward", "Rodrigo", words, "Alice")
+               Highlight.check("going forward", "Bob", words, "Alice")
     end
 
     @tag :unit
@@ -179,12 +179,12 @@ defmodule RetroHexChat.Chat.HighlightTest do
       words = [HighlightWord.new(word: "deploy", bg_color: nil, position: 0)]
 
       assert {:highlight, _} =
-               Highlight.check("DEPLOY NOW", "Rodrigo", words, "Alice")
+               Highlight.check("DEPLOY NOW", "Bob", words, "Alice")
     end
 
     @tag :unit
     test "no highlight when custom words list is empty and nick not present" do
-      assert :no_highlight = Highlight.check("hello world", "Rodrigo", [], "Alice")
+      assert :no_highlight = Highlight.check("hello world", "Bob", [], "Alice")
     end
   end
 
@@ -200,7 +200,7 @@ defmodule RetroHexChat.Chat.HighlightTest do
       words = [HighlightWord.new(word: "C++", bg_color: nil, position: 0)]
 
       assert {:highlight, _} =
-               Highlight.check("I love C++!", "Rodrigo", words, "Alice")
+               Highlight.check("I love C++!", "Bob", words, "Alice")
     end
   end
 end

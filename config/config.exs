@@ -14,7 +14,11 @@ config :retro_hex_chat,
   ecto_repos: [RetroHexChat.Repo],
   admins: [],
   server_operators: [],
-  p2p_token_secret: "p2p-dev-secret-key-base-at-least-64-bytes-long-for-phoenix-token-signing",
+  p2p_token_secret:
+    System.get_env(
+      "P2P_TOKEN_SECRET",
+      "p2p-dev-secret-change-me-in-production-at-least-64-bytes-long-padding"
+    ),
   # TURN server compile-time config
   turn_realm: "retro-hex-chat",
   turn_credentials_lifetime: 3_600,

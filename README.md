@@ -792,14 +792,26 @@ RetroHexChat ships with a multi-stage `Dockerfile` and a `docker-compose.prod.ym
 ### Deploy via CI Pipeline (recommended)
 
 The deploy pipeline (`scripts/deploy_all.exs`) runs all 9 CI checks first, then
-deploys to both environments in parallel via SSH:
+deploys to both environments in parallel via SSH.
+
+**Required environment variables:**
+
+| Variable | Description |
+|----------|-------------|
+| `DEPLOY_USER` | SSH username on the target servers |
+| `SUN_IP` | Production server IP address |
+| `MOON_IP` | Staging server IP address |
+| `SSH_PORT` | SSH port (default: `2222`) |
 
 ```bash
-# CI + deploy to both Sun (production) & Moon (staging) in parallel
+# Set your deploy targets
+export DEPLOY_USER=myuser SUN_IP=1.2.3.4 MOON_IP=5.6.7.8
+
+# CI + deploy to both production & staging in parallel
 make deploy
 
 # Deploy a specific git ref
-make deploy REF=sun-2026-02-25.01
+make deploy REF=v1.0.0
 
 # Deploy only to production or staging
 make deploy.sun
@@ -813,8 +825,8 @@ make deploy.skip-ci
 Phase 1: CI Validation (9 parallel checks, ~64s)
     ↓ (only if all checks pass)
 Phase 2: Deploy (parallel)
-    ├─ Sun (production, YOUR_PRODUCTION_SERVER_IP) — scp + ssh deploy.sh
-    └─ Moon (staging, YOUR_STAGING_SERVER_IP)     — scp + ssh deploy.sh
+    ├─ Production — scp + ssh deploy.sh
+    └─ Staging    — scp + ssh deploy.sh
 ```
 
 Each deploy SSHs into the target server, checks out the git ref, builds a release

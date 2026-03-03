@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.AwayTest do
   alias RetroHexChat.Commands.Handlers.Away
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: false,

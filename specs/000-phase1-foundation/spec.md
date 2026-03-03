@@ -33,13 +33,13 @@ notifications, end-to-end encryption, multi-server support.
 ### User Story 1 — Connect and Chat in #lobby (Priority: P1)
 
 A user opens the application and sees a 2000s-era "Connect to
-Server" dialog centered on screen. They enter a nickname (e.g., "Rodrigo"),
+Server" dialog centered on screen. They enter a nickname (e.g., "Alice"),
 click Connect, and are immediately placed in the `#lobby` channel. The
 full mIRC-style layout appears: treebar on the left showing #lobby under
 "Channels", the chat area in the center with a sunken panel, a nicklist
 on the right listing all connected users, and a status bar at the bottom.
 The user types a message and presses Enter — the message appears
-instantly for all participants in `[HH:MM] <Rodrigo> hello world` format.
+instantly for all participants in `[HH:MM] <Alice> hello world` format.
 They see other users' messages appear in real time with color-coded
 nicknames. System messages (joins, parts) appear in muted gray-blue.
 
@@ -145,8 +145,8 @@ operator badge, and channel lifecycle.
 
 ### User Story 3 — Private Messages (Priority: P3)
 
-A user types `/query Rodrigo` which opens a PM conversation in the
-treebar under "Private". They can also use `/msg Rodrigo hey there`
+A user types `/query Alice` which opens a PM conversation in the
+treebar under "Private". They can also use `/msg Alice hey there`
 which sends a direct message and opens the PM window automatically.
 The conversation behaves like a channel chat — real-time messages,
 timestamps, color-coded nicknames — but without a nicklist panel.
@@ -162,13 +162,13 @@ bidirectionally, verify persistence and treebar indicators.
 
 **Acceptance Scenarios**:
 
-1. **Given** a connected user, **When** they type `/query Rodrigo`,
+1. **Given** a connected user, **When** they type `/query Alice`,
    **Then** a PM window opens in the treebar under "Private" and the
    chat area switches to the PM conversation.
 
-2. **Given** a connected user, **When** they type `/msg Rodrigo hello`,
+2. **Given** a connected user, **When** they type `/msg Alice hello`,
    **Then** the message is sent, a PM window opens in the treebar, and
-   Rodrigo receives the message in real time.
+   Alice receives the message in real time.
 
 3. **Given** user A has a PM with user B, **When** user A is viewing a
    channel and user B sends a PM, **Then** the PM entry in the treebar
@@ -222,8 +222,8 @@ history and Tab nickname completion independently.
    the input, **Then** the previous command fills the input. Pressing ↑
    again shows the one before. ↓ reverses direction.
 
-5. **Given** the user is in a channel with "Rodrigo" and "Roberto",
-   **When** they type "Ro" and press Tab, **Then** "Rodrigo" completes.
+5. **Given** the user is in a channel with "Alice" and "Roberto",
+   **When** they type "Ro" and press Tab, **Then** "Alice" completes.
    Pressing Tab again cycles to "Roberto".
 
 6. **Given** the command palette is open, **When** the user presses Esc,
@@ -234,7 +234,7 @@ history and Tab nickname completion independently.
    everywhere (nicklist, status bar, treebar), and a system message
    `* OldName is now known as NewName` appears in all shared channels.
 
-8. **Given** a user types `/whois Rodrigo`, **When** the command executes,
+8. **Given** a user types `/whois Alice`, **When** the command executes,
    **Then** a retro dialog opens showing: nickname, channels,
    connection time, away status.
 
@@ -326,7 +326,7 @@ A user types `/ns register mysecretpass` to register their current
 nickname. After registration, the nickname is protected — if someone
 else connects with it, they have 60 seconds to `/ns identify` or get
 renamed to `Guest_XXXXX`. NickServ messages appear in the treebar under
-"Services" in gold/yellow color. `/ns info Rodrigo` shows registration
+"Services" in gold/yellow color. `/ns info Alice` shows registration
 details. `/ns ghost OldNick pass` kills a ghost session. `/ns drop`
 removes registration.
 
@@ -340,33 +340,33 @@ without any other feature.
 
 **Acceptance Scenarios**:
 
-1. **Given** a connected user "Rodrigo", **When** they type
+1. **Given** a connected user "Alice", **When** they type
    `/ns register mypass`, **Then** NickServ responds in gold:
-   "Nickname Rodrigo has been registered" and the nickname is stored
+   "Nickname Alice has been registered" and the nickname is stored
    with bcrypt hashed password.
 
-2. **Given** "Rodrigo" is registered, **When** a new user connects as
-   "Rodrigo", **Then** NickServ warns in gold: "This nickname is
+2. **Given** "Alice" is registered, **When** a new user connects as
+   "Alice", **Then** NickServ warns in gold: "This nickname is
    registered. You have 60 seconds to identify via /ns identify <password>
    or you will be renamed."
 
 3. **Given** the 60-second timer is active, **When** the user types
    `/ns identify mypass` with the correct password, **Then** NickServ
-   confirms: "You are now identified as Rodrigo."
+   confirms: "You are now identified as Alice."
 
 4. **Given** the 60-second timer expires without identification, **When**
    the timeout fires, **Then** the user is forcibly renamed to
    `Guest_XXXXX` with a NickServ message explaining why.
 
-5. **Given** "Rodrigo" is registered and identified, **When** they type
-   `/ns info Rodrigo`, **Then** NickServ shows: registered date, last
+5. **Given** "Alice" is registered and identified, **When** they type
+   `/ns info Alice`, **Then** NickServ shows: registered date, last
    seen, current status (online/offline).
 
-6. **Given** a ghost session exists for "Rodrigo", **When** the real
-   owner types `/ns ghost Rodrigo mypass`, **Then** the ghost session is
+6. **Given** a ghost session exists for "Alice", **When** the real
+   owner types `/ns ghost Alice mypass`, **Then** the ghost session is
    disconnected and the nick becomes available.
 
-7. **Given** "Rodrigo" is identified, **When** they type `/ns drop`,
+7. **Given** "Alice" is identified, **When** they type `/ns drop`,
    **Then** the registration is removed and NickServ confirms.
 
 8. **Given** NickServ sends a message, **When** it appears, **Then** it

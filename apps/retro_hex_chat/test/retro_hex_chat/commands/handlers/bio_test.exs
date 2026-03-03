@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.BioTest do
   alias RetroHexChat.Commands.Handlers.Bio
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: false,

@@ -653,5 +653,5 @@ Each increment delivers independently testable value without breaking previous s
 - TDD is non-negotiable (Constitution IV): write test → verify fail → implement → verify pass
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
-- All file paths are relative to the umbrella root `/Users/rodrigo/src/retro_hex_chat/`
+- All file paths are relative to the umbrella root.
 - Total tasks: 211

@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.NickTest do
   alias RetroHexChat.Commands.Handlers.Nick
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: false,
@@ -29,7 +29,7 @@ defmodule RetroHexChat.Commands.Handlers.NickTest do
     end
 
     test "accepts nickname starting with letter" do
-      assert {:ok, :nick_change, "Alice"} = Nick.execute(["Alice"], @base_context)
+      assert {:ok, :nick_change, "Bob"} = Nick.execute(["Bob"], @base_context)
     end
 
     test "accepts nickname starting with special char [" do
@@ -69,7 +69,7 @@ defmodule RetroHexChat.Commands.Handlers.NickTest do
     end
 
     test "errors when same as current nick" do
-      assert {:error, _} = Nick.execute(["Rodrigo"], @base_context)
+      assert {:error, _} = Nick.execute(["Alice"], @base_context)
     end
 
     test "errors when nickname too long (over 16 chars)" do

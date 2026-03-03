@@ -8,7 +8,7 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
   @moduletag :integration
 
   @base_context %{
-    nickname: "rodrigo",
+    nickname: "alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: true,
@@ -34,7 +34,7 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
       {:ok, creator} =
         %RegisteredNick{}
         |> RegisteredNick.registration_changeset(%{
-          nickname: "rodrigo",
+          nickname: "alice",
           password: "password123"
         })
         |> Repo.insert()
@@ -47,7 +47,7 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
         })
         |> Repo.insert()
 
-      context = %{@base_context | nickname: "rodrigo", identified: true}
+      context = %{@base_context | nickname: "alice", identified: true}
       result = P2p.execute(["mario"], context)
 
       assert {:ok, :ui_action, :p2p_invite, payload} = result
@@ -68,8 +68,8 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
     end
 
     test "rejects targeting self" do
-      context = %{@base_context | nickname: "rodrigo"}
-      assert {:error, msg} = P2p.execute(["rodrigo"], context)
+      context = %{@base_context | nickname: "alice"}
+      assert {:error, msg} = P2p.execute(["alice"], context)
       assert msg =~ "yourself"
     end
 

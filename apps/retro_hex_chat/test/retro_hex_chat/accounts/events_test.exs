@@ -12,10 +12,10 @@ defmodule RetroHexChat.Accounts.EventsTest do
           [:retro_hex_chat, :accounts, :connected]
         ])
 
-      Events.emit_connected("Rodrigo")
+      Events.emit_connected("Alice")
 
       assert_received {[:retro_hex_chat, :accounts, :connected], ^ref, %{count: 1},
-                       %{nickname: "Rodrigo"}}
+                       %{nickname: "Alice"}}
     end
   end
 
@@ -26,10 +26,10 @@ defmodule RetroHexChat.Accounts.EventsTest do
           [:retro_hex_chat, :accounts, :disconnected]
         ])
 
-      Events.emit_disconnected("Rodrigo")
+      Events.emit_disconnected("Alice")
 
       assert_received {[:retro_hex_chat, :accounts, :disconnected], ^ref, %{count: 1},
-                       %{nickname: "Rodrigo"}}
+                       %{nickname: "Alice"}}
     end
   end
 

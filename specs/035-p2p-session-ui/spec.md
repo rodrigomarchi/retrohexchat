@@ -17,13 +17,13 @@ A registered user types `/p2p mario` in the chat input to request a peer-to-peer
 
 **Acceptance Scenarios**:
 
-1. **Given** a registered user "rodrigo" in a channel, **When** they type `/p2p mario` and "mario" is online and registered, **Then** a message with the lobby link appears in the private chat between rodrigo and mario (visible to both), and mario also receives a toast notification with Aceitar/Recusar/Ignorar buttons.
+1. **Given** a registered user "alice" in a channel, **When** they type `/p2p mario` and "mario" is online and registered, **Then** a message with the lobby link appears in the private chat between alice and mario (visible to both), and mario also receives a toast notification with Aceitar/Recusar/Ignorar buttons.
 2. **Given** a registered user, **When** they type `/p2p` without a nickname, **Then** they see an error message with usage syntax.
 3. **Given** a registered user, **When** they type `/p2p ghost` and "ghost" is not online or not registered, **Then** they see an appropriate error message.
-4. **Given** mario receives the toast notification, **When** mario clicks Recusar, **Then** the session is closed with reason "rejected" and a message "mario recusou o convite P2P" appears in the private chat between rodrigo and mario.
+4. **Given** mario receives the toast notification, **When** mario clicks Recusar, **Then** the session is closed with reason "rejected" and a message "mario recusou o convite P2P" appears in the private chat between alice and mario.
 5. **Given** mario receives the toast notification, **When** mario clicks Ignorar, **Then** the notification is dismissed and the session expires after 5 minutes of inactivity.
 6. **Given** mario receives the invitation, **When** mario clicks the lobby link in the PM or clicks Aceitar in the toast, **Then** mario is navigated to the P2P lobby at `/p2p/:token`.
-7. **Given** mario is offline or has the PM tab closed, **When** mario later opens the PM with rodrigo, **Then** the invitation message with the lobby link is visible in the chat history (subject to session expiration).
+7. **Given** mario is offline or has the PM tab closed, **When** mario later opens the PM with alice, **Then** the invitation message with the lobby link is visible in the chat history (subject to session expiration).
 
 ---
 
@@ -38,8 +38,8 @@ Both peers navigate to `/p2p/:token` and enter the lobby. The lobby is a dedicat
 **Acceptance Scenarios**:
 
 1. **Given** a valid session token, **When** both the creator and peer navigate to `/p2p/:token`, **Then** both see a 2000s-era lobby window with each other's nicknames and green "online" presence indicators.
-2. **Given** both peers are in the lobby, **When** rodrigo types a message in the lobby chat, **Then** mario sees the message appear immediately, and vice versa.
-3. **Given** both peers are in the lobby, **When** rodrigo refreshes the page, **Then** previous chat messages are gone (ephemeral — not persisted).
+2. **Given** both peers are in the lobby, **When** alice types a message in the lobby chat, **Then** mario sees the message appear immediately, and vice versa.
+3. **Given** both peers are in the lobby, **When** alice refreshes the page, **Then** previous chat messages are gone (ephemeral — not persisted).
 4. **Given** a valid session in pending state, **When** only one peer has joined the lobby, **Then** the other peer's presence indicator shows "offline/awaiting" and a system message indicates the peer has not yet arrived.
 5. **Given** a user who is neither creator nor peer, **When** they navigate to `/p2p/:token`, **Then** they receive a 404 error page.
 6. **Given** an expired or invalid token, **When** a user navigates to `/p2p/:token`, **Then** they are redirected to the main chat with an error message.
@@ -48,7 +48,7 @@ Both peers navigate to `/p2p/:token` and enter the lobby. The lobby is a dedicat
 
 ### User Story 3 - Bilateral Consent Action Requests (Priority: P3)
 
-The lobby displays action buttons for available P2P activities: "Enviar Arquivo", "Chamada de Audio", and "Chamada de Video". When a peer clicks an action button, the other peer sees a request notification within the lobby (e.g., "rodrigo quer iniciar uma chamada de audio") with Accept and Reject buttons. Only when the second peer accepts does the system proceed — requesting browser permissions and initiating the action. If the browser does not support the required capability (e.g., `getUserMedia` for audio/video), the corresponding buttons are disabled with an explanatory tooltip. Browser capability detection runs asynchronously after mount and does not block the initial lobby render.
+The lobby displays action buttons for available P2P activities: "Enviar Arquivo", "Chamada de Audio", and "Chamada de Video". When a peer clicks an action button, the other peer sees a request notification within the lobby (e.g., "alice quer iniciar uma chamada de audio") with Accept and Reject buttons. Only when the second peer accepts does the system proceed — requesting browser permissions and initiating the action. If the browser does not support the required capability (e.g., `getUserMedia` for audio/video), the corresponding buttons are disabled with an explanatory tooltip. Browser capability detection runs asynchronously after mount and does not block the initial lobby render.
 
 **Why this priority**: Bilateral consent is the core UX innovation over legacy DCC. It ensures both peers agree before any resource-intensive action begins.
 
@@ -56,9 +56,9 @@ The lobby displays action buttons for available P2P activities: "Enviar Arquivo"
 
 **Acceptance Scenarios**:
 
-1. **Given** both peers are in the lobby, **When** rodrigo clicks "Chamada de Audio", **Then** mario sees "rodrigo quer iniciar uma chamada de audio" with Accept and Reject buttons.
+1. **Given** both peers are in the lobby, **When** alice clicks "Chamada de Audio", **Then** mario sees "alice quer iniciar uma chamada de audio" with Accept and Reject buttons.
 2. **Given** mario sees an action request, **When** mario clicks Accept, **Then** the system requests microphone permission from both browsers. Once both grant permission, the session transitions to "connecting" state and the lobby displays an "Aguardando conexao..." placeholder (handoff point for future WebRTC feature).
-3. **Given** mario sees an action request, **When** mario clicks Reject, **Then** the request is cancelled and rodrigo sees "mario recusou a chamada de audio".
+3. **Given** mario sees an action request, **When** mario clicks Reject, **Then** the request is cancelled and alice sees "mario recusou a chamada de audio".
 4. **Given** the browser does not support `getUserMedia`, **When** the lobby loads, **Then** the "Chamada de Audio" and "Chamada de Video" buttons are disabled with a tooltip explaining incompatibility.
 5. **Given** the browser supports no WebRTC capabilities at all, **When** the lobby loads, **Then** all action buttons are disabled with a message explaining browser incompatibility.
 6. **Given** both peers click different action buttons simultaneously, **When** both requests arrive, **Then** the first request takes priority and the second is queued.
@@ -76,9 +76,9 @@ Either peer can end the P2P session by clicking "Encerrar Sessao" in the lobby. 
 
 **Acceptance Scenarios**:
 
-1. **Given** both peers are in the lobby, **When** rodrigo clicks "Encerrar Sessao", **Then** both peers are redirected to the main chat, the session is closed in the database, and both see a system message "Sessao P2P encerrada".
-2. **Given** both peers are in the lobby, **When** rodrigo closes the browser tab, **Then** mario sees a notification that rodrigo left, and the session is closed after a brief grace period.
-3. **Given** both peers are in the lobby, **When** rodrigo navigates to a different URL, **Then** the `beforeunload` event and server-side `terminate/2` callback trigger session cleanup.
+1. **Given** both peers are in the lobby, **When** alice clicks "Encerrar Sessao", **Then** both peers are redirected to the main chat, the session is closed in the database, and both see a system message "Sessao P2P encerrada".
+2. **Given** both peers are in the lobby, **When** alice closes the browser tab, **Then** mario sees a notification that alice left, and the session is closed after a brief grace period.
+3. **Given** both peers are in the lobby, **When** alice navigates to a different URL, **Then** the `beforeunload` event and server-side `terminate/2` callback trigger session cleanup.
 4. **Given** a session is in the lobby state, **When** both peers are idle for 15 minutes, **Then** the session expires and both peers are redirected with a timeout message.
 
 ---

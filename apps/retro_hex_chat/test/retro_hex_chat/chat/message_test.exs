@@ -7,7 +7,7 @@ defmodule RetroHexChat.Chat.MessageTest do
 
   describe "changeset/2" do
     test "valid attrs produce a valid changeset" do
-      attrs = %{channel_name: "#lobby", author_nickname: "Rodrigo", content: "Hello!"}
+      attrs = %{channel_name: "#lobby", author_nickname: "Alice", content: "Hello!"}
       changeset = Message.changeset(%Message{}, attrs)
       assert changeset.valid?
     end
@@ -26,7 +26,7 @@ defmodule RetroHexChat.Chat.MessageTest do
     test "validates channel_name max length 50" do
       attrs = %{
         channel_name: String.duplicate("a", 51),
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         content: "Hi"
       }
 
@@ -46,7 +46,7 @@ defmodule RetroHexChat.Chat.MessageTest do
       for valid_type <- ~w(message action system service error) do
         attrs = %{
           channel_name: "#lobby",
-          author_nickname: "Rodrigo",
+          author_nickname: "Alice",
           content: "Hi",
           type: valid_type
         }
@@ -59,7 +59,7 @@ defmodule RetroHexChat.Chat.MessageTest do
     test "rejects invalid type" do
       attrs = %{
         channel_name: "#lobby",
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         content: "Hi",
         type: "invalid"
       }
@@ -70,7 +70,7 @@ defmodule RetroHexChat.Chat.MessageTest do
     end
 
     test "defaults type to message" do
-      attrs = %{channel_name: "#lobby", author_nickname: "Rodrigo", content: "Hi"}
+      attrs = %{channel_name: "#lobby", author_nickname: "Alice", content: "Hi"}
       changeset = Message.changeset(%Message{}, attrs)
       assert Ecto.Changeset.get_field(changeset, :type) == "message"
     end
@@ -80,7 +80,7 @@ defmodule RetroHexChat.Chat.MessageTest do
     test "valid reply with all fields" do
       attrs = %{
         channel_name: "#lobby",
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         content: "I agree!",
         reply_to_id: 42,
         reply_to_author: "Mario",
@@ -94,7 +94,7 @@ defmodule RetroHexChat.Chat.MessageTest do
     test "requires reply_to_author and reply_to_preview when reply_to_id is set" do
       attrs = %{
         channel_name: "#lobby",
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         content: "I agree!",
         reply_to_id: 42
       }
@@ -105,7 +105,7 @@ defmodule RetroHexChat.Chat.MessageTest do
     end
 
     test "valid without reply fields (normal message)" do
-      attrs = %{channel_name: "#lobby", author_nickname: "Rodrigo", content: "Hello!"}
+      attrs = %{channel_name: "#lobby", author_nickname: "Alice", content: "Hello!"}
       changeset = Message.reply_changeset(%Message{}, attrs)
       assert changeset.valid?
     end
@@ -113,7 +113,7 @@ defmodule RetroHexChat.Chat.MessageTest do
     test "validates reply_to_preview max 100 chars" do
       attrs = %{
         channel_name: "#lobby",
-        author_nickname: "Rodrigo",
+        author_nickname: "Alice",
         content: "reply",
         reply_to_id: 1,
         reply_to_author: "Mario",

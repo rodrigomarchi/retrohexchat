@@ -7,7 +7,7 @@ defmodule RetroHexChat.Chat.PrivateMessageTest do
 
   describe "changeset/2" do
     test "valid attrs produce a valid changeset" do
-      attrs = %{sender_nickname: "Rodrigo", recipient_nickname: "Admin", content: "Hey!"}
+      attrs = %{sender_nickname: "Alice", recipient_nickname: "Admin", content: "Hey!"}
       changeset = PrivateMessage.changeset(%PrivateMessage{}, attrs)
       assert changeset.valid?
     end
@@ -36,7 +36,7 @@ defmodule RetroHexChat.Chat.PrivateMessageTest do
 
     test "validates recipient_nickname max length 16" do
       attrs = %{
-        sender_nickname: "Rodrigo",
+        sender_nickname: "Alice",
         recipient_nickname: String.duplicate("a", 17),
         content: "Hi"
       }
@@ -48,7 +48,7 @@ defmodule RetroHexChat.Chat.PrivateMessageTest do
     test "validates type inclusion - only message and action" do
       for valid <- ~w(message action) do
         attrs = %{
-          sender_nickname: "Rodrigo",
+          sender_nickname: "Alice",
           recipient_nickname: "Admin",
           content: "Hi",
           type: valid
@@ -60,7 +60,7 @@ defmodule RetroHexChat.Chat.PrivateMessageTest do
 
       for invalid <- ~w(system service error) do
         attrs = %{
-          sender_nickname: "Rodrigo",
+          sender_nickname: "Alice",
           recipient_nickname: "Admin",
           content: "Hi",
           type: invalid
@@ -72,7 +72,7 @@ defmodule RetroHexChat.Chat.PrivateMessageTest do
     end
 
     test "defaults type to message" do
-      attrs = %{sender_nickname: "Rodrigo", recipient_nickname: "Admin", content: "Hi"}
+      attrs = %{sender_nickname: "Alice", recipient_nickname: "Admin", content: "Hi"}
       changeset = PrivateMessage.changeset(%PrivateMessage{}, attrs)
       assert Ecto.Changeset.get_field(changeset, :type) == "message"
     end

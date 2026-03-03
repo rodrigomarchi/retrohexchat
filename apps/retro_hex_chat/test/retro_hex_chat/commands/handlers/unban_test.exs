@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.UnbanTest do
   alias RetroHexChat.Commands.Handlers.Unban
 
   @base_context %{
-    nickname: "Rodrigo",
+    nickname: "Alice",
     active_channel: "#lobby",
     channels: ["#lobby"],
     identified: false,

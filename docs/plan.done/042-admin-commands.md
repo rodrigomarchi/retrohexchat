@@ -254,7 +254,7 @@ admin_roles:
 
 #### 4. Root Admins via Variável de Ambiente
 
-- Env var: `ROOT_ADMINS=rodrigo,alice,bob` (nicks separados por vírgula)
+- Env var: `ROOT_ADMINS=alice,bob,charlie` (nicks separados por vírgula)
 - `runtime.exs`: `config :retro_hex_chat, :root_admins, String.split(System.get_env("ROOT_ADMINS", ""), ",")`
 - Root admins são imutáveis — não podem ser removidos via comando
 - Nicks NÃO são auto-registrados — o user precisa fazer `/ns register` normalmente
