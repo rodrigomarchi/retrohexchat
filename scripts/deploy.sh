@@ -124,6 +124,35 @@ echo "==> Fixing permissions for DeployEx..."
 chmod o+rx "${DIST_DIR}" "${VERSIONS_DIR}"
 chmod o+r "${DIST_DIR}/${APP_NAME}-${RELEASE_VERSION}.tar.gz" "${CURRENT_JSON}"
 
+# ------------------------------------------------------------------
+# 7. Cleanup old artifacts to prevent disk exhaustion
+# ------------------------------------------------------------------
+KEEP_RELEASES=3
+
+echo "==> Cleaning old release tarballs (keeping ${KEEP_RELEASES} newest)..."
+# shellcheck disable=SC2012
+STALE_DIST=$(ls -t "${DIST_DIR}"/*.tar.gz 2>/dev/null | tail -n +$((KEEP_RELEASES + 1)))
+if [ -n "${STALE_DIST}" ]; then
+  echo "${STALE_DIST}" | xargs rm -f
+  echo "    Removed $(echo "${STALE_DIST}" | wc -l | tr -d ' ') old tarball(s)"
+else
+  echo "    Nothing to clean"
+fi
+
+echo "==> Cleaning old _build/prod tarballs (keeping current)..."
+# shellcheck disable=SC2012
+STALE_BUILD=$(ls -t "${SOURCE_DIR}/_build/prod/"*.tar.gz 2>/dev/null | tail -n +2)
+if [ -n "${STALE_BUILD}" ]; then
+  echo "${STALE_BUILD}" | xargs rm -f
+  echo "    Removed $(echo "${STALE_BUILD}" | wc -l | tr -d ' ') old build tarball(s)"
+fi
+
+echo "==> Cleaning Git LFS temporaries..."
+rm -rf "${SOURCE_DIR}/.git/lfs/tmp/"*
+
+echo "==> Pruning unreferenced Git LFS objects..."
+cd "${SOURCE_DIR}" && git lfs prune 2>/dev/null || true
+
 echo "==> Deploy complete!"
 echo "    App:     ${APP_NAME}"
 echo "    Version: ${RELEASE_VERSION}"
