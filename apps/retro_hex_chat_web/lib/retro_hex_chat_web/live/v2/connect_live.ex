@@ -313,7 +313,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
 
   defp password_step(assigns) do
     ~H"""
-    <form phx-submit="authenticate" phx-change="validate_password">
+    <form phx-submit="authenticate" phx-change="validate_password" autocomplete="off">
       <.retro_fieldset legend="Authentication">
         <.alert class="mb-3">
           <:icon><.icon_shield /></:icon>
@@ -334,6 +334,10 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
             name="password"
             value={@password}
             placeholder="Enter your password..."
+            autocomplete="off"
+            data-1p-ignore
+            data-lpignore="true"
+            data-bwignore="true"
             phx-mounted={JS.focus()}
           />
         </.field_row>
@@ -363,7 +367,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
 
   defp register_step(assigns) do
     ~H"""
-    <form phx-submit="register" phx-change="validate_register">
+    <form phx-submit="register" phx-change="validate_register" autocomplete="off">
       <.retro_fieldset legend="Registration">
         <.alert class="mb-3">
           <:icon><.icon_checkmark /></:icon>
@@ -383,6 +387,10 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
             name="password"
             value={@password}
             placeholder="Choose a password (min. 5 characters)..."
+            autocomplete="off"
+            data-1p-ignore
+            data-lpignore="true"
+            data-bwignore="true"
             phx-mounted={JS.focus()}
           />
         </.field_row>
@@ -398,6 +406,10 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
             name="password_confirm"
             value={@password_confirm}
             placeholder="Repeat your password..."
+            autocomplete="off"
+            data-1p-ignore
+            data-lpignore="true"
+            data-bwignore="true"
           />
         </.field_row>
         <p :if={@password_error} class="text-destructive text-xs mt-2">

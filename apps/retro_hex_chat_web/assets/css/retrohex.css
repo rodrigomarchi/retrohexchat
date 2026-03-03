@@ -145,3 +145,8 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
 .nick-color-9  { color: #558b2f; }
 .nick-color-10 { color: #d84315; }
 .nick-color-11 { color: #455a64; }
+
+/* ── Password masking (type="text" to bypass browser save-password) ── */
+.input-masked {
+  -webkit-text-security: disc;
+}
