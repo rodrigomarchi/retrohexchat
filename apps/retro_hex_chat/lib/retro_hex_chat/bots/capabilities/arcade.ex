@@ -79,9 +79,7 @@ defmodule RetroHexChat.Bots.Capabilities.Arcade do
     with :ok <- check_identified(author),
          {:ok, creator_id} <- resolve_registered_nick(author),
          {:ok, result} <- RetroHexChat.Arcade.create_session(creator_id) do
-      base_url = Application.get_env(:retro_hex_chat, :base_url, "http://localhost:4000")
-      url = "#{base_url}/solo/#{result.token}"
-      {:reply, "Arcade session ready for #{author}! Open: #{url}"}
+      {:notice, author, "/solo/#{result.token}"}
     end
   end
 

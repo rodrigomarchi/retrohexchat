@@ -247,6 +247,26 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     {:halt, push_status_message(socket, Enum.join(parts, " "), :system)}
   end
 
+  def handle_info(%{event: "bot_notice", payload: payload}, socket) do
+    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
+    import Phoenix.LiveView, only: [stream_insert: 3]
+
+    msg = %{
+      id: "system-#{System.unique_integer([:positive])}",
+      author: "System",
+      content: payload.content,
+      type: :arcade_link,
+      timestamp: DateTime.utc_now()
+    }
+
+    socket =
+      socket
+      |> stream_insert(:chat_messages, msg)
+      |> push_status_message("#{payload.bot}: Arcade session ready!", :system)
+
+    {:halt, socket}
+  end
+
   def handle_info(%{event: "arcade_session_ended"} = msg, socket) do
     import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
 

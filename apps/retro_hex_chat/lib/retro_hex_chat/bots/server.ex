@@ -493,6 +493,16 @@ defmodule RetroHexChat.Bots.Server do
     update_cooldown(state, channel)
   end
 
+  defp maybe_respond(state, channel, {:notice, target_nick, text}) do
+    Phoenix.PubSub.broadcast(
+      RetroHexChat.PubSub,
+      "user:#{target_nick}",
+      %{event: "bot_notice", payload: %{bot: state.nickname, channel: channel, content: text}}
+    )
+
+    update_cooldown(state, channel)
+  end
+
   defp maybe_respond(state, _channel, {:side_effect, _action}), do: state
 
   @spec maybe_respond_timer(

@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
 
   attr :entries, :list,
     default: [],
-    doc: "List of %{url, nick, channel, timestamp} maps"
+    doc: "List of CapturedURL structs"
 
   attr :sort_column, :atom, default: :timestamp, doc: "Column currently sorted on"
   attr :sort_direction, :atom, default: :desc, doc: "Sort direction: :asc or :desc"
@@ -123,10 +123,11 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                       size="sm"
                       class="gap-retro-2 hover:underline p-0 h-auto"
                       phx-click={@on_sort}
-                      phx-value-column="nick"
+                      phx-value-column="posted_by"
                     >
                       <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
-                      Nick <.sort_indicator col={:nick} active={@sort_column} dir={@sort_direction} />
+                      Nick
+                      <.sort_indicator col={:posted_by} active={@sort_column} dir={@sort_direction} />
                     </.button>
                   </.table_head>
                   <.table_head>
@@ -136,11 +137,11 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                       size="sm"
                       class="gap-retro-2 hover:underline p-0 h-auto"
                       phx-click={@on_sort}
-                      phx-value-column="channel"
+                      phx-value-column="source"
                     >
                       <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
                       Channel
-                      <.sort_indicator col={:channel} active={@sort_column} dir={@sort_direction} />
+                      <.sort_indicator col={:source} active={@sort_column} dir={@sort_direction} />
                     </.button>
                   </.table_head>
                   <.table_head>
@@ -171,8 +172,8 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                       {entry.url}
                     </a>
                   </.table_cell>
-                  <.table_cell>{entry.nick}</.table_cell>
-                  <.table_cell>{Map.get(entry, :channel, "")}</.table_cell>
+                  <.table_cell>{entry.posted_by}</.table_cell>
+                  <.table_cell>{entry.source}</.table_cell>
                   <.table_cell class="text-xs text-muted-foreground whitespace-nowrap">
                     {format_timestamp(Map.get(entry, :timestamp), @timezone)}
                   </.table_cell>

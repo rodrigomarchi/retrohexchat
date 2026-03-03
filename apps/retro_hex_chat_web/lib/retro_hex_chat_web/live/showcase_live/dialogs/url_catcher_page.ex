@@ -16,32 +16,32 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.UrlCatcherPage do
   @sample_entries [
     %{
       url: "https://elixir-lang.org",
-      nick: "alice",
-      channel: "#dev",
+      posted_by: "alice",
+      source: "#dev",
       timestamp: "14:32:01"
     },
     %{
       url: "https://phoenixframework.org",
-      nick: "bob",
-      channel: "#dev",
+      posted_by: "bob",
+      source: "#dev",
       timestamp: "14:28:44"
     },
     %{
       url: "https://github.com/phoenixframework/phoenix",
-      nick: "carol",
-      channel: "#random",
+      posted_by: "carol",
+      source: "#random",
       timestamp: "13:55:10"
     },
     %{
       url: "https://hex.pm/packages/ecto",
-      nick: "dave",
-      channel: "#dev",
+      posted_by: "dave",
+      source: "#dev",
       timestamp: "13:12:07"
     },
     %{
       url: "https://news.ycombinator.com/item?id=99999",
-      nick: "eve",
-      channel: "#random",
+      posted_by: "eve",
+      source: "#random",
       timestamp: "12:00:00"
     }
   ]
@@ -102,10 +102,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.UrlCatcherPage do
         </.button>
         <.url_catcher
           id="url-catcher-sorted"
-          entries={Enum.sort_by(@entries, & &1.nick)}
+          entries={Enum.sort_by(@entries, & &1.posted_by)}
           entry_count={length(@entries)}
           channels={@channels}
-          sort_column={:nick}
+          sort_column={:posted_by}
           sort_direction={:asc}
         />
       </.showcase_card>
@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.UrlCatcherPage do
         </.button>
         <.url_catcher
           id="url-catcher-filtered"
-          entries={Enum.filter(@entries, &(&1.channel == "#dev"))}
+          entries={Enum.filter(@entries, &(&1.source == "#dev"))}
           entry_count={3}
           channels={@channels}
           filter_channel="#dev"

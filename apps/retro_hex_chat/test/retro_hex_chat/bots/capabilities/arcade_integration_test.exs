@@ -43,16 +43,14 @@ defmodule RetroHexChat.Bots.Capabilities.ArcadeIntegrationTest do
       assert text =~ "registered"
     end
 
-    test "creates arcade session and returns URL for identified+registered user" do
+    test "creates arcade session and returns notice for identified+registered user" do
       nick = "ArcPlay#{System.unique_integer([:positive])}"
       {:ok, _} = NickServ.register(nick, "testpass123")
       {:ok, _} = NickServ.identify(nick, "testpass123")
 
       result = Arcade.handle_message("!play", nick, @ctx)
-      assert {:reply, text} = result
-      assert text =~ nick
-      assert text =~ "/solo/"
-      assert text =~ "Arcade session ready"
+      assert {:notice, ^nick, path} = result
+      assert path =~ "/solo/"
     end
 
     test "works with long format !ArcadeBot play" do
@@ -61,8 +59,8 @@ defmodule RetroHexChat.Bots.Capabilities.ArcadeIntegrationTest do
       {:ok, _} = NickServ.identify(nick, "testpass123")
 
       result = Arcade.handle_message("!ArcadeBot play", nick, @ctx)
-      assert {:reply, text} = result
-      assert text =~ "/solo/"
+      assert {:notice, ^nick, path} = result
+      assert path =~ "/solo/"
     end
 
     test "is case insensitive" do
@@ -71,8 +69,8 @@ defmodule RetroHexChat.Bots.Capabilities.ArcadeIntegrationTest do
       {:ok, _} = NickServ.identify(nick, "testpass123")
 
       result = Arcade.handle_message("!PLAY", nick, @ctx)
-      assert {:reply, text} = result
-      assert text =~ "/solo/"
+      assert {:notice, ^nick, path} = result
+      assert path =~ "/solo/"
     end
   end
 end

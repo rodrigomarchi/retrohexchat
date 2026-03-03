@@ -34,6 +34,7 @@ defmodule RetroHexChat.Bots.Capability do
           | {:reply, String.t(), map()}
           | {:reply_action, String.t()}
           | {:multi_reply, [String.t()]}
+          | {:notice, String.t(), String.t()}
           | {:side_effect, map()}
           | :ignore
 
