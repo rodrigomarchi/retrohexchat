@@ -259,7 +259,7 @@ defmodule RetroHexChatWeb.LandingLive.Features do
               <div class="space-y-1.5">
                 <div class="flex items-start gap-2 text-xs">
                   <Icons.icon_terminal class="w-4 h-4 shrink-0 mt-0.5" />
-                  <span>Start with <strong>/solo</strong> from any chat</span>
+                  <span>Start with <strong>/singleplayer</strong> from any chat</span>
                 </div>
                 <div class="flex items-start gap-2 text-xs">
                   <Icons.icon_code class="w-4 h-4 shrink-0 mt-0.5" />
