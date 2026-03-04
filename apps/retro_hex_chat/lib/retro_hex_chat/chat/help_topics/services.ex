@@ -7,7 +7,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Services do
       %{
         id: "nickserv",
         title: "NickServ Overview",
-        category: "Services",
+        category: "Services & Protocols",
         keywords: ["nickserv", "register", "identify", "password", "nickname protection"],
         icon: :icon_lock,
         description:
@@ -16,7 +16,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Services do
       %{
         id: "chanserv",
         title: "ChanServ Overview",
-        category: "Services",
+        category: "Services & Protocols",
         keywords: [
           "chanserv",
           "channel service",

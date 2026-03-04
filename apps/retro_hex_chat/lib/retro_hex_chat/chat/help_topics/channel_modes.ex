@@ -184,7 +184,7 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
       %{
         id: "cmd-knock",
         title: "/knock Command",
-        category: "Commands",
+        category: "Channels",
         keywords: ["knock", "request invite", "join request"],
         icon: :icon_megaphone,
         description: "Request an invitation to join an invite-only channel."

@@ -7,7 +7,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-notify-list",
         title: "Notify List (Buddy List)",
-        category: "Features",
+        category: "Contacts & Notify",
         keywords: ["notify", "buddy", "friend list", "online", "offline", "track"],
         icon: :icon_tab_notify,
         description: "Track when specific users connect or disconnect with the notify list."
@@ -15,7 +15,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-address-book",
         title: "Address Book",
-        category: "Features",
+        category: "Contacts & Notify",
         keywords: ["address book", "contacts", "nick colors", "color override"],
         icon: :icon_dialog_address_book,
         description: "Manage contacts, assign custom nick colors, and organize your notify list."
@@ -23,7 +23,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-highlight-words",
         title: "Highlight Words",
-        category: "Features",
+        category: "Contacts & Notify",
         keywords: ["highlight", "mention", "alert", "notification", "flash"],
         icon: :icon_dialog_highlight,
         description:
@@ -32,7 +32,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-url-catcher",
         title: "URL Catcher",
-        category: "Features",
+        category: "Chat Display",
         keywords: ["url", "link", "catcher", "preview", "web"],
         icon: :icon_dialog_url,
         description: "View and manage URLs shared across all channels with link previews."
@@ -40,7 +40,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-ignore-list",
         title: "Ignore List",
-        category: "Features",
+        category: "Contacts & Notify",
         keywords: ["ignore", "block", "silence", "mute", "filter", "hide", "unignore"],
         icon: :icon_dialog_ignore,
         description: "Manage your ignore list to hide messages and actions from specific users."
@@ -48,7 +48,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-channel-central",
         title: "Channel Central",
-        category: "Features",
+        category: "Channel Settings",
         keywords: [
           "channel central",
           "channel info",
@@ -66,7 +66,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-ban-exceptions",
         title: "Ban Exceptions (+e)",
-        category: "Features",
+        category: "Channel Settings",
         keywords: [
           "ban exception",
           "ban exempt",
@@ -81,7 +81,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-invite-exceptions",
         title: "Invite Exceptions (+I)",
-        category: "Features",
+        category: "Channel Settings",
         keywords: [
           "invite exception",
           "invite exempt",
@@ -96,7 +96,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-channel-invites",
         title: "Channel Invites",
-        category: "Features",
+        category: "Channel Settings",
         keywords: [
           "invite",
           "channel invite",
@@ -111,7 +111,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-search",
         title: "Search",
-        category: "Features",
+        category: "Channel Settings",
         keywords: [
           "search",
           "find",
@@ -129,7 +129,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-perform",
         title: "Perform / Auto-Commands",
-        category: "Features",
+        category: "Automation",
         keywords: [
           "perform",
           "auto-commands",
@@ -147,7 +147,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-auto-reconnect",
         title: "Auto-Reconnect",
-        category: "Features",
+        category: "Connection",
         keywords: [
           "reconnect",
           "auto-reconnect",
@@ -164,7 +164,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-notices",
         title: "Notices",
-        category: "Features",
+        category: "Notifications & Sounds",
         keywords: ["notice", "notification", "announce", "lightweight message"],
         icon: :icon_megaphone,
         description: "Lightweight messages used for server announcements and automated responses."
@@ -172,7 +172,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-ctcp",
         title: "CTCP (Client-to-Client Protocol)",
-        category: "Features",
+        category: "Services & Protocols",
         keywords: [
           "ctcp",
           "ping",
@@ -189,7 +189,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-flood-protection",
         title: "Flood Protection",
-        category: "Features",
+        category: "Notifications & Sounds",
         keywords: [
           "flood",
           "spam",
@@ -206,7 +206,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-sounds",
         title: "Sounds",
-        category: "Features",
+        category: "Notifications & Sounds",
         keywords: [
           "sounds",
           "sound",
@@ -224,7 +224,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-mute",
         title: "Mute",
-        category: "Features",
+        category: "Notifications & Sounds",
         keywords: ["mute", "unmute", "silence", "sound off", "quiet"],
         icon: :icon_mute,
         description: "Mute all sounds globally or per-channel to silence notifications."
@@ -232,7 +232,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-typing-indicator",
         title: "Typing Indicator",
-        category: "Features",
+        category: "Chat & Messaging",
         keywords: ["typing", "indicator", "is typing", "pm typing"],
         icon: :icon_chat,
         description: "See when someone is typing a message in a private conversation."
@@ -240,7 +240,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-aliases",
         title: "Aliases",
-        category: "Features",
+        category: "Automation",
         keywords: ["alias", "aliases", "shortcut", "macro", "expansion", "scripting"],
         icon: :icon_dialog_alias,
         description:
@@ -249,7 +249,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-timers",
         title: "Timers",
-        category: "Features",
+        category: "Automation",
         keywords: ["timer", "timers", "schedule", "delay", "repeat", "interval"],
         icon: :icon_clock,
         description: "Schedule commands to execute after a delay or repeat at regular intervals."
@@ -257,7 +257,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-custom-menus",
         title: "Custom Menus",
-        category: "Features",
+        category: "Automation",
         keywords: [
           "custom menu",
           "popup",
@@ -272,7 +272,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-options-dialog",
         title: "Options Dialog",
-        category: "Features",
+        category: "Settings & Preferences",
         keywords: [
           "options",
           "preferences",
@@ -288,7 +288,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-display-settings",
         title: "Display Settings",
-        category: "Features",
+        category: "Settings & Preferences",
         keywords: [
           "display",
           "toolbar",
@@ -305,7 +305,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-key-bindings",
         title: "Key Bindings",
-        category: "Features",
+        category: "Settings & Preferences",
         keywords: [
           "key bindings",
           "keybindings",
@@ -320,7 +320,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-autorespond",
         title: "Auto-Respond",
-        category: "Features",
+        category: "Automation",
         keywords: [
           "auto-respond",
           "autorespond",
@@ -337,7 +337,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-interactive-elements",
         title: "Interactive Chat Elements",
-        category: "Features",
+        category: "Chat Display",
         keywords: [
           "interactive",
           "clickable",
@@ -355,7 +355,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-nick-alignment",
         title: "Nick Column Alignment",
-        category: "Features",
+        category: "Chat Display",
         keywords: ["nick", "alignment", "column", "grid", "layout", "readability"],
         icon: :icon_tab_nicklist,
         description: "Align nicknames in a fixed-width column for improved chat readability."
@@ -363,7 +363,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-copy",
         title: "Right-Click Copy",
-        category: "Features",
+        category: "Chat Display",
         keywords: ["copy", "clipboard", "right-click", "context menu", "select", "text"],
         icon: :icon_copy,
         description: "Copy message text to the clipboard using the right-click context menu."
@@ -371,7 +371,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-paste-dialog",
         title: "Multi-Line Paste Dialog",
-        category: "Features",
+        category: "Chat Input",
         keywords: ["paste", "multiline", "flood", "confirmation", "send"],
         icon: :icon_dialog_paste,
         description:
@@ -380,7 +380,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-char-counter",
         title: "Character Counter",
-        category: "Features",
+        category: "Chat Input",
         keywords: ["character", "counter", "limit", "length", "input"],
         icon: :icon_notepad,
         description: "See how many characters remain before reaching the message length limit."
@@ -388,7 +388,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-quit-message",
         title: "Quit Messages",
-        category: "Features",
+        category: "Users & Identity",
         keywords: ["quit", "disconnect", "message", "goodbye", "leaving"],
         icon: :icon_close,
         description:
@@ -397,7 +397,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-away-reply",
         title: "Away Auto-Reply",
-        category: "Features",
+        category: "Users & Identity",
         keywords: ["away", "auto-reply", "automatic", "reply", "pm", "message"],
         icon: :icon_clock,
         description: "Automatically reply to private messages when you are marked as away."
@@ -405,7 +405,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-emoji",
         title: "Emoji Picker",
-        category: "Features",
+        category: "Chat Input",
         keywords: ["emoji", "smiley", "picker", "unicode", "emoticon"],
         icon: :icon_heart,
         description: "Browse and insert emoji into your messages using the emoji picker."
@@ -413,7 +413,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-timestamp-format",
         title: "Timestamp Configuration",
-        category: "Features",
+        category: "Chat Display",
         keywords: ["timestamp", "time", "format", "clock", "date"],
         icon: :icon_clock,
         description: "Customize how timestamps are displayed next to messages."
@@ -421,7 +421,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-autocomplete",
         title: "Autocomplete",
-        category: "Features",
+        category: "Chat Input",
         keywords: [
           "autocomplete",
           "auto-complete",
@@ -437,7 +437,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-command-syntax-tooltip",
         title: "Command Syntax Tooltip",
-        category: "Features",
+        category: "Chat Input",
         keywords: [
           "syntax",
           "tooltip",
@@ -453,7 +453,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-smart-input",
         title: "Smart Input",
-        category: "Features",
+        category: "Chat Input",
         keywords: [
           "smart input",
           "textarea",
@@ -469,7 +469,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-cheatsheet",
         title: "Shortcut Cheatsheet",
-        category: "Features",
+        category: "User Interface",
         keywords: [
           "cheatsheet",
           "cheat sheet",
@@ -483,7 +483,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-context-menus",
         title: "Context Menus",
-        category: "Features",
+        category: "Settings & Preferences",
         keywords: [
           "context menu",
           "right-click",
@@ -503,7 +503,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-enhanced-history",
         title: "Enhanced History",
-        category: "Features",
+        category: "Chat Input",
         keywords: [
           "history",
           "ctrl+up",
@@ -521,7 +521,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-contextual-tips",
         title: "Contextual Tips",
-        category: "Features",
+        category: "Chat Display",
         keywords: [
           "tips",
           "contextual",
@@ -536,7 +536,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-unread-indicators",
         title: "Unread Indicators",
-        category: "Features",
+        category: "Chat Display",
         keywords: [
           "unread",
           "badge",
@@ -555,7 +555,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-kick-notifications",
         title: "Kick Notifications",
-        category: "Features",
+        category: "Chat Display",
         keywords: ["kick", "kicked", "expelled", "dialog", "notification"],
         icon: :icon_dialog_kick,
         description:
@@ -564,7 +564,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-copy-feedback",
         title: "Copy Feedback",
-        category: "Features",
+        category: "Chat Display",
         keywords: [
           "copy",
           "clipboard",
@@ -580,7 +580,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-status-bar",
         title: "Status Bar",
-        category: "Features",
+        category: "User Interface",
         keywords: [
           "status bar",
           "lag",
@@ -596,7 +596,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-lag-indicator",
         title: "Lag Indicator",
-        category: "Features",
+        category: "Connection",
         keywords: [
           "lag",
           "latency",
@@ -613,7 +613,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-connection-states",
         title: "Connection States",
-        category: "Features",
+        category: "Connection",
         keywords: [
           "connection",
           "connected",
@@ -630,7 +630,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-message-reply",
         title: "Message Reply",
-        category: "Features",
+        category: "Chat & Messaging",
         keywords: [
           "reply",
           "quote",
@@ -645,7 +645,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-message-edit",
         title: "Message Edit",
-        category: "Features",
+        category: "Chat & Messaging",
         keywords: [
           "edit",
           "edited",
@@ -660,7 +660,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-message-delete",
         title: "Message Delete",
-        category: "Features",
+        category: "Chat & Messaging",
         keywords: [
           "delete",
           "remove",
@@ -673,7 +673,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-audio-call",
         title: "Audio Call",
-        category: "Features",
+        category: "P2P & Calls",
         keywords: [
           "audio",
           "call",
@@ -687,7 +687,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-video-call",
         title: "Video Call",
-        category: "Features",
+        category: "P2P & Calls",
         keywords: [
           "video",
           "call",
@@ -703,7 +703,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-media-devices",
         title: "Media Devices",
-        category: "Features",
+        category: "P2P & Calls",
         keywords: [
           "device",
           "microphone",
@@ -717,7 +717,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-call-quality",
         title: "Call Quality",
-        category: "Features",
+        category: "P2P & Calls",
         keywords: [
           "quality",
           "bitrate",
@@ -732,7 +732,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-p2p-sessions",
         title: "P2P Sessions",
-        category: "Features",
+        category: "P2P & Calls",
         keywords: [
           "p2p",
           "peer",
@@ -749,7 +749,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-connection-diagram",
         title: "Connection Diagram",
-        category: "Features",
+        category: "P2P & Calls",
         keywords: [
           "connection",
           "diagram",
@@ -769,7 +769,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-file-transfer",
         title: "File Transfer",
-        category: "Features",
+        category: "P2P & Calls",
         keywords: [
           "file",
           "transfer",
@@ -786,7 +786,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-privacy-settings",
         title: "Privacy Settings",
-        category: "Features",
+        category: "Settings & Preferences",
         keywords: [
           "privacy",
           "turn",
@@ -802,7 +802,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-pm-persistence",
         title: "PM Persistence",
-        category: "Features",
+        category: "Chat & Messaging",
         keywords: [
           "pm",
           "private message",
@@ -820,7 +820,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-auto-join-channels",
         title: "Auto-Join Channels",
-        category: "Features",
+        category: "Channel Settings",
         keywords: [
           "auto-join",
           "autojoin",
@@ -836,7 +836,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-single-session",
         title: "Single Session",
-        category: "Features",
+        category: "Users & Identity",
         keywords: [
           "single session",
           "session",
@@ -853,7 +853,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-nick-expiry",
         title: "Nick Expiration",
-        category: "Features",
+        category: "Users & Identity",
         keywords: [
           "nick expiry",
           "expiration",
@@ -871,7 +871,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-admin-console",
         title: "Admin Console",
-        category: "Features",
+        category: "Admin & Server",
         keywords: [
           "admin",
           "console",
@@ -889,7 +889,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-p2p-games",
         title: "P2P Games",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "game",
           "games",
@@ -945,7 +945,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-pong",
         title: "Hex Pong",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: ["hex pong", "pong", "paddle", "ball", "game", "cyberpunk", "neon"],
         icon: :icon_game_pong,
         description:
@@ -955,7 +955,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-light-trails",
         title: "Light Trails",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: ["light trails", "tron", "trails", "grid", "arena", "game"],
         icon: :icon_game_trails,
         description:
@@ -965,7 +965,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-pixel-tanks",
         title: "Pixel Tanks",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "pixel tanks",
           "tank",
@@ -987,7 +987,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-star-duel",
         title: "Star Duel",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "star duel",
           "space",
@@ -1008,7 +1008,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-gravity-well",
         title: "Gravity Well",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "gravity well",
           "gravity",
@@ -1028,7 +1028,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-debris-field",
         title: "Debris Field",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "debris field",
           "debris",
@@ -1048,7 +1048,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-block-breakers",
         title: "Block Breakers",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "block breakers",
           "breakout",
@@ -1069,7 +1069,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-warlords",
         title: "Hex Warlords",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex warlords",
           "warlords",
@@ -1093,7 +1093,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-raid",
         title: "Hex Raid",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex raid",
           "river raid",
@@ -1122,7 +1122,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-raid-pacifist",
         title: "Hex Raid: Pacifist",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex raid",
           "pacifist",
@@ -1142,7 +1142,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-raid-blitz",
         title: "Hex Raid: Blitz",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex raid",
           "blitz",
@@ -1162,7 +1162,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-boxing",
         title: "Hex Boxing",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex boxing",
           "boxing",
@@ -1184,7 +1184,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-outlaw",
         title: "Hex Outlaw",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex outlaw",
           "outlaw",
@@ -1212,7 +1212,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-outlaw-ricochet",
         title: "Hex Outlaw: Ricochet",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex outlaw",
           "ricochet",
@@ -1238,7 +1238,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-outlaw-stagecoach",
         title: "Hex Outlaw: Stagecoach",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex outlaw",
           "stagecoach",
@@ -1263,7 +1263,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-outlaw-nml",
         title: "Hex Outlaw: No Man's Land",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex outlaw",
           "no man's land",
@@ -1288,7 +1288,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-invaders",
         title: "Hex Invaders",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex invaders",
           "space invaders",
@@ -1317,7 +1317,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-invaders-coop",
         title: "Hex Invaders: Co-op",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex invaders",
           "coop",
@@ -1341,7 +1341,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-invaders-blitz",
         title: "Hex Invaders: Blitz",
-        category: "Features",
+        category: "P2P Games: Action",
         keywords: [
           "hex invaders",
           "blitz",
@@ -1365,7 +1365,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-enduro",
         title: "Hex Enduro",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex enduro",
           "enduro",
@@ -1392,7 +1392,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-enduro-night",
         title: "Hex Enduro: Night Race",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex enduro",
           "night",
@@ -1415,7 +1415,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-enduro-sprint",
         title: "Hex Enduro: Sprint",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex enduro",
           "sprint",
@@ -1439,7 +1439,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-tennis",
         title: "Hex Tennis",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex tennis",
           "tennis",
@@ -1464,7 +1464,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-tennis-quick",
         title: "Hex Tennis: Quick Match",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex tennis",
           "tennis",
@@ -1487,7 +1487,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-tennis-sudden",
         title: "Hex Tennis: Sudden Death",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex tennis",
           "tennis",
@@ -1510,7 +1510,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-skiing",
         title: "Hex Skiing",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex skiing",
           "skiing",
@@ -1536,7 +1536,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-skiing-escape",
         title: "Hex Skiing: Escape",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex skiing",
           "skiing",
@@ -1560,7 +1560,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-skiing-clean",
         title: "Hex Skiing: Clean Run",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex skiing",
           "skiing",
@@ -1584,7 +1584,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-frost",
         title: "Hex Frost",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex frost",
           "frostbite",
@@ -1612,7 +1612,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-frost-blizzard",
         title: "Hex Frost: Blizzard",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex frost",
           "frostbite",
@@ -1635,7 +1635,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-frost-peaceful",
         title: "Hex Frost: Peaceful",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex frost",
           "frostbite",
@@ -1659,7 +1659,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-hockey",
         title: "Hex Hockey",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex hockey",
           "ice hockey",
@@ -1689,7 +1689,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-hockey-blitz",
         title: "Hex Hockey: Blitz",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex hockey",
           "hockey",
@@ -1712,7 +1712,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-hex-hockey-showdown",
         title: "Hex Hockey: Showdown",
-        category: "Features",
+        category: "P2P Games: Sports",
         keywords: [
           "hex hockey",
           "hockey",
@@ -1736,7 +1736,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-arcade",
         title: "Solo Arcade",
-        category: "Features",
+        category: "Solo Arcade",
         keywords: [
           "arcade",
           "singleplayer",
@@ -1787,7 +1787,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-arcade-doom",
         title: "DOOM (Arcade)",
-        category: "Features",
+        category: "Solo Arcade",
         keywords: [
           "doom",
           "freedoom",
@@ -1821,7 +1821,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-arcade-quake",
         title: "Quake (Arcade)",
-        category: "Features",
+        category: "Solo Arcade",
         keywords: [
           "quake",
           "librequake",
@@ -1848,7 +1848,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-arcade-wolfenstein",
         title: "Wolfenstein 3D (Arcade)",
-        category: "Features",
+        category: "Solo Arcade",
         keywords: [
           "wolfenstein",
           "wolf3d",
@@ -1878,7 +1878,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-arcade-halflife",
         title: "Half-Life (Arcade)",
-        category: "Features",
+        category: "Solo Arcade",
         keywords: [
           "half-life",
           "halflife",
@@ -1909,7 +1909,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-arcade-quake2",
         title: "Quake II (Arcade)",
-        category: "Features",
+        category: "Solo Arcade",
         keywords: [
           "quake 2",
           "quake ii",
@@ -1941,7 +1941,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-arcade-scummvm",
         title: "ScummVM Adventures (Arcade)",
-        category: "Features",
+        category: "Solo Arcade",
         keywords: [
           "scummvm",
           "point and click",

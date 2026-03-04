@@ -15,13 +15,17 @@ defmodule RetroHexChatWeb.HelpSystemE2ETest do
 
       assert html =~ "Help Topics"
       assert html =~ "Getting Started"
-      assert html =~ "Commands"
-      assert html =~ "Services"
+      assert html =~ "Chat &amp; Messaging"
+      assert html =~ "Users &amp; Identity"
+      assert html =~ "Channels"
       assert html =~ "Channel Modes"
+      assert html =~ "Moderation"
+      assert html =~ "Bots"
+      assert html =~ "Automation"
       assert html =~ "Text Formatting"
-      assert html =~ "Features"
       assert html =~ "User Interface"
-      assert html =~ "Keyboard Shortcuts"
+      assert html =~ "P2P Games: Action"
+      assert html =~ "Solo Arcade"
     end
 
     test "topic deep-link shows content", %{conn: conn} do

@@ -35,24 +35,56 @@ defmodule RetroHexChat.Chat.HelpTopics do
 
   @category_icons %{
     "Getting Started" => :icon_lightbulb,
-    "Commands" => :icon_terminal,
-    "Services" => :icon_shield,
+    "Chat & Messaging" => :icon_chat,
+    "Users & Identity" => :icon_status_user,
+    "Contacts & Notify" => :icon_dialog_address_book,
+    "Channels" => :icon_channels,
+    "Channel Settings" => :icon_dialog_channel_central,
+    "Moderation" => :icon_ban,
     "Channel Modes" => :icon_tab_modes,
-    "Text Formatting" => :icon_palette,
-    "Features" => :icon_star,
+    "Services & Protocols" => :icon_lock,
+    "Bots" => :icon_robot,
+    "Admin & Server" => :icon_shield,
+    "Server Messages" => :icon_megaphone,
+    "Automation" => :icon_code,
+    "Chat Input" => :icon_terminal,
+    "Chat Display" => :icon_notepad,
+    "Notifications & Sounds" => :icon_dialog_sound,
+    "Settings & Preferences" => :icon_dialog_options,
     "User Interface" => :icon_laptop,
-    "Keyboard Shortcuts" => :icon_dialog_cheatsheet
+    "Text Formatting" => :icon_palette,
+    "Connection" => :icon_websocket,
+    "P2P & Calls" => :icon_p2p,
+    "P2P Games: Action" => :icon_game_generic,
+    "P2P Games: Sports" => :icon_game_tennis,
+    "Solo Arcade" => :icon_game_arcade
   }
 
   @categories [
     "Getting Started",
-    "Commands",
-    "Services",
+    "Chat & Messaging",
+    "Users & Identity",
+    "Contacts & Notify",
+    "Channels",
+    "Channel Settings",
+    "Moderation",
     "Channel Modes",
-    "Text Formatting",
-    "Features",
+    "Services & Protocols",
+    "Bots",
+    "Admin & Server",
+    "Server Messages",
+    "Automation",
+    "Chat Input",
+    "Chat Display",
+    "Notifications & Sounds",
+    "Settings & Preferences",
     "User Interface",
-    "Keyboard Shortcuts"
+    "Text Formatting",
+    "Connection",
+    "P2P & Calls",
+    "P2P Games: Action",
+    "P2P Games: Sports",
+    "Solo Arcade"
   ]
 
   @topics GettingStarted.topics() ++

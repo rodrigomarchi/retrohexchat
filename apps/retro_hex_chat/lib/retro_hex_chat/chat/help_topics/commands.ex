@@ -7,7 +7,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "commands-overview",
         title: "IRC Commands Reference",
-        category: "Commands",
+        category: "Chat & Messaging",
         keywords: ["commands", "reference", "list", "help", "overview", "slash"],
         icon: :icon_terminal,
         description:
@@ -16,7 +16,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-alias",
         title: "/alias",
-        category: "Commands",
+        category: "Automation",
         keywords: ["alias", "shortcut", "macro", "expansion", "abbreviation"],
         icon: :icon_dialog_alias,
         description: "Create custom command aliases that expand into one or more commands."
@@ -24,7 +24,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-autojoin",
         title: "/autojoin",
-        category: "Commands",
+        category: "Automation",
         keywords: ["autojoin", "auto join", "auto-join", "channel", "on connect"],
         icon: :icon_tab_autojoin,
         description: "Manage the list of channels that are automatically joined on connect."
@@ -32,7 +32,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-autorespond",
         title: "/autorespond",
-        category: "Commands",
+        category: "Automation",
         keywords: ["autorespond", "auto", "respond", "trigger", "event", "greet"],
         icon: :icon_dialog_auto_respond,
         description:
@@ -41,7 +41,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-away",
         title: "/away",
-        category: "Commands",
+        category: "Users & Identity",
         keywords: ["away", "afk", "absent", "back"],
         icon: :icon_clock,
         description: "Set or clear your away status to let others know you are not available."
@@ -49,7 +49,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-ban",
         title: "/ban",
-        category: "Commands",
+        category: "Moderation",
         keywords: ["ban", "block", "prohibit"],
         icon: :icon_ban,
         description: "Ban a user from a channel by nickname or hostmask pattern."
@@ -57,7 +57,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-bio",
         title: "/bio",
-        category: "Commands",
+        category: "Users & Identity",
         keywords: ["bio", "profile", "about me", "description"],
         icon: :icon_status_user,
         description: "Set or view a personal biography that appears in whois and hover cards."
@@ -65,7 +65,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-call",
         title: "/call",
-        category: "Commands",
+        category: "P2P & Calls",
         keywords: ["call", "audio", "voice", "voice call", "p2p"],
         icon: :icon_microphone,
         description: "Start a peer-to-peer audio or video call with another user."
@@ -73,7 +73,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-clear",
         title: "/clear",
-        category: "Commands",
+        category: "Chat & Messaging",
         keywords: ["clear", "clean", "wipe", "reset"],
         icon: :icon_trash,
         description: "Clear all messages from the current channel or conversation view."
@@ -81,7 +81,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-cs",
         title: "/cs",
-        category: "Commands",
+        category: "Services & Protocols",
         keywords: ["cs", "chanserv", "channel service", "register channel"],
         icon: :icon_shield,
         description: "Send commands to ChanServ for channel registration and management."
@@ -89,7 +89,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-ctcp",
         title: "/ctcp",
-        category: "Commands",
+        category: "Services & Protocols",
         keywords: ["ctcp", "ping", "version", "time", "finger", "client-to-client"],
         icon: :icon_dialog_ctcp,
         description: "Send Client-to-Client Protocol queries like PING, VERSION, and TIME."
@@ -97,7 +97,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-game",
         title: "/game",
-        category: "Commands",
+        category: "P2P & Calls",
         keywords: ["game", "play", "p2p", "games", "arcade", "retro"],
         icon: :icon_star,
         description: "Start a peer-to-peer game session with another user for retro arcade games."
@@ -105,7 +105,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-help",
         title: "/help",
-        category: "Commands",
+        category: "Chat & Messaging",
         keywords: ["help", "commands", "usage"],
         icon: :icon_question,
         description: "Display help information for commands and features."
@@ -113,7 +113,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-ignore",
         title: "/ignore",
-        category: "Commands",
+        category: "Contacts & Notify",
         keywords: ["ignore", "block", "silence", "mute", "filter", "hide"],
         icon: :icon_dialog_ignore,
         description: "Add a user to your ignore list to hide their messages and actions."
@@ -121,7 +121,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-invite",
         title: "/invite",
-        category: "Commands",
+        category: "Channels",
         keywords: ["invite", "invite user", "channel invite", "invite-only", "auto-join"],
         icon: :icon_dialog_invite,
         description:
@@ -130,7 +130,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-join",
         title: "/join",
-        category: "Commands",
+        category: "Channels",
         keywords: ["join", "enter", "channel"],
         icon: :icon_btn_join,
         description:
@@ -139,7 +139,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-kick",
         title: "/kick",
-        category: "Commands",
+        category: "Moderation",
         keywords: ["kick", "remove", "eject"],
         icon: :icon_dialog_kick,
         description: "Remove a user from a channel. Requires operator or higher privileges."
@@ -147,7 +147,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-list",
         title: "/list",
-        category: "Commands",
+        category: "Channels",
         keywords: ["list", "channels", "channel list", "browse"],
         icon: :icon_dialog_channel_list,
         description: "Browse all available channels with their topics and user counts."
@@ -155,7 +155,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-me",
         title: "/me",
-        category: "Commands",
+        category: "Chat & Messaging",
         keywords: ["me", "action", "emote", "roleplay"],
         icon: :icon_chat,
         description: "Send an action message that describes what you are doing."
@@ -163,7 +163,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-mode",
         title: "/mode",
-        category: "Commands",
+        category: "Channels",
         keywords: ["mode", "channel mode", "set mode", "operator"],
         icon: :icon_tab_modes,
         description: "View or change channel modes and user privilege modes."
@@ -171,7 +171,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-msg",
         title: "/msg",
-        category: "Commands",
+        category: "Chat & Messaging",
         keywords: ["msg", "message", "private", "whisper", "pm"],
         icon: :icon_send,
         description: "Send a private message to another user without opening a conversation tab."
@@ -179,7 +179,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-nick",
         title: "/nick",
-        category: "Commands",
+        category: "Users & Identity",
         keywords: ["nick", "nickname", "rename", "change name"],
         icon: :icon_dialog_nick,
         description: "Change your current nickname to a new one."
@@ -187,7 +187,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-notice",
         title: "/notice",
-        category: "Commands",
+        category: "Chat & Messaging",
         keywords: ["notice", "notification", "announce"],
         icon: :icon_megaphone,
         description:
@@ -196,7 +196,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-notice-routing",
         title: "/notice_routing",
-        category: "Commands",
+        category: "Notifications & Sounds",
         keywords: ["notice", "routing", "preference", "setting"],
         icon: :icon_dialog_notifications,
         description:
@@ -205,7 +205,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-notify",
         title: "/notify",
-        category: "Commands",
+        category: "Contacts & Notify",
         keywords: ["notify", "buddy", "friend", "watch"],
         icon: :icon_tab_notify,
         description:
@@ -214,7 +214,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-ns",
         title: "/ns",
-        category: "Commands",
+        category: "Services & Protocols",
         keywords: ["ns", "nickserv", "register", "identify"],
         icon: :icon_lock,
         description: "Send commands to NickServ for nickname registration and identification."
@@ -222,7 +222,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-p2p",
         title: "/p2p",
-        category: "Commands",
+        category: "P2P & Calls",
         keywords: ["p2p", "peer", "session", "direct", "peer-to-peer"],
         icon: :icon_p2p,
         description:
@@ -231,7 +231,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-part",
         title: "/part",
-        category: "Commands",
+        category: "Channels",
         keywords: ["part", "leave", "exit", "channel"],
         icon: :icon_btn_remove,
         description: "Leave the current channel with an optional part message."
@@ -239,7 +239,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-perform",
         title: "/perform",
-        category: "Commands",
+        category: "Automation",
         keywords: ["perform", "auto", "on connect", "execute", "autorun"],
         icon: :icon_dialog_perform,
         description: "Manage commands that run automatically when you connect to the server."
@@ -247,7 +247,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-popups",
         title: "/popups",
-        category: "Commands",
+        category: "Automation",
         keywords: ["popups", "popup", "context menu", "custom menu", "right-click"],
         icon: :icon_dialog_custom_menus,
         description: "Open the custom menus editor to add items to right-click context menus."
@@ -255,7 +255,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-query",
         title: "/query",
-        category: "Commands",
+        category: "Chat & Messaging",
         keywords: ["query", "pm", "private", "open conversation"],
         icon: :icon_tab_pm,
         description: "Open a private conversation tab with another user."
@@ -263,7 +263,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-quit",
         title: "/quit",
-        category: "Commands",
+        category: "Chat & Messaging",
         keywords: ["quit", "disconnect", "exit", "logout"],
         icon: :icon_close,
         description: "Disconnect from the server with an optional quit message."
@@ -271,7 +271,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-sendfile",
         title: "/sendfile",
-        category: "Commands",
+        category: "P2P & Calls",
         keywords: ["sendfile", "send", "file", "transfer", "p2p"],
         icon: :icon_file_send,
         description: "Send a file to another user through a peer-to-peer connection."
@@ -279,7 +279,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-timer",
         title: "/timer",
-        category: "Commands",
+        category: "Automation",
         keywords: ["timer", "schedule", "delay", "repeat", "interval", "cron"],
         icon: :icon_clock,
         description: "Schedule commands to run after a delay or at regular intervals."
@@ -287,7 +287,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-topic",
         title: "/topic",
-        category: "Commands",
+        category: "Channels",
         keywords: ["topic", "channel topic", "set topic"],
         icon: :icon_btn_set_topic,
         description: "View or set the topic for the current channel."
@@ -295,7 +295,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-unban",
         title: "/unban",
-        category: "Commands",
+        category: "Moderation",
         keywords: ["unban", "remove ban", "lift ban", "pardon"],
         icon: :icon_accept,
         description: "Remove a ban from a channel to allow the user to rejoin."
@@ -303,7 +303,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-unignore",
         title: "/unignore",
-        category: "Commands",
+        category: "Contacts & Notify",
         keywords: ["unignore", "unblock", "unmute", "unsilence"],
         icon: :icon_accept,
         description: "Remove a user from your ignore list to see their messages again."
@@ -311,7 +311,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-whois",
         title: "/whois",
-        category: "Commands",
+        category: "Users & Identity",
         keywords: ["whois", "info", "user info", "lookup", "profile", "idle", "bio"],
         icon: :icon_status_user,
         description:
@@ -320,7 +320,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-whowas",
         title: "/whowas",
-        category: "Commands",
+        category: "Users & Identity",
         keywords: ["whowas", "recently", "disconnected", "last seen", "offline"],
         icon: :icon_clock,
         description: "Look up information about a user who recently disconnected from the server."
@@ -329,7 +329,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-admin",
         title: "/admin",
-        category: "Commands",
+        category: "Admin & Server",
         keywords: ["admin", "administration", "server", "manage", "ban", "mute", "role"],
         icon: :icon_shield,
         description:
@@ -338,7 +338,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-admin-server",
         title: "/admin server",
-        category: "Commands",
+        category: "Admin & Server",
         keywords: ["admin", "server", "settings", "info", "config", "motd"],
         icon: :icon_shield,
         description:
@@ -347,7 +347,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-admin-user",
         title: "/admin user",
-        category: "Commands",
+        category: "Admin & Server",
         keywords: ["admin", "user", "ban", "kick", "mute", "rename", "role", "banlist"],
         icon: :icon_shield,
         description:
@@ -356,7 +356,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-admin-channel",
         title: "/admin channel",
-        category: "Commands",
+        category: "Admin & Server",
         keywords: ["admin", "channel", "create", "delete", "purge", "banlist"],
         icon: :icon_shield,
         description:
@@ -365,7 +365,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-admin-ns",
         title: "/admin ns",
-        category: "Commands",
+        category: "Admin & Server",
         keywords: ["admin", "nickserv", "drop", "resetpass", "password", "registration"],
         icon: :icon_shield,
         description:
@@ -374,7 +374,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-admin-cs",
         title: "/admin cs",
-        category: "Commands",
+        category: "Admin & Server",
         keywords: ["admin", "chanserv", "drop", "transfer", "access", "founder"],
         icon: :icon_shield,
         description:
@@ -383,7 +383,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-admin-debug",
         title: "/admin debug",
-        category: "Commands",
+        category: "Admin & Server",
         keywords: ["admin", "debug", "connections", "processes", "memory", "stats"],
         icon: :icon_shield,
         description:
@@ -392,7 +392,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-admin-log",
         title: "/admin log",
-        category: "Commands",
+        category: "Admin & Server",
         keywords: ["admin", "audit", "log", "history", "actions"],
         icon: :icon_shield,
         description: "Query the audit log of admin actions with optional filters."
@@ -400,7 +400,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-admin-turn",
         title: "/admin turn",
-        category: "Commands",
+        category: "Admin & Server",
         keywords: ["admin", "turn", "stun", "webrtc", "allocations", "relay", "p2p"],
         icon: :icon_shield,
         description:
@@ -409,7 +409,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-admin-nuke",
         title: "/admin nuke",
-        category: "Commands",
+        category: "Admin & Server",
         keywords: [
           "admin",
           "nuke",
@@ -429,7 +429,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-op",
         title: "/op",
-        category: "Commands",
+        category: "Moderation",
         keywords: ["op", "operator", "promote", "channel operator"],
         icon: :icon_tab_modes,
         description: "Give operator status to a user in the current channel."
@@ -437,7 +437,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-deop",
         title: "/deop",
-        category: "Commands",
+        category: "Moderation",
         keywords: ["deop", "remove operator", "demote"],
         icon: :icon_tab_modes,
         description: "Remove operator status from a user in the current channel."
@@ -445,7 +445,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-voice",
         title: "/voice",
-        category: "Commands",
+        category: "Moderation",
         keywords: ["voice", "give voice", "speak", "promote"],
         icon: :icon_tab_modes,
         description: "Give voice status to a user in the current channel."
@@ -453,7 +453,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-devoice",
         title: "/devoice",
-        category: "Commands",
+        category: "Moderation",
         keywords: ["devoice", "remove voice", "silence"],
         icon: :icon_tab_modes,
         description: "Remove voice status from a user in the current channel."
@@ -461,7 +461,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-slow",
         title: "/slow",
-        category: "Commands",
+        category: "Moderation",
         keywords: ["slow", "throttle", "rate limit", "flood"],
         icon: :icon_clock,
         description: "Enable or disable slow mode (join throttle) in the current channel."
@@ -469,7 +469,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-mute",
         title: "/mute",
-        category: "Commands",
+        category: "Moderation",
         keywords: ["mute", "silence", "channel mute", "quiet"],
         icon: :icon_mute,
         description: "Mute a user in the current channel, preventing them from sending messages."
@@ -477,7 +477,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-unmute",
         title: "/unmute",
-        category: "Commands",
+        category: "Moderation",
         keywords: ["unmute", "unsilence", "channel unmute"],
         icon: :icon_mute,
         description: "Remove a channel mute from a user, allowing them to send messages again."
@@ -485,7 +485,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
       %{
         id: "cmd-transfer",
         title: "/transfer",
-        category: "Commands",
+        category: "Moderation",
         keywords: ["transfer", "ownership", "channel owner", "founder"],
         icon: :icon_tab_modes,
         description: "Transfer channel ownership to another user."

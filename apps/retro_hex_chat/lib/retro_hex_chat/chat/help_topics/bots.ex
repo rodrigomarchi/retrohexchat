@@ -7,7 +7,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
       %{
         id: "botservice",
         title: "BotService Overview",
-        category: "Services",
+        category: "Bots",
         keywords: [
           "bot",
           "botservice",
@@ -25,7 +25,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
       %{
         id: "bot-command",
         title: "/bot Command Reference",
-        category: "Commands",
+        category: "Bots",
         keywords: [
           "bot command",
           "/bot",
@@ -46,7 +46,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
       %{
         id: "bot-custom-commands",
         title: "Bot Custom Commands",
-        category: "Features",
+        category: "Bots",
         keywords: [
           "bot commands",
           "custom commands",
@@ -63,7 +63,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
       %{
         id: "bot-dice",
         title: "Bot Dice Capability",
-        category: "Features",
+        category: "Bots",
         keywords: [
           "dice",
           "roll",
@@ -82,7 +82,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
       %{
         id: "bot-trivia",
         title: "Bot Trivia Capability",
-        category: "Features",
+        category: "Bots",
         keywords: [
           "trivia",
           "quiz",
@@ -100,7 +100,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
       %{
         id: "bot-scheduler",
         title: "Bot Scheduler Capability",
-        category: "Features",
+        category: "Bots",
         keywords: [
           "scheduler",
           "schedule",
@@ -117,7 +117,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
       %{
         id: "bot-rss",
         title: "Bot RSS Capability",
-        category: "Features",
+        category: "Bots",
         keywords: [
           "rss",
           "feed",
@@ -134,7 +134,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
       %{
         id: "bot-moderation",
         title: "Bot Moderation Capability",
-        category: "Features",
+        category: "Bots",
         keywords: [
           "moderation",
           "mod",

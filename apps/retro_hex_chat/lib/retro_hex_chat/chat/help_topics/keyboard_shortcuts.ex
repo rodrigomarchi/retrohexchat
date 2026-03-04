@@ -7,7 +7,7 @@ defmodule RetroHexChat.Chat.HelpTopics.KeyboardShortcuts do
       %{
         id: "keyboard-shortcuts",
         title: "Keyboard Shortcuts",
-        category: "Keyboard Shortcuts",
+        category: "User Interface",
         keywords: ["keyboard", "shortcuts", "hotkeys", "keybindings", "keys"],
         icon: :icon_dialog_cheatsheet,
         description:

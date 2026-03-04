@@ -7,7 +7,7 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
       %{
         id: "cmd-motd",
         title: "/motd",
-        category: "Commands",
+        category: "Server Messages",
         keywords: ["motd", "message of the day"],
         icon: :icon_notepad,
         description: "View the server's Message of the Day."
@@ -15,7 +15,7 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
       %{
         id: "cmd-setmotd",
         title: "/setmotd",
-        category: "Commands",
+        category: "Server Messages",
         keywords: ["setmotd", "motd", "set message of the day", "admin"],
         icon: :icon_notepad,
         description: "Set or update the server's Message of the Day. Requires admin privileges."
@@ -23,7 +23,7 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
       %{
         id: "cmd-clearmotd",
         title: "/clearmotd",
-        category: "Commands",
+        category: "Server Messages",
         keywords: ["clearmotd", "motd", "clear message of the day", "admin"],
         icon: :icon_trash,
         description: "Remove the server's Message of the Day. Requires admin privileges."
@@ -31,7 +31,7 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
       %{
         id: "cmd-setwelcome",
         title: "/setwelcome",
-        category: "Commands",
+        category: "Server Messages",
         keywords: ["setwelcome", "welcome", "channel welcome", "greeting"],
         icon: :icon_megaphone,
         description: "Set a welcome message displayed to users when they join your channel."
@@ -39,7 +39,7 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
       %{
         id: "cmd-clearwelcome",
         title: "/clearwelcome",
-        category: "Commands",
+        category: "Server Messages",
         keywords: ["clearwelcome", "welcome", "clear welcome"],
         icon: :icon_trash,
         description: "Remove the channel welcome message."
@@ -47,7 +47,7 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
       %{
         id: "cmd-wallops",
         title: "/wallops",
-        category: "Commands",
+        category: "Server Messages",
         keywords: ["wallops", "operator broadcast", "server message"],
         icon: :icon_megaphone,
         description: "Send a broadcast message to all users who have wallops mode enabled."
@@ -55,7 +55,7 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
       %{
         id: "cmd-announce",
         title: "/announce",
-        category: "Commands",
+        category: "Server Messages",
         keywords: ["announce", "announcement", "global", "broadcast", "admin"],
         icon: :icon_megaphone,
         description:
@@ -64,7 +64,7 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
       %{
         id: "cmd-umode",
         title: "/umode",
-        category: "Commands",
+        category: "Channels",
         keywords: ["umode", "user mode", "wallops", "mode"],
         icon: :icon_tab_modes,
         description: "View or change your user modes, such as enabling wallops reception."
@@ -72,7 +72,7 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
       %{
         id: "feature-special-messages",
         title: "Special Messages",
-        category: "Features",
+        category: "Server Messages",
         keywords: [
           "motd",
           "welcome",

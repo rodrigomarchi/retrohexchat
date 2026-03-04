@@ -46,13 +46,17 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
 
       names = Enum.map(categories, &elem(&1, 0))
       assert "Getting Started" in names
-      assert "Commands" in names
-      assert "Services" in names
+      assert "Chat & Messaging" in names
+      assert "Users & Identity" in names
+      assert "Channels" in names
       assert "Channel Modes" in names
+      assert "Moderation" in names
+      assert "Bots" in names
+      assert "Automation" in names
       assert "Text Formatting" in names
-      assert "Features" in names
       assert "User Interface" in names
-      assert "Keyboard Shortcuts" in names
+      assert "P2P & Calls" in names
+      assert "Solo Arcade" in names
 
       # Each entry is a 3-tuple with category icon
       for {name, icon, topics} <- categories do
@@ -80,7 +84,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
   describe "category_icon/1" do
     test "returns icon atom for known category" do
       assert is_atom(HelpTopics.category_icon("Getting Started"))
-      assert is_atom(HelpTopics.category_icon("Commands"))
+      assert is_atom(HelpTopics.category_icon("Chat & Messaging"))
     end
   end
 
@@ -89,7 +93,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-channel-central")
       assert topic != nil
       assert topic.id == "feature-channel-central"
-      assert topic.category == "Features"
+      assert topic.category == "Channel Settings"
     end
 
     test "has correct title" do
@@ -114,7 +118,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-ban-exceptions")
       assert topic != nil
       assert topic.id == "feature-ban-exceptions"
-      assert topic.category == "Features"
+      assert topic.category == "Channel Settings"
     end
 
     test "has correct title" do
@@ -133,7 +137,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-invite-exceptions")
       assert topic != nil
       assert topic.id == "feature-invite-exceptions"
-      assert topic.category == "Features"
+      assert topic.category == "Channel Settings"
     end
 
     test "has correct title" do
@@ -152,7 +156,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("cmd-perform")
       assert topic != nil
       assert topic.id == "cmd-perform"
-      assert topic.category == "Commands"
+      assert topic.category == "Automation"
     end
 
     test "has correct title" do
@@ -171,7 +175,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("cmd-autojoin")
       assert topic != nil
       assert topic.id == "cmd-autojoin"
-      assert topic.category == "Commands"
+      assert topic.category == "Automation"
     end
 
     test "has correct title" do
@@ -190,7 +194,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-perform")
       assert topic != nil
       assert topic.id == "feature-perform"
-      assert topic.category == "Features"
+      assert topic.category == "Automation"
     end
 
     test "has correct title" do
@@ -209,7 +213,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-auto-reconnect")
       assert topic != nil
       assert topic.id == "feature-auto-reconnect"
-      assert topic.category == "Features"
+      assert topic.category == "Connection"
     end
 
     test "has correct title" do
@@ -255,7 +259,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       topic = HelpTopics.get_topic("feature-status-bar")
       assert topic != nil
       assert topic.title == "Status Bar"
-      assert topic.category == "Features"
+      assert topic.category == "User Interface"
     end
   end
 
@@ -271,21 +275,21 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     test "P2P Sessions topic exists with correct category" do
       topic = HelpTopics.get_topic("feature-p2p-sessions")
       assert topic != nil
-      assert topic.category == "Features"
+      assert topic.category == "P2P & Calls"
       assert topic.title == "P2P Sessions"
     end
 
     test "File Transfer topic exists with correct category" do
       topic = HelpTopics.get_topic("feature-file-transfer")
       assert topic != nil
-      assert topic.category == "Features"
+      assert topic.category == "P2P & Calls"
       assert topic.title == "File Transfer"
     end
 
     test "Privacy Settings topic exists with correct category" do
       topic = HelpTopics.get_topic("feature-privacy-settings")
       assert topic != nil
-      assert topic.category == "Features"
+      assert topic.category == "Settings & Preferences"
       assert topic.title == "Privacy Settings"
     end
 
@@ -293,7 +297,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       for id <- ~w(cmd-p2p cmd-call cmd-sendfile) do
         topic = HelpTopics.get_topic(id)
         assert topic != nil, "Missing help topic: #{id}"
-        assert topic.category == "Commands"
+        assert topic.category == "P2P & Calls"
       end
     end
   end
