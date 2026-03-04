@@ -1,22 +1,32 @@
 <p>
-  Classic Pong reimagined with hexagonal paddles and power-ups. The ball accelerates progressively — how long can you keep up?
+  Cyberpunk Pong with neon glow, CRT scanlines, and synth audio. Two paddles, one ball,
+  pure skill. The ball accelerates with every rally — first to 11 points wins (must win by 2
+  after 10-10). Games are fast and intense, typically lasting 2-3 minutes.
 </p>
+<.diagram_game_pong class="w-full max-w-lg mx-auto my-4" />
 <.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
 <ul>
-  <li><strong>Arrow Up / Arrow Down</strong> — Move paddle up and down</li>
+  <li><strong>Arrow Up / Arrow Down</strong> — Move paddle</li>
+  <li><strong>W / S</strong> — Alternative controls</li>
 </ul>
 <.help_h4 icon={:icon_rules}>Rules</.help_h4>
 <ul>
   <li>Each player controls a paddle on their side of the screen</li>
-  <li>Deflect the ball to score points when the opponent misses</li>
-  <li>The ball speeds up with each volley</li>
-  <li>Power-ups drop from the top — catch them for advantages</li>
-  <li>First to the score limit wins</li>
+  <li>The ball bounces off the top and bottom walls</li>
+  <li>If the ball passes your paddle, your opponent scores a point</li>
+  <li>Ball speed increases with each paddle hit, up to 2.4x initial speed</li>
+  <li>Speed resets after each point scored</li>
+  <li>
+    Ball angle depends on where it hits the paddle — center gives a shallow bounce, edges give steep angles (up to 60 degrees)
+  </li>
+  <li>First to 11 points wins — deuce rule applies after 10-10 (must win by 2)</li>
 </ul>
 <.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Inspired by Pong and Breakout — the original arcade classics.</p>
+<p>Based on Atari's Pong (1972) — the game that started the video game industry.</p>
 <.help_h4 icon={:icon_link}>See Also</.help_h4>
 <p>
   <.help_link topic="feature-p2p-games">P2P Games</.help_link>
+  · <.help_link topic="feature-block-breakers">Block Breakers</.help_link>
+  · <.help_link topic="feature-hex-warlords">Hex Warlords</.help_link>
   · <.help_link topic="cmd-game">/game</.help_link>
 </p>

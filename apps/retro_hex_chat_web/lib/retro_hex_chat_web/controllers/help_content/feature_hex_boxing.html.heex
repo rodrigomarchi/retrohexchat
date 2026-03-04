@@ -1,32 +1,28 @@
 <p>
-  Top-down boxing in a cyberpunk underground ring. Close punches score more points
-  (3 for body-to-body, 2 for medium, 1 for long range). First to 100 triggers a KO!
-  If no one reaches 100, the fighter with more points wins the round by decision.
-  Best of 3 rounds, 2 minutes each.
+  Top-down boxing in a cyberpunk underground ring. Close punches score more —
+  get in your opponent's face for maximum damage, but risk taking hits yourself.
+  First to 100 points triggers a KO. Best of 3 rounds, 2 minutes each.
 </p>
+<.diagram_game_boxing class="w-full max-w-lg mx-auto my-4" />
 <.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
 <ul>
   <li><strong>Arrow keys / WASD</strong> — Move boxer (8 directions)</li>
-  <li><strong>Space / Shift</strong> — Punch (alternates left/right arm)</li>
+  <li><strong>Space / Shift</strong> — Punch (alternates left/right arm automatically)</li>
 </ul>
 <.help_h4 icon={:icon_rules}>Rules</.help_h4>
 <ul>
-  <li>Close-range punches score 3 points, medium 2, long range 1</li>
-  <li>First to 100 points scores a KO (round ends immediately)</li>
-  <li>If timer runs out, the fighter with more points wins the round</li>
-  <li>Best of 3 rounds, 2 minutes each</li>
-  <li>No blocking — defense is movement and spacing</li>
-  <li>Boxers cannot pass through each other (body collision pushes apart)</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>Strategy</.help_h4>
-<ul>
-  <li>Get close for 3-point body shots — but you risk getting hit too</li>
-  <li>Use movement to bait opponents into overextending</li>
-  <li>Alternating arms (left/right) is automatic — focus on timing</li>
-  <li>Watch the timer — if you're ahead, play defensive</li>
+  <li>Distance-based scoring: close punch = 3 points, medium = 2, long range = 1</li>
+  <li>First to 100 points scores a KO — the round ends immediately</li>
+  <li>If the 2-minute timer runs out, the fighter with more points wins the round</li>
+  <li>Tied at time-up goes to Player 1 (host)</li>
+  <li>Best of 3 rounds — first to 2 round wins takes the match</li>
+  <li>Punches are edge-triggered — tap to punch, no holding for rapid fire</li>
+  <li>Each punch has a brief cooldown before you can punch again</li>
+  <li>Boxers cannot pass through each other — body collision pushes the mover back</li>
+  <li>No blocking — defense is all about movement and spacing</li>
 </ul>
 <.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Inspired by Activision's Boxing (1980) for the Atari 2600.</p>
+<p>Based on Activision's Boxing (1980) for the Atari 2600.</p>
 <.help_h4 icon={:icon_link}>See Also</.help_h4>
 <p>
   <.help_link topic="feature-p2p-games">P2P Games</.help_link>

@@ -1,6 +1,9 @@
 <p>
-  Versus Breakout battle with cyberpunk post-apocalyptic visuals — neon glow, CRT scanlines, and synth audio. Each player defends a brick castle with a king inside while trying to smash the opponent's castle with a fireball. Last king standing wins.
+  Versus Breakout battle — each player defends a brick castle with a king inside.
+  Deflect or catch the fireball with your shield to smash your opponent's walls.
+  Clear a path to the king and strike to take a life. Last king standing wins.
 </p>
+<.diagram_game_warlords class="w-full max-w-lg mx-auto my-4" />
 <.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
 <ul>
   <li><strong>Arrow Up / Down</strong> or <strong>W / S</strong> — Move shield vertically</li>
@@ -9,16 +12,20 @@
 </ul>
 <.help_h4 icon={:icon_rules}>Rules</.help_h4>
 <ul>
-  <li>Best of 3 lives per player — hit the king to take a life</li>
-  <li>Each castle has 24 bricks arranged in a 4×6 grid protecting the king</li>
+  <li>Each castle has 24 bricks (6 rows x 4 columns) protecting a king</li>
   <li>Fireball destroys one brick on contact and bounces off</li>
-  <li>When inner bricks are destroyed, the king becomes exposed</li>
-  <li>Castles rebuild between rounds after a king hit</li>
-  <li>Shield deflects the fireball — hit position affects bounce angle</li>
   <li>
-    Catch mechanic: hold Space when fireball touches your shield to catch it, release to aim and throw
+    The king is only vulnerable when the inner column of bricks at the fireball's height is cleared
   </li>
-  <li>Fireball speeds up with each shield deflection</li>
+  <li>Hitting the king removes one life — each player starts with 3 lives</li>
+  <li>Castles fully rebuild between rounds after a king hit</li>
+  <li>
+    Shield deflection angle depends on hit position — edges create steep bounces (up to 60 degrees)
+  </li>
+  <li>
+    Catch mechanic: hold Space when the fireball touches your shield to grab it, release to aim and launch
+  </li>
+  <li>Fireball speeds up with each shield deflection (up to 1.8x initial speed)</li>
   <li>First to eliminate all opponent lives wins the match</li>
 </ul>
 <.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>

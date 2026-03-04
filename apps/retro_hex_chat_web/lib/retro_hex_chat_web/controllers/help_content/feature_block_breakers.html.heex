@@ -1,6 +1,9 @@
 <p>
-  Cooperative Breakout with cyberpunk post-apocalyptic visuals — neon glow, CRT scanlines, and synth audio. Player 1 (host) controls the bottom paddle, Player 2 controls the top paddle. Work together to destroy all 50 blocks before running out of lives.
+  Cooperative Breakout — Player 1 controls the bottom paddle, Player 2 controls the top.
+  Work together to destroy all 50 neon blocks before running out of lives.
+  The ball bounces between your paddles — miss it and both players lose a life.
 </p>
+<.diagram_game_breakout class="w-full max-w-lg mx-auto my-4" />
 <.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
 <ul>
   <li><strong>Arrow Left / Right</strong> or <strong>A / D</strong> — Move paddle</li>
@@ -8,18 +11,22 @@
 <.help_h4 icon={:icon_rules}>Rules</.help_h4>
 <ul>
   <li>3 shared lives — if the ball exits top or bottom, both players lose a life</li>
-  <li>50 blocks arranged in 5 rows with different colors and point values</li>
-  <li>Top rows are worth more: 50, 40, 30, 20, 10 points per block</li>
-  <li>Ball speeds up every 5 blocks destroyed</li>
-  <li>Paddle hit angle affects ball direction — edges create steeper bounces</li>
-  <li>Ball bounces off left/right walls but NOT top/bottom</li>
-  <li>Destroy all blocks to win together, or lose all lives for game over</li>
+  <li>50 blocks arranged in 5 rows of 10 with different point values</li>
+  <li>Top rows are worth more: 50 (red), 40 (orange), 30 (yellow), 20 (green), 10 (cyan)</li>
+  <li>Ball speeds up with each paddle hit and every 5 blocks destroyed</li>
+  <li>Ball speed resets after each life lost</li>
+  <li>
+    Paddle hit angle affects ball direction — edges create steeper bounces (up to 60 degrees)
+  </li>
+  <li>Ball bounces off left/right walls but NOT top/bottom — that's your job</li>
+  <li>Destroy all 50 blocks to win (max 1500 points), or lose all 3 lives for game over</li>
 </ul>
 <.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Inspired by Breakout and Warlords — cooperative brick-breaking with a cyberpunk twist.</p>
+<p>Based on Atari's Breakout (1976) — cooperative brick-breaking for two players.</p>
 <.help_h4 icon={:icon_link}>See Also</.help_h4>
 <p>
   <.help_link topic="feature-p2p-games">P2P Games</.help_link>
   · <.help_link topic="feature-hex-pong">Hex Pong</.help_link>
+  · <.help_link topic="feature-hex-warlords">Hex Warlords</.help_link>
   · <.help_link topic="cmd-game">/game</.help_link>
 </p>

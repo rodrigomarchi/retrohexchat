@@ -1,5 +1,5 @@
 <p>
-  P2P Games lets you play retro arcade games directly with another user. Games run in real-time over WebRTC DataChannel — no server relay, minimal latency.
+  P2P Games lets you play retro arcade games directly with another user. Games run in real-time over WebRTC DataChannel — no server relay, minimal latency. 15 base games with 20 additional mode variants across action, sports, racing, and co-op genres.
 </p>
 <.help_h4 icon={:icon_send}>Starting a Game</.help_h4>
 <pre>/game &lt;nickname&gt;</pre>
@@ -12,7 +12,7 @@
 </p>
 <ul>
   <li>Chat with your opponent</li>
-  <li>Browse and select from 5 available games</li>
+  <li>Browse and select from 35 available games across 15 families</li>
   <li>Wait for your opponent to accept or decline</li>
 </ul>
 <p>
@@ -21,11 +21,160 @@
 </p>
 <.help_h4 icon={:icon_game_generic}>Available Games</.help_h4>
 <ul>
-  <li><strong>Hex Pong</strong> — Pong with hexagonal paddles and power-ups</li>
-  <li><strong>Light Trails</strong> — Leave a trail, trap your opponent</li>
-  <li><strong>Pixel Tanks</strong> — Tank combat in a destructible maze</li>
-  <li><strong>Star Duel</strong> — Space dogfight with inertial physics</li>
-  <li><strong>Block Breakers</strong> — Cooperative Breakout with two paddles</li>
+  <li>
+    <.help_link topic="feature-hex-pong">Hex Pong</.help_link>
+    — Cyberpunk Pong, first to 11 (win by 2)
+  </li>
+  <li>
+    <.help_link topic="feature-light-trails">Light Trails</.help_link>
+    — Neon grid trail race, trap your opponent
+  </li>
+  <li>
+    <.help_link topic="feature-hex-warlords">Hex Warlords</.help_link>
+    — Versus Breakout castle battle, last king standing
+  </li>
+  <li>
+    <.help_link topic="feature-hex-boxing">Hex Boxing</.help_link>
+    — Top-down boxing, distance-based scoring, first to KO
+  </li>
+  <li>
+    <.help_link topic="feature-pixel-tanks">Pixel Tanks</.help_link>
+    — Tank combat in destructible mazes, best of 3 rounds
+  </li>
+  <li>
+    <.help_link topic="feature-star-duel">Star Duel</.help_link>
+    — Newtonian space combat with wraparound arena
+    <ul>
+      <li>
+        <.help_link topic="feature-gravity-well">Gravity Well</.help_link>
+        — Central star pulls ships into orbital trajectories
+      </li>
+      <li>
+        <.help_link topic="feature-debris-field">Debris Field</.help_link>
+        — 8 asteroids block missiles and kill ships
+      </li>
+    </ul>
+  </li>
+  <li>
+    <.help_link topic="feature-block-breakers">Block Breakers</.help_link>
+    — Cooperative Breakout with two paddles
+  </li>
+  <li>
+    <.help_link topic="feature-hex-outlaw">Hex Outlaw</.help_link>
+    — Western duel across a cactus obstacle
+    <ul>
+      <li>
+        <.help_link topic="feature-hex-outlaw-ricochet">Ricochet</.help_link>
+        — Bullets bounce off walls at 30-degree angles
+      </li>
+      <li>
+        <.help_link topic="feature-hex-outlaw-stagecoach">Stagecoach</.help_link>
+        — Moving stagecoach blocks shots
+      </li>
+      <li>
+        <.help_link topic="feature-hex-outlaw-nml">No Man's Land</.help_link>
+        — Open field, full horizontal movement
+      </li>
+    </ul>
+  </li>
+  <li>
+    <.help_link topic="feature-hex-hockey">Hex Hockey</.help_link>
+    — Ice hockey with AI goalies, 3 periods
+    <ul>
+      <li>
+        <.help_link topic="feature-hex-hockey-blitz">Blitz</.help_link>
+        — 1 period, faster puck, 80% tackle success
+      </li>
+      <li>
+        <.help_link topic="feature-hex-hockey-showdown">Showdown</.help_link>
+        — No timer, first to 5 goals, escalating puck speed
+      </li>
+    </ul>
+  </li>
+  <li>
+    <.help_link topic="feature-hex-tennis">Hex Tennis</.help_link>
+    — Full set with deuce, advantage, tiebreak
+    <ul>
+      <li>
+        <.help_link topic="feature-hex-tennis-quick">Quick Match</.help_link>
+        — First to 3 games wins
+      </li>
+      <li>
+        <.help_link topic="feature-hex-tennis-sudden">Sudden Death</.help_link>
+        — Every point wins a game, first to 6
+      </li>
+    </ul>
+  </li>
+  <li>
+    <.help_link topic="feature-hex-enduro">Hex Enduro</.help_link>
+    — Pseudo-3D racing with weather cycle, best of 3 days
+    <ul>
+      <li>
+        <.help_link topic="feature-hex-enduro-night">Night Race</.help_link>
+        — Permanent darkness with fog bursts
+      </li>
+      <li>
+        <.help_link topic="feature-hex-enduro-sprint">Sprint</.help_link>
+        — 90-second daylight sprint, no weather
+      </li>
+    </ul>
+  </li>
+  <li>
+    <.help_link topic="feature-hex-raid">Hex Raid</.help_link>
+    — River Raid for two, 10 sections with mines and fuel
+    <ul>
+      <li>
+        <.help_link topic="feature-hex-raid-pacifist">Pacifist</.help_link>
+        — No mines, pure skill competition
+      </li>
+      <li>
+        <.help_link topic="feature-hex-raid-blitz">Blitz</.help_link>
+        — 5 sections, narrow river, faster mines
+      </li>
+    </ul>
+  </li>
+  <li>
+    <.help_link topic="feature-hex-invaders">Hex Invaders</.help_link>
+    — Split-screen Space Invaders with alien drops
+    <ul>
+      <li>
+        <.help_link topic="feature-hex-invaders-coop">Co-op</.help_link>
+        — Shared screen, fight waves together
+      </li>
+      <li>
+        <.help_link topic="feature-hex-invaders-blitz">Blitz</.help_link>
+        — Instant drops, 5 waves of chaos
+      </li>
+    </ul>
+  </li>
+  <li>
+    <.help_link topic="feature-hex-frost">Hex Frost</.help_link>
+    — Arctic igloo construction race on floating ice
+    <ul>
+      <li>
+        <.help_link topic="feature-hex-frost-blizzard">Blizzard</.help_link>
+        — 1 epic round, 20-piece igloo, all enemies
+      </li>
+      <li>
+        <.help_link topic="feature-hex-frost-peaceful">Peaceful</.help_link>
+        — No block stealing, pure construction race
+      </li>
+    </ul>
+  </li>
+  <li>
+    <.help_link topic="feature-hex-skiing">Hex Skiing</.help_link>
+    — Alpine descent through obstacles, outrun the avalanche
+    <ul>
+      <li>
+        <.help_link topic="feature-hex-skiing-escape">Escape</.help_link>
+        — Infinite descent, ever-accelerating avalanche
+      </li>
+      <li>
+        <.help_link topic="feature-hex-skiing-clean">Clean Run</.help_link>
+        — No avalanche, pure time trial
+      </li>
+    </ul>
+  </li>
 </ul>
 <.help_h4 icon={:icon_webrtc}>Architecture</.help_h4>
 <p>
@@ -39,10 +188,6 @@
 <.help_h4 icon={:icon_link}>See Also</.help_h4>
 <p>
   <.help_link topic="cmd-game">/game</.help_link>
-  · <.help_link topic="feature-hex-pong">Hex Pong</.help_link>
-  · <.help_link topic="feature-light-trails">Light Trails</.help_link>
-  · <.help_link topic="feature-pixel-tanks">Pixel Tanks</.help_link>
-  · <.help_link topic="feature-star-duel">Star Duel</.help_link>
-  · <.help_link topic="feature-block-breakers">Block Breakers</.help_link>
   · <.help_link topic="feature-p2p-sessions">P2P Sessions</.help_link>
+  · <.help_link topic="feature-arcade">Solo Arcade</.help_link>
 </p>

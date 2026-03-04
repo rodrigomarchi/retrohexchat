@@ -70,6 +70,11 @@ app-header-panels
 bg-desktop
 font-system
 text-text
+# Diagram layout — Tailwind utility classes passed to SVG diagram components in help templates
+max-w-lg
+mx-auto
+my-4
+w-full
 # JS hooks — classes used by JS hooks for DOM manipulation and querySelector targeting.
 # These were previously defined in V1 retro CSS; now styled via Tailwind or used as selectors only.
 chat-action
