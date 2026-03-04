@@ -9,12 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Diagrams do
 
   import RetroHexChatWeb.ShowcaseHelpers
 
-  @submodules [
-    {RetroHexChatWeb.Components.Diagrams.P2P, "P2P", "Flow and architecture diagrams"},
-    {RetroHexChatWeb.Components.Diagrams.Security, "Security",
-     "Encryption layers and protocol diagrams"},
-    {RetroHexChatWeb.Components.Diagrams.Voice, "Voice", "Voice/video call mockups"}
-  ]
+  @facade RetroHexChatWeb.Components.Diagrams
 
   @impl true
   def mount(_params, _session, socket) do
@@ -23,17 +18,36 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Diagrams do
   end
 
   defp build_groups do
-    Enum.map(@submodules, fn {mod, title, description} ->
-      diagrams =
-        mod.__info__(:functions)
-        |> Enum.filter(fn {name, arity} ->
-          arity == 1 and String.starts_with?(to_string(name), "diagram_")
-        end)
-        |> Enum.map(fn {name, _} -> name end)
-        |> Enum.sort_by(&to_string/1)
+    diagrams =
+      @facade.__info__(:functions)
+      |> Enum.filter(fn {name, arity} ->
+        arity == 1 and String.starts_with?(to_string(name), "diagram_")
+      end)
+      |> Enum.map(fn {name, _} -> name end)
+      |> Enum.sort_by(&to_string/1)
 
-      {mod, title, description, diagrams}
+    categorize(diagrams)
+  end
+
+  defp categorize(diagrams) do
+    groups = [
+      {"P2P", "Flow and architecture diagrams", &String.starts_with?(&1, "diagram_p2p_")},
+      {"Security", "Encryption layers and protocol diagrams",
+       &String.starts_with?(&1, "diagram_security_")},
+      {"Voice", "Voice/video call mockups", &String.starts_with?(&1, "diagram_voice_")},
+      {"Game Flows", "P2P multiplayer and solo arcade flow",
+       &(&1 in ["diagram_p2p_games", "diagram_arcade_flow"])},
+      {"Game Screens", "Win98-style game screen illustrations",
+       &String.starts_with?(&1, "diagram_game_")},
+      {"Arcade Logos", "Solo Arcade game logos/cover art",
+       &(String.starts_with?(&1, "diagram_arcade_") and &1 != "diagram_arcade_flow")}
+    ]
+
+    Enum.map(groups, fn {title, description, matcher} ->
+      matched = Enum.filter(diagrams, fn name -> matcher.(to_string(name)) end)
+      {@facade, title, description, matched}
     end)
+    |> Enum.reject(fn {_, _, _, list} -> list == [] end)
   end
 
   @impl true
