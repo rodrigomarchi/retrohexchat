@@ -57,7 +57,8 @@ defmodule RetroHexChat.Chat.HelpTopics do
     "P2P & Calls" => :icon_p2p,
     "P2P Games: Action" => :icon_game_generic,
     "P2P Games: Sports" => :icon_game_tennis,
-    "Solo Arcade" => :icon_game_arcade
+    "Solo Arcade: FPS" => :icon_game_arcade,
+    "Solo Arcade: Adventures" => :icon_game_bass
   }
 
   @categories [
@@ -84,7 +85,8 @@ defmodule RetroHexChat.Chat.HelpTopics do
     "P2P & Calls",
     "P2P Games: Action",
     "P2P Games: Sports",
-    "Solo Arcade"
+    "Solo Arcade: FPS",
+    "Solo Arcade: Adventures"
   ]
 
   @topics GettingStarted.topics() ++

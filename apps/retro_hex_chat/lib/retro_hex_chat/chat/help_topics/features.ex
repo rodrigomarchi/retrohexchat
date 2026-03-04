@@ -1736,7 +1736,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-arcade",
         title: "Solo Arcade",
-        category: "Solo Arcade",
+        category: "Solo Arcade: FPS",
         keywords: [
           "arcade",
           "singleplayer",
@@ -1781,13 +1781,18 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-arcade-quake2",
           "feature-arcade-wolfenstein",
           "feature-arcade-halflife",
-          "feature-arcade-scummvm"
+          "feature-arcade-scummvm",
+          "feature-arcade-doom-shareware",
+          "feature-arcade-scummvm-bass",
+          "feature-arcade-quake-shareware",
+          "feature-arcade-wolfenstein-3d",
+          "feature-arcade-halflife-uplink"
         ]
       },
       %{
         id: "feature-arcade-doom",
         title: "DOOM (Arcade)",
-        category: "Solo Arcade",
+        category: "Solo Arcade: FPS",
         keywords: [
           "doom",
           "freedoom",
@@ -1811,17 +1816,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "FreeDM, Chex Quest, HacX, and REKKR. Powered by Dwasm (PrBoom+ → WebAssembly).",
         see_also: [
           "feature-arcade",
+          "feature-arcade-doom-shareware",
+          "feature-arcade-freedoom1",
+          "feature-arcade-freedoom2",
+          "feature-arcade-freedm",
+          "feature-arcade-chex-quest",
+          "feature-arcade-hacx",
+          "feature-arcade-rekkr",
           "feature-arcade-quake",
-          "feature-arcade-quake2",
-          "feature-arcade-wolfenstein",
-          "feature-arcade-halflife",
           "feature-arcade-scummvm"
         ]
       },
       %{
         id: "feature-arcade-quake",
         title: "Quake (Arcade)",
-        category: "Solo Arcade",
+        category: "Solo Arcade: FPS",
         keywords: [
           "quake",
           "librequake",
@@ -1838,17 +1847,16 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Powered by Qwasm (QuakeSpasm → WebAssembly).",
         see_also: [
           "feature-arcade",
+          "feature-arcade-quake-shareware",
+          "feature-arcade-librequake",
           "feature-arcade-doom",
-          "feature-arcade-quake2",
-          "feature-arcade-wolfenstein",
-          "feature-arcade-halflife",
           "feature-arcade-scummvm"
         ]
       },
       %{
         id: "feature-arcade-wolfenstein",
         title: "Wolfenstein 3D (Arcade)",
-        category: "Solo Arcade",
+        category: "Solo Arcade: FPS",
         keywords: [
           "wolfenstein",
           "wolf3d",
@@ -1868,17 +1876,16 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Powered by ECWolf-JS (ECWolf → WebAssembly).",
         see_also: [
           "feature-arcade",
+          "feature-arcade-wolfenstein-3d",
           "feature-arcade-doom",
           "feature-arcade-quake",
-          "feature-arcade-quake2",
-          "feature-arcade-halflife",
           "feature-arcade-scummvm"
         ]
       },
       %{
         id: "feature-arcade-halflife",
         title: "Half-Life (Arcade)",
-        category: "Solo Arcade",
+        category: "Solo Arcade: FPS",
         keywords: [
           "half-life",
           "halflife",
@@ -1899,17 +1906,16 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Powered by Xash3D-FWGS (GoldSource reimplementation → WebAssembly).",
         see_also: [
           "feature-arcade",
+          "feature-arcade-halflife-uplink",
           "feature-arcade-doom",
           "feature-arcade-quake",
-          "feature-arcade-quake2",
-          "feature-arcade-wolfenstein",
           "feature-arcade-scummvm"
         ]
       },
       %{
         id: "feature-arcade-quake2",
         title: "Quake II (Arcade)",
-        category: "Solo Arcade",
+        category: "Solo Arcade: FPS",
         keywords: [
           "quake 2",
           "quake ii",
@@ -1930,10 +1936,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Powered by Qwasm2 (Yamagi Quake II → WebAssembly).",
         see_also: [
           "feature-arcade",
+          "feature-arcade-quake2-shareware",
           "feature-arcade-quake",
           "feature-arcade-doom",
-          "feature-arcade-wolfenstein",
-          "feature-arcade-halflife",
           "feature-arcade-scummvm"
         ]
       },
@@ -1941,7 +1946,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       %{
         id: "feature-arcade-scummvm",
         title: "ScummVM Adventures (Arcade)",
-        category: "Solo Arcade",
+        category: "Solo Arcade: Adventures",
         keywords: [
           "scummvm",
           "point and click",
@@ -1985,11 +1990,454 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Powered by ScummVM (official Emscripten backend → WebAssembly).",
         see_also: [
           "feature-arcade",
+          "feature-arcade-scummvm-bass",
+          "feature-arcade-scummvm-drascula",
+          "feature-arcade-scummvm-dreamweb",
+          "feature-arcade-scummvm-fotaq",
+          "feature-arcade-scummvm-lure",
+          "feature-arcade-scummvm-soltys",
           "feature-arcade-doom",
+          "feature-arcade-quake"
+        ]
+      },
+      # ── Solo Arcade: Individual DOOM Engine Games ──────────
+      %{
+        id: "feature-arcade-doom-shareware",
+        title: "DOOM: Knee-Deep in the Dead",
+        category: "Solo Arcade: FPS",
+        keywords: ["doom", "shareware", "phobos", "episode 1", "id software", "1993", "knee deep"],
+        icon: :icon_game_doom,
+        description:
+          "The original 1993 shareware episode — 9 levels of demon-infested corridors on Phobos.",
+        see_also: [
+          "feature-arcade-doom",
+          "feature-arcade-freedoom1",
+          "feature-arcade-freedoom2",
+          "feature-arcade-freedm",
+          "feature-arcade-chex-quest",
+          "feature-arcade-hacx",
+          "feature-arcade-rekkr"
+        ]
+      },
+      %{
+        id: "feature-arcade-freedoom1",
+        title: "Freedoom: Phase 1",
+        category: "Solo Arcade: FPS",
+        keywords: ["freedoom", "phase 1", "open source", "bsd", "free", "ultimate doom"],
+        icon: :icon_game_freedoom1,
+        description:
+          "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels with original art and music.",
+        see_also: [
+          "feature-arcade-doom",
+          "feature-arcade-doom-shareware",
+          "feature-arcade-freedoom2",
+          "feature-arcade-freedm",
+          "feature-arcade-chex-quest",
+          "feature-arcade-hacx",
+          "feature-arcade-rekkr"
+        ]
+      },
+      %{
+        id: "feature-arcade-freedoom2",
+        title: "Freedoom: Phase 2",
+        category: "Solo Arcade: FPS",
+        keywords: [
+          "freedoom",
+          "phase 2",
+          "open source",
+          "bsd",
+          "free",
+          "doom ii",
+          "super shotgun",
+          "pwad"
+        ],
+        icon: :icon_game_freedoom2,
+        description:
+          "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. Compatible with community PWAD mods.",
+        see_also: [
+          "feature-arcade-doom",
+          "feature-arcade-doom-shareware",
+          "feature-arcade-freedoom1",
+          "feature-arcade-freedm",
+          "feature-arcade-chex-quest",
+          "feature-arcade-hacx",
+          "feature-arcade-rekkr"
+        ]
+      },
+      %{
+        id: "feature-arcade-freedm",
+        title: "FreeDM",
+        category: "Solo Arcade: FPS",
+        keywords: ["freedm", "deathmatch", "arena", "open source", "bsd", "free", "multiplayer"],
+        icon: :icon_game_freedm,
+        description: "32 deathmatch-focused arena maps for the DOOM engine. BSD license.",
+        see_also: [
+          "feature-arcade-doom",
+          "feature-arcade-doom-shareware",
+          "feature-arcade-freedoom1",
+          "feature-arcade-freedoom2",
+          "feature-arcade-chex-quest",
+          "feature-arcade-hacx",
+          "feature-arcade-rekkr"
+        ]
+      },
+      %{
+        id: "feature-arcade-chex-quest",
+        title: "Chex Quest",
+        category: "Solo Arcade: FPS",
+        keywords: [
+          "chex",
+          "chex quest",
+          "cereal",
+          "zorcher",
+          "flemoid",
+          "1996",
+          "digital cafe",
+          "kid friendly"
+        ],
+        icon: :icon_game_chex,
+        description:
+          "The legendary 1996 cereal box promotion — a kid-friendly DOOM total conversion where you zap Flemoids with the Zorcher.",
+        see_also: [
+          "feature-arcade-doom",
+          "feature-arcade-doom-shareware",
+          "feature-arcade-freedoom1",
+          "feature-arcade-freedoom2",
+          "feature-arcade-freedm",
+          "feature-arcade-hacx",
+          "feature-arcade-rekkr"
+        ]
+      },
+      %{
+        id: "feature-arcade-hacx",
+        title: "HacX: Twitch 'n Kill",
+        category: "Solo Arcade: FPS",
+        keywords: [
+          "hacx",
+          "cyberpunk",
+          "total conversion",
+          "banjo software",
+          "1997",
+          "hacker",
+          "dystopian"
+        ],
+        icon: :icon_game_hacx,
+        description:
+          "A cyberpunk DOOM total conversion with new weapons, enemies, and levels. Standalone v1.2 IWAD.",
+        see_also: [
+          "feature-arcade-doom",
+          "feature-arcade-doom-shareware",
+          "feature-arcade-freedoom1",
+          "feature-arcade-freedoom2",
+          "feature-arcade-freedm",
+          "feature-arcade-chex-quest",
+          "feature-arcade-rekkr"
+        ]
+      },
+      %{
+        id: "feature-arcade-rekkr",
+        title: "REKKR: Sunken Land",
+        category: "Solo Arcade: FPS",
+        keywords: [
+          "rekkr",
+          "viking",
+          "norse",
+          "pixel art",
+          "total conversion",
+          "cacoward",
+          "2018",
+          "axe",
+          "bow"
+        ],
+        icon: :icon_game_rekkr,
+        description:
+          "A Viking-themed DOOM total conversion with hand-drawn pixel art — axes, bows, and runic magic. Cacoward 2018 winner.",
+        see_also: [
+          "feature-arcade-doom",
+          "feature-arcade-doom-shareware",
+          "feature-arcade-freedoom1",
+          "feature-arcade-freedoom2",
+          "feature-arcade-freedm",
+          "feature-arcade-chex-quest",
+          "feature-arcade-hacx"
+        ]
+      },
+      # ── Solo Arcade: Individual Quake Engine Games ──────────
+      %{
+        id: "feature-arcade-quake-shareware",
+        title: "Quake: Dimension of the Doomed",
+        category: "Solo Arcade: FPS",
+        keywords: [
+          "quake",
+          "shareware",
+          "episode 1",
+          "id software",
+          "1996",
+          "lovecraft",
+          "dimension of the doomed"
+        ],
+        icon: :icon_game_quake,
+        description:
+          "The original 1996 shareware episode — full 3D FPS with Lovecraftian horrors and a Trent Reznor soundtrack.",
+        see_also: [
           "feature-arcade-quake",
+          "feature-arcade-librequake",
+          "feature-arcade-doom-shareware",
+          "feature-arcade-quake2-shareware"
+        ]
+      },
+      %{
+        id: "feature-arcade-librequake",
+        title: "LibreQuake",
+        category: "Solo Arcade: FPS",
+        keywords: [
+          "librequake",
+          "open source",
+          "bsd",
+          "free",
+          "quake replacement",
+          "community"
+        ],
+        icon: :icon_game_librequake,
+        description:
+          "A complete free replacement for Quake — original levels, art, and music under BSD license.",
+        see_also: [
+          "feature-arcade-quake",
+          "feature-arcade-quake-shareware",
+          "feature-arcade-freedoom1",
+          "feature-arcade-freedoom2"
+        ]
+      },
+      # ── Solo Arcade: Individual Quake II Game ──────────
+      %{
+        id: "feature-arcade-quake2-shareware",
+        title: "Quake II: The Invasion",
+        category: "Solo Arcade: FPS",
+        keywords: [
+          "quake 2",
+          "quake ii",
+          "shareware",
+          "demo",
+          "strogg",
+          "1997",
+          "id software",
+          "unit 1"
+        ],
+        icon: :icon_game_quake2,
+        description:
+          "The official 1997 Quake II demo — Unit 1 of the singleplayer campaign against the Strogg.",
+        see_also: [
           "feature-arcade-quake2",
+          "feature-arcade-quake-shareware",
+          "feature-arcade-doom-shareware",
+          "feature-arcade-wolfenstein-3d"
+        ]
+      },
+      # ── Solo Arcade: Individual Wolfenstein 3D Game ──────────
+      %{
+        id: "feature-arcade-wolfenstein-3d",
+        title: "Wolfenstein 3D: Escape from Castle",
+        category: "Solo Arcade: FPS",
+        keywords: [
+          "wolfenstein",
+          "wolf3d",
+          "shareware",
+          "episode 1",
+          "1992",
+          "id software",
+          "castle",
+          "raycasting"
+        ],
+        icon: :icon_game_wolfenstein,
+        description:
+          "The grandfather of FPS games (1992) — 10 levels of castle-storming action in the shareware episode.",
+        see_also: [
           "feature-arcade-wolfenstein",
-          "feature-arcade-halflife"
+          "feature-arcade-doom-shareware",
+          "feature-arcade-quake-shareware",
+          "feature-arcade-halflife-uplink"
+        ]
+      },
+      # ── Solo Arcade: Individual Half-Life Game ──────────
+      %{
+        id: "feature-arcade-halflife-uplink",
+        title: "Half-Life: Uplink",
+        category: "Solo Arcade: FPS",
+        keywords: [
+          "half-life",
+          "halflife",
+          "uplink",
+          "demo",
+          "valve",
+          "1999",
+          "black mesa",
+          "gordon freeman"
+        ],
+        icon: :icon_game_halflife,
+        description:
+          "The official 1999 Valve demo — 3 unique levels not found in the full game, set in Black Mesa.",
+        see_also: [
+          "feature-arcade-halflife",
+          "feature-arcade-wolfenstein-3d",
+          "feature-arcade-doom-shareware",
+          "feature-arcade-quake-shareware"
+        ]
+      },
+      # ── Solo Arcade: Individual ScummVM Adventure Games ──────────
+      %{
+        id: "feature-arcade-scummvm-bass",
+        title: "Beneath a Steel Sky",
+        category: "Solo Arcade: Adventures",
+        keywords: [
+          "beneath a steel sky",
+          "bass",
+          "revolution software",
+          "cyberpunk",
+          "1994",
+          "dave gibbons",
+          "joey",
+          "union city"
+        ],
+        icon: :icon_game_bass,
+        description:
+          "Cyberpunk masterpiece by Revolution Software (1994) — escape Union City with your robot companion Joey.",
+        see_also: [
+          "feature-arcade-scummvm",
+          "feature-arcade-scummvm-drascula",
+          "feature-arcade-scummvm-dreamweb",
+          "feature-arcade-scummvm-fotaq",
+          "feature-arcade-scummvm-lure",
+          "feature-arcade-scummvm-soltys"
+        ]
+      },
+      %{
+        id: "feature-arcade-scummvm-drascula",
+        title: "Drascula: The Vampire Strikes Back",
+        category: "Solo Arcade: Adventures",
+        keywords: [
+          "drascula",
+          "vampire",
+          "spanish",
+          "alcachofa soft",
+          "1996",
+          "comedy",
+          "parody",
+          "dracula"
+        ],
+        icon: :icon_game_drascula,
+        description:
+          "Hilarious Spanish point & click parody of Dracula (1996) — defeat the vampire Drascula with absurd humor.",
+        see_also: [
+          "feature-arcade-scummvm",
+          "feature-arcade-scummvm-bass",
+          "feature-arcade-scummvm-dreamweb",
+          "feature-arcade-scummvm-fotaq",
+          "feature-arcade-scummvm-lure",
+          "feature-arcade-scummvm-soltys"
+        ]
+      },
+      %{
+        id: "feature-arcade-scummvm-dreamweb",
+        title: "Dreamweb",
+        category: "Solo Arcade: Adventures",
+        keywords: [
+          "dreamweb",
+          "creative reality",
+          "cyberpunk",
+          "top-down",
+          "1994",
+          "dark",
+          "mature",
+          "ryan"
+        ],
+        icon: :icon_game_dreamweb,
+        description:
+          "Dark cyberpunk top-down adventure by Creative Reality (1994) — explore the Dreamweb to save reality.",
+        see_also: [
+          "feature-arcade-scummvm",
+          "feature-arcade-scummvm-bass",
+          "feature-arcade-scummvm-drascula",
+          "feature-arcade-scummvm-fotaq",
+          "feature-arcade-scummvm-lure",
+          "feature-arcade-scummvm-soltys"
+        ]
+      },
+      %{
+        id: "feature-arcade-scummvm-fotaq",
+        title: "Flight of the Amazon Queen",
+        category: "Solo Arcade: Adventures",
+        keywords: [
+          "flight of the amazon queen",
+          "fotaq",
+          "joe king",
+          "amazon",
+          "1995",
+          "indiana jones",
+          "dinosaurs",
+          "comedy"
+        ],
+        icon: :icon_game_fotaq,
+        description:
+          "Comic Indiana Jones-style adventure in the Amazon (1995) — pilot Joe King vs. a mad scientist's dinosaur plot.",
+        see_also: [
+          "feature-arcade-scummvm",
+          "feature-arcade-scummvm-bass",
+          "feature-arcade-scummvm-drascula",
+          "feature-arcade-scummvm-dreamweb",
+          "feature-arcade-scummvm-lure",
+          "feature-arcade-scummvm-soltys"
+        ]
+      },
+      %{
+        id: "feature-arcade-scummvm-lure",
+        title: "Lure of the Temptress",
+        category: "Solo Arcade: Adventures",
+        keywords: [
+          "lure of the temptress",
+          "lure",
+          "revolution software",
+          "1992",
+          "medieval",
+          "virtual theatre",
+          "turnvale",
+          "selena"
+        ],
+        icon: :icon_game_lure,
+        description:
+          "Revolution Software's 1992 debut — medieval fantasy with the pioneering Virtual Theatre NPC AI system.",
+        see_also: [
+          "feature-arcade-scummvm",
+          "feature-arcade-scummvm-bass",
+          "feature-arcade-scummvm-drascula",
+          "feature-arcade-scummvm-dreamweb",
+          "feature-arcade-scummvm-fotaq",
+          "feature-arcade-scummvm-soltys"
+        ]
+      },
+      %{
+        id: "feature-arcade-scummvm-soltys",
+        title: "Soltys",
+        category: "Solo Arcade: Adventures",
+        keywords: [
+          "soltys",
+          "lk avalon",
+          "polish",
+          "1995",
+          "surreal",
+          "puzzle",
+          "pirates",
+          "grandfather"
+        ],
+        icon: :icon_game_soltys,
+        description:
+          "Surreal Polish puzzle adventure by LK Avalon (1995) — rescue your grandfather from underground pirates.",
+        see_also: [
+          "feature-arcade-scummvm",
+          "feature-arcade-scummvm-bass",
+          "feature-arcade-scummvm-drascula",
+          "feature-arcade-scummvm-dreamweb",
+          "feature-arcade-scummvm-fotaq",
+          "feature-arcade-scummvm-lure"
         ]
       }
     ]

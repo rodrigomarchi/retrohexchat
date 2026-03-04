@@ -21,7 +21,8 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       assert html =~ "Text Formatting"
       assert html =~ "User Interface"
       assert html =~ "P2P Games: Action"
-      assert html =~ "Solo Arcade"
+      assert html =~ "Solo Arcade: FPS"
+      assert html =~ "Solo Arcade: Adventures"
     end
 
     test "defaults to welcome topic", %{conn: conn} do
