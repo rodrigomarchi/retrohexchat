@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.HelpLive.HelpHelpers do
 
   import RetroHexChatWeb.Components.UI.TreeView
   import RetroHexChatWeb.Components.UI.AppHeader
+  import RetroHexChatWeb.Components.UI.MenuBarApp
 
   alias RetroHexChatWeb.Icons
 
@@ -23,7 +24,11 @@ defmodule RetroHexChatWeb.HelpLive.HelpHelpers do
   def help_layout(assigns) do
     ~H"""
     <div class="min-h-screen bg-desktop font-system text-text flex flex-col">
-      <.app_header logo_href="/" />
+      <.app_header logo_href="/">
+        <:panels>
+          <.menu_bar_app id="help-menubar" phx-hook="MenuBarHook" connected={false} />
+        </:panels>
+      </.app_header>
 
       <div class="flex-1 m-4 mt-2">
         <div class="shadow-retro-window bg-surface p-1">
