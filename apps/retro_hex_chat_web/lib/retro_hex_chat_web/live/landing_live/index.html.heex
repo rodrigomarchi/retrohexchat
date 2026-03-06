@@ -1,7 +1,7 @@
 <.landing_layout active_page={@active_page}>
   <%!-- ══════════════ HERO + DESKTOP ══════════════ --%>
   <section class="m-4" aria-labelledby="hero-heading">
-    <div class="grid md:grid-cols-[1fr_auto] gap-4">
+    <div class="grid grid-cols-[1fr_auto] gap-4">
       <.window>
         <.window_title_bar title="Retro Hex Chat — Welcome" controls={[:close]}>
           <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
@@ -71,7 +71,7 @@
             <button
               type="button"
               class="flex flex-col items-center gap-1 text-xs bg-transparent border-0 cursor-pointer hover:underline"
-              phx-click={JS.show(to: "#readme-popup")}
+              phx-click={JS.show(to: "#readme-popup", display: "flex")}
             >
               <Icons.icon_notepad class="w-8 h-8" />
               <span>README.txt</span>
@@ -79,13 +79,16 @@
             <button
               type="button"
               class="flex flex-col items-center gap-1 text-xs bg-transparent border-0 cursor-pointer hover:underline"
-              phx-click={JS.show(to: "#trash-popup")}
+              phx-click={JS.show(to: "#trash-popup", display: "flex")}
             >
               <Icons.icon_trash class="w-8 h-8" />
               <span>Trash</span>
             </button>
           </div>
         </.window_body>
+        <.window_status_bar>
+          <.window_status_bar_field grow>4 object(s)</.window_status_bar_field>
+        </.window_status_bar>
       </.window>
     </div>
   </section>
@@ -320,6 +323,9 @@
             No trash here.<br /> Just clean code. &#x2728;
           </p>
         </.window_body>
+        <.window_status_bar>
+          <.window_status_bar_field grow>0 object(s)</.window_status_bar_field>
+        </.window_status_bar>
       </.window>
     </div>
   </div>

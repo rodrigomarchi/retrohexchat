@@ -260,6 +260,10 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
             <span>2025&ndash;2026</span>
           </div>
         </.window_body>
+        <.window_status_bar>
+          <.window_status_bar_field grow>MIT License</.window_status_bar_field>
+          <.window_status_bar_field>v0.1.0</.window_status_bar_field>
+        </.window_status_bar>
       </.window>
     </footer>
     """

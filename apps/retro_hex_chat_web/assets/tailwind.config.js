@@ -16,6 +16,7 @@ module.exports = {
       "../lib/retro_hex_chat_web/live/showcase_live/**/*.ex",
       // Landing LiveViews
       "../lib/retro_hex_chat_web/live/landing_live/**/*.ex",
+      "../lib/retro_hex_chat_web/live/landing_live/**/*.heex",
       // Showcase helpers
       "../lib/retro_hex_chat_web/components/showcase_helpers.ex",
       // Showcase layout
