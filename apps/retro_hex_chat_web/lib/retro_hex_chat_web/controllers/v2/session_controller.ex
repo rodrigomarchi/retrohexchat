@@ -12,12 +12,14 @@ defmodule RetroHexChatWeb.V2.SessionController do
          :ok <- verify_optional_token(params["auth_token"], nickname) do
       pre_identified = params["auth_token"] != nil && params["auth_token"] != ""
 
+      redirect_path = join_channel_redirect(params["join_channel"])
+
       conn
       |> put_session(:chat_nickname, nickname)
       |> put_session(:chat_pre_identified, pre_identified)
       |> put_session(:chat_timezone, params["timezone"] || "Etc/UTC")
-      |> maybe_put_join_channel(params["join_channel"])
-      |> redirect(to: ~p"/chat")
+      |> delete_session(:chat_join_channel)
+      |> redirect(to: redirect_path)
     else
       _ ->
         redirect(conn, to: ~p"/connect")
@@ -48,8 +50,8 @@ defmodule RetroHexChatWeb.V2.SessionController do
     end
   end
 
-  @spec maybe_put_join_channel(Plug.Conn.t(), String.t() | nil) :: Plug.Conn.t()
-  defp maybe_put_join_channel(conn, nil), do: conn
-  defp maybe_put_join_channel(conn, ""), do: conn
-  defp maybe_put_join_channel(conn, channel), do: put_session(conn, :chat_join_channel, channel)
+  @spec join_channel_redirect(String.t() | nil) :: String.t()
+  defp join_channel_redirect(nil), do: ~p"/chat"
+  defp join_channel_redirect(""), do: ~p"/chat"
+  defp join_channel_redirect(channel), do: ~p"/chat?join=#{channel}"
 end

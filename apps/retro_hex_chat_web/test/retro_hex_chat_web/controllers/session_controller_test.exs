@@ -77,19 +77,21 @@ defmodule RetroHexChatWeb.SessionControllerTest do
       assert redirected_to(conn) == "/connect"
     end
 
-    test "join_channel param stores channel in session", %{conn: conn} do
+    test "join_channel param redirects with query param instead of storing in session", %{
+      conn: conn
+    } do
       conn =
         post(conn, ~p"/chat/session", %{
           "nickname" => "JoinNick",
           "join_channel" => "#general"
         })
 
-      assert redirected_to(conn) == "/chat"
+      assert redirected_to(conn) == "/chat?join=%23general"
       assert get_session(conn, :chat_nickname) == "JoinNick"
-      assert get_session(conn, :chat_join_channel) == "#general"
+      refute get_session(conn, :chat_join_channel)
     end
 
-    test "without join_channel param does not set chat_join_channel in session", %{conn: conn} do
+    test "without join_channel param redirects to /chat without query param", %{conn: conn} do
       conn = post(conn, ~p"/chat/session", %{"nickname" => "NoJoin"})
       assert redirected_to(conn) == "/chat"
       refute get_session(conn, :chat_join_channel)

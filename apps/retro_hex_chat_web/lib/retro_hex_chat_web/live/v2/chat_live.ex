@@ -110,14 +110,14 @@ defmodule RetroHexChatWeb.V2.ChatLive do
 
   @impl true
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(_params, http_session, socket) do
+  def mount(params, http_session, socket) do
     nickname = http_session["chat_nickname"]
 
     case validate_session_nickname(nickname) do
       :ok ->
         session = Session.new(nickname)
         pre_identified = http_session["chat_pre_identified"] == true
-        join_channel = http_session["chat_join_channel"]
+        join_channel = params["join"]
 
         if connected?(socket) do
           Phoenix.PubSub.broadcast(

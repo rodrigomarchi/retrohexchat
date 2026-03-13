@@ -22,15 +22,6 @@
         pm_conversations={["alice", "bob", "carol"]}
         active_pm="bob"
         unread_pms={["alice"]}
-        channel_users={[
-          %{nick: "admin", role: :owner},
-          %{nick: "moderator", role: :operator},
-          %{nick: "helper", role: :half_operator},
-          %{nick: "speaker", role: :voiced},
-          %{nick: "lurker", role: :regular},
-          %{nick: "chanbot", role: :bot},
-          %{nick: "afk_user", role: :regular, away: true}
-        ]}
         popular_channels={[
           %{name: "#gaming", user_count: 45},
           %{name: "#sports", user_count: 22},
@@ -88,28 +79,6 @@
         highlight_channels={["#highlight"]}
         muted_channels={["#muted"]}
         disconnected_channels={["#disconnected"]}
-      />
-    </div>
-  </.showcase_card>
-
-  <.showcase_card
-    title="User Roles"
-    description="Users sorted by role priority (owner > operator > halfop > voiced > regular > bot). Each role has SVG badge + color. Away users are dimmed."
-  >
-    <div class="max-w-[220px] shadow-retro-field bg-white">
-      <.conversations
-        id="demo-roles"
-        channels={["#staff"]}
-        active_channel="#staff"
-        channel_users={[
-          %{nick: "regular_user", role: :regular},
-          %{nick: "the_owner", role: :owner},
-          %{nick: "bot_service", role: :bot},
-          %{nick: "voiced_user", role: :voiced},
-          %{nick: "op_admin", role: :operator},
-          %{nick: "halfop_mod", role: :half_operator},
-          %{nick: "away_person", role: :regular, away: true}
-        ]}
       />
     </div>
   </.showcase_card>

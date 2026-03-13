@@ -154,10 +154,21 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       entry = Enum.at(entries, index)
       masked = PerformList.mask_command(entry.command)
 
+      # Preserve the current active channel — perform should not steal focus
+      prev_active = session.active_channel
+
       socket =
         socket
         |> system_event("* Performing: #{masked}")
         |> execute_perform_command(session, entry.command)
+
+      socket =
+        if prev_active do
+          new_session = Session.set_active_channel(socket.assigns.session, prev_active)
+          assign(socket, session: new_session)
+        else
+          socket
+        end
 
       Process.send_after(self(), {:execute_perform, index + 1}, 100)
       {:halt, socket}
@@ -178,10 +189,21 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       channel = entry.channel_name
       key = entry.channel_key
 
+      # Preserve the current active channel — autojoin should not steal focus
+      prev_active = session.active_channel
+
       socket =
         socket
         |> system_event("* Auto-joining #{channel}...")
         |> join_channel(channel, session, key)
+
+      socket =
+        if prev_active do
+          new_session = Session.set_active_channel(socket.assigns.session, prev_active)
+          assign(socket, session: new_session)
+        else
+          socket
+        end
 
       Process.send_after(self(), {:execute_autojoin, index + 1}, 100)
       {:halt, socket}

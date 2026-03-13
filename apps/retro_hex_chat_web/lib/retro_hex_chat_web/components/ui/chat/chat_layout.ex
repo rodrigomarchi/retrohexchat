@@ -52,11 +52,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatLayout do
         <.conversations
           channels={@channels}
           active_channel={@active_channel}
-          channel_users={
-            Enum.map(@users, fn u ->
-              %{nick: u.nick, role: role_atom(Map.get(u, :role, "normal"))}
-            end)
-          }
           class="flex-1"
         />
       </div>
@@ -105,8 +100,4 @@ defmodule RetroHexChatWeb.Components.UI.ChatLayout do
     </div>
     """
   end
-
-  defp role_atom("op"), do: :operator
-  defp role_atom("voice"), do: :voiced
-  defp role_atom(_), do: nil
 end

@@ -28,8 +28,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   alias RetroHexChatWeb.Icons
 
-  @role_priority %{owner: 0, operator: 1, half_operator: 2, voiced: 3, regular: 4, bot: 5}
-
   # ── Main Component ─────────────────────────────────────
 
   @doc "Renders the conversations sidebar with channel/PM/popular sections."
@@ -46,10 +44,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :active_pm, :string, default: nil
   attr :unread_pms, :list, default: []
 
-  attr :channel_users, :list,
-    default: [],
-    doc: "Users in active channel (maps with :nick/:role/:away)"
-
   attr :nick_color_fn, :any, default: nil, doc: "Function(nick) -> CSS class for nick coloring"
   attr :channel_user_counts, :map, default: %{}, doc: "Map of channel name to user count"
   attr :popular_channels, :list, default: [], doc: "List of maps with :name and :user_count"
@@ -57,7 +51,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :on_channel_click, :any, default: nil, doc: "Channel click callback"
   attr :on_channel_dblclick, :any, default: nil, doc: "Channel double-click callback"
   attr :on_pm_click, :any, default: nil, doc: "PM click callback"
-  attr :on_user_click, :any, default: nil, doc: "User click callback"
   attr :on_toggle_section, :any, default: nil, doc: "Section toggle callback"
   attr :on_close, :any, default: nil, doc: "Close/hide sidebar callback"
   attr :on_browse_channels, :any, default: nil, doc: "Browse channels callback"
@@ -67,9 +60,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   @spec conversations(map()) :: Phoenix.LiveView.Rendered.t()
   def conversations(assigns) do
-    sorted_users = sort_users_by_role(assigns.channel_users)
-    assigns = assign(assigns, :sorted_users, sorted_users)
-
     ~H"""
     <div
       class={classes(["flex flex-col", @class])}
@@ -140,19 +130,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               on_click={@on_channel_click}
               on_dblclick={@on_channel_dblclick}
             />
-            <%!-- Users under active channel --%>
-            <div
-              :if={@sorted_users != []}
-              class="ml-2 mt-retro-2"
-              data-testid="conversations-users"
-            >
-              <.user_item
-                :for={user <- @sorted_users}
-                user={user}
-                nick_color_fn={@nick_color_fn}
-                on_click={@on_user_click}
-              />
-            </div>
           </.tree_view_group>
 
           <%!-- Private Messages --%>
@@ -305,44 +282,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     """
   end
 
-  # ── User Item ──────────────────────────────────────────
-
-  attr :user, :map, required: true
-  attr :nick_color_fn, :any, default: nil
-  attr :on_click, :any, default: nil
-
-  defp user_item(assigns) do
-    nick = assigns.user[:nick] || assigns.user[:nickname] || assigns.user[:name]
-    role = assigns.user[:role]
-    away = assigns.user[:away] || false
-
-    nick_color_class =
-      if assigns.nick_color_fn, do: assigns.nick_color_fn.(nick), else: nil
-
-    assigns =
-      assigns
-      |> assign(:nick, nick)
-      |> assign(:role, role)
-      |> assign(:away, away)
-      |> assign(:nick_color_class, nick_color_class)
-
-    ~H"""
-    <.tree_view_item
-      class={[@away && "opacity-50", @nick_color_class]}
-      phx-click={@on_click}
-      phx-value-nick={@nick}
-      data-nick={@nick}
-      data-testid={"user-#{@nick}"}
-    >
-      <:icon>
-        <.role_icon role={@role} />
-      </:icon>
-      <span class="truncate">{@nick}</span>
-      <.role_badge role={@role} />
-    </.tree_view_item>
-    """
-  end
-
   # ── Popular Item ───────────────────────────────────────
 
   attr :channel, :map, required: true, doc: "Map with :name and :user_count"
@@ -369,84 +308,5 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       </.button>
     </.tree_view_item>
     """
-  end
-
-  # ── Role Helpers ───────────────────────────────────────
-
-  attr :role, :atom, required: true
-
-  defp role_icon(%{role: :owner} = assigns) do
-    ~H"""
-    <Icons.icon_role_owner class="w-3 h-3" />
-    """
-  end
-
-  defp role_icon(%{role: :operator} = assigns) do
-    ~H"""
-    <Icons.icon_role_operator class="w-3 h-3" />
-    """
-  end
-
-  defp role_icon(%{role: :half_operator} = assigns) do
-    ~H"""
-    <Icons.icon_role_halfop class="w-3 h-3" />
-    """
-  end
-
-  defp role_icon(%{role: :voiced} = assigns) do
-    ~H"""
-    <Icons.icon_role_voiced class="w-3 h-3" />
-    """
-  end
-
-  defp role_icon(assigns) do
-    ~H"""
-    <Icons.icon_role_regular class="w-3 h-3" />
-    """
-  end
-
-  attr :role, :atom, required: true
-
-  defp role_badge(%{role: :owner} = assigns) do
-    ~H"""
-    <Icons.icon_role_owner class="w-2.5 h-2.5 ml-1 shrink-0" />
-    """
-  end
-
-  defp role_badge(%{role: :operator} = assigns) do
-    ~H"""
-    <Icons.icon_role_operator class="w-2.5 h-2.5 ml-1 shrink-0" />
-    """
-  end
-
-  defp role_badge(%{role: :half_operator} = assigns) do
-    ~H"""
-    <Icons.icon_role_halfop class="w-2.5 h-2.5 ml-1 shrink-0" />
-    """
-  end
-
-  defp role_badge(%{role: :voiced} = assigns) do
-    ~H"""
-    <Icons.icon_role_voiced class="w-2.5 h-2.5 ml-1 shrink-0" />
-    """
-  end
-
-  defp role_badge(%{role: :bot} = assigns) do
-    ~H"""
-    <span class="text-[10px] ml-1 shrink-0" title="Bot">⚙</span>
-    """
-  end
-
-  defp role_badge(assigns) do
-    ~H""
-  end
-
-  @spec sort_users_by_role(list()) :: list()
-  defp sort_users_by_role(users) do
-    Enum.sort_by(users, fn user ->
-      nick = user[:nick] || user[:nickname] || user[:name] || ""
-      role = user[:role] || :regular
-      {Map.get(@role_priority, role, 99), nick}
-    end)
   end
 end

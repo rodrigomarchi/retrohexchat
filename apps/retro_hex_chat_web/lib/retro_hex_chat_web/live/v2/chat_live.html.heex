@@ -82,9 +82,6 @@
           }
           pm_conversations={@session.pm_conversations}
           active_pm={@session.active_pm}
-          channel_users={
-            if !@session.active_pm && !@show_status_tab, do: @channel_users, else: []
-          }
           nick_color_fn={@nick_color_fn}
           channel_user_counts={@channel_user_counts}
           popular_channels={@popular_channels}
@@ -94,7 +91,6 @@
           on_channel_click="switch_channel"
           on_channel_dblclick="channel_dblclick"
           on_pm_click="switch_pm"
-          on_user_click="nick_dblclick"
           on_toggle_section="conversations_toggle_section"
           on_close="toggle_conversations"
           on_browse_channels="conversations_browse_all"
