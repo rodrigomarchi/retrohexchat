@@ -49,17 +49,13 @@ defmodule RetroHexChatWeb.V2.P2PSessionLiveTest do
   describe "p2p_connect event" do
     test "transitions session from lobby to connecting and pushes WebRTC start",
          %{conn: conn, token: token, creator: creator, peer: peer} do
-      # Mount as creator
       {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
 
-      # Simulate peer joining so session transitions to lobby
       SessionServer.join(token, peer.id)
       Process.sleep(50)
 
-      # Click the Connect button
       render_click(view, "p2p_connect")
 
-      # Assert WebRTC start event was pushed to the creator (initiator)
       assert_push_event(view, "p2p_start_offer", %{role: "initiator"})
     end
 
@@ -67,21 +63,140 @@ defmodule RetroHexChatWeb.V2.P2PSessionLiveTest do
          %{conn: conn, token: token, creator: creator, peer: peer} do
       {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
 
-      # Both join -> lobby
       SessionServer.join(token, peer.id)
       Process.sleep(50)
-      html = render(view)
 
       assert has_element?(view, ~s([data-testid="p2p-lobby-connect"]))
-      assert html =~ "Connect"
     end
 
     test "connect button is visible in pending state",
          %{conn: conn, token: token, creator: creator} do
       {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
 
-      # Still pending (only creator joined)
       assert has_element?(view, ~s([data-testid="p2p-lobby-connect"]))
+    end
+  end
+
+  describe "hooks and DOM elements" do
+    test "WebRTCHook element is present on mount",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      assert has_element?(view, ~s(#p2p-webrtc[phx-hook="WebRTCHook"]))
+    end
+
+    test "P2PCapabilityHook element is present on mount",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      assert has_element?(view, ~s(#p2p-capabilities[phx-hook="P2PCapabilityHook"]))
+    end
+  end
+
+  describe "media call area" do
+    test "MediaHook renders with video/audio elements when call is active",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      # Simulate call being active
+      send(view.pid, %{
+        event: "p2p_status_changed",
+        payload: %{status: "active"}
+      })
+
+      # Set call state via a media_call_started event
+      render_click(view, "media_call_started", %{"type" => "audio"})
+      Process.sleep(50)
+      html = render(view)
+
+      assert html =~ ~s(id="media-call")
+      assert html =~ ~s(phx-hook="MediaHook")
+      assert html =~ ~s(id="remote-audio")
+      assert has_element?(view, ~s([data-testid="media-controls-mute"]))
+      assert has_element?(view, ~s([data-testid="media-controls-end-call"]))
+    end
+
+    test "media controls use data-media-action for hook wiring",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      send(view.pid, %{
+        event: "p2p_status_changed",
+        payload: %{status: "active"}
+      })
+
+      render_click(view, "media_call_started", %{"type" => "audio"})
+      Process.sleep(50)
+      html = render(view)
+
+      assert html =~ ~s(data-media-action="mute")
+      assert html =~ ~s(data-media-action="end-call")
+    end
+
+    test "video elements render for video call",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      send(view.pid, %{
+        event: "p2p_status_changed",
+        payload: %{status: "active"}
+      })
+
+      render_click(view, "media_call_started", %{"type" => "video"})
+      Process.sleep(50)
+      html = render(view)
+
+      assert html =~ ~s(id="remote-video")
+      assert html =~ ~s(id="local-video")
+      assert html =~ ~s(data-media-action="camera")
+    end
+
+    test "no media area when no call is active",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      refute has_element?(view, ~s([data-testid="media-call"]))
+    end
+  end
+
+  describe "file transfer area" do
+    test "FileTransferHook renders with file input when file transfer is active",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      # Action response sets accepted_action_type (must come before status change)
+      send(view.pid, %{
+        event: "p2p_action_response",
+        payload: %{
+          accepted: true,
+          responder_id: 0,
+          responder_nick: "peer",
+          action_type: "file_transfer"
+        }
+      })
+
+      Process.sleep(50)
+
+      # Status change to active triggers maybe_init_file_transfer
+      send(view.pid, %{
+        event: "p2p_status_changed",
+        payload: %{status: "active"}
+      })
+
+      Process.sleep(50)
+      html = render(view)
+
+      assert html =~ ~s(id="p2p-file-transfer")
+      assert html =~ ~s(phx-hook="FileTransferHook")
+      assert html =~ ~s(id="p2p-file-input")
+      assert html =~ "Browse Files"
+    end
+
+    test "no file transfer area when not active",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      refute has_element?(view, ~s([data-testid="file-transfer-hook"]))
     end
   end
 

@@ -19,7 +19,8 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.P2PLobby
   import RetroHexChatWeb.Components.UI.FileTransfer
-  import RetroHexChatWeb.Components.UI.MediaControls
+
+  alias RetroHexChatWeb.Icons
 
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.P2P

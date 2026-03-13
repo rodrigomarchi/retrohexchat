@@ -84,31 +84,183 @@
       </div>
     </div>
 
-    <%!-- File transfer --%>
-    <.file_transfer
-      :if={@file_transfer && @file_transfer[:file_name]}
-      file_name={@file_transfer[:file_name] || "unknown"}
-      progress={@file_transfer[:percent] || 0}
-      speed={@file_transfer[:speed]}
-      formatted_size={@file_transfer[:formatted_size]}
-      state={@file_transfer[:status] || "ready"}
-      direction={ft_direction(@file_transfer, @nickname)}
-      on_cancel="ft_cancel"
-      on_accept="ft_accept_offer"
-      class="w-full max-w-[320px]"
-    />
-
-    <%!-- Media controls --%>
-    <.media_controls
+    <%!-- Media call area (MediaHook handles audio/video streams and controls) --%>
+    <div
       :if={@call}
-      muted={@local_muted}
-      camera_on={!@local_camera_off}
-      in_call={true}
-      on_mute_toggle="media_mute_changed"
-      on_camera_toggle="media_camera_changed"
-      on_end_call="media_call_ended"
+      id="media-call"
+      phx-hook="MediaHook"
+      class="w-full max-w-[320px] shadow-retro-raised bg-surface"
+      data-testid="media-call"
+    >
+      <%!-- Video area --%>
+      <div :if={@call[:type] == "video"} class="relative bg-black">
+        <video
+          id="remote-video"
+          class={[
+            "w-full aspect-video bg-black",
+            @call[:peer_camera_off] && "hidden"
+          ]}
+          autoplay
+          playsinline
+        >
+        </video>
+        <div
+          :if={@call[:peer_camera_off]}
+          class="w-full aspect-video bg-black flex items-center justify-center"
+        >
+          <span class="text-white text-xs">Camera off</span>
+        </div>
+        <video
+          id="local-video"
+          class="absolute bottom-2 right-2 w-20 aspect-video bg-black border border-border"
+          autoplay
+          playsinline
+          muted
+        >
+        </video>
+      </div>
+      <%!-- Audio element (always present for audio streams) --%>
+      <audio id="remote-audio" autoplay></audio>
+      <%!-- Media controls toolbar --%>
+      <div class="flex items-center gap-2 p-2 justify-center text-xs">
+        <button
+          type="button"
+          data-media-action="mute"
+          class={[
+            "shadow-retro-raised px-3 py-1 cursor-pointer hover:shadow-retro-sunken",
+            @local_muted && "shadow-retro-sunken bg-accent",
+            !@local_muted && "bg-surface"
+          ]}
+          data-testid="media-controls-mute"
+        >
+          {if @local_muted, do: "Unmute", else: "Mute"}
+        </button>
+        <button
+          :if={@call[:type] == "video"}
+          type="button"
+          data-media-action="camera"
+          class={[
+            "shadow-retro-raised px-3 py-1 cursor-pointer hover:shadow-retro-sunken",
+            @local_camera_off && "shadow-retro-sunken bg-accent",
+            !@local_camera_off && "bg-surface"
+          ]}
+          data-testid="media-controls-camera"
+        >
+          {if @local_camera_off, do: "Camera On", else: "Camera Off"}
+        </button>
+        <button
+          :if={@call[:type] == "audio"}
+          type="button"
+          data-media-action="upgrade"
+          class="shadow-retro-raised bg-surface px-3 py-1 cursor-pointer hover:shadow-retro-sunken"
+        >
+          Add Video
+        </button>
+        <span class="mx-1 text-border">|</span>
+        <button
+          type="button"
+          data-media-action="end-call"
+          class="shadow-retro-raised bg-surface px-3 py-1 cursor-pointer hover:shadow-retro-sunken text-error"
+          data-testid="media-controls-end-call"
+        >
+          End Call
+        </button>
+        <span :if={@call[:duration]} class="text-muted-foreground ml-2">
+          {@call[:duration]}
+        </span>
+      </div>
+      <%!-- Video upgrade request/response --%>
+      <div :if={@call[:upgrade_pending]} class="flex items-center gap-2 p-2 text-xs bg-accent">
+        <span>{@peer_nick} wants to add video</span>
+        <button
+          type="button"
+          phx-click="media_respond_upgrade"
+          phx-value-accepted="true"
+          class="shadow-retro-raised bg-surface px-2 py-0.5 cursor-pointer hover:shadow-retro-sunken"
+        >
+          Accept
+        </button>
+        <button
+          type="button"
+          phx-click="media_respond_upgrade"
+          phx-value-accepted="false"
+          class="shadow-retro-raised bg-surface px-2 py-0.5 cursor-pointer hover:shadow-retro-sunken"
+        >
+          Decline
+        </button>
+      </div>
+      <%!-- Quality presets --%>
+      <div
+        :if={@call[:quality_label]}
+        class="flex items-center gap-2 p-2 text-xs text-muted-foreground"
+      >
+        <span>Quality: {@call[:quality_label]}</span>
+        <button
+          type="button"
+          phx-click="media_select_preset"
+          phx-value-preset="high"
+          class="shadow-retro-raised bg-surface px-2 py-0.5 cursor-pointer hover:shadow-retro-sunken text-[10px]"
+        >
+          High
+        </button>
+        <button
+          type="button"
+          phx-click="media_select_preset"
+          phx-value-preset="medium"
+          class="shadow-retro-raised bg-surface px-2 py-0.5 cursor-pointer hover:shadow-retro-sunken text-[10px]"
+        >
+          Med
+        </button>
+        <button
+          type="button"
+          phx-click="media_select_preset"
+          phx-value-preset="low"
+          class="shadow-retro-raised bg-surface px-2 py-0.5 cursor-pointer hover:shadow-retro-sunken text-[10px]"
+        >
+          Low
+        </button>
+      </div>
+    </div>
+
+    <%!-- File transfer area (FileTransferHook handles DataChannel and file I/O) --%>
+    <div
+      :if={@file_transfer}
+      id="p2p-file-transfer"
+      phx-hook="FileTransferHook"
       class="w-full max-w-[320px]"
-    />
+      data-testid="file-transfer-hook"
+    >
+      <input type="file" id="p2p-file-input" class="file-transfer-input hidden" />
+      <%!-- File selection (ready state) --%>
+      <div
+        :if={@file_transfer[:status] == "ready" && !@file_transfer[:file_name]}
+        class="shadow-retro-field bg-white p-4 text-center text-xs"
+      >
+        <Icons.icon_file_send class="w-6 h-6 mx-auto mb-2" />
+        <p class="mb-2">Drag a file here or click to browse</p>
+        <p class="text-muted-foreground mb-2">
+          Max: {Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500)} MB
+        </p>
+        <label
+          for="p2p-file-input"
+          class="shadow-retro-raised bg-surface px-3 py-1 cursor-pointer hover:shadow-retro-sunken inline-block"
+        >
+          Browse Files
+        </label>
+      </div>
+      <%!-- File transfer progress/status display --%>
+      <.file_transfer
+        :if={@file_transfer[:file_name]}
+        file_name={@file_transfer[:file_name] || "unknown"}
+        progress={@file_transfer[:percent] || 0}
+        speed={@file_transfer[:speed]}
+        formatted_size={@file_transfer[:formatted_size]}
+        state={@file_transfer[:status] || "ready"}
+        direction={ft_direction(@file_transfer, @nickname)}
+        on_cancel="ft_cancel"
+        on_accept="ft_accept_offer"
+      />
+    </div>
 
     <%!-- Lobby chat input --%>
     <div :if={@session_status in ["pending", "lobby"]} class="w-full max-w-[320px]">
