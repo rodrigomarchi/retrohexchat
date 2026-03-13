@@ -24,11 +24,15 @@
       <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
     </:panels>
   </.app_header>
-  <div class="flex-1 flex items-center justify-center p-4">
-    <div class="shadow-retro-raised bg-surface p-6 text-center max-w-sm">
-      <p class="text-sm font-bold mb-2">P2P Session Ended</p>
-      <p class="text-xs text-muted-foreground">{@session_ended_reason}</p>
-    </div>
+  <div class="flex-1 flex flex-col items-center p-4 gap-4 overflow-y-auto">
+    <.p2p_session_ended
+      nickname={@nickname}
+      peer={@peer_nick}
+      reason={@session_ended_reason}
+      duration={@session_duration}
+      local_info={@local_info}
+      peer_info={@peer_info}
+    />
   </div>
   <.about_dialog id="about-dialog" />
 </div>

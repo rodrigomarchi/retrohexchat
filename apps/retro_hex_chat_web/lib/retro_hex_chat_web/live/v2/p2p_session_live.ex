@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.P2PLobby
 
+  import RetroHexChatWeb.Components.UI.P2PSessionEnded
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.Schema.Session
@@ -199,9 +200,15 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
     else
       notify_session_ended(socket, reason)
 
+      duration_secs = compute_session_duration(socket)
+
       {:noreply,
        socket
-       |> assign(session_closed: true, session_ended_reason: expired_reason_label(reason))}
+       |> assign(
+         session_closed: true,
+         session_ended_reason: expired_reason_label(reason),
+         session_duration: duration_secs
+       )}
     end
   end
 
@@ -864,7 +871,8 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
         local_muted: false,
         local_camera_off: false,
         session_closed: false,
-        session_ended_reason: nil
+        session_ended_reason: nil,
+        session_duration: nil
       )
 
     socket =
@@ -1032,7 +1040,20 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   defp expired_reason_label("disconnected"), do: "Session closed (disconnected)."
   defp expired_reason_label("expired"), do: "Session expired due to inactivity."
   defp expired_reason_label("failed"), do: "Session closed due to connection failure."
+  defp expired_reason_label("call_ended"), do: "Call ended."
+  defp expired_reason_label("file_transfer_completed"), do: "File transfer completed."
   defp expired_reason_label(_reason), do: "P2P session ended."
+
+  @spec compute_session_duration(Phoenix.LiveView.Socket.t()) :: integer()
+  defp compute_session_duration(socket) do
+    token = socket.assigns[:token]
+    session = socket.assigns[:session]
+
+    case RetroHexChat.P2P.get_session(token) do
+      {:ok, fresh} when is_integer(fresh.duration_seconds) -> fresh.duration_seconds
+      _ -> DateTime.diff(DateTime.utc_now(), session.inserted_at)
+    end
+  end
 
   defp load_turn_only_preference(nickname) do
     case RetroHexChat.Repo.get(UserPreference, nickname) do

@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.P2PLobby
+  import RetroHexChatWeb.Components.UI.P2PSessionEnded
   import RetroHexChatWeb.ShowcaseHelpers
 
   @local_info %{
@@ -205,6 +206,48 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
           turn_configured={true}
           turn_only={true}
           inactivity_warning={true}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Session Ended (call ended)"
+        description="Shown to the peer who didn't close. Displays connection diagram, reason, and duration."
+      >
+        <.p2p_session_ended
+          nickname="you"
+          peer="dave"
+          reason="Call ended."
+          duration={185}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Session Ended (user closed)"
+        description="Session closed by the other peer."
+      >
+        <.p2p_session_ended
+          nickname="you"
+          peer="alice"
+          reason="Session closed by user."
+          duration={3723}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Session Ended (file transfer)"
+        description="Session ended after file transfer completed."
+      >
+        <.p2p_session_ended
+          nickname="you"
+          peer="bob"
+          reason="File transfer completed."
+          duration={42}
           local_info={@local_info}
           peer_info={@peer_info}
         />

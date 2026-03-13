@@ -339,6 +339,10 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
   defp derive_session_state(%{session_status: "connecting"}),
     do: %{id: "connecting", label: "Connecting...", direction: "bidi"}
 
+  defp derive_session_state(%{session_status: status})
+       when status in ~w(closed expired failed),
+       do: %{id: "disconnected", label: "Disconnected"}
+
   defp derive_session_state(%{peer_online: true}),
     do: %{id: "ready", label: "Ready"}
 
