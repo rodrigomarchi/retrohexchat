@@ -70,6 +70,10 @@
           channels={@session.channels}
           active_channel={@session.active_channel}
           unread_counts={@unread_counts}
+          unread_channels={
+            for {k, v} <- @unread_counts, v > 0, !String.starts_with?(k, "pm:"), do: k
+          }
+          unread_pms={for {"pm:" <> nick, v} <- @unread_counts, v > 0, do: nick}
           highlight_channels={MapSet.to_list(@highlight_channels)}
           flash_channels={MapSet.to_list(@flash_channels)}
           muted_channels={MapSet.to_list(@muted_channels)}

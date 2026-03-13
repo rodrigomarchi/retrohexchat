@@ -90,6 +90,22 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
       </.showcase_card>
 
       <.showcase_card
+        title="Waiting State (Guest)"
+        description="Guest waits for the host to choose a game."
+      >
+        <.game_lobby
+          id="game-lobby-guest-waiting"
+          nickname="bob"
+          peer_nick="alice"
+          role={:peer}
+          games={@games}
+          session_status="Waiting for game selection"
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
         title="Consent State (Guest)"
         description="Guest sees an accept/decline banner when the host requests a game."
       >

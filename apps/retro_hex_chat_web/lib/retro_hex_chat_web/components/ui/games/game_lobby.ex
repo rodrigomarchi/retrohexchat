@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
     ~H"""
     <.window
       :if={@show}
-      class={classes(["w-full max-w-[420px]", @class])}
+      class={classes(["w-full max-w-[600px]", @class])}
       data-testid="game-lobby"
       {@rest}
     >
@@ -136,35 +136,36 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
           </span>
         </div>
 
-        <%!-- Game picker grid --%>
-        <div :if={@games != [] and @game_request == nil}>
+        <%!-- Game picker grid (host only) --%>
+        <div :if={@role == :creator and @games != [] and @game_request == nil}>
           <p class="text-xs font-bold mb-retro-4">Choose a game:</p>
-          <div class="grid grid-cols-3 gap-retro-4">
-            <.button
+          <div class="grid grid-cols-5 gap-retro-4">
+            <button
               :for={game <- @games}
               type="button"
-              variant="ghost"
               phx-click={@on_select_game}
               phx-value-game_id={game.id}
-              class={[
-                "shadow-retro-field bg-white p-retro-4 text-center cursor-pointer h-auto",
-                "hover:bg-hover-bg active:shadow-retro-sunken flex-col"
-              ]}
+              class="shadow-retro-field bg-white p-retro-4 flex flex-col items-center justify-center gap-retro-2 cursor-pointer hover:bg-hover-bg active:shadow-retro-sunken"
               data-testid={"game-lobby-game-#{game.id}"}
             >
-              <:icon>
-                <div class="w-8 h-8 mx-auto mb-retro-2">
-                  <Icons.game_icon game_id={game.id} class="w-8 h-8" />
-                </div>
-              </:icon>
-              <p class="text-xs font-bold truncate">{game.name}</p>
-            </.button>
+              <Icons.game_icon game_id={game.id} class="w-8 h-8" />
+              <p class="text-xs font-bold text-center w-full truncate">{game.name}</p>
+            </button>
           </div>
         </div>
 
-        <%!-- Empty state when no games and no request --%>
+        <%!-- Waiting state (guest waits for host to pick a game) --%>
         <div
-          :if={@games == [] and @game_request == nil}
+          :if={@role == :peer and @game_request == nil}
+          class="flex items-center gap-retro-4 shadow-retro-field bg-white px-retro-8 py-retro-8 text-xs"
+        >
+          <Icons.icon_clock class="w-4 h-4 flex-shrink-0 animate-spin" />
+          <span>Waiting for <strong>{@peer_nick}</strong> to choose a game...</span>
+        </div>
+
+        <%!-- Empty state (host, no games available) --%>
+        <div
+          :if={@role == :creator and @games == [] and @game_request == nil}
           class="shadow-retro-field bg-white p-retro-16 text-center text-xs text-muted-foreground"
         >
           No games available
