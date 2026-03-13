@@ -8,29 +8,50 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.GameLobby
+  import RetroHexChatWeb.Components.UI.GameSessionEnded
   import RetroHexChatWeb.ShowcaseHelpers
 
-  @games [
-    %{id: "pong", name: "Pong", icon: :pong},
-    %{id: "tanks", name: "Tanks", icon: :tanks},
-    %{id: "breakout", name: "Breakout", icon: :breakout},
-    %{id: "space", name: "Space Invaders", icon: :space},
-    %{id: "tennis", name: "Tennis", icon: :tennis},
-    %{id: "boxing", name: "Boxing", icon: :boxing}
-  ]
+  alias RetroHexChat.Games.Catalog
+
+  @local_info %{
+    browser: "Chrome 145.0",
+    os: "macOS 10.15",
+    screen: "2560x1440",
+    language: "en-US",
+    timezone: "America/Sao_Paulo",
+    cores: 14,
+    color_depth: 24
+  }
+
+  @peer_info %{
+    browser: "Firefox 148.0",
+    os: "Linux Ubuntu",
+    screen: "1920x1080",
+    language: "pt-BR",
+    timezone: "America/Sao_Paulo",
+    cores: 8,
+    color_depth: 30
+  }
 
   @impl true
   def mount(_params, _session, socket) do
+    games = Catalog.list_games() |> Enum.take(6)
+
     {:ok,
      assign(socket,
        page_title: "Game Lobby",
        active_page: "game-lobby",
-       games: @games
+       games: games
      )}
   end
 
   @impl true
   def render(assigns) do
+    assigns =
+      assigns
+      |> assign(:local_info, @local_info)
+      |> assign(:peer_info, @peer_info)
+
     ~H"""
     <.showcase_layout active_page={@active_page}>
       <h2 class="text-lg font-bold mb-3">Game Lobby</h2>
@@ -46,18 +67,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
           role={:creator}
           games={@games}
           session_status="Waiting for game selection"
+          local_info={@local_info}
+          peer_info={@peer_info}
         />
-        <.code_example>
-          &lt;.game_lobby
-          id="game-lobby"
-          nickname="alice"
-          peer_nick="bob"
-          role=&#123;:creator&#125;
-          games=&#123;@games&#125;
-          on_select_game="select_game"
-          on_close="leave_lobby"
-          /&gt;
-        </.code_example>
       </.showcase_card>
 
       <.showcase_card
@@ -70,8 +82,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
           peer_nick="bob"
           role={:creator}
           games={@games}
-          game_request={%{game_id: "Pong", requester_nick: "alice"}}
+          game_request={%{game_id: "hex_pong", game_name: "Hex Pong", requester_nick: "alice"}}
           session_status="Waiting for acceptance"
+          local_info={@local_info}
+          peer_info={@peer_info}
         />
       </.showcase_card>
 
@@ -85,8 +99,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
           peer_nick="alice"
           role={:peer}
           games={@games}
-          game_request={%{game_id: "Pong", requester_nick: "alice"}}
+          game_request={%{game_id: "hex_pong", game_name: "Hex Pong", requester_nick: "alice"}}
           session_status="Game request received"
+          local_info={@local_info}
+          peer_info={@peer_info}
         />
       </.showcase_card>
 
@@ -102,6 +118,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
           games={@games}
           inactivity_warning={true}
           session_status="Lobby idle"
+          local_info={@local_info}
+          peer_info={@peer_info}
         />
       </.showcase_card>
 
@@ -117,6 +135,50 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
           peer_online={false}
           games={[]}
           session_status="Peer disconnected"
+          local_info={@local_info}
+        />
+      </.showcase_card>
+
+      <h2 class="text-lg font-bold mb-3 mt-6">Game Session Ended</h2>
+
+      <.showcase_card
+        title="Game Over (with score)"
+        description="Shown after a game finishes with final score and winner."
+      >
+        <.game_session_ended
+          nickname="alice"
+          peer="bob"
+          reason="Game over."
+          duration={185}
+          game_name="Hex Pong"
+          game_result={%{"score" => %{"p1" => 11, "p2" => 7}, "winner" => 1}}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Session Closed by User"
+        description="Session closed by the other peer."
+      >
+        <.game_session_ended
+          nickname="alice"
+          peer="bob"
+          reason="Session closed by user."
+          duration={3723}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Session Ended (no result)"
+        description="Session expired before a game was played."
+      >
+        <.game_session_ended
+          nickname="alice"
+          peer="charlie"
+          reason="Session expired due to inactivity."
         />
       </.showcase_card>
     </.showcase_layout>

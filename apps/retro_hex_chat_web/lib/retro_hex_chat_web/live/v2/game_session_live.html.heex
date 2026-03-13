@@ -1,25 +1,49 @@
-<%!-- Expired state --%>
+<%!-- Expired state (session was already terminal before mount) --%>
 <div :if={assigns[:expired]} class="flex flex-col min-h-screen bg-surface">
   <.app_header on_logo_click={show_modal("about-dialog")}>
     <:panels>
       <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
     </:panels>
   </.app_header>
-  <div class="flex-1 flex items-center justify-center p-4">
-    <div class="shadow-retro-raised bg-surface p-6 text-center max-w-sm">
-      <p class="text-sm font-bold mb-2">Game Session Ended</p>
-      <p class="text-xs text-muted-foreground mb-2">{@expired_reason}</p>
-      <p :if={@game_result} class="text-xs text-muted-foreground">
-        Result: {@game_result}
-      </p>
-    </div>
+  <div class="flex-1 flex flex-col items-center p-4 gap-4 overflow-y-auto">
+    <.game_session_ended
+      nickname={assigns[:nickname] || "you"}
+      peer={assigns[:peer_nick] || "peer"}
+      reason={@expired_reason}
+      game_result={@game_result}
+    />
+  </div>
+  <.about_dialog id="about-dialog" />
+</div>
+
+<%!-- Session ended by the other peer (shown to the peer who didn't close) --%>
+<div
+  :if={!assigns[:expired] && @session_ended_reason}
+  class="flex flex-col min-h-screen bg-surface"
+>
+  <.app_header on_logo_click={show_modal("about-dialog")}>
+    <:panels>
+      <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
+    </:panels>
+  </.app_header>
+  <div class="flex-1 flex flex-col items-center p-4 gap-4 overflow-y-auto">
+    <.game_session_ended
+      nickname={@nickname}
+      peer={@peer_nick}
+      reason={@session_ended_reason}
+      duration={@session_duration}
+      game_name={@game_name}
+      game_result={@game_result}
+      local_info={@local_info}
+      peer_info={@peer_info}
+    />
   </div>
   <.about_dialog id="about-dialog" />
 </div>
 
 <%!-- Playing state --%>
 <div
-  :if={!assigns[:expired] && @session_status == "playing"}
+  :if={!assigns[:expired] && !@session_ended_reason && @session_status == "playing"}
   id="game-session"
   phx-hook="GameSessionHook"
   class="flex flex-col min-h-screen bg-surface"
@@ -33,6 +57,7 @@
   <div class="flex-1 flex items-center justify-center p-4">
     <.game_canvas
       id="game-canvas"
+      phx-hook="GameCanvasHook"
       game_id={@game_id}
       game_name={@game_name}
       nickname={@nickname}
@@ -46,7 +71,7 @@
 
 <%!-- Lobby state --%>
 <div
-  :if={!assigns[:expired] && @session_status != "playing"}
+  :if={!assigns[:expired] && !@session_ended_reason && @session_status != "playing"}
   id="game-session"
   phx-hook="GameSessionHook"
   class="flex flex-col min-h-screen bg-surface"
@@ -67,6 +92,8 @@
       game_request={@game_request}
       session_status={@session_status}
       inactivity_warning={@inactivity_warning}
+      local_info={@local_info}
+      peer_info={@peer_info}
       on_select_game="select_game"
       on_respond_game="respond_game"
       on_close="close_session"

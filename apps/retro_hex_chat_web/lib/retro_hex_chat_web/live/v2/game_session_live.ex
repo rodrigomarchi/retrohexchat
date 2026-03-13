@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.GameLobby
   import RetroHexChatWeb.Components.UI.GameCanvas
+  import RetroHexChatWeb.Components.UI.GameSessionEnded
 
   alias RetroHexChat.Games
   alias RetroHexChat.Games.Schema.GameSession
@@ -116,20 +117,39 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
     if GameSession.terminal?(status) do
       notify_session_ended(socket, status)
 
-      socket =
-        socket
-        |> push_event("game_end", %{})
-        |> assign(session_closed: true)
-        |> push_event("game_close_tab", %{})
+      if socket.assigns.session_closed do
+        # We initiated the close — close tab
+        {:noreply,
+         socket
+         |> push_event("game_end", %{})
+         |> push_event("game_close_tab", %{})}
+      else
+        # Other peer ended — show session ended screen
+        {duration, game_result} = fetch_session_result(socket)
 
-      {:noreply, socket}
+        {:noreply,
+         socket
+         |> push_event("game_end", %{})
+         |> assign(
+           session_ended_reason: session_ended_label(status),
+           session_duration: duration,
+           game_result: game_result,
+           session_closed: true
+         )}
+      end
     else
       {:noreply, assign(socket, session_status: status)}
     end
   end
 
   def handle_info(%{event: "game_select_request", payload: request}, socket) do
-    {:noreply, assign(socket, game_request: request)}
+    game_name =
+      case Games.get_game(request.game_id) do
+        {:ok, game} -> game.name
+        _ -> request.game_id
+      end
+
+    {:noreply, assign(socket, game_request: Map.put(request, :game_name, game_name))}
   end
 
   def handle_info(%{event: "game_select_response", payload: _response}, socket) do
@@ -141,12 +161,22 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
   end
 
   def handle_info(%{event: "game_session_closed", payload: %{reason: reason}}, socket) do
-    notify_session_ended(socket, reason)
+    if socket.assigns.session_closed do
+      # We initiated the close — close tab
+      {:noreply, push_event(socket, "game_close_tab", %{})}
+    else
+      # Other peer closed — show session ended screen
+      notify_session_ended(socket, reason)
+      {duration, game_result} = fetch_session_result(socket)
 
-    {:noreply,
-     socket
-     |> assign(session_closed: true)
-     |> push_event("game_close_tab", %{})}
+      {:noreply,
+       assign(socket,
+         session_ended_reason: session_ended_label(reason),
+         session_duration: duration,
+         game_result: game_result,
+         session_closed: true
+       )}
+    end
   end
 
   def handle_info(
@@ -322,7 +352,9 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
         webrtc_state: nil,
         game_id: game_id,
         game_name: game_name,
-        session_closed: false
+        session_closed: false,
+        session_ended_reason: nil,
+        session_duration: nil
       )
 
     {:ok, socket}
@@ -395,6 +427,21 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
   defp expired_reason_label("pending_timeout"), do: "Session expired — peer did not join."
   defp expired_reason_label("lobby_inactivity"), do: "Session expired due to inactivity."
   defp expired_reason_label(_reason), do: "Game session ended."
+
+  defp fetch_session_result(socket) do
+    case socket.assigns[:token] && Games.get_session(socket.assigns.token) do
+      {:ok, s} -> {s.duration_seconds, s.metadata["result"]}
+      _ -> {nil, nil}
+    end
+  end
+
+  defp session_ended_label("game_over"), do: "Game over."
+  defp session_ended_label("finished"), do: "Game finished."
+  defp session_ended_label("user_closed"), do: "Session closed by user."
+  defp session_ended_label("disconnected"), do: "Peer disconnected."
+  defp session_ended_label("inactivity"), do: "Session closed due to inactivity."
+  defp session_ended_label("lobby_inactivity"), do: "Session closed due to inactivity."
+  defp session_ended_label(reason), do: expired_reason_label(reason)
 
   defp notify_session_ended(socket, reason) do
     nickname = socket.assigns[:nickname]

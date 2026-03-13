@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
 
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Badge
+  import RetroHexChatWeb.Components.UI.P2PConnectionDiagram
 
   alias RetroHexChatWeb.Icons
 
@@ -38,14 +38,16 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
 
   attr :games, :list,
     default: [],
-    doc: "List of %{id, name, icon} maps for the game picker"
+    doc: "List of %{id, name} maps for the game picker"
 
   attr :game_request, :map,
     default: nil,
-    doc: "Active game request map with :game_id and :requester_nick, or nil"
+    doc: "Active game request map with :game_name, :game_id and :requester_nick, or nil"
 
   attr :session_status, :string, default: "lobby", doc: "Session phase label"
   attr :inactivity_warning, :boolean, default: false, doc: "Show inactivity warning bar"
+  attr :local_info, :map, default: %{}, doc: "Local peer client info for connection diagram"
+  attr :peer_info, :map, default: %{}, doc: "Remote peer client info for connection diagram"
   attr :on_select_game, :any, default: nil, doc: "Game card click callback (phx-value-game_id)"
   attr :on_respond_game, :any, default: nil, doc: "Accept/Decline callback (phx-value-accepted)"
   attr :on_close, :any, default: nil, doc: "Leave/close button callback"
@@ -70,24 +72,15 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
       </.window_title_bar>
 
       <.window_body class="p-retro-8 space-y-retro-8">
-        <%!-- Player badges --%>
-        <div class="flex items-center gap-retro-8">
-          <div class="flex items-center gap-retro-4">
-            <Icons.icon_status_user class="w-4 h-4" />
-            <span class="text-xs font-bold">{@nickname}</span>
-            <.badge variant="default">
-              {if @role == :creator, do: "Host", else: "Player 2"}
-            </.badge>
-          </div>
-          <span class="text-xs text-muted-foreground">vs</span>
-          <div class="flex items-center gap-retro-4">
-            <Icons.icon_status_user class="w-4 h-4" />
-            <span class="text-xs font-bold">{@peer_nick}</span>
-            <.badge variant={if @peer_online, do: "secondary", else: "outline"}>
-              {if @peer_online, do: "Online", else: "Offline"}
-            </.badge>
-          </div>
-        </div>
+        <%!-- Connection diagram with peer info --%>
+        <.p2p_connection_diagram
+          nickname={@nickname}
+          peer_nick={@peer_nick}
+          peer_online={@peer_online}
+          session_status={@session_status}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
 
         <%!-- Inactivity warning --%>
         <div
@@ -105,7 +98,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
         >
           <p class="text-xs font-bold">
             <span class="font-normal">{@game_request.requester_nick}</span>
-            wants to play <span class="font-normal">{@game_request.game_id}</span>
+            wants to play <span class="font-normal">{@game_request.game_name}</span>
           </p>
           <div class="flex gap-retro-4">
             <.button
@@ -139,7 +132,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
           <Icons.icon_clock class="w-4 h-4 flex-shrink-0 animate-spin" />
           <span>
             Waiting for <strong>{@peer_nick}</strong>
-            to accept <strong>{@game_request.game_id}</strong>...
+            to accept <strong>{@game_request.game_name}</strong>...
           </span>
         </div>
 
@@ -161,7 +154,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
             >
               <:icon>
                 <div class="w-8 h-8 mx-auto mb-retro-2">
-                  <.game_icon icon={Map.get(game, :icon)} />
+                  <Icons.game_icon game_id={game.id} class="w-8 h-8" />
                 </div>
               </:icon>
               <p class="text-xs font-bold truncate">{game.name}</p>
@@ -199,35 +192,4 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
     </.window>
     """
   end
-
-  # ── Private helpers ───────────────────────────────────
-
-  attr :icon, :any, default: nil
-
-  defp game_icon(%{icon: :pong} = assigns),
-    do: ~H|<Icons.icon_game_pong class="w-8 h-8" />|
-
-  defp game_icon(%{icon: :doom} = assigns),
-    do: ~H|<Icons.icon_game_doom class="w-8 h-8" />|
-
-  defp game_icon(%{icon: :tanks} = assigns),
-    do: ~H|<Icons.icon_game_tanks class="w-8 h-8" />|
-
-  defp game_icon(%{icon: :trails} = assigns),
-    do: ~H|<Icons.icon_game_trails class="w-8 h-8" />|
-
-  defp game_icon(%{icon: :space} = assigns),
-    do: ~H|<Icons.icon_game_space class="w-8 h-8" />|
-
-  defp game_icon(%{icon: :breakout} = assigns),
-    do: ~H|<Icons.icon_game_breakout class="w-8 h-8" />|
-
-  defp game_icon(%{icon: :tennis} = assigns),
-    do: ~H|<Icons.icon_game_tennis class="w-8 h-8" />|
-
-  defp game_icon(%{icon: :boxing} = assigns),
-    do: ~H|<Icons.icon_game_boxing class="w-8 h-8" />|
-
-  defp game_icon(assigns),
-    do: ~H|<Icons.icon_game_generic class="w-8 h-8" />|
 end

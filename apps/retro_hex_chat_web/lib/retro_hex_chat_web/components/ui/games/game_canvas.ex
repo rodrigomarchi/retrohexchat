@@ -52,9 +52,12 @@ defmodule RetroHexChatWeb.Components.UI.GameCanvas do
       </.window_title_bar>
 
       <.window_body class="p-retro-8 space-y-retro-8">
-        <%!-- Canvas area placeholder --%>
-        <div class="shadow-retro-field bg-white flex items-center justify-center text-xs text-muted-foreground h-[400px]">
-          Game Canvas Area
+        <%!-- Canvas area --%>
+        <div class="shadow-retro-field bg-black h-[400px] relative overflow-hidden">
+          <canvas id="game-surface" width="640" height="480" class="w-full h-full"></canvas>
+          <p class="game-canvas__stub absolute inset-0 flex items-center justify-center text-xs text-gray-400">
+            Game engine initializing... Waiting for WebRTC connection.
+          </p>
         </div>
 
         <%!-- Controls bar --%>
