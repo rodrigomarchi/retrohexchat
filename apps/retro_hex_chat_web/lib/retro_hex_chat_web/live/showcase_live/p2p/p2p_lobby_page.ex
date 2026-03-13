@@ -10,6 +10,32 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
   import RetroHexChatWeb.Components.UI.P2PLobby
   import RetroHexChatWeb.ShowcaseHelpers
 
+  @local_info %{
+    browser: "Chrome 145.0",
+    os: "macOS 10.15",
+    screen: "2560x1440",
+    language: "en-US",
+    timezone: "America/Sao_Paulo",
+    cores: 14,
+    color_depth: 24
+  }
+
+  @peer_info %{
+    browser: "Firefox 148.0",
+    os: "Linux Ubuntu",
+    screen: "1920x1080",
+    language: "pt-BR",
+    timezone: "America/Sao_Paulo",
+    cores: 8,
+    color_depth: 30
+  }
+
+  @sample_messages [
+    %{type: "system", sender_nick: "System", content: "bob has joined the session"},
+    %{type: "chat", sender_nick: "you", content: "Hey, ready to connect?"},
+    %{type: "chat", sender_nick: "bob", content: "Sure, let's go!"}
+  ]
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, page_title: "P2P Lobby", active_page: "p2p-lobby")}
@@ -17,37 +43,171 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
 
   @impl true
   def render(assigns) do
+    assigns =
+      assigns
+      |> assign(:local_info, @local_info)
+      |> assign(:peer_info, @peer_info)
+      |> assign(:sample_messages, @sample_messages)
+
     ~H"""
     <.showcase_layout active_page={@active_page}>
       <h2 class="text-lg font-bold mb-3">P2P Lobby</h2>
 
-      <.showcase_card title="Pending" description="Waiting to connect. Shows Connect button.">
-        <.p2p_lobby peer="alice" state="pending" />
-        <.code_example>
-          &lt;.p2p_lobby peer="alice" state="pending" on_connect="p2p_connect" /&gt;
-        </.code_example>
+      <.showcase_card title="Pending" description="Waiting for peer to join.">
+        <.p2p_lobby
+          peer="alice"
+          state="pending"
+          nickname="you"
+          local_info={@local_info}
+        />
       </.showcase_card>
 
       <.showcase_card
         title="Lobby"
-        description="Invitation sent, waiting for peer to accept. Shows Connect button."
+        description="Both peers present. Shows Audio Call, Video Call, Send File buttons."
       >
-        <.p2p_lobby peer="bob" state="lobby" />
+        <.p2p_lobby
+          peer="bob"
+          state="lobby"
+          nickname="you"
+          local_info={@local_info}
+          peer_info={@peer_info}
+          messages={@sample_messages}
+        />
       </.showcase_card>
 
       <.showcase_card
         title="Connecting"
-        description="Connection in progress. Shows progress bar and Cancel button."
+        description="WebRTC negotiation in progress. Shows progress bar and Cancel button."
       >
-        <.p2p_lobby peer="carol" state="connecting" />
+        <.p2p_lobby
+          peer="carol"
+          state="connecting"
+          nickname="you"
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
       </.showcase_card>
 
-      <.showcase_card title="Active" description="Successfully connected. Shows Disconnect button.">
-        <.p2p_lobby peer="dave" state="active" />
+      <.showcase_card
+        title="Active + Audio Call"
+        description="Active session with an ongoing audio call. Shows media controls."
+      >
+        <.p2p_lobby
+          peer="dave"
+          state="active"
+          nickname="you"
+          webrtc_state="Connected"
+          call={%{type: "audio", duration: "02:34"}}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
       </.showcase_card>
 
-      <.showcase_card title="Failed" description="Connection attempt failed. Shows Connect to retry.">
-        <.p2p_lobby peer="eve" state="failed" />
+      <.showcase_card
+        title="Active + Video Call"
+        description="Active session with a video call. Shows video area, camera toggle, quality presets."
+      >
+        <.p2p_lobby
+          peer="dave"
+          state="active"
+          nickname="you"
+          webrtc_state="Connected"
+          call={%{type: "video", duration: "05:12", quality_label: "720p"}}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Active + File Transfer (sending)"
+        description="Active session with a file transfer in progress."
+      >
+        <.p2p_lobby
+          peer="dave"
+          state="active"
+          nickname="you"
+          webrtc_state="Connected"
+          file_transfer={
+            %{
+              status: "transferring",
+              file_name: "project-archive.zip",
+              percent: 42,
+              speed: "2.4 MB/s",
+              formatted_size: "156.3 MB",
+              sender_nick: "you"
+            }
+          }
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Active + File Transfer (receiving offer)"
+        description="Incoming file transfer offer. Shows Accept/Cancel buttons."
+      >
+        <.p2p_lobby
+          peer="dave"
+          state="active"
+          nickname="you"
+          webrtc_state="Connected"
+          file_transfer={
+            %{
+              status: "offer_received",
+              file_name: "photo-album.zip",
+              percent: 0,
+              formatted_size: "89.7 MB",
+              sender_nick: "dave"
+            }
+          }
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Action Request (consent)"
+        description="Bilateral consent banner for incoming action requests."
+      >
+        <.p2p_lobby
+          peer="dave"
+          state="lobby"
+          nickname="you"
+          action_request={%{action_type: "video_call", status: "pending"}}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="Failed"
+        description="Connection attempt failed. Shows Close Session."
+      >
+        <.p2p_lobby
+          peer="eve"
+          state="failed"
+          nickname="you"
+          webrtc_state="Connection failed"
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title="With Privacy & Inactivity Warning"
+        description="Shows privacy toggle and inactivity warning banner."
+      >
+        <.p2p_lobby
+          peer="frank"
+          state="lobby"
+          nickname="you"
+          turn_configured={true}
+          turn_only={true}
+          inactivity_warning={true}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
       </.showcase_card>
     </.showcase_layout>
     """

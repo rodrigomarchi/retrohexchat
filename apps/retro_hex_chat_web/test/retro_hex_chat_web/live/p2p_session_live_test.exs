@@ -46,34 +46,48 @@ defmodule RetroHexChatWeb.V2.P2PSessionLiveTest do
     {:ok, session: session, token: token, creator: creator, peer: peer}
   end
 
-  describe "p2p_connect event" do
-    test "transitions session from lobby to connecting and pushes WebRTC start",
+  describe "action buttons in lobby" do
+    test "action buttons are visible in lobby state",
          %{conn: conn, token: token, creator: creator, peer: peer} do
       {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
 
       SessionServer.join(token, peer.id)
       Process.sleep(50)
 
-      render_click(view, "p2p_connect")
-
-      assert_push_event(view, "p2p_start_offer", %{role: "initiator"})
+      html = render(view)
+      assert html =~ "Audio Call"
+      assert html =~ "Video Call"
+      assert html =~ "Send File"
     end
 
-    test "connect button is visible in lobby state",
-         %{conn: conn, token: token, creator: creator, peer: peer} do
-      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
-
-      SessionServer.join(token, peer.id)
-      Process.sleep(50)
-
-      assert has_element?(view, ~s([data-testid="p2p-lobby-connect"]))
-    end
-
-    test "connect button is visible in pending state",
+    test "action buttons are not visible in pending state",
          %{conn: conn, token: token, creator: creator} do
-      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+      {:ok, _view, html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
 
-      assert has_element?(view, ~s([data-testid="p2p-lobby-connect"]))
+      refute html =~ "Audio Call"
+      refute html =~ "Video Call"
+      refute html =~ "Send File"
+    end
+
+    test "request_action triggers consent flow and transitions to connecting",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      {:ok, creator_view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+      {:ok, peer_view, _html} = live(chat_conn(conn, peer.nickname), "/p2p/#{token}")
+
+      SessionServer.join(token, peer.id)
+      Process.sleep(50)
+
+      render_click(creator_view, "request_action", %{"action_type" => "audio_call"})
+      Process.sleep(50)
+
+      # Peer sees consent banner
+      html = render(peer_view)
+      assert html =~ "audio_call"
+
+      # Peer accepts → triggers connecting → WebRTC starts
+      render_click(peer_view, "respond_action", %{"accepted" => "true"})
+
+      assert_push_event(creator_view, "p2p_start_offer", %{role: "initiator"})
     end
   end
 
@@ -90,6 +104,48 @@ defmodule RetroHexChatWeb.V2.P2PSessionLiveTest do
       {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
 
       assert has_element?(view, ~s(#p2p-capabilities[phx-hook="P2PCapabilityHook"]))
+    end
+
+    test "P2PDiagramHook element is present on mount",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      assert has_element?(view, ~s(#p2p-diagram[phx-hook="P2PDiagramHook"]))
+    end
+  end
+
+  describe "connection diagram" do
+    test "shows waiting state when peer not online",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, _view, html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      assert html =~ "Waiting..."
+      assert html =~ creator.nickname
+    end
+
+    test "shows ready state when peer is online",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      SessionServer.join(token, peer.id)
+      Process.sleep(50)
+
+      html = render(view)
+      assert html =~ "Ready"
+    end
+
+    test "shows connecting state during WebRTC setup",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      # Simulate status change to connecting via direct message
+      send(view.pid, %{
+        event: "p2p_status_changed",
+        payload: %{status: "connecting"}
+      })
+
+      html = render(view)
+      assert html =~ "Connecting..."
     end
   end
 

@@ -18,9 +18,6 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.P2PLobby
-  import RetroHexChatWeb.Components.UI.FileTransfer
-
-  alias RetroHexChatWeb.Icons
 
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.P2P
@@ -196,12 +193,16 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   end
 
   def handle_info(%{event: "p2p_session_closed", payload: %{reason: reason}}, socket) do
-    notify_session_ended(socket, reason)
+    if socket.assigns.session_closed do
+      # Already handled locally (we initiated the close)
+      {:noreply, socket}
+    else
+      notify_session_ended(socket, reason)
 
-    {:noreply,
-     socket
-     |> assign(session_closed: true)
-     |> push_event("p2p_close_tab", %{})}
+      {:noreply,
+       socket
+       |> assign(session_closed: true, session_ended_reason: expired_reason_label(reason))}
+    end
   end
 
   def handle_info(
@@ -385,13 +386,6 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
      |> push_event("p2p_close_tab", %{})}
   end
 
-  def handle_event("p2p_connect", _params, socket) do
-    case P2P.transition_status(socket.assigns.token, :connecting) do
-      :ok -> {:noreply, socket}
-      {:error, _reason} -> {:noreply, socket}
-    end
-  end
-
   def handle_event("p2p_capabilities", capabilities, socket) do
     caps = %{
       webrtc: Map.get(capabilities, "webrtc", false),
@@ -556,12 +550,12 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   def handle_event("ft_completed", params, socket) do
     Logger.info("P2P file completed: #{params["file_name"]}, token=#{socket.assigns.token}")
 
-    ft = %{
-      status: "completed",
-      file_name: params["file_name"]
-    }
+    P2P.close_session(socket.assigns.token, socket.assigns.user_id, "file_transfer_completed")
 
-    {:noreply, assign(socket, file_transfer: ft)}
+    {:noreply,
+     socket
+     |> assign(session_closed: true)
+     |> push_event("p2p_close_tab", %{})}
   end
 
   def handle_event("ft_failed", params, socket) do
@@ -661,24 +655,18 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   def handle_event("media_call_ended", %{"reason" => reason}, socket) do
     Logger.info("P2P call ended: reason=#{reason}, token=#{socket.assigns.token}")
 
-    msg = %{
-      id: System.unique_integer([:positive]),
-      sender_nick: "System",
-      content: "Call ended: #{reason}",
-      type: "system",
-      timestamp: DateTime.utc_now()
-    }
-
     Phoenix.PubSub.broadcast(
       @pubsub,
       "p2p:#{socket.assigns.token}",
       %{event: "media_call_ended", payload: %{reason: reason}}
     )
 
+    P2P.close_session(socket.assigns.token, socket.assigns.user_id, "call_ended")
+
     {:noreply,
      socket
-     |> assign(call: nil, webrtc_state: "Connected")
-     |> assign(messages: socket.assigns.messages ++ [msg])}
+     |> assign(session_closed: true)
+     |> push_event("p2p_close_tab", %{})}
   end
 
   def handle_event("media_error", %{"code" => _code, "message" => message}, socket) do
@@ -875,7 +863,8 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
         peer_info: %{},
         local_muted: false,
         local_camera_off: false,
-        session_closed: false
+        session_closed: false,
+        session_ended_reason: nil
       )
 
     socket =
@@ -1035,10 +1024,6 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
       "video_call" -> push_event(socket, "media_start_video", %{})
       _ -> socket
     end
-  end
-
-  defp ft_direction(ft, nickname) do
-    if Map.get(ft, :sender_nick) == nickname, do: "sending", else: "receiving"
   end
 
   defp expired_reason_label("user_closed"), do: "Session closed by user."

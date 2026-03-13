@@ -170,7 +170,7 @@ defmodule RetroHexChat.P2P.SessionServer do
         _from,
         %{session: %{status: s}} = state
       )
-      when s not in ~w(lobby connecting active) do
+      when s not in ~w(pending lobby connecting active failed) do
     {:reply, {:error, :not_in_lobby}, state}
   end
 

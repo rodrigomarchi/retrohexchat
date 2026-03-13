@@ -1,4 +1,4 @@
-<%!-- Expired state --%>
+<%!-- Expired state (session was already terminal before mount) --%>
 <div :if={assigns[:expired]} class="flex flex-col min-h-screen bg-surface">
   <.app_header on_logo_click={show_modal("about-dialog")}>
     <:panels>
@@ -14,9 +14,28 @@
   <.about_dialog id="about-dialog" />
 </div>
 
+<%!-- Session ended by the other peer (shown to the peer who didn't close) --%>
+<div
+  :if={!assigns[:expired] && @session_ended_reason}
+  class="flex flex-col min-h-screen bg-surface"
+>
+  <.app_header on_logo_click={show_modal("about-dialog")}>
+    <:panels>
+      <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
+    </:panels>
+  </.app_header>
+  <div class="flex-1 flex items-center justify-center p-4">
+    <div class="shadow-retro-raised bg-surface p-6 text-center max-w-sm">
+      <p class="text-sm font-bold mb-2">P2P Session Ended</p>
+      <p class="text-xs text-muted-foreground">{@session_ended_reason}</p>
+    </div>
+  </div>
+  <.about_dialog id="about-dialog" />
+</div>
+
 <%!-- Normal state --%>
 <div
-  :if={!assigns[:expired]}
+  :if={!assigns[:expired] && !@session_ended_reason}
   id="p2p-session"
   phx-hook="P2PSessionHook"
   class="flex flex-col min-h-screen bg-surface"
@@ -32,314 +51,26 @@
   <div id="p2p-webrtc" phx-hook="WebRTCHook" class="hidden"></div>
 
   <div class="flex-1 flex flex-col items-center p-4 gap-4 overflow-y-auto">
-    <%!-- P2P connection lobby --%>
     <.p2p_lobby
       peer={@peer_nick}
       state={@session_status}
-      on_connect="p2p_connect"
+      nickname={@nickname}
+      peer_online={@peer_online}
+      local_info={@local_info}
+      peer_info={@peer_info}
+      webrtc_state={@webrtc_state}
+      retry_attempt={@retry_attempt}
+      file_transfer={@file_transfer}
+      call={@call}
+      local_muted={@local_muted}
+      local_camera_off={@local_camera_off}
+      messages={@messages}
+      action_request={@action_request}
+      turn_configured={@turn_configured}
+      turn_only={@turn_only}
+      inactivity_warning={@inactivity_warning}
       on_cancel="close_session"
-      on_disconnect="close_session"
     />
-
-    <%!-- Messages list --%>
-    <div
-      :if={@messages != []}
-      class="w-full max-w-[320px] shadow-retro-field bg-white p-2 max-h-[200px] overflow-y-auto"
-    >
-      <div :for={msg <- @messages} class="text-xs py-[2px]">
-        <span :if={msg.type != "system"} class="font-bold">{msg.sender_nick}: </span>
-        <span :if={msg.type == "system"} class="text-muted-foreground italic">* </span>
-        <span>{msg.content}</span>
-      </div>
-    </div>
-
-    <%!-- Action request banner --%>
-    <div
-      :if={
-        @action_request && @action_request[:status] != "accepted" &&
-          @action_request[:status] != "rejected"
-      }
-      class="w-full max-w-[320px] shadow-retro-raised bg-accent p-3"
-    >
-      <p class="text-xs font-bold mb-2">
-        Action Request: {Map.get(@action_request, :action_type, "unknown")}
-      </p>
-      <div class="flex gap-2">
-        <button
-          type="button"
-          phx-click="respond_action"
-          phx-value-accepted="true"
-          class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
-        >
-          Accept
-        </button>
-        <button
-          type="button"
-          phx-click="respond_action"
-          phx-value-accepted="false"
-          class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
-        >
-          Decline
-        </button>
-      </div>
-    </div>
-
-    <%!-- Media call area (MediaHook handles audio/video streams and controls) --%>
-    <div
-      :if={@call}
-      id="media-call"
-      phx-hook="MediaHook"
-      class="w-full max-w-[320px] shadow-retro-raised bg-surface"
-      data-testid="media-call"
-    >
-      <%!-- Video area --%>
-      <div :if={@call[:type] == "video"} class="relative bg-black">
-        <video
-          id="remote-video"
-          class={[
-            "w-full aspect-video bg-black",
-            @call[:peer_camera_off] && "hidden"
-          ]}
-          autoplay
-          playsinline
-        >
-        </video>
-        <div
-          :if={@call[:peer_camera_off]}
-          class="w-full aspect-video bg-black flex items-center justify-center"
-        >
-          <span class="text-white text-xs">Camera off</span>
-        </div>
-        <video
-          id="local-video"
-          class="absolute bottom-2 right-2 w-20 aspect-video bg-black border border-border"
-          autoplay
-          playsinline
-          muted
-        >
-        </video>
-      </div>
-      <%!-- Audio element (always present for audio streams) --%>
-      <audio id="remote-audio" autoplay></audio>
-      <%!-- Media controls toolbar --%>
-      <div class="flex items-center gap-2 p-2 justify-center text-xs">
-        <button
-          type="button"
-          data-media-action="mute"
-          class={[
-            "shadow-retro-raised px-3 py-1 cursor-pointer hover:shadow-retro-sunken",
-            @local_muted && "shadow-retro-sunken bg-accent",
-            !@local_muted && "bg-surface"
-          ]}
-          data-testid="media-controls-mute"
-        >
-          {if @local_muted, do: "Unmute", else: "Mute"}
-        </button>
-        <button
-          :if={@call[:type] == "video"}
-          type="button"
-          data-media-action="camera"
-          class={[
-            "shadow-retro-raised px-3 py-1 cursor-pointer hover:shadow-retro-sunken",
-            @local_camera_off && "shadow-retro-sunken bg-accent",
-            !@local_camera_off && "bg-surface"
-          ]}
-          data-testid="media-controls-camera"
-        >
-          {if @local_camera_off, do: "Camera On", else: "Camera Off"}
-        </button>
-        <button
-          :if={@call[:type] == "audio"}
-          type="button"
-          data-media-action="upgrade"
-          class="shadow-retro-raised bg-surface px-3 py-1 cursor-pointer hover:shadow-retro-sunken"
-        >
-          Add Video
-        </button>
-        <span class="mx-1 text-border">|</span>
-        <button
-          type="button"
-          data-media-action="end-call"
-          class="shadow-retro-raised bg-surface px-3 py-1 cursor-pointer hover:shadow-retro-sunken text-error"
-          data-testid="media-controls-end-call"
-        >
-          End Call
-        </button>
-        <span :if={@call[:duration]} class="text-muted-foreground ml-2">
-          {@call[:duration]}
-        </span>
-      </div>
-      <%!-- Video upgrade request/response --%>
-      <div :if={@call[:upgrade_pending]} class="flex items-center gap-2 p-2 text-xs bg-accent">
-        <span>{@peer_nick} wants to add video</span>
-        <button
-          type="button"
-          phx-click="media_respond_upgrade"
-          phx-value-accepted="true"
-          class="shadow-retro-raised bg-surface px-2 py-0.5 cursor-pointer hover:shadow-retro-sunken"
-        >
-          Accept
-        </button>
-        <button
-          type="button"
-          phx-click="media_respond_upgrade"
-          phx-value-accepted="false"
-          class="shadow-retro-raised bg-surface px-2 py-0.5 cursor-pointer hover:shadow-retro-sunken"
-        >
-          Decline
-        </button>
-      </div>
-      <%!-- Quality presets --%>
-      <div
-        :if={@call[:quality_label]}
-        class="flex items-center gap-2 p-2 text-xs text-muted-foreground"
-      >
-        <span>Quality: {@call[:quality_label]}</span>
-        <button
-          type="button"
-          phx-click="media_select_preset"
-          phx-value-preset="high"
-          class="shadow-retro-raised bg-surface px-2 py-0.5 cursor-pointer hover:shadow-retro-sunken text-[10px]"
-        >
-          High
-        </button>
-        <button
-          type="button"
-          phx-click="media_select_preset"
-          phx-value-preset="medium"
-          class="shadow-retro-raised bg-surface px-2 py-0.5 cursor-pointer hover:shadow-retro-sunken text-[10px]"
-        >
-          Med
-        </button>
-        <button
-          type="button"
-          phx-click="media_select_preset"
-          phx-value-preset="low"
-          class="shadow-retro-raised bg-surface px-2 py-0.5 cursor-pointer hover:shadow-retro-sunken text-[10px]"
-        >
-          Low
-        </button>
-      </div>
-    </div>
-
-    <%!-- File transfer area (FileTransferHook handles DataChannel and file I/O) --%>
-    <div
-      :if={@file_transfer}
-      id="p2p-file-transfer"
-      phx-hook="FileTransferHook"
-      class="w-full max-w-[320px]"
-      data-testid="file-transfer-hook"
-    >
-      <input type="file" id="p2p-file-input" class="file-transfer-input hidden" />
-      <%!-- File selection (ready state) --%>
-      <div
-        :if={@file_transfer[:status] == "ready" && !@file_transfer[:file_name]}
-        class="shadow-retro-field bg-white p-4 text-center text-xs"
-      >
-        <Icons.icon_file_send class="w-6 h-6 mx-auto mb-2" />
-        <p class="mb-2">Drag a file here or click to browse</p>
-        <p class="text-muted-foreground mb-2">
-          Max: {Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500)} MB
-        </p>
-        <label
-          for="p2p-file-input"
-          class="shadow-retro-raised bg-surface px-3 py-1 cursor-pointer hover:shadow-retro-sunken inline-block"
-        >
-          Browse Files
-        </label>
-      </div>
-      <%!-- File transfer progress/status display --%>
-      <.file_transfer
-        :if={@file_transfer[:file_name]}
-        file_name={@file_transfer[:file_name] || "unknown"}
-        progress={@file_transfer[:percent] || 0}
-        speed={@file_transfer[:speed]}
-        formatted_size={@file_transfer[:formatted_size]}
-        state={@file_transfer[:status] || "ready"}
-        direction={ft_direction(@file_transfer, @nickname)}
-        on_cancel="ft_cancel"
-        on_accept="ft_accept_offer"
-      />
-    </div>
-
-    <%!-- Lobby chat input --%>
-    <div :if={@session_status in ["pending", "lobby"]} class="w-full max-w-[320px]">
-      <form phx-submit="send_lobby_message" class="flex gap-2">
-        <input
-          type="text"
-          name="content"
-          placeholder="Type a message..."
-          class="shadow-retro-field bg-white flex-1 px-2 py-1 text-xs focus:outline-none"
-          autocomplete="off"
-        />
-        <button
-          type="submit"
-          class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
-        >
-          Send
-        </button>
-      </form>
-    </div>
-
-    <%!-- Session actions --%>
-    <div class="w-full max-w-[320px] flex flex-wrap gap-2">
-      <button
-        :if={@session_status in ["pending", "lobby", "active"]}
-        type="button"
-        phx-click="close_session"
-        class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
-      >
-        Close Session
-      </button>
-      <button
-        :if={@session_status in ["pending", "lobby"] && @turn_configured}
-        type="button"
-        phx-click="toggle_privacy_mode"
-        class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
-      >
-        {if @turn_only, do: "Privacy: ON", else: "Privacy: OFF"}
-      </button>
-      <button
-        :if={@session_status == "active" && !@call}
-        type="button"
-        phx-click="request_action"
-        phx-value-action_type="audio_call"
-        class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
-      >
-        Audio Call
-      </button>
-      <button
-        :if={@session_status == "active" && !@call}
-        type="button"
-        phx-click="request_action"
-        phx-value-action_type="video_call"
-        class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
-      >
-        Video Call
-      </button>
-      <button
-        :if={@session_status == "active" && !@file_transfer}
-        type="button"
-        phx-click="request_action"
-        phx-value-action_type="file_transfer"
-        class="shadow-retro-raised bg-surface px-3 py-1 text-xs cursor-pointer hover:shadow-retro-sunken"
-      >
-        Send File
-      </button>
-    </div>
-
-    <%!-- Connection status --%>
-    <div :if={@webrtc_state} class="text-xs text-muted-foreground">
-      WebRTC: {@webrtc_state}
-    </div>
-
-    <%!-- Inactivity warning --%>
-    <div
-      :if={@inactivity_warning}
-      class="w-full max-w-[320px] shadow-retro-field bg-warning-bg p-2 text-xs text-center"
-    >
-      Session will be closed due to inactivity soon.
-    </div>
   </div>
   <.about_dialog id="about-dialog" />
 </div>
