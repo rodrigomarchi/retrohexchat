@@ -36,6 +36,7 @@
     <.p2p_lobby
       peer={@peer_nick}
       state={@session_status}
+      on_connect="p2p_connect"
       on_cancel="close_session"
       on_disconnect="close_session"
     />

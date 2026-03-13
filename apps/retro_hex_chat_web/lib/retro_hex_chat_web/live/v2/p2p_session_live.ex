@@ -384,6 +384,13 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
      |> push_event("p2p_close_tab", %{})}
   end
 
+  def handle_event("p2p_connect", _params, socket) do
+    case P2P.transition_status(socket.assigns.token, :connecting) do
+      :ok -> {:noreply, socket}
+      {:error, _reason} -> {:noreply, socket}
+    end
+  end
+
   def handle_event("p2p_capabilities", capabilities, socket) do
     caps = %{
       webrtc: Map.get(capabilities, "webrtc", false),
