@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   @doc "Renders the highlight dialog."
   attr :id, :string, required: true
   attr :show, :boolean, default: false
-  attr :words, :list, default: [], doc: "List of %{text, color} maps"
+  attr :words, :list, default: [], doc: "List of HighlightWord.t() structs"
 
   attr :own_nick, :string,
     default: nil,
@@ -56,9 +56,8 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
       </.dialog_header>
 
       <.dialog_body class="space-y-retro-8">
-        <%!-- Add word input --%>
+        <%!-- Add word button --%>
         <div class="flex items-center gap-retro-4">
-          <.input type="text" placeholder="Add word..." class="flex-1" name="highlight_word" />
           <.button size="sm" variant="outline" phx-click={@on_add}>
             <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
             Add
@@ -90,14 +89,14 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             <.table_row
               :for={word <- @words}
               class={
-                if(@selected_word == word.text, do: "bg-selection-bg text-selection-fg", else: "")
+                if(@selected_word == word.word, do: "bg-selection-bg text-selection-fg", else: "")
               }
               phx-click={@on_select}
-              phx-value-word={word.text}
+              phx-value-word={word.word}
             >
-              <.table_cell>{word.text}</.table_cell>
+              <.table_cell>{word.word}</.table_cell>
               <.table_cell>
-                <div class={["w-4 h-4 border border-border", color_class(word.color)]} />
+                <div class={["w-4 h-4 border border-border", color_class(word.bg_color)]} />
               </.table_cell>
               <.table_cell>&nbsp;</.table_cell>
             </.table_row>
@@ -183,7 +182,11 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
             <div class="field-row-stacked u-mt-8">
               <label class="text-xs font-bold">Background Color (optional):</label>
-              <.color_picker id="highlight-add-color" on_select="highlight_color_pick" />
+              <.color_picker
+                id="highlight-add-color"
+                selected={@selected_color}
+                on_select="highlight_color_pick"
+              />
             </div>
             <div class="field-row dialog-buttons u-mt-12">
               <.button type="submit" size="sm">
@@ -226,7 +229,11 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
             <div class="field-row-stacked">
               <label class="text-xs font-bold">Background Color:</label>
-              <.color_picker id="highlight-edit-color" on_select="highlight_color_pick" />
+              <.color_picker
+                id="highlight-edit-color"
+                selected={@selected_color}
+                on_select="highlight_color_pick"
+              />
             </div>
             <div class="field-row dialog-buttons u-mt-12">
               <.button type="submit" size="sm">

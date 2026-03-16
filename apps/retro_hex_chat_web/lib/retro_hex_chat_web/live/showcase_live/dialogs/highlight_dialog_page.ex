@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.HighlightDialogPage do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.ShowcaseHelpers
+  alias RetroHexChat.Chat.HighlightWord
   alias RetroHexChatWeb.Icons
 
   @impl true
@@ -20,9 +21,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.HighlightDialogPage do
        page_title: "Highlight Dialog",
        active_page: "highlight-dialog",
        words: [
-         %{text: "important", color: "#ff0000"},
-         %{text: "urgent", color: "#ff6600"},
-         %{text: "mynick", color: "#0066ff"}
+         HighlightWord.new(word: "important", bg_color: 4, position: 0),
+         HighlightWord.new(word: "urgent", bg_color: 7, position: 1),
+         HighlightWord.new(word: "mynick", bg_color: 12, position: 2)
        ]
      )}
   end

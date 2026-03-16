@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.HighlightEvents do
   end
 
   def handle_event("open_highlight_add_dialog", _params, socket) do
-    {:halt, assign(socket, show_highlight_add_dialog: true)}
+    {:halt, assign(socket, show_highlight_add_dialog: true, highlight_selected_color: nil)}
   end
 
   def handle_event("close_highlight_add_dialog", _params, socket) do
@@ -44,7 +44,25 @@ defmodule RetroHexChatWeb.ChatLive.HighlightEvents do
   end
 
   def handle_event("open_highlight_edit_dialog", _params, socket) do
-    {:halt, assign(socket, show_highlight_edit_dialog: true)}
+    current_color =
+      case socket.assigns.highlight_selected do
+        nil ->
+          nil
+
+        word ->
+          session = socket.assigns.session
+
+          session.highlight_words
+          |> HighlightWords.entries()
+          |> Enum.find(fn e -> e.word == word end)
+          |> case do
+            nil -> nil
+            entry -> entry.bg_color
+          end
+      end
+
+    {:halt,
+     assign(socket, show_highlight_edit_dialog: true, highlight_selected_color: current_color)}
   end
 
   def handle_event("close_highlight_edit_dialog", _params, socket) do
