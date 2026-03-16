@@ -270,22 +270,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description: "Add custom items to right-click context menus for quick access to commands."
       },
       %{
-        id: "feature-options-dialog",
-        title: "Options Dialog",
-        category: "Settings & Preferences",
-        keywords: [
-          "options",
-          "preferences",
-          "settings",
-          "configure",
-          "customize",
-          "Ctrl+Shift+O"
-        ],
-        icon: :icon_dialog_options,
-        description:
-          "Configure display, font, behavior, and notification preferences in the options dialog."
-      },
-      %{
         id: "feature-display-settings",
         title: "Display Settings",
         category: "Settings & Preferences",

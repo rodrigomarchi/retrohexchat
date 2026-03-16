@@ -104,15 +104,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     end
   end
 
-  defp dispatch_action(:toggle_options_dialog, socket) do
-    if socket.assigns.show_options_dialog do
-      assign(socket, show_options_dialog: false, options_draft: nil)
-    else
-      draft = socket.assigns.session.user_preferences
-      assign(socket, show_options_dialog: true, options_draft: draft)
-    end
-  end
-
   defp dispatch_action(:toggle_cheatsheet, socket) do
     assign(socket, cheatsheet_visible: !socket.assigns.cheatsheet_visible)
   end
@@ -153,9 +144,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
 
       socket.assigns.cheatsheet_visible ->
         assign(socket, cheatsheet_visible: false)
-
-      socket.assigns.show_options_dialog ->
-        assign(socket, show_options_dialog: false, options_draft: nil)
 
       socket.assigns.show_perform_dialog ->
         close_perform_dialog(socket)

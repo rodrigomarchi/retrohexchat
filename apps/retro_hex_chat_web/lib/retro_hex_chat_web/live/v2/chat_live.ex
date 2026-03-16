@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   import RetroHexChatWeb.Components.UI.KickDialog
   import RetroHexChatWeb.Components.UI.NickChangeDialog
   import RetroHexChatWeb.Components.UI.NotifyList
-  import RetroHexChatWeb.Components.UI.OptionsDialog
+
   import RetroHexChatWeb.Components.UI.PasteConfirmDialog
   import RetroHexChatWeb.Components.UI.PerformDialog
   import RetroHexChatWeb.Components.UI.SoundSettingsDialog
@@ -453,7 +453,6 @@ defmodule RetroHexChatWeb.V2.ChatLive do
 
   @event_hook_fns [
     &ChatLive.EmojiEvents.handle_event/3,
-    &ChatLive.OptionsEvents.handle_event/3,
     &ChatLive.UrlCatcherEvents.handle_event/3,
     &ChatLive.InviteEvents.handle_event/3,
     &ChatLive.PmTypingEvents.handle_event/3,
@@ -506,7 +505,6 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   defp attach_all_hooks(socket) do
     event_hooks = [
       {:emoji_events, &ChatLive.EmojiEvents.handle_event/3},
-      {:options_events, &ChatLive.OptionsEvents.handle_event/3},
       {:url_catcher_events, &ChatLive.UrlCatcherEvents.handle_event/3},
       {:invite_events, &ChatLive.InviteEvents.handle_event/3},
       {:pm_typing_events, &ChatLive.PmTypingEvents.handle_event/3},
@@ -693,12 +691,6 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       show_flood_protection_dialog: false,
       show_sound_settings_dialog: false,
       sound_settings_draft: nil,
-      show_options_dialog: false,
-      options_panel: "display",
-      options_draft: nil,
-      show_toolbar: true,
-      show_switchbar: true,
-      show_statusbar: true,
       show_nicklist: true,
       nick_palette_editing_index: nil,
       muted: false,

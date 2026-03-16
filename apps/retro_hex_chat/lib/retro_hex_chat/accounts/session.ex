@@ -13,7 +13,7 @@ defmodule RetroHexChat.Accounts.Session do
   alias RetroHexChat.Chat.IgnoreList
   alias RetroHexChat.Chat.PerformList
   alias RetroHexChat.Chat.SoundSettings
-  alias RetroHexChat.Chat.UserPreferences
+
   alias RetroHexChat.Presence.NotifyList
 
   @type t :: %__MODULE__{
@@ -43,7 +43,6 @@ defmodule RetroHexChat.Accounts.Session do
           custom_menus: map(),
           autorespond_rules: map(),
           bio: String.t() | nil,
-          user_preferences: map(),
           last_message_at: DateTime.t(),
           user_modes: map(),
           welcomed_channels: map()
@@ -77,7 +76,6 @@ defmodule RetroHexChat.Accounts.Session do
     custom_menus: nil,
     autorespond_rules: nil,
     bio: nil,
-    user_preferences: nil,
     last_message_at: nil,
     user_modes: nil,
     welcomed_channels: nil
@@ -98,7 +96,6 @@ defmodule RetroHexChat.Accounts.Session do
       ctcp_settings: CtcpSettings.new(),
       flood_protection: FloodProtection.new(),
       sound_settings: SoundSettings.new(),
-      user_preferences: UserPreferences.new(),
       aliases: %{entries: []},
       custom_menus: %{entries: []},
       autorespond_rules: %{entries: []},
@@ -364,13 +361,5 @@ defmodule RetroHexChat.Accounts.Session do
   @spec welcomed_channel?(t(), String.t()) :: boolean()
   def welcomed_channel?(%__MODULE__{welcomed_channels: channels}, channel_name) do
     MapSet.member?(channels, channel_name)
-  end
-
-  @spec get_user_preferences(t()) :: map()
-  def get_user_preferences(%__MODULE__{user_preferences: prefs}), do: prefs
-
-  @spec set_user_preferences(t(), map()) :: t()
-  def set_user_preferences(%__MODULE__{} = session, prefs) do
-    %{session | user_preferences: prefs}
   end
 end

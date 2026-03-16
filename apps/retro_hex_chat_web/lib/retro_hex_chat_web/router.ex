@@ -170,7 +170,7 @@ defmodule RetroHexChatWeb.Router do
 
     # Dialogs
     live "/confirm-dialog", Dialogs.ConfirmDialogPage
-    live "/options-dialog", Dialogs.OptionsDialogPage
+
     live "/channel-dialog", Dialogs.ChannelDialogPage
     live "/address-book", Dialogs.AddressBookPage
     live "/about-dialog", Dialogs.AboutDialogPage

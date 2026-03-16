@@ -88,13 +88,6 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
       assert html =~ "search-bar"
     end
 
-    test "toggle_options_dialog opens options", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SAOpts"), "/chat")
-
-      html = render_click(view, "shortcut_action", %{"action" => "toggle_options_dialog"})
-      assert html =~ "options-dialog"
-    end
-
     test "toggle_cheatsheet opens cheatsheet", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "SACheat"), "/chat")
 

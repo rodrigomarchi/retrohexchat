@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Queries
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
-  alias RetroHexChatWeb.ChatLive.Helpers.Persistence
+
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
 
@@ -83,10 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     PresenceHelpers.safe_untrack_user("channel:#{channel_name}", session.nickname)
     new_session = Session.remove_channel(session, channel_name)
 
-    socket =
-      socket
-      |> assign(session: new_session)
-      |> Persistence.maybe_persist_user_preferences(new_session)
+    socket = assign(socket, session: new_session)
 
     socket =
       if new_session.active_channel do

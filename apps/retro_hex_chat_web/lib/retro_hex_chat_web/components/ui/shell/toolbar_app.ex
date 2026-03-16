@@ -151,13 +151,6 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
             action="open_autorespond_dialog"
             on_action={@on_action}
           />
-          <.dropdown_item
-            icon_fn={:icon_btn_settings}
-            label="Settings"
-            action="settings"
-            on_action={@on_action}
-          />
-
           <%!-- Admin (conditional) --%>
           <.dropdown_item
             :if={@is_admin}

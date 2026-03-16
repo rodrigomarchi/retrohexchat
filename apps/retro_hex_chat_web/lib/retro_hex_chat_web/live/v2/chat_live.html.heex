@@ -39,7 +39,6 @@
         on_action="toolbar_action"
       />
       <.status_bar_app
-        :if={@show_statusbar}
         class="ml-auto"
         nickname={@session.nickname}
         channel={@session.active_pm || @session.active_channel}
@@ -102,7 +101,7 @@
     <%!-- Chat area --%>
     <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
       <%!-- Tab bar (shrink, no grow) --%>
-      <.irc_tab_bar :if={@show_switchbar}>
+      <.irc_tab_bar>
         <.irc_tab_item
           type="status"
           label="Status"
@@ -544,17 +543,6 @@
   on_sound_change="sound_settings_change"
   on_flash_toggle="sound_flash_toggle"
   on_preview="sound_preview"
-/>
-
-<.options_dialog
-  id="options-dialog"
-  show={@show_options_dialog}
-  active_panel={@options_panel}
-  options_draft={@options_draft}
-  on_panel_select="options_select_panel"
-  on_ok="options_ok"
-  on_cancel="close_options_dialog"
-  on_apply="options_apply"
 />
 
 <.perform_dialog

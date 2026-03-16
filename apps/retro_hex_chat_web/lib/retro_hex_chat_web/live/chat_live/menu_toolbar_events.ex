@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   @moduledoc """
   Handle toolbar events.
 
-  Covers: quit_chat, restore_session, open_search, settings,
+  Covers: quit_chat, restore_session, open_search,
   toggle_conversations, toggle_strip_formatting, show_about,
   autocomplete_query, autocomplete_close,
   autocomplete_select, autocomplete_navigate, autocomplete_select_current,
@@ -43,16 +43,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("open_search", _params, socket) do
     {:halt, assign(socket, search_visible: true)}
-  end
-
-  def handle_event("settings", _params, socket) do
-    draft = socket.assigns.session.user_preferences
-
-    {:halt,
-     assign(socket,
-       show_options_dialog: true,
-       options_draft: draft
-     )}
   end
 
   def handle_event("toggle_conversations", _params, socket) do

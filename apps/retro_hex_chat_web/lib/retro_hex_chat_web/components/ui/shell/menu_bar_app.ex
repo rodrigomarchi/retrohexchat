@@ -56,13 +56,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
             action="disconnect"
             on_action={@on_action}
           />
-          <.context_menu_separator />
-          <.menu_item
-            icon_fn={:icon_btn_settings}
-            label="Settings"
-            action="settings"
-            on_action={@on_action}
-          />
           <.menu_item
             :if={@is_admin}
             icon_fn={:icon_dialog_admin_console}

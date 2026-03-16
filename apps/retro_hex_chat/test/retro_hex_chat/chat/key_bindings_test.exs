@@ -7,7 +7,7 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     @tag :unit
     test "returns 20 default bindings" do
       bindings = KeyBindings.defaults()
-      assert map_size(bindings) == 20
+      assert map_size(bindings) == 19
     end
 
     @tag :unit
@@ -20,7 +20,7 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
       assert Map.has_key?(bindings, :toggle_highlight_dialog)
       assert Map.has_key?(bindings, :toggle_url_catcher)
       assert Map.has_key?(bindings, :toggle_perform_dialog)
-      assert Map.has_key?(bindings, :toggle_options_dialog)
+
       assert Map.has_key?(bindings, :open_help)
     end
 
@@ -83,7 +83,7 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     test "returns sorted list of action-label pairs for all 20 actions" do
       actions = KeyBindings.actions()
       assert is_list(actions)
-      assert length(actions) == 20
+      assert length(actions) == 19
 
       labels = Enum.map(actions, fn {_action, label} -> label end)
       assert labels == Enum.sort(labels)
@@ -109,7 +109,7 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     @tag :unit
     test "returns 20 entries for default bindings" do
       entries = KeyBindings.registry(KeyBindings.defaults())
-      assert length(entries) == 20
+      assert length(entries) == 19
     end
 
     @tag :unit

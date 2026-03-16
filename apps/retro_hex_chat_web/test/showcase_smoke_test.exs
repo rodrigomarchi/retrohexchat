@@ -59,7 +59,6 @@ defmodule RetroHexChatWeb.ShowcaseSmokeTest do
     "/showcase/reply-bar",
     "/showcase/connection-status",
     "/showcase/confirm-dialog",
-    "/showcase/options-dialog",
     "/showcase/channel-dialog",
     "/showcase/address-book",
     "/showcase/about-dialog",

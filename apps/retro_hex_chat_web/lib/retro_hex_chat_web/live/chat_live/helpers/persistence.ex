@@ -17,8 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     PerformList,
     Queries,
     SoundSettings,
-    UserBio,
-    UserPreferences
+    UserBio
   }
 
   alias RetroHexChat.Chat.CtcpSettings
@@ -126,18 +125,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     socket
   end
 
-  @spec maybe_persist_user_preferences(Phoenix.LiveView.Socket.t(), Session.t()) ::
-          Phoenix.LiveView.Socket.t()
-  def maybe_persist_user_preferences(socket, session) do
-    if session.identified do
-      Task.start(fn ->
-        UserPreferences.save(session.nickname, session.user_preferences)
-      end)
-    end
-
-    socket
-  end
-
   @spec load_persisted_data(Session.t(), String.t()) :: Session.t()
   def load_persisted_data(session, nick) do
     session
@@ -155,7 +142,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     |> load_if_found(AliasList.load(nick), &Session.set_aliases/2)
     |> load_if_found(CustomMenus.load(nick), &Session.set_custom_menus/2)
     |> load_if_found(AutoRespondRules.load(nick), &Session.set_autorespond_rules/2)
-    |> load_if_found(UserPreferences.load(nick), &Session.set_user_preferences/2)
     |> restore_pm_conversations(nick)
   end
 

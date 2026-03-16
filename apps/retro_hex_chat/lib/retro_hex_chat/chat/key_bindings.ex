@@ -28,7 +28,6 @@ defmodule RetroHexChat.Chat.KeyBindings do
     toggle_highlight_dialog: %{key: "h", modifiers: [:ctrl, :shift]},
     toggle_url_catcher: %{key: "s", modifiers: [:ctrl, :shift]},
     toggle_perform_dialog: %{key: "e", modifiers: [:ctrl, :shift]},
-    toggle_options_dialog: %{key: "o", modifiers: [:ctrl, :shift]},
     open_help: nil,
     toggle_cheatsheet: %{key: "/", modifiers: [:ctrl, :shift]},
     window_next: %{key: "]", modifiers: [:ctrl, :shift]},
@@ -80,12 +79,6 @@ defmodule RetroHexChat.Chat.KeyBindings do
       category: :system,
       label: "Open Perform Dialog",
       description: "Open/close auto-perform settings",
-      customizable: true
-    },
-    toggle_options_dialog: %{
-      category: :system,
-      label: "Open Options",
-      description: "Open/close the options dialog",
       customizable: true
     },
     open_help: %{
