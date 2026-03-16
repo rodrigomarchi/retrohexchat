@@ -148,6 +148,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               unread={pm in @unread_pms}
               unread_count={Map.get(@unread_counts, pm, 0)}
               flash={pm in @flash_channels}
+              nick_color={@nick_color_fn && @nick_color_fn.(pm)}
               on_click={@on_pm_click}
             />
           </.tree_view_group>
@@ -251,6 +252,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :unread, :boolean, default: false
   attr :unread_count, :integer, default: 0
   attr :flash, :boolean, default: false
+  attr :nick_color, :string, default: nil
   attr :on_click, :any, default: nil
 
   defp pm_item(assigns) do
@@ -267,7 +269,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       data-testid={"pm-#{@nick}"}
     >
       <:icon><Icons.icon_tab_pm class="w-3 h-3" /></:icon>
-      <span class="truncate">{@nick}</span>
+      <span class={["truncate", !@active && @nick_color]}>{@nick}</span>
       <span
         :if={@unread && !@active && @unread_count > 0}
         class="text-[10px] font-bold bg-link text-white rounded-full px-1 min-w-[16px] text-center shrink-0"

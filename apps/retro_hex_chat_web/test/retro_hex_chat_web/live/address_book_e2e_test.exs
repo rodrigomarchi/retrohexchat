@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
 
       # Switch to Control
       html = render_click(view, "address_book_tab", %{"tab" => "control"})
-      assert html =~ "Ignore management will be available in a future update."
+      assert html =~ "No ignored users. Click Add to ignore a nickname."
 
       # Back to Contacts
       html = render_click(view, "address_book_tab", %{"tab" => "contacts"})
@@ -322,7 +322,7 @@ defmodule RetroHexChatWeb.AddressBookE2ETest do
       render_click(view, "address_book_tab", %{"tab" => "control"})
 
       html = render(view)
-      assert html =~ "Ignore management will be available in a future update."
+      assert html =~ "No ignored users. Click Add to ignore a nickname."
     end
 
     test "context menu 'Add to Contacts' adds nick to contacts", %{conn: conn} do

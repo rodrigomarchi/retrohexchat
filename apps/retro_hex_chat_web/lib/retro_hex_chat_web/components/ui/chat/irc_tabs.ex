@@ -35,6 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   attr :type, :string, values: ~w(channel pm status), default: "channel"
   attr :label, :string, required: true
   attr :closeable, :boolean, default: true
+  attr :nick_color, :string, default: nil, doc: "CSS class for nick coloring (PM tabs)"
   attr :on_click, :any, default: nil, doc: "Tab click callback"
   attr :on_close, :any, default: nil, doc: "Close button callback"
   attr :class, :any, default: nil
@@ -67,7 +68,10 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
       <span class="w-4 h-4 flex-shrink-0 inline-flex items-center justify-center">
         {type_icon(assigns)}
       </span>
-      <span class="inline-block max-w-[16ch] overflow-hidden text-ellipsis whitespace-nowrap">
+      <span class={[
+        "inline-block max-w-[16ch] overflow-hidden text-ellipsis whitespace-nowrap",
+        !@active && @nick_color
+      ]}>
         {@label}
       </span>
       <.button

@@ -91,11 +91,21 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
   Tab content panel — Win98-style with 3D window border, connects to active tab above.
   """
   attr :value, :string, required: true, doc: "unique for tab content"
+
+  attr :builder, :map,
+    default: nil,
+    doc: "builder from parent tabs (used to set initial visibility)"
+
   attr :class, :string, default: nil
   slot :inner_block, required: true
   attr :rest, :global
 
   def tabs_content(assigns) do
+    default = assigns[:builder] && assigns.builder[:default]
+    initially_hidden = default != nil && assigns.value != default
+
+    assigns = assign(assigns, :initially_hidden, initially_hidden)
+
     ~H"""
     <div
       class={
@@ -104,6 +114,7 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
           "border border-border bg-surface p-retro-8",
           "border-t-0",
           "focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
+          @initially_hidden && "hidden",
           @class
         ])
       }
@@ -116,14 +127,15 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
   end
 
   # Set selected tab to active
-  # show appropriate tab content
+  # show appropriate tab content (uses hidden class instead of inline style
+  # so initial server-rendered state survives LiveView re-renders)
   defp show_tab(root, value) do
     %JS{}
     |> JS.set_attribute({"data-state", ""}, to: "##{root} .tabs-trigger[data-state=active]")
     |> JS.set_attribute({"data-state", "active"},
       to: "##{root} .tabs-trigger[data-target=#{value}]"
     )
-    |> JS.hide(to: "##{root} .tabs-content:not([value=#{value}])")
-    |> JS.show(to: "##{root} .tabs-content[value=#{value}]")
+    |> JS.add_class("hidden", to: "##{root} .tabs-content:not([value=#{value}])")
+    |> JS.remove_class("hidden", to: "##{root} .tabs-content[value=#{value}]")
   end
 end

@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
       # Switch to Control
       html = view |> render_click("address_book_tab", %{"tab" => "control"})
-      assert html =~ "Ignore management will be available in a future update."
+      assert html =~ "No ignored users. Click Add to ignore a nickname."
 
       # Back to Contacts
       html = view |> render_click("address_book_tab", %{"tab" => "contacts"})
@@ -668,13 +668,13 @@ defmodule RetroHexChatWeb.AddressBookTest do
   # ── Phase 7: US5 — Control Tab ──────────────────────────
 
   describe "control tab" do
-    test "shows placeholder message for ignore management", %{conn: conn} do
+    test "shows empty state when no ignored users", %{conn: conn} do
       view = connect_user(conn, "ControlTab")
       view |> render_click("toggle_address_book")
       view |> render_click("address_book_tab", %{"tab" => "control"})
 
       html = render(view)
-      assert html =~ "Ignore management will be available in a future update."
+      assert html =~ "No ignored users. Click Add to ignore a nickname."
     end
   end
 end

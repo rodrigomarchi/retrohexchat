@@ -657,6 +657,8 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       show_ignore_dialog: false,
       ignore_selected: nil,
       show_ignore_add_dialog: false,
+      control_selected: nil,
+      show_control_add_dialog: false,
       show_channel_central: false,
       channel_central_tab: "general",
       channel_central_state: nil,

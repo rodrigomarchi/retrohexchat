@@ -17,11 +17,18 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
     only: [
       maybe_persist_contacts: 2,
       maybe_persist_nick_colors: 2,
+      maybe_persist_ignore_list: 2,
       rebuild_nick_color_fn: 2,
-      push_status_message: 3
+      push_status_message: 3,
+      system_event: 2,
+      error_event: 2,
+      cancel_ignore_timer: 2,
+      maybe_start_ignore_timer: 3,
+      parse_dialog_duration: 1
     ]
 
   alias RetroHexChat.Accounts.{ContactList, NickColors, Session}
+  alias RetroHexChat.Chat.IgnoreList
 
   def handle_event("toggle_address_book", _params, socket) do
     if socket.assigns.show_address_book do
@@ -34,7 +41,9 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
          show_contact_edit_dialog: false,
          nick_colors_selected: nil,
          show_nick_color_add_dialog: false,
-         show_nick_color_edit_dialog: false
+         show_nick_color_edit_dialog: false,
+         control_selected: nil,
+         show_control_add_dialog: false
        )}
     else
       {:halt, assign(socket, show_address_book: true)}
@@ -230,6 +239,71 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
 
       {:error, :not_found} ->
         {:halt, push_status_message(socket, "#{nick} has no custom color", :system)}
+    end
+  end
+
+  # ── Control (Ignore) CRUD events ────────────────────────────
+
+  def handle_event("control_select", %{"nickname" => nick}, socket) do
+    {:halt, assign(socket, control_selected: nick)}
+  end
+
+  def handle_event("control_add_dialog", _params, socket) do
+    {:halt, assign(socket, show_control_add_dialog: true)}
+  end
+
+  def handle_event("control_add_cancel", _params, socket) do
+    {:halt, assign(socket, show_control_add_dialog: false)}
+  end
+
+  def handle_event("control_add_confirm", params, socket) do
+    nick = params["nickname"]
+    type = String.to_existing_atom(params["type"])
+    duration_str = params["duration"]
+
+    {duration, expires_at} = parse_dialog_duration(duration_str)
+
+    session = socket.assigns.session
+
+    case IgnoreList.add_entry(session.ignore_list, nick, type, expires_at) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        {:halt,
+         socket
+         |> assign(session: new_session, show_control_add_dialog: false)
+         |> cancel_ignore_timer(nick)
+         |> maybe_start_ignore_timer(nick, duration)
+         |> maybe_persist_ignore_list(new_session)
+         |> system_event("* #{nick} is now ignored (#{type})")}
+
+      {:error, reason} ->
+        {:halt, error_event(socket, "Failed to add ignore: #{reason}")}
+    end
+  end
+
+  def handle_event("control_remove", _params, socket) do
+    nick = socket.assigns.control_selected
+
+    if nick do
+      session = socket.assigns.session
+
+      case IgnoreList.remove_entry(session.ignore_list, nick) do
+        {:ok, updated_list} ->
+          new_session = Session.set_ignore_list(session, updated_list)
+
+          {:halt,
+           socket
+           |> assign(session: new_session, control_selected: nil)
+           |> cancel_ignore_timer(nick)
+           |> maybe_persist_ignore_list(new_session)
+           |> system_event("* #{nick} is no longer ignored")}
+
+        {:error, :not_found} ->
+          {:halt, socket}
+      end
+    else
+      {:halt, socket}
     end
   end
 

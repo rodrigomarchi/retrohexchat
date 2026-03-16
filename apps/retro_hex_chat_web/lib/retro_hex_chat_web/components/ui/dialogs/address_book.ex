@@ -33,7 +33,9 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :contacts, :list, default: [], doc: "List of %{nick, notes, color} maps"
   attr :notify_list, :list, default: [], doc: "List of %{nick, notify_on, notify_off} maps"
   attr :nick_colors, :list, default: [], doc: "List of %{nick, color} maps"
-  attr :control_list, :list, default: [], doc: "List of %{nick, level} maps"
+  attr :control_list, :list, default: [], doc: "List of ignore entries"
+  attr :control_selected, :string, default: nil, doc: "Selected ignore entry nickname"
+  attr :show_control_add_dialog, :boolean, default: false
 
   attr :selected_index, :any,
     default: nil,
@@ -60,6 +62,9 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :on_edit, :any, default: nil, doc: "Edit button callback"
   attr :on_remove, :any, default: nil, doc: "Remove button callback"
   attr :on_color_select, :any, default: nil, doc: "Color select callback"
+  attr :on_control_select, :any, default: nil, doc: "Control tab row selection callback"
+  attr :on_control_add, :any, default: nil, doc: "Control tab add button callback"
+  attr :on_control_remove, :any, default: nil, doc: "Control tab remove button callback"
   attr :on_ok, :any, default: nil, doc: "OK button callback"
   attr :on_cancel, :any, default: nil, doc: "Cancel button callback"
   attr :on_close, :any, default: nil, doc: "Close button callback"
@@ -94,11 +99,13 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           </.tabs_list>
 
           <%!-- Contacts Tab --%>
-          <.tabs_content value="contacts">
+          <.tabs_content value="contacts" builder={builder}>
             <.contacts_table
               contacts={@contacts}
               selected={if(@selected_tab == "contacts", do: @selected_index)}
               on_select={@on_select}
+              nick_color_fn={@nick_color_fn}
+              timezone={@timezone}
             />
             <.crud_buttons
               on_add={@on_add}
@@ -115,11 +122,12 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           </.tabs_content>
 
           <%!-- Notify Tab --%>
-          <.tabs_content value="notify">
+          <.tabs_content value="notify" builder={builder}>
             <.notify_table
               notify_list={@notify_list}
               selected={if(@selected_tab == "notify", do: @notify_selected)}
               on_select={@on_select}
+              timezone={@timezone}
             />
             <.crud_buttons
               on_add={@on_add}
@@ -131,7 +139,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           </.tabs_content>
 
           <%!-- Nick Colors Tab --%>
-          <.tabs_content value="colors">
+          <.tabs_content value="colors" builder={builder}>
             <.nick_colors_table
               nick_colors={@nick_colors}
               selected={if(@selected_tab == "colors", do: @nick_colors_selected)}
@@ -152,19 +160,33 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           </.tabs_content>
 
           <%!-- Control Tab --%>
-          <.tabs_content value="control">
+          <.tabs_content value="control" builder={builder}>
             <.control_table
               control_list={@control_list}
-              selected={if(@selected_tab == "control", do: @selected_index)}
-              on_select={@on_select}
+              selected={if(@selected_tab == "control", do: @control_selected)}
+              on_select={@on_control_select}
             />
-            <.crud_buttons
-              on_add={@on_add}
-              on_edit={@on_edit}
-              on_remove={@on_remove}
-              selected={@selected_index != nil && @selected_tab == "control"}
-              testid_prefix="control"
-            />
+            <div class="flex gap-retro-4 mt-retro-4">
+              <.button
+                size="sm"
+                variant="outline"
+                phx-click={@on_control_add}
+                data-testid="control-add"
+              >
+                <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
+                Add
+              </.button>
+              <.button
+                size="sm"
+                variant="outline"
+                phx-click={@on_control_remove}
+                disabled={@control_selected == nil}
+                data-testid="control-remove"
+              >
+                <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
+                Remove
+              </.button>
+            </div>
           </.tabs_content>
         </.tabs>
       </.dialog_body>
@@ -208,6 +230,8 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
       nick_colors_selected={@nick_colors_selected}
       nick_palette_editing_index={@nick_palette_editing_index}
     />
+    <%!-- Control Add Sub-Dialog --%>
+    <.control_add_form :if={@show_control_add_dialog} />
     """
   end
 
@@ -539,6 +563,8 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :contacts, :list, required: true
   attr :selected, :any, default: nil
   attr :on_select, :any, default: nil
+  attr :nick_color_fn, :any, default: nil
+  attr :timezone, :string, default: nil
 
   defp contacts_table(assigns) do
     ~H"""
@@ -547,7 +573,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         <.table_row>
           <.table_head>Nick</.table_head>
           <.table_head>Notes</.table_head>
-          <.table_head>Color</.table_head>
+          <.table_head>Since</.table_head>
         </.table_row>
       </.table_header>
       <.table_body>
@@ -568,13 +594,14 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           phx-click={@on_select}
           phx-value-nickname={contact.contact_nickname}
         >
-          <.table_cell>{contact.contact_nickname}</.table_cell>
-          <.table_cell>{Map.get(contact, :note, "")}</.table_cell>
           <.table_cell>
-            <div
-              class="w-4 h-4 border border-border"
-              class={nick_color_class(Map.get(contact, :color))}
-            />
+            <span class={@nick_color_fn && @nick_color_fn.(contact.contact_nickname)}>
+              {contact.contact_nickname}
+            </span>
+          </.table_cell>
+          <.table_cell>{Map.get(contact, :note, "")}</.table_cell>
+          <.table_cell class="text-xs text-muted-foreground">
+            {format_contact_date(Map.get(contact, :first_contact_date), @timezone)}
           </.table_cell>
         </.table_row>
       </.table_body>
@@ -587,6 +614,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :notify_list, :list, required: true
   attr :selected, :any, default: nil
   attr :on_select, :any, default: nil
+  attr :timezone, :string, default: nil
 
   defp notify_table(assigns) do
     ~H"""
@@ -594,13 +622,14 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
       <.table_header>
         <.table_row>
           <.table_head>Nick</.table_head>
-          <.table_head>On Join</.table_head>
-          <.table_head>On Part</.table_head>
+          <.table_head>Status</.table_head>
+          <.table_head>Note</.table_head>
+          <.table_head>Last Seen</.table_head>
         </.table_row>
       </.table_header>
       <.table_body>
         <.table_row :if={@notify_list == []}>
-          <.table_cell colspan="3" class="text-center text-muted-foreground py-4">
+          <.table_cell colspan="4" class="text-center text-muted-foreground py-4">
             No entries. Click Add to track a nickname.
           </.table_cell>
         </.table_row>
@@ -614,8 +643,15 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           phx-value-nickname={entry.tracked_nickname}
         >
           <.table_cell>{entry.tracked_nickname}</.table_cell>
-          <.table_cell>{if entry.online, do: "Online", else: "Offline"}</.table_cell>
-          <.table_cell>{Map.get(entry, :note, "")}</.table_cell>
+          <.table_cell>
+            <span class={if(entry.online, do: "text-success", else: "text-muted-foreground")}>
+              {if entry.online, do: "Online", else: "Offline"}
+            </span>
+          </.table_cell>
+          <.table_cell class="text-xs">{Map.get(entry, :note, "")}</.table_cell>
+          <.table_cell class="text-xs text-muted-foreground">
+            {format_last_seen(Map.get(entry, :last_seen_at), entry.online, @timezone)}
+          </.table_cell>
         </.table_row>
       </.table_body>
     </.table>
@@ -677,23 +713,32 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
       <.table_header>
         <.table_row>
           <.table_head>Nick</.table_head>
-          <.table_head>Level</.table_head>
+          <.table_head>Type</.table_head>
+          <.table_head>Expires</.table_head>
         </.table_row>
       </.table_header>
       <.table_body>
         <.table_row :if={@control_list == []}>
-          <.table_cell colspan="2" class="text-center text-muted-foreground py-4">
-            Ignore management will be available in a future update.
+          <.table_cell colspan="3" class="text-center text-muted-foreground py-4">
+            No ignored users. Click Add to ignore a nickname.
           </.table_cell>
         </.table_row>
         <.table_row
           :for={entry <- @control_list}
-          class={if(@selected == entry.nick, do: "bg-selection-bg text-selection-fg", else: "")}
+          id={"control-entry-#{control_nick(entry)}"}
+          class={
+            if(@selected == control_nick(entry), do: "bg-selection-bg text-selection-fg", else: "")
+          }
           phx-click={@on_select}
-          phx-value-nickname={entry.nick}
+          phx-value-nickname={control_nick(entry)}
         >
-          <.table_cell>{entry.nick}</.table_cell>
-          <.table_cell>{Map.get(entry, :level, "normal")}</.table_cell>
+          <.table_cell class="font-bold text-xs">{control_nick(entry)}</.table_cell>
+          <.table_cell class="text-xs">
+            {to_string(Map.get(entry, :ignore_type, Map.get(entry, :level, "")))}
+          </.table_cell>
+          <.table_cell class="text-xs text-muted-foreground">
+            {format_expires(Map.get(entry, :expires_at))}
+          </.table_cell>
         </.table_row>
       </.table_body>
     </.table>
@@ -744,7 +789,124 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
     """
   end
 
+  # ── Control Add Sub-Form ────────────────────────────
+
+  defp control_add_form(assigns) do
+    ~H"""
+    <div class="dialog-overlay dialog-overlay--above">
+      <div class="window dialog-window--narrow">
+        <div class="title-bar">
+          <div class="title-bar-text">Add Ignore Entry</div>
+          <div class="title-bar-controls">
+            <button type="button" aria-label="Close" phx-click="control_add_cancel" />
+          </div>
+        </div>
+        <div class="window-body dialog-body--p8">
+          <form phx-submit="control_add_confirm" data-testid="control-add-form">
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="control-add-nick">Nickname:</label>
+              <.input
+                type="text"
+                id="control-add-nick"
+                name="nickname"
+                maxlength="16"
+                required
+                autocomplete="off"
+                class="u-w-full"
+              />
+            </div>
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="control-add-type">Type:</label>
+              <select id="control-add-type" name="type" class="u-w-full">
+                <option value="all" selected>All</option>
+                <option value="messages">Messages</option>
+                <option value="pms">PMs</option>
+                <option value="actions">Actions</option>
+                <option value="invites">Invites</option>
+              </select>
+            </div>
+            <div class="field-row-stacked u-mb-8">
+              <label class="text-xs font-bold" for="control-add-duration">
+                Duration (leave empty for permanent):
+              </label>
+              <.input
+                type="text"
+                id="control-add-duration"
+                name="duration"
+                placeholder="e.g. 5m, 1h, 2d"
+                autocomplete="off"
+                class="u-w-full"
+              />
+            </div>
+            <div class="dialog-buttons dialog-buttons--gap-8">
+              <.button type="submit" size="sm">
+                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+                OK
+              </.button>
+              <.button type="button" size="sm" variant="outline" phx-click="control_add_cancel">
+                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+                Cancel
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  # ── Helpers ────────────────────────────────────────
+
+  # Support both IgnoreEntry structs (:nickname) and showcase maps (:nick)
+  @spec control_nick(map()) :: String.t()
+  defp control_nick(entry), do: Map.get(entry, :nickname) || Map.get(entry, :nick, "")
+
   @spec nick_color_class(any()) :: String.t()
   defp nick_color_class(n) when is_integer(n), do: "irc-bg-#{n}"
   defp nick_color_class(_), do: "bg-black"
+
+  @spec format_contact_date(DateTime.t() | nil, String.t() | nil) :: String.t()
+  defp format_contact_date(nil, _timezone), do: ""
+
+  defp format_contact_date(dt, timezone) do
+    dt
+    |> shift_timezone(timezone)
+    |> Calendar.strftime("%d/%m/%Y")
+  end
+
+  @spec format_last_seen(DateTime.t() | nil, boolean(), String.t() | nil) :: String.t()
+  defp format_last_seen(_dt, true, _timezone), do: "—"
+  defp format_last_seen(nil, false, _timezone), do: "Never"
+
+  defp format_last_seen(dt, false, timezone) do
+    dt
+    |> shift_timezone(timezone)
+    |> Calendar.strftime("%d/%m %H:%M")
+  end
+
+  @spec format_expires(DateTime.t() | nil) :: String.t()
+  defp format_expires(nil), do: "Permanent"
+
+  defp format_expires(dt) do
+    remaining = DateTime.diff(dt, DateTime.utc_now(), :second)
+
+    cond do
+      remaining <= 0 -> "Expired"
+      remaining < 60 -> "#{remaining}s"
+      remaining < 3600 -> "#{div(remaining, 60)}m"
+      remaining < 86_400 -> "#{div(remaining, 3600)}h"
+      true -> "#{div(remaining, 86_400)}d"
+    end
+  end
+
+  @spec shift_timezone(DateTime.t(), String.t() | nil) :: DateTime.t()
+  defp shift_timezone(dt, nil), do: dt
+  defp shift_timezone(dt, "Etc/UTC"), do: dt
+
+  defp shift_timezone(dt, timezone) do
+    case DateTime.shift_zone(dt, timezone) do
+      {:ok, shifted} -> shifted
+      {:error, _} -> dt
+    end
+  end
 end
