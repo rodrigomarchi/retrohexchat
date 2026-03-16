@@ -57,7 +57,6 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   import RetroHexChatWeb.Components.UI.ChannelCentralDialog
   import RetroHexChatWeb.Components.UI.ChannelList
   import RetroHexChatWeb.Components.UI.CheatsheetDialog
-  import RetroHexChatWeb.Components.UI.CtcpSettingsDialog
   import RetroHexChatWeb.Components.UI.CustomMenusDialog
   import RetroHexChatWeb.Components.UI.DeleteConfirmDialog
   import RetroHexChatWeb.Components.UI.DisconnectConfirmDialog
@@ -677,14 +676,10 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       pending_invites: [],
       reconnect_active_channel: nil,
       reconnect_active_pm: nil,
-      ctcp_pending: %{},
-      ctcp_rate_limits: %{},
       knock_timestamps: %{},
-      show_ctcp_settings_dialog: false,
       duplicate_tracker: DuplicateTracker.new(),
       flood_tracker: FloodTracker.new(),
       auto_ignore_state: %{active: %{}, cooldowns: %{}},
-      ctcp_reply_tracker: %{timestamps: []},
       show_flood_protection_dialog: false,
       show_sound_settings_dialog: false,
       sound_settings_draft: nil,

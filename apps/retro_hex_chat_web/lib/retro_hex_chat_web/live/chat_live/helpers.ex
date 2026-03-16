@@ -10,7 +10,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   - `Presence` — presence tracker wrappers
   - `Whois` — whois/whowas text output
   - `Flood` — flood detection and auto-ignore
-  - `CTCP` — CTCP reply handling
   - `Autorespond` — auto-respond rule execution
   - `Session` — nick colors, sounds, reconnect, misc actions
 
@@ -91,13 +90,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
 
   defdelegate cancel_auto_ignore_with_cooldown(socket, nick), to: __MODULE__.Flood
   defdelegate format_duration(seconds), to: __MODULE__.Flood
-
-  # ── CTCP ─────────────────────────────────────────────────────
-
-  defdelegate maybe_send_ctcp_reply(socket, session, settings, type, sender, req_id, sent_at),
-    to: __MODULE__.CTCP
-
-  defdelegate ctcp_reply_allowed?(tracker, limit, window_seconds), to: __MODULE__.CTCP
 
   # ── Autorespond ──────────────────────────────────────────────
 

@@ -274,7 +274,6 @@ defmodule HelpConverter do
     "Message of the Day (MOTD)" => ":icon_notepad",
     "Hierarchy" => ":icon_role_owner",
     "Available Formats" => ":icon_notepad",
-    "Available CTCP Types" => ":icon_dialog_ctcp",
     "Services" => ":icon_shield",
     "Setting a Quit Message" => ":icon_close",
     "Settings Confirmation" => ":icon_btn_ok",

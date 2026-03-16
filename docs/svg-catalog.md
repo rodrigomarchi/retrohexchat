@@ -56,7 +56,6 @@ All SVGs extracted and organized in the SVG consolidation effort.
 | `icon_btn_toggle_nicklist` | Panel with people **[DONE]** |
 | `icon_btn_auto_respond` | Speech bubble + arrow **[DONE]** |
 | `icon_btn_url_catcher` | Globe with dot **[DONE]** |
-| `icon_btn_ctcp` | Bidirectional arrows **[DONE]** |
 | `icon_btn_channel_central` | House **[DONE]** |
 
 ### Tools

@@ -318,7 +318,6 @@ defmodule RetroHexChat.Admin do
     {"notify_list_settings", RetroHexChat.Presence.NotifyListSettings},
     {"user_bios", RetroHexChat.Chat.Schemas.UserBio},
     {"perform_settings", RetroHexChat.Chat.Schemas.PerformSettings},
-    {"ctcp_settings", RetroHexChat.Chat.Schemas.CtcpSetting},
     {"flood_protection_settings", RetroHexChat.Chat.Schemas.FloodProtectionSetting},
     {"sound_settings", RetroHexChat.Chat.Schemas.SoundSetting},
     {"notice_routing_settings", RetroHexChat.Chat.Schemas.NoticeRoutingSetting},

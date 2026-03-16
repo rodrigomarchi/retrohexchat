@@ -711,20 +711,6 @@ defmodule RetroHexChatWeb.Icons.Communication do
     """
   end
 
-  # -- CTCP --
-
-  attr :class, :string, default: nil
-
-  @spec icon_btn_ctcp(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_btn_ctcp(assigns) do
-    ~H"""
-    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
-      <path d="M2 5h6V4h1v1h1v1h1v1h-1v1H9v1H8V8H2V5z" fill="#008000" />
-      <path d="M14 10H8v1H7v-1H6v-1H5v-1h1V7h1v1h1v1h6v2z" fill="#000080" />
-    </svg>
-    """
-  end
-
   # -- Channel Central --
 
   attr :class, :string, default: nil

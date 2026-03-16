@@ -189,7 +189,6 @@ defmodule RetroHexChatWeb.Router do
     live "/sound-settings-dialog", Dialogs.SoundSettingsDialogPage
     live "/invite-dialog", Dialogs.InviteDialogPage
     live "/paste-confirm-dialog", Dialogs.PasteConfirmDialogPage
-    live "/ctcp-settings-dialog", Dialogs.CtcpSettingsDialogPage
     live "/cheatsheet-dialog", Dialogs.CheatsheetDialogPage
     live "/nick-change-dialog", Dialogs.NickChangeDialogPage
     live "/perform-dialog", Dialogs.PerformDialogPage

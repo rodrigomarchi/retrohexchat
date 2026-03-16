@@ -1,10 +1,9 @@
 defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   @moduledoc """
-  Handle events for the CTCP Settings, Flood Protection, and Sound Settings dialogs,
+  Handle events for the Flood Protection and Sound Settings dialogs,
   plus the global mute toggle.
 
-  Covers: open_ctcp_settings_dialog, close_ctcp_settings_dialog, ctcp_save_settings,
-  open_flood_protection_dialog, close_flood_protection_dialog, flood_save_settings,
+  Covers: open_flood_protection_dialog, close_flood_protection_dialog, flood_save_settings,
   flood_reset_defaults, open_sound_settings_dialog, close_sound_settings_dialog,
   sound_settings_change, sound_flash_toggle, sound_preview, sound_settings_apply,
   sound_settings_ok, toggle_mute.
@@ -18,50 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   import RetroHexChatWeb.ChatLive.Helpers, only: [system_message: 1]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{CtcpSettings, FloodProtection, SoundSettings}
-
-  # ── CTCP Settings ───────────────────────────────────────────
-
-  def handle_event("open_ctcp_settings_dialog", _params, socket) do
-    {:halt, assign(socket, show_ctcp_settings_dialog: true)}
-  end
-
-  def handle_event("close_ctcp_settings_dialog", _params, socket) do
-    {:halt, assign(socket, show_ctcp_settings_dialog: false)}
-  end
-
-  def handle_event("ctcp_save_settings", params, socket) do
-    session = socket.assigns.session
-    settings = session.ctcp_settings
-
-    settings =
-      settings
-      |> CtcpSettings.set_enabled(params["enabled"] == "true")
-      |> CtcpSettings.set_version_string(params["version_string"] || "RetroHexChat v1.0")
-      |> CtcpSettings.set_finger_text(
-        case params["finger_text"] do
-          "" -> nil
-          nil -> nil
-          text -> text
-        end
-      )
-
-    new_session = Session.set_ctcp_settings(session, settings)
-
-    if new_session.identified do
-      Task.start(fn ->
-        CtcpSettings.save(new_session.nickname, settings)
-      end)
-    end
-
-    {:halt,
-     socket
-     |> assign(session: new_session, show_ctcp_settings_dialog: false)
-     |> stream_insert(
-       :chat_messages,
-       system_message("* CTCP settings saved")
-     )}
-  end
+  alias RetroHexChat.Chat.{FloodProtection, SoundSettings}
 
   # ── Flood Protection ────────────────────────────────────────
 
@@ -87,11 +43,6 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
       )
       |> try_set(&FloodProtection.set_spam_threshold/2, params["spam_threshold"])
       |> try_set(&FloodProtection.set_spam_window_seconds/2, params["spam_window_seconds"])
-      |> try_set(&FloodProtection.set_ctcp_reply_limit/2, params["ctcp_reply_limit"])
-      |> try_set(
-        &FloodProtection.set_ctcp_reply_window_seconds/2,
-        params["ctcp_reply_window_seconds"]
-      )
 
     new_session = Session.set_flood_protection(session, settings)
 

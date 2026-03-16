@@ -36,7 +36,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     AliasExpander,
     AliasList,
     AutoJoinList,
-    CtcpSettings,
     Service
   }
 
@@ -300,14 +299,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     handle_notice_send(socket, session, target, content)
   end
 
-  defp handle_dispatch_result(
-         socket,
-         session,
-         {:ok, :ctcp, %{target: target, type: type}}
-       ) do
-    handle_ctcp_send(socket, session, target, type)
-  end
-
   defp handle_dispatch_result(socket, _session, {:ok, :system, %{content: text}}),
     do: service_event(socket, detect_service_author(text), text)
 
@@ -372,140 +363,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     end)
   end
 
-  # ── Private: CTCP send ────────────────────────────────────
-
-  defp handle_ctcp_send(socket, session, target, type) do
-    if target == session.nickname do
-      handle_self_ctcp(socket, session, type)
-    else
-      case check_ctcp_rate_limit(socket, target) do
-        {:ok, updated_socket} ->
-          handle_remote_ctcp(updated_socket, session, target, type)
-
-        {:error, socket_with_error} ->
-          socket_with_error
-      end
-    end
-  end
-
-  defp handle_self_ctcp(socket, session, type) do
-    timezone = socket.assigns[:timezone] || "Etc/UTC"
-    value = generate_ctcp_reply_value(session, type, timezone)
-
-    case type do
-      :ping ->
-        system_event(socket, "* CTCP PING reply from #{session.nickname}: 0ms")
-
-      _ ->
-        type_upper = type |> Atom.to_string() |> String.upcase()
-        system_event(socket, "* CTCP #{type_upper} reply from #{session.nickname}: #{value}")
-    end
-  end
-
-  defp handle_remote_ctcp(socket, session, target, type) do
-    case validate_target_online(target) do
-      :ok ->
-        request_id = "ctcp_#{System.unique_integer([:positive])}"
-        sent_at = System.monotonic_time(:millisecond)
-        timer_ref = Process.send_after(self(), {:ctcp_timeout, request_id}, 10_000)
-
-        pending =
-          Map.put(socket.assigns.ctcp_pending, request_id, %{
-            target: target,
-            type: type,
-            sent_at: sent_at,
-            timer_ref: timer_ref
-          })
-
-        Phoenix.PubSub.broadcast(
-          RetroHexChat.PubSub,
-          "user:#{target}",
-          {:ctcp_request,
-           %{
-             type: type,
-             sender: session.nickname,
-             request_id: request_id,
-             sent_at: sent_at
-           }}
-        )
-
-        assign(socket, ctcp_pending: pending)
-
-      {:error, msg} ->
-        error_event(socket, msg)
-    end
-  end
-
-  defp check_ctcp_rate_limit(socket, target) do
-    key = String.downcase(target)
-    now = System.monotonic_time(:millisecond)
-    window = 30_000
-    max_requests = 3
-
-    rate_limits = socket.assigns.ctcp_rate_limits
-    timestamps = Map.get(rate_limits, key, [])
-
-    active = Enum.filter(timestamps, fn ts -> now - ts < window end)
-
-    if length(active) < max_requests do
-      updated = Map.put(rate_limits, key, [now | active])
-      {:ok, assign(socket, ctcp_rate_limits: updated)}
-    else
-      {:error,
-       system_event(
-         socket,
-         "* CTCP rate limit reached for #{target}. Please wait before sending another request."
-       )}
-    end
-  end
-
-  defp generate_ctcp_reply_value(session, type, timezone) do
-    settings = Session.get_ctcp_settings(session)
-
-    case type do
-      :ping ->
-        ""
-
-      :version ->
-        CtcpSettings.get_version_string(settings)
-
-      :time ->
-        now = DateTime.utc_now()
-        tz_label = RetroHexChatWeb.Timezone.format_utc_offset(timezone)
-
-        now
-        |> RetroHexChatWeb.Timezone.shift(timezone)
-        |> Calendar.strftime("%Y-%m-%d %H:%M:%S #{tz_label}")
-
-      :finger ->
-        case CtcpSettings.get_finger_text(settings) do
-          nil ->
-            idle_seconds = DateTime.diff(DateTime.utc_now(), session.last_message_at, :second)
-            "#{session.nickname} - idle #{format_idle_time(idle_seconds)}"
-
-          custom ->
-            custom
-        end
-    end
-  end
-
-  defp format_idle_time(seconds) when seconds < 60, do: "#{seconds} seconds"
-
-  defp format_idle_time(seconds) when seconds < 3600 do
-    minutes = div(seconds, 60)
-    if minutes == 1, do: "1 minute", else: "#{minutes} minutes"
-  end
-
-  defp format_idle_time(seconds) when seconds < 86_400 do
-    hours = div(seconds, 3600)
-    if hours == 1, do: "1 hour", else: "#{hours} hours"
-  end
-
-  defp format_idle_time(seconds) do
-    days = div(seconds, 86_400)
-    if days == 1, do: "1 day", else: "#{days} days"
-  end
-
   # ── Private: helpers ──────────────────────────────────────
 
   defp channels_where_operator(session) do
@@ -538,22 +395,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   # show_help_message, show_command_help_message, validate_operator,
   # validate_invite_only, validate_target_not_in_channel
   # → UiActionHandlers (local copies)
-
-  defp validate_target_online(target) do
-    case Server.get_state("#lobby") do
-      {:ok, state} ->
-        member_nicks = Enum.map(state.members, fn {nick, _role} -> nick end)
-
-        if target in member_nicks do
-          :ok
-        else
-          {:error, "* User '#{target}' not found"}
-        end
-
-      {:error, _} ->
-        {:error, "* User '#{target}' not found"}
-    end
-  end
 
   # ── Private: auto-join management ──────────────────────────
 

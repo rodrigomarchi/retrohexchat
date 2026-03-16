@@ -340,10 +340,6 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
       assert {:nick, :all_channels} = Autocomplete.argument_context("notice")
     end
 
-    test "ctcp expects nick from all channels" do
-      assert {:nick, :all_channels} = Autocomplete.argument_context("ctcp")
-    end
-
     test "kick expects nick from current channel" do
       assert {:nick, :current_channel} = Autocomplete.argument_context("kick")
     end

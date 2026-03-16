@@ -519,14 +519,6 @@
   on_close="toggle_channel_list"
 />
 
-<.ctcp_settings_dialog
-  id="ctcp-settings-dialog"
-  show={@show_ctcp_settings_dialog}
-  settings={@session.ctcp_settings}
-  on_save="ctcp_save_settings"
-  on_cancel="close_ctcp_settings_dialog"
-/>
-
 <.flood_protection_dialog
   id="flood-protection-dialog"
   show={@show_flood_protection_dialog}

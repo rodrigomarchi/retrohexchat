@@ -4,7 +4,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
   Delegates to:
   - `Messages` — new_message, new_pm, typing/stop_typing, notices
-  - `Ctcp` — ctcp_request, ctcp_reply, ctcp_timeout, test helpers
   - `ChannelState` — mode_changed, kicked/banned/unbanned, ban/invite exceptions, topic
   - `Membership` — user_joined/left, nick_changed, force_disconnect/rename, nickserv
   - `Presence` — user_connected/disconnected, notify_debounce, link_preview, invite
@@ -12,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   Attached as `attach_hook(:pubsub_handlers, :handle_info, ...)` in ChatLive.mount/3.
   """
 
-  alias __MODULE__.{ChannelState, Ctcp, Membership, Messages, Presence, ServerMessages}
+  alias __MODULE__.{ChannelState, Membership, Messages, Presence, ServerMessages}
 
   # ── Messages: channel messages, PMs, typing, notices ──────
 
@@ -45,23 +44,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
   def handle_info(%{event: "reply_quote_updated"} = msg, socket),
     do: Messages.handle_info(msg, socket)
-
-  # ── CTCP ──────────────────────────────────────────────────
-
-  def handle_info({:ctcp_request, _} = msg, socket),
-    do: Ctcp.handle_info(msg, socket)
-
-  def handle_info({:ctcp_reply, _} = msg, socket),
-    do: Ctcp.handle_info(msg, socket)
-
-  def handle_info({:ctcp_timeout, _} = msg, socket),
-    do: Ctcp.handle_info(msg, socket)
-
-  def handle_info({:_test_add_ctcp_pending, _, _} = msg, socket),
-    do: Ctcp.handle_info(msg, socket)
-
-  def handle_info({:_test_set_ctcp_enabled, _} = msg, socket),
-    do: Ctcp.handle_info(msg, socket)
 
   # ── Channel state: modes, kicks, bans, exceptions, topic ─
 

@@ -116,12 +116,6 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
             on_action={@on_action}
           />
           <.dropdown_item
-            icon_fn={:icon_btn_ctcp}
-            label="CTCP"
-            action="open_ctcp_settings_dialog"
-            on_action={@on_action}
-          />
-          <.dropdown_item
             icon_fn={:icon_btn_flood_protection}
             label="Flood Protection"
             action="open_flood_protection_dialog"

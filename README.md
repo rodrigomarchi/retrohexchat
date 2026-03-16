@@ -59,7 +59,7 @@ RetroHexChat recreates the experience of classic IRC clients like mIRC, complete
 - **Ban** — Persistent bans stored in PostgreSQL, ban exceptions (`+e`)
 - **Invite exceptions** — `+I` mode to bypass invite-only restriction
 - **Rate limiting** — Flood control with mute enforcement via ETS counters
-- **Flood protection** — Duplicate detection, auto-ignore, CTCP rate limiting
+- **Flood protection** — Duplicate detection, auto-ignore, spam filtering
 
 ### Buddy List & Contacts
 - **Notify list** — Track friends' online/away status with 10-second debounce notifications
@@ -88,7 +88,6 @@ RetroHexChat recreates the experience of classic IRC clients like mIRC, complete
 ### Communication
 - **Channel invites** — `/invite` with retro dialog, 5-minute expiry
 - **Notices** — `/notice` with configurable routing (channel/status/active window)
-- **CTCP** — PING/VERSION/TIME/FINGER with configurable responses
 - **Special messages** — MOTD, channel welcome messages, `/wallops`, `/announce`
 
 ### User Information
@@ -344,7 +343,7 @@ Manages user identity within a session. No persistent user accounts — nickname
 Accounts
 ├── Session         — In-memory user state: channels, PMs, away, preferences,
 │                     notify list, contacts, nick colors, highlights, ignores,
-│                     favorites, perform/autojoin, sound settings, CTCP settings
+│                     favorites, perform/autojoin, sound settings
 ├── NicknameValidator — 1-16 chars, alphanumeric + _-[]{}^
 └── Policy          — Authorization checks (can user perform action?)
 ```
@@ -488,7 +487,6 @@ Every slash command implements the `Handler` behaviour:
 | `/knock` | `/knock #channel [message]` | Request entry to invite-only channel |
 | `/notice` | `/notice <target> <message>` | Send a notice |
 | `/notice_routing` | `/notice_routing [setting]` | Configure notice display |
-| `/ctcp` | `/ctcp <nick> <type>` | Send CTCP request |
 | `/perform` | `/perform <add\|remove\|move\|list\|clear> [args]` | Manage perform commands |
 | `/autojoin` | `/autojoin <add\|remove\|list\|clear> [args]` | Manage auto-join channels |
 | `/bio` | `/bio [text]` | Set or view your bio |
@@ -697,7 +695,6 @@ ChatLive
 | `server_settings` | Special Messages | key, value (MOTD, etc.) |
 | `channel_welcome_messages` | Special Messages | channel_name, message |
 | `notice_routing_settings` | Notices | user_nickname, routing config |
-| `ctcp_settings` | CTCP | user_nickname, response config |
 | `flood_protection_settings` | Protection | user_nickname, thresholds |
 | `sound_settings` | Sounds | user_nickname, event sounds (JSONB) |
 | `user_preferences` | Options | user_nickname, 6 JSONB columns (display, chat, etc.) |

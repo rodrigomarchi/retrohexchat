@@ -176,24 +176,6 @@ defmodule RetroHexChatWeb.Icons.Code do
 
   attr :class, :string, default: nil
 
-  @spec icon_dialog_ctcp(map()) :: Phoenix.LiveView.Rendered.t()
-  def icon_dialog_ctcp(assigns) do
-    ~H"""
-    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
-      <!-- Shadow -->
-      <rect x="4" y="3" width="11" height="11" fill="#000" />
-      
-    <!-- Box lines (White for dark bg) -->
-      <rect x="3" y="2" width="11" height="11" fill="none" stroke="#fff" stroke-width="2" />
-      
-    <!-- Arrow/Zap inside (Gold) -->
-      <polygon points="5,7 9,5 8,8 11,8 7,12 8,9 5,9" fill="#FFD700" stroke="#000" stroke-width="1" />
-    </svg>
-    """
-  end
-
-  attr :class, :string, default: nil
-
   @spec icon_dialog_auto_respond(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_dialog_auto_respond(assigns) do
     ~H"""

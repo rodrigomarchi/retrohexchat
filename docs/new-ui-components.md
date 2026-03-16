@@ -199,9 +199,9 @@ All use `dialog` as base frame. **Zero dedicated window/border markup.**
 
 ### D-08: `ui/config_form.ex` ✅
 - **Composes:** `dialog` + `table` + `button` + form controls
-- **Reference:** alias/perform/flood/ctcp/sound dialogs
+- **Reference:** alias/perform/flood/sound dialogs
 - **Implements:** Generic config pattern: list (left) + edit form (right).
-  Reusable base for Alias, Perform, Flood Protection, CTCP, Sound Settings.
+  Reusable base for Alias, Perform, Flood Protection, Sound Settings.
 - **Showcase:** `showcase_live/config_form_page.ex`
 
 ---

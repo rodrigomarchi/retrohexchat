@@ -20,7 +20,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     UserBio
   }
 
-  alias RetroHexChat.Chat.CtcpSettings
   alias RetroHexChat.Presence.NotifyList
 
   @spec maybe_persist_notify_list(Phoenix.LiveView.Socket.t(), Session.t()) ::
@@ -135,7 +134,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     |> load_if_found(IgnoreList.load(nick), &Session.set_ignore_list/2)
     |> load_if_found(PerformList.load(nick), &Session.set_perform_list/2)
     |> load_if_found(AutoJoinList.load(nick), &Session.set_autojoin_list/2)
-    |> load_if_found(CtcpSettings.load(nick), &Session.set_ctcp_settings/2)
     |> load_if_found(FloodProtection.load(nick), &Session.set_flood_protection/2)
     |> load_if_found(SoundSettings.load(nick), &Session.set_sound_settings/2)
     |> load_if_found(UserBio.load(nick), &Session.set_bio/2)

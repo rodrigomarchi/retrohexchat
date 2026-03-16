@@ -17,7 +17,6 @@ defmodule RetroHexChat.Commands.Registry do
     "clear" => RetroHexChat.Commands.Handlers.Clear,
     "clearmotd" => RetroHexChat.Commands.Handlers.ClearMotd,
     "clearwelcome" => RetroHexChat.Commands.Handlers.ClearWelcome,
-    "ctcp" => RetroHexChat.Commands.Handlers.Ctcp,
     "cs" => RetroHexChat.Commands.Handlers.Cs,
     "deop" => RetroHexChat.Commands.Handlers.Deop,
     "devoice" => RetroHexChat.Commands.Handlers.Devoice,

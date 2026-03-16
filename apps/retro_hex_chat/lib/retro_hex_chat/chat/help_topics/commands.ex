@@ -87,14 +87,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         description: "Send commands to ChanServ for channel registration and management."
       },
       %{
-        id: "cmd-ctcp",
-        title: "/ctcp",
-        category: "Services & Protocols",
-        keywords: ["ctcp", "ping", "version", "time", "finger", "client-to-client"],
-        icon: :icon_dialog_ctcp,
-        description: "Send Client-to-Client Protocol queries like PING, VERSION, and TIME."
-      },
-      %{
         id: "cmd-game",
         title: "/game",
         category: "P2P & Calls",

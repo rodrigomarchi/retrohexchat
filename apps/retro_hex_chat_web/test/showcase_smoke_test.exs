@@ -83,7 +83,6 @@ defmodule RetroHexChatWeb.ShowcaseSmokeTest do
     "/showcase/status-bar-app",
     "/showcase/conversations-context-menu",
     "/showcase/game-canvas",
-    "/showcase/ctcp-settings-dialog",
     "/showcase/cheatsheet-dialog",
     "/showcase/nick-change-dialog",
     "/showcase/syntax-tooltip",

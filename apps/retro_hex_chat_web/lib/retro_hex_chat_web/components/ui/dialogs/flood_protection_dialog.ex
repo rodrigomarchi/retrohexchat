@@ -3,8 +3,8 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
   Flood protection settings dialog for the showcase design system.
 
   Composed from dialog + button + input primitives.
-  Form-based dialog matching v1 contract: 4 fieldsets (Message Flood,
-  Anti-Spam, Auto-Ignore, CTCP Reply Limit) with correct field names
+  Form-based dialog matching v1 contract: 3 fieldsets (Message Flood,
+  Anti-Spam, Auto-Ignore) with correct field names
   submitted via `phx-submit`.
 
   ## Usage
@@ -13,8 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
         id="flood-protection"
         show={true}
         settings={%{flood_threshold: 5, flood_window_seconds: 10, spam_threshold: 3,
-                     spam_window_seconds: 30, auto_ignore_duration_seconds: 60,
-                     ctcp_reply_limit: 5, ctcp_reply_window_seconds: 30}}
+                     spam_window_seconds: 30, auto_ignore_duration_seconds: 60}}
         on_save="flood_save_settings"
         on_reset="flood_reset_defaults"
         on_cancel="close_flood_protection_dialog"
@@ -33,9 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
     flood_window_seconds: 10,
     spam_threshold: 3,
     spam_window_seconds: 30,
-    auto_ignore_duration_seconds: 60,
-    ctcp_reply_limit: 5,
-    ctcp_reply_window_seconds: 30
+    auto_ignore_duration_seconds: 60
   }
 
   @doc "Renders the flood protection settings dialog."
@@ -48,8 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
     Flood protection settings map.
     Keys: :flood_threshold, :flood_window_seconds,
           :spam_threshold, :spam_window_seconds,
-          :auto_ignore_duration_seconds,
-          :ctcp_reply_limit, :ctcp_reply_window_seconds.
+          :auto_ignore_duration_seconds.
     """
 
   attr :on_save, :any, default: nil, doc: "Form submit event name"
@@ -156,39 +152,6 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
                   class="w-20 text-xs h-7"
                 />
                 <span class="text-xs text-muted-foreground">seconds</span>
-              </div>
-            </fieldset>
-
-            <%!-- CTCP Reply Limit --%>
-            <fieldset class="shadow-retro-field p-retro-8">
-              <legend class="text-xs font-bold px-1">CTCP Reply Limit</legend>
-              <div class="space-y-retro-4">
-                <div class="flex items-center gap-retro-4">
-                  <label for={"#{@id}-ctcp-limit"} class="text-xs w-[120px]">Reply limit:</label>
-                  <.input
-                    id={"#{@id}-ctcp-limit"}
-                    name="ctcp_reply_limit"
-                    type="number"
-                    value={Map.get(@settings, :ctcp_reply_limit, 5)}
-                    min="1"
-                    max="20"
-                    class="w-16 text-xs h-7"
-                  />
-                  <span class="text-xs text-muted-foreground">replies</span>
-                </div>
-                <div class="flex items-center gap-retro-4">
-                  <label for={"#{@id}-ctcp-window"} class="text-xs w-[120px]">Time window:</label>
-                  <.input
-                    id={"#{@id}-ctcp-window"}
-                    name="ctcp_reply_window_seconds"
-                    type="number"
-                    value={Map.get(@settings, :ctcp_reply_window_seconds, 30)}
-                    min="1"
-                    max="120"
-                    class="w-16 text-xs h-7"
-                  />
-                  <span class="text-xs text-muted-foreground">seconds</span>
-                </div>
               </div>
             </fieldset>
           </div>

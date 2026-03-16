@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
 
   Composed from dialog + table + button + form controls.
   Generic config pattern: list (left) + edit form (right).
-  Reusable base for Alias, Perform, Flood Protection, CTCP, Sound Settings.
+  Reusable base for Alias, Perform, Flood Protection, Sound Settings.
 
   ## Usage
 

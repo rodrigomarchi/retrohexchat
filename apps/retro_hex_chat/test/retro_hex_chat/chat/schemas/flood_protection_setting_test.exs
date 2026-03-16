@@ -16,9 +16,7 @@ defmodule RetroHexChat.Chat.Schemas.FloodProtectionSettingTest do
         flood_window_seconds: 15,
         auto_ignore_duration_seconds: 300,
         spam_threshold: 3,
-        spam_window_seconds: 10,
-        ctcp_reply_limit: 2,
-        ctcp_reply_window_seconds: 10
+        spam_window_seconds: 10
       }
 
       changeset = FloodProtectionSetting.changeset(%FloodProtectionSetting{}, attrs)
@@ -51,18 +49,6 @@ defmodule RetroHexChat.Chat.Schemas.FloodProtectionSettingTest do
 
     test "rejects spam_threshold above 50" do
       attrs = %{owner_nickname: "TestUser", spam_threshold: 51}
-      changeset = FloodProtectionSetting.changeset(%FloodProtectionSetting{}, attrs)
-      refute changeset.valid?
-    end
-
-    test "rejects ctcp_reply_limit of 0" do
-      attrs = %{owner_nickname: "TestUser", ctcp_reply_limit: 0}
-      changeset = FloodProtectionSetting.changeset(%FloodProtectionSetting{}, attrs)
-      refute changeset.valid?
-    end
-
-    test "rejects ctcp_reply_limit above 20" do
-      attrs = %{owner_nickname: "TestUser", ctcp_reply_limit: 21}
       changeset = FloodProtectionSetting.changeset(%FloodProtectionSetting{}, attrs)
       refute changeset.valid?
     end

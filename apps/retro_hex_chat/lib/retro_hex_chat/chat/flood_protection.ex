@@ -14,8 +14,6 @@ defmodule RetroHexChat.Chat.FloodProtection do
   @default_auto_ignore_duration_seconds 300
   @default_spam_threshold 3
   @default_spam_window_seconds 10
-  @default_ctcp_reply_limit 2
-  @default_ctcp_reply_window_seconds 10
 
   # ---------------------------------------------------------------------------
   # In-Memory CRUD
@@ -28,9 +26,7 @@ defmodule RetroHexChat.Chat.FloodProtection do
       flood_window_seconds: @default_flood_window_seconds,
       auto_ignore_duration_seconds: @default_auto_ignore_duration_seconds,
       spam_threshold: @default_spam_threshold,
-      spam_window_seconds: @default_spam_window_seconds,
-      ctcp_reply_limit: @default_ctcp_reply_limit,
-      ctcp_reply_window_seconds: @default_ctcp_reply_window_seconds
+      spam_window_seconds: @default_spam_window_seconds
     }
   end
 
@@ -50,12 +46,6 @@ defmodule RetroHexChat.Chat.FloodProtection do
 
   @spec get_spam_window_seconds(map()) :: pos_integer()
   def get_spam_window_seconds(%{spam_window_seconds: v}), do: v
-
-  @spec get_ctcp_reply_limit(map()) :: pos_integer()
-  def get_ctcp_reply_limit(%{ctcp_reply_limit: v}), do: v
-
-  @spec get_ctcp_reply_window_seconds(map()) :: pos_integer()
-  def get_ctcp_reply_window_seconds(%{ctcp_reply_window_seconds: v}), do: v
 
   # Setters
 
@@ -98,22 +88,6 @@ defmodule RetroHexChat.Chat.FloodProtection do
 
   def set_spam_window_seconds(_settings, _value), do: {:error, :invalid_value}
 
-  @spec set_ctcp_reply_limit(map(), integer()) :: map() | {:error, :invalid_value}
-  def set_ctcp_reply_limit(settings, value)
-      when is_integer(value) and value > 0 and value <= 20 do
-    %{settings | ctcp_reply_limit: value}
-  end
-
-  def set_ctcp_reply_limit(_settings, _value), do: {:error, :invalid_value}
-
-  @spec set_ctcp_reply_window_seconds(map(), integer()) :: map() | {:error, :invalid_value}
-  def set_ctcp_reply_window_seconds(settings, value)
-      when is_integer(value) and value > 0 and value <= 120 do
-    %{settings | ctcp_reply_window_seconds: value}
-  end
-
-  def set_ctcp_reply_window_seconds(_settings, _value), do: {:error, :invalid_value}
-
   # ---------------------------------------------------------------------------
   # Persistence
   # ---------------------------------------------------------------------------
@@ -126,9 +100,7 @@ defmodule RetroHexChat.Chat.FloodProtection do
       flood_window_seconds: settings.flood_window_seconds,
       auto_ignore_duration_seconds: settings.auto_ignore_duration_seconds,
       spam_threshold: settings.spam_threshold,
-      spam_window_seconds: settings.spam_window_seconds,
-      ctcp_reply_limit: settings.ctcp_reply_limit,
-      ctcp_reply_window_seconds: settings.ctcp_reply_window_seconds
+      spam_window_seconds: settings.spam_window_seconds
     }
 
     case Repo.get(FloodProtectionSetting, owner) do
@@ -161,9 +133,7 @@ defmodule RetroHexChat.Chat.FloodProtection do
            flood_window_seconds: db_entry.flood_window_seconds,
            auto_ignore_duration_seconds: db_entry.auto_ignore_duration_seconds,
            spam_threshold: db_entry.spam_threshold,
-           spam_window_seconds: db_entry.spam_window_seconds,
-           ctcp_reply_limit: db_entry.ctcp_reply_limit,
-           ctcp_reply_window_seconds: db_entry.ctcp_reply_window_seconds
+           spam_window_seconds: db_entry.spam_window_seconds
          }}
     end
   end

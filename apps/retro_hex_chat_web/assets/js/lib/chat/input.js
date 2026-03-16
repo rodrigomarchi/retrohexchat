@@ -98,7 +98,7 @@ export function detectTrigger(value, cursorPos, getArgContext) {
  */
 export function getArgumentContext(cmdName) {
   const subcommand = ["ns", "cs", "autojoin", "alias", "notify", "perform", "autorespond", "timer"];
-  const nickAll = ["msg", "query", "whois", "whowas", "notice", "ctcp", "invite"];
+  const nickAll = ["msg", "query", "whois", "whowas", "notice", "invite"];
   const nickCurrent = ["kick", "ban", "call", "p2p", "sendfile"];
   const channel = ["join", "part", "topic", "mode"];
 

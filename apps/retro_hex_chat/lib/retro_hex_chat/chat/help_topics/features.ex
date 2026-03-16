@@ -170,23 +170,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description: "Lightweight messages used for server announcements and automated responses."
       },
       %{
-        id: "feature-ctcp",
-        title: "CTCP (Client-to-Client Protocol)",
-        category: "Services & Protocols",
-        keywords: [
-          "ctcp",
-          "ping",
-          "version",
-          "time",
-          "finger",
-          "client-to-client",
-          "latency"
-        ],
-        icon: :icon_dialog_ctcp,
-        description:
-          "Configure Client-to-Client Protocol responses for PING, VERSION, TIME, and more."
-      },
-      %{
         id: "feature-flood-protection",
         title: "Flood Protection",
         category: "Notifications & Sounds",

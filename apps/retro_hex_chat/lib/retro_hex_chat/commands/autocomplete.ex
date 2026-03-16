@@ -269,7 +269,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
   Returns `{:nick, :all_channels}`, `{:nick, :current_channel}`,
   `{:channel, :all}`, or `nil`.
   """
-  @nick_all_commands ~w(msg query whois whowas notice ctcp invite)
+  @nick_all_commands ~w(msg query whois whowas notice invite)
   @nick_current_commands ~w(kick ban)
   @channel_commands ~w(join part topic mode)
 
