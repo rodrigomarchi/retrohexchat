@@ -6,7 +6,8 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
   contact_select, contact_add_dialog, contact_add_cancel, contact_add,
   contact_edit_dialog, contact_edit_cancel, contact_edit, contact_remove,
   nick_color_select, nick_color_add_dialog, nick_color_add_cancel, nick_color_add,
-  nick_color_edit_dialog, nick_color_edit_cancel, nick_color_edit, nick_color_remove.
+  nick_color_edit_dialog, nick_color_edit_cancel, nick_color_edit, nick_color_remove,
+  control_select, control_add_dialog, control_add_cancel, control_add_confirm, control_remove.
 
   Attached as `attach_hook(:address_book_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -23,6 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
       system_event: 2,
       error_event: 2,
       cancel_ignore_timer: 2,
+      cancel_auto_ignore_with_cooldown: 2,
       maybe_start_ignore_timer: 3,
       parse_dialog_duration: 1
     ]
@@ -150,8 +152,12 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
     {:halt, assign(socket, nick_colors_selected: nick)}
   end
 
+  def handle_event("nick_palette_pick", %{"index" => idx_str}, socket) do
+    {:halt, assign(socket, nick_palette_editing_index: String.to_integer(idx_str))}
+  end
+
   def handle_event("nick_color_add_dialog", _params, socket) do
-    {:halt, assign(socket, show_nick_color_add_dialog: true)}
+    {:halt, assign(socket, show_nick_color_add_dialog: true, nick_palette_editing_index: nil)}
   end
 
   def handle_event("nick_color_add_cancel", _params, socket) do
@@ -192,7 +198,15 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
   end
 
   def handle_event("nick_color_edit_dialog", _params, socket) do
-    {:halt, assign(socket, show_nick_color_edit_dialog: true)}
+    session = socket.assigns.session
+    nick = socket.assigns.nick_colors_selected
+    current_color = NickColors.color_index_for(session.nick_colors, nick)
+
+    {:halt,
+     assign(socket,
+       show_nick_color_edit_dialog: true,
+       nick_palette_editing_index: current_color
+     )}
   end
 
   def handle_event("nick_color_edit_cancel", _params, socket) do
@@ -260,25 +274,34 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
     nick = params["nickname"]
     type = String.to_existing_atom(params["type"])
     duration_str = params["duration"]
-
-    {duration, expires_at} = parse_dialog_duration(duration_str)
-
     session = socket.assigns.session
 
-    case IgnoreList.add_entry(session.ignore_list, nick, type, expires_at) do
-      {:ok, updated_list} ->
-        new_session = Session.set_ignore_list(session, updated_list)
+    cond do
+      String.downcase(String.trim(nick)) == String.downcase(session.nickname) ->
+        {:halt, error_event(socket, "You cannot ignore yourself")}
 
-        {:halt,
-         socket
-         |> assign(session: new_session, show_control_add_dialog: false)
-         |> cancel_ignore_timer(nick)
-         |> maybe_start_ignore_timer(nick, duration)
-         |> maybe_persist_ignore_list(new_session)
-         |> system_event("* #{nick} is now ignored (#{type})")}
+      duration_str != nil and duration_str != "" and
+          match?({nil, nil}, parse_dialog_duration(duration_str)) ->
+        {:halt, error_event(socket, "Invalid duration format. Use: 5m, 2h, or 1d")}
 
-      {:error, reason} ->
-        {:halt, error_event(socket, "Failed to add ignore: #{reason}")}
+      true ->
+        {duration, expires_at} = parse_dialog_duration(duration_str)
+
+        case IgnoreList.add_entry(session.ignore_list, nick, type, expires_at) do
+          {:ok, updated_list} ->
+            new_session = Session.set_ignore_list(session, updated_list)
+
+            {:halt,
+             socket
+             |> assign(session: new_session, show_control_add_dialog: false)
+             |> cancel_ignore_timer(nick)
+             |> maybe_start_ignore_timer(nick, duration)
+             |> maybe_persist_ignore_list(new_session)
+             |> system_event("* #{nick} is now ignored (#{type})")}
+
+          {:error, reason} ->
+            {:halt, error_event(socket, "Failed to add ignore: #{reason}")}
+        end
     end
   end
 
@@ -296,6 +319,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
            socket
            |> assign(session: new_session, control_selected: nil)
            |> cancel_ignore_timer(nick)
+           |> cancel_auto_ignore_with_cooldown(nick)
            |> maybe_persist_ignore_list(new_session)
            |> system_event("* #{nick} is no longer ignored")}
 

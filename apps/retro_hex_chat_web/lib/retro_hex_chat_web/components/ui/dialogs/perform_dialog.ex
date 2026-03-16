@@ -56,7 +56,14 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   @spec perform_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def perform_dialog(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show}>
+    <.dialog
+      id={@id}
+      show={@show}
+      lock={
+        @show_perform_add_dialog || @show_perform_edit_dialog ||
+          @show_autojoin_add_dialog || @show_autojoin_edit_dialog
+      }
+    >
       <.dialog_header id={@id} title="Perform">
         <:icon><Icons.icon_dialog_perform /></:icon>
       </.dialog_header>
@@ -135,17 +142,17 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
 
   defp perform_add_sub_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--360">
-        <div class="title-bar">
-          <div class="title-bar-text">Add Perform Command</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Add Perform Command</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="close_perform_add_dialog" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="perform_dialog_add_confirm" data-testid="perform-add-dialog">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="perform-command-input">Command:</label>
               <.input
                 type="text"
@@ -155,10 +162,10 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 placeholder="/join #channel"
                 required
                 autofocus
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="dialog-buttons">
+            <div class="flex justify-end gap-1">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark /></:icon>
                 OK
@@ -188,17 +195,17 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     assigns = assign(assigns, :edit_command, if(entry, do: entry.command, else: ""))
 
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--360">
-        <div class="title-bar">
-          <div class="title-bar-text">Edit Perform Command</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Edit Perform Command</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="close_perform_edit_dialog" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="perform_dialog_edit_confirm" data-testid="perform-edit-dialog">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="perform-edit-input">Command:</label>
               <.input
                 type="text"
@@ -208,10 +215,10 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 value={@edit_command}
                 required
                 autofocus
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="dialog-buttons">
+            <div class="flex justify-end gap-1">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark /></:icon>
                 OK
@@ -235,17 +242,17 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
 
   defp autojoin_add_sub_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--320">
-        <div class="title-bar">
-          <div class="title-bar-text">Add Auto-Join Channel</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-xs">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Add Auto-Join Channel</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="close_autojoin_add_dialog" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="autojoin_dialog_add_confirm" data-testid="autojoin-add-dialog">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="autojoin-channel-input">Channel:</label>
               <.input
                 type="text"
@@ -255,10 +262,10 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 placeholder="#channel"
                 required
                 autofocus
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="autojoin-key-input">Key:</label>
               <.input
                 type="text"
@@ -266,10 +273,10 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 name="key"
                 maxlength="50"
                 placeholder="Leave empty if no key"
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="dialog-buttons">
+            <div class="flex justify-end gap-1">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark /></:icon>
                 OK
@@ -304,17 +311,19 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
       )
 
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--320">
-        <div class="title-bar">
-          <div class="title-bar-text">Edit Auto-Join Channel</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-xs">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">
+            Edit Auto-Join Channel
+          </span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="close_autojoin_edit_dialog" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="autojoin_dialog_edit_confirm" data-testid="autojoin-edit-dialog">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="autojoin-edit-channel">Channel:</label>
               <.input
                 type="text"
@@ -322,10 +331,10 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 name="channel"
                 value={@edit_channel}
                 disabled
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="autojoin-edit-key">Key:</label>
               <.input
                 type="text"
@@ -334,10 +343,10 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 maxlength="50"
                 value={@edit_key}
                 autofocus
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="dialog-buttons">
+            <div class="flex justify-end gap-1">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark /></:icon>
                 OK

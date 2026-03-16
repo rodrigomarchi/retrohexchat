@@ -52,24 +52,30 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
     end
   end
 
-  def handle_event("notify_remove", %{"nickname" => nick}, socket) do
-    session = socket.assigns.session
+  def handle_event("notify_remove", params, socket) do
+    nick = params["nickname"] || socket.assigns.notify_selected
 
-    case NotifyList.remove_entry(session.notify_list, nick) do
-      {:ok, updated_list} ->
-        new_session = Session.set_notify_list(session, updated_list)
+    if nick do
+      session = socket.assigns.session
 
-        # Cancel any pending debounce timer for this buddy
-        socket = cancel_notify_timer(socket, nick)
+      case NotifyList.remove_entry(session.notify_list, nick) do
+        {:ok, updated_list} ->
+          new_session = Session.set_notify_list(session, updated_list)
 
-        {:halt,
-         socket
-         |> assign(session: new_session, notify_selected: nil)
-         |> maybe_persist_notify_list(new_session)
-         |> push_status_message("Removed #{nick} from notify list", :system)}
+          # Cancel any pending debounce timer for this buddy
+          socket = cancel_notify_timer(socket, nick)
 
-      {:error, :not_found} ->
-        {:halt, push_status_message(socket, "#{nick} is not in your notify list", :system)}
+          {:halt,
+           socket
+           |> assign(session: new_session, notify_selected: nil)
+           |> maybe_persist_notify_list(new_session)
+           |> push_status_message("Removed #{nick} from notify list", :system)}
+
+        {:error, :not_found} ->
+          {:halt, push_status_message(socket, "#{nick} is not in your notify list", :system)}
+      end
+    else
+      {:halt, socket}
     end
   end
 

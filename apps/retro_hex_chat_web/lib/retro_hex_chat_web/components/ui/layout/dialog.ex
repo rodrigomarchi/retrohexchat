@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   attr :id, :string, required: true
   attr :show, :boolean, default: false
   attr :on_cancel, JS, default: %JS{}
+  attr :lock, :boolean, default: false, doc: "When true, disables click-away and escape dismissal"
   attr :class, :string, default: nil
   slot :inner_block, required: true
 
@@ -62,9 +63,9 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
       >
         <.focus_wrap
           id={"#{@id}-wrap"}
-          phx-window-keydown={JS.exec("phx-hide-modal", to: "##{@id}")}
+          phx-window-keydown={!@lock && JS.exec("phx-hide-modal", to: "##{@id}")}
           phx-key="escape"
-          phx-click-away={JS.exec("phx-hide-modal", to: "##{@id}")}
+          phx-click-away={!@lock && JS.exec("phx-hide-modal", to: "##{@id}")}
           class={classes(["w-full max-w-none md:max-w-lg p-0 md:p-4", @class])}
         >
           <%!-- Window frame (Win98 3D border) --%>

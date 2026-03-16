@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   @spec highlight_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def highlight_dialog(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show}>
+    <.dialog id={@id} show={@show} lock={@show_highlight_add_dialog || @show_highlight_edit_dialog}>
       <.dialog_header id={@id} title="Highlight Words">
         <:icon><Icons.icon_star class="w-4 h-4" /></:icon>
       </.dialog_header>
@@ -157,17 +157,17 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
 
   defp highlight_add_sub_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--sm">
-        <div class="title-bar">
-          <div class="title-bar-text">Add Highlight Word</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Add Highlight Word</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="close_highlight_add_dialog" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="highlight_add" data-testid="highlight-add-form">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="highlight-word-input">Word:</label>
               <.input
                 type="text"
@@ -176,11 +176,11 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 maxlength="50"
                 required
                 autofocus
-                class="u-w-full"
+                class="w-full"
               />
             </div>
             <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
-            <div class="field-row-stacked u-mt-8">
+            <div class="flex flex-col gap-1.5 mt-2">
               <label class="text-xs font-bold">Background Color (optional):</label>
               <.color_picker
                 id="highlight-add-color"
@@ -188,7 +188,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 on_select="highlight_color_pick"
               />
             </div>
-            <div class="field-row dialog-buttons u-mt-12">
+            <div class="flex justify-end gap-1 mt-3">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
                 Add
@@ -215,19 +215,19 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
 
   defp highlight_edit_sub_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--sm">
-        <div class="title-bar">
-          <div class="title-bar-text">Edit Highlight Color</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Edit Highlight Color</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="close_highlight_edit_dialog" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="highlight_edit" data-testid="highlight-edit-form">
             <input type="hidden" name="word" value={@selected_word || ""} />
             <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
-            <div class="field-row-stacked">
+            <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold">Background Color:</label>
               <.color_picker
                 id="highlight-edit-color"
@@ -235,7 +235,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 on_select="highlight_color_pick"
               />
             </div>
-            <div class="field-row dialog-buttons u-mt-12">
+            <div class="flex justify-end gap-1 mt-3">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 OK

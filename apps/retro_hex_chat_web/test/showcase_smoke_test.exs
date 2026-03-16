@@ -90,7 +90,6 @@ defmodule RetroHexChatWeb.ShowcaseSmokeTest do
     # New complex components
     "/showcase/alias-dialog",
     "/showcase/flood-protection-dialog",
-    "/showcase/ignore-list-dialog",
     "/showcase/auto-respond-dialog",
     "/showcase/custom-menus-dialog",
     "/showcase/sound-settings-dialog",

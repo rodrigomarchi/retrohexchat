@@ -181,7 +181,7 @@ defmodule RetroHexChatWeb.Router do
     live "/disconnect-confirm-dialog", Dialogs.DisconnectConfirmDialogPage
     live "/alias-dialog", Dialogs.AliasDialogPage
     live "/flood-protection-dialog", Dialogs.FloodProtectionDialogPage
-    live "/ignore-list-dialog", Dialogs.IgnoreListDialogPage
+
     live "/notify-list", Dialogs.NotifyListPage
     live "/url-catcher", Dialogs.UrlCatcherPage
     live "/auto-respond-dialog", Dialogs.AutoRespondDialogPage

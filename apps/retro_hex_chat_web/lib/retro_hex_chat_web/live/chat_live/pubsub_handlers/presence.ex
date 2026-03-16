@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
     ]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{CapturedURL, LinkPreview}
+  alias RetroHexChat.Chat.{CapturedURL, IgnoreList, LinkPreview}
   alias RetroHexChat.Presence.NotifyList
 
   # ── Global presence events ────────────────────────────────
@@ -115,6 +115,25 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   def handle_info({:channel_invite, %{channel: channel, inviter: inviter}}, socket) do
     session = socket.assigns.session
 
+    if IgnoreList.ignored?(session.ignore_list, inviter, :invite) do
+      {:halt, socket}
+    else
+      handle_invite(socket, session, channel, inviter)
+    end
+  end
+
+  # ── Task/DOWN catch-all ───────────────────────────────────
+
+  def handle_info({_ref, _result}, socket), do: {:halt, socket}
+  def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket), do: {:halt, socket}
+
+  # ── Catch-all: pass unhandled to next hook ────────────────
+
+  def handle_info(_, socket), do: {:cont, socket}
+
+  # ── Private helpers ───────────────────────────────────────
+
+  defp handle_invite(socket, session, channel, inviter) do
     if Session.get_auto_join_on_invite(session) do
       socket =
         socket
@@ -142,17 +161,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
       {:halt, socket}
     end
   end
-
-  # ── Task/DOWN catch-all ───────────────────────────────────
-
-  def handle_info({_ref, _result}, socket), do: {:halt, socket}
-  def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket), do: {:halt, socket}
-
-  # ── Catch-all: pass unhandled to next hook ────────────────
-
-  def handle_info(_, socket), do: {:cont, socket}
-
-  # ── Private helpers ───────────────────────────────────────
 
   defp cancel_existing_invite(pending, channel) do
     case Enum.split_with(pending, &(&1.channel == channel)) do

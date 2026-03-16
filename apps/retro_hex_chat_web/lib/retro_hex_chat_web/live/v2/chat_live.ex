@@ -63,7 +63,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   import RetroHexChatWeb.Components.UI.DisconnectConfirmDialog
   import RetroHexChatWeb.Components.UI.FloodProtectionDialog
   import RetroHexChatWeb.Components.UI.HighlightDialog
-  import RetroHexChatWeb.Components.UI.IgnoreListDialog
+
   import RetroHexChatWeb.Components.UI.InviteDialog
   import RetroHexChatWeb.Components.UI.KickDialog
   import RetroHexChatWeb.Components.UI.NickChangeDialog
@@ -460,7 +460,6 @@ defmodule RetroHexChatWeb.V2.ChatLive do
     &ChatLive.CustomMenusEvents.handle_event/3,
     &ChatLive.AutorespondEvents.handle_event/3,
     &ChatLive.HighlightEvents.handle_event/3,
-    &ChatLive.IgnoreEvents.handle_event/3,
     &ChatLive.SettingsDialogsEvents.handle_event/3,
     &ChatLive.NotifyEvents.handle_event/3,
     &ChatLive.AddressBookEvents.handle_event/3,
@@ -512,7 +511,6 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       {:custom_menus_events, &ChatLive.CustomMenusEvents.handle_event/3},
       {:autorespond_events, &ChatLive.AutorespondEvents.handle_event/3},
       {:highlight_events, &ChatLive.HighlightEvents.handle_event/3},
-      {:ignore_events, &ChatLive.IgnoreEvents.handle_event/3},
       {:settings_dialogs_events, &ChatLive.SettingsDialogsEvents.handle_event/3},
       {:notify_events, &ChatLive.NotifyEvents.handle_event/3},
       {:address_book_events, &ChatLive.AddressBookEvents.handle_event/3},
@@ -654,9 +652,6 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       url_catcher_sort_direction: :desc,
       whois_target: nil,
       ignore_timers: %{},
-      show_ignore_dialog: false,
-      ignore_selected: nil,
-      show_ignore_add_dialog: false,
       control_selected: nil,
       show_control_add_dialog: false,
       show_channel_central: false,

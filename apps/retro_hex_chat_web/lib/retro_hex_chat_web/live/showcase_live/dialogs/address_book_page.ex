@@ -77,7 +77,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AddressBookPage do
           nick_colors={@nick_colors}
           control_list={@control_list}
           nick_color_fn={fn nick -> "nick-color-#{:erlang.phash2(nick, 12)}" end}
-          selected_color={4}
         />
         <.code_example>
           &lt;.address_book

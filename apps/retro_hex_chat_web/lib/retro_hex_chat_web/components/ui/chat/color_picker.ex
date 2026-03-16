@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
     >
       <div class="grid grid-cols-4 gap-[2px]">
         <button
-          :for={{{{name, hex}, idx}} <- @colors}
+          :for={{{name, hex}, idx} <- @colors}
           type="button"
           class={[
             "w-[18px] h-[18px] border cursor-pointer",

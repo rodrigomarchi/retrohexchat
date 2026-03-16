@@ -68,15 +68,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_ignore_dialog, socket) do
-    if socket.assigns.show_ignore_dialog do
-      assign(socket,
-        show_ignore_dialog: false,
-        ignore_selected: nil,
-        show_ignore_add_dialog: false
-      )
-    else
-      assign(socket, show_ignore_dialog: true)
-    end
+    assign(socket, show_address_book: true, address_book_tab: "control")
   end
 
   defp dispatch_action(:toggle_highlight_dialog, socket) do

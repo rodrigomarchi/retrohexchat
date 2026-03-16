@@ -114,12 +114,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
             on_action={@on_action}
           />
           <.menu_item
-            icon_fn={:icon_btn_ignore_list}
-            label="Ignore List"
-            action="open_ignore_dialog"
-            on_action={@on_action}
-          />
-          <.menu_item
             icon_fn={:icon_btn_url_catcher}
             label="URL Catcher"
             action="toggle_url_catcher"

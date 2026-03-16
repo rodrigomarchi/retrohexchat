@@ -491,7 +491,14 @@
   on_add="contact_add_dialog"
   on_edit="contact_edit_dialog"
   on_remove="contact_remove"
-  on_color_select="nick_color_select"
+  on_notify_select="notify_select"
+  on_notify_add="notify_add_dialog"
+  on_notify_edit="notify_edit_dialog"
+  on_notify_remove="notify_remove"
+  on_nick_color_select="nick_color_select"
+  on_nick_color_add="nick_color_add_dialog"
+  on_nick_color_edit="nick_color_edit_dialog"
+  on_nick_color_remove="nick_color_remove"
   on_control_select="control_select"
   on_control_add="control_add_dialog"
   on_control_remove="control_remove"
@@ -510,18 +517,6 @@
   on_select="channel_list_join"
   on_join="channel_list_join"
   on_close="toggle_channel_list"
-/>
-
-<.ignore_list_dialog
-  id="ignore-list-dialog"
-  show={@show_ignore_dialog}
-  entries={IgnoreList.sorted_entries(@session.ignore_list)}
-  selected={@ignore_selected}
-  show_ignore_add_dialog={@show_ignore_add_dialog}
-  on_select="ignore_select"
-  on_add="ignore_dialog_add"
-  on_remove="ignore_dialog_remove"
-  on_close="close_ignore_dialog"
 />
 
 <.ctcp_settings_dialog

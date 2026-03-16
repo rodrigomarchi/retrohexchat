@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   @spec notify_list(map()) :: Phoenix.LiveView.Rendered.t()
   def notify_list(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show}>
+    <.dialog id={@id} show={@show} lock={@show_add_dialog || @show_edit_dialog}>
       <div data-testid="notify-list">
         <.dialog_header id={@id} title="Notify List">
           <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
@@ -148,17 +148,17 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
 
   defp notify_add_sub_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--narrow">
-        <div class="title-bar">
-          <div class="title-bar-text">Add Notify Entry</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Add Notify Entry</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="notify_add_cancel" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="notify_add" data-testid="notify-add-form">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="notify-add-nickname">Nickname:</label>
               <.input
                 type="text"
@@ -167,10 +167,10 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 maxlength="16"
                 required
                 autocomplete="off"
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="notify-add-note">Note:</label>
               <.input
                 type="text"
@@ -178,10 +178,10 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 name="note"
                 maxlength="200"
                 autocomplete="off"
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="dialog-buttons dialog-buttons--gap-8">
+            <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 OK
@@ -203,17 +203,17 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
 
   defp notify_edit_sub_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--narrow">
-        <div class="title-bar">
-          <div class="title-bar-text">Edit Notify Entry</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Edit Notify Entry</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="notify_edit_cancel" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="notify_edit" data-testid="notify-edit-form">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="notify-edit-nickname">Nickname:</label>
               <.input
                 type="text"
@@ -221,10 +221,10 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 name="nickname"
                 value={@selected_entry}
                 readonly
-                class="u-w-full input-readonly"
+                class="w-full input-readonly"
               />
             </div>
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="notify-edit-note">Note:</label>
               <.input
                 type="text"
@@ -233,10 +233,10 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 value={@selected_note}
                 maxlength="200"
                 autocomplete="off"
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="dialog-buttons dialog-buttons--gap-8">
+            <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 OK

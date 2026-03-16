@@ -42,7 +42,6 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
     doc: "Currently selected row identifier (nickname or index)"
 
   attr :selected_tab, :string, default: "contacts", doc: "Active tab key"
-  attr :selected_color, :integer, default: nil
   attr :show_contact_add_dialog, :boolean, default: false
   attr :show_contact_edit_dialog, :boolean, default: false
   attr :show_notify_add_dialog, :boolean, default: false
@@ -57,11 +56,18 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :notify_selected, :string, default: nil, doc: "Selected notify nick for edit form"
   attr :selected_notify_note, :string, default: "", doc: "Note for the selected notify (edit)"
   attr :nick_colors_selected, :string, default: nil, doc: "Selected nick color nick for edit"
-  attr :on_select, :any, default: nil, doc: "Row selection callback (receives phx-value-index)"
-  attr :on_add, :any, default: nil, doc: "Add button callback"
-  attr :on_edit, :any, default: nil, doc: "Edit button callback"
-  attr :on_remove, :any, default: nil, doc: "Remove button callback"
-  attr :on_color_select, :any, default: nil, doc: "Color select callback"
+  attr :on_select, :any, default: nil, doc: "Contacts tab row selection callback"
+  attr :on_add, :any, default: nil, doc: "Contacts tab add button callback"
+  attr :on_edit, :any, default: nil, doc: "Contacts tab edit button callback"
+  attr :on_remove, :any, default: nil, doc: "Contacts tab remove button callback"
+  attr :on_notify_select, :any, default: nil, doc: "Notify tab row selection callback"
+  attr :on_notify_add, :any, default: nil, doc: "Notify tab add button callback"
+  attr :on_notify_edit, :any, default: nil, doc: "Notify tab edit button callback"
+  attr :on_notify_remove, :any, default: nil, doc: "Notify tab remove button callback"
+  attr :on_nick_color_select, :any, default: nil, doc: "Nick Colors tab row selection callback"
+  attr :on_nick_color_add, :any, default: nil, doc: "Nick Colors tab add button callback"
+  attr :on_nick_color_edit, :any, default: nil, doc: "Nick Colors tab edit button callback"
+  attr :on_nick_color_remove, :any, default: nil, doc: "Nick Colors tab remove button callback"
   attr :on_control_select, :any, default: nil, doc: "Control tab row selection callback"
   attr :on_control_add, :any, default: nil, doc: "Control tab add button callback"
   attr :on_control_remove, :any, default: nil, doc: "Control tab remove button callback"
@@ -72,7 +78,16 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   @spec address_book(map()) :: Phoenix.LiveView.Rendered.t()
   def address_book(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show}>
+    <.dialog
+      id={@id}
+      show={@show}
+      lock={
+        @show_contact_add_dialog || @show_contact_edit_dialog ||
+          @show_notify_add_dialog || @show_notify_edit_dialog ||
+          @show_nick_color_add_dialog || @show_nick_color_edit_dialog ||
+          @show_control_add_dialog
+      }
+    >
       <.dialog_header id={@id} title="Address Book">
         <:icon><Icons.icon_dialog_address_book class="w-4 h-4" /></:icon>
       </.dialog_header>
@@ -114,11 +129,6 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               selected={@selected_index != nil && @selected_tab == "contacts"}
               testid_prefix="contact"
             />
-            <.color_picker
-              id={"#{@id}-color-picker"}
-              selected={@selected_color}
-              on_select={@on_color_select}
-            />
           </.tabs_content>
 
           <%!-- Notify Tab --%>
@@ -126,13 +136,13 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
             <.notify_table
               notify_list={@notify_list}
               selected={if(@selected_tab == "notify", do: @notify_selected)}
-              on_select={@on_select}
+              on_select={@on_notify_select}
               timezone={@timezone}
             />
             <.crud_buttons
-              on_add={@on_add}
-              on_edit={@on_edit}
-              on_remove={@on_remove}
+              on_add={@on_notify_add}
+              on_edit={@on_notify_edit}
+              on_remove={@on_notify_remove}
               selected={@notify_selected != nil && @selected_tab == "notify"}
               testid_prefix="ab-notify"
             />
@@ -143,19 +153,14 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
             <.nick_colors_table
               nick_colors={@nick_colors}
               selected={if(@selected_tab == "colors", do: @nick_colors_selected)}
-              on_select={@on_select}
+              on_select={@on_nick_color_select}
             />
             <.crud_buttons
-              on_add={@on_add}
-              on_edit={@on_edit}
-              on_remove={@on_remove}
+              on_add={@on_nick_color_add}
+              on_edit={@on_nick_color_edit}
+              on_remove={@on_nick_color_remove}
               selected={@nick_colors_selected != nil && @selected_tab == "colors"}
               testid_prefix="nick-color"
-            />
-            <.color_picker
-              id={"#{@id}-nick-color-picker"}
-              selected={@selected_color}
-              on_select={@on_color_select}
             />
           </.tabs_content>
 
@@ -239,17 +244,17 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp contact_add_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--narrow">
-        <div class="title-bar">
-          <div class="title-bar-text">Add Contact</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Add Contact</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="contact_add_cancel" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="contact_add" data-testid="contact-add-form">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="contact-add-nick">Nickname:</label>
               <.input
                 type="text"
@@ -258,20 +263,20 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 maxlength="16"
                 required
                 autocomplete="off"
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="contact-add-note">Notes:</label>
               <textarea
                 id="contact-add-note"
                 name="note"
                 maxlength="200"
                 rows="3"
-                class="textarea-resizable u-w-full"
+                class="textarea-resizable w-full"
               />
             </div>
-            <div class="dialog-buttons dialog-buttons--gap-8">
+            <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 OK
@@ -293,17 +298,17 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp contact_edit_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--narrow">
-        <div class="title-bar">
-          <div class="title-bar-text">Edit Contact</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Edit Contact</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="contact_edit_cancel" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="contact_edit" data-testid="contact-edit-form">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="contact-edit-nick">Nickname:</label>
               <.input
                 type="text"
@@ -311,20 +316,20 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 name="nickname"
                 value={@contacts_selected}
                 readonly
-                class="u-w-full input-readonly"
+                class="w-full input-readonly"
               />
             </div>
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="contact-edit-note">Notes:</label>
               <textarea
                 id="contact-edit-note"
                 name="note"
                 maxlength="200"
                 rows="3"
-                class="textarea-resizable u-w-full"
+                class="textarea-resizable w-full"
               >{@selected_contact_note}</textarea>
             </div>
-            <div class="dialog-buttons dialog-buttons--gap-8">
+            <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 OK
@@ -343,17 +348,17 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp ab_notify_add_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--narrow">
-        <div class="title-bar">
-          <div class="title-bar-text">Add Notify Entry</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Add Notify Entry</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="notify_add_cancel" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="notify_add" data-testid="ab-notify-add-form">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="ab-notify-add-nick">Nickname:</label>
               <.input
                 type="text"
@@ -361,20 +366,20 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 name="nickname"
                 maxlength="16"
                 required
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="ab-notify-add-note">Note:</label>
               <.input
                 type="text"
                 id="ab-notify-add-note"
                 name="note"
                 maxlength="200"
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="dialog-buttons dialog-buttons--gap-8">
+            <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 OK
@@ -396,17 +401,17 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp ab_notify_edit_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--narrow">
-        <div class="title-bar">
-          <div class="title-bar-text">Edit Notify Entry</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Edit Notify Entry</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="notify_edit_cancel" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="notify_edit" data-testid="ab-notify-edit-form">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="ab-notify-edit-nick">Nickname:</label>
               <.input
                 type="text"
@@ -414,10 +419,10 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 name="nickname"
                 value={@notify_selected}
                 readonly
-                class="u-w-full input-readonly"
+                class="w-full input-readonly"
               />
             </div>
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="ab-notify-edit-note">Note:</label>
               <.input
                 type="text"
@@ -425,10 +430,10 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 name="note"
                 value={@selected_notify_note}
                 maxlength="200"
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="dialog-buttons dialog-buttons--gap-8">
+            <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 OK
@@ -449,17 +454,17 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp nick_color_add_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--narrow">
-        <div class="title-bar">
-          <div class="title-bar-text">Add Nick Color</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Add Nick Color</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="nick_color_add_cancel" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="nick_color_add" data-testid="nick-color-add-form">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="nick-color-add-nick">Nickname:</label>
               <.input
                 type="text"
@@ -467,7 +472,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 name="nickname"
                 maxlength="16"
                 required
-                class="u-w-full"
+                class="w-full"
               />
             </div>
             <input
@@ -475,11 +480,15 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               name="color_index"
               value={to_string(@nick_palette_editing_index || "")}
             />
-            <div class="field-row-stacked u-mb-12">
+            <div class="flex flex-col gap-1.5 mb-3">
               <label class="text-xs font-bold">Color:</label>
-              <.color_picker id="nick-color-add-picker" on_select="nick_color_select" />
+              <.color_picker
+                id="nick-color-add-picker"
+                selected={@nick_palette_editing_index}
+                on_select="nick_palette_pick"
+              />
             </div>
-            <div class="dialog-buttons dialog-buttons--gap-8">
+            <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 OK
@@ -506,17 +515,17 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp nick_color_edit_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--narrow">
-        <div class="title-bar">
-          <div class="title-bar-text">Edit Nick Color</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Edit Nick Color</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="nick_color_edit_cancel" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="nick_color_edit" data-testid="nick-color-edit-form">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="nick-color-edit-nick">Nickname:</label>
               <.input
                 type="text"
@@ -524,7 +533,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 name="nickname"
                 value={@nick_colors_selected}
                 readonly
-                class="u-w-full input-readonly"
+                class="w-full input-readonly"
               />
             </div>
             <input
@@ -532,11 +541,15 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               name="color_index"
               value={to_string(@nick_palette_editing_index || "")}
             />
-            <div class="field-row-stacked u-mb-12">
+            <div class="flex flex-col gap-1.5 mb-3">
               <label class="text-xs font-bold">Color:</label>
-              <.color_picker id="nick-color-edit-picker" on_select="nick_color_select" />
+              <.color_picker
+                id="nick-color-edit-picker"
+                selected={@nick_palette_editing_index}
+                on_select="nick_palette_pick"
+              />
             </div>
-            <div class="dialog-buttons dialog-buttons--gap-8">
+            <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 OK
@@ -793,17 +806,17 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   defp control_add_form(assigns) do
     ~H"""
-    <div class="dialog-overlay dialog-overlay--above">
-      <div class="window dialog-window--narrow">
-        <div class="title-bar">
-          <div class="title-bar-text">Add Ignore Entry</div>
-          <div class="title-bar-controls">
+    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <span class="text-xs font-bold text-white truncate select-none">Add Ignore Entry</span>
+          <div class="ml-auto">
             <button type="button" aria-label="Close" phx-click="control_add_cancel" />
           </div>
         </div>
-        <div class="window-body dialog-body--p8">
+        <div class="p-2">
           <form phx-submit="control_add_confirm" data-testid="control-add-form">
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="control-add-nick">Nickname:</label>
               <.input
                 type="text"
@@ -812,12 +825,12 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 maxlength="16"
                 required
                 autocomplete="off"
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="control-add-type">Type:</label>
-              <select id="control-add-type" name="type" class="u-w-full">
+              <select id="control-add-type" name="type" class="w-full">
                 <option value="all" selected>All</option>
                 <option value="messages">Messages</option>
                 <option value="pms">PMs</option>
@@ -825,7 +838,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 <option value="invites">Invites</option>
               </select>
             </div>
-            <div class="field-row-stacked u-mb-8">
+            <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="control-add-duration">
                 Duration (leave empty for permanent):
               </label>
@@ -835,10 +848,10 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 name="duration"
                 placeholder="e.g. 5m, 1h, 2d"
                 autocomplete="off"
-                class="u-w-full"
+                class="w-full"
               />
             </div>
-            <div class="dialog-buttons dialog-buttons--gap-8">
+            <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 OK
