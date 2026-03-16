@@ -24,7 +24,7 @@ defmodule RetroHexChat.Chat.Schemas.CustomMenuItem do
     |> cast(attrs, [:owner_nickname, :menu_type, :label, :command, :position])
     |> validate_required([:owner_nickname, :menu_type, :label, :command, :position])
     |> validate_length(:owner_nickname, max: 16)
-    |> validate_inclusion(:menu_type, ["nicklist", "channel"])
+    |> validate_inclusion(:menu_type, ["nicklist", "channel", "chat"])
     |> validate_length(:label, min: 1, max: 50)
     |> validate_length(:command, min: 1, max: 500)
   end

@@ -116,8 +116,9 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
         :for={item <- @custom_items}
         on_click={@on_action}
         action="custom_menu_execute"
-        phx-value-label={item[:action]}
-        phx-value-channel={@channel}
+        phx-value-target={@channel}
+        phx-value-command={item[:command]}
+        phx-value-label={item[:label]}
       >
         <:icon><Icons.icon_btn_star class="w-[14px] h-[14px]" /></:icon>
         {item[:label]}

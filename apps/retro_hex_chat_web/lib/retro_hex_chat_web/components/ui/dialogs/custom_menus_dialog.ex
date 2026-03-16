@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
   Custom context menu editor dialog component for the showcase design system.
 
   Composed from dialog + tabs + table + button + input primitives.
-  Two tabs: Nicklist and Channel. Each tab lists custom menu entries
+  Three tabs: Nicklist, Channel, and Chat. Each tab lists custom menu entries
   (label + command) filtered by menu_type. Supports CRUD and an inline edit form.
 
   ## Usage
@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
 
   attr :active_tab, :atom,
     default: :nicklist,
-    values: [:nicklist, :channel],
+    values: [:nicklist, :channel, :chat],
     doc: "Currently active tab"
 
   attr :entries, :list,
@@ -88,6 +88,15 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
               <:icon><Icons.icon_tab_channel class="w-4 h-4" /></:icon>
               Channel
             </.tabs_trigger>
+            <.tabs_trigger
+              builder={builder}
+              value="chat"
+              phx-click={@on_tab}
+              phx-value-tab="chat"
+            >
+              <:icon><Icons.icon_tab_pm class="w-4 h-4" /></:icon>
+              Chat
+            </.tabs_trigger>
           </.tabs_list>
 
           <%!-- Nicklist Tab --%>
@@ -116,6 +125,25 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
               entries={filter_entries(@entries, :channel)}
               selected_item={if(@active_tab == :channel, do: @selected_item)}
               editing={@editing && @active_tab == :channel}
+              draft_label={@draft_label}
+              draft_command={@draft_command}
+              error_message={@error_message}
+              on_select={@on_select}
+              on_add={@on_add}
+              on_edit={@on_edit}
+              on_delete={@on_delete}
+              on_save={@on_save}
+              on_cancel_edit={@on_cancel_edit}
+            />
+          </.tabs_content>
+
+          <%!-- Chat Tab --%>
+          <.tabs_content value="chat">
+            <.menu_entries_section
+              id={@id}
+              entries={filter_entries(@entries, :chat)}
+              selected_item={if(@active_tab == :chat, do: @selected_item)}
+              editing={@editing && @active_tab == :chat}
               draft_label={@draft_label}
               draft_command={@draft_command}
               error_message={@error_message}

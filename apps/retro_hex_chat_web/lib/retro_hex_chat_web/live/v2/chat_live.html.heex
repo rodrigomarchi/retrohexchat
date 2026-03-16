@@ -381,6 +381,7 @@
   is_target_self={@chat_context_menu.target_nick == @session.nickname}
   is_target_registered={@chat_context_menu[:is_target_registered] || false}
   is_already_joined={@chat_context_menu.target_channel in (@session.channels || [])}
+  custom_items={CustomMenus.entries_for(@session.custom_menus, :chat)}
   key_bindings={RetroHexChat.Chat.KeyBindings.defaults()}
   on_action="chat_context_action"
 />

@@ -4,7 +4,7 @@ defmodule RetroHexChat.Chat.CustomMenuItem do
   """
 
   @type t :: %__MODULE__{
-          menu_type: :nicklist | :channel,
+          menu_type: :nicklist | :channel | :chat,
           label: String.t(),
           command: String.t(),
           position: non_neg_integer()

@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
   attr :is_target_registered, :boolean, default: false
   attr :is_already_joined, :boolean, default: false
   attr :key_bindings, :map, default: %{}
+  attr :custom_items, :list, default: []
   attr :on_action, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
@@ -179,6 +180,19 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     >
       <:icon><Icons.icon_role_operator class="w-[14px] h-[14px]" /></:icon>
       Give Op (+o)
+    </.context_menu_item>
+    <%!-- Custom menu items --%>
+    <.context_menu_separator :if={@custom_items != []} />
+    <.context_menu_item
+      :for={item <- @custom_items}
+      on_click={@on_action}
+      action="custom_menu_execute"
+      phx-value-target={@target_nick}
+      phx-value-command={item[:command]}
+      phx-value-label={item[:label]}
+    >
+      <:icon><Icons.icon_btn_star class="w-[14px] h-[14px]" /></:icon>
+      {item[:label]}
     </.context_menu_item>
     """
   end

@@ -264,7 +264,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "context menu",
           "right-click",
           "nicklist menu",
-          "channel menu"
+          "channel menu",
+          "chat menu"
         ],
         icon: :icon_dialog_custom_menus,
         description: "Add custom items to right-click context menus for quick access to commands."

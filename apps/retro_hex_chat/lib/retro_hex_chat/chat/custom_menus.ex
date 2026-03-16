@@ -1,7 +1,7 @@
 defmodule RetroHexChat.Chat.CustomMenus do
   @moduledoc """
   Pure domain module for managing custom context menu items.
-  Items can be added to nicklist or channel context menus.
+  Items can be added to nicklist, channel, or chat context menus.
   """
 
   alias RetroHexChat.Chat.CustomMenuItem
@@ -19,7 +19,7 @@ defmodule RetroHexChat.Chat.CustomMenus do
     %{entries: []}
   end
 
-  @spec add_entry(map(), :nicklist | :channel, String.t(), String.t()) ::
+  @spec add_entry(map(), :nicklist | :channel | :chat, String.t(), String.t()) ::
           {:ok, map()} | {:error, atom()}
   def add_entry(menus, menu_type, label, command) do
     trimmed_label = String.trim(label)
@@ -53,7 +53,7 @@ defmodule RetroHexChat.Chat.CustomMenus do
     end
   end
 
-  @spec remove_entry(map(), :nicklist | :channel, String.t()) ::
+  @spec remove_entry(map(), :nicklist | :channel | :chat, String.t()) ::
           {:ok, map()} | {:error, :not_found}
   def remove_entry(menus, menu_type, label) do
     downcased = String.downcase(label)
@@ -69,7 +69,7 @@ defmodule RetroHexChat.Chat.CustomMenus do
     end
   end
 
-  @spec update_entry(map(), :nicklist | :channel, String.t(), String.t(), String.t()) ::
+  @spec update_entry(map(), :nicklist | :channel | :chat, String.t(), String.t(), String.t()) ::
           {:ok, map()} | {:error, atom()}
   def update_entry(menus, menu_type, old_label, new_label, new_command) do
     downcased = String.downcase(old_label)
@@ -90,7 +90,7 @@ defmodule RetroHexChat.Chat.CustomMenus do
     end
   end
 
-  @spec entries_for(map(), :nicklist | :channel) :: [CustomMenuItem.t()]
+  @spec entries_for(map(), :nicklist | :channel | :chat) :: [CustomMenuItem.t()]
   def entries_for(menus, menu_type) do
     menus.entries
     |> Enum.filter(&(&1.menu_type == menu_type))

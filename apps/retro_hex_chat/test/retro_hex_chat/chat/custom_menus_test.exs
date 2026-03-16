@@ -153,6 +153,59 @@ defmodule RetroHexChat.Chat.CustomMenusTest do
     end
   end
 
+  describe "add_entry/4 :chat type" do
+    @tag :unit
+    test "adds a chat menu item" do
+      menus = CustomMenus.new()
+      assert {:ok, updated} = CustomMenus.add_entry(menus, :chat, "Slap", "/me slaps $1")
+      entries = CustomMenus.entries_for(updated, :chat)
+      assert length(entries) == 1
+      assert hd(entries).label == "Slap"
+      assert hd(entries).command == "/me slaps $1"
+    end
+
+    @tag :unit
+    test "chat items are independent from nicklist and channel" do
+      menus = CustomMenus.new()
+      {:ok, menus} = CustomMenus.add_entry(menus, :nicklist, "Greet", "/notice $1 Hi!")
+      {:ok, menus} = CustomMenus.add_entry(menus, :channel, "Topic", "/topic $chan")
+      {:ok, menus} = CustomMenus.add_entry(menus, :chat, "Slap", "/me slaps $1")
+
+      assert length(CustomMenus.entries_for(menus, :nicklist)) == 1
+      assert length(CustomMenus.entries_for(menus, :channel)) == 1
+      assert length(CustomMenus.entries_for(menus, :chat)) == 1
+    end
+
+    @tag :unit
+    test "allows same label across chat and nicklist" do
+      menus = CustomMenus.new()
+      {:ok, menus} = CustomMenus.add_entry(menus, :nicklist, "Greet", "/notice $1 Hi!")
+      assert {:ok, _} = CustomMenus.add_entry(menus, :chat, "Greet", "/me greets $1")
+    end
+  end
+
+  describe "remove_entry/3 :chat type" do
+    @tag :unit
+    test "removes chat entry" do
+      menus = CustomMenus.new()
+      {:ok, menus} = CustomMenus.add_entry(menus, :chat, "Slap", "/me slaps $1")
+      {:ok, updated} = CustomMenus.remove_entry(menus, :chat, "Slap")
+      assert CustomMenus.entries_for(updated, :chat) == []
+    end
+  end
+
+  describe "update_entry/5 :chat type" do
+    @tag :unit
+    test "updates chat entry" do
+      menus = CustomMenus.new()
+      {:ok, menus} = CustomMenus.add_entry(menus, :chat, "Slap", "/me slaps $1")
+      {:ok, updated} = CustomMenus.update_entry(menus, :chat, "Slap", "Poke", "/me pokes $1")
+      entries = CustomMenus.entries_for(updated, :chat)
+      assert hd(entries).label == "Poke"
+      assert hd(entries).command == "/me pokes $1"
+    end
+  end
+
   # ── Integration Tests (Persistence) ─────────────────────
 
   describe "save/2 and load/1" do
@@ -170,6 +223,21 @@ defmodule RetroHexChat.Chat.CustomMenusTest do
       assert {:ok, loaded} = CustomMenus.load(owner)
       assert length(CustomMenus.entries_for(loaded, :nicklist)) == 1
       assert length(CustomMenus.entries_for(loaded, :channel)) == 1
+    end
+
+    @tag :integration
+    test "persists and loads chat menu items" do
+      owner = "ChatMenu#{System.unique_integer([:positive])}"
+      register_nick(owner)
+
+      menus = CustomMenus.new()
+      {:ok, menus} = CustomMenus.add_entry(menus, :chat, "Slap", "/me slaps $1")
+      {:ok, menus} = CustomMenus.add_entry(menus, :nicklist, "Greet", "/notice $1 Hi!")
+
+      assert :ok = CustomMenus.save(owner, menus)
+      assert {:ok, loaded} = CustomMenus.load(owner)
+      assert length(CustomMenus.entries_for(loaded, :chat)) == 1
+      assert length(CustomMenus.entries_for(loaded, :nicklist)) == 1
     end
 
     @tag :integration

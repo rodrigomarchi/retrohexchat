@@ -35,7 +35,26 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
           ChatLive.CommandDispatch.send_plain_message(socket, session, text)
       end
 
-    {:halt, assign(socket, context_menu: %{visible: false, x: 0, y: 0, target_nick: nil})}
+    {:halt,
+     socket
+     |> assign(
+       context_menu: %{visible: false, x: 0, y: 0, target_nick: nil, is_target_registered: false}
+     )
+     |> assign(
+       chat_context_menu: %{
+         visible: false,
+         type: nil,
+         x: 0,
+         y: 0,
+         target_nick: nil,
+         target_url: nil,
+         target_channel: nil,
+         target_message: nil,
+         has_selection: false,
+         is_target_registered: false
+       }
+     )
+     |> assign(conversations_context_menu: %{visible: false, x: 0, y: 0, channel: nil})}
   end
 
   # ── Dialog events ──────────────────────────────────────────
