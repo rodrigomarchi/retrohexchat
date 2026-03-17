@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.AddressBookTest do
   @moduletag :liveview
 
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
+  alias RetroHexChat.Presence.{NotifyEntry, NotifyList}
+  alias RetroHexChat.Services.NickServ
 
   setup do
     case RetroHexChat.Channels.Registry.lookup("#lobby") do
@@ -662,6 +664,131 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
       assert html =~ "PickTarget"
       assert html =~ "Red"
+    end
+  end
+
+  # ── Phase 6b: Notify Presence Sync ──────────────────────
+
+  describe "notify presence sync" do
+    test "adding a buddy who is already online shows them as Online", %{conn: conn} do
+      # Connect the buddy first so they're tracked in presence:global
+      buddy_view = connect_user(conn, "OnlineBud")
+      Process.sleep(100)
+
+      # Connect the observer
+      view = connect_user(conn, "SyncObs")
+      view |> render_click("toggle_address_book")
+      view |> render_click("address_book_tab", %{"tab" => "notify"})
+
+      # Add the already-online buddy
+      view |> render_click("notify_add_dialog")
+      view |> render_submit("notify_add", %{"nickname" => "OnlineBud", "note" => ""})
+
+      # The buddy's row should have the Online indicator (text-success class)
+      assert has_element?(view, "#ab-notify-entry-OnlineBud .text-success", "Online")
+
+      GenServer.stop(buddy_view.pid)
+    end
+
+    test "adding a buddy who is offline shows them as Offline", %{conn: conn} do
+      view = connect_user(conn, "SyncObs2")
+      view |> render_click("toggle_address_book")
+      view |> render_click("address_book_tab", %{"tab" => "notify"})
+
+      # Add a buddy who is NOT connected
+      view |> render_click("notify_add_dialog")
+      view |> render_submit("notify_add", %{"nickname" => "GhostBud", "note" => ""})
+
+      # The buddy's row should have the Offline indicator (text-muted-foreground)
+      assert has_element?(view, "#ab-notify-entry-GhostBud .text-muted-foreground", "Offline")
+      refute has_element?(view, "#ab-notify-entry-GhostBud .text-success")
+    end
+
+    test "buddy online via /notify add command shows Online status", %{conn: conn} do
+      # Connect the buddy first
+      buddy_view = connect_user(conn, "CmdBud")
+      Process.sleep(100)
+
+      # Observer adds via command
+      view = connect_user(conn, "CmdObs")
+      view |> render_submit("send_input", %{"input" => "/notify add CmdBud"})
+
+      # Check in address book
+      view |> render_click("toggle_address_book")
+      view |> render_click("address_book_tab", %{"tab" => "notify"})
+
+      assert has_element?(view, "#ab-notify-entry-CmdBud .text-success", "Online")
+
+      GenServer.stop(buddy_view.pid)
+    end
+
+    test "notify list syncs presence on session load for identified users", %{conn: conn} do
+      nick = "SyncId#{uid()}"
+
+      # Register and identify the user
+      NickServ.register(nick, "pass123")
+      NickServ.identify(nick, "pass123")
+
+      # Add a notify entry in the DB
+      NotifyList.save_entry(nick, %NotifyEntry{
+        tracked_nickname: "TrkBud",
+        note: nil,
+        last_seen_at: nil,
+        online: false
+      })
+
+      # Connect the tracked buddy so they're in the Tracker
+      buddy_view = connect_user(conn, "TrkBud")
+      Process.sleep(100)
+
+      # Connect the identified user (pre_identified loads persisted data including notify list)
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+
+      # Check the notify list
+      view |> render_click("toggle_address_book")
+      view |> render_click("address_book_tab", %{"tab" => "notify"})
+
+      assert has_element?(view, "#ab-notify-entry-TrkBud .text-success", "Online")
+
+      GenServer.stop(buddy_view.pid)
+    end
+  end
+
+  # ── Phase 6c: Notify Status Message Rendering ──────────
+
+  describe "notify status message rendering" do
+    test "notify_online status message renders without crashing", %{conn: conn} do
+      # Connect observer and add buddy to notify list
+      view = connect_user(conn, "RenderObs1")
+      view |> render_click("toggle_address_book")
+      view |> render_click("address_book_tab", %{"tab" => "notify"})
+      view |> render_click("notify_add_dialog")
+      view |> render_submit("notify_add", %{"nickname" => "RenderBud1", "note" => ""})
+
+      # Simulate the debounce timer firing with :online status
+      send(view.pid, {:notify_debounce, "RenderBud1", :online})
+      Process.sleep(50)
+
+      # The view should still be alive (not crashed) and render successfully
+      html = render(view)
+      assert html =~ "RenderBud1 is now online"
+    end
+
+    test "notify_offline status message renders without crashing", %{conn: conn} do
+      # Connect observer, add buddy, mark them online first
+      view = connect_user(conn, "RenderObs2")
+      view |> render_click("toggle_address_book")
+      view |> render_click("address_book_tab", %{"tab" => "notify"})
+      view |> render_click("notify_add_dialog")
+      view |> render_submit("notify_add", %{"nickname" => "RenderBud2", "note" => ""})
+
+      # Simulate the debounce timer firing with :offline status
+      send(view.pid, {:notify_debounce, "RenderBud2", :offline})
+      Process.sleep(50)
+
+      # The view should still be alive and render successfully
+      html = render(view)
+      assert html =~ "RenderBud2 has gone offline"
     end
   end
 

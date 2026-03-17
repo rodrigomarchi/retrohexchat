@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
     ]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Presence.NotifyList
+  alias RetroHexChat.Presence.{NotifyList, Tracker}
 
   def handle_event("toggle_notify_list", _params, socket) do
     {:halt, assign(socket, show_notify_list: !socket.assigns.show_notify_list)}
@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
 
     case NotifyList.add_entry(session.notify_list, session.nickname, nick, note) do
       {:ok, updated_list} ->
+        updated_list = sync_entry_online(updated_list, nick)
         new_session = Session.set_notify_list(session, updated_list)
 
         {:halt,
@@ -150,4 +151,19 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
   # ── Catch-all ──────────────────────────────────────────────
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
+
+  # ── Private helpers ──────────────────────────────────────
+
+  @spec sync_entry_online(map(), String.t()) :: map()
+  defp sync_entry_online(notify_list, nickname) do
+    online_nicks =
+      Tracker.list_users("presence:global")
+      |> Enum.map(& &1.nickname)
+
+    if Enum.any?(online_nicks, &(String.downcase(&1) == String.downcase(nickname))) do
+      NotifyList.set_online(notify_list, nickname, true)
+    else
+      notify_list
+    end
+  end
 end

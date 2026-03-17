@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     UserBio
   }
 
-  alias RetroHexChat.Presence.NotifyList
+  alias RetroHexChat.Presence.{NotifyList, Tracker}
 
   @spec maybe_persist_notify_list(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
@@ -128,6 +128,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
   def load_persisted_data(session, nick) do
     session
     |> load_if_found(NotifyList.load(nick), &Session.set_notify_list/2)
+    |> sync_notify_online_status()
     |> load_if_found(ContactList.load(nick), &Session.set_contacts/2)
     |> load_if_found(NickColors.load(nick), &Session.set_nick_colors/2)
     |> load_if_found(HighlightWords.load(nick), &Session.set_highlight_words/2)
@@ -158,6 +159,20 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
 
   defp pm_topic(nick_a, nick_b) do
     [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
+  end
+
+  @spec sync_notify_online_status(Session.t()) :: Session.t()
+  defp sync_notify_online_status(session) do
+    if session.notify_list.entries == [] do
+      session
+    else
+      online_nicks =
+        Tracker.list_users("presence:global")
+        |> Enum.map(& &1.nickname)
+
+      updated_list = NotifyList.sync_online_status(session.notify_list, online_nicks)
+      Session.set_notify_list(session, updated_list)
+    end
   end
 
   defp load_if_found(session, {:ok, data}, setter), do: setter.(session, data)

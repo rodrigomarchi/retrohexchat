@@ -92,6 +92,24 @@ defmodule RetroHexChat.Presence.NotifyList do
     %{notify_list | entries: updated_entries}
   end
 
+  @spec sync_online_status(map(), [String.t()]) :: map()
+  def sync_online_status(notify_list, online_nicknames) do
+    online_set = MapSet.new(online_nicknames, &String.downcase/1)
+
+    updated_entries =
+      Enum.map(notify_list.entries, fn entry ->
+        online? = MapSet.member?(online_set, String.downcase(entry.tracked_nickname))
+
+        if online? do
+          %{entry | online: true}
+        else
+          entry
+        end
+      end)
+
+    %{notify_list | entries: updated_entries}
+  end
+
   @spec set_online(map(), String.t(), boolean()) :: map()
   def set_online(notify_list, tracked_nickname, online?) do
     downcased = String.downcase(tracked_nickname)

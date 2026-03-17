@@ -44,7 +44,12 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   attr :timestamp, :string, default: nil
   attr :nick, :string, default: nil
   attr :nick_color, :string, default: nil
-  attr :type, :string, values: ~w(normal action system service error notice), default: "normal"
+
+  attr :type, :string,
+    values:
+      ~w(normal action system service error notice notify_online notify_offline motd wallops),
+    default: "normal"
+
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
@@ -111,4 +116,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   defp type_class("notice"), do: "text-notice"
   defp type_class("motd"), do: "text-gray-500 italic"
   defp type_class("wallops"), do: "text-gray-500 italic"
+  defp type_class("notify_online"), do: "text-success"
+  defp type_class("notify_offline"), do: "text-gray-500 italic"
 end

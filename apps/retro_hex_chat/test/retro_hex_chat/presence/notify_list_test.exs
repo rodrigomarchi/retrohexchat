@@ -195,6 +195,80 @@ defmodule RetroHexChat.Presence.NotifyListTest do
     end
   end
 
+  describe "sync_online_status/2" do
+    test "marks tracked buddies as online when present in online list" do
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", nil)
+      {:ok, list} = NotifyList.add_entry(list, "Owner", "Bob", nil)
+
+      updated = NotifyList.sync_online_status(list, ["Alice"])
+      alice = Enum.find(updated.entries, &(&1.tracked_nickname == "Alice"))
+      bob = Enum.find(updated.entries, &(&1.tracked_nickname == "Bob"))
+
+      assert alice.online == true
+      assert bob.online == false
+    end
+
+    test "matches nicknames case-insensitively" do
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", nil)
+
+      updated = NotifyList.sync_online_status(list, ["ALICE"])
+      assert hd(updated.entries).online == true
+    end
+
+    test "returns unchanged list when no buddies are online" do
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", nil)
+
+      updated = NotifyList.sync_online_status(list, ["Charlie", "Dave"])
+      assert hd(updated.entries).online == false
+    end
+
+    test "handles empty online list" do
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", nil)
+
+      updated = NotifyList.sync_online_status(list, [])
+      assert hd(updated.entries).online == false
+    end
+
+    test "handles empty notify list" do
+      list = NotifyList.new()
+      updated = NotifyList.sync_online_status(list, ["Alice"])
+      assert updated.entries == []
+    end
+
+    test "preserves existing entry fields (note, last_seen_at)" do
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", "My friend")
+      list = NotifyList.set_online(list, "Alice", false)
+
+      updated = NotifyList.sync_online_status(list, ["Alice"])
+      entry = hd(updated.entries)
+
+      assert entry.online == true
+      assert entry.note == "My friend"
+      assert entry.last_seen_at != nil
+    end
+
+    test "marks multiple buddies online at once" do
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", nil)
+      {:ok, list} = NotifyList.add_entry(list, "Owner", "Bob", nil)
+      {:ok, list} = NotifyList.add_entry(list, "Owner", "Charlie", nil)
+
+      updated = NotifyList.sync_online_status(list, ["Alice", "Charlie"])
+
+      online_nicks =
+        updated.entries
+        |> Enum.filter(& &1.online)
+        |> Enum.map(& &1.tracked_nickname)
+
+      assert Enum.sort(online_nicks) == ["Alice", "Charlie"]
+    end
+  end
+
   describe "set_online/3" do
     test "sets entry online to true" do
       list = NotifyList.new()

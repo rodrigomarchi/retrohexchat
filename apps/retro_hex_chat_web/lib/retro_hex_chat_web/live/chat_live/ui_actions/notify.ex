@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
     ]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Presence.NotifyList
+  alias RetroHexChat.Presence.{NotifyList, Tracker}
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
 
     case NotifyList.add_entry(session.notify_list, session.nickname, nick, note) do
       {:ok, updated_list} ->
+        updated_list = sync_entry_online(updated_list, nick)
         new_session = Session.set_notify_list(session, updated_list)
 
         socket
@@ -95,5 +96,18 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
     status = if entry.online, do: "online", else: "offline"
     note = if entry.note, do: " - #{entry.note}", else: ""
     "  #{entry.tracked_nickname} [#{status}]#{note}"
+  end
+
+  @spec sync_entry_online(map(), String.t()) :: map()
+  defp sync_entry_online(notify_list, nickname) do
+    online_nicks =
+      Tracker.list_users("presence:global")
+      |> Enum.map(& &1.nickname)
+
+    if Enum.any?(online_nicks, &(String.downcase(&1) == String.downcase(nickname))) do
+      NotifyList.set_online(notify_list, nickname, true)
+    else
+      notify_list
+    end
   end
 end
