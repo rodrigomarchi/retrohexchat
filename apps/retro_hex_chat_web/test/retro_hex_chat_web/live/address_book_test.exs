@@ -792,6 +792,84 @@ defmodule RetroHexChatWeb.AddressBookTest do
     end
   end
 
+  # ── Phase 6d: Auto-Add PM to Notify List ──────────────
+
+  describe "auto-add PM to notify list" do
+    test "sending a PM auto-adds target to notify list", %{conn: conn} do
+      # Connect both users
+      _target = connect_user(conn, "PmTarget1")
+      Process.sleep(100)
+      sender = connect_user(conn, "PmSender1")
+
+      # Sender sends PM to target via /msg command
+      render_submit(sender, "send_input", %{"input" => "/msg PmTarget1 hello there"})
+      Process.sleep(50)
+
+      # Check that PmTarget1 was auto-added to sender's notify list
+      sender |> render_click("toggle_address_book")
+      sender |> render_click("address_book_tab", %{"tab" => "notify"})
+
+      assert has_element?(sender, "#ab-notify-entry-PmTarget1")
+    end
+
+    test "receiving a PM auto-adds sender to notify list", %{conn: conn} do
+      receiver = connect_user(conn, "PmRecv1")
+      Process.sleep(100)
+      sender = connect_user(conn, "PmSend2")
+
+      # Sender sends PM — receiver gets it via PubSub
+      render_submit(sender, "send_input", %{"input" => "/msg PmRecv1 hey"})
+      Process.sleep(100)
+
+      # Check that PmSend2 was auto-added to receiver's notify list
+      receiver |> render_click("toggle_address_book")
+      receiver |> render_click("address_book_tab", %{"tab" => "notify"})
+
+      assert has_element?(receiver, "#ab-notify-entry-PmSend2")
+    end
+
+    test "duplicate PM does not create duplicate notify entry", %{conn: conn} do
+      _target = connect_user(conn, "PmDupTgt")
+      Process.sleep(100)
+      sender = connect_user(conn, "PmDupSnd")
+
+      # Send two PMs
+      render_submit(sender, "send_input", %{"input" => "/msg PmDupTgt first"})
+      Process.sleep(50)
+      render_submit(sender, "send_input", %{"input" => "/msg PmDupTgt second"})
+      Process.sleep(50)
+
+      # Should have exactly one entry
+      sender |> render_click("toggle_address_book")
+      sender |> render_click("address_book_tab", %{"tab" => "notify"})
+
+      html = render(sender)
+      # Count occurrences of the entry ID
+      assert length(Regex.scan(~r/ab-notify-entry-PmDupTgt/, html)) == 1
+    end
+
+    test "auto-add disabled when toggle is off", %{conn: conn} do
+      _target = connect_user(conn, "PmNoAdd")
+      Process.sleep(100)
+      sender = connect_user(conn, "PmTogOff")
+
+      # Disable auto-add via the standalone notify list dialog
+      render_click(sender, "toggle_notify_list")
+      render_click(sender, "toggle_auto_add_pm")
+      render_click(sender, "toggle_notify_list")
+
+      # Send PM
+      render_submit(sender, "send_input", %{"input" => "/msg PmNoAdd hi"})
+      Process.sleep(50)
+
+      # Should NOT have an entry
+      sender |> render_click("toggle_address_book")
+      sender |> render_click("address_book_tab", %{"tab" => "notify"})
+
+      refute has_element?(sender, "#ab-notify-entry-PmNoAdd")
+    end
+  end
+
   # ── Phase 7: US5 — Control Tab ──────────────────────────
 
   describe "control tab" do

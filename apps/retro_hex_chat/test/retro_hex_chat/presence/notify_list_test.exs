@@ -9,7 +9,7 @@ defmodule RetroHexChat.Presence.NotifyListTest do
     test "returns empty list with default settings" do
       list = NotifyList.new()
       assert list.entries == []
-      assert list.settings == %{auto_whois: false}
+      assert list.settings == %{auto_whois: false, auto_add_pm: true}
     end
   end
 
@@ -427,6 +427,106 @@ defmodule RetroHexChat.Presence.NotifyListTest do
 
       {:ok, list} = NotifyList.add_entry(list, "Owner", "Bob", nil)
       assert NotifyList.count(list) == 2
+    end
+  end
+
+  describe "add_entry_with_rotation/4" do
+    test "adds entry normally when list is not full" do
+      list = NotifyList.new()
+      assert {:ok, updated} = NotifyList.add_entry_with_rotation(list, "Owner", "Alice", nil)
+
+      assert length(updated.entries) == 1
+      assert hd(updated.entries).tracked_nickname == "Alice"
+    end
+
+    test "returns :noop when entry already exists" do
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", nil)
+
+      assert :noop = NotifyList.add_entry_with_rotation(list, "Owner", "Alice", nil)
+    end
+
+    test "returns :noop for duplicate (case-insensitive)" do
+      list = NotifyList.new()
+      {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", nil)
+
+      assert :noop = NotifyList.add_entry_with_rotation(list, "Owner", "ALICE", nil)
+    end
+
+    test "returns error when adding self" do
+      list = NotifyList.new()
+      assert {:error, :self_add} = NotifyList.add_entry_with_rotation(list, "Owner", "Owner", nil)
+    end
+
+    test "rotates oldest entry when list is full" do
+      list = NotifyList.new()
+
+      list =
+        Enum.reduce(1..50, list, fn i, acc ->
+          {:ok, updated} = NotifyList.add_entry(acc, "Owner", "User#{i}", nil)
+          updated
+        end)
+
+      assert NotifyList.full?(list)
+
+      # Add new entry — should rotate out User1 (oldest)
+      assert {:ok, updated} = NotifyList.add_entry_with_rotation(list, "Owner", "NewUser", nil)
+
+      assert length(updated.entries) == 50
+      nicks = Enum.map(updated.entries, & &1.tracked_nickname)
+      refute "User1" in nicks
+      assert "NewUser" in nicks
+      assert List.last(updated.entries).tracked_nickname == "NewUser"
+    end
+
+    test "preserves all other entries during rotation" do
+      list = NotifyList.new()
+
+      list =
+        Enum.reduce(1..50, list, fn i, acc ->
+          {:ok, updated} = NotifyList.add_entry(acc, "Owner", "User#{i}", nil)
+          updated
+        end)
+
+      {:ok, updated} = NotifyList.add_entry_with_rotation(list, "Owner", "NewUser", nil)
+
+      # User2..User50 should still be present
+      nicks = Enum.map(updated.entries, & &1.tracked_nickname)
+
+      for i <- 2..50 do
+        assert "User#{i}" in nicks
+      end
+    end
+  end
+
+  describe "auto_add_pm?/1" do
+    test "returns true by default on new list" do
+      list = NotifyList.new()
+      assert NotifyList.auto_add_pm?(list) == true
+    end
+
+    test "returns false when set to false" do
+      list = NotifyList.new() |> NotifyList.set_auto_add_pm(false)
+      assert NotifyList.auto_add_pm?(list) == false
+    end
+
+    test "defaults to true when key missing (backward compat)" do
+      list = %{entries: [], settings: %{auto_whois: false}}
+      assert NotifyList.auto_add_pm?(list) == true
+    end
+  end
+
+  describe "set_auto_add_pm/2" do
+    test "sets auto_add_pm to false" do
+      list = NotifyList.new()
+      updated = NotifyList.set_auto_add_pm(list, false)
+      assert updated.settings.auto_add_pm == false
+    end
+
+    test "sets auto_add_pm to true" do
+      list = NotifyList.new() |> NotifyList.set_auto_add_pm(false)
+      updated = NotifyList.set_auto_add_pm(list, true)
+      assert updated.settings.auto_add_pm == true
     end
   end
 

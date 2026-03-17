@@ -6,9 +6,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [stream: 4]
 
+  import RetroHexChatWeb.ChatLive.Helpers,
+    only: [maybe_persist_notify_list: 2]
+
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{Queries, Service}
+  alias RetroHexChat.Presence.NotifyList
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
   @spec open_pm_conversation(Phoenix.LiveView.Socket.t(), String.t()) ::
@@ -48,7 +52,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
           {:incoming_pm_notify, %{sender: session.nickname}}
         )
 
-        assign(socket, session: new_session)
+        socket
+        |> assign(session: new_session)
+        |> maybe_auto_add_to_notify(target)
 
       {:error, reason} ->
         Messages.error_event(socket, reason)
@@ -164,6 +170,34 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
       true ->
         socket
+    end
+  end
+
+  @spec maybe_auto_add_to_notify(Phoenix.LiveView.Socket.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def maybe_auto_add_to_notify(socket, other_nick) do
+    session = socket.assigns.session
+
+    if NotifyList.auto_add_pm?(session.notify_list) do
+      case NotifyList.add_entry_with_rotation(
+             session.notify_list,
+             session.nickname,
+             other_nick
+           ) do
+        {:ok, updated_list} ->
+          updated_list = NotifyList.set_online(updated_list, other_nick, true)
+          new_session = Session.set_notify_list(session, updated_list)
+
+          socket
+          |> assign(session: new_session)
+          |> maybe_persist_notify_list(new_session)
+
+        # :noop (already tracked) or {:error, :self_add}
+        _skip ->
+          socket
+      end
+    else
+      socket
     end
   end
 

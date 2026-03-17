@@ -148,6 +148,20 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
     {:halt, socket}
   end
 
+  def handle_event("toggle_auto_add_pm", _params, socket) do
+    session = socket.assigns.session
+    current = NotifyList.auto_add_pm?(session.notify_list)
+    updated_list = NotifyList.set_auto_add_pm(session.notify_list, !current)
+    new_session = Session.set_notify_list(session, updated_list)
+
+    socket =
+      socket
+      |> assign(session: new_session)
+      |> maybe_persist_notify_list(new_session)
+
+    {:halt, socket}
+  end
+
   # ── Catch-all ──────────────────────────────────────────────
 
   def handle_event(_event, _params, socket), do: {:cont, socket}

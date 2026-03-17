@@ -23,7 +23,7 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec new() :: map()
   def new do
-    %{entries: [], settings: %{auto_whois: false}}
+    %{entries: [], settings: %{auto_whois: false, auto_add_pm: true}}
   end
 
   @spec add_entry(map(), String.t(), String.t(), String.t() | nil) ::
@@ -38,6 +38,29 @@ defmodule RetroHexChat.Presence.NotifyList do
 
       full?(notify_list) ->
         {:error, :list_full}
+
+      true ->
+        entry = NotifyEntry.new(tracked_nickname: tracked_nickname, note: note)
+        {:ok, %{notify_list | entries: notify_list.entries ++ [entry]}}
+    end
+  end
+
+  @spec add_entry_with_rotation(map(), String.t(), String.t(), String.t() | nil) ::
+          {:ok, map()} | {:error, :self_add} | :noop
+  def add_entry_with_rotation(notify_list, owner_nickname, tracked_nickname, note \\ nil) do
+    cond do
+      String.downcase(owner_nickname) == String.downcase(tracked_nickname) ->
+        {:error, :self_add}
+
+      tracking?(notify_list, tracked_nickname) ->
+        :noop
+
+      full?(notify_list) ->
+        # Rotate: remove oldest (first in list), then append new.
+        # Safe: full?/1 guarantees entries is non-empty (count >= @max_entries).
+        [_oldest | rest] = notify_list.entries
+        entry = NotifyEntry.new(tracked_nickname: tracked_nickname, note: note)
+        {:ok, %{notify_list | entries: rest ++ [entry]}}
 
       true ->
         entry = NotifyEntry.new(tracked_nickname: tracked_nickname, note: note)
@@ -129,6 +152,16 @@ defmodule RetroHexChat.Presence.NotifyList do
   @spec set_auto_whois(map(), boolean()) :: map()
   def set_auto_whois(notify_list, auto_whois?) do
     %{notify_list | settings: %{notify_list.settings | auto_whois: auto_whois?}}
+  end
+
+  @spec set_auto_add_pm(map(), boolean()) :: map()
+  def set_auto_add_pm(notify_list, auto_add_pm?) do
+    %{notify_list | settings: Map.put(notify_list.settings, :auto_add_pm, auto_add_pm?)}
+  end
+
+  @spec auto_add_pm?(map()) :: boolean()
+  def auto_add_pm?(notify_list) do
+    Map.get(notify_list.settings, :auto_add_pm, true)
   end
 
   @spec tracking?(map(), String.t()) :: boolean()
@@ -256,8 +289,13 @@ defmodule RetroHexChat.Presence.NotifyList do
         end)
 
       auto_whois = if settings, do: settings.auto_whois, else: false
+      auto_add_pm = if settings, do: Map.get(settings, :auto_add_pm, true), else: true
 
-      {:ok, %{entries: notify_entries, settings: %{auto_whois: auto_whois}}}
+      {:ok,
+       %{
+         entries: notify_entries,
+         settings: %{auto_whois: auto_whois, auto_add_pm: auto_add_pm}
+       }}
     end
   end
 
@@ -359,17 +397,20 @@ defmodule RetroHexChat.Presence.NotifyList do
 
   @spec upsert_settings(String.t(), map()) :: {:ok, NotifyListSettings.t()} | {:error, term()}
   defp upsert_settings(owner, settings) do
-    auto_whois = Map.get(settings, :auto_whois, false)
+    attrs = %{
+      auto_whois: Map.get(settings, :auto_whois, false),
+      auto_add_pm: Map.get(settings, :auto_add_pm, true)
+    }
 
     case Repo.get(NotifyListSettings, owner) do
       nil ->
         %NotifyListSettings{}
-        |> NotifyListSettings.changeset(%{owner_nickname: owner, auto_whois: auto_whois})
+        |> NotifyListSettings.changeset(Map.put(attrs, :owner_nickname, owner))
         |> Repo.insert()
 
       existing ->
         existing
-        |> NotifyListSettings.changeset(%{auto_whois: auto_whois})
+        |> NotifyListSettings.changeset(attrs)
         |> Repo.update()
     end
   end

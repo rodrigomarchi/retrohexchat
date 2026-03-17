@@ -206,6 +206,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       {:halt, socket}
     else
       socket = maybe_auto_open_incoming_pm(socket, session, sender)
+      socket = PM.maybe_auto_add_to_notify(socket, sender)
       session = socket.assigns.session
       {:halt, maybe_away_auto_reply(socket, sender, session)}
     end
@@ -297,6 +298,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     # Reorder by recency — move to front on every message
     session = Session.move_pm_to_front(session, other_nick)
     socket = assign(socket, session: session)
+
+    # Auto-add PM partner to notify list (if enabled)
+    socket = PM.maybe_auto_add_to_notify(socket, other_nick)
+
+    session = socket.assigns.session
 
     if session.active_pm == other_nick do
       stream_insert(socket, :chat_messages, pm_to_stream_item(payload))

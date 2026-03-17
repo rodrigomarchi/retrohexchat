@@ -11,6 +11,7 @@ defmodule RetroHexChat.Presence.NotifyListSettings do
   @primary_key {:owner_nickname, :string, autogenerate: false}
   schema "notify_list_settings" do
     field :auto_whois, :boolean, default: false
+    field :auto_add_pm, :boolean, default: true
 
     timestamps(type: :utc_datetime_usec)
   end
@@ -18,7 +19,7 @@ defmodule RetroHexChat.Presence.NotifyListSettings do
   @spec changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def changeset(settings, attrs) do
     settings
-    |> cast(attrs, [:owner_nickname, :auto_whois])
+    |> cast(attrs, [:owner_nickname, :auto_whois, :auto_add_pm])
     |> validate_required([:owner_nickname])
   end
 end

@@ -38,6 +38,8 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   attr :show_edit_dialog, :boolean, default: false, doc: "Show inline edit sub-form"
   attr :selected_note, :string, default: "", doc: "Note for the selected entry (for edit form)"
   attr :on_toggle_auto_whois, :any, default: nil, doc: "Auto-Whois checkbox callback"
+  attr :auto_add_pm, :boolean, default: true, doc: "Auto-add PM contacts checkbox state"
+  attr :on_toggle_auto_add_pm, :any, default: nil, doc: "Auto-add PM checkbox callback"
   attr :on_close, :any, default: nil, doc: "Close button callback"
 
   @spec notify_list(map()) :: Phoenix.LiveView.Rendered.t()
@@ -50,17 +52,30 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
         </.dialog_header>
 
         <.dialog_body class="space-y-retro-8">
-          <%!-- Auto-Whois toggle --%>
-          <div class="flex items-center gap-retro-4">
-            <.checkbox
-              name="auto_whois"
-              value={@auto_whois}
-              phx-click={@on_toggle_auto_whois}
-              id={"#{@id}-auto-whois"}
-            />
-            <label for={"#{@id}-auto-whois"} class="text-xs cursor-pointer select-none">
-              Perform WHOIS on notify nicks when they come online
-            </label>
+          <%!-- Settings toggles --%>
+          <div class="flex flex-col gap-retro-4">
+            <div class="flex items-center gap-retro-4">
+              <.checkbox
+                name="auto_add_pm"
+                value={@auto_add_pm}
+                phx-click={@on_toggle_auto_add_pm}
+                id={"#{@id}-auto-add-pm"}
+              />
+              <label for={"#{@id}-auto-add-pm"} class="text-xs cursor-pointer select-none">
+                Auto-add PM contacts to notify list
+              </label>
+            </div>
+            <div class="flex items-center gap-retro-4">
+              <.checkbox
+                name="auto_whois"
+                value={@auto_whois}
+                phx-click={@on_toggle_auto_whois}
+                id={"#{@id}-auto-whois"}
+              />
+              <label for={"#{@id}-auto-whois"} class="text-xs cursor-pointer select-none">
+                Perform WHOIS on notify nicks when they come online
+              </label>
+            </div>
           </div>
 
           <%!-- Entries table --%>

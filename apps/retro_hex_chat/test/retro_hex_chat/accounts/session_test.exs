@@ -344,7 +344,7 @@ defmodule RetroHexChat.Accounts.SessionTest do
     test "new/1 notify_list has empty entries and default settings" do
       session = Session.new("Alice")
       assert session.notify_list.entries == []
-      assert session.notify_list.settings == %{auto_whois: false}
+      assert session.notify_list.settings == %{auto_whois: false, auto_add_pm: true}
     end
 
     test "set_notify_list/2 replaces the notify list" do
