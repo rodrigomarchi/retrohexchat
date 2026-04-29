@@ -1,0 +1,40 @@
+title = "RetroHexChat gitleaks config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Test fixtures and known dev/test placeholders"
+paths = [
+  '''config/dev\.exs''',
+  '''config/test\.exs''',
+]
+regexes = [
+  '''dev_only_secret_key_base''',
+  '''test_only_secret_key_base''',
+]
+
+[[allowlists]]
+description = "Test token fixtures"
+paths = [
+  '''.*_test\.exs''',
+  '''test/.*''',
+]
+regexes = [
+  '''abc123def456''',
+  '''test-auth-secret''',
+  '''test-nonce-secret''',
+]
+
+[[allowlists]]
+description = "Keyboard shortcut strings misidentified as keys"
+regexes = [
+  '''Ctrl\+Shift\+Tab''',
+  '''Ctrl\+Shift''',
+]
+
+[[allowlists]]
+description = "Third-party dependency example secrets"
+paths = [
+  '''deps/.*''',
+]

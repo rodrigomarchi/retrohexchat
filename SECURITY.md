@@ -8,7 +8,7 @@ If you discover a security vulnerability in Retro Hex Chat, please report it res
 
 ### How to report
 
-Send an email to: **security@retrohexchat.com**
+Send an email to: **orodrigomarchi@gmail.com**
 
 Include:
 - Description of the vulnerability
