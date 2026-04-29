@@ -27,10 +27,11 @@ regexes = [
 ]
 
 [[allowlists]]
-description = "Keyboard shortcut strings misidentified as keys"
+description = "UI strings misidentified as keys"
 regexes = [
   '''Ctrl\+Shift\+Tab''',
   '''Ctrl\+Shift''',
+  '''OK/Apply/Cancel''',
 ]
 
 [[allowlists]]
