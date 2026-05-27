@@ -1,5 +1,11 @@
 import Config
 
+# Plausible analytics environment label, surfaced to the browser via a
+# <meta name="plausible-env"> tag in root.html.heex. The bundled tracker
+# attaches it as a `env` prop to every event so the same Plausible site
+# can serve both staging and production.
+config :retro_hex_chat_web, :plausible_env, System.get_env("APP_ENV", "prod")
+
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
 # system starts, so it is typically used to load production configuration

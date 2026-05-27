@@ -122,6 +122,27 @@ describe("createPlausibleTracker", () => {
     });
   });
 
+  it("merges defaultProps into every event, per-call props win", () => {
+    const { win } = makeWin("https://retrohexchat.app/");
+    const { doc } = makeDoc();
+    const fetchImpl = vi.fn().mockResolvedValue(new Response(null));
+
+    const tracker = createPlausibleTracker({
+      domain: "retrohexchat.app",
+      defaultProps: { env: "prod", room: "lobby" },
+      win,
+      doc,
+      sendBeacon: null,
+      fetch: fetchImpl,
+    });
+
+    tracker.trackEvent("Room: Join", { room: "general" });
+
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    const body = JSON.parse(fetchImpl.mock.calls[0][1].body);
+    expect(body.props).toEqual({ env: "prod", room: "general" });
+  });
+
   it("does not send when running on localhost", () => {
     const { win } = makeWin("http://localhost:4000/");
     const { doc } = makeDoc();

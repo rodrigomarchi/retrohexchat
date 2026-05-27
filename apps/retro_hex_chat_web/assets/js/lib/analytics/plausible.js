@@ -18,6 +18,7 @@ const DEFAULT_ENDPOINT = "/api/event";
  *
  * @param {object} options - Tracker configuration.
  * @param {string} options.domain - Site domain registered in Plausible.
+ * @param {Record<string, unknown>} [options.defaultProps] - Props merged into every event (e.g. `{ env: "prod" }`).
  * @param {string} [options.endpoint] - Events endpoint path or full URL.
  * @param {Window} [options.win] - Window-like object (DI for tests).
  * @param {Document} [options.doc] - Document-like object (DI for tests).
@@ -27,6 +28,7 @@ const DEFAULT_ENDPOINT = "/api/event";
  */
 export function createPlausibleTracker({
   domain,
+  defaultProps = {},
   endpoint = DEFAULT_ENDPOINT,
   win = typeof window === "undefined" ? undefined : window,
   doc = typeof document === "undefined" ? undefined : document,
@@ -81,7 +83,7 @@ export function createPlausibleTracker({
       url: location.href,
       domain,
       referrer: doc.referrer || null,
-      props,
+      props: { ...defaultProps, ...props },
     });
   }
 
@@ -93,7 +95,12 @@ export function createPlausibleTracker({
    * @returns {void}
    */
   function trackEvent(name, props = {}) {
-    send({ name, url: location.href, domain, props });
+    send({
+      name,
+      url: location.href,
+      domain,
+      props: { ...defaultProps, ...props },
+    });
   }
 
   /**

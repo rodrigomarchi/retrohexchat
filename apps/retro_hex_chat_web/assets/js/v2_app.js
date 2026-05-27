@@ -110,7 +110,12 @@ topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" });
 window.addEventListener("phx:page-loading-start", (_info) => topbar.show(300));
 window.addEventListener("phx:page-loading-stop", (_info) => topbar.hide());
 
-const plausible = createPlausibleTracker({ domain: "moon.retrohexchat.app" });
+const plausibleEnv =
+  document.querySelector('meta[name="plausible-env"]')?.content || "prod";
+const plausible = createPlausibleTracker({
+  domain: "retrohexchat.app",
+  defaultProps: { env: plausibleEnv },
+});
 plausible.attachAutoTracking();
 window.plausible = plausible;
 
