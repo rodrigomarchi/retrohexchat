@@ -18,7 +18,8 @@ config :retro_hex_chat, RetroHexChat.Repo,
 # you can enable the server option below.
 config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "test_only_secret_key_base_not_for_production_run_mix_phx_gen_secret_to_replace",
+  secret_key_base:
+    "test_only_secret_key_base_not_for_production_run_mix_phx_gen_secret_to_replace",
   server: false
 
 # Silence all logs during test (use @tag :capture_log to inspect per-test)

@@ -24,7 +24,8 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "dev_only_secret_key_base_not_for_production_run_mix_phx_gen_secret_to_replace",
+  secret_key_base:
+    "dev_only_secret_key_base_not_for_production_run_mix_phx_gen_secret_to_replace",
   watchers: [
     esbuild:
       {Esbuild, :install_and_run,
