@@ -43,6 +43,7 @@ import GameWebRTCHook from "./hooks/games/game_webrtc_hook";
 import WebRTCHook from "./hooks/p2p/webrtc_hook";
 import MediaHook from "./hooks/p2p/media_hook";
 import ViewportDetectHook from "./hooks/ui/viewport_detect_hook";
+import { createPlausibleTracker } from "./lib/analytics/plausible";
 import { getClientInfo } from "./lib/connection/client_info";
 
 const AutoFocusHook = {
@@ -108,6 +109,10 @@ const liveSocket = new LiveSocket("/live", Socket, {
 topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" });
 window.addEventListener("phx:page-loading-start", (_info) => topbar.show(300));
 window.addEventListener("phx:page-loading-stop", (_info) => topbar.hide());
+
+const plausible = createPlausibleTracker({ domain: "moon.retrohexchat.app" });
+plausible.attachAutoTracking();
+window.plausible = plausible;
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();

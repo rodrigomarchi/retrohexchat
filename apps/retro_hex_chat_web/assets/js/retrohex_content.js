@@ -21,6 +21,7 @@ hljs.registerLanguage("heex", (hljs) => {
 });
 
 import MenuBarHook from "./hooks/ui/menu_bar_hook";
+import { createPlausibleTracker } from "./lib/analytics/plausible";
 
 // Hook to highlight code blocks after LiveView mounts/updates.
 const Hooks = {
@@ -52,3 +53,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
 
 liveSocket.connect();
 window.liveSocket = liveSocket;
+
+const plausible = createPlausibleTracker({ domain: "moon.retrohexchat.app" });
+plausible.attachAutoTracking();
+window.plausible = plausible;
