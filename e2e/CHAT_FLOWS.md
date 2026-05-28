@@ -4,7 +4,7 @@ Persistent map of every chat-related user flow this suite covers (or plans
 to). Mirrors the structure of `FLOWS.md` (auth/lifecycle) — `Status` is the
 single source of truth for "what's actually green".
 
-**Last reviewed:** 2026-05-28 (Groups A–D landed)
+**Last reviewed:** 2026-05-28 (Groups A–F landed)
 
 ## Ground rules (inherited from FLOWS.md)
 
@@ -82,24 +82,24 @@ single source of truth for "what's actually green".
 
 | #  | Flow                                                              | Planned spec file                | Status |
 |----|-------------------------------------------------------------------|----------------------------------|--------|
-| E1 | `/nick newname` updates the nickname (status bar + other user)    | `tests/chat-identity.spec.ts`    | todo   |
-| E2 | `/away At lunch` then `/away` clears toggles status indicator     | `tests/chat-identity.spec.ts`    | todo   |
+| E1 | `/nick newname` confirms the dialog and updates the own nicklist entry | `tests/chat-identity.spec.ts`    | done   |
+| E2 | `/away At lunch` then `/away` emits set/clear away status messages | `tests/chat-identity.spec.ts`    | done   |
 
 ## Group F — Help, formatting, autocomplete
 
 | #  | Flow                                                              | Planned spec file                | Status |
 |----|-------------------------------------------------------------------|----------------------------------|--------|
-| F1 | `/help` opens the help page or surface                            | `tests/chat-help.spec.ts`        | todo   |
-| F2 | Bold formatting button wraps the current selection                | `tests/chat-formatting.spec.ts`  | todo   |
-| F3 | Typing `@` in the input shows the nickname autocomplete dropdown  | `tests/chat-autocomplete.spec.ts` | todo  |
-| F4 | Typing `/co` shows the command autocomplete dropdown              | `tests/chat-autocomplete.spec.ts` | todo  |
+| F1 | `/help` lists available commands in the active message list       | `tests/chat-help.spec.ts`        | done   |
+| F2 | Bold formatting button inserts the IRC bold control code          | `tests/chat-formatting.spec.ts`  | done   |
+| F3 | Typing `@` in the input shows the nickname autocomplete dropdown  | `tests/chat-autocomplete.spec.ts` | done  |
+| F4 | Typing `/jo` shows the command autocomplete dropdown              | `tests/chat-autocomplete.spec.ts` | done  |
 
 ## Page objects (current + planned for chat)
 
 | Page Object              | Status | Used by              |
 |--------------------------|--------|----------------------|
 | `pages/ChatPage.ts`      | extend | grows as new helpers are needed per group |
-| `pages/AutocompletePage.ts` | todo  | F3, F4               |
+| `pages/AutocompletePage.ts` | not needed | F3, F4 covered by `ChatPage` locators |
 
 ## Implementation order
 

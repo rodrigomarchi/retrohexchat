@@ -8,7 +8,9 @@ export class ChatPage {
   readonly page: Page;
   readonly menuBar: Locator;
   readonly fileMenuTrigger: Locator;
+  readonly helpMenuTrigger: Locator;
   readonly disconnectMenuItem: Locator;
+  readonly helpTopicsMenuItem: Locator;
   readonly disconnectConfirmDialog: Locator;
   readonly disconnectConfirmButton: Locator;
   readonly chatInput: Locator;
@@ -18,6 +20,14 @@ export class ChatPage {
   readonly nicklist: Locator;
   readonly topicBar: Locator;
   readonly tabBar: Locator;
+  readonly formatBoldButton: Locator;
+  readonly autocompleteDropdown: Locator;
+  readonly inlineHelp: Locator;
+  readonly syntaxTooltip: Locator;
+  readonly historySearch: Locator;
+  readonly historySearchInput: Locator;
+  readonly historySearchNoResults: Locator;
+  readonly helpContentPane: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -29,13 +39,27 @@ export class ChatPage {
     this.nicklist = page.getByTestId('nicklist');
     this.topicBar = page.getByTestId('topic-bar');
     this.tabBar = page.getByTestId('tab-bar');
+    this.formatBoldButton = page.getByTestId('format-btn-bold');
+    this.autocompleteDropdown = page.getByTestId('autocomplete-dropdown');
     // menu_bar_app renders one <button data-menubar-trigger> per top-level
     // label; we filter by visible label text rather than rely on order.
     this.fileMenuTrigger = page
       .locator('button[data-menubar-trigger]')
       .filter({ hasText: 'File' });
+    this.helpMenuTrigger = page
+      .locator('button[data-menubar-trigger]')
+      .filter({ hasText: 'Help' });
     // context_menu_item exposes data-testid="context-menu-item-<action>".
     this.disconnectMenuItem = page.getByTestId('context-menu-item-disconnect');
+    this.helpTopicsMenuItem = page.getByTestId(
+      'context-menu-item-help_topics',
+    );
+    this.inlineHelp = page.getByTestId('inline-help');
+    this.syntaxTooltip = page.getByTestId('syntax-tooltip');
+    this.historySearch = page.getByTestId('history-search');
+    this.historySearchInput = page.getByTestId('history-search-input');
+    this.historySearchNoResults = page.getByTestId('history-search-no-results');
+    this.helpContentPane = page.getByTestId('help-content-pane');
     // The dialog component wraps content in a <span data-testid="...">, but
     // that wrapper has zero visible size when the dialog is closed; use the
     // confirm button instead as the open/closed signal.
@@ -116,6 +140,12 @@ export class ChatPage {
     ).toBeVisible();
   }
 
+  async expectMessageHidden(text: string) {
+    await expect(this.messageList.getByText(text, { exact: false })).toHaveCount(
+      0,
+    );
+  }
+
   // Per-nick nicklist item — uses the data-testid="nicklist-item-<nick>"
   // attribute set by the Nicklist component.
   nicklistItem(nick: string): Locator {
@@ -126,6 +156,18 @@ export class ChatPage {
     await expect(this.nicklistItem(nick)).toBeVisible();
   }
 
+  async expectAutocompleteContains(text: string) {
+    await expect(this.autocompleteDropdown).toBeVisible();
+    await expect(this.autocompleteDropdown).toContainText(text);
+  }
+
+  autocompleteItemByText(text: string): Locator {
+    return this.autocompleteDropdown
+      .locator('[data-testid^="autocomplete-item-"]')
+      .filter({ hasText: text })
+      .first();
+  }
+
   async openFileMenu() {
     // MenuBarHook listens for mousedown (not click) so that focus never
     // leaves the chat input. Playwright's click() does fire mousedown as
@@ -133,6 +175,14 @@ export class ChatPage {
     // we DO need the hook to be mounted first (see waitUntilConnected).
     await this.fileMenuTrigger.click();
     await expect(this.disconnectMenuItem).toBeVisible();
+  }
+
+  async openHelpTopicsFromMenu() {
+    await this.helpMenuTrigger.click();
+    await expect(this.helpTopicsMenuItem).toBeVisible();
+    await this.helpTopicsMenuItem.click();
+    await expect(this.page).toHaveURL(/\/chat\/help(\?.*)?$/);
+    await expect(this.helpContentPane).toBeVisible();
   }
 
   async disconnect() {

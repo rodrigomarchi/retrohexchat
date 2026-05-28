@@ -67,12 +67,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> SessionHelpers.push_reconnect_state()
   end
 
-  @spec part_channel(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
-  def part_channel(socket, channel_name) do
+  @spec part_channel(Phoenix.LiveView.Socket.t(), String.t(), String.t() | nil) ::
+          Phoenix.LiveView.Socket.t()
+  def part_channel(socket, channel_name, reason \\ nil) do
     session = socket.assigns.session
 
     try do
-      Server.part(channel_name, session.nickname, nil)
+      Server.part(channel_name, session.nickname, reason)
     rescue
       e ->
         Logger.warning("Failed to part #{channel_name}: #{inspect(e)}")

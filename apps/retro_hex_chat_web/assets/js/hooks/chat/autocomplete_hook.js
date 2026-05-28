@@ -404,45 +404,55 @@ const AutocompleteHook = {
   },
 
   openHistorySearch() {
+    const bar = document.getElementById("hist-search-panel");
+    if (!bar) return;
+
     this.historySearchActive = true;
     this.historySearchOriginal = this.inputEl.value;
 
-    const bar = document.getElementById("hist-search-panel");
-    if (bar) {
-      bar.classList.add("hist-search-panel--open");
-      const searchInput = bar.querySelector(".history-search-input");
-      if (searchInput) {
-        searchInput.value = "";
-        searchInput.focus();
+    bar.classList.remove("u-hidden");
+    bar.classList.add("hist-search-panel--open");
+    bar.style.display = "flex";
 
-        if (this._histSearchInputHandler) {
-          searchInput.removeEventListener("input", this._histSearchInputHandler);
-          searchInput.removeEventListener("keydown", this._histSearchKeydownHandler);
-        }
+    const noMatch = bar.querySelector(".history-no-match");
+    if (noMatch) noMatch.classList.add("u-hidden");
 
-        this._histSearchInputHandler = (e) => {
-          this.onHistorySearchInput(e.target.value);
-        };
-        this._histSearchKeydownHandler = (e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            this.closeHistorySearch(false);
-          } else if (e.key === "Escape") {
-            e.preventDefault();
-            this.closeHistorySearch(true);
-          }
-        };
+    const searchInput = bar.querySelector(".history-search-input");
+    if (searchInput) {
+      searchInput.value = "";
+      searchInput.focus();
 
-        searchInput.addEventListener("input", this._histSearchInputHandler);
-        searchInput.addEventListener("keydown", this._histSearchKeydownHandler);
+      if (this._histSearchInputHandler) {
+        searchInput.removeEventListener("input", this._histSearchInputHandler);
+        searchInput.removeEventListener("keydown", this._histSearchKeydownHandler);
       }
+
+      this._histSearchInputHandler = (e) => {
+        this.onHistorySearchInput(e.target.value);
+      };
+      this._histSearchKeydownHandler = (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          this.closeHistorySearch(false);
+        } else if (e.key === "Escape") {
+          e.preventDefault();
+          this.closeHistorySearch(true);
+        }
+      };
+
+      searchInput.addEventListener("input", this._histSearchInputHandler);
+      searchInput.addEventListener("keydown", this._histSearchKeydownHandler);
     }
   },
 
   closeHistorySearch(cancel) {
     this.historySearchActive = false;
     const bar = document.getElementById("hist-search-panel");
-    if (bar) bar.classList.remove("hist-search-panel--open");
+    if (bar) {
+      bar.classList.remove("hist-search-panel--open");
+      bar.classList.add("u-hidden");
+      bar.style.display = "none";
+    }
 
     if (cancel && this.historySearchOriginal !== undefined) {
       this.inputEl.value = this.historySearchOriginal;
@@ -458,7 +468,10 @@ const AutocompleteHook = {
     const noMatch = bar ? bar.querySelector(".history-no-match") : null;
 
     if (!query) {
-      if (noMatch) noMatch.classList.remove("history-no-match--visible");
+      if (noMatch) {
+        noMatch.classList.remove("history-no-match--visible");
+        noMatch.classList.add("u-hidden");
+      }
       return;
     }
 
@@ -468,9 +481,15 @@ const AutocompleteHook = {
       this.inputEl.value = match;
       this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
       autoResize(this.inputEl, this.maxHeight);
-      if (noMatch) noMatch.classList.remove("history-no-match--visible");
+      if (noMatch) {
+        noMatch.classList.remove("history-no-match--visible");
+        noMatch.classList.add("u-hidden");
+      }
     } else {
-      if (noMatch) noMatch.classList.add("history-no-match--visible");
+      if (noMatch) {
+        noMatch.classList.add("history-no-match--visible");
+        noMatch.classList.remove("u-hidden");
+      }
     }
   },
 

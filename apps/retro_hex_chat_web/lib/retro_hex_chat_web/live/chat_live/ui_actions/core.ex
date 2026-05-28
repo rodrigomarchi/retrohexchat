@@ -95,7 +95,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     text =
       "Available commands: " <>
         Enum.join(Enum.map(commands, &"/#{&1}"), ", ") <>
-        "\nType /help <command> for details, or press F1 for the full help system."
+        "\nType /help <command> for details, or open Help Topics from the menu for the full help system."
 
     system_event(socket, text)
   end

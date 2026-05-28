@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.CheatsheetDialogPage do
     %{
       category: "Help",
       items: [
-        %{action: "Open help", keys: "F1", description: "Open the help topics dialog"},
+        %{action: "Open help", keys: "Menu", description: "Open the help topics dialog"},
         %{
           action: "Cheatsheet",
           keys: "Ctrl+/",

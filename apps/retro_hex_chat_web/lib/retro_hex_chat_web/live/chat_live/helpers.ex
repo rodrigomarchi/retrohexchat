@@ -49,6 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   defdelegate join_channel(socket, channel_name, session), to: __MODULE__.Channel
   defdelegate join_channel(socket, channel_name, session, password), to: __MODULE__.Channel
   defdelegate part_channel(socket, channel_name), to: __MODULE__.Channel
+  defdelegate part_channel(socket, channel_name, reason), to: __MODULE__.Channel
   defdelegate part_channel_after_kick(socket, channel_name), to: __MODULE__.Channel
   defdelegate load_channel_users(socket, channel_name), to: __MODULE__.Channel
   defdelegate load_channel_messages_with_pagination(socket, channel_name), to: __MODULE__.Channel

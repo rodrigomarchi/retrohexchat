@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.Components.UI.InlineHelpCard do
           rel="noopener noreferrer"
           class="underline"
         >
-          Open in Help Topics (F1)
+          Open in Help Topics
         </a>
       </div>
     </div>

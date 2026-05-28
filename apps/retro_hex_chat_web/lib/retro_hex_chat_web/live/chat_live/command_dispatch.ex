@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       service_event: 3,
       join_channel: 3,
       join_channel: 4,
-      part_channel: 2,
+      part_channel: 3,
       handle_pm_send: 3,
       handle_notice_send: 4,
       safe_untrack_user: 2,
@@ -227,9 +227,9 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     |> maybe_auto_add_to_autojoin(channel_name, nil)
   end
 
-  defp handle_dispatch_result(socket, _session, {:ok, :part, channel_name, _msg}) do
+  defp handle_dispatch_result(socket, _session, {:ok, :part, channel_name, msg}) do
     socket
-    |> part_channel(channel_name)
+    |> part_channel(channel_name, msg)
     |> maybe_auto_remove_from_autojoin(channel_name)
   end
 

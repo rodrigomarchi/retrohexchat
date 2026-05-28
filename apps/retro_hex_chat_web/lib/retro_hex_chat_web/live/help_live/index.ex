@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.HelpLive.Index do
         <Icons.icon_notepad class="w-8 h-8 mx-auto mb-3 opacity-50" />
         <h1 class="text-base font-bold mb-2 text-text">RetroHexChat Help</h1>
         <p class="text-sm">Select a topic from the navigation pane to get started.</p>
-        <p class="text-xs mt-1">Browse by category or use F1 inside the chat.</p>
+        <p class="text-xs mt-1">Browse by category or open Help Topics from the chat menu.</p>
       </div>
     </.help_layout>
     """

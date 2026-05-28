@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.HistorySearch do
   alias RetroHexChatWeb.Icons
 
   @doc "Renders a history search bar with optional no-results indicator."
+  attr :id, :string, default: "hist-search-panel"
   attr :visible, :boolean, default: false
   attr :class, :string, default: nil
   attr :rest, :global
@@ -24,6 +25,7 @@ defmodule RetroHexChatWeb.Components.UI.HistorySearch do
     ~H"""
     <div
       :if={@visible}
+      id={@id}
       class={
         classes([
           "flex items-center gap-retro-4 px-retro-8 py-retro-4 bg-surface border-b border-border",
@@ -37,10 +39,16 @@ defmodule RetroHexChatWeb.Components.UI.HistorySearch do
       <input
         type="text"
         placeholder="Search history..."
-        class="flex-1 shadow-retro-field bg-white px-retro-4 py-retro-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
+        class="history-search-input flex-1 shadow-retro-field bg-white px-retro-4 py-retro-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
         aria-label="Search chat history"
+        data-testid="history-search-input"
       />
-      <span class="text-xs text-muted-foreground whitespace-nowrap">No results</span>
+      <span
+        class="history-no-match u-hidden text-xs text-muted-foreground whitespace-nowrap"
+        data-testid="history-search-no-results"
+      >
+        No results
+      </span>
     </div>
     """
   end
