@@ -12,11 +12,17 @@ export class ChatPage {
   readonly disconnectConfirmDialog: Locator;
   readonly disconnectConfirmButton: Locator;
   readonly chatInput: Locator;
+  readonly chatSendButton: Locator;
+  readonly charCounter: Locator;
+  readonly messageList: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.menuBar = page.getByTestId('menu-bar');
     this.chatInput = page.getByTestId('chat-input-field');
+    this.chatSendButton = page.getByTestId('chat-input-send');
+    this.charCounter = page.getByTestId('char-counter');
+    this.messageList = page.getByTestId('chat-message-list');
     // menu_bar_app renders one <button data-menubar-trigger> per top-level
     // label; we filter by visible label text rather than rely on order.
     this.fileMenuTrigger = page
@@ -54,6 +60,12 @@ export class ChatPage {
     );
   }
 
+  // Switches to the Status tab (server-level messages like welcome, MOTD,
+  // NickServ acks). Channel tabs live alongside Status in the same tablist.
+  async switchToStatusTab() {
+    await this.page.getByRole('tab', { name: 'Status' }).click();
+  }
+
   // Types a message (or slash command) into the chat input and submits
   // by pressing Enter. The form's phx-submit handler dispatches commands
   // through the same path real users hit when typing `/...`.
@@ -61,6 +73,17 @@ export class ChatPage {
     await expect(this.chatInput).toBeEnabled();
     await this.chatInput.fill(text);
     await this.chatInput.press('Enter');
+  }
+
+  // Asserts that a message with the given visible text is present in the
+  // active channel/PM message list. Use the message body verbatim — there
+  // are no per-message testids so we match by text content scoped to the
+  // chat-message-list container. Uses .first() to tolerate other messages
+  // (e.g., system "you are now identified as <nick>") that may also match.
+  async expectMessageVisible(text: string) {
+    await expect(
+      this.messageList.getByText(text, { exact: false }).first(),
+    ).toBeVisible();
   }
 
   async openFileMenu() {
