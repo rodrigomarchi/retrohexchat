@@ -54,8 +54,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
 liveSocket.connect();
 window.liveSocket = liveSocket;
 
-const plausibleEnv =
-  document.querySelector('meta[name="plausible-env"]')?.content || "prod";
+const plausibleEnv = document.querySelector('meta[name="plausible-env"]')?.content || "prod";
 const plausible = createPlausibleTracker({
   domain: "retrohexchat.app",
   defaultProps: { env: plausibleEnv },
