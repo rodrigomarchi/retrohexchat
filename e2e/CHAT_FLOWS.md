@@ -4,7 +4,7 @@ Persistent map of every chat-related user flow this suite covers (or plans
 to). Mirrors the structure of `FLOWS.md` (auth/lifecycle) — `Status` is the
 single source of truth for "what's actually green".
 
-**Last reviewed:** 2026-05-28 (Group A landed; CharCounterHook product fix)
+**Last reviewed:** 2026-05-28 (Groups A–D landed)
 
 ## Ground rules (inherited from FLOWS.md)
 
@@ -46,29 +46,37 @@ single source of truth for "what's actually green".
 
 | #  | Flow                                                              | Planned spec file                | Status |
 |----|-------------------------------------------------------------------|----------------------------------|--------|
-| B1 | A sends a message → B sees it in real time in the same channel    | `tests/chat-multiuser.spec.ts`   | todo   |
-| B2 | B joins `#lobby` → A sees a system "joined" message               | `tests/chat-multiuser.spec.ts`   | todo   |
-| B3 | B disconnects → A sees a system "quit/parts" message              | `tests/chat-multiuser.spec.ts`   | todo   |
-| B4 | Nicklist: B joins → A's nicklist shows B as a member              | `tests/chat-multiuser.spec.ts`   | todo   |
+| B1 | A sends a message → B sees it in real time in the same channel    | `tests/chat-multiuser.spec.ts`   | done   |
+| B2 | B joins `#lobby` → A sees `<nick> has joined the channel`         | `tests/chat-multiuser.spec.ts`   | done   |
+| B3 | B disconnects → A sees `<nick> has left` system message           | `tests/chat-multiuser.spec.ts`   | done   |
+| B4 | Nicklist: B joins → A's nicklist shows B (`nicklist-item-<nick>`) | `tests/chat-multiuser.spec.ts`   | done   |
 
 ## Group C — Channels and navigation
 
 | #  | Flow                                                              | Planned spec file                | Status |
 |----|-------------------------------------------------------------------|----------------------------------|--------|
-| C1 | `/join #room` creates a new tab and switches to it                | `tests/chat-channels.spec.ts`    | todo   |
-| C2 | Switching tabs (Status ↔ `#lobby` ↔ `#room`) preserves messages   | `tests/chat-channels.spec.ts`    | todo   |
-| C3 | Close-tab button on a channel returns focus to `#lobby`/Status    | `tests/chat-channels.spec.ts`    | todo   |
-| C4 | `/part #room` leaves the channel and removes the tab              | `tests/chat-channels.spec.ts`    | todo   |
-| C5 | `/topic My new topic` updates the visible topic bar               | `tests/chat-channels.spec.ts`    | todo   |
+| C1 | `/join #room` creates a new tab and switches to it                | `tests/chat-channels.spec.ts`    | done   |
+| C2 | Switching tabs (Status ↔ `#lobby`) preserves the message history  | `tests/chat-channels.spec.ts`    | done   |
+| C3 | Close-tab button on a channel tab removes it                      | `tests/chat-channels.spec.ts`    | done   |
+| C4 | `/part #room` leaves the channel and removes the tab              | `tests/chat-channels.spec.ts`    | done   |
+| C5 | `/topic My new topic` updates the visible topic bar               | `tests/chat-channels.spec.ts`    | done   |
 
 ## Group D — Private messages
 
 | #  | Flow                                                              | Planned spec file                | Status |
 |----|-------------------------------------------------------------------|----------------------------------|--------|
-| D1 | `/msg <bob> hi` opens a PM tab and sends the message              | `tests/chat-pm.spec.ts`          | todo   |
-| D2 | Bob receives the PM in a new tab                                  | `tests/chat-pm.spec.ts`          | todo   |
-| D3 | Bob replies → A's PM tab updates with the reply                   | `tests/chat-pm.spec.ts`          | todo   |
-| D4 | Closing a PM tab works                                            | `tests/chat-pm.spec.ts`          | todo   |
+| D1 | `/msg <bob> hi` opens a PM tab on the sender side (no focus steal — user must click) | `tests/chat-pm.spec.ts` | done   |
+| D2 | Bob receives the PM in a new tab labeled with the sender nick     | `tests/chat-pm.spec.ts`          | done   |
+| D3 | Bob replies on his PM tab → A's PM tab carries the reply          | `tests/chat-pm.spec.ts`          | done   |
+| D4 | Closing the PM tab removes it from the tablist                    | `tests/chat-pm.spec.ts`          | done   |
+
+**Design decision captured during D1:**
+
+- `/msg` (and all incoming chat events) MUST NOT auto-switch the active
+  tab. Sender's view stays put; the new PM tab just appears in the
+  tablist. Same on the recipient's side: an indicator draws attention,
+  but the user explicitly clicks to read. Captured in
+  `feedback_chat_no_auto_focus_steal.md` (user memory).
 
 ## Group E — Identity & status
 

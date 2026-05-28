@@ -15,6 +15,9 @@ export class ChatPage {
   readonly chatSendButton: Locator;
   readonly charCounter: Locator;
   readonly messageList: Locator;
+  readonly nicklist: Locator;
+  readonly topicBar: Locator;
+  readonly tabBar: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -23,6 +26,9 @@ export class ChatPage {
     this.chatSendButton = page.getByTestId('chat-input-send');
     this.charCounter = page.getByTestId('char-counter');
     this.messageList = page.getByTestId('chat-message-list');
+    this.nicklist = page.getByTestId('nicklist');
+    this.topicBar = page.getByTestId('topic-bar');
+    this.tabBar = page.getByTestId('tab-bar');
     // menu_bar_app renders one <button data-menubar-trigger> per top-level
     // label; we filter by visible label text rather than rely on order.
     this.fileMenuTrigger = page
@@ -66,6 +72,30 @@ export class ChatPage {
     await this.page.getByRole('tab', { name: 'Status' }).click();
   }
 
+  // Returns the tab element with the given visible label (e.g. "#lobby").
+  // Names with leading "#" need no special escaping here — Playwright's
+  // accessible-name match works literally.
+  tab(name: string): Locator {
+    return this.page.getByRole('tab', { name, exact: false });
+  }
+
+  async switchToTab(name: string) {
+    await this.tab(name).click();
+  }
+
+  // Each tab contains a nested "Close tab" button.
+  async closeTab(name: string) {
+    await this.tab(name).getByRole('button', { name: 'Close tab' }).click();
+  }
+
+  async expectTabVisible(name: string) {
+    await expect(this.tab(name)).toBeVisible();
+  }
+
+  async expectTabHidden(name: string) {
+    await expect(this.tab(name)).toHaveCount(0);
+  }
+
   // Types a message (or slash command) into the chat input and submits
   // by pressing Enter. The form's phx-submit handler dispatches commands
   // through the same path real users hit when typing `/...`.
@@ -84,6 +114,16 @@ export class ChatPage {
     await expect(
       this.messageList.getByText(text, { exact: false }).first(),
     ).toBeVisible();
+  }
+
+  // Per-nick nicklist item — uses the data-testid="nicklist-item-<nick>"
+  // attribute set by the Nicklist component.
+  nicklistItem(nick: string): Locator {
+    return this.page.getByTestId(`nicklist-item-${nick}`);
+  }
+
+  async expectNickInList(nick: string) {
+    await expect(this.nicklistItem(nick)).toBeVisible();
   }
 
   async openFileMenu() {
