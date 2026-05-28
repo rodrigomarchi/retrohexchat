@@ -1,7 +1,7 @@
 .PHONY: help setup deps db.setup db.create db.migrate db.rollback db.reset db.seed \
        db.gen.migration server iex routes \
        test test.unit test.integration test.liveview test.feature test.all test.cover \
-       e2e e2e.ui e2e.install e2e.db.setup \
+       e2e e2e.headless e2e.ui e2e.install e2e.db.setup \
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
        ci ci.quick \
@@ -153,11 +153,15 @@ test.js.watch: ## Run JavaScript tests in watch mode
 # Browser E2E (Playwright) -- LOCAL ONLY, intentionally NOT in CI
 # ---------------------------------------------------------------------
 
-e2e: ## Run Playwright suite headless (boots MIX_ENV=e2e server on :4003)
+e2e: ## Run Playwright with VISIBLE browser + slow-mo (default; watch the flow)
+	MIX_ENV=e2e mix assets.build
+	cd e2e && SLOW_MO=$${SLOW_MO:-300} npm run test:headed
+
+e2e.headless: ## Run Playwright headless (faster, no browser window)
 	MIX_ENV=e2e mix assets.build
 	cd e2e && npm test
 
-e2e.ui: ## Run Playwright in interactive UI mode
+e2e.ui: ## Run Playwright in interactive UI mode (play/pause/inspect)
 	cd e2e && npm run test:ui
 
 e2e.install: ## First-time: install npm deps + download Chromium

@@ -22,7 +22,13 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        // Set SLOW_MO=300 (ms) when running headed to watch the spec unfold.
+        launchOptions: {
+          slowMo: Number(process.env.SLOW_MO) || 0,
+        },
+      },
     },
   ],
   // Boots `MIX_ENV=e2e mix phx.server` from the repo root if not already up.

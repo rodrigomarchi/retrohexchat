@@ -8,24 +8,51 @@ export class ConnectPage {
   readonly nicknameInput: Locator;
   readonly connectButton: Locator;
   readonly backButton: Locator;
+  // :nickname step error feedback (validate event, debounced 300ms)
+  readonly nicknameError: Locator;
   // :register step (brand-new nickname)
   readonly registerPasswordInput: Locator;
   readonly registerPasswordConfirmInput: Locator;
   readonly registerButton: Locator;
+  readonly registerError: Locator;
   // :password step (already-registered nickname)
   readonly authPasswordInput: Locator;
   readonly authButton: Locator;
+  readonly authError: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.nicknameInput = page.locator('#nickname');
     this.connectButton = page.getByTestId('connect-btn');
     this.backButton = page.getByTestId('back-btn');
+    // The validation error is the only .text-destructive paragraph inside
+    // the :nickname step form (phx-submit=connect).
+    this.nicknameError = page
+      .locator('form[phx-submit="connect"] p.text-destructive');
     this.registerPasswordInput = page.locator('#reg-password');
     this.registerPasswordConfirmInput = page.locator('#reg-password-confirm');
     this.registerButton = page.getByTestId('register-btn');
+    this.registerError = page
+      .locator('form[phx-submit="register"] p.text-destructive');
     this.authPasswordInput = page.locator('#password');
     this.authButton = page.getByTestId('auth-btn');
+    this.authError = page
+      .locator('form[phx-submit="authenticate"] p.text-destructive');
+  }
+
+  // Click the "Back" button (visible in :register and :password steps).
+  async clickBack() {
+    await this.backButton.click();
+    await expect(this.nicknameInput).toBeVisible();
+  }
+
+  // Type into the nickname field WITHOUT submitting — useful for asserting
+  // validation behavior. Waits past the 300ms phx-debounce so the
+  // server-side validate event has fired and any error has rendered.
+  async typeNickname(nick: string) {
+    await this.nicknameInput.fill(nick);
+    // The LiveView phx-debounce is 300ms; allow a bit of slack.
+    await this.page.waitForTimeout(400);
   }
 
   async open() {
