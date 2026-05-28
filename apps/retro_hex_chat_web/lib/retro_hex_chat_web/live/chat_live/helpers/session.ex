@@ -243,7 +243,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       nickname: session.nickname,
       channels: session.channels,
       active_channel: session.active_channel,
-      active_pm: session.active_pm
+      active_pm: session.active_pm,
+      welcomed_channels: MapSet.to_list(session.welcomed_channels || MapSet.new())
     })
   end
 
@@ -270,6 +271,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
     socket =
       socket
+      |> restore_welcomed_channels(Map.get(params, "welcomed_channels", []))
       |> assign(reconnect_active_channel: active_channel, reconnect_active_pm: active_pm)
       |> Messages.system_event("* Restoring session...")
 
@@ -279,6 +281,21 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
     socket
   end
+
+  defp restore_welcomed_channels(socket, channels) when is_list(channels) do
+    session =
+      Enum.reduce(channels, socket.assigns.session, fn
+        channel, session when is_binary(channel) ->
+          Session.add_welcomed_channel(session, channel)
+
+        _other, session ->
+          session
+      end)
+
+    assign(socket, session: session)
+  end
+
+  defp restore_welcomed_channels(socket, _channels), do: socket
 
   # ── Context menu ───────────────────────────────────────────
 

@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
 
   @doc "Renders a scrollable chat message list container."
   attr :class, :any, default: nil
+  attr :testid, :string, default: "chat-message-list"
   attr :rest, :global
   slot :inner_block, required: true
 
@@ -31,7 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
           @class
         ])
       }
-      data-testid="chat-message-list"
+      data-testid={@testid}
       {@rest}
     >
       {render_slot(@inner_block)}

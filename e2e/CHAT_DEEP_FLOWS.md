@@ -120,17 +120,17 @@ only the foundation and a small subset of command behavior.
 | # | Flow | Planned spec file | Priority | Status |
 |---|------|-------------------|----------|--------|
 | H1 | `/join room` without `#` shows validation error | `tests/chat-channel-errors.spec.ts` | P0 | done |
-| H2 | Joining more than the allowed channel count shows a max-channel error without losing current tab | `tests/chat-channel-errors.spec.ts` | P1 | todo |
+| H2 | Joining more than the allowed channel count shows a max-channel error without losing current tab | `tests/chat-channel-errors.spec.ts` | P1 | done |
 | H3 | `/leave #room bye` works as `/part`, removes the tab, and broadcasts the part reason | `tests/chat-channel-lifecycle.spec.ts` | P1 | done |
 | H4 | `/part #other` from `#lobby` removes only `#other` and does not steal focus | `tests/chat-channel-lifecycle.spec.ts` | P1 | done |
 | H5 | `/clear` clears only the active window; switching tabs preserves other windows | `tests/chat-channel-lifecycle.spec.ts` | P1 | done |
 | H6 | `/topic` with no args prints current topic text | `tests/chat-topic-advanced.spec.ts` | P1 | done |
 | H7 | Topic changes are visible in realtime to another user in the channel | `tests/chat-topic-advanced.spec.ts` | P1 | done |
-| H8 | `/list` opens channel list dialog, search filters a unique channel, Join button joins it | `tests/chat-channel-list.spec.ts` | P1 | todo |
-| H9 | `/setwelcome msg` then a new user joins and sees the welcome message once | `tests/chat-channel-welcome.spec.ts` | P1 | todo |
-| H10 | `/clearwelcome` stops the channel welcome from appearing for later joiners | `tests/chat-channel-welcome.spec.ts` | P1 | todo |
-| H11 | `/setmotd text`, `/motd`, and new connect show the admin MOTD; cleanup with `/clearmotd` | `tests/chat-server-messages.spec.ts` | P1 | todo |
-| H12 | `/quit reason` navigates self to `/connect` and other channel members see the quit/left reason | `tests/chat-quit.spec.ts` | P1 | todo |
+| H8 | `/list` opens channel list dialog, search filters a unique channel, Join button joins it | `tests/chat-channel-list.spec.ts` | P1 | done |
+| H9 | `/setwelcome msg` then a new user joins and sees the welcome message once | `tests/chat-channel-welcome.spec.ts` | P1 | done |
+| H10 | `/clearwelcome` stops the channel welcome from appearing for later joiners | `tests/chat-channel-welcome.spec.ts` | P1 | done |
+| H11 | `/setmotd text`, `/motd`, and new connect show the admin MOTD; cleanup with `/clearmotd` | `tests/chat-server-messages.spec.ts` | P1 | done |
+| H12 | `/quit reason` navigates self to `/connect` and other channel members see the quit/left reason | `tests/chat-quit.spec.ts` | P1 | done |
 
 ## Group I - Channel Modes, Privileges, Moderation
 

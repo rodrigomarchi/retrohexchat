@@ -17,6 +17,7 @@ export class ChatPage {
   readonly chatSendButton: Locator;
   readonly charCounter: Locator;
   readonly messageList: Locator;
+  readonly statusMessageList: Locator;
   readonly nicklist: Locator;
   readonly topicBar: Locator;
   readonly tabBar: Locator;
@@ -28,6 +29,8 @@ export class ChatPage {
   readonly historySearchInput: Locator;
   readonly historySearchNoResults: Locator;
   readonly helpContentPane: Locator;
+  readonly channelListSearch: Locator;
+  readonly channelListJoinButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -36,6 +39,7 @@ export class ChatPage {
     this.chatSendButton = page.getByTestId('chat-input-send');
     this.charCounter = page.getByTestId('char-counter');
     this.messageList = page.getByTestId('chat-message-list');
+    this.statusMessageList = page.getByTestId('status-messages');
     this.nicklist = page.getByTestId('nicklist');
     this.topicBar = page.getByTestId('topic-bar');
     this.tabBar = page.getByTestId('tab-bar');
@@ -60,6 +64,8 @@ export class ChatPage {
     this.historySearchInput = page.getByTestId('history-search-input');
     this.historySearchNoResults = page.getByTestId('history-search-no-results');
     this.helpContentPane = page.getByTestId('help-content-pane');
+    this.channelListSearch = page.getByTestId('channel-list-search');
+    this.channelListJoinButton = page.getByTestId('channel-list-join');
     // The dialog component wraps content in a <span data-testid="...">, but
     // that wrapper has zero visible size when the dialog is closed; use the
     // confirm button instead as the open/closed signal.
@@ -146,6 +152,12 @@ export class ChatPage {
     );
   }
 
+  async expectStatusMessageVisible(text: string) {
+    await expect(
+      this.statusMessageList.getByText(text, { exact: false }).first(),
+    ).toBeVisible();
+  }
+
   // Per-nick nicklist item — uses the data-testid="nicklist-item-<nick>"
   // attribute set by the Nicklist component.
   nicklistItem(nick: string): Locator {
@@ -166,6 +178,10 @@ export class ChatPage {
       .locator('[data-testid^="autocomplete-item-"]')
       .filter({ hasText: text })
       .first();
+  }
+
+  channelListRow(channel: string): Locator {
+    return this.page.getByTestId(`channel-list-row-${channel}`);
   }
 
   async openFileMenu() {

@@ -232,7 +232,7 @@
             class={["flex-1 min-h-0", !@show_status_tab && "hidden"]}
             id="status-messages"
             phx-update="stream"
-            data-testid="status-messages"
+            testid="status-messages"
           >
             <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
               <.chat_message
@@ -514,9 +514,10 @@
   show={@show_channel_list}
   channels={@channel_list_filtered}
   search={@channel_list_search}
+  selected_channel={@channel_list_selected}
   loading={@channel_list_loading}
   on_search="channel_list_filter"
-  on_select="channel_list_join"
+  on_select="channel_list_select"
   on_join="channel_list_join"
   on_close="toggle_channel_list"
 />

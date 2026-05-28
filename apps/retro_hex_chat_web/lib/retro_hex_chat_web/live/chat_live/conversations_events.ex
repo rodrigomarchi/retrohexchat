@@ -56,6 +56,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsEvents do
        show_channel_list: true,
        channel_list_channels: channels,
        channel_list_filtered: channels,
+       channel_list_selected: nil,
        channel_list_search: "",
        channel_list_loading: false,
        channel_list_count: length(channels)
