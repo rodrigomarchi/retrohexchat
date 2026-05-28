@@ -11,10 +11,12 @@ export class ChatPage {
   readonly disconnectMenuItem: Locator;
   readonly disconnectConfirmDialog: Locator;
   readonly disconnectConfirmButton: Locator;
+  readonly chatInput: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.menuBar = page.getByTestId('menu-bar');
+    this.chatInput = page.getByTestId('chat-input-field');
     // menu_bar_app renders one <button data-menubar-trigger> per top-level
     // label; we filter by visible label text rather than rely on order.
     this.fileMenuTrigger = page
@@ -50,6 +52,15 @@ export class ChatPage {
       () => !!(window as any).liveSocket?.isConnected?.(),
       { timeout: 10_000 },
     );
+  }
+
+  // Types a message (or slash command) into the chat input and submits
+  // by pressing Enter. The form's phx-submit handler dispatches commands
+  // through the same path real users hit when typing `/...`.
+  async sendMessage(text: string) {
+    await expect(this.chatInput).toBeEnabled();
+    await this.chatInput.fill(text);
+    await this.chatInput.press('Enter');
   }
 
   async openFileMenu() {

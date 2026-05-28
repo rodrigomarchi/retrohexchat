@@ -4,7 +4,7 @@ Persistent map of every user flow this suite covers (or plans to). Update this
 file as specs land — `Status` column is the single source of truth for
 "what's actually green".
 
-**Last reviewed:** 2026-05-28 (Rounds 1+2+3 landed)
+**Last reviewed:** 2026-05-28 (all rounds 1–4 landed — 17/17 specs green)
 
 ## Ground rules
 
@@ -79,14 +79,16 @@ Uses the `TestAdmin` nick already pre-configured in `config/e2e.exs`.
 
 | # | Flow                                                                              | Planned spec file                   | Status |
 |---|-----------------------------------------------------------------------------------|-------------------------------------|--------|
-| M | Admin bans user via `/ban` → banned user lands on `/connect?reason=banned`        | `tests/admin-ban.spec.ts`           | block  |
-| N | Admin closes registration via admin UI → new user gets "Registration is currently closed…" error | `tests/admin-registration-closed.spec.ts` | block  |
+| M | Admin bans user via `/admin user ban` → victim force-disconnected with "Server banned" | `tests/admin-ban.spec.ts`           | done   |
+| N | Admin closes registration via `/admin server set registration closed` → new user gets "Registration is currently closed…" error (test restores `open` in finally) | `tests/admin-registration-closed.spec.ts` | done   |
 
-**Blockers:**
+**Resolved blockers:**
 
-- **M, N** — need to confirm: where are the admin actions in the UI? Is it
-  a command typed in chat (`/ban`, `/set registration closed`) or a
-  dedicated admin dialog? Investigate before coding.
+- **M, N** — admin actions are chat commands (`/admin user ban X`,
+  `/admin server set registration closed`). The `/ban` command is
+  *channel*-scoped (mode +b), not server-wide; for server bans the
+  correct path is `/admin user ban`, which broadcasts
+  `{:force_disconnect, ...}` on the user's PubSub topic.
 
 ## Page Objects (current + planned)
 

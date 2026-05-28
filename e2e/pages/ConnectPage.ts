@@ -82,6 +82,21 @@ export class ConnectPage {
     await expect(this.authButton).toBeEnabled();
     await this.authButton.click();
   }
+
+  // Convenience for tests that reuse a SHARED nick across runs (e.g. the
+  // built-in TestAdmin admin nick): tries register flow first, falls back
+  // to auth if the nick already exists in the e2e database.
+  async signIn(nick: string, password: string) {
+    await this.enterNickname(nick);
+    const isRegister = await this.registerPasswordInput
+      .isVisible({ timeout: 2_000 })
+      .catch(() => false);
+    if (isRegister) {
+      await this.registerWithPassword(password);
+    } else {
+      await this.authenticateWithPassword(password);
+    }
+  }
 }
 
 // Generates a nickname that satisfies ConnectLive validation:
