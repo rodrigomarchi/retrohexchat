@@ -261,8 +261,10 @@ defmodule RetroHexChat.Arcade.Catalog do
   @spec game_url(game()) :: String.t()
   def game_url(%{id: id, engine: :scummvm}) do
     {dir, gameid} = Map.fetch!(@scummvm_games, id)
-    "/arcade/scummvm/index.html#-p /data/games/#{dir}/ #{gameid}"
+    "#{arcade_base_url()}/scummvm/index.html#-p /data/games/#{dir}/ #{gameid}"
   end
 
-  def game_url(%{id: id}), do: "/arcade/#{id}/index.html"
+  def game_url(%{id: id}), do: "#{arcade_base_url()}/#{id}/index.html"
+
+  defp arcade_base_url, do: Application.fetch_env!(:retro_hex_chat, :arcade_base_url)
 end

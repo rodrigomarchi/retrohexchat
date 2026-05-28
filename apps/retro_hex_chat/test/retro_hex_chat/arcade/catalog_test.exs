@@ -98,34 +98,43 @@ defmodule RetroHexChat.Arcade.CatalogTest do
   end
 
   describe "game_url/1" do
+    setup do
+      original = Application.fetch_env!(:retro_hex_chat, :arcade_base_url)
+      Application.put_env(:retro_hex_chat, :arcade_base_url, "https://example.test/arcade")
+      on_exit(fn -> Application.put_env(:retro_hex_chat, :arcade_base_url, original) end)
+      :ok
+    end
+
     test "builds per-game URL for doom game" do
       {:ok, game} = Catalog.get_game("doom_shareware")
-      assert Catalog.game_url(game) == "/arcade/doom_shareware/index.html"
+      assert Catalog.game_url(game) == "https://example.test/arcade/doom_shareware/index.html"
     end
 
     test "builds per-game URL for quake game" do
       {:ok, game} = Catalog.get_game("quake_shareware")
-      assert Catalog.game_url(game) == "/arcade/quake_shareware/index.html"
+      assert Catalog.game_url(game) == "https://example.test/arcade/quake_shareware/index.html"
     end
 
     test "builds per-game URL for new games" do
       {:ok, game} = Catalog.get_game("chex_quest")
-      assert Catalog.game_url(game) == "/arcade/chex_quest/index.html"
+      assert Catalog.game_url(game) == "https://example.test/arcade/chex_quest/index.html"
     end
 
     test "builds per-game URL for wolfenstein game" do
       {:ok, game} = Catalog.get_game("wolfenstein_3d")
-      assert Catalog.game_url(game) == "/arcade/wolfenstein_3d/index.html"
+      assert Catalog.game_url(game) == "https://example.test/arcade/wolfenstein_3d/index.html"
     end
 
     test "builds per-game URL for halflife game" do
       {:ok, game} = Catalog.get_game("halflife_uplink")
-      assert Catalog.game_url(game) == "/arcade/halflife_uplink/index.html"
+      assert Catalog.game_url(game) == "https://example.test/arcade/halflife_uplink/index.html"
     end
 
     test "builds shared engine URL with fragment for scummvm game" do
       {:ok, game} = Catalog.get_game("scummvm_bass")
-      assert Catalog.game_url(game) == "/arcade/scummvm/index.html#-p /data/games/bass/ sky"
+
+      assert Catalog.game_url(game) ==
+               "https://example.test/arcade/scummvm/index.html#-p /data/games/bass/ sky"
     end
   end
 end

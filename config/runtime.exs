@@ -21,6 +21,13 @@ config :retro_hex_chat,
 config :retro_hex_chat,
   base_url: System.get_env("BASE_URL") || "http://localhost:4000"
 
+# Base URL for the Solo Arcade WASM game assets. Games are served from
+# an external static host (built and published from the retro-wasm-builder
+# repo); the application never bundles or serves them locally.
+# Each game's URL is composed as `${arcade_base_url}/${game_id}/index.html`.
+config :retro_hex_chat,
+  arcade_base_url: System.get_env("ARCADE_BASE_URL") || "https://static.retrohexchat.app/arcade"
+
 # TURN server runtime config (all environments)
 config :retro_hex_chat,
   turn_listen_ip: {0, 0, 0, 0},
