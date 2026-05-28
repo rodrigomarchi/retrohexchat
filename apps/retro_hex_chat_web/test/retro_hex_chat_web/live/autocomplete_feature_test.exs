@@ -1,7 +1,7 @@
-defmodule RetroHexChatWeb.AutocompleteE2ETest do
+defmodule RetroHexChatWeb.AutocompleteFeatureTest do
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
 

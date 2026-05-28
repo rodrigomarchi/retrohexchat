@@ -1,11 +1,11 @@
-defmodule RetroHexChatWeb.ChannelCentralE2ETest do
+defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   @moduledoc """
   End-to-end tests for the Channel Central Dialog feature (007).
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
 

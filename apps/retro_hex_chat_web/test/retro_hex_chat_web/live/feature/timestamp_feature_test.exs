@@ -1,11 +1,11 @@
-defmodule RetroHexChatWeb.TimestampE2ETest do
+defmodule RetroHexChatWeb.TimestampFeatureTest do
   @moduledoc """
   E2E tests for timestamp format (hardcoded to DD/MM HH:MM).
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   describe "Timestamp Format E2E" do
     test "messages always render with DD/MM HH:MM format", %{conn: conn} do

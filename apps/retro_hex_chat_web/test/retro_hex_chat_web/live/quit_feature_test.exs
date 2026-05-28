@@ -1,11 +1,11 @@
-defmodule RetroHexChatWeb.QuitE2ETest do
+defmodule RetroHexChatWeb.QuitFeatureTest do
   @moduledoc """
   E2E tests for quit message broadcast (US6).
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
 

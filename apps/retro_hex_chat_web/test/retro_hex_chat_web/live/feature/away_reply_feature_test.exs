@@ -1,11 +1,11 @@
-defmodule RetroHexChatWeb.AwayReplyE2ETest do
+defmodule RetroHexChatWeb.AwayReplyFeatureTest do
   @moduledoc """
   E2E tests for away auto-reply (US7).
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   describe "Away Auto-Reply E2E" do
     test "PM to away user triggers auto-reply for sender", %{conn: conn} do

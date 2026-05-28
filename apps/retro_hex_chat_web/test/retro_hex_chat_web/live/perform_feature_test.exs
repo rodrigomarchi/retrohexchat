@@ -1,11 +1,11 @@
-defmodule RetroHexChatWeb.PerformE2ETest do
+defmodule RetroHexChatWeb.PerformFeatureTest do
   @moduledoc """
   End-to-end tests for the Perform / Auto-Commands feature (009).
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
 

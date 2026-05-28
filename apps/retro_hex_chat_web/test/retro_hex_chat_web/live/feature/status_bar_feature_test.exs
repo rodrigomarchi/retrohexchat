@@ -1,11 +1,11 @@
-defmodule RetroHexChatWeb.StatusBarE2ETest do
+defmodule RetroHexChatWeb.StatusBarFeatureTest do
   @moduledoc """
   E2E tests for status bar with lag, clock, and connection state.
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   describe "Status Bar E2E" do
     test "renders status bar with channel and connection on chat page", %{conn: conn} do

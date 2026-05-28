@@ -1,13 +1,13 @@
-defmodule RetroHexChatWeb.HelpSystemE2ETest do
+defmodule RetroHexChatWeb.HelpSystemFeatureTest do
   @moduledoc """
   End-to-end tests for the dedicated help page at /chat/help.
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.ConnCase, async: false
 
   import Phoenix.LiveViewTest
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   describe "Help Page E2E" do
     test "help page renders with all categories", %{conn: conn} do

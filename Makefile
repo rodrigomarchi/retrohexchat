@@ -1,6 +1,7 @@
 .PHONY: help setup deps db.setup db.create db.migrate db.rollback db.reset db.seed \
        db.gen.migration server iex routes \
        test test.unit test.integration test.liveview test.feature test.all test.cover \
+       e2e e2e.ui e2e.install e2e.db.setup \
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
        ci ci.quick \
@@ -147,6 +148,25 @@ test.js: ## Run JavaScript tests (Vitest)
 
 test.js.watch: ## Run JavaScript tests in watch mode
 	npm run test:watch --prefix $(WEB_APP)/assets
+
+# ---------------------------------------------------------------------
+# Browser E2E (Playwright) -- LOCAL ONLY, intentionally NOT in CI
+# ---------------------------------------------------------------------
+
+e2e: ## Run Playwright suite headless (boots MIX_ENV=e2e server on :4003)
+	MIX_ENV=e2e mix assets.build
+	cd e2e && npm test
+
+e2e.ui: ## Run Playwright in interactive UI mode
+	cd e2e && npm run test:ui
+
+e2e.install: ## First-time: install npm deps + download Chromium
+	cd e2e && npm install
+	cd e2e && npm run install:browsers
+
+e2e.db.setup: ## First-time: create + migrate the retro_hex_chat_e2e database
+	MIX_ENV=e2e mix ecto.create
+	MIX_ENV=e2e mix ecto.migrate
 
 # ---------------------------------------------------------------------
 # Static Analysis (Constitution Principle VI)

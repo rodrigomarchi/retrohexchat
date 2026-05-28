@@ -1,11 +1,11 @@
-defmodule RetroHexChatWeb.EmojiE2ETest do
+defmodule RetroHexChatWeb.EmojiFeatureTest do
   @moduledoc """
   E2E tests for emoji picker (US9).
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   describe "Emoji Picker E2E" do
     test "clicking toggle opens emoji picker", %{conn: conn} do

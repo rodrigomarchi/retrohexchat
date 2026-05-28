@@ -1,11 +1,11 @@
-defmodule RetroHexChatWeb.PasteE2ETest do
+defmodule RetroHexChatWeb.PasteFeatureTest do
   @moduledoc """
   E2E tests for multi-line paste dialog (US5).
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
 

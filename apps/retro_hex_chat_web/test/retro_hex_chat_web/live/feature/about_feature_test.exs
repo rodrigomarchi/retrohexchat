@@ -1,11 +1,11 @@
-defmodule RetroHexChatWeb.AboutE2ETest do
+defmodule RetroHexChatWeb.AboutFeatureTest do
   @moduledoc """
   E2E tests for About dialog (US10).
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   describe "About Dialog E2E" do
     test "show_about renders AboutDialog with version and credits", %{conn: conn} do

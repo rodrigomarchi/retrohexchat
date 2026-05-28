@@ -1,11 +1,11 @@
-defmodule RetroHexChatWeb.AddressBookE2ETest do
+defmodule RetroHexChatWeb.AddressBookFeatureTest do
   @moduledoc """
   End-to-end tests for the Address Book feature (003).
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
 

@@ -1,11 +1,11 @@
-defmodule RetroHexChatWeb.NickColumnE2ETest do
+defmodule RetroHexChatWeb.NickColumnFeatureTest do
   @moduledoc """
   E2E tests for nick column alignment (US1).
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
 

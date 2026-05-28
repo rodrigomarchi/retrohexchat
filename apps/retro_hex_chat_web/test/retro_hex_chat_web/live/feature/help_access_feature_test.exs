@@ -1,13 +1,13 @@
-defmodule RetroHexChatWeb.HelpAccessE2ETest do
+defmodule RetroHexChatWeb.HelpAccessFeatureTest do
   @moduledoc """
   E2E tests for Help page access (formerly US11 help dialog quick access).
-  Run with: mix test --only e2e
+  Run with: mix test --only liveview_feature
   """
   use RetroHexChatWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
 
-  @moduletag :e2e
+  @moduletag :liveview_feature
 
   describe "Help Page Access E2E" do
     test "IRC Commands deep-link renders commands topic", %{conn: conn} do
