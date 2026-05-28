@@ -1,6 +1,6 @@
 .PHONY: help setup deps db.setup db.create db.migrate db.rollback db.reset db.seed \
        db.gen.migration server iex routes \
-       test test.unit test.integration test.liveview test.e2e test.all test.cover \
+       test test.unit test.integration test.liveview test.feature test.all test.cover \
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
        ci ci.quick \
@@ -100,7 +100,7 @@ routes: ## List all application routes
 # Tests
 # ---------------------------------------------------------------------
 
-test: ## Run full test suite -- excludes E2E
+test: ## Run full test suite -- excludes LiveView feature tests
 	mix test
 
 test.unit: ## Run unit tests only
@@ -112,22 +112,22 @@ test.integration: ## Run integration tests only
 test.liveview: ## Run LiveView tests only
 	cd $(WEB_APP) && mix test --only liveview
 
-test.e2e: ## Run E2E tests only
-	cd $(WEB_APP) && mix test --only e2e
+test.feature: ## Run LiveView feature tests only (server-side feature/journey tests)
+	cd $(WEB_APP) && mix test --only liveview_feature
 
-test.all: ## Run ALL tests including E2E
-	mix test --include e2e
+test.all: ## Run ALL tests including LiveView feature tests
+	mix test --include liveview_feature
 
 test.cover: ## Run tests with coverage report
 	mix test --cover
 
-test.cover.all: ## Run ALL tests with coverage (including E2E)
-	mix test --include e2e --cover
+test.cover.all: ## Run ALL tests with coverage (including LiveView feature tests)
+	mix test --include liveview_feature --cover
 
 test.domain: ## Run domain app tests only
 	cd $(DOMAIN_APP) && mix test
 
-test.web: ## Run web app tests only (excludes E2E)
+test.web: ## Run web app tests only (excludes LiveView feature tests)
 	cd $(WEB_APP) && mix test
 
 test.failed: ## Re-run only previously failed tests

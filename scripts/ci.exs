@@ -7,10 +7,10 @@
 #
 # Pipeline:
 #   Stage 1 (parallel): compile + JS lint + JS tests (independent)
-#   Stage 2 (parallel, after compile): format + credo + CSS lint + tests + E2E tests
+#   Stage 2 (parallel, after compile): format + credo + CSS lint + tests + feature tests
 #   Stage 3 (isolated, after stage 2): dialyzer (runs alone to avoid protocol consolidation races)
 #
-# Tests are split into two parallel workers (tests + E2E) to reduce wall-clock time.
+# Tests are split into two parallel workers (tests + feature) to reduce wall-clock time.
 # Ecto SQL Sandbox ensures each process gets isolated DB transactions.
 #
 # Usage:
@@ -21,7 +21,7 @@
 defmodule CI do
   @compile_check "compile"
   @stage1_independent ["lint_js", "js_tests"]
-  @stage2_after_compile ["format", "credo", "lint_css", "test", "test_e2e"]
+  @stage2_after_compile ["format", "credo", "lint_css", "test", "test_feature"]
   @stage3_isolated ["dialyzer"]
 
   @all_checks [@compile_check | @stage1_independent] ++ @stage2_after_compile ++ @stage3_isolated
@@ -38,7 +38,11 @@ defmodule CI do
     "format" => %{label: "Format", cmd: "mix", args: ["format", "--check-formatted"]},
     "credo" => %{label: "Credo", cmd: "mix", args: ["credo", "--strict"]},
     "test" => %{label: "Tests", cmd: "mix", args: ["test"]},
-    "test_e2e" => %{label: "E2E Tests", cmd: "mix", args: ["test", "--only", "e2e"]},
+    "test_feature" => %{
+      label: "Feature Tests",
+      cmd: "mix",
+      args: ["test", "--only", "liveview_feature"]
+    },
     "dialyzer" => %{label: "Dialyzer", cmd: "mix", args: ["dialyzer"]}
   }
 
@@ -130,7 +134,7 @@ defmodule CI do
     IO.puts("    #{c(:dim)}⟳#{c(:reset)} #{label}...")
     start = System.monotonic_time(:millisecond)
 
-    env = if check in ["test", "test_e2e"], do: [{~c"MIX_ENV", ~c"test"}], else: []
+    env = if check in ["test", "test_feature"], do: [{~c"MIX_ENV", ~c"test"}], else: []
 
     port =
       Port.open(
@@ -220,7 +224,10 @@ defmodule CI do
 
     IO.puts("")
     IO.puts("  #{c(:cyan)}───────────────────────────────────────#{c(:reset)}")
-    IO.puts("  Results: #{passed}/#{total} passed  #{c(:dim)}(#{fmt(elapsed_ms)} total)#{c(:reset)}")
+
+    IO.puts(
+      "  Results: #{passed}/#{total} passed  #{c(:dim)}(#{fmt(elapsed_ms)} total)#{c(:reset)}"
+    )
 
     results
     |> Enum.sort_by(fn {check, _} ->
