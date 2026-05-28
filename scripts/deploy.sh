@@ -40,6 +40,14 @@ echo "==> Aligning local ${GIT_REF} with origin/${GIT_REF}..."
 git checkout "${GIT_REF}" --
 git reset --hard "origin/${GIT_REF}"
 
+# Remove untracked files in priv/static/ that were tracked in past commits but
+# purged from history (e.g. arcade WASM blobs after the filter-repo cleanup).
+# `git reset --hard` only touches tracked paths; orphan files survive on disk
+# and `mix release` would pick them up. `-d` removes empty dirs, no `-x` so
+# .gitignore-d build artifacts elsewhere are not touched.
+echo "==> Pruning untracked files under priv/static/..."
+git clean -fd -- apps/retro_hex_chat_web/priv/static/
+
 echo "==> Pulling Git LFS files..."
 git lfs pull
 
