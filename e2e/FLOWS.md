@@ -4,7 +4,7 @@ Persistent map of every user flow this suite covers (or plans to). Update this
 file as specs land — `Status` column is the single source of truth for
 "what's actually green".
 
-**Last reviewed:** 2026-05-28 (Round 1 landed)
+**Last reviewed:** 2026-05-28 (Rounds 1+2 landed)
 
 ## Ground rules
 
@@ -54,14 +54,15 @@ the spec itself — no hidden fixtures.
 
 | # | Flow                                                                  | Planned spec file              | Status |
 |---|-----------------------------------------------------------------------|--------------------------------|--------|
-| B | Register a nick, log out, reconnect with correct password lands on /chat | `tests/returning-user.spec.ts` | todo   |
-| D | Returning user: wrong password shows error, retry with correct password works | `tests/returning-user.spec.ts` | todo   |
-| L | Logged-in user triggers logout via UI → lands on `/connect`           | `tests/logout.spec.ts`         | block  |
+| B | Register a nick, log out, reconnect with correct password lands on /chat | `tests/returning-user.spec.ts` | done   |
+| D | Returning user: wrong password shows error, retry with correct password works | `tests/returning-user.spec.ts` | done   |
+| L | Logged-in user triggers logout via UI → lands on `/connect`           | `tests/logout.spec.ts`         | done   |
 
-**Blockers:**
+**Resolved blockers:**
 
-- **L** — need to confirm the logout trigger in `ChatLive` (menu File → Disconnect?
-  `/quit` command?). Investigate before coding.
+- **L** — logout = File menu → Disconnect → confirm dialog → push_navigate
+  to `/connect` (no `?reason=` query in this flow; the reason banner is
+  reserved for SessionController-driven flows like session-expired).
 
 ## Round 3 — multi-context (highest signal, replaces real PubSub coverage)
 
