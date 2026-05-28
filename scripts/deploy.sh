@@ -33,9 +33,12 @@ cd "${SOURCE_DIR}"
 echo "==> Fetching latest from origin..."
 git fetch --all --prune
 
-echo "==> Checking out ${GIT_REF}..."
+echo "==> Aligning local ${GIT_REF} with origin/${GIT_REF}..."
+# `git reset --hard` (vs. `git pull`) survives force-pushes — the previous
+# `git pull ... || true` silently dropped the upstream state when histories
+# diverged, so the build kept producing tarballs from stale local commits.
 git checkout "${GIT_REF}" --
-git pull origin "${GIT_REF}" 2>/dev/null || true
+git reset --hard "origin/${GIT_REF}"
 
 echo "==> Pulling Git LFS files..."
 git lfs pull
