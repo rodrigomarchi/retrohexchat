@@ -4,7 +4,7 @@ Persistent map of every user flow this suite covers (or plans to). Update this
 file as specs land — `Status` column is the single source of truth for
 "what's actually green".
 
-**Last reviewed:** 2026-05-28 (Rounds 1+2 landed)
+**Last reviewed:** 2026-05-28 (Rounds 1+2+3 landed)
 
 ## Ground rules
 
@@ -70,7 +70,7 @@ Pure browser scenarios that LiveViewTest physically cannot reproduce.
 
 | # | Flow                                                                        | Planned spec file                 | Status |
 |---|-----------------------------------------------------------------------------|-----------------------------------|--------|
-| K | Same nickname connects from a second context → first context is force-disconnected with "Session ended — logged in from another window" | `tests/multi-tab-takeover.spec.ts` | todo   |
+| K | Same nickname connects from a second context → first context is force-disconnected with "Session ended — logged in from another window" | `tests/multi-tab-takeover.spec.ts` | done   |
 
 ## Round 4 — admin orchestration (two roles, two contexts)
 
