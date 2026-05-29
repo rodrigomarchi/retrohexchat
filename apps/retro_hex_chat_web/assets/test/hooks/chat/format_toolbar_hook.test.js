@@ -20,7 +20,7 @@ describe("FormatToolbarHook", () => {
         <button class="format-btn" data-format-code="underline">U</button>
         <button class="format-btn" data-format-code="color">C</button>
         <div class="format-color-dropdown">
-          <button class="color-swatch" data-color-code="4">Red</button>
+          <button data-format-color-swatch data-color-code="4">Red</button>
         </div>
       `,
     });
@@ -52,7 +52,7 @@ describe("FormatToolbarHook", () => {
   });
 
   it("inserts color code on swatch mousedown", () => {
-    const swatch = hook.el.querySelector(".color-swatch[data-color-code='4']");
+    const swatch = hook.el.querySelector("[data-format-color-swatch][data-color-code='4']");
     swatch.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
     expect(chatInput.value).toBe("\x034");
   });

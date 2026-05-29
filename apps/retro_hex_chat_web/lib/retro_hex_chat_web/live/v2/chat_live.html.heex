@@ -290,10 +290,14 @@
           :if={@show_emoji_picker}
           id="emoji-picker"
           search={@emoji_search}
-          active_category={@emoji_category}
+          active_category={if @emoji_search == "", do: @emoji_category, else: "Search Results"}
           categories={
-            EmojiData.categories()
-            |> Enum.map(fn cat -> {cat, EmojiData.by_category(cat)} end)
+            if @emoji_search == "" do
+              EmojiData.categories()
+              |> Enum.map(fn cat -> {cat, EmojiData.by_category(cat)} end)
+            else
+              [{"Search Results", @emoji_emojis}]
+            end
           }
           on_select="emoji_select"
           on_category="emoji_category"

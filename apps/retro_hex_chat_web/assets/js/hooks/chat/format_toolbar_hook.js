@@ -37,7 +37,7 @@ const FormatToolbarHook = {
     });
 
     this.el.addEventListener("mousedown", (e) => {
-      const swatch = e.target.closest(".color-swatch");
+      const swatch = e.target.closest("[data-format-color-swatch]");
       if (!swatch) return;
 
       e.preventDefault();

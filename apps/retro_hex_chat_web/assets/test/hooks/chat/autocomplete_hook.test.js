@@ -149,6 +149,19 @@ describe("AutocompleteHook", () => {
       simulateEvent(hook, "tab_matches", { matches: ["alice", "robot"], is_start: true });
       expect(hook.el.value).toBe("alice: ");
     });
+
+    it("insert_emoji event inserts emoji at cursor", () => {
+      simulateEvent(hook, "insert_emoji", { char: "😀" });
+      expect(hook.el.value).toBe("😀");
+    });
+
+    it("insert_emoji event inserts emoji in the middle of text", () => {
+      hook.el.value = "hello world";
+      hook.el.selectionStart = 5;
+      hook.el.selectionEnd = 5;
+      simulateEvent(hook, "insert_emoji", { char: "👋" });
+      expect(hook.el.value).toBe("hello👋 world");
+    });
   });
 
   // ── IRC formatting shortcuts ───────────────────────────

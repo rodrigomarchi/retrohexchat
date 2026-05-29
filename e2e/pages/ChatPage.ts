@@ -28,12 +28,25 @@ export class ChatPage {
   readonly topicBar: Locator;
   readonly tabBar: Locator;
   readonly formatBoldButton: Locator;
+  readonly formatItalicButton: Locator;
+  readonly formatUnderlineButton: Locator;
+  readonly formatColorButton: Locator;
+  readonly formatReverseButton: Locator;
+  readonly formatResetButton: Locator;
+  readonly stripFormattingToggle: Locator;
+  readonly emojiPickerToggle: Locator;
+  readonly emojiPicker: Locator;
+  readonly emojiPickerSearch: Locator;
   readonly autocompleteDropdown: Locator;
   readonly inlineHelp: Locator;
   readonly syntaxTooltip: Locator;
   readonly historySearch: Locator;
   readonly historySearchInput: Locator;
   readonly historySearchNoResults: Locator;
+  readonly pasteConfirmDialog: Locator;
+  readonly pasteConfirmSendButton: Locator;
+  readonly pasteConfirmCancelButton: Locator;
+  readonly pasteFloodWarning: Locator;
   readonly helpContentPane: Locator;
   readonly notifyListDialog: Locator;
   readonly addressBookDialog: Locator;
@@ -65,6 +78,15 @@ export class ChatPage {
     this.topicBar = page.getByTestId('topic-bar');
     this.tabBar = page.getByTestId('tab-bar');
     this.formatBoldButton = page.getByTestId('format-btn-bold');
+    this.formatItalicButton = page.getByTestId('format-btn-italic');
+    this.formatUnderlineButton = page.getByTestId('format-btn-underline');
+    this.formatColorButton = page.getByTestId('format-btn-color');
+    this.formatReverseButton = page.getByTestId('format-btn-reverse');
+    this.formatResetButton = page.getByTestId('format-btn-reset');
+    this.stripFormattingToggle = page.getByTestId('strip-formatting-toggle');
+    this.emojiPickerToggle = page.getByTestId('emoji-picker-toggle');
+    this.emojiPicker = page.getByTestId('emoji-picker');
+    this.emojiPickerSearch = page.getByTestId('emoji-picker-search');
     this.autocompleteDropdown = page.getByTestId('autocomplete-dropdown');
     // menu_bar_app renders one <button data-menubar-trigger> per top-level
     // label; we filter by visible label text rather than rely on order.
@@ -96,6 +118,10 @@ export class ChatPage {
     this.historySearch = page.getByTestId('history-search');
     this.historySearchInput = page.getByTestId('history-search-input');
     this.historySearchNoResults = page.getByTestId('history-search-no-results');
+    this.pasteConfirmDialog = page.getByTestId('paste-confirm-dialog');
+    this.pasteConfirmSendButton = page.getByTestId('paste-confirm-send');
+    this.pasteConfirmCancelButton = page.getByTestId('paste-confirm-cancel');
+    this.pasteFloodWarning = page.getByTestId('paste-flood-warning');
     this.helpContentPane = page.getByTestId('help-content-pane');
     this.notifyListDialog = page.locator('#notify-list-dialog [role="dialog"]');
     this.addressBookDialog = page.locator(
@@ -195,6 +221,21 @@ export class ChatPage {
     await expect(this.chatInput).toBeEnabled();
     await this.chatInput.fill(text);
     await this.chatInput.press('Enter');
+  }
+
+  async pasteText(text: string) {
+    await expect(this.chatInput).toBeEnabled();
+    await this.chatInput.focus();
+    await this.chatInput.evaluate((el, pasted) => {
+      const clipboard = new DataTransfer();
+      clipboard.setData('text/plain', pasted);
+      const event = new ClipboardEvent('paste', {
+        bubbles: true,
+        cancelable: true,
+        clipboardData: clipboard,
+      });
+      el.dispatchEvent(event);
+    }, text);
   }
 
   // Asserts that a message with the given visible text is present in the
@@ -321,6 +362,14 @@ export class ChatPage {
 
   p2pInviteCard(): Locator {
     return this.messageList.getByTestId('p2p-invite-card').first();
+  }
+
+  emojiButton(char: string): Locator {
+    return this.emojiPicker.getByRole('button', { name: char });
+  }
+
+  formatColorSwatch(index: number): Locator {
+    return this.page.getByTestId(`format-color-swatch-${index}`);
   }
 
   customContextMenuItem(label: string): Locator {

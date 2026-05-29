@@ -260,6 +260,12 @@ const AutocompleteHook = {
       autoResize(this.inputEl, this.maxHeight);
     });
 
+    this.handleEvent("insert_emoji", ({ char }) => {
+      this.insertAtCursor(char);
+      autoResize(this.inputEl, this.maxHeight);
+      this.inputEl.focus();
+    });
+
     this.handleEvent("enter_edit_mode", ({ content }) => {
       this.editMode = true;
       this.inputEl.value = content;

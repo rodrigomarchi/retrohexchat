@@ -63,6 +63,8 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
     ~H"""
     <.window
       :if={@visible}
+      id={@id}
+      phx-hook="EmojiPickerHook"
       class={classes(["w-full md:w-[320px]", @class])}
       data-testid="emoji-picker"
       {@rest}
@@ -93,16 +95,17 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
 
         <%!-- Search --%>
         <div class="p-retro-4">
-          <.input
-            type="text"
-            value={@search}
-            placeholder="Search emoji..."
-            class="w-full text-xs"
-            name="emoji_search"
-            phx-change={@on_search}
-            phx-debounce="200"
-            data-testid="emoji-picker-search"
-          />
+          <form phx-change={@on_search}>
+            <.input
+              type="text"
+              value={@search}
+              placeholder="Search emoji..."
+              class="w-full text-xs"
+              name="emoji_search"
+              phx-debounce="200"
+              data-testid="emoji-picker-search"
+            />
+          </form>
         </div>
 
         <%!-- Emoji grid --%>

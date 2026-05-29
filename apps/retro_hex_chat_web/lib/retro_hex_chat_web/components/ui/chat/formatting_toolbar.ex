@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
 
   Composed from toolbar primitives. Hook-compatible with FormatToolbarHook:
   uses `.format-btn` class and string `data-format-code` names.
-  Color dropdown uses `.format-color-dropdown` and `.color-swatch` elements.
+  Color dropdown uses `.format-color-dropdown` and `data-format-color-swatch` elements.
 
   ## Usage
 
@@ -95,8 +95,10 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
             <button
               :for={{name, i} <- Enum.with_index(@color_names)}
               type="button"
-              class={"color-swatch irc-bg-#{i}"}
+              class={"w-4 h-4 border border-[#0a0a0a] shadow-retro-field cursor-pointer irc-bg-#{i}"}
               data-color-code={to_string(i)}
+              data-format-color-swatch
+              data-testid={"format-color-swatch-#{i}"}
               title={name}
             >
             </button>

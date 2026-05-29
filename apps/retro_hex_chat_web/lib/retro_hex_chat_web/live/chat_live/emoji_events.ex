@@ -38,15 +38,12 @@ defmodule RetroHexChatWeb.ChatLive.EmojiEvents do
      )}
   end
 
-  def handle_event("emoji_search", %{"value" => query}, socket) do
-    emojis =
-      if query == "" do
-        EmojiData.by_category(socket.assigns.emoji_category)
-      else
-        EmojiData.search(query)
-      end
+  def handle_event("emoji_search", %{"emoji_search" => query}, socket) do
+    search(query, socket)
+  end
 
-    {:halt, assign(socket, emoji_search: query, emoji_emojis: emojis)}
+  def handle_event("emoji_search", %{"value" => query}, socket) do
+    search(query, socket)
   end
 
   def handle_event("emoji_select", %{"emoji" => char}, socket) do
@@ -59,4 +56,15 @@ defmodule RetroHexChatWeb.ChatLive.EmojiEvents do
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
+
+  defp search(query, socket) do
+    emojis =
+      if query == "" do
+        EmojiData.by_category(socket.assigns.emoji_category)
+      else
+        EmojiData.search(query)
+      end
+
+    {:halt, assign(socket, emoji_search: query, emoji_emojis: emojis)}
+  end
 end
