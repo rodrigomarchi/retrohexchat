@@ -432,8 +432,10 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- ctx_chat_delete --
 
   def handle_event("ctx_chat_delete", %{"message_id" => msg_id_str}, socket) do
-    msg_id = String.to_integer(msg_id_str)
-    {:halt, assign(socket, delete_confirm: %{message_id: msg_id})}
+    case parse_message_id(msg_id_str) do
+      {:ok, msg_id} -> {:halt, assign(socket, delete_confirm: %{message_id: msg_id})}
+      :error -> {:halt, socket}
+    end
   end
 
   # -- confirm_delete --

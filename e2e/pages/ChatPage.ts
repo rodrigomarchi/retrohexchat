@@ -62,9 +62,12 @@ export class ChatPage {
   readonly pasteFloodWarning: Locator;
   readonly chatContextMenu: Locator;
   readonly contextReplyMenuItem: Locator;
+  readonly contextDeleteMenuItem: Locator;
   readonly replyBar: Locator;
   readonly replyBarDismissButton: Locator;
   readonly replyBlock: Locator;
+  readonly deleteConfirmButton: Locator;
+  readonly deleteCancelButton: Locator;
   readonly helpContentPane: Locator;
   readonly notifyListDialog: Locator;
   readonly addressBookDialog: Locator;
@@ -161,9 +164,16 @@ export class ChatPage {
     this.contextReplyMenuItem = page.getByTestId(
       'context-menu-item-reply_to_message',
     );
+    this.contextDeleteMenuItem = page.getByTestId(
+      'context-menu-item-ctx_chat_delete',
+    );
     this.replyBar = page.getByTestId('reply-bar');
     this.replyBarDismissButton = page.getByTestId('reply-bar-dismiss');
     this.replyBlock = page.getByTestId('reply-block');
+    this.deleteConfirmButton = page.getByTestId(
+      'delete-confirm-dialog-confirm',
+    );
+    this.deleteCancelButton = page.getByTestId('delete-confirm-dialog-cancel');
     this.helpContentPane = page.getByTestId('help-content-pane');
     this.notifyListDialog = page.locator('#notify-list-dialog [role="dialog"]');
     this.addressBookDialog = page.locator(

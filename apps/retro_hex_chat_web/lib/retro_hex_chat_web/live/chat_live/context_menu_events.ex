@@ -285,6 +285,18 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     {:halt, close_chat_context_menu(socket)}
   end
 
+  def handle_event("ctx_chat_delete", %{"message_id" => msg_id} = params, socket)
+      when is_binary(msg_id) and byte_size(msg_id) > 0 do
+    socket =
+      close_chat_context_menu(socket)
+
+    CoreEvents.handle_event("ctx_chat_delete", params, socket)
+  end
+
+  def handle_event("ctx_chat_delete", _params, socket) do
+    {:halt, close_chat_context_menu(socket)}
+  end
+
   def handle_event("ctx_chat_pm", %{"nick" => nick}, socket) do
     {:halt,
      socket
