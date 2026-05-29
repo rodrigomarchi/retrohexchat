@@ -336,7 +336,10 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   end
 
   def handle_event("paste_cancel", _params, socket) do
-    {:halt, assign(socket, paste_lines: nil)}
+    {:halt,
+     socket
+     |> assign(paste_lines: nil)
+     |> push_event("focus_input", %{})}
   end
 
   def handle_event("paste_send", _params, socket) do

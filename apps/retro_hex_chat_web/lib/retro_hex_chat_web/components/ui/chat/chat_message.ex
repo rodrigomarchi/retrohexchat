@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       id={@id}
       class={
         classes([
-          "grid grid-cols-[auto_10ch_1fr] md:grid-cols-[auto_18ch_1fr] items-baseline",
+          "grid min-w-0 grid-cols-[auto_10ch_1fr] md:grid-cols-[auto_18ch_1fr] items-baseline",
           type_class(@type),
           @class
         ])
@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
         {@nick}
       </span>
       <span :if={!@nick} />
-      <span class={["font-mono break-words", message_body_class(@type)]}>
+      <span class={["font-mono min-w-0 break-words", message_body_class(@type)]}>
         {render_slot(@inner_block)}
       </span>
     </div>

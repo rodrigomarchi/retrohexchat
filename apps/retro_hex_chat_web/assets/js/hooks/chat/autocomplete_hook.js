@@ -283,6 +283,10 @@ const AutocompleteHook = {
       this.editMode = false;
     });
 
+    this.handleEvent("focus_input", () => {
+      this.inputEl.focus();
+    });
+
     this.handleEvent("clear_input", () => {
       this.inputEl.value = "";
       this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));

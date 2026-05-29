@@ -6,11 +6,11 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **100 spec files** under `e2e/tests/`.
-- **204 Playwright `test()` cases**.
+- **107 spec files** under `e2e/tests/`.
+- **212 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 165 mapped flows, 164 done, 1 intentionally blocked.
+- **Chat extended coverage:** 172 mapped flows, 171 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -307,13 +307,20 @@ make ci
 | Q9 | Sensitive command names/args are omitted from local command history | `tests/chat-command-history-sensitive.spec.ts` | P1 | done |
 | Q10 | Recent-command autocomplete ranks safe commands without leaking sensitive commands | `tests/chat-command-history-sensitive.spec.ts` | P2 | done |
 
-## Backlog R/Y - Security And Safety Additions
+## Backlog R/Y - Security, Safety, And Rendering Additions
 
 | # | Flow | Spec file | Priority | Status |
 |---|------|-----------|----------|--------|
 | R1 | Chat message HTML/script content renders escaped and never executes | `tests/chat-security-escaping.spec.ts` | P0 | done |
 | R2 | Topic, welcome, MOTD, away, bio, alias expansion, bot response, and autorespond output escape HTML/script content | `tests/chat-security-escaping.spec.ts` | P0 | done |
 | R3 | Unsafe URL schemes such as `javascript:` and `data:` are not rendered as clickable links | `tests/chat-security-links.spec.ts` | P0 | done |
+| R4 | Long unbroken words and very long URLs stay inside the desktop chat layout | `tests/chat-message-rendering.spec.ts` | P2 | done |
+| R5 | Unicode, emoji, combining marks, and non-Latin text survive send, reload, edit, search, and visible copy flows | `tests/chat-unicode.spec.ts` | P2 | done |
+| R6 | Message input enforces the 1000-character limit for typing, paste, Send button, and Enter submit | `tests/chat-input-limits.spec.ts` | P1 | done |
+| R7 | Paste confirmation disables Send above max line count and Cancel restores input focus | `tests/chat-paste-limits.spec.ts` | P1 | done |
+| R8 | Flood Protection settings affect rapid paste behavior and Reset Defaults restores effective defaults | `tests/chat-flood-protection.spec.ts` | P1 | done |
+| R9 | P2P command rate-limit and failed send errors leave no stale pending messages or disabled input | `tests/chat-rate-limit.spec.ts` | P2 | done |
+| R10 | Empty message edit opens delete confirmation and cancel restores normal input state | `tests/chat-message-edit-delete-edges.spec.ts` | P1 | done |
 | Y10 | Reciprocal autorespond notice rules fire once and do not loop | `tests/chat-autorespond-loop.spec.ts` | P0 | done |
 
 ## Backlog S - Message Lifecycle Additions
@@ -350,3 +357,5 @@ make ci
 - Slash command parsing now trims leading whitespace, handles bare slash input, and preserves free-text argument spacing.
 - Command autocomplete now groups registered commands by category and keeps the complete registry visible for an empty `/` trigger.
 - Sensitive NickServ-style commands are excluded from browser history and recent-command ranking, including PM and automation variants.
+- Message rows now allow the content grid item to shrink and wrap long unbroken text inside the chat layout.
+- Cancelling a blocked multi-line paste now returns focus to the chat input.

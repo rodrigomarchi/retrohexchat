@@ -50,13 +50,13 @@ green catalog in `TEST_CATALOG.md`.
 | R1 | Chat message HTML/script content renders escaped and never executes | `tests/chat-security-escaping.spec.ts` | P0 | done |
 | R2 | Topic, welcome, MOTD, away, bio, alias expansion, bot response, and autorespond output escape HTML/script content | `tests/chat-security-escaping.spec.ts` | P0 | done |
 | R3 | URLs with unsafe schemes such as `javascript:` are not rendered as clickable openable links | `tests/chat-security-links.spec.ts` | P0 | done |
-| R4 | Long unbroken words and very long URLs do not break the desktop chat layout | `tests/chat-message-rendering.spec.ts` | P2 | todo |
-| R5 | Unicode, emoji, combining marks, and non-Latin text survive send, history reload, edit, search, and copy-visible flows | `tests/chat-unicode.spec.ts` | P2 | todo |
-| R6 | Message input enforces the 1000-character limit consistently for typing, paste, send button, and Enter submit | `tests/chat-input-limits.spec.ts` | P1 | todo |
-| R7 | Paste confirmation disables send for more than the product max line count and cancel fully restores input focus | `tests/chat-paste-limits.spec.ts` | P1 | todo |
-| R8 | Flood protection settings actually affect rapid message/paste behavior and can be reset to defaults | `tests/chat-flood-protection.spec.ts` | P1 | investigate |
-| R9 | Command rate-limit or flood errors do not leave stale pending messages or disabled input state | `tests/chat-rate-limit.spec.ts` | P2 | investigate |
-| R10 | Editing a message to empty opens delete confirmation; cancelling returns to normal input state | `tests/chat-message-edit-delete-edges.spec.ts` | P1 | todo |
+| R4 | Long unbroken words and very long URLs do not break the desktop chat layout | `tests/chat-message-rendering.spec.ts` | P2 | done |
+| R5 | Unicode, emoji, combining marks, and non-Latin text survive send, history reload, edit, search, and copy-visible flows | `tests/chat-unicode.spec.ts` | P2 | done |
+| R6 | Message input enforces the 1000-character limit consistently for typing, paste, send button, and Enter submit | `tests/chat-input-limits.spec.ts` | P1 | done |
+| R7 | Paste confirmation disables send for more than the product max line count and cancel fully restores input focus | `tests/chat-paste-limits.spec.ts` | P1 | done |
+| R8 | Flood protection settings actually affect rapid message/paste behavior and can be reset to defaults | `tests/chat-flood-protection.spec.ts` | P1 | done |
+| R9 | Command rate-limit or flood errors do not leave stale pending messages or disabled input state | `tests/chat-rate-limit.spec.ts` | P2 | done |
+| R10 | Editing a message to empty opens delete confirmation; cancelling returns to normal input state | `tests/chat-message-edit-delete-edges.spec.ts` | P1 | done |
 
 ## S - Message Lifecycle, Replies, History, And Search Edges
 

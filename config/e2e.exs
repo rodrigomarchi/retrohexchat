@@ -50,7 +50,7 @@ config :retro_hex_chat,
   turn_listener_count: 0,
   turn_auth_secret: "e2e-auth-secret-64-bytes-long-padding-padding-padding-padding-padd",
   turn_nonce_secret: "e2e-nonce-secret-64-bytes-long-padding-padding-padding-padding-pad",
-  p2p_session_rate_limit: {5, 1_000},
+  p2p_session_rate_limit: {2, 10_000},
   signaling_rate_limiter: RetroHexChat.P2P.SignalingRateLimit.Noop
 
 # Basic auth for LiveDashboard

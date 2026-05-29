@@ -169,6 +169,16 @@ describe("AutocompleteHook", () => {
       simulateEvent(hook, "insert_emoji", { char: "👋" });
       expect(hook.el.value).toBe("hello👋 world");
     });
+
+    it("focus_input event restores focus to the textarea", () => {
+      const other = document.createElement("button");
+      document.body.appendChild(other);
+      other.focus();
+
+      simulateEvent(hook, "focus_input", {});
+
+      expect(document.activeElement).toBe(hook.el);
+    });
   });
 
   // ── IRC formatting shortcuts ───────────────────────────

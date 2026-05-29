@@ -17,6 +17,7 @@ export class ChatPage {
   readonly addressBookMenuItem: Locator;
   readonly channelCentralMenuItem: Locator;
   readonly aliasEditorMenuItem: Locator;
+  readonly floodProtectionMenuItem: Locator;
   readonly urlCatcherMenuItem: Locator;
   readonly disconnectConfirmDialog: Locator;
   readonly disconnectConfirmButton: Locator;
@@ -68,6 +69,7 @@ export class ChatPage {
   readonly pasteConfirmCancelButton: Locator;
   readonly pasteFloodWarning: Locator;
   readonly chatContextMenu: Locator;
+  readonly contextCopyMessageMenuItem: Locator;
   readonly contextReplyMenuItem: Locator;
   readonly contextDeleteMenuItem: Locator;
   readonly nicklistContextMenu: Locator;
@@ -96,6 +98,12 @@ export class ChatPage {
   readonly addressBookDialog: Locator;
   readonly channelCentralDialog: Locator;
   readonly aliasDialog: Locator;
+  readonly floodProtectionDialog: Locator;
+  readonly floodThresholdInput: Locator;
+  readonly floodWindowInput: Locator;
+  readonly floodAutoIgnoreDurationInput: Locator;
+  readonly floodSaveButton: Locator;
+  readonly floodResetDefaultsButton: Locator;
   readonly customMenusDialog: Locator;
   readonly urlCatcherDialog: Locator;
   readonly urlCatcherSearch: Locator;
@@ -176,6 +184,9 @@ export class ChatPage {
     this.aliasEditorMenuItem = page.getByTestId(
       'context-menu-item-open_alias_dialog',
     );
+    this.floodProtectionMenuItem = page.getByTestId(
+      'context-menu-item-open_flood_protection_dialog',
+    );
     this.urlCatcherMenuItem = page.getByTestId(
       'context-menu-item-toggle_url_catcher',
     );
@@ -202,6 +213,9 @@ export class ChatPage {
     this.pasteConfirmCancelButton = page.getByTestId('paste-confirm-cancel');
     this.pasteFloodWarning = page.getByTestId('paste-flood-warning');
     this.chatContextMenu = page.getByTestId('context-menu-chat-context-menu');
+    this.contextCopyMessageMenuItem = page.getByTestId(
+      'context-menu-item-ctx_chat_copy_message',
+    );
     this.contextReplyMenuItem = page.getByTestId(
       'context-menu-item-reply_to_message',
     );
@@ -276,6 +290,23 @@ export class ChatPage {
       '#channel-central-dialog [role="dialog"]',
     );
     this.aliasDialog = page.locator('#alias-dialog [role="dialog"]');
+    this.floodProtectionDialog = page.locator('#flood-protection-dialog');
+    this.floodThresholdInput = this.floodProtectionDialog.locator(
+      'input[name="flood_threshold"]',
+    );
+    this.floodWindowInput = this.floodProtectionDialog.locator(
+      'input[name="flood_window_seconds"]',
+    );
+    this.floodAutoIgnoreDurationInput = this.floodProtectionDialog.locator(
+      'input[name="auto_ignore_duration_seconds"]',
+    );
+    this.floodSaveButton = this.floodProtectionDialog.getByRole('button', {
+      name: 'Save',
+    });
+    this.floodResetDefaultsButton = this.floodProtectionDialog.getByRole(
+      'button',
+      { name: 'Reset Defaults' },
+    );
     this.customMenusDialog = page.locator(
       '#custom-menus-dialog [role="dialog"]',
     );
@@ -355,6 +386,13 @@ export class ChatPage {
     await expect(this.findMenuItem).toBeVisible();
     await this.findMenuItem.click();
     await expect(this.searchBar).toBeVisible();
+  }
+
+  async openFloodProtectionFromToolsMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.floodProtectionMenuItem).toBeVisible();
+    await this.floodProtectionMenuItem.click();
+    await expect(this.floodThresholdInput).toBeVisible();
   }
 
   async expectTabVisible(name: string) {
