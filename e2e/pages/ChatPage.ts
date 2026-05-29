@@ -82,6 +82,8 @@ export class ChatPage {
   readonly replyBlock: Locator;
   readonly deleteConfirmButton: Locator;
   readonly deleteCancelButton: Locator;
+  readonly cheatsheetDialog: Locator;
+  readonly cheatsheetCloseButton: Locator;
   readonly helpContentPane: Locator;
   readonly notifyListDialog: Locator;
   readonly addressBookDialog: Locator;
@@ -243,6 +245,8 @@ export class ChatPage {
       'delete-confirm-dialog-confirm',
     );
     this.deleteCancelButton = page.getByTestId('delete-confirm-dialog-cancel');
+    this.cheatsheetDialog = page.locator('#cheatsheet-dialog [role="dialog"]');
+    this.cheatsheetCloseButton = page.getByTestId('cheatsheet-dialog-close');
     this.helpContentPane = page.getByTestId('help-content-pane');
     this.notifyListDialog = page.locator('#notify-list-dialog [role="dialog"]');
     this.addressBookDialog = page.locator(
