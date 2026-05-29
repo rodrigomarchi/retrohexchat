@@ -24,6 +24,8 @@ export class ChatPage {
   readonly chatInput: Locator;
   readonly chatSendButton: Locator;
   readonly charCounter: Locator;
+  readonly statusBarApp: Locator;
+  readonly statusBarMuteToggle: Locator;
   readonly messageList: Locator;
   readonly messageRows: Locator;
   readonly statusMessageList: Locator;
@@ -111,6 +113,8 @@ export class ChatPage {
     this.chatInput = page.getByTestId('chat-input-field');
     this.chatSendButton = page.getByTestId('chat-input-send');
     this.charCounter = page.getByTestId('char-counter');
+    this.statusBarApp = page.getByTestId('status-bar-app');
+    this.statusBarMuteToggle = page.getByTestId('status-bar-mute-toggle');
     this.messageList = page.getByTestId('chat-message-list');
     this.messageRows = this.messageList.locator('[data-message-id]');
     this.statusMessageList = page.getByTestId('status-messages');

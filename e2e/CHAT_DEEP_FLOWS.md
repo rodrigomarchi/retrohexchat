@@ -278,7 +278,7 @@ only the foundation and a small subset of command behavior.
 | O16 | Address Book dialog add/edit/remove contact, notify, nick color, and control entries | `tests/chat-address-book.spec.ts` | P2 | done |
 | O17 | Custom nick color applies to message nick rendering in chat | `tests/chat-address-book.spec.ts` | P2 | done |
 | O18 | Keyboard shortcuts switch windows, open cheatsheet, open address book, and never submit text accidentally | `tests/chat-keyboard.spec.ts` | P1 | done |
-| O19 | Mute toggle in status bar affects client audio state and survives rerender | `tests/chat-statusbar.spec.ts` | P2 | todo |
+| O19 | Mute toggle in status bar affects client audio state and survives rerender | `tests/chat-statusbar.spec.ts` | P2 | done |
 
 ## Group P - Persistence, Reconnect, History, No-Focus-Steal
 
