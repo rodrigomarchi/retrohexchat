@@ -63,6 +63,13 @@ export class ChatPage {
   readonly chatContextMenu: Locator;
   readonly contextReplyMenuItem: Locator;
   readonly contextDeleteMenuItem: Locator;
+  readonly nicklistContextMenu: Locator;
+  readonly nicklistContextQueryMenuItem: Locator;
+  readonly nicklistContextWhoisMenuItem: Locator;
+  readonly nicklistContextIgnoreMenuItem: Locator;
+  readonly nicklistContextUnignoreMenuItem: Locator;
+  readonly nicklistContextVoiceMenuItem: Locator;
+  readonly nicklistContextOpMenuItem: Locator;
   readonly replyBar: Locator;
   readonly replyBarDismissButton: Locator;
   readonly replyBlock: Locator;
@@ -166,6 +173,27 @@ export class ChatPage {
     );
     this.contextDeleteMenuItem = page.getByTestId(
       'context-menu-item-ctx_chat_delete',
+    );
+    this.nicklistContextMenu = page.getByTestId(
+      'context-menu-nicklist-context-menu',
+    );
+    this.nicklistContextQueryMenuItem = page.getByTestId(
+      'context-menu-item-context_query',
+    );
+    this.nicklistContextWhoisMenuItem = page.getByTestId(
+      'context-menu-item-context_whois',
+    );
+    this.nicklistContextIgnoreMenuItem = page.getByTestId(
+      'context-menu-item-context_ignore',
+    );
+    this.nicklistContextUnignoreMenuItem = page.getByTestId(
+      'context-menu-item-context_unignore',
+    );
+    this.nicklistContextVoiceMenuItem = page.getByTestId(
+      'context-menu-item-context_voice',
+    );
+    this.nicklistContextOpMenuItem = page.getByTestId(
+      'context-menu-item-context_op',
     );
     this.replyBar = page.getByTestId('reply-bar');
     this.replyBarDismissButton = page.getByTestId('reply-bar-dismiss');
@@ -364,6 +392,11 @@ export class ChatPage {
     role: 'owner' | 'operator' | 'half_operator' | 'voiced' | 'regular',
   ) {
     await expect(this.nicklistItem(nick)).toHaveAttribute('data-role', role);
+  }
+
+  async openNicklistContextMenu(nick: string) {
+    await this.nicklistItem(nick).click({ button: 'right' });
+    await expect(this.nicklistContextMenu).toBeVisible();
   }
 
   async expectAutocompleteContains(text: string) {
