@@ -294,7 +294,7 @@ only the foundation and a small subset of command behavior.
 | P8 | Browser reload keeps current chat session and reconnects LiveView cleanly | `tests/chat-reconnect.spec.ts` | P1 | done |
 | P9 | Connection loss/reconnect UI transitions through disabled input/reconnect button without losing typed draft | `tests/chat-reconnect.spec.ts` | P2 | done |
 | P10 | Message pagination/scroll loader loads older channel/PM history without duplicate messages | `tests/chat-history-pagination.spec.ts` | P2 | done |
-| P11 | Idle time shown in `/whois` increases with inactivity and resets after message/command | `tests/chat-idle.spec.ts` | P2 | todo |
+| P11 | Idle time shown in `/whois` increases with inactivity and resets after message/command | `tests/chat-idle.spec.ts` | P2 | done |
 | P12 | Typing indicator appears in PM recipient tab and clears after timeout or send | `tests/chat-typing-indicator.spec.ts` | P1 | todo |
 
 ## Suggested Implementation Order
