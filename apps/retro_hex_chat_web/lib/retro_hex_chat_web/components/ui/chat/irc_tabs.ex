@@ -47,6 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
     <div
       role="tab"
       aria-selected={to_string(@active)}
+      data-unread={to_string(@unread)}
       phx-click={@on_click}
       phx-value-type={@type}
       phx-value-label={@label}

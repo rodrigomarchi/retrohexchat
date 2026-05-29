@@ -556,12 +556,20 @@ export class ChatPage {
     return this.page.getByTestId(`channel-${channel}`);
   }
 
+  pmConversationItem(nick: string): Locator {
+    return this.page.getByTestId(`pm-${nick}`);
+  }
+
   hoverCard(nick: string): Locator {
     return this.page.getByTestId(`hover-card-${nick}`);
   }
 
   channelUnreadBadge(channel: string): Locator {
     return this.page.getByTestId(`channel-unread-badge-${channel}`);
+  }
+
+  pmUnreadBadge(nick: string): Locator {
+    return this.page.getByTestId(`pm-unread-badge-${nick}`);
   }
 
   async openConversationContextMenu(channel: string) {

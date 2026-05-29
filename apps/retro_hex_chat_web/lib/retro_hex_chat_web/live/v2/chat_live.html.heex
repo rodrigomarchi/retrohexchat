@@ -124,7 +124,7 @@
           type="pm"
           label={pm}
           active={@session.active_pm == pm && !@show_status_tab}
-          unread={Map.get(@unread_counts, pm, 0) > 0}
+          unread={Map.get(@unread_counts, "pm:#{pm}", 0) > 0}
           nick_color={@nick_color_fn.(pm)}
           on_click="switch_tab"
           on_close="close_tab"

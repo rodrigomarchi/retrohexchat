@@ -215,7 +215,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     if IgnoreList.ignored?(session.ignore_list, sender, :pm) do
       {:halt, socket}
     else
+      newly_opened? = sender not in session.pm_conversations
       socket = maybe_auto_open_incoming_pm(socket, session, sender)
+      socket = maybe_mark_new_incoming_pm_unread(socket, session, sender, newly_opened?)
       socket = PM.maybe_auto_add_to_notify(socket, sender)
       session = socket.assigns.session
       {:halt, maybe_away_auto_reply(socket, sender, session)}
@@ -334,6 +336,20 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       new_session = Session.add_pm_conversation(session, sender)
       assign(socket, session: new_session)
     end
+  end
+
+  defp maybe_mark_new_incoming_pm_unread(socket, _session, sender, true = _newly_opened?) do
+    session = socket.assigns.session
+    unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, "pm:#{sender}")
+
+    socket
+    |> play_event_sound(:pm, session)
+    |> maybe_flash_channel("pm:#{sender}", :pm, session)
+    |> assign(unread_counts: unread_counts)
+  end
+
+  defp maybe_mark_new_incoming_pm_unread(socket, _session, _sender, false = _newly_opened?) do
+    socket
   end
 
   defp maybe_away_auto_reply(socket, sender, session) do
