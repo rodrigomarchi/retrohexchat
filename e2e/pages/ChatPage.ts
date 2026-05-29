@@ -493,6 +493,18 @@ export class ChatPage {
     return this.page.locator(`[id="ab-notify-entry-${nick}"]`);
   }
 
+  addressBookContactRow(nick: string): Locator {
+    return this.page.locator(`[id="contact-entry-${nick}"]`);
+  }
+
+  addressBookNickColorRow(nick: string): Locator {
+    return this.page.locator(`[id="nick-color-entry-${nick}"]`);
+  }
+
+  addressBookControlRow(nick: string): Locator {
+    return this.page.locator(`[id="control-entry-${nick}"]`);
+  }
+
   aliasRow(name: string): Locator {
     return this.aliasDialog.locator('tr').filter({ hasText: `/${name}` });
   }
@@ -598,6 +610,10 @@ export class ChatPage {
     await this.addressBookDialog
       .getByRole('button', { name: 'Notify' })
       .click();
+  }
+
+  async switchAddressBookToTab(tab: 'Contacts' | 'Notify' | 'Nick Colors' | 'Control') {
+    await this.addressBookDialog.getByRole('button', { name: tab }).click();
   }
 
   async closeAddressBook() {

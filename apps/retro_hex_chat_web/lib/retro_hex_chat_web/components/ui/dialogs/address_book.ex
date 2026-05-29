@@ -71,6 +71,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :on_control_select, :any, default: nil, doc: "Control tab row selection callback"
   attr :on_control_add, :any, default: nil, doc: "Control tab add button callback"
   attr :on_control_remove, :any, default: nil, doc: "Control tab remove button callback"
+  attr :on_tab, :any, default: nil, doc: "Tab selection callback"
   attr :on_ok, :any, default: nil, doc: "OK button callback"
   attr :on_cancel, :any, default: nil, doc: "Cancel button callback"
   attr :on_close, :any, default: nil, doc: "Close button callback"
@@ -95,19 +96,29 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
       <.dialog_body class="space-y-retro-8">
         <.tabs :let={builder} id={"#{@id}-tabs"} default={@selected_tab}>
           <.tabs_list class="flex-wrap">
-            <.tabs_trigger builder={builder} value="contacts">
+            <.tabs_trigger
+              builder={builder}
+              value="contacts"
+              phx-click={@on_tab}
+              phx-value-tab="contacts"
+            >
               <:icon><Icons.icon_dialog_address_book class="w-4 h-4" /></:icon>
               Contacts
             </.tabs_trigger>
-            <.tabs_trigger builder={builder} value="notify">
+            <.tabs_trigger builder={builder} value="notify" phx-click={@on_tab} phx-value-tab="notify">
               <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
               Notify
             </.tabs_trigger>
-            <.tabs_trigger builder={builder} value="colors">
+            <.tabs_trigger builder={builder} value="colors" phx-click={@on_tab} phx-value-tab="colors">
               <:icon><Icons.icon_fmt_color class="w-4 h-4" /></:icon>
               Nick Colors
             </.tabs_trigger>
-            <.tabs_trigger builder={builder} value="control">
+            <.tabs_trigger
+              builder={builder}
+              value="control"
+              phx-click={@on_tab}
+              phx-value-tab="control"
+            >
               <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
               Control
             </.tabs_trigger>
@@ -321,13 +332,14 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
             </div>
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="contact-edit-note">Notes:</label>
-              <textarea
+              <.input
+                type="text"
                 id="contact-edit-note"
                 name="note"
+                value={@selected_contact_note}
                 maxlength="200"
-                rows="3"
-                class="textarea-resizable w-full"
-              >{@selected_contact_note}</textarea>
+                class="w-full"
+              />
             </div>
             <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
@@ -695,6 +707,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         <.table_row
           :for={entry <- @nick_colors}
           id={"nick-color-entry-#{entry.target_nickname}"}
+          data-color-index={entry.color_index}
           class={
             if(@selected == entry.target_nickname, do: "bg-selection-bg text-selection-fg", else: "")
           }

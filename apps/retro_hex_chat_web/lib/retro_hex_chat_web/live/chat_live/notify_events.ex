@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
 
           {:halt,
            socket
-           |> assign(session: new_session, notify_selected: nil)
+           |> assign(session: new_session, notify_selected: nil, selected_notify_note: "")
            |> maybe_persist_notify_list(new_session)
            |> push_status_message("Removed #{nick} from notify list", :system)}
 
@@ -90,7 +90,11 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
 
         {:halt,
          socket
-         |> assign(session: new_session, show_notify_edit_dialog: false)
+         |> assign(
+           session: new_session,
+           show_notify_edit_dialog: false,
+           selected_notify_note: note || ""
+         )
          |> maybe_persist_notify_list(new_session)
          |> push_status_message("Updated note for #{nick}", :system)}
 
@@ -100,7 +104,9 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
   end
 
   def handle_event("notify_select", %{"nickname" => nick}, socket) do
-    {:halt, assign(socket, notify_selected: nick)}
+    note = notify_note(socket.assigns.session.notify_list, nick)
+
+    {:halt, assign(socket, notify_selected: nick, selected_notify_note: note)}
   end
 
   def handle_event("notify_add_dialog", _params, socket) do
@@ -112,7 +118,9 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
   end
 
   def handle_event("notify_edit_dialog", _params, socket) do
-    {:halt, assign(socket, show_notify_edit_dialog: true)}
+    note = notify_note(socket.assigns.session.notify_list, socket.assigns.notify_selected)
+
+    {:halt, assign(socket, show_notify_edit_dialog: true, selected_notify_note: note)}
   end
 
   def handle_event("notify_edit_cancel", _params, socket) do
@@ -180,4 +188,17 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
       notify_list
     end
   end
+
+  defp notify_note(notify_list, nick) when is_binary(nick) do
+    downcased = String.downcase(nick)
+
+    notify_list.entries
+    |> Enum.find(&(String.downcase(&1.tracked_nickname) == downcased))
+    |> case do
+      nil -> ""
+      entry -> Map.get(entry, :note) || ""
+    end
+  end
+
+  defp notify_note(_notify_list, _nick), do: ""
 end

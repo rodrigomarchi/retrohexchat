@@ -59,7 +59,9 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
   # ── Contact CRUD events ─────────────────────────────────────
 
   def handle_event("contact_select", %{"nickname" => nick}, socket) do
-    {:halt, assign(socket, contacts_selected: nick)}
+    note = contact_note(socket.assigns.session.contacts, nick)
+
+    {:halt, assign(socket, contacts_selected: nick, selected_contact_note: note)}
   end
 
   def handle_event("contact_add_dialog", _params, socket) do
@@ -100,7 +102,9 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
   end
 
   def handle_event("contact_edit_dialog", _params, socket) do
-    {:halt, assign(socket, show_contact_edit_dialog: true)}
+    note = contact_note(socket.assigns.session.contacts, socket.assigns.contacts_selected)
+
+    {:halt, assign(socket, show_contact_edit_dialog: true, selected_contact_note: note)}
   end
 
   def handle_event("contact_edit_cancel", _params, socket) do
@@ -109,21 +113,29 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
 
   def handle_event("contact_edit", %{"note" => note} = params, socket) do
     session = socket.assigns.session
-    nickname = params["nickname"] || socket.assigns.contacts_selected
+    nickname = present_string(params["nickname"]) || socket.assigns.contacts_selected
     note = if note == "", do: nil, else: note
 
-    case ContactList.update_note(session.contacts, nickname, note) do
-      {:ok, updated_contacts} ->
-        new_session = Session.set_contacts(session, updated_contacts)
+    if nickname do
+      case ContactList.update_note(session.contacts, nickname, note) do
+        {:ok, updated_contacts} ->
+          new_session = Session.set_contacts(session, updated_contacts)
 
-        {:halt,
-         socket
-         |> assign(session: new_session, show_contact_edit_dialog: false)
-         |> maybe_persist_contacts(new_session)
-         |> push_status_message("Updated note for #{nickname}", :system)}
+          {:halt,
+           socket
+           |> assign(
+             session: new_session,
+             show_contact_edit_dialog: false,
+             selected_contact_note: note || ""
+           )
+           |> maybe_persist_contacts(new_session)
+           |> push_status_message("Updated note for #{nickname}", :system)}
 
-      {:error, :not_found} ->
-        {:halt, push_status_message(socket, "#{nickname} is not in your contacts", :system)}
+        {:error, :not_found} ->
+          {:halt, push_status_message(socket, "#{nickname} is not in your contacts", :system)}
+      end
+    else
+      {:halt, push_status_message(socket, "No contact selected", :system)}
     end
   end
 
@@ -334,4 +346,26 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
   # ── Catch-all ───────────────────────────────────────────────
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
+
+  defp present_string(value) when is_binary(value) do
+    case String.trim(value) do
+      "" -> nil
+      trimmed -> trimmed
+    end
+  end
+
+  defp present_string(_value), do: nil
+
+  defp contact_note(contact_list, nick) when is_binary(nick) do
+    downcased = String.downcase(nick)
+
+    contact_list.entries
+    |> Enum.find(&(String.downcase(&1.contact_nickname) == downcased))
+    |> case do
+      nil -> ""
+      entry -> Map.get(entry, :note) || ""
+    end
+  end
+
+  defp contact_note(_contact_list, _nick), do: ""
 end
