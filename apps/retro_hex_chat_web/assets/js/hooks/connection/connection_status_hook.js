@@ -26,6 +26,7 @@ const ConnectionStatusHook = {
     this._overlayInfo = this.el.querySelector('[data-role="overlay-info"]');
     this._overlayCountdown = this.el.querySelector('[data-role="overlay-countdown"]');
     this._overlayAction = this.el.querySelector('[data-role="overlay-action"]');
+    this._draftValue = "";
 
     this._overlayAction.addEventListener("click", () => this._handleActionClick());
 
@@ -35,6 +36,11 @@ const ConnectionStatusHook = {
         window.location.href = "/connect?reason=expired";
       },
     });
+
+    this._onBrowserOffline = () => this._handleConnectionLost();
+    this._onBrowserOnline = () => this._handleConnectionRestored();
+    window.addEventListener("offline", this._onBrowserOffline);
+    window.addEventListener("online", this._onBrowserOnline);
 
     this.handleEvent("intentional_disconnect", () => {
       localStorage.setItem("rhc_intentional_disconnect", "true");
@@ -60,15 +66,16 @@ const ConnectionStatusHook = {
       localStorage.removeItem("rhc_intentional_disconnect");
       return;
     }
-    this._sm.onDisconnect();
+    this._handleConnectionLost();
   },
 
   reconnected() {
-    this._sm.onReconnect();
-    this._maybePushRestoreSession();
+    this._handleConnectionRestored();
   },
 
   destroyed() {
+    window.removeEventListener("offline", this._onBrowserOffline);
+    window.removeEventListener("online", this._onBrowserOnline);
     this._sm.destroy();
   },
 
@@ -122,6 +129,12 @@ const ConnectionStatusHook = {
 
     // Update status bar
     this._updateStatusBar(state);
+    this._updateChatInputDisabled(
+      state === "disconnected" ||
+        state === "reconnecting" ||
+        state === "cancelled" ||
+        state === "failed",
+    );
   },
 
   _updateStatusBar(state) {
@@ -131,6 +144,44 @@ const ConnectionStatusHook = {
     const info = STATUS_BAR_MAP[state] || STATUS_BAR_MAP.connected;
     el.className = `status-bar-connection--${info.css}`;
     el.textContent = `${info.indicator} ${info.text}`;
+  },
+
+  _updateChatInputDisabled(disabled) {
+    const input = document.querySelector('[data-testid="chat-input-field"]');
+    const send = document.querySelector('[data-testid="chat-input-send"]');
+
+    if (disabled && input) this._draftValue = input.value;
+    if (!disabled) this._restoreDraftIfNeeded(input);
+
+    if (input) input.disabled = disabled;
+    if (send) send.disabled = disabled || !input || input.value.length === 0;
+  },
+
+  _restoreDraftIfNeeded(input) {
+    if (!input || !this._draftValue) return;
+
+    const restore = () => {
+      if (input.value !== "") return;
+
+      input.value = this._draftValue;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    };
+
+    restore();
+    requestAnimationFrame(restore);
+    setTimeout(restore, 50);
+  },
+
+  _handleConnectionLost() {
+    const state = this._sm.getState();
+    if (state === "disconnected" || state === "reconnecting" || state === "cancelled") return;
+
+    this._sm.onDisconnect();
+  },
+
+  _handleConnectionRestored() {
+    this._sm.onReconnect();
+    this._maybePushRestoreSession();
   },
 
   _maybePushRestoreSession() {

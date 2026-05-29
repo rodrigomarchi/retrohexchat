@@ -62,4 +62,54 @@ test.describe('Chat reconnect and reload', () => {
     await chat.sendMessage(afterReload);
     await chat.expectMessageVisible(afterReload);
   });
+
+  test('connection loss disables input without losing typed draft (P9)', async ({
+    context,
+    page,
+  }) => {
+    test.setTimeout(45_000);
+
+    const { chat } = await signedInUser(page, 'drop');
+    const draft = `draft survives reconnect ${Date.now()}`;
+
+    await chat.chatInput.fill(draft);
+    await expect(chat.chatSendButton).toBeEnabled();
+
+    try {
+      await context.setOffline(true);
+
+      await expect(chat.connectionBanner).toHaveClass(
+        /connection-banner--visible/,
+        { timeout: 5_000 },
+      );
+      await expect(chat.chatInput).toBeDisabled();
+      await expect(chat.chatInput).toHaveValue(draft);
+
+      await expect(chat.reconnectOverlay).toHaveClass(
+        /reconnect-overlay--visible/,
+        { timeout: 10_000 },
+      );
+      await expect(chat.reconnectOverlayAction).toHaveText('Cancel');
+      await expect(chat.chatInput).toHaveValue(draft);
+
+      await context.setOffline(false);
+      await expect(chat.connectionBanner).toContainText('Reconectado', {
+        timeout: 15_000,
+      });
+      await page.waitForFunction(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        () => !!(window as any).liveSocket?.isConnected?.(),
+        { timeout: 10_000 },
+      );
+
+      await expect(chat.chatInput).toBeEnabled();
+      await expect(chat.chatInput).toHaveValue(draft);
+      await expect(chat.chatSendButton).toBeEnabled();
+
+      await chat.chatInput.press('Enter');
+      await chat.expectMessageVisible(draft);
+    } finally {
+      await context.setOffline(false);
+    }
+  });
 });

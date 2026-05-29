@@ -26,6 +26,10 @@ export class ChatPage {
   readonly charCounter: Locator;
   readonly statusBarApp: Locator;
   readonly statusBarMuteToggle: Locator;
+  readonly connectionStatusHook: Locator;
+  readonly connectionBanner: Locator;
+  readonly reconnectOverlay: Locator;
+  readonly reconnectOverlayAction: Locator;
   readonly messageList: Locator;
   readonly messageRows: Locator;
   readonly statusMessageList: Locator;
@@ -115,6 +119,16 @@ export class ChatPage {
     this.charCounter = page.getByTestId('char-counter');
     this.statusBarApp = page.getByTestId('status-bar-app');
     this.statusBarMuteToggle = page.getByTestId('status-bar-mute-toggle');
+    this.connectionStatusHook = page.getByTestId('connection-status-hook');
+    this.connectionBanner = this.connectionStatusHook.locator(
+      '[data-role="banner"]',
+    );
+    this.reconnectOverlay = this.connectionStatusHook.locator(
+      '[data-role="overlay"]',
+    );
+    this.reconnectOverlayAction = this.connectionStatusHook.locator(
+      '[data-role="overlay-action"]',
+    );
     this.messageList = page.getByTestId('chat-message-list');
     this.messageRows = this.messageList.locator('[data-message-id]');
     this.statusMessageList = page.getByTestId('status-messages');
