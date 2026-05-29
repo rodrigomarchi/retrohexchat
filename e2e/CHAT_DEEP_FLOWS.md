@@ -270,7 +270,7 @@ only the foundation and a small subset of command behavior.
 | O8 | Reply via message context menu creates reply bar; send includes reply block; dismiss cancels | `tests/chat-message-actions.spec.ts` | P1 | done |
 | O9 | Edit last own message with ArrowUp; submit edit updates message and shows edited tag | `tests/chat-message-actions.spec.ts` | P1 | done |
 | O10 | Delete own message marks deleted placeholder for both users | `tests/chat-message-actions.spec.ts` | P1 | done |
-| O11 | Retry failed pending message path appears when channel send is rejected by mode/mute | `tests/chat-message-actions.spec.ts` | P2 | investigate |
+| O11 | Retry failed pending message path appears when channel send is rejected by mode/mute | `tests/chat-message-actions.spec.ts` | P2 | done |
 | O12 | Nicklist context menu: query, whois, ignore, invite, op/voice actions are visible and execute | `tests/chat-context-menus.spec.ts` | P1 | investigate |
 | O13 | Conversation context menu: mark-read, mute toggle, copy name, leave/channel settings | `tests/chat-context-menus.spec.ts` | P2 | investigate |
 | O14 | Hover card over nick shows registered/away/idle/shared channel information | `tests/chat-hover-card.spec.ts` | P2 | investigate |

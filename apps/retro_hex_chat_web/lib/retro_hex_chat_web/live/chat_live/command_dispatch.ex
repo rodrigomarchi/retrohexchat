@@ -162,7 +162,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         |> assign(reply_to: nil)
 
       {:error, reason} ->
+        failed_msg = %{pending_msg | status: :failed}
+
         socket
+        |> stream_insert(:chat_messages, failed_msg)
         |> assign(pending_channel_msg_id: nil)
         |> push_event("message_failed", %{temp_id: temp_id, reason: reason})
         |> error_event(reason)

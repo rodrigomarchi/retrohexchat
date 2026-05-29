@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream: 4, stream_insert: 4, push_event: 3]
+  import Phoenix.LiveView, only: [stream: 4, stream_delete: 3, stream_insert: 4, push_event: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
@@ -116,7 +116,10 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
     case Server.send_message(target, session.nickname, content) do
       :ok ->
-        {:halt, push_event(socket, "message_confirmed", %{temp_id: temp_id})}
+        {:halt,
+         socket
+         |> stream_delete(:chat_messages, %{id: temp_id})
+         |> push_event("message_confirmed", %{temp_id: temp_id})}
 
       {:error, reason} ->
         {:halt, push_event(socket, "message_failed", %{temp_id: temp_id, reason: reason})}

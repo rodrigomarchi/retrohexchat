@@ -153,4 +153,42 @@ test.describe('Message actions', () => {
       await bob.ctx.close();
     }
   });
+
+  test('failed channel send renders retry and retry succeeds after permissions change (O11)', async ({
+    browser,
+  }) => {
+    const channel = uniqueChannel('retry');
+    const { alice, bob } = await setupTwoUsersInChannel(browser, channel);
+    const text = `retry-after-voice-${Date.now()}`;
+
+    try {
+      await alice.chat.sendMessage('/mode +m');
+      await alice.chat.expectMessageVisible(`${alice.nick} sets mode +m`);
+
+      await bob.chat.sendMessage(text);
+      await expect(bob.chat.messageRowByText(text)).toHaveAttribute(
+        'data-msg-status',
+        'failed',
+      );
+      await expect(
+        bob.chat.messageRowByText(text).getByTestId('retry-message'),
+      ).toBeVisible();
+      await alice.chat.expectMessageHidden(text);
+
+      await alice.chat.sendMessage(`/voice ${bob.nick}`);
+      await bob.chat.expectNickRole(bob.nick, 'voiced');
+
+      await bob.chat.messageRowByText(text).getByTestId('retry-message').click();
+
+      await alice.chat.expectMessageVisible(text);
+      await bob.chat.expectMessageVisible(text);
+      await expect(
+        bob.chat.messageList.getByTestId('retry-message'),
+      ).toHaveCount(0);
+      await expect(bob.chat.messageRows.filter({ hasText: text })).toHaveCount(1);
+    } finally {
+      await alice.ctx.close();
+      await bob.ctx.close();
+    }
+  });
 });
