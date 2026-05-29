@@ -431,6 +431,13 @@ export class ChatPage {
     await expect(this.messageRows).toHaveCount(count);
   }
 
+  async scrollMessagesToTop() {
+    await this.messageList.evaluate((el) => {
+      el.scrollTop = 0;
+      el.dispatchEvent(new Event('scroll', { bubbles: true }));
+    });
+  }
+
   async expectStatusMessageVisible(text: string, timeout?: number) {
     await expect(
       this.statusMessageList.getByText(text, { exact: false }).first(),

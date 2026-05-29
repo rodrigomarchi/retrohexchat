@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream: 4, stream_delete: 3, stream_insert: 4, push_event: 3]
+  import Phoenix.LiveView, only: [push_event: 3, stream: 4, stream_delete: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
@@ -177,7 +177,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   def handle_event("switch_pm", %{"nickname" => nickname}, socket) do
     session = Session.set_active_pm(socket.assigns.session, nickname)
-    messages = load_pm_messages(session.nickname, nickname, session.ignore_list)
     unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, "pm:#{nickname}")
     flash = MapSet.delete(socket.assigns.flash_channels, "pm:#{nickname}")
     if socket.assigns.pm_typing_timer, do: Process.cancel_timer(socket.assigns.pm_typing_timer)
@@ -195,7 +194,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
        pm_typing_timer: nil
      )
      |> clear_search_on_switch()
-     |> stream(:chat_messages, messages, reset: true)
+     |> PM.load_pm_messages_with_pagination(nickname)
      |> push_reconnect_state()}
   end
 
@@ -223,8 +222,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
     socket =
       if session.active_pm do
-        messages = load_pm_messages(session.nickname, session.active_pm, session.ignore_list)
-        stream(socket, :chat_messages, messages, reset: true)
+        PM.load_pm_messages_with_pagination(socket, session.active_pm)
       else
         if session.active_channel do
           socket
@@ -584,46 +582,26 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     end
   end
 
-  defp load_pm_messages(my_nick, other_nick, ignore_list) do
-    Queries.list_private_messages(my_nick, other_nick, limit: 50)
-    |> MessageHelpers.visible_private_messages(ignore_list)
-    |> Enum.reverse()
-    |> Enum.map(&pm_to_stream_item/1)
-  end
-
-  defp pm_to_stream_item(pm) do
-    base = %{
-      id: pm_field(pm, [:id]),
-      author: pm_field(pm, [:sender, :sender_nickname]),
-      content: pm.content,
-      type: pm_resolve_type(pm),
-      timestamp: pm_field(pm, [:timestamp, :inserted_at])
-    }
-
-    base
-    |> maybe_add_field(pm, :reply_to_id)
-    |> maybe_add_field(pm, :reply_to_author)
-    |> maybe_add_field(pm, :reply_to_preview)
-    |> maybe_add_field(pm, :edited_at)
-    |> maybe_add_field(pm, :deleted_at)
-  end
-
-  defp pm_field(map, keys) do
-    Enum.find_value(keys, fn key -> Map.get(map, key) end)
-  end
-
-  defp pm_resolve_type(%{type: type}) when is_atom(type), do: type
-  defp pm_resolve_type(%{type: type}) when is_binary(type), do: String.to_existing_atom(type)
-  defp pm_resolve_type(_), do: :message
-
   defp do_load_more(socket, oldest_id) do
-    channel = socket.assigns.session.active_channel
+    session = socket.assigns.session
 
-    if channel do
-      older_messages = Queries.list_messages(channel, limit: 50, before_id: oldest_id)
-      prepend_older_messages(assign(socket, loading_more: true), older_messages)
-    else
-      socket
+    cond do
+      session.active_pm ->
+        older_messages =
+          Queries.list_private_messages(session.nickname, session.active_pm,
+            limit: 50,
+            before_id: oldest_id
+          )
+
+        PM.prepend_older_pm_messages(assign(socket, loading_more: true), older_messages)
+
+      session.active_channel ->
+        channel = session.active_channel
+        older_messages = Queries.list_messages(channel, limit: 50, before_id: oldest_id)
+        prepend_older_messages(assign(socket, loading_more: true), older_messages)
+
+      true ->
+        socket
     end
   end
 
@@ -632,26 +610,27 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   end
 
   defp prepend_older_messages(socket, older_messages) do
-    new_oldest = List.last(older_messages)
+    channel = socket.assigns.session.active_channel
+    loaded_count = (socket.assigns[:loaded_message_count] || 50) + length(older_messages)
+
+    raw_messages = Queries.list_messages(channel, limit: loaded_count)
+    new_oldest = List.last(raw_messages)
 
     stream_items =
-      older_messages
+      raw_messages
       |> MessageHelpers.visible_channel_messages(socket.assigns.session.ignore_list)
       |> Enum.reverse()
       |> Enum.map(&message_to_stream_item/1)
 
-    socket =
-      socket
-      |> assign(
-        loading_more: false,
-        oldest_message_id: new_oldest.id,
-        has_more: length(older_messages) == 50
-      )
-      |> push_event("prepend_start", %{})
-
-    Enum.reduce(stream_items, socket, fn item, acc ->
-      stream_insert(acc, :chat_messages, item, at: 0)
-    end)
+    socket
+    |> assign(
+      loading_more: false,
+      oldest_message_id: new_oldest.id,
+      has_more: length(older_messages) == 50,
+      loaded_message_count: length(raw_messages)
+    )
+    |> push_event("prepend_start", %{})
+    |> stream(:chat_messages, stream_items, reset: true)
   end
 
   defp message_to_stream_item(msg) do

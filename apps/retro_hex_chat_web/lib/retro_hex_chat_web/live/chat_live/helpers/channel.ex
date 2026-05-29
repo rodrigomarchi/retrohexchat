@@ -226,6 +226,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> assign(
       oldest_message_id: oldest_id,
       has_more: length(raw_messages) == 50,
+      loaded_message_count: length(raw_messages),
       loading_more: false,
       new_messages_indicator: false
     )

@@ -10,7 +10,6 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream: 4]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
@@ -30,14 +29,13 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     AutoJoinList,
     FloodTracker,
     IgnoreList,
-    PerformList,
-    Queries
+    PerformList
   }
 
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Commands.Parser
   alias RetroHexChatWeb.ChatLive.CommandDispatch
-  alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
+  alias RetroHexChatWeb.ChatLive.Helpers.PM
 
   # ── Typing indicator timer ────────────────────────────────
 
@@ -309,11 +307,10 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
 
     if target_pm in session.pm_conversations do
       new_session = Session.set_active_pm(session, target_pm)
-      messages = load_pm_messages(new_session.nickname, target_pm, new_session.ignore_list)
 
       socket
       |> assign(session: new_session, show_status_tab: false)
-      |> stream(:chat_messages, messages, reset: true)
+      |> PM.load_pm_messages_with_pagination(target_pm)
     else
       socket
     end
@@ -329,11 +326,10 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     cond do
       target_pm && target_pm in session.pm_conversations ->
         new_session = Session.set_active_pm(session, target_pm)
-        messages = load_pm_messages(new_session.nickname, target_pm, new_session.ignore_list)
 
         socket
         |> assign(session: new_session, show_status_tab: false)
-        |> stream(:chat_messages, messages, reset: true)
+        |> PM.load_pm_messages_with_pagination(target_pm)
 
       target_channel && target_channel in session.channels ->
         new_session = Session.set_active_channel(session, target_channel)
@@ -347,31 +343,6 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
         socket
     end
   end
-
-  defp load_pm_messages(my_nick, other_nick, ignore_list) do
-    Queries.list_private_messages(my_nick, other_nick, limit: 50)
-    |> MessageHelpers.visible_private_messages(ignore_list)
-    |> Enum.reverse()
-    |> Enum.map(&pm_to_stream_item/1)
-  end
-
-  defp pm_to_stream_item(pm) do
-    %{
-      id: pm_field(pm, [:id]),
-      author: pm_field(pm, [:sender, :sender_nickname]),
-      content: pm.content,
-      type: pm_resolve_type(pm),
-      timestamp: pm_field(pm, [:timestamp, :inserted_at])
-    }
-  end
-
-  defp pm_field(map, keys) do
-    Enum.find_value(keys, fn key -> Map.get(map, key) end)
-  end
-
-  defp pm_resolve_type(%{type: type}) when is_atom(type), do: type
-  defp pm_resolve_type(%{type: type}) when is_binary(type), do: String.to_existing_atom(type)
-  defp pm_resolve_type(_), do: :message
 
   defp cancel_existing_invite(pending, channel) do
     case Enum.split_with(pending, &(&1.channel == channel)) do

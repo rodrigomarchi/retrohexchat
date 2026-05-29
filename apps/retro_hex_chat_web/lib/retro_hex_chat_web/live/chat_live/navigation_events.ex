@@ -11,9 +11,9 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   import Phoenix.Component, only: [assign: 2]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{Queries, UnreadTracker}
+  alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChatWeb.ChatLive.Helpers
-  alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
+  alias RetroHexChatWeb.ChatLive.Helpers.PM
 
   def handle_event("window_next", _params, socket) do
     {:halt, navigate(socket, :next)}
@@ -138,7 +138,6 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
 
   defp switch_pm(socket, nickname) do
     session = Session.set_active_pm(socket.assigns.session, nickname)
-    messages = load_pm_messages(session.nickname, nickname, session.ignore_list)
     unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, "pm:#{nickname}")
     flash = MapSet.delete(socket.assigns.flash_channels, "pm:#{nickname}")
 
@@ -156,39 +155,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
       pm_typing_from: nil,
       pm_typing_timer: nil
     )
-    |> Phoenix.LiveView.stream(:chat_messages, messages, reset: true)
+    |> PM.load_pm_messages_with_pagination(nickname)
     |> Helpers.Session.push_reconnect_state()
   end
-
-  defp load_pm_messages(my_nick, other_nick, ignore_list) do
-    Queries.list_private_messages(my_nick, other_nick, limit: 50)
-    |> MessageHelpers.visible_private_messages(ignore_list)
-    |> Enum.reverse()
-    |> Enum.map(&pm_to_stream_item/1)
-  end
-
-  defp pm_to_stream_item(pm) do
-    %{
-      id: pm_field(pm, [:id]),
-      author: pm_field(pm, [:sender, :sender_nickname]),
-      content: pm.content,
-      type: pm_resolve_type(pm),
-      timestamp: pm_field(pm, [:inserted_at])
-    }
-  end
-
-  defp pm_field(pm, keys) when is_map(pm) do
-    Enum.reduce_while(keys, nil, fn key, _acc ->
-      case Map.get(pm, key) do
-        nil -> {:cont, nil}
-        val -> {:halt, val}
-      end
-    end)
-  end
-
-  defp pm_field(pm, keys) when is_struct(pm), do: pm_field(Map.from_struct(pm), keys)
-
-  defp pm_resolve_type(%{type: type}) when is_atom(type), do: type
-  defp pm_resolve_type(%{type: type}) when is_binary(type), do: String.to_existing_atom(type)
-  defp pm_resolve_type(_), do: :message
 end
