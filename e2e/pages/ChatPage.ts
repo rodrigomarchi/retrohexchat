@@ -319,6 +319,10 @@ export class ChatPage {
     return this.messageList.getByRole('link', { name: 'Open Arcade' }).first();
   }
 
+  p2pInviteCard(): Locator {
+    return this.messageList.getByTestId('p2p-invite-card').first();
+  }
+
   customContextMenuItem(label: string): Locator {
     return this.page
       .getByTestId('context-menu-item-custom_menu_execute')

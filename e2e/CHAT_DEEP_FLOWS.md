@@ -247,10 +247,10 @@ only the foundation and a small subset of command behavior.
 
 | # | Flow | Planned spec file | Priority | Status |
 |---|------|-------------------|----------|--------|
-| N1 | Unidentified user `/p2p bob`, `/call bob`, `/sendfile bob`, `/game bob` shows identify-required errors | `tests/chat-p2p-errors.spec.ts` | P0 | todo |
-| N2 | Registered identified user cannot P2P/call/sendfile/game self | `tests/chat-p2p-errors.spec.ts` | P1 | todo |
-| N3 | Target not registered shows "not registered" error | `tests/chat-p2p-errors.spec.ts` | P1 | todo |
-| N4 | `/p2p bob` creates invite card for sender and receiver; receiver can accept/decline | `tests/chat-p2p-invite.spec.ts` | P1 | todo |
+| N1 | Unidentified user `/p2p bob`, `/call bob`, `/sendfile bob`, `/game bob` shows identify-required errors | `tests/chat-p2p-errors.spec.ts` | P0 | done |
+| N2 | Registered identified user cannot P2P/call/sendfile/game self | `tests/chat-p2p-errors.spec.ts` | P1 | done |
+| N3 | Target not registered shows "not registered" error | `tests/chat-p2p-errors.spec.ts` | P1 | done |
+| N4 | `/p2p bob` creates PM invite cards for sender and receiver; both can open the lobby and closing the lobby ends the session | `tests/chat-p2p-invite.spec.ts` | P1 | done |
 | N5 | `/call bob` creates audio-call lobby/session with browser permissions mocked by Playwright context | `tests/chat-p2p-call.spec.ts` | P2 | investigate |
 | N6 | `/sendfile bob` creates file-transfer session and upload UI accepts a small temp file | `tests/chat-p2p-file.spec.ts` | P2 | investigate |
 | N7 | `/game bob` creates game invite and lobby; selecting a game starts shared game shell | `tests/chat-p2p-game.spec.ts` | P2 | investigate |

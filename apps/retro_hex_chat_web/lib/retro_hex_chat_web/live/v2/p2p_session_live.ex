@@ -800,7 +800,8 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   def terminate(_reason, socket) do
     Logger.info("P2P LiveView terminated: token=#{socket.assigns[:token]}")
 
-    if connected?(socket) and socket.assigns[:token] and !socket.assigns[:session_closed] do
+    if connected?(socket) and is_binary(socket.assigns[:token]) and
+         !socket.assigns[:session_closed] do
       token = socket.assigns.token
       user_id = socket.assigns[:user_id]
 
