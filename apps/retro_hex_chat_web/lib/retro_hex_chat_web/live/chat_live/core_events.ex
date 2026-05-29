@@ -408,7 +408,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
         session.active_channel && Queries.last_own_message(nickname, session.active_channel)
       end
 
-    if last_message && Policy.can_edit?(last_message, nickname) == :ok do
+    if last_message && editable_message?(last_message, session, nickname) do
       msg_id = last_message.id
 
       {:halt,
@@ -543,6 +543,17 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       author: author,
       preview: String.slice(message.content, 0, 100)
     }
+  end
+
+  defp editable_message?(message, %{active_pm: active_pm}, nickname) when not is_nil(active_pm) do
+    message
+    |> Map.put(:author_nickname, message.sender_nickname)
+    |> Policy.can_edit?(nickname)
+    |> Kernel.==(:ok)
+  end
+
+  defp editable_message?(message, _session, nickname) do
+    Policy.can_edit?(message, nickname) == :ok
   end
 
   defp exit_edit_mode(socket) do

@@ -286,14 +286,17 @@ defmodule RetroHexChat.Chat.FormatterTest do
         stripped = Formatter.strip(text)
         {:safe, html} = Formatter.to_safe_html(text)
 
-        # The HTML should contain the same visible text (after stripping HTML tags)
-        plain_from_html =
+        # The HTML should contain the escaped visible text (after stripping HTML tags).
+        text_from_html =
           html
           |> String.replace(~r/<[^>]+>/, "")
+
+        escaped_stripped =
+          stripped
           |> Phoenix.HTML.html_escape()
           |> Phoenix.HTML.safe_to_string()
 
-        assert plain_from_html =~ stripped or stripped == ""
+        assert text_from_html =~ escaped_stripped or stripped == ""
       end
     end
 

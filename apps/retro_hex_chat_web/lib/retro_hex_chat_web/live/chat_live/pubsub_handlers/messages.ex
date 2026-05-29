@@ -166,14 +166,14 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   # ── Reply quote updated ─────────────────────────────────
 
   def handle_info(
-        %{event: "reply_quote_updated", payload: %{reply_ids: reply_ids, new_preview: preview}},
+        %{event: "reply_quote_updated", payload: %{reply_ids: reply_ids}},
         socket
       ) do
     Enum.reduce(reply_ids, socket, fn reply_id, acc ->
-      stream_insert(acc, :chat_messages, %{
-        id: reply_id,
-        reply_to_preview: preview
-      })
+      case stream_item_for_reply_quote(reply_id, acc.assigns.session) do
+        nil -> acc
+        item -> stream_insert(acc, :chat_messages, item)
+      end
     end)
     |> then(&{:halt, &1})
   end
@@ -379,13 +379,16 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   end
 
   defp pm_to_stream_item(pm) do
-    base = %{
-      id: pm_field(pm, [:id]),
-      author: pm_field(pm, [:sender, :sender_nickname]),
-      content: pm.content,
-      type: pm_resolve_type(pm),
-      timestamp: pm_field(pm, [:timestamp, :inserted_at])
-    }
+    base =
+      %{
+        id: pm_field(pm, [:id]),
+        author: pm_field(pm, [:sender, :sender_nickname]),
+        content: pm.content,
+        type: pm_resolve_type(pm),
+        timestamp: pm_field(pm, [:timestamp, :inserted_at])
+      }
+      |> maybe_add_pm_field(pm, :edited_at)
+      |> maybe_add_pm_field(pm, :deleted_at)
 
     reply_to_id = Map.get(pm, :reply_to_id)
 
@@ -402,6 +405,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   defp pm_field(map, keys) do
     Enum.find_value(keys, fn key -> Map.get(map, key) end)
+  end
+
+  defp maybe_add_pm_field(map, source, key) do
+    case Map.get(source, key) do
+      nil -> map
+      value -> Map.put(map, key, value)
+    end
   end
 
   defp pm_resolve_type(%{type: type}) when is_atom(type), do: type
@@ -423,6 +433,30 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   end
 
   defp stream_item_for_message_event(_payload, _session), do: nil
+
+  defp stream_item_for_reply_quote(reply_id, %{active_pm: nil, active_channel: channel}) do
+    case Queries.get_message(reply_id) do
+      %{channel_name: ^channel} = message -> Channel.message_to_stream_item(message)
+      _ -> nil
+    end
+  end
+
+  defp stream_item_for_reply_quote(reply_id, %{active_pm: active_pm, nickname: nickname})
+       when not is_nil(active_pm) do
+    case Queries.get_private_message(reply_id) do
+      nil ->
+        nil
+
+      pm ->
+        participants = MapSet.new([pm.sender_nickname, pm.recipient_nickname])
+
+        if participants == MapSet.new([nickname, active_pm]) do
+          pm_to_stream_item(pm)
+        end
+    end
+  end
+
+  defp stream_item_for_reply_quote(_reply_id, _session), do: nil
 
   defp check_channel_duplicate(socket, %{type: :system}), do: socket
 

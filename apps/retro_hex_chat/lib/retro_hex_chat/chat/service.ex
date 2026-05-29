@@ -66,6 +66,7 @@ defmodule RetroHexChat.Chat.Service do
          now <- DateTime.utc_now(),
          {:ok, deleted} <- Queries.soft_delete_message(message, now) do
       broadcast_delete(message.channel_name, deleted)
+      clear_reply_previews_if_needed(message.id, message.channel_name)
       {:ok, deleted}
     end
   end
@@ -78,6 +79,7 @@ defmodule RetroHexChat.Chat.Service do
          now <- DateTime.utc_now(),
          {:ok, deleted} <- Queries.soft_delete_pm(pm, now) do
       broadcast_pm_delete(pm.sender_nickname, pm.recipient_nickname, deleted)
+      clear_pm_reply_previews_if_needed(pm.id, pm.sender_nickname, pm.recipient_nickname)
       {:ok, deleted}
     end
   end
@@ -211,6 +213,23 @@ defmodule RetroHexChat.Chat.Service do
     end
   end
 
+  defp clear_reply_previews_if_needed(parent_id, channel_name) do
+    reply_ids = Queries.get_reply_ids(parent_id)
+
+    if reply_ids != [] do
+      Queries.update_reply_previews(parent_id, nil)
+
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "channel:#{channel_name}",
+        %{
+          event: "reply_quote_updated",
+          payload: %{parent_id: parent_id, new_preview: nil, reply_ids: reply_ids}
+        }
+      )
+    end
+  end
+
   defp update_pm_reply_previews_if_needed(parent_id, new_content, sender, recipient) do
     reply_ids = Queries.get_pm_reply_ids(parent_id)
 
@@ -226,6 +245,25 @@ defmodule RetroHexChat.Chat.Service do
         %{
           event: "reply_quote_updated",
           payload: %{parent_id: parent_id, new_preview: preview, reply_ids: reply_ids}
+        }
+      )
+    end
+  end
+
+  defp clear_pm_reply_previews_if_needed(parent_id, sender, recipient) do
+    reply_ids = Queries.get_pm_reply_ids(parent_id)
+
+    if reply_ids != [] do
+      Queries.update_pm_reply_previews(parent_id, nil)
+
+      topic = "pm:#{pm_topic(sender, recipient)}"
+
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        topic,
+        %{
+          event: "reply_quote_updated",
+          payload: %{parent_id: parent_id, new_preview: nil, reply_ids: reply_ids}
         }
       )
     end

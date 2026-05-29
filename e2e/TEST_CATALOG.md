@@ -6,12 +6,12 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **91 spec files** under `e2e/tests/`.
-- **184 Playwright `test()` cases**.
+- **97 spec files** under `e2e/tests/`.
+- **194 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 147 mapped flows, 146 done, 1 intentionally blocked.
-- **Open todo/investigate items:** none.
+- **Chat extended coverage:** 155 mapped flows, 154 done, 1 intentionally blocked.
+- **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
 ## Operating Rules
@@ -292,6 +292,24 @@ make ci
 | P11 | `/whois` idle increases and resets after command/message | `tests/chat-idle.spec.ts` | P2 | done |
 | P12 | PM typing indicator appears and clears after timeout or send | `tests/chat-typing-indicator.spec.ts` | P1 | done |
 
+## Q - Security And Safety Backlog Additions
+
+| # | Flow | Spec file | Priority | Status |
+|---|------|-----------|----------|--------|
+| Q1 | Chat message HTML/script content renders escaped and never executes | `tests/chat-security-escaping.spec.ts` | P0 | done |
+| Q2 | Topic, welcome, MOTD, away, bio, alias expansion, bot response, and autorespond output escape HTML/script content | `tests/chat-security-escaping.spec.ts` | P0 | done |
+| Q3 | Unsafe URL schemes such as `javascript:` and `data:` are not rendered as clickable links | `tests/chat-security-links.spec.ts` | P0 | done |
+| Q4 | Reciprocal autorespond notice rules fire once and do not loop | `tests/chat-autorespond-loop.spec.ts` | P0 | done |
+
+## R - Message Lifecycle Backlog Additions
+
+| # | Flow | Spec file | Priority | Status |
+|---|------|-----------|----------|--------|
+| R1 | Non-author cannot edit or delete another user's channel message | `tests/chat-message-permissions.spec.ts` | P0 | done |
+| R2 | PM messages support reply, edit, delete, and deleted placeholders | `tests/chat-pm-message-actions.spec.ts` | P1 | done |
+| R3 | Reply preview updates when the parent message is edited | `tests/chat-message-reply-edges.spec.ts` | P1 | done |
+| R4 | Reply preview shows deleted state when the parent message is deleted | `tests/chat-message-reply-edges.spec.ts` | P1 | done |
+
 ## Intentional Block
 
 | # | Reason |
@@ -312,3 +330,5 @@ make ci
 - PM unread indicators now use the same PM key shape as conversations/tabs.
 - Reconnect UI hook is mounted in the app shell and preserves typed drafts across disconnect/reconnect.
 - History pagination for channel and PM windows now loads older rows in chronological order without duplicate messages.
+- Reply preview updates now reinsert complete stream items and survive parent edit/delete.
+- PM edit/delete events now preserve edited/deleted metadata in the rendered stream.

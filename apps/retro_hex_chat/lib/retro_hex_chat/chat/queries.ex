@@ -56,7 +56,7 @@ defmodule RetroHexChat.Chat.Queries do
     |> Repo.update()
   end
 
-  @spec update_reply_previews(integer(), String.t()) :: {non_neg_integer(), nil}
+  @spec update_reply_previews(integer(), String.t() | nil) :: {non_neg_integer(), nil}
   def update_reply_previews(parent_id, new_preview) do
     Message
     |> where([m], m.reply_to_id == ^parent_id)
@@ -168,7 +168,7 @@ defmodule RetroHexChat.Chat.Queries do
     |> Repo.update()
   end
 
-  @spec update_pm_reply_previews(integer(), String.t()) :: {non_neg_integer(), nil}
+  @spec update_pm_reply_previews(integer(), String.t() | nil) :: {non_neg_integer(), nil}
   def update_pm_reply_previews(parent_id, new_preview) do
     PrivateMessage
     |> where([pm], pm.reply_to_id == ^parent_id)
