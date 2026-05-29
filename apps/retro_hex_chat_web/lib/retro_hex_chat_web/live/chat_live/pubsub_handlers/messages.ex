@@ -19,8 +19,17 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     ]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{DuplicateTracker, FloodProtection, IgnoreList, Service, UnreadTracker}
-  alias RetroHexChatWeb.ChatLive.Helpers.PM
+
+  alias RetroHexChat.Chat.{
+    DuplicateTracker,
+    FloodProtection,
+    IgnoreList,
+    Queries,
+    Service,
+    UnreadTracker
+  }
+
+  alias RetroHexChatWeb.ChatLive.Helpers.{Channel, PM}
 
   # ── Channel messages ──────────────────────────────────────
 
@@ -129,13 +138,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     is_active = active_context?(payload, session)
 
     if is_active do
-      updated_item = %{
-        id: payload.id,
-        content: payload.content,
-        edited_at: payload.edited_at
-      }
-
-      {:halt, stream_insert(socket, :chat_messages, updated_item)}
+      case stream_item_for_message_event(payload, session) do
+        nil -> {:halt, socket}
+        updated_item -> {:halt, stream_insert(socket, :chat_messages, updated_item)}
+      end
     else
       {:halt, socket}
     end
@@ -148,12 +154,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     is_active = active_context?(payload, session)
 
     if is_active do
-      deleted_item = %{
-        id: payload.id,
-        deleted_at: payload.deleted_at
-      }
-
-      {:halt, stream_insert(socket, :chat_messages, deleted_item)}
+      case stream_item_for_message_event(payload, session) do
+        nil -> {:halt, socket}
+        deleted_item -> {:halt, stream_insert(socket, :chat_messages, deleted_item)}
+      end
     else
       {:halt, socket}
     end
@@ -387,6 +391,22 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   defp pm_resolve_type(%{type: type}) when is_atom(type), do: type
   defp pm_resolve_type(%{type: type}) when is_binary(type), do: String.to_existing_atom(type)
   defp pm_resolve_type(_), do: :message
+
+  defp stream_item_for_message_event(%{channel: _channel, id: id}, _session) do
+    case Queries.get_message(id) do
+      nil -> nil
+      message -> Channel.message_to_stream_item(message)
+    end
+  end
+
+  defp stream_item_for_message_event(%{sender: _sender, id: id}, _session) do
+    case Queries.get_private_message(id) do
+      nil -> nil
+      pm -> pm_to_stream_item(pm)
+    end
+  end
+
+  defp stream_item_for_message_event(_payload, _session), do: nil
 
   defp check_channel_duplicate(socket, %{type: :system}), do: socket
 

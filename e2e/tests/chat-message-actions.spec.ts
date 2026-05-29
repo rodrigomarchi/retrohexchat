@@ -58,4 +58,27 @@ test.describe('Message actions', () => {
     await expect(replyBlock).toContainText(nick);
     await expect(replyBlock).toContainText(original);
   });
+
+  test('ArrowUp edits the last own message and submit shows the edited tag (O9)', async ({
+    page,
+  }) => {
+    const { chat } = await signedInUser(page, 'edit');
+    const marker = Date.now();
+    const original = `edit-original-${marker}`;
+    const updated = `edit-updated-${marker}`;
+
+    await chat.sendMessage(original);
+    await chat.expectMessageVisible(original);
+
+    await chat.chatInput.press('ArrowUp');
+    await expect(chat.chatInput).toHaveValue(original);
+
+    await chat.chatInput.fill(updated);
+    await chat.chatInput.press('Enter');
+
+    const updatedRow = chat.messageRowByText(updated);
+    await expect(updatedRow).toBeVisible();
+    await expect(updatedRow.getByTestId('edited-tag')).toBeVisible();
+    await expect(chat.chatInput).toHaveValue('');
+  });
 });
