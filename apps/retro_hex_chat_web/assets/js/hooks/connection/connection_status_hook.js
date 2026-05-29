@@ -135,6 +135,12 @@ const ConnectionStatusHook = {
         state === "cancelled" ||
         state === "failed",
     );
+    this._updateShellDisabled(
+      state === "disconnected" ||
+        state === "reconnecting" ||
+        state === "cancelled" ||
+        state === "failed",
+    );
   },
 
   _updateStatusBar(state) {
@@ -155,6 +161,29 @@ const ConnectionStatusHook = {
 
     if (input) input.disabled = disabled;
     if (send) send.disabled = disabled || !input || input.value.length === 0;
+  },
+
+  _updateShellDisabled(disabled) {
+    const menuBar = document.querySelector('[data-testid="menu-bar"]');
+    if (!menuBar) return;
+
+    const offlineDisabledMenus = new Set(["File", "View", "Tools"]);
+
+    menuBar.querySelectorAll("[data-menubar-trigger]").forEach((trigger) => {
+      const label = trigger.textContent.trim();
+      const shouldDisable = disabled && offlineDisabledMenus.has(label);
+
+      trigger.dataset.disabled = shouldDisable ? "true" : "false";
+      trigger.setAttribute("aria-disabled", shouldDisable ? "true" : "false");
+
+      if (shouldDisable) {
+        trigger.classList.remove("bg-primary", "text-primary-foreground");
+      }
+    });
+
+    if (disabled) {
+      menuBar.dispatchEvent(new CustomEvent("menubar:close-all"));
+    }
   },
 
   _restoreDraftIfNeeded(input) {

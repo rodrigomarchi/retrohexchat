@@ -50,8 +50,13 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   @spec highlight_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def highlight_dialog(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show} lock={@show_highlight_add_dialog || @show_highlight_edit_dialog}>
-      <.dialog_header id={@id} title="Highlight Words">
+    <.dialog
+      id={@id}
+      show={@show}
+      lock={@show_highlight_add_dialog || @show_highlight_edit_dialog}
+      on_cancel={@on_cancel}
+    >
+      <.dialog_header id={@id} title="Highlight Words" on_close={@on_cancel}>
         <:icon><Icons.icon_star class="w-4 h-4" /></:icon>
       </.dialog_header>
 

@@ -87,6 +87,14 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
 .toolbar-group-dropdown { position: absolute; top: 100%; left: 0; z-index: 50; }
 .toolbar-group-dropdown:not(.u-hidden) { display: flex; flex-direction: column; }
 [data-menubar-dropdown]:not(.u-hidden) { display: flex; flex-direction: column; }
+[data-menubar-trigger][data-disabled="true"] {
+  color: #808080;
+  cursor: default;
+}
+[data-menubar-trigger][data-disabled="true"]:hover {
+  color: #808080;
+  background: transparent;
+}
 .format-color-dropdown {
   display: none;
   position: absolute;

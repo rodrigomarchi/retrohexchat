@@ -57,8 +57,8 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
     assigns = assign_new(assigns, :settings, fn -> @default_settings end)
 
     ~H"""
-    <.dialog id={@id} show={@show}>
-      <.dialog_header id={@id} title="Flood Protection">
+    <.dialog id={@id} show={@show} on_cancel={@on_cancel}>
+      <.dialog_header id={@id} title="Flood Protection" on_close={@on_cancel}>
         <:icon><Icons.icon_dialog_flood class="w-4 h-4" /></:icon>
       </.dialog_header>
 

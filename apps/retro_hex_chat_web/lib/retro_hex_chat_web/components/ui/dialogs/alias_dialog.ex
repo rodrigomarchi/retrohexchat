@@ -58,8 +58,8 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
   @spec alias_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def alias_dialog(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show}>
-      <.dialog_header id={@id} title="Alias Editor">
+    <.dialog id={@id} show={@show} on_cancel={@on_close}>
+      <.dialog_header id={@id} title="Alias Editor" on_close={@on_close}>
         <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
       </.dialog_header>
 

@@ -13,6 +13,10 @@ defmodule RetroHexChatWeb.ChatLive.UrlCatcherEvents do
     {:halt, assign(socket, show_url_catcher: !socket.assigns.show_url_catcher)}
   end
 
+  def handle_event("close_url_catcher", _params, socket) do
+    {:halt, assign(socket, show_url_catcher: false)}
+  end
+
   def handle_event("url_catcher_sort", %{"column" => column}, socket) do
     col = String.to_existing_atom(column)
 

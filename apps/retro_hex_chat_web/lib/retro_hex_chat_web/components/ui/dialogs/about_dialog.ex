@@ -81,7 +81,12 @@ defmodule RetroHexChatWeb.Components.UI.AboutDialog do
       </.dialog_body>
 
       <.dialog_footer>
-        <.button variant="default" phx-click={hide_modal(@id)}>
+        <.button
+          id={"#{@id}-ok"}
+          phx-hook="FocusChatInputOnClickHook"
+          variant="default"
+          phx-click={hide_modal(@id)}
+        >
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
           OK
         </.button>

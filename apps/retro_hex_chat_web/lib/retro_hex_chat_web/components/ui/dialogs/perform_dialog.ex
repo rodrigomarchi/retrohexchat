@@ -63,8 +63,9 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         @show_perform_add_dialog || @show_perform_edit_dialog ||
           @show_autojoin_add_dialog || @show_autojoin_edit_dialog
       }
+      on_cancel={@on_cancel}
     >
-      <.dialog_header id={@id} title="Perform">
+      <.dialog_header id={@id} title="Perform" on_close={@on_cancel}>
         <:icon><Icons.icon_dialog_perform /></:icon>
       </.dialog_header>
       <.dialog_body>

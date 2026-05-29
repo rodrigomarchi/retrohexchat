@@ -175,6 +175,12 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
             action="help_topics"
             on_action={@on_action}
           />
+          <.menu_item
+            icon_fn={:icon_dialog_cheatsheet}
+            label="Shortcut Cheatsheet"
+            action="toggle_cheatsheet"
+            on_action={@on_action}
+          />
           <.context_menu_separator />
           <.context_menu_item on_click={show_modal("about-dialog")} action="show_about">
             <:icon>{apply(Icons, :icon_dialog_about, [%{class: "w-[14px] h-[14px]"}])}</:icon>

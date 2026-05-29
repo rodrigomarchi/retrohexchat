@@ -12,12 +12,22 @@ export class ChatPage {
   readonly helpMenuTrigger: Locator;
   readonly toolsMenuTrigger: Locator;
   readonly disconnectMenuItem: Locator;
+  readonly channelListMenuItem: Locator;
+  readonly toggleConversationsMenuItem: Locator;
+  readonly toggleNicklistMenuItem: Locator;
   readonly findMenuItem: Locator;
   readonly helpTopicsMenuItem: Locator;
+  readonly cheatsheetMenuItem: Locator;
+  readonly aboutMenuItem: Locator;
   readonly addressBookMenuItem: Locator;
+  readonly highlightWordsMenuItem: Locator;
   readonly channelCentralMenuItem: Locator;
+  readonly performMenuItem: Locator;
+  readonly soundSettingsMenuItem: Locator;
   readonly aliasEditorMenuItem: Locator;
   readonly floodProtectionMenuItem: Locator;
+  readonly customMenusMenuItem: Locator;
+  readonly autorespondMenuItem: Locator;
   readonly urlCatcherMenuItem: Locator;
   readonly disconnectConfirmDialog: Locator;
   readonly disconnectConfirmButton: Locator;
@@ -25,6 +35,7 @@ export class ChatPage {
   readonly chatInput: Locator;
   readonly chatSendButton: Locator;
   readonly charCounter: Locator;
+  readonly appLogo: Locator;
   readonly statusBarApp: Locator;
   readonly statusBarMuteToggle: Locator;
   readonly connectionStatusHook: Locator;
@@ -91,13 +102,17 @@ export class ChatPage {
   readonly typingIndicator: Locator;
   readonly deleteConfirmButton: Locator;
   readonly deleteCancelButton: Locator;
+  readonly aboutDialog: Locator;
+  readonly aboutOkButton: Locator;
   readonly cheatsheetDialog: Locator;
   readonly cheatsheetCloseButton: Locator;
   readonly helpContentPane: Locator;
   readonly notifyListDialog: Locator;
   readonly addressBookDialog: Locator;
+  readonly channelListDialog: Locator;
   readonly channelCentralDialog: Locator;
   readonly aliasDialog: Locator;
+  readonly highlightDialog: Locator;
   readonly floodProtectionDialog: Locator;
   readonly floodThresholdInput: Locator;
   readonly floodWindowInput: Locator;
@@ -108,6 +123,9 @@ export class ChatPage {
   readonly urlCatcherDialog: Locator;
   readonly urlCatcherSearch: Locator;
   readonly urlCatcherRows: Locator;
+  readonly performDialog: Locator;
+  readonly soundSettingsDialog: Locator;
+  readonly autorespondDialog: Locator;
   readonly botManagementDialog: Locator;
   readonly botList: Locator;
   readonly newBotDialog: Locator;
@@ -126,6 +144,7 @@ export class ChatPage {
     this.chatInput = page.getByTestId('chat-input-field');
     this.chatSendButton = page.getByTestId('chat-input-send');
     this.charCounter = page.getByTestId('char-counter');
+    this.appLogo = page.getByTestId('app-logo');
     this.statusBarApp = page.getByTestId('status-bar-app');
     this.statusBarMuteToggle = page.getByTestId('status-bar-mute-toggle');
     this.connectionStatusHook = page.getByTestId('connection-status-hook');
@@ -171,21 +190,49 @@ export class ChatPage {
       .filter({ hasText: 'Tools' });
     // context_menu_item exposes data-testid="context-menu-item-<action>".
     this.disconnectMenuItem = page.getByTestId('context-menu-item-disconnect');
+    this.channelListMenuItem = page.getByTestId(
+      'context-menu-item-toggle_channel_list',
+    );
+    this.toggleConversationsMenuItem = page.getByTestId(
+      'context-menu-item-toggle_conversations',
+    );
+    this.toggleNicklistMenuItem = page.getByTestId(
+      'context-menu-item-toggle_nicklist',
+    );
     this.findMenuItem = page.getByTestId('context-menu-item-toggle_search');
     this.helpTopicsMenuItem = page.getByTestId(
       'context-menu-item-help_topics',
     );
+    this.cheatsheetMenuItem = page.getByTestId(
+      'context-menu-item-toggle_cheatsheet',
+    );
+    this.aboutMenuItem = page.getByTestId('context-menu-item-show_about');
     this.addressBookMenuItem = page.getByTestId(
       'context-menu-item-toggle_address_book',
     );
+    this.highlightWordsMenuItem = page.getByTestId(
+      'context-menu-item-open_highlight_dialog',
+    );
     this.channelCentralMenuItem = page.getByTestId(
       'context-menu-item-open_channel_central',
+    );
+    this.performMenuItem = page.getByTestId(
+      'context-menu-item-open_perform_dialog',
+    );
+    this.soundSettingsMenuItem = page.getByTestId(
+      'context-menu-item-open_sound_settings_dialog',
     );
     this.aliasEditorMenuItem = page.getByTestId(
       'context-menu-item-open_alias_dialog',
     );
     this.floodProtectionMenuItem = page.getByTestId(
       'context-menu-item-open_flood_protection_dialog',
+    );
+    this.customMenusMenuItem = page.getByTestId(
+      'context-menu-item-open_custom_menus_dialog',
+    );
+    this.autorespondMenuItem = page.getByTestId(
+      'context-menu-item-open_autorespond_dialog',
     );
     this.urlCatcherMenuItem = page.getByTestId(
       'context-menu-item-toggle_url_catcher',
@@ -279,6 +326,8 @@ export class ChatPage {
       'delete-confirm-dialog-confirm',
     );
     this.deleteCancelButton = page.getByTestId('delete-confirm-dialog-cancel');
+    this.aboutDialog = page.locator('#about-dialog [role="dialog"]');
+    this.aboutOkButton = this.aboutDialog.getByRole('button', { name: 'OK' });
     this.cheatsheetDialog = page.locator('#cheatsheet-dialog [role="dialog"]');
     this.cheatsheetCloseButton = page.getByTestId('cheatsheet-dialog-close');
     this.helpContentPane = page.getByTestId('help-content-pane');
@@ -286,11 +335,17 @@ export class ChatPage {
     this.addressBookDialog = page.locator(
       '#address-book-dialog [role="dialog"]',
     );
+    this.channelListDialog = page.locator(
+      '#channel-list-dialog [role="dialog"]',
+    );
     this.channelCentralDialog = page.locator(
       '#channel-central-dialog [role="dialog"]',
     );
     this.aliasDialog = page.locator('#alias-dialog [role="dialog"]');
-    this.floodProtectionDialog = page.locator('#flood-protection-dialog');
+    this.highlightDialog = page.locator('#highlight-dialog [role="dialog"]');
+    this.floodProtectionDialog = page.locator(
+      '#flood-protection-dialog [role="dialog"]',
+    );
     this.floodThresholdInput = this.floodProtectionDialog.locator(
       'input[name="flood_threshold"]',
     );
@@ -313,6 +368,13 @@ export class ChatPage {
     this.urlCatcherDialog = page.getByTestId('url-catcher');
     this.urlCatcherSearch = page.getByTestId('url-catcher-search');
     this.urlCatcherRows = this.urlCatcherDialog.getByTestId('url-catcher-row');
+    this.performDialog = page.locator('#perform-dialog [role="dialog"]');
+    this.soundSettingsDialog = page.locator(
+      '#sound-settings-dialog [role="dialog"]',
+    );
+    this.autorespondDialog = page.locator(
+      '#autorespond-dialog [role="dialog"]',
+    );
     this.botManagementDialog = page.locator(
       '#bot-management-dialog [role="dialog"]',
     );

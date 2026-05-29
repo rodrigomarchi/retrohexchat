@@ -43,9 +43,9 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   @spec url_catcher(map()) :: Phoenix.LiveView.Rendered.t()
   def url_catcher(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show} class="max-w-2xl">
+    <.dialog id={@id} show={@show} class="max-w-2xl" on_cancel={@on_close}>
       <div id={"#{@id}-content"} phx-hook="URLCatcherHook" data-testid="url-catcher">
-        <.dialog_header id={@id} title="URL Catcher">
+        <.dialog_header id={@id} title="URL Catcher" on_close={@on_close}>
           <:icon><Icons.icon_link class="w-4 h-4" /></:icon>
         </.dialog_header>
 

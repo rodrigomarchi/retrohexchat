@@ -257,6 +257,10 @@ defmodule RetroHexChatWeb.V2.ChatLive do
     dispatch_to_hooks(action, Map.delete(params, "action"), socket)
   end
 
+  def handle_event(event, params, socket) do
+    dispatch_to_hooks(event, params, socket)
+  end
+
   # ── Catch-all handle_info ─────────────────────────────────────
 
   @impl true

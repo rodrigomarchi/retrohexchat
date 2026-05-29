@@ -6,11 +6,11 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **113 spec files** under `e2e/tests/`.
-- **220 Playwright `test()` cases**.
+- **123 spec files** under `e2e/tests/`.
+- **232 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 180 mapped flows, 179 done, 1 intentionally blocked.
+- **Chat extended coverage:** 192 mapped flows, 191 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -340,6 +340,23 @@ make ci
 | S11 | Failed pending message can be deleted without leaving retry/orphan UI behind | `tests/chat-message-retry.spec.ts` | P2 | done |
 | S12 | Message timestamps use detected browser timezone with the current default `dd/mm HH:MM` format | `tests/chat-timestamps.spec.ts` | P2 | done |
 
+## Backlog T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
+
+| # | Flow | Spec file | Priority | Status |
+|---|------|-----------|----------|--------|
+| T1 | File/View/Tools/Help menu items open the same shell surfaces as keyboard equivalents where both exist | `tests/chat-menu-toolbar-parity.spec.ts` | P1 | done |
+| T2 | Menus keep chat input focus and intentional dialog inputs own focus | `tests/chat-menu-focus.spec.ts` | P1 | done |
+| T3 | About dialog opens from Help menu and app logo, closes cleanly, and restores chat input focus | `tests/chat-about-dialog.spec.ts` | P2 | done |
+| T4 | View menu toggles conversations, nicklist, channel list, and search without losing active tab or unread state | `tests/chat-view-menu.spec.ts` | P1 | done |
+| T5 | Tools menu opens Address Book, Highlights, URL Catcher, Channel Central, Perform, Sound, Flood Protection, Alias, Custom Menus, and Autorespond | `tests/chat-tools-menu.spec.ts` | P1 | done |
+| T6 | Escape closes only the topmost dialog/menu layer and preserves underlying state | `tests/chat-dialog-keyboard.spec.ts` | P1 | done |
+| T7 | Enter submits primary sub-dialog action and Escape/cancel paths discard drafts | `tests/chat-dialog-keyboard.spec.ts` | P2 | done |
+| T8 | Tab focus stays inside major modal dialogs | `tests/chat-dialog-keyboard.spec.ts` | P2 | done |
+| T9 | Window switch shortcuts skip Status and cycle channels/PMs in stable order | `tests/chat-window-shortcuts.spec.ts` | P1 | done |
+| T10 | Shortcut cheatsheet opens from Help menu and shortcut, lists active bindings, and does not submit draft input | `tests/chat-cheatsheet.spec.ts` | P2 | done |
+| T11 | Dialog title close, cancel buttons, and backdrop paths close major dialogs consistently | `tests/chat-dialog-close.spec.ts` | P2 | done |
+| T12 | Reconnect state disables destructive shell menus while keeping Help accessible and preserving draft input | `tests/chat-reconnect-shell.spec.ts` | P1 | done |
+
 ## Intentional Block
 
 | # | Reason |
@@ -374,3 +391,9 @@ make ci
 - Switching to Status now clears the visible search UI just like channel and PM switches.
 - Failed temporary `pending_*` channel messages can now be removed from the local stream through Delete.
 - Chat message timestamps now have a stable `data-testid` for timezone/format coverage.
+- Channel List menu action now opens as well as closes the dialog.
+- Search opened from View now focuses the search input.
+- Chat input draft is synced to LiveView so unrelated rerenders do not clear typed text.
+- Dialog focus and close paths now restore focus and keep server-side state in sync for title close, backdrop, Escape, and cancel flows.
+- Help menu now exposes Shortcut Cheatsheet.
+- Reconnect UI disables destructive File/View/Tools menus while keeping Help accessible.

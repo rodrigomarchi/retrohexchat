@@ -53,6 +53,19 @@ const AutoFocusHook = {
   },
 };
 
+const FocusChatInputOnClickHook = {
+  mounted() {
+    this._onClick = () => {
+      setTimeout(() => document.getElementById("chat-input")?.focus(), 150);
+    };
+    this.el.addEventListener("click", this._onClick);
+  },
+
+  destroyed() {
+    this.el.removeEventListener("click", this._onClick);
+  },
+};
+
 const Hooks = {
   AutoFocusHook: AutoFocusHook,
   CharCounterHook: CharCounterHook,
@@ -64,6 +77,7 @@ const Hooks = {
   AutocompleteHook: AutocompleteHook,
   EmojiPickerHook: EmojiPickerHook,
   FileTransferHook: FileTransferHook,
+  FocusChatInputOnClickHook: FocusChatInputOnClickHook,
   ArcadeIframe: ArcadeIframeHook,
   ArcadeSession: ArcadeSessionHook,
   ArcadeGame: ArcadeGameHook,

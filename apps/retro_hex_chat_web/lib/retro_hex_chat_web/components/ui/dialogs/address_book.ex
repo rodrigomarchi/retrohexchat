@@ -88,8 +88,9 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           @show_nick_color_add_dialog || @show_nick_color_edit_dialog ||
           @show_control_add_dialog
       }
+      on_cancel={@on_close}
     >
-      <.dialog_header id={@id} title="Address Book">
+      <.dialog_header id={@id} title="Address Book" on_close={@on_close}>
         <:icon><Icons.icon_dialog_address_book class="w-4 h-4" /></:icon>
       </.dialog_header>
 

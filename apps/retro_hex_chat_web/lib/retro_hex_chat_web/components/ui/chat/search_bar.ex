@@ -60,11 +60,13 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
         <form class="flex items-center gap-retro-4" phx-change={@on_search} phx-submit={@on_search}>
           <.input
             type="text"
+            id="search-bar-input"
             value={@query}
             placeholder="Find text..."
             class="flex-1"
             name="query"
             phx-debounce="300"
+            phx-mounted={JS.focus(to: "#search-bar-input")}
             phx-keydown={@on_navigate}
             data-testid="search-bar-input"
           />

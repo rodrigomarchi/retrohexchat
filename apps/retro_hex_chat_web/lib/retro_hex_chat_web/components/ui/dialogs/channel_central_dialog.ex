@@ -82,8 +82,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       show={@show}
       class="max-w-xl"
       lock={@show_add_ban_dialog || @show_add_ban_ex_dialog || @show_add_invite_ex_dialog}
+      on_cancel={@on_close}
     >
-      <.dialog_header id={@id} title={"Channel Central: #{display_channel(@channel_name)}"}>
+      <.dialog_header
+        id={@id}
+        title={"Channel Central: #{display_channel(@channel_name)}"}
+        on_close={@on_close}
+      >
         <:icon><Icons.icon_dialog_channel_central /></:icon>
       </.dialog_header>
       <.dialog_body>

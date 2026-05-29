@@ -70,6 +70,9 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
       type="button"
       class="flex items-center px-[2px] cursor-pointer border-none bg-transparent hover:opacity-80"
       phx-click={@on_click}
+      onmousedown="event.preventDefault()"
+      aria-label="About RetroHexChat"
+      data-testid="app-logo"
     >
       <Icons.icon_hex_stone class="w-4 h-4 shrink-0" />
     </button>

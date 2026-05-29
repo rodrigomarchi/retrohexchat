@@ -34,8 +34,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   @spec channel_list(map()) :: Phoenix.LiveView.Rendered.t()
   def channel_list(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show}>
-      <.dialog_header id={@id} title="Channel List">
+    <.dialog id={@id} show={@show} on_cancel={@on_close}>
+      <.dialog_header id={@id} title="Channel List" on_close={@on_close}>
         <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
       </.dialog_header>
 

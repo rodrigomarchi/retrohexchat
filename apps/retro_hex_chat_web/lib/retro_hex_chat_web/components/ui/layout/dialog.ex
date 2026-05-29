@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   """
   attr :id, :string, required: true
   attr :show, :boolean, default: false
-  attr :on_cancel, JS, default: %JS{}
+  attr :on_cancel, :any, default: nil
   attr :lock, :boolean, default: false, doc: "When true, disables click-away and escape dismissal"
   attr :class, :string, default: nil
   slot :inner_block, required: true
@@ -37,8 +37,8 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
       id={@id}
       phx-mounted={@show && JS.exec("phx-show-modal", to: "##{@id}")}
       phx-show-modal={show_modal(@id)}
-      phx-hide-modal={@on_cancel |> hide_modal(@id)}
-      class="relative z-modal hidden group/dialog"
+      phx-hide-modal={close_modal(@on_cancel, @id)}
+      class={classes(["relative z-modal group/dialog", !@show && "hidden"])}
     >
       <%!-- Server-driven show/hide trigger: mounts when show=true, removed when show=false --%>
       <div
@@ -63,13 +63,16 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
       >
         <.focus_wrap
           id={"#{@id}-wrap"}
-          phx-window-keydown={!@lock && JS.exec("phx-hide-modal", to: "##{@id}")}
+          phx-window-keydown={!@lock && close_modal(@on_cancel, @id)}
           phx-key="escape"
-          phx-click-away={!@lock && JS.exec("phx-hide-modal", to: "##{@id}")}
+          phx-click-away={!@lock && close_modal(@on_cancel, @id)}
           class={classes(["w-full max-w-none md:max-w-lg p-0 md:p-4", @class])}
         >
           <%!-- Window frame (Win98 3D border) --%>
-          <div class="bg-surface shadow-retro-window p-[3px] min-h-[100dvh] md:min-h-0">
+          <div
+            id={"#{@id}-surface"}
+            class="bg-surface shadow-retro-window p-[3px] min-h-[100dvh] md:min-h-0"
+          >
             {render_slot(@inner_block)}
           </div>
         </.focus_wrap>
@@ -90,6 +93,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   """
   attr :id, :string, required: true, doc: "Dialog id — used by the close button"
   attr :title, :string, required: true, doc: "Title text displayed in the title bar"
+  attr :on_close, :any, default: nil
   attr :class, :string, default: nil
   slot :icon, required: true, doc: "16×16 title bar icon — mandatory"
 
@@ -98,7 +102,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
     <div class={classes(["bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2", @class])}>
       <.dialog_icon>{render_slot(@icon)}</.dialog_icon>
       <.dialog_title>{@title}</.dialog_title>
-      <.dialog_close id={@id} />
+      <.dialog_close id={@id} on_close={@on_close} />
     </div>
     """
   end
@@ -151,6 +155,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   Must be placed inside dialog_header.
   """
   attr :id, :string, required: true
+  attr :on_close, :any, default: nil
   attr :class, :string, default: nil
 
   def dialog_close(assigns) do
@@ -165,13 +170,17 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
           @class
         ])
       }
-      phx-click={JS.exec("phx-hide-modal", to: "##{@id}")}
+      phx-click={close_modal(@on_close, @id)}
       aria-label="Close"
     >
       <Icons.icon_close_pixel class="w-[8px] h-[7px]" />
     </button>
     """
   end
+
+  defp close_modal(nil, id), do: hide_modal(id)
+  defp close_modal(%JS{} = js, id), do: hide_modal(js, id)
+  defp close_modal(event, id) when is_binary(event), do: JS.push(event) |> hide_modal(id)
 
   @doc """
   Dialog body — content area with padding.
@@ -206,7 +215,8 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
     JS.set_attribute(%JS{}, {"data-state", "open"}, to: "##{id}")
     |> JS.show(to: "##{id}", transition: {"_", "_", "_"}, time: 130)
     |> JS.add_class("overflow-hidden", to: "body")
-    |> JS.focus_first(to: "##{id}-content")
+    |> JS.push_focus()
+    |> JS.focus_first(to: "##{id}-surface")
   end
 
   @spec show_modal(Phoenix.LiveView.JS.t(), String.t()) :: Phoenix.LiveView.JS.t()
@@ -215,7 +225,8 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
     |> JS.set_attribute({"data-state", "open"}, to: "##{id}")
     |> JS.show(to: "##{id}", transition: {"_", "_", "_"}, time: 130)
     |> JS.add_class("overflow-hidden", to: "body")
-    |> JS.focus_first(to: "##{id}-content")
+    |> JS.push_focus()
+    |> JS.focus_first(to: "##{id}-surface")
   end
 
   @spec hide_modal(String.t()) :: Phoenix.LiveView.JS.t()

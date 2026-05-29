@@ -79,18 +79,18 @@ green catalog in `TEST_CATALOG.md`.
 
 | # | Scenario | Suggested spec file | Priority | Status |
 |---|----------|---------------------|----------|--------|
-| T1 | File/View/Tools/Help menu items open the same dialogs/actions as toolbar buttons where both exist | `tests/chat-menu-toolbar-parity.spec.ts` | P1 | todo |
-| T2 | Opening menus and dialogs never steals chat input focus unless the dialog intentionally owns focus | `tests/chat-menu-focus.spec.ts` | P1 | todo |
-| T3 | About dialog opens from Help menu and app logo, closes cleanly, and returns focus to chat input | `tests/chat-about-dialog.spec.ts` | P2 | todo |
-| T4 | View toggles hide/show conversations, nicklist, channel list, and search without losing active tab or unread state | `tests/chat-view-menu.spec.ts` | P1 | todo |
-| T5 | Tools menu opens Address Book, Highlights, URL Catcher, Channel Central, Perform, Sound, Flood Protection, Alias, Custom Menus, Autorespond | `tests/chat-tools-menu.spec.ts` | P1 | todo |
-| T6 | Escape closes the topmost dialog/menu only and leaves underlying dialogs/state intact | `tests/chat-dialog-keyboard.spec.ts` | P1 | todo |
-| T7 | Enter activates primary dialog action and Escape/cancel paths do not persist draft changes | `tests/chat-dialog-keyboard.spec.ts` | P2 | todo |
-| T8 | Tab key focus order inside major dialogs is usable and does not escape modal unexpectedly | `tests/chat-dialog-keyboard.spec.ts` | P2 | todo |
-| T9 | Window switch shortcuts skip Status as designed and cycle channels/PMs in stable order | `tests/chat-window-shortcuts.spec.ts` | P1 | todo |
-| T10 | Cheatsheet opens from menu/shortcut, lists active key bindings, and closes without submitting chat input | `tests/chat-cheatsheet.spec.ts` | P2 | todo |
-| T11 | Dialog close buttons, cancel buttons, and backdrop behavior are consistent for all major dialogs | `tests/chat-dialog-close.spec.ts` | P2 | todo |
-| T12 | Toolbar/menu disabled state during reconnect prevents destructive actions but keeps Help accessible | `tests/chat-reconnect-shell.spec.ts` | P1 | todo |
+| T1 | File/View/Tools/Help menu items open the same dialogs/actions as toolbar buttons where both exist | `tests/chat-menu-toolbar-parity.spec.ts` | P1 | done |
+| T2 | Opening menus and dialogs never steals chat input focus unless the dialog intentionally owns focus | `tests/chat-menu-focus.spec.ts` | P1 | done |
+| T3 | About dialog opens from Help menu and app logo, closes cleanly, and returns focus to chat input | `tests/chat-about-dialog.spec.ts` | P2 | done |
+| T4 | View toggles hide/show conversations, nicklist, channel list, and search without losing active tab or unread state | `tests/chat-view-menu.spec.ts` | P1 | done |
+| T5 | Tools menu opens Address Book, Highlights, URL Catcher, Channel Central, Perform, Sound, Flood Protection, Alias, Custom Menus, Autorespond | `tests/chat-tools-menu.spec.ts` | P1 | done |
+| T6 | Escape closes the topmost dialog/menu only and leaves underlying dialogs/state intact | `tests/chat-dialog-keyboard.spec.ts` | P1 | done |
+| T7 | Enter activates primary dialog action and Escape/cancel paths do not persist draft changes | `tests/chat-dialog-keyboard.spec.ts` | P2 | done |
+| T8 | Tab key focus order inside major dialogs is usable and does not escape modal unexpectedly | `tests/chat-dialog-keyboard.spec.ts` | P2 | done |
+| T9 | Window switch shortcuts skip Status as designed and cycle channels/PMs in stable order | `tests/chat-window-shortcuts.spec.ts` | P1 | done |
+| T10 | Cheatsheet opens from menu/shortcut, lists active key bindings, and closes without submitting chat input | `tests/chat-cheatsheet.spec.ts` | P2 | done |
+| T11 | Dialog close buttons, cancel buttons, and backdrop behavior are consistent for all major dialogs | `tests/chat-dialog-close.spec.ts` | P2 | done |
+| T12 | Toolbar/menu disabled state during reconnect prevents destructive actions but keeps Help accessible | `tests/chat-reconnect-shell.spec.ts` | P1 | done |
 
 ## U - Dialog CRUD And Settings Depth
 

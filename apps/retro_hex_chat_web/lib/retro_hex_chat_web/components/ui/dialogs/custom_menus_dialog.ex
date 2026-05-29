@@ -62,8 +62,8 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
       assign(assigns, :active_tab_str, Atom.to_string(assigns.active_tab))
 
     ~H"""
-    <.dialog id={@id} show={@show}>
-      <.dialog_header id={@id} title="Custom Menus">
+    <.dialog id={@id} show={@show} on_cancel={@on_close}>
+      <.dialog_header id={@id} title="Custom Menus" on_close={@on_close}>
         <:icon><Icons.icon_dialog_custom_menus class="w-4 h-4" /></:icon>
       </.dialog_header>
 

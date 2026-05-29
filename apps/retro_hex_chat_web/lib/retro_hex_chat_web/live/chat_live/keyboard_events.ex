@@ -130,35 +130,63 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   # ---------------------------------------------------------------------------
 
   defp dismiss_topmost(socket) do
-    cond do
-      socket.assigns.pending_invites != [] ->
-        dismiss_pending_invite(socket)
-
-      socket.assigns.cheatsheet_visible ->
-        assign(socket, cheatsheet_visible: false)
-
-      socket.assigns.show_perform_dialog ->
-        close_perform_dialog(socket)
-
-      true ->
-        dismiss_secondary(socket)
+    case topmost_dismissal(socket) do
+      nil -> dismiss_secondary(socket)
+      dismissal -> dismissal.(socket)
     end
   end
 
   defp dismiss_secondary(socket) do
-    cond do
-      socket.assigns.show_channel_list ->
-        close_channel_list(socket)
-
-      socket.assigns.show_channel_central ->
-        close_channel_central(socket)
-
-      socket.assigns.search_visible ->
-        clear_search_state(socket)
-
-      true ->
-        socket
+    case find_active_dismissal(socket, secondary_dismissals()) do
+      nil -> socket
+      dismissal -> dismissal.(socket)
     end
+  end
+
+  defp topmost_dismissal(socket) do
+    if socket.assigns.pending_invites != [] do
+      &dismiss_pending_invite/1
+    else
+      find_active_dismissal(socket, topmost_dismissals())
+    end
+  end
+
+  defp find_active_dismissal(socket, dismissals) do
+    case Enum.find(dismissals, fn {assign, _dismissal} -> Map.get(socket.assigns, assign) end) do
+      nil -> nil
+      {_assign, dismissal} -> dismissal
+    end
+  end
+
+  defp topmost_dismissals do
+    [
+      {:cheatsheet_visible, &close_cheatsheet/1},
+      {:show_contact_add_dialog, &close_contact_add_dialog/1},
+      {:show_contact_edit_dialog, &close_contact_edit_dialog/1},
+      {:show_highlight_add_dialog, &close_highlight_add_dialog/1},
+      {:show_highlight_edit_dialog, &close_highlight_edit_dialog/1},
+      {:show_perform_add_dialog, &close_perform_add_dialog/1},
+      {:show_perform_edit_dialog, &close_perform_edit_dialog/1},
+      {:show_autojoin_add_dialog, &close_autojoin_add_dialog/1},
+      {:show_autojoin_edit_dialog, &close_autojoin_edit_dialog/1},
+      {:show_perform_dialog, &close_perform_dialog/1}
+    ]
+  end
+
+  defp secondary_dismissals do
+    [
+      {:show_channel_list, &close_channel_list/1},
+      {:show_channel_central, &close_channel_central/1},
+      {:search_visible, &clear_search_state/1},
+      {:show_address_book, &close_address_book/1},
+      {:show_highlight_dialog, &close_highlight_dialog/1},
+      {:show_sound_settings_dialog, &close_sound_settings_dialog/1},
+      {:show_flood_protection_dialog, &close_flood_protection_dialog/1},
+      {:show_alias_dialog, &close_alias_dialog/1},
+      {:show_custom_menus_dialog, &close_custom_menus_dialog/1},
+      {:show_url_catcher, &close_url_catcher/1},
+      {:show_autorespond_dialog, &close_autorespond_dialog/1}
+    ]
   end
 
   defp dismiss_pending_invite(socket) do
@@ -168,6 +196,25 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     try_remove_invite_exception(last.channel, socket.assigns.session.nickname)
     assign(socket, pending_invites: remaining)
   end
+
+  defp close_cheatsheet(socket), do: assign(socket, cheatsheet_visible: false)
+  defp close_contact_add_dialog(socket), do: assign(socket, show_contact_add_dialog: false)
+  defp close_contact_edit_dialog(socket), do: assign(socket, show_contact_edit_dialog: false)
+  defp close_highlight_add_dialog(socket), do: assign(socket, show_highlight_add_dialog: false)
+  defp close_highlight_edit_dialog(socket), do: assign(socket, show_highlight_edit_dialog: false)
+  defp close_perform_add_dialog(socket), do: assign(socket, show_perform_add_dialog: false)
+  defp close_perform_edit_dialog(socket), do: assign(socket, show_perform_edit_dialog: false)
+  defp close_autojoin_add_dialog(socket), do: assign(socket, show_autojoin_add_dialog: false)
+  defp close_autojoin_edit_dialog(socket), do: assign(socket, show_autojoin_edit_dialog: false)
+
+  defp close_sound_settings_dialog(socket) do
+    assign(socket, show_sound_settings_dialog: false, sound_settings_draft: nil)
+  end
+
+  defp close_flood_protection_dialog(socket),
+    do: assign(socket, show_flood_protection_dialog: false)
+
+  defp close_url_catcher(socket), do: assign(socket, show_url_catcher: false)
 
   # ---------------------------------------------------------------------------
   # Private helpers
@@ -212,6 +259,65 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       channel_list_search: "",
       channel_list_loading: false,
       channel_list_count: 0
+    )
+  end
+
+  defp close_address_book(socket) do
+    assign(socket,
+      show_address_book: false,
+      address_book_tab: "contacts",
+      contacts_selected: nil,
+      show_contact_add_dialog: false,
+      show_contact_edit_dialog: false,
+      nick_colors_selected: nil,
+      show_nick_color_add_dialog: false,
+      show_nick_color_edit_dialog: false,
+      control_selected: nil,
+      show_control_add_dialog: false
+    )
+  end
+
+  defp close_highlight_dialog(socket) do
+    assign(socket,
+      show_highlight_dialog: false,
+      show_highlight_add_dialog: false,
+      show_highlight_edit_dialog: false,
+      highlight_selected: nil
+    )
+  end
+
+  defp close_alias_dialog(socket) do
+    assign(socket,
+      show_alias_dialog: false,
+      alias_dialog_selected: nil,
+      alias_dialog_editing: false,
+      alias_dialog_draft_name: "",
+      alias_dialog_draft_expansion: "",
+      alias_dialog_error: nil,
+      alias_dialog_warning: nil
+    )
+  end
+
+  defp close_custom_menus_dialog(socket) do
+    assign(socket,
+      show_custom_menus_dialog: false,
+      custom_menus_dialog_selected: nil,
+      custom_menus_dialog_editing: false,
+      custom_menus_dialog_draft_label: "",
+      custom_menus_dialog_draft_command: "",
+      custom_menus_dialog_error: nil
+    )
+  end
+
+  defp close_autorespond_dialog(socket) do
+    assign(socket,
+      show_autorespond_dialog: false,
+      autorespond_dialog_selected: nil,
+      autorespond_dialog_editing: false,
+      autorespond_dialog_draft_trigger: "on_join",
+      autorespond_dialog_draft_channel: "",
+      autorespond_dialog_draft_command: "",
+      autorespond_dialog_error: nil
     )
   end
 

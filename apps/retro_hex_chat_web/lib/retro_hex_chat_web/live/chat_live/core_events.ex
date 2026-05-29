@@ -36,6 +36,10 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   # -- send_input --
 
+  def handle_event("input_changed", %{"input" => input}, socket) do
+    {:halt, assign(socket, input: input)}
+  end
+
   def handle_event("send_input", %{"input" => ""}, socket) do
     if socket.assigns.edit_mode_message_id do
       # Empty edit = treat as delete (show confirmation dialog)

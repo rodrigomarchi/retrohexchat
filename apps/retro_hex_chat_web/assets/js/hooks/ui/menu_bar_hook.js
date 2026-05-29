@@ -53,13 +53,16 @@ const MenuBarHook = {
     this._onEscape = (e) => {
       if (e.key === "Escape") this._closeAll();
     };
+    this._onForceClose = () => this._closeAll();
     document.addEventListener("mousedown", this._onOutside);
     document.addEventListener("keydown", this._onEscape);
+    this.el.addEventListener("menubar:close-all", this._onForceClose);
   },
 
   destroyed() {
     document.removeEventListener("mousedown", this._onOutside);
     document.removeEventListener("keydown", this._onEscape);
+    this.el.removeEventListener("menubar:close-all", this._onForceClose);
   },
 
   _openMenu(menu) {

@@ -34,22 +34,14 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
 
   def handle_event("toggle_address_book", _params, socket) do
     if socket.assigns.show_address_book do
-      {:halt,
-       assign(socket,
-         show_address_book: false,
-         address_book_tab: "contacts",
-         contacts_selected: nil,
-         show_contact_add_dialog: false,
-         show_contact_edit_dialog: false,
-         nick_colors_selected: nil,
-         show_nick_color_add_dialog: false,
-         show_nick_color_edit_dialog: false,
-         control_selected: nil,
-         show_control_add_dialog: false
-       )}
+      {:halt, close_address_book(socket)}
     else
       {:halt, assign(socket, show_address_book: true)}
     end
+  end
+
+  def handle_event("close_address_book", _params, socket) do
+    {:halt, close_address_book(socket)}
   end
 
   def handle_event("address_book_tab", %{"tab" => tab}, socket) do
@@ -355,6 +347,21 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
   end
 
   defp present_string(_value), do: nil
+
+  defp close_address_book(socket) do
+    assign(socket,
+      show_address_book: false,
+      address_book_tab: "contacts",
+      contacts_selected: nil,
+      show_contact_add_dialog: false,
+      show_contact_edit_dialog: false,
+      nick_colors_selected: nil,
+      show_nick_color_add_dialog: false,
+      show_nick_color_edit_dialog: false,
+      control_selected: nil,
+      show_control_add_dialog: false
+    )
+  end
 
   defp contact_note(contact_list, nick) when is_binary(nick) do
     downcased = String.downcase(nick)

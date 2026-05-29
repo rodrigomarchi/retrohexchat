@@ -80,8 +80,8 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
       ])
 
     ~H"""
-    <.dialog id={@id} show={@show}>
-      <.dialog_header id={@id} title="Sound Settings">
+    <.dialog id={@id} show={@show} on_cancel={@on_cancel}>
+      <.dialog_header id={@id} title="Sound Settings" on_close={@on_cancel}>
         <:icon><Icons.icon_dialog_sound class="w-4 h-4" /></:icon>
       </.dialog_header>
 

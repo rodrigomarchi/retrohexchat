@@ -360,6 +360,7 @@
           name="input"
           placeholder={V2Helpers.input_placeholder(assigns)}
           on_submit="send_input"
+          on_change="input_changed"
           hook="AutocompleteHook"
           wrapper_hook="CharCounterHook"
           autofocus
@@ -541,9 +542,9 @@
   on_control_add="control_add_dialog"
   on_control_remove="control_remove"
   on_tab="address_book_tab"
-  on_ok="toggle_address_book"
-  on_cancel="toggle_address_book"
-  on_close="toggle_address_book"
+  on_ok="close_address_book"
+  on_cancel="close_address_book"
+  on_close="close_address_book"
 />
 
 <.channel_list
@@ -556,7 +557,7 @@
   on_search="channel_list_filter"
   on_select="channel_list_select"
   on_join="channel_list_join"
-  on_close="toggle_channel_list"
+  on_close="close_channel_list"
 />
 
 <.flood_protection_dialog
@@ -732,7 +733,7 @@
   on_sort="url_catcher_sort"
   on_filter="url_catcher_filter"
   on_search="url_catcher_search"
-  on_close="toggle_url_catcher"
+  on_close="close_url_catcher"
 />
 
 <.cheatsheet_dialog

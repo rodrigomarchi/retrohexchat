@@ -32,16 +32,15 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
   end
 
   def handle_event("toggle_channel_list", _params, socket) do
-    {:halt,
-     assign(socket,
-       show_channel_list: false,
-       channel_list_channels: [],
-       channel_list_filtered: [],
-       channel_list_selected: nil,
-       channel_list_search: "",
-       channel_list_loading: false,
-       channel_list_count: 0
-     )}
+    if socket.assigns.show_channel_list do
+      {:halt, close_channel_list(socket)}
+    else
+      handle_event("channel_list", %{}, socket)
+    end
+  end
+
+  def handle_event("close_channel_list", _params, socket) do
+    {:halt, close_channel_list(socket)}
   end
 
   def handle_event("channel_list_filter", %{"search" => search}, socket) do
@@ -93,4 +92,16 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
 
   # Catch-all — pass through all non-channel-list events
   def handle_event(_event, _params, socket), do: {:cont, socket}
+
+  defp close_channel_list(socket) do
+    assign(socket,
+      show_channel_list: false,
+      channel_list_channels: [],
+      channel_list_filtered: [],
+      channel_list_selected: nil,
+      channel_list_search: "",
+      channel_list_loading: false,
+      channel_list_count: 0
+    )
+  end
 end
