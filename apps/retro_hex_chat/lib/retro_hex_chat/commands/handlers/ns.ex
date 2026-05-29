@@ -37,8 +37,11 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
 
   def execute(["ghost" | args], context) do
     case args do
-      [target | _] -> call_ghost(target, context.nickname)
-      [] -> {:error, "Usage: /ns ghost <nickname>"}
+      [target | password_parts] when password_parts != [] ->
+        call_ghost(target, Enum.join(password_parts, " "), context.nickname)
+
+      _ ->
+        {:error, "Usage: /ns ghost <nickname> <password>"}
     end
   end
 
@@ -78,11 +81,11 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
       name: "ns",
       syntax: "/ns <subcommand> [args]",
       description:
-        "Register and protect your nickname with a password through NickServ.\nSubcommands: register <password>, identify <password>, ghost <nick>, info [nick], drop <password>, help.\nRegister: claims current nickname. Identify: authenticates each session.\nGhost: disconnects a stale session using your registered nickname.",
+        "Register and protect your nickname with a password through NickServ.\nSubcommands: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, help.\nRegister: claims current nickname. Identify: authenticates each session.\nGhost: disconnects a stale session using the registered nickname's password.",
       examples: [
         "/ns register mypassword",
         "/ns identify mypassword",
-        "/ns ghost othernick",
+        "/ns ghost othernick mypassword",
         "/ns info",
         "/ns drop mypassword"
       ]
@@ -105,8 +108,8 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     end
   end
 
-  defp call_ghost(target, requester) do
-    case NickServ.ghost(target, requester) do
+  defp call_ghost(target, password, requester) do
+    case NickServ.ghost(target, password, requester) do
       {:ok, msg} -> {:ok, :system, %{content: "[NickServ] #{msg}"}}
       {:error, msg} -> {:error, "[NickServ] #{msg}"}
     end
@@ -166,14 +169,14 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
       examples: [
         "/ns register mypassword",
         "/ns identify mypassword",
-        "/ns ghost othernick",
+        "/ns ghost othernick mypassword",
         "/ns info",
         "/ns drop mypassword"
       ],
       subcommands: [
         %{name: "register", description: "Register your nickname with a password"},
         %{name: "identify", description: "Authenticate with your registered password"},
-        %{name: "ghost", description: "Disconnect a stale session using your nickname"},
+        %{name: "ghost", description: "Disconnect a stale session using its password"},
         %{name: "info", description: "View registration info for a nickname"},
         %{name: "drop", description: "Delete your nickname registration"},
         %{name: "help", description: "Show NickServ help"}

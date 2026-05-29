@@ -3,7 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
-  alias RetroHexChat.Services.ChanServ
+  alias RetroHexChat.Services.{ChanServ, Queries}
 
   @access_levels ~w(sop aop vop)
 
@@ -125,14 +125,32 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     end
   end
 
-  defp call_list_access(channel, _level, server) do
+  defp call_list_access(channel, level, server) do
     case ChanServ.info(channel, server) do
       {:ok, _} ->
-        {:ok, :system, %{content: "[ChanServ] Access list for #{channel}"}}
+        {:ok, :system, %{content: format_access_list(channel, level)}}
 
       {:error, msg} ->
         {:error, "[ChanServ] #{msg}"}
     end
+  end
+
+  defp format_access_list(channel, level) do
+    entries =
+      channel
+      |> Queries.list_access()
+      |> Enum.filter(&(&1.level == level))
+
+    ["[ChanServ] Access list for #{channel} (#{level})" | format_access_lines(entries)]
+    |> Enum.join("\n")
+  end
+
+  defp format_access_lines([]), do: ["  (empty)"]
+
+  defp format_access_lines(entries) do
+    Enum.map(entries, fn entry ->
+      "  #{entry.nickname} [#{entry.level}] (added by #{entry.added_by})"
+    end)
   end
 
   @impl true

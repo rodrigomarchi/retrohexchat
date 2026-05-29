@@ -11,8 +11,11 @@
 <p>
   <code>register &lt;password&gt;</code>
   — Register your current nickname with a password.<br /><code>identify &lt;password&gt;</code>
-  — Log in to your registered nickname for this session.<br /><code>ghost &lt;nick&gt;</code>
-  — Disconnect another session using your registered nickname (if you got disconnected and your old session is still lingering).<br />
+  — Log in to your registered nickname for this session.<br />
+  <code>
+    ghost &lt;nick&gt; &lt;password&gt;
+  </code>
+  — Disconnect another session using a registered nickname after proving you know its password (if you got disconnected and your old session is still lingering).<br />
   <code>
     info [nick]
   </code>
@@ -25,14 +28,14 @@
 <.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
 <ul>
   <li>Password is required for register, identify, and drop</li>
-  <li>Ghost only works on your own registered nickname</li>
+  <li>Ghost requires the registered nickname's password</li>
   <li>You must be using the nickname you want to register</li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
 <pre>/ns register mySecurePassword
 /ns identify mySecurePassword
 /ns info Alice
-/ns ghost MyNick
+/ns ghost MyNick mySecurePassword
 /ns drop mySecurePassword</pre>
 <.help_h4 icon={:icon_link}>See Also</.help_h4>
 <p>

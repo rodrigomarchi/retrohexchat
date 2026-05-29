@@ -69,7 +69,7 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:NsGhostTgt")
 
       assert {:ok, :system, %{content: content}} =
-               Ns.execute(["ghost", "NsGhostTgt"], context)
+               Ns.execute(["ghost", "NsGhostTgt", "secret123"], context)
 
       assert content =~ "Ghost command sent"
     end
@@ -166,7 +166,9 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
     test "ghost returns error for unregistered nick" do
       context = %{@base_context | nickname: "GhostRequester"}
 
-      assert {:error, msg} = Ns.execute(["ghost", "UnregisteredGhostTarget"], context)
+      assert {:error, msg} =
+               Ns.execute(["ghost", "UnregisteredGhostTarget", "secret123"], context)
+
       assert msg =~ "NickServ"
     end
 

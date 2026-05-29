@@ -37,6 +37,11 @@ export class ChatPage {
   readonly notifyListDialog: Locator;
   readonly addressBookDialog: Locator;
   readonly channelCentralDialog: Locator;
+  readonly nickChangeDialog: Locator;
+  readonly nickChangePassword: Locator;
+  readonly nickChangeConfirmButton: Locator;
+  readonly nickChangeCancelButton: Locator;
+  readonly nickChangeError: Locator;
   readonly channelListSearch: Locator;
   readonly channelListJoinButton: Locator;
 
@@ -89,6 +94,11 @@ export class ChatPage {
     this.channelCentralDialog = page.locator(
       '#channel-central-dialog [role="dialog"]',
     );
+    this.nickChangeDialog = page.getByTestId('nick-change-dialog');
+    this.nickChangePassword = page.getByTestId('nick-change-password');
+    this.nickChangeConfirmButton = page.getByTestId('nick-change-confirm');
+    this.nickChangeCancelButton = page.getByTestId('nick-change-cancel');
+    this.nickChangeError = page.getByTestId('nick-change-error');
     this.channelListSearch = page.getByTestId('channel-list-search');
     this.channelListJoinButton = page.getByTestId('channel-list-join');
     // The dialog component wraps content in a <span data-testid="...">, but
@@ -327,6 +337,18 @@ export class ChatPage {
       .last()
       .click();
     await expect(this.channelCentralDialog).toBeHidden();
+  }
+
+  async confirmNickChange(password?: string) {
+    await expect(this.nickChangeDialog).toBeVisible();
+
+    if (password !== undefined) {
+      await expect(this.nickChangePassword).toBeVisible();
+      await this.nickChangePassword.fill('');
+      await this.nickChangePassword.pressSequentially(password);
+    }
+
+    await this.nickChangeConfirmButton.click();
   }
 
   async disconnect() {

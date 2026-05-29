@@ -182,18 +182,18 @@ only the foundation and a small subset of command behavior.
 
 | # | Flow | Planned spec file | Priority | Status |
 |---|------|-------------------|----------|--------|
-| K1 | `/nick` to an unregistered nick, then `/ns register pw` registers it and `/ns info` reports it | `tests/chat-nickserv.spec.ts` | P0 | todo |
-| K2 | `/ns identify wrong` fails, retry with correct password succeeds | `tests/chat-nickserv.spec.ts` | P0 | todo |
-| K3 | `/ns drop wrong` fails, `/ns drop correct` deletes registration | `tests/chat-nickserv.spec.ts` | P1 | todo |
-| K4 | `/ns ghost nick` disconnects a stale same-nick session | `tests/chat-nickserv.spec.ts` | P1 | todo |
-| K5 | `/nick registeredNick` opens password dialog and only confirms with correct password | `tests/chat-nickserv.spec.ts` | P0 | todo |
-| K6 | `/cs register` registers current channel and `/cs info` shows founder | `tests/chat-chanserv.spec.ts` | P0 | todo |
-| K7 | `/cs aop add bob`, bob rejoins, and auto-operator privilege applies | `tests/chat-chanserv.spec.ts` | P1 | todo |
-| K8 | `/cs vop add bob`, bob rejoins, and auto-voice privilege applies | `tests/chat-chanserv.spec.ts` | P1 | todo |
-| K9 | `/cs sop/aop/vop list` displays access list and `/cs ... del` removes entry | `tests/chat-chanserv.spec.ts` | P1 | todo |
-| K10 | Non-founder cannot `/cs drop`; founder can drop after confirmation path if any | `tests/chat-chanserv.spec.ts` | P1 | todo |
-| K11 | `/admin ns info/resetpass/drop` changes NickServ state from admin context | `tests/chat-admin-services.spec.ts` | P1 | todo |
-| K12 | `/admin cs info/access/transfer/drop` changes ChanServ state from admin context | `tests/chat-admin-services.spec.ts` | P1 | todo |
+| K1 | `/nick` to an unregistered nick, then `/ns register pw` registers it and `/ns info` reports it | `tests/chat-nickserv.spec.ts` | P0 | done |
+| K2 | `/ns identify wrong` fails, retry with correct password succeeds | `tests/chat-nickserv.spec.ts` | P0 | done |
+| K3 | `/ns drop wrong` fails, `/ns drop correct` deletes registration | `tests/chat-nickserv.spec.ts` | P1 | done |
+| K4 | `/ns ghost nick password` rejects wrong password and disconnects the stale registered session with the correct password | `tests/chat-nickserv.spec.ts` | P1 | done |
+| K5 | `/nick registeredNick` opens password dialog and only confirms with correct password | `tests/chat-nickserv.spec.ts` | P0 | done |
+| K6 | `/cs register` registers current channel and `/cs info` shows founder | `tests/chat-chanserv.spec.ts` | P0 | done |
+| K7 | `/cs aop add bob`, bob rejoins, and auto-operator privilege applies | `tests/chat-chanserv.spec.ts` | P1 | done |
+| K8 | `/cs vop add bob`, bob rejoins, and auto-voice privilege applies | `tests/chat-chanserv.spec.ts` | P1 | done |
+| K9 | `/cs sop/aop/vop list` displays access list and `/cs ... del` removes entry | `tests/chat-chanserv.spec.ts` | P1 | done |
+| K10 | Non-founder cannot `/cs drop`; founder can drop after confirmation path if any | `tests/chat-chanserv.spec.ts` | P1 | done |
+| K11 | `/admin ns info/resetpass/drop` changes NickServ state from admin context | `tests/chat-admin-services.spec.ts` | P1 | done |
+| K12 | `/admin cs info/access/transfer/drop` changes ChanServ state from admin context | `tests/chat-admin-services.spec.ts` | P1 | done |
 
 ## Group L - Config, Scripting, Timers, Custom Menus
 

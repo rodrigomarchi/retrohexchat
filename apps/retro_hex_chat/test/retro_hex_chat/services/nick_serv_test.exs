@@ -87,28 +87,26 @@ defmodule RetroHexChat.Services.NickServTest do
   end
 
   describe "ghost/2" do
-    test "sends force_disconnect for identified requester", %{server: server} do
+    test "sends force_disconnect with target password", %{server: server} do
       {:ok, _} = NickServ.register("GhostTarget", "secret123", server)
-      {:ok, _} = NickServ.register("GhostReq", "secret456", server)
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:GhostTarget")
 
-      assert {:ok, msg} = NickServ.ghost("GhostTarget", "GhostReq", server)
+      assert {:ok, msg} = NickServ.ghost("GhostTarget", "secret123", "GhostReq", server)
       assert msg =~ "Ghost command sent"
 
       assert_receive {:force_disconnect, %{reason: reason}}
       assert reason =~ "GhostReq"
     end
 
-    test "returns error when requester not identified", %{server: server} do
+    test "returns error with invalid target password", %{server: server} do
       {:ok, _} = NickServ.register("GhostTgt2", "secret123", server)
-      assert {:error, msg} = NickServ.ghost("GhostTgt2", "NotIdent", server)
-      assert msg =~ "identified"
+      assert {:error, msg} = NickServ.ghost("GhostTgt2", "wrong", "GhostReq2", server)
+      assert msg =~ "Invalid password"
     end
 
     test "returns error when target not registered", %{server: server} do
-      {:ok, _} = NickServ.register("GhostReq2", "secret123", server)
-      assert {:error, msg} = NickServ.ghost("NotRegged", "GhostReq2", server)
+      assert {:error, msg} = NickServ.ghost("NotRegged", "secret123", "GhostReq2", server)
       assert msg =~ "not registered"
     end
   end

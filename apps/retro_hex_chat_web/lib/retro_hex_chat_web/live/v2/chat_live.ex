@@ -967,7 +967,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       "  /ns register <password>   — Register your current nickname",
       "  /ns identify <password>   — Identify (log in) for this session",
       "  /ns info [nickname]       — Look up registration info",
-      "  /ns ghost <nick>          — Disconnect a ghost session",
+      "  /ns ghost <nick> <pass>   — Disconnect a ghost session",
       "  /ns drop <password>       — Permanently unregister your nickname",
       "",
       "Rules:",

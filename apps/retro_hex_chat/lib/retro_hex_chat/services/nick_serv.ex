@@ -40,10 +40,10 @@ defmodule RetroHexChat.Services.NickServ do
     GenServer.call(server, {:info, nickname})
   end
 
-  @spec ghost(String.t(), String.t(), GenServer.server()) ::
+  @spec ghost(String.t(), String.t(), String.t(), GenServer.server()) ::
           {:ok, String.t()} | {:error, String.t()}
-  def ghost(target_nick, requester_nick, server \\ __MODULE__) do
-    GenServer.call(server, {:ghost, target_nick, requester_nick})
+  def ghost(target_nick, password, requester_nick, server \\ __MODULE__) do
+    GenServer.call(server, {:ghost, target_nick, password, requester_nick})
   end
 
   @spec drop(String.t(), String.t(), GenServer.server()) ::
@@ -161,28 +161,13 @@ defmodule RetroHexChat.Services.NickServ do
     end
   end
 
-  def handle_call({:ghost, target_nick, requester_nick}, _from, state) do
-    cond do
-      not MapSet.member?(state.identified, requester_nick) ->
-        {:reply, {:error, "You must be identified to use GHOST"}, state}
-
-      Queries.find_by_nickname(target_nick) == nil ->
+  def handle_call({:ghost, target_nick, password, requester_nick}, _from, state) do
+    case Queries.find_by_nickname(target_nick) do
+      nil ->
         {:reply, {:error, "Nickname #{target_nick} is not registered"}, state}
 
-      true ->
-        case Phoenix.PubSub.broadcast(
-               RetroHexChat.PubSub,
-               "user:#{target_nick}",
-               {:force_disconnect, %{reason: "Ghosted by #{requester_nick}"}}
-             ) do
-          :ok ->
-            :ok
-
-          {:error, reason} ->
-            Logger.warning("PubSub broadcast to user:#{target_nick} failed: #{inspect(reason)}")
-        end
-
-        {:reply, {:ok, "Ghost command sent for #{target_nick}"}, state}
+      %RegisteredNick{} = nick ->
+        handle_ghost_for_registered_nick(nick, target_nick, password, requester_nick, state)
     end
   end
 
@@ -311,6 +296,29 @@ defmodule RetroHexChat.Services.NickServ do
          ) do
       :ok -> :ok
       {:error, reason} -> Logger.warning("PubSub identify broadcast failed: #{inspect(reason)}")
+    end
+  end
+
+  defp handle_ghost_for_registered_nick(nick, target_nick, password, requester_nick, state) do
+    if RegisteredNick.verify_password(nick, password) do
+      broadcast_ghost_disconnect(target_nick, requester_nick)
+      {:reply, {:ok, "Ghost command sent for #{target_nick}"}, state}
+    else
+      {:reply, {:error, "Invalid password"}, state}
+    end
+  end
+
+  defp broadcast_ghost_disconnect(target_nick, requester_nick) do
+    case Phoenix.PubSub.broadcast(
+           RetroHexChat.PubSub,
+           "user:#{target_nick}",
+           {:force_disconnect, %{reason: "Ghosted by #{requester_nick}"}}
+         ) do
+      :ok ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("PubSub broadcast to user:#{target_nick} failed: #{inspect(reason)}")
     end
   end
 
