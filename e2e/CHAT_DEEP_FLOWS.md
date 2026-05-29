@@ -251,10 +251,10 @@ only the foundation and a small subset of command behavior.
 | N2 | Registered identified user cannot P2P/call/sendfile/game self | `tests/chat-p2p-errors.spec.ts` | P1 | done |
 | N3 | Target not registered shows "not registered" error | `tests/chat-p2p-errors.spec.ts` | P1 | done |
 | N4 | `/p2p bob` creates PM invite cards for sender and receiver; both can open the lobby and closing the lobby ends the session | `tests/chat-p2p-invite.spec.ts` | P1 | done |
-| N5 | `/call bob` creates audio-call lobby/session with browser permissions mocked by Playwright context | `tests/chat-p2p-call.spec.ts` | P2 | investigate |
-| N6 | `/sendfile bob` creates file-transfer session and upload UI accepts a small temp file | `tests/chat-p2p-file.spec.ts` | P2 | investigate |
-| N7 | `/game bob` creates game invite and lobby; selecting a game starts shared game shell | `tests/chat-p2p-game.spec.ts` | P2 | investigate |
-| N8 | P2P invite expiration/decline cleans cards from both users without focus steal | `tests/chat-p2p-invite.spec.ts` | P2 | todo |
+| N5 | `/call bob` creates audio-call lobby/session with browser permissions mocked by Playwright context | `tests/chat-p2p-call.spec.ts` | P2 | done |
+| N6 | `/sendfile bob` creates file-transfer session and upload UI accepts a small temp file | `tests/chat-p2p-file.spec.ts` | P2 | done |
+| N7 | `/game bob` creates game invite and lobby; selecting a game starts shared game shell | `tests/chat-p2p-game.spec.ts` | P2 | done |
+| N8 | P2P action decline clears consent state from both lobbies without stealing chat focus | `tests/chat-p2p-invite.spec.ts` | P2 | done |
 
 ## Group O - Chat UI Micro-Journeys
 

@@ -47,7 +47,7 @@ defmodule RetroHexChat.P2P.SessionServer do
   @spec close(String.t(), integer(), String.t()) :: :ok | {:error, String.t()}
   def close(token, user_id, reason) do
     case Registry.lookup(token) do
-      {:ok, pid} -> GenServer.call(pid, {:close, user_id, reason})
+      {:ok, pid} -> call_close(pid, user_id, reason)
       {:error, :not_found} -> {:error, "Session process not running"}
     end
   end
@@ -410,6 +410,14 @@ defmodule RetroHexChat.P2P.SessionServer do
   @spec compute_duration(DateTime.t() | nil, DateTime.t()) :: integer() | nil
   defp compute_duration(nil, _now), do: nil
   defp compute_duration(start_time, now), do: DateTime.diff(now, start_time, :second)
+
+  defp call_close(pid, user_id, reason) do
+    GenServer.call(pid, {:close, user_id, reason})
+  catch
+    :exit, :normal -> {:error, "Session process not running"}
+    :exit, {:normal, _call} -> {:error, "Session process not running"}
+    :exit, {:noproc, _call} -> {:error, "Session process not running"}
+  end
 
   defp handle_send_message(state, user_id, sender_nick, content) do
     Logger.debug("P2P message: token=#{state.token}, from=#{sender_nick}")

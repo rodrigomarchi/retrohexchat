@@ -166,13 +166,19 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
 
     socket =
       if response[:accepted] do
-        assign(socket, accepted_action_type: response[:action_type])
+        socket
+        |> assign(accepted_action_type: response[:action_type])
+        |> maybe_init_call()
+        |> maybe_init_file_transfer()
       else
         socket
       end
 
     if response[:accepted] && response[:responder_id] != socket.assigns.user_id do
-      {:noreply, maybe_init_call(socket)}
+      {:noreply,
+       socket
+       |> maybe_init_call()
+       |> maybe_init_file_transfer()}
     else
       {:noreply, socket}
     end
