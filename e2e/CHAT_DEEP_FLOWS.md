@@ -284,8 +284,8 @@ only the foundation and a small subset of command behavior.
 
 | # | Flow | Planned spec file | Priority | Status |
 |---|------|-------------------|----------|--------|
-| P1 | Registered user's PM partners restore on reconnect ordered by most recent message | `tests/chat-persistence.spec.ts` | P0 | todo |
-| P2 | Guest user's PM partners do not persist after reconnect | `tests/chat-persistence.spec.ts` | P1 | todo |
+| P1 | Registered user's PM partners restore on reconnect ordered by most recent message | `tests/chat-persistence.spec.ts` | P0 | done |
+| P2 | Guest user's PM partners do not persist after reconnect | `tests/chat-persistence.spec.ts` | P1 | done |
 | P3 | Incoming PM opens/updates tab indicator but does not auto-switch active tab | `tests/chat-no-focus-steal.spec.ts` | P0 | todo |
 | P4 | Incoming channel message updates unread indicator but does not auto-switch active tab | `tests/chat-no-focus-steal.spec.ts` | P0 | todo |
 | P5 | Perform and autojoin execution on reconnect create tabs without stealing current focus | `tests/chat-no-focus-steal.spec.ts` | P0 | todo |
