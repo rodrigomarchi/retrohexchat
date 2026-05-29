@@ -102,6 +102,41 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
 }
 .format-color-dropdown--open { display: grid; }
 
+/* ── Live connection status hook ─────────────────────────── */
+.connection-banner {
+  display: none;
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 42px;
+  z-index: 70;
+  padding: 6px 8px;
+  background: #ffffd0;
+  border: 1px solid #808080;
+  box-shadow: inset 1px 1px #ffffff, inset -1px -1px #0a0a0a;
+  font-size: 12px;
+}
+
+.connection-banner--visible { display: block; }
+.connection-banner--disconnected { color: #7f0000; }
+.connection-banner--reconnected { color: #006400; }
+
+.reconnect-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.reconnect-overlay--visible { display: flex; }
+
+.reconnect-overlay__window {
+  width: min(320px, calc(100vw - 32px));
+}
+
 /* ── IRC format code styles ──────────────────────────────── */
 .irc-bold { font-weight: bold; }
 .irc-italic { font-style: italic; }

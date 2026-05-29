@@ -149,6 +149,30 @@
         state="connected"
         visible={false}
       />
+      <div
+        id="connection-status-hook"
+        phx-hook="ConnectionStatusHook"
+        phx-update="ignore"
+        data-testid="connection-status-hook"
+      >
+        <div class="connection-banner" data-role="banner" role="status" aria-live="polite">
+          <span data-role="banner-text"></span>
+        </div>
+        <div class="reconnect-overlay" data-role="overlay" role="dialog" aria-modal="true">
+          <div class="window reconnect-overlay__window">
+            <div class="title-bar">
+              <div class="title-bar-text">Connection Lost</div>
+            </div>
+            <div class="window-body">
+              <p data-role="overlay-info" class="text-xs"></p>
+              <p data-role="overlay-countdown" class="text-xs"></p>
+              <div class="mt-3 text-right">
+                <button type="button" data-role="overlay-action">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <%!-- Search bar --%>
       <.search_bar
