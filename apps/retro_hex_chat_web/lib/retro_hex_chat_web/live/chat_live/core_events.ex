@@ -374,29 +374,11 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- reply_to_message --
 
   def handle_event("reply_to_message", %{"message_id" => msg_id_str}, socket) do
-    msg_id = String.to_integer(msg_id_str)
-    session = socket.assigns.session
-
-    message =
-      if session.active_pm do
-        Queries.get_private_message(msg_id)
-      else
-        Queries.get_message(msg_id)
-      end
-
-    if message do
-      author = Map.get(message, :author_nickname) || Map.get(message, :sender_nickname, "?")
-      preview = String.slice(message.content, 0, 100)
-
-      reply_to = %{
-        id: message.id,
-        author: author,
-        preview: preview
-      }
-
-      {:halt, assign(socket, reply_to: reply_to)}
+    with {:ok, msg_id} <- parse_message_id(msg_id_str),
+         %{} = message <- get_reply_parent(socket.assigns.session, msg_id) do
+      {:halt, assign(socket, reply_to: build_reply_to(message))}
     else
-      {:halt, socket}
+      _ -> {:halt, socket}
     end
   end
 
@@ -528,6 +510,37 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # ---------------------------------------------------------------------------
   # Private helpers
   # ---------------------------------------------------------------------------
+
+  defp parse_message_id(id) when is_integer(id), do: {:ok, id}
+
+  defp parse_message_id("chat_messages-" <> id), do: parse_message_id(id)
+
+  defp parse_message_id(id) when is_binary(id) do
+    case Integer.parse(id) do
+      {int, ""} -> {:ok, int}
+      _ -> :error
+    end
+  end
+
+  defp parse_message_id(_id), do: :error
+
+  defp get_reply_parent(session, msg_id) do
+    if session.active_pm do
+      Queries.get_private_message(msg_id)
+    else
+      Queries.get_message(msg_id)
+    end
+  end
+
+  defp build_reply_to(message) do
+    author = Map.get(message, :author_nickname) || Map.get(message, :sender_nickname, "?")
+
+    %{
+      id: message.id,
+      author: author,
+      preview: String.slice(message.content, 0, 100)
+    }
+  end
 
   defp exit_edit_mode(socket) do
     msg_id = socket.assigns.edit_mode_message_id

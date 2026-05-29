@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
   alias RetroHexChat.Commands.Handlers.{Game, P2p}
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.ChatLive.CoreEvents
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
   alias RetroHexChatWeb.ChatLive.Helpers.{GameInvite, P2pInvite}
 
@@ -269,6 +270,18 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   end
 
   def handle_event("close_chat_context_menu", _params, socket) do
+    {:halt, close_chat_context_menu(socket)}
+  end
+
+  def handle_event("reply_to_message", %{"message_id" => msg_id} = params, socket)
+      when is_binary(msg_id) and byte_size(msg_id) > 0 do
+    socket =
+      close_chat_context_menu(socket)
+
+    CoreEvents.handle_event("reply_to_message", params, socket)
+  end
+
+  def handle_event("reply_to_message", _params, socket) do
     {:halt, close_chat_context_menu(socket)}
   end
 
@@ -517,7 +530,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
 
     target_message = %{
       author: params["author"],
+      nick: params["author"],
       text: params["message_text"],
+      id: params["message_id"],
       is_system: params["is_system"] == true,
       urls: urls,
       message_id: params["message_id"],

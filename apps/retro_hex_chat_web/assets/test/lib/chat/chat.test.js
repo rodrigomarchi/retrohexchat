@@ -109,6 +109,15 @@ describe("lib/chat", () => {
       expect(result.x).toBe(10);
       expect(result.y).toBe(20);
     });
+
+    it("prefers the persisted message id over the LiveView DOM id", () => {
+      const msg = createMsg('<span class="chat-content">hi</span>', {
+        messageId: "chat_messages-42",
+        realId: "42",
+      });
+      const result = detectContextTarget(fakeEvent(msg.querySelector(".chat-content")), msg);
+      expect(result.message_id).toBe("42");
+    });
   });
 
   // ── buildMessageText ───────────────────────────────────

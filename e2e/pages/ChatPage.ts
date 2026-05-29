@@ -60,6 +60,11 @@ export class ChatPage {
   readonly pasteConfirmSendButton: Locator;
   readonly pasteConfirmCancelButton: Locator;
   readonly pasteFloodWarning: Locator;
+  readonly chatContextMenu: Locator;
+  readonly contextReplyMenuItem: Locator;
+  readonly replyBar: Locator;
+  readonly replyBarDismissButton: Locator;
+  readonly replyBlock: Locator;
   readonly helpContentPane: Locator;
   readonly notifyListDialog: Locator;
   readonly addressBookDialog: Locator;
@@ -152,6 +157,13 @@ export class ChatPage {
     this.pasteConfirmSendButton = page.getByTestId('paste-confirm-send');
     this.pasteConfirmCancelButton = page.getByTestId('paste-confirm-cancel');
     this.pasteFloodWarning = page.getByTestId('paste-flood-warning');
+    this.chatContextMenu = page.getByTestId('context-menu-chat-context-menu');
+    this.contextReplyMenuItem = page.getByTestId(
+      'context-menu-item-reply_to_message',
+    );
+    this.replyBar = page.getByTestId('reply-bar');
+    this.replyBarDismissButton = page.getByTestId('reply-bar-dismiss');
+    this.replyBlock = page.getByTestId('reply-block');
     this.helpContentPane = page.getByTestId('help-content-pane');
     this.notifyListDialog = page.locator('#notify-list-dialog [role="dialog"]');
     this.addressBookDialog = page.locator(
@@ -296,6 +308,15 @@ export class ChatPage {
     await expect(
       this.messageList.getByText(text, { exact: false }).first(),
     ).toBeHidden();
+  }
+
+  messageRowByText(text: string): Locator {
+    return this.messageRows.filter({ hasText: text }).first();
+  }
+
+  async openMessageContextMenu(text: string) {
+    await this.messageRowByText(text).click({ button: 'right' });
+    await expect(this.chatContextMenu).toBeVisible();
   }
 
   async expectActiveMessageCount(count: number) {

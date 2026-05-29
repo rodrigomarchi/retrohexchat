@@ -41,7 +41,7 @@ export function detectContextTarget(event, msgEl) {
     x: event.clientX,
     y: event.clientY,
     author: msgEl.dataset.author || "",
-    message_id: msgEl.dataset.messageId || "",
+    message_id: msgEl.dataset.realId || msgEl.dataset.messageId || "",
     is_system: msgEl.dataset.systemMessage === "true",
     has_selection: window.getSelection().toString().length > 0,
     message_text: buildMessageText(msgEl),
