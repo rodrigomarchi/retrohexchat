@@ -12,7 +12,7 @@ async function signedInUser(page: Page, prefix = 'addr') {
   await connect.registerWithPassword('pass12345');
   await chat.waitUntilConnected();
 
-  return { chat };
+  return { chat, nick };
 }
 
 async function submitDialogForm(form: Locator) {
@@ -121,5 +121,31 @@ test.describe('Address Book', () => {
     await expect(chat.addressBookControlRow(controlNick)).toHaveCount(0);
 
     await chat.closeAddressBook();
+  });
+
+  test('custom nick color applies to message nick rendering (O17)', async ({
+    page,
+  }) => {
+    const { chat, nick } = await signedInUser(page, 'clrusr');
+    const message = `custom color message ${Date.now()}`;
+
+    await chat.openAddressBookFromMenu();
+    await chat.switchAddressBookToTab('Nick Colors');
+
+    await chat.addressBookDialog.getByTestId('nick-color-add').click();
+    const form = page.getByTestId('nick-color-add-form');
+    await form.locator('#nick-color-add-nick').fill(nick);
+    await form.getByRole('button', { name: 'Color 4: Red' }).click();
+    await submitDialogForm(form);
+    await expect(chat.addressBookNickColorRow(nick)).toHaveAttribute(
+      'data-color-index',
+      '4',
+    );
+
+    await chat.closeAddressBook();
+    await chat.sendMessage(message);
+    await chat.expectMessageVisible(message);
+
+    await expect(chat.messageNickByText(message, nick)).toHaveClass(/irc-fg-4/);
   });
 });
