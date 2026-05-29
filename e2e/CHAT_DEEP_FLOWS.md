@@ -265,8 +265,8 @@ only the foundation and a small subset of command behavior.
 | O3 | Strip formatting toggle affects rendered outbound/inbound formatted text | `tests/chat-formatting-advanced.spec.ts` | P2 | done |
 | O4 | Multi-line paste triggers paste confirmation dialog; send/cancel paths behave correctly | `tests/chat-paste.spec.ts` | P1 | done |
 | O5 | Flood warning appears for large paste and sequential paste send preserves message order | `tests/chat-paste.spec.ts` | P2 | done |
-| O6 | Search bar opens, highlights matches, next/prev navigate, invalid regex shows error | `tests/chat-search.spec.ts` | P1 | todo |
-| O7 | Search options case-sensitive/regex/my-mentions/history persist while search stays open | `tests/chat-search.spec.ts` | P2 | todo |
+| O6 | Search bar opens, highlights matches, next/prev navigate, invalid regex shows error | `tests/chat-search.spec.ts` | P1 | done |
+| O7 | Search options case-sensitive/regex/my-mentions/history persist while search stays open | `tests/chat-search.spec.ts` | P2 | done |
 | O8 | Reply via message context menu creates reply bar; send includes reply block; dismiss cancels | `tests/chat-message-actions.spec.ts` | P1 | investigate |
 | O9 | Edit last own message with ArrowUp; submit edit updates message and shows edited tag | `tests/chat-message-actions.spec.ts` | P1 | investigate |
 | O10 | Delete own message marks deleted placeholder for both users | `tests/chat-message-actions.spec.ts` | P1 | investigate |

@@ -31,7 +31,7 @@ const SearchHighlightHook = {
     });
   },
 
-  highlightMatches({ query, case_sensitive, regex, my_nick }) {
+  highlightMatches({ query, case_sensitive, regex, mention_nick, my_nick }) {
     clearHighlights();
 
     if (!query || query.trim() === "") {
@@ -52,11 +52,12 @@ const SearchHighlightHook = {
     }
 
     let targets = container.querySelectorAll(".chat-content, .chat-action");
+    const mentionNick = mention_nick || my_nick;
 
-    if (my_nick) {
+    if (mentionNick) {
+      const normalizedNick = mentionNick.toLowerCase();
       targets = Array.from(targets).filter((el) => {
-        const row = el.closest("[data-nick]");
-        return row && row.getAttribute("data-nick") === my_nick;
+        return el.textContent.toLowerCase().includes(normalizedNick);
       });
     }
 

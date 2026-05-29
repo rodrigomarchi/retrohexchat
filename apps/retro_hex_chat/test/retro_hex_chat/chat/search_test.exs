@@ -164,6 +164,18 @@ defmodule RetroHexChat.Chat.SearchTest do
     end
   end
 
+  describe "search_messages with mention_nick option" do
+    test "mention_nick limits results to messages mentioning the nickname" do
+      seed_messages()
+
+      results = Search.search_messages("#lobby", "Hi", mention_nick: "Alice")
+      assert length(results) == 1
+      assert hd(results).content == "Hi Alice!"
+
+      assert Search.search_messages("#lobby", "Hi", mention_nick: "Charlie") == []
+    end
+  end
+
   describe "valid_regex?/1" do
     test "accepts valid regex patterns" do
       assert Search.valid_regex?("hello")
@@ -225,6 +237,7 @@ defmodule RetroHexChat.Chat.SearchTest do
 
       # Alice wrote "Hello world!" and "How are you?" — only "How are you?" contains "a"
       assert Search.count_matches("#lobby", "a", nick_filter: "Alice") == 1
+      assert Search.count_matches("#lobby", "Hi", mention_nick: "Alice") == 1
       assert Search.count_matches("#lobby", "GREAT", case_sensitive: true) == 1
     end
   end

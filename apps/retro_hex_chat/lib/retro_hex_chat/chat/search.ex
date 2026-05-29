@@ -16,6 +16,7 @@ defmodule RetroHexChat.Chat.Search do
     |> where([m], m.channel_name == ^channel_name)
     |> apply_content_filter(query, opts)
     |> apply_nick_filter(opts)
+    |> apply_mention_filter(opts)
     |> order_by([m], desc: m.id)
     |> limit(^limit)
     |> Repo.all()
@@ -27,6 +28,7 @@ defmodule RetroHexChat.Chat.Search do
     |> where([m], m.channel_name == ^channel_name)
     |> apply_content_filter(query, opts)
     |> apply_nick_filter(opts)
+    |> apply_mention_filter(opts)
     |> Repo.aggregate(:count)
   end
 
@@ -62,6 +64,17 @@ defmodule RetroHexChat.Chat.Search do
     case Keyword.get(opts, :nick_filter) do
       nil -> queryable
       nick -> where(queryable, [m], m.author_nickname == ^nick)
+    end
+  end
+
+  defp apply_mention_filter(queryable, opts) do
+    case Keyword.get(opts, :mention_nick) do
+      nil ->
+        queryable
+
+      nick ->
+        pattern = "%#{sanitize(nick)}%"
+        where(queryable, [m], ilike(m.content, ^pattern))
     end
   end
 

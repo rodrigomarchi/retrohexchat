@@ -122,10 +122,12 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
     assigns = socket.assigns
     channel = assigns.session.active_channel
     search_opts = build_search_opts(assigns)
+    invalid_regex? = assigns.search_regex and not Search.valid_regex?(query)
 
     socket =
       if channel do
-        {history_count, results} = maybe_search_history(channel, query, search_opts, assigns)
+        {history_count, results} =
+          maybe_search_history(channel, query, search_opts, assigns, invalid_regex?)
 
         assign(socket,
           search_query: query,
@@ -133,7 +135,7 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
           search_history_count: history_count,
           search_result_count: 0,
           search_current_index: 0,
-          search_error: nil
+          search_error: if(invalid_regex?, do: "Invalid regex", else: nil)
         )
       else
         assign(socket,
@@ -141,7 +143,7 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
           search_results: [],
           search_history_count: 0,
           search_result_count: 0,
-          search_error: nil
+          search_error: if(invalid_regex?, do: "Invalid regex", else: nil)
         )
       end
 
@@ -149,12 +151,14 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
       query: query,
       case_sensitive: assigns.search_case_sensitive,
       regex: assigns.search_regex,
-      my_nick: if(assigns.search_my_mentions, do: assigns.session.nickname, else: nil),
+      mention_nick: if(assigns.search_my_mentions, do: assigns.session.nickname, else: nil),
       history_count: socket.assigns.search_history_count
     })
   end
 
-  defp maybe_search_history(channel, query, opts, assigns) do
+  defp maybe_search_history(_channel, _query, _opts, _assigns, true), do: {0, []}
+
+  defp maybe_search_history(channel, query, opts, assigns, false) do
     if assigns.search_history do
       count = Search.count_matches(channel, query, opts)
       results = Search.search_messages(channel, query, opts)
@@ -215,6 +219,8 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
     |> re_search()
   end
 
+  defp toggle_filter(socket, "mentions"), do: toggle_filter(socket, "my_mentions")
+
   defp toggle_filter(socket, "history") do
     socket
     |> assign(search_history: !socket.assigns.search_history)
@@ -248,7 +254,7 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
     ]
 
     if assigns.search_my_mentions do
-      Keyword.put(opts, :nick_filter, assigns.session.nickname)
+      Keyword.put(opts, :mention_nick, assigns.session.nickname)
     else
       opts
     end

@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
         {@nick}
       </span>
       <span :if={!@nick} />
-      <span class="font-mono break-words">
+      <span class={["font-mono break-words", message_body_class(@type)]}>
         {render_slot(@inner_block)}
       </span>
     </div>
@@ -119,4 +119,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   defp type_class("wallops"), do: "text-gray-500 italic"
   defp type_class("notify_online"), do: "text-success"
   defp type_class("notify_offline"), do: "text-gray-500 italic"
+
+  defp message_body_class("action"), do: "chat-action"
+  defp message_body_class(_type), do: "chat-content"
 end

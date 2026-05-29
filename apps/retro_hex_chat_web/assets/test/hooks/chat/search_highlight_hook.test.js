@@ -48,6 +48,23 @@ describe("SearchHighlightHook", () => {
       expect(counts[counts.length - 1]).toEqual({ count: 3 });
     });
 
+    it("filters visible matches to messages mentioning the current nick", () => {
+      setupChatMessages(`
+        <div data-message-id="1"><span class="chat-content">target for Alice</span></div>
+        <div data-message-id="2"><span class="chat-content">target for Bob</span></div>
+      `);
+      simulateEvent(hook, "search_highlight", {
+        query: "target",
+        case_sensitive: false,
+        regex: false,
+        mention_nick: "Alice",
+      });
+
+      const marks = document.querySelectorAll("mark.search-highlight");
+      expect(marks).toHaveLength(1);
+      expect(marks[0].closest("[data-message-id]").textContent).toContain("Alice");
+    });
+
     it("handles empty query gracefully", () => {
       setupChatMessages('<div class="chat-content">hello</div>');
       simulateEvent(hook, "search_highlight", { query: "", case_sensitive: false, regex: false });

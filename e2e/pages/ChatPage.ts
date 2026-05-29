@@ -8,9 +8,11 @@ export class ChatPage {
   readonly page: Page;
   readonly menuBar: Locator;
   readonly fileMenuTrigger: Locator;
+  readonly viewMenuTrigger: Locator;
   readonly helpMenuTrigger: Locator;
   readonly toolsMenuTrigger: Locator;
   readonly disconnectMenuItem: Locator;
+  readonly findMenuItem: Locator;
   readonly helpTopicsMenuItem: Locator;
   readonly addressBookMenuItem: Locator;
   readonly channelCentralMenuItem: Locator;
@@ -43,6 +45,17 @@ export class ChatPage {
   readonly historySearch: Locator;
   readonly historySearchInput: Locator;
   readonly historySearchNoResults: Locator;
+  readonly searchBar: Locator;
+  readonly searchBarInput: Locator;
+  readonly searchBarCount: Locator;
+  readonly searchBarPrevButton: Locator;
+  readonly searchBarNextButton: Locator;
+  readonly searchBarCaseSensitive: Locator;
+  readonly searchBarRegex: Locator;
+  readonly searchBarMyMentions: Locator;
+  readonly searchBarHistory: Locator;
+  readonly searchHighlights: Locator;
+  readonly searchActiveHighlight: Locator;
   readonly pasteConfirmDialog: Locator;
   readonly pasteConfirmSendButton: Locator;
   readonly pasteConfirmCancelButton: Locator;
@@ -93,6 +106,9 @@ export class ChatPage {
     this.fileMenuTrigger = page
       .locator('button[data-menubar-trigger]')
       .filter({ hasText: 'File' });
+    this.viewMenuTrigger = page
+      .locator('button[data-menubar-trigger]')
+      .filter({ hasText: 'View' });
     this.helpMenuTrigger = page
       .locator('button[data-menubar-trigger]')
       .filter({ hasText: 'Help' });
@@ -101,6 +117,7 @@ export class ChatPage {
       .filter({ hasText: 'Tools' });
     // context_menu_item exposes data-testid="context-menu-item-<action>".
     this.disconnectMenuItem = page.getByTestId('context-menu-item-disconnect');
+    this.findMenuItem = page.getByTestId('context-menu-item-toggle_search');
     this.helpTopicsMenuItem = page.getByTestId(
       'context-menu-item-help_topics',
     );
@@ -118,6 +135,19 @@ export class ChatPage {
     this.historySearch = page.getByTestId('history-search');
     this.historySearchInput = page.getByTestId('history-search-input');
     this.historySearchNoResults = page.getByTestId('history-search-no-results');
+    this.searchBar = page.getByTestId('search-bar');
+    this.searchBarInput = page.getByTestId('search-bar-input');
+    this.searchBarCount = page.getByTestId('search-bar-count');
+    this.searchBarPrevButton = page.getByTestId('search-bar-prev');
+    this.searchBarNextButton = page.getByTestId('search-bar-next');
+    this.searchBarCaseSensitive = page.getByTestId(
+      'search-bar-case-sensitive',
+    );
+    this.searchBarRegex = page.getByTestId('search-bar-regex');
+    this.searchBarMyMentions = page.getByTestId('search-bar-my-mentions');
+    this.searchBarHistory = page.getByTestId('search-bar-history');
+    this.searchHighlights = page.locator('mark.search-highlight');
+    this.searchActiveHighlight = page.locator('mark.search-highlight-active');
     this.pasteConfirmDialog = page.getByTestId('paste-confirm-dialog');
     this.pasteConfirmSendButton = page.getByTestId('paste-confirm-send');
     this.pasteConfirmCancelButton = page.getByTestId('paste-confirm-cancel');
@@ -200,6 +230,13 @@ export class ChatPage {
   // Each tab contains a nested "Close tab" button.
   async closeTab(name: string) {
     await this.tab(name).getByRole('button', { name: 'Close tab' }).click();
+  }
+
+  async openSearchFromViewMenu() {
+    await this.viewMenuTrigger.click();
+    await expect(this.findMenuItem).toBeVisible();
+    await this.findMenuItem.click();
+    await expect(this.searchBar).toBeVisible();
   }
 
   async expectTabVisible(name: string) {

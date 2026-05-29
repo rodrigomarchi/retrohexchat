@@ -36,6 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
   attr :on_search, :any, default: nil, doc: "Search input change callback"
   attr :on_next, :any, default: nil, doc: "Next result callback"
   attr :on_prev, :any, default: nil, doc: "Previous result callback"
+  attr :on_navigate, :any, default: nil, doc: "Keyboard navigation callback"
   attr :on_close, :any, default: nil, doc: "Close button callback"
   attr :on_toggle_filter, :any, default: nil, doc: "Filter checkbox toggle callback"
   attr :class, :string, default: nil
@@ -50,27 +51,30 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
       data-testid="search-bar"
       {@rest}
     >
-      <.window_title_bar title="Find" controls={[:close]}>
+      <.window_title_bar title="Find" controls={[:close]} on_close={@on_close}>
         <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
       </.window_title_bar>
 
       <.window_body class="p-retro-8 space-y-retro-8">
         <%!-- Search input row --%>
-        <div class="flex items-center gap-retro-4">
+        <form class="flex items-center gap-retro-4" phx-change={@on_search} phx-submit={@on_search}>
           <.input
             type="text"
             value={@query}
             placeholder="Find text..."
             class="flex-1"
             name="query"
-            phx-change={@on_search}
             phx-debounce="300"
+            phx-keydown={@on_navigate}
             data-testid="search-bar-input"
           />
-          <span class="text-xs text-muted-foreground whitespace-nowrap">
+          <span
+            class="text-xs text-muted-foreground whitespace-nowrap"
+            data-testid="search-bar-count"
+          >
             {@current_result}/{@result_count}
           </span>
-        </div>
+        </form>
 
         <%!-- Error message --%>
         <p :if={@error} class="text-xs text-error">{@error}</p>
@@ -107,6 +111,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
               value={@case_sensitive}
               phx-click={@on_toggle_filter}
               phx-value-filter="case_sensitive"
+              data-testid="search-bar-case-sensitive"
             /> Case sensitive
           </label>
           <label class="flex items-center gap-retro-4 text-xs cursor-pointer">
@@ -115,6 +120,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
               value={@regex}
               phx-click={@on_toggle_filter}
               phx-value-filter="regex"
+              data-testid="search-bar-regex"
             /> Regex
           </label>
           <label class="flex items-center gap-retro-4 text-xs cursor-pointer">
@@ -122,8 +128,9 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
               name="mentions"
               value={@mentions_only}
               phx-click={@on_toggle_filter}
-              phx-value-filter="mentions"
-            /> Mentions only
+              phx-value-filter="my_mentions"
+              data-testid="search-bar-my-mentions"
+            /> My mentions
           </label>
           <label class="flex items-center gap-retro-4 text-xs cursor-pointer">
             <.checkbox
@@ -131,6 +138,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
               value={@search_history}
               phx-click={@on_toggle_filter}
               phx-value-filter="history"
+              data-testid="search-bar-history"
             /> Search history
           </label>
         </div>
