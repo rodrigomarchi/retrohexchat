@@ -86,6 +86,7 @@ export class ChatPage {
   readonly replyBar: Locator;
   readonly replyBarDismissButton: Locator;
   readonly replyBlock: Locator;
+  readonly typingIndicator: Locator;
   readonly deleteConfirmButton: Locator;
   readonly deleteCancelButton: Locator;
   readonly cheatsheetDialog: Locator;
@@ -259,6 +260,7 @@ export class ChatPage {
     this.replyBar = page.getByTestId('reply-bar');
     this.replyBarDismissButton = page.getByTestId('reply-bar-dismiss');
     this.replyBlock = page.getByTestId('reply-block');
+    this.typingIndicator = page.getByTestId('typing-indicator');
     this.deleteConfirmButton = page.getByTestId(
       'delete-confirm-dialog-confirm',
     );
