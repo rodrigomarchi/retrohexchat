@@ -289,8 +289,8 @@ only the foundation and a small subset of command behavior.
 | P3 | Incoming PM opens/updates tab indicator but does not auto-switch active tab | `tests/chat-no-focus-steal.spec.ts` | P0 | done |
 | P4 | Incoming channel message updates unread indicator but does not auto-switch active tab | `tests/chat-no-focus-steal.spec.ts` | P0 | done |
 | P5 | Perform and autojoin execution on reconnect create tabs without stealing current focus | `tests/chat-perform.spec.ts`, `tests/chat-autojoin.spec.ts` | P0 | done |
-| P6 | Registered aliases, perform list, autojoin list, ignore list, notify list, and nick colors persist across reconnect | `tests/chat-settings-persistence.spec.ts` | P1 | todo |
-| P7 | Guest aliases/perform/autojoin/ignore/notify are session-only | `tests/chat-settings-persistence.spec.ts` | P2 | todo |
+| P6 | Registered aliases, perform list, autojoin list, ignore list, notify list, and nick colors persist across reconnect | `tests/chat-settings-persistence.spec.ts` | P1 | done |
+| P7 | Guest aliases/perform/autojoin/ignore/notify are session-only | `tests/chat-settings-persistence.spec.ts` | P2 | done |
 | P8 | Browser reload keeps current chat session and reconnects LiveView cleanly | `tests/chat-reconnect.spec.ts` | P1 | todo |
 | P9 | Connection loss/reconnect UI transitions through disabled input/reconnect button without losing typed draft | `tests/chat-reconnect.spec.ts` | P2 | investigate |
 | P10 | Message pagination/scroll loader loads older channel/PM history without duplicate messages | `tests/chat-history-pagination.spec.ts` | P2 | investigate |
