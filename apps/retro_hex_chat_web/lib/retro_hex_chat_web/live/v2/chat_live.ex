@@ -852,6 +852,9 @@ defmodule RetroHexChatWeb.V2.ChatLive do
     state |> Map.get(:invite_exceptions, []) |> Enum.map(&to_list_entry/1)
   end
 
+  defp channel_central_modes(nil), do: %{}
+  defp channel_central_modes(state), do: Map.get(state, :modes_detail, %{})
+
   @spec to_list_entry(map() | String.t()) :: map()
   defp to_list_entry(%{mask: _} = map), do: map
   defp to_list_entry(nick) when is_binary(nick), do: %{mask: nick, set_by: "—", set_at: "—"}

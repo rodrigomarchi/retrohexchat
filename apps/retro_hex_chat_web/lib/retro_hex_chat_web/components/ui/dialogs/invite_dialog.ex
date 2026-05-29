@@ -12,8 +12,8 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
         id="invite-dialog"
         show={true}
         invites={[
-          %{channel: "#lobby", from: "alice"},
-          %{channel: "#dev", from: "bob"}
+          %{channel: "#lobby", inviter: "alice"},
+          %{channel: "#dev", inviter: "bob"}
         ]}
         on_accept="accept_invite"
         on_ignore="ignore_invite"
@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
 
   attr :invites, :list,
     default: [],
-    doc: "List of invite maps with :channel and :from keys"
+    doc: "List of invite maps with :channel and :inviter keys"
 
   attr :on_accept, :any, default: nil, doc: "JS command or event name for accepting an invite"
   attr :on_ignore, :any, default: nil, doc: "JS command or event name for ignoring an invite"
@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
                 </div>
                 <div class="p-retro-8">
                   <p class="text-xs mb-retro-8">
-                    <span class="font-bold">{invite.from}</span>
+                    <span class="font-bold">{invite_inviter(invite)}</span>
                     {" "}has invited you to join{" "}
                     <span class="font-bold">{invite.channel}</span>.
                   </p>
@@ -101,4 +101,8 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
     </span>
     """
   end
+
+  defp invite_inviter(%{inviter: inviter}), do: inviter
+  defp invite_inviter(%{from: from}), do: from
+  defp invite_inviter(_invite), do: "Someone"
 end

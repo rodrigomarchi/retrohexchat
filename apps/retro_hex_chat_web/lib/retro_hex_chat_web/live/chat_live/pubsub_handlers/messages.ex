@@ -19,14 +19,20 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     ]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Chat.{DuplicateTracker, FloodProtection, IgnoreList, UnreadTracker}
+  alias RetroHexChat.Chat.{DuplicateTracker, FloodProtection, IgnoreList, Service, UnreadTracker}
   alias RetroHexChatWeb.ChatLive.Helpers.PM
 
   # ── Channel messages ──────────────────────────────────────
 
   def handle_info(%{event: "new_message", payload: payload}, socket) do
     session = socket.assigns.session
-    msg_type = if payload.type == :action, do: :action, else: :message
+
+    msg_type =
+      case payload.type do
+        :action -> :action
+        :notice -> :notice
+        _ -> :message
+      end
 
     if IgnoreList.ignored?(session.ignore_list, payload.author, msg_type) do
       {:halt, socket}
@@ -333,30 +339,19 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
          not MapSet.member?(replied_to, sender) do
       away_msg = session.away_message
       reply = "#{session.nickname} is away: #{away_msg}"
-      topic = "pm:#{pm_topic(session.nickname, sender)}"
 
-      Phoenix.PubSub.broadcast(RetroHexChat.PubSub, topic, %{
-        event: "new_pm",
-        payload: %{
-          id: System.unique_integer([:positive]),
-          sender: session.nickname,
-          recipient: sender,
-          content: reply,
-          type: :system,
-          timestamp: DateTime.utc_now()
-        }
-      })
+      case Service.send_private_message(session.nickname, sender, reply, "system") do
+        {:ok, _pm} ->
+          socket
+          |> assign(away_replied_to: MapSet.put(replied_to, sender))
+          |> push_status_message("* Sent away auto-reply to #{sender}", :system)
 
-      socket
-      |> assign(away_replied_to: MapSet.put(replied_to, sender))
-      |> push_status_message("* Sent away auto-reply to #{sender}", :system)
+        {:error, _reason} ->
+          socket
+      end
     else
       socket
     end
-  end
-
-  defp pm_topic(nick_a, nick_b) do
-    [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
   end
 
   defp pm_other_nick(payload, my_nick) do

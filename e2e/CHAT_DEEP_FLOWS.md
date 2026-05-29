@@ -136,47 +136,47 @@ only the foundation and a small subset of command behavior.
 
 | # | Flow | Planned spec file | Priority | Status |
 |---|------|-------------------|----------|--------|
-| I1 | First user in a unique channel is operator; nicklist shows operator role | `tests/chat-channel-roles.spec.ts` | P0 | todo |
-| I2 | `/op bob`, `/deop bob`, `/voice bob`, `/devoice bob` update bob's nicklist role in realtime | `tests/chat-channel-roles.spec.ts` | P0 | todo |
-| I3 | Non-operator running `/mode +m` or `/kick` gets permission error | `tests/chat-channel-permissions.spec.ts` | P0 | todo |
-| I4 | Half-op can voice/devoice but cannot set protected channel modes | `tests/chat-channel-permissions.spec.ts` | P1 | todo |
-| I5 | `/mode +m` blocks unvoiced user messages; `/voice` allows speaking; `/mode -m` restores normal sending | `tests/chat-channel-modes.spec.ts` | P0 | todo |
-| I6 | `/mode +i` blocks direct join; `/invite bob #room` lets bob join | `tests/chat-channel-invite.spec.ts` | P0 | todo |
-| I7 | `/invite auto` toggles auto-join-on-invite and does not steal focus unexpectedly | `tests/chat-channel-invite.spec.ts` | P2 | todo |
-| I8 | `/mode +k secret` requires a key; wrong key fails, right key joins | `tests/chat-channel-modes.spec.ts` | P1 | todo |
-| I9 | `/mode +l 1` enforces channel limit; removing limit allows join | `tests/chat-channel-modes.spec.ts` | P1 | todo |
-| I10 | `/mode +t` blocks non-operator topic changes; `/mode -t` allows them again | `tests/chat-channel-modes.spec.ts` | P1 | todo |
-| I11 | `/ban bob` removes/blocks bob; `/unban bob` allows rejoin | `tests/chat-channel-moderation.spec.ts` | P0 | todo |
-| I12 | `/kick bob reason` removes bob's channel tab and broadcasts the reason | `tests/chat-channel-moderation.spec.ts` | P0 | todo |
-| I13 | `/mute bob` blocks bob's channel messages; `/unmute bob` restores sending | `tests/chat-channel-moderation.spec.ts` | P0 | todo |
-| I14 | `/slow 1` throttles rapid joins and `/slow 0` disables throttle | `tests/chat-channel-modes.spec.ts` | P2 | todo |
-| I15 | `/knock #room` notifies operators of invite-only channel; repeated knock is throttled | `tests/chat-channel-knock.spec.ts` | P2 | todo |
-| I16 | `/mode +K` disables knock and `/mode -K` allows knock again | `tests/chat-channel-knock.spec.ts` | P2 | todo |
-| I17 | `/transfer bob` changes channel ownership and privileges | `tests/chat-channel-transfer.spec.ts` | P1 | todo |
-| I18 | Channel Central dialog edits modes/key/limit and the slash command output stays consistent | `tests/chat-channel-central.spec.ts` | P2 | investigate |
+| I1 | First user in a unique channel is owner; nicklist exposes the owner role | `tests/chat-channel-roles.spec.ts` | P0 | done |
+| I2 | `/op bob`, `/deop bob`, `/voice bob`, `/devoice bob` update bob's nicklist role in realtime | `tests/chat-channel-roles.spec.ts` | P0 | done |
+| I3 | Non-operator running `/mode +m` or `/kick` gets permission error | `tests/chat-channel-permissions.spec.ts` | P0 | done |
+| I4 | Half-op can voice/devoice but cannot set protected channel modes | `tests/chat-channel-modes.spec.ts` | P1 | done |
+| I5 | `/mode +m` blocks unvoiced user messages; `/voice` allows speaking; `/mode -m` restores normal sending | `tests/chat-channel-modes.spec.ts` | P0 | done |
+| I6 | `/mode +i` blocks direct join; `/invite bob #room` lets bob join | `tests/chat-channel-modes.spec.ts` | P0 | done |
+| I7 | `/invite auto` toggles auto-join-on-invite and does not steal focus unexpectedly | `tests/chat-channel-invite.spec.ts` | P2 | done |
+| I8 | `/mode +k secret` requires a key; wrong key fails, right key joins | `tests/chat-channel-modes.spec.ts` | P1 | done |
+| I9 | `/mode +l 1` enforces channel limit; removing limit allows join | `tests/chat-channel-modes.spec.ts` | P1 | done |
+| I10 | `/mode +t` blocks non-operator topic changes; `/mode -t` allows them again | `tests/chat-channel-modes.spec.ts` | P1 | done |
+| I11 | `/ban bob` removes/blocks bob; `/unban bob` allows rejoin | `tests/chat-channel-moderation.spec.ts` | P0 | done |
+| I12 | `/kick bob reason` removes bob's channel tab and broadcasts the reason | `tests/chat-channel-moderation.spec.ts` | P0 | done |
+| I13 | `/mute bob` blocks bob's channel messages; `/unmute bob` restores sending | `tests/chat-channel-moderation.spec.ts` | P0 | done |
+| I14 | `/slow 60` throttles rapid joins and `/slow 0` disables throttle | `tests/chat-channel-modes.spec.ts` | P2 | done |
+| I15 | `/knock #room` notifies operators of invite-only channel; repeated knock is throttled | `tests/chat-channel-knock.spec.ts` | P2 | done |
+| I16 | `/mode +K` disables knock and `/mode -K` allows knock again | `tests/chat-channel-knock.spec.ts` | P2 | done |
+| I17 | `/transfer bob` changes channel ownership and privileges | `tests/chat-channel-transfer.spec.ts` | P1 | done |
+| I18 | Channel Central dialog edits modes/key/limit and the slash command output stays consistent | `tests/chat-channel-central.spec.ts` | P2 | done |
 
 ## Group J - User Commands, Privacy, Presence
 
 | # | Flow | Planned spec file | Priority | Status |
 |---|------|-------------------|----------|--------|
-| J1 | `/query bob` opens a PM tab without sending a message | `tests/chat-user-commands.spec.ts` | P0 | todo |
-| J2 | `/notice bob text` delivers a notice without opening a PM tab on recipient | `tests/chat-notice.spec.ts` | P0 | todo |
-| J3 | `/notice #room text` delivers to channel and respects active-window routing | `tests/chat-notice.spec.ts` | P1 | todo |
-| J4 | `/notice_routing` reports current routing behavior and does not change hidden state unexpectedly | `tests/chat-notice.spec.ts` | P2 | todo |
-| J5 | `/ignore bob all` hides bob's channel messages, actions, PMs, notices, and invites | `tests/chat-ignore.spec.ts` | P0 | todo |
-| J6 | Type-specific ignore works: `messages` hides channel text but not PM; `pms` hides PM but not channel text | `tests/chat-ignore.spec.ts` | P1 | todo |
-| J7 | `/ignore` lists entries and `/unignore bob` restores visibility | `tests/chat-ignore.spec.ts` | P0 | todo |
-| J8 | `/ignore <ownnick>` shows self-ignore error | `tests/chat-ignore.spec.ts` | P1 | todo |
-| J9 | Timed ignore expiry emits "no longer ignored" status | `tests/chat-ignore.spec.ts` | P2 | investigate |
-| J10 | `/bio text` appears in another user's `/whois`; `/bio clear` removes it | `tests/chat-whois.spec.ts` | P1 | todo |
-| J11 | `/whois bob` shows online, idle, registered/identified, shared channels, away, and bio fields | `tests/chat-whois.spec.ts` | P0 | todo |
-| J12 | `/whois missingNick` shows not-online/not-found message | `tests/chat-whois.spec.ts` | P1 | todo |
-| J13 | `/away msg` makes other user's `/whois` show away state and auto-reply behavior | `tests/chat-away-advanced.spec.ts` | P1 | todo |
-| J14 | `/whowas bob` after bob disconnects shows last seen data | `tests/chat-whowas.spec.ts` | P1 | todo |
-| J15 | `/notify add bob`, bob connects, and notifier sees online/offline status messages | `tests/chat-notify.spec.ts` | P0 | todo |
-| J16 | `/notify edit/list/remove` updates visible notify list output and Address Book state | `tests/chat-notify.spec.ts` | P1 | todo |
-| J17 | `/umode +w` opts in to `/wallops`; `/umode -w` opts out | `tests/chat-wallops.spec.ts` | P1 | todo |
-| J18 | `/wallops msg` reaches only opted-in users and requires appropriate privileges if product enforces them | `tests/chat-wallops.spec.ts` | P1 | investigate |
+| J1 | `/query bob` opens a PM tab without sending a message | `tests/chat-user-commands.spec.ts` | P0 | done |
+| J2 | `/notice bob text` delivers a notice without opening a PM tab on recipient | `tests/chat-notice.spec.ts` | P0 | done |
+| J3 | `/notice #room text` delivers to channel and respects active-window routing | `tests/chat-notice.spec.ts` | P1 | done |
+| J4 | `/notice_routing` reports current routing behavior and does not change hidden state unexpectedly | `tests/chat-notice.spec.ts` | P2 | done |
+| J5 | `/ignore bob all` hides bob's channel messages, actions, PMs, notices, and invites | `tests/chat-ignore.spec.ts` | P0 | done |
+| J6 | Type-specific ignore works: `messages` hides channel text but not PM; `pms` hides PM but not channel text | `tests/chat-ignore.spec.ts` | P1 | done |
+| J7 | `/ignore` lists entries and `/unignore bob` restores visibility | `tests/chat-ignore.spec.ts` | P0 | done |
+| J8 | `/ignore <ownnick>` shows self-ignore error | `tests/chat-ignore.spec.ts` | P1 | done |
+| J9 | Timed ignore expiry emits "no longer ignored" status | `tests/chat-ignore.spec.ts` | P2 | done |
+| J10 | `/bio text` appears in another user's `/whois`; `/bio clear` removes it | `tests/chat-whois.spec.ts` | P1 | done |
+| J11 | `/whois bob` shows online, idle, registered/identified, shared channels, away, and bio fields | `tests/chat-whois.spec.ts` | P0 | done |
+| J12 | `/whois missingNick` shows not-online/not-found message | `tests/chat-whois.spec.ts` | P1 | done |
+| J13 | `/away msg` makes other user's `/whois` show away state and auto-reply behavior | `tests/chat-away-advanced.spec.ts` | P1 | done |
+| J14 | `/whowas bob` after bob disconnects shows last seen data | `tests/chat-whowas.spec.ts` | P1 | done |
+| J15 | `/notify add bob`, bob connects, and notifier sees online/offline status messages | `tests/chat-notify.spec.ts` | P0 | done |
+| J16 | `/notify edit/list/remove` updates visible notify list output and Address Book state | `tests/chat-notify.spec.ts` | P1 | done |
+| J17 | `/umode +w` opts in to `/wallops`; `/umode -w` opts out | `tests/chat-wallops.spec.ts` | P1 | done |
+| J18 | `/wallops msg` reaches only opted-in users and requires appropriate privileges if product enforces them | `tests/chat-wallops.spec.ts` | P1 | done |
 
 ## Group K - NickServ and ChanServ
 

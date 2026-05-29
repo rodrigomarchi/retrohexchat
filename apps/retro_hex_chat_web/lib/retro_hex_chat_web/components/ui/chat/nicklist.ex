@@ -27,8 +27,8 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   attr :status, :string, values: ~w(online offline away), default: "online"
 
   attr :role, :atom,
-    values: [:operator, :voiced, :owner, :half_operator, :normal],
-    default: :normal
+    values: [:operator, :voiced, :owner, :half_operator, :regular, :normal],
+    default: :regular
 
   attr :nick_color, :string, default: nil
   attr :class, :any, default: nil
@@ -46,6 +46,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
         ])
       }
       data-testid={"nicklist-item-#{@nick}"}
+      data-role={role_name(@role)}
       {@rest}
     >
       <span class={["w-2 h-2 rounded-full flex-shrink-0 inline-block", status_color(@status)]} />
@@ -62,6 +63,13 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   defp status_color("online"), do: "bg-online"
   defp status_color("away"), do: "bg-away"
   defp status_color("offline"), do: "bg-offline"
+
+  defp role_name(:normal), do: "regular"
+  defp role_name(role) when is_atom(role), do: Atom.to_string(role)
+  defp role_name("op"), do: "operator"
+  defp role_name("voice"), do: "voiced"
+  defp role_name("normal"), do: "regular"
+  defp role_name(role) when is_binary(role), do: role
 
   defp role_icon(%{role: role} = assigns) when role in [:operator, :owner, :half_operator] do
     ~H'<Icons.icon_role_operator class="w-[16px] h-[16px]" />'

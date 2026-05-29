@@ -7,7 +7,7 @@ defmodule RetroHexChat.Chat.PrivateMessage do
 
   @type t :: %__MODULE__{}
 
-  @type_values ~w(message action p2p_invite)
+  @type_values ~w(message action system p2p_invite)
 
   schema "private_messages" do
     field :sender_nickname, :string

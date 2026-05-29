@@ -6,6 +6,22 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   import Phoenix.Component, only: [assign: 3]
   import Phoenix.LiveView, only: [stream_insert: 3]
 
+  alias RetroHexChat.Chat.IgnoreList
+
+  @spec visible_channel_messages([map()], map()) :: [map()]
+  def visible_channel_messages(messages, ignore_list) do
+    Enum.reject(messages, fn msg ->
+      ignored_author?(ignore_list, channel_author(msg), channel_message_type(msg))
+    end)
+  end
+
+  @spec visible_private_messages([map()], map()) :: [map()]
+  def visible_private_messages(messages, ignore_list) do
+    Enum.reject(messages, fn msg ->
+      ignored_author?(ignore_list, private_sender(msg), :pm)
+    end)
+  end
+
   @spec system_message(String.t()) :: map()
   def system_message(content) do
     %{
@@ -113,4 +129,23 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
     |> stream_insert(:chat_messages, inline_help_message(topic_id, topic_title))
     |> push_status_message("Help: #{topic_title}", :system)
   end
+
+  defp ignored_author?(_ignore_list, nil, _type), do: false
+
+  defp ignored_author?(ignore_list, author, type),
+    do: IgnoreList.ignored?(ignore_list, author, type)
+
+  defp channel_author(msg), do: Map.get(msg, :author_nickname) || Map.get(msg, :author)
+
+  defp private_sender(msg), do: Map.get(msg, :sender_nickname) || Map.get(msg, :sender)
+
+  defp channel_message_type(%{type: type}) when is_atom(type), do: normalize_channel_type(type)
+  defp channel_message_type(%{type: type}) when is_binary(type), do: normalize_channel_type(type)
+  defp channel_message_type(_msg), do: :message
+
+  defp normalize_channel_type(:action), do: :action
+  defp normalize_channel_type("action"), do: :action
+  defp normalize_channel_type(:notice), do: :notice
+  defp normalize_channel_type("notice"), do: :notice
+  defp normalize_channel_type(_type), do: :message
 end

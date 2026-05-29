@@ -19,6 +19,21 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   @spec join_channel(Phoenix.LiveView.Socket.t(), String.t(), Session.t(), String.t() | nil) ::
           Phoenix.LiveView.Socket.t()
   def join_channel(socket, channel_name, session, password \\ nil) do
+    do_join_channel(socket, channel_name, session, password, :activate)
+  end
+
+  @spec join_channel_in_background(
+          Phoenix.LiveView.Socket.t(),
+          String.t(),
+          Session.t(),
+          String.t() | nil
+        ) ::
+          Phoenix.LiveView.Socket.t()
+  def join_channel_in_background(socket, channel_name, session, password \\ nil) do
+    do_join_channel(socket, channel_name, session, password, :background)
+  end
+
+  defp do_join_channel(socket, channel_name, session, password, join_mode) do
     case ensure_channel_exists(channel_name) do
       :ok ->
         :ok
@@ -29,18 +44,18 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
     case Server.join(channel_name, session.nickname, password, identified: session.identified) do
       {:ok, _state} ->
-        setup_joined_channel(socket, channel_name, session)
+        setup_joined_channel(socket, channel_name, session, join_mode)
 
       {:error, "Already in channel"} ->
         Logger.info("Rejoining channel #{channel_name} (already a member in server)")
-        setup_joined_channel(socket, channel_name, session)
+        setup_joined_channel(socket, channel_name, session, join_mode)
 
       {:error, reason} ->
         Messages.error_event(socket, reason)
     end
   end
 
-  defp setup_joined_channel(socket, channel_name, session) do
+  defp setup_joined_channel(socket, channel_name, session, :activate) do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
     client_meta = Map.get(socket.assigns, :client_info, %{})
     PresenceHelpers.safe_track_user("channel:#{channel_name}", session.nickname, client_meta)
@@ -63,6 +78,20 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> assign(loading_channel: nil)
     |> maybe_show_welcome(channel_name, new_session)
     |> push_event("tip_trigger", %{tip: "first_join"})
+    |> push_event("channel_joined_flash", %{channel: channel_name})
+    |> SessionHelpers.push_reconnect_state()
+  end
+
+  defp setup_joined_channel(socket, channel_name, session, :background) do
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
+    client_meta = Map.get(socket.assigns, :client_info, %{})
+    PresenceHelpers.safe_track_user("channel:#{channel_name}", session.nickname, client_meta)
+
+    new_session = Session.add_channel(session, channel_name)
+
+    socket
+    |> assign(session: new_session)
+    |> load_channel_user_count(channel_name)
     |> push_event("channel_joined_flash", %{channel: channel_name})
     |> SessionHelpers.push_reconnect_state()
   end
@@ -189,6 +218,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
     stream_items =
       raw_messages
+      |> Messages.visible_channel_messages(socket.assigns.session.ignore_list)
       |> Enum.reverse()
       |> Enum.map(&message_to_stream_item/1)
 

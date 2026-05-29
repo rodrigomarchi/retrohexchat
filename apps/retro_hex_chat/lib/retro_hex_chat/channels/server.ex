@@ -725,6 +725,17 @@ defmodule RetroHexChat.Channels.Server do
          }}
       )
 
+      broadcast(
+        state.name,
+        {:mode_changed,
+         %{
+           nickname: current_owner,
+           mode_string: "+o",
+           params: [current_owner],
+           channel: state.name
+         }}
+      )
+
       {:reply, :ok, new_state}
     else
       {:ok, _role} -> {:reply, {:error, "Only the channel owner can transfer ownership"}, state}

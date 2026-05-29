@@ -8,6 +8,7 @@ defmodule RetroHexChat.Commands.Handler do
           active_channel: String.t() | nil,
           channels: [String.t()],
           identified: boolean(),
+          owner_in: [String.t()],
           operator_in: [String.t()],
           half_operator_in: [String.t()],
           is_admin: boolean(),

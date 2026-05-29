@@ -340,7 +340,7 @@ defmodule RetroHexChat.Chat.Service do
     )
   end
 
-  @known_types ~w(message action system service error p2p_invite)a
+  @known_types ~w(message action system service error notice p2p_invite)a
   @type_string_to_atom Map.new(@known_types, fn a -> {Atom.to_string(a), a} end)
 
   defp safe_type_atom(type) when is_binary(type) do

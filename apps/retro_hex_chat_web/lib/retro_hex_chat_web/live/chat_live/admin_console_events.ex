@@ -58,6 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       active_channel: session.active_channel,
       channels: [],
       identified: session.identified,
+      owner_in: initial_ops,
       operator_in: initial_ops,
       half_operator_in: [],
       is_admin: true,
@@ -127,6 +128,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       ctx
       | active_channel: channel_name,
         channels: Enum.uniq([channel_name | ctx.channels]),
+        owner_in: Enum.uniq([channel_name | ctx.owner_in]),
         operator_in: Enum.uniq([channel_name | ctx.operator_in])
     }
   end

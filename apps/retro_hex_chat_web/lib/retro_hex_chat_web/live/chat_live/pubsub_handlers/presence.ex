@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
       push_status_message: 3,
       play_event_sound: 3,
       maybe_persist_notify_list: 2,
-      join_channel: 3,
+      join_channel_in_background: 3,
       start_notify_debounce: 3,
       push_whois_info: 2
     ]
@@ -137,7 +137,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
     if Session.get_auto_join_on_invite(session) do
       socket =
         socket
-        |> join_channel(channel, session)
+        |> join_channel_in_background(channel, session)
         |> system_event("* You have been invited to #{channel} by #{inviter} (auto-joined)")
 
       {:halt, socket}

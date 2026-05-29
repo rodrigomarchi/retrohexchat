@@ -638,7 +638,7 @@
   created_at={channel_central_created_at(@channel_central_state, @timezone)}
   member_count={channel_central_member_count(@channel_central_state)}
   operator={@channel_central_operator}
-  modes={@channel_central_modes_form}
+  modes={channel_central_modes(@channel_central_state)}
   bans={channel_central_bans(@channel_central_state)}
   ban_exceptions={channel_central_ban_exceptions(@channel_central_state)}
   invite_exceptions={channel_central_invite_exceptions(@channel_central_state)}

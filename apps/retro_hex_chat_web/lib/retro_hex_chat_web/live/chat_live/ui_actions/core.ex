@@ -183,9 +183,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     message = Map.get(payload, :message)
     knock_timestamps = Map.get(socket.assigns, :knock_timestamps, %{})
     now = System.monotonic_time(:millisecond)
-    last_knock = Map.get(knock_timestamps, channel, 0)
 
-    if now - last_knock < 60_000 do
+    if throttled_knock?(knock_timestamps, channel, now) do
       error_event(socket, "Please wait before knocking on #{channel} again")
     else
       case Server.knock(channel, socket.assigns.session.nickname, message) do
@@ -199,6 +198,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
         {:error, msg} ->
           error_event(socket, msg)
       end
+    end
+  end
+
+  defp throttled_knock?(knock_timestamps, channel, now) do
+    case Map.fetch(knock_timestamps, channel) do
+      {:ok, last_knock} -> now - last_knock < 60_000
+      :error -> false
     end
   end
 end

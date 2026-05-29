@@ -136,7 +136,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             </.tabs_trigger>
           </.tabs_list>
 
-          <.tabs_content value="general">
+          <.tabs_content value="general" builder={builder}>
             <.general_tab
               channel_name={@channel_name}
               topic={@topic}
@@ -149,7 +149,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             />
           </.tabs_content>
 
-          <.tabs_content value="modes">
+          <.tabs_content value="modes" builder={builder}>
             <.modes_tab
               modes={@modes}
               operator={@operator}
@@ -157,7 +157,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             />
           </.tabs_content>
 
-          <.tabs_content value="bans">
+          <.tabs_content value="bans" builder={builder}>
             <.list_tab
               entries={@bans}
               selected={@ban_selected}
@@ -169,7 +169,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             />
           </.tabs_content>
 
-          <.tabs_content value="ban_exceptions">
+          <.tabs_content value="ban_exceptions" builder={builder}>
             <.list_tab
               entries={@ban_exceptions}
               selected={@ban_ex_selected}
@@ -181,7 +181,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             />
           </.tabs_content>
 
-          <.tabs_content value="invite_exceptions">
+          <.tabs_content value="invite_exceptions" builder={builder}>
             <.list_tab
               entries={@invite_exceptions}
               selected={@invite_ex_selected}

@@ -9,14 +9,19 @@ export class ChatPage {
   readonly menuBar: Locator;
   readonly fileMenuTrigger: Locator;
   readonly helpMenuTrigger: Locator;
+  readonly toolsMenuTrigger: Locator;
   readonly disconnectMenuItem: Locator;
   readonly helpTopicsMenuItem: Locator;
+  readonly addressBookMenuItem: Locator;
+  readonly channelCentralMenuItem: Locator;
   readonly disconnectConfirmDialog: Locator;
   readonly disconnectConfirmButton: Locator;
+  readonly kickDialogOkButton: Locator;
   readonly chatInput: Locator;
   readonly chatSendButton: Locator;
   readonly charCounter: Locator;
   readonly messageList: Locator;
+  readonly messageRows: Locator;
   readonly statusMessageList: Locator;
   readonly nicklist: Locator;
   readonly topicBar: Locator;
@@ -29,6 +34,9 @@ export class ChatPage {
   readonly historySearchInput: Locator;
   readonly historySearchNoResults: Locator;
   readonly helpContentPane: Locator;
+  readonly notifyListDialog: Locator;
+  readonly addressBookDialog: Locator;
+  readonly channelCentralDialog: Locator;
   readonly channelListSearch: Locator;
   readonly channelListJoinButton: Locator;
 
@@ -39,6 +47,7 @@ export class ChatPage {
     this.chatSendButton = page.getByTestId('chat-input-send');
     this.charCounter = page.getByTestId('char-counter');
     this.messageList = page.getByTestId('chat-message-list');
+    this.messageRows = this.messageList.locator('[data-message-id]');
     this.statusMessageList = page.getByTestId('status-messages');
     this.nicklist = page.getByTestId('nicklist');
     this.topicBar = page.getByTestId('topic-bar');
@@ -53,10 +62,19 @@ export class ChatPage {
     this.helpMenuTrigger = page
       .locator('button[data-menubar-trigger]')
       .filter({ hasText: 'Help' });
+    this.toolsMenuTrigger = page
+      .locator('button[data-menubar-trigger]')
+      .filter({ hasText: 'Tools' });
     // context_menu_item exposes data-testid="context-menu-item-<action>".
     this.disconnectMenuItem = page.getByTestId('context-menu-item-disconnect');
     this.helpTopicsMenuItem = page.getByTestId(
       'context-menu-item-help_topics',
+    );
+    this.addressBookMenuItem = page.getByTestId(
+      'context-menu-item-toggle_address_book',
+    );
+    this.channelCentralMenuItem = page.getByTestId(
+      'context-menu-item-open_channel_central',
     );
     this.inlineHelp = page.getByTestId('inline-help');
     this.syntaxTooltip = page.getByTestId('syntax-tooltip');
@@ -64,6 +82,13 @@ export class ChatPage {
     this.historySearchInput = page.getByTestId('history-search-input');
     this.historySearchNoResults = page.getByTestId('history-search-no-results');
     this.helpContentPane = page.getByTestId('help-content-pane');
+    this.notifyListDialog = page.locator('#notify-list-dialog [role="dialog"]');
+    this.addressBookDialog = page.locator(
+      '#address-book-dialog [role="dialog"]',
+    );
+    this.channelCentralDialog = page.locator(
+      '#channel-central-dialog [role="dialog"]',
+    );
     this.channelListSearch = page.getByTestId('channel-list-search');
     this.channelListJoinButton = page.getByTestId('channel-list-join');
     // The dialog component wraps content in a <span data-testid="...">, but
@@ -75,6 +100,7 @@ export class ChatPage {
     this.disconnectConfirmButton = page.getByTestId(
       'disconnect-confirm-dialog-confirm',
     );
+    this.kickDialogOkButton = page.getByTestId('kick-dialog-ok');
   }
 
   // Waits until we are at /chat AND the LiveView socket is connected
@@ -122,6 +148,10 @@ export class ChatPage {
     await expect(this.tab(name)).toBeVisible();
   }
 
+  async expectTabSelected(name: string) {
+    await expect(this.tab(name)).toHaveAttribute('aria-selected', 'true');
+  }
+
   async expectTabHidden(name: string) {
     await expect(this.tab(name)).toHaveCount(0);
   }
@@ -140,10 +170,10 @@ export class ChatPage {
   // are no per-message testids so we match by text content scoped to the
   // chat-message-list container. Uses .first() to tolerate other messages
   // (e.g., system "you are now identified as <nick>") that may also match.
-  async expectMessageVisible(text: string) {
+  async expectMessageVisible(text: string, timeout?: number) {
     await expect(
       this.messageList.getByText(text, { exact: false }).first(),
-    ).toBeVisible();
+    ).toBeVisible(timeout ? { timeout } : undefined);
   }
 
   async expectMessageHidden(text: string) {
@@ -152,10 +182,26 @@ export class ChatPage {
     );
   }
 
-  async expectStatusMessageVisible(text: string) {
+  async expectMessageNotVisible(text: string) {
+    await expect(
+      this.messageList.getByText(text, { exact: false }).first(),
+    ).toBeHidden();
+  }
+
+  async expectActiveMessageCount(count: number) {
+    await expect(this.messageRows).toHaveCount(count);
+  }
+
+  async expectStatusMessageVisible(text: string, timeout?: number) {
     await expect(
       this.statusMessageList.getByText(text, { exact: false }).first(),
-    ).toBeVisible();
+    ).toBeVisible(timeout ? { timeout } : undefined);
+  }
+
+  async expectStatusMessageHidden(text: string, timeout = 1_000) {
+    await expect(
+      this.statusMessageList.getByText(text, { exact: false }),
+    ).toHaveCount(0, { timeout });
   }
 
   // Per-nick nicklist item — uses the data-testid="nicklist-item-<nick>"
@@ -168,9 +214,26 @@ export class ChatPage {
     await expect(this.nicklistItem(nick)).toBeVisible();
   }
 
+  async expectNickNotInList(nick: string) {
+    await expect(this.nicklistItem(nick)).toHaveCount(0);
+  }
+
+  async expectNickRole(
+    nick: string,
+    role: 'owner' | 'operator' | 'half_operator' | 'voiced' | 'regular',
+  ) {
+    await expect(this.nicklistItem(nick)).toHaveAttribute('data-role', role);
+  }
+
   async expectAutocompleteContains(text: string) {
     await expect(this.autocompleteDropdown).toBeVisible();
     await expect(this.autocompleteDropdown).toContainText(text);
+  }
+
+  async dismissKickDialog() {
+    await expect(this.kickDialogOkButton).toBeVisible();
+    await this.kickDialogOkButton.click();
+    await expect(this.kickDialogOkButton).toBeHidden();
   }
 
   autocompleteItemByText(text: string): Locator {
@@ -180,8 +243,32 @@ export class ChatPage {
       .first();
   }
 
+  inviteJoinButton(channel: string): Locator {
+    return this.page.getByTestId(`invite-join-${channel}`);
+  }
+
+  async acceptInvite(channel: string) {
+    const button = this.inviteJoinButton(channel);
+    await expect(button).toBeVisible();
+    await button.click();
+  }
+
+  async expectInviteHidden(channel: string) {
+    await expect(this.inviteJoinButton(channel)).toHaveCount(0, {
+      timeout: 1_000,
+    });
+  }
+
   channelListRow(channel: string): Locator {
     return this.page.getByTestId(`channel-list-row-${channel}`);
+  }
+
+  notifyListRow(nick: string): Locator {
+    return this.page.getByTestId(`notify-list-row-${nick}`);
+  }
+
+  addressBookNotifyRow(nick: string): Locator {
+    return this.page.locator(`[id="ab-notify-entry-${nick}"]`);
   }
 
   async openFileMenu() {
@@ -199,6 +286,47 @@ export class ChatPage {
     await this.helpTopicsMenuItem.click();
     await expect(this.page).toHaveURL(/\/chat\/help(\?.*)?$/);
     await expect(this.helpContentPane).toBeVisible();
+  }
+
+  async openChannelCentralFromMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.channelCentralMenuItem).toBeVisible();
+    await this.channelCentralMenuItem.click();
+    await expect(this.channelCentralDialog).toBeVisible();
+  }
+
+  async openAddressBookFromMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.addressBookMenuItem).toBeVisible();
+    await this.addressBookMenuItem.click();
+    await expect(this.addressBookDialog).toBeVisible();
+  }
+
+  async switchAddressBookToNotifyTab() {
+    await this.addressBookDialog
+      .getByRole('button', { name: 'Notify' })
+      .click();
+  }
+
+  async closeAddressBook() {
+    await this.addressBookDialog.getByRole('button', { name: 'OK' }).click();
+    await expect(this.addressBookDialog).toBeHidden();
+  }
+
+  async closeNotifyList() {
+    await this.notifyListDialog
+      .getByRole('button', { name: 'Close' })
+      .last()
+      .click();
+    await expect(this.notifyListDialog).toBeHidden();
+  }
+
+  async closeChannelCentral() {
+    await this.channelCentralDialog
+      .getByRole('button', { name: 'Close' })
+      .last()
+      .click();
+    await expect(this.channelCentralDialog).toBeHidden();
   }
 
   async disconnect() {

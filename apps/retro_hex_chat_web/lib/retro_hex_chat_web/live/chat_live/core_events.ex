@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Parser, Registry}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive
+  alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.Endpoint
 
@@ -173,7 +174,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   def handle_event("switch_pm", %{"nickname" => nickname}, socket) do
     session = Session.set_active_pm(socket.assigns.session, nickname)
-    messages = load_pm_messages(session.nickname, nickname)
+    messages = load_pm_messages(session.nickname, nickname, session.ignore_list)
     unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, "pm:#{nickname}")
     flash = MapSet.delete(socket.assigns.flash_channels, "pm:#{nickname}")
     if socket.assigns.pm_typing_timer, do: Process.cancel_timer(socket.assigns.pm_typing_timer)
@@ -219,7 +220,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
     socket =
       if session.active_pm do
-        messages = load_pm_messages(session.nickname, session.active_pm)
+        messages = load_pm_messages(session.nickname, session.active_pm, session.ignore_list)
         stream(socket, :chat_messages, messages, reset: true)
       else
         if session.active_channel do
@@ -565,8 +566,9 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     end
   end
 
-  defp load_pm_messages(my_nick, other_nick) do
+  defp load_pm_messages(my_nick, other_nick, ignore_list) do
     Queries.list_private_messages(my_nick, other_nick, limit: 50)
+    |> MessageHelpers.visible_private_messages(ignore_list)
     |> Enum.reverse()
     |> Enum.map(&pm_to_stream_item/1)
   end
@@ -616,6 +618,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
     stream_items =
       older_messages
+      |> MessageHelpers.visible_channel_messages(socket.assigns.session.ignore_list)
       |> Enum.reverse()
       |> Enum.map(&message_to_stream_item/1)
 

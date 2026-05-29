@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       |> Session.add_pm_conversation(target)
       |> Session.set_active_pm(target)
 
-    messages = load_pm_messages(new_session.nickname, target)
+    messages = load_pm_messages(new_session.nickname, target, new_session.ignore_list)
 
     socket
     |> assign(session: new_session, input: "", show_status_tab: false)
@@ -104,21 +104,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
           Phoenix.LiveView.Socket.t()
   def handle_notice_send(socket, session, "#" <> _ = channel, content) do
     if channel in session.channels do
-      Phoenix.PubSub.broadcast(
-        RetroHexChat.PubSub,
-        "channel:#{channel}",
-        %{
-          event: "new_notice",
-          payload: %{
-            author: session.nickname,
-            content: content,
-            channel: channel,
-            timestamp: DateTime.utc_now()
-          }
-        }
-      )
-
-      socket
+      case Server.send_message(channel, session.nickname, content, :notice) do
+        :ok -> socket
+        {:error, reason} -> Messages.error_event(socket, reason)
+      end
     else
       Messages.error_event(
         socket,
@@ -203,8 +192,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
   # Private helpers
 
-  defp load_pm_messages(my_nick, other_nick) do
+  defp load_pm_messages(my_nick, other_nick, ignore_list) do
     Queries.list_private_messages(my_nick, other_nick, limit: 50)
+    |> Messages.visible_private_messages(ignore_list)
     |> Enum.reverse()
     |> Enum.map(&pm_to_stream_item/1)
   end

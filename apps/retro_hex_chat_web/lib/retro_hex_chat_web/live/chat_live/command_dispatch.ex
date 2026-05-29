@@ -62,6 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       active_channel: session.active_channel,
       channels: session.channels,
       identified: session.identified,
+      owner_in: channels_where_owner(session),
       operator_in: channels_where_operator(session),
       half_operator_in: channels_where_half_operator(session),
       is_admin: ServerRoles.admin?(session.nickname, session.identified),
@@ -364,6 +365,15 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   end
 
   # ── Private: helpers ──────────────────────────────────────
+
+  defp channels_where_owner(session) do
+    Enum.filter(session.channels, fn channel_name ->
+      case Server.get_state(channel_name) do
+        {:ok, state} -> session.nickname in Map.get(state, :owners, [])
+        {:error, _} -> false
+      end
+    end)
+  end
 
   defp channels_where_operator(session) do
     Enum.filter(session.channels, fn channel_name ->

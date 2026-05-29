@@ -37,6 +37,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Commands.Parser
   alias RetroHexChatWeb.ChatLive.CommandDispatch
+  alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
 
   # ── Typing indicator timer ────────────────────────────────
 
@@ -303,7 +304,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     cond do
       target_pm && target_pm in session.pm_conversations ->
         new_session = Session.set_active_pm(session, target_pm)
-        messages = load_pm_messages(new_session.nickname, target_pm)
+        messages = load_pm_messages(new_session.nickname, target_pm, new_session.ignore_list)
 
         socket
         |> assign(session: new_session, show_status_tab: false)
@@ -322,8 +323,9 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     end
   end
 
-  defp load_pm_messages(my_nick, other_nick) do
+  defp load_pm_messages(my_nick, other_nick, ignore_list) do
     Queries.list_private_messages(my_nick, other_nick, limit: 50)
+    |> MessageHelpers.visible_private_messages(ignore_list)
     |> Enum.reverse()
     |> Enum.map(&pm_to_stream_item/1)
   end

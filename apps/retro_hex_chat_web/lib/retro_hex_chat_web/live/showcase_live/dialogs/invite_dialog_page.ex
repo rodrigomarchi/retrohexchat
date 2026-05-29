@@ -36,14 +36,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.InviteDialogPage do
         <.invite_dialog
           id="invite-single"
           show={false}
-          invites={[%{channel: "#lobby", from: "alice"}]}
+          invites={[%{channel: "#lobby", inviter: "alice"}]}
           on_accept="accept_invite"
           on_ignore="ignore_invite"
         />
         <.code_example>
           &lt;.invite_dialog
           id="invite-single"
-          invites=&#123;[%&#123;channel: "#lobby", from: "alice"&#125;]&#125;
+          invites=&#123;[%&#123;channel: "#lobby", inviter: "alice"&#125;]&#125;
           on_accept="accept_invite"
           on_ignore="ignore_invite"
           /&gt;
@@ -62,9 +62,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.InviteDialogPage do
           id="invite-multi"
           show={false}
           invites={[
-            %{channel: "#lobby", from: "alice"},
-            %{channel: "#dev", from: "bob"},
-            %{channel: "#offtopic", from: "carol"}
+            %{channel: "#lobby", inviter: "alice"},
+            %{channel: "#dev", inviter: "bob"},
+            %{channel: "#offtopic", inviter: "carol"}
           ]}
           on_accept="accept_invite"
           on_ignore="ignore_invite"

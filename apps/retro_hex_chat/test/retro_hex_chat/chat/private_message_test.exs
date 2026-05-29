@@ -45,8 +45,8 @@ defmodule RetroHexChat.Chat.PrivateMessageTest do
       refute changeset.valid?
     end
 
-    test "validates type inclusion - only message and action" do
-      for valid <- ~w(message action) do
+    test "validates type inclusion" do
+      for valid <- ~w(message action system p2p_invite) do
         attrs = %{
           sender_nickname: "Alice",
           recipient_nickname: "Admin",
@@ -58,7 +58,7 @@ defmodule RetroHexChat.Chat.PrivateMessageTest do
         assert changeset.valid?
       end
 
-      for invalid <- ~w(system service error) do
+      for invalid <- ~w(service error notice) do
         attrs = %{
           sender_nickname: "Alice",
           recipient_nickname: "Admin",
