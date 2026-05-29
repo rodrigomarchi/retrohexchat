@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   def url_catcher(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} class="max-w-2xl">
-      <div data-testid="url-catcher">
+      <div id={"#{@id}-content"} phx-hook="URLCatcherHook" data-testid="url-catcher">
         <.dialog_header id={@id} title="URL Catcher">
           <:icon><Icons.icon_link class="w-4 h-4" /></:icon>
         </.dialog_header>
@@ -82,20 +82,21 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
             </form>
 
             <%!-- Search --%>
-            <.input
-              type="text"
-              value={@search_query}
-              placeholder="Search URLs..."
-              class="flex-1"
-              phx-change={@on_search}
-              phx-debounce="300"
-              name="query"
-              data-testid="url-catcher-search"
-            />
-            <.button size="sm" variant="outline" phx-click={@on_search}>
-              <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
-              Search
-            </.button>
+            <form phx-change={@on_search} phx-submit={@on_search} class="flex-1 flex gap-retro-4">
+              <.input
+                type="text"
+                value={@search_query}
+                placeholder="Search URLs..."
+                class="flex-1"
+                phx-debounce="300"
+                name="query"
+                data-testid="url-catcher-search"
+              />
+              <.button type="submit" size="sm" variant="outline">
+                <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
+                Search
+              </.button>
+            </form>
           </div>
 
           <%!-- URL table --%>
@@ -161,7 +162,11 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                 </.table_row>
               </.table_header>
               <.table_body>
-                <.table_row :for={entry <- @entries} data-testid="url-catcher-row">
+                <.table_row
+                  :for={entry <- @entries}
+                  data-testid="url-catcher-row"
+                  data-url={entry.url}
+                >
                   <.table_cell class="max-w-[200px] truncate">
                     <a
                       href={entry.url}
@@ -171,6 +176,13 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                     >
                       {entry.url}
                     </a>
+                    <div
+                      :if={Map.get(entry, :preview_title)}
+                      class="text-[10px] text-muted-foreground truncate"
+                      data-testid="url-catcher-preview-title"
+                    >
+                      {Map.get(entry, :preview_title)}
+                    </div>
                   </.table_cell>
                   <.table_cell>{entry.posted_by}</.table_cell>
                   <.table_cell>{entry.source}</.table_cell>

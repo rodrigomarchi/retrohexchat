@@ -17,6 +17,7 @@ export class ChatPage {
   readonly addressBookMenuItem: Locator;
   readonly channelCentralMenuItem: Locator;
   readonly aliasEditorMenuItem: Locator;
+  readonly urlCatcherMenuItem: Locator;
   readonly disconnectConfirmDialog: Locator;
   readonly disconnectConfirmButton: Locator;
   readonly kickDialogOkButton: Locator;
@@ -87,6 +88,9 @@ export class ChatPage {
   readonly channelCentralDialog: Locator;
   readonly aliasDialog: Locator;
   readonly customMenusDialog: Locator;
+  readonly urlCatcherDialog: Locator;
+  readonly urlCatcherSearch: Locator;
+  readonly urlCatcherRows: Locator;
   readonly botManagementDialog: Locator;
   readonly botList: Locator;
   readonly newBotDialog: Locator;
@@ -150,6 +154,9 @@ export class ChatPage {
     );
     this.aliasEditorMenuItem = page.getByTestId(
       'context-menu-item-open_alias_dialog',
+    );
+    this.urlCatcherMenuItem = page.getByTestId(
+      'context-menu-item-toggle_url_catcher',
     );
     this.inlineHelp = page.getByTestId('inline-help');
     this.syntaxTooltip = page.getByTestId('syntax-tooltip');
@@ -248,6 +255,9 @@ export class ChatPage {
     this.customMenusDialog = page.locator(
       '#custom-menus-dialog [role="dialog"]',
     );
+    this.urlCatcherDialog = page.getByTestId('url-catcher');
+    this.urlCatcherSearch = page.getByTestId('url-catcher-search');
+    this.urlCatcherRows = this.urlCatcherDialog.getByTestId('url-catcher-row');
     this.botManagementDialog = page.locator(
       '#bot-management-dialog [role="dialog"]',
     );
@@ -491,6 +501,10 @@ export class ChatPage {
     return this.customMenusDialog.locator('tr').filter({ hasText: label });
   }
 
+  urlCatcherRowByUrl(url: string): Locator {
+    return this.urlCatcherRows.filter({ hasText: url }).first();
+  }
+
   botItem(name: string): Locator {
     return this.page.getByTestId(`bot-item-${name}`);
   }
@@ -571,6 +585,13 @@ export class ChatPage {
     await expect(this.aliasEditorMenuItem).toBeVisible();
     await this.aliasEditorMenuItem.click();
     await expect(this.aliasDialog).toBeVisible();
+  }
+
+  async openUrlCatcherFromMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.urlCatcherMenuItem).toBeVisible();
+    await this.urlCatcherMenuItem.click();
+    await expect(this.urlCatcherDialog).toBeVisible();
   }
 
   async switchAddressBookToNotifyTab() {

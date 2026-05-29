@@ -274,7 +274,7 @@ only the foundation and a small subset of command behavior.
 | O12 | Nicklist context menu: query, whois, ignore/unignore, op/voice actions are visible and execute | `tests/chat-context-menus.spec.ts` | P1 | done |
 | O13 | Conversation context menu: mark-read, mute toggle, copy name, leave/channel settings | `tests/chat-context-menus.spec.ts` | P2 | done |
 | O14 | Hover card over nick shows registered/away/idle/shared channel information | `tests/chat-hover-card.spec.ts` | P2 | done |
-| O15 | URL catcher records links from chat, search filters, preview title updates if available | `tests/chat-url-catcher.spec.ts` | P2 | investigate |
+| O15 | URL catcher records links from chat, search filters, preview title updates if available | `tests/chat-url-catcher.spec.ts` | P2 | done |
 | O16 | Address Book dialog add/edit/remove contact, notify, nick color, and control entries | `tests/chat-address-book.spec.ts` | P2 | todo |
 | O17 | Custom nick color applies to message nick rendering in chat | `tests/chat-address-book.spec.ts` | P2 | todo |
 | O18 | Keyboard shortcuts switch windows, open cheatsheet, open address book, and never submit text accidentally | `tests/chat-keyboard.spec.ts` | P1 | todo |
