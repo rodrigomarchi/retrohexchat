@@ -15,7 +15,8 @@ user-facing journeys before releases, run locally and sporadically.
 ```bash
 make e2e.install     # first time only: npm deps + Chromium
 make e2e.db.setup    # first time only: create + migrate retro_hex_chat_e2e
-make e2e             # run all specs headless
+make e2e             # run all specs headed with slow-mo
+make e2e.headless    # run all specs headless
 make e2e.ui          # interactive Playwright UI mode for debugging
 ```
 
@@ -23,6 +24,8 @@ make e2e.ui          # interactive Playwright UI mode for debugging
 
 - Lives at the **top level** of the repo with its own `package.json`,
   isolated from `apps/retro_hex_chat_web/assets/` (where Vitest lives).
+- The complete catalog of mapped and implemented journeys lives in
+  `TEST_CATALOG.md`.
 - Runs under **MIX_ENV=e2e** on port 4003 against a dedicated
   `retro_hex_chat_e2e` Postgres database. See `config/e2e.exs`.
 - Real Chromium via Playwright — exercises JS hooks, the LiveView socket,
@@ -39,10 +42,12 @@ For regression sweeps, this suite is run manually.
 
 ```
 e2e/
+├── TEST_CATALOG.md        Single source of truth for covered journeys
 ├── package.json
 ├── playwright.config.ts
 ├── tsconfig.json
 ├── pages/                 Page Object Model (selectors + high-level actions)
+│   ├── ChatPage.ts
 │   └── ConnectPage.ts
 └── tests/                 Specs (one file per user journey)
     └── connect-flow.spec.ts
