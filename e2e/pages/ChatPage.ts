@@ -386,6 +386,10 @@ export class ChatPage {
     return this.messageRows.filter({ hasText: text }).first();
   }
 
+  messageNickByText(text: string, nick: string): Locator {
+    return this.messageRowByText(text).locator(`[data-nick="${nick}"]`).first();
+  }
+
   async openMessageContextMenu(text: string) {
     await this.messageRowByText(text).click({ button: 'right' });
     await expect(this.chatContextMenu).toBeVisible();
@@ -516,6 +520,10 @@ export class ChatPage {
 
   channelConversationItem(channel: string): Locator {
     return this.page.getByTestId(`channel-${channel}`);
+  }
+
+  hoverCard(nick: string): Locator {
+    return this.page.getByTestId(`hover-card-${nick}`);
   }
 
   channelUnreadBadge(channel: string): Locator {

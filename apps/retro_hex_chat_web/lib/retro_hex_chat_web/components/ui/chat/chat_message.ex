@@ -77,7 +77,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       <span
         :if={@nick && @type == "normal"}
         class={[
-          "font-bold mr-1 font-mono text-right overflow-hidden text-ellipsis whitespace-nowrap",
+          "chat-nick font-bold mr-1 font-mono text-right overflow-hidden text-ellipsis whitespace-nowrap",
           @nick_color || "text-text"
         ]}
         data-nick={@nick}
@@ -87,7 +87,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       <span
         :if={@nick && @type == "action"}
         class={[
-          "font-bold mr-1 font-mono overflow-hidden text-ellipsis whitespace-nowrap",
+          "chat-nick font-bold mr-1 font-mono overflow-hidden text-ellipsis whitespace-nowrap",
           "text-action"
         ]}
         data-nick={@nick}
@@ -96,7 +96,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       </span>
       <span
         :if={@nick && @type not in ["normal", "action"]}
-        class="font-bold mr-1 font-mono"
+        class="chat-nick font-bold mr-1 font-mono"
         data-nick={@nick}
       >
         {@nick}

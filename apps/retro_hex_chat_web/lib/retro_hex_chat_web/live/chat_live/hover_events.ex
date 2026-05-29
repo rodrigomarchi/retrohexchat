@@ -126,6 +126,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
         away: (target_meta && target_meta[:away]) || false,
         away_message: target_meta && target_meta[:away_message],
         registered: NickServ.registered?(nick),
+        idle: format_idle_time(target_meta),
         role: get_role_in_active_channel(nick, session.active_channel),
         is_contact: contact?(nick, session.contacts),
         is_ignored: IgnoreList.get_entry(session.ignore_list, nick) != nil
@@ -133,7 +134,28 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
       |> Map.merge(extract_client_fields(target_meta))
 
     hover_card = socket.assigns.hover_card
-    assign(socket, hover_card: %{hover_card | loading: false, data: data})
+    assign(socket, hover_card: Map.merge(hover_card, hover_card_fields(data)))
+  end
+
+  defp hover_card_fields(data) do
+    %{
+      loading: false,
+      data: data,
+      away: if(data.away, do: data.away_message || "Away"),
+      host: data.hostname,
+      registered: data.registered,
+      online_for: data.online_for,
+      idle: data.idle,
+      channels: data.channels,
+      browser: data.browser,
+      os: data.os,
+      screen_resolution: data.screen,
+      language: data.language,
+      timezone_info: data.client_timezone,
+      role: hover_role(data.role),
+      is_contact: data.is_contact,
+      is_ignored: data.is_ignored
+    }
   end
 
   @spec extract_client_fields(map() | nil) :: map()
@@ -160,6 +182,20 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
       TimeFormatter.format_duration(seconds)
     else
       "Unknown"
+    end
+  end
+
+  @spec format_idle_time(map() | nil) :: String.t()
+  defp format_idle_time(nil), do: "Unknown"
+
+  defp format_idle_time(meta) do
+    case meta[:last_activity_at] do
+      nil ->
+        "Unknown"
+
+      last_activity_at ->
+        seconds = DateTime.diff(DateTime.utc_now(), last_activity_at, :second)
+        TimeFormatter.format_duration(seconds)
     end
   end
 
@@ -222,6 +258,9 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
       _ -> nil
     end
   end
+
+  defp hover_role(role) when role in [:owner, :operator, :half_operator, :voiced, :bot], do: role
+  defp hover_role(_role), do: nil
 
   @spec contact?(String.t(), map()) :: boolean()
   defp contact?(nick, contacts) do
