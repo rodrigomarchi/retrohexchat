@@ -74,13 +74,11 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
     end
   end
 
-  def handle_event(
-        "alias_dialog_save",
-        %{"name" => name, "expansion" => expansion},
-        socket
-      ) do
+  def handle_event("alias_dialog_save", params, socket) do
     session = socket.assigns.session
     selected = socket.assigns.alias_dialog_selected
+    name = selected || Map.get(params, "name", "")
+    expansion = Map.get(params, "expansion", "")
 
     result =
       if selected do

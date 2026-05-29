@@ -97,6 +97,10 @@ defmodule RetroHexChat.Channels.ServerTest do
       assert {:error, "Not in channel"} = Server.part(channel, "ghost")
     end
 
+    test "returns error when channel process is gone" do
+      assert {:error, "Channel not found"} = Server.part(unique_channel(), "ghost")
+    end
+
     test "stops channel process when last user leaves" do
       channel = unique_channel()
       {:ok, pid} = start_channel(channel)

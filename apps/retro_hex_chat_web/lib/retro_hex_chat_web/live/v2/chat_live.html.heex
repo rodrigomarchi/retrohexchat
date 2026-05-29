@@ -255,7 +255,7 @@
         >
           <div class="absolute inset-0 bg-black/30 md:hidden" phx-click="toggle_nicklist" />
           <div class="relative z-10 w-[200px] md:w-full h-full bg-surface shadow-retro-window md:shadow-none">
-            <.nicklist class="h-full">
+            <.nicklist id="nicklist-users" phx-hook="NicklistHook" class="h-full">
               <.nicklist_item
                 :for={user <- @channel_users}
                 nick={user.nickname}

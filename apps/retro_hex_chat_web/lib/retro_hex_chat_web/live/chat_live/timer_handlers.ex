@@ -155,24 +155,16 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       entry = Enum.at(entries, index)
       masked = PerformList.mask_command(entry.command)
 
-      # Preserve the current active channel — perform should not steal focus
-      prev_active = session.active_channel
+      # Preserve the current active window — perform should not steal focus
+      prev_active = active_window(session)
 
       socket =
         socket
         |> system_event("* Performing: #{masked}")
         |> execute_perform_command(session, entry.command)
 
-      socket =
-        if prev_active do
-          new_session = Session.set_active_channel(socket.assigns.session, prev_active)
-          assign(socket, session: new_session)
-        else
-          socket
-        end
-
       Process.send_after(self(), {:execute_perform, index + 1}, 100)
-      {:halt, socket}
+      {:halt, restore_active_window(socket, prev_active)}
     else
       send(self(), {:execute_autojoin, 0})
       {:halt, socket}
@@ -190,20 +182,19 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       channel = entry.channel_name
       key = entry.channel_key
 
-      # Preserve the current active channel — autojoin should not steal focus
-      prev_active = session.active_channel
-
       socket =
-        socket
-        |> system_event("* Auto-joining #{channel}...")
-        |> join_channel(channel, session, key)
-
-      socket =
-        if prev_active do
-          new_session = Session.set_active_channel(socket.assigns.session, prev_active)
-          assign(socket, session: new_session)
-        else
+        if channel in session.channels do
           socket
+        else
+          # Preserve the current active window — autojoin should not steal focus
+          prev_active = active_window(session)
+
+          socket =
+            socket
+            |> system_event("* Auto-joining #{channel}...")
+            |> join_channel(channel, session, key)
+
+          restore_active_window(socket, prev_active)
         end
 
       Process.send_after(self(), {:execute_autojoin, index + 1}, 100)
@@ -291,6 +282,40 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
           socket,
           "Perform: invalid command format: #{PerformList.mask_command(command)}"
         )
+    end
+  end
+
+  defp active_window(session), do: {session.active_channel, session.active_pm}
+
+  defp restore_active_window(socket, {nil, nil}), do: socket
+
+  defp restore_active_window(socket, {target_channel, nil}) when is_binary(target_channel) do
+    session = socket.assigns.session
+
+    if target_channel in session.channels do
+      new_session = Session.set_active_channel(session, target_channel)
+
+      socket
+      |> assign(session: new_session, show_status_tab: false)
+      |> load_channel_users(target_channel)
+      |> load_channel_messages_with_pagination(target_channel)
+    else
+      socket
+    end
+  end
+
+  defp restore_active_window(socket, {nil, target_pm}) when is_binary(target_pm) do
+    session = socket.assigns.session
+
+    if target_pm in session.pm_conversations do
+      new_session = Session.set_active_pm(session, target_pm)
+      messages = load_pm_messages(new_session.nickname, target_pm, new_session.ignore_list)
+
+      socket
+      |> assign(session: new_session, show_status_tab: false)
+      |> stream(:chat_messages, messages, reset: true)
+    else
+      socket
     end
   end
 

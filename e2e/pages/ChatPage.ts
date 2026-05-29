@@ -14,6 +14,7 @@ export class ChatPage {
   readonly helpTopicsMenuItem: Locator;
   readonly addressBookMenuItem: Locator;
   readonly channelCentralMenuItem: Locator;
+  readonly aliasEditorMenuItem: Locator;
   readonly disconnectConfirmDialog: Locator;
   readonly disconnectConfirmButton: Locator;
   readonly kickDialogOkButton: Locator;
@@ -37,6 +38,8 @@ export class ChatPage {
   readonly notifyListDialog: Locator;
   readonly addressBookDialog: Locator;
   readonly channelCentralDialog: Locator;
+  readonly aliasDialog: Locator;
+  readonly customMenusDialog: Locator;
   readonly nickChangeDialog: Locator;
   readonly nickChangePassword: Locator;
   readonly nickChangeConfirmButton: Locator;
@@ -81,6 +84,9 @@ export class ChatPage {
     this.channelCentralMenuItem = page.getByTestId(
       'context-menu-item-open_channel_central',
     );
+    this.aliasEditorMenuItem = page.getByTestId(
+      'context-menu-item-open_alias_dialog',
+    );
     this.inlineHelp = page.getByTestId('inline-help');
     this.syntaxTooltip = page.getByTestId('syntax-tooltip');
     this.historySearch = page.getByTestId('history-search');
@@ -93,6 +99,10 @@ export class ChatPage {
     );
     this.channelCentralDialog = page.locator(
       '#channel-central-dialog [role="dialog"]',
+    );
+    this.aliasDialog = page.locator('#alias-dialog [role="dialog"]');
+    this.customMenusDialog = page.locator(
+      '#custom-menus-dialog [role="dialog"]',
     );
     this.nickChangeDialog = page.getByTestId('nick-change-dialog');
     this.nickChangePassword = page.getByTestId('nick-change-password');
@@ -281,6 +291,25 @@ export class ChatPage {
     return this.page.locator(`[id="ab-notify-entry-${nick}"]`);
   }
 
+  aliasRow(name: string): Locator {
+    return this.aliasDialog.locator('tr').filter({ hasText: `/${name}` });
+  }
+
+  customMenuRow(label: string): Locator {
+    return this.customMenusDialog.locator('tr').filter({ hasText: label });
+  }
+
+  customContextMenuItem(label: string): Locator {
+    return this.page
+      .getByTestId('context-menu-item-custom_menu_execute')
+      .filter({ hasText: label })
+      .first();
+  }
+
+  channelConversationItem(channel: string): Locator {
+    return this.page.getByTestId(`channel-${channel}`);
+  }
+
   async openFileMenu() {
     // MenuBarHook listens for mousedown (not click) so that focus never
     // leaves the chat input. Playwright's click() does fire mousedown as
@@ -312,6 +341,13 @@ export class ChatPage {
     await expect(this.addressBookDialog).toBeVisible();
   }
 
+  async openAliasEditorFromMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.aliasEditorMenuItem).toBeVisible();
+    await this.aliasEditorMenuItem.click();
+    await expect(this.aliasDialog).toBeVisible();
+  }
+
   async switchAddressBookToNotifyTab() {
     await this.addressBookDialog
       .getByRole('button', { name: 'Notify' })
@@ -337,6 +373,58 @@ export class ChatPage {
       .last()
       .click();
     await expect(this.channelCentralDialog).toBeHidden();
+  }
+
+  async addAliasFromDialog(name: string, expansion: string) {
+    await this.aliasDialog.getByRole('button', { name: 'Add' }).click();
+    await this.aliasDialog.locator('input[name="name"]').fill(name);
+    await this.aliasDialog.locator('input[name="expansion"]').fill(expansion);
+    await this.aliasDialog.getByRole('button', { name: 'Save' }).click();
+    await expect(this.aliasRow(name)).toContainText(expansion);
+  }
+
+  async editAliasFromDialog(name: string, expansion: string) {
+    await this.aliasRow(name).click();
+    await this.aliasDialog.getByRole('button', { name: 'Edit' }).click();
+    await this.aliasDialog.locator('input[name="expansion"]').fill(expansion);
+    await this.aliasDialog.getByRole('button', { name: 'Save' }).click();
+    await expect(this.aliasRow(name)).toContainText(expansion);
+  }
+
+  async removeAliasFromDialog(name: string) {
+    await this.aliasRow(name).click();
+    await this.aliasDialog.getByRole('button', { name: 'Remove' }).click();
+    await expect(this.aliasRow(name)).toHaveCount(0);
+  }
+
+  async closeAliasEditor() {
+    await this.aliasDialog.getByRole('button', { name: 'Close' }).last().click();
+    await expect(this.aliasDialog).toBeHidden();
+  }
+
+  async openCustomMenusDialogFromCommand() {
+    await this.sendMessage('/popups');
+    await expect(this.customMenusDialog).toBeVisible();
+  }
+
+  async addCustomMenuItem(
+    tab: 'Nicklist' | 'Channel' | 'Chat',
+    label: string,
+    command: string,
+  ) {
+    await this.customMenusDialog.getByRole('button', { name: tab }).click();
+    await this.customMenusDialog.getByRole('button', { name: 'Add' }).click();
+    const form = this.customMenusDialog.locator('form:visible');
+
+    await form.locator('input[name="label"]').fill(label);
+    await form.locator('input[name="command"]').fill(command);
+    await form.getByRole('button', { name: 'Save' }).click();
+    await expect(this.customMenuRow(label)).toContainText(command);
+  }
+
+  async closeCustomMenusDialog() {
+    await this.customMenusDialog.getByRole('button', { name: 'OK' }).click();
+    await expect(this.customMenusDialog).toBeHidden();
   }
 
   async confirmNickChange(password?: string) {

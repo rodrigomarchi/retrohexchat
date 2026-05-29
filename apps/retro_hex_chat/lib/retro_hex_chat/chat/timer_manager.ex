@@ -110,10 +110,6 @@ defmodule RetroHexChat.Chat.TimerManager do
     {:error, "Minimum interval for one-shot timers is #{@min_once_interval} second."}
   end
 
-  defp validate_timer_interval(:repeat, interval) when interval < @min_repeat_interval do
-    {:error, "Minimum interval for repeat timers is #{@min_repeat_interval} seconds."}
-  end
-
   defp validate_timer_interval(_type, interval) when interval > @max_interval do
     {:error, "Maximum interval is #{@max_interval} seconds (24 hours)."}
   end

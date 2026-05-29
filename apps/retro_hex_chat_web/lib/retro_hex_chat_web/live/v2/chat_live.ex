@@ -139,6 +139,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
 
           timezone = resolve_timezone(http_session, socket)
           client_info = parse_client_info(get_connect_params(socket))
+          previous_nickname = Map.get(socket.assigns.flash, "nick_changed_from")
 
           ChatLive.Helpers.safe_track_user("presence:global", nickname)
 
@@ -153,6 +154,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
               session
             )
             |> ChatLive.Helpers.maybe_join_channel(join_channel)
+            |> maybe_broadcast_nick_changed(previous_nickname, nickname)
             |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, pre_identified)
             |> ChatLive.Helpers.maybe_trigger_perform()
             |> ChatLive.Helpers.play_event_sound(:connect, session)
@@ -900,6 +902,21 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       content -> ChatLive.Helpers.push_status_message(socket, content, :motd)
     end
   end
+
+  defp maybe_broadcast_nick_changed(socket, old_nickname, new_nickname)
+       when is_binary(old_nickname) and old_nickname != "" and old_nickname != new_nickname do
+    Enum.each(socket.assigns.session.channels, fn channel ->
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "channel:#{channel}",
+        {:nick_changed, %{old_nick: old_nickname, new_nick: new_nickname, channel: channel}}
+      )
+    end)
+
+    socket
+  end
+
+  defp maybe_broadcast_nick_changed(socket, _old_nickname, _new_nickname), do: socket
 
   defp show_welcome_message(socket) do
     server_name = Queries.get_setting("server_name") || "RetroHexChat"

@@ -26,6 +26,7 @@ import TitleFlashHook from "./hooks/notifications/title_flash_hook";
 import MenuBarHook from "./hooks/ui/menu_bar_hook";
 import ToolbarGroupHook from "./hooks/ui/toolbar_group_hook";
 import ConversationsHook from "./hooks/ui/conversations_hook";
+import NicklistHook from "./hooks/ui/nicklist_hook";
 import ContextualTipsHook from "./hooks/ui/contextual_tips_hook";
 import MessageInteractionsHook from "./hooks/chat/message_interactions_hook";
 import NickChangeFormHook from "./hooks/chat/nick_change_form_hook";
@@ -90,6 +91,7 @@ const Hooks = {
   MenuBarHook: MenuBarHook,
   ToolbarGroupHook: ToolbarGroupHook,
   ConversationsHook: ConversationsHook,
+  NicklistHook: NicklistHook,
   URLCatcherHook: URLCatcherHook,
   ViewportDetectHook: ViewportDetectHook,
   WebRTCHook: WebRTCHook,

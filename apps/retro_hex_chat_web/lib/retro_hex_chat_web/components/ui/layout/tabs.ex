@@ -58,6 +58,13 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
   attr :rest, :global
 
   def tabs_trigger(assigns) do
+    {external_click, rest} = pop_phx_click(assigns.rest)
+
+    assigns =
+      assigns
+      |> assign(:rest, rest)
+      |> assign(:click, tab_click(assigns.builder.id, assigns.value, external_click))
+
     ~H"""
     <button
       class={
@@ -77,7 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
       }
       data-target={@value}
       {@rest}
-      phx-click={show_tab(@builder.id, @value)}
+      phx-click={@click}
     >
       <span class="w-[16px] h-[16px] shrink-0 inline-flex items-center justify-center">
         {render_slot(@icon)}
@@ -137,5 +144,29 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
     )
     |> JS.add_class("hidden", to: "##{root} .tabs-content:not([value=#{value}])")
     |> JS.remove_class("hidden", to: "##{root} .tabs-content[value=#{value}]")
+  end
+
+  defp pop_phx_click(rest) do
+    Enum.reduce_while([:"phx-click", "phx-click", :phx_click], {nil, rest}, fn key,
+                                                                               {_click, acc} ->
+      case Map.pop(acc, key) do
+        {nil, updated} -> {:cont, {nil, updated}}
+        {click, updated} -> {:halt, {click, updated}}
+      end
+    end)
+  end
+
+  defp tab_click(root, value, nil), do: show_tab(root, value)
+
+  defp tab_click(root, value, event) when is_binary(event) do
+    root
+    |> show_tab(value)
+    |> JS.push(event)
+  end
+
+  defp tab_click(root, value, %JS{} = event) do
+    root
+    |> show_tab(value)
+    |> JS.concat(event)
   end
 end

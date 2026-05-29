@@ -695,7 +695,12 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
           token = Phoenix.Token.sign(Endpoint, "nickserv_identify", target)
 
           socket
-          |> assign(nick_change_dialog: nil, nick_change_target: target, nick_change_token: token)
+          |> assign(
+            nick_change_dialog: nil,
+            nick_change_target: target,
+            nick_change_token: token,
+            quit_reason: "Changing nickname"
+          )
           |> push_event("submit_nick_change", %{})
 
         {:error, _} ->
@@ -705,7 +710,12 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       end
     else
       socket
-      |> assign(nick_change_dialog: nil, nick_change_target: target, nick_change_token: nil)
+      |> assign(
+        nick_change_dialog: nil,
+        nick_change_target: target,
+        nick_change_token: nil,
+        quit_reason: "Changing nickname"
+      )
       |> push_event("submit_nick_change", %{})
     end
   end

@@ -62,7 +62,12 @@ defmodule RetroHexChat.Channels.Server do
   """
   @spec part(String.t(), String.t(), String.t() | nil) :: :ok | {:error, String.t()}
   def part(channel_name, nickname, reason \\ nil) do
-    GenServer.call(via(channel_name), {:part, nickname, reason})
+    case Registry.lookup(channel_name) do
+      {:ok, pid} -> GenServer.call(pid, {:part, nickname, reason})
+      {:error, :not_found} -> {:error, "Channel not found"}
+    end
+  catch
+    :exit, _reason -> {:error, "Channel not found"}
   end
 
   @doc """

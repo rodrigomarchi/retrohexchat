@@ -42,9 +42,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Autorespond do
   def fire_rule(rule, socket, triggering_nick, channel, now, dispatch_fn) do
     cooldown_key = {rule.id, triggering_nick}
     cooldowns = socket.assigns.autorespond_cooldowns
-    last_fired = Map.get(cooldowns, cooldown_key, 0)
+    last_fired = Map.get(cooldowns, cooldown_key)
 
-    if now - last_fired < 60 do
+    if last_fired && now - last_fired < 60 do
       socket
     else
       execute_autorespond(socket, rule, triggering_nick, channel, cooldown_key, now, dispatch_fn)

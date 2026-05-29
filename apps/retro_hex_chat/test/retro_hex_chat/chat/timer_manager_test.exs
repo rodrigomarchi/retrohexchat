@@ -78,8 +78,8 @@ defmodule RetroHexChat.Chat.TimerManagerTest do
       assert {:error, _} = TimerManager.validate_create(%{}, "test", :once, 0, "/me test")
     end
 
-    test "rejects repeat interval below minimum (10)" do
-      assert {:error, _} = TimerManager.validate_create(%{}, "test", :repeat, 5, "/me test")
+    test "allows repeat interval below minimum so it can be clamped" do
+      assert :ok = TimerManager.validate_create(%{}, "test", :repeat, 5, "/me test")
     end
 
     test "rejects interval above maximum (86400)" do

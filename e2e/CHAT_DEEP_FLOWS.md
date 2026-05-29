@@ -199,24 +199,24 @@ only the foundation and a small subset of command behavior.
 
 | # | Flow | Planned spec file | Priority | Status |
 |---|------|-------------------|----------|--------|
-| L1 | `/alias add hi /me says hi`, `/hi`, `/alias list`, `/alias remove hi` | `tests/chat-alias.spec.ts` | P0 | todo |
-| L2 | Alias variables `$1`, `$nick`, `$chan`, and `$$` expand correctly | `tests/chat-alias.spec.ts` | P1 | todo |
-| L3 | Alias recursion limit shows error instead of freezing UI | `tests/chat-alias.spec.ts` | P1 | todo |
-| L4 | Alias expansion rejects command chaining characters | `tests/chat-alias.spec.ts` | P1 | todo |
-| L5 | `/alias` opens Alias dialog; add/edit/remove through dialog mirrors slash output | `tests/chat-alias-dialog.spec.ts` | P2 | investigate |
-| L6 | `/perform add /join #x`, list/move/remove/clear all update command output | `tests/chat-perform.spec.ts` | P0 | todo |
-| L7 | Perform entries execute on reconnect and do not steal active-window focus | `tests/chat-perform.spec.ts` | P0 | todo |
-| L8 | Sensitive perform command display is masked and disallowed commands are rejected | `tests/chat-perform.spec.ts` | P1 | todo |
-| L9 | `/autojoin add/list/remove/clear` works and invalid channel names are rejected | `tests/chat-autojoin.spec.ts` | P0 | todo |
-| L10 | Joining a unique channel auto-adds it to autojoin; part removes it | `tests/chat-autojoin.spec.ts` | P1 | todo |
-| L11 | Autojoin entries execute on reconnect without stealing focus | `tests/chat-autojoin.spec.ts` | P0 | todo |
-| L12 | `/autorespond add on_join #room /notice $nick hi` fires when another user joins | `tests/chat-autorespond.spec.ts` | P1 | todo |
-| L13 | Autorespond `on_part` and `on_nick_change` fire with `$nick` expansion | `tests/chat-autorespond.spec.ts` | P2 | todo |
-| L14 | Autorespond list/remove and invalid chaining behavior | `tests/chat-autorespond.spec.ts` | P1 | todo |
-| L15 | `/timer once 1 /me timed` fires once, then disappears from `/timer list` | `tests/chat-timer.spec.ts` | P1 | todo |
-| L16 | `/timer stop name` cancels before firing; missing timer shows error | `tests/chat-timer.spec.ts` | P1 | todo |
-| L17 | Repeating timer minimum/clamp notice appears and can be stopped | `tests/chat-timer.spec.ts` | P2 | todo |
-| L18 | `/popups` opens custom menus dialog; custom nick/channel menu item executes command | `tests/chat-custom-menus.spec.ts` | P2 | investigate |
+| L1 | `/alias add hi /me says hi`, `/hi`, `/alias list`, `/alias remove hi` | `tests/chat-alias.spec.ts` | P0 | done |
+| L2 | Alias variables `$1`, `$nick`, `$chan`, and `$$` expand correctly | `tests/chat-alias.spec.ts` | P1 | done |
+| L3 | Alias recursion limit shows error instead of freezing UI | `tests/chat-alias.spec.ts` | P1 | done |
+| L4 | Alias expansion rejects command chaining characters | `tests/chat-alias.spec.ts` | P1 | done |
+| L5 | `/alias` opens Alias dialog; add/edit/remove through dialog mirrors slash output | `tests/chat-alias-dialog.spec.ts` | P2 | done |
+| L6 | `/perform add /join #x`, list/move/remove/clear all update command output | `tests/chat-perform.spec.ts` | P0 | done |
+| L7 | Perform entries execute on reconnect and do not steal active-window focus | `tests/chat-perform.spec.ts` | P0 | done |
+| L8 | Sensitive perform command display is masked and disallowed commands are rejected | `tests/chat-perform.spec.ts` | P1 | done |
+| L9 | `/autojoin add/list/remove/clear` works and invalid channel names are rejected | `tests/chat-autojoin.spec.ts` | P0 | done |
+| L10 | Joining a unique channel auto-adds it to autojoin; part removes it | `tests/chat-autojoin.spec.ts` | P1 | done |
+| L11 | Autojoin entries execute on reconnect without stealing focus | `tests/chat-autojoin.spec.ts` | P0 | done |
+| L12 | `/autorespond add on_join #room /notice $nick hi` fires when another user joins | `tests/chat-autorespond.spec.ts` | P1 | done |
+| L13 | Autorespond `on_part` and `on_nick_change` fire with `$nick` expansion | `tests/chat-autorespond.spec.ts` | P2 | done |
+| L14 | Autorespond list/remove and invalid chaining behavior | `tests/chat-autorespond.spec.ts` | P1 | done |
+| L15 | `/timer once 1 /me timed` fires once, then disappears from `/timer list` | `tests/chat-timer.spec.ts` | P1 | done |
+| L16 | `/timer stop name` cancels before firing; missing timer shows error | `tests/chat-timer.spec.ts` | P1 | done |
+| L17 | Repeating timer minimum/clamp notice appears and can be stopped | `tests/chat-timer.spec.ts` | P2 | done |
+| L18 | `/popups` opens custom menus dialog; custom nick/channel menu item executes command | `tests/chat-custom-menus.spec.ts` | P2 | done |
 
 ## Group M - Admin, Server Operations, Bots
 

@@ -11,10 +11,12 @@ defmodule RetroHexChatWeb.V2.SessionController do
     with :ok <- NicknameValidator.validate(nickname),
          :ok <- verify_optional_token(params["auth_token"], nickname) do
       pre_identified = params["auth_token"] != nil && params["auth_token"] != ""
+      previous_nickname = get_session(conn, :chat_nickname)
 
       redirect_path = join_channel_redirect(params["join_channel"])
 
       conn
+      |> maybe_put_nick_change_flash(previous_nickname, nickname)
       |> put_session(:chat_nickname, nickname)
       |> put_session(:chat_pre_identified, pre_identified)
       |> put_session(:chat_timezone, params["timezone"] || "Etc/UTC")
@@ -54,4 +56,11 @@ defmodule RetroHexChatWeb.V2.SessionController do
   defp join_channel_redirect(nil), do: ~p"/chat"
   defp join_channel_redirect(""), do: ~p"/chat"
   defp join_channel_redirect(channel), do: ~p"/chat?join=#{channel}"
+
+  defp maybe_put_nick_change_flash(conn, old_nickname, new_nickname)
+       when is_binary(old_nickname) and old_nickname != "" and old_nickname != new_nickname do
+    put_flash(conn, :nick_changed_from, old_nickname)
+  end
+
+  defp maybe_put_nick_change_flash(conn, _old_nickname, _new_nickname), do: conn
 end
