@@ -4,13 +4,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
   welcome message changes, and admin events (rename, role, mute/unmute).
   """
 
-  import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [stream_insert: 3]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [system_event: 2, push_status_message: 3]
 
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelper
 
   @spec handle_info(tuple(), Phoenix.LiveView.Socket.t()) :: {:halt, Phoenix.LiveView.Socket.t()}
 
@@ -61,14 +61,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
     session = socket.assigns.session
 
     if session.nickname == old_nick do
-      new_session = Session.update_nickname(session, new_nick)
-
-      Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "user:#{old_nick}")
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{new_nick}")
-
       {:halt,
        socket
-       |> assign(session: new_session)
+       |> SessionHelper.handle_nick_change(new_nick)
        |> system_event("Your nickname was changed to #{new_nick} by an administrator.")}
     else
       {:halt, socket}

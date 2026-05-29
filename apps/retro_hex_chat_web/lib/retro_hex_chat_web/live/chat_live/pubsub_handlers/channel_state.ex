@@ -7,7 +7,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   import Phoenix.Component, only: [assign: 2]
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_event: 2, play_event_sound: 3, part_channel_after_kick: 2]
+    only: [
+      system_event: 2,
+      play_event_sound: 3,
+      part_channel_after_kick: 2,
+      load_channel_messages_with_pagination: 2
+    ]
 
   alias RetroHexChat.Channels.Server
 
@@ -174,6 +179,22 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
        |> part_channel_after_kick(channel)}
     else
       {:halt, system_event(socket, "Channel #{channel} has been deleted by #{admin}.")}
+    end
+  end
+
+  def handle_info({:channel_purged, %{channel: channel, admin: admin, from: from}}, socket) do
+    if channel == socket.assigns.session.active_channel do
+      msg =
+        if from,
+          do: "Channel #{channel} history from #{from} was purged by #{admin}.",
+          else: "Channel #{channel} history was purged by #{admin}."
+
+      {:halt,
+       socket
+       |> load_channel_messages_with_pagination(channel)
+       |> system_event(msg)}
+    else
+      {:halt, socket}
     end
   end
 

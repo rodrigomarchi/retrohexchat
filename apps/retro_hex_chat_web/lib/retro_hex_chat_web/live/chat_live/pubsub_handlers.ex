@@ -77,6 +77,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:channel_deleted, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 
+  def handle_info({:channel_purged, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
   def handle_info({:user_channel_muted, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 

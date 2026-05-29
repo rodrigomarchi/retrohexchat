@@ -3,7 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Greeter, Help, Mention}
-  alias RetroHexChat.Bots.{Policy, Queries, Server, Supervisor}
+  alias RetroHexChat.Bots.{Lifecycle, Policy, Queries, Server, Supervisor}
   alias RetroHexChat.Commands.Handler
 
   @impl true
@@ -174,8 +174,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
         {:error, "[BotService] Bot '#{name}' not found."}
 
       bot ->
-        Supervisor.stop_bot(bot.nickname)
-        Queries.delete_bot(bot)
+        Lifecycle.destroy_bot(bot)
         {:ok, :system, %{content: "[BotService] Bot '#{name}' destroyed."}}
     end
   end

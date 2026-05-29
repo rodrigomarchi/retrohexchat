@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Dice, Greeter, Help, Mention, Moderation}
   alias RetroHexChat.Bots.Capabilities.{RSS, Scheduler, Trivia}
-  alias RetroHexChat.Bots.{Queries, Server, Supervisor}
+  alias RetroHexChat.Bots.{Lifecycle, Queries, Server, Supervisor}
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:cont | :halt, Phoenix.LiveView.Socket.t()}
@@ -81,8 +81,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     bot = Queries.get_bot_by_name(name)
 
     if bot do
-      Supervisor.stop_bot(bot.nickname)
-      Queries.delete_bot(bot)
+      Lifecycle.destroy_bot(bot)
       bots = Queries.list_bots()
 
       {:halt,

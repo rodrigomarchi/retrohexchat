@@ -40,6 +40,10 @@ export class ChatPage {
   readonly channelCentralDialog: Locator;
   readonly aliasDialog: Locator;
   readonly customMenusDialog: Locator;
+  readonly botManagementDialog: Locator;
+  readonly botList: Locator;
+  readonly newBotDialog: Locator;
+  readonly addCommandDialog: Locator;
   readonly nickChangeDialog: Locator;
   readonly nickChangePassword: Locator;
   readonly nickChangeConfirmButton: Locator;
@@ -103,6 +107,14 @@ export class ChatPage {
     this.aliasDialog = page.locator('#alias-dialog [role="dialog"]');
     this.customMenusDialog = page.locator(
       '#custom-menus-dialog [role="dialog"]',
+    );
+    this.botManagementDialog = page.locator(
+      '#bot-management-dialog [role="dialog"]',
+    );
+    this.botList = page.getByTestId('bot-list');
+    this.newBotDialog = page.locator('#new-bot-dialog [role="dialog"]');
+    this.addCommandDialog = page.locator(
+      '#add-command-dialog [role="dialog"]',
     );
     this.nickChangeDialog = page.getByTestId('nick-change-dialog');
     this.nickChangePassword = page.getByTestId('nick-change-password');
@@ -297,6 +309,14 @@ export class ChatPage {
 
   customMenuRow(label: string): Locator {
     return this.customMenusDialog.locator('tr').filter({ hasText: label });
+  }
+
+  botItem(name: string): Locator {
+    return this.page.getByTestId(`bot-item-${name}`);
+  }
+
+  arcadeSessionLink(): Locator {
+    return this.messageList.getByRole('link', { name: 'Open Arcade' }).first();
   }
 
   customContextMenuItem(label: string): Locator {

@@ -264,6 +264,11 @@ defmodule RetroHexChat.Admin do
       count: count
     })
 
+    broadcast_channel(
+      channel_name,
+      {:channel_purged, %{channel: channel_name, admin: admin, from: from_nick, count: count}}
+    )
+
     msg =
       if from_nick,
         do: "Purged #{count} messages from #{from_nick} in #{channel_name}.",

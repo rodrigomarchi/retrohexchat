@@ -222,26 +222,26 @@ only the foundation and a small subset of command behavior.
 
 | # | Flow | Planned spec file | Priority | Status |
 |---|------|-------------------|----------|--------|
-| M1 | Non-admin `/admin server info` shows permission error | `tests/chat-admin-extended.spec.ts` | P0 | todo |
-| M2 | Admin `/admin server info/get/settings` displays server data | `tests/chat-admin-extended.spec.ts` | P1 | todo |
-| M3 | Admin server setting validation: invalid `registration`, invalid `max_channels`, restore originals in `finally` | `tests/chat-admin-extended.spec.ts` | P1 | todo |
-| M4 | `/admin user list --search`, `info`, `banlist` display expected rows | `tests/chat-admin-users.spec.ts` | P1 | todo |
-| M5 | `/admin user kick` force-disconnects target with reason; target can reconnect | `tests/chat-admin-users.spec.ts` | P0 | todo |
-| M6 | `/admin user mute` blocks all target sends; `/admin user unmute` restores sends | `tests/chat-admin-users.spec.ts` | P0 | todo |
-| M7 | `/admin user rename old new` updates target session and other users' nicklists | `tests/chat-admin-users.spec.ts` | P1 | todo |
-| M8 | `/admin user role` validates root-admin restriction and non-admin promotion denial | `tests/chat-admin-users.spec.ts` | P2 | investigate |
-| M9 | `/admin channel create/info/list/banlist/delete` over unique channels | `tests/chat-admin-channels.spec.ts` | P1 | todo |
-| M10 | `/admin channel purge #room --from bob` removes bob's visible history only | `tests/chat-admin-channels.spec.ts` | P2 | investigate |
-| M11 | `/admin debug memory/processes/connections`, `/admin log --last`, `/admin turn stats` render without crashing | `tests/chat-admin-diagnostics.spec.ts` | P2 | todo |
-| M12 | `/admin nuke` without `--confirm` shows destructive confirmation/help only | `tests/chat-admin-nuke.spec.ts` | P2 | todo |
+| M1 | Non-admin `/admin server info` shows permission error | `tests/chat-admin-extended.spec.ts` | P0 | done |
+| M2 | Admin `/admin server info/get/settings` displays server data | `tests/chat-admin-extended.spec.ts` | P1 | done |
+| M3 | Admin server setting validation: invalid `registration`, invalid `max_channels`, restore originals in `finally` | `tests/chat-admin-extended.spec.ts` | P1 | done |
+| M4 | `/admin user list --search`, `info`, `banlist` display expected rows | `tests/chat-admin-users.spec.ts` | P1 | done |
+| M5 | `/admin user kick` force-disconnects target with reason; target can reconnect | `tests/chat-admin-users.spec.ts` | P0 | done |
+| M6 | `/admin user mute` blocks all target sends; `/admin user unmute` restores sends | `tests/chat-admin-users.spec.ts` | P0 | done |
+| M7 | `/admin user rename old new` updates target session and other users' nicklists | `tests/chat-admin-users.spec.ts` | P1 | done |
+| M8 | `/admin user role` validates root-admin restriction and non-admin promotion denial | `tests/chat-admin-users.spec.ts` | P2 | done |
+| M9 | `/admin channel create/info/list/banlist/delete` over unique channels | `tests/chat-admin-channels.spec.ts` | P1 | done |
+| M10 | `/admin channel purge #room --from bob` removes bob's visible history only | `tests/chat-admin-channels.spec.ts` | P2 | done |
+| M11 | `/admin debug memory/processes/connections`, `/admin log --last`, `/admin turn stats` render without crashing | `tests/chat-admin-diagnostics.spec.ts` | P2 | done |
+| M12 | `/admin nuke` without `--confirm` shows destructive confirmation/help only | `tests/chat-admin-nuke.spec.ts` | P2 | done |
 | M13 | `/admin nuke --confirm` is not run in shared E2E DB until an isolated manual profile exists | `tests/chat-admin-nuke.spec.ts` | P2 | block |
-| M14 | Non-admin `/bot` shows bot list, admin `/bot` opens management dialog | `tests/chat-bots.spec.ts` | P1 | todo |
-| M15 | Admin creates a unique bot, joins it to a unique channel, and sees bot in nicklist | `tests/chat-bots.spec.ts` | P1 | todo |
-| M16 | Bot custom command add/list/invoke/delete works through slash command | `tests/chat-bots.spec.ts` | P1 | todo |
-| M17 | Bot enable/disable/destroy changes response behavior and cleans up unique bot | `tests/chat-bots.spec.ts` | P2 | todo |
-| M18 | `/announce text` broadcasts to every connected user and bypasses ignore filters | `tests/chat-announce.spec.ts` | P1 | todo |
-| M19 | Regular user `/announce`, `/setmotd`, `/clearmotd`, `/singleplayer` show permission errors | `tests/chat-admin-permissions.spec.ts` | P1 | todo |
-| M20 | Admin `/singleplayer` emits a usable solo arcade link/card | `tests/chat-singleplayer.spec.ts` | P2 | investigate |
+| M14 | Non-admin `/bot` shows bot list, admin `/bot` opens management dialog | `tests/chat-bots.spec.ts` | P1 | done |
+| M15 | Admin creates a unique bot, joins it to a unique channel, and sees bot in nicklist | `tests/chat-bots.spec.ts` | P1 | done |
+| M16 | Bot custom command add/list/invoke/delete works through slash command | `tests/chat-bots.spec.ts` | P1 | done |
+| M17 | Bot enable/disable/destroy changes response behavior and cleans up unique bot | `tests/chat-bots.spec.ts` | P2 | done |
+| M18 | `/announce text` broadcasts to every connected user and bypasses ignore filters | `tests/chat-announce.spec.ts` | P1 | done |
+| M19 | Regular user `/announce`, `/setmotd`, `/clearmotd`, `/singleplayer` show permission errors | `tests/chat-admin-permissions.spec.ts` | P1 | done |
+| M20 | Admin `/singleplayer` emits a usable solo arcade link/card | `tests/chat-singleplayer.spec.ts` | P2 | done |
 
 ## Group N - P2P, File, Call, Game
 
