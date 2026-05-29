@@ -458,6 +458,10 @@ export class ChatPage {
     return this.messageRows.filter({ hasText: text }).first();
   }
 
+  messageTimestampByText(text: string): Locator {
+    return this.messageRowByText(text).getByTestId('chat-message-timestamp').first();
+  }
+
   messageNickByText(text: string, nick: string): Locator {
     return this.messageRowByText(text).locator(`[data-nick="${nick}"]`).first();
   }
@@ -474,6 +478,13 @@ export class ChatPage {
   async scrollMessagesToTop() {
     await this.messageList.evaluate((el) => {
       el.scrollTop = 0;
+      el.dispatchEvent(new Event('scroll', { bubbles: true }));
+    });
+  }
+
+  async scrollMessagesToBottom() {
+    await this.messageList.evaluate((el) => {
+      el.scrollTop = el.scrollHeight;
       el.dispatchEvent(new Event('scroll', { bubbles: true }));
     });
   }

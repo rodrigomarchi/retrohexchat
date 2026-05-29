@@ -70,7 +70,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       data-message-id={@id}
       {@rest}
     >
-      <span :if={@timestamp} class="text-gray-500 mr-1 font-mono text-xs whitespace-nowrap">
+      <span
+        :if={@timestamp}
+        class="text-gray-500 mr-1 font-mono text-xs whitespace-nowrap"
+        data-testid="chat-message-timestamp"
+      >
         {@timestamp}
       </span>
       <span :if={!@timestamp} />

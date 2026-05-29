@@ -17,7 +17,13 @@ import {
 
 const SearchHighlightHook = {
   mounted() {
+    this.lastSearchPayload = null;
+    this.rehighlightTimer = null;
+    this.observer = null;
+    this.suppressObserver = false;
+
     this.handleEvent("search_highlight", (payload) => {
+      this.lastSearchPayload = payload.query?.trim() ? payload : null;
       this.highlightMatches(payload);
     });
 
@@ -27,12 +33,59 @@ const SearchHighlightHook = {
     });
 
     this.handleEvent("search_clear_highlights", () => {
+      this.lastSearchPayload = null;
+      this.withObserverSuppressed(() => clearHighlights());
+    });
+  },
+
+  destroyed() {
+    if (this.rehighlightTimer) {
+      clearTimeout(this.rehighlightTimer);
+    }
+
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  },
+
+  ensureObserver(container) {
+    if (this.observer || !container) return;
+
+    this.observer = new MutationObserver(() => {
+      if (this.suppressObserver || !this.lastSearchPayload) return;
+
+      if (this.rehighlightTimer) {
+        clearTimeout(this.rehighlightTimer);
+      }
+
+      this.rehighlightTimer = setTimeout(() => {
+        this.highlightMatches(this.lastSearchPayload);
+      }, 0);
+    });
+
+    this.observer.observe(container, { childList: true, subtree: true });
+  },
+
+  withObserverSuppressed(callback) {
+    this.suppressObserver = true;
+
+    try {
+      return callback();
+    } finally {
+      setTimeout(() => {
+        this.suppressObserver = false;
+      }, 0);
+    }
+  },
+
+  clearHighlights() {
+    this.withObserverSuppressed(() => {
       clearHighlights();
     });
   },
 
   highlightMatches({ query, case_sensitive, regex, mention_nick, my_nick }) {
-    clearHighlights();
+    this.withObserverSuppressed(() => clearHighlights());
 
     if (!query || query.trim() === "") {
       this.pushEvent("search_highlight_count", { count: 0 });
@@ -44,6 +97,8 @@ const SearchHighlightHook = {
       this.pushEvent("search_highlight_count", { count: 0 });
       return;
     }
+
+    this.ensureObserver(container);
 
     const pattern = compilePattern(query, case_sensitive, regex);
     if (!pattern) {
@@ -63,8 +118,10 @@ const SearchHighlightHook = {
 
     let totalCount = 0;
 
-    targets.forEach((target) => {
-      totalCount += highlightInElement(target, pattern);
+    this.withObserverSuppressed(() => {
+      targets.forEach((target) => {
+        totalCount += highlightInElement(target, pattern);
+      });
     });
 
     this.pushEvent("search_highlight_count", { count: totalCount });

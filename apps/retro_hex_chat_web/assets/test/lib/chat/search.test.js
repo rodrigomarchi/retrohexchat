@@ -153,6 +153,22 @@ describe("lib/search", () => {
       expect(marks[2].classList.contains("search-highlight-active")).toBe(true);
     });
 
+    it("scrolls the containing message row when available", () => {
+      const row = document.createElement("div");
+      row.dataset.messageId = "chat_messages-1";
+      row.scrollIntoView = vi.fn();
+      row.innerHTML = '<span><mark class="search-highlight">match</mark></span>';
+      document.body.appendChild(row);
+
+      const marks = row.querySelectorAll("mark.search-highlight");
+      scrollToMatch(marks, 1);
+
+      expect(row.scrollIntoView).toHaveBeenCalledWith({
+        block: "center",
+        behavior: "smooth",
+      });
+    });
+
     it("handles empty marks", () => {
       scrollToMatch([], 1); // should not throw
     });

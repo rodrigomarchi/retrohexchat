@@ -175,4 +175,74 @@ describe("ScrollHook", () => {
       expect(hook.pendingPrepend).toBe(true);
     });
   });
+
+  // ── mutation filtering ─────────────────────────────────
+
+  describe("mutation filtering", () => {
+    it("ignores internal search-highlight DOM mutations for auto-scroll", async () => {
+      const msgEl = document.createElement("div");
+      msgEl.dataset.messageId = "chat_messages-1";
+      msgEl.innerHTML = '<span class="chat-content">hello</span>';
+      hook.el.appendChild(msgEl);
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      hook.scrollToBottom = vi.fn();
+      msgEl.querySelector(".chat-content").innerHTML =
+        '<mark class="search-highlight">hello</mark>';
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      expect(hook.scrollToBottom).not.toHaveBeenCalled();
+    });
+  });
+
+  // ── message interaction events ─────────────────────────
+
+  describe("message interaction events", () => {
+    it("scrolls to current LiveView message rows", () => {
+      const msgEl = document.createElement("div");
+      msgEl.id = "chat_messages-123";
+      msgEl.scrollIntoView = vi.fn();
+      hook.el.appendChild(msgEl);
+
+      simulateEvent(hook, "scroll_to_message", { message_id: 123 });
+
+      expect(msgEl.scrollIntoView).toHaveBeenCalled();
+      expect(msgEl.classList.contains("chat-message--scroll-highlight")).toBe(true);
+    });
+
+    it("reports missing scroll targets to LiveView", () => {
+      simulateEvent(hook, "scroll_to_message", { message_id: 999 });
+
+      expect(hook.pushEvent).toHaveBeenCalledWith("scroll_to_message_missing", {
+        message_id: 999,
+      });
+    });
+
+    it("enters and exits edit mode for current LiveView message rows", () => {
+      const input = document.createElement("textarea");
+      input.id = "chat-input";
+      document.body.appendChild(input);
+
+      const msgEl = document.createElement("div");
+      msgEl.id = "chat_messages-123";
+      hook.el.appendChild(msgEl);
+
+      simulateEvent(hook, "enter_edit_mode", {
+        message_id: 123,
+        content: "edit me",
+      });
+
+      expect(msgEl.classList.contains("chat-message--editing")).toBe(true);
+      expect(input.value).toBe("edit me");
+      expect(input.dataset.editMode).toBe("true");
+      expect(input.dataset.editMessageId).toBe("123");
+
+      simulateEvent(hook, "exit_edit_mode", { message_id: 123 });
+
+      expect(msgEl.classList.contains("chat-message--editing")).toBe(false);
+      expect(input.value).toBe("");
+      expect(input.dataset.editMode).toBeUndefined();
+      expect(input.dataset.editMessageId).toBeUndefined();
+    });
+  });
 });

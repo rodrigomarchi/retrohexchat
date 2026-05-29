@@ -66,14 +66,14 @@ green catalog in `TEST_CATALOG.md`.
 | S2 | PM messages support reply, edit, delete, and deleted placeholder behavior consistently with channel messages | `tests/chat-pm-message-actions.spec.ts` | P1 | done |
 | S3 | Reply preview updates when the parent message is edited | `tests/chat-message-reply-edges.spec.ts` | P1 | done |
 | S4 | Reply preview remains coherent when the parent message is deleted | `tests/chat-message-reply-edges.spec.ts` | P1 | done |
-| S5 | Clicking a reply parent link scrolls to the parent when it is currently loaded | `tests/chat-message-reply-edges.spec.ts` | P2 | todo |
-| S6 | Clicking a reply parent link whose parent is only in older history loads or reports that history coherently | `tests/chat-message-reply-history.spec.ts` | P2 | investigate |
-| S7 | Search with history mode finds matches only available after scroll pagination | `tests/chat-search-history.spec.ts` | P2 | investigate |
-| S8 | Search active result scrolls into view and maintains active highlight while navigating next/previous | `tests/chat-search-navigation.spec.ts` | P2 | todo |
-| S9 | Search state resets or persists deliberately when switching channel, PM, and Status tabs | `tests/chat-search-window-state.spec.ts` | P2 | todo |
-| S10 | Pending failed message retry succeeds after the blocking mode/mute condition is removed | `tests/chat-message-retry.spec.ts` | P1 | todo |
-| S11 | Failed pending message can be cancelled/deleted without leaving orphan UI | `tests/chat-message-retry.spec.ts` | P2 | todo |
-| S12 | Message timestamps respect selected timezone and timestamp format after browser timezone detection | `tests/chat-timestamps.spec.ts` | P2 | investigate |
+| S5 | Clicking a reply parent link scrolls to the parent when it is currently loaded | `tests/chat-message-reply-edges.spec.ts` | P2 | done |
+| S6 | Clicking a reply parent link whose parent is only in older history loads or reports that history coherently | `tests/chat-message-reply-history.spec.ts` | P2 | done |
+| S7 | Search with history mode finds matches only available after scroll pagination | `tests/chat-search-history.spec.ts` | P2 | done |
+| S8 | Search active result scrolls into view and maintains active highlight while navigating next/previous | `tests/chat-search-navigation.spec.ts` | P2 | done |
+| S9 | Search state resets or persists deliberately when switching channel, PM, and Status tabs | `tests/chat-search-window-state.spec.ts` | P2 | done |
+| S10 | Pending failed message retry succeeds after the blocking mode/mute condition is removed | `tests/chat-message-retry.spec.ts` | P1 | done |
+| S11 | Failed pending message can be cancelled/deleted without leaving orphan UI | `tests/chat-message-retry.spec.ts` | P2 | done |
+| S12 | Message timestamps respect selected timezone and timestamp format after browser timezone detection | `tests/chat-timestamps.spec.ts` | P2 | done |
 
 ## T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
 

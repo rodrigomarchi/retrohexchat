@@ -17,6 +17,7 @@ describe("SearchHighlightHook", () => {
   });
 
   afterEach(() => {
+    hook.destroyed?.();
     cleanupDOM();
   });
 
@@ -46,6 +47,30 @@ describe("SearchHighlightHook", () => {
 
       const counts = getPushEvents(hook, "search_highlight_count");
       expect(counts[counts.length - 1]).toEqual({ count: 3 });
+    });
+
+    it("reapplies the last search when paginated messages enter the DOM", async () => {
+      const container = setupChatMessages(
+        '<div data-message-id="1"><span class="chat-content">no match</span></div>',
+      );
+
+      simulateEvent(hook, "search_highlight", {
+        query: "older-match",
+        case_sensitive: false,
+        regex: false,
+      });
+      expect(document.querySelectorAll("mark.search-highlight")).toHaveLength(0);
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      container.insertAdjacentHTML(
+        "afterbegin",
+        '<div data-message-id="2"><span class="chat-content">older-match</span></div>',
+      );
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      const marks = document.querySelectorAll("mark.search-highlight");
+      expect(marks).toHaveLength(1);
+      expect(marks[0].textContent).toBe("older-match");
     });
 
     it("filters visible matches to messages mentioning the current nick", () => {

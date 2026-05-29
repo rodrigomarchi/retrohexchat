@@ -16,6 +16,11 @@ import {
 } from "../../lib/chat/chat.js";
 import { insertAtCursor } from "../../lib/chat/input.js";
 import {
+  scrollToMessage,
+  highlightEditingMessage,
+  removeEditingHighlight,
+} from "../../lib/chat/message_interactions.js";
+import {
   isClickNotDrag,
   createTooltip,
   removeTooltip,
@@ -48,6 +53,35 @@ const ScrollHook = {
     this.handleEvent("scroll_to_bottom", () => {
       this.scrollToBottom();
       this.hideNewMessagesButton();
+    });
+
+    this.handleEvent("scroll_to_message", ({ message_id }) => {
+      if (!scrollToMessage(message_id)) {
+        this.pushEvent("scroll_to_message_missing", { message_id });
+      }
+    });
+
+    this.handleEvent("enter_edit_mode", ({ message_id, content }) => {
+      highlightEditingMessage(message_id);
+
+      const input = document.getElementById("chat-input");
+      if (input) {
+        input.value = content;
+        input.focus();
+        input.dataset.editMode = "true";
+        input.dataset.editMessageId = message_id;
+      }
+    });
+
+    this.handleEvent("exit_edit_mode", ({ message_id }) => {
+      removeEditingHighlight(message_id);
+
+      const input = document.getElementById("chat-input");
+      if (input) {
+        input.value = "";
+        delete input.dataset.editMode;
+        delete input.dataset.editMessageId;
+      }
     });
 
     // Listen for link preview results
@@ -298,7 +332,11 @@ const ScrollHook = {
     document.documentElement.addEventListener("mouseleave", this._viewportLeaveHandler);
 
     // Observe DOM mutations for auto-scroll and prepend handling
-    this.observer = new MutationObserver(() => {
+    this.observer = new MutationObserver((mutations) => {
+      if (!mutations.some((mutation) => this.isMessageStreamMutation(mutation))) {
+        return;
+      }
+
       if (this.pendingPrepend) {
         const newScrollHeight = this.chatEl.scrollHeight;
         const heightDiff = newScrollHeight - this.prevScrollHeight;
@@ -382,6 +420,17 @@ const ScrollHook = {
 
   collectUrls(msgEl) {
     return collectUrls(msgEl);
+  },
+
+  isMessageStreamMutation(mutation) {
+    if (mutation.target === this.chatEl) return true;
+
+    const nodes = [...mutation.addedNodes, ...mutation.removedNodes];
+
+    return nodes.some((node) => {
+      if (node.nodeType !== Node.ELEMENT_NODE) return false;
+      return node.matches?.("[data-message-id]") || node.querySelector?.("[data-message-id]");
+    });
   },
 };
 

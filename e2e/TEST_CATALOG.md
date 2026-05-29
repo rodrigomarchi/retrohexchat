@@ -6,11 +6,11 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **107 spec files** under `e2e/tests/`.
-- **212 Playwright `test()` cases**.
+- **113 spec files** under `e2e/tests/`.
+- **220 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 172 mapped flows, 171 done, 1 intentionally blocked.
+- **Chat extended coverage:** 180 mapped flows, 179 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -331,6 +331,14 @@ make ci
 | S2 | PM messages support reply, edit, delete, and deleted placeholders | `tests/chat-pm-message-actions.spec.ts` | P1 | done |
 | S3 | Reply preview updates when the parent message is edited | `tests/chat-message-reply-edges.spec.ts` | P1 | done |
 | S4 | Reply preview shows deleted state when the parent message is deleted | `tests/chat-message-reply-edges.spec.ts` | P1 | done |
+| S5 | Reply parent link scrolls to and highlights a loaded parent message | `tests/chat-message-reply-edges.spec.ts` | P2 | done |
+| S6 | Reply parent link reports clearly when the parent is only in older unloaded history | `tests/chat-message-reply-history.spec.ts` | P2 | done |
+| S7 | Search history mode highlights matches that become available after scroll pagination | `tests/chat-search-history.spec.ts` | P2 | done |
+| S8 | Search Next/Prev scrolls the active highlighted result into view and preserves active highlight | `tests/chat-search-navigation.spec.ts` | P2 | done |
+| S9 | Search closes on channel, PM, and Status switches while preserving the last query for reopening | `tests/chat-search-window-state.spec.ts` | P2 | done |
+| S10 | Failed pending message retry succeeds after removing the blocking channel mode | `tests/chat-message-retry.spec.ts` | P1 | done |
+| S11 | Failed pending message can be deleted without leaving retry/orphan UI behind | `tests/chat-message-retry.spec.ts` | P2 | done |
+| S12 | Message timestamps use detected browser timezone with the current default `dd/mm HH:MM` format | `tests/chat-timestamps.spec.ts` | P2 | done |
 
 ## Intentional Block
 
@@ -359,3 +367,10 @@ make ci
 - Sensitive NickServ-style commands are excluded from browser history and recent-command ranking, including PM and automation variants.
 - Message rows now allow the content grid item to shrink and wrap long unbroken text inside the chat layout.
 - Cancelling a blocked multi-line paste now returns focus to the chat input.
+- Reply parent navigation now resolves current LiveView message DOM ids and runs through the mounted message-list hook.
+- Reply parent navigation now reports when an older parent is not currently loaded instead of silently doing nothing.
+- Search highlights now reapply when paginated messages enter the DOM, and history-mode counts avoid double-counting loaded matches.
+- Search result navigation now scrolls the containing message row and chat auto-scroll ignores internal highlight DOM mutations.
+- Switching to Status now clears the visible search UI just like channel and PM switches.
+- Failed temporary `pending_*` channel messages can now be removed from the local stream through Delete.
+- Chat message timestamps now have a stable `data-testid` for timezone/format coverage.

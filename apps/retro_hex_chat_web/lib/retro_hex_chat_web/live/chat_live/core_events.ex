@@ -201,7 +201,10 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- switch_to_status --
 
   def handle_event("switch_to_status", _params, socket) do
-    {:halt, assign(socket, show_status_tab: true, status_unread: false)}
+    {:halt,
+     socket
+     |> assign(show_status_tab: true, status_unread: false)
+     |> clear_search_on_switch()}
   end
 
   # -- close_channel_tab --
@@ -398,6 +401,14 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     {:halt, push_event(socket, "scroll_to_message", %{message_id: parent_id})}
   end
 
+  def handle_event("scroll_to_message_missing", _params, socket) do
+    {:halt,
+     MessageHelpers.system_event(
+       socket,
+       "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
+     )}
+  end
+
   # -- edit_last_message --
 
   def handle_event("edit_last_message", _params, socket) do
@@ -437,8 +448,14 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   def handle_event("ctx_chat_delete", %{"message_id" => msg_id_str}, socket) do
     case parse_message_id(msg_id_str) do
-      {:ok, msg_id} -> {:halt, assign(socket, delete_confirm: %{message_id: msg_id})}
-      :error -> {:halt, socket}
+      {:ok, msg_id} ->
+        {:halt, assign(socket, delete_confirm: %{message_id: msg_id})}
+
+      :error ->
+        case parse_pending_message_id(msg_id_str) do
+          {:ok, temp_id} -> {:halt, stream_delete(socket, :chat_messages, %{id: temp_id})}
+          :error -> {:halt, socket}
+        end
     end
   end
 
@@ -529,6 +546,10 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   end
 
   defp parse_message_id(_id), do: :error
+
+  defp parse_pending_message_id("chat_messages-" <> id), do: parse_pending_message_id(id)
+  defp parse_pending_message_id("pending_" <> _ = id), do: {:ok, id}
+  defp parse_pending_message_id(_id), do: :error
 
   defp get_reply_parent(session, msg_id) do
     if session.active_pm do

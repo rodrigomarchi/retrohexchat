@@ -1,9 +1,17 @@
-import { describe, it, expect } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 import {
   truncatePreview,
   formatEditTimestamp,
   shouldTriggerEditMode,
+  findMessageElement,
+  scrollToMessage,
+  highlightEditingMessage,
+  removeEditingHighlight,
 } from "../../../js/lib/chat/message_interactions";
+
+afterEach(() => {
+  document.body.innerHTML = "";
+});
 
 describe("truncatePreview", () => {
   it("returns text unchanged when under max length", () => {
@@ -57,5 +65,66 @@ describe("shouldTriggerEditMode", () => {
 
   it("returns false for whitespace-only input", () => {
     expect(shouldTriggerEditMode("  ")).toBe(false);
+  });
+});
+
+describe("findMessageElement", () => {
+  it("finds legacy msg ids", () => {
+    const row = document.createElement("div");
+    row.id = "msg-123";
+    document.body.appendChild(row);
+
+    expect(findMessageElement(123)).toBe(row);
+  });
+
+  it("finds LiveView stream ids", () => {
+    const row = document.createElement("div");
+    row.id = "chat_messages-123";
+    document.body.appendChild(row);
+
+    expect(findMessageElement(123)).toBe(row);
+  });
+
+  it("finds current message rows by real id", () => {
+    const row = document.createElement("div");
+    row.dataset.realId = "123";
+    row.dataset.messageId = "chat_messages-123";
+    document.body.appendChild(row);
+
+    expect(findMessageElement(123)).toBe(row);
+  });
+});
+
+describe("message element effects", () => {
+  it("scrolls and highlights current LiveView message rows", () => {
+    const row = document.createElement("div");
+    row.dataset.realId = "123";
+    row.scrollIntoView = vi.fn();
+    document.body.appendChild(row);
+
+    const found = scrollToMessage(123);
+
+    expect(found).toBe(true);
+    expect(row.scrollIntoView).toHaveBeenCalledWith({
+      behavior: "smooth",
+      block: "center",
+    });
+    expect(row.classList.contains("chat-message--scroll-highlight")).toBe(true);
+  });
+
+  it("reports when a scroll target is not loaded", () => {
+    expect(scrollToMessage(999)).toBe(false);
+  });
+
+  it("adds and removes editing highlight from LiveView stream rows", () => {
+    const row = document.createElement("div");
+    row.id = "chat_messages-123";
+    document.body.appendChild(row);
+
+    highlightEditingMessage(123);
+    expect(row.classList.contains("chat-message--editing")).toBe(true);
+
+    removeEditingHighlight(123);
+    expect(row.classList.contains("chat-message--editing")).toBe(false);
   });
 });

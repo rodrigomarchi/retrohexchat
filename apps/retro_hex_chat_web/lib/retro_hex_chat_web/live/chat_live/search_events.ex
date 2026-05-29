@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
   def handle_event("search_highlight_count", %{"count" => count} = params, socket) do
     error = params["error"]
     history_count = socket.assigns.search_history_count
-    total = count + history_count
+    total = if history_count > 0, do: max(count, history_count), else: count
 
     socket =
       assign(socket,

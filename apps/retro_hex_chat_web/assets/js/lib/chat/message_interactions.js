@@ -38,13 +38,41 @@ export function shouldTriggerEditMode(inputValue) {
   return inputValue === "";
 }
 
+function escapeAttr(value) {
+  return String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+/**
+ * Find a message element by the ids used across chat message renderers.
+ * @param {number|string} messageId
+ * @returns {Element|null}
+ */
+export function findMessageElement(messageId) {
+  if (messageId === undefined || messageId === null || messageId === "") {
+    return null;
+  }
+
+  const id = String(messageId);
+  const streamId = id.startsWith("chat_messages-") ? id : `chat_messages-${id}`;
+
+  return (
+    document.getElementById(id) ||
+    document.getElementById(`msg-${id}`) ||
+    document.getElementById(streamId) ||
+    document.querySelector(`[data-real-id="${escapeAttr(id)}"]`) ||
+    document.querySelector(`[data-message-id="${escapeAttr(streamId)}"]`) ||
+    document.querySelector(`[data-message-id="${escapeAttr(id)}"]`)
+  );
+}
+
 /**
  * Scroll to a message element and apply a 2-second highlight animation.
  * @param {number|string} messageId
+ * @returns {boolean} true when the target message was found
  */
 export function scrollToMessage(messageId) {
-  const el = document.getElementById(`msg-${messageId}`);
-  if (!el) return;
+  const el = findMessageElement(messageId);
+  if (!el) return false;
 
   el.scrollIntoView({ behavior: "smooth", block: "center" });
   el.classList.add("chat-message--scroll-highlight");
@@ -52,6 +80,8 @@ export function scrollToMessage(messageId) {
   setTimeout(() => {
     el.classList.remove("chat-message--scroll-highlight");
   }, 2000);
+
+  return true;
 }
 
 /**
@@ -59,7 +89,7 @@ export function scrollToMessage(messageId) {
  * @param {number|string} messageId
  */
 export function highlightEditingMessage(messageId) {
-  const el = document.getElementById(`msg-${messageId}`);
+  const el = findMessageElement(messageId);
   if (el) el.classList.add("chat-message--editing");
 }
 
@@ -68,6 +98,6 @@ export function highlightEditingMessage(messageId) {
  * @param {number|string} messageId
  */
 export function removeEditingHighlight(messageId) {
-  const el = document.getElementById(`msg-${messageId}`);
+  const el = findMessageElement(messageId);
   if (el) el.classList.remove("chat-message--editing");
 }

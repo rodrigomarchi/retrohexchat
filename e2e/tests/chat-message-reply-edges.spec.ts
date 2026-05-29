@@ -66,6 +66,25 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
+async function sendPasteLines(chat: ChatPage, lines: string[]) {
+  await chat.pasteText(lines.join('\n'));
+  await expect(chat.pasteConfirmSendButton).toBeVisible();
+  await chat.pasteConfirmSendButton.click();
+  await expect(chat.pasteConfirmSendButton).toBeHidden();
+}
+
+async function isRowInsideMessageViewport(chat: ChatPage, text: string) {
+  return chat.messageRowByText(text).evaluate((row) => {
+    const list = row.closest('[data-testid="chat-message-list"]');
+    if (!list) return false;
+
+    const rowBox = row.getBoundingClientRect();
+    const listBox = list.getBoundingClientRect();
+
+    return rowBox.top >= listBox.top && rowBox.bottom <= listBox.bottom;
+  });
+}
+
 test.describe('Reply edge cases', () => {
   test('reply preview updates when the parent message is edited (S3)', async ({
     browser,
@@ -111,6 +130,56 @@ test.describe('Reply edge cases', () => {
       await expect(bob.chat.messageList.getByTestId('deleted-message')).toBeVisible();
       await expect(replyBlock).toContainText('[message deleted]');
       await expect(replyBlock).not.toContainText(parent);
+    } finally {
+      await closeUsers([alice, bob]);
+    }
+  });
+
+  test('clicking a reply parent link scrolls to the loaded parent message (S5)', async ({
+    browser,
+  }) => {
+    const channel = uniqueChannel('rplscroll');
+    const alice = await newSignedInUser(browser, 'rpsa');
+    const bob = await newSignedInUser(browser, 'rpsb');
+    const marker = Date.now();
+    const parent = `reply-scroll-parent-${marker}`;
+    const reply = `reply-scroll-child-${marker}`;
+    const fillerLines = Array.from(
+      { length: 35 },
+      (_, index) => `reply-scroll-filler-${marker}-${String(index + 1).padStart(2, '0')}`,
+    );
+
+    try {
+      await alice.chat.sendMessage(`/join ${channel}`);
+      await alice.chat.expectTabVisible(channel);
+
+      await bob.chat.sendMessage(`/join ${channel}`);
+      await bob.chat.expectTabVisible(channel);
+      await alice.chat.expectNickInList(bob.nick);
+
+      await alice.chat.sendMessage(parent);
+      await bob.chat.expectMessageVisible(parent);
+
+      await sendPasteLines(bob.chat, fillerLines);
+      await bob.chat.expectMessageVisible(fillerLines.at(-1)!, 30_000);
+
+      await bob.chat.openMessageContextMenu(parent);
+      await bob.chat.contextReplyMenuItem.click();
+      await expect(bob.chat.replyBar).toBeVisible();
+
+      await bob.chat.sendMessage(reply);
+      await bob.chat.scrollMessagesToBottom();
+      const replyBlock = bob.chat.messageRowByText(reply).getByTestId('reply-block');
+      const parentRow = bob.chat.messageRowByText(parent);
+
+      await expect(replyBlock).toBeVisible();
+      await expect(parentRow).toBeVisible();
+      await expect.poll(() => isRowInsideMessageViewport(bob.chat, parent)).toBe(false);
+
+      await replyBlock.click();
+
+      await expect(parentRow).toHaveClass(/scroll-highlight/);
+      await expect.poll(() => isRowInsideMessageViewport(bob.chat, parent)).toBe(true);
     } finally {
       await closeUsers([alice, bob]);
     }

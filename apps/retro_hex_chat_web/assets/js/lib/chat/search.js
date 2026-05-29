@@ -125,6 +125,7 @@ export function scrollToMatch(marks, index) {
 
   if (target) {
     target.classList.add("search-highlight-active");
-    target.scrollIntoView({ block: "center", behavior: "smooth" });
+    const row = target.closest("[data-message-id]");
+    (row || target).scrollIntoView({ block: "center", behavior: "smooth" });
   }
 }
