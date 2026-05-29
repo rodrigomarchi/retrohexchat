@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
     only: [part_channel: 2]
 
   alias RetroHexChat.Chat.UnreadTracker
+  alias RetroHexChatWeb.ChatLive.ChannelCentralEvents
 
   # ── Context menu ─────────────────────────────────────────
 
@@ -71,9 +72,14 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
      |> part_channel(channel)}
   end
 
-  def handle_event("ctx_conversations_settings", %{"channel" => _channel}, socket) do
-    # Channel settings dialog — placeholder, close menu for now
-    {:halt, close_conversations_menu(socket)}
+  def handle_event("ctx_conversations_settings", %{"channel" => channel}, socket) do
+    socket = close_conversations_menu(socket)
+
+    ChannelCentralEvents.handle_event(
+      "open_channel_central",
+      %{"cc_channel" => channel},
+      socket
+    )
   end
 
   # ── Catch-all: pass unhandled events to next hook ────────

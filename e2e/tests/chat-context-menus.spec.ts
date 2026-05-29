@@ -113,4 +113,86 @@ test.describe('Chat context menus', () => {
       await closeUsers([alice, bob]);
     }
   });
+
+  test('conversation context menu marks read, toggles mute, copies channel name, opens settings, and leaves (O13)', async ({
+    browser,
+  }) => {
+    const channelA = uniqueChannel('ctxa');
+    const channelB = uniqueChannel('ctxb');
+    const { alice, bob } = await setupTwoUsersInChannel(browser, channelA);
+    const unreadText = `ctx-unread-${Date.now()}`;
+
+    try {
+      await alice.ctx.grantPermissions(['clipboard-read', 'clipboard-write'], {
+        origin: 'http://localhost:4003',
+      });
+
+      await alice.chat.sendMessage(`/join ${channelB}`);
+      await alice.chat.expectTabVisible(channelB);
+      await bob.chat.sendMessage(`/join ${channelB}`);
+      await bob.chat.expectTabVisible(channelB);
+
+      await alice.chat.switchToTab(channelA);
+      await alice.chat.expectTabSelected(channelA);
+      await bob.chat.switchToTab(channelB);
+      await bob.chat.sendMessage(unreadText);
+
+      await expect(alice.chat.channelUnreadBadge(channelB)).toHaveText('1');
+      await alice.chat.expectTabSelected(channelA);
+
+      await alice.chat.openConversationContextMenu(channelB);
+      await expect(alice.chat.conversationsMarkReadMenuItem).toBeVisible();
+      await expect(alice.chat.conversationsMuteMenuItem).toContainText(
+        'Mute Channel',
+      );
+      await expect(alice.chat.conversationsCopyNameMenuItem).toBeVisible();
+      await expect(alice.chat.conversationsSettingsMenuItem).toBeVisible();
+      await expect(alice.chat.conversationsLeaveMenuItem).toBeVisible();
+
+      await alice.chat.conversationsMarkReadMenuItem.click();
+      await expect(alice.chat.conversationsContextMenu).toBeHidden();
+      await expect(alice.chat.channelUnreadBadge(channelB)).toHaveCount(0);
+      await alice.chat.expectTabSelected(channelA);
+
+      await alice.chat.openConversationContextMenu(channelB);
+      await alice.chat.conversationsMuteMenuItem.click();
+      await expect(alice.chat.channelConversationItem(channelB)).toHaveAttribute(
+        'data-muted',
+        'true',
+      );
+
+      await alice.chat.openConversationContextMenu(channelB);
+      await expect(alice.chat.conversationsMuteMenuItem).toContainText(
+        'Unmute Channel',
+      );
+      await alice.chat.conversationsMuteMenuItem.click();
+      await expect(alice.chat.channelConversationItem(channelB)).toHaveAttribute(
+        'data-muted',
+        'false',
+      );
+
+      await alice.chat.openConversationContextMenu(channelB);
+      await alice.chat.conversationsCopyNameMenuItem.click();
+      await expect
+        .poll(() =>
+          alice.chat.page.evaluate(() => navigator.clipboard.readText()),
+        )
+        .toBe(channelB);
+
+      await alice.chat.openConversationContextMenu(channelB);
+      await alice.chat.conversationsSettingsMenuItem.click();
+      await expect(alice.chat.channelCentralDialog).toBeVisible();
+      await expect(alice.chat.channelCentralDialog).toContainText(channelB);
+      await alice.chat.closeChannelCentral();
+
+      await alice.chat.openConversationContextMenu(channelB);
+      await alice.chat.conversationsLeaveMenuItem.click();
+      await expect(alice.chat.conversationsContextMenu).toBeHidden();
+      await alice.chat.expectTabHidden(channelB);
+      await expect(alice.chat.channelConversationItem(channelB)).toHaveCount(0);
+      await alice.chat.expectTabSelected(channelA);
+    } finally {
+      await closeUsers([alice, bob]);
+    }
+  });
 });

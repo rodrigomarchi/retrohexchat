@@ -70,6 +70,12 @@ export class ChatPage {
   readonly nicklistContextUnignoreMenuItem: Locator;
   readonly nicklistContextVoiceMenuItem: Locator;
   readonly nicklistContextOpMenuItem: Locator;
+  readonly conversationsContextMenu: Locator;
+  readonly conversationsMarkReadMenuItem: Locator;
+  readonly conversationsMuteMenuItem: Locator;
+  readonly conversationsCopyNameMenuItem: Locator;
+  readonly conversationsSettingsMenuItem: Locator;
+  readonly conversationsLeaveMenuItem: Locator;
   readonly replyBar: Locator;
   readonly replyBarDismissButton: Locator;
   readonly replyBlock: Locator;
@@ -195,6 +201,34 @@ export class ChatPage {
     this.nicklistContextOpMenuItem = page.getByTestId(
       'context-menu-item-context_op',
     );
+    this.conversationsContextMenu = page.getByTestId(
+      'context-menu-conversations-context-menu',
+    );
+    this.conversationsMarkReadMenuItem = page
+      .locator(
+        '[data-testid="ctx-mark-read"], [data-testid="context-menu-item-ctx_conversations_mark_read"]',
+      )
+      .first();
+    this.conversationsMuteMenuItem = page
+      .locator(
+        '[data-testid="ctx-mute-toggle"], [data-testid="context-menu-item-ctx_conversations_mute"]',
+      )
+      .first();
+    this.conversationsCopyNameMenuItem = page
+      .locator(
+        '[data-testid="ctx-copy-name"], [data-testid="context-menu-item-ctx_conversations_copy_name"]',
+      )
+      .first();
+    this.conversationsSettingsMenuItem = page
+      .locator(
+        '[data-testid="ctx-channel-settings"], [data-testid="context-menu-item-ctx_conversations_settings"]',
+      )
+      .first();
+    this.conversationsLeaveMenuItem = page
+      .locator(
+        '[data-testid="ctx-leave"], [data-testid="context-menu-item-ctx_conversations_leave"]',
+      )
+      .first();
     this.replyBar = page.getByTestId('reply-bar');
     this.replyBarDismissButton = page.getByTestId('reply-bar-dismiss');
     this.replyBlock = page.getByTestId('reply-block');
@@ -482,6 +516,15 @@ export class ChatPage {
 
   channelConversationItem(channel: string): Locator {
     return this.page.getByTestId(`channel-${channel}`);
+  }
+
+  channelUnreadBadge(channel: string): Locator {
+    return this.page.getByTestId(`channel-unread-badge-${channel}`);
+  }
+
+  async openConversationContextMenu(channel: string) {
+    await this.channelConversationItem(channel).click({ button: 'right' });
+    await expect(this.conversationsContextMenu).toBeVisible();
   }
 
   async openFileMenu() {

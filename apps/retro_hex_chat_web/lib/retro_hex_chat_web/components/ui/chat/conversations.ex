@@ -215,6 +215,8 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       phx-value-channel={@name}
       phx-dblclick={@on_dblclick}
       data-channel={@name}
+      data-muted={to_string(@muted)}
+      data-unread={to_string(@unread)}
       data-testid={"channel-#{@name}"}
     >
       <:icon>
@@ -234,12 +236,14 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
           "text-[10px] font-bold rounded-full px-1 min-w-[16px] text-center shrink-0",
           if(@highlight, do: "bg-error text-white", else: "bg-link text-white")
         ]}
+        data-testid={"channel-unread-badge-#{@name}"}
       >
         {if @unread_count > 99, do: "99+", else: @unread_count}
       </span>
       <span
         :if={@unread && !@active && @unread_count == 0}
         class="w-2 h-2 rounded-full bg-link shrink-0"
+        data-testid={"channel-unread-dot-#{@name}"}
       />
     </.tree_view_item>
     """
