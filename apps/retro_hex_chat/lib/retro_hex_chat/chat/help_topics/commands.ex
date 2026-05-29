@@ -269,6 +269,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         description: "Send a file to another user through a peer-to-peer connection."
       },
       %{
+        id: "cmd-singleplayer",
+        title: "/singleplayer",
+        category: "Solo Arcade: FPS",
+        keywords: ["singleplayer", "single player", "solo", "arcade", "admin"],
+        icon: :icon_game_arcade,
+        description: "Start a solo arcade session. This command is reserved for administrators."
+      },
+      %{
         id: "cmd-timer",
         title: "/timer",
         category: "Automation",

@@ -4,8 +4,16 @@
  * Extracted from: autocomplete_hook.js
  */
 
-const SENSITIVE_PATTERNS = ["/identify ", "/identify\n", "/nickserv ", "/ns "];
-const SENSITIVE_EXACT = ["/identify", "/nickserv", "/ns"];
+const SENSITIVE_COMMANDS = [
+  /^\/identify(?:\s|$)/,
+  /^\/nickserv(?:\s|$)/,
+  /^\/ns(?:\s|$)/,
+  /^\/(?:msg|query|notice)\s+nickserv\s+identify(?:\s|$)/,
+  /^\/perform\s+add\s+\/(?:identify|nickserv|ns)(?:\s|$)/,
+  /^\/alias\s+add\s+\S+\s+\/(?:identify|nickserv|ns)(?:\s|$)/,
+  /^\/autorespond\s+add\s+\S+(?:\s+#\S+)?\s+\/(?:identify|nickserv|ns)(?:\s|$)/,
+  /^\/timer\s+\S+\s+(?:repeat\s+)?\S+\s+\/(?:identify|nickserv|ns)(?:\s|$)/,
+];
 
 /**
  * Check if a command text is sensitive (should not be saved to history).
@@ -15,7 +23,7 @@ const SENSITIVE_EXACT = ["/identify", "/nickserv", "/ns"];
  */
 export function isSensitiveCommand(text) {
   const lower = text.toLowerCase().trimStart();
-  return SENSITIVE_PATTERNS.some((p) => lower.startsWith(p)) || SENSITIVE_EXACT.includes(lower);
+  return SENSITIVE_COMMANDS.some((pattern) => pattern.test(lower));
 }
 
 /**

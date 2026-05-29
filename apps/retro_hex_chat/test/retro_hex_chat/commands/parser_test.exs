@@ -12,7 +12,7 @@ defmodule RetroHexChat.Commands.ParserTest do
     end
 
     test "parses command with multiple args" do
-      assert {:command, "kick", ["#elixir", "troll", "spamming"]} =
+      assert {:command, "kick", ["#elixir", "troll spamming"]} =
                Parser.parse("/kick #elixir troll spamming")
     end
 
@@ -43,6 +43,23 @@ defmodule RetroHexChat.Commands.ParserTest do
     test "handles extra whitespace in args" do
       assert {:command, "join", ["#elixir"]} = Parser.parse("/join   #elixir")
     end
+
+    test "handles leading whitespace before commands" do
+      assert {:command, "help", []} = Parser.parse("   /HELP   ")
+    end
+
+    test "bare slash is parsed as an empty command instead of crashing" do
+      assert {:command, "", []} = Parser.parse("/")
+      assert {:command, "", []} = Parser.parse("/   ")
+    end
+
+    test "preserves repeated spaces in free-text command arguments" do
+      assert {:command, "me", ["waves  with   spacing"]} =
+               Parser.parse("/me waves  with   spacing")
+
+      assert {:command, "msg", ["Nick", "hello  unicode áé  \x02bold\x02"]} =
+               Parser.parse("/msg Nick hello  unicode áé  \x02bold\x02")
+    end
   end
 
   # StreamData property tests
@@ -61,7 +78,8 @@ defmodule RetroHexChat.Commands.ParserTest do
     property "non-slash messages are always :message" do
       check all(
               msg <- string(:printable, min_length: 1, max_length: 100),
-              not String.starts_with?(msg, "/") or String.starts_with?(msg, "//")
+              not String.starts_with?(String.trim_leading(msg), "/") or
+                String.starts_with?(String.trim_leading(msg), "//")
             ) do
         assert {:message, _} = Parser.parse(msg)
       end

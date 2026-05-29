@@ -17,6 +17,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
           name: String.t(),
           description: String.t(),
           category: String.t(),
+          category_atom: atom(),
           recent?: boolean(),
           score: non_neg_integer(),
           matched_chars: [non_neg_integer()]
@@ -57,6 +58,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
   @type match_result :: {:match, non_neg_integer(), [non_neg_integer()]} | :no_match
 
   @max_results 20
+  @category_order [:basics, :channel, :user, :config, :advanced]
 
   # --- Fuzzy Matching ---
 
@@ -100,15 +102,88 @@ defmodule RetroHexChat.Commands.Autocomplete do
   @doc """
   Searches commands using fuzzy matching, with category grouping and recent commands.
   """
-  @spec search_commands(String.t(), [String.t()]) :: [command_result()]
+  @spec search_commands(String.t(), [String.t()]) :: [String.t() | command_result()]
   def search_commands(partial, recent_commands) do
     alias RetroHexChat.Commands.Registry
 
-    Registry.command_metadata()
-    |> Enum.map(&match_command(&1, partial, recent_commands))
-    |> Enum.reject(&is_nil/1)
-    |> Enum.sort_by(&{!&1.recent?, -&1.score, &1.name})
-    |> Enum.take(@max_results)
+    matches =
+      Registry.command_metadata()
+      |> Enum.map(&match_command(&1, partial, recent_commands))
+      |> Enum.reject(&is_nil/1)
+
+    limit =
+      if partial == "" do
+        :infinity
+      else
+        @max_results
+      end
+
+    matches
+    |> Enum.sort_by(&{-&1.score, &1.name})
+    |> grouped_command_results(recent_commands, limit)
+  end
+
+  defp grouped_command_results(matches, recent_commands, limit) do
+    {recent_matches, remaining_matches} = split_recent_matches(matches, recent_commands)
+
+    recent_items =
+      if recent_matches == [] do
+        []
+      else
+        ["Recent" | recent_matches]
+      end
+
+    remaining_limit = remaining_limit(limit, length(recent_matches))
+
+    grouped_items =
+      remaining_matches
+      |> take_match_limit(remaining_limit)
+      |> Enum.group_by(& &1.category_atom)
+      |> grouped_by_category()
+
+    recent_items ++ grouped_items
+  end
+
+  defp split_recent_matches(matches, recent_commands) do
+    recent_lookup = MapSet.new(recent_commands)
+
+    recent_matches =
+      recent_commands
+      |> Enum.flat_map(fn recent ->
+        matches
+        |> Enum.filter(&(&1.name == recent))
+        |> Enum.take(1)
+      end)
+
+    remaining_matches =
+      Enum.reject(matches, &MapSet.member?(recent_lookup, &1.name))
+
+    {recent_matches, remaining_matches}
+  end
+
+  defp remaining_limit(:infinity, _used), do: :infinity
+  defp remaining_limit(limit, used), do: max(limit - used, 0)
+
+  defp take_match_limit(matches, :infinity), do: matches
+  defp take_match_limit(matches, limit), do: Enum.take(matches, limit)
+
+  defp grouped_by_category(grouped) do
+    for category <- @category_order,
+        commands = Map.get(grouped, category, []),
+        commands != [],
+        reduce: [] do
+      acc ->
+        label = commands |> hd() |> Map.fetch!(:category)
+        acc ++ [label | Enum.sort_by(commands, & &1.name)]
+    end
+  end
+
+  @doc """
+  Returns only selectable command items from grouped search results.
+  """
+  @spec command_items([String.t() | command_result()]) :: [command_result()]
+  def command_items(results) do
+    Enum.reject(results, &is_binary/1)
   end
 
   defp match_command(cmd, partial, recent_commands) do
@@ -119,6 +194,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
           name: cmd.name,
           description: cmd.description,
           category: cmd.category,
+          category_atom: cmd.category_atom,
           recent?: cmd.name in recent_commands,
           score: score,
           matched_chars: matched_chars
@@ -127,6 +203,14 @@ defmodule RetroHexChat.Commands.Autocomplete do
       :no_match ->
         nil
     end
+  end
+
+  @doc false
+  @spec search_command_items(String.t(), [String.t()]) :: [command_result()]
+  def search_command_items(partial, recent_commands) do
+    partial
+    |> search_commands(recent_commands)
+    |> command_items()
   end
 
   @doc """

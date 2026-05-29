@@ -122,12 +122,19 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
   describe "search_commands/2" do
     test "empty query returns all commands" do
       results = Autocomplete.search_commands("", [])
-      assert results != []
-      assert length(results) <= 20
+      command_items = Autocomplete.command_items(results)
+
+      assert command_items != []
+      assert length(command_items) == length(RetroHexChat.Commands.Registry.list_commands())
+      assert "Basics" in results
+      assert "Channel" in results
+      assert "User" in results
+      assert "Configuration" in results
+      assert "Advanced" in results
     end
 
     test "fuzzy query returns matching commands with scores" do
-      results = Autocomplete.search_commands("jo", [])
+      results = Autocomplete.search_command_items("jo", [])
 
       names = Enum.map(results, & &1.name)
       assert "join" in names
@@ -135,16 +142,17 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
     end
 
     test "results include category information" do
-      results = Autocomplete.search_commands("join", [])
+      results = Autocomplete.search_command_items("join", [])
 
       join = Enum.find(results, &(&1.name == "join"))
       assert join.type == :command
       assert join.category == "Channel"
+      assert join.category_atom == :channel
       assert is_list(join.matched_chars)
     end
 
     test "recent commands are marked as recent" do
-      results = Autocomplete.search_commands("jo", ["join"])
+      results = Autocomplete.search_command_items("jo", ["join"])
 
       join = Enum.find(results, &(&1.name == "join"))
       autojoin = Enum.find(results, &(&1.name == "autojoin"))
@@ -153,11 +161,10 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
       refute autojoin.recent?
     end
 
-    test "results sorted by score descending" do
-      results = Autocomplete.search_commands("jo", [])
-      scores = Enum.map(results, & &1.score)
+    test "recent commands are grouped first" do
+      results = Autocomplete.search_commands("jo", ["join"])
 
-      assert scores == Enum.sort(scores, :desc)
+      assert ["Recent", %{name: "join"} | _] = results
     end
 
     test "non-matching query returns empty list" do
@@ -165,9 +172,9 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
       assert results == []
     end
 
-    test "results capped at 20" do
-      results = Autocomplete.search_commands("", [])
-      assert length(results) <= 20
+    test "non-empty results are capped at 20 selectable commands" do
+      results = Autocomplete.search_commands("a", [])
+      assert length(Autocomplete.command_items(results)) <= 20
     end
   end
 

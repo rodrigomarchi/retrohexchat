@@ -32,6 +32,18 @@ describe("lib/history", () => {
       expect(isSensitiveCommand("/ns identify")).toBe(true);
     });
 
+    it("detects NickServ identify sent through /msg", () => {
+      expect(isSensitiveCommand("/msg NickServ identify pass")).toBe(true);
+      expect(isSensitiveCommand("/query nickserv identify pass")).toBe(true);
+    });
+
+    it("detects automation commands that embed NickServ passwords", () => {
+      expect(isSensitiveCommand("/perform add /ns identify pass")).toBe(true);
+      expect(isSensitiveCommand("/alias add auth /ns identify pass")).toBe(true);
+      expect(isSensitiveCommand("/autorespond add on_join #ops /ns identify pass")).toBe(true);
+      expect(isSensitiveCommand("/timer auth 5 /ns identify pass")).toBe(true);
+    });
+
     it("is case-insensitive", () => {
       expect(isSensitiveCommand("/IDENTIFY mypass")).toBe(true);
       expect(isSensitiveCommand("/NickServ identify")).toBe(true);

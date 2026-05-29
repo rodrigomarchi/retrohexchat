@@ -6,11 +6,11 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **97 spec files** under `e2e/tests/`.
-- **194 Playwright `test()` cases**.
+- **100 spec files** under `e2e/tests/`.
+- **204 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 155 mapped flows, 154 done, 1 intentionally blocked.
+- **Chat extended coverage:** 165 mapped flows, 164 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -292,23 +292,38 @@ make ci
 | P11 | `/whois` idle increases and resets after command/message | `tests/chat-idle.spec.ts` | P2 | done |
 | P12 | PM typing indicator appears and clears after timeout or send | `tests/chat-typing-indicator.spec.ts` | P1 | done |
 
-## Q - Security And Safety Backlog Additions
+## Backlog Q - Catalog, Help, Parser, And Command Surface
 
 | # | Flow | Spec file | Priority | Status |
 |---|------|-----------|----------|--------|
-| Q1 | Chat message HTML/script content renders escaped and never executes | `tests/chat-security-escaping.spec.ts` | P0 | done |
-| Q2 | Topic, welcome, MOTD, away, bio, alias expansion, bot response, and autorespond output escape HTML/script content | `tests/chat-security-escaping.spec.ts` | P0 | done |
-| Q3 | Unsafe URL schemes such as `javascript:` and `data:` are not rendered as clickable links | `tests/chat-security-links.spec.ts` | P0 | done |
-| Q4 | Reciprocal autorespond notice rules fire once and do not loop | `tests/chat-autorespond-loop.spec.ts` | P0 | done |
+| Q1 | `/help` output includes every registered command and no stale command names | `tests/chat-command-registry.spec.ts` | P1 | done |
+| Q2 | `/help <command>` renders detailed inline help for every registered command | `tests/chat-command-registry.spec.ts` | P1 | done |
+| Q3 | Inline command help deep links render full Help Topics pages | `tests/chat-command-registry.spec.ts` | P1 | done |
+| Q4 | Command autocomplete exposes every registered command grouped by category | `tests/chat-command-registry.spec.ts` | P2 | done |
+| Q5 | Slash commands are case-insensitive for channel, PM, and service handlers | `tests/chat-command-parser.spec.ts` | P1 | done |
+| Q6 | Leading/trailing whitespace around commands and args keeps dispatch behavior | `tests/chat-command-parser.spec.ts` | P1 | done |
+| Q7 | Bare slash inputs show helpful errors without changing active tab state | `tests/chat-command-parser.spec.ts` | P2 | done |
+| Q8 | Free-text command args preserve punctuation, repeated spaces, unicode, and IRC formatting | `tests/chat-command-parser.spec.ts` | P2 | done |
+| Q9 | Sensitive command names/args are omitted from local command history | `tests/chat-command-history-sensitive.spec.ts` | P1 | done |
+| Q10 | Recent-command autocomplete ranks safe commands without leaking sensitive commands | `tests/chat-command-history-sensitive.spec.ts` | P2 | done |
 
-## R - Message Lifecycle Backlog Additions
+## Backlog R/Y - Security And Safety Additions
 
 | # | Flow | Spec file | Priority | Status |
 |---|------|-----------|----------|--------|
-| R1 | Non-author cannot edit or delete another user's channel message | `tests/chat-message-permissions.spec.ts` | P0 | done |
-| R2 | PM messages support reply, edit, delete, and deleted placeholders | `tests/chat-pm-message-actions.spec.ts` | P1 | done |
-| R3 | Reply preview updates when the parent message is edited | `tests/chat-message-reply-edges.spec.ts` | P1 | done |
-| R4 | Reply preview shows deleted state when the parent message is deleted | `tests/chat-message-reply-edges.spec.ts` | P1 | done |
+| R1 | Chat message HTML/script content renders escaped and never executes | `tests/chat-security-escaping.spec.ts` | P0 | done |
+| R2 | Topic, welcome, MOTD, away, bio, alias expansion, bot response, and autorespond output escape HTML/script content | `tests/chat-security-escaping.spec.ts` | P0 | done |
+| R3 | Unsafe URL schemes such as `javascript:` and `data:` are not rendered as clickable links | `tests/chat-security-links.spec.ts` | P0 | done |
+| Y10 | Reciprocal autorespond notice rules fire once and do not loop | `tests/chat-autorespond-loop.spec.ts` | P0 | done |
+
+## Backlog S - Message Lifecycle Additions
+
+| # | Flow | Spec file | Priority | Status |
+|---|------|-----------|----------|--------|
+| S1 | Non-author cannot edit or delete another user's channel message | `tests/chat-message-permissions.spec.ts` | P0 | done |
+| S2 | PM messages support reply, edit, delete, and deleted placeholders | `tests/chat-pm-message-actions.spec.ts` | P1 | done |
+| S3 | Reply preview updates when the parent message is edited | `tests/chat-message-reply-edges.spec.ts` | P1 | done |
+| S4 | Reply preview shows deleted state when the parent message is deleted | `tests/chat-message-reply-edges.spec.ts` | P1 | done |
 
 ## Intentional Block
 
@@ -332,3 +347,6 @@ make ci
 - History pagination for channel and PM windows now loads older rows in chronological order without duplicate messages.
 - Reply preview updates now reinsert complete stream items and survive parent edit/delete.
 - PM edit/delete events now preserve edited/deleted metadata in the rendered stream.
+- Slash command parsing now trims leading whitespace, handles bare slash input, and preserves free-text argument spacing.
+- Command autocomplete now groups registered commands by category and keeps the complete registry visible for an empty `/` trigger.
+- Sensitive NickServ-style commands are excluded from browser history and recent-command ranking, including PM and automation variants.

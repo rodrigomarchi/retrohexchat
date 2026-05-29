@@ -14,28 +14,34 @@ green catalog in `TEST_CATALOG.md`.
 - Every prerequisite must be created through visible user actions in the spec.
 - If a scenario exposes behavior a real user would consider broken, fix product
   behavior or make an explicit product decision before weakening assertions.
+- Implement this backlog in file order from top to bottom. Do not use a
+  separate priority order unless this document is explicitly changed first.
+- Every scenario in this backlog is intended to land. `investigate` and `block`
+  are temporary execution states, not permission to skip a scenario.
 
 ## Status Legend
 
 - `done` - implemented, passing, and reflected in `TEST_CATALOG.md`.
 - `todo` - mapped, not implemented.
-- `investigate` - inspect UI/product behavior before writing the spec.
-- `block` - intentionally not runnable until a safe black-box strategy exists.
+- `investigate` - inspect UI/product behavior, then implement the scenario or
+  document the product/blocker decision before moving on.
+- `block` - not runnable yet; first create a safe black-box strategy, then
+  implement the scenario.
 
 ## Q - Catalog, Help, Parser, And Command Surface
 
 | # | Scenario | Suggested spec file | Priority | Status |
 |---|----------|---------------------|----------|--------|
-| Q1 | `/help` output includes every command registered in `Commands.Registry` and no stale command names | `tests/chat-command-registry.spec.ts` | P1 | todo |
-| Q2 | `/help <command>` renders detail for every registered command, including syntax and examples when present | `tests/chat-command-registry.spec.ts` | P1 | todo |
-| Q3 | Full Help Topics deep links render for every command help card reachable from `/help <command>` | `tests/chat-help-topics-registry.spec.ts` | P1 | todo |
-| Q4 | Command autocomplete contains every registered command and groups commands by category labels | `tests/chat-command-registry.spec.ts` | P2 | todo |
-| Q5 | Slash commands are case-insensitive: `/JOIN #room`, `/Msg nick text`, `/Ns info` hit the same handlers | `tests/chat-command-parser.spec.ts` | P1 | todo |
-| Q6 | Leading/trailing whitespace around commands and args does not change dispatch behavior | `tests/chat-command-parser.spec.ts` | P1 | todo |
-| Q7 | A bare `/`, `/ `, and command-like whitespace show a helpful error without clearing unrelated UI state | `tests/chat-command-parser.spec.ts` | P2 | todo |
-| Q8 | Command arguments preserve user text containing punctuation, repeated spaces, unicode, and IRC formatting codes | `tests/chat-command-parser.spec.ts` | P2 | todo |
-| Q9 | Sensitive command names/args are omitted from command history beyond NickServ examples already covered | `tests/chat-command-history-sensitive.spec.ts` | P1 | todo |
-| Q10 | Recent-command autocomplete ranking updates after command use without leaking sensitive commands | `tests/chat-command-history-sensitive.spec.ts` | P2 | todo |
+| Q1 | `/help` output includes every command registered in `Commands.Registry` and no stale command names | `tests/chat-command-registry.spec.ts` | P1 | done |
+| Q2 | `/help <command>` renders detail for every registered command, including syntax and examples when present | `tests/chat-command-registry.spec.ts` | P1 | done |
+| Q3 | Full Help Topics deep links render for every command help card reachable from `/help <command>` | `tests/chat-command-registry.spec.ts` | P1 | done |
+| Q4 | Command autocomplete contains every registered command and groups commands by category labels | `tests/chat-command-registry.spec.ts` | P2 | done |
+| Q5 | Slash commands are case-insensitive: `/JOIN #room`, `/Msg nick text`, `/Ns info` hit the same handlers | `tests/chat-command-parser.spec.ts` | P1 | done |
+| Q6 | Leading/trailing whitespace around commands and args does not change dispatch behavior | `tests/chat-command-parser.spec.ts` | P1 | done |
+| Q7 | A bare `/`, `/ `, and command-like whitespace show a helpful error without clearing unrelated UI state | `tests/chat-command-parser.spec.ts` | P2 | done |
+| Q8 | Command arguments preserve user text containing punctuation, repeated spaces, unicode, and IRC formatting codes | `tests/chat-command-parser.spec.ts` | P2 | done |
+| Q9 | Sensitive command names/args are omitted from command history beyond NickServ examples already covered | `tests/chat-command-history-sensitive.spec.ts` | P1 | done |
+| Q10 | Recent-command autocomplete ranking updates after command use without leaking sensitive commands | `tests/chat-command-history-sensitive.spec.ts` | P2 | done |
 
 ## R - Security, Escaping, Limits, And Input Robustness
 
@@ -208,20 +214,25 @@ green catalog in `TEST_CATALOG.md`.
 | AA8 | Local browser storage settings such as mute/sound survive reload but do not leak across isolated browser contexts | `tests/chat-local-storage-isolation.spec.ts` | P2 | todo |
 | AA9 | Confirmed `/admin nuke --confirm` remains blocked until disposable isolated profile exists | `tests/chat-admin-nuke.spec.ts` | P2 | block |
 
-## Suggested Implementation Order
+## Implementation Order
 
-1. P0 safety: R1-R3 and Y10 are complete.
-2. P1 message permissions and reply lifecycle: S1-S4 are complete.
-3. P1 desktop shell: T1-T6, V4-V8.
-4. P1 dialogs/settings that mutate real behavior: U1, U5-U11, X4-X7, X10-X15.
-5. P1 identity/presence and P2P availability: W1-W4, W7, W9-W10, Z1-Z6.
-6. P2 depth: search/history edges, race conditions, bot depth, game/call/file depth, local-storage isolation.
+Work strictly in the order this file is written:
+
+1. Finish all open `Q` scenarios, then `R`, `S`, `T`, `U`, `V`, `W`, `X`, `Y`,
+   `Z`, and `AA`.
+2. Within each section, work by row number.
+3. For `investigate`, inspect the product/UI first, update the row if needed,
+   then implement the E2E coverage before proceeding.
+4. For `block`, do not skip the row permanently. Define a safe black-box
+   strategy or an explicit product-safe constraint, then implement coverage.
+5. Mark a row `done` only after its focused E2E spec passes and
+   `TEST_CATALOG.md` reflects the new coverage.
 
 ## Maintenance Notes
 
-- When a backlog scenario lands, move the completed row into `TEST_CATALOG.md`
-  or add a compact "completed from backlog" section there, then remove it from
-  this file.
+- When a backlog scenario lands, keep the row in this file and mark it `done`.
+  Also add or update the completed coverage entry in `TEST_CATALOG.md`.
 - Keep this backlog intentionally separate from the green catalog so readers can
-  distinguish current confidence from planned coverage.
+  distinguish current confidence from planned coverage while still seeing
+  implementation progress in one place.
 - Do not add mobile/responsive scenarios here unless the scope changes.

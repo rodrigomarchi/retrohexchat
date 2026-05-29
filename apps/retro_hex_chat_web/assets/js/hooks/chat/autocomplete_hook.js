@@ -133,9 +133,14 @@ const AutocompleteHook = {
           this.historyManager.save(value);
           this.persistedHistory = this.historyManager.getHistory();
         }
-        if (value.startsWith("/")) {
-          const cmdName = value.slice(1).split(" ")[0];
-          if (cmdName) this.historyManager.saveRecentCommand(cmdName);
+        if (value.startsWith("/") && !isSensitiveCommand(value)) {
+          const cmdName = value.slice(1).split(/\s+/)[0].toLowerCase();
+          if (cmdName) {
+            this.historyManager.saveRecentCommand(cmdName);
+            this.pushEvent("recent_commands_loaded", {
+              commands: this.historyManager.getRecentCommands(),
+            });
+          }
         }
 
         this.historyManager.resetBrowsing();

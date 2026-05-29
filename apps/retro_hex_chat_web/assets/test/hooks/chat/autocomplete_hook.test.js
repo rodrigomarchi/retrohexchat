@@ -3,6 +3,7 @@ import {
   simulateEvent,
   cleanupDOM,
   mockLocalStorage,
+  getPushEvents,
 } from "../../helpers/hook_helper.js";
 import AutocompleteHook from "../../../js/hooks/chat/autocomplete_hook.js";
 
@@ -91,6 +92,12 @@ describe("AutocompleteHook", () => {
 
     it("allows /msg (not sensitive)", () => {
       expect(hook.isSensitiveCommand("/msg user hello")).toBe(false);
+    });
+
+    it("identifies NickServ passwords in PM and automation commands", () => {
+      expect(hook.isSensitiveCommand("/msg NickServ identify pass")).toBe(true);
+      expect(hook.isSensitiveCommand("/perform add /ns identify pass")).toBe(true);
+      expect(hook.isSensitiveCommand("/alias add auth /ns identify pass")).toBe(true);
     });
   });
 
@@ -219,6 +226,34 @@ describe("AutocompleteHook", () => {
         new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }),
       );
       expect(hook.persistedHistory[0]).toBe("hello world");
+    });
+
+    it("does not save sensitive commands to recent commands on Enter", () => {
+      const form = document.createElement("form");
+      form.appendChild(hook.el);
+      document.body.appendChild(form);
+
+      hook.el.value = "/ns identify secret";
+      hook.el.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }),
+      );
+
+      expect(hook.loadRecentCommands()).not.toContain("ns");
+    });
+
+    it("pushes updated recent commands to LiveView for non-sensitive commands", () => {
+      const form = document.createElement("form");
+      form.appendChild(hook.el);
+      document.body.appendChild(form);
+
+      hook.el.value = "/away lunch";
+      hook.el.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }),
+      );
+
+      expect(getPushEvents(hook, "recent_commands_loaded")).toContainEqual({
+        commands: ["away"],
+      });
     });
   });
 

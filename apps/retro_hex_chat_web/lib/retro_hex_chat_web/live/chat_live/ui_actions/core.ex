@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   end
 
   def handle_ui_action(socket, :show_command_help, %{help: help}) do
-    topic_id = "cmd-#{help.name}"
+    topic_id = command_topic_id(help.name)
 
     case HelpTopics.get_topic(topic_id) do
       %{title: title} ->
@@ -200,6 +200,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
       end
     end
   end
+
+  defp command_topic_id("bot"), do: "bot-command"
+  defp command_topic_id(command_name), do: "cmd-#{String.replace(command_name, "_", "-")}"
 
   defp throttled_knock?(knock_timestamps, channel, now) do
     case Map.fetch(knock_timestamps, channel) do

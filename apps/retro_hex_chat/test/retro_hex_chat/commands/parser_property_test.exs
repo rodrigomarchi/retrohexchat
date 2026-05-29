@@ -9,7 +9,7 @@ defmodule RetroHexChat.Commands.ParserPropertyTest do
   describe "property: non-slash strings return {:message, text}" do
     property "any string not starting with '/' returns {:message, text}" do
       check all(text <- string(:printable, max_length: 200)) do
-        if not String.starts_with?(text, "/") do
+        if not String.starts_with?(String.trim_leading(text), "/") do
           assert {:message, ^text} = Parser.parse(text)
         end
       end
