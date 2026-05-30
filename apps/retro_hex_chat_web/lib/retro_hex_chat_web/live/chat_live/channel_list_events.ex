@@ -96,12 +96,8 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
   defp close_channel_list(socket) do
     assign(socket,
       show_channel_list: false,
-      channel_list_channels: [],
-      channel_list_filtered: [],
       channel_list_selected: nil,
-      channel_list_search: "",
-      channel_list_loading: false,
-      channel_list_count: 0
+      channel_list_loading: false
     )
   end
 end

@@ -6,11 +6,11 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **136 spec files** under `e2e/tests/`.
-- **249 Playwright `test()` cases**.
+- **145 spec files** under `e2e/tests/`.
+- **262 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 208 mapped flows, 207 done, 1 intentionally blocked.
+- **Chat extended coverage:** 220 mapped flows, 219 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -378,6 +378,23 @@ make ci
 | U15 | Channel Central ban exception and invite exception add/remove flows affect join/ban behavior | `tests/chat-channel-central-exceptions.spec.ts` | P1 | done |
 | U16 | Channel Central topic/mode edits stay in sync with slash command output after dialog close/reopen | `tests/chat-channel-central-sync.spec.ts` | P2 | done |
 
+## Backlog V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
+
+| # | Flow | Spec file | Priority | Status |
+|---|------|-----------|----------|--------|
+| V1 | Conversation sidebar section collapse/expand state survives rerenders and does not affect active tab | `tests/chat-conversations-sidebar.spec.ts` | P2 | done |
+| V2 | Popular channel item joins/switches channel through browser UI without command typing | `tests/chat-conversations-sidebar.spec.ts` | P2 | done |
+| V3 | Browse all channels from conversations sidebar opens the channel list and preserves the previous filter search | `tests/chat-conversations-sidebar.spec.ts` | P2 | done |
+| V4 | Conversation context menu Mark Read clears unread indicators in the tab bar and conversations sidebar without switching focus | `tests/chat-conversation-unread.spec.ts` | P1 | done |
+| V5 | Muted channels and PM conversations suppress sound/title flash while keeping visual unread indicators | `tests/chat-conversation-mute.spec.ts` | P1 | done |
+| V6 | Copy name from the conversations context menu writes channel and PM targets to the clipboard | `tests/chat-conversation-context-clipboard.spec.ts` | P2 | done |
+| V7 | Leave from the conversations context menu removes only the targeted inactive or active channel | `tests/chat-conversation-context-leave.spec.ts` | P1 | done |
+| V8 | Channel Settings from the conversations context menu opens Channel Central for the targeted channel, not the active channel | `tests/chat-conversation-context-settings.spec.ts` | P1 | done |
+| V9 | Closing unread channel and PM tabs clears stale unread state before the conversation is reopened | `tests/chat-tab-unread-edges.spec.ts` | P2 | done |
+| V10 | Incoming PM and typing from an ignored user do not create unread indicators, typing UI, or title flash | `tests/chat-ignore-notifications.spec.ts` | P1 | done |
+| V11 | Incoming invite from an ignored user does not open invite UI or steal focus | `tests/chat-ignore-notifications.spec.ts` | P1 | done |
+| V12 | Multiple simultaneous PM unread counts update independently and reset only when each PM is opened | `tests/chat-pm-unread-multiple.spec.ts` | P1 | done |
+
 ## Intentional Block
 
 | # | Reason |
@@ -429,3 +446,7 @@ make ci
 - `/clear` now also resets pagination state so scroll history loading cannot immediately repopulate a locally cleared window.
 - Nick color changes now refresh the active chat stream so existing rows and future rows use the updated Address Book/context-menu color.
 - Address Book Control and ignore-list persistence now include the `notices` ignore type, and `/ignore` help text documents it consistently.
+- Conversations sidebar now renders the Popular Channels section before lazy-loading so users can expand it and join channels through the UI.
+- Channel List close preserves the current filter search, and Browse All Channels from the conversations sidebar reapplies it to the refreshed channel list.
+- Conversations sidebar context menus now support PM mute/copy actions, and PM mute suppresses sound/title flash while preserving unread indicators.
+- Closing channel or PM tabs now clears unread/flash state so reopening the same conversation does not resurrect stale unread indicators.

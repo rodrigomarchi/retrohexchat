@@ -16,6 +16,17 @@ const ConversationsHook = {
           x: e.clientX,
           y: e.clientY,
         });
+        return;
+      }
+
+      const nick = findClosestWithData(e.target, "[data-nick]", "nick");
+      if (nick) {
+        e.preventDefault();
+        this.pushEvent("pm_right_click", {
+          nick,
+          x: e.clientX,
+          y: e.clientY,
+        });
       }
     });
 

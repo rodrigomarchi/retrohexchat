@@ -147,7 +147,8 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               active={pm == @active_pm}
               unread={pm in @unread_pms}
               unread_count={Map.get(@unread_counts, "pm:#{pm}", 0)}
-              flash={pm in @flash_channels}
+              flash={"pm:#{pm}" in @flash_channels}
+              muted={"pm:#{pm}" in @muted_channels}
               nick_color={@nick_color_fn && @nick_color_fn.(pm)}
               on_click={@on_pm_click}
             />
@@ -155,7 +156,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
           <%!-- Popular Channels --%>
           <.tree_view_group
-            :if={@popular_channels != []}
             label="POPULAR CHANNELS"
             open={"popular" not in @collapsed_sections}
             phx-click={@on_toggle_section}
@@ -256,6 +256,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :unread, :boolean, default: false
   attr :unread_count, :integer, default: 0
   attr :flash, :boolean, default: false
+  attr :muted, :boolean, default: false
   attr :nick_color, :string, default: nil
   attr :on_click, :any, default: nil
 
@@ -265,11 +266,13 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       active={@active}
       class={[
         @unread && !@active && "font-bold italic",
-        @flash && "animate-pulse"
+        @flash && "animate-pulse",
+        @muted && "opacity-50"
       ]}
       phx-click={@on_click}
       phx-value-nickname={@nick}
       data-nick={@nick}
+      data-muted={to_string(@muted)}
       data-unread={to_string(@unread)}
       data-testid={"pm-#{@nick}"}
     >

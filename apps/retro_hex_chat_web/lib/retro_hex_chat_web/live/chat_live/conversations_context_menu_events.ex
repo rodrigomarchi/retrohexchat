@@ -27,21 +27,45 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
 
     {:halt,
      assign(socket,
-       conversations_context_menu: %{visible: true, x: x, y: y, channel: channel}
+       conversations_context_menu: %{
+         visible: true,
+         x: x,
+         y: y,
+         type: :channel,
+         channel: channel,
+         nick: nil
+       }
+     )}
+  end
+
+  def handle_event("pm_right_click", %{"nick" => nick} = params, socket) do
+    x = params["x"] || 0
+    y = params["y"] || 0
+
+    {:halt,
+     assign(socket,
+       conversations_context_menu: %{
+         visible: true,
+         x: x,
+         y: y,
+         type: :pm,
+         channel: nil,
+         nick: nick
+       }
      )}
   end
 
   def handle_event("close_conversations_context_menu", _params, socket) do
-    {:halt,
-     assign(socket, conversations_context_menu: %{visible: false, x: 0, y: 0, channel: nil})}
+    {:halt, assign(socket, conversations_context_menu: closed_menu())}
   end
 
   # ── Extended conversations context menu actions ────────────────
 
-  def handle_event("ctx_conversations_mark_read", %{"channel" => channel}, socket) do
-    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, channel)
-    highlight = MapSet.delete(socket.assigns.highlight_channels, channel)
-    flash = MapSet.delete(socket.assigns.flash_channels, channel)
+  def handle_event("ctx_conversations_mark_read", params, socket) do
+    key = conversation_key(params)
+    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, key)
+    highlight = MapSet.delete(socket.assigns.highlight_channels, key)
+    flash = MapSet.delete(socket.assigns.flash_channels, key)
 
     {:halt,
      socket
@@ -49,8 +73,9 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
      |> assign(unread_counts: unread_counts, highlight_channels: highlight, flash_channels: flash)}
   end
 
-  def handle_event("ctx_conversations_mute", %{"channel" => channel}, socket) do
-    muted = toggle_muted(socket.assigns.muted_channels, channel)
+  def handle_event("ctx_conversations_mute", params, socket) do
+    key = conversation_key(params)
+    muted = toggle_muted(socket.assigns.muted_channels, key)
 
     {:halt,
      socket
@@ -58,11 +83,11 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
      |> assign(muted_channels: muted)}
   end
 
-  def handle_event("ctx_conversations_copy_name", %{"channel" => channel}, socket) do
+  def handle_event("ctx_conversations_copy_name", params, socket) do
     {:halt,
      socket
      |> close_conversations_menu()
-     |> push_event("clipboard_copy", %{text: channel})}
+     |> push_event("clipboard_copy", %{text: conversation_label(params)})}
   end
 
   def handle_event("ctx_conversations_leave", %{"channel" => channel}, socket) do
@@ -89,8 +114,22 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
   # ── Private helpers ──────────────────────────────────────
 
   defp close_conversations_menu(socket) do
-    assign(socket, conversations_context_menu: %{visible: false, x: 0, y: 0, channel: nil})
+    assign(socket, conversations_context_menu: closed_menu())
   end
+
+  defp closed_menu do
+    %{visible: false, x: 0, y: 0, type: :channel, channel: nil, nick: nil}
+  end
+
+  defp conversation_key(%{"type" => "pm", "nick" => nick}) when is_binary(nick), do: "pm:#{nick}"
+  defp conversation_key(%{"nick" => nick}) when is_binary(nick), do: "pm:#{nick}"
+  defp conversation_key(%{"channel" => channel}) when is_binary(channel), do: channel
+  defp conversation_key(params), do: conversation_label(params)
+
+  defp conversation_label(%{"type" => "pm", "nick" => nick}) when is_binary(nick), do: nick
+  defp conversation_label(%{"nick" => nick}) when is_binary(nick), do: nick
+  defp conversation_label(%{"channel" => channel}) when is_binary(channel), do: channel
+  defp conversation_label(_params), do: ""
 
   defp toggle_muted(muted_set, channel) do
     if MapSet.member?(muted_set, channel) do

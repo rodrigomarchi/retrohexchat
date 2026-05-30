@@ -112,7 +112,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
           <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
           Join
         </.button>
-        <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
+        <.button
+          variant="outline"
+          phx-click={@on_close || hide_modal(@id)}
+          data-testid="channel-list-close"
+        >
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
           Close
         </.button>

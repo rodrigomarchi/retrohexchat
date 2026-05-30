@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Queries
+  alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
@@ -113,7 +114,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     PresenceHelpers.safe_untrack_user("channel:#{channel_name}", session.nickname)
     new_session = Session.remove_channel(session, channel_name)
 
-    socket = assign(socket, session: new_session)
+    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, channel_name)
+    highlight = MapSet.delete(socket.assigns.highlight_channels, channel_name)
+    flash = MapSet.delete(socket.assigns.flash_channels, channel_name)
+
+    socket =
+      assign(socket,
+        session: new_session,
+        unread_counts: unread_counts,
+        highlight_channels: highlight,
+        flash_channels: flash
+      )
 
     socket =
       if new_session.active_channel do

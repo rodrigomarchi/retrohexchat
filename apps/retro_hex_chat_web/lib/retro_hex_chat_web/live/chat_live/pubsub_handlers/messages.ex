@@ -319,11 +319,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     if session.active_pm == other_nick do
       stream_insert(socket, :chat_messages, pm_to_stream_item(payload))
     else
-      unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, "pm:#{other_nick}")
+      pm_key = "pm:#{other_nick}"
+      unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, pm_key)
 
       socket
-      |> play_event_sound(:pm, session)
-      |> maybe_flash_channel("pm:#{other_nick}", :pm, session)
+      |> maybe_notify_pm_unmuted(pm_key, session)
       |> assign(unread_counts: unread_counts)
     end
   end
@@ -340,16 +340,26 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   defp maybe_mark_new_incoming_pm_unread(socket, _session, sender, true = _newly_opened?) do
     session = socket.assigns.session
-    unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, "pm:#{sender}")
+    pm_key = "pm:#{sender}"
+    unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, pm_key)
 
     socket
-    |> play_event_sound(:pm, session)
-    |> maybe_flash_channel("pm:#{sender}", :pm, session)
+    |> maybe_notify_pm_unmuted(pm_key, session)
     |> assign(unread_counts: unread_counts)
   end
 
   defp maybe_mark_new_incoming_pm_unread(socket, _session, _sender, false = _newly_opened?) do
     socket
+  end
+
+  defp maybe_notify_pm_unmuted(socket, pm_key, session) do
+    if MapSet.member?(socket.assigns.muted_channels, pm_key) do
+      socket
+    else
+      socket
+      |> play_event_sound(:pm, session)
+      |> maybe_flash_channel(pm_key, :pm, session)
+    end
   end
 
   defp maybe_away_auto_reply(socket, sender, session) do

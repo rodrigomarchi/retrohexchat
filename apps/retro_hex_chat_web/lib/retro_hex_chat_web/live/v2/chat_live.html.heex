@@ -428,10 +428,16 @@
   visible={@conversations_context_menu.visible}
   x={@conversations_context_menu.x}
   y={@conversations_context_menu.y}
+  type={@conversations_context_menu.type}
   channel={@conversations_context_menu.channel}
-  is_muted={MapSet.member?(@muted_channels, @conversations_context_menu.channel)}
-  has_unread={UnreadTracker.unread?(@unread_counts, @conversations_context_menu.channel)}
-  custom_items={CustomMenus.entries_for(@session.custom_menus, :channel)}
+  nick={@conversations_context_menu.nick}
+  is_muted={
+    MapSet.member?(@muted_channels, conversation_context_key(@conversations_context_menu))
+  }
+  has_unread={
+    UnreadTracker.unread?(@unread_counts, conversation_context_key(@conversations_context_menu))
+  }
+  custom_items={conversation_context_custom_items(@session, @conversations_context_menu)}
   on_action="conversations_context_action"
 />
 

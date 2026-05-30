@@ -170,6 +170,7 @@ export class ChatPage {
   readonly nickChangeError: Locator;
   readonly channelListSearch: Locator;
   readonly channelListJoinButton: Locator;
+  readonly channelListCloseButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -440,6 +441,7 @@ export class ChatPage {
     this.nickChangeError = page.getByTestId('nick-change-error');
     this.channelListSearch = page.getByTestId('channel-list-search');
     this.channelListJoinButton = page.getByTestId('channel-list-join');
+    this.channelListCloseButton = page.getByTestId('channel-list-close');
     // The dialog component wraps content in a <span data-testid="...">, but
     // that wrapper has zero visible size when the dialog is closed; use the
     // confirm button instead as the open/closed signal.
@@ -517,6 +519,13 @@ export class ChatPage {
 
   async expectTabHidden(name: string) {
     await expect(this.tab(name)).toHaveCount(0);
+  }
+
+  async expectTabUnread(name: string, unread: boolean) {
+    await expect(this.tab(name)).toHaveAttribute(
+      'data-unread',
+      String(unread),
+    );
   }
 
   // Types a message (or slash command) into the chat input and submits
@@ -798,6 +807,18 @@ export class ChatPage {
     return this.page.getByTestId(`channel-${channel}`);
   }
 
+  popularChannelItem(channel: string): Locator {
+    return this.page.getByTestId(`popular-${channel}`);
+  }
+
+  popularJoinButton(channel: string): Locator {
+    return this.page.getByTestId(`join-${channel}`);
+  }
+
+  conversationSection(section: 'channels' | 'pms' | 'popular'): Locator {
+    return this.page.getByTestId(`conversations-section-${section}`);
+  }
+
   pmConversationItem(nick: string): Locator {
     return this.page.getByTestId(`pm-${nick}`);
   }
@@ -817,6 +838,79 @@ export class ChatPage {
   async openConversationContextMenu(channel: string) {
     await this.channelConversationItem(channel).click({ button: 'right' });
     await expect(this.conversationsContextMenu).toBeVisible();
+  }
+
+  async openPmConversationContextMenu(nick: string) {
+    await this.pmConversationItem(nick).click({ button: 'right' });
+    await expect(this.conversationsContextMenu).toBeVisible();
+  }
+
+  async toggleConversationSection(section: 'channels' | 'pms' | 'popular') {
+    await this.conversationSection(section).locator('summary').click();
+  }
+
+  async expectConversationSectionExpanded(
+    section: 'channels' | 'pms' | 'popular',
+    expanded: boolean,
+  ) {
+    await expect
+      .poll(async () =>
+        this.conversationSection(section).evaluate(
+          (el) => (el as HTMLDetailsElement).open,
+        ),
+      )
+      .toBe(expanded);
+  }
+
+  async expectChannelConversationUnread(channel: string, unread: boolean) {
+    await expect(this.channelConversationItem(channel)).toHaveAttribute(
+      'data-unread',
+      String(unread),
+    );
+  }
+
+  async expectChannelConversationMuted(channel: string, muted: boolean) {
+    await expect(this.channelConversationItem(channel)).toHaveAttribute(
+      'data-muted',
+      String(muted),
+    );
+  }
+
+  async expectPmConversationUnread(nick: string, unread: boolean) {
+    await expect(this.pmConversationItem(nick)).toHaveAttribute(
+      'data-unread',
+      String(unread),
+    );
+  }
+
+  async expectPmConversationMuted(nick: string, muted: boolean) {
+    await expect(this.pmConversationItem(nick)).toHaveAttribute(
+      'data-muted',
+      String(muted),
+    );
+  }
+
+  async joinPopularChannel(channel: string) {
+    await this.expectConversationSectionExpanded('popular', false);
+    await this.toggleConversationSection('popular');
+    await this.expectConversationSectionExpanded('popular', true);
+    await expect(this.popularChannelItem(channel)).toBeVisible();
+    await this.popularJoinButton(channel).click();
+    await this.expectTabVisible(channel);
+    await this.expectTabSelected(channel);
+  }
+
+  async browseAllChannelsFromConversations() {
+    await this.expectConversationSectionExpanded('popular', false);
+    await this.toggleConversationSection('popular');
+    await this.expectConversationSectionExpanded('popular', true);
+    await this.page.getByTestId('conversations-browse-all').click();
+    await expect(this.channelListDialog).toBeVisible();
+  }
+
+  async closeChannelList() {
+    await this.channelListCloseButton.click();
+    await expect(this.channelListDialog).toBeHidden();
   }
 
   async openFileMenu() {
@@ -1282,6 +1376,20 @@ export class ChatPage {
       'data-content',
       label,
     );
+  }
+
+  async setSoundFlash(event: string, enabled: boolean) {
+    const toggle = this.soundFlashToggle(event);
+
+    if ((await toggle.isChecked()) !== enabled) {
+      await toggle.click();
+    }
+
+    if (enabled) {
+      await expect(toggle).toBeChecked();
+    } else {
+      await expect(toggle).not.toBeChecked();
+    }
   }
 
   performCommandRow(command: string): Locator {

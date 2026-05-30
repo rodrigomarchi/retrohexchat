@@ -222,10 +222,14 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   def handle_event("close_pm_tab", %{"nickname" => nickname}, socket) do
     old_session = socket.assigns.session
     topic = "pm:#{PM.pm_topic(old_session.nickname, nickname)}"
+    pm_key = "pm:#{nickname}"
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, topic)
 
     session = Session.remove_pm_conversation(old_session, nickname)
-    socket = assign(socket, session: session)
+    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, pm_key)
+    flash = MapSet.delete(socket.assigns.flash_channels, pm_key)
+
+    socket = assign(socket, session: session, unread_counts: unread_counts, flash_channels: flash)
 
     socket =
       if session.active_pm do

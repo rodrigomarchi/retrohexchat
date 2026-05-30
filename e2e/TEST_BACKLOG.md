@@ -117,18 +117,18 @@ green catalog in `TEST_CATALOG.md`.
 
 | # | Scenario | Suggested spec file | Priority | Status |
 |---|----------|---------------------|----------|--------|
-| V1 | Conversation sidebar section collapse/expand state survives rerenders and does not affect active tab | `tests/chat-conversations-sidebar.spec.ts` | P2 | todo |
-| V2 | Popular channel item joins/switches channel through browser UI without command typing | `tests/chat-conversations-sidebar.spec.ts` | P2 | investigate |
-| V3 | Browse all channels from conversations sidebar opens channel list with search pre-state intact | `tests/chat-conversations-sidebar.spec.ts` | P2 | todo |
-| V4 | Conversation context menu Mark Read clears unread badges in tab and sidebar but does not switch focus | `tests/chat-conversation-unread.spec.ts` | P1 | todo |
-| V5 | Muted channel/PM suppresses sound/title-flash while still showing visual unread indicators | `tests/chat-conversation-mute.spec.ts` | P1 | investigate |
-| V6 | Copy channel/PM name from context menu writes expected text to clipboard with browser permission | `tests/chat-conversation-context-clipboard.spec.ts` | P2 | todo |
-| V7 | Leave from conversation context menu removes only the targeted channel and handles active/inactive cases | `tests/chat-conversation-context-leave.spec.ts` | P1 | todo |
-| V8 | Channel Settings from conversation context menu opens Channel Central for the selected channel, not active channel | `tests/chat-conversation-context-settings.spec.ts` | P1 | todo |
-| V9 | Closing a tab with unread messages clears or preserves unread state according to product decision when re-opened | `tests/chat-tab-unread-edges.spec.ts` | P2 | investigate |
-| V10 | Incoming PM from ignored user does not create unread indicator, typing indicator, or title flash | `tests/chat-ignore-notifications.spec.ts` | P1 | todo |
-| V11 | Incoming invite from ignored user does not auto-open invite dialog or steal focus | `tests/chat-ignore-notifications.spec.ts` | P1 | todo |
-| V12 | Multiple simultaneous PM unread counts update independently and reset only when each PM is opened | `tests/chat-pm-unread-multiple.spec.ts` | P1 | todo |
+| V1 | Conversation sidebar section collapse/expand state survives rerenders and does not affect active tab | `tests/chat-conversations-sidebar.spec.ts` | P2 | done |
+| V2 | Popular channel item joins/switches channel through browser UI without command typing | `tests/chat-conversations-sidebar.spec.ts` | P2 | done |
+| V3 | Browse all channels from conversations sidebar opens channel list with search pre-state intact | `tests/chat-conversations-sidebar.spec.ts` | P2 | done |
+| V4 | Conversation context menu Mark Read clears unread badges in tab and sidebar but does not switch focus | `tests/chat-conversation-unread.spec.ts` | P1 | done |
+| V5 | Muted channel/PM suppresses sound/title-flash while still showing visual unread indicators | `tests/chat-conversation-mute.spec.ts` | P1 | done |
+| V6 | Copy channel/PM name from context menu writes expected text to clipboard with browser permission | `tests/chat-conversation-context-clipboard.spec.ts` | P2 | done |
+| V7 | Leave from conversation context menu removes only the targeted channel and handles active/inactive cases | `tests/chat-conversation-context-leave.spec.ts` | P1 | done |
+| V8 | Channel Settings from conversation context menu opens Channel Central for the selected channel, not active channel | `tests/chat-conversation-context-settings.spec.ts` | P1 | done |
+| V9 | Closing a tab with unread messages clears or preserves unread state according to product decision when re-opened | `tests/chat-tab-unread-edges.spec.ts` | P2 | done |
+| V10 | Incoming PM from ignored user does not create unread indicator, typing indicator, or title flash | `tests/chat-ignore-notifications.spec.ts` | P1 | done |
+| V11 | Incoming invite from ignored user does not auto-open invite dialog or steal focus | `tests/chat-ignore-notifications.spec.ts` | P1 | done |
+| V12 | Multiple simultaneous PM unread counts update independently and reset only when each PM is opened | `tests/chat-pm-unread-multiple.spec.ts` | P1 | done |
 
 ## W - Presence, Identity, Nick Changes, Whois/Whowas
 

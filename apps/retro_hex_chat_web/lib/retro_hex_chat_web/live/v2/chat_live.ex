@@ -696,7 +696,14 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       flash_channels: MapSet.new(),
       pm_typing_from: nil,
       pm_typing_timer: nil,
-      conversations_context_menu: %{visible: false, x: 0, y: 0, channel: nil},
+      conversations_context_menu: %{
+        visible: false,
+        x: 0,
+        y: 0,
+        type: :channel,
+        channel: nil,
+        nick: nil
+      },
       last_activity_at: DateTime.utc_now(),
       show_alias_dialog: false,
       alias_dialog_selected: nil,
@@ -801,6 +808,18 @@ defmodule RetroHexChatWeb.V2.ChatLive do
 
   defp chat_context_target_ignored?(session, %{target_nick: nick}) do
     IgnoreList.get_entry(session.ignore_list, nick) != nil
+  end
+
+  defp conversation_context_key(%{type: :pm, nick: nick}) when is_binary(nick), do: "pm:#{nick}"
+  defp conversation_context_key(%{type: "pm", nick: nick}) when is_binary(nick), do: "pm:#{nick}"
+  defp conversation_context_key(%{channel: channel}) when is_binary(channel), do: channel
+  defp conversation_context_key(_context), do: nil
+
+  defp conversation_context_custom_items(_session, %{type: :pm}), do: []
+  defp conversation_context_custom_items(_session, %{type: "pm"}), do: []
+
+  defp conversation_context_custom_items(session, _context) do
+    CustomMenus.entries_for(session.custom_menus, :channel)
   end
 
   defp message_classes(msg, edit_mode_message_id) do

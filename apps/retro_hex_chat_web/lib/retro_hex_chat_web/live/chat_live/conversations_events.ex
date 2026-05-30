@@ -50,14 +50,16 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsEvents do
 
   def handle_event("conversations_browse_all", _params, socket) do
     channels = Autocomplete.list_visible_channels(socket.assigns.session.channels)
+    search = socket.assigns[:channel_list_search] || ""
+    filtered = filter_channels(channels, search)
 
     {:halt,
      assign(socket,
        show_channel_list: true,
        channel_list_channels: channels,
-       channel_list_filtered: channels,
+       channel_list_filtered: filtered,
        channel_list_selected: nil,
-       channel_list_search: "",
+       channel_list_search: search,
        channel_list_loading: false,
        channel_list_count: length(channels)
      )}
@@ -80,5 +82,16 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsEvents do
       |> Enum.take(10)
 
     assign(socket, popular_channels: popular, popular_channels_loaded: true)
+  end
+
+  defp filter_channels(channels, ""), do: channels
+
+  defp filter_channels(channels, search) do
+    term = String.downcase(search)
+
+    Enum.filter(channels, fn ch ->
+      String.contains?(String.downcase(ch.name), term) or
+        String.contains?(String.downcase(ch.topic || ""), term)
+    end)
   end
 end
