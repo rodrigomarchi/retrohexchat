@@ -133,6 +133,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
               "shadow-retro-field bg-white p-retro-8 text-center cursor-pointer",
               "hover:bg-hover-bg active:shadow-retro-sunken"
             ]}
+            data-testid={"solo-game-#{game.id}"}
           >
             <Icons.game_icon game_id={game.id} class="w-12 h-12 shrink-0" />
             <span class="text-xs font-bold leading-tight">{game.name}</span>
@@ -184,6 +185,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             class="font-bold"
             phx-click={@on_select_game}
             phx-value-game-id={@previewed_game.id}
+            data-testid={"solo-game-start-#{@previewed_game.id}"}
           >
             <:icon><Icons.icon_btn_join class="w-4 h-4" /></:icon>
             Start Game
@@ -268,7 +270,13 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         <p class="text-xs text-muted-foreground">Game in progress...</p>
         <p :if={@game_started_at} class="text-xs font-mono">Started: {@game_started_at}</p>
       </div>
-      <.button variant="outline" size="sm" class="flex-shrink-0" phx-click={@on_close}>
+      <.button
+        variant="outline"
+        size="sm"
+        class="flex-shrink-0"
+        phx-click={@on_close}
+        data-testid="solo-session-end"
+      >
         <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
         End Session
       </.button>
@@ -310,7 +318,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
       <%!-- Close button --%>
       <div>
-        <.button variant="outline" phx-click={@on_close}>
+        <.button variant="outline" phx-click={@on_close} data-testid="solo-session-close">
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
           Close
         </.button>

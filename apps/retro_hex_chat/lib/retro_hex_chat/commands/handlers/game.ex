@@ -3,6 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.Game do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handlers.P2p
   alias RetroHexChat.Services.RegisteredNick
 
   @impl true
@@ -18,6 +19,7 @@ defmodule RetroHexChat.Commands.Handlers.Game do
     with :ok <- validate_identified(context),
          :ok <- validate_not_self(target, context),
          {:ok, target_id} <- resolve_registered_nick(target),
+         :ok <- P2p.validate_target_online(target),
          {:ok, creator_id} <- resolve_registered_nick(context.nickname),
          {:ok, result} <- create_session(creator_id, target_id) do
       {:ok, :ui_action, :game_invite,

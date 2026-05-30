@@ -52,7 +52,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
             "* #{nick} is now ignored (#{type})"
           end
 
-        close_p2p_sessions_for_ignore(socket, nick)
+        if p2p_blocking_ignore?(type) do
+          close_p2p_sessions_for_ignore(socket, nick)
+        end
 
         socket
         |> assign(session: new_session)
@@ -92,6 +94,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
     expires = if IgnoreEntry.permanent?(entry), do: "permanent", else: "timed"
     "  #{entry.nickname} [#{entry.ignore_type}] (#{expires})"
   end
+
+  defp p2p_blocking_ignore?(type), do: type in [:all, :invites]
 
   defp close_p2p_sessions_for_ignore(socket, ignored_nick) do
     owner_nick = socket.assigns.session.nickname

@@ -10,6 +10,8 @@ defmodule RetroHexChat.P2P.SessionServer do
 
   alias RetroHexChat.P2P.{Queries, Registry}
   alias RetroHexChat.P2P.Schema.Session
+  alias RetroHexChat.Repo
+  alias RetroHexChat.Services.RegisteredNick
 
   @pending_timeout :timer.minutes(5)
   @lobby_warning_timeout :timer.minutes(10)
@@ -372,6 +374,7 @@ defmodule RetroHexChat.P2P.SessionServer do
       })
 
     broadcast(state.token, "p2p_session_closed", %{reason: reason, closed_by: closed_by})
+    notify_chat_participants(session, reason)
     %{state | session: session}
   end
 
@@ -388,6 +391,7 @@ defmodule RetroHexChat.P2P.SessionServer do
       })
 
     broadcast(state.token, "p2p_status_changed", %{status: "expired", reason: reason})
+    notify_chat_participants(session, reason)
     %{state | session: session}
   end
 
@@ -404,7 +408,41 @@ defmodule RetroHexChat.P2P.SessionServer do
       })
 
     broadcast(state.token, "p2p_status_changed", %{status: "failed", reason: reason})
+    notify_chat_participants(session, reason)
     %{state | session: session}
+  end
+
+  defp notify_chat_participants(session, reason) do
+    creator_nick = registered_nick(session.creator_id)
+    peer_nick = registered_nick(session.peer_id)
+
+    if creator_nick && peer_nick do
+      notify_chat_user(creator_nick, peer_nick, session, reason)
+      notify_chat_user(peer_nick, creator_nick, session, reason)
+    end
+  end
+
+  defp notify_chat_user(nickname, peer_nick, session, reason) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "user:#{nickname}",
+      %{
+        event: "p2p_session_ended",
+        payload: %{
+          peer_nick: peer_nick,
+          session_type: session.session_type,
+          reason: reason,
+          duration_seconds: session.duration_seconds
+        }
+      }
+    )
+  end
+
+  defp registered_nick(id) do
+    case Repo.get(RegisteredNick, id) do
+      nil -> nil
+      nick -> nick.nickname
+    end
   end
 
   @spec compute_duration(DateTime.t() | nil, DateTime.t()) :: integer() | nil

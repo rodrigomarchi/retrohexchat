@@ -176,6 +176,8 @@ defmodule RetroHexChat.P2P.SessionServerTest do
       pid = start_server(session.token)
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "p2p:#{session.token}")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:alice_ss8")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:bob_ss8")
 
       assert :ok = SessionServer.close(session.token, alice.id, "user_closed")
 
@@ -190,6 +192,16 @@ defmodule RetroHexChat.P2P.SessionServerTest do
       assert_receive %{
         event: "p2p_session_closed",
         payload: %{reason: "user_closed", closed_by: "user"}
+      }
+
+      assert_receive %{
+        event: "p2p_session_ended",
+        payload: %{peer_nick: "bob_ss8", reason: "user_closed"}
+      }
+
+      assert_receive %{
+        event: "p2p_session_ended",
+        payload: %{peer_nick: "alice_ss8", reason: "user_closed"}
       }
     end
   end
@@ -254,6 +266,9 @@ defmodule RetroHexChat.P2P.SessionServerTest do
       session = create_session_record(alice.id, bob.id)
       pid = start_server(session.token)
 
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:alice_s12")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:bob_s12")
+
       # Wait for pending timeout (100ms in test)
       Process.sleep(200)
       refute Process.alive?(pid)
@@ -261,6 +276,16 @@ defmodule RetroHexChat.P2P.SessionServerTest do
       updated = Queries.get_session_by_token(session.token)
       assert updated.status == "expired"
       assert updated.closed_reason == "pending_timeout"
+
+      assert_receive %{
+        event: "p2p_session_ended",
+        payload: %{peer_nick: "bob_s12", reason: "pending_timeout"}
+      }
+
+      assert_receive %{
+        event: "p2p_session_ended",
+        payload: %{peer_nick: "alice_s12", reason: "pending_timeout"}
+      }
     end
 
     test "lobby warning broadcast at warning timeout" do

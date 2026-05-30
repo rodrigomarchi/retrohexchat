@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       error_event: 2,
       push_status_message: 3,
       maybe_persist_ignore_list: 2,
-      join_channel: 4,
+      join_channel_in_background: 4,
       load_channel_users: 2,
       load_channel_messages_with_pagination: 2
     ]
@@ -168,15 +168,9 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
         if channel in session.channels do
           socket
         else
-          # Preserve the current active window — autojoin should not steal focus
-          prev_active = active_window(socket, session)
-
-          socket =
-            socket
-            |> system_event("* Auto-joining #{channel}...")
-            |> join_channel(channel, session, key)
-
-          restore_active_window(socket, prev_active)
+          socket
+          |> system_event("* Auto-joining #{channel}...")
+          |> join_channel_in_background(channel, session, key)
         end
 
       Process.send_after(self(), {:execute_autojoin, index + 1}, 100)
@@ -200,7 +194,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
         else
           socket
           |> system_event("* Rejoining #{channel}...")
-          |> join_channel(channel, session, nil)
+          |> join_channel_in_background(channel, session, nil)
         end
 
       Process.send_after(self(), {:execute_rejoin, index + 1, channels}, 100)

@@ -19,12 +19,12 @@ defmodule RetroHexChat.P2P.PolicyTest do
     nick
   end
 
-  defp create_ignore_entry(owner_nick, ignored_nick) do
+  defp create_ignore_entry(owner_nick, ignored_nick, ignore_type \\ "all") do
     Repo.insert_all("ignore_list_entries", [
       %{
         owner_nickname: owner_nick,
         ignored_nickname: ignored_nick,
-        ignore_type: "ignore",
+        ignore_type: ignore_type,
         inserted_at: DateTime.utc_now(),
         updated_at: DateTime.utc_now()
       }
@@ -106,7 +106,7 @@ defmodule RetroHexChat.P2P.PolicyTest do
       assert :ok = Policy.can_create?(alice.id, bob.id)
     end
 
-    test "rejects when creator has ignored peer with generic message" do
+    test "rejects when creator has ignored peer for all events" do
       alice = create_registered_nick("alice_pol8")
       bob = create_registered_nick("bob_pol8")
       create_ignore_entry("alice_pol8", "bob_pol8")
@@ -115,13 +115,21 @@ defmodule RetroHexChat.P2P.PolicyTest do
                Policy.can_create?(alice.id, bob.id)
     end
 
-    test "rejects when peer has ignored creator with generic message" do
+    test "rejects when peer has ignored creator invites" do
       alice = create_registered_nick("alice_pol9")
       bob = create_registered_nick("bob_pol9")
-      create_ignore_entry("bob_pol9", "alice_pol9")
+      create_ignore_entry("bob_pol9", "alice_pol9", "invites")
 
       assert {:error, "User not available"} =
                Policy.can_create?(alice.id, bob.id)
+    end
+
+    test "allows when peer has ignored creator channel messages only" do
+      alice = create_registered_nick("alice_pol10")
+      bob = create_registered_nick("bob_pol10")
+      create_ignore_entry("bob_pol10", "alice_pol10", "messages")
+
+      assert :ok = Policy.can_create?(alice.id, bob.id)
     end
   end
 

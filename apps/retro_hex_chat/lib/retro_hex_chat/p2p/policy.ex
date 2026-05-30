@@ -9,6 +9,8 @@ defmodule RetroHexChat.P2P.Policy do
   alias RetroHexChat.P2P.Schema.Session
   alias RetroHexChat.Repo
 
+  @session_blocking_ignore_types ~w(all invites)
+
   @spec can_create?(integer(), integer()) :: :ok | {:error, String.t()}
   def can_create?(creator_id, peer_id) do
     with :ok <- check_not_self(creator_id, peer_id),
@@ -69,8 +71,9 @@ defmodule RetroHexChat.P2P.Policy do
     blocked =
       from(e in "ignore_list_entries",
         where:
-          (e.owner_nickname == ^creator_nick and e.ignored_nickname == ^peer_nick) or
-            (e.owner_nickname == ^peer_nick and e.ignored_nickname == ^creator_nick),
+          e.ignore_type in ^@session_blocking_ignore_types and
+            ((e.owner_nickname == ^creator_nick and e.ignored_nickname == ^peer_nick) or
+               (e.owner_nickname == ^peer_nick and e.ignored_nickname == ^creator_nick)),
         select: true
       )
       |> Repo.exists?()

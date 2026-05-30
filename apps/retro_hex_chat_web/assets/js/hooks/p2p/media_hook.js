@@ -34,6 +34,7 @@ const MediaHook = {
     this.localStream = null;
     this.senders = [];
     this.callType = null;
+    this.startingCall = false;
     this.startTime = null;
     this.durationInterval = null;
     this.qualityInterval = null;
@@ -92,7 +93,8 @@ const MediaHook = {
   // --- Call start/end ---
 
   async _startCall(type) {
-    if (!this.pc) return;
+    if (!this.pc || this.callType || this.startingCall) return;
+    this.startingCall = true;
 
     const constraints = {};
     constraints.audio = getAudioConstraints();
@@ -103,6 +105,7 @@ const MediaHook = {
     try {
       this.localStream = await acquireMedia(constraints);
     } catch (error) {
+      this.startingCall = false;
       this.pushEvent("media_error", error);
       return;
     }
@@ -128,6 +131,7 @@ const MediaHook = {
     this._setupDeviceChangeListener();
 
     this.pushEvent("media_call_started", { type });
+    this.startingCall = false;
   },
 
   _endCall(reason) {

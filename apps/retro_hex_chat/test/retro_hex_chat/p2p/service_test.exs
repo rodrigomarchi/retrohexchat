@@ -199,7 +199,7 @@ defmodule RetroHexChat.P2P.ServiceTest do
         %{
           owner_nickname: "alice_auth2",
           ignored_nickname: "bob_auth2",
-          ignore_type: "ignore",
+          ignore_type: "all",
           inserted_at: DateTime.utc_now(),
           updated_at: DateTime.utc_now()
         }

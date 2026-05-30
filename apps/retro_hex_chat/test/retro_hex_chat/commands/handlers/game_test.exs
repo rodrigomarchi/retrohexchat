@@ -2,6 +2,7 @@ defmodule RetroHexChat.Commands.Handlers.GameTest do
   use RetroHexChat.DataCase, async: false
 
   alias RetroHexChat.Commands.Handlers.Game
+  alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.RegisteredNick
 
   @moduletag :integration
@@ -45,6 +46,8 @@ defmodule RetroHexChat.Commands.Handlers.GameTest do
         })
         |> Repo.insert()
 
+      mark_online("gcmd_mario")
+
       context = %{@base_context | nickname: "gcmd_rod", identified: true}
       result = Game.execute(["gcmd_mario"], context)
 
@@ -83,6 +86,28 @@ defmodule RetroHexChat.Commands.Handlers.GameTest do
       assert {:error, msg} = Game.execute(["gcmd_unreg"], context)
       assert msg =~ "not registered"
     end
+
+    test "rejects registered offline target" do
+      {:ok, _creator} =
+        %RegisteredNick{}
+        |> RegisteredNick.registration_changeset(%{
+          nickname: "gcmd_off_creator",
+          password: "password123"
+        })
+        |> Repo.insert()
+
+      {:ok, _peer} =
+        %RegisteredNick{}
+        |> RegisteredNick.registration_changeset(%{
+          nickname: "gcmd_off_peer",
+          password: "password123"
+        })
+        |> Repo.insert()
+
+      context = %{@base_context | nickname: "gcmd_off_creator"}
+      assert {:error, msg} = Game.execute(["gcmd_off_peer"], context)
+      assert msg =~ "offline"
+    end
   end
 
   describe "help/0" do
@@ -105,5 +130,9 @@ defmodule RetroHexChat.Commands.Handlers.GameTest do
       assert syntax.command == "game"
       assert length(syntax.parameters) == 1
     end
+  end
+
+  defp mark_online(nickname) do
+    Tracker.track_user("presence:global", nickname, %{})
   end
 end

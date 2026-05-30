@@ -2,15 +2,15 @@
 
 Single source of truth for the browser-level Playwright suite.
 
-**Last reviewed:** 2026-05-29
+**Last reviewed:** 2026-05-30
 
 ## Current Coverage
 
-- **176 spec files** under `e2e/tests/`.
-- **299 Playwright `test()` cases**.
+- **188 spec files** under `e2e/tests/`.
+- **316 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 257 mapped flows, 256 done, 1 intentionally blocked.
+- **Chat extended coverage:** 269 mapped flows, 268 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -447,6 +447,23 @@ make ci
 | Y11 | Alias commands expand inside timer, perform reconnect, and autorespond trigger flows | `tests/chat-automation-composition.spec.ts` | P2 | done |
 | Y12 | Rapid nick change plus immediate channel message leaves no stale old nick tab, nicklist row, or attribution | `tests/chat-realtime-race-edges.spec.ts` | P2 | done |
 
+## Backlog Z - P2P, File, Call, Game, And Arcade
+
+| # | Flow | Spec file | Priority | Status |
+|---|------|-----------|----------|--------|
+| Z1 | P2P, call, sendfile, and game commands reject registered targets who are currently offline | `tests/chat-p2p-availability.spec.ts` | P1 | done |
+| Z2 | P2P invite ignores suppress target PM invite card, status notification, title flash, and message-only ignores still allow P2P invite delivery | `tests/chat-p2p-ignore.spec.ts` | P1 | done |
+| Z3 | Closing a pending P2P invite notifies both chats, closes the sender lobby, and leaves stale invite links in an ended state | `tests/chat-p2p-expiry-cancel.spec.ts` | P2 | done |
+| Z4 | Double-clicking P2P lobby Accept/Decline settles each action once without duplicate feedback or stale media state | `tests/chat-p2p-idempotency.spec.ts` | P1 | done |
+| Z5 | Closing one open P2P lobby closes that popup, updates the peer lobby to ended state, and preserves both main chat tabs | `tests/chat-p2p-session-lifecycle.spec.ts` | P1 | done |
+| Z6 | Denied microphone permission during `/call` shows actionable browser-permission guidance once and leaves PM chat usable | `tests/chat-p2p-call-permissions.spec.ts` | P1 | done |
+| Z7 | Video-call mute and camera toggles update local controls and remote muted/camera-off indicators | `tests/chat-p2p-call-controls.spec.ts` | P2 | done |
+| Z8 | File-transfer cancellation before receiver accept and after transfer start keeps both lobby panels visible with cancelled status | `tests/chat-p2p-file-cancel.spec.ts` | P1 | done |
+| Z9 | File-transfer validation rejects blocked extensions and oversized files locally without creating a receiver offer | `tests/chat-p2p-file-limits.spec.ts` | P1 | done |
+| Z10 | Game lobby leave and game-selection decline return both peers to the expected chat/lobby state without focus steal | `tests/chat-p2p-game-lifecycle.spec.ts` | P2 | done |
+| Z11 | Hex Pong peer canvas paints and changes after start, proving shared state frames arrive beyond the lobby shell | `tests/chat-p2p-game-state.spec.ts` | P2 | done |
+| Z12 | Solo arcade link opens the solo lobby, starts a playable external arcade window, returns to completed state, and leaves chat usable | `tests/chat-singleplayer-arcade.spec.ts` | P2 | done |
+
 ## Intentional Block
 
 | # | Reason |
@@ -459,6 +476,9 @@ make ci
 |-------------|--------|---------|
 | `pages/ConnectPage.ts` | done | Connect/register/auth flows and `uniqueNickname()` helper |
 | `pages/ChatPage.ts` | active | Chat shell locators and shared high-level actions |
+| `pages/P2PLobbyPage.ts` | active | P2P lobby, media, and file-transfer controls |
+| `pages/GameSessionPage.ts` | active | Shared game lobby/canvas lifecycle checks |
+| `pages/SoloArcadePage.ts` | active | Solo arcade lobby and external game-window lifecycle checks |
 
 ## Notable Product Fixes Found By E2E
 
@@ -518,3 +538,12 @@ make ci
 - Bot creation from the management dialog now reports changeset field errors and converts the displayed cooldown seconds to milliseconds.
 - Bot Management now renders enabled/disabled status from persisted bot state and lists capability names without crashing on capability maps.
 - Timers now capture their creation window, target that window when firing, and restore the user's active tab so delayed commands cannot steal focus.
+- P2P, call, sendfile, and game commands now reject registered targets who are offline before creating sessions or invite messages.
+- P2P and game invite handling now respects invite-specific ignores for PM invite cards, status notifications, and session creation while leaving message-only ignores scoped to channel messages.
+- P2P session close/expiry/failure notifications now originate from the session server and reach both participants' chat windows even if only one user opened the lobby.
+- P2P media permission failures now show actionable browser-permission guidance once instead of duplicating the same error in the lobby chat.
+- P2P video calls now render remote muted/camera-off indicators from the peer media state already broadcast by the session.
+- P2P file-transfer cancellation now preserves file context and renders `Cancelled` instead of mislabeling the transfer as failed.
+- P2P file-transfer validation errors now remain visible in the lobby and keep the file picker usable for a corrected file.
+- Autojoin and reconnect rejoin now use background channel joins so no-focus-steal does not reload the active chat and wipe command output.
+- Solo arcade sessions open external static game pages directly instead of embedding them in a local iframe blocked by the external frame-ancestors CSP.

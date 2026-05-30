@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.GameInvite do
           Phoenix.PubSub.broadcast(
             RetroHexChat.PubSub,
             "user:#{target}",
-            {:incoming_pm_notify, %{sender: session.nickname}}
+            {:incoming_pm_notify, %{sender: session.nickname, type: :invite}}
           )
 
           # Toast notification so receiver can Accept → push_navigate (same tab)

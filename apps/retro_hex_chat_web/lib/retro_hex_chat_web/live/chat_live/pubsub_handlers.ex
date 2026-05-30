@@ -11,6 +11,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   Attached as `attach_hook(:pubsub_handlers, :handle_info, ...)` in ChatLive.mount/3.
   """
 
+  alias RetroHexChat.Chat.IgnoreList
+
   alias __MODULE__.{ChannelState, Membership, Messages, Presence, ServerMessages}
 
   # ── Messages: channel messages, PMs, typing, notices ──────
@@ -170,15 +172,19 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     %{payload: %{token: token, from: from, session_type: session_type}} = msg
 
-    label =
-      case session_type do
-        "audio_call" -> "Audio call from #{from}"
-        "video_call" -> "Video call from #{from}"
-        "file_transfer" -> "File transfer from #{from}"
-        _ -> "P2P invite from #{from}"
-      end
+    if ignored_invite?(socket, from) do
+      {:halt, socket}
+    else
+      label =
+        case session_type do
+          "audio_call" -> "Audio call from #{from}"
+          "video_call" -> "Video call from #{from}"
+          "file_transfer" -> "File transfer from #{from}"
+          _ -> "P2P invite from #{from}"
+        end
 
-    {:halt, push_status_message(socket, "#{label} — /p2p/#{token}", :system)}
+      {:halt, push_status_message(socket, "#{label} — /p2p/#{token}", :system)}
+    end
   end
 
   # ── Games: invite notification ────────────────────────────
@@ -188,7 +194,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     %{payload: %{token: token, from: from}} = msg
 
-    {:halt, push_status_message(socket, "Game invite from #{from} — /game/#{token}", :system)}
+    if ignored_invite?(socket, from) do
+      {:halt, socket}
+    else
+      {:halt, push_status_message(socket, "Game invite from #{from} — /game/#{token}", :system)}
+    end
   end
 
   # ── P2P/Game: session ended ─────────────────────────────
@@ -285,6 +295,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info(_, socket), do: {:cont, socket}
 
   # ── Private helpers ─────────────────────────────────────
+
+  defp ignored_invite?(socket, from) do
+    IgnoreList.ignored?(socket.assigns.session.ignore_list, from, :invite)
+  end
 
   defp format_duration(secs) when is_integer(secs) and secs >= 3600 do
     h = div(secs, 3600)

@@ -44,10 +44,82 @@ export class GameSessionPage {
     await this.acceptButton.click();
   }
 
+  async declineGame(gameName: string) {
+    await expect(this.lobby).toContainText(`wants to play ${gameName}`, {
+      timeout: 10_000,
+    });
+    await this.declineButton.click();
+  }
+
+  async leave() {
+    await expect(this.leaveButton).toBeVisible();
+    await this.leaveButton.click();
+  }
+
   async expectGameCanvas(gameId: string) {
     await expect(this.canvas).toBeVisible({ timeout: 10_000 });
     await expect(this.canvas).toHaveAttribute('data-game-id', gameId);
     await expect(this.canvasSurface).toBeVisible();
+  }
+
+  async canvasFrameSignature(): Promise<string> {
+    await expect(this.canvasSurface).toBeVisible();
+
+    return this.canvasSurface.evaluate((node) => {
+      const canvas = node as HTMLCanvasElement;
+      const context = canvas.getContext('2d');
+      if (!context) {
+        return '0:0';
+      }
+
+      const { width, height } = canvas;
+      const pixels = context.getImageData(0, 0, width, height).data;
+      let painted = 0;
+      let hash = 2166136261;
+
+      for (let y = 0; y < height; y += 12) {
+        for (let x = 0; x < width; x += 12) {
+          const i = (y * width + x) * 4;
+          const r = pixels[i] || 0;
+          const g = pixels[i + 1] || 0;
+          const b = pixels[i + 2] || 0;
+          const a = pixels[i + 3] || 0;
+
+          if (a > 0 && (r > 0 || g > 0 || b > 0)) {
+            painted += 1;
+          }
+
+          hash ^= r;
+          hash = Math.imul(hash, 16777619);
+          hash ^= g;
+          hash = Math.imul(hash, 16777619);
+          hash ^= b;
+          hash = Math.imul(hash, 16777619);
+          hash ^= a;
+          hash = Math.imul(hash, 16777619);
+        }
+      }
+
+      return `${painted}:${hash >>> 0}`;
+    });
+  }
+
+  async expectCanvasPainted() {
+    await expect
+      .poll(
+        async () => {
+          const signature = await this.canvasFrameSignature();
+          return Number(signature.split(':')[0]);
+        },
+        { timeout: 15_000 },
+      )
+      .toBeGreaterThan(0);
+  }
+
+  async expectCanvasFrameChanged(previousSignature: string) {
+    await expect
+      .poll(() => this.canvasFrameSignature(), { timeout: 15_000 })
+      .not.toBe(previousSignature);
   }
 }
 

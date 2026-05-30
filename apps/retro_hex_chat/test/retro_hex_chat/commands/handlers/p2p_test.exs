@@ -3,6 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
 
   alias RetroHexChat.Commands.Handlers.P2p
   alias RetroHexChat.P2P.{RateLimiter, RateLimitTable}
+  alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.RegisteredNick
 
   @moduletag :integration
@@ -47,6 +48,8 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
         })
         |> Repo.insert()
 
+      mark_online("mario")
+
       context = %{@base_context | nickname: "alice", identified: true}
       result = P2p.execute(["mario"], context)
 
@@ -87,6 +90,28 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
       assert {:error, msg} = P2p.execute(["nobody"], context)
       assert msg =~ "not registered"
     end
+
+    test "rejects registered offline target" do
+      {:ok, _creator} =
+        %RegisteredNick{}
+        |> RegisteredNick.registration_changeset(%{
+          nickname: "p2p_off_creator",
+          password: "password123"
+        })
+        |> Repo.insert()
+
+      {:ok, _peer} =
+        %RegisteredNick{}
+        |> RegisteredNick.registration_changeset(%{
+          nickname: "p2p_off_peer",
+          password: "password123"
+        })
+        |> Repo.insert()
+
+      context = %{@base_context | nickname: "p2p_off_creator"}
+      assert {:error, msg} = P2p.execute(["p2p_off_peer"], context)
+      assert msg =~ "offline"
+    end
   end
 
   describe "rate limiting" do
@@ -109,6 +134,8 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
               password: "password123"
             })
             |> Repo.insert()
+
+          mark_online(peer.nickname)
 
           peer
         end
@@ -144,5 +171,9 @@ defmodule RetroHexChat.Commands.Handlers.P2pTest do
     test "returns :user" do
       assert P2p.category() == :user
     end
+  end
+
+  defp mark_online(nickname) do
+    Tracker.track_user("presence:global", nickname, %{})
   end
 end

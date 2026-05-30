@@ -36,6 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
 
   attr :on_cancel, :any, default: nil, doc: "Cancel transfer callback"
   attr :on_accept, :any, default: nil, doc: "Accept incoming transfer callback"
+  attr :cancelled_by, :string, default: nil, doc: "Nickname that cancelled the transfer"
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -67,9 +68,26 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
       <%!-- Stats row --%>
       <div class="flex items-center gap-retro-8 text-muted-foreground">
         <span :if={@state in ~w(transferring paused resuming)}>{@progress}%</span>
-        <span :if={@state == "completed"} class="text-success font-bold">Complete</span>
         <span
-          :if={@state in ~w(failed rejected cancelled validation_error)}
+          :if={@state == "completed"}
+          data-testid="file-transfer-status"
+          class="text-success font-bold"
+        >
+          Complete
+        </span>
+        <span :if={@state == "cancelled"} data-testid="file-transfer-status" class="font-bold">
+          {if @cancelled_by, do: "Cancelled by #{@cancelled_by}", else: "Cancelled"}
+        </span>
+        <span
+          :if={@state == "rejected"}
+          data-testid="file-transfer-status"
+          class="text-error font-bold"
+        >
+          Rejected
+        </span>
+        <span
+          :if={@state in ~w(failed validation_error)}
+          data-testid="file-transfer-status"
           class="text-error font-bold"
         >
           Failed

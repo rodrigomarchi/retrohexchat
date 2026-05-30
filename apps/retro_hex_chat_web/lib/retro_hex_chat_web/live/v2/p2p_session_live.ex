@@ -106,8 +106,6 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
 
   def handle_info(%{event: "p2p_status_changed", payload: %{status: status}}, socket) do
     if Session.terminal?(status) do
-      notify_session_ended(socket, status)
-
       {:noreply,
        socket
        |> assign(session_closed: true)
@@ -174,14 +172,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
         socket
       end
 
-    if response[:accepted] && response[:responder_id] != socket.assigns.user_id do
-      {:noreply,
-       socket
-       |> maybe_init_call()
-       |> maybe_init_file_transfer()}
-    else
-      {:noreply, socket}
-    end
+    {:noreply, socket}
   end
 
   def handle_info(%{event: "p2p_action_expired"}, socket) do
@@ -204,8 +195,6 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
       # Already handled locally (we initiated the close)
       {:noreply, socket}
     else
-      notify_session_ended(socket, reason)
-
       duration_secs = compute_session_duration(socket)
 
       {:noreply,
@@ -585,10 +574,11 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   end
 
   def handle_event("ft_cancelled", params, socket) do
-    ft = %{
-      status: "cancelled",
-      cancelled_by: params["cancelled_by"]
-    }
+    ft =
+      Map.merge(socket.assigns.file_transfer || %{}, %{
+        status: "cancelled",
+        cancelled_by: params["cancelled_by"]
+      })
 
     {:noreply, assign(socket, file_transfer: ft)}
   end
@@ -682,21 +672,27 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
      |> push_event("p2p_close_tab", %{})}
   end
 
-  def handle_event("media_error", %{"code" => _code, "message" => message}, socket) do
+  def handle_event("media_error", %{"code" => code, "message" => message}, socket) do
     Logger.warning("P2P media error: #{message}, token=#{socket.assigns.token}")
 
-    msg = %{
-      id: System.unique_integer([:positive]),
-      sender_nick: "System",
-      content: message,
-      type: "system",
-      timestamp: DateTime.utc_now()
-    }
+    error_key = {code, message}
 
-    {:noreply,
-     socket
-     |> assign(call: nil)
-     |> assign(messages: socket.assigns.messages ++ [msg])}
+    if socket.assigns[:last_media_error] == error_key do
+      {:noreply, assign(socket, call: nil)}
+    else
+      msg = %{
+        id: System.unique_integer([:positive]),
+        sender_nick: "System",
+        content: message,
+        type: "system",
+        timestamp: DateTime.utc_now()
+      }
+
+      {:noreply,
+       socket
+       |> assign(call: nil, last_media_error: error_key)
+       |> assign(messages: socket.assigns.messages ++ [msg])}
+    end
   end
 
   def handle_event("media_mute_changed", %{"muted" => muted}, socket) do
@@ -810,8 +806,6 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
          !socket.assigns[:session_closed] do
       token = socket.assigns.token
       user_id = socket.assigns[:user_id]
-
-      notify_session_ended(socket, "disconnected")
 
       if user_id do
         try do
@@ -1088,38 +1082,5 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
         |> UserPreference.changeset(%{display_settings: updated})
         |> RetroHexChat.Repo.update()
     end
-  end
-
-  defp notify_session_ended(socket, reason) do
-    nickname = socket.assigns[:nickname]
-    peer_nick = socket.assigns[:peer_nick]
-    token = socket.assigns[:token]
-    session = socket.assigns[:session]
-
-    if nickname && session do
-      duration_secs =
-        case RetroHexChat.P2P.get_session(token) do
-          {:ok, fresh} -> fresh.duration_seconds
-          _ -> nil
-        end
-
-      duration_secs = duration_secs || DateTime.diff(DateTime.utc_now(), session.inserted_at)
-
-      Phoenix.PubSub.broadcast(
-        @pubsub,
-        "user:#{nickname}",
-        %{
-          event: "p2p_session_ended",
-          payload: %{
-            peer_nick: peer_nick || "unknown",
-            session_type: session.session_type,
-            reason: reason,
-            duration_seconds: duration_secs
-          }
-        }
-      )
-    end
-  rescue
-    _ -> :ok
   end
 end

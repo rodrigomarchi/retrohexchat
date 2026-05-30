@@ -187,18 +187,18 @@ green catalog in `TEST_CATALOG.md`.
 
 | # | Scenario | Suggested spec file | Priority | Status |
 |---|----------|---------------------|----------|--------|
-| Z1 | P2P/call/sendfile/game to offline but registered user shows clear offline/unavailable error | `tests/chat-p2p-availability.spec.ts` | P1 | todo |
-| Z2 | P2P target ignores sender and does not receive invite card or notification | `tests/chat-p2p-ignore.spec.ts` | P1 | todo |
-| Z3 | P2P invite expires or is cancelled and both users' lobby/chat state clears | `tests/chat-p2p-expiry-cancel.spec.ts` | P2 | investigate |
-| Z4 | Double-clicking accept/decline on invite cards is idempotent and does not create duplicate sessions | `tests/chat-p2p-idempotency.spec.ts` | P1 | todo |
-| Z5 | Closing one side of a P2P lobby/session updates the other side's state and does not steal chat focus | `tests/chat-p2p-session-lifecycle.spec.ts` | P1 | todo |
-| Z6 | Media permission denied path for `/call` shows actionable error and leaves chat usable | `tests/chat-p2p-call-permissions.spec.ts` | P1 | todo |
-| Z7 | Audio/video mute toggles in call session update local UI and remote indicators if present | `tests/chat-p2p-call-controls.spec.ts` | P2 | investigate |
-| Z8 | File transfer cancel before upload and cancel during upload cleanly update both peers | `tests/chat-p2p-file-cancel.spec.ts` | P1 | todo |
-| Z9 | File transfer rejects oversized or disallowed file according to product limits | `tests/chat-p2p-file-limits.spec.ts` | P1 | investigate |
-| Z10 | Game invite decline and game selection cancellation return both users to chat/lobby state cleanly | `tests/chat-p2p-game-lifecycle.spec.ts` | P2 | todo |
-| Z11 | Shared game shell exchanges at least one state update between peers, beyond simply opening the lobby | `tests/chat-p2p-game-state.spec.ts` | P2 | investigate |
-| Z12 | Solo arcade link opens playable session; canvas/frame is nonblank and can return to chat | `tests/chat-singleplayer-arcade.spec.ts` | P2 | investigate |
+| Z1 | P2P/call/sendfile/game to offline but registered user shows clear offline/unavailable error | `tests/chat-p2p-availability.spec.ts` | P1 | done |
+| Z2 | P2P target ignores sender and does not receive invite card or notification | `tests/chat-p2p-ignore.spec.ts` | P1 | done |
+| Z3 | P2P invite expires or is cancelled and both users' lobby/chat state clears | `tests/chat-p2p-expiry-cancel.spec.ts` | P2 | done |
+| Z4 | Double-clicking P2P lobby accept/decline actions is idempotent and does not create duplicate state | `tests/chat-p2p-idempotency.spec.ts` | P1 | done |
+| Z5 | Closing one side of a P2P lobby/session updates the other side's state and does not steal chat focus | `tests/chat-p2p-session-lifecycle.spec.ts` | P1 | done |
+| Z6 | Media permission denied path for `/call` shows actionable error and leaves chat usable | `tests/chat-p2p-call-permissions.spec.ts` | P1 | done |
+| Z7 | Audio/video mute toggles in call session update local UI and remote indicators if present | `tests/chat-p2p-call-controls.spec.ts` | P2 | done |
+| Z8 | File transfer cancel before upload and cancel during upload cleanly update both peers | `tests/chat-p2p-file-cancel.spec.ts` | P1 | done |
+| Z9 | File transfer rejects oversized or disallowed file according to product limits | `tests/chat-p2p-file-limits.spec.ts` | P1 | done |
+| Z10 | Game invite decline and game selection cancellation return both users to chat/lobby state cleanly | `tests/chat-p2p-game-lifecycle.spec.ts` | P2 | done |
+| Z11 | Shared game shell exchanges at least one state update between peers, beyond simply opening the lobby | `tests/chat-p2p-game-state.spec.ts` | P2 | done |
+| Z12 | Solo arcade link opens playable session; canvas/frame is nonblank and can return to chat | `tests/chat-singleplayer-arcade.spec.ts` | P2 | done |
 
 ## AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
 

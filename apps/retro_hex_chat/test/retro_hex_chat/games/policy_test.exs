@@ -35,12 +35,12 @@ defmodule RetroHexChat.Games.PolicyTest do
     session
   end
 
-  defp add_ignore(owner_nick, ignored_nick) do
+  defp add_ignore(owner_nick, ignored_nick, ignore_type \\ "all") do
     Repo.insert_all("ignore_list_entries", [
       %{
         owner_nickname: owner_nick,
         ignored_nickname: ignored_nick,
-        ignore_type: "all",
+        ignore_type: ignore_type,
         inserted_at: DateTime.utc_now(),
         updated_at: DateTime.utc_now()
       }
@@ -110,14 +110,23 @@ defmodule RetroHexChat.Games.PolicyTest do
                Policy.can_create?(alice.id, bob.id)
     end
 
-    test "rejects when peer has blocked creator" do
+    test "rejects when peer has ignored creator invites" do
       alice = create_nick("gpol_alice8")
       bob = create_nick("gpol_bob8")
 
-      add_ignore("gpol_bob8", "gpol_alice8")
+      add_ignore("gpol_bob8", "gpol_alice8", "invites")
 
       assert {:error, "User not available"} =
                Policy.can_create?(alice.id, bob.id)
+    end
+
+    test "allows when peer has ignored creator channel messages only" do
+      alice = create_nick("gpol_alice12")
+      bob = create_nick("gpol_bob12")
+
+      add_ignore("gpol_bob12", "gpol_alice12", "messages")
+
+      assert :ok = Policy.can_create?(alice.id, bob.id)
     end
   end
 

@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   @spec visible_private_messages([map()], map()) :: [map()]
   def visible_private_messages(messages, ignore_list) do
     Enum.reject(messages, fn msg ->
-      ignored_author?(ignore_list, private_sender(msg), :pm)
+      ignored_author?(ignore_list, private_sender(msg), private_message_type(msg))
     end)
   end
 
@@ -138,6 +138,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   defp channel_author(msg), do: Map.get(msg, :author_nickname) || Map.get(msg, :author)
 
   defp private_sender(msg), do: Map.get(msg, :sender_nickname) || Map.get(msg, :sender)
+
+  defp private_message_type(%{type: type}), do: normalize_private_type(type)
+  defp private_message_type(_msg), do: :pm
+
+  defp normalize_private_type(:p2p_invite), do: :invite
+  defp normalize_private_type("p2p_invite"), do: :invite
+  defp normalize_private_type(_type), do: :pm
 
   defp channel_message_type(%{type: type}) when is_atom(type), do: normalize_channel_type(type)
   defp channel_message_type(%{type: type}) when is_binary(type), do: normalize_channel_type(type)

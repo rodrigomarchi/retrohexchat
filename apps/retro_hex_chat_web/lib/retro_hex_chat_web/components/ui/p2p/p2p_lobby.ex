@@ -187,6 +187,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             </video>
             <div
               :if={@call[:peer_camera_off]}
+              data-testid="media-peer-camera-off-indicator"
               class="w-full aspect-video bg-black flex items-center justify-center"
             >
               <span class="text-white text-xs">Camera off</span>
@@ -202,6 +203,13 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
           </div>
           <%!-- Audio element (always present for audio streams) --%>
           <audio id="remote-audio" autoplay></audio>
+          <div
+            :if={@call[:peer_muted]}
+            data-testid="media-peer-muted-indicator"
+            class="px-2 pt-2 text-center text-xs font-bold"
+          >
+            Peer muted
+          </div>
           <%!-- Media controls toolbar --%>
           <.toolbar class="gap-1 p-2 justify-center">
             <.toolbar_button
@@ -331,10 +339,20 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
           <input type="file" id="p2p-file-input" class="file-transfer-input hidden" />
           <%!-- File selection (ready state) --%>
           <div
-            :if={@file_transfer[:status] == "ready" && !@file_transfer[:file_name]}
+            :if={
+              @file_transfer[:status] in ["ready", "validation_error"] &&
+                !@file_transfer[:file_name]
+            }
             class="shadow-retro-field bg-white p-4 text-center text-xs"
           >
             <Icons.icon_file_send class="w-6 h-6 mx-auto mb-2" />
+            <p
+              :if={@file_transfer[:validation_error]}
+              data-testid="file-transfer-validation-error"
+              class="text-error font-bold mb-2"
+            >
+              {@file_transfer[:validation_error]}
+            </p>
             <p class="mb-2">Drag a file here or click to browse</p>
             <p class="text-muted-foreground mb-2">
               Max: {Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500)} MB
@@ -355,6 +373,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             formatted_size={@file_transfer[:formatted_size]}
             state={@file_transfer[:status] || "ready"}
             direction={ft_direction(@file_transfer, @nickname)}
+            cancelled_by={@file_transfer[:cancelled_by]}
             on_cancel="ft_cancel"
             on_accept="ft_accept_offer"
           />

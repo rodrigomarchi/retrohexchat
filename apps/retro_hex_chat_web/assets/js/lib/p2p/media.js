@@ -50,7 +50,8 @@ export function categorizeMediaError(error) {
     case "NotAllowedError":
       return {
         code: "permission_denied",
-        message: "Microphone permission denied. The call cannot continue.",
+        message:
+          "Microphone permission denied. Enable microphone permission in your browser and try again.",
       };
     case "NotReadableError":
       return {

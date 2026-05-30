@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.V2.SoloSessionLive do
     game = resolve_game(game_id)
     started_at = Map.get(payload, :started_at)
 
-    game_url = "/arcade/#{socket.assigns.token}/#{game_id}"
+    game_url = Arcade.Catalog.game_url(game)
 
     socket =
       socket

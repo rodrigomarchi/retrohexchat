@@ -75,8 +75,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   def handle_info(%{event: "new_pm", payload: payload}, socket) do
     session = socket.assigns.session
+    msg_type = private_ignore_type(payload.type)
 
-    if IgnoreList.ignored?(session.ignore_list, payload.sender, :pm) do
+    if IgnoreList.ignored?(session.ignore_list, payload.sender, msg_type) do
       {:halt, socket}
     else
       socket = check_pm_duplicate(socket, payload)
@@ -209,10 +210,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   # ── Incoming PM notification (auto-open + away auto-reply) ──
 
-  def handle_info({:incoming_pm_notify, %{sender: sender}}, socket) do
+  def handle_info({:incoming_pm_notify, payload}, socket) do
     session = socket.assigns.session
+    sender = payload.sender
+    msg_type = private_ignore_type(Map.get(payload, :type, :pm))
 
-    if IgnoreList.ignored?(session.ignore_list, sender, :pm) do
+    if IgnoreList.ignored?(session.ignore_list, sender, msg_type) do
       {:halt, socket}
     else
       newly_opened? = sender not in session.pm_conversations
@@ -234,6 +237,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     notice = notice_message(sender, content)
     stream_insert(socket, :chat_messages, notice)
   end
+
+  defp private_ignore_type(:p2p_invite), do: :invite
+  defp private_ignore_type("p2p_invite"), do: :invite
+  defp private_ignore_type(:invite), do: :invite
+  defp private_ignore_type(_type), do: :pm
 
   defp maybe_push_highlight_tip(socket, %{highlighted: true}),
     do: push_event(socket, "tip_trigger", %{tip: "first_highlight"})

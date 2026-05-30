@@ -3,6 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.RegisteredNick
 
   @impl true
@@ -70,6 +71,7 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
     with :ok <- validate_identified(context),
          :ok <- validate_not_self(target, context),
          {:ok, target_id} <- resolve_registered_nick(target),
+         :ok <- validate_target_online(target),
          {:ok, creator_id} <- resolve_registered_nick(context.nickname),
          {:ok, result} <- create_session(creator_id, target_id, session_type) do
       {:ok, :ui_action, :p2p_invite,
@@ -92,6 +94,16 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
     case RetroHexChat.Repo.get_by(RegisteredNick, nickname: nickname) do
       nil -> {:error, "User '#{nickname}' is not registered."}
       nick -> {:ok, nick.id}
+    end
+  end
+
+  @doc false
+  @spec validate_target_online(String.t()) :: :ok | {:error, String.t()}
+  def validate_target_online(target) do
+    if Tracker.online?("presence:global", target) do
+      :ok
+    else
+      {:error, "User '#{target}' is offline."}
     end
   end
 

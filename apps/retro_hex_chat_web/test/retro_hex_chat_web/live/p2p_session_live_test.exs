@@ -254,6 +254,37 @@ defmodule RetroHexChatWeb.V2.P2PSessionLiveTest do
 
       refute has_element?(view, ~s([data-testid="file-transfer-hook"]))
     end
+
+    test "cancelled file transfer keeps file context and renders cancelled status",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      render_hook(view, "ft_offer_sent", %{
+        "file_name" => "cancel-me.txt",
+        "file_size" => 12,
+        "formatted_size" => "12 B"
+      })
+
+      html = render_hook(view, "ft_cancelled", %{"cancelled_by" => creator.nickname})
+
+      assert html =~ "cancel-me.txt"
+      assert html =~ "Cancelled by #{creator.nickname}"
+      refute html =~ "Failed"
+    end
+
+    test "file validation error stays visible and keeps file picker available",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      html =
+        render_hook(view, "ft_validation_error", %{
+          "error" => "Tipo de arquivo bloqueado: .exe"
+        })
+
+      assert html =~ ~s(data-testid="file-transfer-validation-error")
+      assert html =~ "Tipo de arquivo bloqueado: .exe"
+      assert html =~ "Browse Files"
+    end
   end
 
   # -- Helpers --

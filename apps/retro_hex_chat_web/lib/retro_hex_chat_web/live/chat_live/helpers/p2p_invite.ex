@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.P2pInvite do
         Phoenix.PubSub.broadcast(
           RetroHexChat.PubSub,
           "user:#{target}",
-          {:incoming_pm_notify, %{sender: session.nickname}}
+          {:incoming_pm_notify, %{sender: session.nickname, type: :invite}}
         )
 
       {:error, _} ->

@@ -2,6 +2,7 @@ defmodule RetroHexChat.Commands.Handlers.CallTest do
   use RetroHexChat.DataCase, async: false
 
   alias RetroHexChat.Commands.Handlers.Call
+  alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.RegisteredNick
 
   @moduletag :integration
@@ -45,6 +46,8 @@ defmodule RetroHexChat.Commands.Handlers.CallTest do
         })
         |> Repo.insert()
 
+      mark_online("call_pe")
+
       context = %{@base_context | nickname: "call_cr"}
       result = Call.execute(["call_pe"], context)
 
@@ -71,5 +74,9 @@ defmodule RetroHexChat.Commands.Handlers.CallTest do
     test "returns :user" do
       assert Call.category() == :user
     end
+  end
+
+  defp mark_online(nickname) do
+    Tracker.track_user("presence:global", nickname, %{})
   end
 end

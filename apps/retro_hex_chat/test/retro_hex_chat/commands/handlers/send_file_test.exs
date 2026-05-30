@@ -2,6 +2,7 @@ defmodule RetroHexChat.Commands.Handlers.SendFileTest do
   use RetroHexChat.DataCase, async: false
 
   alias RetroHexChat.Commands.Handlers.SendFile
+  alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.RegisteredNick
 
   @moduletag :integration
@@ -45,6 +46,8 @@ defmodule RetroHexChat.Commands.Handlers.SendFileTest do
         })
         |> Repo.insert()
 
+      mark_online("sf_pe")
+
       context = %{@base_context | nickname: "sf_cr"}
       result = SendFile.execute(["sf_pe"], context)
 
@@ -71,5 +74,9 @@ defmodule RetroHexChat.Commands.Handlers.SendFileTest do
     test "returns :user" do
       assert SendFile.category() == :user
     end
+  end
+
+  defp mark_online(nickname) do
+    Tracker.track_user("presence:global", nickname, %{})
   end
 end
