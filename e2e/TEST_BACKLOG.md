@@ -204,14 +204,14 @@ green catalog in `TEST_CATALOG.md`.
 
 | # | Scenario | Suggested spec file | Priority | Status |
 |---|----------|---------------------|----------|--------|
-| AA1 | Browser offline/online during active PM preserves PM draft, active tab, unread state, and typing state | `tests/chat-reconnect-window-state.spec.ts` | P1 | todo |
-| AA2 | Browser offline/online while a modal dialog has unsaved changes preserves or discards draft according to product decision | `tests/chat-reconnect-dialog-state.spec.ts` | P2 | investigate |
-| AA3 | Reconnect during P2P invite/lobby/session produces coherent state for both peers | `tests/chat-reconnect-p2p.spec.ts` | P2 | investigate |
-| AA4 | Multi-tab same-user takeover while source has unsaved draft/dialog closes source cleanly and preserves new context session | `tests/multi-tab-takeover-edges.spec.ts` | P1 | todo |
-| AA5 | Admin kick/ban during reconnect or while user is offline produces correct reconnect denial/allow behavior | `tests/chat-admin-reconnect-edges.spec.ts` | P1 | todo |
-| AA6 | Registration closed blocks new registration but never blocks existing registered user authentication | `tests/admin-registration-closed-edges.spec.ts` | P1 | todo |
-| AA7 | Registration closed plus nickname takeover does not bypass auth or registration policy | `tests/admin-registration-closed-edges.spec.ts` | P2 | todo |
-| AA8 | Local browser storage settings such as mute/sound survive reload but do not leak across isolated browser contexts | `tests/chat-local-storage-isolation.spec.ts` | P2 | todo |
+| AA1 | Browser offline/online during active PM preserves PM draft, active tab, unread state, and typing state | `tests/chat-reconnect-window-state.spec.ts` | P1 | done |
+| AA2 | Browser offline/online while a modal dialog has unsaved changes preserves or discards draft according to product decision | `tests/chat-reconnect-dialog-state.spec.ts` | P2 | done |
+| AA3 | Reconnect during P2P invite/lobby/session produces coherent state for both peers | `tests/chat-reconnect-p2p.spec.ts` | P2 | done |
+| AA4 | Multi-tab same-user takeover while source has unsaved draft/dialog closes source cleanly and preserves new context session | `tests/multi-tab-takeover-edges.spec.ts` | P1 | done |
+| AA5 | Admin kick/ban during reconnect or while user is offline produces correct reconnect denial/allow behavior | `tests/chat-admin-reconnect-edges.spec.ts` | P1 | done |
+| AA6 | Registration closed blocks new registration but never blocks existing registered user authentication | `tests/admin-registration-closed-edges.spec.ts` | P1 | done |
+| AA7 | Registration closed plus nickname takeover does not bypass auth or registration policy | `tests/admin-registration-closed-edges.spec.ts` | P2 | done |
+| AA8 | Local browser storage settings such as mute/sound survive reload but do not leak across isolated browser contexts | `tests/chat-local-storage-isolation.spec.ts` | P2 | done |
 | AA9 | Confirmed `/admin nuke --confirm` remains blocked until disposable isolated profile exists | `tests/chat-admin-nuke.spec.ts` | P2 | block |
 
 ## Implementation Order

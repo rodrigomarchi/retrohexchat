@@ -11,8 +11,11 @@ export class P2PLobbyPage {
   readonly fileTransferStatus: Locator;
   readonly fileTransferValidationError: Locator;
   readonly mediaCall: Locator;
+  readonly lobbyChatInput: Locator;
+  readonly lobbyChatSendButton: Locator;
   readonly audioCallButton: Locator;
   readonly videoCallButton: Locator;
+  readonly sendFileButton: Locator;
   readonly muteButton: Locator;
   readonly cameraButton: Locator;
   readonly peerMutedIndicator: Locator;
@@ -35,8 +38,11 @@ export class P2PLobbyPage {
       'file-transfer-validation-error',
     );
     this.mediaCall = page.getByTestId('media-call');
+    this.lobbyChatInput = this.root.getByPlaceholder('Type a message...');
+    this.lobbyChatSendButton = this.root.getByRole('button', { name: 'Send' });
     this.audioCallButton = page.getByRole('button', { name: 'Audio Call' });
     this.videoCallButton = page.getByRole('button', { name: 'Video Call' });
+    this.sendFileButton = page.getByRole('button', { name: 'Send File' });
     this.muteButton = page.getByTestId('media-controls-mute');
     this.cameraButton = page.getByTestId('media-controls-camera');
     this.peerMutedIndicator = page.getByTestId('media-peer-muted-indicator');
@@ -54,6 +60,49 @@ export class P2PLobbyPage {
   async waitUntilOpen() {
     await expect(this.page).toHaveURL(/\/p2p\/[A-Za-z0-9_-]+$/);
     await expect(this.root).toBeVisible();
+  }
+
+  async waitUntilLiveViewConnected() {
+    await expect
+      .poll(
+        () =>
+          this.page.evaluate(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            () => !!(window as any).liveSocket?.isConnected?.(),
+          ),
+        { timeout: 15_000 },
+      )
+      .toBe(true);
+  }
+
+  async waitUntilBrowserOffline() {
+    await expect
+      .poll(
+        () => this.page.evaluate(() => navigator.onLine),
+        { timeout: 5_000 },
+      )
+      .toBe(false);
+  }
+
+  async waitUntilBrowserOnline() {
+    await expect
+      .poll(
+        () => this.page.evaluate(() => navigator.onLine),
+        { timeout: 5_000 },
+      )
+      .toBe(true);
+  }
+
+  async sendLobbyMessage(text: string) {
+    await expect(this.lobbyChatInput).toBeEnabled();
+    await this.lobbyChatInput.fill(text);
+    await this.lobbyChatInput.press('Enter');
+  }
+
+  async expectLobbyMessage(text: string) {
+    await expect(this.root.getByText(text, { exact: false }).first()).toBeVisible({
+      timeout: 10_000,
+    });
   }
 
   actionRequest(actionType: string): Locator {

@@ -6,11 +6,11 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **188 spec files** under `e2e/tests/`.
-- **316 Playwright `test()` cases**.
+- **195 spec files** under `e2e/tests/`.
+- **325 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 269 mapped flows, 268 done, 1 intentionally blocked.
+- **Chat extended coverage:** 277 mapped flows, 276 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -464,6 +464,19 @@ make ci
 | Z11 | Hex Pong peer canvas paints and changes after start, proving shared state frames arrive beyond the lobby shell | `tests/chat-p2p-game-state.spec.ts` | P2 | done |
 | Z12 | Solo arcade link opens the solo lobby, starts a playable external arcade window, returns to completed state, and leaves chat usable | `tests/chat-singleplayer-arcade.spec.ts` | P2 | done |
 
+## Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
+
+| # | Flow | Spec file | Priority | Status |
+|---|------|-----------|----------|--------|
+| AA1 | Browser offline/online during an active PM preserves the PM draft, selected PM tab, existing unread PM badge, and typing indicator state | `tests/chat-reconnect-window-state.spec.ts` | P1 | done |
+| AA2 | Browser offline/online with an unsaved Alias Editor draft preserves the dialog inputs and can save/run the alias after reconnect | `tests/chat-reconnect-dialog-state.spec.ts` | P2 | done |
+| AA3 | Browser offline/online while a P2P lobby is open keeps both peers usable, preserves the invite session, and can transition into file transfer | `tests/chat-reconnect-p2p.spec.ts` | P2 | done |
+| AA4 | Same-nick multi-context takeover redirects the source with unsaved draft/dialog state and leaves the new chat session usable without inherited local state | `tests/multi-tab-takeover-edges.spec.ts` | P1 | done |
+| AA5 | Admin kick while a target browser is offline redirects on reconnect but allows later login, while admin ban blocks reconnect until unban | `tests/chat-admin-reconnect-edges.spec.ts` | P1 | done |
+| AA6 | Closed registration blocks brand-new nick registration while existing registered users can still authenticate | `tests/admin-registration-closed-edges.spec.ts` | P1 | done |
+| AA7 | Closed registration keeps same-nick takeover password-gated: wrong password does not displace the source, correct password performs normal takeover | `tests/admin-registration-closed-edges.spec.ts` | P2 | done |
+| AA8 | Mute state stored in browser localStorage survives reload in the same context, suppresses sound preview, and does not leak to an isolated browser context | `tests/chat-local-storage-isolation.spec.ts` | P2 | done |
+
 ## Intentional Block
 
 | # | Reason |
@@ -547,3 +560,4 @@ make ci
 - P2P file-transfer validation errors now remain visible in the lobby and keep the file picker usable for a corrected file.
 - Autojoin and reconnect rejoin now use background channel joins so no-focus-steal does not reload the active chat and wipe command output.
 - Solo arcade sessions open external static game pages directly instead of embedding them in a local iframe blocked by the external frame-ancestors CSP.
+- Same-nick takeover now waits for the previous LiveView to finish channel cleanup and skips duplicate terminate cleanup, preventing the old session from removing the new session's `#lobby` membership.

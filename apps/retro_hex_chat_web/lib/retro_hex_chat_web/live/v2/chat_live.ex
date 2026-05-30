@@ -101,7 +101,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
     UnreadTracker
   }
 
-  alias RetroHexChat.Presence.{NotifyList, WhowasCache}
+  alias RetroHexChat.Presence.{NotifyList, Tracker, WhowasCache}
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.Timezone
   alias RetroHexChatWeb.V2.V2Helpers
@@ -137,11 +137,21 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   end
 
   defp mount_connected_chat(params, http_session, socket, session, nickname) do
+    default_channel = Application.get_env(:retro_hex_chat, :default_channel, "#lobby")
+    takeover_expected? = takeover_expected?(default_channel, nickname)
+    takeover_ref = make_ref()
+
     Phoenix.PubSub.broadcast(
       RetroHexChat.PubSub,
       "user:#{nickname}",
-      {:force_disconnect, %{reason: "Session ended — logged in from another window"}}
+      {:force_disconnect,
+       %{
+         reason: "Session ended — logged in from another window",
+         takeover_ack: {self(), takeover_ref}
+       }}
     )
+
+    if takeover_expected?, do: wait_for_takeover_cleanup(takeover_ref)
 
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "presence:global")
@@ -168,10 +178,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
     |> attach_all_hooks()
     |> assign_defaults(session)
     |> assign(timezone: timezone, client_info: client_info)
-    |> ChatLive.Helpers.join_channel(
-      Application.get_env(:retro_hex_chat, :default_channel, "#lobby"),
-      session
-    )
+    |> ChatLive.Helpers.join_channel(default_channel, session)
     |> ChatLive.Helpers.maybe_join_channel(join_channel)
     |> maybe_broadcast_nick_changed(previous_nickname, nickname)
     |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, pre_identified)
@@ -182,6 +189,36 @@ defmodule RetroHexChatWeb.V2.ChatLive do
     |> show_chanserv_announcement()
     |> show_nickserv_announcement()
     |> push_initial_preferences()
+  end
+
+  defp takeover_expected?(default_channel, nickname) do
+    Tracker.online?("presence:global", nickname) or channel_has_member?(default_channel, nickname)
+  end
+
+  defp channel_has_member?(channel_name, nickname) do
+    target = String.downcase(nickname)
+
+    case Server.get_state(channel_name) do
+      {:ok, state} ->
+        Enum.any?(state.members, fn {member, _role} ->
+          String.downcase(member) == target
+        end)
+
+      {:error, _} ->
+        false
+    end
+  catch
+    :exit, _reason -> false
+  end
+
+  defp wait_for_takeover_cleanup(ref) do
+    receive do
+      {:force_disconnect_ack, ^ref} -> :ok
+    after
+      1_000 ->
+        Logger.warning("Timed out waiting for previous chat session takeover cleanup")
+        :ok
+    end
   end
 
   defp mount_disconnected_chat(http_session, socket, session) do
@@ -214,7 +251,9 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       ChatLive.Helpers.safe_untrack_user("presence:global", session.nickname)
       WhowasCache.record(session.nickname, session.channels, quit_reason)
 
-      ChatLive.Helpers.cleanup_channels(session, quit_reason)
+      unless socket.assigns[:skip_channel_cleanup] do
+        ChatLive.Helpers.cleanup_channels(session, quit_reason)
+      end
     end
 
     :ok

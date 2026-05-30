@@ -189,11 +189,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
   # ── Force disconnect/rename ───────────────────────────────
 
-  def handle_info({:force_disconnect, %{reason: reason}}, socket) do
+  def handle_info({:force_disconnect, %{reason: reason} = payload}, socket) do
     cleanup_channels(socket.assigns.session)
+    maybe_ack_force_disconnect(payload)
 
     {:halt,
      socket
+     |> assign(skip_channel_cleanup: true)
      |> push_event("intentional_disconnect", %{})
      |> push_event("clear_client_state", %{})
      |> Phoenix.LiveView.redirect(to: PathHelpers.session_clear_path(socket, reason))}
@@ -392,6 +394,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
         socket
     end
   end
+
+  defp maybe_ack_force_disconnect(%{takeover_ack: {pid, ref}}) when is_pid(pid) do
+    send(pid, {:force_disconnect_ack, ref})
+    :ok
+  end
+
+  defp maybe_ack_force_disconnect(_payload), do: :ok
 
   defp cleanup_channels(session) do
     NickServ.cancel_identify_timer(session.nickname)
