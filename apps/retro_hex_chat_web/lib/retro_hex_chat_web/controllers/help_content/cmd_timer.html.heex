@@ -18,7 +18,7 @@
 <p>
   One-shot timers run the command once after the specified delay. Repeating timers run the command every &lt;seconds&gt; indefinitely until stopped. Timer commands support alias expansion, so you can use variables like
   <code>$nick</code>
-  and <code>$chan</code>. Creating a timer with the same name as an existing one replaces the old timer.
+  and <code>$chan</code>. Timer commands run in the window that was active when the timer was created and do not switch your current window when they fire. Creating a timer with the same name as an existing one replaces the old timer.
 </p>
 <.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
 <ul>

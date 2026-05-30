@@ -165,7 +165,14 @@ export class ChatPage {
   readonly adminConsoleInput: Locator;
   readonly adminConsoleOutput: Locator;
   readonly botList: Locator;
+  readonly botManagementCloseButton: Locator;
+  readonly newBotButton: Locator;
   readonly newBotDialog: Locator;
+  readonly newBotNameInput: Locator;
+  readonly newBotNicknameInput: Locator;
+  readonly newBotDescriptionInput: Locator;
+  readonly newBotCreateButton: Locator;
+  readonly newBotCancelButton: Locator;
   readonly addCommandDialog: Locator;
   readonly nickChangeDialog: Locator;
   readonly nickChangePassword: Locator;
@@ -442,7 +449,23 @@ export class ChatPage {
     this.adminConsoleInput = page.locator('#admin-console-input');
     this.adminConsoleOutput = page.getByTestId('admin-console-output');
     this.botList = page.getByTestId('bot-list');
+    this.botManagementCloseButton = page
+      .locator('#bot-management-dialog')
+      .getByRole('button', { name: 'Close' })
+      .last();
+    this.newBotButton = this.botManagementDialog.getByRole('button', {
+      name: 'New',
+    });
     this.newBotDialog = page.locator('#new-bot-dialog [role="dialog"]');
+    this.newBotNameInput = page.locator('#bot-name');
+    this.newBotNicknameInput = page.locator('#bot-nickname');
+    this.newBotDescriptionInput = page.locator('#bot-description');
+    this.newBotCreateButton = this.newBotDialog.getByRole('button', {
+      name: 'Create',
+    });
+    this.newBotCancelButton = this.newBotDialog.getByRole('button', {
+      name: 'Cancel',
+    });
     this.addCommandDialog = page.locator(
       '#add-command-dialog [role="dialog"]',
     );
@@ -951,6 +974,21 @@ export class ChatPage {
     await expect(this.adminConsoleMenuItem).toBeVisible();
     await this.adminConsoleMenuItem.click();
     await expect(this.adminConsoleDialog).toBeVisible();
+  }
+
+  async openNewBotDialog() {
+    await expect(this.botManagementDialog).toBeVisible();
+    await this.newBotButton.click();
+    await expect(this.newBotDialog).toBeVisible();
+  }
+
+  async closeBotManagementDialog() {
+    if (!(await this.botManagementDialog.isVisible().catch(() => false))) {
+      return;
+    }
+
+    await this.botManagementCloseButton.click();
+    await expect(this.botManagementDialog).toBeHidden();
   }
 
   async openHelpTopicsFromMenu() {

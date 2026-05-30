@@ -20,6 +20,11 @@
   — Show all active timers.<br /><code>/timer stop &lt;name&gt;</code>
   — Cancel a specific timer.
 </p>
+<p>
+  Timer commands run in the window that was active when the timer was created.
+  If you switch tabs before a timer fires, the scheduled command still targets
+  the original window and your current window stays selected.
+</p>
 <.help_h4 icon={:icon_rules}>Limits</.help_h4>
 <p>
   - Maximum 5 concurrent timers per session.<br />- One-shot: minimum 1 second, maximum 86,400 seconds (24 hours).<br />- Repeat: minimum 10 seconds, maximum 86,400 seconds.<br />- <strong>Session-only</strong>: Timers do NOT survive page reload or disconnection.

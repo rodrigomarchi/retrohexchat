@@ -6,11 +6,11 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **166 spec files** under `e2e/tests/`.
-- **288 Playwright `test()` cases**.
+- **176 spec files** under `e2e/tests/`.
+- **299 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 246 mapped flows, 245 done, 1 intentionally blocked.
+- **Chat extended coverage:** 257 mapped flows, 256 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -431,6 +431,22 @@ make ci
 | X14 | Server operator role appears after reconnect and grants operator-only command/menu access | `tests/chat-admin-role-persistence.spec.ts` | P2 | done |
 | X15 | Admin audit log shows actor, target, action, and persisted reason for user ban entries | `tests/chat-admin-audit-log.spec.ts` | P1 | done |
 
+## Backlog Y - Bot And Automation Edges
+
+| # | Flow | Spec file | Priority | Status |
+|---|------|-----------|----------|--------|
+| Y1 | Duplicate bot name/nickname creation attempts show field-specific errors and leave one bot list row | `tests/chat-bot-edges.spec.ts` | P1 | done |
+| Y2 | Bot join/part across two channels updates each nicklist and `/bot info` channel count | `tests/chat-bot-channel-membership.spec.ts` | P1 | done |
+| Y3 | Bot custom command variables and HTML-like special characters render as escaped text | `tests/chat-bot-custom-command-edges.spec.ts` | P1 | done |
+| Y4 | Disabled bot state persists across Bot Management reopen and operator reconnect | `tests/chat-bot-persistence.spec.ts` | P2 | done |
+| Y5 | Timers execute in the window active at creation even when another tab is active at fire time | `tests/chat-timer-window-context.spec.ts` | P1 | done |
+| Y6 | Timer-fired `/query` opens a PM tab without switching away from the user's active tab | `tests/chat-timer-window-context.spec.ts` | P1 | done |
+| Y7 | A timer whose creation window disappears reports an error, removes itself, and does not deliver to another tab | `tests/chat-timer-error-edges.spec.ts` | P2 | done |
+| Y8 | Perform reconnect continues later entries after an earlier command reports an error | `tests/chat-perform-error-edges.spec.ts` | P1 | done |
+| Y9 | Auto-join reconnect continues later channels after an earlier key-protected channel fails | `tests/chat-autojoin-error-edges.spec.ts` | P1 | done |
+| Y11 | Alias commands expand inside timer, perform reconnect, and autorespond trigger flows | `tests/chat-automation-composition.spec.ts` | P2 | done |
+| Y12 | Rapid nick change plus immediate channel message leaves no stale old nick tab, nicklist row, or attribution | `tests/chat-realtime-race-edges.spec.ts` | P2 | done |
+
 ## Intentional Block
 
 | # | Reason |
@@ -499,3 +515,6 @@ make ci
 - `/cs register` now marks the live channel process as registered immediately, so later joins and mode persistence do not depend on process restart.
 - Server bans now display a human-readable reconnect alert and prevent banned existing sessions from reopening `/chat`.
 - `/admin log` now includes non-empty audit details such as ban reasons instead of hiding the persisted metadata.
+- Bot creation from the management dialog now reports changeset field errors and converts the displayed cooldown seconds to milliseconds.
+- Bot Management now renders enabled/disabled status from persisted bot state and lists capability names without crashing on capability maps.
+- Timers now capture their creation window, target that window when firing, and restore the user's active tab so delayed commands cannot steal focus.

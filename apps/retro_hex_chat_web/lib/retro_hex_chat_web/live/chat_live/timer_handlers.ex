@@ -52,38 +52,22 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       nil ->
         {:halt, socket}
 
-      %{type: type, interval: interval, command: command} ->
+      %{type: type, interval: interval, command: command} = timer ->
         session = socket.assigns.session
-        expand_context = %{nick: session.nickname, chan: session.active_channel}
-        expanded = AliasExpander.expand(command, [], expand_context)
+        firing_window = active_window(socket, session)
+        timer_window = Map.get(timer, :window, firing_window)
 
         socket =
-          case Parser.parse(expanded) do
-            {:command, cmd_name, cmd_args} ->
-              dispatch_command(socket, session, cmd_name, cmd_args)
+          case activate_timer_window(socket, timer_window) do
+            {:ok, target_socket} ->
+              execute_timer_command(target_socket, command)
 
-            {:message, text} ->
-              send_plain_message(socket, session, text)
+            {:error, target_socket} ->
+              error_event(target_socket, "* Timer '#{name}' target window is no longer available")
           end
 
-        socket =
-          case type do
-            :repeat ->
-              ref = Process.send_after(self(), {:user_timer_fired, name}, interval * 1000)
-
-              new_timers =
-                Map.put(timers, name, %{
-                  type: :repeat,
-                  interval: interval,
-                  command: command,
-                  ref: ref
-                })
-
-              assign(socket, user_timers: new_timers)
-
-            :once ->
-              assign(socket, user_timers: Map.delete(timers, name))
-          end
+        socket = update_timer_after_fire(socket, name, type, interval, command, timer_window)
+        socket = restore_active_window(socket, firing_window)
 
         {:halt, socket}
     end
@@ -154,7 +138,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       masked = PerformList.mask_command(entry.command)
 
       # Preserve the current active window — perform should not steal focus
-      prev_active = active_window(session)
+      prev_active = active_window(socket, session)
 
       socket =
         socket
@@ -185,7 +169,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
           socket
         else
           # Preserve the current active window — autojoin should not steal focus
-          prev_active = active_window(session)
+          prev_active = active_window(socket, session)
 
           socket =
             socket
@@ -270,6 +254,45 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     CommandDispatch.send_plain_message(socket, session, text)
   end
 
+  defp execute_timer_command(socket, command) do
+    session = socket.assigns.session
+    expand_context = %{nick: session.nickname, chan: session.active_channel}
+    expanded = AliasExpander.expand(command, [], expand_context)
+
+    case Parser.parse(expanded) do
+      {:command, cmd_name, cmd_args} ->
+        dispatch_command(socket, session, cmd_name, cmd_args)
+
+      {:message, text} ->
+        send_plain_message(socket, session, text)
+    end
+  end
+
+  defp update_timer_after_fire(socket, name, :repeat, interval, command, timer_window) do
+    timers = socket.assigns.user_timers
+
+    if Map.has_key?(timers, name) do
+      ref = Process.send_after(self(), {:user_timer_fired, name}, interval * 1000)
+
+      new_timers =
+        Map.put(timers, name, %{
+          type: :repeat,
+          interval: interval,
+          command: command,
+          window: timer_window,
+          ref: ref
+        })
+
+      assign(socket, user_timers: new_timers)
+    else
+      socket
+    end
+  end
+
+  defp update_timer_after_fire(socket, name, :once, _interval, _command, _timer_window) do
+    assign(socket, user_timers: Map.delete(socket.assigns.user_timers, name))
+  end
+
   defp execute_perform_command(socket, session, command) do
     case Parser.parse(command) do
       {:command, name, args} ->
@@ -283,11 +306,59 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     end
   end
 
-  defp active_window(session), do: {session.active_channel, session.active_pm}
+  defp active_window(socket, session) do
+    cond do
+      socket.assigns.show_status_tab -> :status
+      session.active_pm -> {:pm, session.active_pm}
+      session.active_channel -> {:channel, session.active_channel}
+      true -> nil
+    end
+  end
 
-  defp restore_active_window(socket, {nil, nil}), do: socket
+  defp activate_timer_window(socket, :status) do
+    session = socket.assigns.session
 
-  defp restore_active_window(socket, {target_channel, nil}) when is_binary(target_channel) do
+    {:ok,
+     assign(socket,
+       session: %{session | active_channel: nil, active_pm: nil},
+       show_status_tab: true
+     )}
+  end
+
+  defp activate_timer_window(socket, {:channel, channel}) do
+    session = socket.assigns.session
+
+    if channel in session.channels do
+      {:ok,
+       assign(socket,
+         session: Session.set_active_channel(session, channel),
+         show_status_tab: false
+       )}
+    else
+      {:error, socket}
+    end
+  end
+
+  defp activate_timer_window(socket, {:pm, target_pm}) do
+    session = socket.assigns.session
+
+    if target_pm in session.pm_conversations do
+      {:ok,
+       assign(socket, session: Session.set_active_pm(session, target_pm), show_status_tab: false)}
+    else
+      {:error, socket}
+    end
+  end
+
+  defp activate_timer_window(socket, nil), do: {:ok, socket}
+
+  defp restore_active_window(socket, nil), do: socket
+
+  defp restore_active_window(socket, :status) do
+    assign(socket, show_status_tab: true, status_unread: false)
+  end
+
+  defp restore_active_window(socket, {:channel, target_channel}) when is_binary(target_channel) do
     session = socket.assigns.session
 
     if target_channel in session.channels do
@@ -302,7 +373,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     end
   end
 
-  defp restore_active_window(socket, {nil, target_pm}) when is_binary(target_pm) do
+  defp restore_active_window(socket, {:pm, target_pm}) when is_binary(target_pm) do
     session = socket.assigns.session
 
     if target_pm in session.pm_conversations do

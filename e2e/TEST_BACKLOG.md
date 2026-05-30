@@ -170,18 +170,18 @@ green catalog in `TEST_CATALOG.md`.
 
 | # | Scenario | Suggested spec file | Priority | Status |
 |---|----------|---------------------|----------|--------|
-| Y1 | Bot duplicate nickname/create validation shows clear errors without corrupting bot list | `tests/chat-bot-edges.spec.ts` | P1 | todo |
-| Y2 | Bot part/join across multiple channels updates nicklists and bot info correctly | `tests/chat-bot-channel-membership.spec.ts` | P1 | todo |
-| Y3 | Bot custom command with variables/special chars responds correctly and escapes output | `tests/chat-bot-custom-command-edges.spec.ts` | P1 | todo |
-| Y4 | Bot disabled state persists across dialog close/reopen and reconnect | `tests/chat-bot-persistence.spec.ts` | P2 | todo |
-| Y5 | Timer firing while active tab changes sends output to intended active window or documented target | `tests/chat-timer-window-context.spec.ts` | P1 | investigate |
-| Y6 | Timer command that opens a tab obeys no-focus-steal guarantees | `tests/chat-timer-window-context.spec.ts` | P1 | todo |
-| Y7 | Timer created with command that later becomes invalid shows error without repeating forever unexpectedly | `tests/chat-timer-error-edges.spec.ts` | P2 | todo |
-| Y8 | Perform command failure during reconnect reports error and continues later perform entries if product intends | `tests/chat-perform-error-edges.spec.ts` | P1 | investigate |
-| Y9 | Autojoin failure during reconnect reports error but does not block other autojoin channels | `tests/chat-autojoin-error-edges.spec.ts` | P1 | todo |
+| Y1 | Bot duplicate nickname/create validation shows clear errors without corrupting bot list | `tests/chat-bot-edges.spec.ts` | P1 | done |
+| Y2 | Bot part/join across multiple channels updates nicklists and bot info correctly | `tests/chat-bot-channel-membership.spec.ts` | P1 | done |
+| Y3 | Bot custom command with variables/special chars responds correctly and escapes output | `tests/chat-bot-custom-command-edges.spec.ts` | P1 | done |
+| Y4 | Bot disabled state persists across dialog close/reopen and reconnect | `tests/chat-bot-persistence.spec.ts` | P2 | done |
+| Y5 | Timer firing while active tab changes sends output to intended active window or documented target | `tests/chat-timer-window-context.spec.ts` | P1 | done |
+| Y6 | Timer command that opens a tab obeys no-focus-steal guarantees | `tests/chat-timer-window-context.spec.ts` | P1 | done |
+| Y7 | Timer created with command that later becomes invalid shows error without repeating forever unexpectedly | `tests/chat-timer-error-edges.spec.ts` | P2 | done |
+| Y8 | Perform command failure during reconnect reports error and continues later perform entries if product intends | `tests/chat-perform-error-edges.spec.ts` | P1 | done |
+| Y9 | Autojoin failure during reconnect reports error but does not block other autojoin channels | `tests/chat-autojoin-error-edges.spec.ts` | P1 | done |
 | Y10 | Autorespond loop prevention handles two users with reciprocal autorespond rules | `tests/chat-autorespond-loop.spec.ts` | P0 | done |
-| Y11 | Alias expansion inside perform/timer/autorespond works or is rejected consistently | `tests/chat-automation-composition.spec.ts` | P2 | investigate |
-| Y12 | Two rapid concurrent state changes, such as kick plus PM or rename plus message, do not leave stale tabs/nicks | `tests/chat-realtime-race-edges.spec.ts` | P2 | investigate |
+| Y11 | Alias expansion inside perform/timer/autorespond works or is rejected consistently | `tests/chat-automation-composition.spec.ts` | P2 | done |
+| Y12 | Two rapid concurrent state changes, such as kick plus PM or rename plus message, do not leave stale tabs/nicks | `tests/chat-realtime-race-edges.spec.ts` | P2 | done |
 
 ## Z - P2P, File, Call, Game, Arcade
 

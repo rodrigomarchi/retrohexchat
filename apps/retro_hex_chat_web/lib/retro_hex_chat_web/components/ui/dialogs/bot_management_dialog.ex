@@ -156,24 +156,24 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                     <div class="flex items-center gap-retro-8">
                       <span class="font-bold w-[80px]">Status:</span>
                       <span class={
-                        if Map.get(@selected, :active, false),
+                        if Map.get(@selected, :enabled, true),
                           do: "text-green-700",
                           else: "text-red-700"
                       }>
-                        {if Map.get(@selected, :active, false), do: "Active", else: "Inactive"}
+                        {if Map.get(@selected, :enabled, true), do: "Enabled", else: "Disabled"}
                       </span>
                     </div>
                     <.separator />
                     <div class="font-bold text-xs">Capabilities</div>
                     <div class="flex flex-wrap gap-retro-4">
                       <span
-                        :for={cap <- Map.get(@selected, :capabilities, [])}
+                        :for={cap <- capability_names(@selected)}
                         class="bg-surface shadow-retro-raised px-retro-8 py-retro-2 text-xs"
                       >
-                        {cap}
+                        {cap_display_name(cap)}
                       </span>
                       <span
-                        :if={Map.get(@selected, :capabilities, []) == []}
+                        :if={capability_names(@selected) == []}
                         class="text-muted-foreground text-xs"
                       >
                         No capabilities configured
@@ -447,6 +447,14 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   defp cap_display_name("greeter"), do: "Greeter"
   defp cap_display_name("mention"), do: "Mention"
   defp cap_display_name(other), do: String.capitalize(other)
+
+  defp capability_names(selected) do
+    case Map.get(selected, :capabilities, %{}) do
+      caps when is_map(caps) -> Map.keys(caps)
+      caps when is_list(caps) -> caps
+      _ -> []
+    end
+  end
 
   @spec cap_config_fields(map() | nil) :: [{String.t(), any()}]
   defp cap_config_fields(nil), do: []

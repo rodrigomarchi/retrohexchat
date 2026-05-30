@@ -111,7 +111,8 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     nickname = Map.get(params, "nickname", name) |> String.trim()
     description = Map.get(params, "description", "") |> String.trim()
     prefix = Map.get(params, "prefix", "!") |> String.trim()
-    cooldown = Map.get(params, "cooldown", "2000") |> parse_int(2000)
+    cooldown_seconds = Map.get(params, "cooldown", "3") |> parse_int(3)
+    cooldown = cooldown_seconds * 1000
 
     default_caps = build_default_capabilities(params)
 
@@ -150,8 +151,9 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
          |> assign(show_new_bot_dialog: false, bot_dialog_bots: bots)
          |> system_event("[BotService] Bot '#{name}' created.")}
 
-      {:error, _changeset} ->
-        {:halt, error_event(socket, "[BotService] Failed to create bot '#{name}'.")}
+      {:error, changeset} ->
+        msg = format_changeset_errors(changeset)
+        {:halt, error_event(socket, "[BotService] Failed to create bot '#{name}': #{msg}")}
     end
   end
 
@@ -544,6 +546,16 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       {n, _} -> n
       :error -> default
     end
+  end
+
+  defp format_changeset_errors(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
+      Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
+        opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
+      end)
+    end)
+    |> Enum.map(fn {field, errors} -> "#{field}: #{Enum.join(errors, ", ")}" end)
+    |> Enum.join("; ")
   end
 
   defp admin?(session) do

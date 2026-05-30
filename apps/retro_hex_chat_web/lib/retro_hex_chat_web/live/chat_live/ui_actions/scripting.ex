@@ -83,6 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
         command: command
       }) do
     timers = socket.assigns.user_timers
+    session = socket.assigns.session
 
     case TimerManager.validate_create(timers, name, type, interval, command) do
       :ok ->
@@ -105,6 +106,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
             type: type,
             interval: clamped_interval,
             command: command,
+            window: active_window(socket, session),
             ref: ref
           })
 
@@ -172,4 +174,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
 
   defp autorespond_error_msg(:command_chaining),
     do: "Command must not contain chaining (|, &&, ;)"
+
+  defp active_window(socket, session) do
+    cond do
+      socket.assigns.show_status_tab -> :status
+      session.active_pm -> {:pm, session.active_pm}
+      session.active_channel -> {:channel, session.active_channel}
+      true -> nil
+    end
+  end
 end
