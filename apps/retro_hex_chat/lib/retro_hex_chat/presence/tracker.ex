@@ -34,6 +34,16 @@ defmodule RetroHexChat.Presence.Tracker do
     end)
   end
 
+  @spec online?(String.t(), String.t()) :: boolean()
+  def online?(topic, nickname) do
+    target = String.downcase(nickname)
+
+    topic
+    |> list()
+    |> Map.keys()
+    |> Enum.any?(&(String.downcase(&1) == target))
+  end
+
   @spec update_away(String.t(), String.t(), boolean(), String.t() | nil) ::
           {:ok, binary()} | {:error, any()}
   def update_away(topic, nickname, away, message \\ nil) do

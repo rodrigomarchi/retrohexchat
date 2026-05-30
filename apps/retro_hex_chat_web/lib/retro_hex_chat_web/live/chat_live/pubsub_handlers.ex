@@ -100,6 +100,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:nick_changed, _} = msg, socket),
     do: Membership.handle_info(msg, socket)
 
+  def handle_info({:user_away_changed, _} = msg, socket),
+    do: Membership.handle_info(msg, socket)
+
   def handle_info({:force_disconnect, _} = msg, socket),
     do: Membership.handle_info(msg, socket)
 

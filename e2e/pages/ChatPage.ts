@@ -648,6 +648,18 @@ export class ChatPage {
     await expect(this.nicklistItem(nick)).toHaveAttribute('data-role', role);
   }
 
+  async expectNickStatus(nick: string, status: 'online' | 'away' | 'offline') {
+    await expect(this.nicklistItem(nick)).toHaveAttribute(
+      'data-status',
+      status,
+    );
+  }
+
+  async openNickHoverCard(nick: string) {
+    await this.nicklistItem(nick).hover();
+    await expect(this.hoverCard(nick)).toBeVisible();
+  }
+
   async openNicklistContextMenu(nick: string) {
     await this.nicklistItem(nick).click({ button: 'right' });
     await expect(this.nicklistContextMenu).toBeVisible();

@@ -6,11 +6,11 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **145 spec files** under `e2e/tests/`.
-- **262 Playwright `test()` cases**.
+- **152 spec files** under `e2e/tests/`.
+- **273 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 220 mapped flows, 219 done, 1 intentionally blocked.
+- **Chat extended coverage:** 231 mapped flows, 230 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -395,6 +395,22 @@ make ci
 | V11 | Incoming invite from an ignored user does not open invite UI or steal focus | `tests/chat-ignore-notifications.spec.ts` | P1 | done |
 | V12 | Multiple simultaneous PM unread counts update independently and reset only when each PM is opened | `tests/chat-pm-unread-multiple.spec.ts` | P1 | done |
 
+## Backlog W - Presence, Identity, Nick Changes, Whois/Whowas
+
+| # | Flow | Spec file | Priority | Status |
+|---|------|-----------|----------|--------|
+| W1 | Remote nick change updates nicklist, existing PM tab labels, conversations sidebar PM item, future channel attribution, and future PM routing | `tests/chat-nick-change-realtime.spec.ts` | P1 | done |
+| W2 | Nick collision shows an error without opening takeover flow and both users keep their channel membership | `tests/chat-nick-change-edges.spec.ts` | P1 | done |
+| W3 | Registered nick password dialog Cancel keeps the old nickname, active channel, and usable chat input | `tests/chat-nickserv-dialog-edges.spec.ts` | P1 | done |
+| W4 | NickServ register/drop changes are reflected by another user's `/whois Registered:` output without reconnect | `tests/chat-nickserv-whois-realtime.spec.ts` | P2 | done |
+| W5 | `/whowas` for an online nick points users to `/whois` for current info instead of stale/offline lookup | `tests/chat-whowas-edges.spec.ts` | P2 | done |
+| W6 | `/whowas` records expire after the configured retention period using the public admin setting | `tests/chat-whowas-edges.spec.ts` | P3 | done |
+| W7 | Away auto-reply fires once per sender, resets after clearing away, and fires again after a new away message | `tests/chat-away-edges.spec.ts` | P1 | done |
+| W8 | Away state immediately updates already-open channel nicklists and nicklist hover cards | `tests/chat-away-edges.spec.ts` | P2 | done |
+| W9 | Notify auto-WHOIS emits online notification plus WHOIS registration detail when a watched user connects | `tests/chat-notify-settings.spec.ts` | P1 | done |
+| W10 | Notify auto-add-PM adds first PM partners and persists the entry across registered-user reconnect | `tests/chat-notify-settings.spec.ts` | P1 | done |
+| W11 | Passive tab switching, dialog open/close, and nicklist hover do not reset the observed idle timer | `tests/chat-idle-passive.spec.ts` | P2 | done |
+
 ## Intentional Block
 
 | # | Reason |
@@ -450,3 +466,9 @@ make ci
 - Channel List close preserves the current filter search, and Browse All Channels from the conversations sidebar reapplies it to the refreshed channel list.
 - Conversations sidebar context menus now support PM mute/copy actions, and PM mute suppresses sound/title flash while preserving unread indicators.
 - Closing channel or PM tabs now clears unread/flash state so reopening the same conversation does not resurrect stale unread indicators.
+- Remote nick changes now rename existing PM conversations and carry unread/mute/flash state to the new nick, preventing duplicate stale PM tabs.
+- Nick-change remount now preserves the user's joined channels and active window by retargeting reconnect state from the old nick to the new nick.
+- `/nick` now blocks active nickname collisions before confirmation, preventing accidental takeover/disconnect of the user already holding that nick.
+- `/whowas` now detects online users and points to `/whois` for current information instead of returning a misleading missing-cache response.
+- Whowas retention is now configurable through `/admin server set whowas_retention_seconds`, allowing safe verification of expiry behavior through normal admin UI.
+- Away changes now broadcast to open channel views, refresh nicklist status, and keep nicklist hover cards in sync.

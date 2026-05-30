@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.{CommandDispatch, HoverEvents}
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
+  alias RetroHexChatWeb.ChatLive.Helpers.PM
 
   # ── User joined/left/nick_changed ─────────────────────────
 
@@ -121,6 +122,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
         socket
       end
 
+    socket = rename_pm_state(socket, old_nick, new_nick)
+
     # Dismiss nick hover card if it's showing the old nick (T023)
     socket =
       if socket.assigns.hover_card.nick == old_nick do
@@ -141,6 +144,25 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
        new_nick,
        &CommandDispatch.dispatch_command/4
      )}
+  end
+
+  def handle_info(
+        {:user_away_changed, %{nickname: nick, away: away, away_message: message}},
+        socket
+      ) do
+    users =
+      Enum.map(socket.assigns.channel_users, fn user ->
+        if String.downcase(user.nickname) == String.downcase(nick) do
+          Map.merge(user, %{away: away, away_message: message})
+        else
+          user
+        end
+      end)
+
+    {:halt,
+     socket
+     |> assign(channel_users: users)
+     |> maybe_update_hover_away(nick, away, message)}
   end
 
   # ── Force disconnect/rename ───────────────────────────────
@@ -248,6 +270,77 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     counts = socket.assigns.channel_user_counts
     current = Map.get(counts, channel, 0)
     assign(socket, channel_user_counts: Map.put(counts, channel, max(current - 1, 0)))
+  end
+
+  defp rename_pm_state(socket, old_nick, new_nick) do
+    session = socket.assigns.session
+
+    if old_nick in session.pm_conversations or session.active_pm == old_nick do
+      Phoenix.PubSub.unsubscribe(
+        RetroHexChat.PubSub,
+        "pm:#{PM.pm_topic(session.nickname, old_nick)}"
+      )
+
+      PM.ensure_pm_subscription(session.nickname, new_nick)
+    end
+
+    old_pm_key = "pm:#{old_nick}"
+    new_pm_key = "pm:#{new_nick}"
+
+    socket
+    |> assign(
+      session: Session.rename_pm_conversation(session, old_nick, new_nick),
+      unread_counts: rename_count_key(socket.assigns.unread_counts, old_pm_key, new_pm_key),
+      flash_channels: rename_set_key(socket.assigns.flash_channels, old_pm_key, new_pm_key),
+      muted_channels: rename_set_key(socket.assigns.muted_channels, old_pm_key, new_pm_key),
+      away_replied_to: rename_set_key(socket.assigns.away_replied_to, old_nick, new_nick),
+      pm_typing_from: rename_optional_value(socket.assigns.pm_typing_from, old_nick, new_nick)
+    )
+  end
+
+  defp rename_count_key(counts, old_key, new_key) do
+    case Map.pop(counts, old_key) do
+      {nil, updated_counts} ->
+        updated_counts
+
+      {count, updated_counts} ->
+        Map.update(updated_counts, new_key, count, &(&1 + count))
+    end
+  end
+
+  defp rename_set_key(set, old_key, new_key) do
+    if MapSet.member?(set, old_key) do
+      set
+      |> MapSet.delete(old_key)
+      |> MapSet.put(new_key)
+    else
+      set
+    end
+  end
+
+  defp rename_optional_value(value, old_nick, new_nick) when value == old_nick, do: new_nick
+  defp rename_optional_value(value, _old_nick, _new_nick), do: value
+
+  defp maybe_update_hover_away(socket, nick, away, message) do
+    case socket.assigns.hover_card do
+      %{visible: true, nick: hover_nick} = card ->
+        if String.downcase(hover_nick) == String.downcase(nick) do
+          data = Map.get(card, :data) || %{}
+
+          assign(socket,
+            hover_card:
+              Map.merge(card, %{
+                away: if(away, do: message || "Away"),
+                data: Map.merge(data, %{away: away, away_message: message})
+              })
+          )
+        else
+          socket
+        end
+
+      _ ->
+        socket
+    end
   end
 
   defp cleanup_channels(session) do

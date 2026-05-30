@@ -28,24 +28,24 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
 
   @spec show_whowas_text(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def show_whowas_text(socket, target) do
+    if Tracker.online?("presence:global", target) do
+      Messages.system_event(
+        socket,
+        "* #{target} is online. Use /whois #{target} for current info."
+      )
+    else
+      show_cached_whowas(socket, target)
+    end
+  end
+
+  # Private helpers
+
+  defp show_cached_whowas(socket, target) do
     case WhowasCache.lookup(target) do
       {:ok, entry} ->
-        lines = [
-          "----- Whowas: #{entry.nickname} -----",
-          "Last seen: #{TimeFormatter.format_relative(entry.disconnected_at)}",
-          "Channels: #{Enum.join(entry.channels, ", ")}"
-        ]
-
-        lines =
-          if entry.quit_message do
-            lines ++ ["Quit message: #{entry.quit_message}"]
-          else
-            lines
-          end
-
-        lines = lines ++ ["-----------------------------"]
-
-        Enum.reduce(lines, socket, fn line, acc ->
+        entry
+        |> whowas_lines()
+        |> Enum.reduce(socket, fn line, acc ->
           Messages.system_event(acc, line)
         end)
 
@@ -54,7 +54,15 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
     end
   end
 
-  # Private helpers
+  defp whowas_lines(entry) do
+    [
+      "----- Whowas: #{entry.nickname} -----",
+      "Last seen: #{TimeFormatter.format_relative(entry.disconnected_at)}",
+      "Channels: #{Enum.join(entry.channels, ", ")}"
+    ]
+    |> maybe_append(entry.quit_message != nil, "Quit message: #{entry.quit_message}")
+    |> Kernel.++(["-----------------------------"])
+  end
 
   defp build_whois_lines(socket, session, target, target_meta) do
     data = gather_whois_data(socket, session, target, target_meta)

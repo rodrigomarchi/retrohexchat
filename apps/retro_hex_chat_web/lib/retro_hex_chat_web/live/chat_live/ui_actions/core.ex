@@ -60,6 +60,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
       safe_update_away("channel:#{channel}", session.nickname, true, message)
     end)
 
+    broadcast_away_change(session, true, message)
+
     socket
     |> system_event("You are now away: #{message}")
     |> assign(session: session, away_replied_to: MapSet.new())
@@ -72,6 +74,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     Enum.each(session.channels, fn channel ->
       safe_update_away("channel:#{channel}", session.nickname, false, nil)
     end)
+
+    broadcast_away_change(new_session, false, nil)
 
     socket
     |> system_event("You are no longer away")
@@ -211,6 +215,22 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
 
   defp command_topic_id("bot"), do: "bot-command"
   defp command_topic_id(command_name), do: "cmd-#{String.replace(command_name, "_", "-")}"
+
+  defp broadcast_away_change(session, away, message) do
+    Enum.each(session.channels, fn channel ->
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "channel:#{channel}",
+        {:user_away_changed,
+         %{
+           channel: channel,
+           nickname: session.nickname,
+           away: away,
+           away_message: message
+         }}
+      )
+    end)
+  end
 
   defp throttled_knock?(knock_timestamps, channel, now) do
     case Map.fetch(knock_timestamps, channel) do

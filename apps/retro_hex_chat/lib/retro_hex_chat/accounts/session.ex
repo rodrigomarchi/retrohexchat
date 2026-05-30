@@ -159,6 +159,25 @@ defmodule RetroHexChat.Accounts.Session do
     %{session | pm_conversations: new_pms, active_pm: new_active}
   end
 
+  @spec rename_pm_conversation(t(), String.t(), String.t()) :: t()
+  def rename_pm_conversation(
+        %__MODULE__{pm_conversations: pms, active_pm: active} = session,
+        old_nickname,
+        new_nickname
+      ) do
+    new_pms =
+      pms
+      |> Enum.map(fn
+        ^old_nickname -> new_nickname
+        nickname -> nickname
+      end)
+      |> Enum.uniq()
+
+    new_active = if active == old_nickname, do: new_nickname, else: active
+
+    %{session | pm_conversations: new_pms, active_pm: new_active}
+  end
+
   @spec set_active_pm(t(), String.t() | nil) :: t()
   def set_active_pm(%__MODULE__{} = session, nickname) do
     %{session | active_pm: nickname, active_channel: nil}

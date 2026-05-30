@@ -47,6 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       }
       data-testid={"nicklist-item-#{@nick}"}
       data-role={role_name(@role)}
+      data-status={@status}
       {@rest}
     >
       <span class={["w-2 h-2 rounded-full flex-shrink-0 inline-block", status_color(@status)]} />

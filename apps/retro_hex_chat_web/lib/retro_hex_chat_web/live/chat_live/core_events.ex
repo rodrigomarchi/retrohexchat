@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{Policy, Queries, Service, UnreadTracker}
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Parser, Registry}
+  alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
@@ -729,35 +730,53 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     target = dialog.target_nick
     password = params["password"] || ""
 
-    if dialog.registered do
-      case NickServ.identify(target, password) do
-        {:ok, _} ->
-          token = Phoenix.Token.sign(Endpoint, "nickserv_identify", target)
+    cond do
+      nick_in_use?(target, socket.assigns.session.nickname) ->
+        socket
+        |> assign(nick_change_dialog: nil)
+        |> error_event("Nickname #{target} is already in use")
 
-          socket
-          |> assign(
-            nick_change_dialog: nil,
-            nick_change_target: target,
-            nick_change_token: token,
-            quit_reason: "Changing nickname"
-          )
-          |> push_event("submit_nick_change", %{})
+      dialog.registered ->
+        case NickServ.identify(target, password) do
+          {:ok, _} ->
+            token = Phoenix.Token.sign(Endpoint, "nickserv_identify", target)
 
-        {:error, _} ->
-          assign(socket,
-            nick_change_dialog: %{dialog | password_error: "Incorrect password", password: ""}
-          )
-      end
-    else
-      socket
-      |> assign(
-        nick_change_dialog: nil,
-        nick_change_target: target,
-        nick_change_token: nil,
-        quit_reason: "Changing nickname"
-      )
-      |> push_event("submit_nick_change", %{})
+            socket
+            |> assign(
+              nick_change_dialog: nil,
+              nick_change_target: target,
+              nick_change_token: token,
+              quit_reason: "Changing nickname"
+            )
+            |> push_event("submit_nick_change", %{
+              nickname: target,
+              previous_nickname: socket.assigns.session.nickname
+            })
+
+          {:error, _} ->
+            assign(socket,
+              nick_change_dialog: %{dialog | password_error: "Incorrect password", password: ""}
+            )
+        end
+
+      true ->
+        socket
+        |> assign(
+          nick_change_dialog: nil,
+          nick_change_target: target,
+          nick_change_token: nil,
+          quit_reason: "Changing nickname"
+        )
+        |> push_event("submit_nick_change", %{
+          nickname: target,
+          previous_nickname: socket.assigns.session.nickname
+        })
     end
+  end
+
+  defp nick_in_use?(nickname, current_nickname) do
+    String.downcase(nickname) != String.downcase(current_nickname) and
+      Tracker.online?("presence:global", nickname)
   end
 
   defp clear_search_on_switch(socket) do

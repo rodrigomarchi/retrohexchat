@@ -6,8 +6,11 @@ defmodule RetroHexChat.Presence.WhowasCache do
   """
   use GenServer
 
+  alias RetroHexChat.Services.Queries
+
   @table :whowas_cache
-  @ttl_seconds 3600
+  @default_ttl_seconds 3600
+  @ttl_setting_key "whowas_retention_seconds"
   @max_entries 1000
   @cleanup_interval_ms 600_000
 
@@ -88,7 +91,7 @@ defmodule RetroHexChat.Presence.WhowasCache do
 
   @spec expired?(map()) :: boolean()
   defp expired?(%{disconnected_at: disconnected_at}) do
-    DateTime.diff(DateTime.utc_now(), disconnected_at, :second) > @ttl_seconds
+    DateTime.diff(DateTime.utc_now(), disconnected_at, :second) > ttl_seconds()
   end
 
   @spec enforce_capacity() :: :ok
@@ -120,10 +123,11 @@ defmodule RetroHexChat.Presence.WhowasCache do
   @spec cleanup_expired(atom()) :: :ok
   defp cleanup_expired(table) do
     now = DateTime.utc_now()
+    ttl = ttl_seconds()
 
     :ets.tab2list(table)
     |> Enum.each(fn {key, entry} ->
-      if DateTime.diff(now, entry.disconnected_at, :second) > @ttl_seconds do
+      if DateTime.diff(now, entry.disconnected_at, :second) > ttl do
         :ets.delete(table, key)
       end
     end)
@@ -133,5 +137,30 @@ defmodule RetroHexChat.Presence.WhowasCache do
 
   defp schedule_cleanup do
     Process.send_after(self(), :cleanup, @cleanup_interval_ms)
+  end
+
+  defp ttl_seconds do
+    case configured_ttl_setting() do
+      nil ->
+        @default_ttl_seconds
+
+      value ->
+        parse_ttl_seconds(value)
+    end
+  end
+
+  defp parse_ttl_seconds(value) do
+    case Integer.parse(value) do
+      {seconds, ""} when seconds > 0 -> seconds
+      _ -> @default_ttl_seconds
+    end
+  end
+
+  defp configured_ttl_setting do
+    Queries.get_setting(@ttl_setting_key)
+  rescue
+    DBConnection.OwnershipError -> nil
+  catch
+    :exit, _reason -> nil
   end
 end

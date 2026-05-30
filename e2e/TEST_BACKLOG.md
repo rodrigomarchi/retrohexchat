@@ -134,17 +134,17 @@ green catalog in `TEST_CATALOG.md`.
 
 | # | Scenario | Suggested spec file | Priority | Status |
 |---|----------|---------------------|----------|--------|
-| W1 | Nick change by another user updates channel message attribution, nicklist, PM tab labels, and conversations sidebar | `tests/chat-nick-change-realtime.spec.ts` | P1 | todo |
-| W2 | Nick collision flow shows error and leaves original session/channel membership intact | `tests/chat-nick-change-edges.spec.ts` | P1 | todo |
-| W3 | Registered nick password dialog cancel path leaves nickname unchanged and chat input usable | `tests/chat-nickserv-dialog-edges.spec.ts` | P1 | todo |
-| W4 | NickServ registration/drop updates `/whois Registered:` state in another user's session without reconnect | `tests/chat-nickserv-whois-realtime.spec.ts` | P2 | todo |
-| W5 | `/whowas` for an online user points to `/whois` or returns the intended online-user behavior | `tests/chat-whowas-edges.spec.ts` | P2 | investigate |
-| W6 | `/whowas` entry expiry behavior is visible after configured retention only if retention can be reached safely | `tests/chat-whowas-edges.spec.ts` | P3 | investigate |
-| W7 | Away auto-reply resets after away is cleared and can trigger again after setting away again | `tests/chat-away-edges.spec.ts` | P1 | todo |
-| W8 | Away state is reflected in nicklist styling/hover card immediately for already-open channels | `tests/chat-away-edges.spec.ts` | P2 | todo |
-| W9 | Notify auto-WHOIS setting emits WHOIS details when a watched user comes online | `tests/chat-notify-settings.spec.ts` | P1 | todo |
-| W10 | Notify auto-add-PM setting adds PM partners after first PM and persists for registered users | `tests/chat-notify-settings.spec.ts` | P1 | todo |
-| W11 | Idle timer does not reset from passive events such as switching tabs, opening dialogs, or hovering nicklist | `tests/chat-idle-passive.spec.ts` | P2 | todo |
+| W1 | Nick change by another user updates channel message attribution, nicklist, PM tab labels, and conversations sidebar | `tests/chat-nick-change-realtime.spec.ts` | P1 | done |
+| W2 | Nick collision flow shows error and leaves original session/channel membership intact | `tests/chat-nick-change-edges.spec.ts` | P1 | done |
+| W3 | Registered nick password dialog cancel path leaves nickname unchanged and chat input usable | `tests/chat-nickserv-dialog-edges.spec.ts` | P1 | done |
+| W4 | NickServ registration/drop updates `/whois Registered:` state in another user's session without reconnect | `tests/chat-nickserv-whois-realtime.spec.ts` | P2 | done |
+| W5 | `/whowas` for an online user points to `/whois` or returns the intended online-user behavior | `tests/chat-whowas-edges.spec.ts` | P2 | done |
+| W6 | `/whowas` entry expiry behavior is visible after configured retention only if retention can be reached safely | `tests/chat-whowas-edges.spec.ts` | P3 | done |
+| W7 | Away auto-reply resets after away is cleared and can trigger again after setting away again | `tests/chat-away-edges.spec.ts` | P1 | done |
+| W8 | Away state is reflected in nicklist styling/hover card immediately for already-open channels | `tests/chat-away-edges.spec.ts` | P2 | done |
+| W9 | Notify auto-WHOIS setting emits WHOIS details when a watched user comes online | `tests/chat-notify-settings.spec.ts` | P1 | done |
+| W10 | Notify auto-add-PM setting adds PM partners after first PM and persists for registered users | `tests/chat-notify-settings.spec.ts` | P1 | done |
+| W11 | Idle timer does not reset from passive events such as switching tabs, opening dialogs, or hovering nicklist | `tests/chat-idle-passive.spec.ts` | P2 | done |
 
 ## X - Channel Modes, Services, Permissions, And Persistence Edges
 

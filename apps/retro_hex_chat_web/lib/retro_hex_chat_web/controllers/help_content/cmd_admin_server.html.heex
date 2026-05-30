@@ -39,6 +39,10 @@
     — Whether new nick registrations are allowed: <code>open</code>
     (default) or <code>closed</code>
   </li>
+  <li>
+    <code>whowas_retention_seconds</code>
+    — How long recently disconnected user records stay available (default: 3600, range: 1-86400)
+  </li>
 </ul>
 
 <.help_h4 icon={:icon_rules}>Enforcement</.help_h4>
@@ -53,6 +57,7 @@
     — Enforced in NickServ; when <code>closed</code>, <code>/ns register</code>
     is rejected
   </li>
+  <li><code>whowas_retention_seconds</code> — Enforced when users run <code>/whowas</code></li>
   <li>
     Nickname length is a compile-time constant (16 characters) and cannot be changed at runtime
   </li>

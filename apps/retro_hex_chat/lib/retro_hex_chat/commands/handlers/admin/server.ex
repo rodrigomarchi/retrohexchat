@@ -7,7 +7,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.Queries
 
-  @valid_settings ~w(server_name server_description welcome_message max_channels registration)
+  @valid_settings ~w(server_name server_description welcome_message max_channels registration whowas_retention_seconds)
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["info"], context) do
@@ -110,6 +110,13 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
 
   defp validate_setting_value("registration", _) do
     {:error, "registration must be 'open' or 'closed'"}
+  end
+
+  defp validate_setting_value("whowas_retention_seconds", value) do
+    case Integer.parse(value) do
+      {n, ""} when n >= 1 and n <= 86_400 -> :ok
+      _ -> {:error, "whowas_retention_seconds must be an integer from 1 to 86400"}
+    end
   end
 
   defp validate_setting_value(_key, _value), do: :ok

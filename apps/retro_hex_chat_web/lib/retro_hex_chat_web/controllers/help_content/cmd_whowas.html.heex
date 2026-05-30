@@ -7,11 +7,13 @@
 <p><code>nickname</code> — The user to look up.</p>
 <.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
 <p>
-  Shows information about a user who has disconnected within the last hour: their last seen time, which channels they were in, and their quit message (if they provided one). This is useful when you notice someone has left and want to know when and why. Lookups are case-insensitive. If no record exists, a "no whowas information available" message is shown.
+  Shows information about a user who has disconnected within the configured retention period: their last seen time, which channels they were in, and their quit message (if they provided one). This is useful when you notice someone has left and want to know when and why. Lookups are case-insensitive. If no record exists, a "no whowas information available" message is shown.
 </p>
 <.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
 <ul>
-  <li>Data is cached for up to 1 hour after disconnect</li>
+  <li>
+    Data is cached for up to the configured retention period after disconnect (default: 1 hour)
+  </li>
   <li>The user must have been online recently</li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>

@@ -53,6 +53,16 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
+async function reconnectRegisteredUser(user: TestUser, password: string) {
+  const connect = new ConnectPage(user.chat.page);
+
+  await user.chat.disconnect();
+  await connect.open();
+  await connect.enterNickname(user.nick);
+  await connect.authenticateWithPassword(password);
+  await user.chat.waitUntilConnected();
+}
+
 test.describe('Notify List settings', () => {
   test('auto-add PM and auto-WHOIS settings affect later PM and online events (U11)', async ({
     browser,
@@ -106,6 +116,78 @@ test.describe('Notify List settings', () => {
         `[Auto-Whois] ${daveNick}:`,
         15_000,
       );
+    } finally {
+      await closeUsers(users);
+    }
+  });
+
+  test('auto-WHOIS emits details when a watched user comes online (W9)', async ({
+    browser,
+  }) => {
+    const users: TestUser[] = [];
+    const alice = await newSignedInUser(browser, 'w9a');
+    const watchedNick = uniqueNickname('w9b');
+    users.push(alice);
+
+    try {
+      await alice.chat.switchToStatusTab();
+      await alice.chat.openNotifyListFromCommand();
+      await alice.chat.setNotifyAutoWhois(true);
+      await alice.chat.closeNotifyList();
+
+      await alice.chat.sendMessage(`/notify add ${watchedNick}`);
+      await alice.chat.expectStatusMessageVisible(
+        `Added ${watchedNick} to notify list`,
+      );
+
+      const watched = await newSignedInUserWithNick(browser, watchedNick);
+      users.push(watched);
+
+      await alice.chat.expectStatusMessageVisible(
+        `* ${watchedNick} is now online`,
+        15_000,
+      );
+      await alice.chat.expectStatusMessageVisible(
+        `[Auto-Whois] ${watchedNick}:`,
+        15_000,
+      );
+      await alice.chat.expectStatusMessageVisible(
+        'Registered: yes (identified)',
+        15_000,
+      );
+    } finally {
+      await closeUsers(users);
+    }
+  });
+
+  test('auto-add-PM adds PM partners and persists for registered users (W10)', async ({
+    browser,
+  }) => {
+    const password = 'pass12345';
+    const users: TestUser[] = [];
+    const alice = await newSignedInUser(browser, 'w10a');
+    const bob = await newSignedInUser(browser, 'w10b');
+    const stamp = Date.now();
+    users.push(alice, bob);
+
+    try {
+      await alice.chat.switchToStatusTab();
+      await alice.chat.openNotifyListFromCommand();
+      await alice.chat.setNotifyAutoAddPm(true);
+      await alice.chat.closeNotifyList();
+
+      await bob.chat.sendMessage(`/msg ${alice.nick} auto-add-persist-${stamp}`);
+      await alice.chat.expectTabVisible(bob.nick);
+
+      await alice.chat.openNotifyListFromCommand();
+      await expect(alice.chat.notifyListRow(bob.nick)).toContainText('Online');
+      await alice.chat.closeNotifyList();
+
+      await alice.chat.page.waitForTimeout(750);
+      await reconnectRegisteredUser(alice, password);
+
+      await alice.chat.openNotifyListFromCommand();
+      await expect(alice.chat.notifyListRow(bob.nick)).toContainText('Online');
     } finally {
       await closeUsers(users);
     }

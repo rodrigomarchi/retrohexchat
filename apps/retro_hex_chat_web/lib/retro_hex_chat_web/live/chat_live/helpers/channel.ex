@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Chat.UnreadTracker
+  alias RetroHexChat.Presence.Tracker
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
@@ -171,9 +172,18 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   def load_channel_users(socket, channel_name) do
     case Server.get_state(channel_name) do
       {:ok, state} ->
+        presence_by_nick = channel_presence_by_nick(channel_name)
+
         users =
           Enum.map(state.members, fn {nick, role} ->
-            %{nickname: nick, role: role, away: false}
+            presence = Map.get(presence_by_nick, String.downcase(nick), %{})
+
+            %{
+              nickname: nick,
+              role: role,
+              away: Map.get(presence, :away, false),
+              away_message: Map.get(presence, :away_message)
+            }
           end)
 
         assign(socket,
@@ -185,6 +195,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       {:error, _} ->
         assign(socket, channel_users: [], current_topic: nil, current_modes: nil)
     end
+  end
+
+  defp channel_presence_by_nick(channel_name) do
+    "channel:#{channel_name}"
+    |> Tracker.list_users()
+    |> Map.new(fn user -> {String.downcase(user.nickname), user} end)
   end
 
   @spec load_channel_user_count(Phoenix.LiveView.Socket.t(), String.t()) ::
