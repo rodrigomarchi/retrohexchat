@@ -2,6 +2,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   @moduledoc "Handler for /cs (ChanServ commands)"
   @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Channels.Server
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Services.{ChanServ, Queries}
 
@@ -93,8 +94,12 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
 
   defp call_register(channel, founder, server) do
     case ChanServ.register(channel, founder, server) do
-      {:ok, msg} -> {:ok, :system, %{content: "[ChanServ] #{msg}"}}
-      {:error, msg} -> {:error, "[ChanServ] #{msg}"}
+      {:ok, msg} ->
+        _ = Server.mark_registered(channel)
+        {:ok, :system, %{content: "[ChanServ] #{msg}"}}
+
+      {:error, msg} ->
+        {:error, "[ChanServ] #{msg}"}
     end
   end
 

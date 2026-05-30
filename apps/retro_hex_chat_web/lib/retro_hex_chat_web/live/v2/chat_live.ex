@@ -81,6 +81,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
 
   # ── Domain aliases ────────────────────────────────────────────
   alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, ServerRoles, Session}
+  alias RetroHexChat.Admin.ServerBans
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.{Motd, Queries}
 
@@ -114,71 +115,83 @@ defmodule RetroHexChatWeb.V2.ChatLive do
 
     case validate_session_nickname(nickname) do
       :ok ->
-        session = Session.new(nickname)
-        pre_identified = http_session["chat_pre_identified"] == true
-        join_channel = params["join"]
-
-        if connected?(socket) do
-          Phoenix.PubSub.broadcast(
-            RetroHexChat.PubSub,
-            "user:#{nickname}",
-            {:force_disconnect, %{reason: "Session ended — logged in from another window"}}
-          )
-
-          Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
-          Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "presence:global")
-          Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
-          Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:wallops")
-          Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:settings")
-
-          Phoenix.PubSub.broadcast(
-            RetroHexChat.PubSub,
-            "presence:global",
-            {:user_connected, %{nickname: nickname}}
-          )
-
-          timezone = resolve_timezone(http_session, socket)
-          client_info = parse_client_info(get_connect_params(socket))
-          previous_nickname = Map.get(socket.assigns.flash, "nick_changed_from")
-
-          ChatLive.Helpers.safe_track_user("presence:global", nickname)
-
-          socket =
-            socket
-            |> assign(v2: true)
-            |> attach_all_hooks()
-            |> assign_defaults(session)
-            |> assign(timezone: timezone, client_info: client_info)
-            |> ChatLive.Helpers.join_channel(
-              Application.get_env(:retro_hex_chat, :default_channel, "#lobby"),
-              session
-            )
-            |> ChatLive.Helpers.maybe_join_channel(join_channel)
-            |> maybe_broadcast_nick_changed(previous_nickname, nickname)
-            |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, pre_identified)
-            |> ChatLive.Helpers.maybe_trigger_perform()
-            |> ChatLive.Helpers.play_event_sound(:connect, session)
-            |> maybe_show_motd()
-            |> show_welcome_message()
-            |> show_chanserv_announcement()
-            |> show_nickserv_announcement()
-            |> push_initial_preferences()
-
-          {:ok, socket}
+        if ServerBans.banned?(nickname) do
+          {:ok, push_navigate(socket, to: ~p"/connect?reason=banned")}
         else
-          {:ok,
-           socket
-           |> assign(v2: true)
-           |> assign_defaults(session)
-           |> assign(
-             timezone: Timezone.validate(http_session["chat_timezone"]),
-             client_info: %{}
-           )}
+          {:ok, mount_chat_session(params, http_session, socket, nickname)}
         end
 
       {:error, _} ->
         {:ok, push_navigate(socket, to: ~p"/connect")}
     end
+  end
+
+  defp mount_chat_session(params, http_session, socket, nickname) do
+    session = Session.new(nickname)
+
+    if connected?(socket) do
+      mount_connected_chat(params, http_session, socket, session, nickname)
+    else
+      mount_disconnected_chat(http_session, socket, session)
+    end
+  end
+
+  defp mount_connected_chat(params, http_session, socket, session, nickname) do
+    Phoenix.PubSub.broadcast(
+      RetroHexChat.PubSub,
+      "user:#{nickname}",
+      {:force_disconnect, %{reason: "Session ended — logged in from another window"}}
+    )
+
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{nickname}")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "presence:global")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:wallops")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:settings")
+
+    Phoenix.PubSub.broadcast(
+      RetroHexChat.PubSub,
+      "presence:global",
+      {:user_connected, %{nickname: nickname}}
+    )
+
+    timezone = resolve_timezone(http_session, socket)
+    client_info = parse_client_info(get_connect_params(socket))
+    previous_nickname = Map.get(socket.assigns.flash, "nick_changed_from")
+    pre_identified = http_session["chat_pre_identified"] == true
+    join_channel = params["join"]
+
+    ChatLive.Helpers.safe_track_user("presence:global", nickname)
+
+    socket
+    |> assign(v2: true)
+    |> attach_all_hooks()
+    |> assign_defaults(session)
+    |> assign(timezone: timezone, client_info: client_info)
+    |> ChatLive.Helpers.join_channel(
+      Application.get_env(:retro_hex_chat, :default_channel, "#lobby"),
+      session
+    )
+    |> ChatLive.Helpers.maybe_join_channel(join_channel)
+    |> maybe_broadcast_nick_changed(previous_nickname, nickname)
+    |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, pre_identified)
+    |> ChatLive.Helpers.maybe_trigger_perform()
+    |> ChatLive.Helpers.play_event_sound(:connect, session)
+    |> maybe_show_motd()
+    |> show_welcome_message()
+    |> show_chanserv_announcement()
+    |> show_nickserv_announcement()
+    |> push_initial_preferences()
+  end
+
+  defp mount_disconnected_chat(http_session, socket, session) do
+    socket
+    |> assign(v2: true)
+    |> assign_defaults(session)
+    |> assign(
+      timezone: Timezone.validate(http_session["chat_timezone"]),
+      client_info: %{}
+    )
   end
 
   # ── Terminate ─────────────────────────────────────────────────
@@ -879,6 +892,12 @@ defmodule RetroHexChatWeb.V2.ChatLive do
 
   defp channel_central_modes(nil), do: %{}
   defp channel_central_modes(state), do: Map.get(state, :modes_detail, %{})
+
+  defp topic_bar_modes(_modes, true, _active_pm), do: []
+  defp topic_bar_modes(_modes, _show_status_tab, active_pm) when is_binary(active_pm), do: []
+  defp topic_bar_modes(nil, _show_status_tab, _active_pm), do: []
+  defp topic_bar_modes("", _show_status_tab, _active_pm), do: []
+  defp topic_bar_modes(modes, _show_status_tab, _active_pm), do: [modes]
 
   @spec to_list_entry(map() | String.t()) :: map()
   defp to_list_entry(%{mask: _} = map), do: map

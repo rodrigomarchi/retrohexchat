@@ -1,4 +1,4 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
+import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
 import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
 import { ChatPage } from '../pages/ChatPage';
 
@@ -139,12 +139,12 @@ test.describe('ChanServ commands', () => {
         `[ChanServ] ${aop.nick} removed from access list of ${channel}`,
       );
 
-      await founder.chat.sendMessage('/clear');
       await founder.chat.sendMessage('/cs aop list');
-      await founder.chat.expectMessageVisible(
-        `[ChanServ] Access list for ${channel}`,
-      );
-      await founder.chat.expectMessageHidden(`${aop.nick} [aop]`);
+      const updatedAopList = founder.chat.messageRows
+        .filter({ hasText: `[ChanServ] Access list for ${channel} (aop)` })
+        .last();
+      await expect(updatedAopList).toContainText('(empty)');
+      await expect(updatedAopList).not.toContainText(`${aop.nick} [aop]`);
     } finally {
       await closeUsers([founder, aop, vop]);
     }

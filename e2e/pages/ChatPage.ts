@@ -32,6 +32,7 @@ export class ChatPage {
   readonly helpMenuTrigger: Locator;
   readonly toolsMenuTrigger: Locator;
   readonly disconnectMenuItem: Locator;
+  readonly adminConsoleMenuItem: Locator;
   readonly channelListMenuItem: Locator;
   readonly toggleConversationsMenuItem: Locator;
   readonly toggleNicklistMenuItem: Locator;
@@ -160,6 +161,9 @@ export class ChatPage {
   readonly autorespondDialog: Locator;
   readonly autorespondEditForm: Locator;
   readonly botManagementDialog: Locator;
+  readonly adminConsoleDialog: Locator;
+  readonly adminConsoleInput: Locator;
+  readonly adminConsoleOutput: Locator;
   readonly botList: Locator;
   readonly newBotDialog: Locator;
   readonly addCommandDialog: Locator;
@@ -224,6 +228,9 @@ export class ChatPage {
       .filter({ hasText: 'Tools' });
     // context_menu_item exposes data-testid="context-menu-item-<action>".
     this.disconnectMenuItem = page.getByTestId('context-menu-item-disconnect');
+    this.adminConsoleMenuItem = page.getByTestId(
+      'context-menu-item-open_admin_console',
+    );
     this.channelListMenuItem = page.getByTestId(
       'context-menu-item-toggle_channel_list',
     );
@@ -429,6 +436,11 @@ export class ChatPage {
     this.botManagementDialog = page.locator(
       '#bot-management-dialog [role="dialog"]',
     );
+    this.adminConsoleDialog = page.locator(
+      '#admin-console-dialog [role="dialog"]',
+    );
+    this.adminConsoleInput = page.locator('#admin-console-input');
+    this.adminConsoleOutput = page.getByTestId('admin-console-output');
     this.botList = page.getByTestId('bot-list');
     this.newBotDialog = page.locator('#new-bot-dialog [role="dialog"]');
     this.addCommandDialog = page.locator(
@@ -932,6 +944,13 @@ export class ChatPage {
     // we DO need the hook to be mounted first (see waitUntilConnected).
     await this.fileMenuTrigger.click();
     await expect(this.disconnectMenuItem).toBeVisible();
+  }
+
+  async openAdminConsoleFromMenu() {
+    await this.openFileMenu();
+    await expect(this.adminConsoleMenuItem).toBeVisible();
+    await this.adminConsoleMenuItem.click();
+    await expect(this.adminConsoleDialog).toBeVisible();
   }
 
   async openHelpTopicsFromMenu() {

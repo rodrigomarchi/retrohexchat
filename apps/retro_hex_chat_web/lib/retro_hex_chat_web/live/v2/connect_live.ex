@@ -57,6 +57,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
   @spec reason_to_message(String.t()) :: String.t()
   defp reason_to_message("expired"), do: "Session expired"
   defp reason_to_message("disconnected"), do: "Session ended"
+  defp reason_to_message("banned"), do: "Server banned"
   defp reason_to_message(reason), do: reason
 
   @impl true

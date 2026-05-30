@@ -3,7 +3,7 @@ defmodule RetroHexChat.Channels.Policy do
   Authorization checks for channel operations.
   """
 
-  alias RetroHexChat.Channels.{Membership, Modes}
+  alias RetroHexChat.Channels.{Masks, Membership, Modes}
 
   @spec can_join?(
           Modes.t(),
@@ -36,7 +36,7 @@ defmodule RetroHexChat.Channels.Policy do
   end
 
   defp check_invite(modes, invite_exceptions, nickname) do
-    if Modes.invite_only?(modes) and not MapSet.member?(invite_exceptions, nickname),
+    if Modes.invite_only?(modes) and not Masks.matches_any?(invite_exceptions, nickname),
       do: {:error, "Channel is invite-only (+i)"},
       else: :ok
   end

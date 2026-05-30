@@ -150,21 +150,21 @@ green catalog in `TEST_CATALOG.md`.
 
 | # | Scenario | Suggested spec file | Priority | Status |
 |---|----------|---------------------|----------|--------|
-| X1 | Channel mode combinations `+imntkl` applied together survive dialog reopen and slash `/mode` output | `tests/chat-channel-mode-matrix.spec.ts` | P1 | todo |
-| X2 | Removing channel key/limit with `/mode -k` and `/mode -l` clears visible state and join restrictions | `tests/chat-channel-mode-matrix.spec.ts` | P1 | todo |
-| X3 | Ban masks or wildcard-style bans behave as product intends, not only exact nick bans | `tests/chat-channel-ban-masks.spec.ts` | P2 | investigate |
-| X4 | Ban exception allows a banned user to join when exception matches | `tests/chat-channel-ban-exceptions.spec.ts` | P1 | todo |
-| X5 | Invite exception allows a user into invite-only channel without one-off invite | `tests/chat-channel-invite-exceptions.spec.ts` | P1 | todo |
-| X6 | ChanServ registered channel access survives all users leaving and later rejoining | `tests/chat-chanserv-persistence.spec.ts` | P1 | todo |
-| X7 | ChanServ founder transfer persists and changes future access control | `tests/chat-chanserv-transfer-persistence.spec.ts` | P1 | todo |
-| X8 | SOP outranks AOP/VOP for service-managed permissions and automatic role assignment | `tests/chat-chanserv-access-hierarchy.spec.ts` | P2 | todo |
-| X9 | Non-founder service access mutation attempts produce clear errors and no partial state change | `tests/chat-chanserv-permission-edges.spec.ts` | P1 | todo |
-| X10 | Admin channel delete while users are inside removes tabs and prevents stale sends | `tests/chat-admin-channel-destructive.spec.ts` | P1 | todo |
-| X11 | Admin channel purge updates already-open clients in realtime, not only after tab reload | `tests/chat-admin-channel-purge-realtime.spec.ts` | P2 | todo |
-| X12 | Admin user ban persists across reconnect and unban restores access through UI-visible flow | `tests/chat-admin-ban-persistence.spec.ts` | P1 | todo |
-| X13 | Admin mute persists across reconnect and unmute restores normal send behavior | `tests/chat-admin-user-mute-persistence.spec.ts` | P1 | todo |
-| X14 | Admin role change is reflected immediately in menus/permissions after target reconnects | `tests/chat-admin-role-persistence.spec.ts` | P2 | todo |
-| X15 | Admin audit log shows entries for representative admin actions with actor/target/reason | `tests/chat-admin-audit-log.spec.ts` | P1 | todo |
+| X1 | Channel mode combinations `+imntkl` applied together survive dialog reopen and slash `/mode` output | `tests/chat-channel-mode-matrix.spec.ts` | P1 | done |
+| X2 | Removing channel key/limit with `/mode -k` and `/mode -l` clears visible state and join restrictions | `tests/chat-channel-mode-matrix.spec.ts` | P1 | done |
+| X3 | Ban masks or wildcard-style bans behave as product intends, not only exact nick bans | `tests/chat-channel-ban-masks.spec.ts` | P2 | done |
+| X4 | Ban exception allows a banned user to join when exception matches | `tests/chat-channel-ban-exceptions.spec.ts` | P1 | done |
+| X5 | Invite exception allows a user into invite-only channel without one-off invite | `tests/chat-channel-invite-exceptions.spec.ts` | P1 | done |
+| X6 | ChanServ registered channel access survives all users leaving and later rejoining | `tests/chat-chanserv-persistence.spec.ts` | P1 | done |
+| X7 | ChanServ founder transfer persists and changes future access control | `tests/chat-chanserv-transfer-persistence.spec.ts` | P1 | done |
+| X8 | SOP outranks AOP/VOP for service-managed permissions and automatic role assignment | `tests/chat-chanserv-access-hierarchy.spec.ts` | P2 | done |
+| X9 | Non-founder service access mutation attempts produce clear errors and no partial state change | `tests/chat-chanserv-permission-edges.spec.ts` | P1 | done |
+| X10 | Admin channel delete while users are inside removes tabs and prevents stale sends | `tests/chat-admin-channel-destructive.spec.ts` | P1 | done |
+| X11 | Admin channel purge updates already-open clients in realtime, not only after tab reload | `tests/chat-admin-channel-purge-realtime.spec.ts` | P2 | done |
+| X12 | Admin user ban persists across reconnect and unban restores access through UI-visible flow | `tests/chat-admin-ban-persistence.spec.ts` | P1 | done |
+| X13 | Admin mute persists across reconnect and unmute restores normal send behavior | `tests/chat-admin-user-mute-persistence.spec.ts` | P1 | done |
+| X14 | Admin role change is reflected immediately in menus/permissions after target reconnects | `tests/chat-admin-role-persistence.spec.ts` | P2 | done |
+| X15 | Admin audit log shows entries for representative admin actions with actor/target/reason | `tests/chat-admin-audit-log.spec.ts` | P1 | done |
 
 ## Y - Bots, Automation, Timers, And Race Conditions
 

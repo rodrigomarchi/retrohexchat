@@ -11,7 +11,7 @@ defmodule RetroHexChat.Channels.Server do
 
   require Logger
 
-  alias RetroHexChat.Channels.{Events, Membership, Modes, Policy, Queries, Registry}
+  alias RetroHexChat.Channels.{Events, Masks, Membership, Modes, Policy, Queries, Registry}
   alias RetroHexChat.Chat
   alias RetroHexChat.Chat.Formatter
   alias RetroHexChat.Services.ChanServ
@@ -211,6 +211,17 @@ defmodule RetroHexChat.Channels.Server do
   @spec transfer_ownership(String.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
   def transfer_ownership(channel_name, current_owner, new_owner) do
     GenServer.call(via(channel_name), {:transfer_ownership, current_owner, new_owner})
+  end
+
+  @doc "Mark a live channel process as registered after ChanServ registration."
+  @spec mark_registered(String.t()) :: :ok | {:error, String.t()}
+  def mark_registered(channel_name) do
+    case Registry.lookup(channel_name) do
+      {:ok, pid} -> GenServer.call(pid, :mark_registered)
+      {:error, :not_found} -> {:error, "Channel not found"}
+    end
+  catch
+    :exit, _reason -> {:error, "Channel not found"}
   end
 
   # ──────────────────────────────────────────────────────────────
@@ -424,20 +435,7 @@ defmodule RetroHexChat.Channels.Server do
            }}
         )
 
-        # Eject banned user from channel if currently a member
-        new_state =
-          if Membership.member?(new_state.membership, target_nick) do
-            new_membership = Membership.remove(new_state.membership, target_nick)
-
-            broadcast(
-              state.name,
-              {:user_kicked, %{operator: actor_nick, target: target_nick, reason: "Banned"}}
-            )
-
-            %{new_state | membership: new_membership}
-          else
-            new_state
-          end
+        new_state = eject_ban_matches(new_state, actor_nick, target_nick, "Banned")
 
         {:reply, :ok, new_state}
 
@@ -637,6 +635,10 @@ defmodule RetroHexChat.Channels.Server do
     {:reply, {:ok, state.welcome_message}, state}
   end
 
+  def handle_call(:mark_registered, _from, state) do
+    {:reply, :ok, %{state | registered: true}}
+  end
+
   def handle_call({:knock, nickname, message}, _from, state) do
     cond do
       not Modes.invite_only?(state.modes) ->
@@ -645,8 +647,8 @@ defmodule RetroHexChat.Channels.Server do
       Modes.no_knock?(state.modes) ->
         {:reply, {:error, "Knocking is disabled for this channel"}, state}
 
-      MapSet.member?(state.bans, nickname) and
-          not MapSet.member?(state.ban_exceptions, nickname) ->
+      Masks.matches_any?(state.bans, nickname) and
+          not Masks.matches_any?(state.ban_exceptions, nickname) ->
         {:reply, {:error, "You are banned from that channel"}, state}
 
       Membership.member?(state.membership, nickname) ->
@@ -834,7 +836,7 @@ defmodule RetroHexChat.Channels.Server do
         {:user_banned, %{channel: state.name, operator: nickname, target: target, reason: nil}}
       )
 
-      {:ok, eject_if_member(new_state, nickname, target)}
+      {:ok, eject_ban_matches(new_state, nickname, target, "Banned")}
     end
   end
 
@@ -854,19 +856,21 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
-  defp eject_if_member(state, operator, target) do
-    if Membership.member?(state.membership, target) do
-      new_membership = Membership.remove(state.membership, target)
-
+  defp eject_ban_matches(state, operator, mask, reason) do
+    state.membership
+    |> Membership.to_list()
+    |> Enum.map(fn {nick, _role} -> nick end)
+    |> Enum.filter(&Masks.matches?(mask, &1))
+    |> Enum.reject(&(&1 == operator))
+    |> Enum.filter(&(Policy.can_ban?(state.membership, operator, &1) == :ok))
+    |> Enum.reduce(state, fn target, acc ->
       broadcast(
-        state.name,
-        {:user_kicked, %{operator: operator, target: target, reason: "Banned"}}
+        acc.name,
+        {:user_kicked, %{operator: operator, target: target, reason: reason}}
       )
 
-      %{state | membership: new_membership}
-    else
-      state
-    end
+      %{acc | membership: Membership.remove(acc.membership, target)}
+    end)
   end
 
   defp check_mode_permissions(membership, nickname, mode_string, params) do
@@ -998,8 +1002,8 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   defp check_not_banned(state, nickname) do
-    banned = MapSet.member?(state.bans, nickname)
-    excepted = MapSet.member?(state.ban_exceptions, nickname)
+    banned = Masks.matches_any?(state.bans, nickname)
+    excepted = Masks.matches_any?(state.ban_exceptions, nickname)
 
     if banned and not excepted do
       {:error, "You are banned from #{state.name}"}

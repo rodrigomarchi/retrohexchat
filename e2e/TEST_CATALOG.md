@@ -6,11 +6,11 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **152 spec files** under `e2e/tests/`.
-- **273 Playwright `test()` cases**.
+- **166 spec files** under `e2e/tests/`.
+- **288 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 231 mapped flows, 230 done, 1 intentionally blocked.
+- **Chat extended coverage:** 246 mapped flows, 245 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -411,6 +411,26 @@ make ci
 | W10 | Notify auto-add-PM adds first PM partners and persists the entry across registered-user reconnect | `tests/chat-notify-settings.spec.ts` | P1 | done |
 | W11 | Passive tab switching, dialog open/close, and nicklist hover do not reset the observed idle timer | `tests/chat-idle-passive.spec.ts` | P2 | done |
 
+## Backlog X - Channel Modes, Services, Permissions, Persistence Edges
+
+| # | Flow | Spec file | Priority | Status |
+|---|------|-----------|----------|--------|
+| X1 | Combined `+imntkl` channel modes survive Channel Central reopen and render in channel mode output | `tests/chat-channel-mode-matrix.spec.ts` | P1 | done |
+| X2 | `/mode -k` and `/mode -l` clear Channel Central state and remove join restrictions | `tests/chat-channel-mode-matrix.spec.ts` | P1 | done |
+| X3 | Wildcard ban masks block matching nicks, spare non-matching nicks, and allow rejoin after unban | `tests/chat-channel-ban-masks.spec.ts` | P2 | done |
+| X4 | Matching ban exception hostmask overrides a wildcard ban, and removal restores the ban | `tests/chat-channel-ban-exceptions.spec.ts` | P1 | done |
+| X5 | Matching invite exception hostmask allows invite-only join, and removal restores the restriction | `tests/chat-channel-invite-exceptions.spec.ts` | P1 | done |
+| X6 | ChanServ registered channel access survives an empty channel and later founder/member rejoins | `tests/chat-chanserv-persistence.spec.ts` | P1 | done |
+| X7 | Admin-transferred founder controls future ChanServ access after empty-channel rejoin | `tests/chat-chanserv-transfer-persistence.spec.ts` | P1 | done |
+| X8 | SOP/AOP/VOP hierarchy controls automatic roles and access-management permissions | `tests/chat-chanserv-access-hierarchy.spec.ts` | P2 | done |
+| X9 | Non-founder access mutations fail clearly and leave AOP/VOP state unchanged | `tests/chat-chanserv-permission-edges.spec.ts` | P1 | done |
+| X10 | Admin channel delete removes open tabs and sends after deletion target the fallback channel | `tests/chat-admin-channel-destructive.spec.ts` | P1 | done |
+| X11 | Admin channel purge removes visible history from already-open clients in realtime | `tests/chat-admin-channel-purge-realtime.spec.ts` | P2 | done |
+| X12 | Server bans block reconnect and stale-session `/chat` access until admin unban restores login | `tests/chat-admin-ban-persistence.spec.ts` | P1 | done |
+| X13 | Server mutes survive disconnect/reconnect and block sends until admin unmute restores sending | `tests/chat-admin-user-mute-persistence.spec.ts` | P1 | done |
+| X14 | Server operator role appears after reconnect and grants operator-only command/menu access | `tests/chat-admin-role-persistence.spec.ts` | P2 | done |
+| X15 | Admin audit log shows actor, target, action, and persisted reason for user ban entries | `tests/chat-admin-audit-log.spec.ts` | P1 | done |
+
 ## Intentional Block
 
 | # | Reason |
@@ -472,3 +492,10 @@ make ci
 - `/whowas` now detects online users and points to `/whois` for current information instead of returning a misleading missing-cache response.
 - Whowas retention is now configurable through `/admin server set whowas_retention_seconds`, allowing safe verification of expiry behavior through normal admin UI.
 - Away changes now broadcast to open channel views, refresh nicklist status, and keep nicklist hover cards in sync.
+- Topic bar now receives the active channel mode string, making slash `/mode` changes visible in the channel header.
+- Channel ban masks now match wildcard nick hostmasks for joins, knocks, and lower-rank ejections instead of exact nick only.
+- Channel membership PubSub updates now ignore inactive-channel membership/away events for the visible nicklist, preventing cross-channel duplicates.
+- Invite exceptions now use the same nick hostmask matcher as bans, so Channel Central Hostmask entries work for invite-only joins.
+- `/cs register` now marks the live channel process as registered immediately, so later joins and mode persistence do not depend on process restart.
+- Server bans now display a human-readable reconnect alert and prevent banned existing sessions from reopening `/chat`.
+- `/admin log` now includes non-empty audit details such as ban reasons instead of hiding the persisted metadata.

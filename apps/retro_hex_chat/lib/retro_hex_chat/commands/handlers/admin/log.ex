@@ -30,9 +30,27 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Log do
 
   defp format_log_entry(e) do
     target = if e.target_type, do: " → #{e.target_type}:#{e.target_id}", else: ""
+    details = format_details(e.details)
     time = Calendar.strftime(e.inserted_at, "%Y-%m-%d %H:%M:%S")
-    "  [#{time}] #{e.actor} #{e.action}#{target}"
+    "  [#{time}] #{e.actor} #{e.action}#{target}#{details}"
   end
+
+  defp format_details(nil), do: ""
+  defp format_details(details) when details == %{}, do: ""
+
+  defp format_details(details) do
+    details
+    |> Enum.reject(fn {_key, value} -> is_nil(value) end)
+    |> Enum.sort_by(fn {key, _value} -> to_string(key) end)
+    |> Enum.map(fn {key, value} -> "#{key}: #{format_detail_value(value)}" end)
+    |> case do
+      [] -> ""
+      parts -> " (" <> Enum.join(parts, ", ") <> ")"
+    end
+  end
+
+  defp format_detail_value(value) when is_binary(value), do: value
+  defp format_detail_value(value), do: inspect(value)
 
   defp strip_at("@" <> nick), do: nick
   defp strip_at(nick), do: nick

@@ -221,6 +221,7 @@ defmodule RetroHexChat.Admin do
     case Channels.Supervisor.start_child(channel_name) do
       {:ok, _pid} ->
         ChanServ.register(channel_name, admin)
+        Channels.Server.mark_registered(channel_name)
         AuditLogs.log(admin, "channel.create", {"channel", channel_name})
         {:ok, "Channel #{channel_name} created and registered."}
 

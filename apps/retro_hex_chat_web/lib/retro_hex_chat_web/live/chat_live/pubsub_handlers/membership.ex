@@ -39,59 +39,70 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     role = Map.get(payload, :role, :regular)
     channel = Map.get(payload, :channel)
     user = %{nickname: nick, role: role, away: false}
-    users = [user | socket.assigns.channel_users]
 
-    {:halt,
-     socket
-     |> assign(channel_users: users)
-     |> increment_channel_user_count(channel)
-     |> maybe_refresh_cc(channel)
-     |> play_event_sound(:join, socket.assigns.session)
-     |> system_event(msg)
-     |> maybe_fire_autorespond(
-       :on_join,
-       channel,
-       nick,
-       &CommandDispatch.dispatch_command/4
-     )}
+    socket =
+      socket
+      |> increment_channel_user_count(channel)
+      |> maybe_refresh_cc(channel)
+
+    if active_channel?(socket, channel) do
+      users = upsert_channel_user(socket.assigns.channel_users, user)
+
+      {:halt,
+       socket
+       |> assign(channel_users: users)
+       |> play_event_sound(:join, socket.assigns.session)
+       |> system_event(msg)
+       |> maybe_fire_autorespond(
+         :on_join,
+         channel,
+         nick,
+         &CommandDispatch.dispatch_command/4
+       )}
+    else
+      {:halt, socket}
+    end
   end
 
   def handle_info({:user_left, %{nickname: nick, reason: reason} = payload}, socket) do
     msg = "#{nick} has left" <> if(reason, do: " (#{reason})", else: "")
     channel = Map.get(payload, :channel)
-    users = Enum.reject(socket.assigns.channel_users, &(&1.nickname == nick))
 
     socket =
       socket
-      |> assign(channel_users: users)
       |> decrement_channel_user_count(channel)
       |> maybe_refresh_cc(channel)
-      |> play_event_sound(:part, socket.assigns.session)
-      |> system_event(msg)
 
-    socket =
-      if reason == "Changing nickname" do
+    if active_channel?(socket, channel) do
+      users = Enum.reject(socket.assigns.channel_users, &same_nick?(&1.nickname, nick))
+
+      socket =
         socket
-      else
-        maybe_fire_autorespond(
-          socket,
-          :on_part,
-          channel,
-          nick,
-          &CommandDispatch.dispatch_command/4
-        )
-      end
+        |> assign(channel_users: users)
+        |> play_event_sound(:part, socket.assigns.session)
+        |> system_event(msg)
 
-    {:halt, socket}
+      socket =
+        if reason == "Changing nickname" do
+          socket
+        else
+          maybe_fire_autorespond(
+            socket,
+            :on_part,
+            channel,
+            nick,
+            &CommandDispatch.dispatch_command/4
+          )
+        end
+
+      {:halt, socket}
+    else
+      {:halt, socket}
+    end
   end
 
   def handle_info({:nick_changed, %{old_nick: old_nick, new_nick: new_nick} = payload}, socket) do
     channel = Map.get(payload, :channel, socket.assigns.session.active_channel)
-
-    users =
-      Enum.map(socket.assigns.channel_users, fn user ->
-        if user.nickname == old_nick, do: %{user | nickname: new_nick}, else: user
-      end)
 
     msg = "#{old_nick} is now known as #{new_nick}"
 
@@ -134,35 +145,46 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
         socket
       end
 
-    {:halt,
-     socket
-     |> assign(channel_users: users)
-     |> system_event(msg)
-     |> maybe_fire_autorespond(
-       :on_nick_change,
-       channel,
-       new_nick,
-       &CommandDispatch.dispatch_command/4
-     )}
+    if active_channel?(socket, channel) do
+      users =
+        Enum.map(socket.assigns.channel_users, fn user ->
+          rename_channel_user(user, old_nick, new_nick)
+        end)
+
+      {:halt,
+       socket
+       |> assign(channel_users: users)
+       |> system_event(msg)
+       |> maybe_fire_autorespond(
+         :on_nick_change,
+         channel,
+         new_nick,
+         &CommandDispatch.dispatch_command/4
+       )}
+    else
+      {:halt, socket}
+    end
   end
 
   def handle_info(
-        {:user_away_changed, %{nickname: nick, away: away, away_message: message}},
+        {:user_away_changed, %{nickname: nick, away: away, away_message: message} = payload},
         socket
       ) do
-    users =
-      Enum.map(socket.assigns.channel_users, fn user ->
-        if String.downcase(user.nickname) == String.downcase(nick) do
-          Map.merge(user, %{away: away, away_message: message})
-        else
-          user
-        end
-      end)
+    channel = Map.get(payload, :channel)
 
-    {:halt,
-     socket
-     |> assign(channel_users: users)
-     |> maybe_update_hover_away(nick, away, message)}
+    if active_channel?(socket, channel) do
+      users =
+        Enum.map(socket.assigns.channel_users, fn user ->
+          update_channel_user_away(user, nick, away, message)
+        end)
+
+      {:halt,
+       socket
+       |> assign(channel_users: users)
+       |> maybe_update_hover_away(nick, away, message)}
+    else
+      {:halt, socket}
+    end
   end
 
   # ── Force disconnect/rename ───────────────────────────────
@@ -270,6 +292,34 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     counts = socket.assigns.channel_user_counts
     current = Map.get(counts, channel, 0)
     assign(socket, channel_user_counts: Map.put(counts, channel, max(current - 1, 0)))
+  end
+
+  defp active_channel?(_socket, nil), do: true
+
+  defp active_channel?(socket, channel) do
+    socket.assigns.session.active_channel == channel
+  end
+
+  defp upsert_channel_user(users, user) do
+    users
+    |> Enum.reject(&same_nick?(&1.nickname, user.nickname))
+    |> then(&[user | &1])
+  end
+
+  defp same_nick?(left, right) do
+    String.downcase(left) == String.downcase(right)
+  end
+
+  defp rename_channel_user(user, old_nick, new_nick) do
+    if same_nick?(user.nickname, old_nick), do: %{user | nickname: new_nick}, else: user
+  end
+
+  defp update_channel_user_away(user, nick, away, message) do
+    if same_nick?(user.nickname, nick) do
+      Map.merge(user, %{away: away, away_message: message})
+    else
+      user
+    end
   end
 
   defp rename_pm_state(socket, old_nick, new_nick) do
