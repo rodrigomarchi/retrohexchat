@@ -8,7 +8,7 @@ defmodule RetroHexChat.Chat.Schemas.IgnoreListEntry do
 
   @type t :: %__MODULE__{}
 
-  @valid_types ~w(all messages pms invites actions)
+  @valid_types ~w(all messages pms invites actions notices)
 
   schema "ignore_list_entries" do
     field :owner_nickname, :string

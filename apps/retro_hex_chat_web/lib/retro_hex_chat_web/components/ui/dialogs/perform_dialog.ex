@@ -46,6 +46,10 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   attr :on_move_up, :any, default: nil
   attr :on_move_down, :any, default: nil
   attr :on_toggle_enabled, :any, default: nil
+  attr :on_autojoin_select, :any, default: nil
+  attr :on_autojoin_add, :any, default: nil
+  attr :on_autojoin_edit, :any, default: nil
+  attr :on_autojoin_remove, :any, default: nil
   attr :show_perform_add_dialog, :boolean, default: false
   attr :show_perform_edit_dialog, :boolean, default: false
   attr :show_autojoin_add_dialog, :boolean, default: false
@@ -100,10 +104,10 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
             <.autojoin_tab
               entries={@autojoin_entries}
               selected={@autojoin_selected}
-              on_select={@on_select}
-              on_add={@on_add}
-              on_edit={@on_edit}
-              on_remove={@on_remove}
+              on_select={@on_autojoin_select}
+              on_add={@on_autojoin_add}
+              on_edit={@on_autojoin_edit}
+              on_remove={@on_autojoin_remove}
             />
           </.tabs_content>
         </.tabs>
@@ -324,6 +328,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         </div>
         <div class="p-2">
           <form phx-submit="autojoin_dialog_edit_confirm" data-testid="autojoin-edit-dialog">
+            <input type="hidden" name="channel" value={@edit_channel} />
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="autojoin-edit-channel">Channel:</label>
               <.input

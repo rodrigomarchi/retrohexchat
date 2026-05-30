@@ -74,6 +74,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
       away: target_meta && target_meta[:away],
       away_message: target_meta && target_meta[:away_message],
       bio: whois_bio(is_self, session, target_meta, target),
+      contact_note: contact_note(session, target),
       browser: client_field(is_self, socket, target_meta, :browser),
       os: client_field(is_self, socket, target_meta, :os),
       language: client_field(is_self, socket, target_meta, :language),
@@ -112,6 +113,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
       end
   end
 
+  defp contact_note(session, target) do
+    target_lower = String.downcase(target)
+
+    session.contacts.entries
+    |> Enum.find(&(String.downcase(&1.contact_nickname) == target_lower))
+    |> case do
+      nil -> nil
+      entry -> entry.note
+    end
+  end
+
   defp format_whois_lines(data, target, my_nick) do
     lines = ["----- Whois: #{target} -----"]
 
@@ -134,6 +146,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
     lines = lines ++ ["Registered: #{if data.registered, do: "Yes", else: "No"}"]
     lines = maybe_append(lines, data.away, "Away: #{data.away_message || ""}")
     lines = maybe_append(lines, data.bio != nil, "Bio: #{data.bio}")
+    lines = maybe_append(lines, data.contact_note != nil, "Contact note: #{data.contact_note}")
 
     client_label = client_display(data.browser, data.os)
     lines = maybe_append(lines, client_label != nil, "Client: #{client_label}")

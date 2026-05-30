@@ -129,6 +129,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
         idle: format_idle_time(target_meta),
         role: get_role_in_active_channel(nick, session.active_channel),
         is_contact: contact?(nick, session.contacts),
+        contact_note: contact_note(nick, session.contacts),
         is_ignored: IgnoreList.get_entry(session.ignore_list, nick) != nil
       }
       |> Map.merge(extract_client_fields(target_meta))
@@ -154,6 +155,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
       timezone_info: data.client_timezone,
       role: hover_role(data.role),
       is_contact: data.is_contact,
+      contact_note: data.contact_note,
       is_ignored: data.is_ignored
     }
   end
@@ -264,10 +266,19 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
 
   @spec contact?(String.t(), map()) :: boolean()
   defp contact?(nick, contacts) do
+    find_contact(nick, contacts) != nil
+  end
+
+  defp contact_note(nick, contacts) do
+    case find_contact(nick, contacts) do
+      nil -> nil
+      entry -> entry.note
+    end
+  end
+
+  defp find_contact(nick, contacts) do
     nick_lower = String.downcase(nick)
 
-    Enum.any?(contacts.entries, fn entry ->
-      String.downcase(entry.contact_nickname) == nick_lower
-    end)
+    Enum.find(contacts.entries, &(String.downcase(&1.contact_nickname) == nick_lower))
   end
 end

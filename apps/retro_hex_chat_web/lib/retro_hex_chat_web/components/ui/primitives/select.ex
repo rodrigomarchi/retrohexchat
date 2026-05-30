@@ -175,6 +175,8 @@ defmodule RetroHexChatWeb.Components.UI.Select do
 
   attr :value, :string, required: true
   attr :label, :string, default: nil
+  attr :on_select, :any, default: nil
+  attr :on_select_value, :map, default: %{}
   attr :disabled, :boolean, default: false
   attr :class, :string, default: nil
   slot :inner_block, required: true
@@ -183,6 +185,7 @@ defmodule RetroHexChatWeb.Components.UI.Select do
 
   def select_item(assigns) do
     assigns = assign(assigns, :label, assigns.label || assigns.value)
+    assigns = assign(assigns, :input_id, option_input_id(assigns.builder.id, assigns.value))
 
     ~H"""
     <label
@@ -195,16 +198,18 @@ defmodule RetroHexChatWeb.Components.UI.Select do
         ])
       }
       {%{"data-disabled": @disabled}}
-      phx-click={select_value(@builder.id, @label)}
+      phx-click={select_item_push(@builder.id, @on_select, @on_select_value)}
       {@rest}
     >
       <input
+        id={@input_id}
         type="radio"
         class="peer w-0 opacity-0"
         name={@builder.name}
         value={@value}
         checked={@builder.value == @value}
         disabled={@disabled}
+        phx-click={JS.exec("x-hide-select", to: "##{@builder.id}")}
         phx-key="Escape"
         phx-keydown={JS.exec("x-hide-select", to: "##{@builder.id}")}
       />
@@ -258,10 +263,19 @@ defmodule RetroHexChatWeb.Components.UI.Select do
     |> JS.focus_first(to: "##{id}[data-state=open] .select-content label:has(input:checked)")
   end
 
-  # set value to select and hide select
-  defp select_value(root_id, value) do
-    %JS{}
-    |> JS.set_attribute({"data-content", value}, to: "##{root_id} .select-value")
+  defp select_item_push(_root_id, nil, _on_select_value), do: nil
+
+  defp select_item_push(root_id, on_select, on_select_value) do
+    JS.push(on_select, value: on_select_value)
     |> JS.exec("x-hide-select", to: "##{root_id}")
+  end
+
+  defp option_input_id(root_id, value) do
+    encoded_value =
+      value
+      |> to_string()
+      |> Base.url_encode64(padding: false)
+
+    "#{root_id}-option-#{encoded_value}"
   end
 end

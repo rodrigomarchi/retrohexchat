@@ -83,10 +83,11 @@ defmodule RetroHexChat.Chat.IgnoreListPersistenceTest do
       {:ok, list} = IgnoreList.add_entry(list, "SpamBot", :all, nil)
       {:ok, list} = IgnoreList.add_entry(list, "Troll", :pms, nil)
       {:ok, list} = IgnoreList.add_entry(list, "Annoying", :actions, nil)
+      {:ok, list} = IgnoreList.add_entry(list, "InfoBot", :notices, nil)
       :ok = IgnoreList.save(@owner, list)
 
       {:ok, loaded} = IgnoreList.load(@owner)
-      assert IgnoreList.count(loaded) == 3
+      assert IgnoreList.count(loaded) == 4
 
       spam_entry = IgnoreList.get_entry(loaded, "SpamBot")
       assert spam_entry.ignore_type == :all
@@ -96,6 +97,9 @@ defmodule RetroHexChat.Chat.IgnoreListPersistenceTest do
 
       annoying_entry = IgnoreList.get_entry(loaded, "Annoying")
       assert annoying_entry.ignore_type == :actions
+
+      info_entry = IgnoreList.get_entry(loaded, "InfoBot")
+      assert info_entry.ignore_type == :notices
     end
 
     test "filters out expired entries on load" do

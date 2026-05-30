@@ -73,7 +73,7 @@ defmodule RetroHexChat.Chat.Schemas.IgnoreListEntryTest do
     end
 
     test "validates ignore_type inclusion" do
-      for valid_type <- ~w(all messages pms invites actions) do
+      for valid_type <- ~w(all messages pms invites actions notices) do
         attrs = %{
           owner_nickname: "TestUser",
           ignored_nickname: "SpamBot",

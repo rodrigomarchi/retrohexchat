@@ -207,8 +207,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
   @spec load_channel_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
-  def load_channel_messages_with_pagination(socket, channel_name) do
-    raw_messages = Queries.list_messages(channel_name, limit: 50)
+  @spec load_channel_messages_with_pagination(
+          Phoenix.LiveView.Socket.t(),
+          String.t(),
+          pos_integer()
+        ) ::
+          Phoenix.LiveView.Socket.t()
+  def load_channel_messages_with_pagination(socket, channel_name, limit \\ 50) do
+    raw_messages = Queries.list_messages(channel_name, limit: limit)
 
     oldest_id =
       case List.last(raw_messages) do
@@ -225,7 +231,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     socket
     |> assign(
       oldest_message_id: oldest_id,
-      has_more: length(raw_messages) == 50,
+      has_more: length(raw_messages) == limit,
       loaded_message_count: length(raw_messages),
       loading_more: false,
       new_messages_indicator: false

@@ -69,8 +69,9 @@ defmodule RetroHexChatWeb.ChatLive.HighlightEvents do
     {:halt, assign(socket, show_highlight_edit_dialog: false)}
   end
 
-  def handle_event("highlight_color_pick", %{"color" => color}, socket) do
-    {:halt, assign(socket, highlight_selected_color: color)}
+  def handle_event("highlight_color_pick", params, socket) do
+    color = params["color"] || params["index"]
+    {:halt, assign(socket, highlight_selected_color: parse_optional_color(color))}
   end
 
   def handle_event("highlight_add", %{"word" => word} = params, socket) do

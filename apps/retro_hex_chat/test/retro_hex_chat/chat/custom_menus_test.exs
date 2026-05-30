@@ -93,6 +93,20 @@ defmodule RetroHexChat.Chat.CustomMenusTest do
       assert {:error, :command_too_long} =
                CustomMenus.add_entry(menus, :nicklist, "Test", long_cmd)
     end
+
+    @tag :unit
+    test "rejects empty command" do
+      menus = CustomMenus.new()
+      assert {:error, :invalid_command} = CustomMenus.add_entry(menus, :nicklist, "Test", " ")
+    end
+
+    @tag :unit
+    test "rejects command chaining" do
+      menus = CustomMenus.new()
+
+      assert {:error, :command_chaining} =
+               CustomMenus.add_entry(menus, :nicklist, "Test", "/me one && /me two")
+    end
   end
 
   describe "remove_entry/3" do
@@ -131,6 +145,34 @@ defmodule RetroHexChat.Chat.CustomMenusTest do
 
       assert {:error, :not_found} =
                CustomMenus.update_entry(menus, :nicklist, "Nope", "New", "/me test")
+    end
+
+    @tag :unit
+    test "rejects duplicate labels when updating" do
+      menus = CustomMenus.new()
+      {:ok, menus} = CustomMenus.add_entry(menus, :nicklist, "Greet", "/notice $1 Hi!")
+      {:ok, menus} = CustomMenus.add_entry(menus, :nicklist, "Wave", "/me waves")
+
+      assert {:error, :duplicate_label} =
+               CustomMenus.update_entry(menus, :nicklist, "Wave", "GREET", "/me updated")
+    end
+
+    @tag :unit
+    test "rejects empty command when updating" do
+      menus = CustomMenus.new()
+      {:ok, menus} = CustomMenus.add_entry(menus, :nicklist, "Greet", "/notice $1 Hi!")
+
+      assert {:error, :invalid_command} =
+               CustomMenus.update_entry(menus, :nicklist, "Greet", "Greet", " ")
+    end
+
+    @tag :unit
+    test "rejects command chaining when updating" do
+      menus = CustomMenus.new()
+      {:ok, menus} = CustomMenus.add_entry(menus, :nicklist, "Greet", "/notice $1 Hi!")
+
+      assert {:error, :command_chaining} =
+               CustomMenus.update_entry(menus, :nicklist, "Greet", "Greet", "/me one; /me two")
     end
   end
 

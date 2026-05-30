@@ -1,4 +1,4 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
+import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
 import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
 import { ChatPage } from '../pages/ChatPage';
 
@@ -74,10 +74,23 @@ test.describe('Whois and bio commands', () => {
       await bob.chat.sendMessage('/bio clear');
       await bob.chat.expectMessageVisible('Bio cleared.');
 
-      await alice.chat.sendMessage('/clear');
-      await alice.chat.expectActiveMessageCount(0);
+      const beforeWhoisCount = await alice.chat.messageRows.count();
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await alice.chat.expectMessageHidden(`Bio: ${bio}`);
+      await expect
+        .poll(async () => alice.chat.messageRows.count())
+        .toBeGreaterThan(beforeWhoisCount);
+
+      const latestWhoisText = await alice.chat.messageRows.evaluateAll(
+        (rows, start) =>
+          rows
+            .slice(start)
+            .map((row) => row.textContent || '')
+            .join('\n'),
+        beforeWhoisCount,
+      );
+
+      expect(latestWhoisText).toContain(`----- Whois: ${bob.nick} -----`);
+      expect(latestWhoisText).not.toContain(`Bio: ${bio}`);
     } finally {
       await closeUsers([alice, bob]);
     }

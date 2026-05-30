@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
       maybe_persist_nick_colors: 2,
       maybe_persist_ignore_list: 2,
       rebuild_nick_color_fn: 2,
+      refresh_active_message_stream: 2,
       push_status_message: 3,
       system_event: 2,
       error_event: 2,
@@ -185,6 +186,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
          socket
          |> assign(session: new_session, show_nick_color_add_dialog: false)
          |> rebuild_nick_color_fn(new_session)
+         |> refresh_active_message_stream(new_session)
          |> maybe_persist_nick_colors(new_session)}
 
       {:error, :duplicate} ->
@@ -230,6 +232,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
          socket
          |> assign(session: new_session, show_nick_color_edit_dialog: false)
          |> rebuild_nick_color_fn(new_session)
+         |> refresh_active_message_stream(new_session)
          |> maybe_persist_nick_colors(new_session)}
 
       {:error, :not_found} ->
@@ -252,6 +255,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
          socket
          |> assign(session: new_session, nick_colors_selected: nil)
          |> rebuild_nick_color_fn(new_session)
+         |> refresh_active_message_stream(new_session)
          |> maybe_persist_nick_colors(new_session)
          |> push_status_message("Removed custom color for #{nick}", :system)}
 

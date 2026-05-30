@@ -120,6 +120,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
 
   defdelegate build_nick_color_fn(session), to: __MODULE__.Session
   defdelegate rebuild_nick_color_fn(socket, session), to: __MODULE__.Session
+  defdelegate refresh_active_message_stream(socket, session), to: __MODULE__.Session
   defdelegate capture_urls(socket, content, source, source_type, author), to: __MODULE__.Session
   defdelegate maybe_fetch_previews(socket, urls), to: __MODULE__.Session
   defdelegate spawn_preview_fetch(url, lv_pid), to: __MODULE__.Session

@@ -70,6 +70,22 @@ async function resetFloodProtectionDefaults(chat: ChatPage) {
   await expect(chat.floodAutoIgnoreDurationInput).toHaveValue('300');
 }
 
+async function cancelStrictFloodProtectionDraft(chat: ChatPage) {
+  await chat.openFloodProtectionFromToolsMenu();
+  await chat.floodThresholdInput.fill('3');
+  await chat.floodWindowInput.fill('15');
+  await chat.floodAutoIgnoreDurationInput.fill('5');
+  await chat.floodProtectionDialog.getByRole('button', { name: 'Cancel' }).click();
+  await expect(chat.floodProtectionDialog).toBeHidden();
+
+  await chat.openFloodProtectionFromToolsMenu();
+  await expect(chat.floodThresholdInput).toHaveValue('10');
+  await expect(chat.floodWindowInput).toHaveValue('15');
+  await expect(chat.floodAutoIgnoreDurationInput).toHaveValue('300');
+  await chat.floodProtectionDialog.getByRole('button', { name: 'Cancel' }).click();
+  await expect(chat.floodProtectionDialog).toBeHidden();
+}
+
 test.describe('Flood protection settings', () => {
   test('settings affect rapid paste behavior and reset restores defaults (R8)', async ({
     browser,
@@ -115,6 +131,35 @@ test.describe('Flood protection settings', () => {
       );
     } finally {
       await closeUsers([alice, bob, charlie]);
+    }
+  });
+
+  test('cancel discards flood protection edits before they affect paste behavior (U5)', async ({
+    browser,
+  }) => {
+    const channel = uniqueChannel('floodcancel');
+    const alice = await newSignedInUser(browser, 'flca');
+    const bob = await newSignedInUser(browser, 'flcb');
+    const marker = `cancelled-flood-${Date.now()}`;
+    const lines = [1, 2, 3, 4].map((index) => `${marker}-${index}`);
+
+    try {
+      await joinChannel(alice, channel);
+      await joinChannel(bob, channel);
+      await alice.chat.switchToTab(channel);
+      await bob.chat.switchToTab(channel);
+
+      await cancelStrictFloodProtectionDraft(alice.chat);
+
+      await sendPasteLines(bob.chat, lines);
+      for (const line of lines) {
+        await alice.chat.expectMessageVisible(line);
+      }
+      await alice.chat.expectMessageHidden(
+        `* ${bob.nick} has been auto-ignored for flooding`,
+      );
+    } finally {
+      await closeUsers([alice, bob]);
     }
   });
 });

@@ -17,12 +17,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
   @spec load_pm_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
-  def load_pm_messages_with_pagination(socket, target) do
+  @spec load_pm_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t(), pos_integer()) ::
+          Phoenix.LiveView.Socket.t()
+  def load_pm_messages_with_pagination(socket, target, limit \\ 50) do
     session = socket.assigns.session
-    raw_messages = Queries.list_private_messages(session.nickname, target, limit: 50)
+    raw_messages = Queries.list_private_messages(session.nickname, target, limit: limit)
 
     stream_pm_page(socket, raw_messages,
-      has_more: length(raw_messages) == 50,
+      has_more: length(raw_messages) == limit,
       loading_more: false,
       new_messages_indicator: false
     )

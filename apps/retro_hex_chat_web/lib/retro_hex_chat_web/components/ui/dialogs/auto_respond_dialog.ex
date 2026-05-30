@@ -99,8 +99,8 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
                       phx-value-position={rule.position}
                     />
                   </.table_cell>
-                  <.table_cell>{trigger_label(Map.get(rule, :trigger, "on_join"))}</.table_cell>
-                  <.table_cell>{Map.get(rule, :channel, "")}</.table_cell>
+                  <.table_cell>{trigger_label(rule_trigger(rule))}</.table_cell>
+                  <.table_cell>{rule_channel(rule)}</.table_cell>
                   <.table_cell class="font-mono text-[11px]">
                     {Map.get(rule, :command, "")}
                   </.table_cell>
@@ -232,5 +232,15 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   @spec trigger_options() :: [{String.t(), String.t()}]
   defp trigger_options do
     Enum.map(@trigger_labels, fn {k, v} -> {k, v} end)
+  end
+
+  defp rule_trigger(rule) do
+    rule
+    |> Map.get(:trigger, Map.get(rule, :trigger_event, "on_join"))
+    |> to_string()
+  end
+
+  defp rule_channel(rule) do
+    Map.get(rule, :channel, Map.get(rule, :channel_filter, "")) || ""
   end
 end

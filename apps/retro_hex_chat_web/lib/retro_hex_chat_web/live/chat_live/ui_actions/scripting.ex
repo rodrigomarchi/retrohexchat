@@ -167,6 +167,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
   defp autorespond_error_msg(:list_full), do: "Maximum 10 auto-respond rules"
   defp autorespond_error_msg(:invalid_trigger), do: "Invalid trigger event"
   defp autorespond_error_msg(:invalid_channel), do: "Channel filter must start with #"
+  defp autorespond_error_msg(:invalid_command), do: "Command is required"
   defp autorespond_error_msg(:command_too_long), do: "Command too long (max 500 characters)"
 
   defp autorespond_error_msg(:command_chaining),

@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Persistence
+  alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
 
   # ── Nick color functions ───────────────────────────────────
@@ -45,6 +46,27 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
           Phoenix.LiveView.Socket.t()
   def rebuild_nick_color_fn(socket, session) do
     assign(socket, nick_color_fn: build_nick_color_fn(session))
+  end
+
+  @spec refresh_active_message_stream(Phoenix.LiveView.Socket.t(), Session.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def refresh_active_message_stream(socket, session) do
+    limit = max(socket.assigns[:loaded_message_count] || 50, 50)
+
+    cond do
+      present?(session.active_pm) ->
+        PM.load_pm_messages_with_pagination(socket, session.active_pm, limit)
+
+      present?(session.active_channel) ->
+        ChannelHelpers.load_channel_messages_with_pagination(
+          socket,
+          session.active_channel,
+          limit
+        )
+
+      true ->
+        socket
+    end
   end
 
   # ── URL capture ────────────────────────────────────────────
@@ -477,4 +499,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       :miss -> spawn_preview_fetch(url, lv_pid)
     end
   end
+
+  defp present?(value) when is_binary(value), do: String.trim(value) != ""
+  defp present?(_value), do: false
 end

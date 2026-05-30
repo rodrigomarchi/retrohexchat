@@ -42,8 +42,16 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     )
   end
 
-  def handle_ui_action(socket, :clear_chat, _),
-    do: stream(socket, :chat_messages, [], reset: true)
+  def handle_ui_action(socket, :clear_chat, _) do
+    socket
+    |> assign(
+      oldest_message_id: nil,
+      has_more: false,
+      loading_more: false,
+      loaded_message_count: 0
+    )
+    |> stream(:chat_messages, [], reset: true)
+  end
 
   def handle_ui_action(socket, :set_away, %{message: message}) do
     session = Session.set_away(socket.assigns.session, message)

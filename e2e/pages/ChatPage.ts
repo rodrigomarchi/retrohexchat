@@ -1,5 +1,25 @@
 import { Page, Locator, expect } from '@playwright/test';
 
+export type AddressBookControlType =
+  | 'all'
+  | 'messages'
+  | 'pms'
+  | 'actions'
+  | 'notices'
+  | 'invites';
+
+type ChannelCentralTab =
+  | 'general'
+  | 'modes'
+  | 'bans'
+  | 'ban_exceptions'
+  | 'invite_exceptions';
+
+type ChannelCentralModeLabel =
+  | 'Moderated (+m)'
+  | 'Invite Only (+i)'
+  | 'Topic Lock (+t)';
+
 // Page Object for the v2 ChatLive at /chat. Covers high-level shell
 // concerns shared by specs (waiting for connect, opening the File menu,
 // disconnecting). Channel/PM/IRC interactions will live on dedicated POMs
@@ -108,11 +128,18 @@ export class ChatPage {
   readonly cheatsheetCloseButton: Locator;
   readonly helpContentPane: Locator;
   readonly notifyListDialog: Locator;
+  readonly notifyAutoAddPmToggle: Locator;
+  readonly notifyAutoWhoisToggle: Locator;
   readonly addressBookDialog: Locator;
   readonly channelListDialog: Locator;
   readonly channelCentralDialog: Locator;
   readonly aliasDialog: Locator;
+  readonly aliasEditForm: Locator;
+  readonly aliasWarning: Locator;
   readonly highlightDialog: Locator;
+  readonly highlightAddForm: Locator;
+  readonly highlightEditForm: Locator;
+  readonly highlightWordInput: Locator;
   readonly floodProtectionDialog: Locator;
   readonly floodThresholdInput: Locator;
   readonly floodWindowInput: Locator;
@@ -120,12 +147,18 @@ export class ChatPage {
   readonly floodSaveButton: Locator;
   readonly floodResetDefaultsButton: Locator;
   readonly customMenusDialog: Locator;
+  readonly customMenuEditForm: Locator;
   readonly urlCatcherDialog: Locator;
   readonly urlCatcherSearch: Locator;
   readonly urlCatcherRows: Locator;
   readonly performDialog: Locator;
+  readonly performAddDialog: Locator;
+  readonly performEditDialog: Locator;
+  readonly autojoinAddDialog: Locator;
+  readonly autojoinEditDialog: Locator;
   readonly soundSettingsDialog: Locator;
   readonly autorespondDialog: Locator;
+  readonly autorespondEditForm: Locator;
   readonly botManagementDialog: Locator;
   readonly botList: Locator;
   readonly newBotDialog: Locator;
@@ -332,6 +365,12 @@ export class ChatPage {
     this.cheatsheetCloseButton = page.getByTestId('cheatsheet-dialog-close');
     this.helpContentPane = page.getByTestId('help-content-pane');
     this.notifyListDialog = page.locator('#notify-list-dialog [role="dialog"]');
+    this.notifyAutoAddPmToggle = page.locator(
+      '#notify-list-dialog-auto-add-pm',
+    );
+    this.notifyAutoWhoisToggle = page.locator(
+      '#notify-list-dialog-auto-whois',
+    );
     this.addressBookDialog = page.locator(
       '#address-book-dialog [role="dialog"]',
     );
@@ -342,7 +381,12 @@ export class ChatPage {
       '#channel-central-dialog [role="dialog"]',
     );
     this.aliasDialog = page.locator('#alias-dialog [role="dialog"]');
+    this.aliasEditForm = page.getByTestId('alias-edit-form');
+    this.aliasWarning = page.getByTestId('alias-warning');
     this.highlightDialog = page.locator('#highlight-dialog [role="dialog"]');
+    this.highlightAddForm = page.getByTestId('highlight-add-form');
+    this.highlightEditForm = page.getByTestId('highlight-edit-form');
+    this.highlightWordInput = page.locator('#highlight-word-input');
     this.floodProtectionDialog = page.locator(
       '#flood-protection-dialog [role="dialog"]',
     );
@@ -365,16 +409,22 @@ export class ChatPage {
     this.customMenusDialog = page.locator(
       '#custom-menus-dialog [role="dialog"]',
     );
+    this.customMenuEditForm = page.getByTestId('custom-menu-edit-form');
     this.urlCatcherDialog = page.getByTestId('url-catcher');
     this.urlCatcherSearch = page.getByTestId('url-catcher-search');
     this.urlCatcherRows = this.urlCatcherDialog.getByTestId('url-catcher-row');
     this.performDialog = page.locator('#perform-dialog [role="dialog"]');
+    this.performAddDialog = page.getByTestId('perform-add-dialog');
+    this.performEditDialog = page.getByTestId('perform-edit-dialog');
+    this.autojoinAddDialog = page.getByTestId('autojoin-add-dialog');
+    this.autojoinEditDialog = page.getByTestId('autojoin-edit-dialog');
     this.soundSettingsDialog = page.locator(
       '#sound-settings-dialog [role="dialog"]',
     );
     this.autorespondDialog = page.locator(
       '#autorespond-dialog [role="dialog"]',
     );
+    this.autorespondEditForm = this.autorespondDialog.locator('form');
     this.botManagementDialog = page.locator(
       '#bot-management-dialog [role="dialog"]',
     );
@@ -533,6 +583,11 @@ export class ChatPage {
     await expect(this.chatContextMenu).toBeVisible();
   }
 
+  async openChatNickContextMenu(text: string, nick: string) {
+    await this.messageNickByText(text, nick).click({ button: 'right' });
+    await expect(this.chatContextMenu).toBeVisible();
+  }
+
   async expectActiveMessageCount(count: number) {
     await expect(this.messageRows).toHaveCount(count);
   }
@@ -648,11 +703,32 @@ export class ChatPage {
   }
 
   aliasRow(name: string): Locator {
-    return this.aliasDialog.locator('tr').filter({ hasText: `/${name}` });
+    return this.aliasDialog
+      .getByTestId('alias-row')
+      .filter({ hasText: `/${name}` })
+      .first();
+  }
+
+  customMenuPanel(tab: 'Nicklist' | 'Channel' | 'Chat'): Locator {
+    const value = tab.toLowerCase();
+    return this.customMenusDialog.locator(`.tabs-content[value="${value}"]`);
   }
 
   customMenuRow(label: string): Locator {
-    return this.customMenusDialog.locator('tr').filter({ hasText: label });
+    return this.customMenusDialog
+      .getByTestId('custom-menu-row')
+      .filter({ hasText: label })
+      .first();
+  }
+
+  customMenuRowInTab(
+    tab: 'Nicklist' | 'Channel' | 'Chat',
+    label: string,
+  ): Locator {
+    return this.customMenuPanel(tab)
+      .getByTestId('custom-menu-row')
+      .filter({ hasText: label })
+      .first();
   }
 
   urlCatcherRowByUrl(url: string): Locator {
@@ -683,6 +759,38 @@ export class ChatPage {
     return this.page
       .getByTestId('context-menu-item-custom_menu_execute')
       .filter({ hasText: label })
+      .first();
+  }
+
+  customNicklistContextMenuItem(label: string): Locator {
+    return this.nicklistContextMenu
+      .getByTestId('context-menu-item-custom_menu_execute')
+      .filter({ hasText: label })
+      .first();
+  }
+
+  customConversationContextMenuItem(label: string): Locator {
+    return this.conversationsContextMenu
+      .getByTestId('context-menu-item-custom_menu_execute')
+      .filter({ hasText: label })
+      .first();
+  }
+
+  customChatContextMenuItem(label: string): Locator {
+    return this.chatContextMenu
+      .getByTestId('context-menu-item-custom_menu_execute')
+      .filter({ hasText: label })
+      .first();
+  }
+
+  channelCentralPanel(tab: ChannelCentralTab): Locator {
+    return this.channelCentralDialog.locator(`.tabs-content[value="${tab}"]`);
+  }
+
+  channelCentralEntry(tab: ChannelCentralTab, nick: string): Locator {
+    return this.channelCentralPanel(tab)
+      .locator('tbody tr')
+      .filter({ hasText: nick })
       .first();
   }
 
@@ -735,6 +843,132 @@ export class ChatPage {
     await expect(this.channelCentralDialog).toBeVisible();
   }
 
+  async switchChannelCentralToTab(tab: ChannelCentralTab) {
+    await this.channelCentralDialog.locator(`button[data-target="${tab}"]`).click();
+    await expect(this.channelCentralPanel(tab)).toBeVisible();
+  }
+
+  async setChannelCentralInviteOnly(enabled: boolean) {
+    await this.setChannelCentralMode('Invite Only (+i)', enabled);
+  }
+
+  async setChannelCentralModerated(enabled: boolean) {
+    await this.setChannelCentralMode('Moderated (+m)', enabled);
+  }
+
+  async setChannelCentralTopic(topic: string) {
+    await this.switchChannelCentralToTab('general');
+    const panel = this.channelCentralPanel('general');
+    await panel.locator('input[name="topic"]').fill(topic);
+    await panel.getByRole('button', { name: 'Save Topic' }).click();
+    await expect(panel.locator('input[name="topic"]')).toHaveValue(topic);
+  }
+
+  async expectChannelCentralTopic(topic: string) {
+    await this.switchChannelCentralToTab('general');
+    await expect(
+      this.channelCentralPanel('general').locator('input[name="topic"]'),
+    ).toHaveValue(topic);
+  }
+
+  async setChannelCentralMode(
+    label: ChannelCentralModeLabel,
+    enabled: boolean,
+  ) {
+    await this.switchChannelCentralToTab('modes');
+    const panel = this.channelCentralPanel('modes');
+    const toggle = panel.getByLabel(label);
+
+    if ((await toggle.isChecked()) !== enabled) {
+      await toggle.click();
+    }
+
+    await panel.getByRole('button', { name: 'Apply Modes' }).click();
+
+    if (enabled) {
+      await expect(toggle).toBeChecked();
+    } else {
+      await expect(toggle).not.toBeChecked();
+    }
+  }
+
+  async expectChannelCentralMode(
+    label: ChannelCentralModeLabel,
+    enabled: boolean,
+  ) {
+    await this.switchChannelCentralToTab('modes');
+    const toggle = this.channelCentralPanel('modes').getByLabel(label);
+
+    if (enabled) {
+      await expect(toggle).toBeChecked();
+    } else {
+      await expect(toggle).not.toBeChecked();
+    }
+  }
+
+  async addChannelCentralBan(nick: string) {
+    await this.addChannelCentralListEntry(
+      'bans',
+      nick,
+      'cc-add-ban-dialog',
+      'cc-ban-nick-input',
+    );
+  }
+
+  async addChannelCentralBanException(nick: string) {
+    await this.addChannelCentralListEntry(
+      'ban_exceptions',
+      nick,
+      'cc-add-ban-ex-dialog',
+      'cc-ban-ex-nick-input',
+    );
+  }
+
+  async removeChannelCentralBanException(nick: string) {
+    await this.removeChannelCentralListEntry('ban_exceptions', nick);
+  }
+
+  async addChannelCentralInviteException(nick: string) {
+    await this.addChannelCentralListEntry(
+      'invite_exceptions',
+      nick,
+      'cc-add-invite-ex-dialog',
+      'cc-invite-ex-nick-input',
+    );
+  }
+
+  async removeChannelCentralInviteException(nick: string) {
+    await this.removeChannelCentralListEntry('invite_exceptions', nick);
+  }
+
+  async addChannelCentralListEntry(
+    tab: ChannelCentralTab,
+    nick: string,
+    dialogTestId: string,
+    inputTestId: string,
+  ) {
+    await this.switchChannelCentralToTab(tab);
+    const panel = this.channelCentralPanel(tab);
+    await panel.getByRole('button', { name: 'Add' }).click();
+    const dialog = this.page.getByTestId(dialogTestId);
+    await expect(dialog).toBeVisible();
+    await dialog.getByTestId(inputTestId).fill(nick);
+    await dialog.getByRole('button', { name: 'OK' }).click();
+    await expect(dialog).toHaveCount(0);
+    await expect(this.channelCentralEntry(tab, nick)).toBeVisible();
+  }
+
+  async removeChannelCentralListEntry(tab: ChannelCentralTab, nick: string) {
+    await this.switchChannelCentralToTab(tab);
+    const row = this.channelCentralEntry(tab, nick);
+    await expect(row).toBeVisible();
+    await row.click();
+    await this.channelCentralPanel(tab)
+      .getByRole('button', { name: 'Remove' })
+      .click();
+    await expect(this.channelCentralEntry(tab, nick)).toHaveCount(0);
+  }
+
   async openAddressBookFromMenu() {
     await this.toolsMenuTrigger.click();
     await expect(this.addressBookMenuItem).toBeVisible();
@@ -749,11 +983,51 @@ export class ChatPage {
     await expect(this.aliasDialog).toBeVisible();
   }
 
+  async openHighlightDialogFromMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.highlightWordsMenuItem).toBeVisible();
+    await this.highlightWordsMenuItem.click();
+    await expect(this.highlightDialog).toBeVisible();
+  }
+
+  async openPerformDialogFromMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.performMenuItem).toBeVisible();
+    await this.performMenuItem.click();
+    await expect(this.performDialog).toBeVisible();
+  }
+
+  async openSoundSettingsFromMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.soundSettingsMenuItem).toBeVisible();
+    await this.soundSettingsMenuItem.click();
+    await expect(this.soundSettingsDialog).toBeVisible();
+  }
+
   async openUrlCatcherFromMenu() {
     await this.toolsMenuTrigger.click();
     await expect(this.urlCatcherMenuItem).toBeVisible();
     await this.urlCatcherMenuItem.click();
     await expect(this.urlCatcherDialog).toBeVisible();
+  }
+
+  async openAutorespondDialogFromMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.autorespondMenuItem).toBeVisible();
+    await this.autorespondMenuItem.click();
+    await expect(this.autorespondDialog).toBeVisible();
+  }
+
+  async openNotifyListFromCommand() {
+    await this.sendMessage('/notify');
+    await expect(this.notifyListDialog).toBeVisible();
+  }
+
+  async openCustomMenusDialogFromMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.customMenusMenuItem).toBeVisible();
+    await this.customMenusMenuItem.click();
+    await expect(this.customMenusDialog).toBeVisible();
   }
 
   async switchAddressBookToNotifyTab() {
@@ -764,6 +1038,78 @@ export class ChatPage {
 
   async switchAddressBookToTab(tab: 'Contacts' | 'Notify' | 'Nick Colors' | 'Control') {
     await this.addressBookDialog.getByRole('button', { name: tab }).click();
+  }
+
+  async addAddressBookContact(nick: string, note: string) {
+    await this.addressBookDialog.getByTestId('contact-add').click();
+    const form = this.page.getByTestId('contact-add-form');
+    await expect(form).toBeVisible();
+    await form.locator('#contact-add-nick').fill(nick);
+    await form.locator('#contact-add-note').fill(note);
+    await form.getByRole('button', { name: 'OK' }).click();
+    await expect(this.addressBookContactRow(nick)).toContainText(note);
+  }
+
+  async addAddressBookNickColor(nick: string, colorIndex: number) {
+    await this.switchAddressBookToTab('Nick Colors');
+    await this.addressBookDialog.getByTestId('nick-color-add').click();
+    const form = this.page.getByTestId('nick-color-add-form');
+    await expect(form).toBeVisible();
+    await form.locator('#nick-color-add-nick').fill(nick);
+    await form
+      .getByRole('button', { name: new RegExp(`^Color ${colorIndex}:`) })
+      .click();
+    await form.getByRole('button', { name: 'OK' }).click();
+    await expect(this.addressBookNickColorRow(nick)).toHaveAttribute(
+      'data-color-index',
+      String(colorIndex),
+    );
+  }
+
+  async editAddressBookNickColor(nick: string, colorIndex: number) {
+    await this.switchAddressBookToTab('Nick Colors');
+    await this.addressBookNickColorRow(nick).click();
+    await this.addressBookDialog.getByTestId('nick-color-edit').click();
+    const form = this.page.getByTestId('nick-color-edit-form');
+    await expect(form).toBeVisible();
+    await form
+      .getByRole('button', { name: new RegExp(`^Color ${colorIndex}:`) })
+      .click();
+    await form.getByRole('button', { name: 'OK' }).click();
+    await expect(this.addressBookNickColorRow(nick)).toHaveAttribute(
+      'data-color-index',
+      String(colorIndex),
+    );
+  }
+
+  async removeAddressBookNickColor(nick: string) {
+    await this.switchAddressBookToTab('Nick Colors');
+    await this.addressBookNickColorRow(nick).click();
+    await this.addressBookDialog.getByTestId('nick-color-remove').click();
+    await expect(this.addressBookNickColorRow(nick)).toHaveCount(0);
+  }
+
+  async addAddressBookControlEntry(
+    nick: string,
+    type: AddressBookControlType,
+    duration = '',
+  ) {
+    await this.switchAddressBookToTab('Control');
+    await this.addressBookDialog.getByTestId('control-add').click();
+    const form = this.page.getByTestId('control-add-form');
+    await expect(form).toBeVisible();
+    await form.locator('#control-add-nick').fill(nick);
+    await form.locator('#control-add-type').selectOption(type);
+    await form.locator('#control-add-duration').fill(duration);
+    await form.getByRole('button', { name: 'OK' }).click();
+    await expect(this.addressBookControlRow(nick)).toContainText(type);
+  }
+
+  async removeAddressBookControlEntry(nick: string) {
+    await this.switchAddressBookToTab('Control');
+    await this.addressBookControlRow(nick).click();
+    await this.addressBookDialog.getByTestId('control-remove').click();
+    await expect(this.addressBookControlRow(nick)).toHaveCount(0);
   }
 
   async closeAddressBook() {
@@ -779,6 +1125,30 @@ export class ChatPage {
     await expect(this.notifyListDialog).toBeHidden();
   }
 
+  async setNotifyAutoAddPm(enabled: boolean) {
+    if ((await this.notifyAutoAddPmToggle.isChecked()) !== enabled) {
+      await this.notifyAutoAddPmToggle.click();
+    }
+
+    if (enabled) {
+      await expect(this.notifyAutoAddPmToggle).toBeChecked();
+    } else {
+      await expect(this.notifyAutoAddPmToggle).not.toBeChecked();
+    }
+  }
+
+  async setNotifyAutoWhois(enabled: boolean) {
+    if ((await this.notifyAutoWhoisToggle.isChecked()) !== enabled) {
+      await this.notifyAutoWhoisToggle.click();
+    }
+
+    if (enabled) {
+      await expect(this.notifyAutoWhoisToggle).toBeChecked();
+    } else {
+      await expect(this.notifyAutoWhoisToggle).not.toBeChecked();
+    }
+  }
+
   async closeChannelCentral() {
     await this.channelCentralDialog
       .getByRole('button', { name: 'Close' })
@@ -788,18 +1158,20 @@ export class ChatPage {
   }
 
   async addAliasFromDialog(name: string, expansion: string) {
-    await this.aliasDialog.getByRole('button', { name: 'Add' }).click();
-    await this.aliasDialog.locator('input[name="name"]').fill(name);
-    await this.aliasDialog.locator('input[name="expansion"]').fill(expansion);
-    await this.aliasDialog.getByRole('button', { name: 'Save' }).click();
+    await this.startAliasAdd();
+    await this.fillAliasDraft(name, expansion);
+    await this.saveAliasDraft();
+    await expect(this.aliasEditForm).toBeHidden();
     await expect(this.aliasRow(name)).toContainText(expansion);
   }
 
   async editAliasFromDialog(name: string, expansion: string) {
     await this.aliasRow(name).click();
     await this.aliasDialog.getByRole('button', { name: 'Edit' }).click();
-    await this.aliasDialog.locator('input[name="expansion"]').fill(expansion);
-    await this.aliasDialog.getByRole('button', { name: 'Save' }).click();
+    await expect(this.aliasEditForm).toBeVisible();
+    await this.aliasEditForm.getByTestId('alias-expansion-input').fill(expansion);
+    await this.saveAliasDraft();
+    await expect(this.aliasEditForm).toBeHidden();
     await expect(this.aliasRow(name)).toContainText(expansion);
   }
 
@@ -814,9 +1186,271 @@ export class ChatPage {
     await expect(this.aliasDialog).toBeHidden();
   }
 
+  async startAliasAdd() {
+    await this.aliasDialog.getByRole('button', { name: 'Add' }).click();
+    await expect(this.aliasEditForm).toBeVisible();
+  }
+
+  async fillAliasDraft(name: string, expansion: string) {
+    await this.aliasEditForm.getByTestId('alias-name-input').fill(name);
+    await this.aliasEditForm.getByTestId('alias-expansion-input').fill(expansion);
+  }
+
+  async saveAliasDraft() {
+    await this.aliasEditForm.getByRole('button', { name: 'Save' }).click();
+  }
+
+  async cancelAliasDraft() {
+    await this.aliasEditForm.getByRole('button', { name: 'Cancel' }).click();
+    await expect(this.aliasEditForm).toBeHidden();
+  }
+
+  async expectAliasError(text: string) {
+    await expect(this.aliasEditForm.getByTestId('alias-error')).toContainText(text);
+  }
+
+  highlightWordRow(word: string): Locator {
+    return this.page.getByTestId(`highlight-word-row-${word}`);
+  }
+
+  highlightWordColor(word: string): Locator {
+    return this.page.getByTestId(`highlight-word-color-${word}`);
+  }
+
+  async addHighlightWord(word: string, colorIndex: number) {
+    await this.highlightDialog.getByRole('button', { name: 'Add' }).click();
+    await expect(this.highlightAddForm).toBeVisible();
+    await this.highlightWordInput.fill(word);
+    await this.highlightAddForm
+      .getByRole('button', { name: new RegExp(`^Color ${colorIndex}:`) })
+      .click();
+    await this.highlightAddForm.getByRole('button', { name: 'Add' }).click();
+    await expect(this.highlightAddForm).toBeHidden();
+    await expect(this.highlightWordRow(word)).toBeVisible();
+  }
+
+  async editHighlightWordColor(word: string, colorIndex: number) {
+    await this.highlightWordRow(word).click();
+    await this.highlightDialog.getByRole('button', { name: 'Edit' }).click();
+    await expect(this.highlightEditForm).toBeVisible();
+    await this.highlightEditForm
+      .getByRole('button', { name: new RegExp(`^Color ${colorIndex}:`) })
+      .click();
+    await this.highlightEditForm.getByRole('button', { name: 'OK' }).click();
+    await expect(this.highlightEditForm).toBeHidden();
+  }
+
+  async removeHighlightWord(word: string) {
+    await this.highlightWordRow(word).click();
+    await this.highlightDialog.getByRole('button', { name: 'Remove' }).click();
+    await expect(this.highlightWordRow(word)).toHaveCount(0);
+  }
+
+  soundSelect(event: string): Locator {
+    return this.page.getByTestId(`sound-select-${event}`);
+  }
+
+  soundSelectLabel(event: string): Locator {
+    return this.soundSelect(event).locator('.select-value');
+  }
+
+  soundFlashToggle(event: string): Locator {
+    return this.page.getByTestId(`flash-toggle-${event}`);
+  }
+
+  soundPreviewButton(event: string): Locator {
+    return this.page.getByTestId(`sound-preview-${event}`);
+  }
+
+  async selectSound(event: string, label: string) {
+    const select = this.soundSelect(event);
+
+    await select.getByRole('button').click();
+    await expect(select.locator('.select-content')).toBeVisible();
+    await select
+      .getByRole('option', { name: label, exact: true })
+      .getByText(label, { exact: true })
+      .click();
+    await expect(this.soundSelectLabel(event)).toHaveAttribute(
+      'data-content',
+      label,
+    );
+  }
+
+  async expectSoundSelected(event: string, label: string) {
+    await expect(this.soundSelectLabel(event)).toHaveAttribute(
+      'data-content',
+      label,
+    );
+  }
+
+  performCommandRow(command: string): Locator {
+    return this.performCommandsPanel()
+      .locator('tr')
+      .filter({ hasText: command })
+      .first();
+  }
+
+  performEnabledCheckbox(): Locator {
+    return this.performCommandsPanel().getByLabel('Enable perform on connect');
+  }
+
+  performCommandsPanel(): Locator {
+    return this.performDialog.locator('.tabs-content[value="commands"]');
+  }
+
+  performAutojoinPanel(): Locator {
+    return this.performDialog.locator('.tabs-content[value="autojoin"]');
+  }
+
+  async addPerformCommand(command: string) {
+    await this.performCommandsPanel().getByRole('button', { name: 'Add' }).click();
+    await expect(this.performAddDialog).toBeVisible();
+    await this.performAddDialog.locator('#perform-command-input').fill(command);
+    await this.performAddDialog.getByRole('button', { name: 'OK' }).click();
+    await expect(this.performAddDialog).toBeHidden();
+    await expect(this.performCommandRow(command)).toBeVisible();
+  }
+
+  async editPerformCommand(command: string, replacement: string) {
+    await this.performCommandRow(command).click();
+    await this.performCommandsPanel().getByRole('button', { name: 'Edit' }).click();
+    await expect(this.performEditDialog).toBeVisible();
+    await this.performEditDialog
+      .locator('#perform-edit-input')
+      .fill(replacement);
+    await this.performEditDialog.getByRole('button', { name: 'OK' }).click();
+    await expect(this.performEditDialog).toBeHidden();
+    await expect(this.performCommandRow(replacement)).toBeVisible();
+  }
+
+  async movePerformCommandUp(command: string) {
+    await this.performCommandRow(command).click();
+    await this.performCommandsPanel().getByRole('button', { name: 'Up' }).click();
+  }
+
+  async closePerformDialog() {
+    await this.performDialog.getByRole('button', { name: 'OK' }).click();
+    await expect(this.performDialog).toBeHidden();
+  }
+
+  async switchPerformDialogToAutojoinTab() {
+    await this.performDialog.getByRole('button', { name: 'Auto-Join' }).click();
+    await expect(this.performAutojoinPanel()).toBeVisible();
+  }
+
+  autojoinRow(channel: string): Locator {
+    return this.performAutojoinPanel()
+      .locator('tr')
+      .filter({ hasText: channel })
+      .first();
+  }
+
+  async addAutojoinEntry(channel: string, key = '') {
+    await this.performAutojoinPanel().getByRole('button', { name: 'Add' }).click();
+    await expect(this.autojoinAddDialog).toBeVisible();
+    await this.autojoinAddDialog.locator('#autojoin-channel-input').fill(channel);
+    await this.autojoinAddDialog.locator('#autojoin-key-input').fill(key);
+    await this.autojoinAddDialog.getByRole('button', { name: 'OK' }).click();
+    await expect(this.autojoinAddDialog).toBeHidden();
+    await expect(this.autojoinRow(channel)).toBeVisible();
+  }
+
+  async editAutojoinKey(channel: string, key: string) {
+    await this.autojoinRow(channel).click();
+    await this.performAutojoinPanel().getByRole('button', { name: 'Edit' }).click();
+    await expect(this.autojoinEditDialog).toBeVisible();
+    await this.autojoinEditDialog.locator('#autojoin-edit-key').fill(key);
+    await this.autojoinEditDialog.getByRole('button', { name: 'OK' }).click();
+    await expect(this.autojoinEditDialog).toBeHidden();
+  }
+
+  async removeAutojoinEntry(channel: string) {
+    await this.autojoinRow(channel).click();
+    await this.performAutojoinPanel().getByRole('button', { name: 'Remove' }).click();
+    await expect(this.autojoinRow(channel)).toHaveCount(0);
+  }
+
+  autorespondRuleRow(text: string): Locator {
+    return this.autorespondDialog.locator('tr').filter({ hasText: text }).first();
+  }
+
+  autorespondRuleToggle(text: string): Locator {
+    return this.autorespondRuleRow(text).locator('input[type="checkbox"]').first();
+  }
+
+  async startAutorespondAdd() {
+    await this.autorespondDialog.getByRole('button', { name: 'Add' }).click();
+    await expect(this.autorespondEditForm).toBeVisible();
+  }
+
+  async fillAutorespondDraft(channel: string, command: string) {
+    await this.autorespondEditForm.locator('input[name="channel"]').fill(channel);
+    await this.autorespondEditForm.locator('input[name="command"]').fill(command);
+  }
+
+  async saveAutorespondDraft() {
+    await this.autorespondEditForm.getByRole('button', { name: 'Save' }).click();
+  }
+
+  async addAutorespondRule(channel: string, command: string) {
+    await this.startAutorespondAdd();
+    await this.fillAutorespondDraft(channel, command);
+    await this.saveAutorespondDraft();
+    await expect(this.autorespondEditForm).toBeHidden();
+    await expect(this.autorespondRuleRow(command)).toBeVisible();
+  }
+
+  async editAutorespondRule(command: string, replacement: string) {
+    await this.autorespondRuleRow(command).click();
+    await this.autorespondDialog.getByRole('button', { name: 'Edit' }).click();
+    await expect(this.autorespondEditForm).toBeVisible();
+    await this.autorespondEditForm
+      .locator('input[name="command"]')
+      .fill(replacement);
+    await this.saveAutorespondDraft();
+    await expect(this.autorespondEditForm).toBeHidden();
+    await expect(this.autorespondRuleRow(replacement)).toBeVisible();
+  }
+
+  async removeAutorespondRule(text: string) {
+    await this.autorespondRuleRow(text).click();
+    await this.autorespondDialog.getByRole('button', { name: 'Remove' }).click();
+    await expect(this.autorespondRuleRow(text)).toHaveCount(0);
+  }
+
   async openCustomMenusDialogFromCommand() {
     await this.sendMessage('/popups');
     await expect(this.customMenusDialog).toBeVisible();
+  }
+
+  async switchCustomMenusTab(tab: 'Nicklist' | 'Channel' | 'Chat') {
+    await this.customMenusDialog.getByRole('button', { name: tab }).click();
+    await expect(this.customMenuPanel(tab)).toBeVisible();
+  }
+
+  async startCustomMenuAdd(tab: 'Nicklist' | 'Channel' | 'Chat') {
+    await this.switchCustomMenusTab(tab);
+    await this.customMenuPanel(tab).getByRole('button', { name: 'Add' }).click();
+    await expect(this.customMenuEditForm).toBeVisible();
+  }
+
+  async fillCustomMenuDraft(label: string, command: string) {
+    await this.customMenuEditForm
+      .getByTestId('custom-menu-label-input')
+      .fill(label);
+    await this.customMenuEditForm
+      .getByTestId('custom-menu-command-input')
+      .fill(command);
+  }
+
+  async saveCustomMenuDraft() {
+    await this.customMenuEditForm.getByRole('button', { name: 'Save' }).click();
+  }
+
+  async expectCustomMenuError(text: string) {
+    await expect(this.customMenuEditForm.getByTestId('custom-menu-error'))
+      .toContainText(text);
   }
 
   async addCustomMenuItem(
@@ -824,14 +1458,11 @@ export class ChatPage {
     label: string,
     command: string,
   ) {
-    await this.customMenusDialog.getByRole('button', { name: tab }).click();
-    await this.customMenusDialog.getByRole('button', { name: 'Add' }).click();
-    const form = this.customMenusDialog.locator('form:visible');
-
-    await form.locator('input[name="label"]').fill(label);
-    await form.locator('input[name="command"]').fill(command);
-    await form.getByRole('button', { name: 'Save' }).click();
-    await expect(this.customMenuRow(label)).toContainText(command);
+    await this.startCustomMenuAdd(tab);
+    await this.fillCustomMenuDraft(label, command);
+    await this.saveCustomMenuDraft();
+    await expect(this.customMenuEditForm).toBeHidden();
+    await expect(this.customMenuRowInTab(tab, label)).toContainText(command);
   }
 
   async closeCustomMenusDialog() {

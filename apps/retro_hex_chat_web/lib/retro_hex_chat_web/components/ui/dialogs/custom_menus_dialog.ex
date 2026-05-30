@@ -204,6 +204,9 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
             <.table_body>
               <.table_row
                 :for={entry <- @entries}
+                data-testid="custom-menu-row"
+                data-menu-type={entry.menu_type}
+                data-menu-label={entry.label}
                 class={
                   if(@selected_item == entry.label,
                     do: "bg-selection-bg text-selection-fg",
@@ -250,6 +253,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
       <form
         :if={@editing}
         phx-submit={@on_save}
+        data-testid="custom-menu-edit-form"
         class="w-[200px] shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
       >
         <h3 class="font-bold text-xs mb-retro-4">
@@ -264,6 +268,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
               name="label"
               value={@draft_label}
               placeholder="Menu item text"
+              data-testid="custom-menu-label-input"
               class="w-full"
               maxlength="50"
             />
@@ -276,12 +281,15 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
               name="command"
               value={@draft_command}
               placeholder="/command $1"
+              data-testid="custom-menu-command-input"
               class="w-full"
               maxlength="500"
             />
           </div>
 
-          <p :if={@error_message} class="text-xs text-destructive">{@error_message}</p>
+          <p :if={@error_message} data-testid="custom-menu-error" class="text-xs text-destructive">
+            {@error_message}
+          </p>
 
           <div class="flex gap-retro-4 pt-retro-4">
             <.button type="submit" size="sm" variant="default">

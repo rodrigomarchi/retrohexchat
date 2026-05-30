@@ -397,6 +397,7 @@
   timezone_info={@hover_card[:timezone_info]}
   role={@hover_card[:role]}
   is_contact={@hover_card[:is_contact] || false}
+  contact_note={@hover_card[:contact_note]}
   is_ignored={@hover_card[:is_ignored] || false}
   on_close="nick_hover_dismiss"
 />
@@ -561,6 +562,7 @@
 />
 
 <.flood_protection_dialog
+  :if={@show_flood_protection_dialog}
   id="flood-protection-dialog"
   show={@show_flood_protection_dialog}
   settings={@session.flood_protection}
@@ -602,6 +604,10 @@
   on_move_up="perform_dialog_move_up"
   on_move_down="perform_dialog_move_down"
   on_toggle_enabled="perform_toggle_enabled"
+  on_autojoin_select="autojoin_select"
+  on_autojoin_add="autojoin_dialog_add"
+  on_autojoin_edit="autojoin_dialog_edit"
+  on_autojoin_remove="autojoin_dialog_remove"
   on_ok="close_perform_dialog"
   on_cancel="close_perform_dialog"
 />

@@ -97,6 +97,18 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
      )}
   end
 
+  def handle_event(
+        "sound_settings_change",
+        %{"event" => event_str, "sound" => sound_name},
+        socket
+      ) do
+    event = String.to_existing_atom(event_str)
+    draft = socket.assigns.sound_settings_draft || socket.assigns.session.sound_settings
+    updated_draft = SoundSettings.set_sound(draft, event, sound_name)
+
+    {:halt, assign(socket, sound_settings_draft: updated_draft)}
+  end
+
   def handle_event("sound_settings_change", params, socket) do
     draft = socket.assigns.sound_settings_draft
 

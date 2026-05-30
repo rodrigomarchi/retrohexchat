@@ -18,6 +18,7 @@ defmodule RetroHexChat.Chat.AliasList do
   @max_expansion_length 500
   @max_name_length 30
   @name_pattern ~r/^[a-zA-Z0-9_-]+$/
+  @expansion_command_pattern ~r/^\s*\/([a-zA-Z0-9_-]+)(?:\s|$)/
 
   @spec new() :: map()
   def new do
@@ -39,6 +40,9 @@ defmodule RetroHexChat.Chat.AliasList do
 
       has_entry?(alias_list, trimmed_name) ->
         {:error, :duplicate_name}
+
+      trimmed_expansion == "" ->
+        {:error, :invalid_expansion}
 
       String.length(trimmed_expansion) > @max_expansion_length ->
         {:error, :expansion_too_long}
@@ -79,6 +83,9 @@ defmodule RetroHexChat.Chat.AliasList do
       not has_entry?(alias_list, name) ->
         {:error, :not_found}
 
+      trimmed == "" ->
+        {:error, :invalid_expansion}
+
       String.length(trimmed) > @max_expansion_length ->
         {:error, :expansion_too_long}
 
@@ -105,6 +112,16 @@ defmodule RetroHexChat.Chat.AliasList do
   @spec shadows_builtin?(String.t()) :: boolean()
   def shadows_builtin?(name) do
     Registry.known?(String.downcase(name))
+  end
+
+  @spec recursive_expansion?(String.t(), String.t()) :: boolean()
+  def recursive_expansion?(name, expansion) do
+    downcased_name = name |> String.trim() |> String.downcase()
+
+    case Regex.run(@expansion_command_pattern, expansion) do
+      [_, command] -> String.downcase(command) == downcased_name
+      _ -> false
+    end
   end
 
   # ---------------------------------------------------------------------------

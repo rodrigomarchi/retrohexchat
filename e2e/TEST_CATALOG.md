@@ -6,11 +6,11 @@ Single source of truth for the browser-level Playwright suite.
 
 ## Current Coverage
 
-- **123 spec files** under `e2e/tests/`.
-- **232 Playwright `test()` cases**.
+- **136 spec files** under `e2e/tests/`.
+- **249 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 192 mapped flows, 191 done, 1 intentionally blocked.
+- **Chat extended coverage:** 208 mapped flows, 207 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -357,6 +357,27 @@ make ci
 | T11 | Dialog title close, cancel buttons, and backdrop paths close major dialogs consistently | `tests/chat-dialog-close.spec.ts` | P2 | done |
 | T12 | Reconnect state disables destructive shell menus while keeping Help accessible and preserving draft input | `tests/chat-reconnect-shell.spec.ts` | P1 | done |
 
+## Backlog U - Dialog CRUD And Settings Depth
+
+| # | Flow | Spec file | Priority | Status |
+|---|------|-----------|----------|--------|
+| U1 | Highlight dialog adds, edits, removes a word/color and matching inbound messages render highlighted | `tests/chat-highlights.spec.ts` | P1 | done |
+| U2 | Highlight settings persist for registered users and remain session-only for guests after reload | `tests/chat-highlights-persistence.spec.ts` | P2 | done |
+| U3 | Sound Settings OK/Apply/Cancel/Preview persists only intended settings | `tests/chat-sound-settings.spec.ts` | P2 | done |
+| U4 | Sound mute/status-bar setting and Sound Settings preview stay in sync across rerenders/reconnect | `tests/chat-sound-settings.spec.ts` | P2 | done |
+| U5 | Flood Protection save/reset/cancel paths update effective paste flood behavior only when intended | `tests/chat-flood-protection.spec.ts` | P1 | done |
+| U6 | Perform dialog edit/move/toggle-enabled paths mirror slash command behavior and reconnect execution | `tests/chat-perform-dialog.spec.ts` | P1 | done |
+| U7 | Autojoin dialog add/edit/remove paths mirror slash command behavior and reconnect execution | `tests/chat-perform-dialog.spec.ts` | P1 | done |
+| U8 | Autorespond dialog add/edit/toggle/delete validates fields and mirrors slash list output | `tests/chat-autorespond-dialog.spec.ts` | P1 | done |
+| U9 | Custom Menus dialog validates duplicate labels, empty command, command chaining, and tab-specific menu types | `tests/chat-custom-menus-dialog.spec.ts` | P1 | done |
+| U10 | Alias dialog validates duplicate aliases, empty expansion, recursion warning, and cancel/discard behavior | `tests/chat-alias-dialog-edges.spec.ts` | P1 | done |
+| U11 | Notify List dialog auto-WHOIS and auto-add-PM settings affect later online/PM behavior | `tests/chat-notify-settings.spec.ts` | P1 | done |
+| U12 | Address Book contact notes surface in hover card and whois output | `tests/chat-address-book-contacts.spec.ts` | P2 | done |
+| U13 | Address Book nick color edit/delete immediately updates existing chat rows and future rows | `tests/chat-address-book-colors.spec.ts` | P2 | done |
+| U14 | Control-list entries from Address Book match `/ignore` filtering behavior by type | `tests/chat-address-book-control.spec.ts` | P1 | done |
+| U15 | Channel Central ban exception and invite exception add/remove flows affect join/ban behavior | `tests/chat-channel-central-exceptions.spec.ts` | P1 | done |
+| U16 | Channel Central topic/mode edits stay in sync with slash command output after dialog close/reopen | `tests/chat-channel-central-sync.spec.ts` | P2 | done |
+
 ## Intentional Block
 
 | # | Reason |
@@ -397,3 +418,14 @@ make ci
 - Dialog focus and close paths now restore focus and keep server-side state in sync for title close, backdrop, Escape, and cancel flows.
 - Help menu now exposes Shortcut Cheatsheet.
 - Reconnect UI disables destructive File/View/Tools menus while keeping Help accessible.
+- Highlight dialog color picker now accepts the shared color-picker `index` payload and stores the selected IRC color.
+- Sound Settings now renders domain sound values with human labels, sends selected sounds to LiveView, and avoids sticky client-side select labels that outlive Cancel/reopen.
+- Flood Protection dialog now unmounts when closed so canceled numeric edits do not survive in hidden browser input state.
+- Perform dialog now wires Auto-Join tab selection/actions to `autojoin_*` events, and Auto-Join edit submits its disabled channel through a hidden field.
+- Autorespond rules now reject empty commands, and the dialog table renders domain `trigger_event`/`channel_filter` fields instead of stale display keys.
+- Custom Menus now reject empty/chained commands on add and edit, validate duplicate labels on edit, and expose stable row/form test ids.
+- Alias entries now reject empty expansions, warn when an alias directly expands to itself, and expose stable row/form test ids.
+- Address Book contact notes now surface in the hover card and `/whois` output for contextual lookup.
+- `/clear` now also resets pagination state so scroll history loading cannot immediately repopulate a locally cleared window.
+- Nick color changes now refresh the active chat stream so existing rows and future rows use the updated Address Book/context-menu color.
+- Address Book Control and ignore-list persistence now include the `notices` ignore type, and `/ignore` help text documents it consistently.

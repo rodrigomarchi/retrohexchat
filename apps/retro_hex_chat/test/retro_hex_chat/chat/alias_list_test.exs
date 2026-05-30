@@ -82,6 +82,12 @@ defmodule RetroHexChat.Chat.AliasListTest do
     end
 
     @tag :unit
+    test "rejects empty expansion" do
+      list = AliasList.new()
+      assert {:error, :invalid_expansion} = AliasList.add_entry(list, "hi", " ")
+    end
+
+    @tag :unit
     test "rejects expansion with command chaining" do
       list = AliasList.new()
       assert {:error, :command_chaining} = AliasList.add_entry(list, "hi", "/me hi | /quit")
@@ -168,6 +174,13 @@ defmodule RetroHexChat.Chat.AliasListTest do
     end
 
     @tag :unit
+    test "rejects empty expansion" do
+      list = AliasList.new()
+      {:ok, list} = AliasList.add_entry(list, "hi", "/me hello")
+      assert {:error, :invalid_expansion} = AliasList.update_entry(list, "hi", " ")
+    end
+
+    @tag :unit
     test "rejects expansion with command chaining" do
       list = AliasList.new()
       {:ok, list} = AliasList.add_entry(list, "hi", "/me hello")
@@ -223,6 +236,20 @@ defmodule RetroHexChat.Chat.AliasListTest do
     test "returns false for non-builtin names" do
       refute AliasList.shadows_builtin?("hi")
       refute AliasList.shadows_builtin?("greet")
+    end
+  end
+
+  describe "recursive_expansion?/2" do
+    @tag :unit
+    test "detects direct self-reference" do
+      assert AliasList.recursive_expansion?("loop", "/loop")
+      assert AliasList.recursive_expansion?("loop", " /LOOP arg")
+    end
+
+    @tag :unit
+    test "ignores other expansions" do
+      refute AliasList.recursive_expansion?("loop", "/me loop")
+      refute AliasList.recursive_expansion?("loop", "plain text")
     end
   end
 

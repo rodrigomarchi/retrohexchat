@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Select
 
+  alias RetroHexChat.Chat.SoundSettings
   alias RetroHexChatWeb.Icons
 
   @event_labels %{
@@ -46,11 +47,11 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
 
   attr :settings, :map,
     default: %{},
-    doc: "Map of event atom to %{sound, flash} e.g. %{message: %{sound: \"Beep\", flash: false}}"
+    doc: "SoundSettings map containing sound_mappings and flash_settings"
 
   attr :available_sounds, :list,
-    default: ["Default", "Beep", "Chime", "Ding"],
-    doc: "Sound options for the dropdown"
+    default: nil,
+    doc: "Sound options for the dropdown as {value, label} tuples"
 
   attr :on_ok, :any, default: nil, doc: "OK button callback"
   attr :on_cancel, :any, default: nil, doc: "Cancel button callback"
@@ -78,6 +79,10 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
         :buddy_online,
         :buddy_offline
       ])
+      |> assign(
+        :available_sounds,
+        normalize_sound_options(assigns.available_sounds)
+      )
 
     ~H"""
     <.dialog id={@id} show={@show} on_cancel={@on_cancel}>
@@ -109,7 +114,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
                       id={"sound-select-#{event}"}
                       name={"event_#{event}"}
                       value={event_sound(@settings, event)}
-                      label={event_sound(@settings, event)}
+                      label={sound_label(@available_sounds, event_sound(@settings, event))}
                       class="w-full"
                       data-testid={"sound-select-#{event}"}
                     >
@@ -117,12 +122,14 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
                       <.select_content builder={builder}>
                         <.select_group>
                           <.select_item
-                            :for={sound <- @available_sounds}
+                            :for={{sound, label} <- @available_sounds}
                             builder={builder}
                             value={sound}
-                            label={sound}
+                            label={label}
+                            on_select={@on_sound_change}
+                            on_select_value={%{event: event, sound: sound}}
                           >
-                            {sound}
+                            {label}
                           </.select_item>
                         </.select_group>
                       </.select_content>
@@ -181,14 +188,34 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
   @spec event_sound(map(), atom()) :: String.t()
   defp event_sound(settings, event) do
     settings
-    |> Map.get(event, %{})
-    |> Map.get(:sound, "Default")
+    |> normalize_settings()
+    |> SoundSettings.get_sound(event)
   end
 
   @spec event_flash(map(), atom()) :: boolean()
   defp event_flash(settings, event) do
     settings
-    |> Map.get(event, %{})
-    |> Map.get(:flash, false)
+    |> normalize_settings()
+    |> SoundSettings.get_flash(event)
+  end
+
+  defp normalize_settings(%{sound_mappings: _, flash_settings: _} = settings), do: settings
+  defp normalize_settings(_settings), do: SoundSettings.new()
+
+  defp normalize_sound_options(nil), do: SoundSettings.available_sounds()
+
+  defp normalize_sound_options(options) do
+    Enum.map(options, fn
+      {value, label} -> {value, label}
+      value when is_binary(value) -> {value, value}
+    end)
+  end
+
+  defp sound_label(options, value) do
+    options
+    |> Enum.find_value(value, fn
+      {^value, label} -> label
+      _ -> nil
+    end)
   end
 end

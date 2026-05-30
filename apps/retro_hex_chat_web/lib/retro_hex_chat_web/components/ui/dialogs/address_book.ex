@@ -849,6 +849,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 <option value="messages">Messages</option>
                 <option value="pms">PMs</option>
                 <option value="actions">Actions</option>
+                <option value="notices">Notices</option>
                 <option value="invites">Invites</option>
               </select>
             </div>

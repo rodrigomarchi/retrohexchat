@@ -54,6 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   attr :on_close, :any, default: nil, doc: "Close button callback"
   attr :role, :atom, default: nil, values: [nil, :owner, :operator, :half_operator, :voiced, :bot]
   attr :is_contact, :boolean, default: false
+  attr :contact_note, :string, default: nil
   attr :is_ignored, :boolean, default: false
   attr :class, :string, default: nil
   attr :rest, :global
@@ -103,6 +104,7 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
           <.info_field :if={@language} label="Lang" value={@language} />
           <.info_field :if={@timezone_info} label="TZ" value={@timezone_info} />
           <.info_field :if={@color_depth} label="Colors" value={@color_depth} />
+          <.info_field :if={@contact_note} label="Note" value={@contact_note} />
 
           <%!-- Registration status --%>
           <div :if={@registered} class="flex items-center gap-retro-4">

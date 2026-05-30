@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
       error_event: 2,
       cancel_ignore_timer: 2,
       rebuild_nick_color_fn: 2,
+      refresh_active_message_stream: 2,
       maybe_persist_nick_colors: 2
     ]
 
@@ -225,6 +226,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
          |> close_context_menu()
          |> assign(session: new_session)
          |> rebuild_nick_color_fn(new_session)
+         |> refresh_active_message_stream(new_session)
          |> maybe_persist_nick_colors(new_session)
          |> push_status_message("Set #{target}'s color to #{color_name}", :system)}
 

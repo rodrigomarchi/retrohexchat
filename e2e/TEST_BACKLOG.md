@@ -96,22 +96,22 @@ green catalog in `TEST_CATALOG.md`.
 
 | # | Scenario | Suggested spec file | Priority | Status |
 |---|----------|---------------------|----------|--------|
-| U1 | Highlight dialog add/edit/remove word and color; matching inbound message highlights in chat | `tests/chat-highlights.spec.ts` | P1 | todo |
-| U2 | Highlight settings persist for registered users and remain session-only for guests | `tests/chat-highlights-persistence.spec.ts` | P2 | todo |
-| U3 | Sound Settings OK/Apply/Cancel/Preview behavior persists only intended settings | `tests/chat-sound-settings.spec.ts` | P2 | investigate |
-| U4 | Sound mute/status-bar setting and sound dialog stay in sync across rerenders/reconnect | `tests/chat-sound-settings.spec.ts` | P2 | todo |
-| U5 | Flood Protection dialog save/reset/cancel updates effective flood behavior | `tests/chat-flood-protection.spec.ts` | P1 | investigate |
-| U6 | Perform dialog edit/move/toggle-enabled paths mirror slash command behavior | `tests/chat-perform-dialog.spec.ts` | P1 | todo |
-| U7 | Autojoin dialog edit/reorder/remove paths mirror slash command behavior | `tests/chat-perform-dialog.spec.ts` | P1 | todo |
-| U8 | Autorespond dialog add/edit/toggle/delete validates fields and mirrors slash behavior | `tests/chat-autorespond-dialog.spec.ts` | P1 | todo |
-| U9 | Custom Menus dialog validates duplicate labels, empty command, command chaining, and tab-specific menu types | `tests/chat-custom-menus-dialog.spec.ts` | P1 | todo |
-| U10 | Alias dialog validates duplicate aliases, empty expansion, recursion warning, and cancel/discard behavior | `tests/chat-alias-dialog-edges.spec.ts` | P1 | todo |
-| U11 | Notify List dialog auto-WHOIS and auto-add-PM settings affect later online/PM behavior | `tests/chat-notify-settings.spec.ts` | P1 | todo |
-| U12 | Address Book contact notes surface in hover/whois-adjacent UI where product intends them to surface | `tests/chat-address-book-contacts.spec.ts` | P2 | investigate |
-| U13 | Address Book nick color edit/delete immediately updates existing chat rows and future rows | `tests/chat-address-book-colors.spec.ts` | P2 | todo |
-| U14 | Control-list entries from Address Book match `/ignore` filtering behavior by type | `tests/chat-address-book-control.spec.ts` | P1 | todo |
-| U15 | Channel Central ban exception and invite exception add/remove flows affect join/ban behavior | `tests/chat-channel-central-exceptions.spec.ts` | P1 | todo |
-| U16 | Channel Central topic/mode edits stay in sync with slash command output after dialog close/reopen | `tests/chat-channel-central-sync.spec.ts` | P2 | todo |
+| U1 | Highlight dialog add/edit/remove word and color; matching inbound message highlights in chat | `tests/chat-highlights.spec.ts` | P1 | done |
+| U2 | Highlight settings persist for registered users and remain session-only for guests | `tests/chat-highlights-persistence.spec.ts` | P2 | done |
+| U3 | Sound Settings OK/Apply/Cancel/Preview behavior persists only intended settings | `tests/chat-sound-settings.spec.ts` | P2 | done |
+| U4 | Sound mute/status-bar setting and sound dialog stay in sync across rerenders/reconnect | `tests/chat-sound-settings.spec.ts` | P2 | done |
+| U5 | Flood Protection dialog save/reset/cancel updates effective flood behavior | `tests/chat-flood-protection.spec.ts` | P1 | done |
+| U6 | Perform dialog edit/move/toggle-enabled paths mirror slash command behavior | `tests/chat-perform-dialog.spec.ts` | P1 | done |
+| U7 | Autojoin dialog add/edit/remove paths mirror slash command behavior | `tests/chat-perform-dialog.spec.ts` | P1 | done |
+| U8 | Autorespond dialog add/edit/toggle/delete validates fields and mirrors slash behavior | `tests/chat-autorespond-dialog.spec.ts` | P1 | done |
+| U9 | Custom Menus dialog validates duplicate labels, empty command, command chaining, and tab-specific menu types | `tests/chat-custom-menus-dialog.spec.ts` | P1 | done |
+| U10 | Alias dialog validates duplicate aliases, empty expansion, recursion warning, and cancel/discard behavior | `tests/chat-alias-dialog-edges.spec.ts` | P1 | done |
+| U11 | Notify List dialog auto-WHOIS and auto-add-PM settings affect later online/PM behavior | `tests/chat-notify-settings.spec.ts` | P1 | done |
+| U12 | Address Book contact notes surface in hover/whois-adjacent UI where product intends them to surface | `tests/chat-address-book-contacts.spec.ts` | P2 | done |
+| U13 | Address Book nick color edit/delete immediately updates existing chat rows and future rows | `tests/chat-address-book-colors.spec.ts` | P2 | done |
+| U14 | Control-list entries from Address Book match `/ignore` filtering behavior by type | `tests/chat-address-book-control.spec.ts` | P1 | done |
+| U15 | Channel Central ban exception and invite exception add/remove flows affect join/ban behavior | `tests/chat-channel-central-exceptions.spec.ts` | P1 | done |
+| U16 | Channel Central topic/mode edits stay in sync with slash command output after dialog close/reopen | `tests/chat-channel-central-sync.spec.ts` | P2 | done |
 
 ## V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
 

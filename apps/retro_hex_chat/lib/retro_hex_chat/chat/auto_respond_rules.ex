@@ -38,6 +38,7 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
       full?(rules) -> {:error, :list_full}
       trigger_event not in @valid_triggers -> {:error, :invalid_trigger}
       trimmed_filter != nil and not valid_channel?(trimmed_filter) -> {:error, :invalid_channel}
+      trimmed_cmd == "" -> {:error, :invalid_command}
       String.length(trimmed_cmd) > @max_command_length -> {:error, :command_too_long}
       AliasExpander.contains_chaining?(trimmed_cmd) -> {:error, :command_chaining}
       true -> :ok
@@ -84,11 +85,16 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
   defp do_update_entry(rules, position, attrs) do
     new_cmd = Map.get(attrs, :command)
 
-    if new_cmd != nil and AliasExpander.contains_chaining?(new_cmd) do
-      {:error, :command_chaining}
-    else
-      updated = Enum.map(rules.entries, &apply_update(&1, position, attrs))
-      {:ok, %{rules | entries: updated}}
+    cond do
+      new_cmd != nil and String.trim(new_cmd) == "" ->
+        {:error, :invalid_command}
+
+      new_cmd != nil and AliasExpander.contains_chaining?(new_cmd) ->
+        {:error, :command_chaining}
+
+      true ->
+        updated = Enum.map(rules.entries, &apply_update(&1, position, attrs))
+        {:ok, %{rules | entries: updated}}
     end
   end
 

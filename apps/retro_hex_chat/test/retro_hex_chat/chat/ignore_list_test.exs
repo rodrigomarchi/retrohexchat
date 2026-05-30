@@ -64,10 +64,10 @@ defmodule RetroHexChat.Chat.IgnoreListTest do
       assert {:error, :list_full} = IgnoreList.add_entry(list, "User101", :all, nil)
     end
 
-    test "allows all five valid types" do
+    test "allows all valid types" do
       list = IgnoreList.new()
 
-      Enum.each([:all, :messages, :pms, :invites, :actions], fn type ->
+      Enum.each([:all, :messages, :pms, :invites, :actions, :notices], fn type ->
         assert {:ok, _} = IgnoreList.add_entry(list, "User_#{type}", type, nil)
       end)
     end

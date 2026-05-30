@@ -98,10 +98,14 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               }
               phx-click={@on_select}
               phx-value-word={word.word}
+              data-testid={"highlight-word-row-#{word.word}"}
             >
               <.table_cell>{word.word}</.table_cell>
               <.table_cell>
-                <div class={["w-4 h-4 border border-border", color_class(word.bg_color)]} />
+                <div
+                  class={["w-4 h-4 border border-border", color_class(word.bg_color)]}
+                  data-testid={"highlight-word-color-#{word.word}"}
+                />
               </.table_cell>
               <.table_cell>&nbsp;</.table_cell>
             </.table_row>

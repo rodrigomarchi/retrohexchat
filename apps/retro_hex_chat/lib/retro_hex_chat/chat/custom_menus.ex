@@ -4,7 +4,7 @@ defmodule RetroHexChat.Chat.CustomMenus do
   Items can be added to nicklist, channel, or chat context menus.
   """
 
-  alias RetroHexChat.Chat.CustomMenuItem
+  alias RetroHexChat.Chat.{AliasExpander, CustomMenuItem}
   alias RetroHexChat.Chat.Schemas.CustomMenuItem, as: CustomMenuItemSchema
   alias RetroHexChat.Repo
 
@@ -35,8 +35,14 @@ defmodule RetroHexChat.Chat.CustomMenus do
       has_entry?(menus, menu_type, trimmed_label) ->
         {:error, :duplicate_label}
 
+      trimmed_command == "" ->
+        {:error, :invalid_command}
+
       String.length(trimmed_command) > @max_command_length ->
         {:error, :command_too_long}
+
+      AliasExpander.contains_chaining?(trimmed_command) ->
+        {:error, :command_chaining}
 
       true ->
         position = next_position(menus)
@@ -72,21 +78,18 @@ defmodule RetroHexChat.Chat.CustomMenus do
   @spec update_entry(map(), :nicklist | :channel | :chat, String.t(), String.t(), String.t()) ::
           {:ok, map()} | {:error, atom()}
   def update_entry(menus, menu_type, old_label, new_label, new_command) do
-    downcased = String.downcase(old_label)
+    trimmed_label = String.trim(new_label)
+    trimmed_command = String.trim(new_command)
+    downcased = old_label |> String.trim() |> String.downcase()
 
-    case Enum.find_index(menus.entries, fn e ->
-           e.menu_type == menu_type and String.downcase(e.label) == downcased
-         end) do
-      nil ->
-        {:error, :not_found}
+    with {:ok, idx} <- find_entry_index(menus, menu_type, downcased),
+         :ok <- validate_update(menus, menu_type, trimmed_label, trimmed_command, downcased) do
+      updated =
+        List.update_at(menus.entries, idx, fn entry ->
+          %{entry | label: trimmed_label, command: trimmed_command}
+        end)
 
-      idx ->
-        updated =
-          List.update_at(menus.entries, idx, fn entry ->
-            %{entry | label: String.trim(new_label), command: String.trim(new_command)}
-          end)
-
-        {:ok, %{menus | entries: updated}}
+      {:ok, %{menus | entries: updated}}
     end
   end
 
@@ -163,11 +166,45 @@ defmodule RetroHexChat.Chat.CustomMenus do
     length(entries_for(menus, menu_type)) >= @max_per_type
   end
 
-  defp has_entry?(menus, menu_type, label) do
+  defp find_entry_index(menus, menu_type, downcased_label) do
+    case Enum.find_index(menus.entries, fn e ->
+           e.menu_type == menu_type and String.downcase(e.label) == downcased_label
+         end) do
+      nil -> {:error, :not_found}
+      idx -> {:ok, idx}
+    end
+  end
+
+  defp validate_update(menus, menu_type, label, command, except_downcased_label) do
+    cond do
+      not valid_label?(label) ->
+        {:error, :invalid_label}
+
+      has_entry?(menus, menu_type, label, except_downcased_label) ->
+        {:error, :duplicate_label}
+
+      command == "" ->
+        {:error, :invalid_command}
+
+      String.length(command) > @max_command_length ->
+        {:error, :command_too_long}
+
+      AliasExpander.contains_chaining?(command) ->
+        {:error, :command_chaining}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp has_entry?(menus, menu_type, label, except_downcased_label \\ nil) do
     downcased = String.downcase(label)
 
     Enum.any?(menus.entries, fn e ->
-      e.menu_type == menu_type and String.downcase(e.label) == downcased
+      entry_label = String.downcase(e.label)
+
+      e.menu_type == menu_type and entry_label == downcased and
+        entry_label != except_downcased_label
     end)
   end
 

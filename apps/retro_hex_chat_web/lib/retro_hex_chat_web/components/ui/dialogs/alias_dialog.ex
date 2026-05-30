@@ -81,6 +81,8 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
               </tr>
               <.table_row
                 :for={entry <- @aliases}
+                data-testid="alias-row"
+                data-alias-name={entry.name}
                 class={
                   if(entry.name == @selected_alias,
                     do: "bg-selection-bg text-selection-fg cursor-pointer",
@@ -98,7 +100,11 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
         </div>
 
         <%!-- Warning message --%>
-        <div :if={@warning_message} class="text-xs text-warning font-bold px-retro-2">
+        <div
+          :if={@warning_message}
+          data-testid="alias-warning"
+          class="text-xs text-warning font-bold px-retro-2"
+        >
           {@warning_message}
         </div>
 
@@ -106,6 +112,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
         <form
           :if={@editing}
           phx-submit={@on_save}
+          data-testid="alias-edit-form"
           class="shadow-retro-field bg-white p-retro-8 space-y-retro-4"
         >
           <h3 class="font-bold text-xs mb-retro-4">
@@ -120,6 +127,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
                 name="name"
                 value={@draft_name}
                 placeholder="e.g. hi"
+                data-testid="alias-name-input"
                 class="w-full text-xs h-7"
                 maxlength="30"
                 disabled={@selected_alias != nil}
@@ -132,6 +140,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
                 name="expansion"
                 value={@draft_expansion}
                 placeholder="e.g. /msg $1 hello!"
+                data-testid="alias-expansion-input"
                 class="w-full text-xs h-7"
                 maxlength="500"
               />
@@ -141,7 +150,11 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
             </p>
           </div>
 
-          <div :if={@error_message} class="text-xs text-destructive font-bold">
+          <div
+            :if={@error_message}
+            data-testid="alias-error"
+            class="text-xs text-destructive font-bold"
+          >
             {@error_message}
           </div>
 

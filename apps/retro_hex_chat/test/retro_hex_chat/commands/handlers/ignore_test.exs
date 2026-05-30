@@ -61,7 +61,7 @@ defmodule RetroHexChat.Commands.Handlers.IgnoreTest do
     end
 
     test "with all valid types" do
-      for type_str <- ~w(all messages pms invites actions) do
+      for type_str <- ~w(all messages pms invites actions notices) do
         expected_type = String.to_atom(type_str)
 
         assert {:ok, :ui_action, :ignore_add, %{nickname: "User", type: ^expected_type}} =

@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
     case result do
       {:ok, updated_list} ->
         new_session = Session.set_aliases(session, updated_list)
-        warning = if AliasList.shadows_builtin?(name), do: "Warning: shadows built-in /#{name}"
+        warning = alias_warning(name, expansion)
 
         {:halt,
          socket
@@ -160,6 +160,8 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
   defp alias_error_msg(:invalid_name, _),
     do: "Invalid name. Use letters, numbers, hyphens, underscores."
 
+  defp alias_error_msg(:invalid_expansion, _), do: "Expansion is required"
+
   defp alias_error_msg(:expansion_too_long, _), do: "Expansion too long (max 500 characters)"
 
   defp alias_error_msg(:command_chaining, _),
@@ -167,4 +169,18 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
 
   defp alias_error_msg(:list_full, _), do: "Alias list is full (max 50)"
   defp alias_error_msg(:not_found, _), do: "Alias not found"
+
+  defp alias_warning(name, expansion) do
+    [
+      if(AliasList.shadows_builtin?(name), do: "shadows built-in /#{name}"),
+      if(AliasList.recursive_expansion?(name, expansion),
+        do: "expands to itself and will hit the recursion limit"
+      )
+    ]
+    |> Enum.reject(&is_nil/1)
+    |> case do
+      [] -> nil
+      warnings -> "Warning: " <> Enum.join(warnings, "; ")
+    end
+  end
 end
