@@ -18,10 +18,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SyntaxTooltipPage do
       %{name: "key", required: false}
     ],
     current_param_index: 0,
-    description: gettext("Join a channel, optionally with a password key."),
+    description: dgettext("showcase", "Join a channel, optionally with a password key."),
     sub_options: [],
-    context_message: gettext("Channel names begin with # or &"),
-    examples: [gettext("/join #lobby"), gettext("/join #private secretkey")]
+    context_message: dgettext("showcase", "Channel names begin with # or &"),
+    examples: [
+      dgettext("showcase", "/join #lobby"),
+      dgettext("showcase", "/join #private secretkey")
+    ]
   }
 
   @kick_tooltip %{
@@ -32,13 +35,16 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SyntaxTooltipPage do
       %{name: "reason", required: false}
     ],
     current_param_index: 1,
-    description: gettext("Kick a user from a channel. Requires operator status."),
+    description: dgettext("showcase", "Kick a user from a channel. Requires operator status."),
     sub_options: [
-      %{flag: "-q", description: gettext("Quiet — do not display kick message")},
-      %{flag: "-b", description: gettext("Also ban the user after kicking")}
+      %{flag: "-q", description: dgettext("showcase", "Quiet — do not display kick message")},
+      %{flag: "-b", description: dgettext("showcase", "Also ban the user after kicking")}
     ],
-    context_message: gettext("You must be a channel operator to use this command."),
-    examples: [gettext("/kick #lobby spammer"), gettext("/kick #lobby troll Violating rules")]
+    context_message: dgettext("showcase", "You must be a channel operator to use this command."),
+    examples: [
+      dgettext("showcase", "/kick #lobby spammer"),
+      dgettext("showcase", "/kick #lobby troll Violating rules")
+    ]
   }
 
   @msg_tooltip %{
@@ -48,15 +54,22 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SyntaxTooltipPage do
       %{name: "message", required: true}
     ],
     current_param_index: nil,
-    description: gettext("Send a private message to a user or channel."),
+    description: dgettext("showcase", "Send a private message to a user or channel."),
     sub_options: [],
     context_message: nil,
-    examples: [gettext("/msg alice Hello!"), gettext("/msg #lobby Anyone around?")]
+    examples: [
+      dgettext("showcase", "/msg alice Hello!"),
+      dgettext("showcase", "/msg #lobby Anyone around?")
+    ]
   }
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Syntax Tooltip"), active_page: "syntax-tooltip")}
+    {:ok,
+     assign(socket,
+       page_title: dgettext("showcase", "Syntax Tooltip"),
+       active_page: "syntax-tooltip"
+     )}
   end
 
   @impl true
@@ -70,10 +83,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SyntaxTooltipPage do
 
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Syntax Tooltip")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Syntax Tooltip")}</h2>
 
       <.showcase_card
-        title={gettext("Beginner Mode — /join")}
+        title={dgettext("showcase", "Beginner Mode — /join")}
         description="Full detail: command header, description, context message, and examples. First param is active."
       >
         <.syntax_tooltip tooltip={@join_tooltip} detail_level={:beginner} />
@@ -94,14 +107,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SyntaxTooltipPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Beginner Mode — /kick (with sub-options)")}
+        title={dgettext("showcase", "Beginner Mode — /kick (with sub-options)")}
         description="Shows sub-options list. Second param (nick) is active."
       >
         <.syntax_tooltip tooltip={@kick_tooltip} detail_level={:beginner} />
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Expert Mode — /msg")}
+        title={dgettext("showcase", "Expert Mode — /msg")}
         description="Expert mode: command header only, no description or examples."
       >
         <.syntax_tooltip tooltip={@msg_tooltip} detail_level={:expert} />
@@ -111,11 +124,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SyntaxTooltipPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Off Mode")}
+        title={dgettext("showcase", "Off Mode")}
         description="When detail_level is :off, nothing is rendered."
       >
         <p class="text-xs text-muted-foreground italic">
-          {gettext("(Nothing rendered below — tooltip is hidden)")}
+          {dgettext("showcase", "(Nothing rendered below — tooltip is hidden)")}
         </p>
         <.syntax_tooltip tooltip={@join_tooltip} detail_level={:off} />
         <.code_example>
@@ -124,11 +137,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SyntaxTooltipPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Nil Tooltip")}
+        title={dgettext("showcase", "Nil Tooltip")}
         description="When tooltip is nil (e.g. user hasn't typed a command yet), nothing is rendered."
       >
         <p class="text-xs text-muted-foreground italic">
-          {gettext("(Nothing rendered below — tooltip is nil)")}
+          {dgettext("showcase", "(Nothing rendered below — tooltip is nil)")}
         </p>
         <.syntax_tooltip tooltip={nil} detail_level={:beginner} />
       </.showcase_card>

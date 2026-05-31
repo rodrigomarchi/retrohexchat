@@ -1,0 +1,1766 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:169
+#, elixir-autogen, elixir-format
+msgid "  %{id} | %{title} | %{channel} | %{url}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:186
+#, elixir-autogen, elixir-format
+msgid "  %{id} | %{type} | %{channel} | %{message}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:72
+#, elixir-autogen, elixir-format
+msgid "  %{prefix}%{trigger} — %{description}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:79
+#, elixir-autogen, elixir-format
+msgid "  %{prefix}help — Show this help message"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:94
+#, elixir-autogen, elixir-format
+msgid "%{author}: You must be identified to play. Use /ns identify <password> first."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:107
+#, elixir-autogen, elixir-format
+msgid "%{author}: You must be registered to play. Use /ns register <password> first."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:301
+#, elixir-autogen, elixir-format
+msgid "%{base} %{sign} %{modifier} = %{total}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:297
+#, elixir-autogen, elixir-format
+msgid "%{base} = %{sum}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:63
+#, elixir-autogen, elixir-format
+msgid "%{bot_name} — Available Commands:"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:219
+#, elixir-autogen, elixir-format
+msgid "%{message} (%{reason})"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
+#, elixir-autogen, elixir-format
+msgid "%{prefix}\nRound over! %{scores}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:375
+#, elixir-autogen, elixir-format
+msgid "%{prefix} %{title} — %{link}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:349
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:371
+#, elixir-autogen, elixir-format
+msgid "%{rank}. %{name}: %{points}pts"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:87
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:105
+#, elixir-autogen, elixir-format
+msgid "(no title)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:167
+#, elixir-autogen, elixir-format
+msgid "(untitled)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:215
+#, elixir-autogen, elixir-format
+msgid "15th century"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:51
+#, elixir-autogen, elixir-format
+msgid "4th from sun"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:205
+#, elixir-autogen, elixir-format
+msgid "A flower"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:46
+#, elixir-autogen, elixir-format
+msgid "A gem"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:153
+#, elixir-autogen, elixir-format
+msgid "A single letter"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:185
+#, elixir-autogen, elixir-format
+msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:13
+#, elixir-autogen, elixir-format
+msgid "AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:194
+#, elixir-autogen, elixir-format
+msgid "Active schedules:"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:148
+#, elixir-autogen, elixir-format
+msgid "Add a scheduled message"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:130
+#, elixir-autogen, elixir-format
+msgid "Add an RSS feed"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:465
+#, elixir-autogen, elixir-format
+msgid "Aladdin"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:239
+#, elixir-autogen, elixir-format
+msgid "Alexander Fleming"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:383
+#, elixir-autogen, elixir-format
+msgid "Alexander Graham Bell"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:316
+#, elixir-autogen, elixir-format
+msgid "Algeria"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:82
+#, elixir-autogen, elixir-format
+msgid "Alias for roll"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/server.ex:144
+#, elixir-autogen, elixir-format
+msgid "Already in channel"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:292
+#, elixir-autogen, elixir-format
+msgid "Also a country"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:359
+#, elixir-autogen, elixir-format
+msgid "And Paul Allen"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:220
+#, elixir-autogen, elixir-format
+msgid "Apollo 11"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:398
+#, elixir-autogen, elixir-format
+msgid "Application Programming Interface"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:60
+#, elixir-autogen, elixir-format
+msgid "Au"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:291
+#, elixir-autogen, elixir-format
+msgid "Australia"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:25
+#, elixir-autogen, elixir-format
+msgid "Auto-moderation — blocked words, spam/flood detection, caps filter"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:420
+#, elixir-autogen, elixir-format
+msgid "Avatar"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:374
+#, elixir-autogen, elixir-format
+msgid "BEAM VM"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:225
+#, elixir-autogen, elixir-format
+msgid "Bastille"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:384
+#, elixir-autogen, elixir-format
+msgid "Bell Labs"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:306
+#, elixir-autogen, elixir-format
+msgid "Bering Strait"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:358
+#, elixir-autogen, elixir-format
+msgid "Bill Gates"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:431
+#, elixir-autogen, elixir-format
+msgid "Black and white"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:451
+#, elixir-autogen, elixir-format
+msgid "Blocks"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:421
+#, elixir-autogen, elixir-format
+msgid "Blue aliens"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/lifecycle.ex:47
+#, elixir-autogen, elixir-format
+msgid "Bot destroyed"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/server.ex:756
+#, elixir-autogen, elixir-format
+msgid "Bot leaving"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:344
+#, elixir-autogen, elixir-format
+msgid "Brain of computer"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:426
+#, elixir-autogen, elixir-format
+msgid "British author"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:15
+#, elixir-autogen, elixir-format
+msgid "Built-in !help command listing available commands"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:321
+#, elixir-autogen, elixir-format
+msgid "Cairo"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:286
+#, elixir-autogen, elixir-format
+msgid "Canberra"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:219
+#, elixir-autogen, elixir-format
+msgid "Cannot keep %{keep} dice when only rolling %{count}."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:343
+#, elixir-autogen, elixir-format
+msgid "Central Processing Unit"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:250
+#, elixir-autogen, elixir-format
+msgid "Checked feed '%{id}'. New items found."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:21
+#, elixir-autogen, elixir-format
+msgid "City of Light"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:259
+#, elixir-autogen, elixir-format
+msgid "Correct, %{author}! (+%{points} points)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/custom_commands.ex:18
+#, elixir-autogen, elixir-format
+msgid "Custom bot commands (!prefix trigger)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/script.ex:12
+#, elixir-autogen, elixir-format
+msgid "Custom script engine (Coming soon)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:312
+#, elixir-autogen, elixir-format
+msgid "Danish territory"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:379
+#, elixir-autogen, elixir-format
+msgid "Databases"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:28
+#, elixir-autogen, elixir-format
+msgid "Dice rolling for RPG games (e.g., 2d6, d20+5, 4d6kh3)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:180
+#, elixir-autogen, elixir-format
+msgid "Dollar bill"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:456
+#, elixir-autogen, elixir-format
+msgid "Dutch painter"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:36
+#, elixir-autogen, elixir-format
+msgid "Early 20th century"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:461
+#, elixir-autogen, elixir-format
+msgid "Elementary"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:373
+#, elixir-autogen, elixir-format
+msgid "Erlang"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:148
+#, elixir-autogen, elixir-format
+msgid "Error: Dice must have at least 2 sides."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:142
+#, elixir-autogen, elixir-format
+msgid "Error: Maximum %{max} dice allowed."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:145
+#, elixir-autogen, elixir-format
+msgid "Error: Maximum %{max} sides allowed."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:103
+#, elixir-autogen, elixir-format
+msgid "Famous for rings"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:220
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' added: %{url} → %{channel}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:254
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' checked. No new items."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:236
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:245
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' not found."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:234
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' removed."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:375
+#, elixir-autogen, elixir-format
+msgid "Final scores: %{ranked}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:334
+#, elixir-autogen, elixir-format
+msgid "Finnish"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:133
+#, elixir-autogen, elixir-format
+msgid "Force check a feed now"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:416
+#, elixir-autogen, elixir-format
+msgid "Freddie Mercury"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:224
+#, elixir-autogen, elixir-format
+msgid "French Revolution"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:61
+#, elixir-autogen, elixir-format
+msgid "From Latin aurum"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:435
+#, elixir-autogen, elixir-format
+msgid "Game of Thrones"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:179
+#, elixir-autogen, elixir-format
+msgid "George Washington"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:195
+#, elixir-autogen, elixir-format
+msgid "German philosopher"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:311
+#, elixir-autogen, elixir-format
+msgid "Greenland"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:17
+#, elixir-autogen, elixir-format
+msgid "Greet users on join, say goodbye on part"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:209
+#, elixir-autogen, elixir-format
+msgid "Gutenberg"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:436
+#, elixir-autogen, elixir-format
+msgid "HBO"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:321
+#, elixir-autogen, elixir-format
+msgid "HTTP %{status}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:56
+#, elixir-autogen, elixir-format
+msgid "Hex = six"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:85
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:216
+#, elixir-autogen, elixir-format
+msgid "Hey {nickname}, please keep it civil."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:60
+#, elixir-autogen, elixir-format
+msgid "Hi {nickname}! Try {prefix}help for my commands."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:74
+#, elixir-autogen, elixir-format
+msgid "Hint: %{hint}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:441
+#, elixir-autogen, elixir-format
+msgid "Hollywood legend"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:79
+#, elixir-autogen, elixir-format
+msgid "How many bones in the adult human body?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:39
+#, elixir-autogen, elixir-format
+msgid "How many colors in a rainbow?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:24
+#, elixir-autogen, elixir-format
+msgid "How many continents are there?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:131
+#, elixir-autogen, elixir-format
+msgid "How many planets in our solar system?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:54
+#, elixir-autogen, elixir-format
+msgid "How many sides does a hexagon have?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:328
+#, elixir-autogen, elixir-format
+msgid "HyperText Markup Language"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:353
+#, elixir-autogen, elixir-format
+msgid "HyperText Transfer Protocol"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:252
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:267
+#, elixir-autogen, elixir-format
+msgid "In Africa"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:200
+#, elixir-autogen, elixir-format
+msgid "In Italy"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:257
+#, elixir-autogen, elixir-format
+msgid "In Nepal"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:91
+#, elixir-autogen, elixir-format
+msgid "In Rome"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:163
+#, elixir-autogen, elixir-format
+msgid "In the nucleus"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:173
+#, elixir-autogen, elixir-format
+msgid "In what year did World War II end?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:244
+#, elixir-autogen, elixir-format
+msgid "Inca"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:261
+#, elixir-autogen, elixir-format
+msgid "India"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:399
+#, elixir-autogen, elixir-format
+msgid "Integration"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:23
+#, elixir-autogen, elixir-format
+msgid "Interactive quiz and trivia with scoring"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:226
+#, elixir-autogen, elixir-format
+msgid "Invalid URL. Must start with http:// or https://"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:179
+#, elixir-autogen, elixir-format
+msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
+#, elixir-autogen, elixir-format
+msgid "Invalid time format. Use HH:MM (24h UTC)."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:425
+#, elixir-autogen, elixir-format
+msgid "J.K. Rowling"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:210
+#, elixir-autogen, elixir-format
+msgid "Johannes"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:194
+#, elixir-autogen, elixir-format
+msgid "Karl Marx"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:215
+#, elixir-autogen, elixir-format
+msgid "Keep count must be at least 1."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:476
+#, elixir-autogen, elixir-format
+msgid "King of Pop"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/llm.ex:12
+#, elixir-autogen, elixir-format
+msgid "LLM-powered intelligent responses (Coming soon)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:190
+#, elixir-autogen, elixir-format
+msgid "Late 1980s"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:394
+#, elixir-autogen, elixir-format
+msgid "Late 1990s"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:339
+#, elixir-autogen, elixir-format
+msgid "Late 2000s"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:229
+#, elixir-autogen, elixir-format
+msgid "Leonardo da Vinci"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:113
+#, elixir-autogen, elixir-format
+msgid "Lightest"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:184
+#, elixir-autogen, elixir-format
+msgid "Lighthouse"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:333
+#, elixir-autogen, elixir-format
+msgid "Linus Torvalds"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:131
+#, elixir-autogen, elixir-format
+msgid "List RSS feeds"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:149
+#, elixir-autogen, elixir-format
+msgid "List active schedules"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:66
+#, elixir-autogen, elixir-format
+msgid "Lives in the ocean"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:118
+#, elixir-autogen, elixir-format
+msgid "Look up"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:276
+#, elixir-autogen, elixir-format
+msgid "Mariana Trench"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:50
+#, elixir-autogen, elixir-format
+msgid "Mars"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:186
+#, elixir-autogen, elixir-format
+msgid "Maximum %{max} feeds reached."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:204
+#, elixir-autogen, elixir-format
+msgid "Maximum %{max} schedules reached."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:204
+#, elixir-autogen, elixir-format
+msgid "Mayflower"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:296
+#, elixir-autogen, elixir-format
+msgid "Mediterranean"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:475
+#, elixir-autogen, elixir-format
+msgid "Michael Jackson"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:297
+#, elixir-autogen, elixir-format
+msgid "Middle earth"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:450
+#, elixir-autogen, elixir-format
+msgid "Minecraft"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:227
+#, elixir-autogen, elixir-format
+msgid "Minimum interval is %{minutes} minutes."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#, elixir-autogen, elixir-format
+msgid "Missing channel. Usage: rss add <url> <#channel>"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:470
+#, elixir-autogen, elixir-format
+msgid "Monopoly"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:26
+#, elixir-autogen, elixir-format
+msgid "More than 5"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:256
+#, elixir-autogen, elixir-format
+msgid "Mount Everest"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:168
+#, elixir-autogen, elixir-format
+msgid "Myco-"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:137
+#, elixir-autogen, elixir-format
+msgid "NaCl"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:307
+#, elixir-autogen, elixir-format
+msgid "Named after Vitus"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:219
+#, elixir-autogen, elixir-format
+msgid "Neil Armstrong"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:123
+#, elixir-autogen, elixir-format
+msgid "Neutral"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:143
+#, elixir-autogen, elixir-format
+msgid "Newton's apple"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:251
+#, elixir-autogen, elixir-format
+msgid "Nile"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:446
+#, elixir-autogen, elixir-format
+msgid "Nintendo"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:163
+#, elixir-autogen, elixir-format
+msgid "No RSS feeds configured."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:180
+#, elixir-autogen, elixir-format
+msgid "No active schedules."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:194
+#, elixir-autogen, elixir-format
+msgid "No questions available for category '%{category}'."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:362
+#, elixir-autogen, elixir-format
+msgid "No scores recorded."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:225
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:238
+#, elixir-autogen, elixir-format
+msgid "No trivia round in progress."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:317
+#, elixir-autogen, elixir-format
+msgid "North Africa"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:287
+#, elixir-autogen, elixir-format
+msgid "Not Sydney"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:302
+#, elixir-autogen, elixir-format
+msgid "Not Toronto"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/server.ex:163
+#, elixir-autogen, elixir-format
+msgid "Not in channel"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:349
+#, elixir-autogen, elixir-format
+msgid "Now Oracle"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:322
+#, elixir-autogen, elixir-format
+msgid "On the Nile"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/policy.ex:25
+#, elixir-autogen, elixir-format
+msgid "Only admins and server operators can manage bots"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:108
+#, elixir-autogen, elixir-format
+msgid "Organelle"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:301
+#, elixir-autogen, elixir-format
+msgid "Ottawa"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:158
+#, elixir-autogen, elixir-format
+msgid "Outside"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:81
+#, elixir-autogen, elixir-format
+msgid "Over 200"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:30
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:277
+#, elixir-autogen, elixir-format
+msgid "Pacific"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:20
+#, elixir-autogen, elixir-format
+msgid "Paris"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:471
+#, elixir-autogen, elixir-format
+msgid "Pass Go"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:31
+#, elixir-autogen, elixir-format
+msgid "Peaceful"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:185
+#, elixir-autogen, elixir-format
+msgid "Pharos"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:389
+#, elixir-autogen, elixir-format
+msgid "Plug it in"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:133
+#, elixir-autogen, elixir-format
+msgid "Pluto was demoted"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:331
+#, elixir-autogen, elixir-format
+msgid "Q%{number}/%{total}: %{question}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:415
+#, elixir-autogen, elixir-format
+msgid "Queen"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:411
+#, elixir-autogen, elixir-format
+msgid "RDJ"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:41
+#, elixir-autogen, elixir-format
+msgid "ROY G BIV"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:177
+#, elixir-autogen, elixir-format
+msgid "RSS Feeds:"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:26
+#, elixir-autogen, elixir-format
+msgid "RSS feed reader that posts updates to channels"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:368
+#, elixir-autogen, elixir-format
+msgid "Random Access Memory"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:406
+#, elixir-autogen, elixir-format
+msgid "Red pill"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:150
+#, elixir-autogen, elixir-format
+msgid "Remove a schedule"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:132
+#, elixir-autogen, elixir-format
+msgid "Remove an RSS feed"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:230
+#, elixir-autogen, elixir-format
+msgid "Renaissance"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:17
+#, elixir-autogen, elixir-format
+msgid "Respond when mentioned by name"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:55
+#, elixir-autogen, elixir-format
+msgid "Response must be a non-empty string"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:334
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat-RSS/1.0"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:410
+#, elixir-autogen, elixir-format
+msgid "Robert Downey Jr"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:81
+#, elixir-autogen, elixir-format
+msgid "Roll dice (e.g., 2d6, d20+5, 4d6kh3)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:265
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:257
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} = %{sum}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:290
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} → keeping %{kept}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:199
+#, elixir-autogen, elixir-format
+msgid "Roman"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:266
+#, elixir-autogen, elixir-format
+msgid "Sahara"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:102
+#, elixir-autogen, elixir-format
+msgid "Saturn"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:269
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' added: daily at %{time} UTC in %{channel}."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:243
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' added: every %{minutes}min in %{channel}."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:286
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' not found."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:284
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' removed."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:27
+#, elixir-autogen, elixir-format
+msgid "Scheduled and periodic messages"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:353
+#, elixir-autogen, elixir-format
+msgid "Scores (Q%{number}/%{total}): %{ranked}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:340
+#, elixir-autogen, elixir-format
+msgid "Scores (Q%{number}/%{total}): No scores yet."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:240
+#, elixir-autogen, elixir-format
+msgid "Scottish"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:460
+#, elixir-autogen, elixir-format
+msgid "Sherlock Holmes"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:140
+#, elixir-autogen, elixir-format
+msgid "Show current scores"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:56
+#, elixir-autogen, elixir-format
+msgid "Show this help message"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:138
+#, elixir-autogen, elixir-format
+msgid "Sodium..."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:245
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:281
+#, elixir-autogen, elixir-format
+msgid "South America"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:262
+#, elixir-autogen, elixir-format
+msgid "South Asia"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:282
+#, elixir-autogen, elixir-format
+msgid "Southern hemisphere"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:53
+#, elixir-autogen, elixir-format
+msgid "Start a solo arcade session"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:138
+#, elixir-autogen, elixir-format
+msgid "Start a trivia round"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:22
+#, elixir-autogen, elixir-format
+msgid "Start solo arcade sessions with !play"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
+#, elixir-autogen, elixir-format
+msgid "Starts with T"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:440
+#, elixir-autogen, elixir-format
+msgid "Steven Spielberg"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:139
+#, elixir-autogen, elixir-format
+msgid "Stop the current round"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:378
+#, elixir-autogen, elixir-format
+msgid "Structured Query Language"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:141
+#, elixir-autogen, elixir-format
+msgid "Submit a trivia answer"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:117
+#, elixir-autogen, elixir-format
+msgid "Sun"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:348
+#, elixir-autogen, elixir-format
+msgid "Sun Microsystems"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:445
+#, elixir-autogen, elixir-format
+msgid "Super Mario Bros"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:405
+#, elixir-autogen, elixir-format
+msgid "The Matrix"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:76
+#, elixir-autogen, elixir-format
+msgid "Three digits"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:466
+#, elixir-autogen, elixir-format
+msgid "Three wishes"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:364
+#, elixir-autogen, elixir-format
+msgid "Tim Berners-Lee"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:94
+#, elixir-autogen, elixir-format
+msgid "Time's up! Nobody got it."
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:92
+#, elixir-autogen, elixir-format
+msgid "Time's up! The answer was: %{answer}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:271
+#, elixir-autogen, elixir-format
+msgid "Tokyo"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
+#, elixir-autogen, elixir-format
+msgid "Trivia started! (%{category}, %{count} questions)\n%{question}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:230
+#, elixir-autogen, elixir-format
+msgid "Trivia stopped! %{scores}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:98
+#, elixir-autogen, elixir-format
+msgid "Two elements"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:388
+#, elixir-autogen, elixir-format
+msgid "Universal Serial Bus"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:127
+#, elixir-autogen, elixir-format
+msgid "Unknown category '%{category}'. Available: %{categories}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unknown feed format (expected RSS 2.0 or Atom)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:196
+#, elixir-autogen, elixir-format
+msgid "Usage: rss add <url> <#channel>"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
+#, elixir-autogen, elixir-format
+msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
+#, elixir-autogen, elixir-format
+msgid "Vatican City"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:148
+#, elixir-autogen, elixir-format
+msgid "Very cold"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:455
+#, elixir-autogen, elixir-format
+msgid "Vincent van Gogh"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:369
+#, elixir-autogen, elixir-format
+msgid "Volatile"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:354
+#, elixir-autogen, elixir-format
+msgid "Web"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:329
+#, elixir-autogen, elixir-format
+msgid "Web pages"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:50
+#, elixir-autogen, elixir-format
+msgid "Welcome, {nickname}!"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:464
+#, elixir-autogen, elixir-format
+msgid "What Disney movie features a genie?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:434
+#, elixir-autogen, elixir-format
+msgid "What TV show features dragons and an iron throne?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:183
+#, elixir-autogen, elixir-format
+msgid "What ancient wonder was in Alexandria?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:414
+#, elixir-autogen, elixir-format
+msgid "What band wrote 'Bohemian Rhapsody'?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:469
+#, elixir-autogen, elixir-format
+msgid "What board game has properties like Boardwalk?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:243
+#, elixir-autogen, elixir-format
+msgid "What civilization built Machu Picchu?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:347
+#, elixir-autogen, elixir-format
+msgid "What company created Java?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:280
+#, elixir-autogen, elixir-format
+msgid "What continent is Brazil in?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:260
+#, elixir-autogen, elixir-format
+msgid "What country has the most people?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:315
+#, elixir-autogen, elixir-format
+msgid "What country is the Sahara Desert mostly in?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:397
+#, elixir-autogen, elixir-format
+msgid "What does API stand for?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:342
+#, elixir-autogen, elixir-format
+msgid "What does CPU stand for?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:327
+#, elixir-autogen, elixir-format
+msgid "What does HTML stand for?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:352
+#, elixir-autogen, elixir-format
+msgid "What does HTTP stand for?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:367
+#, elixir-autogen, elixir-format
+msgid "What does RAM stand for?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:377
+#, elixir-autogen, elixir-format
+msgid "What does SQL stand for?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:387
+#, elixir-autogen, elixir-format
+msgid "What does USB stand for?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:111
+#, elixir-autogen, elixir-format
+msgid "What element has atomic number 1?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:198
+#, elixir-autogen, elixir-format
+msgid "What empire built the Colosseum?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:459
+#, elixir-autogen, elixir-format
+msgid "What fictional detective lived at 221B Baker Street?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:141
+#, elixir-autogen, elixir-format
+msgid "What force keeps planets in orbit?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:444
+#, elixir-autogen, elixir-format
+msgid "What game features a plumber named Mario?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:69
+#, elixir-autogen, elixir-format
+msgid "What gas do plants absorb?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:126
+#, elixir-autogen, elixir-format
+msgid "What gas makes up 78% of Earth's atmosphere?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:429
+#, elixir-autogen, elixir-format
+msgid "What instrument has 88 keys?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:146
+#, elixir-autogen, elixir-format
+msgid "What is absolute zero in Celsius?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:449
+#, elixir-autogen, elixir-format
+msgid "What is the best-selling video game of all time?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:74
+#, elixir-autogen, elixir-format
+msgid "What is the boiling point of water in Celsius?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:285
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Australia?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:300
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Canada?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:320
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Egypt?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:19
+#, elixir-autogen, elixir-format
+msgid "What is the capital of France?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:270
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Japan?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:136
+#, elixir-autogen, elixir-format
+msgid "What is the chemical formula for table salt?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:59
+#, elixir-autogen, elixir-format
+msgid "What is the chemical symbol for gold?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:96
+#, elixir-autogen, elixir-format
+msgid "What is the chemical symbol for water?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:116
+#, elixir-autogen, elixir-format
+msgid "What is the closest star to Earth?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:275
+#, elixir-autogen, elixir-format
+msgid "What is the deepest ocean trench?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:44
+#, elixir-autogen, elixir-format
+msgid "What is the hardest natural substance?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:419
+#, elixir-autogen, elixir-format
+msgid "What is the highest-grossing film of all time?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:265
+#, elixir-autogen, elixir-format
+msgid "What is the largest desert?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:310
+#, elixir-autogen, elixir-format
+msgid "What is the largest island?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:64
+#, elixir-autogen, elixir-format
+msgid "What is the largest mammal?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:29
+#, elixir-autogen, elixir-format
+msgid "What is the largest ocean?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:156
+#, elixir-autogen, elixir-format
+msgid "What is the largest organ in the human body?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:250
+#, elixir-autogen, elixir-format
+msgid "What is the longest river in the world?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:121
+#, elixir-autogen, elixir-format
+msgid "What is the pH of pure water?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:106
+#, elixir-autogen, elixir-format
+msgid "What is the powerhouse of the cell?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:290
+#, elixir-autogen, elixir-format
+msgid "What is the smallest continent?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:89
+#, elixir-autogen, elixir-format
+msgid "What is the smallest country by area?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:84
+#, elixir-autogen, elixir-format
+msgid "What is the speed of light (km/s)?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:166
+#, elixir-autogen, elixir-format
+msgid "What is the study of fungi called?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:255
+#, elixir-autogen, elixir-format
+msgid "What is the tallest mountain?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:404
+#, elixir-autogen, elixir-format
+msgid "What movie features a character named Neo?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:161
+#, elixir-autogen, elixir-format
+msgid "What particle has a positive charge?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:101
+#, elixir-autogen, elixir-format
+msgid "What planet has the most moons?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:49
+#, elixir-autogen, elixir-format
+msgid "What planet is known as the Red Planet?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:372
+#, elixir-autogen, elixir-format
+msgid "What programming language is Elixir built on?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:223
+#, elixir-autogen, elixir-format
+msgid "What revolution started in 1789?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:295
+#, elixir-autogen, elixir-format
+msgid "What sea is between Europe and Africa?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:203
+#, elixir-autogen, elixir-format
+msgid "What ship brought Pilgrims to America?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:305
+#, elixir-autogen, elixir-format
+msgid "What strait separates Asia and North America?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:151
+#, elixir-autogen, elixir-format
+msgid "What vitamin does the sun provide?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:213
+#, elixir-autogen, elixir-format
+msgid "What year did Columbus reach America?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:188
+#, elixir-autogen, elixir-format
+msgid "What year did the Berlin Wall fall?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:34
+#, elixir-autogen, elixir-format
+msgid "What year did the Titanic sink?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:392
+#, elixir-autogen, elixir-format
+msgid "What year was Google founded?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:233
+#, elixir-autogen, elixir-format
+msgid "What year was the Declaration of Independence signed?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:362
+#, elixir-autogen, elixir-format
+msgid "What year was the World Wide Web invented?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:337
+#, elixir-autogen, elixir-format
+msgid "What year was the first iPhone released?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:332
+#, elixir-autogen, elixir-format
+msgid "Who created Linux?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:439
+#, elixir-autogen, elixir-format
+msgid "Who directed Jurassic Park?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:238
+#, elixir-autogen, elixir-format
+msgid "Who discovered penicillin?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:357
+#, elixir-autogen, elixir-format
+msgid "Who founded Microsoft?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:208
+#, elixir-autogen, elixir-format
+msgid "Who invented the printing press?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:382
+#, elixir-autogen, elixir-format
+msgid "Who invented the telephone?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:228
+#, elixir-autogen, elixir-format
+msgid "Who painted the Mona Lisa?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:454
+#, elixir-autogen, elixir-format
+msgid "Who painted the Starry Night?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:409
+#, elixir-autogen, elixir-format
+msgid "Who played Iron Man in the MCU?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:474
+#, elixir-autogen, elixir-format
+msgid "Who sang 'Thriller'?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:218
+#, elixir-autogen, elixir-format
+msgid "Who was the first man on the moon?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:178
+#, elixir-autogen, elixir-format
+msgid "Who was the first president of the USA?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:424
+#, elixir-autogen, elixir-format
+msgid "Who wrote Harry Potter?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:193
+#, elixir-autogen, elixir-format
+msgid "Who wrote the Communist Manifesto?"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:33
+#, elixir-autogen, elixir-format
+msgid "XML parse error: %{reason}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:372
+#, elixir-autogen, elixir-format
+msgid "[%{title}]"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:98
+#, elixir-autogen, elixir-format
+msgid "action must be one of: warn, mute, kick"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:65
+#, elixir-autogen, elixir-format
+msgid "blue whale"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:70
+#, elixir-autogen, elixir-format
+msgid "carbon dioxide"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:380
+#, elixir-autogen, elixir-format
+msgid "daily@%{time}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:179
+#, elixir-autogen, elixir-format
+msgid "excessive caps lock"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:161
+#, elixir-autogen, elixir-format
+msgid "flooding (%{count} messages in %{window}s)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:67
+#, elixir-autogen, elixir-format
+msgid "max_dice must be between 1 and 1000"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:70
+#, elixir-autogen, elixir-format
+msgid "max_sides must be between 2 and 10_000"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/bot.ex:46
+#, elixir-autogen, elixir-format
+msgid "must start with a letter"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/bot.ex:43
+#: lib/retro_hex_chat/bots/bot_custom_command.ex:32
+#, elixir-autogen, elixir-format
+msgid "only letters, numbers, _ and -"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:377
+#, elixir-autogen, elixir-format
+msgid "q/%{minutes}min"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:145
+#, elixir-autogen, elixir-format
+msgid "spamming (%{count} identical messages)"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:127
+#, elixir-autogen, elixir-format
+msgid "using blocked words"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:218
+#, elixir-autogen, elixir-format
+msgid "{nickname}"
+msgstr ""
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:86
+#, elixir-autogen, elixir-format
+msgid "~3 x 10^5 km/s"
+msgstr ""

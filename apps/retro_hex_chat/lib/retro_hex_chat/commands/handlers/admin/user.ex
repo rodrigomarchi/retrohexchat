@@ -12,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["list" | opts], context) do
     {search, online_only} = parse_list_opts(opts)
-    AuditLogs.log(context.nickname, gettext("user.list"))
+    AuditLogs.log(context.nickname, dgettext("admin", "user.list"))
     registered = Queries.list_registered_nicks(search: search)
     online_nicks = online_nicknames()
 
@@ -25,10 +25,12 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
 
     text =
       if entries == [] do
-        gettext("*** No users found.")
+        dgettext("admin", "*** No users found.")
       else
         header =
-          gettext("*** User List (%{entries_count} results) ***", entries_count: length(entries))
+          dgettext("admin", "*** User List (%{entries_count} results) ***",
+            entries_count: length(entries)
+          )
 
         lines = Enum.map(entries, &format_user_entry(&1, online_nicks))
 
@@ -40,16 +42,16 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
 
   def execute(["info", nick], context) do
     nick = strip_at(nick)
-    AuditLogs.log(context.nickname, gettext("user.info"), {"user", nick})
+    AuditLogs.log(context.nickname, dgettext("admin", "user.info"), {"user", nick})
 
     case Queries.find_by_nickname(nick) do
       nil ->
         online = nick in online_nicknames()
 
         text =
-          gettext("*** User: %{nick}\n", nick: nick) <>
-            gettext("  Registered: no\n") <>
-            gettext("  Online: %{online}", online: online)
+          dgettext("admin", "*** User: %{nick}\n", nick: nick) <>
+            dgettext("admin", "  Registered: no\n") <>
+            dgettext("admin", "  Online: %{online}", online: online)
 
         {:ok, :system, %{content: text}}
 
@@ -60,13 +62,15 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
         is_oper = ServerRoles.server_operator?(nick, identified)
 
         text =
-          gettext("*** User: %{nick}\n", nick: nick) <>
-            gettext("  Registered: %{registered_at}\n", registered_at: reg.registered_at) <>
-            gettext("  Last seen: %{last_seen_at}\n", last_seen_at: reg.last_seen_at) <>
-            gettext("  Online: %{online}\n", online: online) <>
-            gettext("  Identified: %{identified}\n", identified: identified) <>
-            gettext("  Admin: %{is_admin}\n", is_admin: is_admin) <>
-            gettext("  Server operator: %{is_oper}", is_oper: is_oper)
+          dgettext("admin", "*** User: %{nick}\n", nick: nick) <>
+            dgettext("admin", "  Registered: %{registered_at}\n",
+              registered_at: reg.registered_at
+            ) <>
+            dgettext("admin", "  Last seen: %{last_seen_at}\n", last_seen_at: reg.last_seen_at) <>
+            dgettext("admin", "  Online: %{online}\n", online: online) <>
+            dgettext("admin", "  Identified: %{identified}\n", identified: identified) <>
+            dgettext("admin", "  Admin: %{is_admin}\n", is_admin: is_admin) <>
+            dgettext("admin", "  Server operator: %{is_oper}", is_oper: is_oper)
 
         {:ok, :system, %{content: text}}
     end
@@ -77,7 +81,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
     {reason, duration} = parse_ban_opts(opts)
 
     case Admin.ban_user(nick, context.nickname, reason, duration) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
       {:error, msg} -> {:error, msg}
     end
   end
@@ -86,7 +90,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
     nick = strip_at(nick)
 
     case Admin.unban_user(nick, context.nickname) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
       {:error, msg} -> {:error, msg}
     end
   end
@@ -96,7 +100,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
     reason = parse_reason(opts)
 
     case Admin.kick_user(nick, context.nickname, reason) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
     end
   end
 
@@ -105,7 +109,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
     duration = parse_duration_opt(opts)
 
     case Admin.mute_user(nick, context.nickname, nil, duration) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
     end
   end
 
@@ -113,7 +117,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
     nick = strip_at(nick)
 
     case Admin.unmute_user(nick, context.nickname) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
     end
   end
 
@@ -121,7 +125,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
     old_nick = strip_at(old_nick)
 
     case Admin.rename_user(old_nick, new_nick, context.nickname) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
       {:error, msg} -> {:error, msg}
     end
   end
@@ -132,11 +136,14 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
     root_admins = Application.get_env(:retro_hex_chat, :root_admins, [])
 
     if role == "admin" and context.nickname not in root_admins do
-      {:error, gettext("Only root admins can promote users to admin")}
+      {:error, dgettext("admin", "Only root admins can promote users to admin")}
     else
       case Admin.set_role(nick, role, context.nickname) do
-        {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
-        {:error, msg} -> {:error, msg}
+        {:ok, msg} ->
+          {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
+
+        {:error, msg} ->
+          {:error, msg}
       end
     end
   end
@@ -154,10 +161,12 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
 
     text =
       if filtered == [] do
-        gettext("*** No active server bans.")
+        dgettext("admin", "*** No active server bans.")
       else
         header =
-          gettext("*** Server Ban List (%{filtered_count}) ***", filtered_count: length(filtered))
+          dgettext("admin", "*** Server Ban List (%{filtered_count}) ***",
+            filtered_count: length(filtered)
+          )
 
         lines = Enum.map(filtered, &format_ban_entry/1)
 
@@ -169,7 +178,10 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
 
   def execute([], _context) do
     {:error,
-     gettext("Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>")}
+     dgettext(
+       "admin",
+       "Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+     )}
   end
 
   def execute([subcmd | _], _context) do
@@ -180,18 +192,22 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
 
   defp format_user_entry(n, online_nicks) do
     online = if n.nickname in online_nicks, do: "online", else: "offline"
-    gettext("  %{nickname} [registered] [%{online}]", nickname: n.nickname, online: online)
+
+    dgettext("admin", "  %{nickname} [registered] [%{online}]",
+      nickname: n.nickname,
+      online: online
+    )
   end
 
   defp format_ban_entry(b) do
     expires =
       if b.expires_at,
-        do: gettext("expires %{expires_at}", expires_at: b.expires_at),
+        do: dgettext("admin", "expires %{expires_at}", expires_at: b.expires_at),
         else: "permanent"
 
-    reason = b.reason || gettext("No reason")
+    reason = b.reason || dgettext("admin", "No reason")
 
-    gettext("  %{nickname} — %{reason} (by %{banned_by}, %{expires})",
+    dgettext("admin", "  %{nickname} — %{reason} (by %{banned_by}, %{expires})",
       nickname: b.nickname,
       reason: reason,
       banned_by: b.banned_by,

@@ -1,19 +1,26 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_ui",
     "RetroHexChat supports IRC-compatible text formatting with bold, italic, underline, colors, and more."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Methods")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_ui", "Methods")}</.help_h4>
 <p>
-  <strong>{gettext("Toolbar:")}</strong>
-  {gettext("Use the formatting toolbar below the chat area (B, I, U, Color, Strip buttons).")}
+  <strong>{dgettext("help_ui", "Toolbar:")}</strong>
+  {dgettext(
+    "help_ui",
+    "Use the formatting toolbar below the chat area (B, I, U, Color, Strip buttons)."
+  )}
 </p>
-<p><strong>{gettext("Keyboard Shortcuts:")}</strong></p>
-<pre>{gettext("Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color (opens color picker) Ctrl+Shift+V — Reverse Ctrl+Shift+X — Reset all formatting")}</pre>
-<.help_h4 icon={:icon_close}>{gettext("Strip Formatting")}</.help_h4>
+<p><strong>{dgettext("help_ui", "Keyboard Shortcuts:")}</strong></p>
+<pre>{dgettext("help_ui", "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color (opens color picker) Ctrl+Shift+V — Reverse Ctrl+Shift+X — Reset all formatting")}</pre>
+<.help_h4 icon={:icon_close}>{dgettext("help_ui", "Strip Formatting")}</.help_h4>
 <p>
-  {gettext("Click the")} <strong>S</strong>
-  {gettext("button in the formatting toolbar to strip all formatting from incoming messages.")}
+  {dgettext("help_ui", "Click the")} <strong>S</strong>
+  {dgettext(
+    "help_ui",
+    "button in the formatting toolbar to strip all formatting from incoming messages."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
-<p><.help_link topic="formatting-colors">{gettext("Colors")}</.help_link></p>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p><.help_link topic="formatting-colors">{dgettext("help_ui", "Colors")}</.help_link></p>

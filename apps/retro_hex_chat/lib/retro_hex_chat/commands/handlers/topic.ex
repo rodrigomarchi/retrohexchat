@@ -13,7 +13,7 @@ defmodule RetroHexChat.Commands.Handlers.Topic do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], context) do
     case context.active_channel do
-      nil -> {:error, gettext("You are not in any channel")}
+      nil -> {:error, dgettext("commands", "You are not in any channel")}
       channel -> {:ok, :ui_action, :view_topic, %{channel: channel}}
     end
   end
@@ -21,7 +21,7 @@ defmodule RetroHexChat.Commands.Handlers.Topic do
   def execute(args, context) do
     case context.active_channel do
       nil ->
-        {:error, gettext("You are not in any channel")}
+        {:error, dgettext("commands", "You are not in any channel")}
 
       channel ->
         topic = Enum.join(args, " ")
@@ -39,12 +39,13 @@ defmodule RetroHexChat.Commands.Handlers.Topic do
   def help do
     %{
       name: "topic",
-      syntax: gettext("/topic [new topic]"),
+      syntax: dgettext("commands", "/topic [new topic]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "View or change the channel topic displayed in the topic bar at the top of the channel.\nNo args: shows current topic. With text: sets a new topic.\nMust be in a channel. If channel has +t mode, only operators can change the topic."
         ),
-      examples: ["/topic", gettext("/topic Welcome to #elixir!")]
+      examples: ["/topic", dgettext("commands", "/topic Welcome to #elixir!")]
     }
   end
 
@@ -59,9 +60,10 @@ defmodule RetroHexChat.Commands.Handlers.Topic do
 
     %CommandSyntax{
       command: "topic",
-      syntax: gettext("/topic [new topic]"),
+      syntax: dgettext("commands", "/topic [new topic]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "View or change the channel topic displayed in the topic bar at the top of the channel."
         ),
       category: :channel,
@@ -71,10 +73,10 @@ defmodule RetroHexChat.Commands.Handlers.Topic do
           required: false,
           type: :text,
           position: 0,
-          description: gettext("New channel topic")
+          description: dgettext("commands", "New channel topic")
         }
       ],
-      examples: ["/topic", gettext("/topic Welcome to #elixir!")]
+      examples: ["/topic", dgettext("commands", "/topic Welcome to #elixir!")]
     }
   end
 end

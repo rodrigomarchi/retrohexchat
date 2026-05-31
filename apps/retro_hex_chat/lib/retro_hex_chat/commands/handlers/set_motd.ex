@@ -13,18 +13,18 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, %{is_admin: false}) do
-    {:error, gettext("Permission denied: you must be a server administrator.")}
+    {:error, dgettext("commands", "Permission denied: you must be a server administrator.")}
   end
 
   def execute([], _context) do
-    {:error, gettext("Usage: /setmotd <text>")}
+    {:error, dgettext("commands", "Usage: /setmotd <text>")}
   end
 
   def execute(args, %{is_admin: true, nickname: nickname}) do
     content = Enum.join(args, " ")
 
     case Motd.set(content, nickname) do
-      :ok -> {:ok, :system, %{content: gettext("MOTD has been updated.")}}
+      :ok -> {:ok, :system, %{content: dgettext("commands", "MOTD has been updated.")}}
       {:error, msg} -> {:error, msg}
     end
   end
@@ -39,12 +39,13 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
   def help do
     %{
       name: "setmotd",
-      syntax: gettext("/setmotd <text>"),
+      syntax: dgettext("commands", "/setmotd <text>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Set the server's Message of the Day shown to all users when they connect.\nRequires: server administrator. Message text is required."
         ),
-      examples: [gettext("/setmotd Welcome to RetroHexChat!")]
+      examples: [dgettext("commands", "/setmotd Welcome to RetroHexChat!")]
     }
   end
 
@@ -59,9 +60,12 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
 
     %CommandSyntax{
       command: "setmotd",
-      syntax: gettext("/setmotd <text>"),
+      syntax: dgettext("commands", "/setmotd <text>"),
       description:
-        gettext("Set the server's Message of the Day shown to all users when they connect."),
+        dgettext(
+          "commands",
+          "Set the server's Message of the Day shown to all users when they connect."
+        ),
       category: :advanced,
       parameters: [
         %Parameter{
@@ -69,10 +73,10 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
           required: true,
           type: :text,
           position: 0,
-          description: gettext("Message of the Day text")
+          description: dgettext("commands", "Message of the Day text")
         }
       ],
-      examples: [gettext("/setmotd Welcome to RetroHexChat!")]
+      examples: [dgettext("commands", "/setmotd Welcome to RetroHexChat!")]
     }
   end
 end

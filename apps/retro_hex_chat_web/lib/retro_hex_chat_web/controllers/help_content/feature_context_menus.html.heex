@@ -1,56 +1,81 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Right-click on elements in the chat area and conversations sidebar to access context-specific actions."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_custom_menus}>{gettext("Nick Menu (Chat Area)")}</.help_h4>
+<.help_h4 icon={:icon_dialog_custom_menus}>
+  {dgettext("help_features", "Nick Menu (Chat Area)")}
+</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Right-click a nickname in a chat message to see: Private Message, Whois, Copy Nick, Ignore/Unignore, Add to Address Book, Set Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, Video Call, Send File (disabled if target is not registered or is yourself). Channel operators also see: Kick, Ban, Give Voice (+v), Give Op (+o)."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_custom_menus}>{gettext("URL Menu")}</.help_h4>
+<.help_h4 icon={:icon_dialog_custom_menus}>{dgettext("help_features", "URL Menu")}</.help_h4>
 <p>
-  {gettext("Right-click a URL in a chat message to see: Open Link, Copy URL, Save to URL List.")}
+  {dgettext(
+    "help_features",
+    "Right-click a URL in a chat message to see: Open Link, Copy URL, Save to URL List."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_custom_menus}>{gettext("Channel Menu")}</.help_h4>
+<.help_h4 icon={:icon_dialog_custom_menus}>{dgettext("help_features", "Channel Menu")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Right-click a #channel reference in a chat message to see: Join Channel (disabled if already joined), Copy Channel Name, Channel Info."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_custom_menus}>{gettext("Message Menu")}</.help_h4>
+<.help_h4 icon={:icon_dialog_custom_menus}>{dgettext("help_features", "Message Menu")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Right-click the general chat area to see: Copy Message, Copy Selected Text, Quote/Reply (disabled), Ignore Sender. If the message contains URLs, Open Link and Copy URL also appear."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_custom_menus}>{gettext("Conversations Menu")}</.help_h4>
+<.help_h4 icon={:icon_dialog_custom_menus}>
+  {dgettext("help_features", "Conversations Menu")}
+</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Right-click a channel in the conversations sidebar to see: Mark as Read, Mute/Unmute Channel, Copy Name, Leave Channel, Channel Settings."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_cheatsheet}>{gettext("Keyboard Navigation")}</.help_h4>
+<.help_h4 icon={:icon_dialog_cheatsheet}>
+  {dgettext("help_features", "Keyboard Navigation")}
+</.help_h4>
 <p>
-  {gettext("Use")} <strong>{gettext("Arrow Up/Down")}</strong>
-  {gettext("to navigate menu items,")} <strong>{gettext("Enter")}</strong>
-  {gettext("to select, and")} <strong>{gettext("Escape")}</strong>
-  {gettext("to close.")}
+  {dgettext("help_features", "Use")} <strong>{dgettext("help_features", "Arrow Up/Down")}</strong>
+  {dgettext("help_features", "to navigate menu items,")}
+  <strong>{dgettext("help_features", "Enter")}</strong>
+  {dgettext("help_features", "to select, and")}
+  <strong>{dgettext("help_features", "Escape")}</strong>
+  {dgettext("help_features", "to close.")}
 </p>
-<.help_h4 icon={:icon_document_alert}>{gettext("Notes")}</.help_h4>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Notes")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Menus automatically reposition if they would go off-screen. The browser's default right-click menu is preserved in the input field. Self-targeting actions (Kick, Ban, Ignore, P2P actions on yourself) appear disabled."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-custom-menus">{gettext("Custom Menus")}</.help_link>
+  <.help_link topic="feature-custom-menus">
+    {dgettext("help_features", "Custom Menus")}
+  </.help_link>
   ·
   <.help_link topic="feature-interactive-elements">
-    {gettext("Interactive Chat Elements")}
+    {dgettext("help_features", "Interactive Chat Elements")}
   </.help_link>
-  · <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
-  · <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
+  ·
+  <.help_link topic="feature-p2p-sessions">
+    {dgettext("help_features", "P2P Sessions")}
+  </.help_link>
+  ·
+  <.help_link topic="keyboard-shortcuts">
+    {dgettext("help_features", "Keyboard Shortcuts")}
+  </.help_link>
 </p>

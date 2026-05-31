@@ -15,17 +15,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.LoadingSpinnerPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Loading Spinner"), active_page: "loading-spinner")}
+    {:ok,
+     assign(socket,
+       page_title: dgettext("showcase", "Loading Spinner"),
+       active_page: "loading-spinner"
+     )}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Loading Spinner")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Loading Spinner")}</h2>
 
       <.showcase_card
-        title={gettext("Default")}
+        title={dgettext("showcase", "Default")}
         description="Retro-styled animated progress bar for loading states."
       >
         <.loading_spinner />
@@ -35,28 +39,28 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.LoadingSpinnerPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Custom Text")}
+        title={dgettext("showcase", "Custom Text")}
         description="Loading spinner with custom status text."
       >
-        <.loading_spinner text={gettext("Loading messages...")} />
+        <.loading_spinner text={dgettext("showcase", "Loading messages...")} />
         <.code_example>
           &lt;.loading_spinner text="Loading messages..." /&gt;
         </.code_example>
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Sizes")}
+        title={dgettext("showcase", "Sizes")}
         description="Small, default, and large size variants."
       >
         <div class="space-y-4">
           <div class="shadow-retro-field bg-white p-2">
-            <.loading_spinner size="sm" text={gettext("Small")} />
+            <.loading_spinner size="sm" text={dgettext("showcase", "Small")} />
           </div>
           <div class="shadow-retro-field bg-white p-2">
-            <.loading_spinner size="default" text={gettext("Default")} />
+            <.loading_spinner size="default" text={dgettext("showcase", "Default")} />
           </div>
           <div class="shadow-retro-field bg-white p-2">
-            <.loading_spinner size="lg" text={gettext("Large")} />
+            <.loading_spinner size="lg" text={dgettext("showcase", "Large")} />
           </div>
         </div>
         <.code_example>
@@ -67,13 +71,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.LoadingSpinnerPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With Action")}
+        title={dgettext("showcase", "With Action")}
         description="Loading spinner with a retry button passed as inner block."
       >
-        <.loading_spinner text={gettext("Connection timed out")}>
+        <.loading_spinner text={dgettext("showcase", "Connection timed out")}>
           <.button variant="outline" size="sm" class="pointer-events-auto">
             <:icon><Icons.icon_retry /></:icon>
-            {gettext("Retry")}
+            {dgettext("showcase", "Retry")}
           </.button>
         </.loading_spinner>
         <.code_example>

@@ -14,9 +14,10 @@ defmodule RetroHexChatWeb.LandingLive.Community do
     {:ok,
      assign(socket,
        active_page: :community,
-       page_title: gettext("Open Source & Community — Retro Hex Chat"),
+       page_title: dgettext("landing", "Open Source & Community — Retro Hex Chat"),
        page_description:
-         gettext(
+         dgettext(
+           "landing",
            "Retro Hex Chat is MIT-licensed open source software. Contribute, star, share, or sponsor the project on GitHub."
          )
      )}

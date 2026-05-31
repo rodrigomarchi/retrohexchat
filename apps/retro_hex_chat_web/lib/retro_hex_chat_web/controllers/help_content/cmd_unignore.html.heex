@@ -1,24 +1,27 @@
 <p>
-  {gettext("Stop ignoring a user you previously blocked with")} <code>{gettext("/ignore")}</code>{gettext(
+  {dgettext("help_commands", "Stop ignoring a user you previously blocked with")} <code>{dgettext("help_commands", "/ignore")}</code>{dgettext(
+    "help_commands",
     ", making their messages visible to you again."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/unignore <nickname>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>nickname</code> {gettext("— The user to stop ignoring.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/unignore <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p><code>nickname</code> {dgettext("help_commands", "— The user to stop ignoring.")}</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Removes the user from your ignore list. Their messages, PMs, actions, and invites (whichever were being blocked) will be visible again immediately. To see who you're currently ignoring, run"
   )}
-  <code>{gettext("/ignore")}</code>
-  {gettext("with no arguments first.")}
+  <code>{dgettext("help_commands", "/ignore")}</code>
+  {dgettext("help_commands", "with no arguments first.")}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/unignore SpamBot /unignore Alice")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/unignore SpamBot /unignore Alice")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ignore">{gettext("/ignore")}</.help_link>
-  · <.help_link topic="feature-ignore-list">{gettext("Ignore List")}</.help_link>
+  <.help_link topic="cmd-ignore">{dgettext("help_commands", "/ignore")}</.help_link>
+  ·
+  <.help_link topic="feature-ignore-list">{dgettext("help_commands", "Ignore List")}</.help_link>
 </p>

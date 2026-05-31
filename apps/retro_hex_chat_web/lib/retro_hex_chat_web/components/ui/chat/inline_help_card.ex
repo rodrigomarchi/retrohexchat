@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.Components.UI.InlineHelpCard do
           rel="noopener noreferrer"
           class="underline"
         >
-          {gettext("Open in Help Topics")}
+          {dgettext("chat", "Open in Help Topics")}
         </a>
       </div>
     </div>

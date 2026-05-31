@@ -1,49 +1,78 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "One epic long round of Frostbite — all enemies from the start, igloo needs 20 pieces, and the temperature drops slowly from 60°. Arctic endurance mode. A marathon of precision and patience — one wrong jump can cost you minutes of progress."
   )}
 </p>
 <.diagram_game_frost class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("Arrow keys (←/→) or A/D")}</strong> {gettext("— Move left/right")}</li>
-  <li><strong>{gettext("Arrow Up or W")}</strong> {gettext("— Jump to row above")}</li>
-  <li><strong>{gettext("Arrow Down or S")}</strong> {gettext("— Jump to row below")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Blizzard Mode Rules")}</.help_h4>
-<ul>
-  <li>{gettext("Single round — no best of 5")}</li>
-  <li>{gettext("Igloo requires 20 pieces (vs 15 in Arctic Race)")}</li>
-  <li>{gettext("All enemy types active from the start")}</li>
-  <li>{gettext("Temperature starts at 60° and drops at 0.5°/second")}</li>
-  <li>{gettext("Block stealing is active — expect chaos!")}</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Pace yourself")}</strong>
-    {gettext("— With 60° on the clock, you have time. Don't rush jumps and fall into the water.")}
+    <strong>{dgettext("help_games", "Arrow keys (←/→) or A/D")}</strong> {dgettext(
+      "help_games",
+      "— Move left/right"
+    )}
   </li>
   <li>
-    <strong>{gettext("Prioritize safe rows")}</strong>
-    {gettext("— Not all ice rows are equal. Focus on rows with predictable patterns first.")}
+    <strong>{dgettext("help_games", "Arrow Up or W")}</strong> {dgettext(
+      "help_games",
+      "— Jump to row above"
+    )}
   </li>
   <li>
-    <strong>{gettext("Block stealing is everything")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Arrow Down or S")}</strong> {dgettext(
+      "help_games",
+      "— Jump to row below"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Blizzard Mode Rules")}</.help_h4>
+<ul>
+  <li>{dgettext("help_games", "Single round — no best of 5")}</li>
+  <li>{dgettext("help_games", "Igloo requires 20 pieces (vs 15 in Arctic Race)")}</li>
+  <li>{dgettext("help_games", "All enemy types active from the start")}</li>
+  <li>{dgettext("help_games", "Temperature starts at 60° and drops at 0.5°/second")}</li>
+  <li>{dgettext("help_games", "Block stealing is active — expect chaos!")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_games", "Pace yourself")}</strong>
+    {dgettext(
+      "help_games",
+      "— With 60° on the clock, you have time. Don't rush jumps and fall into the water."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Prioritize safe rows")}</strong>
+    {dgettext(
+      "help_games",
+      "— Not all ice rows are equal. Focus on rows with predictable patterns first."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Block stealing is everything")}</strong>
+    {dgettext(
+      "help_games",
       "— Stepping on your opponent's blocks steals them. Use it offensively when you're ahead."
     )}
   </li>
   <li>
-    <strong>{gettext("Watch the temperature")}</strong>
-    {gettext("— At 0.5°/second, you have about 2 minutes. Don't panic but don't dawdle either.")}
+    <strong>{dgettext("help_games", "Watch the temperature")}</strong>
+    {dgettext(
+      "help_games",
+      "— At 0.5°/second, you have about 2 minutes. Don't panic but don't dawdle either."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
-<p>{gettext("Inspired by Activision Frostbite (1983) by Steve Cartwright.")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
+<p>{dgettext("help_games", "Inspired by Activision Frostbite (1983) by Steve Cartwright.")}</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-frost">{gettext("Hex Frost")}</.help_link>
-  · <.help_link topic="feature-hex-frost-peaceful">{gettext("Hex Frost: Peaceful")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  <.help_link topic="feature-hex-frost">{dgettext("help_games", "Hex Frost")}</.help_link>
+  ·
+  <.help_link topic="feature-hex-frost-peaceful">
+    {dgettext("help_games", "Hex Frost: Peaceful")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
 </p>

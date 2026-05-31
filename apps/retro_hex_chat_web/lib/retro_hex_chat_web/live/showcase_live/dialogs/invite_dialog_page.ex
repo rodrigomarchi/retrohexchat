@@ -17,22 +17,26 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.InviteDialogPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Invite Dialog"), active_page: "invite-dialog")}
+    {:ok,
+     assign(socket,
+       page_title: dgettext("showcase", "Invite Dialog"),
+       active_page: "invite-dialog"
+     )}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Invite Dialog")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Invite Dialog")}</h2>
 
       <.showcase_card
-        title={gettext("Single Invite")}
+        title={dgettext("showcase", "Single Invite")}
         description="A single channel invite from another user."
       >
         <.button variant="outline" phx-click={show_modal("invite-single")}>
           <:icon><Icons.icon_dialog_invite class="w-4 h-4" /></:icon>
-          {gettext("Show Single Invite")}
+          {dgettext("showcase", "Show Single Invite")}
         </.button>
         <.invite_dialog
           id="invite-single"
@@ -52,12 +56,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.InviteDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Multiple Invites (Stacked)")}
+        title={dgettext("showcase", "Multiple Invites (Stacked)")}
         description="Multiple pending invites rendered as stacked dialog cards."
       >
         <.button variant="outline" phx-click={show_modal("invite-multi")}>
           <:icon><Icons.icon_dialog_invite class="w-4 h-4" /></:icon>
-          {gettext("Show Stacked Invites")}
+          {dgettext("showcase", "Show Stacked Invites")}
         </.button>
         <.invite_dialog
           id="invite-multi"
@@ -73,12 +77,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.InviteDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("No Pending Invites")}
+        title={dgettext("showcase", "No Pending Invites")}
         description="Empty invite list — shows placeholder message."
       >
         <.button variant="outline" phx-click={show_modal("invite-empty")}>
           <:icon><Icons.icon_dialog_invite class="w-4 h-4" /></:icon>
-          {gettext("Show Empty Invite Dialog")}
+          {dgettext("showcase", "Show Empty Invite Dialog")}
         </.button>
         <.invite_dialog
           id="invite-empty"

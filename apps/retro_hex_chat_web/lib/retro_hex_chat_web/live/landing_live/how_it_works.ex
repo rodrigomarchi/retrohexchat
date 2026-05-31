@@ -15,9 +15,11 @@ defmodule RetroHexChatWeb.LandingLive.HowItWorks do
     {:ok,
      assign(socket,
        active_page: :how_it_works,
-       page_title: gettext("How Retro Hex Chat Works — Server, P2P, Privacy & Security"),
+       page_title:
+         dgettext("landing", "How Retro Hex Chat Works — Server, P2P, Privacy & Security"),
        page_description:
-         gettext(
+         dgettext(
+           "landing",
            "Learn how Retro Hex Chat works: self-hosted server architecture, WebRTC P2P calls, privacy protections, and security layers."
          )
      )}

@@ -13,17 +13,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.TabBarPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Tab Bar"), active_page: "tab-bar")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Tab Bar"), active_page: "tab-bar")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Tab Bar")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Tab Bar")}</h2>
 
       <.showcase_card
-        title={gettext("Mixed Tabs")}
+        title={dgettext("showcase", "Mixed Tabs")}
         description="Status, channel, and PM tabs with various states."
       >
         <.tab_bar tabs={[
@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.TabBarPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Status Only")}
+        title={dgettext("showcase", "Status Only")}
         description="Just the status tab."
       >
         <.tab_bar tabs={[
@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.TabBarPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Many Channels")}
+        title={dgettext("showcase", "Many Channels")}
         description="Tab bar with many channel tabs."
       >
         <.tab_bar tabs={[

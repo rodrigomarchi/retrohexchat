@@ -1,44 +1,81 @@
-<p>{gettext("RetroHexChat supports several types of special server and channel messages:")}</p>
-<.help_h4 icon={:icon_notepad}>{gettext("Message of the Day (MOTD)")}</.help_h4>
 <p>
-  {gettext("Server administrators can set a MOTD that all users see when they connect. Use")}
-  <code>{gettext("/motd")}</code>
-  {gettext("to re-read it at any time.")}
+  {dgettext(
+    "help_features",
+    "RetroHexChat supports several types of special server and channel messages:"
+  )}
 </p>
-<.help_h4 icon={:icon_megaphone}>{gettext("Channel Welcome Messages")}</.help_h4>
+<.help_h4 icon={:icon_notepad}>{dgettext("help_features", "Message of the Day (MOTD)")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
+    "Server administrators can set a MOTD that all users see when they connect. Use"
+  )}
+  <code>{dgettext("help_features", "/motd")}</code>
+  {dgettext("help_features", "to re-read it at any time.")}
+</p>
+<.help_h4 icon={:icon_megaphone}>
+  {dgettext("help_features", "Channel Welcome Messages")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
     "Channel operators can set a welcome message shown once to users when they first join. The message is not shown to the user who set it, and not repeated on rejoin within the same session."
   )}
 </p>
-<.help_h4 icon={:icon_megaphone}>{gettext("Wallops")}</.help_h4>
+<.help_h4 icon={:icon_megaphone}>{dgettext("help_features", "Wallops")}</.help_h4>
 <p>
-  {gettext("Server operators can send wallops messages to users who opt in with")} <code>{gettext("/umode +w")}</code>{gettext(
+  {dgettext(
+    "help_features",
+    "Server operators can send wallops messages to users who opt in with"
+  )} <code>{dgettext("help_features", "/umode +w")}</code>{dgettext(
+    "help_features",
     ". Wallops appear in the Status tab."
   )}
 </p>
-<.help_h4 icon={:icon_megaphone}>{gettext("Global Announcements")}</.help_h4>
+<.help_h4 icon={:icon_megaphone}>{dgettext("help_features", "Global Announcements")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Server administrators can send announcements that appear in every user's active window. Announcements bypass ignore lists and have distinctive bold styling."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Commands")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Commands")}</.help_h4>
 <p>
-  <code>{gettext("/motd")}</code>
-  {gettext("— View the MOTD")}<br /><code>{gettext("/setmotd")}</code>
-  {gettext("— Set the MOTD (admin)")}<br /><code>{gettext("/clearmotd")}</code>
-  {gettext("— Clear the MOTD (admin)")}<br /><code>{gettext("/setwelcome")}</code>
-  {gettext("— Set channel welcome (operator)")}<br /><code>{gettext("/clearwelcome")}</code>
-  {gettext("— Clear channel welcome (operator)")}<br /><code>{gettext("/wallops")}</code>
-  {gettext("— Send wallops message (operator)")}<br /><code>{gettext("/announce")}</code>
-  {gettext("— Send global announcement (admin)")}<br /><code>{gettext("/umode")}</code>
-  {gettext("— Set user modes (+w for wallops)")}
+  <code>{dgettext("help_features", "/motd")}</code>
+  {dgettext("help_features", "— View the MOTD")}<br />
+  <code>
+    {dgettext("help_features", "/setmotd")}
+  </code>
+  {dgettext("help_features", "— Set the MOTD (admin)")}<br />
+  <code>
+    {dgettext("help_features", "/clearmotd")}
+  </code>
+  {dgettext("help_features", "— Clear the MOTD (admin)")}<br />
+  <code>
+    {dgettext("help_features", "/setwelcome")}
+  </code>
+  {dgettext("help_features", "— Set channel welcome (operator)")}<br />
+  <code>
+    {dgettext("help_features", "/clearwelcome")}
+  </code>
+  {dgettext("help_features", "— Clear channel welcome (operator)")}<br />
+  <code>
+    {dgettext("help_features", "/wallops")}
+  </code>
+  {dgettext("help_features", "— Send wallops message (operator)")}<br />
+  <code>
+    {dgettext("help_features", "/announce")}
+  </code>
+  {dgettext("help_features", "— Send global announcement (admin)")}<br />
+  <code>
+    {dgettext("help_features", "/umode")}
+  </code>
+  {dgettext("help_features", "— Set user modes (+w for wallops)")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-motd">{gettext("/motd")}</.help_link>
-  · <.help_link topic="cmd-wallops">{gettext("/wallops")}</.help_link>
-  · <.help_link topic="cmd-announce">{gettext("/announce")}</.help_link>
-  · <.help_link topic="cmd-umode">{gettext("/umode")}</.help_link>
+  <.help_link topic="cmd-motd">{dgettext("help_features", "/motd")}</.help_link>
+  · <.help_link topic="cmd-wallops">{dgettext("help_features", "/wallops")}</.help_link>
+  · <.help_link topic="cmd-announce">{dgettext("help_features", "/announce")}</.help_link>
+  · <.help_link topic="cmd-umode">{dgettext("help_features", "/umode")}</.help_link>
 </p>

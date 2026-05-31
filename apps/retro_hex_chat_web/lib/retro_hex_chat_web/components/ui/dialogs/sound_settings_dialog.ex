@@ -73,7 +73,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
 
     ~H"""
     <.dialog id={@id} show={@show} on_cancel={@on_cancel}>
-      <.dialog_header id={@id} title={gettext("Sound Settings")} on_close={@on_cancel}>
+      <.dialog_header id={@id} title={dgettext("dialogs", "Sound Settings")} on_close={@on_cancel}>
         <:icon><Icons.icon_dialog_sound class="w-4 h-4" /></:icon>
       </.dialog_header>
 
@@ -82,10 +82,12 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
           <.table>
             <.table_header>
               <.table_row>
-                <.table_head>{gettext("Event")}</.table_head>
-                <.table_head>{gettext("Sound")}</.table_head>
-                <.table_head class="w-[60px] text-center">{gettext("Flash")}</.table_head>
-                <.table_head class="w-[80px] text-center">{gettext("Preview")}</.table_head>
+                <.table_head>{dgettext("dialogs", "Event")}</.table_head>
+                <.table_head>{dgettext("dialogs", "Sound")}</.table_head>
+                <.table_head class="w-[60px] text-center">{dgettext("dialogs", "Flash")}</.table_head>
+                <.table_head class="w-[80px] text-center">
+                  {dgettext("dialogs", "Preview")}
+                </.table_head>
               </.table_row>
             </.table_header>
             <.table_body>
@@ -142,7 +144,7 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
                     data-testid={"sound-preview-#{event}"}
                   >
                     <:icon><Icons.icon_btn_sounds class="w-4 h-4" /></:icon>
-                    {gettext("Play")}
+                    {dgettext("dialogs", "Play")}
                   </.button>
                 </.table_cell>
               </.table_row>
@@ -154,15 +156,15 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
       <.dialog_footer>
         <.button variant="default" phx-click={@on_ok || hide_modal(@id)}>
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {gettext("OK")}
+          {dgettext("dialogs", "OK")}
         </.button>
         <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {gettext("Cancel")}
+          {dgettext("dialogs", "Cancel")}
         </.button>
         <.button variant="outline" phx-click={@on_apply}>
           <:icon><Icons.icon_btn_sounds class="w-4 h-4" /></:icon>
-          {gettext("Apply")}
+          {dgettext("dialogs", "Apply")}
         </.button>
       </.dialog_footer>
     </.dialog>
@@ -170,16 +172,16 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
   end
 
   @spec event_label(atom()) :: String.t()
-  defp event_label(:message), do: gettext("Channel Message")
-  defp event_label(:pm), do: gettext("Private Message")
-  defp event_label(:highlight), do: gettext("Highlight/Mention")
-  defp event_label(:join), do: gettext("User Joined")
-  defp event_label(:part), do: gettext("User Left")
-  defp event_label(:kick), do: gettext("User Kicked")
-  defp event_label(:connect), do: gettext("Connected")
-  defp event_label(:disconnect), do: gettext("Disconnected")
-  defp event_label(:buddy_online), do: gettext("Buddy Online")
-  defp event_label(:buddy_offline), do: gettext("Buddy Offline")
+  defp event_label(:message), do: dgettext("dialogs", "Channel Message")
+  defp event_label(:pm), do: dgettext("dialogs", "Private Message")
+  defp event_label(:highlight), do: dgettext("dialogs", "Highlight/Mention")
+  defp event_label(:join), do: dgettext("dialogs", "User Joined")
+  defp event_label(:part), do: dgettext("dialogs", "User Left")
+  defp event_label(:kick), do: dgettext("dialogs", "User Kicked")
+  defp event_label(:connect), do: dgettext("dialogs", "Connected")
+  defp event_label(:disconnect), do: dgettext("dialogs", "Disconnected")
+  defp event_label(:buddy_online), do: dgettext("dialogs", "Buddy Online")
+  defp event_label(:buddy_offline), do: dgettext("dialogs", "Buddy Offline")
   defp event_label(event), do: Atom.to_string(event)
 
   @spec event_sound(map(), atom()) :: String.t()

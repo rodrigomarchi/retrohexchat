@@ -1,7 +1,8 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "When a channel is moderated, only operators (+o) and voiced (+v) users can send messages. Regular users can still read but not write."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
-<pre>{gettext("/mode +m — Enable moderated mode /mode -m — Disable moderated mode /mode +v Nick — Give voice to a user")}</pre>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
+<pre>{dgettext("help_channels", "/mode +m — Enable moderated mode /mode -m — Disable moderated mode /mode +v Nick — Give voice to a user")}</pre>

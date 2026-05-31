@@ -1,26 +1,34 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_ui",
     "When a UI container has no content, a friendly placeholder message appears with guidance:"
   )}
 </p>
-<.help_h4 icon={:icon_chat}>{gettext("Channel Messages")}</.help_h4>
-<p>{gettext("An empty channel shows a welcome message and tips for getting started.")}</p>
-<.help_h4 icon={:icon_tab_nicklist}>{gettext("Nicklist")}</.help_h4>
+<.help_h4 icon={:icon_chat}>{dgettext("help_ui", "Channel Messages")}</.help_h4>
 <p>
-  {gettext("Shows \"Nobody here\" when you are the only user (or the channel is truly empty).")}
+  {dgettext("help_ui", "An empty channel shows a welcome message and tips for getting started.")}
 </p>
-<.help_h4 icon={:icon_tab_conversations}>{gettext("Conversations")}</.help_h4>
+<.help_h4 icon={:icon_tab_nicklist}>{dgettext("help_ui", "Nicklist")}</.help_h4>
 <p>
-  {gettext("When no channels are joined, shows a hint to use")} <code>{gettext("/join")}</code>
-  {gettext("and an \"Browse channels\" button.")}
+  {dgettext(
+    "help_ui",
+    "Shows \"Nobody here\" when you are the only user (or the channel is truly empty)."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_url}>{gettext("URL Catcher")}</.help_h4>
-<p>{gettext("Shows \"No URLs captured\" until URLs appear in chat.")}</p>
-<.help_h4 icon={:icon_document_alert}>{gettext("Notes")}</.help_h4>
+<.help_h4 icon={:icon_tab_conversations}>{dgettext("help_ui", "Conversations")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext("help_ui", "When no channels are joined, shows a hint to use")}
+  <code>{dgettext("help_ui", "/join")}</code>
+  {dgettext("help_ui", "and an \"Browse channels\" button.")}
+</p>
+<.help_h4 icon={:icon_dialog_url}>{dgettext("help_ui", "URL Catcher")}</.help_h4>
+<p>{dgettext("help_ui", "Shows \"No URLs captured\" until URLs appear in chat.")}</p>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_ui", "Notes")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
     "Empty state messages disappear automatically when content arrives. The text is not selectable."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
-<p><.help_link topic="ui-overview">{gettext("UI Overview")}</.help_link></p>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p><.help_link topic="ui-overview">{dgettext("help_ui", "UI Overview")}</.help_link></p>

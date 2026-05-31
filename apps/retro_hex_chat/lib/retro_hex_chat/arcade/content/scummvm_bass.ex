@@ -6,40 +6,50 @@ defmodule RetroHexChat.Arcade.Content.ScummvmBass do
   def data do
     %{
       about: [
-        gettext(
+        dgettext(
+          "arcade",
           "Beneath a Steel Sky (1994) is a cyberpunk point-and-click adventure by Revolution Software, set in a dystopian future Australia. Robert Foster was raised in the radioactive wasteland known as \"the Gap\" but is kidnapped and brought to Union City — a massive, stratified metropolis ruled by the supercomputer LINC."
         ),
-        gettext(
+        dgettext(
+          "arcade",
           "With his robot companion Joey (whose personality chip can be inserted into different robot bodies), Robert must navigate the city's social layers, uncover conspiracies, and discover the truth about his past. The game features artwork by Dave Gibbons (Watchmen) and a rich cyberpunk narrative."
         ),
-        gettext(
+        dgettext(
+          "arcade",
           "Made freeware by Revolution Software in 2003, Beneath a Steel Sky is widely considered one of the greatest point-and-click adventures ever made. It runs on ScummVM with full CD voice acting."
         )
       ],
       controls: [
-        {gettext("Left Click"), gettext("Walk / interact with object")},
-        {gettext("Right Click"), gettext("Examine / open verb menu")},
-        {gettext("Drag item"), gettext("Combine inventory items")},
-        {"F5", gettext("Save / load game")},
-        {gettext("Ctrl + F5"), gettext("ScummVM options")},
-        {gettext("Esc"), gettext("Skip cutscene")},
-        {gettext("Space"), gettext("Pause game")},
-        {".", gettext("Skip dialogue line")}
+        {dgettext("arcade", "Left Click"), dgettext("arcade", "Walk / interact with object")},
+        {dgettext("arcade", "Right Click"), dgettext("arcade", "Examine / open verb menu")},
+        {dgettext("arcade", "Drag item"), dgettext("arcade", "Combine inventory items")},
+        {"F5", dgettext("arcade", "Save / load game")},
+        {dgettext("arcade", "Ctrl + F5"), dgettext("arcade", "ScummVM options")},
+        {dgettext("arcade", "Esc"), dgettext("arcade", "Skip cutscene")},
+        {dgettext("arcade", "Space"), dgettext("arcade", "Pause game")},
+        {".", dgettext("arcade", "Skip dialogue line")}
       ],
       tips: [
-        gettext(
+        dgettext(
+          "arcade",
           "Talk to everyone multiple times — NPCs often have new dialogue after events change."
         ),
-        gettext(
+        dgettext(
+          "arcade",
           "Joey can be inserted into different robot bodies — some puzzles require specific robot forms."
         ),
-        gettext(
+        dgettext(
+          "arcade",
           "Pay attention to the social stratification — each city level has its own culture and rules."
         ),
-        gettext(
+        dgettext(
+          "arcade",
           "The game's humor is subtle and British — read item descriptions for entertaining commentary."
         ),
-        gettext("Save frequently — some puzzle sequences are complex and easy to get stuck in.")
+        dgettext(
+          "arcade",
+          "Save frequently — some puzzle sequences are complex and easy to get stuck in."
+        )
       ]
     }
   end

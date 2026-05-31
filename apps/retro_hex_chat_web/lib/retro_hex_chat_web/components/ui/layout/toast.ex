@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.Toast do
         ])
       }
       aria-live="polite"
-      aria-label={gettext("Notifications")}
+      aria-label={dgettext("ui", "Notifications")}
     >
       {render_slot(@inner_block)}
     </div>
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.Components.UI.Toast do
                 transition: {"transition-opacity duration-150", "opacity-100", "opacity-0"}
               )
           }
-          aria-label={gettext("Dismiss")}
+          aria-label={dgettext("ui", "Dismiss")}
         >
           <Icons.icon_close_pixel class="w-[8px] h-[7px]" />
         </button>

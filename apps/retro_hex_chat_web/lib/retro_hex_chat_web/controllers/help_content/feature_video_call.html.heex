@@ -1,43 +1,56 @@
 <p>
-  {gettext("Peer-to-peer video calls with full-screen remote video and a local video thumbnail.")}
+  {dgettext(
+    "help_p2p",
+    "Peer-to-peer video calls with full-screen remote video and a local video thumbnail."
+  )}
 </p>
-<.help_h4 icon={:icon_camera}>{gettext("Starting a Video Call")}</.help_h4>
+<.help_h4 icon={:icon_camera}>{dgettext("help_p2p", "Starting a Video Call")}</.help_h4>
 <p>
-  {gettext("In the P2P session, click")} <strong>{gettext("Video Call")}</strong>{gettext(
+  {dgettext("help_p2p", "In the P2P session, click")} <strong>{dgettext("help_p2p", "Video Call")}</strong>{dgettext(
+    "help_p2p",
     ". The peer must accept."
   )}
 </p>
-<.help_h4 icon={:icon_tab_display}>{gettext("Layout")}</.help_h4>
+<.help_h4 icon={:icon_tab_display}>{dgettext("help_p2p", "Layout")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
     "The remote video occupies the main area. Your local video appears in the bottom-right corner."
   )}
 </p>
-<.help_h4 icon={:icon_camera_off}>{gettext("Turn Camera Off/On")}</.help_h4>
+<.help_h4 icon={:icon_camera_off}>{dgettext("help_p2p", "Turn Camera Off/On")}</.help_h4>
 <p>
-  {gettext("Click")}
-  <strong>{gettext("Turn Camera Off")}</strong> {gettext(
+  {dgettext("help_p2p", "Click")}
+  <strong>{dgettext("help_p2p", "Turn Camera Off")}</strong> {dgettext(
+    "help_p2p",
     "to pause the video. The peer will see a placeholder."
   )}
 </p>
-<.help_h4 icon={:icon_pip}>{gettext("Picture-in-Picture")}</.help_h4>
+<.help_h4 icon={:icon_pip}>{dgettext("help_p2p", "Picture-in-Picture")}</.help_h4>
 <p>
-  {gettext("Click")} <strong>{gettext("PiP")}</strong>
-  {gettext(
+  {dgettext("help_p2p", "Click")} <strong>{dgettext("help_p2p", "PiP")}</strong>
+  {dgettext(
+    "help_p2p",
     "to pop the remote video into a floating window that stays visible while navigating other tabs."
   )}
 </p>
-<.help_h4 icon={:icon_upgrade_video}>{gettext("Upgrade from Audio to Video")}</.help_h4>
+<.help_h4 icon={:icon_upgrade_video}>
+  {dgettext("help_p2p", "Upgrade from Audio to Video")}
+</.help_h4>
 <p>
-  {gettext("During an audio call, click")} <strong>{gettext("Add Video")}</strong>{gettext(
+  {dgettext("help_p2p", "During an audio call, click")} <strong>{dgettext("help_p2p", "Add Video")}</strong>{dgettext(
+    "help_p2p",
     ". The peer must accept before the camera is activated."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
-  · <.help_link topic="feature-audio-call">{gettext("Audio Call")}</.help_link>
-  · <.help_link topic="feature-media-devices">{gettext("Media Devices")}</.help_link>
-  · <.help_link topic="feature-call-quality">{gettext("Call Quality")}</.help_link>
-  · <.help_link topic="feature-privacy-settings">{gettext("Privacy Settings")}</.help_link>
+  <.help_link topic="feature-p2p-sessions">{dgettext("help_p2p", "P2P Sessions")}</.help_link>
+  · <.help_link topic="feature-audio-call">{dgettext("help_p2p", "Audio Call")}</.help_link>
+  · <.help_link topic="feature-media-devices">{dgettext("help_p2p", "Media Devices")}</.help_link>
+  · <.help_link topic="feature-call-quality">{dgettext("help_p2p", "Call Quality")}</.help_link>
+  ·
+  <.help_link topic="feature-privacy-settings">
+    {dgettext("help_p2p", "Privacy Settings")}
+  </.help_link>
 </p>

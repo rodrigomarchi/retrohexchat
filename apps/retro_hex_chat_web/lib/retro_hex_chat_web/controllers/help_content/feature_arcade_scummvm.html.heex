@@ -1,124 +1,185 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Play classic point & click adventures in your browser via WebAssembly. ScummVM powers freeware games from the golden age of adventure gaming (1992–1996)."
   )}
 </p>
 <.diagram_arcade_scummvm class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_game_bass}>{gettext("Available Games")}</.help_h4>
+<.help_h4 icon={:icon_game_bass}>{dgettext("help_arcade", "Available Games")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="feature-arcade-scummvm-bass">{gettext("Beneath a Steel Sky")}</.help_link> {gettext(
+    <.help_link topic="feature-arcade-scummvm-bass">
+      {dgettext("help_arcade", "Beneath a Steel Sky")}
+    </.help_link>
+    {dgettext(
+      "help_arcade",
       "(1994) — Cyberpunk masterpiece by Revolution Software. Full CD version with voice acting."
     )}
   </li>
   <li>
     <.help_link topic="feature-arcade-scummvm-drascula">
-      {gettext("Drascula: The Vampire Strikes Back")}
+      {dgettext("help_arcade", "Drascula: The Vampire Strikes Back")}
     </.help_link>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "(1996) — Hilarious Spanish point & click parody of Dracula. Full version with MP3 voice acting."
     )}
   </li>
   <li>
-    <.help_link topic="feature-arcade-scummvm-dreamweb">{gettext("Dreamweb")}</.help_link> {gettext(
+    <.help_link topic="feature-arcade-scummvm-dreamweb">
+      {dgettext("help_arcade", "Dreamweb")}
+    </.help_link>
+    {dgettext(
+      "help_arcade",
       "(1994) — Dark cyberpunk top-down adventure by Creative Reality. Full CD version with voice acting."
     )}
   </li>
   <li>
     <.help_link topic="feature-arcade-scummvm-fotaq">
-      {gettext("Flight of the Amazon Queen")}
+      {dgettext("help_arcade", "Flight of the Amazon Queen")}
     </.help_link>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "(1995) — Comic Indiana Jones-style adventure in the Amazon. Full CD version with voice acting."
     )}
   </li>
   <li>
     <.help_link topic="feature-arcade-scummvm-lure">
-      {gettext("Lure of the Temptress")}
+      {dgettext("help_arcade", "Lure of the Temptress")}
     </.help_link>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "(1992) — Revolution Software's debut. Medieval fantasy with innovative Virtual Theatre AI system."
     )}
   </li>
   <li>
-    <.help_link topic="feature-arcade-scummvm-soltys">{gettext("Soltys")}</.help_link> {gettext(
+    <.help_link topic="feature-arcade-scummvm-soltys">
+      {dgettext("help_arcade", "Soltys")}
+    </.help_link>
+    {dgettext(
+      "help_arcade",
       "(1995) — Surreal Polish puzzle adventure by LK Avalon. Rescue your grandfather from underground pirates."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_webrtc}>{gettext("Engine")}</.help_h4>
+<.help_h4 icon={:icon_webrtc}>{dgettext("help_arcade", "Engine")}</.help_h4>
 <p>
-  {gettext("Powered by")} <strong>{gettext("ScummVM")}</strong>
-  {gettext(
+  {dgettext("help_arcade", "Powered by")} <strong>{dgettext("help_arcade", "ScummVM")}</strong>
+  {dgettext(
+    "help_arcade",
     "— the legendary multi-engine adventure game interpreter with an official Emscripten backend, compiled to WebAssembly (GPL-3.0). Game data is loaded on-demand via HTTP filesystem."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("Left click")}</strong> {gettext("— Interact / walk")}</li>
-  <li><strong>{gettext("Right click")}</strong> {gettext("— Verb menu / examine")}</li>
-  <li><strong>{gettext("Drag")}</strong> {gettext("— Combine or use inventory items")}</li>
-  <li><strong>{gettext("F5")}</strong> {gettext("— Save / Load game")}</li>
-  <li><strong>{gettext("Ctrl+F5")}</strong> {gettext("— ScummVM options menu")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Skip cutscene")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left click")}</strong> {dgettext(
+      "help_arcade",
+      "— Interact / walk"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Right click")}</strong> {dgettext(
+      "help_arcade",
+      "— Verb menu / examine"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Drag")}</strong> {dgettext(
+      "help_arcade",
+      "— Combine or use inventory items"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "F5")}</strong> {dgettext(
+      "help_arcade",
+      "— Save / Load game"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Ctrl+F5")}</strong> {dgettext(
+      "help_arcade",
+      "— ScummVM options menu"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Skip cutscene")}
+  </li>
 </ul>
-<.help_h4 icon={:icon_clock}>{gettext("History")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "History")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "ScummVM (Script Creation Utility for Maniac Mansion Virtual Machine) began in 2001 as a project to run LucasArts adventure games on modern systems. It has since grown to support over 300 games across dozens of engines, from Sierra's AGI/SCI to Revolution Software's Virtual Theatre. The games available here — from Beneath a Steel Sky to Flight of the Amazon Queen — represent the golden age of point & click adventures (1992–1996)."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Click on everything")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Click on everything")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Adventure games reward thorough exploration. Look at, pick up, and talk to everything you can."
     )}
   </li>
   <li>
-    <strong>{gettext("Save often")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Save often")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Use F5 to save your progress. Some puzzles have time limits or points of no return."
     )}
   </li>
   <li>
-    <strong>{gettext("Combine inventory items")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Combine inventory items")}</strong>
+    {dgettext(
+      "help_arcade",
       "— If you're stuck, try combining items in your inventory. The solution is often creative."
     )}
   </li>
   <li>
-    <strong>{gettext("Talk to everyone twice")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Talk to everyone twice")}</strong>
+    {dgettext(
+      "help_arcade",
       "— NPCs sometimes have new dialogue after story events. Exhaust all conversation options."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Beneath a Steel Sky (1994) was made freeware by Revolution Software in 2003 — it was one of the first commercial games given away for free by its creators."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "ScummVM's name references SCUMM (Script Creation Utility for Maniac Mansion), the engine LucasArts created for their classic adventures starting in 1987."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Lure of the Temptress (1992) pioneered the \"Virtual Theatre\" system where NPCs moved independently through the game world — a remarkably advanced concept for its time."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade">{gettext("Solo Arcade")}</.help_link>
-  · <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
-  · <.help_link topic="feature-arcade-quake">{gettext("Quake (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade">{dgettext("help_arcade", "Solo Arcade")}</.help_link>
   ·
-  <.help_link topic="feature-arcade-wolfenstein">{gettext("Wolfenstein 3D (Arcade)")}</.help_link>
-  · <.help_link topic="feature-arcade-halflife">{gettext("Half-Life (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade-doom">{dgettext("help_arcade", "DOOM (Arcade)")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-quake">
+    {dgettext("help_arcade", "Quake (Arcade)")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-wolfenstein">
+    {dgettext("help_arcade", "Wolfenstein 3D (Arcade)")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-halflife">
+    {dgettext("help_arcade", "Half-Life (Arcade)")}
+  </.help_link>
 </p>

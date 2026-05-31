@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PInviteCard do
         target="_blank"
         rel="noopener noreferrer"
       >
-        {gettext("Join lobby")}
+        {dgettext("chat", "Join lobby")}
       </a>
     </span>
     """

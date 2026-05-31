@@ -65,7 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
         <%!-- Text formatting buttons --%>
         <.toolbar_button
           variant="compact"
-          label={gettext("Bold (Ctrl+Shift+B)")}
+          label={dgettext("chat", "Bold (Ctrl+Shift+B)")}
           active={@bold_active}
           class="format-btn"
           data-format-code="bold"
@@ -75,7 +75,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
         </.toolbar_button>
         <.toolbar_button
           variant="compact"
-          label={gettext("Italic (Ctrl+Shift+Y)")}
+          label={dgettext("chat", "Italic (Ctrl+Shift+Y)")}
           active={@italic_active}
           class="format-btn"
           data-format-code="italic"
@@ -85,7 +85,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
         </.toolbar_button>
         <.toolbar_button
           variant="compact"
-          label={gettext("Underline (Ctrl+Shift+U)")}
+          label={dgettext("chat", "Underline (Ctrl+Shift+U)")}
           active={@underline_active}
           class="format-btn"
           data-format-code="underline"
@@ -100,7 +100,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
         <div class="format-color-picker-wrapper relative inline-flex items-center">
           <.toolbar_button
             variant="compact"
-            label={gettext("Color (Ctrl+Shift+D)")}
+            label={dgettext("chat", "Color (Ctrl+Shift+D)")}
             class="format-btn"
             data-format-code="color"
             data-testid="format-btn-color"
@@ -126,7 +126,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
         <%!-- Control buttons --%>
         <.toolbar_button
           variant="compact"
-          label={gettext("Reverse (Ctrl+Shift+V)")}
+          label={dgettext("chat", "Reverse (Ctrl+Shift+V)")}
           class="format-btn"
           data-format-code="reverse"
           data-testid="format-btn-reverse"
@@ -135,7 +135,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
         </.toolbar_button>
         <.toolbar_button
           variant="compact"
-          label={gettext("Reset (Ctrl+Shift+X)")}
+          label={dgettext("chat", "Reset (Ctrl+Shift+X)")}
           class="format-btn"
           data-format-code="reset"
           data-testid="format-btn-reset"
@@ -148,7 +148,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
         <%!-- Strip formatting --%>
         <.toolbar_button
           variant="compact"
-          label={gettext("Strip Colors")}
+          label={dgettext("chat", "Strip Colors")}
           active={@strip_active}
           phx-click={@on_format}
           phx-value-format="strip"
@@ -162,7 +162,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
         <%!-- Emoji toggle --%>
         <.toolbar_button
           variant="compact"
-          label={gettext("Emoji Picker")}
+          label={dgettext("chat", "Emoji Picker")}
           phx-click={@on_toggle_emoji}
           data-emoji-toggle="true"
           data-testid="emoji-picker-toggle"
@@ -174,20 +174,20 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
     """
   end
 
-  defp color_name(:white), do: gettext("White")
-  defp color_name(:black), do: gettext("Black")
-  defp color_name(:navy), do: gettext("Navy")
-  defp color_name(:green), do: gettext("Green")
-  defp color_name(:red), do: gettext("Red")
-  defp color_name(:brown), do: gettext("Brown")
-  defp color_name(:purple), do: gettext("Purple")
-  defp color_name(:orange), do: gettext("Orange")
-  defp color_name(:yellow), do: gettext("Yellow")
-  defp color_name(:light_green), do: gettext("Light Green")
-  defp color_name(:teal), do: gettext("Teal")
-  defp color_name(:light_cyan), do: gettext("Light Cyan")
-  defp color_name(:blue), do: gettext("Blue")
-  defp color_name(:pink), do: gettext("Pink")
-  defp color_name(:grey), do: gettext("Grey")
-  defp color_name(:light_grey), do: gettext("Light Grey")
+  defp color_name(:white), do: dgettext("chat", "White")
+  defp color_name(:black), do: dgettext("chat", "Black")
+  defp color_name(:navy), do: dgettext("chat", "Navy")
+  defp color_name(:green), do: dgettext("chat", "Green")
+  defp color_name(:red), do: dgettext("chat", "Red")
+  defp color_name(:brown), do: dgettext("chat", "Brown")
+  defp color_name(:purple), do: dgettext("chat", "Purple")
+  defp color_name(:orange), do: dgettext("chat", "Orange")
+  defp color_name(:yellow), do: dgettext("chat", "Yellow")
+  defp color_name(:light_green), do: dgettext("chat", "Light Green")
+  defp color_name(:teal), do: dgettext("chat", "Teal")
+  defp color_name(:light_cyan), do: dgettext("chat", "Light Cyan")
+  defp color_name(:blue), do: dgettext("chat", "Blue")
+  defp color_name(:pink), do: dgettext("chat", "Pink")
+  defp color_name(:grey), do: dgettext("chat", "Grey")
+  defp color_name(:light_grey), do: dgettext("chat", "Light Grey")
 end

@@ -1,53 +1,68 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Manage server channels: list, view details, create, delete, purge messages, and view bans. Requires server administrator role."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/admin channel list [--search Q] /admin channel info #<channel> /admin channel create #<channel> /admin channel delete #<channel> /admin channel purge #<channel> [--from @nick] /admin channel banlist #<channel>")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin channel list [--search Q] /admin channel info #<channel> /admin channel create #<channel> /admin channel delete #<channel> /admin channel purge #<channel> [--from @nick] /admin channel banlist #<channel>")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Subcommands")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Subcommands")}</.help_h4>
 <ul>
   <li>
-    <code>list</code> {gettext(
+    <code>list</code> {dgettext(
+      "help_commands",
       "— List active channels with member counts and registration status"
     )}
   </li>
   <li>
-    <code>info</code> {gettext("— Show detailed channel info: members, modes, topic, bans")}
+    <code>info</code> {dgettext(
+      "help_commands",
+      "— Show detailed channel info: members, modes, topic, bans"
+    )}
   </li>
   <li>
-    <code>create</code> {gettext("— Create and register a new channel (admin becomes founder)")}
+    <code>create</code> {dgettext(
+      "help_commands",
+      "— Create and register a new channel (admin becomes founder)"
+    )}
   </li>
   <li>
-    <code>delete</code> {gettext("— Delete a channel: kicks all members and drops registration")}
+    <code>delete</code> {dgettext(
+      "help_commands",
+      "— Delete a channel: kicks all members and drops registration"
+    )}
   </li>
   <li>
     <code>purge</code>
-    {gettext("— Delete stored messages. Use")} <code>{gettext("--from @nick")}</code>
-    {gettext("to target a specific user")}
+    {dgettext("help_commands", "— Delete stored messages. Use")}
+    <code>{dgettext("help_commands", "--from @nick")}</code>
+    {dgettext("help_commands", "to target a specific user")}
   </li>
-  <li><code>banlist</code> {gettext("— List banned users in a channel")}</li>
+  <li><code>banlist</code> {dgettext("help_commands", "— List banned users in a channel")}</li>
 </ul>
 
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Channel deletion broadcasts to all members before closing")}</li>
   <li>
-    {gettext(
+    {dgettext("help_commands", "Channel deletion broadcasts to all members before closing")}
+  </li>
+  <li>
+    {dgettext(
+      "help_commands",
       "Purge only affects stored messages (already-rendered messages stay until page reload)"
     )}
   </li>
-  <li>{gettext("All actions are recorded in the audit log")}</li>
+  <li>{dgettext("help_commands", "All actions are recorded in the audit log")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/admin channel list --search lobby /admin channel info #general /admin channel delete #spam /admin channel purge #general --from @Spammer")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin channel list --search lobby /admin channel info #general /admin channel delete #spam /admin channel purge #general --from @Spammer")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-admin">{gettext("/admin")}</.help_link>
-  · <.help_link topic="cmd-admin-cs">{gettext("/admin cs")}</.help_link>
-  · <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
+  <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  · <.help_link topic="cmd-admin-cs">{dgettext("help_commands", "/admin cs")}</.help_link>
+  · <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
 </p>

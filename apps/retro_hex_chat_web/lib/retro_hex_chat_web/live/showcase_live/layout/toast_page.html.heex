@@ -1,36 +1,44 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">{gettext("Toast")}</h2>
+  <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Toast")}</h2>
 
   <.showcase_card
-    title={gettext("Variants")}
+    title={dgettext("showcase", "Variants")}
     description="Toast notifications with colored accent indicators for different message types."
   >
     <div class="space-y-3">
       <.toast id="demo-default" variant="default">
-        <.toast_title>{gettext("Notification")}</.toast_title>
-        <.toast_description>{gettext("This is a default notification.")}</.toast_description>
+        <.toast_title>{dgettext("showcase", "Notification")}</.toast_title>
+        <.toast_description>
+          {dgettext("showcase", "This is a default notification.")}
+        </.toast_description>
       </.toast>
 
       <.toast id="demo-success" variant="success">
-        <.toast_title>{gettext("Success")}</.toast_title>
-        <.toast_description>{gettext("Operation completed successfully.")}</.toast_description>
+        <.toast_title>{dgettext("showcase", "Success")}</.toast_title>
+        <.toast_description>
+          {dgettext("showcase", "Operation completed successfully.")}
+        </.toast_description>
       </.toast>
 
       <.toast id="demo-error" variant="error">
-        <.toast_title>{gettext("Error")}</.toast_title>
+        <.toast_title>{dgettext("showcase", "Error")}</.toast_title>
         <.toast_description>
-          {gettext("Something went wrong. Please try again.")}
+          {dgettext("showcase", "Something went wrong. Please try again.")}
         </.toast_description>
       </.toast>
 
       <.toast id="demo-warning" variant="warning">
-        <.toast_title>{gettext("Warning")}</.toast_title>
-        <.toast_description>{gettext("This action cannot be undone.")}</.toast_description>
+        <.toast_title>{dgettext("showcase", "Warning")}</.toast_title>
+        <.toast_description>
+          {dgettext("showcase", "This action cannot be undone.")}
+        </.toast_description>
       </.toast>
 
       <.toast id="demo-info" variant="info">
-        <.toast_title>{gettext("Info")}</.toast_title>
-        <.toast_description>{gettext("A new version is available.")}</.toast_description>
+        <.toast_title>{dgettext("showcase", "Info")}</.toast_title>
+        <.toast_description>
+          {dgettext("showcase", "A new version is available.")}
+        </.toast_description>
       </.toast>
     </div>
     <.code_example>
@@ -42,32 +50,32 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("With Actions")}
+    title={dgettext("showcase", "With Actions")}
     description="Toasts can include an action area with buttons or other interactive elements."
   >
     <div class="space-y-3">
       <.toast id="demo-action" variant="info" dismissible={false}>
-        <.toast_title>{gettext("New tip available")}</.toast_title>
+        <.toast_title>{dgettext("showcase", "New tip available")}</.toast_title>
         <.toast_description>
-          {gettext("Did you know you can use /help to see all commands?")}
+          {dgettext("showcase", "Did you know you can use /help to see all commands?")}
         </.toast_description>
         <.toast_action>
           <.button variant="outline" size="sm">
             <:icon><span class="w-4 h-4" /></:icon>
-            {gettext("Got it")}
+            {dgettext("showcase", "Got it")}
           </.button>
         </.toast_action>
       </.toast>
 
       <.toast id="demo-action-2" variant="warning">
-        <.toast_title>{gettext("Unsaved changes")}</.toast_title>
+        <.toast_title>{dgettext("showcase", "Unsaved changes")}</.toast_title>
         <.toast_description>
-          {gettext("You have unsaved changes that will be lost.")}
+          {dgettext("showcase", "You have unsaved changes that will be lost.")}
         </.toast_description>
         <.toast_action>
           <.button variant="outline" size="sm">
             <:icon><span class="w-4 h-4" /></:icon>
-            {gettext("Save now")}
+            {dgettext("showcase", "Save now")}
           </.button>
         </.toast_action>
       </.toast>
@@ -87,12 +95,14 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Non-dismissible")}
+    title={dgettext("showcase", "Non-dismissible")}
     description="Toasts without the close button for persistent notifications."
   >
     <.toast id="demo-persistent" variant="error" dismissible={false}>
-      <.toast_title>{gettext("Connection lost")}</.toast_title>
-      <.toast_description>{gettext("Attempting to reconnect...")}</.toast_description>
+      <.toast_title>{dgettext("showcase", "Connection lost")}</.toast_title>
+      <.toast_description>
+        {dgettext("showcase", "Attempting to reconnect...")}
+      </.toast_description>
     </.toast>
     <.code_example>
       &lt;.toast id="my-toast" variant="error" dismissible={false}&gt;
@@ -103,7 +113,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Interactive Demo")}
+    title={dgettext("showcase", "Interactive Demo")}
     description="Click buttons to show/dismiss toasts in the bottom-right corner."
   >
     <div class="flex flex-wrap gap-retro-4">
@@ -114,7 +124,7 @@
         )
       }>
         <:icon><span class="w-4 h-4" /></:icon>
-        {gettext("Show Default")}
+        {dgettext("showcase", "Show Default")}
       </.button>
       <.button phx-click={
         JS.show(
@@ -123,7 +133,7 @@
         )
       }>
         <:icon><span class="w-4 h-4" /></:icon>
-        {gettext("Show Success")}
+        {dgettext("showcase", "Show Success")}
       </.button>
       <.button phx-click={
         JS.show(
@@ -132,7 +142,7 @@
         )
       }>
         <:icon><span class="w-4 h-4" /></:icon>
-        {gettext("Show Error")}
+        {dgettext("showcase", "Show Error")}
       </.button>
     </div>
     <.code_example>
@@ -146,27 +156,31 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Container Positions")}
+    title={dgettext("showcase", "Container Positions")}
     description="Toast containers can be positioned in any corner of the viewport."
   >
     <div class="text-xs text-muted-foreground space-y-1">
       <p>
-        <code class="bg-white px-1">{gettext("position=\"top-right\"")}</code> {gettext(
+        <code class="bg-white px-1">{dgettext("showcase", "position=\"top-right\"")}</code> {dgettext(
+          "showcase",
           "— Top right corner"
         )}
       </p>
       <p>
-        <code class="bg-white px-1">{gettext("position=\"top-left\"")}</code> {gettext(
+        <code class="bg-white px-1">{dgettext("showcase", "position=\"top-left\"")}</code> {dgettext(
+          "showcase",
           "— Top left corner"
         )}
       </p>
       <p>
-        <code class="bg-white px-1">{gettext("position=\"bottom-right\"")}</code> {gettext(
+        <code class="bg-white px-1">{dgettext("showcase", "position=\"bottom-right\"")}</code> {dgettext(
+          "showcase",
           "— Bottom right (default)"
         )}
       </p>
       <p>
-        <code class="bg-white px-1">{gettext("position=\"bottom-left\"")}</code> {gettext(
+        <code class="bg-white px-1">{dgettext("showcase", "position=\"bottom-left\"")}</code> {dgettext(
+          "showcase",
           "— Bottom left corner"
         )}
       </p>
@@ -191,8 +205,10 @@
         )
       }
     >
-      <.toast_title>{gettext("Notification")}</.toast_title>
-      <.toast_description>{gettext("This is a default toast notification.")}</.toast_description>
+      <.toast_title>{dgettext("showcase", "Notification")}</.toast_title>
+      <.toast_description>
+        {dgettext("showcase", "This is a default toast notification.")}
+      </.toast_description>
     </.toast>
     <.toast
       id="live-success"
@@ -205,8 +221,10 @@
         )
       }
     >
-      <.toast_title>{gettext("Success")}</.toast_title>
-      <.toast_description>{gettext("Changes have been saved successfully.")}</.toast_description>
+      <.toast_title>{dgettext("showcase", "Success")}</.toast_title>
+      <.toast_description>
+        {dgettext("showcase", "Changes have been saved successfully.")}
+      </.toast_description>
     </.toast>
     <.toast
       id="live-error"
@@ -219,8 +237,10 @@
         )
       }
     >
-      <.toast_title>{gettext("Error")}</.toast_title>
-      <.toast_description>{gettext("Failed to save changes. Try again.")}</.toast_description>
+      <.toast_title>{dgettext("showcase", "Error")}</.toast_title>
+      <.toast_description>
+        {dgettext("showcase", "Failed to save changes. Try again.")}
+      </.toast_description>
     </.toast>
   </.toast_container>
 </.showcase_layout>

@@ -13,14 +13,14 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, gettext("Usage: /ns <register|identify|ghost|info|drop|help> [args]")}
+    {:error, dgettext("commands", "Usage: /ns <register|identify|ghost|info|drop|help> [args]")}
   end
 
   def execute(["register" | args], context) do
     password = Enum.join(args, " ")
 
     if password == "" do
-      {:error, gettext("Usage: /ns register <password>")}
+      {:error, dgettext("commands", "Usage: /ns register <password>")}
     else
       call_register(context.nickname, password)
     end
@@ -30,7 +30,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     password = Enum.join(args, " ")
 
     if password == "" do
-      {:error, gettext("Usage: /ns identify <password>")}
+      {:error, dgettext("commands", "Usage: /ns identify <password>")}
     else
       call_identify(context.nickname, password)
     end
@@ -42,7 +42,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
         call_ghost(target, Enum.join(password_parts, " "), context.nickname)
 
       _ ->
-        {:error, gettext("Usage: /ns ghost <nickname> <password>")}
+        {:error, dgettext("commands", "Usage: /ns ghost <nickname> <password>")}
     end
   end
 
@@ -60,7 +60,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     password = Enum.join(args, " ")
 
     if password == "" do
-      {:error, gettext("Usage: /ns drop <password>")}
+      {:error, dgettext("commands", "Usage: /ns drop <password>")}
     else
       call_drop(context.nickname, password)
     end
@@ -80,17 +80,18 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   def help do
     %{
       name: "ns",
-      syntax: gettext("/ns <subcommand> [args]"),
+      syntax: dgettext("commands", "/ns <subcommand> [args]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Register and protect your nickname with a password through NickServ.\nSubcommands: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, help.\nRegister: claims current nickname. Identify: authenticates each session.\nGhost: disconnects a stale session using the registered nickname's password."
         ),
       examples: [
-        gettext("/ns register mypassword"),
-        gettext("/ns identify mypassword"),
-        gettext("/ns ghost othernick mypassword"),
-        gettext("/ns info"),
-        gettext("/ns drop mypassword")
+        dgettext("commands", "/ns register mypassword"),
+        dgettext("commands", "/ns identify mypassword"),
+        dgettext("commands", "/ns ghost othernick mypassword"),
+        dgettext("commands", "/ns info"),
+        dgettext("commands", "/ns drop mypassword")
       ]
     }
   end
@@ -99,22 +100,31 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
 
   defp call_register(nickname, password) do
     case NickServ.register(nickname, password) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("[NickServ] %{message}", message: msg)}}
-      {:error, msg} -> {:error, gettext("[NickServ] %{message}", message: msg)}
+      {:ok, msg} ->
+        {:ok, :system, %{content: dgettext("commands", "[NickServ] %{message}", message: msg)}}
+
+      {:error, msg} ->
+        {:error, dgettext("commands", "[NickServ] %{message}", message: msg)}
     end
   end
 
   defp call_identify(nickname, password) do
     case NickServ.identify(nickname, password) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("[NickServ] %{message}", message: msg)}}
-      {:error, msg} -> {:error, gettext("[NickServ] %{message}", message: msg)}
+      {:ok, msg} ->
+        {:ok, :system, %{content: dgettext("commands", "[NickServ] %{message}", message: msg)}}
+
+      {:error, msg} ->
+        {:error, dgettext("commands", "[NickServ] %{message}", message: msg)}
     end
   end
 
   defp call_ghost(target, password, requester) do
     case NickServ.ghost(target, password, requester) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("[NickServ] %{message}", message: msg)}}
-      {:error, msg} -> {:error, gettext("[NickServ] %{message}", message: msg)}
+      {:ok, msg} ->
+        {:ok, :system, %{content: dgettext("commands", "[NickServ] %{message}", message: msg)}}
+
+      {:error, msg} ->
+        {:error, dgettext("commands", "[NickServ] %{message}", message: msg)}
     end
   end
 
@@ -122,7 +132,8 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     case NickServ.info(nickname) do
       {:ok, info} ->
         text =
-          gettext(
+          dgettext(
+            "commands",
             "[NickServ] %{nickname}: registered %{registered_at}, identified: %{identified}",
             nickname: nickname,
             registered_at: info.registered_at,
@@ -132,14 +143,17 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
         {:ok, :system, %{content: text}}
 
       {:error, msg} ->
-        {:error, gettext("[NickServ] %{message}", message: msg)}
+        {:error, dgettext("commands", "[NickServ] %{message}", message: msg)}
     end
   end
 
   defp call_drop(nickname, password) do
     case NickServ.drop(nickname, password) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("[NickServ] %{message}", message: msg)}}
-      {:error, msg} -> {:error, gettext("[NickServ] %{message}", message: msg)}
+      {:ok, msg} ->
+        {:ok, :system, %{content: dgettext("commands", "[NickServ] %{message}", message: msg)}}
+
+      {:error, msg} ->
+        {:error, dgettext("commands", "[NickServ] %{message}", message: msg)}
     end
   end
 
@@ -154,9 +168,10 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
 
     %CommandSyntax{
       command: "ns",
-      syntax: gettext("/ns <subcommand> [args]"),
+      syntax: dgettext("commands", "/ns <subcommand> [args]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Register and protect your nickname with a password through NickServ, the nickname services bot."
         ),
       category: :advanced,
@@ -166,30 +181,42 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
           required: true,
           type: :text,
           position: 0,
-          description: gettext("Subcommand: register, identify, ghost, info, drop")
+          description: dgettext("commands", "Subcommand: register, identify, ghost, info, drop")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: gettext("Subcommand arguments")
+          description: dgettext("commands", "Subcommand arguments")
         }
       ],
       examples: [
-        gettext("/ns register mypassword"),
-        gettext("/ns identify mypassword"),
-        gettext("/ns ghost othernick mypassword"),
-        gettext("/ns info"),
-        gettext("/ns drop mypassword")
+        dgettext("commands", "/ns register mypassword"),
+        dgettext("commands", "/ns identify mypassword"),
+        dgettext("commands", "/ns ghost othernick mypassword"),
+        dgettext("commands", "/ns info"),
+        dgettext("commands", "/ns drop mypassword")
       ],
       subcommands: [
-        %{name: "register", description: gettext("Register your nickname with a password")},
-        %{name: "identify", description: gettext("Authenticate with your registered password")},
-        %{name: "ghost", description: gettext("Disconnect a stale session using its password")},
-        %{name: "info", description: gettext("View registration info for a nickname")},
-        %{name: "drop", description: gettext("Delete your nickname registration")},
-        %{name: "help", description: gettext("Show NickServ help")}
+        %{
+          name: "register",
+          description: dgettext("commands", "Register your nickname with a password")
+        },
+        %{
+          name: "identify",
+          description: dgettext("commands", "Authenticate with your registered password")
+        },
+        %{
+          name: "ghost",
+          description: dgettext("commands", "Disconnect a stale session using its password")
+        },
+        %{
+          name: "info",
+          description: dgettext("commands", "View registration info for a nickname")
+        },
+        %{name: "drop", description: dgettext("commands", "Delete your nickname registration")},
+        %{name: "help", description: dgettext("commands", "Show NickServ help")}
       ]
     }
   end

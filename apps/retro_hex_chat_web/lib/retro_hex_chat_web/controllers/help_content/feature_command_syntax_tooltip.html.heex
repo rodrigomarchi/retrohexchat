@@ -1,40 +1,54 @@
 <p>
-  {gettext("When typing a command (e.g.,")} <code>{gettext("/mode #general +o")}</code>{gettext(
+  {dgettext("help_features", "When typing a command (e.g.,")} <code>{dgettext("help_features", "/mode #general +o")}</code>{dgettext(
+    "help_features",
     "), a tooltip appears above the input showing the command syntax with the current parameter highlighted in bold."
   )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "How It Works")}</.help_h4>
 <p>
-  {gettext("1. Type a command followed by a space (e.g.,")} <code>{gettext("/mode")} </code>).<br />{gettext(
+  {dgettext("help_features", "1. Type a command followed by a space (e.g.,")} <code>{dgettext("help_features", "/mode")} </code>).<br />{dgettext(
+    "help_features",
     "2. The tooltip shows the full syntax with parameter names."
-  )}<br />{gettext("3. As you type arguments, the next expected parameter is highlighted.")}<br />{gettext(
+  )}<br />{dgettext(
+    "help_features",
+    "3. As you type arguments, the next expected parameter is highlighted."
+  )}<br />{dgettext(
+    "help_features",
     "4. For"
-  )} <code>{gettext("/mode")}</code>{gettext(
+  )} <code>{dgettext("help_features", "/mode")}</code>{dgettext(
+    "help_features",
     ", available mode flags are listed below the syntax line."
   )}
 </p>
-<.help_h4 icon={:icon_group_view}>{gettext("Detail Levels")}</.help_h4>
+<.help_h4 icon={:icon_group_view}>{dgettext("help_features", "Detail Levels")}</.help_h4>
 <p>
-  {gettext("Configure in")} <strong>{gettext("Options > Display > Command Help")}</strong>:<br />
+  {dgettext("help_features", "Configure in")} <strong>{dgettext("help_features", "Options > Display > Command Help")}</strong>:<br />
   <strong>
-    {gettext("Beginner:")}
+    {dgettext("help_features", "Beginner:")}
   </strong>
-  {gettext("Full descriptions, sub-options, context messages, and examples.")}<br />
+  {dgettext("help_features", "Full descriptions, sub-options, context messages, and examples.")}<br />
   <strong>
-    {gettext("Expert:")}
+    {dgettext("help_features", "Expert:")}
   </strong>
-  {gettext("Syntax line only — compact and unobtrusive.")}<br /><strong>{gettext("Off:")}</strong>
-  {gettext("Disable the tooltip entirely.")}
+  {dgettext("help_features", "Syntax line only — compact and unobtrusive.")}<br />
+  <strong>
+    {dgettext("help_features", "Off:")}
+  </strong>
+  {dgettext("help_features", "Disable the tooltip entirely.")}
 </p>
-<.help_h4 icon={:icon_community}>{gettext("Interaction")}</.help_h4>
+<.help_h4 icon={:icon_community}>{dgettext("help_features", "Interaction")}</.help_h4>
 <p>
-  {gettext("Press")} <strong>{gettext("Escape")}</strong>
-  {gettext(
+  {dgettext("help_features", "Press")} <strong>{dgettext("help_features", "Escape")}</strong>
+  {dgettext(
+    "help_features",
     "to dismiss the tooltip. The tooltip automatically hides when the autocomplete dropdown is open."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-autocomplete">{gettext("Autocomplete")}</.help_link>
-  · <.help_link topic="feature-smart-input">{gettext("Smart Input")}</.help_link>
+  <.help_link topic="feature-autocomplete">
+    {dgettext("help_features", "Autocomplete")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-smart-input">{dgettext("help_features", "Smart Input")}</.help_link>
 </p>

@@ -44,9 +44,9 @@ visivel ainda esta em literais de ingles em HEEx, Elixir e JavaScript.
    diretamente.
 7. Comecar com locale em sessao, com fallback por `Accept-Language`; adicionar
    prefixo de URL depois somente se SEO/links por idioma forem requisitos.
-8. Separar dominios de catalogo quando houver volume real:
-   `default` para UI, `errors` para validacoes, `help` para conteudo longo de
-   ajuda, `commands` para respostas de comandos/chat.
+8. Separar dominios de catalogo por area funcional. O padrao atual esta em
+   `docs/i18n-catalogs.md`; `default` deve ficar pequeno e ajuda longa deve ser
+   quebrada em subdominios.
 9. Para strings em JavaScript, escolher uma das duas trilhas por caso:
    renderizar textos traduzidos em `data-*`/attrs vindos do HEEx quando a string
    pertence a um hook DOM; ou carregar um pequeno dicionario `window.__RHC_I18N__`
@@ -106,11 +106,12 @@ visivel ainda esta em literais de ingles em HEEx, Elixir e JavaScript.
 
 ### Fase 5 - Catalogos e CI
 
-- Rodar `make i18n.gettext.extract` depois de cada lote.
+- Rodar `make i18n.gettext.rebuild` depois de cada lote.
 - Criar POs para os idiomas alvo com
   `cd apps/retro_hex_chat_web && mix gettext.merge priv/gettext --locale <locale>`.
 - Adicionar ao CI:
   - `make i18n.gettext.check`
+  - `make i18n.catalog.check`
   - `elixir scripts/i18n_audit.exs --fail-on-findings`
 - Bloquear merge quando houver novos literais traduziveis fora de Gettext ou
   catalogos desatualizados.
@@ -122,6 +123,8 @@ A atividade pode ser considerada pronta quando:
 - `elixir scripts/i18n_audit.exs --fail-on-findings` retorna zero achados high
   e medium fora da allowlist revisada.
 - `make i18n.gettext.check` passa.
+- `make i18n.catalog.check` passa, garantindo `pt_BR` sem vazio/fuzzy e cada
+  `.po` dentro do limite de legibilidade.
 - Cada idioma alvo tem `default.po`, `errors.po` e os dominios adicionais usados
   sem `msgstr ""` obrigatorio e sem `fuzzy` pendente.
 - Fluxos principais foram validados em pelo menos dois locales: conexao,

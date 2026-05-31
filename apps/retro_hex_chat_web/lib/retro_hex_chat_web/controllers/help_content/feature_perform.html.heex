@@ -1,44 +1,54 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The Perform system lets you define commands that execute automatically every time you connect, followed by a list of channels to join."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_perform}>{gettext("Perform List")}</.help_h4>
+<.help_h4 icon={:icon_dialog_perform}>{dgettext("help_features", "Perform List")}</.help_h4>
 <p>
-  {gettext("The perform list contains commands (e.g.,")} <code>{gettext("/ns identify")}</code>, <code>{gettext("/mode +x")}</code>{gettext(
+  {dgettext("help_features", "The perform list contains commands (e.g.,")} <code>{dgettext("help_features", "/ns identify")}</code>, <code>{dgettext("help_features", "/mode +x")}</code>{dgettext(
+    "help_features",
     ") that run sequentially on connect. Use"
   )}
-  <code>{gettext("/perform add <command>")}</code>
-  {gettext("to add commands, or manage them visually in the Perform Dialog.")}
+  <code>{dgettext("help_features", "/perform add <command>")}</code>
+  {dgettext("help_features", "to add commands, or manage them visually in the Perform Dialog.")}
 </p>
-<.help_h4 icon={:icon_tab_autojoin}>{gettext("Auto-Join Channels")}</.help_h4>
+<.help_h4 icon={:icon_tab_autojoin}>{dgettext("help_features", "Auto-Join Channels")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Auto-join channels are separate from perform commands. They are joined after all perform commands complete, ensuring that NickServ identification and other setup happens first."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_perform}>{gettext("Perform Dialog")}</.help_h4>
+<.help_h4 icon={:icon_dialog_perform}>{dgettext("help_features", "Perform Dialog")}</.help_h4>
 <p>
-  {gettext("Press")} <strong>{gettext("Ctrl+Shift+E")}</strong>
-  {gettext(
+  {dgettext("help_features", "Press")}
+  <strong>{dgettext("help_features", "Ctrl+Shift+E")}</strong>
+  {dgettext(
+    "help_features",
     "to open the Perform Dialog, which provides a visual interface for managing both the perform list and auto-join channels."
   )}
 </p>
-<.help_h4 icon={:icon_checkmark}>{gettext("Enable / Disable")}</.help_h4>
+<.help_h4 icon={:icon_checkmark}>{dgettext("help_features", "Enable / Disable")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The perform system can be toggled on or off. When disabled, no commands execute and no channels are auto-joined on connect."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_perform}>{gettext("Execution Order")}</.help_h4>
+<.help_h4 icon={:icon_dialog_perform}>{dgettext("help_features", "Execution Order")}</.help_h4>
 <p>
-  {gettext("1. Perform commands execute sequentially.")}<br />{gettext(
+  {dgettext("help_features", "1. Perform commands execute sequentially.")}<br />{dgettext(
+    "help_features",
     "2. Auto-join channels are joined after all perform commands complete."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-perform">{gettext("/perform Command")}</.help_link>
-  · <.help_link topic="cmd-autojoin">{gettext("/autojoin Command")}</.help_link>
-  · <.help_link topic="feature-auto-reconnect">{gettext("Auto-Reconnect")}</.help_link>
+  <.help_link topic="cmd-perform">{dgettext("help_features", "/perform Command")}</.help_link>
+  · <.help_link topic="cmd-autojoin">{dgettext("help_features", "/autojoin Command")}</.help_link>
+  ·
+  <.help_link topic="feature-auto-reconnect">
+    {dgettext("help_features", "Auto-Reconnect")}
+  </.help_link>
 </p>

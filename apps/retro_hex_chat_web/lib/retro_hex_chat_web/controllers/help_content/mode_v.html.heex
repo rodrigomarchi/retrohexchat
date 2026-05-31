@@ -1,12 +1,13 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "Grants voice to a user (prefix +), allowing them to speak in moderated (+m) channels. Half-operators and above can grant voice."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
-<pre>{gettext("/mode +v Alice — Give voice to Alice /mode -v Alice — Remove voice from Alice")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
+<pre>{dgettext("help_channels", "/mode +v Alice — Give voice to Alice /mode -v Alice — Remove voice from Alice")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="mode-m">{gettext("Moderated (+m)")}</.help_link>
-  · <.help_link topic="mode-h">{gettext("Half-Operator (+h)")}</.help_link>
+  <.help_link topic="mode-m">{dgettext("help_channels", "Moderated (+m)")}</.help_link>
+  · <.help_link topic="mode-h">{dgettext("help_channels", "Half-Operator (+h)")}</.help_link>
 </p>

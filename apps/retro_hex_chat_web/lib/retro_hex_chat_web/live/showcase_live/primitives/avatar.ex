@@ -13,29 +13,29 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Avatar do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Avatar"), active_page: "avatar")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Avatar"), active_page: "avatar")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Avatar")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Avatar")}</h2>
 
       <.showcase_card
-        title={gettext("Usage")}
+        title={dgettext("showcase", "Usage")}
         description="An image element with a fallback for when the image fails to load."
       >
         <div class="flex gap-3 items-center">
           <.avatar>
-            <.avatar_image src="https://github.com/shadcn.png" alt={gettext("User")} />
-            <.avatar_fallback>{gettext("CN")}</.avatar_fallback>
+            <.avatar_image src="https://github.com/shadcn.png" alt={dgettext("showcase", "User")} />
+            <.avatar_fallback>{dgettext("showcase", "CN")}</.avatar_fallback>
           </.avatar>
           <.avatar>
-            <.avatar_fallback>{gettext("RH")}</.avatar_fallback>
+            <.avatar_fallback>{dgettext("showcase", "RH")}</.avatar_fallback>
           </.avatar>
           <.avatar>
-            <.avatar_fallback>{gettext("JD")}</.avatar_fallback>
+            <.avatar_fallback>{dgettext("showcase", "JD")}</.avatar_fallback>
           </.avatar>
         </div>
         <.code_example>

@@ -15,6 +15,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Window do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Window"), active_page: "window")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Window"), active_page: "window")}
   end
 end

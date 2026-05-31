@@ -11,7 +11,7 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, gettext("Usage: /transfer <nickname>")}
+  def execute([], _context), do: {:error, dgettext("commands", "Usage: /transfer <nickname>")}
 
   def execute([nick | _], context) do
     with {:ok, channel} <- require_channel(context),
@@ -24,12 +24,13 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
   def help do
     %{
       name: "transfer",
-      syntax: gettext("/transfer <nickname>"),
+      syntax: dgettext("commands", "/transfer <nickname>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Transfer channel ownership to another user.\nThe new owner gets +q (owner) and you are demoted to operator.\nRequires: channel owner."
         ),
-      examples: [gettext("/transfer alice")]
+      examples: [dgettext("commands", "/transfer alice")]
     }
   end
 
@@ -44,8 +45,8 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
 
     %CommandSyntax{
       command: "transfer",
-      syntax: gettext("/transfer <nickname>"),
-      description: gettext("Transfer channel ownership to another user."),
+      syntax: dgettext("commands", "/transfer <nickname>"),
+      description: dgettext("commands", "Transfer channel ownership to another user."),
       category: :channel,
       parameters: [
         %Parameter{
@@ -53,15 +54,15 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
           required: true,
           type: :nick,
           position: 0,
-          description: gettext("New owner")
+          description: dgettext("commands", "New owner")
         }
       ],
-      examples: [gettext("/transfer alice")]
+      examples: [dgettext("commands", "/transfer alice")]
     }
   end
 
   defp require_channel(%{active_channel: nil}),
-    do: {:error, gettext("You are not in any channel")}
+    do: {:error, dgettext("commands", "You are not in any channel")}
 
   defp require_channel(%{active_channel: ch}), do: {:ok, ch}
 
@@ -71,7 +72,7 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
     if channel in owner_in do
       :ok
     else
-      {:error, gettext("You must be the channel owner to use this command")}
+      {:error, dgettext("commands", "You must be the channel owner to use this command")}
     end
   end
 end

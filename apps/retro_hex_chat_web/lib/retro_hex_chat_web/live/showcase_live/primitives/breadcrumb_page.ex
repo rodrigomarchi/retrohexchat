@@ -13,28 +13,32 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.BreadcrumbPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Breadcrumb"), active_page: "breadcrumb")}
+    {:ok,
+     assign(socket, page_title: dgettext("showcase", "Breadcrumb"), active_page: "breadcrumb")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Breadcrumb")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Breadcrumb")}</h2>
 
-      <.showcase_card title={gettext("Basic Breadcrumb")} description="Navigation breadcrumb trail.">
+      <.showcase_card
+        title={dgettext("showcase", "Basic Breadcrumb")}
+        description="Navigation breadcrumb trail."
+      >
         <.breadcrumb>
           <.breadcrumb_list>
             <.breadcrumb_item>
-              <.breadcrumb_link href="#">{gettext("Home")}</.breadcrumb_link>
+              <.breadcrumb_link href="#">{dgettext("showcase", "Home")}</.breadcrumb_link>
             </.breadcrumb_item>
             <.breadcrumb_separator />
             <.breadcrumb_item>
-              <.breadcrumb_link href="#">{gettext("Settings")}</.breadcrumb_link>
+              <.breadcrumb_link href="#">{dgettext("showcase", "Settings")}</.breadcrumb_link>
             </.breadcrumb_item>
             <.breadcrumb_separator />
             <.breadcrumb_item>
-              <.breadcrumb_page>{gettext("Profile")}</.breadcrumb_page>
+              <.breadcrumb_page>{dgettext("showcase", "Profile")}</.breadcrumb_page>
             </.breadcrumb_item>
           </.breadcrumb_list>
         </.breadcrumb>
@@ -54,13 +58,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.BreadcrumbPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With Ellipsis")}
+        title={dgettext("showcase", "With Ellipsis")}
         description="Breadcrumb with collapsed intermediate items."
       >
         <.breadcrumb>
           <.breadcrumb_list>
             <.breadcrumb_item>
-              <.breadcrumb_link href="#">{gettext("Home")}</.breadcrumb_link>
+              <.breadcrumb_link href="#">{dgettext("showcase", "Home")}</.breadcrumb_link>
             </.breadcrumb_item>
             <.breadcrumb_separator />
             <.breadcrumb_item>
@@ -68,11 +72,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.BreadcrumbPage do
             </.breadcrumb_item>
             <.breadcrumb_separator />
             <.breadcrumb_item>
-              <.breadcrumb_link href="#">{gettext("Components")}</.breadcrumb_link>
+              <.breadcrumb_link href="#">{dgettext("showcase", "Components")}</.breadcrumb_link>
             </.breadcrumb_item>
             <.breadcrumb_separator />
             <.breadcrumb_item>
-              <.breadcrumb_page>{gettext("Breadcrumb")}</.breadcrumb_page>
+              <.breadcrumb_page>{dgettext("showcase", "Breadcrumb")}</.breadcrumb_page>
             </.breadcrumb_item>
           </.breadcrumb_list>
         </.breadcrumb>

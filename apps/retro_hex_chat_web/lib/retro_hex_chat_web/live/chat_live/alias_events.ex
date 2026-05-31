@@ -158,33 +158,35 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
   # ── Private helpers ────────────────────────────────────────
 
   defp alias_error_msg(:duplicate_name, name),
-    do: gettext("Alias /%{name} already exists", name: name)
+    do: dgettext("chat", "Alias /%{name} already exists", name: name)
 
   defp alias_error_msg(:invalid_name, _),
-    do: gettext("Invalid name. Use letters, numbers, hyphens, underscores.")
+    do: dgettext("chat", "Invalid name. Use letters, numbers, hyphens, underscores.")
 
-  defp alias_error_msg(:invalid_expansion, _), do: gettext("Expansion is required")
+  defp alias_error_msg(:invalid_expansion, _), do: dgettext("chat", "Expansion is required")
 
   defp alias_error_msg(:expansion_too_long, _),
-    do: gettext("Expansion too long (max 500 characters)")
+    do: dgettext("chat", "Expansion too long (max 500 characters)")
 
   defp alias_error_msg(:command_chaining, _),
-    do: gettext("Expansion must not contain chaining (|, &&, ;, newlines)")
+    do: dgettext("chat", "Expansion must not contain chaining (|, &&, ;, newlines)")
 
-  defp alias_error_msg(:list_full, _), do: gettext("Alias list is full (max 50)")
-  defp alias_error_msg(:not_found, _), do: gettext("Alias not found")
+  defp alias_error_msg(:list_full, _), do: dgettext("chat", "Alias list is full (max 50)")
+  defp alias_error_msg(:not_found, _), do: dgettext("chat", "Alias not found")
 
   defp alias_warning(name, expansion) do
     [
-      if(AliasList.shadows_builtin?(name), do: gettext("shadows built-in /%{name}", name: name)),
+      if(AliasList.shadows_builtin?(name),
+        do: dgettext("chat", "shadows built-in /%{name}", name: name)
+      ),
       if(AliasList.recursive_expansion?(name, expansion),
-        do: gettext("expands to itself and will hit the recursion limit")
+        do: dgettext("chat", "expands to itself and will hit the recursion limit")
       )
     ]
     |> Enum.reject(&is_nil/1)
     |> case do
       [] -> nil
-      warnings -> gettext("Warning: %{warnings}", warnings: Enum.join(warnings, "; "))
+      warnings -> dgettext("chat", "Warning: %{warnings}", warnings: Enum.join(warnings, "; "))
     end
   end
 end

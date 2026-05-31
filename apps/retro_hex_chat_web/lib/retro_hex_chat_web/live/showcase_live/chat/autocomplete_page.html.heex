@@ -1,8 +1,8 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">{gettext("Autocomplete")}</h2>
+  <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Autocomplete")}</h2>
 
   <.showcase_card
-    title={gettext("Command Mode")}
+    title={dgettext("showcase", "Command Mode")}
     description="Autocomplete dropdown with command suggestions grouped by category (native backend data)."
   >
     <.autocomplete
@@ -48,7 +48,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Nick Mode")}
+    title={dgettext("showcase", "Nick Mode")}
     description="Autocomplete showing nick suggestions with online status dots and color classes."
   >
     <.autocomplete
@@ -68,7 +68,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Channel Mode")}
+    title={dgettext("showcase", "Channel Mode")}
     description="Autocomplete showing channels with joined checkmark and user counts."
   >
     <.autocomplete
@@ -84,7 +84,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Subcommand Mode")}
+    title={dgettext("showcase", "Subcommand Mode")}
     description="Autocomplete for subcommands (e.g., /ns options)."
   >
     <.autocomplete
@@ -100,18 +100,18 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Empty State")}
+    title={dgettext("showcase", "Empty State")}
     description="Autocomplete with no matching results."
   >
     <.autocomplete items={[]} />
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Hidden")}
+    title={dgettext("showcase", "Hidden")}
     description="Autocomplete with visible=false (nothing renders)."
   >
     <div class="text-xs text-muted-foreground italic p-2">
-      {gettext("(autocomplete is hidden — nothing rendered below)")}
+      {dgettext("showcase", "(autocomplete is hidden — nothing rendered below)")}
     </div>
     <.autocomplete visible={false} items={[]} />
   </.showcase_card>

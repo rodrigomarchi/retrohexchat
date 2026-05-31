@@ -15,7 +15,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PaginationPage do
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, page_title: gettext("Pagination"), active_page: "pagination", current_page: 3)}
+     assign(socket,
+       page_title: dgettext("showcase", "Pagination"),
+       active_page: "pagination",
+       current_page: 3
+     )}
   end
 
   @impl true
@@ -27,10 +31,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PaginationPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Pagination")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Pagination")}</h2>
 
       <.showcase_card
-        title={gettext("Basic Pagination")}
+        title={dgettext("showcase", "Basic Pagination")}
         description="Simple page navigation with numbered buttons."
       >
         <nav class="flex items-center gap-1">
@@ -42,7 +46,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PaginationPage do
             phx-value-page="1"
           >
             <:icon><Icons.icon_btn_prev /></:icon>
-            {gettext("Prev")}
+            {dgettext("showcase", "Prev")}
           </.button>
           <.button
             :for={page <- 1..5}
@@ -62,10 +66,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PaginationPage do
             phx-value-page="5"
           >
             <:icon><Icons.icon_btn_next /></:icon>
-            {gettext("Next")}
+            {dgettext("showcase", "Next")}
           </.button>
         </nav>
-        <p class="text-xs text-muted-foreground mt-2">{gettext("Current page:")} {@current_page}</p>
+        <p class="text-xs text-muted-foreground mt-2">
+          {dgettext("showcase", "Current page:")} {@current_page}
+        </p>
         <.code_example>
           &lt;.button variant="outline" size="sm"&gt;
           &lt;:icon&gt;&lt;Icons.icon_btn_prev /&gt;&lt;/:icon&gt;
@@ -79,13 +85,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PaginationPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With Ellipsis")}
+        title={dgettext("showcase", "With Ellipsis")}
         description="Pagination showing ellipsis for many pages."
       >
         <nav class="flex items-center gap-1">
           <.button variant="outline" size="sm">
             <:icon><Icons.icon_btn_prev /></:icon>
-            {gettext("Prev")}
+            {dgettext("showcase", "Prev")}
           </.button>
           <.button variant="default" size="sm">
             <:icon><Icons.icon_btn_page /></:icon>
@@ -114,7 +120,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PaginationPage do
           </.button>
           <.button variant="outline" size="sm">
             <:icon><Icons.icon_btn_next /></:icon>
-            {gettext("Next")}
+            {dgettext("showcase", "Next")}
           </.button>
         </nav>
       </.showcase_card>

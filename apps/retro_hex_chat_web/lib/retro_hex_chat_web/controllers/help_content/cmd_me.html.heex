@@ -1,30 +1,34 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Send an action message that describes what you're doing. It appears to everyone in the channel as"
-  )} <em>{gettext("* YourNick does something")}</em>.
+  )} <em>{dgettext("help_commands", "* YourNick does something")}</em>.
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/me <action text>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/me <action text>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
-  <code>{gettext("action text")}</code> {gettext(
+  <code>{dgettext("help_commands", "action text")}</code> {dgettext(
+    "help_commands",
     "— What you're doing (at least one word required)."
   )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext("Instead of a regular chat message like")} <code>&lt;YourNick&gt; hello</code>{gettext(
+  {dgettext("help_commands", "Instead of a regular chat message like")} <code>&lt;YourNick&gt; hello</code>{dgettext(
+    "help_commands",
     ", an action message appears as"
   )}
-  <code>{gettext("* YourNick waves hello")}</code>
-  {gettext(
+  <code>{dgettext("help_commands", "* YourNick waves hello")}</code>
+  {dgettext(
+    "help_commands",
     "with special formatting. Action messages support the same text formatting as regular messages (bold, italic, colors, etc.)."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/me waves hello /me is thinking... /me grabs some coffee")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/me waves hello /me is thinking... /me grabs some coffee")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-msg">{gettext("/msg")}</.help_link>
-  · <.help_link topic="cmd-notice">{gettext("/notice")}</.help_link>
+  <.help_link topic="cmd-msg">{dgettext("help_commands", "/msg")}</.help_link>
+  · <.help_link topic="cmd-notice">{dgettext("help_commands", "/notice")}</.help_link>
 </p>

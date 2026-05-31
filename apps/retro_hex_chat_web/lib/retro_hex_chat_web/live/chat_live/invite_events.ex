@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
 
     case find_invite(pending, channel) do
       nil ->
-        {:halt, error_event(socket, gettext("This invitation has expired"))}
+        {:halt, error_event(socket, dgettext("chat", "This invitation has expired"))}
 
       invite ->
         Process.cancel_timer(invite.timer_ref)
@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
           socket
           |> assign(pending_invites: remaining)
           |> push_status_message(
-            gettext("* Accepted invite to %{channel} from %{inviter}",
+            dgettext("chat", "* Accepted invite to %{channel} from %{inviter}",
               channel: channel,
               inviter: invite.inviter
             ),
@@ -60,7 +60,7 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
           socket
           |> assign(pending_invites: remaining)
           |> push_status_message(
-            gettext("* Ignored invite to %{channel}", channel: channel),
+            dgettext("chat", "* Ignored invite to %{channel}", channel: channel),
             :system
           )
 

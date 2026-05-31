@@ -1,19 +1,42 @@
-<p>{gettext("Configure how timestamps appear in chat messages via the Options dialog.")}</p>
-<.help_h4 icon={:icon_notepad}>{gettext("Available Formats")}</.help_h4>
 <p>
-  <code>{gettext("[HH:MM]")}</code>
-  {gettext("— Default, shows hours and minutes.")}<br /><code>{gettext("[HH:MM:SS]")}</code>
-  {gettext("— Includes seconds.")}<br /><code>{gettext("[DD/MM HH:MM]")}</code>
-  {gettext("— Includes date and time.")}<br /><code>{gettext("None")}</code>
-  {gettext("— Hides timestamps entirely.")}
+  {dgettext(
+    "help_features",
+    "Configure how timestamps appear in chat messages via the Options dialog."
+  )}
 </p>
-<.help_h4 icon={:icon_btn_edit}>{gettext("Changing the Format")}</.help_h4>
+<.help_h4 icon={:icon_notepad}>{dgettext("help_features", "Available Formats")}</.help_h4>
 <p>
-  {gettext("Open")} <strong>{gettext("Tools > Options")}</strong>{gettext(", go to the")}
-  <strong>{gettext("Display")}</strong>
-  {gettext("panel, and select your preferred format from the Timestamps dropdown. Click")} <strong>{gettext("Apply")}</strong>.
+  <code>{dgettext("help_features", "[HH:MM]")}</code>
+  {dgettext("help_features", "— Default, shows hours and minutes.")}<br />
+  <code>
+    {dgettext("help_features", "[HH:MM:SS]")}
+  </code>
+  {dgettext("help_features", "— Includes seconds.")}<br />
+  <code>
+    {dgettext("help_features", "[DD/MM HH:MM]")}
+  </code>
+  {dgettext("help_features", "— Includes date and time.")}<br />
+  <code>
+    {dgettext("help_features", "None")}
+  </code>
+  {dgettext("help_features", "— Hides timestamps entirely.")}
 </p>
-<.help_h4 icon={:icon_document_alert}>{gettext("Notes")}</.help_h4>
+<.help_h4 icon={:icon_btn_edit}>{dgettext("help_features", "Changing the Format")}</.help_h4>
 <p>
-  {gettext("Changing the format resets the chat stream. Previous messages are cleared from view.")}
+  {dgettext("help_features", "Open")} <strong>{dgettext("help_features", "Tools > Options")}</strong>{dgettext(
+    "help_features",
+    ", go to the"
+  )}
+  <strong>{dgettext("help_features", "Display")}</strong>
+  {dgettext(
+    "help_features",
+    "panel, and select your preferred format from the Timestamps dropdown. Click"
+  )} <strong>{dgettext("help_features", "Apply")}</strong>.
+</p>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Notes")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Changing the format resets the chat stream. Previous messages are cleared from view."
+  )}
 </p>

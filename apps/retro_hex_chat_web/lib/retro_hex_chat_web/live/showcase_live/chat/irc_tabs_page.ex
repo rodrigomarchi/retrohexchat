@@ -13,18 +13,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.IrcTabsPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("IRC Tabs"), active_page: "irc-tabs")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "IRC Tabs"), active_page: "irc-tabs")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("IRC Tabs")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "IRC Tabs")}</h2>
 
-      <.showcase_card title={gettext("Channel Tabs")} description="Tab strip with channel-type tabs.">
+      <.showcase_card
+        title={dgettext("showcase", "Channel Tabs")}
+        description="Tab strip with channel-type tabs."
+      >
         <.irc_tab_bar>
-          <.irc_tab_item type="status" label={gettext("Status")} closeable={false} />
+          <.irc_tab_item type="status" label={dgettext("showcase", "Status")} closeable={false} />
           <.irc_tab_item type="channel" label="#lobby" active />
           <.irc_tab_item type="channel" label="#general" />
           <.irc_tab_item type="channel" label="#help" />
@@ -39,14 +42,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.IrcTabsPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Mixed Types")}
+        title={dgettext("showcase", "Mixed Types")}
         description="Channels and private message tabs together."
       >
         <.irc_tab_bar>
-          <.irc_tab_item type="status" label={gettext("Status")} closeable={false} />
+          <.irc_tab_item type="status" label={dgettext("showcase", "Status")} closeable={false} />
           <.irc_tab_item type="channel" label="#lobby" active />
           <.irc_tab_item type="pm" label="bruno" />
-          <.irc_tab_item type="pm" label={gettext("DoeJoe")} unread />
+          <.irc_tab_item type="pm" label={dgettext("showcase", "DoeJoe")} unread />
           <.irc_tab_item type="channel" label="#general" />
         </.irc_tab_bar>
         <.code_example>
@@ -56,13 +59,16 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.IrcTabsPage do
         </.code_example>
       </.showcase_card>
 
-      <.showcase_card title={gettext("States")} description="Active, unread, and normal tab states.">
+      <.showcase_card
+        title={dgettext("showcase", "States")}
+        description="Active, unread, and normal tab states."
+      >
         <.irc_tab_bar>
-          <.irc_tab_item type="channel" label={gettext("Normal")} />
-          <.irc_tab_item type="channel" label={gettext("Active")} active />
-          <.irc_tab_item type="channel" label={gettext("Unread")} unread />
-          <.irc_tab_item type="pm" label={gettext("PM Normal")} />
-          <.irc_tab_item type="pm" label={gettext("PM Unread")} unread />
+          <.irc_tab_item type="channel" label={dgettext("showcase", "Normal")} />
+          <.irc_tab_item type="channel" label={dgettext("showcase", "Active")} active />
+          <.irc_tab_item type="channel" label={dgettext("showcase", "Unread")} unread />
+          <.irc_tab_item type="pm" label={dgettext("showcase", "PM Normal")} />
+          <.irc_tab_item type="pm" label={dgettext("showcase", "PM Unread")} unread />
         </.irc_tab_bar>
         <.code_example>
           &lt;.irc_tab_item type="channel" label="Normal" /&gt;
@@ -72,11 +78,16 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.IrcTabsPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Without Close Button")}
+        title={dgettext("showcase", "Without Close Button")}
         description="Tabs can hide their close button."
       >
         <.irc_tab_bar>
-          <.irc_tab_item type="status" label={gettext("Status")} closeable={false} active />
+          <.irc_tab_item
+            type="status"
+            label={dgettext("showcase", "Status")}
+            closeable={false}
+            active
+          />
           <.irc_tab_item type="channel" label="#lobby" closeable={false} />
         </.irc_tab_bar>
         <.code_example>

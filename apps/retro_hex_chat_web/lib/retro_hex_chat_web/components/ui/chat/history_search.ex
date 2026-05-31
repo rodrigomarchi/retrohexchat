@@ -38,16 +38,16 @@ defmodule RetroHexChatWeb.Components.UI.HistorySearch do
       <Icons.icon_btn_find class="w-[16px] h-[16px] shrink-0 text-muted-foreground" />
       <input
         type="text"
-        placeholder={gettext("Search history...")}
+        placeholder={dgettext("chat", "Search history...")}
         class="history-search-input flex-1 shadow-retro-field bg-white px-retro-4 py-retro-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
-        aria-label={gettext("Search chat history")}
+        aria-label={dgettext("chat", "Search chat history")}
         data-testid="history-search-input"
       />
       <span
         class="history-no-match u-hidden text-xs text-muted-foreground whitespace-nowrap"
         data-testid="history-search-no-results"
       >
-        {gettext("No results")}
+        {dgettext("chat", "No results")}
       </span>
     </div>
     """

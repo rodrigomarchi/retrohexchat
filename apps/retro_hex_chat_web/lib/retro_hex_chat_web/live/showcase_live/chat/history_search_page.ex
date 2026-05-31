@@ -13,17 +13,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.HistorySearchPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("History Search"), active_page: "history-search")}
+    {:ok,
+     assign(socket,
+       page_title: dgettext("showcase", "History Search"),
+       active_page: "history-search"
+     )}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("History Search")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "History Search")}</h2>
 
       <.showcase_card
-        title={gettext("Visible")}
+        title={dgettext("showcase", "Visible")}
         description="Search bar shown when the user activates history search mode."
       >
         <.history_search visible={true} />
@@ -33,12 +37,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.HistorySearchPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Hidden")}
+        title={dgettext("showcase", "Hidden")}
         description="Nothing rendered when visible is false."
       >
         <div class="shadow-retro-field bg-white p-3 min-h-[40px] flex items-center justify-center">
           <span class="text-xs text-muted-foreground">
-            {gettext("(empty — history_search renders nothing)")}
+            {dgettext("showcase", "(empty — history_search renders nothing)")}
           </span>
         </div>
         <.history_search visible={false} />

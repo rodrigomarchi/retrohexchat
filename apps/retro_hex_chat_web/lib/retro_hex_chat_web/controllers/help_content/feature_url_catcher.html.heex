@@ -1,33 +1,40 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The URL Catcher captures all URLs shared in channels and PMs. URLs in messages are automatically made clickable with link previews."
   )}
 </p>
-<.help_h4 icon={:icon_folder}>{gettext("Opening")}</.help_h4>
+<.help_h4 icon={:icon_folder}>{dgettext("help_features", "Opening")}</.help_h4>
 <p>
-  {gettext("Press")}
-  <strong>{gettext("Ctrl+Shift+S")}</strong> {gettext("or go to")} <strong>{gettext("Tools > URL Catcher")}</strong>.
+  {dgettext("help_features", "Press")}
+  <strong>{dgettext("help_features", "Ctrl+Shift+S")}</strong> {dgettext(
+    "help_features",
+    "or go to"
+  )} <strong>{dgettext("help_features", "Tools > URL Catcher")}</strong>.
 </p>
-<.help_h4 icon={:icon_star}>{gettext("Features")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_features", "Features")}</.help_h4>
 <p>
-  <strong>{gettext("Clickable Links:")}</strong>
-  {gettext("URLs in messages become clickable, opening in a new tab.")}<br />
+  <strong>{dgettext("help_features", "Clickable Links:")}</strong>
+  {dgettext("help_features", "URLs in messages become clickable, opening in a new tab.")}<br />
   <strong>
-    {gettext("Link Previews:")}
+    {dgettext("help_features", "Link Previews:")}
   </strong>
-  {gettext("Page titles are fetched and shown below the URL.")}<br />
+  {dgettext("help_features", "Page titles are fetched and shown below the URL.")}<br />
   <strong>
-    {gettext("URL Catcher Window:")}
+    {dgettext("help_features", "URL Catcher Window:")}
   </strong>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Browse all captured URLs, sorted by time. Filter by channel and search by URL text. Double-click to open."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="formatting-overview">{gettext("Text Formatting")}</.help_link>
+  <.help_link topic="formatting-overview">
+    {dgettext("help_features", "Text Formatting")}
+  </.help_link>
   ·
   <.help_link topic="feature-interactive-elements">
-    {gettext("Interactive Chat Elements")}
+    {dgettext("help_features", "Interactive Chat Elements")}
   </.help_link>
 </p>

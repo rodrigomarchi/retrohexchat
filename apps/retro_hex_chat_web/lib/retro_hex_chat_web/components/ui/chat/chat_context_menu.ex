@@ -61,11 +61,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     ~H"""
     <.context_menu_item on_click={@on_action} action="ctx_chat_pm" phx-value-nick={@target_nick}>
       <:icon><Icons.icon_tab_pm class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Private Message")}
+      {dgettext("chat", "Private Message")}
     </.context_menu_item>
     <.context_menu_item on_click={@on_action} action="ctx_chat_whois" phx-value-nick={@target_nick}>
       <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Whois")}
+      {dgettext("chat", "Whois")}
     </.context_menu_item>
     <.context_menu_separator />
     <.context_menu_item
@@ -74,7 +74,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_copy class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Copy Nick")}
+      {dgettext("chat", "Copy Nick")}
     </.context_menu_item>
     <.context_menu_item
       :if={!@is_target_self}
@@ -83,11 +83,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_btn_ignore class="w-[14px] h-[14px]" /></:icon>
-      {if @is_target_ignored, do: gettext("Unignore"), else: gettext("Ignore")}
+      {if @is_target_ignored, do: dgettext("chat", "Unignore"), else: dgettext("chat", "Ignore")}
     </.context_menu_item>
     <.context_menu_item :if={@is_target_self} disabled>
       <:icon><Icons.icon_btn_ignore class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Ignore")}
+      {dgettext("chat", "Ignore")}
     </.context_menu_item>
     <.context_menu_item
       on_click={@on_action}
@@ -95,7 +95,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_tab_contacts class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Address Book")}
+      {dgettext("chat", "Address Book")}
     </.context_menu_item>
     <%!-- P2P items (only if viewer is identified) --%>
     <.context_menu_separator :if={@viewer_is_identified} />
@@ -104,44 +104,52 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       on_click={if @is_target_registered && !@is_target_self, do: @on_action}
       action="ctx_chat_call"
       disabled={!@is_target_registered || @is_target_self}
-      title={if !@is_target_registered && !@is_target_self, do: gettext("User not registered")}
+      title={
+        if !@is_target_registered && !@is_target_self, do: dgettext("chat", "User not registered")
+      }
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_microphone class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Audio Call")}
+      {dgettext("chat", "Audio Call")}
     </.context_menu_item>
     <.context_menu_item
       :if={@viewer_is_identified}
       on_click={if @is_target_registered && !@is_target_self, do: @on_action}
       action="ctx_chat_video_call"
       disabled={!@is_target_registered || @is_target_self}
-      title={if !@is_target_registered && !@is_target_self, do: gettext("User not registered")}
+      title={
+        if !@is_target_registered && !@is_target_self, do: dgettext("chat", "User not registered")
+      }
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_camera class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Video Call")}
+      {dgettext("chat", "Video Call")}
     </.context_menu_item>
     <.context_menu_item
       :if={@viewer_is_identified}
       on_click={if @is_target_registered && !@is_target_self, do: @on_action}
       action="ctx_chat_sendfile"
       disabled={!@is_target_registered || @is_target_self}
-      title={if !@is_target_registered && !@is_target_self, do: gettext("User not registered")}
+      title={
+        if !@is_target_registered && !@is_target_self, do: dgettext("chat", "User not registered")
+      }
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_file_send class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Send File")}
+      {dgettext("chat", "Send File")}
     </.context_menu_item>
     <.context_menu_item
       :if={@viewer_is_identified}
       on_click={if @is_target_registered && !@is_target_self, do: @on_action}
       action="ctx_chat_game"
       disabled={!@is_target_registered || @is_target_self}
-      title={if !@is_target_registered && !@is_target_self, do: gettext("User not registered")}
+      title={
+        if !@is_target_registered && !@is_target_self, do: dgettext("chat", "User not registered")
+      }
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_star class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Play Game")}
+      {dgettext("chat", "Play Game")}
     </.context_menu_item>
     <%!-- Op actions (only if viewer is op and not targeting self) --%>
     <.context_menu_separator :if={@viewer_is_op && !@is_target_self} />
@@ -152,7 +160,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_dialog_kick class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Kick")}
+      {dgettext("chat", "Kick")}
     </.context_menu_item>
     <.context_menu_item
       :if={@viewer_is_op && !@is_target_self}
@@ -161,7 +169,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_ban class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Ban")}
+      {dgettext("chat", "Ban")}
     </.context_menu_item>
     <.context_menu_item
       :if={@viewer_is_op && !@is_target_self}
@@ -170,7 +178,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_role_voiced class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Give Voice (+v)")}
+      {dgettext("chat", "Give Voice (+v)")}
     </.context_menu_item>
     <.context_menu_item
       :if={@viewer_is_op && !@is_target_self}
@@ -179,7 +187,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_role_operator class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Give Op (+o)")}
+      {dgettext("chat", "Give Op (+o)")}
     </.context_menu_item>
     <%!-- Custom menu items --%>
     <.context_menu_separator :if={@custom_items != []} />
@@ -201,15 +209,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     ~H"""
     <.context_menu_item on_click={@on_action} action="ctx_chat_open_url" phx-value-url={@target_url}>
       <:icon><Icons.icon_link class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Open Link")}
+      {dgettext("chat", "Open Link")}
     </.context_menu_item>
     <.context_menu_item on_click={@on_action} action="ctx_chat_copy_url" phx-value-url={@target_url}>
       <:icon><Icons.icon_copy class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Copy URL")}
+      {dgettext("chat", "Copy URL")}
     </.context_menu_item>
     <.context_menu_item on_click={@on_action} action="ctx_chat_save_url" phx-value-url={@target_url}>
       <:icon><Icons.icon_btn_save class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Save to URL List")}
+      {dgettext("chat", "Save to URL List")}
     </.context_menu_item>
     """
   end
@@ -223,7 +231,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-channel={@target_channel}
     >
       <:icon><Icons.icon_btn_join class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Join Channel")}
+      {dgettext("chat", "Join Channel")}
     </.context_menu_item>
     <.context_menu_item
       on_click={@on_action}
@@ -231,7 +239,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-channel={@target_channel}
     >
       <:icon><Icons.icon_copy class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Copy Channel Name")}
+      {dgettext("chat", "Copy Channel Name")}
     </.context_menu_item>
     <.context_menu_item
       on_click={@on_action}
@@ -239,7 +247,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-channel={@target_channel}
     >
       <:icon><Icons.icon_tab_channel class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Channel Info")}
+      {dgettext("chat", "Channel Info")}
     </.context_menu_item>
     """
   end
@@ -262,11 +270,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-text={@msg_text}
     >
       <:icon><Icons.icon_copy class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Copy Message")}
+      {dgettext("chat", "Copy Message")}
     </.context_menu_item>
     <.context_menu_item on_click={@on_action} action="reply_to_message" phx-value-message_id={@msg_id}>
       <:icon><Icons.icon_chat class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Reply")}
+      {dgettext("chat", "Reply")}
     </.context_menu_item>
     <.context_menu_separator />
     <.context_menu_item
@@ -276,7 +284,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-message_id={@msg_id}
     >
       <:icon><Icons.icon_trash class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Delete")}
+      {dgettext("chat", "Delete")}
     </.context_menu_item>
     <.context_menu_item
       :if={!@is_target_self}
@@ -285,7 +293,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-nick={@msg_nick}
     >
       <:icon><Icons.icon_btn_ignore class="w-[14px] h-[14px]" /></:icon>
-      {gettext("Ignore Sender")}
+      {dgettext("chat", "Ignore Sender")}
     </.context_menu_item>
     """
   end

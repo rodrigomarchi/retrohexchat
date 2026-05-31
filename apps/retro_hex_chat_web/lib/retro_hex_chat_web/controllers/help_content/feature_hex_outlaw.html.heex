@@ -1,56 +1,92 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Western duel — two gunslingers face off across a cactus obstacle. Dodge bullets you can see coming and shoot your opponent. First to 10 points wins the round, best of 3 rounds. Four distinct game modes offer different obstacles and bullet mechanics."
   )}
 </p>
 <.diagram_game_outlaw class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Arrow keys / WASD")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Arrow keys / WASD")}</strong> {dgettext(
+      "help_games",
       "— Move gunslinger (vertical; horizontal in No Man's Land)"
     )}
   </li>
-  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Fire (one bullet at a time)")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
-<ul>
-  <li>{gettext("Each hit scores 1 point — first to 10 wins the round")}</li>
-  <li>{gettext("Best of 3 rounds — first to 2 round wins takes the match")}</li>
   <li>
-    {gettext("One bullet per player at a time — wait for it to hit or miss before firing again")}
+    <strong>{dgettext("help_games", "Space / Shift")}</strong> {dgettext(
+      "help_games",
+      "— Fire (one bullet at a time)"
+    )}
   </li>
-  <li>{gettext("Bullets travel horizontally and are blocked by obstacles")}</li>
-  <li>{gettext("After each hit, a 1.5-second pause then positions reset (scores don't)")}</li>
-  <li>{gettext("Bullets are visible — dodge by moving vertically")}</li>
 </ul>
-<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>{dgettext("help_games", "Each hit scores 1 point — first to 10 wins the round")}</li>
+  <li>{dgettext("help_games", "Best of 3 rounds — first to 2 round wins takes the match")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "One bullet per player at a time — wait for it to hit or miss before firing again"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Bullets travel horizontally and are blocked by obstacles")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "After each hit, a 1.5-second pause then positions reset (scores don't)"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Bullets are visible — dodge by moving vertically")}</li>
+</ul>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_games", "Modes")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Quick Draw")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Quick Draw")}</strong> {dgettext(
+      "help_games",
       "(this mode) — Cactus obstacle in the center blocks direct shots"
     )}
   </li>
   <li>
-    <.help_link topic="feature-hex-outlaw-ricochet">{gettext("Ricochet")}</.help_link>
-    {gettext("— Bullets fire at 30-degree angles and bounce once off ceiling/floor")}
+    <.help_link topic="feature-hex-outlaw-ricochet">
+      {dgettext("help_games", "Ricochet")}
+    </.help_link>
+    {dgettext(
+      "help_games",
+      "— Bullets fire at 30-degree angles and bounce once off ceiling/floor"
+    )}
   </li>
   <li>
-    <.help_link topic="feature-hex-outlaw-stagecoach">{gettext("Stagecoach")}</.help_link>
-    {gettext("— A moving stagecoach blocks shots with unpredictable timing")}
+    <.help_link topic="feature-hex-outlaw-stagecoach">
+      {dgettext("help_games", "Stagecoach")}
+    </.help_link>
+    {dgettext("help_games", "— A moving stagecoach blocks shots with unpredictable timing")}
   </li>
   <li>
-    <.help_link topic="feature-hex-outlaw-nml">{gettext("No Man's Land")}</.help_link>
-    {gettext("— No obstacle, but players can advance horizontally within their half")}
+    <.help_link topic="feature-hex-outlaw-nml">
+      {dgettext("help_games", "No Man's Land")}
+    </.help_link>
+    {dgettext(
+      "help_games",
+      "— No obstacle, but players can advance horizontally within their half"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
-<p>{gettext("Based on Outlaw (1978) by David Crane for the Atari 2600.")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
+<p>{dgettext("help_games", "Based on Outlaw (1978) by David Crane for the Atari 2600.")}</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-outlaw-ricochet">{gettext("Ricochet")}</.help_link>
-  · <.help_link topic="feature-hex-outlaw-stagecoach">{gettext("Stagecoach")}</.help_link>
-  · <.help_link topic="feature-hex-outlaw-nml">{gettext("No Man's Land")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-hex-outlaw-ricochet">
+    {dgettext("help_games", "Ricochet")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-hex-outlaw-stagecoach">
+    {dgettext("help_games", "Stagecoach")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-hex-outlaw-nml">
+    {dgettext("help_games", "No Man's Land")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

@@ -1,36 +1,50 @@
 <p>
-  {gettext("Reply to any message to create a visual quote linking your response to the original.")}
+  {dgettext(
+    "help_features",
+    "Reply to any message to create a visual quote linking your response to the original."
+  )}
 </p>
-<.help_h4 icon={:icon_chat}>{gettext("How to Reply")}</.help_h4>
+<.help_h4 icon={:icon_chat}>{dgettext("help_features", "How to Reply")}</.help_h4>
 <p>
-  <strong>{gettext("Context menu:")}</strong>
-  {gettext("Right-click a message and select \"Responder\".")}<br />
+  <strong>{dgettext("help_features", "Context menu:")}</strong>
+  {dgettext("help_features", "Right-click a message and select \"Responder\".")}<br />
   <strong>
-    {gettext("Hover button:")}
+    {dgettext("help_features", "Hover button:")}
   </strong>
-  {gettext("Hover over a message and click the ↩ button that appears.")}
+  {dgettext("help_features", "Hover over a message and click the ↩ button that appears.")}
 </p>
-<.help_h4 icon={:icon_notepad}>{gettext("Compose Bar")}</.help_h4>
+<.help_h4 icon={:icon_notepad}>{dgettext("help_features", "Compose Bar")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "A bar appears above the input showing the original author and a preview of their message. Click ✕ to cancel the reply."
   )}
 </p>
-<.help_h4 icon={:icon_group_view}>{gettext("Visual Format")}</.help_h4>
+<.help_h4 icon={:icon_group_view}>{dgettext("help_features", "Visual Format")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Replies appear with a quoted block showing the original message, with your response below. Click the quoted block to scroll to and highlight the original message."
   )}
 </p>
-<.help_h4 icon={:icon_warning}>{gettext("Edge Cases")}</.help_h4>
+<.help_h4 icon={:icon_warning}>{dgettext("help_features", "Edge Cases")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "If the original message was deleted, the quote shows \"[mensagem removida]\". Long messages are truncated in the reply preview. Editing the original message updates the quote in all replies."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-message-edit">{gettext("Message Edit")}</.help_link>
-  · <.help_link topic="feature-message-delete">{gettext("Message Delete")}</.help_link>
-  · <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
+  <.help_link topic="feature-message-edit">
+    {dgettext("help_features", "Message Edit")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-message-delete">
+    {dgettext("help_features", "Message Delete")}
+  </.help_link>
+  ·
+  <.help_link topic="keyboard-shortcuts">
+    {dgettext("help_features", "Keyboard Shortcuts")}
+  </.help_link>
 </p>

@@ -19,168 +19,172 @@ defmodule RetroHexChatWeb.Telemetry do
   def metrics do
     [
       # Phoenix Metrics
-      summary(gettext("phoenix.endpoint.start.system_time"),
+      summary(dgettext("system", "phoenix.endpoint.start.system_time"),
         unit: {:native, :millisecond},
-        reporter_options: [nav: gettext("HTTP")]
+        reporter_options: [nav: dgettext("system", "HTTP")]
       ),
-      summary(gettext("phoenix.endpoint.stop.duration"),
+      summary(dgettext("system", "phoenix.endpoint.stop.duration"),
         unit: {:native, :millisecond},
-        reporter_options: [nav: gettext("HTTP")]
+        reporter_options: [nav: dgettext("system", "HTTP")]
       ),
-      summary(gettext("phoenix.router_dispatch.start.system_time"),
+      summary(dgettext("system", "phoenix.router_dispatch.start.system_time"),
         tags: [:route],
         unit: {:native, :millisecond},
-        reporter_options: [nav: gettext("HTTP")]
+        reporter_options: [nav: dgettext("system", "HTTP")]
       ),
-      summary(gettext("phoenix.router_dispatch.exception.duration"),
+      summary(dgettext("system", "phoenix.router_dispatch.exception.duration"),
         tags: [:route],
         unit: {:native, :millisecond},
-        reporter_options: [nav: gettext("HTTP")]
+        reporter_options: [nav: dgettext("system", "HTTP")]
       ),
-      summary(gettext("phoenix.router_dispatch.stop.duration"),
+      summary(dgettext("system", "phoenix.router_dispatch.stop.duration"),
         tags: [:route],
         unit: {:native, :millisecond},
-        reporter_options: [nav: gettext("HTTP")]
+        reporter_options: [nav: dgettext("system", "HTTP")]
       ),
-      summary(gettext("phoenix.socket_connected.duration"),
+      summary(dgettext("system", "phoenix.socket_connected.duration"),
         unit: {:native, :millisecond},
-        reporter_options: [nav: gettext("HTTP")]
+        reporter_options: [nav: dgettext("system", "HTTP")]
       ),
-      sum(gettext("phoenix.socket_drain.count"),
-        reporter_options: [nav: gettext("HTTP")]
+      sum(dgettext("system", "phoenix.socket_drain.count"),
+        reporter_options: [nav: dgettext("system", "HTTP")]
       ),
-      summary(gettext("phoenix.channel_joined.duration"),
+      summary(dgettext("system", "phoenix.channel_joined.duration"),
         unit: {:native, :millisecond},
-        reporter_options: [nav: gettext("HTTP")]
+        reporter_options: [nav: dgettext("system", "HTTP")]
       ),
-      summary(gettext("phoenix.channel_handled_in.duration"),
+      summary(dgettext("system", "phoenix.channel_handled_in.duration"),
         tags: [:event],
         unit: {:native, :millisecond},
-        reporter_options: [nav: gettext("HTTP")]
+        reporter_options: [nav: dgettext("system", "HTTP")]
       ),
 
       # LiveView Metrics
-      summary(gettext("phoenix.live_view.mount.stop.duration"),
+      summary(dgettext("system", "phoenix.live_view.mount.stop.duration"),
         unit: {:native, :millisecond},
         tags: [:view],
-        reporter_options: [nav: gettext("LiveView")]
+        reporter_options: [nav: dgettext("system", "LiveView")]
       ),
-      summary(gettext("phoenix.live_view.handle_event.stop.duration"),
+      summary(dgettext("system", "phoenix.live_view.handle_event.stop.duration"),
         unit: {:native, :millisecond},
         tags: [:view, :event],
-        reporter_options: [nav: gettext("LiveView")]
+        reporter_options: [nav: dgettext("system", "LiveView")]
       ),
-      summary(gettext("phoenix.live_view.handle_params.stop.duration"),
+      summary(dgettext("system", "phoenix.live_view.handle_params.stop.duration"),
         unit: {:native, :millisecond},
         tags: [:view],
-        reporter_options: [nav: gettext("LiveView")]
+        reporter_options: [nav: dgettext("system", "LiveView")]
       ),
 
       # Database Metrics
-      summary(gettext("retro_hex_chat.repo.query.total_time"),
+      summary(dgettext("system", "retro_hex_chat.repo.query.total_time"),
         unit: {:native, :millisecond},
-        description: gettext("The sum of the other measurements"),
-        reporter_options: [nav: gettext("Database")]
+        description: dgettext("system", "The sum of the other measurements"),
+        reporter_options: [nav: dgettext("system", "Database")]
       ),
-      summary(gettext("retro_hex_chat.repo.query.decode_time"),
-        unit: {:native, :millisecond},
-        description: gettext("The time spent decoding the data received from the database"),
-        reporter_options: [nav: gettext("Database")]
-      ),
-      summary(gettext("retro_hex_chat.repo.query.query_time"),
-        unit: {:native, :millisecond},
-        description: gettext("The time spent executing the query"),
-        reporter_options: [nav: gettext("Database")]
-      ),
-      summary(gettext("retro_hex_chat.repo.query.queue_time"),
-        unit: {:native, :millisecond},
-        description: gettext("The time spent waiting for a database connection"),
-        reporter_options: [nav: gettext("Database")]
-      ),
-      summary(gettext("retro_hex_chat.repo.query.idle_time"),
+      summary(dgettext("system", "retro_hex_chat.repo.query.decode_time"),
         unit: {:native, :millisecond},
         description:
-          gettext("The time the connection spent waiting before being checked out for the query"),
-        reporter_options: [nav: gettext("Database")]
+          dgettext("system", "The time spent decoding the data received from the database"),
+        reporter_options: [nav: dgettext("system", "Database")]
+      ),
+      summary(dgettext("system", "retro_hex_chat.repo.query.query_time"),
+        unit: {:native, :millisecond},
+        description: dgettext("system", "The time spent executing the query"),
+        reporter_options: [nav: dgettext("system", "Database")]
+      ),
+      summary(dgettext("system", "retro_hex_chat.repo.query.queue_time"),
+        unit: {:native, :millisecond},
+        description: dgettext("system", "The time spent waiting for a database connection"),
+        reporter_options: [nav: dgettext("system", "Database")]
+      ),
+      summary(dgettext("system", "retro_hex_chat.repo.query.idle_time"),
+        unit: {:native, :millisecond},
+        description:
+          dgettext(
+            "system",
+            "The time the connection spent waiting before being checked out for the query"
+          ),
+        reporter_options: [nav: dgettext("system", "Database")]
       ),
 
       # VM Metrics
-      summary(gettext("vm.memory.total"),
+      summary(dgettext("system", "vm.memory.total"),
         unit: {:byte, :kilobyte},
-        reporter_options: [nav: gettext("VM")]
+        reporter_options: [nav: dgettext("system", "VM")]
       ),
-      summary(gettext("vm.memory.processes"),
+      summary(dgettext("system", "vm.memory.processes"),
         unit: {:byte, :kilobyte},
-        reporter_options: [nav: gettext("VM")]
+        reporter_options: [nav: dgettext("system", "VM")]
       ),
-      summary(gettext("vm.memory.binary"),
+      summary(dgettext("system", "vm.memory.binary"),
         unit: {:byte, :kilobyte},
-        reporter_options: [nav: gettext("VM")]
+        reporter_options: [nav: dgettext("system", "VM")]
       ),
-      summary(gettext("vm.memory.ets"),
+      summary(dgettext("system", "vm.memory.ets"),
         unit: {:byte, :kilobyte},
-        reporter_options: [nav: gettext("VM")]
+        reporter_options: [nav: dgettext("system", "VM")]
       ),
-      summary(gettext("vm.total_run_queue_lengths.total"),
-        reporter_options: [nav: gettext("VM")]
+      summary(dgettext("system", "vm.total_run_queue_lengths.total"),
+        reporter_options: [nav: dgettext("system", "VM")]
       ),
-      summary(gettext("vm.total_run_queue_lengths.cpu"),
-        reporter_options: [nav: gettext("VM")]
+      summary(dgettext("system", "vm.total_run_queue_lengths.cpu"),
+        reporter_options: [nav: dgettext("system", "VM")]
       ),
-      summary(gettext("vm.total_run_queue_lengths.io"),
-        reporter_options: [nav: gettext("VM")]
+      summary(dgettext("system", "vm.total_run_queue_lengths.io"),
+        reporter_options: [nav: dgettext("system", "VM")]
       ),
-      last_value(gettext("vm.system_counts.process_count"),
-        reporter_options: [nav: gettext("VM")]
+      last_value(dgettext("system", "vm.system_counts.process_count"),
+        reporter_options: [nav: dgettext("system", "VM")]
       ),
-      last_value(gettext("vm.system_counts.atom_count"),
-        reporter_options: [nav: gettext("VM")]
+      last_value(dgettext("system", "vm.system_counts.atom_count"),
+        reporter_options: [nav: dgettext("system", "VM")]
       ),
-      last_value(gettext("vm.system_counts.port_count"),
-        reporter_options: [nav: gettext("VM")]
+      last_value(dgettext("system", "vm.system_counts.port_count"),
+        reporter_options: [nav: dgettext("system", "VM")]
       ),
 
       # Domain Metrics – Channels
-      sum(gettext("retro_hex_chat.channels.channel_created.count"),
+      sum(dgettext("system", "retro_hex_chat.channels.channel_created.count"),
         tags: [:channel],
-        description: gettext("Number of channels created"),
-        reporter_options: [nav: gettext("Domain")]
+        description: dgettext("system", "Number of channels created"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       ),
-      sum(gettext("retro_hex_chat.channels.channel_destroyed.count"),
+      sum(dgettext("system", "retro_hex_chat.channels.channel_destroyed.count"),
         tags: [:channel],
-        description: gettext("Number of channels destroyed"),
-        reporter_options: [nav: gettext("Domain")]
+        description: dgettext("system", "Number of channels destroyed"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       ),
-      sum(gettext("retro_hex_chat.channels.mode_changed.count"),
+      sum(dgettext("system", "retro_hex_chat.channels.mode_changed.count"),
         tags: [:channel],
-        description: gettext("Number of channel mode changes"),
-        reporter_options: [nav: gettext("Domain")]
+        description: dgettext("system", "Number of channel mode changes"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       ),
-      sum(gettext("retro_hex_chat.channels.topic_changed.count"),
+      sum(dgettext("system", "retro_hex_chat.channels.topic_changed.count"),
         tags: [:channel],
-        description: gettext("Number of channel topic changes"),
-        reporter_options: [nav: gettext("Domain")]
+        description: dgettext("system", "Number of channel topic changes"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       ),
-      sum(gettext("retro_hex_chat.channels.active_count.value"),
-        description: gettext("Number of active channel processes"),
-        reporter_options: [nav: gettext("Domain")]
+      sum(dgettext("system", "retro_hex_chat.channels.active_count.value"),
+        description: dgettext("system", "Number of active channel processes"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       ),
 
       # Domain Metrics – Presence
-      sum(gettext("retro_hex_chat.presence.user_online.count"),
+      sum(dgettext("system", "retro_hex_chat.presence.user_online.count"),
         tags: [:nickname, :channel],
-        description: gettext("Number of user online events"),
-        reporter_options: [nav: gettext("Domain")]
+        description: dgettext("system", "Number of user online events"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       ),
-      sum(gettext("retro_hex_chat.presence.user_offline.count"),
+      sum(dgettext("system", "retro_hex_chat.presence.user_offline.count"),
         tags: [:nickname, :channel],
-        description: gettext("Number of user offline events"),
-        reporter_options: [nav: gettext("Domain")]
+        description: dgettext("system", "Number of user offline events"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       ),
-      sum(gettext("retro_hex_chat.presence.user_away.count"),
+      sum(dgettext("system", "retro_hex_chat.presence.user_away.count"),
         tags: [:nickname],
-        description: gettext("Number of user away toggles"),
-        reporter_options: [nav: gettext("Domain")]
+        description: dgettext("system", "Number of user away toggles"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       )
     ]
   end

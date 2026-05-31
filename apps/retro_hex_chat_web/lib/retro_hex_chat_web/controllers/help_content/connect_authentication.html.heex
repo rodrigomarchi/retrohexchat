@@ -1,42 +1,47 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help",
     "RetroHexChat handles all authentication directly on the connection screen — no need to run"
   )}
-  <code>{gettext("/ns identify")}</code>
-  or <code>{gettext("/ns register")}</code>
-  {gettext("manually.")}
+  <code>{dgettext("help", "/ns identify")}</code>
+  or <code>{dgettext("help", "/ns register")}</code>
+  {dgettext("help", "manually.")}
 </p>
-<.help_h4 icon={:icon_lock}>{gettext("Registered Nicknames")}</.help_h4>
+<.help_h4 icon={:icon_lock}>{dgettext("help", "Registered Nicknames")}</.help_h4>
 <p>
-  {gettext("1. Enter your registered nickname and click")} <strong>{gettext("Connect")}</strong>.
+  {dgettext("help", "1. Enter your registered nickname and click")} <strong>{dgettext("help", "Connect")}</strong>.
 </p>
-<p>{gettext("2. A password prompt appears. Enter your NickServ password.")}</p>
+<p>{dgettext("help", "2. A password prompt appears. Enter your NickServ password.")}</p>
 <p>
-  {gettext(
+  {dgettext(
+    "help",
     "3. On success, you join the chat already identified — the 60-second identify timer is skipped."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_nick}>{gettext("New Nicknames")}</.help_h4>
+<.help_h4 icon={:icon_dialog_nick}>{dgettext("help", "New Nicknames")}</.help_h4>
 <p>
-  {gettext("1. Enter a nickname that isn't registered yet and click")} <strong>{gettext("Connect")}</strong>.
+  {dgettext("help", "1. Enter a nickname that isn't registered yet and click")} <strong>{dgettext("help", "Connect")}</strong>.
 </p>
 <p>
-  {gettext("2. A registration form appears with")} <strong>{gettext("Password")}</strong>
-  and <strong>{gettext("Confirm password")}</strong>
-  {gettext("fields.")}
+  {dgettext("help", "2. A registration form appears with")}
+  <strong>{dgettext("help", "Password")}</strong>
+  and <strong>{dgettext("help", "Confirm password")}</strong>
+  {dgettext("help", "fields.")}
 </p>
 <p>
-  {gettext("3. Choose a password (minimum 5 characters) and click")} <strong>{gettext("Register & Connect")}</strong>.
+  {dgettext("help", "3. Choose a password (minimum 5 characters) and click")} <strong>{dgettext("help", "Register & Connect")}</strong>.
 </p>
-<p>{gettext("4. Your nickname is registered and you join the chat already identified.")}</p>
-<.help_h4 icon={:icon_lock}>{gettext("Password Rules")}</.help_h4>
+<p>
+  {dgettext("help", "4. Your nickname is registered and you join the chat already identified.")}
+</p>
+<.help_h4 icon={:icon_lock}>{dgettext("help", "Password Rules")}</.help_h4>
 <ul>
-  <li>{gettext("Minimum 5 characters, maximum 100 characters")}</li>
-  <li>{gettext("Stored securely with bcrypt hashing — never in plain text")}</li>
+  <li>{dgettext("help", "Minimum 5 characters, maximum 100 characters")}</li>
+  <li>{dgettext("help", "Stored securely with bcrypt hashing — never in plain text")}</li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="connecting">{gettext("Connecting")}</.help_link>
-  · <.help_link topic="nickserv">{gettext("NickServ Overview")}</.help_link>
-  · <.help_link topic="cmd-ns">{gettext("/ns Command")}</.help_link>
+  <.help_link topic="connecting">{dgettext("help", "Connecting")}</.help_link>
+  · <.help_link topic="nickserv">{dgettext("help", "NickServ Overview")}</.help_link>
+  · <.help_link topic="cmd-ns">{dgettext("help", "/ns Command")}</.help_link>
 </p>

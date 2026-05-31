@@ -43,9 +43,9 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
   def confirm_dialog(assigns) do
     assigns =
       assigns
-      |> assign(:resolved_title, assigns.title || gettext("Confirm"))
-      |> assign(:resolved_confirm_label, assigns.confirm_label || gettext("OK"))
-      |> assign(:resolved_cancel_label, assigns.cancel_label || gettext("Cancel"))
+      |> assign(:resolved_title, assigns.title || dgettext("dialogs", "Confirm"))
+      |> assign(:resolved_confirm_label, assigns.confirm_label || dgettext("dialogs", "OK"))
+      |> assign(:resolved_cancel_label, assigns.cancel_label || dgettext("dialogs", "Cancel"))
 
     ~H"""
     <.dialog id={@id} show={@show}>

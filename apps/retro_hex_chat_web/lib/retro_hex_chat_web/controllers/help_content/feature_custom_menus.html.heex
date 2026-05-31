@@ -1,52 +1,64 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Add custom items to the user list and channel right-click context menus. Each item executes a command with variable expansion when clicked."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_custom_menus}>{gettext("Menu Types")}</.help_h4>
+<.help_h4 icon={:icon_dialog_custom_menus}>{dgettext("help_features", "Menu Types")}</.help_h4>
 <p>
-  <strong>{gettext("Nicklist")}</strong>{gettext(
+  <strong>{dgettext("help_features", "Nicklist")}</strong>{dgettext(
+    "help_features",
     ": Items appear when clicking a nickname in the user list. Use"
   )}
   <code>$1</code>
-  {gettext("for the target nickname.")}
+  {dgettext("help_features", "for the target nickname.")}
 </p>
 <p>
-  <strong>{gettext("Channel")}</strong>{gettext(
+  <strong>{dgettext("help_features", "Channel")}</strong>{dgettext(
+    "help_features",
     ": Items appear when right-clicking a channel in the conversations sidebar. Use"
   )}
   <code>$1</code>
-  {gettext("for the target channel name.")}
+  {dgettext("help_features", "for the target channel name.")}
 </p>
 <p>
-  <strong>{gettext("Chat")}</strong>{gettext(
+  <strong>{dgettext("help_features", "Chat")}</strong>{dgettext(
+    "help_features",
     ": Items appear when right-clicking a nickname in chat messages. Use"
   )}
   <code>$1</code>
-  {gettext("for the target nickname.")}
+  {dgettext("help_features", "for the target nickname.")}
 </p>
-<.help_h4 icon={:icon_wrench}>{gettext("Managing Items")}</.help_h4>
+<.help_h4 icon={:icon_wrench}>{dgettext("help_features", "Managing Items")}</.help_h4>
 <p>
-  {gettext("Use")} <code>{gettext("/popups")}</code>
-  {gettext("or open")} <strong>{gettext("Tools > Custom Menus")}</strong>{gettext(
+  {dgettext("help_features", "Use")} <code>{dgettext("help_features", "/popups")}</code>
+  {dgettext("help_features", "or open")} <strong>{dgettext("help_features", "Tools > Custom Menus")}</strong>{dgettext(
+    "help_features",
     ". Switch between Nicklist, Channel, and Chat tabs. Each item has a label (display text) and a command (what runs on click)."
   )}
 </p>
-<.help_h4 icon={:icon_tag}>{gettext("Variables")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_features", "Variables")}</.help_h4>
 <p>
   <code>$1</code>
-  {gettext("— Target nickname or channel name.")}<br /><code>{gettext("$nick")}</code>
-  {gettext("— Your nickname.")}<br /><code>{gettext("$chan")}</code>
-  {gettext("— Current channel.")}
+  {dgettext("help_features", "— Target nickname or channel name.")}<br />
+  <code>
+    {dgettext("help_features", "$nick")}
+  </code>
+  {dgettext("help_features", "— Your nickname.")}<br />
+  <code>
+    {dgettext("help_features", "$chan")}
+  </code>
+  {dgettext("help_features", "— Current channel.")}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_features", "Limits")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Maximum 10 custom items per menu type. Labels: up to 50 characters. Commands: up to 500 characters. Custom items append to (not replace) built-in menu items. Persisted for registered users."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-popups">{gettext("/popups Command")}</.help_link>
-  · <.help_link topic="feature-aliases">{gettext("Aliases")}</.help_link>
+  <.help_link topic="cmd-popups">{dgettext("help_features", "/popups Command")}</.help_link>
+  · <.help_link topic="feature-aliases">{dgettext("help_features", "Aliases")}</.help_link>
 </p>

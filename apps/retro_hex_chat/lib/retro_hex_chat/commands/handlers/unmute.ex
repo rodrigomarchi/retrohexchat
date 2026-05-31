@@ -11,7 +11,7 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, gettext("Usage: /unmute <nickname>")}
+  def execute([], _context), do: {:error, dgettext("commands", "Usage: /unmute <nickname>")}
 
   def execute([nick | _], context) do
     with {:ok, channel} <- require_channel(context),
@@ -24,10 +24,13 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
   def help do
     %{
       name: "unmute",
-      syntax: gettext("/unmute <nickname>"),
+      syntax: dgettext("commands", "/unmute <nickname>"),
       description:
-        gettext("Remove a channel-level mute from a user.\nRequires: channel operator or owner."),
-      examples: [gettext("/unmute alice")]
+        dgettext(
+          "commands",
+          "Remove a channel-level mute from a user.\nRequires: channel operator or owner."
+        ),
+      examples: [dgettext("commands", "/unmute alice")]
     }
   end
 
@@ -42,8 +45,8 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
 
     %CommandSyntax{
       command: "unmute",
-      syntax: gettext("/unmute <nickname>"),
-      description: gettext("Remove a channel-level mute from a user."),
+      syntax: dgettext("commands", "/unmute <nickname>"),
+      description: dgettext("commands", "Remove a channel-level mute from a user."),
       category: :channel,
       parameters: [
         %Parameter{
@@ -51,15 +54,15 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
           required: true,
           type: :nick,
           position: 0,
-          description: gettext("User to unmute")
+          description: dgettext("commands", "User to unmute")
         }
       ],
-      examples: [gettext("/unmute alice")]
+      examples: [dgettext("commands", "/unmute alice")]
     }
   end
 
   defp require_channel(%{active_channel: nil}),
-    do: {:error, gettext("You are not in any channel")}
+    do: {:error, dgettext("commands", "You are not in any channel")}
 
   defp require_channel(%{active_channel: ch}), do: {:ok, ch}
 
@@ -67,7 +70,7 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
     if channel in context.operator_in do
       :ok
     else
-      {:error, gettext("You must be a channel operator to use this command")}
+      {:error, dgettext("commands", "You must be a channel operator to use this command")}
     end
   end
 end

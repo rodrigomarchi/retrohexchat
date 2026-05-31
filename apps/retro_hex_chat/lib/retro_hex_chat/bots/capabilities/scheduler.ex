@@ -24,7 +24,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: gettext("Scheduled and periodic messages")
+  def description, do: dgettext("bots", "Scheduled and periodic messages")
 
   @impl true
   @spec init_state(map()) :: map()
@@ -145,9 +145,9 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]
   def commands do
     [
-      %{trigger: "schedule add", description: gettext("Add a scheduled message")},
-      %{trigger: "schedule list", description: gettext("List active schedules")},
-      %{trigger: "schedule remove", description: gettext("Remove a schedule")}
+      %{trigger: "schedule add", description: dgettext("bots", "Add a scheduled message")},
+      %{trigger: "schedule list", description: dgettext("bots", "List active schedules")},
+      %{trigger: "schedule remove", description: dgettext("bots", "Remove a schedule")}
     ]
   end
 
@@ -177,13 +177,13 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
     schedules = state.schedules
 
     if schedules == [] do
-      {:reply, gettext("No active schedules.")}
+      {:reply, dgettext("bots", "No active schedules.")}
     else
       lines =
         Enum.map(schedules, fn s ->
           type_str = format_schedule_type(s)
 
-          gettext("  %{id} | %{type} | %{channel} | %{message}",
+          dgettext("bots", "  %{id} | %{type} | %{channel} | %{message}",
             id: s["id"],
             type: type_str,
             channel: s["channel"],
@@ -191,7 +191,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
           )
         end)
 
-      {:multi_reply, [gettext("Active schedules:") | lines]}
+      {:multi_reply, [dgettext("bots", "Active schedules:") | lines]}
     end
   end
 
@@ -201,7 +201,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
     min_interval = Map.get(config, "min_interval_min", 5)
 
     if length(state.schedules) >= max do
-      {:reply, gettext("Maximum %{max} schedules reached.", max: max)}
+      {:reply, dgettext("bots", "Maximum %{max} schedules reached.", max: max)}
     else
       case parse_add_args(rest) do
         {:interval, minutes, channel, message} ->
@@ -212,7 +212,8 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
 
         :error ->
           {:reply,
-           gettext(
+           dgettext(
+             "bots",
              "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
            )}
       end
@@ -223,7 +224,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
           RetroHexChat.Bots.Capability.capability_result()
   defp add_interval(minutes, channel, message, min_interval, state) do
     if minutes < min_interval do
-      {:reply, gettext("Minimum interval is %{minutes} minutes.", minutes: min_interval)}
+      {:reply, dgettext("bots", "Minimum interval is %{minutes} minutes.", minutes: min_interval)}
     else
       id = generate_id()
 
@@ -239,7 +240,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
       new_state = %{state | schedules: state.schedules ++ [schedule]}
 
       {:reply,
-       gettext("Schedule '%{id}' added: every %{minutes}min in %{channel}.",
+       dgettext("bots", "Schedule '%{id}' added: every %{minutes}min in %{channel}.",
          id: id,
          minutes: minutes,
          channel: channel
@@ -265,13 +266,13 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
       new_state = %{state | schedules: state.schedules ++ [schedule]}
 
       {:reply,
-       gettext("Schedule '%{id}' added: daily at %{time} UTC in %{channel}.",
+       dgettext("bots", "Schedule '%{id}' added: daily at %{time} UTC in %{channel}.",
          id: id,
          time: time,
          channel: channel
        ), new_state}
     else
-      {:reply, gettext("Invalid time format. Use HH:MM (24h UTC).")}
+      {:reply, dgettext("bots", "Invalid time format. Use HH:MM (24h UTC).")}
     end
   end
 
@@ -280,9 +281,9 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
     if find_schedule(state.schedules, id) do
       new_schedules = Enum.reject(state.schedules, &(&1["id"] == id))
       new_state = %{state | schedules: new_schedules}
-      {:reply, gettext("Schedule '%{id}' removed.", id: id), new_state}
+      {:reply, dgettext("bots", "Schedule '%{id}' removed.", id: id), new_state}
     else
-      {:reply, gettext("Schedule '%{id}' not found.", id: id)}
+      {:reply, dgettext("bots", "Schedule '%{id}' not found.", id: id)}
     end
   end
 
@@ -373,10 +374,10 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
 
   @spec format_schedule_type(map()) :: String.t()
   defp format_schedule_type(%{"type" => "interval", "interval_min" => min}),
-    do: gettext("q/%{minutes}min", minutes: min)
+    do: dgettext("bots", "q/%{minutes}min", minutes: min)
 
   defp format_schedule_type(%{"type" => "daily", "time" => time}),
-    do: gettext("daily@%{time}", time: time)
+    do: dgettext("bots", "daily@%{time}", time: time)
 
   defp format_schedule_type(_), do: "unknown"
 

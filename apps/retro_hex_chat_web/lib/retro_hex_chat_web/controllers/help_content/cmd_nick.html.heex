@@ -1,35 +1,41 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Change your display name in the chat. A confirmation dialog appears before the change takes effect, since changing your nickname starts a new session."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/nick <new_nickname>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>new_nickname</code> {gettext("— Your desired new nickname.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/nick <new_nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p><code>new_nickname</code> {dgettext("help_commands", "— Your desired new nickname.")}</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext("When you run")} <code>{gettext("/nick")}</code>{gettext(
+  {dgettext("help_commands", "When you run")} <code>{dgettext("help_commands", "/nick")}</code>{dgettext(
+    "help_commands",
     ", a confirmation dialog appears asking you to confirm the change. If the target nickname is registered with NickServ, you'll also need to enter the password. Once confirmed, all users in your channels see an announcement that you changed your name."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("1 to 16 characters long")}</li>
+  <li>{dgettext("help_commands", "1 to 16 characters long")}</li>
   <li>
-    {gettext("Must start with a letter or one of these special characters:")}
+    {dgettext("help_commands", "Must start with a letter or one of these special characters:")}
     <code>[ ] \ ^ _ &#123; | &#125;</code>
   </li>
-  <li>{gettext("Can contain letters, numbers, special characters, and hyphens")}</li>
-  <li>{gettext("No spaces allowed")}</li>
-  <li>{gettext("Cannot change to your current nickname")}</li>
-  <li>{gettext("Cannot use a nickname that is already in use by someone else")}</li>
-  <li>{gettext("If the nickname is registered, you need its password")}</li>
+  <li>
+    {dgettext("help_commands", "Can contain letters, numbers, special characters, and hyphens")}
+  </li>
+  <li>{dgettext("help_commands", "No spaces allowed")}</li>
+  <li>{dgettext("help_commands", "Cannot change to your current nickname")}</li>
+  <li>
+    {dgettext("help_commands", "Cannot use a nickname that is already in use by someone else")}
+  </li>
+  <li>{dgettext("help_commands", "If the nickname is registered, you need its password")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/nick CoolUser42 /nick Alice")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/nick CoolUser42 /nick Alice")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ns">{gettext("/ns")}</.help_link>
-  · <.help_link topic="cmd-whois">{gettext("/whois")}</.help_link>
+  <.help_link topic="cmd-ns">{dgettext("help_commands", "/ns")}</.help_link>
+  · <.help_link topic="cmd-whois">{dgettext("help_commands", "/whois")}</.help_link>
 </p>

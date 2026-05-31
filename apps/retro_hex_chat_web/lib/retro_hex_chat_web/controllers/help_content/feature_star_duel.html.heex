@@ -1,51 +1,93 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles while drifting through wraparound space. Use hyperspace warp to escape — but there's a 20% chance it kills you. First to 7 wins."
   )}
 </p>
 <.diagram_game_space class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("Arrow Up / W")}</strong> {gettext("— Thrust forward")}</li>
-  <li><strong>{gettext("Arrow Left / A")}</strong> {gettext("— Rotate left")}</li>
-  <li><strong>{gettext("Arrow Right / D")}</strong> {gettext("— Rotate right")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Fire missile")}</li>
   <li>
-    <strong>{gettext("Arrow Down / S")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Arrow Up / W")}</strong> {dgettext(
+      "help_games",
+      "— Thrust forward"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Left / A")}</strong> {dgettext(
+      "help_games",
+      "— Rotate left"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Right / D")}</strong> {dgettext(
+      "help_games",
+      "— Rotate right"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Space")}</strong> {dgettext("help_games", "— Fire missile")}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Down / S")}</strong> {dgettext(
+      "help_games",
       "— Hyperspace warp (random teleport, 20% death chance)"
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
-<ul>
-  <li>{gettext("Ships have full Newtonian inertia — you keep drifting after thrusting")}</li>
-  <li>{gettext("Slight drag slows you gradually, but momentum is king")}</li>
-  <li>{gettext("The arena wraps around — fly off one edge, appear on the other")}</li>
-  <li>{gettext("Up to 3 missiles in flight per player, with a brief cooldown between shots")}</li>
-  <li>{gettext("Missiles inherit your ship's velocity plus their own thrust")}</li>
-  <li>{gettext("Missiles expire after 1.5 seconds if they don't hit anything")}</li>
-  <li>{gettext("Ship-to-ship collision kills both players (no point awarded)")}</li>
-  <li>{gettext("Hyperspace warp: random position, 20% death chance, 3-second cooldown")}</li>
-  <li>{gettext("2 seconds of invulnerability after each respawn")}</li>
-  <li>{gettext("First to 7 kills wins the match")}</li>
-</ul>
-<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="feature-gravity-well">{gettext("Gravity Well")}</.help_link>
-    {gettext("— Central star pulls ships and missiles into orbital trajectories")}
+    {dgettext(
+      "help_games",
+      "Ships have full Newtonian inertia — you keep drifting after thrusting"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Slight drag slows you gradually, but momentum is king")}</li>
+  <li>
+    {dgettext("help_games", "The arena wraps around — fly off one edge, appear on the other")}
   </li>
   <li>
-    <.help_link topic="feature-debris-field">{gettext("Debris Field")}</.help_link>
-    {gettext("— 8 asteroids block missiles and kill ships on contact")}
+    {dgettext(
+      "help_games",
+      "Up to 3 missiles in flight per player, with a brief cooldown between shots"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Missiles inherit your ship's velocity plus their own thrust")}</li>
+  <li>
+    {dgettext("help_games", "Missiles expire after 1.5 seconds if they don't hit anything")}
+  </li>
+  <li>
+    {dgettext("help_games", "Ship-to-ship collision kills both players (no point awarded)")}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Hyperspace warp: random position, 20% death chance, 3-second cooldown"
+    )}
+  </li>
+  <li>{dgettext("help_games", "2 seconds of invulnerability after each respawn")}</li>
+  <li>{dgettext("help_games", "First to 7 kills wins the match")}</li>
+</ul>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_games", "Modes")}</.help_h4>
+<ul>
+  <li>
+    <.help_link topic="feature-gravity-well">{dgettext("help_games", "Gravity Well")}</.help_link>
+    {dgettext("help_games", "— Central star pulls ships and missiles into orbital trajectories")}
+  </li>
+  <li>
+    <.help_link topic="feature-debris-field">{dgettext("help_games", "Debris Field")}</.help_link>
+    {dgettext("help_games", "— 8 asteroids block missiles and kill ships on contact")}
   </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
-<p>{gettext("Based on Spacewar! (1962) — the grandfather of space combat games.")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
 <p>
-  <.help_link topic="feature-gravity-well">{gettext("Gravity Well")}</.help_link>
-  · <.help_link topic="feature-debris-field">{gettext("Debris Field")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  {dgettext("help_games", "Based on Spacewar! (1962) — the grandfather of space combat games.")}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-gravity-well">{dgettext("help_games", "Gravity Well")}</.help_link>
+  · <.help_link topic="feature-debris-field">{dgettext("help_games", "Debris Field")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

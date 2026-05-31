@@ -27,11 +27,11 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
       :ok ->
         system_event(
           socket,
-          gettext("Welcome message for %{channel} has been set.", channel: channel)
+          dgettext("chat", "Welcome message for %{channel} has been set.", channel: channel)
         )
 
       {:error, msg} ->
-        system_event(socket, gettext("Error: %{message}", message: msg))
+        system_event(socket, dgettext("chat", "Error: %{message}", message: msg))
     end
   end
 
@@ -42,11 +42,11 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
       :ok ->
         system_event(
           socket,
-          gettext("Welcome message for %{channel} has been cleared.", channel: channel)
+          dgettext("chat", "Welcome message for %{channel} has been cleared.", channel: channel)
         )
 
       {:error, msg} ->
-        system_event(socket, gettext("Error: %{message}", message: msg))
+        system_event(socket, dgettext("chat", "Error: %{message}", message: msg))
     end
   end
 
@@ -69,9 +69,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
 
     if mode do
       new_session = Session.set_mode(session, mode)
-      {:ok, new_session, gettext("User mode +%{flag} enabled.", flag: flag)}
+      {:ok, new_session, dgettext("chat", "User mode +%{flag} enabled.", flag: flag)}
     else
-      {:error, gettext("Unknown user mode: %{flag}", flag: flag)}
+      {:error, dgettext("chat", "Unknown user mode: %{flag}", flag: flag)}
     end
   end
 
@@ -80,13 +80,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
 
     if mode do
       new_session = Session.unset_mode(session, mode)
-      {:ok, new_session, gettext("User mode -%{flag} disabled.", flag: flag)}
+      {:ok, new_session, dgettext("chat", "User mode -%{flag} disabled.", flag: flag)}
     else
-      {:error, gettext("Unknown user mode: %{flag}", flag: flag)}
+      {:error, dgettext("chat", "Unknown user mode: %{flag}", flag: flag)}
     end
   end
 
-  defp parse_and_apply_mode(_session, _), do: {:error, gettext("Invalid mode string.")}
+  defp parse_and_apply_mode(_session, _), do: {:error, dgettext("chat", "Invalid mode string.")}
 
   defp flag_to_mode("w"), do: :wallops
   defp flag_to_mode(_), do: nil

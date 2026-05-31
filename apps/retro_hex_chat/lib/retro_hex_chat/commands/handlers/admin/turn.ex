@@ -6,7 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Turn do
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.Turn.Config
 
-  @not_configured gettext_noop("*** TURN server is not configured (listener_count = 0)")
+  @not_configured dgettext_noop("admin", "*** TURN server is not configured (listener_count = 0)")
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["stats"], _context) do
@@ -26,15 +26,17 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Turn do
   end
 
   def execute([], _context) do
-    {:error, gettext("Usage: /admin turn <stats|allocations>")}
+    {:error, dgettext("admin", "Usage: /admin turn <stats|allocations>")}
   end
 
   def execute([subcmd | _], _context) do
     {:error,
-     gettext("Unknown turn subcommand: %{subcmd}. Try: stats, allocations", subcmd: subcmd)}
+     dgettext("admin", "Unknown turn subcommand: %{subcmd}. Try: stats, allocations",
+       subcmd: subcmd
+     )}
   end
 
-  defp not_configured, do: Gettext.gettext(RetroHexChat.Gettext, @not_configured)
+  defp not_configured, do: Gettext.dgettext(RetroHexChat.Gettext, "admin", @not_configured)
 
   defp format_stats do
     config = Config.from_application_env()
@@ -50,17 +52,22 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Turn do
     relay_ip = :inet.ntoa(config.relay_ip) |> to_string()
 
     text =
-      gettext("*** TURN Server Stats ***\n") <>
-        gettext("  Status: running\n") <>
-        gettext("  Relay IP: %{relay_ip}\n", relay_ip: relay_ip) <>
-        gettext("  Listen port: %{listen_port}\n", listen_port: config.listen_port) <>
-        gettext("  Listeners: %{listener_count}\n", listener_count: config.listener_count) <>
-        gettext("  Active allocations: %{active}\n", active: active) <>
-        gettext("  Relay ports: %{used_ports}/%{total_ports} in use\n",
+      dgettext("admin", "*** TURN Server Stats ***\n") <>
+        dgettext("admin", "  Status: running\n") <>
+        dgettext("admin", "  Relay IP: %{relay_ip}\n", relay_ip: relay_ip) <>
+        dgettext("admin", "  Listen port: %{listen_port}\n", listen_port: config.listen_port) <>
+        dgettext("admin", "  Listeners: %{listener_count}\n",
+          listener_count: config.listener_count
+        ) <>
+        dgettext("admin", "  Active allocations: %{active}\n", active: active) <>
+        dgettext("admin", "  Relay ports: %{used_ports}/%{total_ports} in use\n",
           used_ports: used_ports,
           total_ports: total_ports
         ) <>
-        gettext("  Port range: %{port_min}-%{port_max}", port_min: port_min, port_max: port_max)
+        dgettext("admin", "  Port range: %{port_min}-%{port_max}",
+          port_min: port_min,
+          port_max: port_max
+        )
 
     {:ok, :system, %{content: text}}
   end
@@ -70,10 +77,10 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Turn do
 
     text =
       if entries == [] do
-        gettext("*** No active TURN allocations.")
+        dgettext("admin", "*** No active TURN allocations.")
       else
         header =
-          gettext("*** Active TURN Allocations (%{entries_count}) ***",
+          dgettext("admin", "*** Active TURN Allocations (%{entries_count}) ***",
             entries_count: length(entries)
           )
 
@@ -88,7 +95,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Turn do
     {client_ip, client_port, _server_ip, _server_port, _proto} = five_tuple
     client = "#{:inet.ntoa(client_ip)}:#{client_port}"
 
-    gettext("  %{client} -> relay port %{alloc_port}",
+    dgettext("admin", "  %{client} -> relay port %{alloc_port}",
       client: client,
       alloc_port: alloc_state.alloc_port
     )

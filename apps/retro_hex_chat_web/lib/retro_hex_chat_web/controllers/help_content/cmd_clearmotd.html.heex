@@ -1,25 +1,30 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Remove the server's Message of the Day so that new users connecting won't see any MOTD."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/clearmotd")}</pre>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/clearmotd")}</pre>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Clears the server MOTD that is normally displayed to users when they connect. After clearing, the MOTD section is simply skipped during connection. You can set a new MOTD at any time with"
-  )} <code>{gettext("/setmotd")}</code>.
+  )} <code>{dgettext("help_commands", "/setmotd")}</code>.
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Server administrator only")}</li>
+  <li>{dgettext("help_commands", "Server administrator only")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/clearmotd")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/clearmotd")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-motd">{gettext("/motd")}</.help_link>
-  · <.help_link topic="cmd-setmotd">{gettext("/setmotd")}</.help_link>
-  · <.help_link topic="feature-special-messages">{gettext("Special Messages")}</.help_link>
+  <.help_link topic="cmd-motd">{dgettext("help_commands", "/motd")}</.help_link>
+  · <.help_link topic="cmd-setmotd">{dgettext("help_commands", "/setmotd")}</.help_link>
+  ·
+  <.help_link topic="feature-special-messages">
+    {dgettext("help_commands", "Special Messages")}
+  </.help_link>
 </p>

@@ -17,7 +17,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameInvaders do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext("Hex Invaders game screen: split-screen Space Invaders with alien grids on each side")
+        dgettext(
+          "diagrams",
+          "Hex Invaders game screen: split-screen Space Invaders with alien grids on each side"
+        )
       }
     >
       {win98_chrome("Hex Invaders")}
@@ -71,13 +74,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameInvaders do
       <rect x="117" y="280" width="2" height="6" fill="#fff" />
       <%!-- Scores --%>
       <text x="30" y="44" fill="#00ff41" font-size="10" font-family="'Courier New',monospace">
-        {gettext("P1: 820")}
+        {dgettext("diagrams", "P1: 820")}
       </text>
       <text x="420" y="44" fill="#00d4ff" font-size="10" font-family="'Courier New',monospace">
-        {gettext("P2: 640")}
+        {dgettext("diagrams", "P2: 640")}
       </text>
       <text x="210" y="44" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
-        {gettext("WAVE 3")}
+        {dgettext("diagrams", "WAVE 3")}
       </text>
     </svg>
     """

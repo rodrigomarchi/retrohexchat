@@ -1,83 +1,120 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "The legendary 1996 cereal box promotion — the first video game ever included as a prize in cereal boxes. A kid-friendly total conversion of DOOM where you zap Flemoids with the Zorcher across 5 levels of nostalgia."
   )}
 </p>
 <.diagram_arcade_doom class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "About")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Developed by Digital Cafe on a $500,000 budget for the WatersMolitor promotion agency, hired by Ralston Foods. Chex Quest shipped with 5.7 million boxes of Rice Chex, Wheat Chex, and Corn Chex in 1996–1997. Digital Cafe licensed the DOOM engine cheaply from id Software because Quake had already been released and id considered DOOM out of the spotlight."
   )}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "The game replaces DOOM's demons with Flemoids and guns with Zorchers — non-violent \"teleportation\" weapons that send aliens back to their home dimension. Aimed at children ages 6–9, it's a 5-level campaign built on The Ultimate DOOM. It runs on the PrBoom+ engine compiled to WebAssembly."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("W / ↑")}</strong> {gettext("— Move forward")}</li>
-  <li><strong>{gettext("S / ↓")}</strong> {gettext("— Move backward")}</li>
-  <li><strong>A</strong> {gettext("— Strafe left")}</li>
-  <li><strong>D</strong> {gettext("— Strafe right")}</li>
-  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim / turn")}</li>
-  <li><strong>{gettext("Left Click")}</strong> {gettext("— Fire Zorcher")}</li>
-  <li><strong>E</strong> {gettext("— Use / open doors")}</li>
-  <li><strong>1–5</strong> {gettext("— Select Zorcher")}</li>
-  <li><strong>{gettext("Tab")}</strong> {gettext("— Toggle automap")}</li>
-  <li><strong>{gettext("Shift")}</strong> {gettext("— Run (hold)")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Menu")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "W / ↑")}</strong> {dgettext("help_arcade", "— Move forward")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "S / ↓")}</strong> {dgettext(
+      "help_arcade",
+      "— Move backward"
+    )}
+  </li>
+  <li><strong>A</strong> {dgettext("help_arcade", "— Strafe left")}</li>
+  <li><strong>D</strong> {dgettext("help_arcade", "— Strafe right")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Mouse")}</strong> {dgettext("help_arcade", "— Aim / turn")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Fire Zorcher"
+    )}
+  </li>
+  <li><strong>E</strong> {dgettext("help_arcade", "— Use / open doors")}</li>
+  <li><strong>1–5</strong> {dgettext("help_arcade", "— Select Zorcher")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Tab")}</strong> {dgettext("help_arcade", "— Toggle automap")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Shift")}</strong> {dgettext("help_arcade", "— Run (hold)")}
+  </li>
+  <li><strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Menu")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Flemoids get tougher")}</strong>
-    {gettext("— Later levels introduce stronger Flemoid variants. Upgrade your Zorcher.")}
+    <strong>{dgettext("help_arcade", "Flemoids get tougher")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Later levels introduce stronger Flemoid variants. Upgrade your Zorcher."
+    )}
   </li>
   <li>
-    <strong>{gettext("Explore for ammo")}</strong>
-    {gettext("— Hidden areas contain extra Zorcher energy. Check suspicious walls.")}
+    <strong>{dgettext("help_arcade", "Explore for ammo")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Hidden areas contain extra Zorcher energy. Check suspicious walls."
+    )}
   </li>
   <li>
-    <strong>{gettext("Short but sweet")}</strong>
-    {gettext("— Only 5 levels, but packed with nostalgia and secrets to find.")}
+    <strong>{dgettext("help_arcade", "Short but sweet")}</strong>
+    {dgettext("help_arcade", "— Only 5 levels, but packed with nostalgia and secrets to find.")}
   </li>
   <li>
-    <strong>{gettext("Same DOOM mechanics")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Same DOOM mechanics")}</strong>
+    {dgettext(
+      "help_arcade",
       "— All the movement tricks work — strafe-running, secret hunting, and monster infighting."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Chex Quest was the first video game ever included as a prize in cereal boxes, shipped with 5.7 million boxes. Sales of Chex cereal jumped over 200% during the promotion."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The game won both a Golden EFFIE Award for Advertising Effectiveness and a Golden Reggie Award for Promotional Achievement in 1998."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Digital Cafe licensed the DOOM engine cheaply from id Software because Quake had already been released and id considered DOOM out of the spotlight."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade-doom">{dgettext("help_arcade", "DOOM (Arcade)")}</.help_link>
   ·
   <.help_link topic="feature-arcade-doom-shareware">
-    {gettext("DOOM: Knee-Deep in the Dead")}
+    {dgettext("help_arcade", "DOOM: Knee-Deep in the Dead")}
   </.help_link>
-  · <.help_link topic="feature-arcade-freedoom1">{gettext("Freedoom: Phase 1")}</.help_link>
-  · <.help_link topic="feature-arcade-freedoom2">{gettext("Freedoom: Phase 2")}</.help_link>
-  · <.help_link topic="feature-arcade-freedm">{gettext("FreeDM")}</.help_link>
-  · <.help_link topic="feature-arcade-hacx">{gettext("HacX")}</.help_link>
-  · <.help_link topic="feature-arcade-rekkr">{gettext("REKKR")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-freedoom1">
+    {dgettext("help_arcade", "Freedoom: Phase 1")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-freedoom2">
+    {dgettext("help_arcade", "Freedoom: Phase 2")}
+  </.help_link>
+  · <.help_link topic="feature-arcade-freedm">{dgettext("help_arcade", "FreeDM")}</.help_link>
+  · <.help_link topic="feature-arcade-hacx">{dgettext("help_arcade", "HacX")}</.help_link>
+  · <.help_link topic="feature-arcade-rekkr">{dgettext("help_arcade", "REKKR")}</.help_link>
 </p>

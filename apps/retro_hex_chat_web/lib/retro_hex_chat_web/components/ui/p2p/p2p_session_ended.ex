@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PSessionEnded do
       data-testid="p2p-session-ended"
       {@rest}
     >
-      <.window_title_bar title={gettext("P2P Connection")} controls={[:close]}>
+      <.window_title_bar title={dgettext("p2p", "P2P Connection")} controls={[:close]}>
         <:icon><Icons.icon_p2p class="w-4 h-4" /></:icon>
       </.window_title_bar>
 
@@ -62,12 +62,12 @@ defmodule RetroHexChatWeb.Components.UI.P2PSessionEnded do
         <div class="shadow-retro-field bg-white p-4 text-center space-y-2">
           <div class="flex items-center justify-center gap-2">
             <Icons.icon_close class="w-4 h-4 text-muted-foreground" />
-            <span class="text-sm font-bold">{gettext("Session Ended")}</span>
+            <span class="text-sm font-bold">{dgettext("p2p", "Session Ended")}</span>
           </div>
           <p class="text-xs text-muted-foreground">{@reason}</p>
           <div :if={@formatted_duration} class="pt-1">
             <.badge variant="outline">
-              <Icons.icon_clock class="w-3 h-3 mr-1" /> {gettext("Duration: %{duration}",
+              <Icons.icon_clock class="w-3 h-3 mr-1" /> {dgettext("p2p", "Duration: %{duration}",
                 duration: @formatted_duration
               )}
             </.badge>
@@ -89,20 +89,20 @@ defmodule RetroHexChatWeb.Components.UI.P2PSessionEnded do
 
     cond do
       hours > 0 ->
-        gettext("%{hours}h %{minutes}m %{seconds}s",
+        dgettext("p2p", "%{hours}h %{minutes}m %{seconds}s",
           hours: hours,
           minutes: String.pad_leading(to_string(minutes), 2, "0"),
           seconds: String.pad_leading(to_string(secs), 2, "0")
         )
 
       minutes > 0 ->
-        gettext("%{minutes}m %{seconds}s",
+        dgettext("p2p", "%{minutes}m %{seconds}s",
           minutes: minutes,
           seconds: String.pad_leading(to_string(secs), 2, "0")
         )
 
       true ->
-        gettext("%{seconds}s", seconds: secs)
+        dgettext("p2p", "%{seconds}s", seconds: secs)
     end
   end
 end

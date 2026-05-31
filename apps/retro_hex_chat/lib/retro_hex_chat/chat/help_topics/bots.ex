@@ -8,55 +8,57 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
     [
       %{
         id: "botservice",
-        title: gettext("BotService Overview"),
-        category: gettext("Bots"),
+        title: dgettext("help", "BotService Overview"),
+        category: dgettext("help", "Bots"),
         keywords: [
           "bot",
           "botservice",
-          gettext("bot service"),
+          dgettext("help", "bot service"),
           "bots",
           "capabilities",
           "automation",
           "greeter",
-          gettext("custom commands")
+          dgettext("help", "custom commands")
         ],
         icon: :icon_wrench,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Create and manage extensible bots with pluggable capabilities for channel automation."
           )
       },
       %{
         id: "bot-command",
-        title: gettext("/bot Command Reference"),
-        category: gettext("Bots"),
+        title: dgettext("help", "/bot Command Reference"),
+        category: dgettext("help", "Bots"),
         keywords: [
-          gettext("bot command"),
+          dgettext("help", "bot command"),
           "/bot",
-          gettext("bot create"),
-          gettext("bot destroy"),
-          gettext("bot join"),
-          gettext("bot part"),
-          gettext("bot enable"),
-          gettext("bot disable"),
-          gettext("bot set"),
-          gettext("bot addcmd"),
-          gettext("bot delcmd")
+          dgettext("help", "bot create"),
+          dgettext("help", "bot destroy"),
+          dgettext("help", "bot join"),
+          dgettext("help", "bot part"),
+          dgettext("help", "bot enable"),
+          dgettext("help", "bot disable"),
+          dgettext("help", "bot set"),
+          dgettext("help", "bot addcmd"),
+          dgettext("help", "bot delcmd")
         ],
         icon: :icon_terminal,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Reference for all /bot subcommands: create, destroy, join, part, enable, disable, set, addcmd, delcmd."
           )
       },
       %{
         id: "bot-custom-commands",
-        title: gettext("Bot Custom Commands"),
-        category: gettext("Bots"),
+        title: dgettext("help", "Bot Custom Commands"),
+        category: dgettext("help", "Bots"),
         keywords: [
-          gettext("bot commands"),
-          gettext("custom commands"),
-          gettext("!prefix"),
+          dgettext("help", "bot commands"),
+          dgettext("help", "custom commands"),
+          dgettext("help", "!prefix"),
           "trigger",
           "response",
           "addcmd",
@@ -64,90 +66,94 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
         ],
         icon: :icon_code,
         description:
-          gettext(
+          dgettext(
+            "help",
             "How to create and use custom bot commands (!prefix trigger) for automated responses."
           )
       },
       %{
         id: "bot-dice",
-        title: gettext("Bot Dice Capability"),
-        category: gettext("Bots"),
+        title: dgettext("help", "Bot Dice Capability"),
+        category: dgettext("help", "Bots"),
         keywords: [
           "dice",
           "roll",
           "d20",
           "rpg",
           "random",
-          gettext("bot dice"),
-          gettext("dice notation"),
-          gettext("keep highest"),
-          gettext("keep lowest")
+          dgettext("help", "bot dice"),
+          dgettext("help", "dice notation"),
+          dgettext("help", "keep highest"),
+          dgettext("help", "keep lowest")
         ],
         icon: :icon_dice,
         description:
-          gettext(
+          dgettext(
+            "help",
             "RPG dice rolling with standard notation (NdS, modifiers, keep highest/lowest)."
           )
       },
       %{
         id: "bot-trivia",
-        title: gettext("Bot Trivia Capability"),
-        category: gettext("Bots"),
+        title: dgettext("help", "Bot Trivia Capability"),
+        category: dgettext("help", "Bots"),
         keywords: [
           "trivia",
           "quiz",
           "questions",
           "score",
-          gettext("bot trivia"),
+          dgettext("help", "bot trivia"),
           "categories",
           "game",
           "answer"
         ],
         icon: :icon_question,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Interactive trivia quiz with multiple categories, scoring, and configurable timers."
           )
       },
       %{
         id: "bot-scheduler",
-        title: gettext("Bot Scheduler Capability"),
-        category: gettext("Bots"),
+        title: dgettext("help", "Bot Scheduler Capability"),
+        category: dgettext("help", "Bots"),
         keywords: [
           "scheduler",
           "schedule",
           "interval",
           "daily",
           "periodic",
-          gettext("bot scheduler"),
+          dgettext("help", "bot scheduler"),
           "cron",
           "timer"
         ],
         icon: :icon_clock,
-        description: gettext("Schedule periodic or daily messages to channels automatically.")
+        description:
+          dgettext("help", "Schedule periodic or daily messages to channels automatically.")
       },
       %{
         id: "bot-rss",
-        title: gettext("Bot RSS Capability"),
-        category: gettext("Bots"),
+        title: dgettext("help", "Bot RSS Capability"),
+        category: dgettext("help", "Bots"),
         keywords: [
           "rss",
           "feed",
           "atom",
           "news",
-          gettext("bot rss"),
+          dgettext("help", "bot rss"),
           "poll",
           "syndication",
           "updates"
         ],
         icon: :icon_rss,
         description:
-          gettext("Monitor RSS/Atom feeds and post new items to channels automatically.")
+          dgettext("help", "Monitor RSS/Atom feeds and post new items to channels automatically.")
       },
       %{
         id: "bot-moderation",
-        title: gettext("Bot Moderation Capability"),
-        category: gettext("Bots"),
+        title: dgettext("help", "Bot Moderation Capability"),
+        category: dgettext("help", "Bots"),
         keywords: [
           "moderation",
           "mod",
@@ -155,12 +161,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           "spam",
           "flood",
           "blocked words",
-          gettext("bot moderation"),
+          dgettext("help", "bot moderation"),
           "auto-mod"
         ],
         icon: :icon_shield,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Auto-moderation: word filtering, spam/flood detection, caps lock abuse prevention."
           )
       }

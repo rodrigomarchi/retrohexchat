@@ -124,11 +124,11 @@ defmodule RetroHexChatWeb.Components.UI.Window do
     """
   end
 
-  defp control_label(:minimize), do: gettext("Minimize")
-  defp control_label(:maximize), do: gettext("Maximize")
-  defp control_label(:restore), do: gettext("Restore")
-  defp control_label(:close), do: gettext("Close")
-  defp control_label(:help), do: gettext("Help")
+  defp control_label(:minimize), do: dgettext("ui", "Minimize")
+  defp control_label(:maximize), do: dgettext("ui", "Maximize")
+  defp control_label(:restore), do: dgettext("ui", "Restore")
+  defp control_label(:close), do: dgettext("ui", "Close")
+  defp control_label(:help), do: dgettext("ui", "Help")
   defp control_label(other), do: to_string(other)
 
   attr :control, :atom, required: true

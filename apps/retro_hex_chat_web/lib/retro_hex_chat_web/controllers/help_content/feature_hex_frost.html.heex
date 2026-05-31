@@ -1,97 +1,132 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Arctic construction race — jump on floating ice blocks to build your igloo while competing against your opponent. The twist: blocks are shared, and stepping on opponent-owned blocks steals their pieces!"
   )}
 </p>
 <.diagram_game_frost class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Arrow keys (←/→) or A/D")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Arrow keys (←/→) or A/D")}</strong> {dgettext(
+      "help_games",
       "— Move left/right on blocks or shore"
     )}
   </li>
   <li>
-    <strong>{gettext("Arrow Up or W")}</strong> {gettext("— Jump to the row above (toward shore)")}
+    <strong>{dgettext("help_games", "Arrow Up or W")}</strong> {dgettext(
+      "help_games",
+      "— Jump to the row above (toward shore)"
+    )}
   </li>
   <li>
-    <strong>{gettext("Arrow Down or S")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Arrow Down or S")}</strong> {dgettext(
+      "help_games",
       "— Jump to the row below (toward water)"
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_rules}>{gettext("Block Mechanics")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Block Mechanics")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("White block")}</strong> {gettext(
+    <strong>{dgettext("help_games", "White block")}</strong> {dgettext(
+      "help_games",
       "— Neutral. Step on it to claim it (+1 igloo piece)"
     )}
   </li>
   <li>
-    <strong>{gettext("Your block")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Your block")}</strong> {dgettext(
+      "help_games",
       "— Step on your own block to undo it (-1 piece)"
     )}
   </li>
   <li>
-    <strong>{gettext("Opponent's block")}</strong>
-    {gettext("— Step to steal it! You +1 piece, they -1 piece (2-piece swing!)")}
+    <strong>{dgettext("help_games", "Opponent's block")}</strong>
+    {dgettext("help_games", "— Step to steal it! You +1 piece, they -1 piece (2-piece swing!)")}
   </li>
-  <li>{gettext("4 rows of ice blocks float horizontally (alternating directions)")}</li>
-  <li>{gettext("You must time your jumps to land on moving blocks")}</li>
-  <li>{gettext("Miss a block and fall in the water — lose a life!")}</li>
+  <li>
+    {dgettext("help_games", "4 rows of ice blocks float horizontally (alternating directions)")}
+  </li>
+  <li>{dgettext("help_games", "You must time your jumps to land on moving blocks")}</li>
+  <li>{dgettext("help_games", "Miss a block and fall in the water — lose a life!")}</li>
 </ul>
-<.help_h4 icon={:icon_rules}>{gettext("Igloo & Winning")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Igloo & Winning")}</.help_h4>
 <ul>
-  <li>{gettext("Build your igloo by collecting 15 pieces from ice blocks")}</li>
-  <li>{gettext("Once complete, return to shore and enter your igloo to win the round")}</li>
-  <li>{gettext("Temperature bonus: remaining temperature × 10 points")}</li>
-  <li>{gettext("Best of 5 rounds (first to 3 wins)")}</li>
+  <li>{dgettext("help_games", "Build your igloo by collecting 15 pieces from ice blocks")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Once complete, return to shore and enter your igloo to win the round"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Temperature bonus: remaining temperature × 10 points")}</li>
+  <li>{dgettext("help_games", "Best of 5 rounds (first to 3 wins)")}</li>
 </ul>
-<.help_h4 icon={:icon_rules}>{gettext("Enemies")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Enemies")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Polar Bear")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Polar Bear")}</strong> {dgettext(
+      "help_games",
       "— Patrols the shore. Dodge to reach your igloo!"
     )}
   </li>
-  <li><strong>{gettext("Crabs")}</strong> {gettext("— Ride the ice blocks (from round 2)")}</li>
   <li>
-    <strong>{gettext("Geese")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Crabs")}</strong> {dgettext(
+      "help_games",
+      "— Ride the ice blocks (from round 2)"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Geese")}</strong> {dgettext(
+      "help_games",
       "— Fly between rows, danger during jumps (from round 3)"
     )}
   </li>
   <li>
-    <strong>{gettext("Clams")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Clams")}</strong> {dgettext(
+      "help_games",
       "— Open/close on blocks. Open = dangerous, closed = safe (from round 4)"
     )}
   </li>
   <li>
-    <strong>{gettext("Fish")}</strong> {gettext("— Bonus collectible between rows (200 points)")}
+    <strong>{dgettext("help_games", "Fish")}</strong> {dgettext(
+      "help_games",
+      "— Bonus collectible between rows (200 points)"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_games", "Modes")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="feature-hex-frost-blizzard">{gettext("Blizzard")}</.help_link>
-    {gettext("— 1 epic round, 20-piece igloo, all enemies from the start")}
+    <.help_link topic="feature-hex-frost-blizzard">
+      {dgettext("help_games", "Blizzard")}
+    </.help_link>
+    {dgettext("help_games", "— 1 epic round, 20-piece igloo, all enemies from the start")}
   </li>
   <li>
-    <.help_link topic="feature-hex-frost-peaceful">{gettext("Peaceful")}</.help_link>
-    {gettext("— No block stealing, pure construction race")}
+    <.help_link topic="feature-hex-frost-peaceful">
+      {dgettext("help_games", "Peaceful")}
+    </.help_link>
+    {dgettext("help_games", "— No block stealing, pure construction race")}
   </li>
 </ul>
-<.help_h4 icon={:icon_rules}>{gettext("Temperature")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Temperature")}</.help_h4>
 <ul>
-  <li>{gettext("Shared timer starts at 45° and drops ~1°/second")}</li>
-  <li>{gettext("If it reaches 0°, the round ends — most igloo pieces wins")}</li>
-  <li>{gettext("Build fast to maximize your temperature bonus!")}</li>
+  <li>{dgettext("help_games", "Shared timer starts at 45° and drops ~1°/second")}</li>
+  <li>{dgettext("help_games", "If it reaches 0°, the round ends — most igloo pieces wins")}</li>
+  <li>{dgettext("help_games", "Build fast to maximize your temperature bonus!")}</li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
-<p>{gettext("Inspired by Activision Frostbite (1983) by Steve Cartwright.")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
+<p>{dgettext("help_games", "Inspired by Activision Frostbite (1983) by Steve Cartwright.")}</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-frost-blizzard">{gettext("Hex Frost: Blizzard")}</.help_link>
-  · <.help_link topic="feature-hex-frost-peaceful">{gettext("Hex Frost: Peaceful")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-hex-frost-blizzard">
+    {dgettext("help_games", "Hex Frost: Blizzard")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-hex-frost-peaceful">
+    {dgettext("help_games", "Hex Frost: Peaceful")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

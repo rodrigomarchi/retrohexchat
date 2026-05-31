@@ -167,16 +167,19 @@ defmodule RetroHexChatWeb.ChatLive.AutorespondEvents do
 
   # ── Private ────────────────────────────────────────────────
 
-  defp autorespond_error_msg(:list_full), do: gettext("Maximum 10 auto-respond rules")
-  defp autorespond_error_msg(:invalid_trigger), do: gettext("Invalid trigger event")
-  defp autorespond_error_msg(:invalid_channel), do: gettext("Channel filter must start with #")
-  defp autorespond_error_msg(:invalid_command), do: gettext("Command is required")
+  defp autorespond_error_msg(:list_full), do: dgettext("chat", "Maximum 10 auto-respond rules")
+  defp autorespond_error_msg(:invalid_trigger), do: dgettext("chat", "Invalid trigger event")
+
+  defp autorespond_error_msg(:invalid_channel),
+    do: dgettext("chat", "Channel filter must start with #")
+
+  defp autorespond_error_msg(:invalid_command), do: dgettext("chat", "Command is required")
 
   defp autorespond_error_msg(:command_too_long),
-    do: gettext("Command too long (max 500 characters)")
+    do: dgettext("chat", "Command too long (max 500 characters)")
 
   defp autorespond_error_msg(:command_chaining),
-    do: gettext("Command must not contain chaining (|, &&, ;)")
+    do: dgettext("chat", "Command must not contain chaining (|, &&, ;)")
 
-  defp autorespond_error_msg(:not_found), do: gettext("Rule not found")
+  defp autorespond_error_msg(:not_found), do: dgettext("chat", "Rule not found")
 end

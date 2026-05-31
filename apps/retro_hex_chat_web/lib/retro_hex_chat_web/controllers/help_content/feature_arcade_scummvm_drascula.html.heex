@@ -1,75 +1,121 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Drascula: The Vampire Strikes Back (1996) is a hilarious Spanish point-and-click adventure — a comedic parody of Dracula full of pop culture references, absurd humor, and fourth-wall-breaking jokes."
   )}
 </p>
 <.diagram_arcade_scummvm class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "About")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Developed by Spanish studio Alcachofa Soft and released in 1996. British real estate agent John Hacker travels to Transylvania and gets entangled in Count Drascula's plot to reanimate Frankenstein and take over the world. The name is a parody of Bram Stoker's Dracula, and the game is packed with references to horror movies, pop culture, and absurdist comedy."
   )}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Poor distribution by publisher DMM prevented many players from discovering the game at release. In 2008, Alcachofa Soft handed the source code to the ScummVM team, which added native support. It was re-released as freeware with subtitles in English, Spanish, German, French, and Italian. This is the full version with MP3 voice acting, running on ScummVM compiled to WebAssembly."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("Left Click")}</strong> {gettext("— Walk / interact with object")}</li>
-  <li><strong>{gettext("Right Click")}</strong> {gettext("— Examine")}</li>
-  <li><strong>{gettext("F5")}</strong> {gettext("— Save / load game")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Skip cutscene")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Pause game")}</li>
-  <li><strong>.</strong> {gettext("— Skip dialogue line")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Walk / interact with object"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Right Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Examine"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "F5")}</strong> {dgettext(
+      "help_arcade",
+      "— Save / load game"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Skip cutscene")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Space")}</strong> {dgettext("help_arcade", "— Pause game")}
+  </li>
+  <li><strong>.</strong> {dgettext("help_arcade", "— Skip dialogue line")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Try everything with everything")}</strong>
-    {gettext("— Cartoon comedy logic applies. Absurd combinations often work.")}
+    <strong>{dgettext("help_arcade", "Try everything with everything")}</strong>
+    {dgettext("help_arcade", "— Cartoon comedy logic applies. Absurd combinations often work.")}
   </li>
   <li>
-    <strong>{gettext("Exhaust all dialogue")}</strong>
-    {gettext("— Characters have extensive conversation trees with hilarious lines.")}
+    <strong>{dgettext("help_arcade", "Exhaust all dialogue")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Characters have extensive conversation trees with hilarious lines."
+    )}
   </li>
   <li>
-    <strong>{gettext("European humor")}</strong>
-    {gettext("— Heavy on pop culture references, horror movie parodies, and Spanish comedy.")}
+    <strong>{dgettext("help_arcade", "European humor")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Heavy on pop culture references, horror movie parodies, and Spanish comedy."
+    )}
   </li>
   <li>
-    <strong>{gettext("Check inventory descriptions")}</strong>
-    {gettext("— Item descriptions are often funny and sometimes contain puzzle hints.")}
+    <strong>{dgettext("help_arcade", "Check inventory descriptions")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Item descriptions are often funny and sometimes contain puzzle hints."
+    )}
   </li>
   <li>
-    <strong>{gettext("Revisit locations")}</strong>
-    {gettext("— New items and interactions appear after story events change.")}
+    <strong>{dgettext("help_arcade", "Revisit locations")}</strong>
+    {dgettext("help_arcade", "— New items and interactions appear after story events change.")}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Poor distribution by publisher DMM prevented many players from discovering the game. Despite this, HobbyConsolas declared it one of the nine best Spanish graphic adventure games in 2017."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "In 2008, Alcachofa Soft handed the source code directly to the ScummVM team, which added native engine support — making it one of the few games added to ScummVM by the original developers."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-scummvm">{gettext("ScummVM Adventures")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-bass">{gettext("Beneath a Steel Sky")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-dreamweb">{gettext("Dreamweb")}</.help_link>
-  ·
-  <.help_link topic="feature-arcade-scummvm-fotaq">
-    {gettext("Flight of the Amazon Queen")}
+  <.help_link topic="feature-arcade-scummvm">
+    {dgettext("help_arcade", "ScummVM Adventures")}
   </.help_link>
   ·
-  <.help_link topic="feature-arcade-scummvm-lure">{gettext("Lure of the Temptress")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-soltys">{gettext("Soltys")}</.help_link>
+  <.help_link topic="feature-arcade-scummvm-bass">
+    {dgettext("help_arcade", "Beneath a Steel Sky")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-dreamweb">
+    {dgettext("help_arcade", "Dreamweb")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-fotaq">
+    {dgettext("help_arcade", "Flight of the Amazon Queen")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-lure">
+    {dgettext("help_arcade", "Lure of the Temptress")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-soltys">
+    {dgettext("help_arcade", "Soltys")}
+  </.help_link>
 </p>

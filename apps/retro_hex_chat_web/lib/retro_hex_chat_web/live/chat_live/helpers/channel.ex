@@ -279,7 +279,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
           socket
           |> assign(session: new_session)
-          |> Messages.system_event(gettext("[Welcome] %{message}", message: message))
+          |> Messages.system_event(dgettext("chat", "[Welcome] %{message}", message: message))
         else
           socket
         end
@@ -336,7 +336,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     alias RetroHexChat.Services.NickServ
     NickServ.cancel_identify_timer(session.nickname)
 
-    reason = reason || gettext("Connection lost")
+    reason = reason || dgettext("chat", "Connection lost")
     truncated = String.slice(reason, 0, 200)
 
     Enum.each(session.channels, fn channel ->
@@ -360,11 +360,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         if target in member_nicks do
           :ok
         else
-          {:error, gettext("* User '%{target}' not found", target: target)}
+          {:error, dgettext("chat", "* User '%{target}' not found", target: target)}
         end
 
       {:error, _} ->
-        {:error, gettext("* User '%{target}' not found", target: target)}
+        {:error, dgettext("chat", "* User '%{target}' not found", target: target)}
     end
   end
 

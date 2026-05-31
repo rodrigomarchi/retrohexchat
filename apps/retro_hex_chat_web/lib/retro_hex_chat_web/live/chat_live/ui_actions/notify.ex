@@ -35,22 +35,30 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
         |> assign(session: new_session)
         |> maybe_persist_notify_list(new_session)
         |> push_status_message(
-          gettext("Added %{nickname} to notify list", nickname: nick),
+          dgettext("chat", "Added %{nickname} to notify list", nickname: nick),
           :system
         )
 
       {:error, :self_add} ->
-        push_status_message(socket, gettext("Cannot add yourself to the notify list"), :system)
+        push_status_message(
+          socket,
+          dgettext("chat", "Cannot add yourself to the notify list"),
+          :system
+        )
 
       {:error, :duplicate} ->
         push_status_message(
           socket,
-          gettext("%{nickname} is already in your notify list", nickname: nick),
+          dgettext("chat", "%{nickname} is already in your notify list", nickname: nick),
           :system
         )
 
       {:error, :list_full} ->
-        push_status_message(socket, gettext("Notify list is full (max 50 entries)"), :system)
+        push_status_message(
+          socket,
+          dgettext("chat", "Notify list is full (max 50 entries)"),
+          :system
+        )
     end
   end
 
@@ -65,14 +73,14 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
         |> assign(session: new_session)
         |> maybe_persist_notify_list(new_session)
         |> push_status_message(
-          gettext("Removed %{nickname} from notify list", nickname: nick),
+          dgettext("chat", "Removed %{nickname} from notify list", nickname: nick),
           :system
         )
 
       {:error, :not_found} ->
         push_status_message(
           socket,
-          gettext("%{nickname} is not in your notify list", nickname: nick),
+          dgettext("chat", "%{nickname} is not in your notify list", nickname: nick),
           :system
         )
     end
@@ -88,12 +96,15 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
         socket
         |> assign(session: new_session)
         |> maybe_persist_notify_list(new_session)
-        |> push_status_message(gettext("Updated note for %{nickname}", nickname: nick), :system)
+        |> push_status_message(
+          dgettext("chat", "Updated note for %{nickname}", nickname: nick),
+          :system
+        )
 
       {:error, :not_found} ->
         push_status_message(
           socket,
-          gettext("%{nickname} is not in your notify list", nickname: nick),
+          dgettext("chat", "%{nickname} is not in your notify list", nickname: nick),
           :system
         )
     end
@@ -104,7 +115,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
     entries = NotifyList.sorted_entries(session.notify_list)
 
     if entries == [] do
-      push_status_message(socket, gettext("Your notify list is empty"), :system)
+      push_status_message(socket, dgettext("chat", "Your notify list is empty"), :system)
     else
       Enum.reduce(entries, socket, fn entry, acc ->
         push_status_message(acc, format_notify_entry(entry), :system)
@@ -113,10 +124,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
   end
 
   defp format_notify_entry(entry) do
-    status = if entry.online, do: gettext("online"), else: gettext("offline")
-    note = if entry.note, do: gettext(" - %{note}", note: entry.note), else: ""
+    status = if entry.online, do: dgettext("chat", "online"), else: dgettext("chat", "offline")
+    note = if entry.note, do: dgettext("chat", " - %{note}", note: entry.note), else: ""
 
-    gettext("  %{nickname} [%{status}]%{note}",
+    dgettext("chat", "  %{nickname} [%{status}]%{note}",
       nickname: entry.tracked_nickname,
       status: status,
       note: note

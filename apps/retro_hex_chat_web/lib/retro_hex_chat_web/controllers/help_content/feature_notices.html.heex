@@ -1,39 +1,56 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Notices are a lightweight message type inspired by IRC's NOTICE command. They are used for announcements, service messages, and bot responses."
   )}
 </p>
-<.help_h4 icon={:icon_tab_general}>{gettext("Key Characteristics")}</.help_h4>
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_features", "Key Characteristics")}</.help_h4>
 <p>
-  {gettext("- Display with")} <code>{gettext("-Nick-")}</code>
-  {gettext("prefix (distinct from regular <Nick> messages)")}<br />{gettext(
+  {dgettext("help_features", "- Display with")} <code>{dgettext("help_features", "-Nick-")}</code>
+  {dgettext("help_features", "prefix (distinct from regular <Nick> messages)")}<br />{dgettext(
+    "help_features",
     "- Shown in a distinct color for easy identification"
-  )}<br />{gettext("- Do NOT create PM windows or conversations sidebar entries")}<br />{gettext(
+  )}<br />{dgettext(
+    "help_features",
+    "- Do NOT create PM windows or conversations sidebar entries"
+  )}<br />{dgettext(
+    "help_features",
     "- Do NOT trigger notification sounds or highlights"
-  )}<br />{gettext(
+  )}<br />{dgettext(
+    "help_features",
     "- The system must NEVER send automatic replies to notices (prevents bot loops)"
   )}
 </p>
-<.help_h4 icon={:icon_megaphone}>{gettext("Sending Notices")}</.help_h4>
-<pre>{gettext("/notice <nickname> <message> /notice <#channel> <message>")}</pre>
-<.help_h4 icon={:icon_dialog_notifications}>{gettext("Routing Preferences")}</.help_h4>
+<.help_h4 icon={:icon_megaphone}>{dgettext("help_features", "Sending Notices")}</.help_h4>
+<pre>{dgettext("help_features", "/notice <nickname> <message> /notice <#channel> <message>")}</pre>
+<.help_h4 icon={:icon_dialog_notifications}>
+  {dgettext("help_features", "Routing Preferences")}
+</.help_h4>
 <p>
-  {gettext("Use")} <code>{gettext("/notice_routing")}</code>
-  {gettext(
+  {dgettext("help_features", "Use")} <code>{dgettext("help_features", "/notice_routing")}</code>
+  {dgettext(
+    "help_features",
     "to configure where user-targeted notices appear. Channel notices always appear in the channel window regardless of routing settings."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_ignore}>{gettext("Ignore Integration")}</.help_h4>
+<.help_h4 icon={:icon_dialog_ignore}>{dgettext("help_features", "Ignore Integration")}</.help_h4>
 <p>
-  {gettext("Notices respect the ignore system. Use")}
-  <code>{gettext("/ignore <nick> notices")}</code>
-  {gettext("to filter notices from a specific user, or")} <code>{gettext("/ignore <nick>")}</code>
-  {gettext("to filter all message types.")}
+  {dgettext("help_features", "Notices respect the ignore system. Use")}
+  <code>{dgettext("help_features", "/ignore <nick> notices")}</code>
+  {dgettext("help_features", "to filter notices from a specific user, or")}
+  <code>{dgettext("help_features", "/ignore <nick>")}</code>
+  {dgettext("help_features", "to filter all message types.")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-notice">{gettext("/notice Command")}</.help_link>
-  · <.help_link topic="cmd-notice-routing">{gettext("/notice_routing Command")}</.help_link>
-  · <.help_link topic="private-messages">{gettext("Private Messages")}</.help_link>
-  · <.help_link topic="cmd-ignore">{gettext("/ignore Command")}</.help_link>
+  <.help_link topic="cmd-notice">{dgettext("help_features", "/notice Command")}</.help_link>
+  ·
+  <.help_link topic="cmd-notice-routing">
+    {dgettext("help_features", "/notice_routing Command")}
+  </.help_link>
+  ·
+  <.help_link topic="private-messages">
+    {dgettext("help_features", "Private Messages")}
+  </.help_link>
+  · <.help_link topic="cmd-ignore">{dgettext("help_features", "/ignore Command")}</.help_link>
 </p>

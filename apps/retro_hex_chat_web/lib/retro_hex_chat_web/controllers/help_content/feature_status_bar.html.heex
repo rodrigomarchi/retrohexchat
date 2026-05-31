@@ -1,20 +1,32 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The status bar at the bottom of the screen provides real-time information about your connection and current channel."
   )}
 </p>
-<.help_h4 icon={:icon_tab_status}>{gettext("Three Sections")}</.help_h4>
+<.help_h4 icon={:icon_tab_status}>{dgettext("help_features", "Three Sections")}</.help_h4>
 <p>
-  <strong>{gettext("Left:")}</strong>
-  {gettext("Current channel name and user count.")}<br /><strong>{gettext("Center:")}</strong>
-  {gettext("Connection state with colored indicator (green = connected, red = disconnected).")}<br />
+  <strong>{dgettext("help_features", "Left:")}</strong>
+  {dgettext("help_features", "Current channel name and user count.")}<br />
   <strong>
-    {gettext("Right:")}
+    {dgettext("help_features", "Center:")}
   </strong>
-  {gettext("Lag indicator, local clock, and mute toggle.")}
+  {dgettext(
+    "help_features",
+    "Connection state with colored indicator (green = connected, red = disconnected)."
+  )}<br />
+  <strong>
+    {dgettext("help_features", "Right:")}
+  </strong>
+  {dgettext("help_features", "Lag indicator, local clock, and mute toggle.")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-lag-indicator">{gettext("Lag Indicator")}</.help_link>
-  · <.help_link topic="feature-connection-states">{gettext("Connection States")}</.help_link>
+  <.help_link topic="feature-lag-indicator">
+    {dgettext("help_features", "Lag Indicator")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-connection-states">
+    {dgettext("help_features", "Connection States")}
+  </.help_link>
 </p>

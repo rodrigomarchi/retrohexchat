@@ -16,6 +16,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ToastPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Toast"), active_page: "toast")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Toast"), active_page: "toast")}
   end
 end

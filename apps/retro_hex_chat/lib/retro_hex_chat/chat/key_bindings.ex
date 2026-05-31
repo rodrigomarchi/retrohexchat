@@ -49,117 +49,117 @@ defmodule RetroHexChat.Chat.KeyBindings do
     # System category
     toggle_search: %{
       category: :system,
-      label: gettext_noop("Toggle Search"),
-      description: gettext_noop("Open/close search bar"),
+      label: dgettext_noop("chat", "Toggle Search"),
+      description: dgettext_noop("chat", "Open/close search bar"),
       customizable: true
     },
     toggle_address_book: %{
       category: :system,
-      label: gettext_noop("Open Address Book"),
-      description: gettext_noop("Open/close the address book"),
+      label: dgettext_noop("chat", "Open Address Book"),
+      description: dgettext_noop("chat", "Open/close the address book"),
       customizable: true
     },
     toggle_ignore_dialog: %{
       category: :system,
-      label: gettext_noop("Open Ignore List"),
-      description: gettext_noop("Open/close the ignore list"),
+      label: dgettext_noop("chat", "Open Ignore List"),
+      description: dgettext_noop("chat", "Open/close the ignore list"),
       customizable: true
     },
     toggle_highlight_dialog: %{
       category: :system,
-      label: gettext_noop("Open Highlight Dialog"),
-      description: gettext_noop("Open/close highlight word settings"),
+      label: dgettext_noop("chat", "Open Highlight Dialog"),
+      description: dgettext_noop("chat", "Open/close highlight word settings"),
       customizable: true
     },
     toggle_url_catcher: %{
       category: :system,
-      label: gettext_noop("Open URL Catcher"),
-      description: gettext_noop("Open/close the URL catcher"),
+      label: dgettext_noop("chat", "Open URL Catcher"),
+      description: dgettext_noop("chat", "Open/close the URL catcher"),
       customizable: true
     },
     toggle_perform_dialog: %{
       category: :system,
-      label: gettext_noop("Open Perform Dialog"),
-      description: gettext_noop("Open/close auto-perform settings"),
+      label: dgettext_noop("chat", "Open Perform Dialog"),
+      description: dgettext_noop("chat", "Open/close auto-perform settings"),
       customizable: true
     },
     open_help: %{
       category: :system,
-      label: gettext_noop("Open Help"),
-      description: gettext_noop("Open the help dialog (menu only)"),
+      label: dgettext_noop("chat", "Open Help"),
+      description: dgettext_noop("chat", "Open the help dialog (menu only)"),
       customizable: true
     },
     toggle_cheatsheet: %{
       category: :system,
-      label: gettext_noop("Shortcut Cheatsheet"),
-      description: gettext_noop("Open/close the keyboard shortcut cheatsheet"),
+      label: dgettext_noop("chat", "Shortcut Cheatsheet"),
+      description: dgettext_noop("chat", "Open/close the keyboard shortcut cheatsheet"),
       customizable: true
     },
     # Navigation category
     window_next: %{
       category: :navigation,
-      label: gettext_noop("Next Window"),
-      description: gettext_noop("Switch to the next channel or PM"),
+      label: dgettext_noop("chat", "Next Window"),
+      description: dgettext_noop("chat", "Switch to the next channel or PM"),
       customizable: true
     },
     window_prev: %{
       category: :navigation,
-      label: gettext_noop("Previous Window"),
-      description: gettext_noop("Switch to the previous channel or PM"),
+      label: dgettext_noop("chat", "Previous Window"),
+      description: dgettext_noop("chat", "Switch to the previous channel or PM"),
       customizable: true
     },
     window_1: %{
       category: :navigation,
-      label: gettext_noop("Window 1"),
-      description: gettext_noop("Switch to window 1"),
+      label: dgettext_noop("chat", "Window 1"),
+      description: dgettext_noop("chat", "Switch to window 1"),
       customizable: false
     },
     window_2: %{
       category: :navigation,
-      label: gettext_noop("Window 2"),
-      description: gettext_noop("Switch to window 2"),
+      label: dgettext_noop("chat", "Window 2"),
+      description: dgettext_noop("chat", "Switch to window 2"),
       customizable: false
     },
     window_3: %{
       category: :navigation,
-      label: gettext_noop("Window 3"),
-      description: gettext_noop("Switch to window 3"),
+      label: dgettext_noop("chat", "Window 3"),
+      description: dgettext_noop("chat", "Switch to window 3"),
       customizable: false
     },
     window_4: %{
       category: :navigation,
-      label: gettext_noop("Window 4"),
-      description: gettext_noop("Switch to window 4"),
+      label: dgettext_noop("chat", "Window 4"),
+      description: dgettext_noop("chat", "Switch to window 4"),
       customizable: false
     },
     window_5: %{
       category: :navigation,
-      label: gettext_noop("Window 5"),
-      description: gettext_noop("Switch to window 5"),
+      label: dgettext_noop("chat", "Window 5"),
+      description: dgettext_noop("chat", "Switch to window 5"),
       customizable: false
     },
     window_6: %{
       category: :navigation,
-      label: gettext_noop("Window 6"),
-      description: gettext_noop("Switch to window 6"),
+      label: dgettext_noop("chat", "Window 6"),
+      description: dgettext_noop("chat", "Switch to window 6"),
       customizable: false
     },
     window_7: %{
       category: :navigation,
-      label: gettext_noop("Window 7"),
-      description: gettext_noop("Switch to window 7"),
+      label: dgettext_noop("chat", "Window 7"),
+      description: dgettext_noop("chat", "Switch to window 7"),
       customizable: false
     },
     window_8: %{
       category: :navigation,
-      label: gettext_noop("Window 8"),
-      description: gettext_noop("Switch to window 8"),
+      label: dgettext_noop("chat", "Window 8"),
+      description: dgettext_noop("chat", "Switch to window 8"),
       customizable: false
     },
     window_9: %{
       category: :navigation,
-      label: gettext_noop("Window 9"),
-      description: gettext_noop("Switch to window 9"),
+      label: dgettext_noop("chat", "Window 9"),
+      description: dgettext_noop("chat", "Switch to window 9"),
       customizable: false
     }
   }
@@ -238,10 +238,10 @@ defmodule RetroHexChat.Chat.KeyBindings do
   end
 
   @spec category_label(category()) :: String.t()
-  def category_label(:navigation), do: gettext("Navigation")
-  def category_label(:chat), do: gettext("Chat")
-  def category_label(:formatting), do: gettext("Formatting")
-  def category_label(:system), do: gettext("System")
+  def category_label(:navigation), do: dgettext("chat", "Navigation")
+  def category_label(:chat), do: dgettext("chat", "Chat")
+  def category_label(:formatting), do: dgettext("chat", "Formatting")
+  def category_label(:system), do: dgettext("chat", "System")
 
   defp category_order(:navigation), do: 0
   defp category_order(:chat), do: 1
@@ -326,7 +326,7 @@ defmodule RetroHexChat.Chat.KeyBindings do
     case result do
       {:conflict, a1, a2, combo} ->
         {:error,
-         gettext("Conflict: %{first_action} and %{second_action} both bound to %{combo}",
+         dgettext("chat", "Conflict: %{first_action} and %{second_action} both bound to %{combo}",
            first_action: a1,
            second_action: a2,
            combo: combo
@@ -402,9 +402,9 @@ defmodule RetroHexChat.Chat.KeyBindings do
   defp normalize_key(key) when byte_size(key) == 1, do: String.downcase(key)
   defp normalize_key(key), do: key
 
-  defp modifier_label(:alt), do: gettext("Alt")
-  defp modifier_label(:ctrl), do: gettext("Ctrl")
-  defp modifier_label(:shift), do: gettext("Shift")
+  defp modifier_label(:alt), do: dgettext("chat", "Alt")
+  defp modifier_label(:ctrl), do: dgettext("chat", "Ctrl")
+  defp modifier_label(:shift), do: dgettext("chat", "Shift")
 
   defp format_key(key) when byte_size(key) == 1, do: String.upcase(key)
   defp format_key(key), do: key
@@ -414,5 +414,5 @@ defmodule RetroHexChat.Chat.KeyBindings do
     "#{normalize_key(key)}:#{mods}"
   end
 
-  defp t(msgid), do: Gettext.gettext(RetroHexChat.Gettext, msgid)
+  defp t(msgid), do: Gettext.dgettext(RetroHexChat.Gettext, "chat", msgid)
 end

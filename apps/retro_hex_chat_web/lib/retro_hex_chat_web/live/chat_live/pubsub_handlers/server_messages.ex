@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
   def handle_info({:announcement, %{content: content}}, socket) do
     msg = %{
       id: "announce-#{System.unique_integer([:positive])}",
-      author: gettext("Server"),
+      author: dgettext("chat", "Server"),
       content: content,
       type: :announcement,
       timestamp: DateTime.utc_now()
@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
       {:halt,
        push_status_message(
          socket,
-         gettext("[Wallops] %{sender}: %{content}", sender: sender, content: content),
+         dgettext("chat", "[Wallops] %{sender}: %{content}", sender: sender, content: content),
          :wallops
        )}
     else
@@ -47,7 +47,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
     {:halt,
      push_status_message(
        socket,
-       gettext("The server Message of the Day has been updated. Type /motd to view."),
+       dgettext("chat", "The server Message of the Day has been updated. Type /motd to view."),
        :system
      )}
   end
@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
     session = socket.assigns.session
 
     if session.active_channel == channel and message do
-      {:halt, system_event(socket, gettext("Welcome message updated."))}
+      {:halt, system_event(socket, dgettext("chat", "Welcome message updated."))}
     else
       {:halt, socket}
     end
@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
        socket
        |> SessionHelper.handle_nick_change(new_nick)
        |> system_event(
-         gettext("Your nickname was changed to %{nickname} by an administrator.",
+         dgettext("chat", "Your nickname was changed to %{nickname} by an administrator.",
            nickname: new_nick
          )
        )}
@@ -88,7 +88,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
       {:halt,
        system_event(
          socket,
-         gettext("Your server role has been changed to: %{role}", role: role)
+         dgettext("chat", "Your server role has been changed to: %{role}", role: role)
        )}
     else
       {:halt, socket}
@@ -98,27 +98,27 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
   def handle_info({:user_muted, %{nickname: _nick, reason: reason}}, socket) do
     msg =
       if reason do
-        gettext("You have been muted by an administrator: %{reason}", reason: reason)
+        dgettext("chat", "You have been muted by an administrator: %{reason}", reason: reason)
       else
-        gettext("You have been muted by an administrator.")
+        dgettext("chat", "You have been muted by an administrator.")
       end
 
     {:halt, system_event(socket, msg)}
   end
 
   def handle_info({:user_unmuted, _}, socket) do
-    {:halt, system_event(socket, gettext("You have been unmuted by an administrator."))}
+    {:halt, system_event(socket, dgettext("chat", "You have been unmuted by an administrator."))}
   end
 
   def handle_info({:server_setting_changed, %{key: key, value: value}}, socket) do
     {:halt,
      system_event(
        socket,
-       gettext("Server setting '%{key}' changed to '%{value}'.", key: key, value: value)
+       dgettext("chat", "Server setting '%{key}' changed to '%{value}'.", key: key, value: value)
      )}
   end
 
   def handle_info({:system_nuked, _}, socket) do
-    {:halt, system_event(socket, gettext("System reset initiated by an administrator."))}
+    {:halt, system_event(socket, dgettext("chat", "System reset initiated by an administrator."))}
   end
 end

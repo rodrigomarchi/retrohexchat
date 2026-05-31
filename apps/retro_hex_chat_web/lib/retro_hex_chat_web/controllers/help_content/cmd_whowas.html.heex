@@ -1,31 +1,35 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Look up information about a user who recently disconnected, such as when they were last seen and what channels they were in."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/whowas <nickname>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>nickname</code> {gettext("— The user to look up.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/whowas <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p><code>nickname</code> {dgettext("help_commands", "— The user to look up.")}</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Shows information about a user who has disconnected within the configured retention period: their last seen time, which channels they were in, and their quit message (if they provided one). This is useful when you notice someone has left and want to know when and why. Lookups are case-insensitive. If no record exists, a \"no whowas information available\" message is shown."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_commands",
       "Data is cached for up to the configured retention period after disconnect (default: 1 hour)"
     )}
   </li>
-  <li>{gettext("The user must have been online recently")}</li>
+  <li>{dgettext("help_commands", "The user must have been online recently")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/whowas Bob /whowas Alice")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/whowas Bob /whowas Alice")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-whois">{gettext("/whois")}</.help_link>
-  · <.help_link topic="feature-notify-list">{gettext("Notify List")}</.help_link>
+  <.help_link topic="cmd-whois">{dgettext("help_commands", "/whois")}</.help_link>
+  ·
+  <.help_link topic="feature-notify-list">{dgettext("help_commands", "Notify List")}</.help_link>
 </p>

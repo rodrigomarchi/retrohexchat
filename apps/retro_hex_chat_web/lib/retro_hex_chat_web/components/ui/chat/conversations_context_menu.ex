@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
         data-testid="ctx-mark-read"
       >
         <:icon><Icons.icon_checkmark class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Mark as Read")}
+        {dgettext("chat", "Mark as Read")}
       </.context_menu_item>
 
       <%!-- Mute / Unmute --%>
@@ -109,7 +109,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
         data-testid="ctx-channel-settings"
       >
         <:icon><Icons.icon_btn_settings class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Channel Settings")}
+        {dgettext("chat", "Channel Settings")}
       </.context_menu_item>
 
       <.context_menu_separator :if={!@is_pm} />
@@ -123,7 +123,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
         data-testid="ctx-leave"
       >
         <:icon><Icons.icon_btn_disconnect class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Leave Channel")}
+        {dgettext("chat", "Leave Channel")}
       </.context_menu_item>
 
       <%!-- Custom items --%>
@@ -143,13 +143,13 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
     """
   end
 
-  defp mute_label(true = _is_pm, true = _is_muted), do: gettext("Unmute PM")
-  defp mute_label(true = _is_pm, false = _is_muted), do: gettext("Mute PM")
-  defp mute_label(false = _is_pm, true = _is_muted), do: gettext("Unmute Channel")
-  defp mute_label(false = _is_pm, false = _is_muted), do: gettext("Mute Channel")
+  defp mute_label(true = _is_pm, true = _is_muted), do: dgettext("chat", "Unmute PM")
+  defp mute_label(true = _is_pm, false = _is_muted), do: dgettext("chat", "Mute PM")
+  defp mute_label(false = _is_pm, true = _is_muted), do: dgettext("chat", "Unmute Channel")
+  defp mute_label(false = _is_pm, false = _is_muted), do: dgettext("chat", "Mute Channel")
 
-  defp copy_name_label(true = _is_pm), do: gettext("Copy Nickname")
-  defp copy_name_label(false = _is_pm), do: gettext("Copy Channel Name")
+  defp copy_name_label(true = _is_pm), do: dgettext("chat", "Copy Nickname")
+  defp copy_name_label(false = _is_pm), do: dgettext("chat", "Copy Channel Name")
 
   defp custom_item_action(item), do: Map.get(item, :action) || "custom_menu_execute"
   defp custom_item_command(item), do: Map.get(item, :command) || ""

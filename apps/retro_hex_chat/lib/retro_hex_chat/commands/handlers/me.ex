@@ -7,16 +7,16 @@ defmodule RetroHexChat.Commands.Handlers.Me do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, gettext("Usage: /me <action>")}
+  def validate(""), do: {:error, dgettext("commands", "Usage: /me <action>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, gettext("Usage: /me <action>")}
+  def execute([], _context), do: {:error, dgettext("commands", "Usage: /me <action>")}
 
   def execute(args, context) do
     if context.active_channel == nil do
-      {:error, gettext("You are not in any channel")}
+      {:error, dgettext("commands", "You are not in any channel")}
     else
       content = Enum.join(args, " ")
       {:ok, :action, %{content: content}}
@@ -33,12 +33,13 @@ defmodule RetroHexChat.Commands.Handlers.Me do
   def help do
     %{
       name: "me",
-      syntax: gettext("/me <action>"),
+      syntax: dgettext("commands", "/me <action>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Send an action message that appears as '* YourNick does something' to everyone in the channel.\nMust be in a channel. Action text is required."
         ),
-      examples: [gettext("/me waves hello"), gettext("/me is away")]
+      examples: [dgettext("commands", "/me waves hello"), dgettext("commands", "/me is away")]
     }
   end
 
@@ -53,9 +54,10 @@ defmodule RetroHexChat.Commands.Handlers.Me do
 
     %CommandSyntax{
       command: "me",
-      syntax: gettext("/me <action>"),
+      syntax: dgettext("commands", "/me <action>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Send an action message that appears as '* YourNick does something' to everyone in the channel.\nMust be in a channel. Action text is required."
         ),
       category: :basics,
@@ -65,10 +67,10 @@ defmodule RetroHexChat.Commands.Handlers.Me do
           required: true,
           type: :text,
           position: 0,
-          description: gettext("Action text")
+          description: dgettext("commands", "Action text")
         }
       ],
-      examples: [gettext("/me waves hello"), gettext("/me is away")]
+      examples: [dgettext("commands", "/me waves hello"), dgettext("commands", "/me is away")]
     }
   end
 end

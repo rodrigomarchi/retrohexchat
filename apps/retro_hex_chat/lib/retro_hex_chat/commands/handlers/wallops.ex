@@ -15,11 +15,11 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, %{is_admin: false, is_server_operator: false}) do
-    {:error, gettext("Permission denied: you must be a server operator.")}
+    {:error, dgettext("commands", "Permission denied: you must be a server operator.")}
   end
 
   def execute([], _context) do
-    {:error, gettext("Usage: /wallops <message>")}
+    {:error, dgettext("commands", "Usage: /wallops <message>")}
   end
 
   def execute(args, context) do
@@ -36,7 +36,7 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
        }}
     )
 
-    {:ok, :system, %{content: gettext("Wallops sent.")}}
+    {:ok, :system, %{content: dgettext("commands", "Wallops sent.")}}
   end
 
   @impl true
@@ -49,12 +49,13 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
   def help do
     %{
       name: "wallops",
-      syntax: gettext("/wallops <message>"),
+      syntax: dgettext("commands", "/wallops <message>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Send a message to all users who opted in to operator announcements via /umode +w.\nRequires: server operator or server administrator. Message text is required."
         ),
-      examples: [gettext("/wallops Server maintenance in 10 minutes")]
+      examples: [dgettext("commands", "/wallops Server maintenance in 10 minutes")]
     }
   end
 
@@ -69,9 +70,10 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
 
     %CommandSyntax{
       command: "wallops",
-      syntax: gettext("/wallops <message>"),
+      syntax: dgettext("commands", "/wallops <message>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Send a message to all users who opted in to operator announcements via /umode +w."
         ),
       category: :user,
@@ -81,10 +83,10 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
           required: true,
           type: :text,
           position: 0,
-          description: gettext("Message for all users with +w mode")
+          description: dgettext("commands", "Message for all users with +w mode")
         }
       ],
-      examples: [gettext("/wallops Server maintenance in 10 minutes")]
+      examples: [dgettext("commands", "/wallops Server maintenance in 10 minutes")]
     }
   end
 end

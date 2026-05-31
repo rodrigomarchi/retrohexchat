@@ -1,0 +1,443 @@
+# "msgid"s in this file come from chat.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-30 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: en\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:144
+#, elixir-autogen, elixir-format
+msgid "  %{name} (%{type}, %{interval}s) → %{command}"
+msgstr "  %{name} (%{type}, %{interval}s) → %{command}"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:41
+#, elixir-autogen, elixir-format
+msgid "1 %{singular}"
+msgstr "1 %{singular}"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:152
+#, elixir-autogen, elixir-format
+msgid "Active timers:\n"
+""
+msgstr "Active timers:\n"
+""
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:35
+#, elixir-autogen, elixir-format
+msgid "Alert"
+msgstr "Alert"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:405
+#, elixir-autogen, elixir-format
+msgid "Alt"
+msgstr "Alt"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:28
+#, elixir-autogen, elixir-format
+msgid "Beep"
+msgstr "Beep"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:40
+#, elixir-autogen, elixir-format
+msgid "Blip"
+msgstr "Blip"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:36
+#, elixir-autogen, elixir-format
+msgid "Buzz"
+msgstr "Buzz"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:242
+#, elixir-autogen, elixir-format
+msgid "Chat"
+msgstr "Chat"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:33
+#, elixir-autogen, elixir-format
+msgid "Chime High"
+msgstr "Chime High"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:32
+#, elixir-autogen, elixir-format
+msgid "Chime Long"
+msgstr "Chime Long"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:34
+#, elixir-autogen, elixir-format
+msgid "Chime Low"
+msgstr "Chime Low"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:31
+#, elixir-autogen, elixir-format
+msgid "Chime Short"
+msgstr "Chime Short"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:37
+#, elixir-autogen, elixir-format
+msgid "Click"
+msgstr "Click"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:329
+#, elixir-autogen, elixir-format
+msgid "Conflict: %{first_action} and %{second_action} both bound to %{combo}"
+msgstr "Conflict: %{first_action} and %{second_action} both bound to %{combo}"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:406
+#, elixir-autogen, elixir-format
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: lib/retro_hex_chat/chat/policy.ex:84
+#, elixir-autogen, elixir-format
+msgid "Delete window has expired."
+msgstr "Delete window has expired."
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:30
+#, elixir-autogen, elixir-format
+msgid "Ding High"
+msgstr "Ding High"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:29
+#, elixir-autogen, elixir-format
+msgid "Ding Low"
+msgstr "Ding Low"
+
+#: lib/retro_hex_chat/chat/policy.ex:41
+#: lib/retro_hex_chat/chat/policy.ex:70
+#, elixir-autogen, elixir-format
+msgid "Edit window has expired."
+msgstr "Edit window has expired."
+
+#: lib/retro_hex_chat/chat/alias_expander.ex:30
+#, elixir-autogen, elixir-format
+msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
+msgstr "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:243
+#, elixir-autogen, elixir-format
+msgid "Formatting"
+msgstr "Formatting"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:98
+#, elixir-autogen, elixir-format
+msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
+msgstr "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
+
+#: lib/retro_hex_chat/chat/policy.ex:18
+#: lib/retro_hex_chat/chat/policy.ex:24
+#, elixir-autogen, elixir-format
+msgid "Message cannot be empty"
+msgstr "Message cannot be empty"
+
+#: lib/retro_hex_chat/chat/policy.ex:38
+#: lib/retro_hex_chat/chat/policy.ex:60
+#: lib/retro_hex_chat/chat/policy.ex:81
+#, elixir-autogen, elixir-format
+msgid "Message has already been deleted."
+msgstr "Message has already been deleted."
+
+#: lib/retro_hex_chat/chat/service.ex:31
+#: lib/retro_hex_chat/chat/service.ex:46
+#: lib/retro_hex_chat/chat/service.ex:67
+#: lib/retro_hex_chat/chat/service.ex:81
+#, elixir-autogen, elixir-format
+msgid "Message not found."
+msgstr "Message not found."
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:241
+#, elixir-autogen, elixir-format
+msgid "Navigation"
+msgstr "Navigation"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:101
+#, elixir-autogen, elixir-format
+msgid "Next Window"
+msgstr "Next Window"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:136
+#, elixir-autogen, elixir-format
+msgid "No active timers."
+msgstr "No active timers."
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:27
+#, elixir-autogen, elixir-format
+msgid "None"
+msgstr "None"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:39
+#, elixir-autogen, elixir-format
+msgid "Notify"
+msgstr "Notify"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:58
+#, elixir-autogen, elixir-format
+msgid "Open Address Book"
+msgstr "Open Address Book"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:88
+#, elixir-autogen, elixir-format
+msgid "Open Help"
+msgstr "Open Help"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:70
+#, elixir-autogen, elixir-format
+msgid "Open Highlight Dialog"
+msgstr "Open Highlight Dialog"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:64
+#, elixir-autogen, elixir-format
+msgid "Open Ignore List"
+msgstr "Open Ignore List"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:82
+#, elixir-autogen, elixir-format
+msgid "Open Perform Dialog"
+msgstr "Open Perform Dialog"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:76
+#, elixir-autogen, elixir-format
+msgid "Open URL Catcher"
+msgstr "Open URL Catcher"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:89
+#, elixir-autogen, elixir-format
+msgid "Open the help dialog (menu only)"
+msgstr "Open the help dialog (menu only)"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:83
+#, elixir-autogen, elixir-format
+msgid "Open/close auto-perform settings"
+msgstr "Open/close auto-perform settings"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:71
+#, elixir-autogen, elixir-format
+msgid "Open/close highlight word settings"
+msgstr "Open/close highlight word settings"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:53
+#, elixir-autogen, elixir-format
+msgid "Open/close search bar"
+msgstr "Open/close search bar"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:77
+#, elixir-autogen, elixir-format
+msgid "Open/close the URL catcher"
+msgstr "Open/close the URL catcher"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:59
+#, elixir-autogen, elixir-format
+msgid "Open/close the address book"
+msgstr "Open/close the address book"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:65
+#, elixir-autogen, elixir-format
+msgid "Open/close the ignore list"
+msgstr "Open/close the ignore list"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:95
+#, elixir-autogen, elixir-format
+msgid "Open/close the keyboard shortcut cheatsheet"
+msgstr "Open/close the keyboard shortcut cheatsheet"
+
+#: lib/retro_hex_chat/chat/service.ex:129
+#: lib/retro_hex_chat/chat/service.ex:146
+#, elixir-autogen, elixir-format
+msgid "Original message not found."
+msgstr "Original message not found."
+
+#: lib/retro_hex_chat/chat/policy.ex:44
+#: lib/retro_hex_chat/chat/policy.ex:109
+#, elixir-autogen, elixir-format
+msgid "Please wait a few seconds before editing again."
+msgstr "Please wait a few seconds before editing again."
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:107
+#, elixir-autogen, elixir-format
+msgid "Previous Window"
+msgstr "Previous Window"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:127
+#, elixir-autogen, elixir-format
+msgid "Repeat interval clamped to minimum %{min_repeat_interval} seconds."
+msgstr "Repeat interval clamped to minimum %{min_repeat_interval} seconds."
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:38
+#, elixir-autogen, elixir-format
+msgid "Ring"
+msgstr "Ring"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:407
+#, elixir-autogen, elixir-format
+msgid "Shift"
+msgstr "Shift"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:94
+#, elixir-autogen, elixir-format
+msgid "Shortcut Cheatsheet"
+msgstr "Shortcut Cheatsheet"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:102
+#, elixir-autogen, elixir-format
+msgid "Switch to the next channel or PM"
+msgstr "Switch to the next channel or PM"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:108
+#, elixir-autogen, elixir-format
+msgid "Switch to the previous channel or PM"
+msgstr "Switch to the previous channel or PM"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:114
+#, elixir-autogen, elixir-format
+msgid "Switch to window 1"
+msgstr "Switch to window 1"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:120
+#, elixir-autogen, elixir-format
+msgid "Switch to window 2"
+msgstr "Switch to window 2"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:126
+#, elixir-autogen, elixir-format
+msgid "Switch to window 3"
+msgstr "Switch to window 3"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:132
+#, elixir-autogen, elixir-format
+msgid "Switch to window 4"
+msgstr "Switch to window 4"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:138
+#, elixir-autogen, elixir-format
+msgid "Switch to window 5"
+msgstr "Switch to window 5"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:144
+#, elixir-autogen, elixir-format
+msgid "Switch to window 6"
+msgstr "Switch to window 6"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:150
+#, elixir-autogen, elixir-format
+msgid "Switch to window 7"
+msgstr "Switch to window 7"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:156
+#, elixir-autogen, elixir-format
+msgid "Switch to window 8"
+msgstr "Switch to window 8"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:162
+#, elixir-autogen, elixir-format
+msgid "Switch to window 9"
+msgstr "Switch to window 9"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:244
+#: lib/retro_hex_chat/chat/service.ex:96
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "System"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:52
+#, elixir-autogen, elixir-format
+msgid "Toggle Search"
+msgstr "Toggle Search"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:76
+#: lib/retro_hex_chat/chat/timer_manager.ex:80
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> <seconds> <command>"
+msgstr "Usage: /timer <name> <seconds> <command>"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:17
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> [repeat] <seconds> <command>"
+msgstr "Usage: /timer <name> [repeat] <seconds> <command>"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:51
+#: lib/retro_hex_chat/chat/timer_manager.ex:55
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> repeat <seconds> <command>"
+msgstr "Usage: /timer <name> repeat <seconds> <command>"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:25
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer stop <name>"
+msgstr "Usage: /timer stop <name>"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:41
+#, elixir-autogen, elixir-format
+msgid "Whoosh"
+msgstr "Whoosh"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:113
+#, elixir-autogen, elixir-format
+msgid "Window 1"
+msgstr "Window 1"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:119
+#, elixir-autogen, elixir-format
+msgid "Window 2"
+msgstr "Window 2"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:125
+#, elixir-autogen, elixir-format
+msgid "Window 3"
+msgstr "Window 3"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:131
+#, elixir-autogen, elixir-format
+msgid "Window 4"
+msgstr "Window 4"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:137
+#, elixir-autogen, elixir-format
+msgid "Window 5"
+msgstr "Window 5"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:143
+#, elixir-autogen, elixir-format
+msgid "Window 6"
+msgstr "Window 6"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:149
+#, elixir-autogen, elixir-format
+msgid "Window 7"
+msgstr "Window 7"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:155
+#, elixir-autogen, elixir-format
+msgid "Window 8"
+msgstr "Window 8"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:161
+#, elixir-autogen, elixir-format
+msgid "Window 9"
+msgstr "Window 9"
+
+#: lib/retro_hex_chat/chat/policy.ex:78
+#, elixir-autogen, elixir-format
+msgid "You cannot delete other users' messages."
+msgstr "You cannot delete other users' messages."
+
+#: lib/retro_hex_chat/chat/policy.ex:35
+#: lib/retro_hex_chat/chat/policy.ex:57
+#, elixir-autogen, elixir-format
+msgid "You cannot edit other users' messages."
+msgstr "You cannot edit other users' messages."
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:31
+#, elixir-autogen, elixir-format
+msgid "just now"
+msgstr "just now"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:9
+#: lib/retro_hex_chat/chat/time_formatter.ex:21
+#, elixir-autogen, elixir-format
+msgid "less than a minute"
+msgstr "less than a minute"

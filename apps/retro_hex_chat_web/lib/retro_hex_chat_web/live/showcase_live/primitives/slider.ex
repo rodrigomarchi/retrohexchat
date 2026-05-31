@@ -13,17 +13,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Slider do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Slider"), active_page: "slider")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Slider"), active_page: "slider")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Slider")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Slider")}</h2>
 
       <.showcase_card
-        title={gettext("Usage")}
+        title={dgettext("showcase", "Usage")}
         description="An input where the user selects a value from within a given range."
       >
         <div class="max-w-sm space-y-4">

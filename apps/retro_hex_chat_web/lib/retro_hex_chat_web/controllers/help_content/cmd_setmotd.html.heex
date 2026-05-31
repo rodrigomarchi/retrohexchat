@@ -1,28 +1,33 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Set the server's Message of the Day — a welcome message shown to all users when they connect."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/setmotd <text>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>text</code> {gettext("— The MOTD content to display.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/setmotd <text>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p><code>text</code> {dgettext("help_commands", "— The MOTD content to display.")}</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Sets or replaces the server MOTD. After setting it, all newly connecting users will see this message in the Status tab when they join. Existing connected users are not notified — only new connections see the MOTD. Any previous MOTD is replaced."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Server administrator only")}</li>
-  <li>{gettext("Message text is required")}</li>
+  <li>{dgettext("help_commands", "Server administrator only")}</li>
+  <li>{dgettext("help_commands", "Message text is required")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/setmotd Welcome to RetroHexChat! Please read the rules in #rules.")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/setmotd Welcome to RetroHexChat! Please read the rules in #rules.")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-motd">{gettext("/motd")}</.help_link>
-  · <.help_link topic="cmd-clearmotd">{gettext("/clearmotd")}</.help_link>
-  · <.help_link topic="feature-special-messages">{gettext("Special Messages")}</.help_link>
+  <.help_link topic="cmd-motd">{dgettext("help_commands", "/motd")}</.help_link>
+  · <.help_link topic="cmd-clearmotd">{dgettext("help_commands", "/clearmotd")}</.help_link>
+  ·
+  <.help_link topic="feature-special-messages">
+    {dgettext("help_commands", "Special Messages")}
+  </.help_link>
 </p>

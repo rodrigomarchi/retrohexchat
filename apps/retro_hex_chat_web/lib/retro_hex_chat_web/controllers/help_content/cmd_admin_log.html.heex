@@ -1,52 +1,67 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Query the audit log of all admin actions. Every state-changing admin command is automatically recorded with timestamp, actor, action, and target."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/admin log [--last N] [--user nick]")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin log [--last N] [--user nick]")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Options")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Options")}</.help_h4>
 <ul>
-  <li><code>{gettext("--last N")}</code> {gettext("— Show the last N entries (default: 20)")}</li>
   <li>
-    <code>{gettext("--user nick")}</code> {gettext("— Filter to actions by a specific admin")}
+    <code>{dgettext("help_commands", "--last N")}</code> {dgettext(
+      "help_commands",
+      "— Show the last N entries (default: 20)"
+    )}
+  </li>
+  <li>
+    <code>{dgettext("help_commands", "--user nick")}</code> {dgettext(
+      "help_commands",
+      "— Filter to actions by a specific admin"
+    )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_tab_control}>{gettext("Log Entry Format")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "Log Entry Format")}</.help_h4>
 <p>
-  {gettext("Each entry shows:")}
-  <code>{gettext("[timestamp] actor action → target_type:target_id")}</code>
+  {dgettext("help_commands", "Each entry shows:")}
+  <code>{dgettext("help_commands", "[timestamp] actor action → target_type:target_id")}</code>
 </p>
-<p>{gettext("Common action types include:")}</p>
+<p>{dgettext("help_commands", "Common action types include:")}</p>
 <ul>
   <li>
-    <code>{gettext("user.ban")}</code>, <code>{gettext("user.unban")}</code>,
-    <code>{gettext("user.kick")}</code>
+    <code>{dgettext("help_commands", "user.ban")}</code>, <code>{dgettext("help_commands", "user.unban")}</code>,
+    <code>{dgettext("help_commands", "user.kick")}</code>
   </li>
   <li>
-    <code>{gettext("user.mute")}</code>, <code>{gettext("user.unmute")}</code>, <code>{gettext("user.rename")}</code>,
-    <code>{gettext("user.role")}</code>
+    <code>{dgettext("help_commands", "user.mute")}</code>, <code>{dgettext("help_commands", "user.unmute")}</code>, <code>{dgettext("help_commands", "user.rename")}</code>,
+    <code>{dgettext("help_commands", "user.role")}</code>
   </li>
   <li>
-    <code>{gettext("channel.create")}</code>, <code>{gettext("channel.delete")}</code>,
-    <code>{gettext("channel.purge")}</code>
+    <code>{dgettext("help_commands", "channel.create")}</code>, <code>{dgettext("help_commands", "channel.delete")}</code>,
+    <code>{dgettext("help_commands", "channel.purge")}</code>
   </li>
-  <li><code>{gettext("ns.drop")}</code>, <code>{gettext("ns.resetpass")}</code></li>
   <li>
-    <code>{gettext("cs.drop")}</code>, <code>{gettext("cs.transfer")}</code>,
-    <code>{gettext("cs.access")}</code>
+    <code>{dgettext("help_commands", "ns.drop")}</code>,
+    <code>{dgettext("help_commands", "ns.resetpass")}</code>
   </li>
-  <li><code>{gettext("server.set")}</code>, <code>{gettext("server.info")}</code></li>
+  <li>
+    <code>{dgettext("help_commands", "cs.drop")}</code>, <code>{dgettext("help_commands", "cs.transfer")}</code>,
+    <code>{dgettext("help_commands", "cs.access")}</code>
+  </li>
+  <li>
+    <code>{dgettext("help_commands", "server.set")}</code>,
+    <code>{dgettext("help_commands", "server.info")}</code>
+  </li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/admin log /admin log --last 50 /admin log --user Admin --last 10")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin log /admin log --last 50 /admin log --user Admin --last 10")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-admin">{gettext("/admin")}</.help_link>
-  · <.help_link topic="cmd-admin-server">{gettext("/admin server")}</.help_link>
+  <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  · <.help_link topic="cmd-admin-server">{dgettext("help_commands", "/admin server")}</.help_link>
 </p>

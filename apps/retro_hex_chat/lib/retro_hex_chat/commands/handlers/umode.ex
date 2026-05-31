@@ -14,7 +14,7 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, gettext("Usage: /umode <+/-mode>")}
+    {:error, dgettext("commands", "Usage: /umode <+/-mode>")}
   end
 
   def execute([mode_string | _], _context) do
@@ -37,25 +37,26 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
   def help do
     %{
       name: "umode",
-      syntax: gettext("/umode <+/-mode>"),
+      syntax: dgettext("commands", "/umode <+/-mode>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Toggle personal user modes that affect what messages you receive.\nAvailable modes: +w (wallops — receive operator broadcast messages), -w (stop receiving).\nMust start with + or -. Currently only the w (wallops) mode is supported."
         ),
-      examples: [gettext("/umode +w"), gettext("/umode -w")]
+      examples: [dgettext("commands", "/umode +w"), dgettext("commands", "/umode -w")]
     }
   end
 
   defp parse_mode("+" <> flag), do: resolve_flag(:add, flag)
   defp parse_mode("-" <> flag), do: resolve_flag(:remove, flag)
-  defp parse_mode(_), do: {:error, gettext("Usage: /umode <+/-mode>")}
+  defp parse_mode(_), do: {:error, dgettext("commands", "Usage: /umode <+/-mode>")}
 
-  defp resolve_flag(_action, ""), do: {:error, gettext("Usage: /umode <+/-mode>")}
+  defp resolve_flag(_action, ""), do: {:error, dgettext("commands", "Usage: /umode <+/-mode>")}
 
   defp resolve_flag(action, flag) do
     case Map.fetch(@known_modes, flag) do
       {:ok, mode} -> {:ok, action, mode}
-      :error -> {:error, gettext("Unknown user mode: %{flag}", flag: flag)}
+      :error -> {:error, dgettext("commands", "Unknown user mode: %{flag}", flag: flag)}
     end
   end
 
@@ -70,8 +71,9 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
 
     %CommandSyntax{
       command: "umode",
-      syntax: gettext("/umode <+/-mode>"),
-      description: gettext("Toggle personal user modes that affect what messages you receive."),
+      syntax: dgettext("commands", "/umode <+/-mode>"),
+      description:
+        dgettext("commands", "Toggle personal user modes that affect what messages you receive."),
       category: :config,
       parameters: [
         %Parameter{
@@ -79,10 +81,10 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
           required: true,
           type: :text,
           position: 0,
-          description: gettext("User mode: +w (wallops), -w")
+          description: dgettext("commands", "User mode: +w (wallops), -w")
         }
       ],
-      examples: [gettext("/umode +w"), gettext("/umode -w")]
+      examples: [dgettext("commands", "/umode +w"), dgettext("commands", "/umode -w")]
     }
   end
 end

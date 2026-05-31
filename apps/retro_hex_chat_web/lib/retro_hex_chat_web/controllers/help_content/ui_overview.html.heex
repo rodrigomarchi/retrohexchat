@@ -1,36 +1,41 @@
-<p>{gettext("RetroHexChat uses a classic mIRC-style layout with retro aesthetics.")}</p>
-<.help_h4 icon={:icon_tab_display}>{gettext("Layout")}</.help_h4>
 <p>
-  <strong>{gettext("Toolbar:")}</strong>
-  {gettext("Quick-access buttons for common actions.")}<br />
-  <strong>
-    {gettext("Tab Bar:")}
-  </strong>
-  {gettext("Switch between Status, channels, and PM tabs.")}<br />
-  <strong>
-    {gettext("Topic Bar:")}
-  </strong>
-  {gettext("Shows the current channel name, modes, and topic.")}<br />
-  <strong>
-    {gettext("Conversations:")}
-  </strong>
-  {gettext("Hierarchical navigation (left pane) with channels, inline user list, and PMs.")}<br />
-  <strong>
-    {gettext("Chat Area:")}
-  </strong>
-  {gettext("Message display with formatting and clickable URLs.")}<br />
-  <strong>
-    {gettext("Formatting Toolbar:")}
-  </strong>
-  {gettext("Bold, italic, underline, color, and strip controls.")}<br />
-  <strong>
-    {gettext("Status Bar:")}
-  </strong>
-  {gettext("Your nickname, current channel, and user count.")}
+  {dgettext("help_ui", "RetroHexChat uses a classic mIRC-style layout with retro aesthetics.")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_tab_display}>{dgettext("help_ui", "Layout")}</.help_h4>
 <p>
-  <.help_link topic="ui-conversations sidebar">{gettext("Conversations")}</.help_link>
-  · <.help_link topic="ui-tab-bar">{gettext("Tab Bar")}</.help_link>
-  · <.help_link topic="ui-nicklist">{gettext("User List")}</.help_link>
+  <strong>{dgettext("help_ui", "Toolbar:")}</strong>
+  {dgettext("help_ui", "Quick-access buttons for common actions.")}<br />
+  <strong>
+    {dgettext("help_ui", "Tab Bar:")}
+  </strong>
+  {dgettext("help_ui", "Switch between Status, channels, and PM tabs.")}<br />
+  <strong>
+    {dgettext("help_ui", "Topic Bar:")}
+  </strong>
+  {dgettext("help_ui", "Shows the current channel name, modes, and topic.")}<br />
+  <strong>
+    {dgettext("help_ui", "Conversations:")}
+  </strong>
+  {dgettext(
+    "help_ui",
+    "Hierarchical navigation (left pane) with channels, inline user list, and PMs."
+  )}<br />
+  <strong>
+    {dgettext("help_ui", "Chat Area:")}
+  </strong>
+  {dgettext("help_ui", "Message display with formatting and clickable URLs.")}<br />
+  <strong>
+    {dgettext("help_ui", "Formatting Toolbar:")}
+  </strong>
+  {dgettext("help_ui", "Bold, italic, underline, color, and strip controls.")}<br />
+  <strong>
+    {dgettext("help_ui", "Status Bar:")}
+  </strong>
+  {dgettext("help_ui", "Your nickname, current channel, and user count.")}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="ui-conversations sidebar">{dgettext("help_ui", "Conversations")}</.help_link>
+  · <.help_link topic="ui-tab-bar">{dgettext("help_ui", "Tab Bar")}</.help_link>
+  · <.help_link topic="ui-nicklist">{dgettext("help_ui", "User List")}</.help_link>
 </p>

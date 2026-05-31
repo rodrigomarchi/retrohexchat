@@ -1,45 +1,61 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Navigate your command and message history with draft preservation and reverse search. History persists across page reloads."
   )}
 </p>
-<.help_h4 icon={:icon_btn_save}>{gettext("Draft-Preserving Navigation")}</.help_h4>
+<.help_h4 icon={:icon_btn_save}>
+  {dgettext("help_features", "Draft-Preserving Navigation")}
+</.help_h4>
 <p>
-  <strong>{gettext("Ctrl+Up")}</strong>
-  {gettext("— Save current text as draft and show previous history entry.")}<br />
+  <strong>{dgettext("help_features", "Ctrl+Up")}</strong>
+  {dgettext("help_features", "— Save current text as draft and show previous history entry.")}<br />
   <strong>
-    {gettext("Ctrl+Down")}
+    {dgettext("help_features", "Ctrl+Down")}
   </strong>
-  {gettext("— Show next entry, or restore your draft when past the newest entry.")}<br />{gettext(
+  {dgettext(
+    "help_features",
+    "— Show next entry, or restore your draft when past the newest entry."
+  )}<br />{dgettext(
+    "help_features",
     "Regular"
   )}
-  <strong>{gettext("Up/Down")}</strong>
-  {gettext("in an empty input works as before (server-side history).")}
+  <strong>{dgettext("help_features", "Up/Down")}</strong>
+  {dgettext("help_features", "in an empty input works as before (server-side history).")}
 </p>
-<.help_h4 icon={:icon_btn_search}>{gettext("Reverse Search (Ctrl+R)")}</.help_h4>
+<.help_h4 icon={:icon_btn_search}>
+  {dgettext("help_features", "Reverse Search (Ctrl+R)")}
+</.help_h4>
 <p>
-  {gettext("Press")} <strong>{gettext("Ctrl+R")}</strong>
-  {gettext(
+  {dgettext("help_features", "Press")} <strong>{dgettext("help_features", "Ctrl+R")}</strong>
+  {dgettext(
+    "help_features",
     "to open an inline search bar. Type to filter history entries by substring match. Press"
   )}
-  <strong>{gettext("Enter")}</strong>
-  {gettext("to accept the match, or")} <strong>{gettext("Escape")}</strong>
-  {gettext("to cancel.")}
+  <strong>{dgettext("help_features", "Enter")}</strong>
+  {dgettext("help_features", "to accept the match, or")}
+  <strong>{dgettext("help_features", "Escape")}</strong>
+  {dgettext("help_features", "to cancel.")}
 </p>
-<.help_h4 icon={:icon_btn_save}>{gettext("Persistence")}</.help_h4>
+<.help_h4 icon={:icon_btn_save}>{dgettext("help_features", "Persistence")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The last 100 entries are stored in your browser's localStorage. History survives page reloads and browser restarts."
   )}
 </p>
-<.help_h4 icon={:icon_privacy}>{gettext("Privacy")}</.help_h4>
+<.help_h4 icon={:icon_privacy}>{dgettext("help_features", "Privacy")}</.help_h4>
 <p>
-  {gettext("Sensitive commands (")}<code>{gettext("/identify")}</code>, <code>{gettext("/nickserv")}</code>, <code>{gettext("/ns")}</code>{gettext(
+  {dgettext("help_features", "Sensitive commands (")}<code>{dgettext("help_features", "/identify")}</code>, <code>{dgettext("help_features", "/nickserv")}</code>, <code>{dgettext("help_features", "/ns")}</code>{dgettext(
+    "help_features",
     ") are never saved to localStorage."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-smart-input">{gettext("Smart Input")}</.help_link>
-  · <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
+  <.help_link topic="feature-smart-input">{dgettext("help_features", "Smart Input")}</.help_link>
+  ·
+  <.help_link topic="keyboard-shortcuts">
+    {dgettext("help_features", "Keyboard Shortcuts")}
+  </.help_link>
 </p>

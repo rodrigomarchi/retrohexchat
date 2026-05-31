@@ -18,7 +18,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeScummvm do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label={gettext("ScummVM arcade logo: point and click adventure scene with cursor")}
+      aria-label={
+        dgettext("diagrams", "ScummVM arcade logo: point and click adventure scene with cursor")
+      }
     >
       {win98_chrome("ScummVM - Arcade")}
       <%!-- Background - adventure game scene --%>
@@ -70,7 +72,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeScummvm do
         font-size="10"
         font-family="'Courier New',monospace"
       >
-        {gettext("Open")}
+        {dgettext("diagrams", "Open")}
       </text>
       <text
         x="130"
@@ -80,7 +82,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeScummvm do
         font-size="10"
         font-family="'Courier New',monospace"
       >
-        {gettext("Close")}
+        {dgettext("diagrams", "Close")}
       </text>
       <text
         x="200"
@@ -90,7 +92,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeScummvm do
         font-size="10"
         font-family="'Courier New',monospace"
       >
-        {gettext("Give")}
+        {dgettext("diagrams", "Give")}
       </text>
       <text
         x="270"
@@ -100,7 +102,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeScummvm do
         font-size="10"
         font-family="'Courier New',monospace"
       >
-        {gettext("Pick up")}
+        {dgettext("diagrams", "Pick up")}
       </text>
       <text
         x="340"
@@ -110,7 +112,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeScummvm do
         font-size="10"
         font-family="'Courier New',monospace"
       >
-        {gettext("Look at")}
+        {dgettext("diagrams", "Look at")}
       </text>
       <text
         x="410"
@@ -120,7 +122,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeScummvm do
         font-size="10"
         font-family="'Courier New',monospace"
       >
-        {gettext("Talk to")}
+        {dgettext("diagrams", "Talk to")}
       </text>
       <text
         x="470"
@@ -130,7 +132,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeScummvm do
         font-size="10"
         font-family="'Courier New',monospace"
       >
-        {gettext("Use")}
+        {dgettext("diagrams", "Use")}
       </text>
     </svg>
     """

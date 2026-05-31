@@ -41,7 +41,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.P2pInvite do
     socket = PM.open_pm_conversation(socket, target)
 
     # Show confirmation system message to initiator (in the PM window)
-    confirm_msg = gettext("P2P invite sent to %{target}. Waiting for response...", target: target)
+    confirm_msg =
+      dgettext("chat", "P2P invite sent to %{target}. Waiting for response...", target: target)
 
     socket
     |> Messages.system_event(confirm_msg)
@@ -50,14 +51,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.P2pInvite do
 
   @spec p2p_invite_content(String.t(), String.t()) :: String.t()
   def p2p_invite_content("audio_call", token),
-    do: gettext("Audio call started. Join the lobby: /p2p/%{token}", token: token)
+    do: dgettext("chat", "Audio call started. Join the lobby: /p2p/%{token}", token: token)
 
   def p2p_invite_content("video_call", token),
-    do: gettext("Video call started. Join the lobby: /p2p/%{token}", token: token)
+    do: dgettext("chat", "Video call started. Join the lobby: /p2p/%{token}", token: token)
 
   def p2p_invite_content("file_transfer", token),
-    do: gettext("File transfer started. Join the lobby: /p2p/%{token}", token: token)
+    do: dgettext("chat", "File transfer started. Join the lobby: /p2p/%{token}", token: token)
 
   def p2p_invite_content(_generic, token),
-    do: gettext("P2P session started. Join the lobby: /p2p/%{token}", token: token)
+    do: dgettext("chat", "P2P session started. Join the lobby: /p2p/%{token}", token: token)
 end

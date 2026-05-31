@@ -23,7 +23,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: gettext("RSS feed reader that posts updates to channels")
+  def description, do: dgettext("bots", "RSS feed reader that posts updates to channels")
 
   @impl true
   @spec init_state(map()) :: map()
@@ -127,10 +127,10 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]
   def commands do
     [
-      %{trigger: "rss add", description: gettext("Add an RSS feed")},
-      %{trigger: "rss list", description: gettext("List RSS feeds")},
-      %{trigger: "rss remove", description: gettext("Remove an RSS feed")},
-      %{trigger: "rss check", description: gettext("Force check a feed now")}
+      %{trigger: "rss add", description: dgettext("bots", "Add an RSS feed")},
+      %{trigger: "rss list", description: dgettext("bots", "List RSS feeds")},
+      %{trigger: "rss remove", description: dgettext("bots", "Remove an RSS feed")},
+      %{trigger: "rss check", description: dgettext("bots", "Force check a feed now")}
     ]
   end
 
@@ -160,13 +160,13 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     feeds = state.feeds
 
     if feeds == [] do
-      {:reply, gettext("No RSS feeds configured.")}
+      {:reply, dgettext("bots", "No RSS feeds configured.")}
     else
       lines =
         Enum.map(feeds, fn f ->
-          title = f["title"] || gettext("(untitled)")
+          title = f["title"] || dgettext("bots", "(untitled)")
 
-          gettext("  %{id} | %{title} | %{channel} | %{url}",
+          dgettext("bots", "  %{id} | %{title} | %{channel} | %{url}",
             id: f["id"],
             title: title,
             channel: f["channel"],
@@ -174,7 +174,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
           )
         end)
 
-      {:multi_reply, [gettext("RSS Feeds:") | lines]}
+      {:multi_reply, [dgettext("bots", "RSS Feeds:") | lines]}
     end
   end
 
@@ -183,17 +183,17 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     max = Map.get(config, "max_feeds", 5)
 
     if length(state.feeds) >= max do
-      {:reply, gettext("Maximum %{max} feeds reached.", max: max)}
+      {:reply, dgettext("bots", "Maximum %{max} feeds reached.", max: max)}
     else
       case String.split(rest, " ", parts: 2) do
         [url, channel] ->
           add_feed(url, ensure_hash(String.trim(channel)), state)
 
         [_url] ->
-          {:reply, gettext("Missing channel. Usage: rss add <url> <#channel>")}
+          {:reply, dgettext("bots", "Missing channel. Usage: rss add <url> <#channel>")}
 
         _ ->
-          {:reply, gettext("Usage: rss add <url> <#channel>")}
+          {:reply, dgettext("bots", "Usage: rss add <url> <#channel>")}
       end
     end
   end
@@ -217,13 +217,13 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
       new_state = %{state | feeds: state.feeds ++ [feed]}
 
       {:reply,
-       gettext("Feed '%{id}' added: %{url} → %{channel}",
+       dgettext("bots", "Feed '%{id}' added: %{url} → %{channel}",
          id: id,
          url: url,
          channel: channel
        ), new_state}
     else
-      {:reply, gettext("Invalid URL. Must start with http:// or https://")}
+      {:reply, dgettext("bots", "Invalid URL. Must start with http:// or https://")}
     end
   end
 
@@ -231,9 +231,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   defp handle_remove(id, state) do
     if find_feed(state.feeds, id) do
       new_feeds = Enum.reject(state.feeds, &(&1["id"] == id))
-      {:reply, gettext("Feed '%{id}' removed.", id: id), %{state | feeds: new_feeds}}
+      {:reply, dgettext("bots", "Feed '%{id}' removed.", id: id), %{state | feeds: new_feeds}}
     else
-      {:reply, gettext("Feed '%{id}' not found.", id: id)}
+      {:reply, dgettext("bots", "Feed '%{id}' not found.", id: id)}
     end
   end
 
@@ -242,15 +242,16 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   defp handle_check(id, state, config) do
     case find_feed(state.feeds, id) do
       nil ->
-        {:reply, gettext("Feed '%{id}' not found.", id: id)}
+        {:reply, dgettext("bots", "Feed '%{id}' not found.", id: id)}
 
       feed ->
         case do_poll_feed(feed, state, config) do
           {{:multi_reply, _lines}, new_state} ->
-            {:reply, gettext("Checked feed '%{id}'. New items found.", id: id), new_state}
+            {:reply, dgettext("bots", "Checked feed '%{id}'. New items found.", id: id),
+             new_state}
 
           {:ignore, _state} ->
-            {:reply, gettext("Feed '%{id}' checked. No new items.", id: id)}
+            {:reply, dgettext("bots", "Feed '%{id}' checked. No new items.", id: id)}
         end
     end
   end
@@ -317,7 +318,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
         {:not_modified}
 
       {:ok, %{status: status}} ->
-        {:error, gettext("HTTP %{status}", status: status)}
+        {:error, dgettext("bots", "HTTP %{status}", status: status)}
 
       {:error, reason} ->
         {:error, reason}
@@ -330,7 +331,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
           {String.t(), String.t()}
         ]
   defp build_conditional_headers(etag, last_modified) do
-    headers = [{"user-agent", gettext("RetroHexChat-RSS/1.0")}]
+    headers = [{"user-agent", dgettext("bots", "RetroHexChat-RSS/1.0")}]
     headers = if etag, do: [{"if-none-match", etag} | headers], else: headers
     if last_modified, do: [{"if-modified-since", last_modified} | headers], else: headers
   end
@@ -368,10 +369,10 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   @spec format_items([FeedParser.feed_item()], String.t() | nil) :: [String.t()]
   defp format_items(items, feed_title) do
-    prefix = if feed_title, do: gettext("[%{title}]", title: feed_title), else: "[RSS]"
+    prefix = if feed_title, do: dgettext("bots", "[%{title}]", title: feed_title), else: "[RSS]"
 
     Enum.map(items, fn item ->
-      gettext("%{prefix} %{title} — %{link}",
+      dgettext("bots", "%{prefix} %{title} — %{link}",
         prefix: prefix,
         title: item.title,
         link: item.link

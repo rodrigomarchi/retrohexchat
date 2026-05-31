@@ -1,47 +1,68 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The Ignore List lets you hide messages from specific users without moderator intervention. Ignored users are not notified — filtering happens entirely on your side."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_ignore}>{gettext("Accessing the Ignore List")}</.help_h4>
+<.help_h4 icon={:icon_dialog_ignore}>
+  {dgettext("help_features", "Accessing the Ignore List")}
+</.help_h4>
 <p>
-  {gettext("Press")} <strong>{gettext("Ctrl+Shift+G")}</strong>{gettext(", go to")} <strong>{gettext("Tools > Ignore List")}</strong>{gettext(
+  {dgettext("help_features", "Press")} <strong>{dgettext("help_features", "Ctrl+Shift+G")}</strong>{dgettext(
+    "help_features",
+    ", go to"
+  )} <strong>{dgettext("help_features", "Tools > Ignore List")}</strong>{dgettext(
+    "help_features",
     ", or open the Address Book ("
-  )}<strong>{gettext("Ctrl+Shift+A")}</strong>{gettext(") and switch to the")}
-  <strong>{gettext("Control")}</strong>
-  {gettext("tab.")}
+  )}<strong>{dgettext("help_features", "Ctrl+Shift+A")}</strong>{dgettext(
+    "help_features",
+    ") and switch to the"
+  )}
+  <strong>{dgettext("help_features", "Control")}</strong>
+  {dgettext("help_features", "tab.")}
 </p>
-<.help_h4 icon={:icon_star}>{gettext("Features")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_features", "Features")}</.help_h4>
 <p>
-  <strong>{gettext("Per-Type Filtering:")}</strong>
-  {gettext("Ignore all content, or just messages, PMs, actions, notices, or invites.")}<br />
+  <strong>{dgettext("help_features", "Per-Type Filtering:")}</strong>
+  {dgettext(
+    "help_features",
+    "Ignore all content, or just messages, PMs, actions, notices, or invites."
+  )}<br />
   <strong>
-    {gettext("Timed Ignores:")}
+    {dgettext("help_features", "Timed Ignores:")}
   </strong>
-  {gettext("Set a duration (e.g., 5m, 2h, 1d) — the ignore automatically expires.")}<br />
+  {dgettext(
+    "help_features",
+    "Set a duration (e.g., 5m, 2h, 1d) — the ignore automatically expires."
+  )}<br />
   <strong>
-    {gettext("Dialog Management:")}
+    {dgettext("help_features", "Dialog Management:")}
   </strong>
-  {gettext("View, add, and remove ignores from the visual dialog.")}<br />
+  {dgettext("help_features", "View, add, and remove ignores from the visual dialog.")}<br />
   <strong>
-    {gettext("Context Menu:")}
+    {dgettext("help_features", "Context Menu:")}
   </strong>
-  {gettext("Right-click a nickname to quickly Ignore or Unignore.")}<br />
+  {dgettext("help_features", "Right-click a nickname to quickly Ignore or Unignore.")}<br />
   <strong>
-    {gettext("Persistence:")}
+    {dgettext("help_features", "Persistence:")}
   </strong>
-  {gettext("Registered users' ignore lists are saved across sessions.")}
+  {dgettext("help_features", "Registered users' ignore lists are saved across sessions.")}
 </p>
-<.help_h4 icon={:icon_btn_search}>{gettext("Filtering Rules")}</.help_h4>
+<.help_h4 icon={:icon_btn_search}>{dgettext("help_features", "Filtering Rules")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "User-authored content (messages, PMs, /me actions, notices, and invites) is hidden. System messages (joins, parts, kicks) from ignored users remain visible to maintain channel context."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ignore">{gettext("/ignore Command")}</.help_link>
-  · <.help_link topic="cmd-unignore">{gettext("/unignore Command")}</.help_link>
-  · <.help_link topic="feature-notify-list">{gettext("Notify List")}</.help_link>
-  · <.help_link topic="feature-flood-protection">{gettext("Flood Protection")}</.help_link>
+  <.help_link topic="cmd-ignore">{dgettext("help_features", "/ignore Command")}</.help_link>
+  · <.help_link topic="cmd-unignore">{dgettext("help_features", "/unignore Command")}</.help_link>
+  ·
+  <.help_link topic="feature-notify-list">{dgettext("help_features", "Notify List")}</.help_link>
+  ·
+  <.help_link topic="feature-flood-protection">
+    {dgettext("help_features", "Flood Protection")}
+  </.help_link>
 </p>

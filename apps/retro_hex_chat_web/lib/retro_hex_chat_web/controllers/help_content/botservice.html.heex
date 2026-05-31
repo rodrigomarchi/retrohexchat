@@ -1,149 +1,197 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_bots",
     "BotService lets you create and manage extensible bots that live in channels, respond to messages, greet users, and execute custom commands. Bots are built on a pluggable capability system — each bot can be configured with different behaviors."
   )}
 </p>
 
-<.help_h4 icon={:icon_wrench}>{gettext("Capabilities")}</.help_h4>
-<p>{gettext("Each bot can have one or more capabilities enabled:")}</p>
+<.help_h4 icon={:icon_wrench}>{dgettext("help_bots", "Capabilities")}</.help_h4>
+<p>{dgettext("help_bots", "Each bot can have one or more capabilities enabled:")}</p>
 <ul>
   <li>
-    <strong>{gettext("Mentions")}</strong> {gettext(
+    <strong>{dgettext("help_bots", "Mentions")}</strong> {dgettext(
+      "help_bots",
       "— responds when someone mentions the bot by name"
     )}
   </li>
   <li>
-    <strong>{gettext("Greeter")}</strong>
-    {gettext("— welcomes users when they join a channel, optionally says goodbye on part")}
+    <strong>{dgettext("help_bots", "Greeter")}</strong>
+    {dgettext(
+      "help_bots",
+      "— welcomes users when they join a channel, optionally says goodbye on part"
+    )}
   </li>
   <li>
-    <strong>{gettext("Custom Commands")}</strong>
-    {gettext("— user-defined")} <code>{gettext("!BotName trigger")}</code>
-    {gettext("commands with configurable responses")}
+    <strong>{dgettext("help_bots", "Custom Commands")}</strong>
+    {dgettext("help_bots", "— user-defined")}
+    <code>{dgettext("help_bots", "!BotName trigger")}</code>
+    {dgettext("help_bots", "commands with configurable responses")}
   </li>
   <li>
-    <strong>{gettext("Help")}</strong>
-    {gettext("— built-in")} <code>{gettext("!BotName help")}</code>
-    {gettext("command that lists available commands")}
+    <strong>{dgettext("help_bots", "Help")}</strong>
+    {dgettext("help_bots", "— built-in")} <code>{dgettext("help_bots", "!BotName help")}</code>
+    {dgettext("help_bots", "command that lists available commands")}
   </li>
   <li>
-    <strong>{gettext("Dice")}</strong>
-    {gettext("— RPG dice rolling with standard notation (")}<code>2d6</code>, <code>{gettext("d20+5")}</code>, <code>4d6kh3</code>{gettext(
+    <strong>{dgettext("help_bots", "Dice")}</strong>
+    {dgettext("help_bots", "— RPG dice rolling with standard notation (")}<code>2d6</code>, <code>{dgettext("help_bots", "d20+5")}</code>, <code>4d6kh3</code>{dgettext(
+      "help_bots",
       "). Use"
-    )} <code>{gettext("!BotName roll <notation>")}</code>
-    {gettext("to roll dice")}
+    )} <code>{dgettext("help_bots", "!BotName roll <notation>")}</code>
+    {dgettext("help_bots", "to roll dice")}
   </li>
   <li>
-    <strong>{gettext("Moderation")}</strong>
-    {gettext(
+    <strong>{dgettext("help_bots", "Moderation")}</strong>
+    {dgettext(
+      "help_bots",
       "— auto-moderation that monitors all messages for blocked words, spam, flood, and caps lock abuse. Configurable actions: warn, mute, or kick"
     )}
   </li>
   <li>
-    <strong>{gettext("Trivia")}</strong> {gettext(
+    <strong>{dgettext("help_bots", "Trivia")}</strong> {dgettext(
+      "help_bots",
       "— interactive quiz with 6 categories, scoring, and timers. Use"
-    )} <code>{gettext("!BotName trivia start")}</code> {gettext("to begin a round")}
+    )}
+    <code>{dgettext("help_bots", "!BotName trivia start")}</code> {dgettext(
+      "help_bots",
+      "to begin a round"
+    )}
   </li>
   <li>
-    <strong>{gettext("Scheduler")}</strong> {gettext(
+    <strong>{dgettext("help_bots", "Scheduler")}</strong> {dgettext(
+      "help_bots",
       "— posts scheduled/periodic messages to channels. Supports interval (every N minutes) and daily (at HH:MM UTC) schedules"
     )}
   </li>
   <li>
-    <strong>{gettext("RSS")}</strong> {gettext(
+    <strong>{dgettext("help_bots", "RSS")}</strong> {dgettext(
+      "help_bots",
       "— monitors RSS/Atom feeds and posts new items to channels. Use"
-    )} <code>{gettext("!BotName rss add <url> <#channel>")}</code> {gettext("to add a feed")}
+    )}
+    <code>{dgettext("help_bots", "!BotName rss add <url> <#channel>")}</code> {dgettext(
+      "help_bots",
+      "to add a feed"
+    )}
   </li>
 </ul>
 <p>
-  {gettext("Additional capabilities (LLM, Script, Game) are planned for future releases.")}
+  {dgettext(
+    "help_bots",
+    "Additional capabilities (LLM, Script, Game) are planned for future releases."
+  )}
 </p>
 
-<.help_h4 icon={:icon_tab_control}>{gettext("How Bots Work")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_bots", "How Bots Work")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_bots",
     "Each bot runs as its own process on the server. When a message arrives in a channel the bot has joined, the bot checks each capability in order. Passive capabilities (like Moderation) run on every message, while active capabilities use first-match-wins. A cooldown timer prevents the bot from responding too frequently."
   )}
 </p>
 <p>
-  {gettext("Bots appear in the channel nicklist with a")} <strong>⚙</strong>
-  {gettext(
+  {dgettext("help_bots", "Bots appear in the channel nicklist with a")} <strong>⚙</strong>
+  {dgettext(
+    "help_bots",
     "prefix and are grouped below regular users. They can be kicked or banned from channels like normal users."
   )}
 </p>
 
-<.help_h4 icon={:icon_shield}>{gettext("Permissions")}</.help_h4>
+<.help_h4 icon={:icon_shield}>{dgettext("help_bots", "Permissions")}</.help_h4>
 <p>
-  {gettext("Only")} <strong>admins</strong>
-  and <strong>{gettext("server operators")}</strong>
-  {gettext(
+  {dgettext("help_bots", "Only")} <strong>admins</strong>
+  and <strong>{dgettext("help_bots", "server operators")}</strong>
+  {dgettext(
+    "help_bots",
     "can create, modify, or delete bots. All users can view bot info and use bot commands."
   )}
 </p>
 
-<.help_h4 icon={:icon_dice}>{gettext("Dice Notation")}</.help_h4>
-<p>{gettext("The Dice capability supports standard RPG notation:")}</p>
+<.help_h4 icon={:icon_dice}>{dgettext("help_bots", "Dice Notation")}</.help_h4>
+<p>{dgettext("help_bots", "The Dice capability supports standard RPG notation:")}</p>
 <ul>
   <li>
-    <code>{gettext("NdS")}</code> {gettext("— roll N dice with S sides (e.g.,")} <code>2d6</code>)
+    <code>{dgettext("help_bots", "NdS")}</code> {dgettext(
+      "help_bots",
+      "— roll N dice with S sides (e.g.,"
+    )} <code>2d6</code>)
   </li>
   <li>
-    <code>{gettext("dS")}</code> {gettext("— shorthand for 1 die (e.g.,")} <code>d20</code>)
+    <code>{dgettext("help_bots", "dS")}</code> {dgettext(
+      "help_bots",
+      "— shorthand for 1 die (e.g.,"
+    )} <code>d20</code>)
   </li>
   <li>
-    <code>{gettext("NdS+M")}</code> {gettext("— add modifier (e.g.,")} <code>{gettext("d20+5")}</code>)
+    <code>{dgettext("help_bots", "NdS+M")}</code> {dgettext("help_bots", "— add modifier (e.g.,")} <code>{dgettext("help_bots", "d20+5")}</code>)
   </li>
   <li>
-    <code>{gettext("NdS-M")}</code> {gettext("— subtract modifier (e.g.,")} <code>d8-2</code>)
+    <code>{dgettext("help_bots", "NdS-M")}</code> {dgettext(
+      "help_bots",
+      "— subtract modifier (e.g.,"
+    )} <code>d8-2</code>)
   </li>
   <li>
-    <code>{gettext("NdSkhK")}</code> {gettext("— keep highest K dice (e.g.,")} <code>4d6kh3</code>)
+    <code>{dgettext("help_bots", "NdSkhK")}</code> {dgettext(
+      "help_bots",
+      "— keep highest K dice (e.g.,"
+    )} <code>4d6kh3</code>)
   </li>
   <li>
-    <code>{gettext("NdSklK")}</code> {gettext("— keep lowest K dice (e.g.,")} <code>2d20kl1</code>)
+    <code>{dgettext("help_bots", "NdSklK")}</code> {dgettext(
+      "help_bots",
+      "— keep lowest K dice (e.g.,"
+    )} <code>2d20kl1</code>)
   </li>
 </ul>
 
-<.help_h4 icon={:icon_question}>{gettext("Trivia Categories")}</.help_h4>
+<.help_h4 icon={:icon_question}>{dgettext("help_bots", "Trivia Categories")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_bots",
     "Available trivia categories: general, science, history, geography, technology, entertainment."
   )}
 </p>
 <p>
-  {gettext("Commands:")} <code>{gettext("!Bot trivia start")}</code>, <code>{gettext("!Bot trivia stop")}</code>, <code>{gettext("!Bot trivia score")}</code>,
-  <code>{gettext("!Bot answer <text>")}</code>
+  {dgettext("help_bots", "Commands:")} <code>{dgettext("help_bots", "!Bot trivia start")}</code>, <code>{dgettext("help_bots", "!Bot trivia stop")}</code>, <code>{dgettext("help_bots", "!Bot trivia score")}</code>,
+  <code>{dgettext("help_bots", "!Bot answer <text>")}</code>
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Template Placeholders")}</.help_h4>
-<p>{gettext("Bot responses support these placeholders:")}</p>
+<.help_h4 icon={:icon_code}>{dgettext("help_bots", "Template Placeholders")}</.help_h4>
+<p>{dgettext("help_bots", "Bot responses support these placeholders:")}</p>
 <ul>
-  <li><code>{"{nickname}"}</code> {gettext("— the user who triggered the response")}</li>
-  <li><code>{"{channel}"}</code> {gettext("— the current channel name")}</li>
-  <li><code>{"{topic}"}</code> {gettext("— the current channel topic")}</li>
   <li>
-    <code>{"{prefix}"}</code> {gettext("— the bot's command prefix (e.g.,")} <code>!</code>)
+    <code>{"{nickname}"}</code> {dgettext("help_bots", "— the user who triggered the response")}
   </li>
-  <li><code>{"{botname}"}</code> {gettext("— the bot's display name")}</li>
+  <li><code>{"{channel}"}</code> {dgettext("help_bots", "— the current channel name")}</li>
+  <li><code>{"{topic}"}</code> {dgettext("help_bots", "— the current channel topic")}</li>
+  <li>
+    <code>{"{prefix}"}</code> {dgettext("help_bots", "— the bot's command prefix (e.g.,")} <code>!</code>)
+  </li>
+  <li><code>{"{botname}"}</code> {dgettext("help_bots", "— the bot's display name")}</li>
 </ul>
 
-<.help_h4 icon={:icon_laptop}>{gettext("Management Dialog")}</.help_h4>
+<.help_h4 icon={:icon_laptop}>{dgettext("help_bots", "Management Dialog")}</.help_h4>
 <p>
-  {gettext("Open the Bot Management dialog from the")} <strong>{gettext("Tools")}</strong>
-  {gettext("menu or by typing")} <code>{gettext("/bot")}</code>
-  {gettext(
+  {dgettext("help_bots", "Open the Bot Management dialog from the")}
+  <strong>{dgettext("help_bots", "Tools")}</strong>
+  {dgettext("help_bots", "menu or by typing")} <code>{dgettext("help_bots", "/bot")}</code>
+  {dgettext(
+    "help_bots",
     "with no arguments (admin only). The dialog shows all bots with a split-view: select a bot on the left to see its details, channels, commands, and event hooks on the right."
   )}
 </p>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_bots", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="bot-command">{gettext("/bot Command Reference")}</.help_link>
-  · <.help_link topic="bot-custom-commands">{gettext("Bot Custom Commands")}</.help_link>
-  · <.help_link topic="bot-dice">{gettext("Dice")}</.help_link>
-  · <.help_link topic="bot-trivia">{gettext("Trivia")}</.help_link>
-  · <.help_link topic="bot-scheduler">{gettext("Scheduler")}</.help_link>
-  · <.help_link topic="bot-rss">{gettext("RSS")}</.help_link>
-  · <.help_link topic="bot-moderation">{gettext("Moderation")}</.help_link>
-  · <.help_link topic="chanserv">{gettext("ChanServ")}</.help_link>
+  <.help_link topic="bot-command">{dgettext("help_bots", "/bot Command Reference")}</.help_link>
+  ·
+  <.help_link topic="bot-custom-commands">
+    {dgettext("help_bots", "Bot Custom Commands")}
+  </.help_link>
+  · <.help_link topic="bot-dice">{dgettext("help_bots", "Dice")}</.help_link>
+  · <.help_link topic="bot-trivia">{dgettext("help_bots", "Trivia")}</.help_link>
+  · <.help_link topic="bot-scheduler">{dgettext("help_bots", "Scheduler")}</.help_link>
+  · <.help_link topic="bot-rss">{dgettext("help_bots", "RSS")}</.help_link>
+  · <.help_link topic="bot-moderation">{dgettext("help_bots", "Moderation")}</.help_link>
+  · <.help_link topic="chanserv">{dgettext("help_bots", "ChanServ")}</.help_link>
 </p>

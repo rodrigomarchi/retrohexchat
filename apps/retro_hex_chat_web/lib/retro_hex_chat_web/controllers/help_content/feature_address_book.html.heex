@@ -1,33 +1,41 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The Address Book (Ctrl+Shift+A) organizes your contacts, notify list, nick color overrides, and future ignore management in one window."
   )}
 </p>
-<.help_h4 icon={:icon_tab_channel}>{gettext("Tabs")}</.help_h4>
+<.help_h4 icon={:icon_tab_channel}>{dgettext("help_features", "Tabs")}</.help_h4>
 <p>
-  <strong>{gettext("Contacts:")}</strong>
-  {gettext("Store notes about users with add/edit/remove.")}<br />
+  <strong>{dgettext("help_features", "Contacts:")}</strong>
+  {dgettext("help_features", "Store notes about users with add/edit/remove.")}<br />
   <strong>
-    {gettext("Notify:")}
+    {dgettext("help_features", "Notify:")}
   </strong>
-  {gettext("Manage your buddy list (synced with Notify List window).")}<br />
+  {dgettext("help_features", "Manage your buddy list (synced with Notify List window).")}<br />
   <strong>
-    {gettext("Nick Colors:")}
+    {dgettext("help_features", "Nick Colors:")}
   </strong>
-  {gettext("Override display colors for specific nicks across the UI.")}<br />
+  {dgettext("help_features", "Override display colors for specific nicks across the UI.")}<br />
   <strong>
-    {gettext("Control:")}
+    {dgettext("help_features", "Control:")}
   </strong>
-  {gettext("Manage per-type ignore entries for messages, PMs, actions, notices, and invites.")}
+  {dgettext(
+    "help_features",
+    "Manage per-type ignore entries for messages, PMs, actions, notices, and invites."
+  )}
 </p>
-<.help_h4 icon={:icon_folder}>{gettext("Opening")}</.help_h4>
+<.help_h4 icon={:icon_folder}>{dgettext("help_features", "Opening")}</.help_h4>
 <p>
-  {gettext("Press")} <strong>{gettext("Ctrl+Shift+A")}</strong>{gettext(
+  {dgettext("help_features", "Press")} <strong>{dgettext("help_features", "Ctrl+Shift+A")}</strong>{dgettext(
+    "help_features",
     ", use the toolbar button, or go to"
-  )} <strong>{gettext("Tools > Address Book")}</strong>.
+  )} <strong>{dgettext("help_features", "Tools > Address Book")}</strong>.
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-notify-list">{gettext("Notify List")}</.help_link>
-  · <.help_link topic="feature-highlight-words">{gettext("Highlight Words")}</.help_link>
+  <.help_link topic="feature-notify-list">{dgettext("help_features", "Notify List")}</.help_link>
+  ·
+  <.help_link topic="feature-highlight-words">
+    {dgettext("help_features", "Highlight Words")}
+  </.help_link>
 </p>

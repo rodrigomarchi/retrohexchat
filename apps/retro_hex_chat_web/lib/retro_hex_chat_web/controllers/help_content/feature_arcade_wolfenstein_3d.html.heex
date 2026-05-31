@@ -1,82 +1,123 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "The grandfather of FPS games (1992) — Wolfenstein 3D Episode 1, \"Escape from Castle Wolfenstein.\" Ten levels of the game that launched the first-person shooter genre, built by John Carmack and John Romero at id Software."
   )}
 </p>
 <.diagram_arcade_wolfenstein class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "About")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Released May 5, 1992, uploaded to bulletin board systems by Apogee Software and id Software. Built by John Carmack and John Romero, the raycasting engine ran smoothly on modest 386 PCs — a technical marvel. The developers expected $60,000 in the first month; the first royalty check from Apogee was $100,000. The game averaged $200,000 per month for the first year and a half."
   )}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Episode 1 features 10 levels (including a secret level) of castle-storming action — no jumping, no looking up or down, pure shooting. id Software purchased the Wolfenstein trademark for just $5,000 in mid-April 1992, weeks before launch. Stealth gameplay features were removed late in development when John Romero found they slowed the game's pace. It runs on ECWolf compiled to WebAssembly."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("Arrow keys / W")}</strong> {gettext("— Move forward")}</li>
-  <li><strong>S</strong> {gettext("— Move backward")}</li>
-  <li><strong>{gettext("Left/Right arrows")}</strong> {gettext("— Turn (or Alt + strafe)")}</li>
-  <li><strong>{gettext("Ctrl")}</strong> {gettext("— Fire")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Open doors / use")}</li>
-  <li><strong>{gettext("Shift")}</strong> {gettext("— Run")}</li>
-  <li><strong>1–4</strong> {gettext("— Select weapon")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Menu")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Arrow keys / W")}</strong> {dgettext(
+      "help_arcade",
+      "— Move forward"
+    )}
+  </li>
+  <li><strong>S</strong> {dgettext("help_arcade", "— Move backward")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left/Right arrows")}</strong> {dgettext(
+      "help_arcade",
+      "— Turn (or Alt + strafe)"
+    )}
+  </li>
+  <li><strong>{dgettext("help_arcade", "Ctrl")}</strong> {dgettext("help_arcade", "— Fire")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Space")}</strong> {dgettext(
+      "help_arcade",
+      "— Open doors / use"
+    )}
+  </li>
+  <li><strong>{dgettext("help_arcade", "Shift")}</strong> {dgettext("help_arcade", "— Run")}</li>
+  <li><strong>1–4</strong> {dgettext("help_arcade", "— Select weapon")}</li>
+  <li><strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Menu")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Push every wall")}</strong>
-    {gettext("— Secret rooms are hidden behind pushable walls. Press Space on everything.")}
+    <strong>{dgettext("help_arcade", "Push every wall")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Secret rooms are hidden behind pushable walls. Press Space on everything."
+    )}
   </li>
   <li>
-    <strong>{gettext("Listen for guards")}</strong>
-    {gettext("— You can hear guards through doors. Plan your approach before opening.")}
+    <strong>{dgettext("help_arcade", "Listen for guards")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— You can hear guards through doors. Plan your approach before opening."
+    )}
   </li>
   <li>
-    <strong>{gettext("Conserve chaingun ammo")}</strong>
-    {gettext("— All bullet weapons share ammo. The chaingun burns through it fast.")}
+    <strong>{dgettext("help_arcade", "Conserve chaingun ammo")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— All bullet weapons share ammo. The chaingun burns through it fast."
+    )}
   </li>
   <li>
-    <strong>{gettext("Prioritize SS guards")}</strong>
-    {gettext("— Blue-uniformed SS guards deal heavy damage and move fast. Take them out first.")}
+    <strong>{dgettext("help_arcade", "Prioritize SS guards")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Blue-uniformed SS guards deal heavy damage and move fast. Take them out first."
+    )}
   </li>
   <li>
-    <strong>{gettext("Treasure = score")}</strong>
-    {gettext("— Collecting treasure counts toward your score. Hunt for hidden treasure rooms.")}
+    <strong>{dgettext("help_arcade", "Treasure = score")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Collecting treasure counts toward your score. Hunt for hidden treasure rooms."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "id Software purchased the Wolfenstein trademark for just $5,000 in mid-April 1992, weeks before the game launched."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Wolfenstein 3D used raycasting (not true 3D) — all walls are the same height and floors are flat. The 3D effect is an optical illusion."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The game was banned in Germany until 2019 due to its use of Nazi imagery. It was one of the first games \"indexed\" by German authorities."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-wolfenstein">{gettext("Wolfenstein 3D (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade-wolfenstein">
+    {dgettext("help_arcade", "Wolfenstein 3D (Arcade)")}
+  </.help_link>
   ·
   <.help_link topic="feature-arcade-doom-shareware">
-    {gettext("DOOM: Knee-Deep in the Dead")}
+    {dgettext("help_arcade", "DOOM: Knee-Deep in the Dead")}
   </.help_link>
   ·
   <.help_link topic="feature-arcade-quake-shareware">
-    {gettext("Quake: Dimension of the Doomed")}
+    {dgettext("help_arcade", "Quake: Dimension of the Doomed")}
   </.help_link>
-  · <.help_link topic="feature-arcade-halflife-uplink">{gettext("Half-Life: Uplink")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-halflife-uplink">
+    {dgettext("help_arcade", "Half-Life: Uplink")}
+  </.help_link>
 </p>

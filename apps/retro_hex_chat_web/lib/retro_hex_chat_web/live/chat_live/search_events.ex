@@ -249,7 +249,7 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
     end
   end
 
-  defp invalid_regex_error, do: gettext("Invalid regex")
+  defp invalid_regex_error, do: dgettext("chat", "Invalid regex")
 
   defp build_search_opts(assigns) do
     opts = [

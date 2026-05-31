@@ -17,10 +17,12 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Log do
 
     text =
       if entries == [] do
-        gettext("*** No audit log entries found.")
+        dgettext("admin", "*** No audit log entries found.")
       else
         header =
-          gettext("*** Audit Log (%{entries_count} entries) ***", entries_count: length(entries))
+          dgettext("admin", "*** Audit Log (%{entries_count} entries) ***",
+            entries_count: length(entries)
+          )
 
         lines = Enum.map(entries, &format_log_entry/1)
 
@@ -34,7 +36,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Log do
     target =
       if e.target_type,
         do:
-          gettext(" → %{target_type}:%{target_id}",
+          dgettext("admin", " → %{target_type}:%{target_id}",
             target_type: e.target_type,
             target_id: e.target_id
           ),
@@ -43,7 +45,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Log do
     details = format_details(e.details)
     time = Calendar.strftime(e.inserted_at, "%Y-%m-%d %H:%M:%S")
 
-    gettext("  [%{time}] %{actor} %{action}%{target}%{details}",
+    dgettext("admin", "  [%{time}] %{actor} %{action}%{target}%{details}",
       time: time,
       actor: e.actor,
       action: e.action,

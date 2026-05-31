@@ -69,11 +69,11 @@ defmodule RetroHexChat.Commands.Registry do
 
   @category_order [:basics, :channel, :user, :config, :advanced]
   @category_labels %{
-    basics: gettext_noop("Basics"),
-    channel: gettext_noop("Channel"),
-    user: gettext_noop("User"),
-    config: gettext_noop("Configuration"),
-    advanced: gettext_noop("Advanced")
+    basics: dgettext_noop("commands", "Basics"),
+    channel: dgettext_noop("commands", "Channel"),
+    user: dgettext_noop("commands", "User"),
+    config: dgettext_noop("commands", "Configuration"),
+    advanced: dgettext_noop("commands", "Advanced")
   }
 
   @spec lookup(String.t()) :: {:ok, module()} | {:error, :unknown_command}
@@ -172,5 +172,5 @@ defmodule RetroHexChat.Commands.Registry do
     end
   end
 
-  defp t(msgid), do: Gettext.gettext(RetroHexChat.Gettext, msgid)
+  defp t(msgid), do: Gettext.dgettext(RetroHexChat.Gettext, "commands", msgid)
 end

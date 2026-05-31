@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.PasteConfirmDialogPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("Paste Confirm Dialog"),
+       page_title: dgettext("showcase", "Paste Confirm Dialog"),
        active_page: "paste-confirm-dialog"
      )}
   end
@@ -28,15 +28,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.PasteConfirmDialogPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Paste Confirm Dialog")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Paste Confirm Dialog")}</h2>
 
       <.showcase_card
-        title={gettext("Standard Paste Confirmation")}
+        title={dgettext("showcase", "Standard Paste Confirmation")}
         description="Warns the user before sending multiple lines of text."
       >
         <.button variant="outline" phx-click={show_modal("paste-standard")}>
           <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
-          {gettext("Paste 5 Lines")}
+          {dgettext("showcase", "Paste 5 Lines")}
         </.button>
         <.paste_confirm_dialog
           id="paste-standard"
@@ -55,12 +55,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.PasteConfirmDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Flood Warning")}
+        title={dgettext("showcase", "Flood Warning")}
         description="Shows a flood protection warning when line count exceeds limits."
       >
         <.button variant="outline" phx-click={show_modal("paste-flood")}>
           <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
-          {gettext("Paste 25 Lines (Flood Warning)")}
+          {dgettext("showcase", "Paste 25 Lines (Flood Warning)")}
         </.button>
         <.paste_confirm_dialog
           id="paste-flood"
@@ -73,12 +73,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.PasteConfirmDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Send Disabled")}
+        title={dgettext("showcase", "Send Disabled")}
         description="Send All button is disabled when flood protection blocks sending."
       >
         <.button variant="outline" phx-click={show_modal("paste-disabled")}>
           <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
-          {gettext("Paste Blocked")}
+          {dgettext("showcase", "Paste Blocked")}
         </.button>
         <.paste_confirm_dialog
           id="paste-disabled"
@@ -91,12 +91,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.PasteConfirmDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Single Line")}
+        title={dgettext("showcase", "Single Line")}
         description="Singular phrasing when only one line is being pasted."
       >
         <.button variant="outline" phx-click={show_modal("paste-single")}>
           <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
-          {gettext("Paste 1 Line")}
+          {dgettext("showcase", "Paste 1 Line")}
         </.button>
         <.paste_confirm_dialog
           id="paste-single"

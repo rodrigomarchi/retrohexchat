@@ -1,37 +1,46 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Request to be let into an invite-only (+i) channel. Channel operators see your knock and can choose to invite you in."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/knock <#channel> [message]")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/knock <#channel> [message]")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>#channel</code>
-  {gettext("— The invite-only channel you want to join.")}<br /><code>message</code>
-  {gettext("— Optional message to include with your knock (e.g., who referred you).")}
+  {dgettext("help_commands", "— The invite-only channel you want to join.")}<br />
+  <code>
+    message
+  </code>
+  {dgettext(
+    "help_commands",
+    "— Optional message to include with your knock (e.g., who referred you)."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "When you knock on a channel, all operators and owners in that channel receive a notification showing your nickname and optional message. They can then decide whether to invite you using"
-  )} <code>{gettext("/invite")}</code>{gettext(
+  )} <code>{dgettext("help_commands", "/invite")}</code>{dgettext(
+    "help_commands",
     ". Think of it as ringing the doorbell of a private room."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("The channel must be invite-only (+i)")}</li>
-  <li>{gettext("Cannot knock if you are banned from the channel")}</li>
-  <li>{gettext("Cannot knock if you are already a member")}</li>
-  <li>{gettext("Rate limited: once per 60 seconds per channel")}</li>
-  <li>{gettext("Disabled if the channel has +K (no knock) mode set")}</li>
+  <li>{dgettext("help_commands", "The channel must be invite-only (+i)")}</li>
+  <li>{dgettext("help_commands", "Cannot knock if you are banned from the channel")}</li>
+  <li>{dgettext("help_commands", "Cannot knock if you are already a member")}</li>
+  <li>{dgettext("help_commands", "Rate limited: once per 60 seconds per channel")}</li>
+  <li>{dgettext("help_commands", "Disabled if the channel has +K (no knock) mode set")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/knock #private /knock #private Hey, Alice referred me!")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/knock #private /knock #private Hey, Alice referred me!")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-invite">{gettext("/invite")}</.help_link>
-  · <.help_link topic="cmd-join">{gettext("/join")}</.help_link>
-  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
+  <.help_link topic="cmd-invite">{dgettext("help_commands", "/invite")}</.help_link>
+  · <.help_link topic="cmd-join">{dgettext("help_commands", "/join")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
 </p>

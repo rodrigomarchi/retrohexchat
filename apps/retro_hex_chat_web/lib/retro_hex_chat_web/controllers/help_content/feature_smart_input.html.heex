@@ -1,33 +1,50 @@
-<p>{gettext("The chat input provides contextual hints and adapts to your content.")}</p>
-<.help_h4 icon={:icon_terminal}>{gettext("Contextual Placeholder")}</.help_h4>
 <p>
-  {gettext("The placeholder text changes based on your current context:")}<br />{gettext(
+  {dgettext(
+    "help_features",
+    "The chat input provides contextual hints and adapts to your content."
+  )}
+</p>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Contextual Placeholder")}</.help_h4>
+<p>
+  {dgettext("help_features", "The placeholder text changes based on your current context:")}<br />{dgettext(
+    "help_features",
     "In a channel:"
   )}
-  <em>{gettext("Mensagem para #channel — / para comandos")}</em>
-  <br />{gettext("In a PM:")} <em>{gettext("Mensagem para NickName — / para comandos")}</em>
-  <br />{gettext("In Status:")} <em>{gettext("Digite um comando — / para lista")}</em>
+  <em>{dgettext("help_features", "Mensagem para #channel — / para comandos")}</em>
+  <br />{dgettext("help_features", "In a PM:")}
+  <em>{dgettext("help_features", "Mensagem para NickName — / para comandos")}</em>
+  <br />{dgettext("help_features", "In Status:")}
+  <em>{dgettext("help_features", "Digite um comando — / para lista")}</em>
 </p>
-<.help_h4 icon={:icon_notepad}>{gettext("Multi-Line Expansion")}</.help_h4>
+<.help_h4 icon={:icon_notepad}>{dgettext("help_features", "Multi-Line Expansion")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The input grows vertically as you type or paste multi-line text, up to 5 visible lines. Beyond that, a scrollbar appears. The chat messages area compresses above to make room."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_cheatsheet}>{gettext("Keyboard")}</.help_h4>
+<.help_h4 icon={:icon_dialog_cheatsheet}>{dgettext("help_features", "Keyboard")}</.help_h4>
 <p>
-  <strong>{gettext("Enter")}</strong> {gettext("— Send message.")}<br />
+  <strong>{dgettext("help_features", "Enter")}</strong> {dgettext(
+    "help_features",
+    "— Send message."
+  )}<br />
   <strong>
-    {gettext("Shift+Enter")}
+    {dgettext("help_features", "Shift+Enter")}
   </strong>
-  {gettext("— Insert a new line.")}
+  {dgettext("help_features", "— Insert a new line.")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-enhanced-history">{gettext("Enhanced History")}</.help_link>
+  <.help_link topic="feature-enhanced-history">
+    {dgettext("help_features", "Enhanced History")}
+  </.help_link>
   ·
   <.help_link topic="feature-command-syntax-tooltip">
-    {gettext("Command Syntax Tooltip")}
+    {dgettext("help_features", "Command Syntax Tooltip")}
   </.help_link>
-  · <.help_link topic="feature-char-counter">{gettext("Character Counter")}</.help_link>
+  ·
+  <.help_link topic="feature-char-counter">
+    {dgettext("help_features", "Character Counter")}
+  </.help_link>
 </p>

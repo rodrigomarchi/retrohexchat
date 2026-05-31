@@ -1,60 +1,93 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Split-screen Space Invaders — aliens you destroy fall on your opponent's side as reinforcements. Combos send extra drops. UFO kills send armored aliens. 10 waves of escalating chaos."
   )}
 </p>
 <.diagram_game_invaders class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("Arrow Left / A")}</strong> {gettext("— Move cannon left")}</li>
-  <li><strong>{gettext("Arrow Right / D")}</strong> {gettext("— Move cannon right")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Fire missile")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    {gettext("Each player defends their half of a split screen against descending alien waves")}
+    <strong>{dgettext("help_games", "Arrow Left / A")}</strong> {dgettext(
+      "help_games",
+      "— Move cannon left"
+    )}
   </li>
   <li>
-    {gettext(
+    <strong>{dgettext("help_games", "Arrow Right / D")}</strong> {dgettext(
+      "help_games",
+      "— Move cannon right"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Space")}</strong> {dgettext("help_games", "— Fire missile")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_games",
+      "Each player defends their half of a split screen against descending alien waves"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
       "Destroyed aliens \"drop\" onto your opponent's side as reinforcements after a delay"
     )}
   </li>
   <li>
-    {gettext("Combo system: 3 rapid kills = 1 extra drop, 5 = 2 + armored, 8+ = 3 + armored")}
+    {dgettext(
+      "help_games",
+      "Combo system: 3 rapid kills = 1 extra drop, 5 = 2 + armored, 8+ = 3 + armored"
+    )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_games",
       "UFO crosses the top — destroy it for bonus points and sends an armored alien to opponent"
     )}
   </li>
-  <li>{gettext("Shields absorb bombs but degrade with each hit (4 segments each)")}</li>
-  <li>{gettext("If aliens reach the ground on your side, you lose instantly")}</li>
-  <li>{gettext("3 lives per player — lose a life when hit by an alien bomb")}</li>
-  <li>{gettext("10 waves — aliens speed up as their numbers decrease")}</li>
+  <li>
+    {dgettext("help_games", "Shields absorb bombs but degrade with each hit (4 segments each)")}
+  </li>
+  <li>{dgettext("help_games", "If aliens reach the ground on your side, you lose instantly")}</li>
+  <li>{dgettext("help_games", "3 lives per player — lose a life when hit by an alien bomb")}</li>
+  <li>{dgettext("help_games", "10 waves — aliens speed up as their numbers decrease")}</li>
 </ul>
-<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_games", "Modes")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Hex Invaders")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Hex Invaders")}</strong> {dgettext(
+      "help_games",
       "— Full rules: alien drops, combos, 10 waves"
     )}
   </li>
   <li>
-    <strong>{gettext("Co-op")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Co-op")}</strong> {dgettext(
+      "help_games",
       "— Shared screen, no alien drops, fight together"
     )}
   </li>
   <li>
-    <strong>{gettext("Blitz")}</strong> {gettext("— Instant drops, easier combos, 5 waves")}
+    <strong>{dgettext("help_games", "Blitz")}</strong> {dgettext(
+      "help_games",
+      "— Instant drops, easier combos, 5 waves"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
-<p>{gettext("Inspired by Taito's Space Invaders (1978).")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
+<p>{dgettext("help_games", "Inspired by Taito's Space Invaders (1978).")}</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-invaders-coop">{gettext("Hex Invaders: Co-op")}</.help_link>
-  · <.help_link topic="feature-hex-invaders-blitz">{gettext("Hex Invaders: Blitz")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-hex-invaders-coop">
+    {dgettext("help_games", "Hex Invaders: Co-op")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-hex-invaders-blitz">
+    {dgettext("help_games", "Hex Invaders: Blitz")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

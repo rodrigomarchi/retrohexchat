@@ -10,13 +10,13 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["drop", channel], context) do
     case Admin.drop_channel(channel, context.nickname) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
-      {:error, msg} -> {:error, gettext("[ChanServ] %{message}", message: msg)}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
+      {:error, msg} -> {:error, dgettext("admin", "[ChanServ] %{message}", message: msg)}
     end
   end
 
   def execute(["info", channel], context) do
-    AuditLogs.log(context.nickname, gettext("cs.info"), {"channel", channel})
+    AuditLogs.log(context.nickname, dgettext("admin", "cs.info"), {"channel", channel})
 
     case ChanServ.info(channel) do
       {:ok, info} ->
@@ -24,24 +24,26 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
 
         access_text =
           if access == [] do
-            gettext("  Access list: (empty)")
+            dgettext("admin", "  Access list: (empty)")
           else
             lines = Enum.map(access, &format_access_entry/1)
-            gettext("  Access list:\n") <> Enum.join(lines, "\n")
+            dgettext("admin", "  Access list:\n") <> Enum.join(lines, "\n")
           end
 
         text =
-          gettext("*** [ChanServ] %{name}\n", name: info.name) <>
-            gettext("  Founder: %{founder}\n", founder: info.founder) <>
-            gettext("  Registered: %{registered_at}\n", registered_at: info.registered_at) <>
-            gettext("  Topic: %{topic}\n", topic: info.topic) <>
-            gettext("  Modes: %{modes}\n", modes: info.modes) <>
+          dgettext("admin", "*** [ChanServ] %{name}\n", name: info.name) <>
+            dgettext("admin", "  Founder: %{founder}\n", founder: info.founder) <>
+            dgettext("admin", "  Registered: %{registered_at}\n",
+              registered_at: info.registered_at
+            ) <>
+            dgettext("admin", "  Topic: %{topic}\n", topic: info.topic) <>
+            dgettext("admin", "  Modes: %{modes}\n", modes: info.modes) <>
             access_text
 
         {:ok, :system, %{content: text}}
 
       {:error, msg} ->
-        {:error, gettext("[ChanServ] %{message}", message: msg)}
+        {:error, dgettext("admin", "[ChanServ] %{message}", message: msg)}
     end
   end
 
@@ -49,24 +51,24 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
     nick = strip_at(nick)
 
     case Admin.transfer_channel(channel, nick, context.nickname) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
-      {:error, msg} -> {:error, gettext("[ChanServ] %{message}", message: msg)}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
+      {:error, msg} -> {:error, dgettext("admin", "[ChanServ] %{message}", message: msg)}
     end
   end
 
   def execute(["access", channel], context) do
-    AuditLogs.log(context.nickname, gettext("cs.access"), {"channel", channel})
+    AuditLogs.log(context.nickname, dgettext("admin", "cs.access"), {"channel", channel})
     access = Queries.list_access(channel)
 
     text =
       if access == [] do
-        gettext("*** Access list for %{channel}: (empty)", channel: channel)
+        dgettext("admin", "*** Access list for %{channel}: (empty)", channel: channel)
       else
-        header = gettext("*** Access List for %{channel} ***", channel: channel)
+        header = dgettext("admin", "*** Access List for %{channel} ***", channel: channel)
 
         lines =
           Enum.map(access, fn e ->
-            gettext("  %{nickname} [%{level}] (added by %{added_by})",
+            dgettext("admin", "  %{nickname} [%{level}] (added by %{added_by})",
               nickname: e.nickname,
               level: e.level,
               added_by: e.added_by
@@ -83,8 +85,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
     nick = strip_at(nick)
 
     case Admin.manage_channel_access(channel, :add, level, nick, context.nickname) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
-      {:error, msg} -> {:error, gettext("[ChanServ] %{message}", message: msg)}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
+      {:error, msg} -> {:error, dgettext("admin", "[ChanServ] %{message}", message: msg)}
     end
   end
 
@@ -92,13 +94,13 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
     nick = strip_at(nick)
 
     case Admin.manage_channel_access(channel, :remove, level, nick, context.nickname) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
-      {:error, msg} -> {:error, gettext("[ChanServ] %{message}", message: msg)}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
+      {:error, msg} -> {:error, dgettext("admin", "[ChanServ] %{message}", message: msg)}
     end
   end
 
   def execute([], _context) do
-    {:error, gettext("Usage: /admin cs <drop|info|transfer|access> [args]")}
+    {:error, dgettext("admin", "Usage: /admin cs <drop|info|transfer|access> [args]")}
   end
 
   def execute([subcmd | _], _context) do
@@ -106,7 +108,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
   end
 
   defp format_access_entry(e) do
-    gettext("    %{nickname} [%{level}] (added by %{added_by})",
+    dgettext("admin", "    %{nickname} [%{level}] (added by %{added_by})",
       nickname: e.nickname,
       level: e.level,
       added_by: e.added_by

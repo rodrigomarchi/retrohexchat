@@ -1,43 +1,55 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Toggle personal user modes that affect what messages you receive. User modes are settings that apply to you, not to a channel."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/umode <+/-mode>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/umode <+/-mode>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
-  <code>{gettext("+/-mode")}</code> {gettext("— Use + to enable or - to disable a user mode.")}
+  <code>{dgettext("help_commands", "+/-mode")}</code> {dgettext(
+    "help_commands",
+    "— Use + to enable or - to disable a user mode."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_modes}>{gettext("Available Modes")}</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_commands", "Available Modes")}</.help_h4>
 <p>
-  <code>{gettext("+w")}</code>
-  {gettext(
+  <code>{dgettext("help_commands", "+w")}</code>
+  {dgettext(
+    "help_commands",
     "— Receive wallops messages (broadcast messages from server operators). These appear in the Status tab."
   )}<br />
   <code>
     -w
   </code>
-  {gettext("— Stop receiving wallops messages.")}
+  {dgettext("help_commands", "— Stop receiving wallops messages.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "User modes are personal settings that only affect you. Currently, the only available user mode is"
   )}
-  <code>{gettext("+w")}</code>
-  {gettext("(wallops), which opts you in to receiving operator broadcast messages sent via")} <code>{gettext("/wallops")}</code>{gettext(
+  <code>{dgettext("help_commands", "+w")}</code>
+  {dgettext(
+    "help_commands",
+    "(wallops), which opts you in to receiving operator broadcast messages sent via"
+  )} <code>{dgettext("help_commands", "/wallops")}</code>{dgettext(
+    "help_commands",
     ". By default, wallops are disabled."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("User modes are session-scoped — they reset when you disconnect")}</li>
+  <li>
+    {dgettext("help_commands", "User modes are session-scoped — they reset when you disconnect")}
+  </li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/umode +w /umode -w")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/umode +w /umode -w")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-wallops">{gettext("/wallops")}</.help_link>
-  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
+  <.help_link topic="cmd-wallops">{dgettext("help_commands", "/wallops")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
 </p>

@@ -13,13 +13,13 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
 
   def validate("add " <> rest) do
     if String.trim(rest) == "" do
-      {:error, gettext("Usage: /perform add <command>")}
+      {:error, dgettext("commands", "Usage: /perform add <command>")}
     else
       :ok
     end
   end
 
-  def validate("add"), do: {:error, gettext("Usage: /perform add <command>")}
+  def validate("add"), do: {:error, dgettext("commands", "Usage: /perform add <command>")}
 
   def validate("remove " <> rest) do
     case Integer.parse(String.trim(rest)) do
@@ -28,19 +28,19 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
 
       _ ->
         {:error,
-         gettext("Invalid position: %{string_trim_rest}. Must be a number.",
+         dgettext("commands", "Invalid position: %{string_trim_rest}. Must be a number.",
            string_trim_rest: String.trim(rest)
          )}
     end
   end
 
-  def validate("remove"), do: {:error, gettext("Usage: /perform remove <number>")}
+  def validate("remove"), do: {:error, dgettext("commands", "Usage: /perform remove <number>")}
 
   def validate("move " <> rest) do
     validate_move_args(String.trim(rest))
   end
 
-  def validate("move"), do: {:error, gettext("Usage: /perform move <from> <to>")}
+  def validate("move"), do: {:error, dgettext("commands", "Usage: /perform move <from> <to>")}
 
   def validate(args) do
     subcmd = args |> String.split(" ", parts: 2) |> List.first()
@@ -87,19 +87,20 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
   def help do
     %{
       name: "perform",
-      syntax: gettext("/perform [list|add|remove|move|clear]"),
+      syntax: dgettext("commands", "/perform [list|add|remove|move|clear]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Set up commands that automatically run every time you connect.\nSubcommands: list, add <command>, remove <index>, move <from> <to>, clear. No args opens the dialog.\nCommon use: /perform add /ns identify mypassword\nPositions are 0-based index numbers. Passwords are masked in the list display."
         ),
       examples: [
         "/perform",
-        gettext("/perform list"),
-        gettext("/perform add /join #elixir"),
-        gettext("/perform add /ns identify mypassword"),
-        gettext("/perform remove 0"),
-        gettext("/perform move 0 2"),
-        gettext("/perform clear")
+        dgettext("commands", "/perform list"),
+        dgettext("commands", "/perform add /join #elixir"),
+        dgettext("commands", "/perform add /ns identify mypassword"),
+        dgettext("commands", "/perform remove 0"),
+        dgettext("commands", "/perform move 0 2"),
+        dgettext("commands", "/perform clear")
       ]
     }
   end
@@ -112,11 +113,11 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
              {_, ""} <- Integer.parse(to_str) do
           :ok
         else
-          _ -> {:error, gettext("Invalid positions. Must be numbers.")}
+          _ -> {:error, dgettext("commands", "Invalid positions. Must be numbers.")}
         end
 
       _ ->
-        {:error, gettext("Usage: /perform move <from> <to>")}
+        {:error, dgettext("commands", "Usage: /perform move <from> <to>")}
     end
   end
 
@@ -131,9 +132,10 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
 
     %CommandSyntax{
       command: "perform",
-      syntax: gettext("/perform [list|add|remove|move|clear]"),
+      syntax: dgettext("commands", "/perform [list|add|remove|move|clear]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Set up commands that automatically run every time you connect, like identifying with NickServ."
         ),
       category: :config,
@@ -143,31 +145,31 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
           required: false,
           type: :text,
           position: 0,
-          description: gettext("Subcommand: list, add, remove, move, clear")
+          description: dgettext("commands", "Subcommand: list, add, remove, move, clear")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: gettext("Subcommand arguments")
+          description: dgettext("commands", "Subcommand arguments")
         }
       ],
       examples: [
         "/perform",
-        gettext("/perform list"),
-        gettext("/perform add /join #elixir"),
-        gettext("/perform add /ns identify mypassword"),
-        gettext("/perform remove 0"),
-        gettext("/perform move 0 2"),
-        gettext("/perform clear")
+        dgettext("commands", "/perform list"),
+        dgettext("commands", "/perform add /join #elixir"),
+        dgettext("commands", "/perform add /ns identify mypassword"),
+        dgettext("commands", "/perform remove 0"),
+        dgettext("commands", "/perform move 0 2"),
+        dgettext("commands", "/perform clear")
       ],
       subcommands: [
-        %{name: "list", description: gettext("Show perform commands")},
-        %{name: "add", description: gettext("Add a command to perform on connect")},
-        %{name: "remove", description: gettext("Remove a perform command")},
-        %{name: "move", description: gettext("Reorder a perform command")},
-        %{name: "clear", description: gettext("Clear all perform commands")}
+        %{name: "list", description: dgettext("commands", "Show perform commands")},
+        %{name: "add", description: dgettext("commands", "Add a command to perform on connect")},
+        %{name: "remove", description: dgettext("commands", "Remove a perform command")},
+        %{name: "move", description: dgettext("commands", "Reorder a perform command")},
+        %{name: "clear", description: dgettext("commands", "Clear all perform commands")}
       ]
     }
   end

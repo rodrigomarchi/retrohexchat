@@ -16,7 +16,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameSpace do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label={gettext("Star Duel game screen: two ships in open space with missiles")}
+      aria-label={
+        dgettext("diagrams", "Star Duel game screen: two ships in open space with missiles")
+      }
     >
       {win98_chrome("Star Duel")}
       <%!-- Stars background --%>

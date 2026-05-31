@@ -1,40 +1,81 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "RetroHexChat plays configurable sounds for various events. Access the Sounds dialog from"
   )}
-  <strong>{gettext("Tools > Sounds")}</strong>
-  {gettext("to customize which sound plays for each event type.")}
+  <strong>{dgettext("help_features", "Tools > Sounds")}</strong>
+  {dgettext("help_features", "to customize which sound plays for each event type.")}
 </p>
-<.help_h4 icon={:icon_clock}>{gettext("Event Types")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_features", "Event Types")}</.help_h4>
 <p>
-  <code>{gettext("Message")}</code>
-  {gettext("— New message in a background channel")}<br /><code>{gettext("PM")}</code>
-  {gettext("— New private message")}<br /><code>{gettext("Highlight")}</code>
-  {gettext("— Your nickname mentioned")}<br /><code>{gettext("Join")}</code>
-  {gettext("— User joins a channel")}<br /><code>{gettext("Part")}</code>
-  {gettext("— User leaves a channel")}<br /><code>{gettext("Kick")}</code>
-  {gettext("— User is kicked from a channel")}<br /><code>{gettext("Connect")}</code>
-  {gettext("— You connect to the chat")}<br /><code>{gettext("Disconnect")}</code>
-  {gettext("— Connection lost")}<br /><code>{gettext("Buddy Online")}</code>
-  {gettext("— A notify list contact comes online")}<br /><code>{gettext("Buddy Offline")}</code>
-  {gettext("— A notify list contact goes offline")}
+  <code>{dgettext("help_features", "Message")}</code>
+  {dgettext("help_features", "— New message in a background channel")}<br />
+  <code>
+    {dgettext("help_features", "PM")}
+  </code>
+  {dgettext("help_features", "— New private message")}<br />
+  <code>
+    {dgettext("help_features", "Highlight")}
+  </code>
+  {dgettext("help_features", "— Your nickname mentioned")}<br />
+  <code>
+    {dgettext("help_features", "Join")}
+  </code>
+  {dgettext("help_features", "— User joins a channel")}<br />
+  <code>
+    {dgettext("help_features", "Part")}
+  </code>
+  {dgettext("help_features", "— User leaves a channel")}<br />
+  <code>
+    {dgettext("help_features", "Kick")}
+  </code>
+  {dgettext("help_features", "— User is kicked from a channel")}<br />
+  <code>
+    {dgettext("help_features", "Connect")}
+  </code>
+  {dgettext("help_features", "— You connect to the chat")}<br />
+  <code>
+    {dgettext("help_features", "Disconnect")}
+  </code>
+  {dgettext("help_features", "— Connection lost")}<br />
+  <code>
+    {dgettext("help_features", "Buddy Online")}
+  </code>
+  {dgettext("help_features", "— A notify list contact comes online")}<br />
+  <code>
+    {dgettext("help_features", "Buddy Offline")}
+  </code>
+  {dgettext("help_features", "— A notify list contact goes offline")}
 </p>
-<.help_h4 icon={:icon_dialog_sound}>{gettext("Sound Catalog")}</.help_h4>
+<.help_h4 icon={:icon_dialog_sound}>{dgettext("help_features", "Sound Catalog")}</.help_h4>
 <p>
-  {gettext("Choose from 14 built-in sounds (ding, alert, chime, click, etc.) or select")}
-  <code>{gettext("None")}</code>
-  {gettext("to disable sound for an event.")}
+  {dgettext(
+    "help_features",
+    "Choose from 14 built-in sounds (ding, alert, chime, click, etc.) or select"
+  )}
+  <code>{dgettext("help_features", "None")}</code>
+  {dgettext("help_features", "to disable sound for an event.")}
 </p>
-<.help_h4 icon={:icon_dialog_options}>{gettext("Dialog Controls")}</.help_h4>
+<.help_h4 icon={:icon_dialog_options}>{dgettext("help_features", "Dialog Controls")}</.help_h4>
 <p>
-  <strong>{gettext("OK")}</strong>
-  {gettext("— Save changes and close")}<br /><strong>{gettext("Cancel")}</strong>
-  {gettext("— Discard changes and close")}<br /><strong>{gettext("Apply")}</strong>
-  {gettext("— Save changes and keep dialog open")}<br /><strong>{gettext("Preview")}</strong>
-  {gettext("— Play the selected sound")}
+  <strong>{dgettext("help_features", "OK")}</strong>
+  {dgettext("help_features", "— Save changes and close")}<br />
+  <strong>
+    {dgettext("help_features", "Cancel")}
+  </strong>
+  {dgettext("help_features", "— Discard changes and close")}<br />
+  <strong>
+    {dgettext("help_features", "Apply")}
+  </strong>
+  {dgettext("help_features", "— Save changes and keep dialog open")}<br />
+  <strong>
+    {dgettext("help_features", "Preview")}
+  </strong>
+  {dgettext("help_features", "— Play the selected sound")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-mute">{gettext("Mute")}</.help_link>
-  · <.help_link topic="feature-notify-list">{gettext("Notify List")}</.help_link>
+  <.help_link topic="feature-mute">{dgettext("help_features", "Mute")}</.help_link>
+  ·
+  <.help_link topic="feature-notify-list">{dgettext("help_features", "Notify List")}</.help_link>
 </p>

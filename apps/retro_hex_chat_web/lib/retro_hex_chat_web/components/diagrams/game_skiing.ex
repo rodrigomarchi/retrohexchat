@@ -17,7 +17,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameSkiing do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext(
+        dgettext(
+          "diagrams",
           "Hex Skiing game screen: two skiers descending through trees and slalom gates with avalanche behind"
         )
       }
@@ -46,13 +47,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameSkiing do
       <rect x="280" y="280" width="6" height="8" fill="#00d4ff" />
       <%!-- HUD --%>
       <text x="30" y="340" fill="#00ff41" font-size="10" font-family="'Courier New',monospace">
-        {gettext("P1: 42.3s")}
+        {dgettext("diagrams", "P1: 42.3s")}
       </text>
       <text x="400" y="340" fill="#00d4ff" font-size="10" font-family="'Courier New',monospace">
-        {gettext("P2: 39.8s")}
+        {dgettext("diagrams", "P2: 39.8s")}
       </text>
       <text x="210" y="340" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
-        {gettext("R1")}
+        {dgettext("diagrams", "R1")}
       </text>
     </svg>
     """

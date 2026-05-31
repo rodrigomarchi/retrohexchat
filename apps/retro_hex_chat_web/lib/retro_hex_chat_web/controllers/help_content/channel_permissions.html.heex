@@ -1,170 +1,207 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "Every channel member has a rank that determines what they can do. Higher ranks inherit all privileges of lower ranks."
   )}
 </p>
 
-<.help_h4 icon={:icon_role_owner}>{gettext("Rank Hierarchy")}</.help_h4>
+<.help_h4 icon={:icon_role_owner}>{dgettext("help_channels", "Rank Hierarchy")}</.help_h4>
 <p>
   <strong>~</strong>
-  {gettext("Owner (rank 4) — Full control over the channel.")}<br />
+  {dgettext("help_channels", "Owner (rank 4) — Full control over the channel.")}<br />
   <strong>@</strong>
-  {gettext("Operator (rank 3) — Day-to-day channel management.")}<br />
+  {dgettext("help_channels", "Operator (rank 3) — Day-to-day channel management.")}<br />
   <strong>%</strong>
-  {gettext("Half-Operator (rank 2) — Limited moderation duties.")}<br />
+  {dgettext("help_channels", "Half-Operator (rank 2) — Limited moderation duties.")}<br />
   <strong>+</strong>
-  {gettext("Voiced (rank 1) — Can speak in moderated channels.")}<br />
-  {gettext("Regular (rank 0) — Standard member, no special privileges.")}
+  {dgettext("help_channels", "Voiced (rank 1) — Can speak in moderated channels.")}<br />
+  {dgettext("help_channels", "Regular (rank 0) — Standard member, no special privileges.")}
 </p>
 
-<.help_h4 icon={:icon_role_operator}>{gettext("What Each Rank Can Do")}</.help_h4>
+<.help_h4 icon={:icon_role_operator}>
+  {dgettext("help_channels", "What Each Rank Can Do")}
+</.help_h4>
 
-<p><strong>{gettext("Owner (~)")}</strong></p>
+<p><strong>{dgettext("help_channels", "Owner (~)")}</strong></p>
 <ul>
-  <li>{gettext("Everything an Operator can do")}</li>
-  <li>{gettext("Grant/revoke Owner status (")}<code>{gettext("/mode +q")}</code>)</li>
-  <li>{gettext("Cannot be kicked or banned by anyone")}</li>
-  <li>{gettext("Drop (unregister) the channel via ChanServ")}</li>
+  <li>{dgettext("help_channels", "Everything an Operator can do")}</li>
+  <li>
+    {dgettext("help_channels", "Grant/revoke Owner status (")}<code>{dgettext("help_channels", "/mode +q")}</code>)
+  </li>
+  <li>{dgettext("help_channels", "Cannot be kicked or banned by anyone")}</li>
+  <li>{dgettext("help_channels", "Drop (unregister) the channel via ChanServ")}</li>
 </ul>
 
-<p><strong>{gettext("Operator (@)")}</strong></p>
+<p><strong>{dgettext("help_channels", "Operator (@)")}</strong></p>
 <ul>
-  <li>{gettext("Everything a Half-Operator can do")}</li>
+  <li>{dgettext("help_channels", "Everything a Half-Operator can do")}</li>
   <li>
-    {gettext("Grant/revoke Operator and Half-Operator status (")}<code>{gettext("/mode +o")}</code>, <code>{gettext("/mode +h")}</code>)
+    {dgettext("help_channels", "Grant/revoke Operator and Half-Operator status (")}<code>{dgettext("help_channels", "/mode +o")}</code>, <code>{dgettext("help_channels", "/mode +h")}</code>)
   </li>
   <li>
-    {gettext("Ban and unban users (")}<code>{gettext("/ban")}</code>, <code>{gettext("/unban")}</code>, <code>{gettext("/mode +b/-b")}</code>)
+    {dgettext("help_channels", "Ban and unban users (")}<code>{dgettext("help_channels", "/ban")}</code>, <code>{dgettext("help_channels", "/unban")}</code>, <code>{dgettext("help_channels", "/mode +b/-b")}</code>)
   </li>
   <li>
-    {gettext("Set all channel modes (")}<code>{gettext("/mode +m")}</code>, <code>{gettext("+i")}</code>, <code>{gettext("+t")}</code>, <code>{gettext("+k")}</code>, <code>{gettext("+l")}</code>, <code>{gettext("+n")}</code>, <code>{gettext("+s")}</code>, <code>{gettext("+p")}</code>, <code>{gettext("+c")}</code>, <code>{gettext("+R")}</code>, <code>{gettext("+K")}</code>, <code>{gettext("+j")}</code>)
+    {dgettext("help_channels", "Set all channel modes (")}<code>{dgettext("help_channels", "/mode +m")}</code>, <code>{dgettext("help_channels", "+i")}</code>, <code>{dgettext("help_channels", "+t")}</code>, <code>{dgettext("help_channels", "+k")}</code>, <code>{dgettext("help_channels", "+l")}</code>, <code>{dgettext("help_channels", "+n")}</code>, <code>{dgettext("help_channels", "+s")}</code>, <code>{dgettext("help_channels", "+p")}</code>, <code>{dgettext("help_channels", "+c")}</code>, <code>{dgettext("help_channels", "+R")}</code>, <code>{dgettext("help_channels", "+K")}</code>, <code>{dgettext("help_channels", "+j")}</code>)
   </li>
-  <li>{gettext("Change topic when channel is +t (topic locked)")}</li>
+  <li>{dgettext("help_channels", "Change topic when channel is +t (topic locked)")}</li>
 </ul>
 
-<p><strong>{gettext("Half-Operator (%)")}</strong></p>
+<p><strong>{dgettext("help_channels", "Half-Operator (%)")}</strong></p>
 <ul>
-  <li>{gettext("Kick users of lower rank")}</li>
-  <li>{gettext("Grant/revoke Voice (")}<code>{gettext("/mode +v")}</code>)</li>
+  <li>{dgettext("help_channels", "Kick users of lower rank")}</li>
+  <li>
+    {dgettext("help_channels", "Grant/revoke Voice (")}<code>{dgettext("help_channels", "/mode +v")}</code>)
+  </li>
 </ul>
 
-<p><strong>{gettext("Voiced (+)")}</strong></p>
+<p><strong>{dgettext("help_channels", "Voiced (+)")}</strong></p>
 <ul>
-  <li>{gettext("Speak in moderated (+m) channels")}</li>
+  <li>{dgettext("help_channels", "Speak in moderated (+m) channels")}</li>
 </ul>
 
-<p><strong>{gettext("Regular")}</strong></p>
+<p><strong>{dgettext("help_channels", "Regular")}</strong></p>
 <ul>
-  <li>{gettext("Send messages (unless channel is +m moderated)")}</li>
-  <li>{gettext("Change topic (unless channel is +t topic-locked)")}</li>
-  <li>{gettext("Join channel (subject to +i, +k, +l, +R, +b restrictions)")}</li>
+  <li>{dgettext("help_channels", "Send messages (unless channel is +m moderated)")}</li>
+  <li>{dgettext("help_channels", "Change topic (unless channel is +t topic-locked)")}</li>
+  <li>
+    {dgettext("help_channels", "Join channel (subject to +i, +k, +l, +R, +b restrictions)")}
+  </li>
 </ul>
 
-<.help_h4 icon={:icon_rules}>{gettext("Key Rules")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Key Rules")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Rank comparison")}</strong>{gettext(
+    <strong>{dgettext("help_channels", "Rank comparison")}</strong>{dgettext(
+      "help_channels",
       ": You can only kick or ban users with a"
     )}
-    <em>{gettext("strictly lower")}</em>
-    {gettext("rank than yours. An operator cannot kick another operator.")}
+    <em>{dgettext("help_channels", "strictly lower")}</em>
+    {dgettext("help_channels", "rank than yours. An operator cannot kick another operator.")}
   </li>
-  <li><strong>{gettext("Self-actions")}</strong>{gettext(": You cannot ban yourself.")}</li>
   <li>
-    <strong>{gettext("Ban vs. Kick")}</strong>{gettext(
+    <strong>{dgettext("help_channels", "Self-actions")}</strong>{dgettext(
+      "help_channels",
+      ": You cannot ban yourself."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_channels", "Ban vs. Kick")}</strong>{dgettext(
+      "help_channels",
       ": Kicking requires Half-Operator or higher. Banning requires Operator or higher."
     )}
   </li>
   <li>
-    <strong>{gettext("Mode setting")}</strong>{gettext(
+    <strong>{dgettext("help_channels", "Mode setting")}</strong>{dgettext(
+      "help_channels",
       ": Most channel modes require Operator. Only Owners can grant +q. Half-Operators can only grant +v."
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_shield}>{gettext("ChanServ Auto-Grant")}</.help_h4>
+<.help_h4 icon={:icon_shield}>{dgettext("help_channels", "ChanServ Auto-Grant")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "For registered channels, ChanServ automatically assigns ranks when identified users join:"
   )}
 </p>
 <ul>
   <li>
-    <strong>{gettext("Founder")}</strong> {gettext("&rarr; Owner (~) automatically on join")}
+    <strong>{dgettext("help_channels", "Founder")}</strong> {dgettext(
+      "help_channels",
+      "&rarr; Owner (~) automatically on join"
+    )}
   </li>
   <li>
-    <strong>{gettext("SOP")}</strong> {gettext(
+    <strong>{dgettext("help_channels", "SOP")}</strong> {dgettext(
+      "help_channels",
       "(Super Operator) &rarr; Operator (@) automatically on join"
     )}
   </li>
   <li>
-    <strong>{gettext("AOP")}</strong> {gettext(
+    <strong>{dgettext("help_channels", "AOP")}</strong> {dgettext(
+      "help_channels",
       "(Auto Operator) &rarr; Operator (@) automatically on join"
     )}
   </li>
   <li>
-    <strong>{gettext("VOP")}</strong> {gettext(
+    <strong>{dgettext("help_channels", "VOP")}</strong> {dgettext(
+      "help_channels",
       "(Auto Voice) &rarr; Voiced (+) automatically on join"
     )}
   </li>
 </ul>
 <p>
-  {gettext("You must be identified with NickServ (")}<code>{gettext("/ns identify")}</code>{gettext(
+  {dgettext("help_channels", "You must be identified with NickServ (")}<code>{dgettext("help_channels", "/ns identify")}</code>{dgettext(
+    "help_channels",
     ") for ChanServ to recognize your access level."
   )}
 </p>
 
-<.help_h4 icon={:icon_ban}>{gettext("Join Restrictions")}</.help_h4>
-<p>{gettext("Channel modes can restrict who may join:")}</p>
+<.help_h4 icon={:icon_ban}>{dgettext("help_channels", "Join Restrictions")}</.help_h4>
+<p>{dgettext("help_channels", "Channel modes can restrict who may join:")}</p>
 <ul>
   <li>
-    <strong>{gettext("+b")}</strong>
-    {gettext("(banned) — Banned users cannot join. Removed with")}
-    <code>{gettext("/unban")}</code> or <code>{gettext("/mode -b")}</code>.
+    <strong>{dgettext("help_channels", "+b")}</strong>
+    {dgettext("help_channels", "(banned) — Banned users cannot join. Removed with")}
+    <code>{dgettext("help_channels", "/unban")}</code>
+    or <code>{dgettext("help_channels", "/mode -b")}</code>.
   </li>
   <li>
-    <strong>{gettext("+i")}</strong> {gettext(
+    <strong>{dgettext("help_channels", "+i")}</strong> {dgettext(
+      "help_channels",
       "(invite-only) — Only invited users or those with ban exceptions can join."
     )}
   </li>
   <li>
-    <strong>{gettext("+k")}</strong>
-    {gettext("(key) — Requires the correct password:")} <code>{gettext("/join #channel password")}</code>.
+    <strong>{dgettext("help_channels", "+k")}</strong>
+    {dgettext("help_channels", "(key) — Requires the correct password:")} <code>{dgettext("help_channels", "/join #channel password")}</code>.
   </li>
   <li>
-    <strong>{gettext("+l")}</strong> {gettext("(limit) — Channel cannot exceed the user limit.")}
+    <strong>{dgettext("help_channels", "+l")}</strong> {dgettext(
+      "help_channels",
+      "(limit) — Channel cannot exceed the user limit."
+    )}
   </li>
   <li>
-    <strong>{gettext("+R")}</strong> {gettext(
+    <strong>{dgettext("help_channels", "+R")}</strong> {dgettext(
+      "help_channels",
       "(registered-only) — Only registered and identified users can join."
     )}
   </li>
   <li>
-    <strong>{gettext("+j")}</strong> {gettext(
+    <strong>{dgettext("help_channels", "+j")}</strong> {dgettext(
+      "help_channels",
       "(throttle) — Limits the rate of joins (anti-flood)."
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_mute}>{gettext("Speaking Restrictions")}</.help_h4>
+<.help_h4 icon={:icon_mute}>{dgettext("help_channels", "Speaking Restrictions")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("+m")}</strong> {gettext(
+    <strong>{dgettext("help_channels", "+m")}</strong> {dgettext(
+      "help_channels",
       "(moderated) — Only Voiced, Half-Operator, Operator, and Owner can speak."
     )}
   </li>
   <li>
-    <strong>{gettext("+n")}</strong> {gettext(
+    <strong>{dgettext("help_channels", "+n")}</strong> {dgettext(
+      "help_channels",
       "(no external) — Only channel members can send messages."
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="chanserv">{gettext("ChanServ Overview")}</.help_link>
-  · <.help_link topic="channel-modes-overview">{gettext("Channel Modes")}</.help_link>
-  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
-  · <.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
-  · <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
+  <.help_link topic="chanserv">{dgettext("help_channels", "ChanServ Overview")}</.help_link>
+  ·
+  <.help_link topic="channel-modes-overview">
+    {dgettext("help_channels", "Channel Modes")}
+  </.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_channels", "/mode")}</.help_link>
+  · <.help_link topic="cmd-ban">{dgettext("help_channels", "/ban")}</.help_link>
+  · <.help_link topic="cmd-kick">{dgettext("help_channels", "/kick")}</.help_link>
 </p>

@@ -1,53 +1,66 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "ChanServ administration: drop channel registrations, transfer founders, and manage access lists. Requires server administrator role."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/admin cs drop #<channel> /admin cs info #<channel> /admin cs transfer #<channel> @<nick> /admin cs access #<channel> /admin cs access #<channel> add <level> @<nick> /admin cs access #<channel> del <level> @<nick>")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin cs drop #<channel> /admin cs info #<channel> /admin cs transfer #<channel> @<nick> /admin cs access #<channel> /admin cs access #<channel> add <level> @<nick> /admin cs access #<channel> del <level> @<nick>")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Subcommands")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Subcommands")}</.help_h4>
 <ul>
   <li>
-    <code>drop</code> {gettext("— Force-drop a channel registration (bypasses founder check)")}
+    <code>drop</code> {dgettext(
+      "help_commands",
+      "— Force-drop a channel registration (bypasses founder check)"
+    )}
   </li>
   <li>
-    <code>info</code> {gettext(
+    <code>info</code> {dgettext(
+      "help_commands",
       "— View detailed registration info, founder, modes, and access list"
     )}
   </li>
-  <li><code>transfer</code> {gettext("— Transfer channel founder to another nick")}</li>
-  <li><code>access</code> {gettext("— View or modify the channel access list")}</li>
   <li>
-    <code>{gettext("access add <level> @nick")}</code>
-    {gettext("— Add a user to the access list at the specified level (sop, aop, vop)")}
+    <code>transfer</code> {dgettext("help_commands", "— Transfer channel founder to another nick")}
   </li>
   <li>
-    <code>{gettext("access del <level> @nick")}</code> {gettext(
+    <code>access</code> {dgettext("help_commands", "— View or modify the channel access list")}
+  </li>
+  <li>
+    <code>{dgettext("help_commands", "access add <level> @nick")}</code>
+    {dgettext(
+      "help_commands",
+      "— Add a user to the access list at the specified level (sop, aop, vop)"
+    )}
+  </li>
+  <li>
+    <code>{dgettext("help_commands", "access del <level> @nick")}</code> {dgettext(
+      "help_commands",
       "— Remove a user from the access list"
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Admin bypasses normal founder/rank checks")}</li>
-  <li>{gettext("All actions are recorded in the audit log")}</li>
+  <li>{dgettext("help_commands", "Admin bypasses normal founder/rank checks")}</li>
+  <li>{dgettext("help_commands", "All actions are recorded in the audit log")}</li>
   <li>
-    {gettext("Access levels:")} <code>sop</code>
-    {gettext("(super op),")} <code>aop</code>
-    {gettext("(auto op),")} <code>vop</code>
-    {gettext("(auto voice)")}
+    {dgettext("help_commands", "Access levels:")} <code>sop</code>
+    {dgettext("help_commands", "(super op),")} <code>aop</code>
+    {dgettext("help_commands", "(auto op),")} <code>vop</code>
+    {dgettext("help_commands", "(auto voice)")}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/admin cs info #general /admin cs transfer #general @NewOwner /admin cs access #general add sop @TrustedUser /admin cs access #general del aop @OldMod /admin cs drop #abandoned")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin cs info #general /admin cs transfer #general @NewOwner /admin cs access #general add sop @TrustedUser /admin cs access #general del aop @OldMod /admin cs drop #abandoned")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-admin">{gettext("/admin")}</.help_link>
-  · <.help_link topic="cmd-cs">{gettext("/cs")}</.help_link>
-  · <.help_link topic="chanserv">{gettext("ChanServ")}</.help_link>
+  <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  · <.help_link topic="cmd-cs">{dgettext("help_commands", "/cs")}</.help_link>
+  · <.help_link topic="chanserv">{dgettext("help_commands", "ChanServ")}</.help_link>
 </p>

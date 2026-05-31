@@ -1,16 +1,23 @@
 <p>
-  {gettext("RetroHexChat uses fixed keyboard shortcuts for all actions. All shortcuts use")}
-  <strong>{gettext("Ctrl+Shift")}</strong>
-  {gettext("combinations to avoid conflicting with browser shortcuts.")}
+  {dgettext(
+    "help_features",
+    "RetroHexChat uses fixed keyboard shortcuts for all actions. All shortcuts use"
+  )}
+  <strong>{dgettext("help_features", "Ctrl+Shift")}</strong>
+  {dgettext("help_features", "combinations to avoid conflicting with browser shortcuts.")}
 </p>
-<.help_h4 icon={:icon_dialog_cheatsheet}>{gettext("Quick Reference")}</.help_h4>
+<.help_h4 icon={:icon_dialog_cheatsheet}>{dgettext("help_features", "Quick Reference")}</.help_h4>
 <p>
-  {gettext("Press")} <strong>{gettext("Ctrl+Shift+/")}</strong>
-  {gettext(
+  {dgettext("help_features", "Press")}
+  <strong>{dgettext("help_features", "Ctrl+Shift+/")}</strong>
+  {dgettext(
+    "help_features",
     "to open the Shortcut Cheatsheet at any time for a complete list of all available shortcuts."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
+  <.help_link topic="keyboard-shortcuts">
+    {dgettext("help_features", "Keyboard Shortcuts")}
+  </.help_link>
 </p>

@@ -54,9 +54,9 @@ defmodule RetroHexChatWeb.HelpLive.Index do
           <.help_icon name={@selected_topic.icon} class="w-6 h-6 flex-shrink-0" />
           <div>
             <h1 class="text-base font-bold text-text">{@selected_topic.title}</h1>
-            <nav aria-label={gettext("Breadcrumb")} class="text-xs text-muted-foreground">
+            <nav aria-label={dgettext("help", "Breadcrumb")} class="text-xs text-muted-foreground">
               <.link navigate={~p"/chat/help"} class="hover:underline text-link">
-                {gettext("Help")}
+                {dgettext("help", "Help")}
               </.link>
               {" > "}{@selected_topic.category}{" > "}{@selected_topic.title}
             </nav>
@@ -81,10 +81,12 @@ defmodule RetroHexChatWeb.HelpLive.Index do
 
       <div :if={!@selected_topic} class="text-center py-12 text-muted-foreground">
         <Icons.icon_notepad class="w-8 h-8 mx-auto mb-3 opacity-50" />
-        <h1 class="text-base font-bold mb-2 text-text">{gettext("RetroHexChat Help")}</h1>
-        <p class="text-sm">{gettext("Select a topic from the navigation pane to get started.")}</p>
+        <h1 class="text-base font-bold mb-2 text-text">{dgettext("help", "RetroHexChat Help")}</h1>
+        <p class="text-sm">
+          {dgettext("help", "Select a topic from the navigation pane to get started.")}
+        </p>
         <p class="text-xs mt-1">
-          {gettext("Browse by category or open Help Topics from the chat menu.")}
+          {dgettext("help", "Browse by category or open Help Topics from the chat menu.")}
         </p>
       </div>
     </.help_layout>
@@ -101,12 +103,13 @@ defmodule RetroHexChatWeb.HelpLive.Index do
   defp resolve_topic(_params), do: HelpTopics.get_topic(@default_topic)
 
   @spec page_title(map() | nil) :: String.t()
-  defp page_title(nil), do: gettext("Help — RetroHexChat")
-  defp page_title(topic), do: gettext("%{topic} — RetroHexChat Help", topic: topic.title)
+  defp page_title(nil), do: dgettext("help", "Help — RetroHexChat")
+  defp page_title(topic), do: dgettext("help", "%{topic} — RetroHexChat Help", topic: topic.title)
 
   @spec page_description(map() | nil) :: String.t()
   defp page_description(nil) do
-    gettext(
+    dgettext(
+      "help",
       "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts."
     )
   end

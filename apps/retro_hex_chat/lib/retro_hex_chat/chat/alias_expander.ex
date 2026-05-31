@@ -27,7 +27,10 @@ defmodule RetroHexChat.Chat.AliasExpander do
   def validate_expansion(expansion) do
     if contains_chaining?(expansion) do
       {:error,
-       gettext("Expansion must not contain command chaining characters (|, &&, ;, or newlines)")}
+       dgettext(
+         "chat",
+         "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
+       )}
     else
       :ok
     end

@@ -1,21 +1,21 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">{gettext("Status Bar")}</h2>
+  <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Status Bar")}</h2>
 
   <.showcase_card
-    title={gettext("Basic Status Bar")}
+    title={dgettext("showcase", "Basic Status Bar")}
     description="A simple status bar with text fields."
   >
     <.window>
-      <.window_title_bar title={gettext("Application")}>
+      <.window_title_bar title={dgettext("showcase", "Application")}>
         <:icon><Icons.icon_tab_status class="w-[16px] h-[16px]" /></:icon>
       </.window_title_bar>
       <.window_body>
         <div class="shadow-retro-field bg-white p-2 min-h-[40px]">
-          <p class="text-sm font-mono">{gettext("Content area")}</p>
+          <p class="text-sm font-mono">{dgettext("showcase", "Content area")}</p>
         </div>
       </.window_body>
       <.window_status_bar>
-        <.window_status_bar_field grow>{gettext("Ready")}</.window_status_bar_field>
+        <.window_status_bar_field grow>{dgettext("showcase", "Ready")}</.window_status_bar_field>
       </.window_status_bar>
     </.window>
     <.code_example>
@@ -26,15 +26,17 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Multi-Field Status Bar")}
+    title={dgettext("showcase", "Multi-Field Status Bar")}
     description="Status bar with multiple segments."
   >
     <.window_status_bar>
-      <.window_status_bar_field grow>{gettext("Ln 42, Col 8")}</.window_status_bar_field>
-      <.window_status_bar_field>{gettext("Spaces: 2")}</.window_status_bar_field>
-      <.window_status_bar_field>{gettext("UTF-8")}</.window_status_bar_field>
-      <.window_status_bar_field>{gettext("LF")}</.window_status_bar_field>
-      <.window_status_bar_field>{gettext("Elixir")}</.window_status_bar_field>
+      <.window_status_bar_field grow>
+        {dgettext("showcase", "Ln 42, Col 8")}
+      </.window_status_bar_field>
+      <.window_status_bar_field>{dgettext("showcase", "Spaces: 2")}</.window_status_bar_field>
+      <.window_status_bar_field>{dgettext("showcase", "UTF-8")}</.window_status_bar_field>
+      <.window_status_bar_field>{dgettext("showcase", "LF")}</.window_status_bar_field>
+      <.window_status_bar_field>{dgettext("showcase", "Elixir")}</.window_status_bar_field>
     </.window_status_bar>
     <.code_example>
       &lt;.window_status_bar&gt;
@@ -48,13 +50,16 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("With Status Indicators")}
+    title={dgettext("showcase", "With Status Indicators")}
     description="Status fields with colored dots and icons."
   >
     <.window_status_bar>
       <.window_status_bar_field>
         <span class="inline-flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-online inline-block" /> {gettext("Troll")}
+          <span class="w-2 h-2 rounded-full bg-online inline-block" /> {dgettext(
+            "showcase",
+            "Troll"
+          )}
         </span>
       </.window_status_bar_field>
       <.window_status_bar_field>
@@ -62,12 +67,12 @@
       </.window_status_bar_field>
       <.window_status_bar_field>
         <span class="inline-flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-online inline-block" /> {gettext("On")}
+          <span class="w-2 h-2 rounded-full bg-online inline-block" /> {dgettext("showcase", "On")}
         </span>
       </.window_status_bar_field>
-      <.window_status_bar_field>{gettext("Lag: 8ms")}</.window_status_bar_field>
-      <.window_status_bar_field>{gettext("13:24 UTC-3")}</.window_status_bar_field>
-      <.window_status_bar_field>{gettext("Vol")}</.window_status_bar_field>
+      <.window_status_bar_field>{dgettext("showcase", "Lag: 8ms")}</.window_status_bar_field>
+      <.window_status_bar_field>{dgettext("showcase", "13:24 UTC-3")}</.window_status_bar_field>
+      <.window_status_bar_field>{dgettext("showcase", "Vol")}</.window_status_bar_field>
     </.window_status_bar>
     <.code_example>
       &lt;.window_status_bar_field&gt;
@@ -79,34 +84,45 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Platform IRC Status Bar")}
+    title={dgettext("showcase", "Platform IRC Status Bar")}
     description="Full replication of the platform's bottom status bar."
   >
     <.window>
-      <.window_title_bar title={gettext("RetroHexChat")} controls={[:minimize, :maximize, :close]}>
+      <.window_title_bar
+        title={dgettext("showcase", "RetroHexChat")}
+        controls={[:minimize, :maximize, :close]}
+      >
         <:icon><Icons.icon_chat class="w-[16px] h-[16px]" /></:icon>
       </.window_title_bar>
       <.window_body>
         <div class="shadow-retro-field bg-white p-2 min-h-[60px]">
-          <p class="text-sm font-mono text-gray-500 italic">{gettext("Chat content area...")}</p>
+          <p class="text-sm font-mono text-gray-500 italic">
+            {dgettext("showcase", "Chat content area...")}
+          </p>
         </div>
       </.window_body>
       <.window_status_bar>
         <.window_status_bar_field>
           <span class="inline-flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-online inline-block" /> {gettext("Troll")}
+            <span class="w-2 h-2 rounded-full bg-online inline-block" /> {dgettext(
+              "showcase",
+              "Troll"
+            )}
           </span>
         </.window_status_bar_field>
         <.window_status_bar_field grow>
-          <span class="inline-flex items-center gap-1">{gettext("#lobby (4)")}</span>
+          <span class="inline-flex items-center gap-1">{dgettext("showcase", "#lobby (4)")}</span>
         </.window_status_bar_field>
         <.window_status_bar_field>
           <span class="inline-flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-online inline-block" /> {gettext("On")}
+            <span class="w-2 h-2 rounded-full bg-online inline-block" /> {dgettext(
+              "showcase",
+              "On"
+            )}
           </span>
         </.window_status_bar_field>
-        <.window_status_bar_field>{gettext("Lag: --")}</.window_status_bar_field>
-        <.window_status_bar_field>{gettext("13:23 UTC-3")}</.window_status_bar_field>
+        <.window_status_bar_field>{dgettext("showcase", "Lag: --")}</.window_status_bar_field>
+        <.window_status_bar_field>{dgettext("showcase", "13:23 UTC-3")}</.window_status_bar_field>
       </.window_status_bar>
     </.window>
   </.showcase_card>

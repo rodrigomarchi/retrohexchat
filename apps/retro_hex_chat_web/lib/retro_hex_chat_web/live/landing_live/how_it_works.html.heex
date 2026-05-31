@@ -1,198 +1,241 @@
 <.landing_layout active_page={@active_page}>
   <section class="m-4" aria-labelledby="how-it-works-heading">
-    <h2 id="how-it-works-heading" class="sr-only">{gettext("How It Works")}</h2>
+    <h2 id="how-it-works-heading" class="sr-only">{dgettext("landing", "How It Works")}</h2>
 
     <div class="grid md:grid-cols-2 gap-4 mb-4">
       <%!-- ══════════════ YOUR SERVER ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Your Server")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "Your Server")} controls={[:close]}>
           <:icon><Icons.icon_server class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">{gettext("One server. Fully yours.")}</h3>
+          <h3 class="text-sm font-bold mb-2">
+            {dgettext("landing", "One server. Fully yours.")}
+          </h3>
           <div class="space-y-2 mb-3">
             <div class="shadow-retro-field bg-white p-2 text-xs">
               <strong>
-                <Icons.icon_database class="w-4 h-4 inline" /> {gettext("Your database")}
+                <Icons.icon_database class="w-4 h-4 inline" /> {dgettext(
+                  "landing",
+                  "Your database"
+                )}
               </strong>
-              <br /> {gettext("Messages, users, channels &mdash; all stored on your machine.")}
+              <br /> {dgettext(
+                "landing",
+                "Messages, users, channels &mdash; all stored on your machine."
+              )}
             </div>
             <div class="shadow-retro-field bg-white p-2 text-xs">
-              <strong><Icons.icon_rules class="w-4 h-4 inline" /> {gettext("Your rules")}</strong>
-              <br /> {gettext(
+              <strong>
+                <Icons.icon_rules class="w-4 h-4 inline" /> {dgettext("landing", "Your rules")}
+              </strong>
+              <br /> {dgettext(
+                "landing",
                 "You decide who joins, what channels exist, and how moderation works."
               )}
             </div>
             <div class="shadow-retro-field bg-white p-2 text-xs">
               <strong>
-                <Icons.icon_backup class="w-4 h-4 inline" /> {gettext("Your backups")}
+                <Icons.icon_backup class="w-4 h-4 inline" /> {dgettext("landing", "Your backups")}
               </strong>
-              <br /> {gettext("Export, restore, migrate &mdash; your data is always accessible.")}
+              <br /> {dgettext(
+                "landing",
+                "Export, restore, migrate &mdash; your data is always accessible."
+              )}
             </div>
           </div>
           <p class="text-sm mb-1">
-            {gettext(
+            {dgettext(
+              "landing",
               "Anyone can run a server. Install it on a $5/month VPS, a Raspberry Pi, or your own hardware. You control everything."
             )}
           </p>
           <p class="text-sm">
-            <strong>{gettext("Public:")}</strong> {gettext("open to anyone who wants to join.")}<br />
-            <strong>{gettext("Private:")}</strong> {gettext(
+            <strong>{dgettext("landing", "Public:")}</strong> {dgettext(
+              "landing",
+              "open to anyone who wants to join."
+            )}<br />
+            <strong>{dgettext("landing", "Private:")}</strong> {dgettext(
+              "landing",
               "invite-only, for your company or group."
             )}
           </p>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("Self-hosted")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Self-hosted")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ P2P CONNECTIONS ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("P2P Connections")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "P2P Connections")} controls={[:close]}>
           <:icon><Icons.icon_p2p class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">{gettext("Direct connections via WebRTC.")}</h3>
+          <h3 class="text-sm font-bold mb-2">
+            {dgettext("landing", "Direct connections via WebRTC.")}
+          </h3>
           <div
             class="shadow-retro-field bg-white p-3 mb-2"
-            aria-label={gettext("WebRTC signaling and data flow diagram")}
+            aria-label={dgettext("landing", "WebRTC signaling and data flow diagram")}
           >
             <.diagram_p2p_flow class="w-full max-w-lg mx-auto" />
           </div>
           <p class="text-sm mb-1">
-            {gettext("The server only handles")}
-            <strong>signaling</strong> {gettext(
+            {dgettext("landing", "The server only handles")}
+            <strong>signaling</strong> {dgettext(
+              "landing",
               "&mdash; helping users find each other. Once connected, all data flows directly between browsers via WebRTC."
             )}
           </p>
           <p class="text-sm">
-            {gettext("If a direct connection isn&rsquo;t possible (strict firewalls), a")}
-            <strong>{gettext("TURN relay")}</strong> {gettext(
+            {dgettext(
+              "landing",
+              "If a direct connection isn&rsquo;t possible (strict firewalls), a"
+            )}
+            <strong>{dgettext("landing", "TURN relay")}</strong> {dgettext(
+              "landing",
               "is used as fallback &mdash; still encrypted end-to-end."
             )}
           </p>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("Peer-to-peer")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Peer-to-peer")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ PRIVACY ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Privacy Comparison")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "Privacy Comparison")} controls={[:close]}>
           <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">{gettext("Big Tech vs. Retro Hex Chat.")}</h3>
+          <h3 class="text-sm font-bold mb-2">
+            {dgettext("landing", "Big Tech vs. Retro Hex Chat.")}
+          </h3>
           <div class="shadow-retro-field bg-white p-2 mb-2 overflow-x-auto">
             <table class="w-full text-xs border-collapse">
               <thead>
                 <tr>
                   <th class="text-left p-1 border-b border-gray-400"></th>
-                  <th class="text-left p-1 border-b border-gray-400">{gettext("Big Tech")}</th>
                   <th class="text-left p-1 border-b border-gray-400">
-                    {gettext("Retro Hex Chat")}
+                    {dgettext("landing", "Big Tech")}
+                  </th>
+                  <th class="text-left p-1 border-b border-gray-400">
+                    {dgettext("landing", "Retro Hex Chat")}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td class="p-1 border-b border-gray-200">
-                    <strong>{gettext("Messages")}</strong>
+                    <strong>{dgettext("landing", "Messages")}</strong>
                   </td>
                   <td class="p-1 border-b border-gray-200">
-                    {gettext("Stored on their servers, mined for ads")}
+                    {dgettext("landing", "Stored on their servers, mined for ads")}
                   </td>
                   <td class="p-1 border-b border-gray-200">
-                    {gettext("Stored on YOUR server, never leaves")}
+                    {dgettext("landing", "Stored on YOUR server, never leaves")}
                   </td>
                 </tr>
                 <tr>
                   <td class="p-1 border-b border-gray-200">
-                    <strong>{gettext("Calls")}</strong>
+                    <strong>{dgettext("landing", "Calls")}</strong>
                   </td>
                   <td class="p-1 border-b border-gray-200">
-                    {gettext("Routed through corporate infrastructure")}
+                    {dgettext("landing", "Routed through corporate infrastructure")}
                   </td>
                   <td class="p-1 border-b border-gray-200">
-                    {gettext("Direct P2P &mdash; server never sees them")}
+                    {dgettext("landing", "Direct P2P &mdash; server never sees them")}
                   </td>
                 </tr>
                 <tr>
                   <td class="p-1 border-b border-gray-200">
-                    <strong>{gettext("Your data")}</strong>
+                    <strong>{dgettext("landing", "Your data")}</strong>
                   </td>
                   <td class="p-1 border-b border-gray-200">
-                    {gettext("Trains their AI, sold to advertisers")}
+                    {dgettext("landing", "Trains their AI, sold to advertisers")}
                   </td>
                   <td class="p-1 border-b border-gray-200">
-                    {gettext("Stays in your database, period")}
+                    {dgettext("landing", "Stays in your database, period")}
                   </td>
                 </tr>
                 <tr>
-                  <td class="p-1 border-b border-gray-200"><strong>{gettext("Code")}</strong></td>
                   <td class="p-1 border-b border-gray-200">
-                    {gettext("Closed source &mdash; trust us")}
+                    <strong>{dgettext("landing", "Code")}</strong>
                   </td>
                   <td class="p-1 border-b border-gray-200">
-                    {gettext("Open source &mdash; verify yourself")}
+                    {dgettext("landing", "Closed source &mdash; trust us")}
+                  </td>
+                  <td class="p-1 border-b border-gray-200">
+                    {dgettext("landing", "Open source &mdash; verify yourself")}
                   </td>
                 </tr>
                 <tr>
-                  <td class="p-1"><strong>{gettext("Control")}</strong></td>
-                  <td class="p-1">{gettext("They can ban you anytime")}</td>
-                  <td class="p-1">{gettext("You own the server &mdash; nobody can")}</td>
+                  <td class="p-1"><strong>{dgettext("landing", "Control")}</strong></td>
+                  <td class="p-1">{dgettext("landing", "They can ban you anytime")}</td>
+                  <td class="p-1">
+                    {dgettext("landing", "You own the server &mdash; nobody can")}
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
           <p class="text-sm">
-            {gettext("No tracking. No profiling. No algorithms. Your conversations are")} <strong>{gettext("your business")}</strong>.
+            {dgettext(
+              "landing",
+              "No tracking. No profiling. No algorithms. Your conversations are"
+            )} <strong>{dgettext("landing", "your business")}</strong>.
           </p>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("Your data")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Your data")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ SECURITY ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Security Layers")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "Security Layers")} controls={[:close]}>
           <:icon><Icons.icon_security class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">{gettext("Security at every layer.")}</h3>
+          <h3 class="text-sm font-bold mb-2">
+            {dgettext("landing", "Security at every layer.")}
+          </h3>
           <div
             class="shadow-retro-field bg-white p-3 mb-2"
-            aria-label={gettext("Security layers diagram")}
+            aria-label={dgettext("landing", "Security layers diagram")}
           >
             <.diagram_security_layers class="w-full max-w-lg mx-auto" />
           </div>
           <p class="text-sm">
-            <strong>{gettext("Server connection:")}</strong> {gettext(
+            <strong>{dgettext("landing", "Server connection:")}</strong> {dgettext(
+              "landing",
               "HTTPS and WSS with TLS encryption."
             )}<br />
-            <strong>{gettext("P2P calls:")}</strong> {gettext(
+            <strong>{dgettext("landing", "P2P calls:")}</strong> {dgettext(
+              "landing",
               "DTLS-SRTP encryption built into WebRTC."
             )}<br />
-            <strong>{gettext("Passwords:")}</strong> {gettext(
+            <strong>{dgettext("landing", "Passwords:")}</strong> {dgettext(
+              "landing",
               "bcrypt hashing, never stored in plain text."
             )}<br />
-            <strong>{gettext("Open source:")}</strong> {gettext(
+            <strong>{dgettext("landing", "Open source:")}</strong> {dgettext(
+              "landing",
               "anyone can audit the code. No backdoors."
             )}
           </p>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("Encrypted")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Encrypted")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>

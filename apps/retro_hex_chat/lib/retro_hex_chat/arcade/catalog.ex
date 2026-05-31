@@ -19,241 +19,277 @@ defmodule RetroHexChat.Arcade.Catalog do
   @games [
     %{
       id: "doom_shareware",
-      name: gettext_noop("DOOM: Knee-Deep in the Dead"),
-      tagline: gettext_noop("Episode 1 — The Original"),
+      name: dgettext_noop("arcade", "DOOM: Knee-Deep in the Dead"),
+      tagline: dgettext_noop("arcade", "Episode 1 — The Original"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "The original Episode 1 of DOOM (1993) — 9 levels of demon-infested corridors on Phobos. The shareware classic that started it all."
         ),
       engine: :doom,
-      controls: gettext_noop("WASD move, Mouse aim, Left click fire, E use, Space jump"),
+      controls:
+        dgettext_noop("arcade", "WASD move, Mouse aim, Left click fire, E use, Space jump"),
       icon: "game_doom"
     },
     %{
       id: "freedoom1",
-      name: gettext_noop("Freedoom: Phase 1"),
-      tagline: gettext_noop("36 levels of open-source doom"),
+      name: dgettext_noop("arcade", "Freedoom: Phase 1"),
+      tagline: dgettext_noop("arcade", "36 levels of open-source doom"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels. Original art, music, and levels under BSD license."
         ),
       engine: :doom,
-      controls: gettext_noop("WASD move, Mouse aim, Left click fire, E use, Space jump"),
+      controls:
+        dgettext_noop("arcade", "WASD move, Mouse aim, Left click fire, E use, Space jump"),
       icon: "game_freedoom1"
     },
     %{
       id: "freedoom2",
-      name: gettext_noop("Freedoom: Phase 2"),
-      tagline: gettext_noop("32 levels — Doom II compatible"),
+      name: dgettext_noop("arcade", "Freedoom: Phase 2"),
+      tagline: dgettext_noop("arcade", "32 levels — Doom II compatible"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. Compatible with thousands of community-made PWAD mods."
         ),
       engine: :doom,
-      controls: gettext_noop("WASD move, Mouse aim, Left click fire, E use, Space jump"),
+      controls:
+        dgettext_noop("arcade", "WASD move, Mouse aim, Left click fire, E use, Space jump"),
       icon: "game_freedoom2"
     },
     %{
       id: "freedm",
-      name: gettext_noop("FreeDM"),
-      tagline: gettext_noop("Deathmatch arena — open source"),
+      name: dgettext_noop("arcade", "FreeDM"),
+      tagline: dgettext_noop("arcade", "Deathmatch arena — open source"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "Free deathmatch-focused maps for DOOM. 32 arena-style levels designed for fast-paced multiplayer action. BSD license."
         ),
       engine: :doom,
-      controls: gettext_noop("WASD move, Mouse aim, Left click fire, E use, Space jump"),
+      controls:
+        dgettext_noop("arcade", "WASD move, Mouse aim, Left click fire, E use, Space jump"),
       icon: "game_freedm"
     },
     %{
       id: "chex_quest",
-      name: gettext_noop("Chex Quest"),
-      tagline: gettext_noop("The cereal box classic"),
+      name: dgettext_noop("arcade", "Chex Quest"),
+      tagline: dgettext_noop("arcade", "The cereal box classic"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "The legendary 1996 cereal box promotion — a kid-friendly total conversion of DOOM where you zap Flemoids with the Zorcher. 5 levels of nostalgia."
         ),
       engine: :doom,
-      controls: gettext_noop("WASD move, Mouse aim, Left click fire, E use, Space jump"),
+      controls:
+        dgettext_noop("arcade", "WASD move, Mouse aim, Left click fire, E use, Space jump"),
       icon: "game_chex"
     },
     %{
       id: "hacx",
-      name: gettext_noop("HacX: Twitch 'n Kill"),
-      tagline: gettext_noop("Cyberpunk total conversion"),
+      name: dgettext_noop("arcade", "HacX: Twitch 'n Kill"),
+      tagline: dgettext_noop("arcade", "Cyberpunk total conversion"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "A cyberpunk total conversion — hack through a dystopian future with new weapons, enemies, and levels. Standalone v1.2 IWAD."
         ),
       engine: :doom,
-      controls: gettext_noop("WASD move, Mouse aim, Left click fire, E use, Space jump"),
+      controls:
+        dgettext_noop("arcade", "WASD move, Mouse aim, Left click fire, E use, Space jump"),
       icon: "game_hacx"
     },
     %{
       id: "rekkr",
-      name: gettext_noop("REKKR: Sunken Land"),
-      tagline: gettext_noop("Viking-themed standalone"),
+      name: dgettext_noop("arcade", "REKKR: Sunken Land"),
+      tagline: dgettext_noop("arcade", "Viking-themed standalone"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "A Viking-themed total conversion with hand-drawn pixel art. Battle through Norse-inspired levels with axes, bows, and runic magic."
         ),
       engine: :doom,
-      controls: gettext_noop("WASD move, Mouse aim, Left click fire, E use, Space jump"),
+      controls:
+        dgettext_noop("arcade", "WASD move, Mouse aim, Left click fire, E use, Space jump"),
       icon: "game_rekkr"
     },
     %{
       id: "quake_shareware",
-      name: gettext_noop("Quake: Dimension of the Doomed"),
-      tagline: gettext_noop("Episode 1 — The Original"),
+      name: dgettext_noop("arcade", "Quake: Dimension of the Doomed"),
+      tagline: dgettext_noop("arcade", "Episode 1 — The Original"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "The original Episode 1 of Quake (1996) — full 3D FPS with Lovecraftian horrors. The shareware episode that pushed PC gaming into true 3D."
         ),
       engine: :quake,
-      controls: gettext_noop("WASD move, Mouse aim, Left click fire, E use"),
+      controls: dgettext_noop("arcade", "WASD move, Mouse aim, Left click fire, E use"),
       icon: "game_quake"
     },
     %{
       id: "librequake",
-      name: gettext_noop("LibreQuake"),
-      tagline: gettext_noop("Open-source Quake replacement"),
+      name: dgettext_noop("arcade", "LibreQuake"),
+      tagline: dgettext_noop("arcade", "Open-source Quake replacement"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "A complete free replacement for Quake — original levels, art, and music under BSD license. Community-made open-source content."
         ),
       engine: :quake,
-      controls: gettext_noop("WASD move, Mouse aim, Left click fire, E use"),
+      controls: dgettext_noop("arcade", "WASD move, Mouse aim, Left click fire, E use"),
       icon: "game_librequake"
     },
     %{
       id: "quake2_shareware",
-      name: gettext_noop("Quake II: The Invasion"),
-      tagline: gettext_noop("Unit 1 — The Demo"),
+      name: dgettext_noop("arcade", "Quake II: The Invasion"),
+      tagline: dgettext_noop("arcade", "Unit 1 — The Demo"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "The official Quake II demo (1997) — full 3D FPS with Strogg invasion. Unit 1 of the singleplayer campaign. The shareware classic that defined online FPS."
         ),
       engine: :quake2,
       controls:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "WASD move, Mouse aim, Left click fire, E use, Space jump, C crouch, R reload"
         ),
       icon: "game_quake2"
     },
     %{
       id: "wolfenstein_3d",
-      name: gettext_noop("Wolfenstein 3D: Escape from Castle"),
-      tagline: gettext_noop("Episode 1 — The Shareware Classic"),
+      name: dgettext_noop("arcade", "Wolfenstein 3D: Escape from Castle"),
+      tagline: dgettext_noop("arcade", "Episode 1 — The Shareware Classic"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "The grandfather of FPS games (1992) — 10 levels of castle-storming action. The shareware episode that launched the first-person shooter genre."
         ),
       engine: :wolfenstein,
       controls:
-        gettext_noop("Arrow keys move, Ctrl fire, Space open doors, Shift run, 1-4 weapons"),
+        dgettext_noop(
+          "arcade",
+          "Arrow keys move, Ctrl fire, Space open doors, Shift run, 1-4 weapons"
+        ),
       icon: "game_wolfenstein"
     },
     %{
       id: "halflife_uplink",
-      name: gettext_noop("Half-Life: Uplink"),
-      tagline: gettext_noop("The Official Demo — 3 Unique Missions"),
+      name: dgettext_noop("arcade", "Half-Life: Uplink"),
+      tagline: dgettext_noop("arcade", "The Official Demo — 3 Unique Missions"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "The official Half-Life demo (1999) — 3 unique levels not found in the full game. Fight through Black Mesa's underground labs. Freely redistributable by Valve."
         ),
       engine: :halflife,
       controls:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "WASD move, Mouse aim, Left click fire, E use, Space jump, Shift crouch, R reload"
         ),
       icon: "game_halflife"
     },
     %{
       id: "scummvm_bass",
-      name: gettext_noop("Beneath a Steel Sky"),
-      tagline: gettext_noop("Cyberpunk point & click adventure (1994)"),
+      name: dgettext_noop("arcade", "Beneath a Steel Sky"),
+      tagline: dgettext_noop("arcade", "Cyberpunk point & click adventure (1994)"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "Escape Union City and uncover your past in this cyberpunk classic by Revolution Software. One of the greatest point & click adventures ever made."
         ),
       engine: :scummvm,
       controls:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "Left click interact/walk, Right click examine/verb menu, Drag inventory items to combine. F5 save/load, Ctrl+F5 options, Esc skip cutscene"
         ),
       icon: "game_bass"
     },
     %{
       id: "scummvm_drascula",
-      name: gettext_noop("Drascula: The Vampire Strikes Back"),
-      tagline: gettext_noop("Comedic Dracula parody adventure (1996)"),
+      name: dgettext_noop("arcade", "Drascula: The Vampire Strikes Back"),
+      tagline: dgettext_noop("arcade", "Comedic Dracula parody adventure (1996)"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "British real estate agent John Hacker must defeat the vampire Drascula in this hilarious Spanish point & click adventure full of pop culture references and absurd humor."
         ),
       engine: :scummvm,
       controls:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "Point & click: left-click interact, right-click examine. Inventory at bottom of screen. F5 save/load, Esc skip cutscene"
         ),
       icon: "game_drascula"
     },
     %{
       id: "scummvm_dreamweb",
-      name: gettext_noop("Dreamweb"),
-      tagline: gettext_noop("Dark cyberpunk adventure (1994)"),
+      name: dgettext_noop("arcade", "Dreamweb"),
+      tagline: dgettext_noop("arcade", "Dark cyberpunk adventure (1994)"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "A disturbing top-down cyberpunk adventure by Creative Reality. You are Ryan, plagued by nightmares about the Dreamweb — a mystical barrier protecting reality. Full CD version with voice acting."
         ),
       engine: :scummvm,
       controls:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "Point & click: left-click interact/walk, right-click examine. Inventory at top of screen. F5 save/load, Esc skip cutscene"
         ),
       icon: "game_dreamweb"
     },
     %{
       id: "scummvm_fotaq",
-      name: gettext_noop("Flight of the Amazon Queen"),
-      tagline: gettext_noop("Comic adventure in the Amazon (1995)"),
+      name: dgettext_noop("arcade", "Flight of the Amazon Queen"),
+      tagline: dgettext_noop("arcade", "Comic adventure in the Amazon (1995)"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "Pilot Joe King crash-lands in the Amazon and stumbles into a mad scientist's plot to turn humans into dinosaurs. A hilarious Indiana Jones-style point & click adventure with full voice acting."
         ),
       engine: :scummvm,
       controls:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "Point & click: left-click interact, right-click examine. Inventory at top of screen. F5 save/load, Esc skip cutscene"
         ),
       icon: "game_fotaq"
     },
     %{
       id: "scummvm_lure",
-      name: gettext_noop("Lure of the Temptress"),
-      tagline: gettext_noop("Medieval fantasy adventure (1992)"),
+      name: dgettext_noop("arcade", "Lure of the Temptress"),
+      tagline: dgettext_noop("arcade", "Medieval fantasy adventure (1992)"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "Free the village of Turnvale from the sorceress Selena. Revolution Software's debut game featuring the innovative Virtual Theatre system with autonomous NPCs."
         ),
       engine: :scummvm,
       controls:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "Point & click: left-click interact, right-click verb menu. NPCs follow their own schedules. F5 save/load, Esc skip cutscene"
         ),
       icon: "game_lure"
     },
     %{
       id: "scummvm_soltys",
-      name: gettext_noop("Soltys"),
-      tagline: gettext_noop("Surreal Polish puzzle adventure (1995)"),
+      name: dgettext_noop("arcade", "Soltys"),
+      tagline: dgettext_noop("arcade", "Surreal Polish puzzle adventure (1995)"),
       description:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "Rescue your grandfather from underground pirates in this charmingly absurd Polish point & click adventure full of creative puzzles and surreal humor."
         ),
       engine: :scummvm,
       controls:
-        gettext_noop(
+        dgettext_noop(
+          "arcade",
           "Point & click: left-click interact, right-click examine. Simple, streamlined interface. F5 save/load, Esc skip cutscene"
         ),
       icon: "game_soltys"
@@ -303,7 +339,7 @@ defmodule RetroHexChat.Arcade.Catalog do
     |> Map.update!(:controls, &t/1)
   end
 
-  defp t(msgid), do: Gettext.gettext(RetroHexChat.Gettext, msgid)
+  defp t(msgid), do: Gettext.dgettext(RetroHexChat.Gettext, "arcade", msgid)
 
   defp arcade_base_url, do: Application.fetch_env!(:retro_hex_chat, :arcade_base_url)
 end

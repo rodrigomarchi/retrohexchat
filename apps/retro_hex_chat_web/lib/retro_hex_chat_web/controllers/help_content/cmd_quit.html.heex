@@ -1,19 +1,26 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Disconnect from the server and return to the connect screen. Other users see your optional quit message in all channels you were in."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/quit [message]")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>message</code> {gettext("— Optional goodbye message shown to other users.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/quit [message]")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
-  {gettext(
+  <code>message</code> {dgettext(
+    "help_commands",
+    "— Optional goodbye message shown to other users."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
     "You are disconnected from the server and returned to the connect screen. All your channel memberships end, and other users see a quit notification with your optional message. Your session is fully ended — to rejoin, you'll need to connect again from the connect screen."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/quit /quit Goodnight everyone!")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
-<p><.help_link topic="cmd-part">{gettext("/part")}</.help_link></p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/quit /quit Goodnight everyone!")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
+<p><.help_link topic="cmd-part">{dgettext("help_commands", "/part")}</.help_link></p>

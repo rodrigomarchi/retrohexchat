@@ -15,6 +15,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ToolbarPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Toolbar"), active_page: "toolbar")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Toolbar"), active_page: "toolbar")}
   end
 end

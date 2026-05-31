@@ -14,17 +14,20 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConnectionStatusPage do
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, page_title: gettext("Connection Status"), active_page: "connection-status")}
+     assign(socket,
+       page_title: dgettext("showcase", "Connection Status"),
+       active_page: "connection-status"
+     )}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Connection Status")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Connection Status")}</h2>
 
       <.showcase_card
-        title={gettext("Connected")}
+        title={dgettext("showcase", "Connected")}
         description="Successfully connected to server."
       >
         <.connection_status state="connected" server="irc.example.com" />
@@ -34,14 +37,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConnectionStatusPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Reconnecting")}
+        title={dgettext("showcase", "Reconnecting")}
         description="Attempting to reconnect with progress."
       >
         <.connection_status state="reconnecting" attempt={3} max_attempts={5} />
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Disconnected")}
+        title={dgettext("showcase", "Disconnected")}
         description="Connection lost with reconnect button."
       >
         <.connection_status state="disconnected" />

@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   def system_message(content) do
     %{
       id: "system-#{System.unique_integer([:positive])}",
-      author: gettext("System"),
+      author: dgettext("chat", "System"),
       content: content,
       type: :system,
       timestamp: DateTime.utc_now()
@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   def error_message(content) do
     %{
       id: "error-#{System.unique_integer([:positive])}",
-      author: gettext("System"),
+      author: dgettext("chat", "System"),
       content: content,
       type: :error,
       timestamp: DateTime.utc_now()
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   def inline_help_message(topic_id, topic_title) do
     %{
       id: "help-#{System.unique_integer([:positive])}",
-      author: gettext("Help"),
+      author: dgettext("chat", "Help"),
       content: topic_id,
       type: :inline_help,
       topic_id: topic_id,
@@ -129,7 +129,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   def inline_help_event(socket, topic_id, topic_title) do
     socket
     |> stream_insert(:chat_messages, inline_help_message(topic_id, topic_title))
-    |> push_status_message(gettext("Help: %{topic}", topic: topic_title), :system)
+    |> push_status_message(dgettext("chat", "Help: %{topic}", topic: topic_title), :system)
   end
 
   defp ignored_author?(_ignore_list, nil, _type), do: false

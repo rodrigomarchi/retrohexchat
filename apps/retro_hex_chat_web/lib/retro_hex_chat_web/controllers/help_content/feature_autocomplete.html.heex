@@ -1,60 +1,84 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "RetroHexChat provides context-aware autocomplete for commands, nicknames, and channels."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Command Autocomplete")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Command Autocomplete")}</.help_h4>
 <p>
-  {gettext("Type")} <code>/</code>
-  {gettext(
+  {dgettext("help_features", "Type")} <code>/</code>
+  {dgettext(
+    "help_features",
     "to open the command palette. Commands are grouped by category (Basics, Channel, User, Settings, Advanced) with fuzzy search — typing"
   )}
-  <code>{gettext("/jo")}</code>
-  {gettext("matches both")} <code>{gettext("/join")}</code>
-  and <code>{gettext("/autojoin")}</code>{gettext(
+  <code>{dgettext("help_features", "/jo")}</code>
+  {dgettext("help_features", "matches both")} <code>{dgettext("help_features", "/join")}</code>
+  and <code>{dgettext("help_features", "/autojoin")}</code>{dgettext(
+    "help_features",
     ". Your 5 most recently used commands appear at the top."
   )}
 </p>
-<.help_h4 icon={:icon_btn_search}>{gettext("Nick Autocomplete")}</.help_h4>
+<.help_h4 icon={:icon_btn_search}>{dgettext("help_features", "Nick Autocomplete")}</.help_h4>
 <p>
-  {gettext("Type")} <code>@</code>
-  {gettext(
+  {dgettext("help_features", "Type")} <code>@</code>
+  {dgettext(
+    "help_features",
     "followed by characters to search nicknames in the current channel. Online users appear before away users. You can also press"
   )}
-  <strong>{gettext("Tab")}</strong>
-  {gettext("at the start of input to cycle through matching nicknames IRC-style (with")}
+  <strong>{dgettext("help_features", "Tab")}</strong>
+  {dgettext(
+    "help_features",
+    "at the start of input to cycle through matching nicknames IRC-style (with"
+  )}
   <code>: </code>
-  {gettext("suffix).")}
+  {dgettext("help_features", "suffix).")}
 </p>
-<.help_h4 icon={:icon_btn_search}>{gettext("Channel Autocomplete")}</.help_h4>
+<.help_h4 icon={:icon_btn_search}>{dgettext("help_features", "Channel Autocomplete")}</.help_h4>
 <p>
-  {gettext("Type")} <code>#</code>
-  {gettext(
+  {dgettext("help_features", "Type")} <code>#</code>
+  {dgettext(
+    "help_features",
     "followed by characters to search channels. Joined channels appear first, marked with a checkmark. Secret channels are hidden from non-members."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Argument Completion")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Argument Completion")}</.help_h4>
 <p>
-  {gettext("After selecting a command like")} <code>{gettext("/msg")}</code>
-  or <code>{gettext("/join")}</code>{gettext(
+  {dgettext("help_features", "After selecting a command like")}
+  <code>{dgettext("help_features", "/msg")}</code>
+  or <code>{dgettext("help_features", "/join")}</code>{dgettext(
+    "help_features",
     ", the system suggests appropriate arguments — nicknames for user commands, channels for channel commands."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_cheatsheet}>{gettext("Keyboard Navigation")}</.help_h4>
+<.help_h4 icon={:icon_dialog_cheatsheet}>
+  {dgettext("help_features", "Keyboard Navigation")}
+</.help_h4>
 <p>
   <code>↑/↓</code>
-  {gettext("— Navigate the dropdown.")}<br /><code>{gettext("Tab")}</code>
-  or <code>{gettext("Enter")}</code>
-  {gettext("— Select the highlighted item.")}<br /><code>{gettext("Escape")}</code>
-  {gettext("— Dismiss the dropdown.")}<br /><code>{gettext("Tab")}</code>
-  {gettext("(no dropdown) — Cycle through nick matches.")}
+  {dgettext("help_features", "— Navigate the dropdown.")}<br />
+  <code>
+    {dgettext("help_features", "Tab")}
+  </code>
+  or <code>{dgettext("help_features", "Enter")}</code>
+  {dgettext("help_features", "— Select the highlighted item.")}<br />
+  <code>
+    {dgettext("help_features", "Escape")}
+  </code>
+  {dgettext("help_features", "— Dismiss the dropdown.")}<br />
+  <code>
+    {dgettext("help_features", "Tab")}
+  </code>
+  {dgettext("help_features", "(no dropdown) — Cycle through nick matches.")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
+  <.help_link topic="keyboard-shortcuts">
+    {dgettext("help_features", "Keyboard Shortcuts")}
+  </.help_link>
   ·
   <.help_link topic="feature-command-syntax-tooltip">
-    {gettext("Command Syntax Tooltip")}
+    {dgettext("help_features", "Command Syntax Tooltip")}
   </.help_link>
-  · <.help_link topic="getting-started">{gettext("Getting Started")}</.help_link>
+  ·
+  <.help_link topic="getting-started">{dgettext("help_features", "Getting Started")}</.help_link>
 </p>

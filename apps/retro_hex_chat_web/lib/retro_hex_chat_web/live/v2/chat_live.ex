@@ -147,7 +147,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       "user:#{nickname}",
       {:force_disconnect,
        %{
-         reason: gettext("Session ended — logged in from another window"),
+         reason: dgettext("chat", "Session ended — logged in from another window"),
          takeover_ack: {self(), takeover_ref}
        }}
     )
@@ -239,7 +239,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
     session = connected?(socket) && socket.assigns[:session]
 
     if session do
-      quit_reason = socket.assigns[:quit_reason] || gettext("Leaving")
+      quit_reason = socket.assigns[:quit_reason] || dgettext("chat", "Leaving")
 
       Queries.update_last_seen_by_nickname(session.nickname)
 
@@ -444,7 +444,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   # ── Private helpers ───────────────────────────────────────────
 
   @spec validate_session_nickname(String.t() | nil) :: :ok | {:error, String.t()}
-  defp validate_session_nickname(nil), do: {:error, gettext("No nickname in session")}
+  defp validate_session_nickname(nil), do: {:error, dgettext("chat", "No nickname in session")}
   defp validate_session_nickname(nickname), do: NicknameValidator.validate(nickname)
 
   @spec resolve_timezone(map(), Phoenix.LiveView.Socket.t()) :: String.t()
@@ -654,7 +654,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
       notify_debounce_timers: %{},
       notify_selected: nil,
       oldest_message_id: nil,
-      page_title: gettext("RetroHexChat"),
+      page_title: dgettext("chat", "RetroHexChat"),
       search_case_sensitive: false,
       search_current_index: 0,
       search_error: nil,
@@ -1001,21 +1001,21 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   defp maybe_broadcast_nick_changed(socket, _old_nickname, _new_nickname), do: socket
 
   defp show_welcome_message(socket) do
-    server_name = Queries.get_setting("server_name") || gettext("RetroHexChat")
+    server_name = Queries.get_setting("server_name") || dgettext("chat", "RetroHexChat")
 
     lines = [
-      gettext("Welcome to %{server_name}!", server_name: server_name),
-      gettext("A real-time chat platform with a retro look and feel."),
+      dgettext("chat", "Welcome to %{server_name}!", server_name: server_name),
+      dgettext("chat", "A real-time chat platform with a retro look and feel."),
       "",
-      gettext("Useful commands:"),
-      gettext("  /join #channel   — Join a channel"),
-      gettext("  /msg nick text   — Send a private message"),
-      gettext("  /nick new_nick   — Change your nickname"),
-      gettext("  /help            — View full help"),
-      gettext("  /help commands   — List all commands"),
+      dgettext("chat", "Useful commands:"),
+      dgettext("chat", "  /join #channel   — Join a channel"),
+      dgettext("chat", "  /msg nick text   — Send a private message"),
+      dgettext("chat", "  /nick new_nick   — Change your nickname"),
+      dgettext("chat", "  /help            — View full help"),
+      dgettext("chat", "  /help commands   — List all commands"),
       "",
-      gettext("Tip: Go to Help > Help Topics for the full documentation.") <>
-        " " <> gettext("Open /chat/help in a new tab.")
+      dgettext("chat", "Tip: Go to Help > Help Topics for the full documentation.") <>
+        " " <> dgettext("chat", "Open /chat/help in a new tab.")
     ]
 
     socket =
@@ -1032,24 +1032,24 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   defp show_chanserv_announcement(socket) do
     lines = [
       "",
-      gettext("[ChanServ] Channel Services Online"),
-      gettext("ChanServ manages channel registration and access control."),
-      gettext("Register your channel to protect it when no operators are online."),
+      dgettext("chat", "[ChanServ] Channel Services Online"),
+      dgettext("chat", "ChanServ manages channel registration and access control."),
+      dgettext("chat", "Register your channel to protect it when no operators are online."),
       "",
-      gettext("Quick start:"),
-      gettext("  /cs register #channel          — Register a channel you operate"),
-      gettext("  /cs sop #channel add <nick>    — Add a Super Operator"),
-      gettext("  /cs aop #channel add <nick>    — Add an Auto Operator"),
-      gettext("  /cs vop #channel add <nick>    — Add an Auto Voice user"),
-      gettext("  /cs info #channel              — View channel registration info"),
+      dgettext("chat", "Quick start:"),
+      dgettext("chat", "  /cs register #channel          — Register a channel you operate"),
+      dgettext("chat", "  /cs sop #channel add <nick>    — Add a Super Operator"),
+      dgettext("chat", "  /cs aop #channel add <nick>    — Add an Auto Operator"),
+      dgettext("chat", "  /cs vop #channel add <nick>    — Add an Auto Voice user"),
+      dgettext("chat", "  /cs info #channel              — View channel registration info"),
       "",
-      gettext("Access hierarchy: Owner > SOP > AOP > VOP"),
+      dgettext("chat", "Access hierarchy: Owner > SOP > AOP > VOP"),
       "",
-      gettext("Rules:"),
-      gettext("  • Channels expire after 7 days of inactivity"),
-      gettext("  • If a founder's nick expires, the next ranked user is promoted"),
+      dgettext("chat", "Rules:"),
+      dgettext("chat", "  • Channels expire after 7 days of inactivity"),
+      dgettext("chat", "  • If a founder's nick expires, the next ranked user is promoted"),
       "",
-      gettext("Type /help chanserv or /help channel-permissions for full details.")
+      dgettext("chat", "Type /help chanserv or /help channel-permissions for full details.")
     ]
 
     Enum.reduce(lines, socket, fn line, acc ->
@@ -1060,22 +1060,25 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   defp show_nickserv_announcement(socket) do
     lines = [
       "",
-      gettext("[NickServ] Nickname Services Online"),
-      gettext("NickServ protects your nickname with a password so nobody else can use it."),
+      dgettext("chat", "[NickServ] Nickname Services Online"),
+      dgettext(
+        "chat",
+        "NickServ protects your nickname with a password so nobody else can use it."
+      ),
       "",
-      gettext("Quick start:"),
-      gettext("  /ns register <password>   — Register your current nickname"),
-      gettext("  /ns identify <password>   — Identify (log in) for this session"),
-      gettext("  /ns info [nickname]       — Look up registration info"),
-      gettext("  /ns ghost <nick> <pass>   — Disconnect a ghost session"),
-      gettext("  /ns drop <password>       — Permanently unregister your nickname"),
+      dgettext("chat", "Quick start:"),
+      dgettext("chat", "  /ns register <password>   — Register your current nickname"),
+      dgettext("chat", "  /ns identify <password>   — Identify (log in) for this session"),
+      dgettext("chat", "  /ns info [nickname]       — Look up registration info"),
+      dgettext("chat", "  /ns ghost <nick> <pass>   — Disconnect a ghost session"),
+      dgettext("chat", "  /ns drop <password>       — Permanently unregister your nickname"),
       "",
-      gettext("Rules:"),
-      gettext("  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"),
-      gettext("  • Nicks expire after 7 days of inactivity"),
-      gettext("  • Switching to a registered nick gives you 60s to identify"),
+      dgettext("chat", "Rules:"),
+      dgettext("chat", "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"),
+      dgettext("chat", "  • Nicks expire after 7 days of inactivity"),
+      dgettext("chat", "  • Switching to a registered nick gives you 60s to identify"),
       "",
-      gettext("Type /help nickserv for full details.")
+      dgettext("chat", "Type /help nickserv for full details.")
     ]
 
     Enum.reduce(lines, socket, fn line, acc ->

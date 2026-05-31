@@ -34,14 +34,14 @@ defmodule RetroHexChatWeb.HelpLive.HelpHelpers do
       <div class="flex-1 m-4 mt-2">
         <div class="shadow-retro-window bg-surface p-1">
           <div class="bg-gradient-to-r from-primary to-highlight-light text-white px-2 py-1 font-bold text-xs flex items-center gap-2">
-            <Icons.icon_notepad class="w-3.5 h-3.5" /> {gettext("Help Topics")}
+            <Icons.icon_notepad class="w-3.5 h-3.5" /> {dgettext("help", "Help Topics")}
           </div>
 
           <div class="flex p-1">
             <nav
               class="shadow-retro-sunken bg-white w-56 mr-2 shrink-0 overflow-y-auto p-1"
               style="max-height: calc(100vh - 120px)"
-              aria-label={gettext("Help navigation")}
+              aria-label={dgettext("help", "Help navigation")}
             >
               <.tree_view class="!shadow-none !p-0 !bg-transparent">
                 <.tree_view_group

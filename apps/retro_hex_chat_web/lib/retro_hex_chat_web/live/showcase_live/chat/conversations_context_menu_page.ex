@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConversationsContextMenuPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("Conversations Context Menu"),
+       page_title: dgettext("showcase", "Conversations Context Menu"),
        active_page: "conversations-context-menu"
      )}
   end
@@ -24,10 +24,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConversationsContextMenuPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Conversations Context Menu")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Conversations Context Menu")}</h2>
 
       <.showcase_card
-        title={gettext("With Unread Messages")}
+        title={dgettext("showcase", "With Unread Messages")}
         description="Mark as Read is enabled when the channel has unread messages."
       >
         <div class="relative h-[220px]">
@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConversationsContextMenuPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Muted Channel")}
+        title={dgettext("showcase", "Muted Channel")}
         description="When is_muted is true the toggle shows 'Unmute Channel'."
       >
         <div class="relative h-[220px]">
@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConversationsContextMenuPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With Custom Items")}
+        title={dgettext("showcase", "With Custom Items")}
         description="Additional menu entries appended after a separator via custom_items list."
       >
         <div class="relative h-[280px]">

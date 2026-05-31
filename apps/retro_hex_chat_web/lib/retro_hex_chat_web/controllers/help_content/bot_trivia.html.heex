@@ -1,72 +1,89 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_bots",
     "The Trivia capability adds interactive quiz games to your bot. Start a round, answer questions, and compete for the highest score."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Commands")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_bots", "Commands")}</.help_h4>
 <table>
   <thead>
     <tr>
-      <th>{gettext("Command")}</th>
-      <th>{gettext("Description")}</th>
+      <th>{dgettext("help_bots", "Command")}</th>
+      <th>{dgettext("help_bots", "Description")}</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><code>{gettext("!Bot trivia start")}</code></td>
-      <td>{gettext("Start a new trivia round")}</td>
+      <td><code>{dgettext("help_bots", "!Bot trivia start")}</code></td>
+      <td>{dgettext("help_bots", "Start a new trivia round")}</td>
     </tr>
     <tr>
-      <td><code>{gettext("!Bot trivia start <category>")}</code></td>
-      <td>{gettext("Start with a specific category")}</td>
+      <td><code>{dgettext("help_bots", "!Bot trivia start <category>")}</code></td>
+      <td>{dgettext("help_bots", "Start with a specific category")}</td>
     </tr>
     <tr>
-      <td><code>{gettext("!Bot trivia stop")}</code></td>
-      <td>{gettext("Stop the current round")}</td>
+      <td><code>{dgettext("help_bots", "!Bot trivia stop")}</code></td>
+      <td>{dgettext("help_bots", "Stop the current round")}</td>
     </tr>
     <tr>
-      <td><code>{gettext("!Bot trivia score")}</code></td>
-      <td>{gettext("Show current scores")}</td>
+      <td><code>{dgettext("help_bots", "!Bot trivia score")}</code></td>
+      <td>{dgettext("help_bots", "Show current scores")}</td>
     </tr>
     <tr>
-      <td><code>{gettext("!Bot answer <text>")}</code></td>
-      <td>{gettext("Answer the current question")}</td>
+      <td><code>{dgettext("help_bots", "!Bot answer <text>")}</code></td>
+      <td>{dgettext("help_bots", "Answer the current question")}</td>
     </tr>
   </tbody>
 </table>
 
-<.help_h4 icon={:icon_question}>{gettext("Categories")}</.help_h4>
-<p>{gettext("Available trivia categories:")}</p>
+<.help_h4 icon={:icon_question}>{dgettext("help_bots", "Categories")}</.help_h4>
+<p>{dgettext("help_bots", "Available trivia categories:")}</p>
 <ul>
-  <li><strong>general</strong> {gettext("— Mixed general knowledge")}</li>
-  <li><strong>science</strong> {gettext("— Science and nature")}</li>
-  <li><strong>history</strong> {gettext("— Historical events and figures")}</li>
-  <li><strong>geography</strong> {gettext("— Countries, capitals, and landmarks")}</li>
-  <li><strong>technology</strong> {gettext("— Computers, software, and tech")}</li>
-  <li><strong>entertainment</strong> {gettext("— Movies, music, and pop culture")}</li>
+  <li><strong>general</strong> {dgettext("help_bots", "— Mixed general knowledge")}</li>
+  <li><strong>science</strong> {dgettext("help_bots", "— Science and nature")}</li>
+  <li><strong>history</strong> {dgettext("help_bots", "— Historical events and figures")}</li>
+  <li>
+    <strong>geography</strong> {dgettext("help_bots", "— Countries, capitals, and landmarks")}
+  </li>
+  <li><strong>technology</strong> {dgettext("help_bots", "— Computers, software, and tech")}</li>
+  <li>
+    <strong>entertainment</strong> {dgettext("help_bots", "— Movies, music, and pop culture")}
+  </li>
 </ul>
 
-<.help_h4 icon={:icon_wrench}>{gettext("Configuration")}</.help_h4>
-<p>{gettext("Admins can configure via")} <code>{gettext("/bot set")}</code>:</p>
-<ul>
-  <li><code>trivia_category</code> {gettext("— Default category (default: general)")}</li>
-  <li><code>trivia_time</code> {gettext("— Seconds per question (default: 30)")}</li>
-  <li><code>trivia_questions</code> {gettext("— Questions per round (default: 10)")}</li>
-  <li><code>trivia_points</code> {gettext("— Points per correct answer (default: 10)")}</li>
-</ul>
-
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
-<ul>
-  <li>{gettext("Only one round can be active per channel at a time")}</li>
-  <li>{gettext("Each question has a time limit — unanswered questions are skipped")}</li>
-  <li>{gettext("Answers are case-insensitive")}</li>
-  <li>{gettext("Scores reset when a new round starts")}</li>
-</ul>
-
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_wrench}>{dgettext("help_bots", "Configuration")}</.help_h4>
 <p>
-  <.help_link topic="botservice">{gettext("BotService Overview")}</.help_link>
-  · <.help_link topic="bot-command">{gettext("/bot Command Reference")}</.help_link>
-  · <.help_link topic="bot-dice">{gettext("Bot Dice")}</.help_link>
+  {dgettext("help_bots", "Admins can configure via")} <code>{dgettext("help_bots", "/bot set")}</code>:
+</p>
+<ul>
+  <li>
+    <code>trivia_category</code> {dgettext("help_bots", "— Default category (default: general)")}
+  </li>
+  <li>
+    <code>trivia_time</code> {dgettext("help_bots", "— Seconds per question (default: 30)")}
+  </li>
+  <li>
+    <code>trivia_questions</code> {dgettext("help_bots", "— Questions per round (default: 10)")}
+  </li>
+  <li>
+    <code>trivia_points</code> {dgettext("help_bots", "— Points per correct answer (default: 10)")}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_rules}>{dgettext("help_bots", "Rules")}</.help_h4>
+<ul>
+  <li>{dgettext("help_bots", "Only one round can be active per channel at a time")}</li>
+  <li>
+    {dgettext("help_bots", "Each question has a time limit — unanswered questions are skipped")}
+  </li>
+  <li>{dgettext("help_bots", "Answers are case-insensitive")}</li>
+  <li>{dgettext("help_bots", "Scores reset when a new round starts")}</li>
+</ul>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_bots", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="botservice">{dgettext("help_bots", "BotService Overview")}</.help_link>
+  · <.help_link topic="bot-command">{dgettext("help_bots", "/bot Command Reference")}</.help_link>
+  · <.help_link topic="bot-dice">{dgettext("help_bots", "Bot Dice")}</.help_link>
 </p>

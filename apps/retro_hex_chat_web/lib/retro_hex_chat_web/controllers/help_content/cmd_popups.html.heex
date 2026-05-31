@@ -1,28 +1,33 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list, channels, and chat messages."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/popups")}</pre>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/popups")}</pre>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Opens a dialog where you can customize the right-click context menus. You can add menu items that execute any command when clicked — for example, adding a \"Whois\" item to the nick list that runs"
   )}
-  <code>{gettext("/whois $1")}</code>
-  {gettext(
+  <code>{dgettext("help_commands", "/whois $1")}</code>
+  {dgettext(
+    "help_commands",
     "when you right-click a user. Custom menu items appear alongside the built-in items in the context menus."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Registered users: custom menus are saved across sessions")}</li>
+  <li>{dgettext("help_commands", "Registered users: custom menus are saved across sessions")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/popups")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/popups")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-custom-menus">{gettext("Custom Menus Feature")}</.help_link>
-  · <.help_link topic="cmd-alias">{gettext("/alias")}</.help_link>
+  <.help_link topic="feature-custom-menus">
+    {dgettext("help_commands", "Custom Menus Feature")}
+  </.help_link>
+  · <.help_link topic="cmd-alias">{dgettext("help_commands", "/alias")}</.help_link>
 </p>

@@ -1,60 +1,94 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
     "P2P sessions allow direct communication between two registered users for chat, file transfer, and audio/video calls."
   )}
 </p>
-<.help_h4 icon={:icon_p2p}>{gettext("Creating a Session")}</.help_h4>
-<p><strong>{gettext("Via commands:")}</strong></p>
-<pre>{gettext("/p2p <nickname>")}</pre>
-<p>{gettext("Starts a generic session. The target user receives an invite and must accept.")}</p>
-<pre>{gettext("/call <nickname>")}</pre>
+<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "Creating a Session")}</.help_h4>
+<p><strong>{dgettext("help_p2p", "Via commands:")}</strong></p>
+<pre>{dgettext("help_p2p", "/p2p <nickname>")}</pre>
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
+    "Starts a generic session. The target user receives an invite and must accept."
+  )}
+</p>
+<pre>{dgettext("help_p2p", "/call <nickname>")}</pre>
+<p>
+  {dgettext(
+    "help_p2p",
     "Starts an audio call session. Automatically requests permission after entering the lobby."
   )}
 </p>
-<pre>{gettext("/sendfile <nickname>")}</pre>
-<p>{gettext("Starts a file transfer session.")}</p>
+<pre>{dgettext("help_p2p", "/sendfile <nickname>")}</pre>
+<p>{dgettext("help_p2p", "Starts a file transfer session.")}</p>
 <p>
-  <strong>{gettext("Via context menu:")}</strong>
-  {gettext(
+  <strong>{dgettext("help_p2p", "Via context menu:")}</strong>
+  {dgettext(
+    "help_p2p",
     "Click a nick (in the user list or chat) and select P2P Session, Audio Call, Video Call, or Send File. P2P items only appear for registered users and are disabled if the target is not registered."
   )}
 </p>
-<.help_h4 icon={:icon_p2p}>{gettext("Lobby")}</.help_h4>
+<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "Lobby")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
     "The lobby is the session waiting room. Both users can chat and request actions (calls, transfers). All actions require"
   )}
-  <strong>{gettext("bilateral consent")}</strong>
-  {gettext("— the other user must accept before the action starts.")}
+  <strong>{dgettext("help_p2p", "bilateral consent")}</strong>
+  {dgettext("help_p2p", "— the other user must accept before the action starts.")}
 </p>
-<.help_h4 icon={:icon_p2p}>{gettext("Session Types")}</.help_h4>
+<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "Session Types")}</.help_h4>
 <ul>
-  <li><strong>{gettext("Generic")}</strong> {gettext("— chat with action options")}</li>
-  <li><strong>{gettext("File Transfer")}</strong> {gettext("— auto-requests file transfer")}</li>
-  <li><strong>{gettext("Audio Call")}</strong> {gettext("— auto-requests audio call")}</li>
-  <li><strong>{gettext("Video Call")}</strong> {gettext("— auto-requests video call")}</li>
+  <li>
+    <strong>{dgettext("help_p2p", "Generic")}</strong> {dgettext(
+      "help_p2p",
+      "— chat with action options"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_p2p", "File Transfer")}</strong> {dgettext(
+      "help_p2p",
+      "— auto-requests file transfer"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_p2p", "Audio Call")}</strong> {dgettext(
+      "help_p2p",
+      "— auto-requests audio call"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_p2p", "Video Call")}</strong> {dgettext(
+      "help_p2p",
+      "— auto-requests video call"
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_clock}>{gettext("Timeouts")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_p2p", "Timeouts")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
     "Pending sessions (waiting for the peer) expire in 5 minutes. The lobby expires due to inactivity after 15 minutes. The WebRTC connection has a 30-second timeout."
   )}
 </p>
-<.help_h4 icon={:icon_phone_end}>{gettext("Ending")}</.help_h4>
+<.help_h4 icon={:icon_phone_end}>{dgettext("help_p2p", "Ending")}</.help_h4>
 <p>
-  {gettext("Click")}
-  <strong>{gettext("End Session")}</strong> {gettext(
+  {dgettext("help_p2p", "Click")}
+  <strong>{dgettext("help_p2p", "End Session")}</strong> {dgettext(
+    "help_p2p",
     "or close the tab. The other user will be notified."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-file-transfer">{gettext("File Transfer")}</.help_link>
-  · <.help_link topic="feature-audio-call">{gettext("Audio Call")}</.help_link>
-  · <.help_link topic="feature-video-call">{gettext("Video Call")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="feature-privacy-settings">{gettext("Privacy Settings")}</.help_link>
-  · <.help_link topic="feature-context-menus">{gettext("Context Menus")}</.help_link>
+  <.help_link topic="feature-file-transfer">{dgettext("help_p2p", "File Transfer")}</.help_link>
+  · <.help_link topic="feature-audio-call">{dgettext("help_p2p", "Audio Call")}</.help_link>
+  · <.help_link topic="feature-video-call">{dgettext("help_p2p", "Video Call")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_p2p", "P2P Games")}</.help_link>
+  ·
+  <.help_link topic="feature-privacy-settings">
+    {dgettext("help_p2p", "Privacy Settings")}
+  </.help_link>
+  · <.help_link topic="feature-context-menus">{dgettext("help_p2p", "Context Menus")}</.help_link>
 </p>

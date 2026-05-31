@@ -1,16 +1,21 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "When you disconnect, a quit message is shown to other users. You can customize this message."
   )}
 </p>
-<.help_h4 icon={:icon_close}>{gettext("Setting a Quit Message")}</.help_h4>
+<.help_h4 icon={:icon_close}>{dgettext("help_features", "Setting a Quit Message")}</.help_h4>
 <p>
-  {gettext("Use")} <code>{gettext("/quit Your message here")}</code>
-  {gettext(
+  {dgettext("help_features", "Use")}
+  <code>{dgettext("help_features", "/quit Your message here")}</code>
+  {dgettext(
+    "help_features",
     "to disconnect with a custom message, or configure a default quit message in the Options dialog."
   )}
 </p>
-<.help_h4 icon={:icon_tab_general}>{gettext("Default")}</.help_h4>
-<p>{gettext("If no custom message is set, the default message is \"Leaving\".")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
-<p><.help_link topic="cmd-quit">{gettext("/quit Command")}</.help_link></p>
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_features", "Default")}</.help_h4>
+<p>
+  {dgettext("help_features", "If no custom message is set, the default message is \"Leaving\".")}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p><.help_link topic="cmd-quit">{dgettext("help_features", "/quit Command")}</.help_link></p>

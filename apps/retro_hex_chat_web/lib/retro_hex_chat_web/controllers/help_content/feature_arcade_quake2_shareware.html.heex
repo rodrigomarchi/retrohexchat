@@ -1,88 +1,132 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "The official Quake II demo (1997) — Unit 1 of the singleplayer campaign against the cybernetic Strogg aliens. Fight through interconnected, mission-based levels with the id Tech 2 engine's colored dynamic lighting."
   )}
 </p>
 <.diagram_arcade_quake2 class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "About")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Released December 9, 1997, developed by a 13-person team at id Software and published by Activision. Quake II shifted from its predecessor's Lovecraftian horror to a sci-fi military campaign against the Strogg — a cybernetic alien race that harvests and assimilates other species. The id Tech 2 engine introduced colored dynamic lighting and a hub-based level structure where you revisit areas with new keys and equipment."
   )}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "The demo includes Unit 1 of the singleplayer campaign, featuring mouselook, crouch, and reload mechanics. It entered PC Data's monthly sales chart at #2 for December 1997, behind only Riven. id Software released the full Quake II source code under GPL in 2001. This runs on Yamagi Quake II compiled to WebAssembly."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("W / ↑")}</strong> {gettext("— Move forward")}</li>
-  <li><strong>{gettext("S / ↓")}</strong> {gettext("— Move backward")}</li>
-  <li><strong>A</strong> {gettext("— Strafe left")}</li>
-  <li><strong>D</strong> {gettext("— Strafe right")}</li>
-  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim / look")}</li>
-  <li><strong>{gettext("Left Click")}</strong> {gettext("— Fire weapon")}</li>
-  <li><strong>{gettext("Right Click")}</strong> {gettext("— Alt-fire")}</li>
-  <li><strong>E</strong> {gettext("— Interact")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Jump")}</li>
-  <li><strong>C</strong> {gettext("— Crouch")}</li>
-  <li><strong>R</strong> {gettext("— Reload")}</li>
-  <li><strong>1–9</strong> {gettext("— Select weapon")}</li>
-  <li><strong>{gettext("Tab")}</strong> {gettext("— Inventory")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Menu")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "W / ↑")}</strong> {dgettext("help_arcade", "— Move forward")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "S / ↓")}</strong> {dgettext(
+      "help_arcade",
+      "— Move backward"
+    )}
+  </li>
+  <li><strong>A</strong> {dgettext("help_arcade", "— Strafe left")}</li>
+  <li><strong>D</strong> {dgettext("help_arcade", "— Strafe right")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Mouse")}</strong> {dgettext("help_arcade", "— Aim / look")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Fire weapon"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Right Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Alt-fire"
+    )}
+  </li>
+  <li><strong>E</strong> {dgettext("help_arcade", "— Interact")}</li>
+  <li><strong>{dgettext("help_arcade", "Space")}</strong> {dgettext("help_arcade", "— Jump")}</li>
+  <li><strong>C</strong> {dgettext("help_arcade", "— Crouch")}</li>
+  <li><strong>R</strong> {dgettext("help_arcade", "— Reload")}</li>
+  <li><strong>1–9</strong> {dgettext("help_arcade", "— Select weapon")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Tab")}</strong> {dgettext("help_arcade", "— Inventory")}
+  </li>
+  <li><strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Menu")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Interconnected levels")}</strong>
-    {gettext("— You'll revisit areas with new keys and equipment. Remember the layout.")}
+    <strong>{dgettext("help_arcade", "Interconnected levels")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— You'll revisit areas with new keys and equipment. Remember the layout."
+    )}
   </li>
   <li>
-    <strong>{gettext("Crouch for vents")}</strong>
-    {gettext("— Use crouch to access vents and low passages hiding secrets and shortcuts.")}
+    <strong>{dgettext("help_arcade", "Crouch for vents")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Use crouch to access vents and low passages hiding secrets and shortcuts."
+    )}
   </li>
   <li>
-    <strong>{gettext("Weapon effectiveness varies")}</strong>
-    {gettext("— Different weapons are more effective against different Strogg types. Experiment.")}
+    <strong>{dgettext("help_arcade", "Weapon effectiveness varies")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Different weapons are more effective against different Strogg types. Experiment."
+    )}
   </li>
   <li>
-    <strong>{gettext("Colored lighting = danger")}</strong>
-    {gettext("— The colored dynamic lighting often signals combat areas and ambushes.")}
+    <strong>{dgettext("help_arcade", "Colored lighting = danger")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— The colored dynamic lighting often signals combat areas and ambushes."
+    )}
   </li>
   <li>
-    <strong>{gettext("Reload during quiet moments")}</strong>
-    {gettext("— Don't get caught in a firefight with an empty magazine.")}
+    <strong>{dgettext("help_arcade", "Reload during quiet moments")}</strong>
+    {dgettext("help_arcade", "— Don't get caught in a firefight with an empty magazine.")}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The name \"Quake II\" was almost \"Wor\" — legal concerns over other title candidates led the team to reuse the Quake name, despite the sequel having zero narrative connection to the original."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "id Software released the Quake II source code under GPL in 2001, leading to dozens of enhanced source ports including Yamagi Quake II used here."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "This was the last id Software game to feature American McGee, who was fired shortly after its release and went on to create Alice: Madness Returns."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-quake2">{gettext("Quake II (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade-quake2">
+    {dgettext("help_arcade", "Quake II (Arcade)")}
+  </.help_link>
   ·
   <.help_link topic="feature-arcade-quake-shareware">
-    {gettext("Quake: Dimension of the Doomed")}
+    {dgettext("help_arcade", "Quake: Dimension of the Doomed")}
   </.help_link>
   ·
   <.help_link topic="feature-arcade-doom-shareware">
-    {gettext("DOOM: Knee-Deep in the Dead")}
+    {dgettext("help_arcade", "DOOM: Knee-Deep in the Dead")}
   </.help_link>
-  · <.help_link topic="feature-arcade-wolfenstein-3d">{gettext("Wolfenstein 3D")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-wolfenstein-3d">
+    {dgettext("help_arcade", "Wolfenstein 3D")}
+  </.help_link>
 </p>

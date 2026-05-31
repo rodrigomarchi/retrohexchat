@@ -15,8 +15,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
   alias RetroHexChat.Games.Catalog
 
   @local_info %{
-    browser: gettext("Chrome 145.0"),
-    os: gettext("macOS 10.15"),
+    browser: dgettext("showcase", "Chrome 145.0"),
+    os: dgettext("showcase", "macOS 10.15"),
     screen: "2560x1440",
     language: "en-US",
     timezone: "America/Sao_Paulo",
@@ -25,8 +25,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
   }
 
   @peer_info %{
-    browser: gettext("Firefox 148.0"),
-    os: gettext("Linux Ubuntu"),
+    browser: dgettext("showcase", "Firefox 148.0"),
+    os: dgettext("showcase", "Linux Ubuntu"),
     screen: "1920x1080",
     language: "pt-BR",
     timezone: "America/Sao_Paulo",
@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
 
     {:ok,
      assign(socket,
-       page_title: gettext("Game Lobby"),
+       page_title: dgettext("showcase", "Game Lobby"),
        active_page: "game-lobby",
        games: games
      )}
@@ -55,10 +55,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
 
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Game Lobby")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Game Lobby")}</h2>
 
       <.showcase_card
-        title={gettext("Lobby State")}
+        title={dgettext("showcase", "Lobby State")}
         description="Host sees the game picker grid and can invite the guest to play."
       >
         <.game_lobby
@@ -74,7 +74,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Waiting State (Host)")}
+        title={dgettext("showcase", "Waiting State (Host)")}
         description="Host sent a game request and is waiting for the guest to respond."
       >
         <.game_lobby
@@ -91,7 +91,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Waiting State (Guest)")}
+        title={dgettext("showcase", "Waiting State (Guest)")}
         description="Guest waits for the host to choose a game."
       >
         <.game_lobby
@@ -107,7 +107,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Consent State (Guest)")}
+        title={dgettext("showcase", "Consent State (Guest)")}
         description="Guest sees an accept/decline banner when the host requests a game."
       >
         <.game_lobby
@@ -124,7 +124,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Inactivity Warning")}
+        title={dgettext("showcase", "Inactivity Warning")}
         description="Yellow warning bar appears when the lobby is about to close due to inactivity."
       >
         <.game_lobby
@@ -141,7 +141,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Peer Offline")}
+        title={dgettext("showcase", "Peer Offline")}
         description="Lobby when the peer has gone offline."
       >
         <.game_lobby
@@ -156,10 +156,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
         />
       </.showcase_card>
 
-      <h2 class="text-lg font-bold mb-3 mt-6">{gettext("Game Session Ended")}</h2>
+      <h2 class="text-lg font-bold mb-3 mt-6">{dgettext("showcase", "Game Session Ended")}</h2>
 
       <.showcase_card
-        title={gettext("Game Over (with score)")}
+        title={dgettext("showcase", "Game Over (with score)")}
         description="Shown after a game finishes with final score and winner."
       >
         <.game_session_ended
@@ -175,7 +175,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Session Closed by User")}
+        title={dgettext("showcase", "Session Closed by User")}
         description="Session closed by the other peer."
       >
         <.game_session_ended
@@ -189,7 +189,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Session Ended (no result)")}
+        title={dgettext("showcase", "Session Ended (no result)")}
         description="Session expired before a game was played."
       >
         <.game_session_ended

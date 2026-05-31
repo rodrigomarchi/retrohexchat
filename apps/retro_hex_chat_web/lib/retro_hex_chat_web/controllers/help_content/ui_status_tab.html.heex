@@ -1,38 +1,47 @@
 <p>
-  {gettext("The Status tab is the central observability point for your session.")}
-  <strong>{gettext("Every")}</strong>
-  {gettext(
+  {dgettext("help_ui", "The Status tab is the central observability point for your session.")}
+  <strong>{dgettext("help_ui", "Every")}</strong>
+  {dgettext(
+    "help_ui",
     "system event, command result, and error is mirrored here, so you never miss important information even if you are looking at a different channel."
   )}
 </p>
-<.help_h4 icon={:icon_tab_status}>{gettext("What Appears in Status")}</.help_h4>
+<.help_h4 icon={:icon_tab_status}>{dgettext("help_ui", "What Appears in Status")}</.help_h4>
 <p>
-  <strong>{gettext("System events:")}</strong>
-  {gettext("joins, parts, kicks, bans, mode changes, topic changes, nick changes, knocks.")}<br />
+  <strong>{dgettext("help_ui", "System events:")}</strong>
+  {dgettext(
+    "help_ui",
+    "joins, parts, kicks, bans, mode changes, topic changes, nick changes, knocks."
+  )}<br />
   <strong>
-    {gettext("Command results:")}
+    {dgettext("help_ui", "Command results:")}
   </strong>
-  {gettext(
+  {dgettext(
+    "help_ui",
     "/whois, /alias, /ignore, /perform, /autojoin, /invite, /kick, /ban, /mode, /timer output."
   )}<br />
   <strong>
-    {gettext("Errors:")}
+    {dgettext("help_ui", "Errors:")}
   </strong>
-  {gettext("permission errors, rate limits, invalid commands, send failures.")}<br />
+  {dgettext("help_ui", "permission errors, rate limits, invalid commands, send failures.")}<br />
   <strong>
-    {gettext("Services:")}
+    {dgettext("help_ui", "Services:")}
   </strong>
-  {gettext("NickServ, ChanServ responses.")}<br /><strong>{gettext("Notifications:")}</strong>
-  {gettext("notify list online/offline, wallops.")}
+  {dgettext("help_ui", "NickServ, ChanServ responses.")}<br />
+  <strong>
+    {dgettext("help_ui", "Notifications:")}
+  </strong>
+  {dgettext("help_ui", "notify list online/offline, wallops.")}
 </p>
 <p>
-  {gettext("Click the")} <strong>{gettext("Status")}</strong>
-  {gettext(
+  {dgettext("help_ui", "Click the")} <strong>{dgettext("help_ui", "Status")}</strong>
+  {dgettext(
+    "help_ui",
     "tab in the tab bar or conversations sidebar to view it. Status data is session-only and is not persisted."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-status-bar">{gettext("Status Bar")}</.help_link>
-  · <.help_link topic="cmd-whois">{gettext("Whois Command")}</.help_link>
+  <.help_link topic="feature-status-bar">{dgettext("help_ui", "Status Bar")}</.help_link>
+  · <.help_link topic="cmd-whois">{dgettext("help_ui", "Whois Command")}</.help_link>
 </p>

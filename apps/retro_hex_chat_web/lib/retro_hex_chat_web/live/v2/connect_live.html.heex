@@ -10,7 +10,10 @@
     phx-hook="ConnectFormHook"
   >
     <.window class="w-full max-w-md">
-      <.window_title_bar title={gettext("Connect to RetroHexChat")} controls={[:close]}>
+      <.window_title_bar
+        title={dgettext("connect", "Connect to RetroHexChat")}
+        controls={[:close]}
+      >
         <:icon><.icon_connect class="w-4 h-4" /></:icon>
       </.window_title_bar>
       <.window_body class="p-4">
@@ -49,19 +52,19 @@
           class="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground"
           data-testid="locale-switcher"
         >
-          <span>{gettext("Language")}</span>
+          <span>{dgettext("connect", "Language")}</span>
           <.link
             href={~p"/locale/en?return_to=/connect"}
             class={if @locale == "en", do: "font-bold text-text", else: "underline"}
           >
-            {gettext("English")}
+            {dgettext("connect", "English")}
           </.link>
           <span>|</span>
           <.link
             href={~p"/locale/pt_BR?return_to=/connect"}
             class={if @locale == "pt_BR", do: "font-bold text-text", else: "underline"}
           >
-            {gettext("Portuguese")}
+            {dgettext("connect", "Portuguese")}
           </.link>
         </div>
       </.window_body>

@@ -1,8 +1,8 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">{gettext("Conversations")}</h2>
+  <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Conversations")}</h2>
 
   <.showcase_card
-    title={gettext("Full Sidebar")}
+    title={dgettext("showcase", "Full Sidebar")}
     description="Conversations sidebar with channels (multiple states), private messages, users, and popular channels. Includes user counts, disconnected indicator, role sorting, and SVG role badges."
   >
     <div class="max-w-[220px] shadow-retro-field bg-white">
@@ -43,7 +43,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Empty State")}
+    title={dgettext("showcase", "Empty State")}
     description="When no channels or PMs are available. Shows 'Browse channels' button when on_browse_channels is set."
   >
     <div class="max-w-[220px] shadow-retro-field bg-white">
@@ -52,7 +52,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Channels Only")}
+    title={dgettext("showcase", "Channels Only")}
     description="Sidebar with channels but no private messages or popular channels."
   >
     <div class="max-w-[220px] shadow-retro-field bg-white">
@@ -66,7 +66,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Channel States")}
+    title={dgettext("showcase", "Channel States")}
     description="Visual states: normal, active (selected bg), unread (bold + badge), highlight (red + bold), muted (50% opacity), disconnected (⚡), flash (pulse animation)."
   >
     <div class="max-w-[220px] shadow-retro-field bg-white">

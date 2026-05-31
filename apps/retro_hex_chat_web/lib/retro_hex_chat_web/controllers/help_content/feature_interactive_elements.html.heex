@@ -1,46 +1,57 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Chat messages contain interactive elements that respond to hover and click actions. URLs, channel names, and nicknames are all clickable."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("URLs")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "URLs")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "URLs in messages are underlined on hover with a pointer cursor. Hover to see the page title (fetched automatically). Click to open in a new browser tab."
   )}
 </p>
-<.help_h4 icon={:icon_channels}>{gettext("Channel Names")}</.help_h4>
+<.help_h4 icon={:icon_channels}>{dgettext("help_features", "Channel Names")}</.help_h4>
 <p>
-  {gettext("Channel names (e.g.,")} <code>#general</code>{gettext(
+  {dgettext("help_features", "Channel names (e.g.,")} <code>#general</code>{dgettext(
+    "help_features",
     ") are clickable. Hover to see a tooltip with the channel name, user count, and action hint. Click to join the channel (or switch to it if already joined)."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_nick}>{gettext("Nicknames")}</.help_h4>
+<.help_h4 icon={:icon_dialog_nick}>{dgettext("help_features", "Nicknames")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Hover over a nickname in a chat message for 500ms to see a hover card with user info: online duration, channels, away status, client details (browser, OS, screen, language, timezone), and contact/ignore badges."
   )}
 </p>
 <p>
-  <strong>{gettext("Single-click:")}</strong>
-  {gettext("Inserts")} <code>{gettext("Nick:")}</code>
-  {gettext("into your input field.")}<br /><strong>{gettext("Double-click:")}</strong>
-  {gettext("Opens a private message conversation.")}<br />
+  <strong>{dgettext("help_features", "Single-click:")}</strong>
+  {dgettext("help_features", "Inserts")} <code>{dgettext("help_features", "Nick:")}</code>
+  {dgettext("help_features", "into your input field.")}<br />
   <strong>
-    {gettext("Right-click:")}
+    {dgettext("help_features", "Double-click:")}
   </strong>
-  {gettext("Opens the context menu (see Context Menus).")}
+  {dgettext("help_features", "Opens a private message conversation.")}<br />
+  <strong>
+    {dgettext("help_features", "Right-click:")}
+  </strong>
+  {dgettext("help_features", "Opens the context menu (see Context Menus).")}
 </p>
-<.help_h4 icon={:icon_document_alert}>{gettext("Notes")}</.help_h4>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Notes")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Interactive elements do not trigger during text selection. The nick hover card does not appear for your own nickname. Hover tooltips dismiss when the mouse leaves the viewport."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-context-menus">{gettext("Context Menus")}</.help_link>
-  · <.help_link topic="feature-url-catcher">{gettext("URL Catcher")}</.help_link>
-  · <.help_link topic="cmd-join">{gettext("/join Command")}</.help_link>
-  · <.help_link topic="cmd-msg">{gettext("/msg Command")}</.help_link>
+  <.help_link topic="feature-context-menus">
+    {dgettext("help_features", "Context Menus")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-url-catcher">{dgettext("help_features", "URL Catcher")}</.help_link>
+  · <.help_link topic="cmd-join">{dgettext("help_features", "/join Command")}</.help_link>
+  · <.help_link topic="cmd-msg">{dgettext("help_features", "/msg Command")}</.help_link>
 </p>

@@ -39,7 +39,9 @@ defmodule RetroHexChat.Games.Policy do
     end
   end
 
-  defp check_not_self(id, id), do: {:error, gettext("Cannot start a game with yourself")}
+  defp check_not_self(id, id),
+    do: {:error, dgettext("games", "Cannot start a game with yourself")}
+
   defp check_not_self(_, _), do: :ok
 
   defp check_registered(user_id, role) do
@@ -51,15 +53,15 @@ defmodule RetroHexChat.Games.Policy do
       :ok
     else
       case role do
-        :creator -> {:error, gettext("You must be registered to play games")}
-        :peer -> {:error, gettext("Target user must be registered")}
+        :creator -> {:error, dgettext("games", "You must be registered to play games")}
+        :peer -> {:error, dgettext("games", "Target user must be registered")}
       end
     end
   end
 
   defp check_no_active_session(creator_id, peer_id) do
     if Queries.active_session_exists?(creator_id, peer_id) do
-      {:error, gettext("An active game session already exists with this user")}
+      {:error, dgettext("games", "An active game session already exists with this user")}
     else
       :ok
     end
@@ -80,7 +82,7 @@ defmodule RetroHexChat.Games.Policy do
       |> Repo.exists?()
 
     if blocked do
-      {:error, gettext("User not available")}
+      {:error, dgettext("games", "User not available")}
     else
       :ok
     end
@@ -90,13 +92,13 @@ defmodule RetroHexChat.Games.Policy do
     if user_id == session.creator_id or user_id == session.peer_id do
       :ok
     else
-      {:error, gettext("You are not a participant in this game session")}
+      {:error, dgettext("games", "You are not a participant in this game session")}
     end
   end
 
   defp check_not_terminal(session) do
     if GameSession.terminal?(session.status) do
-      {:error, gettext("Game session is no longer active")}
+      {:error, dgettext("games", "Game session is no longer active")}
     else
       :ok
     end

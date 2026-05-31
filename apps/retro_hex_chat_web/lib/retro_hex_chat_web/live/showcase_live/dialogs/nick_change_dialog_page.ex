@@ -18,22 +18,25 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NickChangeDialogPage do
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, page_title: gettext("Nick Change Dialog"), active_page: "nick-change-dialog")}
+     assign(socket,
+       page_title: dgettext("showcase", "Nick Change Dialog"),
+       active_page: "nick-change-dialog"
+     )}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Nick Change Dialog")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Nick Change Dialog")}</h2>
 
       <.showcase_card
-        title={gettext("Unregistered Nick")}
+        title={dgettext("showcase", "Unregistered Nick")}
         description="Simple confirmation — no password required for unregistered nicknames."
       >
         <.button variant="outline" phx-click={show_modal("nick-change-unreg")}>
           <:icon><Icons.icon_dialog_nick class="w-4 h-4" /></:icon>
-          {gettext("Change to Unregistered Nick")}
+          {dgettext("showcase", "Change to Unregistered Nick")}
         </.button>
         <.nick_change_dialog
           id="nick-change-unreg"
@@ -51,12 +54,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NickChangeDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Registered Nick")}
+        title={dgettext("showcase", "Registered Nick")}
         description="Password field shown when the target nick is registered with NickServ."
       >
         <.button variant="outline" phx-click={show_modal("nick-change-reg")}>
           <:icon><Icons.icon_dialog_nick class="w-4 h-4" /></:icon>
-          {gettext("Change to Registered Nick")}
+          {dgettext("showcase", "Change to Registered Nick")}
         </.button>
         <.nick_change_dialog
           id="nick-change-reg"
@@ -66,12 +69,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NickChangeDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Password Error State")}
+        title={dgettext("showcase", "Password Error State")}
         description="Error message shown when the NickServ password is incorrect."
       >
         <.button variant="outline" phx-click={show_modal("nick-change-error")}>
           <:icon><Icons.icon_dialog_nick class="w-4 h-4" /></:icon>
-          {gettext("Change Nick (with Error)")}
+          {dgettext("showcase", "Change Nick (with Error)")}
         </.button>
         <.nick_change_dialog
           id="nick-change-error"

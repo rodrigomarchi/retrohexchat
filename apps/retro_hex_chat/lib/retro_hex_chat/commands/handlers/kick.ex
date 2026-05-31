@@ -12,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, gettext("Usage: /kick <nickname> [reason]")}
+    {:error, dgettext("commands", "Usage: /kick <nickname> [reason]")}
   end
 
   def execute([target | rest], context) do
@@ -34,17 +34,21 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
   def help do
     %{
       name: "kick",
-      syntax: gettext("/kick <nickname> [reason]"),
+      syntax: dgettext("commands", "/kick <nickname> [reason]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Remove a user from the channel with an optional reason. They can rejoin unless also banned.\nRequires: channel operator or half-operator. Must be in a channel."
         ),
-      examples: [gettext("/kick troll"), gettext("/kick troll Spamming the channel")]
+      examples: [
+        dgettext("commands", "/kick troll"),
+        dgettext("commands", "/kick troll Spamming the channel")
+      ]
     }
   end
 
   defp require_channel(%{active_channel: nil}),
-    do: {:error, gettext("You are not in any channel")}
+    do: {:error, dgettext("commands", "You are not in any channel")}
 
   defp require_channel(%{active_channel: channel}), do: {:ok, channel}
 
@@ -55,7 +59,7 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
     if is_operator or is_half_op do
       :ok
     else
-      {:error, gettext("You must be a channel operator to kick users")}
+      {:error, dgettext("commands", "You must be a channel operator to kick users")}
     end
   end
 
@@ -70,9 +74,10 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
 
     %CommandSyntax{
       command: "kick",
-      syntax: gettext("/kick <nickname> [reason]"),
+      syntax: dgettext("commands", "/kick <nickname> [reason]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Remove a user from the channel with an optional reason. They can rejoin unless also banned.\nRequires: channel operator or half-operator. Must be in a channel."
         ),
       category: :channel,
@@ -82,17 +87,20 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
           required: true,
           type: :nick,
           position: 0,
-          description: gettext("User to kick")
+          description: dgettext("commands", "User to kick")
         },
         %Parameter{
           name: "reason",
           required: false,
           type: :text,
           position: 1,
-          description: gettext("Reason for the kick")
+          description: dgettext("commands", "Reason for the kick")
         }
       ],
-      examples: [gettext("/kick troll"), gettext("/kick troll Spamming the channel")]
+      examples: [
+        dgettext("commands", "/kick troll"),
+        dgettext("commands", "/kick troll Spamming the channel")
+      ]
     }
   end
 end

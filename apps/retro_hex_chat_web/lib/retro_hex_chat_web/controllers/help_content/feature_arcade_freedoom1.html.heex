@@ -1,87 +1,128 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "A complete free replacement for Ultimate DOOM — 4 full episodes with 36 original levels, all-new art, music, and sound effects. Everything is released under the BSD license, meaning it can be freely reused by any project."
   )}
 </p>
 <.diagram_arcade_doom class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "About")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "The Freedoom project was started in 2001 by Simon Howard and Jon Dowland, originating from a Doomworld forum thread titled \"barn-raising: open iwad project.\" The community set out to recreate every asset in DOOM from scratch — sprites, textures, sounds, music, and levels — producing a complete, standalone game that requires no commercial data files."
   )}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Phase 1 replaces Ultimate DOOM with 4 episodes of 9 levels each (36 total). Enemy designs differ from the originals but fulfill the same gameplay roles. The project remains under active development and is compatible with most classic DOOM WAD mods. It runs on the PrBoom+ engine compiled to WebAssembly."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("W / ↑")}</strong> {gettext("— Move forward")}</li>
-  <li><strong>{gettext("S / ↓")}</strong> {gettext("— Move backward")}</li>
-  <li><strong>A</strong> {gettext("— Strafe left")}</li>
-  <li><strong>D</strong> {gettext("— Strafe right")}</li>
-  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim / turn")}</li>
-  <li><strong>{gettext("Left Click")}</strong> {gettext("— Fire weapon")}</li>
-  <li><strong>E</strong> {gettext("— Use / open doors")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Jump (PrBoom+)")}</li>
-  <li><strong>1–7</strong> {gettext("— Select weapon")}</li>
-  <li><strong>{gettext("Tab")}</strong> {gettext("— Toggle automap")}</li>
-  <li><strong>{gettext("Shift")}</strong> {gettext("— Run (hold)")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Menu")}</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Different enemy designs")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "W / ↑")}</strong> {dgettext("help_arcade", "— Move forward")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "S / ↓")}</strong> {dgettext(
+      "help_arcade",
+      "— Move backward"
+    )}
+  </li>
+  <li><strong>A</strong> {dgettext("help_arcade", "— Strafe left")}</li>
+  <li><strong>D</strong> {dgettext("help_arcade", "— Strafe right")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Mouse")}</strong> {dgettext("help_arcade", "— Aim / turn")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Fire weapon"
+    )}
+  </li>
+  <li><strong>E</strong> {dgettext("help_arcade", "— Use / open doors")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Space")}</strong> {dgettext(
+      "help_arcade",
+      "— Jump (PrBoom+)"
+    )}
+  </li>
+  <li><strong>1–7</strong> {dgettext("help_arcade", "— Select weapon")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Tab")}</strong> {dgettext("help_arcade", "— Toggle automap")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Shift")}</strong> {dgettext("help_arcade", "— Run (hold)")}
+  </li>
+  <li><strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Menu")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_arcade", "Different enemy designs")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Enemies look different from classic DOOM but fill the same roles. Learn the new sprites."
     )}
   </li>
   <li>
-    <strong>{gettext("Explore all 4 episodes")}</strong>
-    {gettext("— Each episode has its own theme and difficulty curve. Don't stop at Episode 1.")}
+    <strong>{dgettext("help_arcade", "Explore all 4 episodes")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Each episode has its own theme and difficulty curve. Don't stop at Episode 1."
+    )}
   </li>
   <li>
-    <strong>{gettext("WAD compatible")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "WAD compatible")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Most DOOM WAD mods work with Freedoom, giving you access to decades of community content."
     )}
   </li>
   <li>
-    <strong>{gettext("Use the automap")}</strong> {gettext(
+    <strong>{dgettext("help_arcade", "Use the automap")}</strong> {dgettext(
+      "help_arcade",
       "— Press Tab in maze-like sections to keep your bearings."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Freedoom has not yet reached version 1.0 and remains under active development since 2001 — making it one of the longest-running open source game projects."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "All Freedoom content is BSD-licensed, meaning any project can freely reuse its assets for any purpose — commercial or otherwise."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "After version 0.13, Freedoom shifted to vanilla DOOM compatibility, meaning it can even run on the original 1993 DOS executable."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade-doom">{dgettext("help_arcade", "DOOM (Arcade)")}</.help_link>
   ·
   <.help_link topic="feature-arcade-doom-shareware">
-    {gettext("DOOM: Knee-Deep in the Dead")}
+    {dgettext("help_arcade", "DOOM: Knee-Deep in the Dead")}
   </.help_link>
-  · <.help_link topic="feature-arcade-freedoom2">{gettext("Freedoom: Phase 2")}</.help_link>
-  · <.help_link topic="feature-arcade-freedm">{gettext("FreeDM")}</.help_link>
-  · <.help_link topic="feature-arcade-chex-quest">{gettext("Chex Quest")}</.help_link>
-  · <.help_link topic="feature-arcade-hacx">{gettext("HacX")}</.help_link>
-  · <.help_link topic="feature-arcade-rekkr">{gettext("REKKR")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-freedoom2">
+    {dgettext("help_arcade", "Freedoom: Phase 2")}
+  </.help_link>
+  · <.help_link topic="feature-arcade-freedm">{dgettext("help_arcade", "FreeDM")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-chex-quest">
+    {dgettext("help_arcade", "Chex Quest")}
+  </.help_link>
+  · <.help_link topic="feature-arcade-hacx">{dgettext("help_arcade", "HacX")}</.help_link>
+  · <.help_link topic="feature-arcade-rekkr">{dgettext("help_arcade", "REKKR")}</.help_link>
 </p>

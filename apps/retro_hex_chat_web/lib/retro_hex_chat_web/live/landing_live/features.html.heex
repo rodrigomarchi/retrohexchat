@@ -1,16 +1,16 @@
 <.landing_layout active_page={@active_page}>
   <section class="m-4" aria-labelledby="features-heading">
-    <h2 id="features-heading" class="sr-only">{gettext("Features")}</h2>
+    <h2 id="features-heading" class="sr-only">{dgettext("landing", "Features")}</h2>
 
     <div class="grid md:grid-cols-2 gap-4 mb-4">
       <%!-- ══════════════ CHAT ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Real-time Chat")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "Real-time Chat")} controls={[:close]}>
           <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
           <h3 class="text-sm font-bold mb-2">
-            {gettext("Real-time chat. Zero refresh. Zero loading.")}
+            {dgettext("landing", "Real-time chat. Zero refresh. Zero loading.")}
           </h3>
           <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mb-2">
             <.chat_mockup />
@@ -19,37 +19,40 @@
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_websocket class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                {gettext("Real-time messages via")} <strong>{gettext("WebSocket")}</strong>
+                {dgettext("landing", "Real-time messages via")}
+                <strong>{dgettext("landing", "WebSocket")}</strong>
               </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_fmt_emoji class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("Emoji reactions and inline formatting")}</span>
+              <span>{dgettext("landing", "Emoji reactions and inline formatting")}</span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_chat class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("Threads, nested replies, and direct messages")}</span>
+              <span>{dgettext("landing", "Threads, nested replies, and direct messages")}</span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_link class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("Link previews with rich metadata")}</span>
+              <span>{dgettext("landing", "Link previews with rich metadata")}</span>
             </div>
           </div>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("Live")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Live")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ CHANNELS ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Channels")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "Channels")} controls={[:close]}>
           <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">{gettext("Channels are chat rooms.")}</h3>
+          <h3 class="text-sm font-bold mb-2">
+            {dgettext("landing", "Channels are chat rooms.")}
+          </h3>
           <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mb-2">
             <.channel_list_mockup />
           </div>
@@ -57,117 +60,128 @@
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_channels class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                <strong>{gettext("Public:")}</strong> {gettext("open to anyone who wants to join")}
+                <strong>{dgettext("landing", "Public:")}</strong> {dgettext(
+                  "landing",
+                  "open to anyone who wants to join"
+                )}
               </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_lock class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                <strong>{gettext("Private:")}</strong> {gettext("invite-only for your group")}
+                <strong>{dgettext("landing", "Private:")}</strong> {dgettext(
+                  "landing",
+                  "invite-only for your group"
+                )}
               </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_security class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                <strong>{gettext("Protected:")}</strong> {gettext("password-gated access")}
+                <strong>{dgettext("landing", "Protected:")}</strong> {dgettext(
+                  "landing",
+                  "password-gated access"
+                )}
               </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_btn_settings class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("Topic, modes, slow mode &mdash; you control it")}</span>
+              <span>{dgettext("landing", "Topic, modes, slow mode &mdash; you control it")}</span>
             </div>
           </div>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("Flexible")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Flexible")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ P2P ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("P2P Calls & Files")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "P2P Calls & Files")} controls={[:close]}>
           <:icon><Icons.icon_p2p class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
           <h3 class="text-sm font-bold mb-2">
-            {gettext("Direct connection between people. Peer-to-peer.")}
+            {dgettext("landing", "Direct connection between people. Peer-to-peer.")}
           </h3>
           <div
             class="shadow-retro-field bg-white p-3 mb-2"
-            aria-label={gettext("Voice call mockup")}
+            aria-label={dgettext("landing", "Voice call mockup")}
           >
             <.diagram_voice_call_mockup class="w-full max-w-lg mx-auto" />
           </div>
           <div class="space-y-1.5">
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_microphone class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("Voice calls &mdash; direct P2P via WebRTC")}</span>
+              <span>{dgettext("landing", "Voice calls &mdash; direct P2P via WebRTC")}</span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_camera class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("Video calls with camera toggle and PiP")}</span>
+              <span>{dgettext("landing", "Video calls with camera toggle and PiP")}</span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_file_send class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("File transfer &mdash; send files directly, no upload")}</span>
+              <span>
+                {dgettext("landing", "File transfer &mdash; send files directly, no upload")}
+              </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_shield class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("End-to-end encrypted with TURN relay fallback")}</span>
+              <span>{dgettext("landing", "End-to-end encrypted with TURN relay fallback")}</span>
             </div>
           </div>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("Encrypted")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Encrypted")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ P2P GAMES ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Multiplayer Games")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "Multiplayer Games")} controls={[:close]}>
           <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
           <h3 class="text-sm font-bold mb-2">
-            {gettext("28 multiplayer games via WebRTC.")}
+            {dgettext("landing", "28 multiplayer games via WebRTC.")}
           </h3>
           <div class="shadow-retro-field bg-white p-3 mb-2">
             <div class="grid grid-cols-4 gap-2 justify-items-center">
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_pong class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Pong")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Pong")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_space class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Star Duel")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Star Duel")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_tanks class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Tanks")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Tanks")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_trails class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Trails")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Trails")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_boxing class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Boxing")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Boxing")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_hockey class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Hockey")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Hockey")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_invaders class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Invaders")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Invaders")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_enduro class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Enduro")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Enduro")}</span>
               </div>
             </div>
           </div>
@@ -175,68 +189,69 @@
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_terminal class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                {gettext("Challenge anyone with")} <strong>{gettext("/game @nick")}</strong>
+                {dgettext("landing", "Challenge anyone with")}
+                <strong>{dgettext("landing", "/game @nick")}</strong>
               </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_webrtc class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("Real-time sync via WebRTC DataChannel")}</span>
+              <span>{dgettext("landing", "Real-time sync via WebRTC DataChannel")}</span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_p2p class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("No server &mdash; same P2P tech as voice calls")}</span>
+              <span>{dgettext("landing", "No server &mdash; same P2P tech as voice calls")}</span>
             </div>
           </div>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("28 games")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "28 games")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ SOLO ARCADE ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Solo Arcade")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "Solo Arcade")} controls={[:close]}>
           <:icon><Icons.icon_game_arcade class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
           <h3 class="text-sm font-bold mb-2">
-            {gettext("18 classic games via WebAssembly.")}
+            {dgettext("landing", "18 classic games via WebAssembly.")}
           </h3>
           <div class="shadow-retro-field bg-white p-3 mb-2">
             <div class="grid grid-cols-4 gap-2 justify-items-center">
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_doom class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("DOOM")}</span>
+                <span class="text-[9px]">{dgettext("landing", "DOOM")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_quake class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Quake")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Quake")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_wolfenstein class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Wolf3D")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Wolf3D")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_halflife class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Half-Life")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Half-Life")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_bass class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("BASS")}</span>
+                <span class="text-[9px]">{dgettext("landing", "BASS")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_drascula class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Drascula")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Drascula")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_fotaq class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("FOTAQ")}</span>
+                <span class="text-[9px]">{dgettext("landing", "FOTAQ")}</span>
               </div>
               <div class="flex flex-col items-center gap-0.5">
                 <Icons.icon_game_quake2 class="w-8 h-8" />
-                <span class="text-[9px]">{gettext("Quake II")}</span>
+                <span class="text-[9px]">{dgettext("landing", "Quake II")}</span>
               </div>
             </div>
           </div>
@@ -244,44 +259,47 @@
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_channels class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                {gettext("Join")} <strong>#games</strong>
-                {gettext("channel (")}<code class="text-[10px]">{gettext("/join #games")}</code>)
+                {dgettext("landing", "Join")} <strong>#games</strong>
+                {dgettext("landing", "channel (")}<code class="text-[10px]">{dgettext("landing", "/join #games")}</code>)
               </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_terminal class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                {gettext("Type")}
-                <strong>{gettext("!play")}</strong> {gettext(
+                {dgettext("landing", "Type")}
+                <strong>{dgettext("landing", "!play")}</strong> {dgettext(
+                  "landing",
                   "&mdash; the bot sends you an arcade link"
                 )}
               </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_code class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("Runs entirely in the browser via WebAssembly")}</span>
+              <span>{dgettext("landing", "Runs entirely in the browser via WebAssembly")}</span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_laptop class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("No downloads, no plugins &mdash; opens in a new window")}</span>
+              <span>
+                {dgettext("landing", "No downloads, no plugins &mdash; opens in a new window")}
+              </span>
             </div>
           </div>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("18 games")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "18 games")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ BOTS ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Bots")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "Bots")} controls={[:close]}>
           <:icon><Icons.icon_robot class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
           <h3 class="text-sm font-bold mb-2">
-            {gettext("Programmable bots with pluggable capabilities.")}
+            {dgettext("landing", "Programmable bots with pluggable capabilities.")}
           </h3>
           <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mb-2">
             <.bot_mockup />
@@ -290,19 +308,26 @@
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_question class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                <strong>{gettext("Trivia:")}</strong> {gettext("quiz games with leaderboards")}
+                <strong>{dgettext("landing", "Trivia:")}</strong> {dgettext(
+                  "landing",
+                  "quiz games with leaderboards"
+                )}
               </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_dice class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                <strong>{gettext("Dice:")}</strong> {gettext("RPG-style rolling (!roll 2d6+3)")}
+                <strong>{dgettext("landing", "Dice:")}</strong> {dgettext(
+                  "landing",
+                  "RPG-style rolling (!roll 2d6+3)"
+                )}
               </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                <strong>{gettext("Moderation:")}</strong> {gettext(
+                <strong>{dgettext("landing", "Moderation:")}</strong> {dgettext(
+                  "landing",
                   "word filters and spam detection"
                 )}
               </span>
@@ -310,73 +335,90 @@
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_rss class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                <strong>{gettext("RSS:")}</strong> {gettext("feed monitoring with announcements")}
+                <strong>{dgettext("landing", "RSS:")}</strong> {dgettext(
+                  "landing",
+                  "feed monitoring with announcements"
+                )}
               </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_clock class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                <strong>{gettext("Scheduler:")}</strong> {gettext("timed messages and reminders")}
+                <strong>{dgettext("landing", "Scheduler:")}</strong> {dgettext(
+                  "landing",
+                  "timed messages and reminders"
+                )}
               </span>
             </div>
           </div>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("Extensible")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Extensible")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ ADMIN ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Administration")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "Administration")} controls={[:close]}>
           <:icon><Icons.icon_rules class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">{gettext("Your server, your rules.")}</h3>
+          <h3 class="text-sm font-bold mb-2">
+            {dgettext("landing", "Your server, your rules.")}
+          </h3>
           <div class="space-y-2 mb-2">
             <div class="shadow-retro-field bg-white p-2 text-xs">
               <strong>
-                <Icons.icon_dialog_admin_console class="w-4 h-4 inline" /> {gettext("Admin Panel")}
+                <Icons.icon_dialog_admin_console class="w-4 h-4 inline" /> {dgettext(
+                  "landing",
+                  "Admin Panel"
+                )}
               </strong>
-              <br /> {gettext("Full dashboard with real-time logs and metrics.")}
+              <br /> {dgettext("landing", "Full dashboard with real-time logs and metrics.")}
             </div>
             <div class="shadow-retro-field bg-white p-2 text-xs">
               <strong>
-                <Icons.icon_community class="w-4 h-4 inline" /> {gettext("User Management")}
+                <Icons.icon_community class="w-4 h-4 inline" /> {dgettext(
+                  "landing",
+                  "User Management"
+                )}
               </strong>
-              <br /> {gettext("Accounts, roles, bans, and registration control.")}
+              <br /> {dgettext("landing", "Accounts, roles, bans, and registration control.")}
             </div>
             <div class="shadow-retro-field bg-white p-2 text-xs">
               <strong>
-                <Icons.icon_shield class="w-4 h-4 inline" /> {gettext("Moderation")}
+                <Icons.icon_shield class="w-4 h-4 inline" /> {dgettext("landing", "Moderation")}
               </strong>
-              <br /> {gettext("Rate limiting, flood protection, and word filters.")}
+              <br /> {dgettext("landing", "Rate limiting, flood protection, and word filters.")}
             </div>
             <div class="shadow-retro-field bg-white p-2 text-xs">
               <strong>
-                <Icons.icon_backup class="w-4 h-4 inline" /> {gettext("Backup & Restore")}
+                <Icons.icon_backup class="w-4 h-4 inline" /> {dgettext(
+                  "landing",
+                  "Backup & Restore"
+                )}
               </strong>
-              <br /> {gettext("Export and import your data anytime.")}
+              <br /> {dgettext("landing", "Export and import your data anytime.")}
             </div>
           </div>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("Full control")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Full control")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ HELP SYSTEM ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Built-in Help")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "Built-in Help")} controls={[:close]}>
           <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
           <h3 class="text-sm font-bold mb-2">
-            {gettext("CHM-style help system built in.")}
+            {dgettext("landing", "CHM-style help system built in.")}
           </h3>
           <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mb-2">
             <.help_mockup />
@@ -385,22 +427,26 @@
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_btn_help_topics class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                {gettext("Open Help Topics or type")} <strong>{gettext("/help")}</strong> anywhere
+                {dgettext("landing", "Open Help Topics or type")}
+                <strong>{dgettext("landing", "/help")}</strong> anywhere
               </span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_btn_search class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("Searchable topics with keyword matching")}</span>
+              <span>{dgettext("landing", "Searchable topics with keyword matching")}</span>
             </div>
             <div class="flex items-start gap-2 text-xs">
               <Icons.icon_link class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{gettext("Cross-referenced &ldquo;See Also&rdquo; links")}</span>
+              <span>{dgettext("landing", "Cross-referenced &ldquo;See Also&rdquo; links")}</span>
             </div>
           </div>
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("Self-documented")}
+            <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext(
+              "landing",
+              "Self-documented"
+            )}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
@@ -408,19 +454,21 @@
 
     <%!-- ══════════════ COMMANDS (full width) ══════════════ --%>
     <.window>
-      <.window_title_bar title={gettext("IRC Commands")} controls={[:close]}>
+      <.window_title_bar title={dgettext("landing", "IRC Commands")} controls={[:close]}>
         <:icon><Icons.icon_terminal class="w-4 h-4" /></:icon>
       </.window_title_bar>
       <.window_body>
-        <h3 class="text-sm font-bold mb-2">{gettext("Powerful IRC-style commands.")}</h3>
+        <h3 class="text-sm font-bold mb-2">
+          {dgettext("landing", "Powerful IRC-style commands.")}
+        </h3>
         <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mb-2">
           <.commands_mockup />
         </div>
-        <p class="text-sm">{gettext("Over 20 commands with smart autocomplete.")}</p>
+        <p class="text-sm">{dgettext("landing", "Over 20 commands with smart autocomplete.")}</p>
       </.window_body>
       <.window_status_bar>
         <.window_status_bar_field grow>
-          <Icons.icon_checkmark class="w-3 h-3 inline" /> {gettext("20+ commands")}
+          <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "20+ commands")}
         </.window_status_bar_field>
       </.window_status_bar>
     </.window>

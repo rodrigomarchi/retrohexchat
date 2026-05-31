@@ -23,19 +23,19 @@ defmodule RetroHexChat.Accounts.NicknameValidator do
   def validate(nickname) do
     cond do
       not is_binary(nickname) ->
-        {:error, gettext("Nickname must be a string")}
+        {:error, dgettext("accounts", "Nickname must be a string")}
 
       byte_size(nickname) == 0 ->
-        {:error, gettext("Nickname cannot be empty")}
+        {:error, dgettext("accounts", "Nickname cannot be empty")}
 
       byte_size(nickname) > @max_length ->
         {:error, "Nickname must be at most #{@max_length} characters"}
 
       not valid_first_char?(nickname) ->
-        {:error, gettext("Nickname must start with a letter or special character")}
+        {:error, dgettext("accounts", "Nickname must start with a letter or special character")}
 
       not no_spaces?(nickname) ->
-        {:error, gettext("Nickname cannot contain spaces")}
+        {:error, dgettext("accounts", "Nickname cannot contain spaces")}
 
       true ->
         :ok

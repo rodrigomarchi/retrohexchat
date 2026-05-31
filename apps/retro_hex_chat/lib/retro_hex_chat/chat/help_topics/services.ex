@@ -8,30 +8,38 @@ defmodule RetroHexChat.Chat.HelpTopics.Services do
     [
       %{
         id: "nickserv",
-        title: gettext("NickServ Overview"),
-        category: gettext("Services & Protocols"),
-        keywords: ["nickserv", "register", "identify", "password", gettext("nickname protection")],
+        title: dgettext("help", "NickServ Overview"),
+        category: dgettext("help", "Services & Protocols"),
+        keywords: [
+          "nickserv",
+          "register",
+          "identify",
+          "password",
+          dgettext("help", "nickname protection")
+        ],
         icon: :icon_lock,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Register and protect your nickname with NickServ to prevent others from using it."
           )
       },
       %{
         id: "chanserv",
-        title: gettext("ChanServ Overview"),
-        category: gettext("Services & Protocols"),
+        title: dgettext("help", "ChanServ Overview"),
+        category: dgettext("help", "Services & Protocols"),
         keywords: [
           "chanserv",
-          gettext("channel service"),
-          gettext("register channel"),
-          gettext("access list"),
-          gettext("channel expiration"),
-          gettext("channel expiry")
+          dgettext("help", "channel service"),
+          dgettext("help", "register channel"),
+          dgettext("help", "access list"),
+          dgettext("help", "channel expiration"),
+          dgettext("help", "channel expiry")
         ],
         icon: :icon_shield,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Register and manage channels with ChanServ, including access lists and channel settings."
           )
       }

@@ -8,23 +8,25 @@ defmodule RetroHexChat.Chat.HelpTopics.TextFormatting do
     [
       %{
         id: "formatting-overview",
-        title: gettext("Text Formatting Overview"),
-        category: gettext("Text Formatting"),
+        title: dgettext("help", "Text Formatting Overview"),
+        category: dgettext("help", "Text Formatting"),
         keywords: ["formatting", "bold", "italic", "underline", "color", "strip"],
         icon: :icon_notepad,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Format your messages with bold, italic, underline, strikethrough, and color codes."
           )
       },
       %{
         id: "formatting-colors",
-        title: gettext("Colors"),
-        category: gettext("Text Formatting"),
+        title: dgettext("help", "Colors"),
+        category: dgettext("help", "Text Formatting"),
         keywords: ["color", "colour", "foreground", "background", "palette"],
         icon: :icon_palette,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Use the color palette to add foreground and background colors to your chat messages."
           )
       }

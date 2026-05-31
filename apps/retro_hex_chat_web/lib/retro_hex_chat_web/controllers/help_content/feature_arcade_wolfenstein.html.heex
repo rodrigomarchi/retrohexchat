@@ -1,87 +1,111 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Play Wolfenstein 3D in your browser via WebAssembly. The original 1992 shareware episode — 10 levels of the game that launched the first-person shooter genre."
   )}
 </p>
 <.diagram_arcade_wolfenstein class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_game_wolfenstein}>{gettext("Game Data")}</.help_h4>
+<.help_h4 icon={:icon_game_wolfenstein}>{dgettext("help_arcade", "Game Data")}</.help_h4>
 <ul>
   <li>
     <.help_link topic="feature-arcade-wolfenstein-3d">
-      {gettext("Wolfenstein 3D: Escape from Castle")}
+      {dgettext("help_arcade", "Wolfenstein 3D: Escape from Castle")}
     </.help_link>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "— The original Episode 1 shareware (10 levels). The grandfather of FPS games, created by id Software. Freely redistributable."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_webrtc}>{gettext("Engine")}</.help_h4>
+<.help_h4 icon={:icon_webrtc}>{dgettext("help_arcade", "Engine")}</.help_h4>
 <p>
-  {gettext("Powered by")} <strong>{gettext("ECWolf-JS")}</strong>
-  {gettext(
+  {dgettext("help_arcade", "Powered by")} <strong>{dgettext("help_arcade", "ECWolf-JS")}</strong>
+  {dgettext(
+    "help_arcade",
     "— ECWolf (modern Wolf3D source port) compiled to WebAssembly via Emscripten (GPL-2.0). Features improved input handling, higher resolutions, and Web Audio support."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("Arrow keys")}</strong> {gettext("— Move and turn")}</li>
-  <li><strong>{gettext("Ctrl")}</strong> {gettext("— Fire")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Open doors")}</li>
-  <li><strong>{gettext("Shift")}</strong> {gettext("— Run")}</li>
-  <li><strong>1-4</strong> {gettext("— Weapon select")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Arrow keys")}</strong> {dgettext(
+      "help_arcade",
+      "— Move and turn"
+    )}
+  </li>
+  <li><strong>{dgettext("help_arcade", "Ctrl")}</strong> {dgettext("help_arcade", "— Fire")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Space")}</strong> {dgettext("help_arcade", "— Open doors")}
+  </li>
+  <li><strong>{dgettext("help_arcade", "Shift")}</strong> {dgettext("help_arcade", "— Run")}</li>
+  <li><strong>1-4</strong> {dgettext("help_arcade", "— Weapon select")}</li>
 </ul>
-<.help_h4 icon={:icon_clock}>{gettext("History")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "History")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Released by id Software on May 5, 1992, Wolfenstein 3D is widely credited as the game that launched the FPS genre. Built by John Carmack and John Romero, the raycasting engine ran smoothly on modest 386 PCs — a technical marvel at the time. The shareware Episode 1 spread like wildfire across BBSes, introducing millions to fast-paced 3D action."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Check every wall")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Check every wall")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Push walls hide treasure rooms and secret levels. Systematically check textured walls by pressing Space."
     )}
   </li>
   <li>
-    <strong>{gettext("Save the chaingun")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Save the chaingun")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Ammo is shared across all bullet weapons. The chaingun is devastating but burns ammo fast."
     )}
   </li>
   <li>
-    <strong>{gettext("Corner peek")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Corner peek")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Open doors and immediately step back. Let enemies come to you through the doorframe."
     )}
   </li>
   <li>
-    <strong>{gettext("Prioritize SS guards")}</strong>
-    {gettext("— Blue-uniformed SS guards deal heavy damage and move fast. Take them out first.")}
+    <strong>{dgettext("help_arcade", "Prioritize SS guards")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Blue-uniformed SS guards deal heavy damage and move fast. Take them out first."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Wolfenstein 3D used raycasting (not true 3D) — all walls are the same height and floors are flat. The 3D effect is an optical illusion."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The game was banned in Germany until 2019 due to its use of Nazi imagery. It was one of the first games \"indexed\" by German authorities."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "id Software released the full Wolfenstein 3D source code in 1995, spawning decades of source ports and mods."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade">{gettext("Solo Arcade")}</.help_link>
-  · <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
-  · <.help_link topic="feature-arcade-quake">{gettext("Quake (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade">{dgettext("help_arcade", "Solo Arcade")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-doom">{dgettext("help_arcade", "DOOM (Arcade)")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-quake">
+    {dgettext("help_arcade", "Quake (Arcade)")}
+  </.help_link>
 </p>

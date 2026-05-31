@@ -22,6 +22,6 @@ defmodule RetroHexChat.Bots.Policy do
   def authorize(context) do
     if can_manage?(context),
       do: :ok,
-      else: {:error, gettext("Only admins and server operators can manage bots")}
+      else: {:error, dgettext("bots", "Only admins and server operators can manage bots")}
   end
 end

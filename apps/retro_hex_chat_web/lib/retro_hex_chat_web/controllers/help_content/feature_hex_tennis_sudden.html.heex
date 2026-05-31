@@ -1,52 +1,72 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Every point wins a game — no 15-30-40, no deuce, no advantage. First to 6 games takes the set. Pure pressure. One mistake can cost you an entire game — there's no recovering from a bad point."
   )}
 </p>
 <.diagram_game_tennis class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("Arrow keys / WASD")}</strong> {gettext("— Move player")}</li>
-  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Serve (during serving phase)")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    <strong>{dgettext("help_games", "Arrow keys / WASD")}</strong> {dgettext(
+      "help_games",
+      "— Move player"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Space / Shift")}</strong> {dgettext(
+      "help_games",
+      "— Serve (during serving phase)"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_games",
       "Same hitting mechanics as Classic — automatic hitting, angle based on contact position"
     )}
   </li>
-  <li>{gettext("Each point won directly increments your games count")}</li>
-  <li>{gettext("No traditional tennis scoring — just games")}</li>
-  <li>{gettext("First to 6 games wins — no tiebreak, no win-by-2")}</li>
-  <li>{gettext("Server alternates after every point")}</li>
+  <li>{dgettext("help_games", "Each point won directly increments your games count")}</li>
+  <li>{dgettext("help_games", "No traditional tennis scoring — just games")}</li>
+  <li>{dgettext("help_games", "First to 6 games wins — no tiebreak, no win-by-2")}</li>
+  <li>{dgettext("help_games", "Server alternates after every point")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Zero margin for error")}</strong>
-    {gettext("— Every single rally decides a game. Stay focused for every point.")}
+    <strong>{dgettext("help_games", "Zero margin for error")}</strong>
+    {dgettext("help_games", "— Every single rally decides a game. Stay focused for every point.")}
   </li>
   <li>
-    <strong>{gettext("Serve placement is king")}</strong>
-    {gettext("— With one-point games, an ace or unreturnable serve is an instant game win.")}
+    <strong>{dgettext("help_games", "Serve placement is king")}</strong>
+    {dgettext(
+      "help_games",
+      "— With one-point games, an ace or unreturnable serve is an instant game win."
+    )}
   </li>
   <li>
-    <strong>{gettext("Play it safe")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Play it safe")}</strong>
+    {dgettext(
+      "help_games",
       "— Risky shots that go out cost you a whole game. Consistency beats flash in Sudden Death."
     )}
   </li>
   <li>
-    <strong>{gettext("Watch the serve rotation")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Watch the serve rotation")}</strong>
+    {dgettext(
+      "help_games",
       "— Server alternates after every point. Know when you're serving to maximize advantage."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-tennis">{gettext("Hex Tennis")}</.help_link>
-  · <.help_link topic="feature-hex-tennis-quick">{gettext("Hex Tennis: Quick Match")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  <.help_link topic="feature-hex-tennis">{dgettext("help_games", "Hex Tennis")}</.help_link>
+  ·
+  <.help_link topic="feature-hex-tennis-quick">
+    {dgettext("help_games", "Hex Tennis: Quick Match")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
 </p>

@@ -9,12 +9,12 @@ defmodule RetroHexChat.Commands.Handlers.Game do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, gettext("Usage: /game <nickname>")}
+  def validate(""), do: {:error, dgettext("commands", "Usage: /game <nickname>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, gettext("Usage: /game <nickname>")}
+  def execute([], _context), do: {:error, dgettext("commands", "Usage: /game <nickname>")}
 
   def execute([target | _rest], context) do
     with :ok <- validate_identified(context),
@@ -38,12 +38,13 @@ defmodule RetroHexChat.Commands.Handlers.Game do
   def help do
     %{
       name: "game",
-      syntax: gettext("/game <nickname>"),
+      syntax: dgettext("commands", "/game <nickname>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Start a peer-to-peer game session with another user.\nRequires: both you and the target must be registered and identified (/ns identify).\nYou pick a game in the lobby after both players join."
         ),
-      examples: [gettext("/game mario")]
+      examples: [dgettext("commands", "/game mario")]
     }
   end
 
@@ -58,9 +59,10 @@ defmodule RetroHexChat.Commands.Handlers.Game do
 
     %CommandSyntax{
       command: "game",
-      syntax: gettext("/game <nickname>"),
+      syntax: dgettext("commands", "/game <nickname>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Start a peer-to-peer game session with another user.\nRequires: both users must be registered and identified (/ns identify)."
         ),
       category: :user,
@@ -70,19 +72,21 @@ defmodule RetroHexChat.Commands.Handlers.Game do
           required: true,
           type: :nick,
           position: 0,
-          description: gettext("User to play with")
+          description: dgettext("commands", "User to play with")
         }
       ],
-      examples: [gettext("/game mario")]
+      examples: [dgettext("commands", "/game mario")]
     }
   end
 
   defp validate_identified(%{identified: true}), do: :ok
-  defp validate_identified(_), do: {:error, gettext("You must be identified to use /game.")}
+
+  defp validate_identified(_),
+    do: {:error, dgettext("commands", "You must be identified to use /game.")}
 
   defp validate_not_self(target, %{nickname: nick}) do
     if String.downcase(target) == String.downcase(nick) do
-      {:error, gettext("You cannot start a game session with yourself.")}
+      {:error, dgettext("commands", "You cannot start a game session with yourself.")}
     else
       :ok
     end
@@ -90,8 +94,12 @@ defmodule RetroHexChat.Commands.Handlers.Game do
 
   defp resolve_registered_nick(nickname) do
     case RetroHexChat.Repo.get_by(RegisteredNick, nickname: nickname) do
-      nil -> {:error, gettext("User '%{nickname}' is not registered.", nickname: nickname)}
-      nick -> {:ok, nick.id}
+      nil ->
+        {:error,
+         dgettext("commands", "User '%{nickname}' is not registered.", nickname: nickname)}
+
+      nick ->
+        {:ok, nick.id}
     end
   end
 

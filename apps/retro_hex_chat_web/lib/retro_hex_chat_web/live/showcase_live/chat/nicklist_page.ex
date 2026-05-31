@@ -13,17 +13,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.NicklistPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Nicklist"), active_page: "nicklist")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Nicklist"), active_page: "nicklist")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Nicklist")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Nicklist")}</h2>
 
       <.showcase_card
-        title={gettext("Basic Nicklist")}
+        title={dgettext("showcase", "Basic Nicklist")}
         description="User list with status indicators."
       >
         <div class="max-w-[180px]">
@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.NicklistPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("User Statuses")}
+        title={dgettext("showcase", "User Statuses")}
         description="Online, away, and offline status indicators."
       >
         <div class="max-w-[180px]">
@@ -67,7 +67,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.NicklistPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Roles")}
+        title={dgettext("showcase", "Roles")}
         description="Users with operator (@) and voice (+) prefixes."
       >
         <div class="max-w-[180px]">

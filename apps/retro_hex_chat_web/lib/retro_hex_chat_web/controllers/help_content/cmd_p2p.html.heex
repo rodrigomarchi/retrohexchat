@@ -1,36 +1,46 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Start a direct peer-to-peer session with another user. P2P sessions let you transfer files, make audio calls, or start video calls — all directly between your browsers."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/p2p <nickname>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>nickname</code> {gettext("— The user to start a P2P session with.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/p2p <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
-  {gettext("Running")} <code>{gettext("/p2p")}</code>
-  {gettext(
+  <code>nickname</code> {dgettext("help_commands", "— The user to start a P2P session with.")}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext("help_commands", "Running")} <code>{dgettext("help_commands", "/p2p")}</code>
+  {dgettext(
+    "help_commands",
     "creates a session and both users enter a lobby window. From the lobby, you can start file transfers, audio calls, or video calls. All data flows directly between your browsers (peer-to-peer) without going through the server, ensuring privacy. If you specifically want to start an audio call or file transfer, you can use"
   )}
-  <code>{gettext("/call")}</code>
-  or <code>{gettext("/sendfile")}</code>
-  {gettext("instead — they create the P2P session and automatically start the respective action.")}
+  <code>{dgettext("help_commands", "/call")}</code>
+  or <code>{dgettext("help_commands", "/sendfile")}</code>
+  {dgettext(
+    "help_commands",
+    "instead — they create the P2P session and automatically start the respective action."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>
-    {gettext("Both you and the target must be registered and identified (via")} <code>{gettext("/ns identify")}</code>)
+    {dgettext("help_commands", "Both you and the target must be registered and identified (via")} <code>{dgettext("help_commands", "/ns identify")}</code>)
   </li>
-  <li>{gettext("Cannot start a P2P session with yourself")}</li>
-  <li>{gettext("Only one active session per user pair at a time")}</li>
+  <li>{dgettext("help_commands", "Cannot start a P2P session with yourself")}</li>
+  <li>{dgettext("help_commands", "Only one active session per user pair at a time")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/p2p Mario /p2p Alice")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/p2p Mario /p2p Alice")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-call">{gettext("/call")}</.help_link>
-  · <.help_link topic="cmd-sendfile">{gettext("/sendfile")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
-  · <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
+  <.help_link topic="cmd-call">{dgettext("help_commands", "/call")}</.help_link>
+  · <.help_link topic="cmd-sendfile">{dgettext("help_commands", "/sendfile")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_commands", "/game")}</.help_link>
+  ·
+  <.help_link topic="feature-p2p-sessions">
+    {dgettext("help_commands", "P2P Sessions")}
+  </.help_link>
 </p>

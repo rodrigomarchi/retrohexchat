@@ -64,7 +64,12 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
       {@rest}
     >
       <.window_title_bar
-        title={gettext("Game Lobby — %{nickname} vs %{peer}", nickname: @nickname, peer: @peer_nick)}
+        title={
+          dgettext("games", "Game Lobby — %{nickname} vs %{peer}",
+            nickname: @nickname,
+            peer: @peer_nick
+          )
+        }
         controls={[:close]}
         on_close={@on_close}
       >
@@ -89,7 +94,10 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
         >
           <Icons.icon_warning class="w-4 h-4 flex-shrink-0" />
           <span>
-            {gettext("Inactivity detected — this lobby will close soon if no game is selected.")}
+            {dgettext(
+              "games",
+              "Inactivity detected — this lobby will close soon if no game is selected."
+            )}
           </span>
         </div>
 
@@ -100,7 +108,8 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
         >
           <p class="text-xs font-bold">
             <span class="font-normal">{@game_request.requester_nick}</span>
-            {gettext("wants to play")} <span class="font-normal">{@game_request.game_name}</span>
+            {dgettext("games", "wants to play")}
+            <span class="font-normal">{@game_request.game_name}</span>
           </p>
           <div class="flex gap-retro-4">
             <.button
@@ -111,7 +120,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
               data-testid="game-lobby-accept"
             >
               <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-              {gettext("Accept")}
+              {dgettext("games", "Accept")}
             </.button>
             <.button
               size="sm"
@@ -121,7 +130,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
               data-testid="game-lobby-decline"
             >
               <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-              {gettext("Decline")}
+              {dgettext("games", "Decline")}
             </.button>
           </div>
         </div>
@@ -133,14 +142,14 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
         >
           <Icons.icon_clock class="w-4 h-4 flex-shrink-0 animate-spin" />
           <span>
-            {gettext("Waiting for")} <strong>{@peer_nick}</strong>
-            {gettext("to accept")} <strong>{@game_request.game_name}</strong>...
+            {dgettext("games", "Waiting for")} <strong>{@peer_nick}</strong>
+            {dgettext("games", "to accept")} <strong>{@game_request.game_name}</strong>...
           </span>
         </div>
 
         <%!-- Game picker grid (host only) --%>
         <div :if={@role == :creator and @games != [] and @game_request == nil}>
-          <p class="text-xs font-bold mb-retro-4">{gettext("Choose a game:")}</p>
+          <p class="text-xs font-bold mb-retro-4">{dgettext("games", "Choose a game:")}</p>
           <div class="grid grid-cols-5 gap-retro-4">
             <button
               :for={game <- @games}
@@ -162,7 +171,9 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
           class="flex items-center gap-retro-4 shadow-retro-field bg-white px-retro-8 py-retro-8 text-xs"
         >
           <Icons.icon_clock class="w-4 h-4 flex-shrink-0 animate-spin" />
-          <span>{gettext("Waiting for %{peer} to choose a game...", peer: @peer_nick)}</span>
+          <span>
+            {dgettext("games", "Waiting for %{peer} to choose a game...", peer: @peer_nick)}
+          </span>
         </div>
 
         <%!-- Empty state (host, no games available) --%>
@@ -170,7 +181,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
           :if={@role == :creator and @games == [] and @game_request == nil}
           class="shadow-retro-field bg-white p-retro-16 text-center text-xs text-muted-foreground"
         >
-          {gettext("No games available")}
+          {dgettext("games", "No games available")}
         </div>
 
         <%!-- Leave button --%>
@@ -181,7 +192,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
             data-testid="game-lobby-leave"
           >
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            {gettext("Leave")}
+            {dgettext("games", "Leave")}
           </.button>
         </div>
       </.window_body>

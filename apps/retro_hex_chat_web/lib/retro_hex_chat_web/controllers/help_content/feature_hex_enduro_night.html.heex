@@ -1,53 +1,90 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "3-minute race in permanent darkness with fog bursts. Headlights-only visibility — pure reflexes. Most overtakes wins. The darkness transforms Enduro into a game of memory and reaction — you can hear cars approaching before you see them."
   )}
 </p>
 <.diagram_game_enduro class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("Arrow Left / A")}</strong> {gettext("— Change lane left")}</li>
-  <li><strong>{gettext("Arrow Right / D")}</strong> {gettext("— Change lane right")}</li>
-  <li><strong>{gettext("Arrow Up / W")}</strong> {gettext("— Accelerate")}</li>
-  <li><strong>{gettext("Arrow Down / S")}</strong> {gettext("— Brake")}</li>
-  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Activate turbo boost")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
-<ul>
-  <li>{gettext("Same core racing rules as Hex Enduro but in permanent night")}</li>
-  <li>{gettext("Visibility limited to headlight cone — AI cars appear as colored dots")}</li>
-  <li>{gettext("Random fog bursts reduce visibility further")}</li>
-  <li>{gettext("3-minute timed race — most overtakes wins")}</li>
-  <li>{gettext("Fuel management still applies")}</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Trust the headlight cone")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Arrow Left / A")}</strong> {dgettext(
+      "help_games",
+      "— Change lane left"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Right / D")}</strong> {dgettext(
+      "help_games",
+      "— Change lane right"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Up / W")}</strong> {dgettext(
+      "help_games",
+      "— Accelerate"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Down / S")}</strong> {dgettext("help_games", "— Brake")}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Space / Shift")}</strong> {dgettext(
+      "help_games",
+      "— Activate turbo boost"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>{dgettext("help_games", "Same core racing rules as Hex Enduro but in permanent night")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Visibility limited to headlight cone — AI cars appear as colored dots"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Random fog bursts reduce visibility further")}</li>
+  <li>{dgettext("help_games", "3-minute timed race — most overtakes wins")}</li>
+  <li>{dgettext("help_games", "Fuel management still applies")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_games", "Trust the headlight cone")}</strong>
+    {dgettext(
+      "help_games",
       "— AI cars appear as colored dots at the edge of your vision. React to dot colors to predict their lane."
     )}
   </li>
   <li>
-    <strong>{gettext("Brake before fog")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Brake before fog")}</strong>
+    {dgettext(
+      "help_games",
       "— Fog bursts reduce visibility to nearly zero. Slow down when fog hits and stay centered."
     )}
   </li>
   <li>
-    <strong>{gettext("Use turbo in clear patches")}</strong>
-    {gettext("— Save your turbo boost for fog-free moments when you can actually see the road.")}
+    <strong>{dgettext("help_games", "Use turbo in clear patches")}</strong>
+    {dgettext(
+      "help_games",
+      "— Save your turbo boost for fog-free moments when you can actually see the road."
+    )}
   </li>
   <li>
-    <strong>{gettext("Count your overtakes")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Count your overtakes")}</strong>
+    {dgettext(
+      "help_games",
       "— Keep a mental tally. If you're ahead, play safe. If behind, take risks in the final minute."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-enduro">{gettext("Hex Enduro")}</.help_link>
-  · <.help_link topic="feature-hex-enduro-sprint">{gettext("Hex Enduro: Sprint")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  <.help_link topic="feature-hex-enduro">{dgettext("help_games", "Hex Enduro")}</.help_link>
+  ·
+  <.help_link topic="feature-hex-enduro-sprint">
+    {dgettext("help_games", "Hex Enduro: Sprint")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
 </p>

@@ -31,28 +31,29 @@ defmodule RetroHexChat.Admin do
 
     case ServerBans.ban(nickname, admin, reason, expires_at) do
       {:ok, _ban} ->
-        AuditLogs.log(admin, gettext("user.ban"), {"user", nickname}, %{
+        AuditLogs.log(admin, dgettext("admin", "user.ban"), {"user", nickname}, %{
           reason: reason,
           duration: duration_seconds
         })
 
-        ban_reason = reason || gettext("No reason given")
+        ban_reason = reason || dgettext("admin", "No reason given")
 
         broadcast_user(
           nickname,
-          {:force_disconnect, %{reason: gettext("Server banned: %{reason}", reason: ban_reason)}}
+          {:force_disconnect,
+           %{reason: dgettext("admin", "Server banned: %{reason}", reason: ban_reason)}}
         )
 
         duration_text =
           if duration_seconds,
             do:
-              gettext(" for %{duration_seconds}",
+              dgettext("admin", " for %{duration_seconds}",
                 duration_seconds: Duration.format(duration_seconds)
               ),
-            else: gettext(" permanently")
+            else: dgettext("admin", " permanently")
 
         {:ok,
-         gettext("%{nickname} has been server-banned%{duration_text}.",
+         dgettext("admin", "%{nickname} has been server-banned%{duration_text}.",
            nickname: nickname,
            duration_text: duration_text
          )}
@@ -66,8 +67,10 @@ defmodule RetroHexChat.Admin do
   def unban_user(nickname, admin) do
     case ServerBans.unban(nickname) do
       {:ok, _msg} ->
-        AuditLogs.log(admin, gettext("user.unban"), {"user", nickname})
-        {:ok, gettext("%{nickname} has been unbanned from the server.", nickname: nickname)}
+        AuditLogs.log(admin, dgettext("admin", "user.unban"), {"user", nickname})
+
+        {:ok,
+         dgettext("admin", "%{nickname} has been unbanned from the server.", nickname: nickname)}
 
       {:error, msg} ->
         {:error, msg}
@@ -76,14 +79,14 @@ defmodule RetroHexChat.Admin do
 
   @spec kick_user(String.t(), String.t(), String.t() | nil) :: {:ok, String.t()}
   def kick_user(nickname, admin, reason \\ nil) do
-    AuditLogs.log(admin, gettext("user.kick"), {"user", nickname}, %{reason: reason})
+    AuditLogs.log(admin, dgettext("admin", "user.kick"), {"user", nickname}, %{reason: reason})
 
     broadcast_user(
       nickname,
-      {:force_disconnect, %{reason: reason || gettext("Kicked by administrator")}}
+      {:force_disconnect, %{reason: reason || dgettext("admin", "Kicked by administrator")}}
     )
 
-    {:ok, gettext("%{nickname} has been kicked from the server.", nickname: nickname)}
+    {:ok, dgettext("admin", "%{nickname} has been kicked from the server.", nickname: nickname)}
   end
 
   @spec mute_user(String.t(), String.t(), String.t() | nil, non_neg_integer() | :permanent) ::
@@ -91,7 +94,7 @@ defmodule RetroHexChat.Admin do
   def mute_user(nickname, admin, reason \\ nil, duration \\ :permanent) do
     GlobalMutes.mute(nickname, reason, duration)
 
-    AuditLogs.log(admin, gettext("user.mute"), {"user", nickname}, %{
+    AuditLogs.log(admin, dgettext("admin", "user.mute"), {"user", nickname}, %{
       reason: reason,
       duration: duration
     })
@@ -101,10 +104,10 @@ defmodule RetroHexChat.Admin do
     duration_text =
       if duration == :permanent,
         do: "permanently",
-        else: gettext("for %{duration}", duration: Duration.format(duration))
+        else: dgettext("admin", "for %{duration}", duration: Duration.format(duration))
 
     {:ok,
-     gettext("%{nickname} has been muted %{duration_text}.",
+     dgettext("admin", "%{nickname} has been muted %{duration_text}.",
        nickname: nickname,
        duration_text: duration_text
      )}
@@ -113,9 +116,9 @@ defmodule RetroHexChat.Admin do
   @spec unmute_user(String.t(), String.t()) :: {:ok, String.t()}
   def unmute_user(nickname, admin) do
     GlobalMutes.unmute(nickname)
-    AuditLogs.log(admin, gettext("user.unmute"), {"user", nickname})
+    AuditLogs.log(admin, dgettext("admin", "user.unmute"), {"user", nickname})
     broadcast_user(nickname, {:user_unmuted, %{nickname: nickname}})
-    {:ok, gettext("%{nickname} has been unmuted.", nickname: nickname)}
+    {:ok, dgettext("admin", "%{nickname} has been unmuted.", nickname: nickname)}
   end
 
   @spec rename_user(String.t(), String.t(), String.t()) ::
@@ -123,7 +126,9 @@ defmodule RetroHexChat.Admin do
   def rename_user(old_nick, new_nick, admin) do
     case NicknameValidator.validate(new_nick) do
       :ok ->
-        AuditLogs.log(admin, gettext("user.rename"), {"user", old_nick}, %{new_nick: new_nick})
+        AuditLogs.log(admin, dgettext("admin", "user.rename"), {"user", old_nick}, %{
+          new_nick: new_nick
+        })
 
         broadcast_user(
           old_nick,
@@ -131,7 +136,7 @@ defmodule RetroHexChat.Admin do
         )
 
         {:ok,
-         gettext("%{old_nick} has been renamed to %{new_nick}.",
+         dgettext("admin", "%{old_nick} has been renamed to %{new_nick}.",
            old_nick: old_nick,
            new_nick: new_nick
          )}
@@ -148,7 +153,7 @@ defmodule RetroHexChat.Admin do
 
     cond do
       nickname in root_admins ->
-        {:error, gettext("Cannot modify role of a root admin")}
+        {:error, dgettext("admin", "Cannot modify role of a root admin")}
 
       role == "user" ->
         remove_roles(nickname, admin)
@@ -168,12 +173,12 @@ defmodule RetroHexChat.Admin do
   def drop_nick(nickname, admin) do
     case NickServ.admin_drop(nickname) do
       {:ok, msg} ->
-        AuditLogs.log(admin, gettext("ns.drop"), {"user", nickname})
+        AuditLogs.log(admin, dgettext("admin", "ns.drop"), {"user", nickname})
 
         broadcast_user(
           nickname,
           {:force_disconnect,
-           %{reason: gettext("Your nick registration was dropped by an administrator")}}
+           %{reason: dgettext("admin", "Your nick registration was dropped by an administrator")}}
         )
 
         {:ok, msg}
@@ -188,8 +193,8 @@ defmodule RetroHexChat.Admin do
   def reset_password(nickname, new_password, admin) do
     case NickServ.admin_reset_password(nickname, new_password) do
       {:ok, msg} ->
-        AuditLogs.log(admin, gettext("ns.resetpass"), {"user", nickname}, %{
-          note: gettext("Password was reset")
+        AuditLogs.log(admin, dgettext("admin", "ns.resetpass"), {"user", nickname}, %{
+          note: dgettext("admin", "Password was reset")
         })
 
         {:ok, msg}
@@ -205,7 +210,7 @@ defmodule RetroHexChat.Admin do
   def drop_channel(channel_name, admin) do
     case ChanServ.admin_drop(channel_name) do
       {:ok, msg} ->
-        AuditLogs.log(admin, gettext("cs.drop"), {"channel", channel_name})
+        AuditLogs.log(admin, dgettext("admin", "cs.drop"), {"channel", channel_name})
         {:ok, msg}
 
       {:error, msg} ->
@@ -218,7 +223,7 @@ defmodule RetroHexChat.Admin do
   def transfer_channel(channel_name, new_founder, admin) do
     case ChanServ.admin_transfer(channel_name, new_founder) do
       {:ok, msg} ->
-        AuditLogs.log(admin, gettext("cs.transfer"), {"channel", channel_name}, %{
+        AuditLogs.log(admin, dgettext("admin", "cs.transfer"), {"channel", channel_name}, %{
           new_founder: new_founder
         })
 
@@ -234,7 +239,7 @@ defmodule RetroHexChat.Admin do
   def manage_channel_access(channel_name, action, level, nickname, admin) do
     case ChanServ.admin_manage_access(channel_name, action, level, nickname) do
       {:ok, msg} ->
-        AuditLogs.log(admin, gettext("cs.access"), {"channel", channel_name}, %{
+        AuditLogs.log(admin, dgettext("admin", "cs.access"), {"channel", channel_name}, %{
           action: action,
           level: level,
           target: nickname
@@ -255,10 +260,12 @@ defmodule RetroHexChat.Admin do
       {:ok, _pid} ->
         ChanServ.register(channel_name, admin)
         Channels.Server.mark_registered(channel_name)
-        AuditLogs.log(admin, gettext("channel.create"), {"channel", channel_name})
+        AuditLogs.log(admin, dgettext("admin", "channel.create"), {"channel", channel_name})
 
         {:ok,
-         gettext("Channel %{channel_name} created and registered.", channel_name: channel_name)}
+         dgettext("admin", "Channel %{channel_name} created and registered.",
+           channel_name: channel_name
+         )}
 
       {:error, reason} ->
         {:error, "Failed to create channel: #{inspect(reason)}"}
@@ -279,8 +286,10 @@ defmodule RetroHexChat.Admin do
       {:error, :not_found} -> :ok
     end
 
-    AuditLogs.log(admin, gettext("channel.delete"), {"channel", channel_name})
-    {:ok, gettext("Channel %{channel_name} has been deleted.", channel_name: channel_name)}
+    AuditLogs.log(admin, dgettext("admin", "channel.delete"), {"channel", channel_name})
+
+    {:ok,
+     dgettext("admin", "Channel %{channel_name} has been deleted.", channel_name: channel_name)}
   end
 
   @spec purge_channel(String.t(), keyword(), String.t()) ::
@@ -295,7 +304,7 @@ defmodule RetroHexChat.Admin do
         RetroHexChat.Chat.Queries.bulk_delete_messages(channel_name)
       end
 
-    AuditLogs.log(admin, gettext("channel.purge"), {"channel", channel_name}, %{
+    AuditLogs.log(admin, dgettext("admin", "channel.purge"), {"channel", channel_name}, %{
       from: from_nick,
       count: count
     })
@@ -308,13 +317,13 @@ defmodule RetroHexChat.Admin do
     msg =
       if from_nick,
         do:
-          gettext("Purged %{count} messages from %{from_nick} in %{channel_name}.",
+          dgettext("admin", "Purged %{count} messages from %{from_nick} in %{channel_name}.",
             count: count,
             from_nick: from_nick,
             channel_name: channel_name
           ),
         else:
-          gettext("Purged %{count} messages from %{channel_name}.",
+          dgettext("admin", "Purged %{count} messages from %{channel_name}.",
             count: count,
             channel_name: channel_name
           )
@@ -331,13 +340,15 @@ defmodule RetroHexChat.Admin do
 
     case Queries.upsert_setting(key, value, admin) do
       {:ok, _} ->
-        AuditLogs.log(admin, gettext("server.set"), {"server", key}, %{
+        AuditLogs.log(admin, dgettext("admin", "server.set"), {"server", key}, %{
           value: value,
           previous: previous
         })
 
         broadcast_server({:server_setting_changed, %{key: key, value: value}})
-        {:ok, gettext("Server setting '%{key}' set to '%{value}'.", key: key, value: value)}
+
+        {:ok,
+         dgettext("admin", "Server setting '%{key}' set to '%{value}'.", key: key, value: value)}
 
       {:error, _} ->
         {:error, "Failed to set server setting '#{key}'"}
@@ -386,7 +397,7 @@ defmodule RetroHexChat.Admin do
     import Ecto.Query
     alias RetroHexChat.Repo
 
-    AuditLogs.log(admin, gettext("system.nuke_preview"))
+    AuditLogs.log(admin, dgettext("admin", "system.nuke_preview"))
 
     counts =
       Enum.map(@nuke_schemas, fn {name, schema} ->
@@ -402,7 +413,9 @@ defmodule RetroHexChat.Admin do
     import Ecto.Query
     alias RetroHexChat.Repo
 
-    AuditLogs.log(admin, gettext("system.nuke"), {"system", "all"}, %{action: "factory_reset"})
+    AuditLogs.log(admin, dgettext("admin", "system.nuke"), {"system", "all"}, %{
+      action: "factory_reset"
+    })
 
     multi =
       Enum.reduce(@nuke_schemas, Ecto.Multi.new(), fn {name, schema}, multi ->
@@ -463,9 +476,11 @@ defmodule RetroHexChat.Admin do
     case %AdminRole{} |> AdminRole.changeset(attrs) |> Repo.insert() do
       {:ok, _} ->
         RoleCache.add(nickname, role)
-        AuditLogs.log(admin, gettext("user.role"), {"user", nickname}, %{role: role})
+        AuditLogs.log(admin, dgettext("admin", "user.role"), {"user", nickname}, %{role: role})
         broadcast_user(nickname, {:role_changed, %{nickname: nickname, role: role}})
-        {:ok, gettext("%{nickname} has been set as %{role}.", nickname: nickname, role: role)}
+
+        {:ok,
+         dgettext("admin", "%{nickname} has been set as %{role}.", nickname: nickname, role: role)}
 
       {:error, %Ecto.Changeset{errors: [{_, {_, [constraint: :unique, constraint_name: _]}} | _]}} ->
         {:error, "#{nickname} already has role #{role}"}
@@ -482,9 +497,9 @@ defmodule RetroHexChat.Admin do
 
     from(r in AdminRole, where: r.nickname == ^nickname) |> Repo.delete_all()
     RoleCache.remove_all(nickname)
-    AuditLogs.log(admin, gettext("user.role"), {"user", nickname}, %{role: "user"})
+    AuditLogs.log(admin, dgettext("admin", "user.role"), {"user", nickname}, %{role: "user"})
     broadcast_user(nickname, {:role_changed, %{nickname: nickname, role: "user"}})
-    {:ok, gettext("Admin roles removed from %{nickname}.", nickname: nickname)}
+    {:ok, dgettext("admin", "Admin roles removed from %{nickname}.", nickname: nickname)}
   end
 
   defp broadcast_user(nickname, message) do

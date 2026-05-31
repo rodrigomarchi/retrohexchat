@@ -18,15 +18,23 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("Channel List"),
+       page_title: dgettext("showcase", "Channel List"),
        active_page: "channel-list",
        channels: [
-         %{name: "#lobby", user_count: 142, topic: gettext("Welcome to RetroHexChat!")},
-         %{name: "#help", user_count: 38, topic: gettext("Ask your questions here")},
-         %{name: "#dev", user_count: 24, topic: gettext("Development discussion")},
-         %{name: "#music", user_count: 67, topic: gettext("Share your favorite tunes")},
-         %{name: "#gaming", user_count: 89, topic: gettext("Game on!")},
-         %{name: "#random", user_count: 53, topic: gettext("Anything goes")}
+         %{
+           name: "#lobby",
+           user_count: 142,
+           topic: dgettext("showcase", "Welcome to RetroHexChat!")
+         },
+         %{name: "#help", user_count: 38, topic: dgettext("showcase", "Ask your questions here")},
+         %{name: "#dev", user_count: 24, topic: dgettext("showcase", "Development discussion")},
+         %{
+           name: "#music",
+           user_count: 67,
+           topic: dgettext("showcase", "Share your favorite tunes")
+         },
+         %{name: "#gaming", user_count: 89, topic: dgettext("showcase", "Game on!")},
+         %{name: "#random", user_count: 53, topic: dgettext("showcase", "Anything goes")}
        ]
      )}
   end
@@ -35,15 +43,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Channel List")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Channel List")}</h2>
 
       <.showcase_card
-        title={gettext("Channel List")}
+        title={dgettext("showcase", "Channel List")}
         description="Searchable channel table with user count and topic."
       >
         <.button variant="outline" phx-click={show_modal("channel-list-demo")}>
           <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
-          {gettext("Channel List")}
+          {dgettext("showcase", "Channel List")}
         </.button>
         <.channel_list id="channel-list-demo" channels={@channels} />
         <.code_example>
@@ -58,12 +66,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With Selection")}
+        title={dgettext("showcase", "With Selection")}
         description="Channel list with a channel pre-selected. Join button is enabled."
       >
         <.button variant="outline" phx-click={show_modal("channel-list-selected")}>
           <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
-          {gettext("Channel List (Selected)")}
+          {dgettext("showcase", "Channel List (Selected)")}
         </.button>
         <.channel_list
           id="channel-list-selected"
@@ -73,12 +81,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Loading State")}
+        title={dgettext("showcase", "Loading State")}
         description="Channel list showing the 'Searching...' state while fetching channels."
       >
         <.button variant="outline" phx-click={show_modal("channel-list-loading")}>
           <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
-          {gettext("Channel List (Loading)")}
+          {dgettext("showcase", "Channel List (Loading)")}
         </.button>
         <.channel_list
           id="channel-list-loading"

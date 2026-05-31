@@ -1,23 +1,32 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Ban exceptions allow specific users to bypass channel bans. If a user is both banned and has a ban exception, they can still join and participate in the channel."
   )}
 </p>
-<.help_h4 icon={:icon_tab_exceptions}>{gettext("Managing Ban Exceptions")}</.help_h4>
+<.help_h4 icon={:icon_tab_exceptions}>
+  {dgettext("help_features", "Managing Ban Exceptions")}
+</.help_h4>
 <p>
-  {gettext("Ban exceptions are managed through the")} <strong>{gettext("Ban Exceptions")}</strong>
-  {gettext("tab in")} <.help_link topic="feature-channel-central">{gettext("Channel Central")}</.help_link>{gettext(
+  {dgettext("help_features", "Ban exceptions are managed through the")}
+  <strong>{dgettext("help_features", "Ban Exceptions")}</strong>
+  {dgettext("help_features", "tab in")} <.help_link topic="feature-channel-central">{dgettext("help_features", "Channel Central")}</.help_link>{dgettext(
+    "help_features",
     ". Only channel operators can add or remove ban exceptions."
   )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "When a user attempts to join a channel where they are banned, the server checks the ban exception list. If the user matches a ban exception entry, the ban is overridden and they are allowed to join."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ban">{gettext("/ban Command")}</.help_link>
-  · <.help_link topic="feature-channel-central">{gettext("Channel Central")}</.help_link>
+  <.help_link topic="cmd-ban">{dgettext("help_features", "/ban Command")}</.help_link>
+  ·
+  <.help_link topic="feature-channel-central">
+    {dgettext("help_features", "Channel Central")}
+  </.help_link>
 </p>

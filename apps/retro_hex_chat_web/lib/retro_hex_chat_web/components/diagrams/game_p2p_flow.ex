@@ -15,7 +15,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext(
+        dgettext(
+          "diagrams",
           "P2P multiplayer games flow: type /game command, join lobby, select game, play via WebRTC DataChannel between two players"
         )
       }
@@ -51,7 +52,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Chat")}
+        {dgettext("diagrams", "Chat")}
       </text>
       <%!-- Content: input field with /game bob --%>
       <rect x="16" y="34" width="148" height="30" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -66,7 +67,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="9"
         font-family="'Courier New',monospace"
       >
-        {gettext("/game bob")}
+        {dgettext("diagrams", "/game bob")}
       </text>
       <%!-- Send button --%>
       <rect x="130" y="40" width="30" height="16" fill="#c0c0c0" stroke="#000" stroke-width="1" />
@@ -80,7 +81,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Send")}
+        {dgettext("diagrams", "Send")}
       </text>
 
       <%!-- Arrow 1 → 2 --%>
@@ -118,7 +119,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("P2P Lobby")}
+        {dgettext("diagrams", "P2P Lobby")}
       </text>
       <%!-- Content --%>
       <rect x="202" y="34" width="108" height="30" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -133,7 +134,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Alice (you)")}
+        {dgettext("diagrams", "Alice (you)")}
       </text>
       <circle cx="212" cy="57" r="3" fill="#00ff00" stroke="#000" stroke-width="1" />
       <text
@@ -143,7 +144,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Bob (joined)")}
+        {dgettext("diagrams", "Bob (joined)")}
       </text>
 
       <%!-- Arrow 2 → 3 --%>
@@ -181,7 +182,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Choose Game")}
+        {dgettext("diagrams", "Choose Game")}
       </text>
       <%!-- Content: 2x2 game grid --%>
       <rect x="348" y="34" width="148" height="30" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -199,7 +200,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="7"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Hex Pong")}
+        {dgettext("diagrams", "Hex Pong")}
       </text>
       <rect x="422" y="37" width="66" height="11" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -210,7 +211,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="7"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Star Duel")}
+        {dgettext("diagrams", "Star Duel")}
       </text>
       <rect x="352" y="51" width="66" height="11" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -221,7 +222,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="7"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Pixel Tanks")}
+        {dgettext("diagrams", "Pixel Tanks")}
       </text>
       <rect x="422" y="51" width="66" height="11" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -232,7 +233,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="7"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Light Trails")}
+        {dgettext("diagrams", "Light Trails")}
       </text>
 
       <%!-- Arrow 3 → 4 (down, green accent) --%>
@@ -276,7 +277,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Hex Pong — Alice vs Bob")}
+        {dgettext("diagrams", "Hex Pong — Alice vs Bob")}
       </text>
       <%!-- Game canvas area (black) --%>
       <rect x="190" y="126" width="300" height="84" fill="#000" stroke="#808080" stroke-width="1" />
@@ -319,10 +320,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Alice")}
+        {dgettext("diagrams", "Alice")}
       </text>
       <text x="130" y="264" text-anchor="middle" fill="#000" font-size="18">
-        {gettext("&#x1F468;")}
+        {dgettext("diagrams", "&#x1F468;")}
       </text>
 
       <%!-- Bob node --%>
@@ -340,10 +341,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Bob")}
+        {dgettext("diagrams", "Bob")}
       </text>
       <text x="390" y="264" text-anchor="middle" fill="#000" font-size="18">
-        {gettext("&#x1F469;")}
+        {dgettext("diagrams", "&#x1F469;")}
       </text>
 
       <%!-- Bidirectional green arrow --%>
@@ -369,7 +370,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("WebRTC DataChannel")}
+        {dgettext("diagrams", "WebRTC DataChannel")}
       </text>
 
       <%!-- Tooltip --%>
@@ -384,7 +385,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="9"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("28 games · Real-time sync · No server")}
+        {dgettext("diagrams", "28 games · Real-time sync · No server")}
       </text>
 
       <%!-- Dashed lines from nodes to game window --%>

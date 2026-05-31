@@ -1,27 +1,28 @@
-<p>{gettext("Monitor and adjust connection quality during calls.")}</p>
-<.help_h4 icon={:icon_quality_high}>{gettext("Quality Indicator")}</.help_h4>
-<p>{gettext("The 4 bars indicate connection quality:")}</p>
+<p>{dgettext("help_p2p", "Monitor and adjust connection quality during calls.")}</p>
+<.help_h4 icon={:icon_quality_high}>{dgettext("help_p2p", "Quality Indicator")}</.help_h4>
+<p>{dgettext("help_p2p", "The 4 bars indicate connection quality:")}</p>
 <ul>
-  <li>{gettext("4 green bars — Excellent")}</li>
-  <li>{gettext("3 green bars — Good")}</li>
-  <li>{gettext("2 yellow bars — Fair")}</li>
-  <li>{gettext("1 red bar — Poor")}</li>
+  <li>{dgettext("help_p2p", "4 green bars — Excellent")}</li>
+  <li>{dgettext("help_p2p", "3 green bars — Good")}</li>
+  <li>{dgettext("help_p2p", "2 yellow bars — Fair")}</li>
+  <li>{dgettext("help_p2p", "1 red bar — Poor")}</li>
 </ul>
-<.help_h4 icon={:icon_quality_high}>{gettext("Manual Quality Adjustment")}</.help_h4>
+<.help_h4 icon={:icon_quality_high}>{dgettext("help_p2p", "Manual Quality Adjustment")}</.help_h4>
 <p>
-  {gettext("Use the")} <strong>{gettext("High")}</strong>
-  {gettext("(1.5 Mbps),")} <strong>{gettext("Medium")}</strong>
-  {gettext("(500 Kbps), or")} <strong>{gettext("Low")}</strong>
-  {gettext("(150 Kbps) buttons to adjust the bitrate manually.")}
+  {dgettext("help_p2p", "Use the")} <strong>{dgettext("help_p2p", "High")}</strong>
+  {dgettext("help_p2p", "(1.5 Mbps),")} <strong>{dgettext("help_p2p", "Medium")}</strong>
+  {dgettext("help_p2p", "(500 Kbps), or")} <strong>{dgettext("help_p2p", "Low")}</strong>
+  {dgettext("help_p2p", "(150 Kbps) buttons to adjust the bitrate manually.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("Automatic Adaptation")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_p2p", "Automatic Adaptation")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
     "WebRTC automatically adjusts the resolution and framerate based on network conditions."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-audio-call">{gettext("Audio Call")}</.help_link>
-  · <.help_link topic="feature-video-call">{gettext("Video Call")}</.help_link>
+  <.help_link topic="feature-audio-call">{dgettext("help_p2p", "Audio Call")}</.help_link>
+  · <.help_link topic="feature-video-call">{dgettext("help_p2p", "Video Call")}</.help_link>
 </p>

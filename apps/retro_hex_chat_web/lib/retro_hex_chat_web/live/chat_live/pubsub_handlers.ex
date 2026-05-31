@@ -179,16 +179,16 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     else
       label =
         case session_type do
-          "audio_call" -> gettext("Audio call from %{from}", from: from)
-          "video_call" -> gettext("Video call from %{from}", from: from)
-          "file_transfer" -> gettext("File transfer from %{from}", from: from)
-          _ -> gettext("P2P invite from %{from}", from: from)
+          "audio_call" -> dgettext("chat", "Audio call from %{from}", from: from)
+          "video_call" -> dgettext("chat", "Video call from %{from}", from: from)
+          "file_transfer" -> dgettext("chat", "File transfer from %{from}", from: from)
+          _ -> dgettext("chat", "P2P invite from %{from}", from: from)
         end
 
       {:halt,
        push_status_message(
          socket,
-         gettext("%{label} — /p2p/%{token}", label: label, token: token),
+         dgettext("chat", "%{label} — /p2p/%{token}", label: label, token: token),
          :system
        )}
     end
@@ -207,7 +207,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
       {:halt,
        push_status_message(
          socket,
-         gettext("Game invite from %{from} — /game/%{token}", from: from, token: token),
+         dgettext("chat", "Game invite from %{from} — /game/%{token}", from: from, token: token),
          :system
        )}
     end
@@ -223,14 +223,14 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     label =
       case type do
-        "audio_call" -> gettext("Audio call")
-        "video_call" -> gettext("Video call")
-        "file_transfer" -> gettext("File transfer")
-        _ -> gettext("P2P session")
+        "audio_call" -> dgettext("chat", "Audio call")
+        "video_call" -> dgettext("chat", "Video call")
+        "file_transfer" -> dgettext("chat", "File transfer")
+        _ -> dgettext("chat", "P2P session")
       end
 
     text =
-      gettext("%{label} with %{peer} ended (%{duration}) — %{reason}",
+      dgettext("chat", "%{label} with %{peer} ended (%{duration}) — %{reason}",
         label: label,
         peer: peer,
         duration: format_duration(secs),
@@ -245,7 +245,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     %{payload: payload} = msg
     peer = payload.peer_nick
-    game_label = payload.game_name || gettext("Game")
+    game_label = payload.game_name || dgettext("chat", "Game")
     reason = payload.reason
     duration = payload[:duration_seconds]
     result = payload[:game_result]
@@ -253,10 +253,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     base =
       case reason do
         r when r in ["finished", "game_over"] ->
-          gettext("%{game} with %{peer} finished", game: game_label, peer: peer)
+          dgettext("chat", "%{game} with %{peer} finished", game: game_label, peer: peer)
 
         _ ->
-          gettext("%{game} with %{peer} ended — %{reason}",
+          dgettext("chat", "%{game} with %{peer} ended — %{reason}",
             game: game_label,
             peer: peer,
             reason: humanize_reason(reason)
@@ -267,7 +267,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     parts =
       if duration,
-        do: parts ++ [gettext("(%{duration})", duration: format_duration(duration))],
+        do: parts ++ [dgettext("chat", "(%{duration})", duration: format_duration(duration))],
         else: parts
 
     result_text = format_game_result(result)
@@ -282,7 +282,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     msg = %{
       id: "system-#{System.unique_integer([:positive])}",
-      author: gettext("System"),
+      author: dgettext("chat", "System"),
       content: payload.content,
       type: :arcade_link,
       timestamp: DateTime.utc_now()
@@ -292,7 +292,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
       socket
       |> stream_insert(:chat_messages, msg)
       |> push_status_message(
-        gettext("%{bot}: Arcade session ready!", bot: payload.bot),
+        dgettext("chat", "%{bot}: Arcade session ready!", bot: payload.bot),
         :system
       )
 
@@ -303,17 +303,17 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
 
     %{payload: payload} = msg
-    game_label = payload.game_name || gettext("Arcade game")
+    game_label = payload.game_name || dgettext("chat", "Arcade game")
     reason = payload.reason
     duration = payload[:duration_seconds]
 
     base =
       case reason do
         r when r in ["finished", "game_over"] ->
-          gettext("%{game} finished", game: game_label)
+          dgettext("chat", "%{game} finished", game: game_label)
 
         _ ->
-          gettext("%{game} ended — %{reason}",
+          dgettext("chat", "%{game} ended — %{reason}",
             game: game_label,
             reason: humanize_reason(reason)
           )
@@ -323,7 +323,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     parts =
       if duration,
-        do: parts ++ [gettext("(%{duration})", duration: format_duration(duration))],
+        do: parts ++ [dgettext("chat", "(%{duration})", duration: format_duration(duration))],
         else: parts
 
     {:halt, push_status_message(socket, Enum.join(parts, " "), :system)}
@@ -347,38 +347,38 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   defp format_duration(secs) when is_integer(secs) and secs >= 3600 do
     h = div(secs, 3600)
     m = div(rem(secs, 3600), 60)
-    gettext("%{hours}h %{minutes}m", hours: h, minutes: m)
+    dgettext("chat", "%{hours}h %{minutes}m", hours: h, minutes: m)
   end
 
   defp format_duration(secs) when is_integer(secs) and secs >= 60 do
     m = div(secs, 60)
     s = rem(secs, 60)
-    gettext("%{minutes}m %{seconds}s", minutes: m, seconds: s)
+    dgettext("chat", "%{minutes}m %{seconds}s", minutes: m, seconds: s)
   end
 
   defp format_duration(secs) when is_integer(secs), do: "#{secs}s"
   defp format_duration(_), do: "0s"
 
   defp format_game_result(%{"score" => %{"p1" => p1, "p2" => p2}, "winner" => w}),
-    do: gettext("— %{p1} × %{p2}%{winner}", p1: p1, p2: p2, winner: format_winner(w))
+    do: dgettext("chat", "— %{p1} × %{p2}%{winner}", p1: p1, p2: p2, winner: format_winner(w))
 
   defp format_game_result(%{"score_p1" => p1, "score_p2" => p2, "winner" => w}),
-    do: gettext("— %{p1} × %{p2}%{winner}", p1: p1, p2: p2, winner: format_winner(w))
+    do: dgettext("chat", "— %{p1} × %{p2}%{winner}", p1: p1, p2: p2, winner: format_winner(w))
 
   defp format_game_result(_), do: ""
 
-  defp format_winner("draw"), do: gettext(", draw")
-  defp format_winner(0), do: gettext(", draw")
+  defp format_winner("draw"), do: dgettext("chat", ", draw")
+  defp format_winner(0), do: dgettext("chat", ", draw")
   defp format_winner(_), do: ""
 
-  defp humanize_reason("user_closed"), do: gettext("closed by user")
-  defp humanize_reason("disconnected"), do: gettext("disconnected")
-  defp humanize_reason("expired"), do: gettext("expired")
-  defp humanize_reason("pending_timeout"), do: gettext("invite expired")
-  defp humanize_reason("failed"), do: gettext("connection failed")
-  defp humanize_reason("lobby_inactivity"), do: gettext("inactivity timeout")
-  defp humanize_reason("game_ended"), do: gettext("ended")
-  defp humanize_reason("game_over"), do: gettext("game over")
+  defp humanize_reason("user_closed"), do: dgettext("chat", "closed by user")
+  defp humanize_reason("disconnected"), do: dgettext("chat", "disconnected")
+  defp humanize_reason("expired"), do: dgettext("chat", "expired")
+  defp humanize_reason("pending_timeout"), do: dgettext("chat", "invite expired")
+  defp humanize_reason("failed"), do: dgettext("chat", "connection failed")
+  defp humanize_reason("lobby_inactivity"), do: dgettext("chat", "inactivity timeout")
+  defp humanize_reason("game_ended"), do: dgettext("chat", "ended")
+  defp humanize_reason("game_over"), do: dgettext("chat", "game over")
   defp humanize_reason(reason) when is_binary(reason), do: reason
-  defp humanize_reason(_), do: gettext("ended")
+  defp humanize_reason(_), do: dgettext("chat", "ended")
 end

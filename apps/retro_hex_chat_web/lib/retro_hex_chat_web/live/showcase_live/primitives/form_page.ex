@@ -16,38 +16,50 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.FormPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Form"), active_page: "form")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Form"), active_page: "form")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Form")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Form")}</h2>
 
       <.showcase_card
-        title={gettext("Form Components")}
+        title={dgettext("showcase", "Form Components")}
         description="Form layout primitives: item, label, control, description, and message."
       >
         <div class="max-w-sm space-y-4">
           <.form_item>
-            <.form_label>{gettext("Username")}</.form_label>
+            <.form_label>{dgettext("showcase", "Username")}</.form_label>
             <.form_control>
-              <.input type="text" name="username" placeholder={gettext("Enter username")} />
+              <.input
+                type="text"
+                name="username"
+                placeholder={dgettext("showcase", "Enter username")}
+              />
             </.form_control>
-            <.form_description>{gettext("This is your public display name.")}</.form_description>
+            <.form_description>
+              {dgettext("showcase", "This is your public display name.")}
+            </.form_description>
           </.form_item>
 
           <.form_item>
-            <.form_label>{gettext("Email")}</.form_label>
+            <.form_label>{dgettext("showcase", "Email")}</.form_label>
             <.form_control>
-              <.input type="email" name="email" placeholder={gettext("user@example.com")} />
+              <.input
+                type="email"
+                name="email"
+                placeholder={dgettext("showcase", "user@example.com")}
+              />
             </.form_control>
-            <.form_description>{gettext("We'll never share your email.")}</.form_description>
+            <.form_description>
+              {dgettext("showcase", "We'll never share your email.")}
+            </.form_description>
           </.form_item>
 
           <.form_item>
-            <.form_label error={true}>{gettext("Password")}</.form_label>
+            <.form_label error={true}>{dgettext("showcase", "Password")}</.form_label>
             <.form_control>
               <.input type="password" name="password" />
             </.form_control>
@@ -56,7 +68,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.FormPage do
 
           <.button type="submit">
             <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-            {gettext("Submit")}
+            {dgettext("showcase", "Submit")}
           </.button>
         </div>
         <.code_example>

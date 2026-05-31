@@ -16,7 +16,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCardsPage do
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, page_title: gettext("Game Cards"), active_page: "game-cards", selected: nil)}
+     assign(socket,
+       page_title: dgettext("showcase", "Game Cards"),
+       active_page: "game-cards",
+       selected: nil
+     )}
   end
 
   @impl true

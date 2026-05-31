@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
         {:mode_changed, %{nickname: nick, mode_string: mode_string, params: params} = payload},
         socket
       ) do
-    msg = gettext("%{nickname} sets mode %{mode}", nickname: nick, mode: mode_string)
+    msg = dgettext("chat", "%{nickname} sets mode %{mode}", nickname: nick, mode: mode_string)
     users = apply_mode_to_users(socket.assigns.channel_users, mode_string, params)
 
     socket =
@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   def handle_info({:mode_changed, %{nickname: nick, mode_string: mode_string} = payload}, socket) do
-    msg = gettext("%{nickname} sets mode %{mode}", nickname: nick, mode: mode_string)
+    msg = dgettext("chat", "%{nickname} sets mode %{mode}", nickname: nick, mode: mode_string)
     channel = Map.get(payload, :channel)
 
     socket =
@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   def handle_info({:user_kicked, %{operator: op, target: target, reason: reason}}, socket) do
     msg =
       append_reason(
-        gettext("%{target} was kicked by %{operator}", target: target, operator: op),
+        dgettext("chat", "%{target} was kicked by %{operator}", target: target, operator: op),
         reason
       )
 
@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       ) do
     msg =
       append_reason(
-        gettext("%{target} was banned by %{operator}", target: target, operator: op),
+        dgettext("chat", "%{target} was banned by %{operator}", target: target, operator: op),
         reason
       )
 
@@ -103,7 +103,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   def handle_info({:user_unbanned, %{operator: op, target: target} = payload}, socket) do
-    msg = gettext("%{target} was unbanned by %{operator}", target: target, operator: op)
+    msg = dgettext("chat", "%{target} was unbanned by %{operator}", target: target, operator: op)
     channel = Map.get(payload, :channel)
 
     {:halt,
@@ -122,7 +122,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       socket
       |> maybe_refresh_cc(channel)
       |> system_event(
-        gettext("%{operator} added ban exception for %{nickname} in %{channel}",
+        dgettext("chat", "%{operator} added ban exception for %{nickname} in %{channel}",
           operator: op,
           nickname: nick,
           channel: channel
@@ -140,7 +140,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       socket
       |> maybe_refresh_cc(channel)
       |> system_event(
-        gettext("%{operator} removed ban exception for %{nickname} in %{channel}",
+        dgettext("chat", "%{operator} removed ban exception for %{nickname} in %{channel}",
           operator: op,
           nickname: nick,
           channel: channel
@@ -158,7 +158,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       socket
       |> maybe_refresh_cc(channel)
       |> system_event(
-        gettext("%{operator} added invite exception for %{nickname} in %{channel}",
+        dgettext("chat", "%{operator} added invite exception for %{nickname} in %{channel}",
           operator: op,
           nickname: nick,
           channel: channel
@@ -176,7 +176,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       socket
       |> maybe_refresh_cc(channel)
       |> system_event(
-        gettext("%{operator} removed invite exception for %{nickname} in %{channel}",
+        dgettext("chat", "%{operator} removed invite exception for %{nickname} in %{channel}",
           operator: op,
           nickname: nick,
           channel: channel
@@ -189,7 +189,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   # ── Topic changed ─────────────────────────────────────────
 
   def handle_info({:topic_changed, %{nickname: nick, topic: topic} = payload}, socket) do
-    msg = gettext("%{nickname} changed the topic to: %{topic}", nickname: nick, topic: topic)
+    msg =
+      dgettext("chat", "%{nickname} changed the topic to: %{topic}", nickname: nick, topic: topic)
+
     channel = Map.get(payload, :channel)
 
     socket =
@@ -212,7 +214,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       {:halt,
        socket
        |> system_event(
-         gettext("Channel %{channel} has been deleted by %{admin}.",
+         dgettext("chat", "Channel %{channel} has been deleted by %{admin}.",
            channel: channel,
            admin: admin
          )
@@ -222,7 +224,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       {:halt,
        system_event(
          socket,
-         gettext("Channel %{channel} has been deleted by %{admin}.",
+         dgettext("chat", "Channel %{channel} has been deleted by %{admin}.",
            channel: channel,
            admin: admin
          )
@@ -235,13 +237,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       msg =
         if from,
           do:
-            gettext("Channel %{channel} history from %{from} was purged by %{admin}.",
+            dgettext("chat", "Channel %{channel} history from %{from} was purged by %{admin}.",
               channel: channel,
               from: from,
               admin: admin
             ),
           else:
-            gettext("Channel %{channel} history was purged by %{admin}.",
+            dgettext("chat", "Channel %{channel} history was purged by %{admin}.",
               channel: channel,
               admin: admin
             )
@@ -259,7 +261,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     {:halt,
      system_event(
        socket,
-       gettext("%{target} has been muted in %{channel}.", target: target, channel: channel)
+       dgettext("chat", "%{target} has been muted in %{channel}.",
+         target: target,
+         channel: channel
+       )
      )}
   end
 
@@ -267,7 +272,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     {:halt,
      system_event(
        socket,
-       gettext("%{target} has been unmuted in %{channel}.", target: target, channel: channel)
+       dgettext("chat", "%{target} has been unmuted in %{channel}.",
+         target: target,
+         channel: channel
+       )
      )}
   end
 
@@ -285,13 +293,16 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     if is_privileged do
       msg =
         if message && message != "" do
-          gettext("* %{nickname} has knocked on %{channel} (%{message})",
+          dgettext("chat", "* %{nickname} has knocked on %{channel} (%{message})",
             nickname: nick,
             channel: channel,
             message: message
           )
         else
-          gettext("* %{nickname} has knocked on %{channel}", nickname: nick, channel: channel)
+          dgettext("chat", "* %{nickname} has knocked on %{channel}",
+            nickname: nick,
+            channel: channel
+          )
         end
 
       {:halt, system_event(socket, msg)}
@@ -310,7 +321,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   defp append_reason(message, ""), do: message
 
   defp append_reason(message, reason),
-    do: gettext("%{message} (%{reason})", message: message, reason: reason)
+    do: dgettext("chat", "%{message} (%{reason})", message: message, reason: reason)
 
   defp apply_mode_to_users(users, "+q", params) do
     Enum.map(users, fn user ->

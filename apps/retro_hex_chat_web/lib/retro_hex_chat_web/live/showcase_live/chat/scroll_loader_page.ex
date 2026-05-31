@@ -13,17 +13,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ScrollLoaderPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Scroll Loader"), active_page: "scroll-loader")}
+    {:ok,
+     assign(socket,
+       page_title: dgettext("showcase", "Scroll Loader"),
+       active_page: "scroll-loader"
+     )}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Scroll Loader")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Scroll Loader")}</h2>
 
       <.showcase_card
-        title={gettext("Loading State")}
+        title={dgettext("showcase", "Loading State")}
         description="Animated progress bar shown while older messages are being fetched."
       >
         <.scroll_loader loading={true} />
@@ -33,12 +37,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ScrollLoaderPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Idle State")}
+        title={dgettext("showcase", "Idle State")}
         description="Nothing rendered when loading is false — the component is invisible."
       >
         <div class="shadow-retro-field bg-white p-3 min-h-[48px] flex items-center justify-center">
           <span class="text-xs text-muted-foreground">
-            {gettext("(empty — scroll_loader renders nothing)")}
+            {dgettext("showcase", "(empty — scroll_loader renders nothing)")}
           </span>
         </div>
         <.scroll_loader loading={false} />

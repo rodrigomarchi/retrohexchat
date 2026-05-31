@@ -20,26 +20,30 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
         :ok
 
       [_trigger] ->
-        {:error, gettext("Usage: /autorespond add <trigger> [#channel] <command>")}
+        {:error, dgettext("commands", "Usage: /autorespond add <trigger> [#channel] <command>")}
 
       _ ->
         {:error,
-         gettext("Usage: /autorespond add <on_join|on_part|on_nick_change> [#channel] <command>")}
+         dgettext(
+           "commands",
+           "Usage: /autorespond add <on_join|on_part|on_nick_change> [#channel] <command>"
+         )}
     end
   end
 
   def validate("add"),
-    do: {:error, gettext("Usage: /autorespond add <trigger> [#channel] <command>")}
+    do: {:error, dgettext("commands", "Usage: /autorespond add <trigger> [#channel] <command>")}
 
   def validate("remove " <> rest) do
     if String.trim(rest) == "" do
-      {:error, gettext("Usage: /autorespond remove <position>")}
+      {:error, dgettext("commands", "Usage: /autorespond remove <position>")}
     else
       :ok
     end
   end
 
-  def validate("remove"), do: {:error, gettext("Usage: /autorespond remove <position>")}
+  def validate("remove"),
+    do: {:error, dgettext("commands", "Usage: /autorespond remove <position>")}
 
   def validate(_), do: :ok
 
@@ -64,7 +68,8 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
 
       :error ->
         {:error,
-         gettext(
+         dgettext(
+           "commands",
            "Invalid trigger '%{trigger_str}'. Valid triggers: on_join, on_part, on_nick_change",
            trigger_str: trigger_str
          )}
@@ -95,17 +100,18 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
   def help do
     %{
       name: "autorespond",
-      syntax: gettext("/autorespond [list|add|remove]"),
+      syntax: dgettext("commands", "/autorespond [list|add|remove]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Automatically run a command when someone joins, leaves, or changes their nickname.\nSubcommands: list, add <trigger> [#channel] <command>, remove <position>. No args opens the dialog.\nValid triggers: on_join, on_part, on_nick_change.\nUse $nick in your command to reference the triggering user. The remove subcommand takes a 0-based index number."
         ),
       examples: [
         "/autorespond",
-        gettext("/autorespond list"),
-        gettext("/autorespond add on_join #welcome /notice $nick Welcome!"),
-        gettext("/autorespond add on_part /say $nick left"),
-        gettext("/autorespond remove 0")
+        dgettext("commands", "/autorespond list"),
+        dgettext("commands", "/autorespond add on_join #welcome /notice $nick Welcome!"),
+        dgettext("commands", "/autorespond add on_part /say $nick left"),
+        dgettext("commands", "/autorespond remove 0")
       ]
     }
   end
@@ -150,9 +156,10 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
 
     %CommandSyntax{
       command: "autorespond",
-      syntax: gettext("/autorespond [list|add|remove]"),
+      syntax: dgettext("commands", "/autorespond [list|add|remove]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Automatically run a command when someone joins, leaves, or changes their nickname."
         ),
       category: :config,
@@ -162,27 +169,27 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
           required: false,
           type: :text,
           position: 0,
-          description: gettext("Subcommand: list, add, remove")
+          description: dgettext("commands", "Subcommand: list, add, remove")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: gettext("Subcommand arguments")
+          description: dgettext("commands", "Subcommand arguments")
         }
       ],
       examples: [
         "/autorespond",
-        gettext("/autorespond list"),
-        gettext("/autorespond add on_join #welcome /notice $nick Welcome!"),
-        gettext("/autorespond add on_part /say $nick left"),
-        gettext("/autorespond remove 0")
+        dgettext("commands", "/autorespond list"),
+        dgettext("commands", "/autorespond add on_join #welcome /notice $nick Welcome!"),
+        dgettext("commands", "/autorespond add on_part /say $nick left"),
+        dgettext("commands", "/autorespond remove 0")
       ],
       subcommands: [
-        %{name: "list", description: gettext("Show auto-respond rules")},
-        %{name: "add", description: gettext("Add an auto-respond rule")},
-        %{name: "remove", description: gettext("Remove an auto-respond rule")}
+        %{name: "list", description: dgettext("commands", "Show auto-respond rules")},
+        %{name: "add", description: dgettext("commands", "Add an auto-respond rule")},
+        %{name: "remove", description: dgettext("commands", "Remove an auto-respond rule")}
       ]
     }
   end

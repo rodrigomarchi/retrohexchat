@@ -14,45 +14,49 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatInputPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Chat Input"), active_page: "chat-input")}
+    {:ok,
+     assign(socket, page_title: dgettext("showcase", "Chat Input"), active_page: "chat-input")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Chat Input")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Chat Input")}</h2>
 
       <.showcase_card
-        title={gettext("Basic Input")}
+        title={dgettext("showcase", "Basic Input")}
         description="Simple chat input with send button and counter."
       >
-        <.chat_input placeholder={gettext("Message to #lobby — / for commands")} show_toolbar={false} />
+        <.chat_input
+          placeholder={dgettext("showcase", "Message to #lobby — / for commands")}
+          show_toolbar={false}
+        />
         <.code_example>
           &lt;.chat_input placeholder="Message to #lobby" show_toolbar=&#123;false&#125; /&gt;
         </.code_example>
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With Formatting Toolbar")}
+        title={dgettext("showcase", "With Formatting Toolbar")}
         description="Input with bold, italic, underline, and color buttons."
       >
-        <.chat_input placeholder={gettext("Message to #lobby — / for commands")}>
+        <.chat_input placeholder={dgettext("showcase", "Message to #lobby — / for commands")}>
           <:toolbar_buttons>
-            <.toolbar_button variant="compact" label={gettext("Bold")}>
+            <.toolbar_button variant="compact" label={dgettext("showcase", "Bold")}>
               <span class="text-xs font-bold">B</span>
             </.toolbar_button>
-            <.toolbar_button variant="compact" label={gettext("Italic")}>
+            <.toolbar_button variant="compact" label={dgettext("showcase", "Italic")}>
               <span class="text-xs italic">I</span>
             </.toolbar_button>
-            <.toolbar_button variant="compact" label={gettext("Underline")}>
+            <.toolbar_button variant="compact" label={dgettext("showcase", "Underline")}>
               <span class="text-xs underline">U</span>
             </.toolbar_button>
             <.toolbar_separator variant="compact" />
-            <.toolbar_button variant="compact" label={gettext("Text Color")}>
+            <.toolbar_button variant="compact" label={dgettext("showcase", "Text Color")}>
               <span class="text-xs font-bold text-error">A</span>
             </.toolbar_button>
-            <.toolbar_button variant="compact" label={gettext("Background Color")}>
+            <.toolbar_button variant="compact" label={dgettext("showcase", "Background Color")}>
               <span class="text-xs font-bold bg-highlight-bg px-0.5">A</span>
             </.toolbar_button>
           </:toolbar_buttons>
@@ -69,10 +73,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatInputPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Custom Max Length")}
+        title={dgettext("showcase", "Custom Max Length")}
         description="Input with custom character limit."
       >
-        <.chat_input placeholder={gettext("Short message...")} max_length={140} show_toolbar={false} />
+        <.chat_input
+          placeholder={dgettext("showcase", "Short message...")}
+          max_length={140}
+          show_toolbar={false}
+        />
         <.code_example>
           &lt;.chat_input max_length=&#123;140&#125; show_toolbar=&#123;false&#125; /&gt;
         </.code_example>

@@ -1,119 +1,154 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Play DOOM-engine games in your browser via WebAssembly. Seven game data options are available — from the original shareware to open-source replacements and total conversions."
   )}
 </p>
 <.diagram_arcade_doom class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_game_doom}>{gettext("Game Data")}</.help_h4>
+<.help_h4 icon={:icon_game_doom}>{dgettext("help_arcade", "Game Data")}</.help_h4>
 <ul>
   <li>
     <.help_link topic="feature-arcade-doom-shareware">
-      {gettext("DOOM: Knee-Deep in the Dead")}
+      {dgettext("help_arcade", "DOOM: Knee-Deep in the Dead")}
     </.help_link>
-    {gettext("— The original Episode 1 shareware (9 levels on Phobos). Freely redistributable.")}
+    {dgettext(
+      "help_arcade",
+      "— The original Episode 1 shareware (9 levels on Phobos). Freely redistributable."
+    )}
   </li>
   <li>
-    <.help_link topic="feature-arcade-freedoom1">{gettext("Freedoom: Phase 1")}</.help_link>
-    {gettext(
+    <.help_link topic="feature-arcade-freedoom1">
+      {dgettext("help_arcade", "Freedoom: Phase 1")}
+    </.help_link>
+    {dgettext(
+      "help_arcade",
       "— A complete free replacement for Ultimate DOOM. 4 episodes, 36 levels with original art and music. BSD license."
     )}
   </li>
   <li>
-    <.help_link topic="feature-arcade-freedoom2">{gettext("Freedoom: Phase 2")}</.help_link>
-    {gettext(
+    <.help_link topic="feature-arcade-freedoom2">
+      {dgettext("help_arcade", "Freedoom: Phase 2")}
+    </.help_link>
+    {dgettext(
+      "help_arcade",
       "— A complete free replacement for DOOM II. 32 levels with the Super Shotgun. Compatible with community PWAD mods. BSD license."
     )}
   </li>
   <li>
-    <.help_link topic="feature-arcade-freedm">{gettext("FreeDM")}</.help_link>
-    {gettext("— 32 deathmatch-focused arena maps. BSD license.")}
+    <.help_link topic="feature-arcade-freedm">{dgettext("help_arcade", "FreeDM")}</.help_link>
+    {dgettext("help_arcade", "— 32 deathmatch-focused arena maps. BSD license.")}
   </li>
   <li>
-    <.help_link topic="feature-arcade-chex-quest">{gettext("Chex Quest")}</.help_link>
-    {gettext(
+    <.help_link topic="feature-arcade-chex-quest">
+      {dgettext("help_arcade", "Chex Quest")}
+    </.help_link>
+    {dgettext(
+      "help_arcade",
       "— The legendary 1996 cereal box promotion. A kid-friendly total conversion where you zap Flemoids with the Zorcher. Freeware."
     )}
   </li>
   <li>
-    <.help_link topic="feature-arcade-hacx">{gettext("HacX: Twitch 'n Kill")}</.help_link>
-    {gettext(
+    <.help_link topic="feature-arcade-hacx">
+      {dgettext("help_arcade", "HacX: Twitch 'n Kill")}
+    </.help_link>
+    {dgettext(
+      "help_arcade",
       "— A cyberpunk total conversion with new weapons, enemies, and levels. Standalone v1.2 IWAD. Freeware."
     )}
   </li>
   <li>
-    <.help_link topic="feature-arcade-rekkr">{gettext("REKKR: Sunken Land")}</.help_link>
-    {gettext(
+    <.help_link topic="feature-arcade-rekkr">
+      {dgettext("help_arcade", "REKKR: Sunken Land")}
+    </.help_link>
+    {dgettext(
+      "help_arcade",
       "— A Viking-themed total conversion with hand-drawn pixel art. Axes, bows, and runic magic. Freeware."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_webrtc}>{gettext("Engine")}</.help_h4>
+<.help_h4 icon={:icon_webrtc}>{dgettext("help_arcade", "Engine")}</.help_h4>
 <p>
-  {gettext("Powered by")} <strong>{gettext("Dwasm")}</strong>
-  {gettext(
+  {dgettext("help_arcade", "Powered by")} <strong>{dgettext("help_arcade", "Dwasm")}</strong>
+  {dgettext(
+    "help_arcade",
     "— PrBoom+ compiled to WebAssembly via Emscripten (GPL-2.0). Supports WADs, PWADs, DEH/BEX patches, OPL synthesis, gamepad input, and widescreen rendering."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("WASD")}</strong> {gettext("— Move")}</li>
-  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim")}</li>
-  <li><strong>{gettext("Left click")}</strong> {gettext("— Fire")}</li>
-  <li><strong>E</strong> {gettext("— Use / Open doors")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Jump")}</li>
-  <li><strong>1-7</strong> {gettext("— Weapon select")}</li>
+  <li><strong>{dgettext("help_arcade", "WASD")}</strong> {dgettext("help_arcade", "— Move")}</li>
+  <li><strong>{dgettext("help_arcade", "Mouse")}</strong> {dgettext("help_arcade", "— Aim")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left click")}</strong> {dgettext("help_arcade", "— Fire")}
+  </li>
+  <li><strong>E</strong> {dgettext("help_arcade", "— Use / Open doors")}</li>
+  <li><strong>{dgettext("help_arcade", "Space")}</strong> {dgettext("help_arcade", "— Jump")}</li>
+  <li><strong>1-7</strong> {dgettext("help_arcade", "— Weapon select")}</li>
 </ul>
-<.help_h4 icon={:icon_clock}>{gettext("History")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "History")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Released by id Software on December 10, 1993, DOOM popularized the first-person shooter genre and pioneered networked multiplayer deathmatch. Developed by John Carmack, John Romero, and the id team, the shareware model distributed Episode 1 for free — it was downloaded by an estimated 10 million people within two years. DOOM's open WAD architecture spawned a modding community that remains active to this day."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Strafe to survive")}</strong>
-    {gettext("— Circle-strafing around enemies is the fundamental DOOM skill. Never stand still.")}
+    <strong>{dgettext("help_arcade", "Strafe to survive")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Circle-strafing around enemies is the fundamental DOOM skill. Never stand still."
+    )}
   </li>
   <li>
-    <strong>{gettext("Save the shotgun")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Save the shotgun")}</strong>
+    {dgettext(
+      "help_arcade",
       "— The shotgun is your workhorse weapon. Use the pistol for weak enemies to conserve shells."
     )}
   </li>
   <li>
-    <strong>{gettext("Secret hunt")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Secret hunt")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Walls with different textures often hide secret rooms with weapons and ammo. Press Use on everything."
     )}
   </li>
   <li>
-    <strong>{gettext("Infighting")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Infighting")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Enemies can damage each other. Lure different enemy types into fighting and let them thin their own ranks."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "DOOM was installed on more PCs than Windows 95 at the time of its release — Bill Gates considered buying id Software."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The original DOOM engine has no true vertical look — all aiming is horizontal. The engine auto-aims vertically."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Chex Quest (1996) was the first video game included as a prize in cereal boxes, and it's playable right here."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade">{gettext("Solo Arcade")}</.help_link>
-  · <.help_link topic="feature-arcade-quake">{gettext("Quake (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade">{dgettext("help_arcade", "Solo Arcade")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-quake">
+    {dgettext("help_arcade", "Quake (Arcade)")}
+  </.help_link>
 </p>

@@ -8,12 +8,13 @@ defmodule RetroHexChat.Chat.HelpTopics.KeyboardShortcuts do
     [
       %{
         id: "keyboard-shortcuts",
-        title: gettext("Keyboard Shortcuts"),
-        category: gettext("User Interface"),
+        title: dgettext("help", "Keyboard Shortcuts"),
+        category: dgettext("help", "User Interface"),
         keywords: ["keyboard", "shortcuts", "hotkeys", "keybindings", "keys"],
         icon: :icon_dialog_cheatsheet,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Complete reference of keyboard shortcuts for navigation, messaging, and interface control."
           )
       }

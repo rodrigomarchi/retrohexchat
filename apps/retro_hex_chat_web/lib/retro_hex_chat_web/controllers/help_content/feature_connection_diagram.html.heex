@@ -1,58 +1,86 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The connection diagram is an animated visual indicator at the top of every P2P session, showing the real-time bilateral link between you and the other peer."
   )}
 </p>
-<.help_h4 icon={:icon_p2p}>{gettext("Visual States")}</.help_h4>
+<.help_h4 icon={:icon_p2p}>{dgettext("help_features", "Visual States")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The diagram shows both peers as browser icons connected by a line that animates based on the current state:"
   )}
 </p>
 <ul>
   <li>
-    <strong>{gettext("Waiting")}</strong> {gettext(
+    <strong>{dgettext("help_features", "Waiting")}</strong> {dgettext(
+      "help_features",
       "— dotted gray line; peer's indicator pulses slowly"
     )}
   </li>
-  <li><strong>{gettext("Ready")}</strong> {gettext("— dashed gray line; both peers online")}</li>
   <li>
-    <strong>{gettext("Connecting")}</strong> {gettext("— yellow dashes scroll bidirectionally")}
+    <strong>{dgettext("help_features", "Ready")}</strong> {dgettext(
+      "help_features",
+      "— dashed gray line; both peers online"
+    )}
   </li>
   <li>
-    <strong>{gettext("Connected")}</strong> {gettext(
+    <strong>{dgettext("help_features", "Connecting")}</strong> {dgettext(
+      "help_features",
+      "— yellow dashes scroll bidirectionally"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_features", "Connected")}</strong> {dgettext(
+      "help_features",
       "— solid green line with a brief flash effect"
     )}
   </li>
   <li>
-    <strong>{gettext("Reconnecting")}</strong> {gettext(
+    <strong>{dgettext("help_features", "Reconnecting")}</strong> {dgettext(
+      "help_features",
       "— yellow broken dashes with attempt counter"
     )}
   </li>
-  <li><strong>{gettext("Failed")}</strong> {gettext("— static red dashed line")}</li>
+  <li>
+    <strong>{dgettext("help_features", "Failed")}</strong> {dgettext(
+      "help_features",
+      "— static red dashed line"
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_file_send}>{gettext("File Transfer Visualization")}</.help_h4>
+<.help_h4 icon={:icon_file_send}>
+  {dgettext("help_features", "File Transfer Visualization")}
+</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "During a file transfer, data dots flow along the line from sender to receiver. The center badge shows the file name, transfer speed, and a mini progress bar."
   )}
 </p>
-<.help_h4 icon={:icon_microphone}>{gettext("Call Visualization")}</.help_h4>
+<.help_h4 icon={:icon_microphone}>{dgettext("help_features", "Call Visualization")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "During audio/video calls, the line shows bidirectional data flow dots. The center badge displays the call type, duration, and quality level. Video calls show a thicker line to indicate higher bandwidth."
   )}
 </p>
-<.help_h4 icon={:icon_laptop}>{gettext("Peer Info (Whois)")}</.help_h4>
+<.help_h4 icon={:icon_laptop}>{dgettext("help_features", "Peer Info (Whois)")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Each side of the diagram shows detailed information about the peer's browser environment: browser name and version, operating system, screen resolution, language, timezone, CPU cores, and color depth. Touch-enabled devices show a touch indicator."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
-  · <.help_link topic="feature-file-transfer">{gettext("File Transfer")}</.help_link>
-  · <.help_link topic="feature-audio-call">{gettext("Audio Call")}</.help_link>
-  · <.help_link topic="feature-video-call">{gettext("Video Call")}</.help_link>
+  <.help_link topic="feature-p2p-sessions">
+    {dgettext("help_features", "P2P Sessions")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-file-transfer">
+    {dgettext("help_features", "File Transfer")}
+  </.help_link>
+  · <.help_link topic="feature-audio-call">{dgettext("help_features", "Audio Call")}</.help_link>
+  · <.help_link topic="feature-video-call">{dgettext("help_features", "Video Call")}</.help_link>
 </p>

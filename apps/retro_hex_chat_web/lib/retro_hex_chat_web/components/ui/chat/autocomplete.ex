@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.Components.UI.Autocomplete do
           class="px-retro-4 py-retro-8 text-xs text-muted-foreground text-center"
           data-testid="autocomplete-empty"
         >
-          {gettext("No results")}
+          {dgettext("chat", "No results")}
         </div>
       <% else %>
         {render_items(assigns)}
@@ -143,7 +143,7 @@ defmodule RetroHexChatWeb.Components.UI.Autocomplete do
       <span :if={result.joined?} class="text-success shrink-0">&#10003;</span>
       <span class="font-bold shrink-0">{result.name}</span>
       <span class="truncate text-muted-foreground">
-        ({ngettext("%{count} user", "%{count} users", result.user_count)})
+        ({dngettext("chat", "%{count} user", "%{count} users", result.user_count)})
       </span>
     </div>
     """

@@ -13,8 +13,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
   import RetroHexChatWeb.ShowcaseHelpers
 
   @local_info %{
-    browser: gettext("Chrome 145.0"),
-    os: gettext("macOS 10.15"),
+    browser: dgettext("showcase", "Chrome 145.0"),
+    os: dgettext("showcase", "macOS 10.15"),
     screen: "2560x1440",
     language: "en-US",
     timezone: "America/Sao_Paulo",
@@ -23,8 +23,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
   }
 
   @peer_info %{
-    browser: gettext("Firefox 148.0"),
-    os: gettext("Linux Ubuntu"),
+    browser: dgettext("showcase", "Firefox 148.0"),
+    os: dgettext("showcase", "Linux Ubuntu"),
     screen: "1920x1080",
     language: "pt-BR",
     timezone: "America/Sao_Paulo",
@@ -35,16 +35,16 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
   @sample_messages [
     %{
       type: "system",
-      sender_nick: gettext("System"),
-      content: gettext("bob has joined the session")
+      sender_nick: dgettext("showcase", "System"),
+      content: dgettext("showcase", "bob has joined the session")
     },
-    %{type: "chat", sender_nick: "you", content: gettext("Hey, ready to connect?")},
-    %{type: "chat", sender_nick: "bob", content: gettext("Sure, let's go!")}
+    %{type: "chat", sender_nick: "you", content: dgettext("showcase", "Hey, ready to connect?")},
+    %{type: "chat", sender_nick: "bob", content: dgettext("showcase", "Sure, let's go!")}
   ]
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("P2P Lobby"), active_page: "p2p-lobby")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "P2P Lobby"), active_page: "p2p-lobby")}
   end
 
   @impl true
@@ -57,9 +57,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
 
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("P2P Lobby")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "P2P Lobby")}</h2>
 
-      <.showcase_card title={gettext("Pending")} description="Waiting for peer to join.">
+      <.showcase_card title={dgettext("showcase", "Pending")} description="Waiting for peer to join.">
         <.p2p_lobby
           peer="alice"
           state="pending"
@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Lobby")}
+        title={dgettext("showcase", "Lobby")}
         description="Both peers present. Shows Audio Call, Video Call, Send File buttons."
       >
         <.p2p_lobby
@@ -83,7 +83,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Connecting")}
+        title={dgettext("showcase", "Connecting")}
         description="WebRTC negotiation in progress. Shows progress bar and Cancel button."
       >
         <.p2p_lobby
@@ -96,7 +96,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Active + Audio Call")}
+        title={dgettext("showcase", "Active + Audio Call")}
         description="Active session with an ongoing audio call. Shows media controls."
       >
         <.p2p_lobby
@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Active + Video Call")}
+        title={dgettext("showcase", "Active + Video Call")}
         description="Active session with a video call. Shows video area, camera toggle, quality presets."
       >
         <.p2p_lobby
@@ -126,7 +126,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Active + File Transfer (sending)")}
+        title={dgettext("showcase", "Active + File Transfer (sending)")}
         description="Active session with a file transfer in progress."
       >
         <.p2p_lobby
@@ -150,7 +150,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Active + File Transfer (receiving offer)")}
+        title={dgettext("showcase", "Active + File Transfer (receiving offer)")}
         description="Incoming file transfer offer. Shows Accept/Cancel buttons."
       >
         <.p2p_lobby
@@ -173,7 +173,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Action Request (consent)")}
+        title={dgettext("showcase", "Action Request (consent)")}
         description="Bilateral consent banner for incoming action requests."
       >
         <.p2p_lobby
@@ -187,7 +187,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Failed")}
+        title={dgettext("showcase", "Failed")}
         description="Connection attempt failed. Shows Close Session."
       >
         <.p2p_lobby
@@ -201,7 +201,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With Privacy & Inactivity Warning")}
+        title={dgettext("showcase", "With Privacy & Inactivity Warning")}
         description="Shows privacy toggle and inactivity warning banner."
       >
         <.p2p_lobby
@@ -217,7 +217,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Session Ended (call ended)")}
+        title={dgettext("showcase", "Session Ended (call ended)")}
         description="Shown to the peer who didn't close. Displays connection diagram, reason, and duration."
       >
         <.p2p_session_ended
@@ -231,7 +231,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Session Ended (user closed)")}
+        title={dgettext("showcase", "Session Ended (user closed)")}
         description="Session closed by the other peer."
       >
         <.p2p_session_ended
@@ -245,7 +245,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Session Ended (file transfer)")}
+        title={dgettext("showcase", "Session Ended (file transfer)")}
         description="Session ended after file transfer completed."
       >
         <.p2p_session_ended

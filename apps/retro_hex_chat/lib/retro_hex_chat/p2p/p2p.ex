@@ -90,7 +90,7 @@ defmodule RetroHexChat.P2P do
       [
         %{
           urls: [
-            gettext("turn:%{relay_ip}:%{listen_port}?transport=udp",
+            dgettext("p2p", "turn:%{relay_ip}:%{listen_port}?transport=udp",
               relay_ip: relay_ip,
               listen_port: listen_port
             )
@@ -100,7 +100,7 @@ defmodule RetroHexChat.P2P do
         }
       ]
     else
-      [%{urls: [gettext("stun:stun.l.google.com:19302")]}]
+      [%{urls: [dgettext("p2p", "stun:stun.l.google.com:19302")]}]
     end
   end
 end

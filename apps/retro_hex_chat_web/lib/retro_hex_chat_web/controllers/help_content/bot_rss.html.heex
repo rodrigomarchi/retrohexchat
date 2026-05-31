@@ -1,77 +1,100 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_bots",
     "The RSS capability monitors RSS and Atom feeds and automatically posts new items to designated channels."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Commands")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_bots", "Commands")}</.help_h4>
 <table>
   <thead>
     <tr>
-      <th>{gettext("Command")}</th>
-      <th>{gettext("Description")}</th>
+      <th>{dgettext("help_bots", "Command")}</th>
+      <th>{dgettext("help_bots", "Description")}</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><code>{gettext("!Bot rss add <url> <#channel>")}</code></td>
-      <td>{gettext("Add an RSS/Atom feed")}</td>
+      <td><code>{dgettext("help_bots", "!Bot rss add <url> <#channel>")}</code></td>
+      <td>{dgettext("help_bots", "Add an RSS/Atom feed")}</td>
     </tr>
     <tr>
-      <td><code>{gettext("!Bot rss list")}</code></td>
-      <td>{gettext("List all configured feeds")}</td>
+      <td><code>{dgettext("help_bots", "!Bot rss list")}</code></td>
+      <td>{dgettext("help_bots", "List all configured feeds")}</td>
     </tr>
     <tr>
-      <td><code>{gettext("!Bot rss remove <id>")}</code></td>
-      <td>{gettext("Remove a feed by ID")}</td>
+      <td><code>{dgettext("help_bots", "!Bot rss remove <id>")}</code></td>
+      <td>{dgettext("help_bots", "Remove a feed by ID")}</td>
     </tr>
     <tr>
-      <td><code>{gettext("!Bot rss check <id>")}</code></td>
-      <td>{gettext("Force-check a feed immediately")}</td>
+      <td><code>{dgettext("help_bots", "!Bot rss check <id>")}</code></td>
+      <td>{dgettext("help_bots", "Force-check a feed immediately")}</td>
     </tr>
   </tbody>
 </table>
 
-<.help_h4 icon={:icon_rss}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_rss}>{dgettext("help_bots", "How It Works")}</.help_h4>
 <ul>
-  <li>{gettext("Feeds are polled at a configurable interval (default: every 30 minutes)")}</li>
-  <li>{gettext("Only new items since the last check are posted")}</li>
-  <li>{gettext("Uses HTTP conditional requests (ETag/Last-Modified) for efficiency")}</li>
-  <li>{gettext("Feed titles are auto-detected from the feed metadata")}</li>
   <li>
-    {gettext("Items are posted in the format:")}
-    <code>{gettext("[Feed Title] Item Title — Link")}</code>
+    {dgettext(
+      "help_bots",
+      "Feeds are polled at a configurable interval (default: every 30 minutes)"
+    )}
+  </li>
+  <li>{dgettext("help_bots", "Only new items since the last check are posted")}</li>
+  <li>
+    {dgettext("help_bots", "Uses HTTP conditional requests (ETag/Last-Modified) for efficiency")}
+  </li>
+  <li>{dgettext("help_bots", "Feed titles are auto-detected from the feed metadata")}</li>
+  <li>
+    {dgettext("help_bots", "Items are posted in the format:")}
+    <code>{dgettext("help_bots", "[Feed Title] Item Title — Link")}</code>
   </li>
 </ul>
 
-<.help_h4 icon={:icon_wrench}>{gettext("Configuration")}</.help_h4>
-<p>{gettext("Admins can configure via")} <code>{gettext("/bot set")}</code>:</p>
-<ul>
-  <li><code>rss_interval</code> {gettext("— Poll interval in minutes (default: 30)")}</li>
-  <li><code>rss_max_feeds</code> {gettext("— Maximum feeds per bot (default: 5)")}</li>
-  <li><code>rss_max_items</code> {gettext("— Maximum items posted per poll (default: 3)")}</li>
-</ul>
-
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("!MyBot rss add https://blog.example.com/feed.xml #news !MyBot rss add https://example.com/rss news !MyBot rss list !MyBot rss check f1a2b3 !MyBot rss remove f1a2b3")}</pre>
-
-<.help_h4 icon={:icon_rules}>{gettext("Notes")}</.help_h4>
-<ul>
-  <li>
-    {gettext("URLs must start with")} <code>{gettext("http://")}</code>
-    or <code>{gettext("https://")}</code>
-  </li>
-  <li>
-    {gettext("The")}
-    <code>#</code> {gettext("prefix on channel names is added automatically if missing")}
-  </li>
-  <li>{gettext("Polling timers automatically reschedule after each poll")}</li>
-  <li>{gettext("Fetch errors are logged but do not stop future polls")}</li>
-</ul>
-
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_wrench}>{dgettext("help_bots", "Configuration")}</.help_h4>
 <p>
-  <.help_link topic="botservice">{gettext("BotService Overview")}</.help_link>
-  · <.help_link topic="bot-command">{gettext("/bot Command Reference")}</.help_link>
-  · <.help_link topic="bot-scheduler">{gettext("Bot Scheduler")}</.help_link>
+  {dgettext("help_bots", "Admins can configure via")} <code>{dgettext("help_bots", "/bot set")}</code>:
+</p>
+<ul>
+  <li>
+    <code>rss_interval</code> {dgettext("help_bots", "— Poll interval in minutes (default: 30)")}
+  </li>
+  <li>
+    <code>rss_max_feeds</code> {dgettext("help_bots", "— Maximum feeds per bot (default: 5)")}
+  </li>
+  <li>
+    <code>rss_max_items</code> {dgettext(
+      "help_bots",
+      "— Maximum items posted per poll (default: 3)"
+    )}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_bots", "Examples")}</.help_h4>
+<pre>{dgettext("help_bots", "!MyBot rss add https://blog.example.com/feed.xml #news !MyBot rss add https://example.com/rss news !MyBot rss list !MyBot rss check f1a2b3 !MyBot rss remove f1a2b3")}</pre>
+
+<.help_h4 icon={:icon_rules}>{dgettext("help_bots", "Notes")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_bots", "URLs must start with")}
+    <code>{dgettext("help_bots", "http://")}</code>
+    or <code>{dgettext("help_bots", "https://")}</code>
+  </li>
+  <li>
+    {dgettext("help_bots", "The")}
+    <code>#</code> {dgettext(
+      "help_bots",
+      "prefix on channel names is added automatically if missing"
+    )}
+  </li>
+  <li>{dgettext("help_bots", "Polling timers automatically reschedule after each poll")}</li>
+  <li>{dgettext("help_bots", "Fetch errors are logged but do not stop future polls")}</li>
+</ul>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_bots", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="botservice">{dgettext("help_bots", "BotService Overview")}</.help_link>
+  · <.help_link topic="bot-command">{dgettext("help_bots", "/bot Command Reference")}</.help_link>
+  · <.help_link topic="bot-scheduler">{dgettext("help_bots", "Bot Scheduler")}</.help_link>
 </p>

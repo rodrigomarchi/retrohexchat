@@ -1,40 +1,45 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Enter a chat channel to read and send messages. If the channel doesn't exist yet, it is created and you become its operator."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/join <#channel> [key]")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/join <#channel> [key]")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>#channel</code>
-  {gettext("— Channel name (must start with #).")}<br /><code>key</code>
-  {gettext("— Optional password if the channel requires one (+k mode).")}
+  {dgettext("help_commands", "— Channel name (must start with #).")}<br /><code>key</code>
+  {dgettext("help_commands", "— Optional password if the channel requires one (+k mode).")}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its first operator (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>
-    {gettext("Channel names must start with")} <code>#</code>{gettext(
+    {dgettext("help_commands", "Channel names must start with")} <code>#</code>{dgettext(
+      "help_commands",
       ", be at most 50 characters, and contain no spaces"
     )}
   </li>
-  <li>{gettext("Maximum 10 channels at once")}</li>
-  <li>{gettext("Cannot rejoin a channel you're already in")}</li>
-  <li>{gettext("If the channel has +k mode, you must provide the correct key")}</li>
-  <li>{gettext("If the channel has +i mode, you must be invited first")}</li>
+  <li>{dgettext("help_commands", "Maximum 10 channels at once")}</li>
+  <li>{dgettext("help_commands", "Cannot rejoin a channel you're already in")}</li>
+  <li>
+    {dgettext("help_commands", "If the channel has +k mode, you must provide the correct key")}
+  </li>
+  <li>{dgettext("help_commands", "If the channel has +i mode, you must be invited first")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/join #elixir /join #secret mykey /join #newchannel")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/join #elixir /join #secret mykey /join #newchannel")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-part">{gettext("/part")}</.help_link>
-  · <.help_link topic="cmd-invite">{gettext("/invite")}</.help_link>
-  · <.help_link topic="cmd-autojoin">{gettext("/autojoin")}</.help_link>
-  · <.help_link topic="cmd-list">{gettext("/list")}</.help_link>
+  <.help_link topic="cmd-part">{dgettext("help_commands", "/part")}</.help_link>
+  · <.help_link topic="cmd-invite">{dgettext("help_commands", "/invite")}</.help_link>
+  · <.help_link topic="cmd-autojoin">{dgettext("help_commands", "/autojoin")}</.help_link>
+  · <.help_link topic="cmd-list">{dgettext("help_commands", "/list")}</.help_link>
 </p>

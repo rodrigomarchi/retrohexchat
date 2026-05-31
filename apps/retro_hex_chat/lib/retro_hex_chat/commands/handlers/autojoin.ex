@@ -14,7 +14,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
   def validate("add " <> rest) do
     case String.trim(rest) do
       "" ->
-        {:error, gettext("Usage: /autojoin add #channel [key]")}
+        {:error, dgettext("commands", "Usage: /autojoin add #channel [key]")}
 
       trimmed ->
         channel = trimmed |> String.split(" ", parts: 2) |> List.first()
@@ -22,16 +22,16 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
     end
   end
 
-  def validate("add"), do: {:error, gettext("Usage: /autojoin add #channel [key]")}
+  def validate("add"), do: {:error, dgettext("commands", "Usage: /autojoin add #channel [key]")}
 
   def validate("remove " <> rest) do
     case String.trim(rest) do
-      "" -> {:error, gettext("Usage: /autojoin remove #channel")}
+      "" -> {:error, dgettext("commands", "Usage: /autojoin remove #channel")}
       channel -> validate_channel_name(channel)
     end
   end
 
-  def validate("remove"), do: {:error, gettext("Usage: /autojoin remove #channel")}
+  def validate("remove"), do: {:error, dgettext("commands", "Usage: /autojoin remove #channel")}
 
   def validate(args) do
     subcmd = args |> String.split(" ", parts: 2) |> List.first()
@@ -75,18 +75,19 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
   def help do
     %{
       name: "autojoin",
-      syntax: gettext("/autojoin [list|add|remove|clear]"),
+      syntax: dgettext("commands", "/autojoin [list|add|remove|clear]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Set channels to join automatically every time you connect.\nSubcommands: list, add <#channel> [key], remove <#channel>, clear. No args opens the Perform dialog.\nChannel names must start with #. Registered users only."
         ),
       examples: [
         "/autojoin",
-        gettext("/autojoin list"),
-        gettext("/autojoin add #elixir"),
-        gettext("/autojoin add #secret mykey"),
-        gettext("/autojoin remove #elixir"),
-        gettext("/autojoin clear")
+        dgettext("commands", "/autojoin list"),
+        dgettext("commands", "/autojoin add #elixir"),
+        dgettext("commands", "/autojoin add #secret mykey"),
+        dgettext("commands", "/autojoin remove #elixir"),
+        dgettext("commands", "/autojoin clear")
       ]
     }
   end
@@ -96,7 +97,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
     if String.starts_with?(channel, "#") do
       :ok
     else
-      {:error, gettext("Channel name must start with #")}
+      {:error, dgettext("commands", "Channel name must start with #")}
     end
   end
 
@@ -111,8 +112,9 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
 
     %CommandSyntax{
       command: "autojoin",
-      syntax: gettext("/autojoin [list|add|remove|clear]"),
-      description: gettext("Set channels to join automatically every time you connect."),
+      syntax: dgettext("commands", "/autojoin [list|add|remove|clear]"),
+      description:
+        dgettext("commands", "Set channels to join automatically every time you connect."),
       category: :config,
       parameters: [
         %Parameter{
@@ -120,29 +122,29 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
           required: false,
           type: :text,
           position: 0,
-          description: gettext("Subcommand: list, add, remove, clear")
+          description: dgettext("commands", "Subcommand: list, add, remove, clear")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: gettext("Subcommand arguments")
+          description: dgettext("commands", "Subcommand arguments")
         }
       ],
       examples: [
         "/autojoin",
-        gettext("/autojoin list"),
-        gettext("/autojoin add #elixir"),
-        gettext("/autojoin add #secret mykey"),
-        gettext("/autojoin remove #elixir"),
-        gettext("/autojoin clear")
+        dgettext("commands", "/autojoin list"),
+        dgettext("commands", "/autojoin add #elixir"),
+        dgettext("commands", "/autojoin add #secret mykey"),
+        dgettext("commands", "/autojoin remove #elixir"),
+        dgettext("commands", "/autojoin clear")
       ],
       subcommands: [
-        %{name: "list", description: gettext("Show your autojoin list")},
-        %{name: "add", description: gettext("Add a channel to autojoin")},
-        %{name: "remove", description: gettext("Remove a channel from autojoin")},
-        %{name: "clear", description: gettext("Clear your entire autojoin list")}
+        %{name: "list", description: dgettext("commands", "Show your autojoin list")},
+        %{name: "add", description: dgettext("commands", "Add a channel to autojoin")},
+        %{name: "remove", description: dgettext("commands", "Remove a channel from autojoin")},
+        %{name: "clear", description: dgettext("commands", "Clear your entire autojoin list")}
       ]
     }
   end

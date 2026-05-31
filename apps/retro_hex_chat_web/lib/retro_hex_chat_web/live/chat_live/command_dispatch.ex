@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
       socket.assigns.show_status_tab ->
         push_status_message(
           socket,
-          gettext("Cannot send text to status window. Use /commands."),
+          dgettext("chat", "Cannot send text to status window. Use /commands."),
           :error
         )
 
@@ -117,7 +117,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp send_pm_message(socket, session, text) do
     if GlobalMutes.muted?(session.nickname) do
-      error_event(socket, gettext("You are muted by an administrator"))
+      error_event(socket, dgettext("chat", "You are muted by an administrator"))
     else
       do_send_pm_message(socket, session, text)
     end
@@ -145,7 +145,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp send_channel_message(socket, session, text) do
     if GlobalMutes.muted?(session.nickname) do
-      error_event(socket, gettext("You are muted by an administrator"))
+      error_event(socket, dgettext("chat", "You are muted by an administrator"))
     else
       do_send_channel_message(socket, session, text)
     end
@@ -210,7 +210,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp try_alias_expansion(session, name, args, context, alias_depth) do
     if alias_depth >= 5 do
-      {:error, gettext("Alias recursion limit reached (max 5 levels)")}
+      {:error, dgettext("chat", "Alias recursion limit reached (max 5 levels)")}
     else
       case AliasList.find_entry(session.aliases, name) do
         nil ->
@@ -256,7 +256,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp handle_dispatch_result(socket, _session, {:ok, :nick_change, new_nick}) do
     if nick_in_use?(new_nick, socket.assigns.session.nickname) do
-      error_event(socket, gettext("Nickname %{nickname} is already in use", nickname: new_nick))
+      error_event(
+        socket,
+        dgettext("chat", "Nickname %{nickname} is already in use", nickname: new_nick)
+      )
     else
       registered = NickServ.registered?(new_nick)
 
@@ -292,7 +295,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
     msg = %{
       id: "system-#{System.unique_integer([:positive])}",
-      author: gettext("System"),
+      author: dgettext("chat", "System"),
       content: url,
       type: :arcade_link,
       timestamp: DateTime.utc_now()
@@ -300,7 +303,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
     socket
     |> stream_insert(:chat_messages, msg)
-    |> push_status_message(gettext("Arcade session ready! Open: %{url}", url: url), :system)
+    |> push_status_message(
+      dgettext("chat", "Arcade session ready! Open: %{url}", url: url),
+      :system
+    )
   end
 
   defp handle_dispatch_result(socket, _session, {:ok, :ui_action, action, payload}),
@@ -352,7 +358,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp handle_quit(socket, reason) do
     session = socket.assigns.session
-    quit_reason = reason || gettext("Leaving")
+    quit_reason = reason || dgettext("chat", "Leaving")
     cleanup_channels(session, quit_reason)
 
     socket
@@ -413,7 +419,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp detect_service_author("[ChanServ]" <> _), do: "ChanServ"
   defp detect_service_author("[NickServ]" <> _), do: "NickServ"
-  defp detect_service_author(_), do: gettext("Service")
+  defp detect_service_author(_), do: dgettext("chat", "Service")
 
   defp nick_in_use?(nickname, current_nickname) do
     String.downcase(nickname) != String.downcase(current_nickname) and
@@ -442,7 +448,8 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         {:error, :list_full} ->
           system_event(
             socket,
-            gettext(
+            dgettext(
+              "chat",
               "Auto-join list is full (20 channels). %{channel} was not added to auto-join.",
               channel: channel_name
             )

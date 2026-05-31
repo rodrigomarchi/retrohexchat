@@ -16,17 +16,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
   alias RetroHexChatWeb.Icons
 
   @sample_aliases [
-    %{name: "hi", expansion: gettext("/msg $1 hello!")},
-    %{name: "bye", expansion: gettext("/msg $1 goodbye!")},
-    %{name: "away", expansion: gettext("/away $1-")},
-    %{name: "op", expansion: gettext("/mode $chan +o $1")}
+    %{name: "hi", expansion: dgettext("showcase", "/msg $1 hello!")},
+    %{name: "bye", expansion: dgettext("showcase", "/msg $1 goodbye!")},
+    %{name: "away", expansion: dgettext("showcase", "/away $1-")},
+    %{name: "op", expansion: dgettext("showcase", "/mode $chan +o $1")}
   ]
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("Alias Dialog"),
+       page_title: dgettext("showcase", "Alias Dialog"),
        active_page: "alias-dialog",
        aliases: @sample_aliases
      )}
@@ -36,15 +36,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Alias Dialog")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Alias Dialog")}</h2>
 
       <.showcase_card
-        title={gettext("Default State")}
+        title={dgettext("showcase", "Default State")}
         description="Alias editor with sample entries. No row selected — Edit and Remove buttons are disabled."
       >
         <.button variant="outline" phx-click={show_modal("alias-dialog-default")}>
           <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
-          {gettext("Open Alias Editor")}
+          {dgettext("showcase", "Open Alias Editor")}
         </.button>
         <.alias_dialog id="alias-dialog-default" aliases={@aliases} />
         <.code_example>
@@ -62,12 +62,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Row Selected")}
+        title={dgettext("showcase", "Row Selected")}
         description="A row is selected (highlighted). Edit and Remove buttons become active."
       >
         <.button variant="outline" phx-click={show_modal("alias-dialog-selected")}>
           <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
-          {gettext("Open (Row Selected)")}
+          {dgettext("showcase", "Open (Row Selected)")}
         </.button>
         <.alias_dialog
           id="alias-dialog-selected"
@@ -77,12 +77,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Editing State")}
+        title={dgettext("showcase", "Editing State")}
         description="Edit form panel is visible below the table. Form shows 'Edit Alias' with pre-filled values."
       >
         <.button variant="outline" phx-click={show_modal("alias-dialog-editing")}>
           <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
-          {gettext("Open (Editing)")}
+          {dgettext("showcase", "Open (Editing)")}
         </.button>
         <.alias_dialog
           id="alias-dialog-editing"
@@ -95,12 +95,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Adding New Alias")}
+        title={dgettext("showcase", "Adding New Alias")}
         description="Edit form in 'add' mode — name field is editable, form shows 'Add Alias'."
       >
         <.button variant="outline" phx-click={show_modal("alias-dialog-adding")}>
           <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
-          {gettext("Open (Adding)")}
+          {dgettext("showcase", "Open (Adding)")}
         </.button>
         <.alias_dialog
           id="alias-dialog-adding"
@@ -112,12 +112,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Empty List")}
+        title={dgettext("showcase", "Empty List")}
         description="No aliases configured — table shows empty state message."
       >
         <.button variant="outline" phx-click={show_modal("alias-dialog-empty")}>
           <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
-          {gettext("Open (Empty)")}
+          {dgettext("showcase", "Open (Empty)")}
         </.button>
         <.alias_dialog id="alias-dialog-empty" aliases={[]} />
       </.showcase_card>

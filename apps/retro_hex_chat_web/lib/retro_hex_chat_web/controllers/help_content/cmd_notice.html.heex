@@ -1,36 +1,46 @@
 <p>
-  {gettext("Send a lightweight notice to a user or channel. Unlike")} <code>{gettext("/msg")}</code>{gettext(
+  {dgettext("help_commands", "Send a lightweight notice to a user or channel. Unlike")} <code>{dgettext("help_commands", "/msg")}</code>{dgettext(
+    "help_commands",
     ", notices don't open a PM window on the recipient's side and don't trigger notification sounds."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/notice <target> <message>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/notice <target> <message>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>target</code>
-  {gettext("— A nickname or #channel to send the notice to.")}<br /><code>message</code>
-  {gettext("— The notice text.")}
+  {dgettext("help_commands", "— A nickname or #channel to send the notice to.")}<br />
+  <code>
+    message
+  </code>
+  {dgettext("help_commands", "— The notice text.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext("Notices appear with a distinctive")} <code>{gettext("-YourNick-")}</code>
-  {gettext("prefix (instead of the usual")} <code>&lt;YourNick&gt;</code>{gettext(
+  {dgettext("help_commands", "Notices appear with a distinctive")}
+  <code>{dgettext("help_commands", "-YourNick-")}</code>
+  {dgettext("help_commands", "prefix (instead of the usual")} <code>&lt;YourNick&gt;</code>{dgettext(
+    "help_commands",
     "). They are designed for automated messages and informational announcements that shouldn't interrupt the recipient. Channel notices always appear in the channel window. User notices appear according to the recipient's"
   )}
-  <code>{gettext("/notice_routing")}</code>
-  {gettext("preference.")}
+  <code>{dgettext("help_commands", "/notice_routing")}</code>
+  {dgettext("help_commands", "preference.")}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Both target and message are required")}</li>
-  <li>{gettext("Does not create PM windows or conversations sidebar entries")}</li>
-  <li>{gettext("Does not trigger notification sounds or highlights")}</li>
+  <li>{dgettext("help_commands", "Both target and message are required")}</li>
+  <li>
+    {dgettext("help_commands", "Does not create PM windows or conversations sidebar entries")}
+  </li>
+  <li>{dgettext("help_commands", "Does not trigger notification sounds or highlights")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/notice Alice Check out #project /notice #elixir Server maintenance in 30 minutes")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/notice Alice Check out #project /notice #elixir Server maintenance in 30 minutes")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-notice-routing">{gettext("/notice_routing")}</.help_link>
-  · <.help_link topic="cmd-msg">{gettext("/msg")}</.help_link>
-  · <.help_link topic="feature-notices">{gettext("Notices")}</.help_link>
+  <.help_link topic="cmd-notice-routing">
+    {dgettext("help_commands", "/notice_routing")}
+  </.help_link>
+  · <.help_link topic="cmd-msg">{dgettext("help_commands", "/msg")}</.help_link>
+  · <.help_link topic="feature-notices">{dgettext("help_commands", "Notices")}</.help_link>
 </p>

@@ -38,7 +38,7 @@ defmodule RetroHexChat.Arcade.Policy do
     if exists do
       :ok
     else
-      {:error, gettext("You must be registered to play arcade games")}
+      {:error, dgettext("arcade", "You must be registered to play arcade games")}
     end
   end
 
@@ -46,13 +46,13 @@ defmodule RetroHexChat.Arcade.Policy do
     if user_id == session.creator_id do
       :ok
     else
-      {:error, gettext("You are not the owner of this arcade session")}
+      {:error, dgettext("arcade", "You are not the owner of this arcade session")}
     end
   end
 
   defp check_not_terminal(session) do
     if SoloSession.terminal?(session.status) do
-      {:error, gettext("Arcade session is no longer active")}
+      {:error, dgettext("arcade", "Arcade session is no longer active")}
     else
       :ok
     end

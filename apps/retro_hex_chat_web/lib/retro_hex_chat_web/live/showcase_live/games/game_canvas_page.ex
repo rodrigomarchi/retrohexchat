@@ -13,17 +13,18 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCanvasPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Game Canvas"), active_page: "game-canvas")}
+    {:ok,
+     assign(socket, page_title: dgettext("showcase", "Game Canvas"), active_page: "game-canvas")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Game Canvas")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Game Canvas")}</h2>
 
       <.showcase_card
-        title={gettext("As Host")}
+        title={dgettext("showcase", "As Host")}
         description="The session creator sees '(host)' next to their own nickname."
       >
         <.game_canvas
@@ -46,7 +47,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.GameCanvasPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("As Guest")}
+        title={dgettext("showcase", "As Guest")}
         description="The peer who joined the session — '(host)' appears next to the peer's nick."
       >
         <.game_canvas

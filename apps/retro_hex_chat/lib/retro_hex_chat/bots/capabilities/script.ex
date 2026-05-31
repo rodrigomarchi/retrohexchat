@@ -9,7 +9,7 @@ defmodule RetroHexChat.Bots.Capabilities.Script do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: gettext("Custom script engine (Coming soon)")
+  def description, do: dgettext("bots", "Custom script engine (Coming soon)")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::

@@ -47,11 +47,11 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_tab_pm class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Query (PM)")}
+        {dgettext("chat", "Query (PM)")}
       </.context_menu_item>
       <.context_menu_item on_click={@on_action} action="context_whois" phx-value-nick={@target_nick}>
         <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Whois")}
+        {dgettext("chat", "Whois")}
       </.context_menu_item>
 
       <.context_menu_separator />
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_tab_contacts class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Add to Contacts")}
+        {dgettext("chat", "Add to Contacts")}
       </.context_menu_item>
       <.context_menu_item
         on_click={@on_action}
@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_btn_settings class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Set Nick Color")}
+        {dgettext("chat", "Set Nick Color")}
       </.context_menu_item>
 
       <%!-- Inline color picker --%>
@@ -99,7 +99,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_btn_ignore class="w-[14px] h-[14px]" /></:icon>
-        {if @is_target_ignored, do: gettext("Unignore"), else: gettext("Ignore")}
+        {if @is_target_ignored, do: dgettext("chat", "Unignore"), else: dgettext("chat", "Ignore")}
       </.context_menu_item>
 
       <%!-- P2P actions (only if viewer is identified) --%>
@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_p2p class="w-[14px] h-[14px]" /></:icon>
-        {gettext("P2P Session")}
+        {dgettext("chat", "P2P Session")}
       </.context_menu_item>
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_microphone class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Audio Call")}
+        {dgettext("chat", "Audio Call")}
       </.context_menu_item>
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
@@ -129,7 +129,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_camera class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Video Call")}
+        {dgettext("chat", "Video Call")}
       </.context_menu_item>
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
@@ -138,7 +138,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_file_send class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Send File")}
+        {dgettext("chat", "Send File")}
       </.context_menu_item>
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
@@ -147,7 +147,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_star class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Play Game")}
+        {dgettext("chat", "Play Game")}
       </.context_menu_item>
 
       <%!-- Op actions (only if viewer is op and not targeting self) --%>
@@ -159,7 +159,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_dialog_kick class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Kick")}
+        {dgettext("chat", "Kick")}
       </.context_menu_item>
       <.context_menu_item
         :if={@viewer_is_op && !@is_target_self}
@@ -168,7 +168,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_ban class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Ban")}
+        {dgettext("chat", "Ban")}
       </.context_menu_item>
       <.context_menu_item
         :if={@viewer_is_op && !@is_target_self}
@@ -177,7 +177,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_role_voiced class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Give Voice (+v)")}
+        {dgettext("chat", "Give Voice (+v)")}
       </.context_menu_item>
       <.context_menu_item
         :if={@viewer_is_op && !@is_target_self}
@@ -186,7 +186,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_role_operator class="w-[14px] h-[14px]" /></:icon>
-        {gettext("Give Op (+o)")}
+        {dgettext("chat", "Give Op (+o)")}
       </.context_menu_item>
 
       <%!-- Custom nicklist items --%>

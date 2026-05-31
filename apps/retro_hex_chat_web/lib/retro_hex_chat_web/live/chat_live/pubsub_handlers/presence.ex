@@ -62,8 +62,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
     msg =
       if online?,
-        do: gettext("* %{nickname} is now online", nickname: nickname),
-        else: gettext("* %{nickname} has gone offline", nickname: nickname)
+        do: dgettext("chat", "* %{nickname} is now online", nickname: nickname),
+        else: dgettext("chat", "* %{nickname} has gone offline", nickname: nickname)
 
     type = if online?, do: :notify_online, else: :notify_offline
 
@@ -141,7 +141,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
         socket
         |> join_channel_in_background(channel, session)
         |> system_event(
-          gettext("* You have been invited to %{channel} by %{inviter} (auto-joined)",
+          dgettext("chat", "* You have been invited to %{channel} by %{inviter} (auto-joined)",
             channel: channel,
             inviter: inviter
           )
@@ -164,7 +164,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
         socket
         |> assign(pending_invites: pending ++ [invite])
         |> push_status_message(
-          gettext("* %{inviter} has invited you to %{channel}",
+          dgettext("chat", "* %{inviter} has invited you to %{channel}",
             inviter: inviter,
             channel: channel
           ),

@@ -19,7 +19,7 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
 
   def execute([nick | rest], %{nickname: own_nick}) do
     if String.downcase(nick) == String.downcase(own_nick) do
-      {:error, gettext("You cannot ignore yourself")}
+      {:error, dgettext("commands", "You cannot ignore yourself")}
     else
       parse_type_and_duration(nick, rest)
     end
@@ -35,15 +35,16 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
   def help do
     %{
       name: "ignore",
-      syntax: gettext("/ignore [nickname] [type] [duration]"),
+      syntax: dgettext("commands", "/ignore [nickname] [type] [duration]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Hide messages from a specific user.\nTypes: all (default), messages, pms, actions, notices, invites.\nDuration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\nNo args: show your ignore list. You cannot ignore yourself."
         ),
       examples: [
-        gettext("/ignore SpamBot"),
-        gettext("/ignore AnnoyingGuy pms"),
-        gettext("/ignore LoudPerson all 5m"),
+        dgettext("commands", "/ignore SpamBot"),
+        dgettext("commands", "/ignore AnnoyingGuy pms"),
+        dgettext("commands", "/ignore LoudPerson all 5m"),
         "/ignore"
       ]
     }
@@ -79,7 +80,7 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
   end
 
   defp build_ignore_result(_nick, _type, _) do
-    {:error, gettext("Usage: /ignore <nickname> [type] [duration]")}
+    {:error, dgettext("commands", "Usage: /ignore <nickname> [type] [duration]")}
   end
 
   @spec parse_duration(String.t()) :: {:ok, pos_integer()} | {:error, String.t()}
@@ -89,7 +90,7 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
         num = String.to_integer(num_str)
 
         if num <= 0 do
-          {:error, gettext("Duration must be positive")}
+          {:error, dgettext("commands", "Duration must be positive")}
         else
           seconds = num * unit_multiplier(unit)
           {:ok, seconds}
@@ -115,9 +116,10 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
 
     %CommandSyntax{
       command: "ignore",
-      syntax: gettext("/ignore [nickname] [type] [duration]"),
+      syntax: dgettext("commands", "/ignore [nickname] [type] [duration]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Hide messages from a specific user.\nTypes: all (default), messages, pms, actions, notices, invites.\nDuration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\nNo args: show your ignore list. You cannot ignore yourself."
         ),
       category: :user,
@@ -127,27 +129,27 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
           required: false,
           type: :nick,
           position: 0,
-          description: gettext("User to ignore")
+          description: dgettext("commands", "User to ignore")
         },
         %Parameter{
           name: "type",
           required: false,
           type: :text,
           position: 1,
-          description: gettext("Type: all, messages, pms, actions, notices, invites")
+          description: dgettext("commands", "Type: all, messages, pms, actions, notices, invites")
         },
         %Parameter{
           name: "duration",
           required: false,
           type: :text,
           position: 2,
-          description: gettext("Duration: 5m, 1h, 2d")
+          description: dgettext("commands", "Duration: 5m, 1h, 2d")
         }
       ],
       examples: [
-        gettext("/ignore SpamBot"),
-        gettext("/ignore AnnoyingGuy pms"),
-        gettext("/ignore LoudPerson all 5m"),
+        dgettext("commands", "/ignore SpamBot"),
+        dgettext("commands", "/ignore AnnoyingGuy pms"),
+        dgettext("commands", "/ignore LoudPerson all 5m"),
         "/ignore"
       ]
     }

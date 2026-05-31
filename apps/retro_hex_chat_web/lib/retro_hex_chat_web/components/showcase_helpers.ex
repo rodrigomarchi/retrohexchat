@@ -22,136 +22,154 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
 
   # Nav tree: {group_label, group_icon_fn, [{label, id, path}]}
   @nav_items [
-    {gettext_noop("Primitives"), :icon_btn_ok,
+    {dgettext_noop("showcase", "Primitives"), :icon_btn_ok,
      [
-       {gettext_noop("Accordion"), "accordion", "/showcase/accordion"},
-       {gettext_noop("Alert"), "alert", "/showcase/alert"},
-       {gettext_noop("Alert Dialog"), "alert-dialog", "/showcase/alert-dialog"},
-       {gettext_noop("Avatar"), "avatar", "/showcase/avatar"},
-       {gettext_noop("Badge"), "badge", "/showcase/badge"},
-       {gettext_noop("Breadcrumb"), "breadcrumb", "/showcase/breadcrumb"},
-       {gettext_noop("Button"), "button", "/showcase/button"},
-       {gettext_noop("Card"), "card", "/showcase/card"},
-       {gettext_noop("Checkbox"), "checkbox", "/showcase/checkbox"},
-       {gettext_noop("Dropdown Menu"), "dropdown-menu", "/showcase/dropdown-menu"},
-       {gettext_noop("Form"), "form", "/showcase/form"},
-       {gettext_noop("Input"), "input", "/showcase/input"},
-       {gettext_noop("Label"), "label", "/showcase/label"},
-       {gettext_noop("Pagination"), "pagination", "/showcase/pagination"},
-       {gettext_noop("Popover"), "popover", "/showcase/popover"},
-       {gettext_noop("Progress"), "progress", "/showcase/progress"},
-       {gettext_noop("Radio Group"), "radio-group", "/showcase/radio-group"},
-       {gettext_noop("Select"), "select", "/showcase/select"},
-       {gettext_noop("Separator"), "separator", "/showcase/separator"},
-       {gettext_noop("Sheet"), "sheet", "/showcase/sheet"},
-       {gettext_noop("Skeleton"), "skeleton", "/showcase/skeleton"},
-       {gettext_noop("Slider"), "slider", "/showcase/slider"},
-       {gettext_noop("Switch"), "switch", "/showcase/switch"},
-       {gettext_noop("Textarea"), "textarea", "/showcase/textarea"},
-       {gettext_noop("Toggle"), "toggle", "/showcase/toggle"},
-       {gettext_noop("Toggle Group"), "toggle-group", "/showcase/toggle-group"},
-       {gettext_noop("Tooltip"), "tooltip", "/showcase/tooltip"}
+       {dgettext_noop("showcase", "Accordion"), "accordion", "/showcase/accordion"},
+       {dgettext_noop("showcase", "Alert"), "alert", "/showcase/alert"},
+       {dgettext_noop("showcase", "Alert Dialog"), "alert-dialog", "/showcase/alert-dialog"},
+       {dgettext_noop("showcase", "Avatar"), "avatar", "/showcase/avatar"},
+       {dgettext_noop("showcase", "Badge"), "badge", "/showcase/badge"},
+       {dgettext_noop("showcase", "Breadcrumb"), "breadcrumb", "/showcase/breadcrumb"},
+       {dgettext_noop("showcase", "Button"), "button", "/showcase/button"},
+       {dgettext_noop("showcase", "Card"), "card", "/showcase/card"},
+       {dgettext_noop("showcase", "Checkbox"), "checkbox", "/showcase/checkbox"},
+       {dgettext_noop("showcase", "Dropdown Menu"), "dropdown-menu", "/showcase/dropdown-menu"},
+       {dgettext_noop("showcase", "Form"), "form", "/showcase/form"},
+       {dgettext_noop("showcase", "Input"), "input", "/showcase/input"},
+       {dgettext_noop("showcase", "Label"), "label", "/showcase/label"},
+       {dgettext_noop("showcase", "Pagination"), "pagination", "/showcase/pagination"},
+       {dgettext_noop("showcase", "Popover"), "popover", "/showcase/popover"},
+       {dgettext_noop("showcase", "Progress"), "progress", "/showcase/progress"},
+       {dgettext_noop("showcase", "Radio Group"), "radio-group", "/showcase/radio-group"},
+       {dgettext_noop("showcase", "Select"), "select", "/showcase/select"},
+       {dgettext_noop("showcase", "Separator"), "separator", "/showcase/separator"},
+       {dgettext_noop("showcase", "Sheet"), "sheet", "/showcase/sheet"},
+       {dgettext_noop("showcase", "Skeleton"), "skeleton", "/showcase/skeleton"},
+       {dgettext_noop("showcase", "Slider"), "slider", "/showcase/slider"},
+       {dgettext_noop("showcase", "Switch"), "switch", "/showcase/switch"},
+       {dgettext_noop("showcase", "Textarea"), "textarea", "/showcase/textarea"},
+       {dgettext_noop("showcase", "Toggle"), "toggle", "/showcase/toggle"},
+       {dgettext_noop("showcase", "Toggle Group"), "toggle-group", "/showcase/toggle-group"},
+       {dgettext_noop("showcase", "Tooltip"), "tooltip", "/showcase/tooltip"}
      ]},
-    {gettext_noop("Layout"), :icon_group_view,
+    {dgettext_noop("showcase", "Layout"), :icon_group_view,
      [
-       {gettext_noop("Context Menu"), "context-menu", "/showcase/context-menu"},
-       {gettext_noop("Dialog"), "dialog", "/showcase/dialog"},
-       {gettext_noop("Fieldset"), "fieldset", "/showcase/fieldset"},
-       {gettext_noop("Menu"), "menu", "/showcase/menu"},
-       {gettext_noop("Scroll Area"), "scroll-area", "/showcase/scroll-area"},
-       {gettext_noop("Table"), "table", "/showcase/table"},
-       {gettext_noop("Tabs"), "tabs", "/showcase/tabs"},
-       {gettext_noop("Toast"), "toast", "/showcase/toast"},
-       {gettext_noop("Toolbar"), "toolbar", "/showcase/toolbar"},
-       {gettext_noop("Tree View"), "tree-view", "/showcase/tree-view"},
-       {gettext_noop("Window"), "window", "/showcase/window"}
+       {dgettext_noop("showcase", "Context Menu"), "context-menu", "/showcase/context-menu"},
+       {dgettext_noop("showcase", "Dialog"), "dialog", "/showcase/dialog"},
+       {dgettext_noop("showcase", "Fieldset"), "fieldset", "/showcase/fieldset"},
+       {dgettext_noop("showcase", "Menu"), "menu", "/showcase/menu"},
+       {dgettext_noop("showcase", "Scroll Area"), "scroll-area", "/showcase/scroll-area"},
+       {dgettext_noop("showcase", "Table"), "table", "/showcase/table"},
+       {dgettext_noop("showcase", "Tabs"), "tabs", "/showcase/tabs"},
+       {dgettext_noop("showcase", "Toast"), "toast", "/showcase/toast"},
+       {dgettext_noop("showcase", "Toolbar"), "toolbar", "/showcase/toolbar"},
+       {dgettext_noop("showcase", "Tree View"), "tree-view", "/showcase/tree-view"},
+       {dgettext_noop("showcase", "Window"), "window", "/showcase/window"}
      ]},
-    {gettext_noop("Chat"), :icon_chat,
+    {dgettext_noop("showcase", "Chat"), :icon_chat,
      [
-       {gettext_noop("Autocomplete"), "autocomplete", "/showcase/autocomplete"},
-       {gettext_noop("Chat Context Menu"), "chat-context-menu", "/showcase/chat-context-menu"},
-       {gettext_noop("Chat Input"), "chat-input", "/showcase/chat-input"},
-       {gettext_noop("Chat Layout"), "chat-layout", "/showcase/chat-layout"},
-       {gettext_noop("Chat Message"), "chat-message", "/showcase/chat-message"},
-       {gettext_noop("Color Picker"), "color-picker", "/showcase/color-picker"},
-       {gettext_noop("Connection Status"), "connection-status", "/showcase/connection-status"},
-       {gettext_noop("Conversations"), "conversations", "/showcase/conversations"},
-       {gettext_noop("Conversations Ctx Menu"), "conversations-context-menu",
+       {dgettext_noop("showcase", "Autocomplete"), "autocomplete", "/showcase/autocomplete"},
+       {dgettext_noop("showcase", "Chat Context Menu"), "chat-context-menu",
+        "/showcase/chat-context-menu"},
+       {dgettext_noop("showcase", "Chat Input"), "chat-input", "/showcase/chat-input"},
+       {dgettext_noop("showcase", "Chat Layout"), "chat-layout", "/showcase/chat-layout"},
+       {dgettext_noop("showcase", "Chat Message"), "chat-message", "/showcase/chat-message"},
+       {dgettext_noop("showcase", "Color Picker"), "color-picker", "/showcase/color-picker"},
+       {dgettext_noop("showcase", "Connection Status"), "connection-status",
+        "/showcase/connection-status"},
+       {dgettext_noop("showcase", "Conversations"), "conversations", "/showcase/conversations"},
+       {dgettext_noop("showcase", "Conversations Ctx Menu"), "conversations-context-menu",
         "/showcase/conversations-context-menu"},
-       {gettext_noop("Emoji Picker"), "emoji-picker", "/showcase/emoji-picker"},
-       {gettext_noop("Formatting Toolbar"), "formatting-toolbar", "/showcase/formatting-toolbar"},
-       {gettext_noop("History Search"), "history-search", "/showcase/history-search"},
-       {gettext_noop("Hover Card"), "hover-card", "/showcase/hover-card"},
-       {gettext_noop("IRC Tabs"), "irc-tabs", "/showcase/irc-tabs"},
-       {gettext_noop("Nicklist"), "nicklist", "/showcase/nicklist"},
-       {gettext_noop("Reply Bar"), "reply-bar", "/showcase/reply-bar"},
-       {gettext_noop("Scroll Loader"), "scroll-loader", "/showcase/scroll-loader"},
-       {gettext_noop("Search Bar"), "search-bar", "/showcase/search-bar"},
-       {gettext_noop("Syntax Tooltip"), "syntax-tooltip", "/showcase/syntax-tooltip"},
-       {gettext_noop("Tab Bar"), "tab-bar", "/showcase/tab-bar"},
-       {gettext_noop("Topic Bar"), "topic-bar", "/showcase/topic-bar"}
+       {dgettext_noop("showcase", "Emoji Picker"), "emoji-picker", "/showcase/emoji-picker"},
+       {dgettext_noop("showcase", "Formatting Toolbar"), "formatting-toolbar",
+        "/showcase/formatting-toolbar"},
+       {dgettext_noop("showcase", "History Search"), "history-search",
+        "/showcase/history-search"},
+       {dgettext_noop("showcase", "Hover Card"), "hover-card", "/showcase/hover-card"},
+       {dgettext_noop("showcase", "IRC Tabs"), "irc-tabs", "/showcase/irc-tabs"},
+       {dgettext_noop("showcase", "Nicklist"), "nicklist", "/showcase/nicklist"},
+       {dgettext_noop("showcase", "Reply Bar"), "reply-bar", "/showcase/reply-bar"},
+       {dgettext_noop("showcase", "Scroll Loader"), "scroll-loader", "/showcase/scroll-loader"},
+       {dgettext_noop("showcase", "Search Bar"), "search-bar", "/showcase/search-bar"},
+       {dgettext_noop("showcase", "Syntax Tooltip"), "syntax-tooltip",
+        "/showcase/syntax-tooltip"},
+       {dgettext_noop("showcase", "Tab Bar"), "tab-bar", "/showcase/tab-bar"},
+       {dgettext_noop("showcase", "Topic Bar"), "topic-bar", "/showcase/topic-bar"}
      ]},
-    {gettext_noop("Shell"), :icon_laptop,
+    {dgettext_noop("showcase", "Shell"), :icon_laptop,
      [
-       {gettext_noop("App Header"), "app-header", "/showcase/app-header"},
-       {gettext_noop("Config Form"), "config-form", "/showcase/config-form"},
-       {gettext_noop("Empty State"), "empty-state", "/showcase/empty-state"},
-       {gettext_noop("Loading Spinner"), "loading-spinner", "/showcase/loading-spinner"},
-       {gettext_noop("Status Bar"), "status-bar", "/showcase/status-bar"},
-       {gettext_noop("Status Bar App"), "status-bar-app", "/showcase/status-bar-app"},
-       {gettext_noop("Toolbar App"), "toolbar-app", "/showcase/toolbar-app"}
+       {dgettext_noop("showcase", "App Header"), "app-header", "/showcase/app-header"},
+       {dgettext_noop("showcase", "Config Form"), "config-form", "/showcase/config-form"},
+       {dgettext_noop("showcase", "Empty State"), "empty-state", "/showcase/empty-state"},
+       {dgettext_noop("showcase", "Loading Spinner"), "loading-spinner",
+        "/showcase/loading-spinner"},
+       {dgettext_noop("showcase", "Status Bar"), "status-bar", "/showcase/status-bar"},
+       {dgettext_noop("showcase", "Status Bar App"), "status-bar-app",
+        "/showcase/status-bar-app"},
+       {dgettext_noop("showcase", "Toolbar App"), "toolbar-app", "/showcase/toolbar-app"}
      ]},
-    {gettext_noop("Dialogs"), :icon_dialog_options,
+    {dgettext_noop("showcase", "Dialogs"), :icon_dialog_options,
      [
-       {gettext_noop("About Dialog"), "about-dialog", "/showcase/about-dialog"},
-       {gettext_noop("Address Book"), "address-book", "/showcase/address-book"},
-       {gettext_noop("Admin Console"), "admin-console-dialog", "/showcase/admin-console-dialog"},
-       {gettext_noop("Alias Dialog"), "alias-dialog", "/showcase/alias-dialog"},
-       {gettext_noop("Auto Respond"), "auto-respond-dialog", "/showcase/auto-respond-dialog"},
-       {gettext_noop("Bot Management"), "bot-management-dialog",
+       {dgettext_noop("showcase", "About Dialog"), "about-dialog", "/showcase/about-dialog"},
+       {dgettext_noop("showcase", "Address Book"), "address-book", "/showcase/address-book"},
+       {dgettext_noop("showcase", "Admin Console"), "admin-console-dialog",
+        "/showcase/admin-console-dialog"},
+       {dgettext_noop("showcase", "Alias Dialog"), "alias-dialog", "/showcase/alias-dialog"},
+       {dgettext_noop("showcase", "Auto Respond"), "auto-respond-dialog",
+        "/showcase/auto-respond-dialog"},
+       {dgettext_noop("showcase", "Bot Management"), "bot-management-dialog",
         "/showcase/bot-management-dialog"},
-       {gettext_noop("Channel Central"), "channel-central-dialog",
+       {dgettext_noop("showcase", "Channel Central"), "channel-central-dialog",
         "/showcase/channel-central-dialog"},
-       {gettext_noop("Channel Dialog"), "channel-dialog", "/showcase/channel-dialog"},
-       {gettext_noop("Channel List"), "channel-list", "/showcase/channel-list"},
-       {gettext_noop("Cheatsheet"), "cheatsheet-dialog", "/showcase/cheatsheet-dialog"},
-       {gettext_noop("Confirm Dialog"), "confirm-dialog", "/showcase/confirm-dialog"},
-       {gettext_noop("Custom Menus"), "custom-menus-dialog", "/showcase/custom-menus-dialog"},
-       {gettext_noop("Delete Confirm"), "delete-confirm-dialog",
+       {dgettext_noop("showcase", "Channel Dialog"), "channel-dialog",
+        "/showcase/channel-dialog"},
+       {dgettext_noop("showcase", "Channel List"), "channel-list", "/showcase/channel-list"},
+       {dgettext_noop("showcase", "Cheatsheet"), "cheatsheet-dialog",
+        "/showcase/cheatsheet-dialog"},
+       {dgettext_noop("showcase", "Confirm Dialog"), "confirm-dialog",
+        "/showcase/confirm-dialog"},
+       {dgettext_noop("showcase", "Custom Menus"), "custom-menus-dialog",
+        "/showcase/custom-menus-dialog"},
+       {dgettext_noop("showcase", "Delete Confirm"), "delete-confirm-dialog",
         "/showcase/delete-confirm-dialog"},
-       {gettext_noop("Disconnect Confirm"), "disconnect-confirm-dialog",
+       {dgettext_noop("showcase", "Disconnect Confirm"), "disconnect-confirm-dialog",
         "/showcase/disconnect-confirm-dialog"},
-       {gettext_noop("Flood Protection"), "flood-protection-dialog",
+       {dgettext_noop("showcase", "Flood Protection"), "flood-protection-dialog",
         "/showcase/flood-protection-dialog"},
-       {gettext_noop("Highlight Dialog"), "highlight-dialog", "/showcase/highlight-dialog"},
-       {gettext_noop("Invite Dialog"), "invite-dialog", "/showcase/invite-dialog"},
-       {gettext_noop("Kick Dialog"), "kick-dialog", "/showcase/kick-dialog"},
-       {gettext_noop("Nick Change"), "nick-change-dialog", "/showcase/nick-change-dialog"},
-       {gettext_noop("Notify List"), "notify-list", "/showcase/notify-list"},
-       {gettext_noop("Paste Confirm"), "paste-confirm-dialog", "/showcase/paste-confirm-dialog"},
-       {gettext_noop("Perform Dialog"), "perform-dialog", "/showcase/perform-dialog"},
-       {gettext_noop("Sound Settings"), "sound-settings-dialog",
+       {dgettext_noop("showcase", "Highlight Dialog"), "highlight-dialog",
+        "/showcase/highlight-dialog"},
+       {dgettext_noop("showcase", "Invite Dialog"), "invite-dialog", "/showcase/invite-dialog"},
+       {dgettext_noop("showcase", "Kick Dialog"), "kick-dialog", "/showcase/kick-dialog"},
+       {dgettext_noop("showcase", "Nick Change"), "nick-change-dialog",
+        "/showcase/nick-change-dialog"},
+       {dgettext_noop("showcase", "Notify List"), "notify-list", "/showcase/notify-list"},
+       {dgettext_noop("showcase", "Paste Confirm"), "paste-confirm-dialog",
+        "/showcase/paste-confirm-dialog"},
+       {dgettext_noop("showcase", "Perform Dialog"), "perform-dialog",
+        "/showcase/perform-dialog"},
+       {dgettext_noop("showcase", "Sound Settings"), "sound-settings-dialog",
         "/showcase/sound-settings-dialog"},
-       {gettext_noop("URL Catcher"), "url-catcher", "/showcase/url-catcher"}
+       {dgettext_noop("showcase", "URL Catcher"), "url-catcher", "/showcase/url-catcher"}
      ]},
-    {gettext_noop("P2P"), :icon_p2p,
+    {dgettext_noop("showcase", "P2P"), :icon_p2p,
      [
-       {gettext_noop("File Transfer"), "file-transfer", "/showcase/file-transfer"},
-       {gettext_noop("Media Controls"), "media-controls", "/showcase/media-controls"},
-       {gettext_noop("P2P Lobby"), "p2p-lobby", "/showcase/p2p-lobby"}
+       {dgettext_noop("showcase", "File Transfer"), "file-transfer", "/showcase/file-transfer"},
+       {dgettext_noop("showcase", "Media Controls"), "media-controls",
+        "/showcase/media-controls"},
+       {dgettext_noop("showcase", "P2P Lobby"), "p2p-lobby", "/showcase/p2p-lobby"}
      ]},
-    {gettext_noop("Games"), :icon_joystick,
+    {dgettext_noop("showcase", "Games"), :icon_joystick,
      [
-       {gettext_noop("Arcade Frame"), "arcade-frame", "/showcase/arcade-frame"},
-       {gettext_noop("Game Canvas"), "game-canvas", "/showcase/game-canvas"},
-       {gettext_noop("Game Cards"), "game-cards", "/showcase/game-cards"},
-       {gettext_noop("Game Lobby"), "game-lobby", "/showcase/game-lobby"},
-       {gettext_noop("Solo Lobby"), "solo-lobby", "/showcase/solo-lobby"}
+       {dgettext_noop("showcase", "Arcade Frame"), "arcade-frame", "/showcase/arcade-frame"},
+       {dgettext_noop("showcase", "Game Canvas"), "game-canvas", "/showcase/game-canvas"},
+       {dgettext_noop("showcase", "Game Cards"), "game-cards", "/showcase/game-cards"},
+       {dgettext_noop("showcase", "Game Lobby"), "game-lobby", "/showcase/game-lobby"},
+       {dgettext_noop("showcase", "Solo Lobby"), "solo-lobby", "/showcase/solo-lobby"}
      ]},
-    {gettext_noop("Assets"), :icon_folder,
+    {dgettext_noop("showcase", "Assets"), :icon_folder,
      [
-       {gettext_noop("Diagrams"), "diagrams", "/showcase/diagrams"},
-       {gettext_noop("Icons"), "icons", "/showcase/icons"}
+       {dgettext_noop("showcase", "Diagrams"), "diagrams", "/showcase/diagrams"},
+       {dgettext_noop("showcase", "Icons"), "icons", "/showcase/icons"}
      ]}
   ]
 
@@ -182,13 +200,13 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
       <div class="flex-1 m-2 md:m-4 md:mt-2">
         <div class="shadow-retro-window bg-surface p-1">
           <div class="bg-gradient-to-r from-primary to-highlight-light text-white px-2 py-1 font-bold text-xs flex items-center justify-between">
-            <span>{gettext("Component Showcase")}</span>
+            <span>{dgettext("showcase", "Component Showcase")}</span>
             <button
               type="button"
               class="md:hidden text-white text-xs px-1"
               onclick="document.getElementById('showcase-nav').classList.toggle('hidden')"
             >
-              {gettext("Menu")}
+              {dgettext("showcase", "Menu")}
             </button>
           </div>
 
@@ -201,7 +219,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
                 <.link navigate="/showcase" class="block no-underline">
                   <.tree_view_item active={@active_page == "index"}>
                     <:icon><Icons.icon_palette class="w-3 h-3" /></:icon>
-                    {gettext("Design System")}
+                    {dgettext("showcase", "Design System")}
                   </.tree_view_item>
                 </.link>
                 <.tree_view_group
@@ -391,5 +409,5 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     """
   end
 
-  defp t(msgid), do: Gettext.gettext(RetroHexChatWeb.Gettext, msgid)
+  defp t(msgid), do: Gettext.dgettext(RetroHexChatWeb.Gettext, "showcase", msgid)
 end

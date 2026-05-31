@@ -1,18 +1,22 @@
 <p>
-  {gettext("Browse all public channels on the server in a sortable, filterable dialog window.")}
+  {dgettext(
+    "help_commands",
+    "Browse all public channels on the server in a sortable, filterable dialog window."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/list")}</pre>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/list")}</pre>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Opens the Channel List dialog as an inline overlay showing all available channels with their user counts and topics. You can filter channels by name or topic using the search box. Click the Join button next to any channel to join it directly. Secret (+s) channels are completely hidden from the list. Private (+p) channels show their name but not their topic. Press Escape or click Close to dismiss the dialog."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/list")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/list")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-join">{gettext("/join")}</.help_link>
-  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
+  <.help_link topic="cmd-join">{dgettext("help_commands", "/join")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
 </p>

@@ -1,54 +1,71 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Private message conversations are automatically restored when registered users connect. Your PM conversation list is rebuilt from your message history, ordered by most recent activity."
   )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "How It Works")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("On connect")}</strong>{gettext(
+    <strong>{dgettext("help_features", "On connect")}</strong>{dgettext(
+      "help_features",
       ": The Private section in the conversations sidebar is populated with everyone you've exchanged PMs with, ordered by most recent conversation first."
     )}
   </li>
   <li>
-    <strong>{gettext("Limit")}</strong>{gettext(
+    <strong>{dgettext("help_features", "Limit")}</strong>{dgettext(
+      "help_features",
       ": Up to 50 most recent PM partners are restored."
     )}
   </li>
   <li>
-    <strong>{gettext("Auto-open")}</strong>{gettext(
+    <strong>{dgettext("help_features", "Auto-open")}</strong>{dgettext(
+      "help_features",
       ": When someone sends you a PM and the conversation isn't already in your list, it automatically appears at the top of the Private section with an unread badge."
     )}
   </li>
   <li>
-    <strong>{gettext("Recency ordering")}</strong>{gettext(
+    <strong>{dgettext("help_features", "Recency ordering")}</strong>{dgettext(
+      "help_features",
       ": Every sent or received PM moves that conversation to the top of the list."
     )}
   </li>
   <li>
-    <strong>{gettext("Closing")}</strong>{gettext(
+    <strong>{dgettext("help_features", "Closing")}</strong>{dgettext(
+      "help_features",
       ": Closing a PM conversation via the conversations sidebar only removes it for the current session. It will reappear on your next connection."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_checkmark}>{gettext("Requirements")}</.help_h4>
+<.help_h4 icon={:icon_checkmark}>{dgettext("help_features", "Requirements")}</.help_h4>
 <ul>
-  <li>{gettext("You must be registered and identified with NickServ to get PM persistence.")}</li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_features",
+      "You must be registered and identified with NickServ to get PM persistence."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
       "Guest users get in-session PM tracking only (conversations are lost on disconnect)."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_warning}>{gettext("Edge Cases")}</.help_h4>
+<.help_h4 icon={:icon_warning}>{dgettext("help_features", "Edge Cases")}</.help_h4>
 <ul>
-  <li>{gettext("PMs from ignored users do NOT auto-open conversations.")}</li>
-  <li>{gettext("Self-PMs are excluded from the restored conversation list.")}</li>
+  <li>{dgettext("help_features", "PMs from ignored users do NOT auto-open conversations.")}</li>
+  <li>
+    {dgettext("help_features", "Self-PMs are excluded from the restored conversation list.")}
+  </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="private-messages">{gettext("Private Messages")}</.help_link>
-  · <.help_link topic="cmd-query">{gettext("/query")}</.help_link>
-  · <.help_link topic="feature-ignore-list">{gettext("Ignore List")}</.help_link>
-  · <.help_link topic="nickserv">{gettext("NickServ")}</.help_link>
+  <.help_link topic="private-messages">
+    {dgettext("help_features", "Private Messages")}
+  </.help_link>
+  · <.help_link topic="cmd-query">{dgettext("help_features", "/query")}</.help_link>
+  ·
+  <.help_link topic="feature-ignore-list">{dgettext("help_features", "Ignore List")}</.help_link>
+  · <.help_link topic="nickserv">{dgettext("help_features", "NickServ")}</.help_link>
 </p>

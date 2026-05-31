@@ -16,7 +16,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameBoxing do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label={gettext("Hex Boxing game screen: two boxers in a ring, close quarters punching")}
+      aria-label={
+        dgettext("diagrams", "Hex Boxing game screen: two boxers in a ring, close quarters punching")
+      }
     >
       {win98_chrome("Hex Boxing")}
       <%!-- Ring ropes --%>
@@ -34,13 +36,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameBoxing do
       <rect x="288" y="182" width="6" height="6" fill="#00d4ff" />
       <%!-- Scores --%>
       <text x="30" y="44" fill="#00ff41" font-size="14" font-family="'Courier New',monospace">
-        {gettext("P1: 47")}
+        {dgettext("diagrams", "P1: 47")}
       </text>
       <text x="420" y="44" fill="#00d4ff" font-size="14" font-family="'Courier New',monospace">
-        {gettext("P2: 63")}
+        {dgettext("diagrams", "P2: 63")}
       </text>
       <text x="200" y="44" fill="#ffaa00" font-size="12" font-family="'Courier New',monospace">
-        {gettext("R2 1:24")}
+        {dgettext("diagrams", "R2 1:24")}
       </text>
     </svg>
     """

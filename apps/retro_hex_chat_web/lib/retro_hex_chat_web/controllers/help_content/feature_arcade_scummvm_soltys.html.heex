@@ -1,74 +1,123 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Soltys (1995) is a surreal Polish puzzle adventure by LK Avalon — rescue your grandfather from underground pirates in a charmingly absurd world of bizarre characters and dream logic."
   )}
 </p>
 <.diagram_arcade_scummvm class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "About")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Developed by Polish studio LK Avalon and released on May 23, 1995 for MS-DOS. The title \"Soltys\" means \"Mayor\" (village head) in Polish. The player must convince Leon, the fiance of the mayor's daughter, to return to the wedding he has fled — leading to a bizarre journey through a surreal world full of folklore-based humor and creative puzzles."
   )}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "A cult classic in Poland, celebrated for its depiction of mid-1990s Polish village life and abundance of folk humor. Originally Polish-only, it was released as freeware on November 26, 2011 on the ScummVM website, which also provided the first-ever English translation. Runs on ScummVM compiled to WebAssembly via the CGE engine."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("Left Click")}</strong> {gettext("— Walk / interact with object")}</li>
-  <li><strong>{gettext("Right Click")}</strong> {gettext("— Examine")}</li>
-  <li><strong>{gettext("F5")}</strong> {gettext("— Save / load game")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Skip cutscene")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Pause game")}</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Think creatively")}</strong>
-    {gettext("— Dream logic applies. Solutions are often absurd and unexpected.")}
+    <strong>{dgettext("help_arcade", "Left Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Walk / interact with object"
+    )}
   </li>
   <li>
-    <strong>{gettext("Click everything")}</strong>
-    {gettext("— Small hotspots are easy to miss. Methodically explore each screen.")}
+    <strong>{dgettext("help_arcade", "Right Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Examine"
+    )}
   </li>
   <li>
-    <strong>{gettext("Humor rewards curiosity")}</strong>
-    {gettext("— Trying unusual interactions often yields funny responses and clues.")}
+    <strong>{dgettext("help_arcade", "F5")}</strong> {dgettext(
+      "help_arcade",
+      "— Save / load game"
+    )}
   </li>
   <li>
-    <strong>{gettext("Simple interface")}</strong>
-    {gettext("— The streamlined point-and-click interface keeps things accessible.")}
+    <strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Skip cutscene")}
   </li>
   <li>
-    <strong>{gettext("Embrace the surreal")}</strong>
-    {gettext("— Don't try to apply real-world logic. The charm is in the absurdity.")}
+    <strong>{dgettext("help_arcade", "Space")}</strong> {dgettext("help_arcade", "— Pause game")}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Think creatively")}</strong>
+    {dgettext("help_arcade", "— Dream logic applies. Solutions are often absurd and unexpected.")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Click everything")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Small hotspots are easy to miss. Methodically explore each screen."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Humor rewards curiosity")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Trying unusual interactions often yields funny responses and clues."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Simple interface")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— The streamlined point-and-click interface keeps things accessible."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Embrace the surreal")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Don't try to apply real-world logic. The charm is in the absurdity."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_arcade",
       "\"Soltys\" means \"Mayor\" (village head) in Polish. The game is a cult classic in Poland, celebrated for its depiction of mid-1990s village life and folk humor."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Released as freeware on the ScummVM website in November 2011, which also provided the first-ever English translation — making the game accessible internationally for the first time."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-scummvm">{gettext("ScummVM Adventures")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-bass">{gettext("Beneath a Steel Sky")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-drascula">{gettext("Drascula")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-dreamweb">{gettext("Dreamweb")}</.help_link>
-  ·
-  <.help_link topic="feature-arcade-scummvm-fotaq">
-    {gettext("Flight of the Amazon Queen")}
+  <.help_link topic="feature-arcade-scummvm">
+    {dgettext("help_arcade", "ScummVM Adventures")}
   </.help_link>
   ·
-  <.help_link topic="feature-arcade-scummvm-lure">{gettext("Lure of the Temptress")}</.help_link>
+  <.help_link topic="feature-arcade-scummvm-bass">
+    {dgettext("help_arcade", "Beneath a Steel Sky")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-drascula">
+    {dgettext("help_arcade", "Drascula")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-dreamweb">
+    {dgettext("help_arcade", "Dreamweb")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-fotaq">
+    {dgettext("help_arcade", "Flight of the Amazon Queen")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-lure">
+    {dgettext("help_arcade", "Lure of the Temptress")}
+  </.help_link>
 </p>

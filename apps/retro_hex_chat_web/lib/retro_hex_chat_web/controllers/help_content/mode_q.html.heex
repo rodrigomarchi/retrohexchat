@@ -1,15 +1,18 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "Grants channel owner status to a user (prefix ~). Owners have the highest privilege level and can set any mode, including +o and +q. The first user to join an unregistered channel is automatically made owner."
   )}
 </p>
-<.help_h4 icon={:icon_role_owner}>{gettext("Hierarchy")}</.help_h4>
-<p>{gettext("Owner (~) > Operator (@) > Half-Operator (%) > Voice (+) > Regular")}</p>
-<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
-<pre>{gettext("/mode +q Alice — Make Alice an owner /mode -q Alice — Remove owner from Alice")}</pre>
-<p>{gettext("Only other owners can grant or revoke +q.")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_role_owner}>{dgettext("help_channels", "Hierarchy")}</.help_h4>
 <p>
-  <.help_link topic="mode-o">{gettext("Operator (+o)")}</.help_link>
-  · <.help_link topic="mode-h">{gettext("Half-Operator (+h)")}</.help_link>
+  {dgettext("help_channels", "Owner (~) > Operator (@) > Half-Operator (%) > Voice (+) > Regular")}
+</p>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
+<pre>{dgettext("help_channels", "/mode +q Alice — Make Alice an owner /mode -q Alice — Remove owner from Alice")}</pre>
+<p>{dgettext("help_channels", "Only other owners can grant or revoke +q.")}</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="mode-o">{dgettext("help_channels", "Operator (+o)")}</.help_link>
+  · <.help_link topic="mode-h">{dgettext("help_channels", "Half-Operator (+h)")}</.help_link>
 </p>

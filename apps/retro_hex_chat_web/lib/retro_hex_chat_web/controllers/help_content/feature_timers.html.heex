@@ -1,42 +1,55 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Timers let you schedule commands to run after a delay or on a repeating interval. Useful for periodic reminders, heartbeat messages, or delayed actions."
   )}
 </p>
-<.help_h4 icon={:icon_clock}>{gettext("Timer Types")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_features", "Timer Types")}</.help_h4>
 <p>
-  <strong>{gettext("One-shot")}</strong>{gettext(": Runs once after the specified delay.")}<br />
+  <strong>{dgettext("help_features", "One-shot")}</strong>{dgettext(
+    "help_features",
+    ": Runs once after the specified delay."
+  )}<br />
   <code>
-    {gettext("/timer remind 1800 /me standup in 30 minutes")}
+    {dgettext("help_features", "/timer remind 1800 /me standup in 30 minutes")}
   </code>
 </p>
 <p>
-  <strong>{gettext("Repeating")}</strong>{gettext(": Runs every N seconds until stopped.")}<br />
+  <strong>{dgettext("help_features", "Repeating")}</strong>{dgettext(
+    "help_features",
+    ": Runs every N seconds until stopped."
+  )}<br />
   <code>
-    {gettext("/timer hb repeat 600 /me is still here")}
+    {dgettext("help_features", "/timer hb repeat 600 /me is still here")}
   </code>
 </p>
-<.help_h4 icon={:icon_clock}>{gettext("Managing Timers")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_features", "Managing Timers")}</.help_h4>
 <p>
-  <code>{gettext("/timer list")}</code>
-  {gettext("— Show all active timers.")}<br /><code>{gettext("/timer stop <name>")}</code>
-  {gettext("— Cancel a specific timer.")}
+  <code>{dgettext("help_features", "/timer list")}</code>
+  {dgettext("help_features", "— Show all active timers.")}<br />
+  <code>
+    {dgettext("help_features", "/timer stop <name>")}
+  </code>
+  {dgettext("help_features", "— Cancel a specific timer.")}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Timer commands run in the window that was active when the timer was created. If you switch tabs before a timer fires, the scheduled command still targets the original window and your current window stays selected."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_features", "Limits")}</.help_h4>
 <p>
-  {gettext("- Maximum 5 concurrent timers per session.")}<br />{gettext(
+  {dgettext("help_features", "- Maximum 5 concurrent timers per session.")}<br />{dgettext(
+    "help_features",
     "- One-shot: minimum 1 second, maximum 86,400 seconds (24 hours)."
-  )}<br />{gettext("- Repeat: minimum 10 seconds, maximum 86,400 seconds.")}<br />- <strong>{gettext("Session-only")}</strong>{gettext(
+  )}<br />{dgettext("help_features", "- Repeat: minimum 10 seconds, maximum 86,400 seconds.")}<br />- <strong>{dgettext("help_features", "Session-only")}</strong>{dgettext(
+    "help_features",
     ": Timers do NOT survive page reload or disconnection."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-timer">{gettext("/timer Command")}</.help_link>
-  · <.help_link topic="feature-aliases">{gettext("Aliases")}</.help_link>
+  <.help_link topic="cmd-timer">{dgettext("help_features", "/timer Command")}</.help_link>
+  · <.help_link topic="feature-aliases">{dgettext("help_features", "Aliases")}</.help_link>
 </p>

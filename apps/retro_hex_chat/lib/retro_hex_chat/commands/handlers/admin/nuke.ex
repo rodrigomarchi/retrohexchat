@@ -22,7 +22,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Nuke do
   end
 
   def execute(_, _context) do
-    {:error, gettext("Usage: /admin nuke [--confirm]")}
+    {:error, dgettext("admin", "Usage: /admin nuke [--confirm]")}
   end
 
   defp format_preview(counts) do
@@ -33,14 +33,17 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Nuke do
       |> Enum.filter(fn {_table, count} -> count > 0 end)
       |> Enum.map(fn {table, count} -> "  #{table}: #{count}" end)
 
-    header = gettext("*** NUKE PREVIEW — %{total} records will be destroyed ***", total: total)
-    warning = gettext("*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE.")
+    header =
+      dgettext("admin", "*** NUKE PREVIEW — %{total} records will be destroyed ***", total: total)
+
+    warning =
+      dgettext("admin", "*** Run /admin nuke --confirm to execute. THIS CANNOT BE UNDONE.")
 
     preserved =
-      gettext("*** Preserved: admin_roles, audit_logs, server_bans, server_settings")
+      dgettext("admin", "*** Preserved: admin_roles, audit_logs, server_bans, server_settings")
 
     if lines == [] do
-      gettext("*** NUKE PREVIEW — Nothing to delete. System is already clean.")
+      dgettext("admin", "*** NUKE PREVIEW — Nothing to delete. System is already clean.")
     else
       Enum.join([header, preserved, "" | lines] ++ ["", warning], "\n")
     end
@@ -53,13 +56,13 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Nuke do
       summary
       |> Enum.filter(fn {_table, count} -> count > 0 end)
       |> Enum.map(fn {table, count} ->
-        gettext("  %{table}: %{count} deleted", table: table, count: count)
+        dgettext("admin", "  %{table}: %{count} deleted", table: table, count: count)
       end)
 
-    header = gettext("*** SYSTEM NUKED — %{total} records destroyed ***", total: total)
+    header = dgettext("admin", "*** SYSTEM NUKED — %{total} records destroyed ***", total: total)
 
     if lines == [] do
-      gettext("*** SYSTEM NUKED — No records to delete.")
+      dgettext("admin", "*** SYSTEM NUKED — No records to delete.")
     else
       Enum.join([header | lines], "\n")
     end

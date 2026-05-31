@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("quit_chat", _params, socket) do
     session = socket.assigns.session
-    cleanup_channels(session, gettext("Leaving"))
+    cleanup_channels(session, dgettext("chat", "Leaving"))
 
     {:halt,
      socket
@@ -333,7 +333,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("confirm_disconnect", _params, socket) do
     session = socket.assigns.session
-    cleanup_channels(session, gettext("Leaving"))
+    cleanup_channels(session, dgettext("chat", "Leaving"))
 
     {:halt,
      socket

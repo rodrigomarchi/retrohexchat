@@ -16,464 +16,464 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia.QuestionBank do
   @questions %{
     "general" => [
       %{
-        question: gettext("What is the capital of France?"),
-        answer: gettext("Paris"),
-        hints: [gettext("City of Light")]
+        question: dgettext("bots", "What is the capital of France?"),
+        answer: dgettext("bots", "Paris"),
+        hints: [dgettext("bots", "City of Light")]
       },
       %{
-        question: gettext("How many continents are there?"),
+        question: dgettext("bots", "How many continents are there?"),
         answer: "7",
-        hints: [gettext("More than 5")]
+        hints: [dgettext("bots", "More than 5")]
       },
       %{
-        question: gettext("What is the largest ocean?"),
-        answer: gettext("Pacific"),
-        hints: [gettext("Peaceful")]
+        question: dgettext("bots", "What is the largest ocean?"),
+        answer: dgettext("bots", "Pacific"),
+        hints: [dgettext("bots", "Peaceful")]
       },
       %{
-        question: gettext("What year did the Titanic sink?"),
+        question: dgettext("bots", "What year did the Titanic sink?"),
         answer: "1912",
-        hints: [gettext("Early 20th century")]
+        hints: [dgettext("bots", "Early 20th century")]
       },
       %{
-        question: gettext("How many colors in a rainbow?"),
+        question: dgettext("bots", "How many colors in a rainbow?"),
         answer: "7",
-        hints: [gettext("ROY G BIV")]
+        hints: [dgettext("bots", "ROY G BIV")]
       },
       %{
-        question: gettext("What is the hardest natural substance?"),
+        question: dgettext("bots", "What is the hardest natural substance?"),
         answer: "diamond",
-        hints: [gettext("A gem")]
+        hints: [dgettext("bots", "A gem")]
       },
       %{
-        question: gettext("What planet is known as the Red Planet?"),
-        answer: gettext("Mars"),
-        hints: [gettext("4th from sun")]
+        question: dgettext("bots", "What planet is known as the Red Planet?"),
+        answer: dgettext("bots", "Mars"),
+        hints: [dgettext("bots", "4th from sun")]
       },
       %{
-        question: gettext("How many sides does a hexagon have?"),
+        question: dgettext("bots", "How many sides does a hexagon have?"),
         answer: "6",
-        hints: [gettext("Hex = six")]
+        hints: [dgettext("bots", "Hex = six")]
       },
       %{
-        question: gettext("What is the chemical symbol for gold?"),
-        answer: gettext("Au"),
-        hints: [gettext("From Latin aurum")]
+        question: dgettext("bots", "What is the chemical symbol for gold?"),
+        answer: dgettext("bots", "Au"),
+        hints: [dgettext("bots", "From Latin aurum")]
       },
       %{
-        question: gettext("What is the largest mammal?"),
-        answer: gettext("blue whale"),
-        hints: [gettext("Lives in the ocean")]
+        question: dgettext("bots", "What is the largest mammal?"),
+        answer: dgettext("bots", "blue whale"),
+        hints: [dgettext("bots", "Lives in the ocean")]
       },
       %{
-        question: gettext("What gas do plants absorb?"),
-        answer: gettext("carbon dioxide"),
+        question: dgettext("bots", "What gas do plants absorb?"),
+        answer: dgettext("bots", "carbon dioxide"),
         hints: ["CO2"]
       },
       %{
-        question: gettext("What is the boiling point of water in Celsius?"),
+        question: dgettext("bots", "What is the boiling point of water in Celsius?"),
         answer: "100",
-        hints: [gettext("Three digits")]
+        hints: [dgettext("bots", "Three digits")]
       },
       %{
-        question: gettext("How many bones in the adult human body?"),
+        question: dgettext("bots", "How many bones in the adult human body?"),
         answer: "206",
-        hints: [gettext("Over 200")]
+        hints: [dgettext("bots", "Over 200")]
       },
       %{
-        question: gettext("What is the speed of light (km/s)?"),
+        question: dgettext("bots", "What is the speed of light (km/s)?"),
         answer: "300000",
-        hints: [gettext("~3 x 10^5 km/s")]
+        hints: [dgettext("bots", "~3 x 10^5 km/s")]
       },
       %{
-        question: gettext("What is the smallest country by area?"),
-        answer: gettext("Vatican City"),
-        hints: [gettext("In Rome")]
+        question: dgettext("bots", "What is the smallest country by area?"),
+        answer: dgettext("bots", "Vatican City"),
+        hints: [dgettext("bots", "In Rome")]
       }
     ],
     "science" => [
       %{
-        question: gettext("What is the chemical symbol for water?"),
+        question: dgettext("bots", "What is the chemical symbol for water?"),
         answer: "H2O",
-        hints: [gettext("Two elements")]
+        hints: [dgettext("bots", "Two elements")]
       },
       %{
-        question: gettext("What planet has the most moons?"),
-        answer: gettext("Saturn"),
-        hints: [gettext("Famous for rings")]
+        question: dgettext("bots", "What planet has the most moons?"),
+        answer: dgettext("bots", "Saturn"),
+        hints: [dgettext("bots", "Famous for rings")]
       },
       %{
-        question: gettext("What is the powerhouse of the cell?"),
+        question: dgettext("bots", "What is the powerhouse of the cell?"),
         answer: "mitochondria",
-        hints: [gettext("Organelle")]
+        hints: [dgettext("bots", "Organelle")]
       },
       %{
-        question: gettext("What element has atomic number 1?"),
+        question: dgettext("bots", "What element has atomic number 1?"),
         answer: "hydrogen",
-        hints: [gettext("Lightest")]
+        hints: [dgettext("bots", "Lightest")]
       },
       %{
-        question: gettext("What is the closest star to Earth?"),
-        answer: gettext("Sun"),
-        hints: [gettext("Look up")]
+        question: dgettext("bots", "What is the closest star to Earth?"),
+        answer: dgettext("bots", "Sun"),
+        hints: [dgettext("bots", "Look up")]
       },
       %{
-        question: gettext("What is the pH of pure water?"),
+        question: dgettext("bots", "What is the pH of pure water?"),
         answer: "7",
-        hints: [gettext("Neutral")]
+        hints: [dgettext("bots", "Neutral")]
       },
       %{
-        question: gettext("What gas makes up 78% of Earth's atmosphere?"),
+        question: dgettext("bots", "What gas makes up 78% of Earth's atmosphere?"),
         answer: "nitrogen",
         hints: ["N2"]
       },
       %{
-        question: gettext("How many planets in our solar system?"),
+        question: dgettext("bots", "How many planets in our solar system?"),
         answer: "8",
-        hints: [gettext("Pluto was demoted")]
+        hints: [dgettext("bots", "Pluto was demoted")]
       },
       %{
-        question: gettext("What is the chemical formula for table salt?"),
-        answer: gettext("NaCl"),
-        hints: [gettext("Sodium...")]
+        question: dgettext("bots", "What is the chemical formula for table salt?"),
+        answer: dgettext("bots", "NaCl"),
+        hints: [dgettext("bots", "Sodium...")]
       },
       %{
-        question: gettext("What force keeps planets in orbit?"),
+        question: dgettext("bots", "What force keeps planets in orbit?"),
         answer: "gravity",
-        hints: [gettext("Newton's apple")]
+        hints: [dgettext("bots", "Newton's apple")]
       },
       %{
-        question: gettext("What is absolute zero in Celsius?"),
+        question: dgettext("bots", "What is absolute zero in Celsius?"),
         answer: "-273",
-        hints: [gettext("Very cold")]
+        hints: [dgettext("bots", "Very cold")]
       },
       %{
-        question: gettext("What vitamin does the sun provide?"),
+        question: dgettext("bots", "What vitamin does the sun provide?"),
         answer: "D",
-        hints: [gettext("A single letter")]
+        hints: [dgettext("bots", "A single letter")]
       },
       %{
-        question: gettext("What is the largest organ in the human body?"),
+        question: dgettext("bots", "What is the largest organ in the human body?"),
         answer: "skin",
-        hints: [gettext("Outside")]
+        hints: [dgettext("bots", "Outside")]
       },
       %{
-        question: gettext("What particle has a positive charge?"),
+        question: dgettext("bots", "What particle has a positive charge?"),
         answer: "proton",
-        hints: [gettext("In the nucleus")]
+        hints: [dgettext("bots", "In the nucleus")]
       },
       %{
-        question: gettext("What is the study of fungi called?"),
+        question: dgettext("bots", "What is the study of fungi called?"),
         answer: "mycology",
-        hints: [gettext("Myco-")]
+        hints: [dgettext("bots", "Myco-")]
       }
     ],
     "history" => [
       %{
-        question: gettext("In what year did World War II end?"),
+        question: dgettext("bots", "In what year did World War II end?"),
         answer: "1945",
         hints: ["Mid-1940s"]
       },
       %{
-        question: gettext("Who was the first president of the USA?"),
-        answer: gettext("George Washington"),
-        hints: [gettext("Dollar bill")]
+        question: dgettext("bots", "Who was the first president of the USA?"),
+        answer: dgettext("bots", "George Washington"),
+        hints: [dgettext("bots", "Dollar bill")]
       },
       %{
-        question: gettext("What ancient wonder was in Alexandria?"),
-        answer: gettext("Lighthouse"),
-        hints: [gettext("Pharos")]
+        question: dgettext("bots", "What ancient wonder was in Alexandria?"),
+        answer: dgettext("bots", "Lighthouse"),
+        hints: [dgettext("bots", "Pharos")]
       },
       %{
-        question: gettext("What year did the Berlin Wall fall?"),
+        question: dgettext("bots", "What year did the Berlin Wall fall?"),
         answer: "1989",
-        hints: [gettext("Late 1980s")]
+        hints: [dgettext("bots", "Late 1980s")]
       },
       %{
-        question: gettext("Who wrote the Communist Manifesto?"),
-        answer: gettext("Karl Marx"),
-        hints: [gettext("German philosopher")]
+        question: dgettext("bots", "Who wrote the Communist Manifesto?"),
+        answer: dgettext("bots", "Karl Marx"),
+        hints: [dgettext("bots", "German philosopher")]
       },
       %{
-        question: gettext("What empire built the Colosseum?"),
-        answer: gettext("Roman"),
-        hints: [gettext("In Italy")]
+        question: dgettext("bots", "What empire built the Colosseum?"),
+        answer: dgettext("bots", "Roman"),
+        hints: [dgettext("bots", "In Italy")]
       },
       %{
-        question: gettext("What ship brought Pilgrims to America?"),
-        answer: gettext("Mayflower"),
-        hints: [gettext("A flower")]
+        question: dgettext("bots", "What ship brought Pilgrims to America?"),
+        answer: dgettext("bots", "Mayflower"),
+        hints: [dgettext("bots", "A flower")]
       },
       %{
-        question: gettext("Who invented the printing press?"),
-        answer: gettext("Gutenberg"),
-        hints: [gettext("Johannes")]
+        question: dgettext("bots", "Who invented the printing press?"),
+        answer: dgettext("bots", "Gutenberg"),
+        hints: [dgettext("bots", "Johannes")]
       },
       %{
-        question: gettext("What year did Columbus reach America?"),
+        question: dgettext("bots", "What year did Columbus reach America?"),
         answer: "1492",
-        hints: [gettext("15th century")]
+        hints: [dgettext("bots", "15th century")]
       },
       %{
-        question: gettext("Who was the first man on the moon?"),
-        answer: gettext("Neil Armstrong"),
-        hints: [gettext("Apollo 11")]
+        question: dgettext("bots", "Who was the first man on the moon?"),
+        answer: dgettext("bots", "Neil Armstrong"),
+        hints: [dgettext("bots", "Apollo 11")]
       },
       %{
-        question: gettext("What revolution started in 1789?"),
-        answer: gettext("French Revolution"),
-        hints: [gettext("Bastille")]
+        question: dgettext("bots", "What revolution started in 1789?"),
+        answer: dgettext("bots", "French Revolution"),
+        hints: [dgettext("bots", "Bastille")]
       },
       %{
-        question: gettext("Who painted the Mona Lisa?"),
-        answer: gettext("Leonardo da Vinci"),
-        hints: [gettext("Renaissance")]
+        question: dgettext("bots", "Who painted the Mona Lisa?"),
+        answer: dgettext("bots", "Leonardo da Vinci"),
+        hints: [dgettext("bots", "Renaissance")]
       },
       %{
-        question: gettext("What year was the Declaration of Independence signed?"),
+        question: dgettext("bots", "What year was the Declaration of Independence signed?"),
         answer: "1776",
         hints: ["17--"]
       },
       %{
-        question: gettext("Who discovered penicillin?"),
-        answer: gettext("Alexander Fleming"),
-        hints: [gettext("Scottish")]
+        question: dgettext("bots", "Who discovered penicillin?"),
+        answer: dgettext("bots", "Alexander Fleming"),
+        hints: [dgettext("bots", "Scottish")]
       },
       %{
-        question: gettext("What civilization built Machu Picchu?"),
-        answer: gettext("Inca"),
-        hints: [gettext("South America")]
+        question: dgettext("bots", "What civilization built Machu Picchu?"),
+        answer: dgettext("bots", "Inca"),
+        hints: [dgettext("bots", "South America")]
       }
     ],
     "geography" => [
       %{
-        question: gettext("What is the longest river in the world?"),
-        answer: gettext("Nile"),
-        hints: [gettext("In Africa")]
+        question: dgettext("bots", "What is the longest river in the world?"),
+        answer: dgettext("bots", "Nile"),
+        hints: [dgettext("bots", "In Africa")]
       },
       %{
-        question: gettext("What is the tallest mountain?"),
-        answer: gettext("Mount Everest"),
-        hints: [gettext("In Nepal")]
+        question: dgettext("bots", "What is the tallest mountain?"),
+        answer: dgettext("bots", "Mount Everest"),
+        hints: [dgettext("bots", "In Nepal")]
       },
       %{
-        question: gettext("What country has the most people?"),
-        answer: gettext("India"),
-        hints: [gettext("South Asia")]
+        question: dgettext("bots", "What country has the most people?"),
+        answer: dgettext("bots", "India"),
+        hints: [dgettext("bots", "South Asia")]
       },
       %{
-        question: gettext("What is the largest desert?"),
-        answer: gettext("Sahara"),
-        hints: [gettext("In Africa")]
+        question: dgettext("bots", "What is the largest desert?"),
+        answer: dgettext("bots", "Sahara"),
+        hints: [dgettext("bots", "In Africa")]
       },
       %{
-        question: gettext("What is the capital of Japan?"),
-        answer: gettext("Tokyo"),
-        hints: [gettext("Starts with T")]
+        question: dgettext("bots", "What is the capital of Japan?"),
+        answer: dgettext("bots", "Tokyo"),
+        hints: [dgettext("bots", "Starts with T")]
       },
       %{
-        question: gettext("What is the deepest ocean trench?"),
-        answer: gettext("Mariana Trench"),
-        hints: [gettext("Pacific")]
+        question: dgettext("bots", "What is the deepest ocean trench?"),
+        answer: dgettext("bots", "Mariana Trench"),
+        hints: [dgettext("bots", "Pacific")]
       },
       %{
-        question: gettext("What continent is Brazil in?"),
-        answer: gettext("South America"),
-        hints: [gettext("Southern hemisphere")]
+        question: dgettext("bots", "What continent is Brazil in?"),
+        answer: dgettext("bots", "South America"),
+        hints: [dgettext("bots", "Southern hemisphere")]
       },
       %{
-        question: gettext("What is the capital of Australia?"),
-        answer: gettext("Canberra"),
-        hints: [gettext("Not Sydney")]
+        question: dgettext("bots", "What is the capital of Australia?"),
+        answer: dgettext("bots", "Canberra"),
+        hints: [dgettext("bots", "Not Sydney")]
       },
       %{
-        question: gettext("What is the smallest continent?"),
-        answer: gettext("Australia"),
-        hints: [gettext("Also a country")]
+        question: dgettext("bots", "What is the smallest continent?"),
+        answer: dgettext("bots", "Australia"),
+        hints: [dgettext("bots", "Also a country")]
       },
       %{
-        question: gettext("What sea is between Europe and Africa?"),
-        answer: gettext("Mediterranean"),
-        hints: [gettext("Middle earth")]
+        question: dgettext("bots", "What sea is between Europe and Africa?"),
+        answer: dgettext("bots", "Mediterranean"),
+        hints: [dgettext("bots", "Middle earth")]
       },
       %{
-        question: gettext("What is the capital of Canada?"),
-        answer: gettext("Ottawa"),
-        hints: [gettext("Not Toronto")]
+        question: dgettext("bots", "What is the capital of Canada?"),
+        answer: dgettext("bots", "Ottawa"),
+        hints: [dgettext("bots", "Not Toronto")]
       },
       %{
-        question: gettext("What strait separates Asia and North America?"),
-        answer: gettext("Bering Strait"),
-        hints: [gettext("Named after Vitus")]
+        question: dgettext("bots", "What strait separates Asia and North America?"),
+        answer: dgettext("bots", "Bering Strait"),
+        hints: [dgettext("bots", "Named after Vitus")]
       },
       %{
-        question: gettext("What is the largest island?"),
-        answer: gettext("Greenland"),
-        hints: [gettext("Danish territory")]
+        question: dgettext("bots", "What is the largest island?"),
+        answer: dgettext("bots", "Greenland"),
+        hints: [dgettext("bots", "Danish territory")]
       },
       %{
-        question: gettext("What country is the Sahara Desert mostly in?"),
-        answer: gettext("Algeria"),
-        hints: [gettext("North Africa")]
+        question: dgettext("bots", "What country is the Sahara Desert mostly in?"),
+        answer: dgettext("bots", "Algeria"),
+        hints: [dgettext("bots", "North Africa")]
       },
       %{
-        question: gettext("What is the capital of Egypt?"),
-        answer: gettext("Cairo"),
-        hints: [gettext("On the Nile")]
+        question: dgettext("bots", "What is the capital of Egypt?"),
+        answer: dgettext("bots", "Cairo"),
+        hints: [dgettext("bots", "On the Nile")]
       }
     ],
     "technology" => [
       %{
-        question: gettext("What does HTML stand for?"),
-        answer: gettext("HyperText Markup Language"),
-        hints: [gettext("Web pages")]
+        question: dgettext("bots", "What does HTML stand for?"),
+        answer: dgettext("bots", "HyperText Markup Language"),
+        hints: [dgettext("bots", "Web pages")]
       },
       %{
-        question: gettext("Who created Linux?"),
-        answer: gettext("Linus Torvalds"),
-        hints: [gettext("Finnish")]
+        question: dgettext("bots", "Who created Linux?"),
+        answer: dgettext("bots", "Linus Torvalds"),
+        hints: [dgettext("bots", "Finnish")]
       },
       %{
-        question: gettext("What year was the first iPhone released?"),
+        question: dgettext("bots", "What year was the first iPhone released?"),
         answer: "2007",
-        hints: [gettext("Late 2000s")]
+        hints: [dgettext("bots", "Late 2000s")]
       },
       %{
-        question: gettext("What does CPU stand for?"),
-        answer: gettext("Central Processing Unit"),
-        hints: [gettext("Brain of computer")]
+        question: dgettext("bots", "What does CPU stand for?"),
+        answer: dgettext("bots", "Central Processing Unit"),
+        hints: [dgettext("bots", "Brain of computer")]
       },
       %{
-        question: gettext("What company created Java?"),
-        answer: gettext("Sun Microsystems"),
-        hints: [gettext("Now Oracle")]
+        question: dgettext("bots", "What company created Java?"),
+        answer: dgettext("bots", "Sun Microsystems"),
+        hints: [dgettext("bots", "Now Oracle")]
       },
       %{
-        question: gettext("What does HTTP stand for?"),
-        answer: gettext("HyperText Transfer Protocol"),
-        hints: [gettext("Web")]
+        question: dgettext("bots", "What does HTTP stand for?"),
+        answer: dgettext("bots", "HyperText Transfer Protocol"),
+        hints: [dgettext("bots", "Web")]
       },
       %{
-        question: gettext("Who founded Microsoft?"),
-        answer: gettext("Bill Gates"),
-        hints: [gettext("And Paul Allen")]
+        question: dgettext("bots", "Who founded Microsoft?"),
+        answer: dgettext("bots", "Bill Gates"),
+        hints: [dgettext("bots", "And Paul Allen")]
       },
       %{
-        question: gettext("What year was the World Wide Web invented?"),
+        question: dgettext("bots", "What year was the World Wide Web invented?"),
         answer: "1989",
-        hints: [gettext("Tim Berners-Lee")]
+        hints: [dgettext("bots", "Tim Berners-Lee")]
       },
       %{
-        question: gettext("What does RAM stand for?"),
-        answer: gettext("Random Access Memory"),
-        hints: [gettext("Volatile")]
+        question: dgettext("bots", "What does RAM stand for?"),
+        answer: dgettext("bots", "Random Access Memory"),
+        hints: [dgettext("bots", "Volatile")]
       },
       %{
-        question: gettext("What programming language is Elixir built on?"),
-        answer: gettext("Erlang"),
-        hints: [gettext("BEAM VM")]
+        question: dgettext("bots", "What programming language is Elixir built on?"),
+        answer: dgettext("bots", "Erlang"),
+        hints: [dgettext("bots", "BEAM VM")]
       },
       %{
-        question: gettext("What does SQL stand for?"),
-        answer: gettext("Structured Query Language"),
-        hints: [gettext("Databases")]
+        question: dgettext("bots", "What does SQL stand for?"),
+        answer: dgettext("bots", "Structured Query Language"),
+        hints: [dgettext("bots", "Databases")]
       },
       %{
-        question: gettext("Who invented the telephone?"),
-        answer: gettext("Alexander Graham Bell"),
-        hints: [gettext("Bell Labs")]
+        question: dgettext("bots", "Who invented the telephone?"),
+        answer: dgettext("bots", "Alexander Graham Bell"),
+        hints: [dgettext("bots", "Bell Labs")]
       },
       %{
-        question: gettext("What does USB stand for?"),
-        answer: gettext("Universal Serial Bus"),
-        hints: [gettext("Plug it in")]
+        question: dgettext("bots", "What does USB stand for?"),
+        answer: dgettext("bots", "Universal Serial Bus"),
+        hints: [dgettext("bots", "Plug it in")]
       },
       %{
-        question: gettext("What year was Google founded?"),
+        question: dgettext("bots", "What year was Google founded?"),
         answer: "1998",
-        hints: [gettext("Late 1990s")]
+        hints: [dgettext("bots", "Late 1990s")]
       },
       %{
-        question: gettext("What does API stand for?"),
-        answer: gettext("Application Programming Interface"),
-        hints: [gettext("Integration")]
+        question: dgettext("bots", "What does API stand for?"),
+        answer: dgettext("bots", "Application Programming Interface"),
+        hints: [dgettext("bots", "Integration")]
       }
     ],
     "entertainment" => [
       %{
-        question: gettext("What movie features a character named Neo?"),
-        answer: gettext("The Matrix"),
-        hints: [gettext("Red pill")]
+        question: dgettext("bots", "What movie features a character named Neo?"),
+        answer: dgettext("bots", "The Matrix"),
+        hints: [dgettext("bots", "Red pill")]
       },
       %{
-        question: gettext("Who played Iron Man in the MCU?"),
-        answer: gettext("Robert Downey Jr"),
-        hints: [gettext("RDJ")]
+        question: dgettext("bots", "Who played Iron Man in the MCU?"),
+        answer: dgettext("bots", "Robert Downey Jr"),
+        hints: [dgettext("bots", "RDJ")]
       },
       %{
-        question: gettext("What band wrote 'Bohemian Rhapsody'?"),
-        answer: gettext("Queen"),
-        hints: [gettext("Freddie Mercury")]
+        question: dgettext("bots", "What band wrote 'Bohemian Rhapsody'?"),
+        answer: dgettext("bots", "Queen"),
+        hints: [dgettext("bots", "Freddie Mercury")]
       },
       %{
-        question: gettext("What is the highest-grossing film of all time?"),
-        answer: gettext("Avatar"),
-        hints: [gettext("Blue aliens")]
+        question: dgettext("bots", "What is the highest-grossing film of all time?"),
+        answer: dgettext("bots", "Avatar"),
+        hints: [dgettext("bots", "Blue aliens")]
       },
       %{
-        question: gettext("Who wrote Harry Potter?"),
-        answer: gettext("J.K. Rowling"),
-        hints: [gettext("British author")]
+        question: dgettext("bots", "Who wrote Harry Potter?"),
+        answer: dgettext("bots", "J.K. Rowling"),
+        hints: [dgettext("bots", "British author")]
       },
       %{
-        question: gettext("What instrument has 88 keys?"),
+        question: dgettext("bots", "What instrument has 88 keys?"),
         answer: "piano",
-        hints: [gettext("Black and white")]
+        hints: [dgettext("bots", "Black and white")]
       },
       %{
-        question: gettext("What TV show features dragons and an iron throne?"),
-        answer: gettext("Game of Thrones"),
-        hints: [gettext("HBO")]
+        question: dgettext("bots", "What TV show features dragons and an iron throne?"),
+        answer: dgettext("bots", "Game of Thrones"),
+        hints: [dgettext("bots", "HBO")]
       },
       %{
-        question: gettext("Who directed Jurassic Park?"),
-        answer: gettext("Steven Spielberg"),
-        hints: [gettext("Hollywood legend")]
+        question: dgettext("bots", "Who directed Jurassic Park?"),
+        answer: dgettext("bots", "Steven Spielberg"),
+        hints: [dgettext("bots", "Hollywood legend")]
       },
       %{
-        question: gettext("What game features a plumber named Mario?"),
-        answer: gettext("Super Mario Bros"),
-        hints: [gettext("Nintendo")]
+        question: dgettext("bots", "What game features a plumber named Mario?"),
+        answer: dgettext("bots", "Super Mario Bros"),
+        hints: [dgettext("bots", "Nintendo")]
       },
       %{
-        question: gettext("What is the best-selling video game of all time?"),
-        answer: gettext("Minecraft"),
-        hints: [gettext("Blocks")]
+        question: dgettext("bots", "What is the best-selling video game of all time?"),
+        answer: dgettext("bots", "Minecraft"),
+        hints: [dgettext("bots", "Blocks")]
       },
       %{
-        question: gettext("Who painted the Starry Night?"),
-        answer: gettext("Vincent van Gogh"),
-        hints: [gettext("Dutch painter")]
+        question: dgettext("bots", "Who painted the Starry Night?"),
+        answer: dgettext("bots", "Vincent van Gogh"),
+        hints: [dgettext("bots", "Dutch painter")]
       },
       %{
-        question: gettext("What fictional detective lived at 221B Baker Street?"),
-        answer: gettext("Sherlock Holmes"),
-        hints: [gettext("Elementary")]
+        question: dgettext("bots", "What fictional detective lived at 221B Baker Street?"),
+        answer: dgettext("bots", "Sherlock Holmes"),
+        hints: [dgettext("bots", "Elementary")]
       },
       %{
-        question: gettext("What Disney movie features a genie?"),
-        answer: gettext("Aladdin"),
-        hints: [gettext("Three wishes")]
+        question: dgettext("bots", "What Disney movie features a genie?"),
+        answer: dgettext("bots", "Aladdin"),
+        hints: [dgettext("bots", "Three wishes")]
       },
       %{
-        question: gettext("What board game has properties like Boardwalk?"),
-        answer: gettext("Monopoly"),
-        hints: [gettext("Pass Go")]
+        question: dgettext("bots", "What board game has properties like Boardwalk?"),
+        answer: dgettext("bots", "Monopoly"),
+        hints: [dgettext("bots", "Pass Go")]
       },
       %{
-        question: gettext("Who sang 'Thriller'?"),
-        answer: gettext("Michael Jackson"),
-        hints: [gettext("King of Pop")]
+        question: dgettext("bots", "Who sang 'Thriller'?"),
+        answer: dgettext("bots", "Michael Jackson"),
+        hints: [dgettext("bots", "King of Pop")]
       }
     ]
   }

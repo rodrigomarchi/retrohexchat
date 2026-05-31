@@ -19,7 +19,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeWolfenstein do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext("Wolfenstein 3D arcade logo: shield emblem in grey tones on dark blue background")
+        dgettext(
+          "diagrams",
+          "Wolfenstein 3D arcade logo: shield emblem in grey tones on dark blue background"
+        )
       }
     >
       {win98_chrome("Wolfenstein 3D - Arcade")}
@@ -59,7 +62,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeWolfenstein do
         font-size="14"
         font-family="'Courier New',monospace"
       >
-        {gettext("3D")}
+        {dgettext("diagrams", "3D")}
       </text>
       <%!-- Crossed swords behind shield --%>
       <line x1="170" y1="80" x2="342" y2="260" stroke="#606060" stroke-width="3" />
@@ -74,7 +77,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeWolfenstein do
         font-family="'Courier New',monospace"
         font-weight="bold"
       >
-        {gettext("WOLFENSTEIN 3D")}
+        {dgettext("diagrams", "WOLFENSTEIN 3D")}
       </text>
       <%!-- Subtitle --%>
       <text
@@ -85,7 +88,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeWolfenstein do
         font-size="11"
         font-family="'Courier New',monospace"
       >
-        {gettext("ECWolf WebAssembly")}
+        {dgettext("diagrams", "ECWolf WebAssembly")}
       </text>
     </svg>
     """

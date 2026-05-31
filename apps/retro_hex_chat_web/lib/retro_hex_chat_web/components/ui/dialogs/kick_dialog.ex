@@ -36,20 +36,20 @@ defmodule RetroHexChatWeb.Components.UI.KickDialog do
     ~H"""
     <span data-testid="kick-dialog">
       <.dialog id={@id} show={@show}>
-        <.dialog_header id={@id} title={gettext("Kicked from Channel")}>
+        <.dialog_header id={@id} title={dgettext("dialogs", "Kicked from Channel")}>
           <:icon><Icons.icon_dialog_kick class="w-[16px] h-[16px]" /></:icon>
         </.dialog_header>
 
         <.dialog_body>
           <p class="text-xs">
             <%= if @kick_info do %>
-              {gettext("You were kicked from %{channel} by %{kicker} (%{reason}).",
+              {dgettext("dialogs", "You were kicked from %{channel} by %{kicker} (%{reason}).",
                 channel: @kick_info[:channel],
                 kicker: @kick_info[:kicker],
                 reason: @kick_info[:reason]
               )}
             <% else %>
-              {gettext("You were kicked from the channel.")}
+              {dgettext("dialogs", "You were kicked from the channel.")}
             <% end %>
           </p>
         </.dialog_body>
@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.Components.UI.KickDialog do
             data-testid="kick-dialog-ok"
           >
             <:icon><Icons.icon_btn_ok class="w-4 h-4" /></:icon>
-            {gettext("OK")}
+            {dgettext("dialogs", "OK")}
           </.button>
         </.dialog_footer>
       </.dialog>

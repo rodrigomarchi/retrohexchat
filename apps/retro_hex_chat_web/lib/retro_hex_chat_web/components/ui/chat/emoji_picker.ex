@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
       data-testid="emoji-picker"
       {@rest}
     >
-      <.window_title_bar title={gettext("Emoji")} controls={[:close]} on_close={@on_close}>
+      <.window_title_bar title={dgettext("chat", "Emoji")} controls={[:close]} on_close={@on_close}>
         <:icon><Icons.icon_fmt_emoji class="w-4 h-4" /></:icon>
       </.window_title_bar>
 
@@ -99,7 +99,7 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
             <.input
               type="text"
               value={@search}
-              placeholder={gettext("Search emoji...")}
+              placeholder={dgettext("chat", "Search emoji...")}
               class="w-full text-xs"
               name="emoji_search"
               phx-debounce="200"
@@ -132,7 +132,9 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
         <div class="flex items-center gap-retro-4 px-retro-4 py-retro-2 border-t border-border bg-surface text-xs">
           <span class="text-lg">{@selected_emoji || "😀"}</span>
           <span class="text-muted-foreground">
-            {if @selected_emoji, do: gettext("click to insert"), else: gettext("hover to preview")}
+            {if @selected_emoji,
+              do: dgettext("chat", "click to insert"),
+              else: dgettext("chat", "hover to preview")}
           </span>
         </div>
       </.window_body>
@@ -157,18 +159,18 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
 
   defp normalize_category(category), do: category |> to_string() |> normalize_category()
 
-  defp translate_category("smileys"), do: gettext("Smileys")
-  defp translate_category("people"), do: gettext("People")
-  defp translate_category("nature"), do: gettext("Nature")
-  defp translate_category("food"), do: gettext("Food")
-  defp translate_category("Smileys & Emotion"), do: gettext("Smileys & Emotion")
-  defp translate_category("People & Body"), do: gettext("People & Body")
-  defp translate_category("Animals & Nature"), do: gettext("Animals & Nature")
-  defp translate_category("Food & Drink"), do: gettext("Food & Drink")
-  defp translate_category("Travel & Places"), do: gettext("Travel & Places")
-  defp translate_category("Activities"), do: gettext("Activities")
-  defp translate_category("Objects"), do: gettext("Objects")
-  defp translate_category("Symbols"), do: gettext("Symbols")
-  defp translate_category("search_results"), do: gettext("Search Results")
+  defp translate_category("smileys"), do: dgettext("chat", "Smileys")
+  defp translate_category("people"), do: dgettext("chat", "People")
+  defp translate_category("nature"), do: dgettext("chat", "Nature")
+  defp translate_category("food"), do: dgettext("chat", "Food")
+  defp translate_category("Smileys & Emotion"), do: dgettext("chat", "Smileys & Emotion")
+  defp translate_category("People & Body"), do: dgettext("chat", "People & Body")
+  defp translate_category("Animals & Nature"), do: dgettext("chat", "Animals & Nature")
+  defp translate_category("Food & Drink"), do: dgettext("chat", "Food & Drink")
+  defp translate_category("Travel & Places"), do: dgettext("chat", "Travel & Places")
+  defp translate_category("Activities"), do: dgettext("chat", "Activities")
+  defp translate_category("Objects"), do: dgettext("chat", "Objects")
+  defp translate_category("Symbols"), do: dgettext("chat", "Symbols")
+  defp translate_category("search_results"), do: dgettext("chat", "Search Results")
   defp translate_category(category), do: category
 end

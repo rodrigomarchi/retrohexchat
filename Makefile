@@ -5,7 +5,7 @@
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
        ci ci.quick \
-       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.gettext.extract i18n.gettext.check \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.gettext.extract i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.fix lint.css precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -219,12 +219,18 @@ i18n.audit.check: ## Fail when hardcoded user-visible strings are found
 i18n.status: ## Report translated, empty, and fuzzy Gettext catalog entries
 	elixir scripts/i18n_po_status.exs
 
-i18n.catalog.check: ## Fail while pt_BR catalogs still have empty or fuzzy entries
+i18n.catalog.check: ## Fail while pt_BR catalogs have empty/fuzzy entries or oversized files
 	elixir scripts/i18n_po_status.exs --fail-on-untranslated --fail-locale pt_BR
+	elixir scripts/i18n_catalog_size_check.exs --fail-on-exceed --max-lines 12000
+
+i18n.catalog.size.check: ## Fail when any Gettext catalog exceeds the readable size limit
+	elixir scripts/i18n_catalog_size_check.exs --fail-on-exceed --max-lines 12000
 
 i18n.gettext.extract: ## Extract and merge Gettext catalogs for all apps
-	cd $(DOMAIN_APP) && mix gettext.extract --merge --no-fuzzy
-	cd $(WEB_APP) && mix gettext.extract --merge --no-fuzzy
+	elixir scripts/i18n_rebuild_domain_catalogs.exs
+
+i18n.gettext.rebuild: ## Rebuild domainized Gettext catalogs and preserve translations
+	elixir scripts/i18n_rebuild_domain_catalogs.exs
 
 i18n.gettext.check: ## Verify Gettext catalogs are up to date for all apps
 	cd $(DOMAIN_APP) && mix gettext.extract --check-up-to-date

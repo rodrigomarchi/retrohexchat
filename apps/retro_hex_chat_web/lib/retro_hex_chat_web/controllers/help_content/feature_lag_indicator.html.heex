@@ -1,27 +1,38 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The lag indicator in the status bar shows the round-trip latency between your browser and the server, measured every 30 seconds."
   )}
 </p>
-<.help_h4 icon={:icon_palette}>{gettext("Color Thresholds")}</.help_h4>
+<.help_h4 icon={:icon_palette}>{dgettext("help_features", "Color Thresholds")}</.help_h4>
 <p>
-  <strong>{gettext("Normal (green):")}</strong>
-  {gettext("Under 200ms — connection is good.")}<br />
+  <strong>{dgettext("help_features", "Normal (green):")}</strong>
+  {dgettext("help_features", "Under 200ms — connection is good.")}<br />
   <strong>
-    {gettext("Warning (yellow):")}
+    {dgettext("help_features", "Warning (yellow):")}
   </strong>
-  {gettext("200–499ms — noticeable delay.")}<br /><strong>{gettext("Critical (red):")}</strong>
-  {gettext("500ms or more — significant lag.")}<br /><strong>{gettext("Timeout (?):")}</strong>
-  {gettext("No response received — connection may be lost.")}
+  {dgettext("help_features", "200–499ms — noticeable delay.")}<br />
+  <strong>
+    {dgettext("help_features", "Critical (red):")}
+  </strong>
+  {dgettext("help_features", "500ms or more — significant lag.")}<br />
+  <strong>
+    {dgettext("help_features", "Timeout (?):")}
+  </strong>
+  {dgettext("help_features", "No response received — connection may be lost.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The client sends a ping to the server every 30 seconds. The server echoes the timestamp back, and the client calculates the round-trip time. If no response arrives within 10 seconds, a timeout is shown."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-status-bar">{gettext("Status Bar")}</.help_link>
-  · <.help_link topic="feature-connection-states">{gettext("Connection States")}</.help_link>
+  <.help_link topic="feature-status-bar">{dgettext("help_features", "Status Bar")}</.help_link>
+  ·
+  <.help_link topic="feature-connection-states">
+    {dgettext("help_features", "Connection States")}
+  </.help_link>
 </p>

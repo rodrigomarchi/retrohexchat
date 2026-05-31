@@ -1,55 +1,82 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Versus Breakout battle — each player defends a brick castle with a king inside. Deflect or catch the fireball with your shield to smash your opponent's walls. Clear a path to the king and strike to take a life. Last king standing wins."
   )}
 </p>
 <.diagram_game_warlords class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Arrow Up / Down")}</strong>
-    or <strong>{gettext("W / S")}</strong> {gettext("— Move shield vertically")}
+    <strong>{dgettext("help_games", "Arrow Up / Down")}</strong>
+    or
+    <strong>{dgettext("help_games", "W / S")}</strong> {dgettext(
+      "help_games",
+      "— Move shield vertically"
+    )}
   </li>
   <li>
-    <strong>{gettext("Space (hold)")}</strong> {gettext("— Catch fireball on shield contact")}
+    <strong>{dgettext("help_games", "Space (hold)")}</strong> {dgettext(
+      "help_games",
+      "— Catch fireball on shield contact"
+    )}
   </li>
   <li>
-    <strong>{gettext("Space (release)")}</strong> {gettext("— Launch fireball toward opponent")}
+    <strong>{dgettext("help_games", "Space (release)")}</strong> {dgettext(
+      "help_games",
+      "— Launch fireball toward opponent"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
 <ul>
-  <li>{gettext("Each castle has 24 bricks (6 rows x 4 columns) protecting a king")}</li>
-  <li>{gettext("Fireball destroys one brick on contact and bounces off")}</li>
   <li>
-    {gettext(
+    {dgettext("help_games", "Each castle has 24 bricks (6 rows x 4 columns) protecting a king")}
+  </li>
+  <li>{dgettext("help_games", "Fireball destroys one brick on contact and bounces off")}</li>
+  <li>
+    {dgettext(
+      "help_games",
       "The king is only vulnerable when the inner column of bricks at the fireball's height is cleared"
     )}
   </li>
-  <li>{gettext("Hitting the king removes one life — each player starts with 3 lives")}</li>
-  <li>{gettext("Castles fully rebuild between rounds after a king hit")}</li>
   <li>
-    {gettext(
+    {dgettext("help_games", "Hitting the king removes one life — each player starts with 3 lives")}
+  </li>
+  <li>{dgettext("help_games", "Castles fully rebuild between rounds after a king hit")}</li>
+  <li>
+    {dgettext(
+      "help_games",
       "Shield deflection angle depends on hit position — edges create steep bounces (up to 60 degrees)"
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_games",
       "Catch mechanic: hold Space when the fireball touches your shield to grab it, release to aim and launch"
     )}
   </li>
-  <li>{gettext("Fireball speeds up with each shield deflection (up to 1.8x initial speed)")}</li>
-  <li>{gettext("First to eliminate all opponent lives wins the match")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Fireball speeds up with each shield deflection (up to 1.8x initial speed)"
+    )}
+  </li>
+  <li>{dgettext("help_games", "First to eliminate all opponent lives wins the match")}</li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Based on Atari's Warlords (1980) — castle defense meets Breakout in a head-to-head duel."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="feature-block-breakers">{gettext("Block Breakers")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  ·
+  <.help_link topic="feature-block-breakers">
+    {dgettext("help_games", "Block Breakers")}
+  </.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

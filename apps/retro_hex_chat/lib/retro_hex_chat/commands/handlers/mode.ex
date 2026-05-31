@@ -12,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, gettext("Usage: /mode <+/-flags> [params]")}
+    {:error, dgettext("commands", "Usage: /mode <+/-flags> [params]")}
   end
 
   def execute([mode_string | params], context) do
@@ -32,22 +32,23 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
   def help do
     %{
       name: "mode",
-      syntax: gettext("/mode <+/-flags> [params]"),
+      syntax: dgettext("commands", "/mode <+/-flags> [params]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Change channel settings and user privileges using mode flags.\nFlags: +o (operator), +v (voice), +b (ban), +h (half-op), +m (moderated), +i (invite-only), +t (topic protected), +k (key/password), +l (user limit), +n (no external messages), +j (join throttle), +K (no knock).\nRequires: channel operator. Half-operators can only set +v/-v. Must be in a channel."
         ),
       examples: [
-        gettext("/mode +m"),
-        gettext("/mode +k secret"),
-        gettext("/mode -t"),
-        gettext("/mode +o nickname")
+        dgettext("commands", "/mode +m"),
+        dgettext("commands", "/mode +k secret"),
+        dgettext("commands", "/mode -t"),
+        dgettext("commands", "/mode +o nickname")
       ]
     }
   end
 
   defp require_channel(%{active_channel: nil}),
-    do: {:error, gettext("You are not in any channel")}
+    do: {:error, dgettext("commands", "You are not in any channel")}
 
   defp require_channel(%{active_channel: channel}), do: {:ok, channel}
 
@@ -66,11 +67,11 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
         if Enum.all?(flags, &(&1 == "v")) do
           :ok
         else
-          {:error, gettext("Insufficient privileges to set channel modes")}
+          {:error, dgettext("commands", "Insufficient privileges to set channel modes")}
         end
 
       true ->
-        {:error, gettext("You must be a channel operator to change modes")}
+        {:error, dgettext("commands", "You must be a channel operator to change modes")}
     end
   end
 
@@ -93,9 +94,10 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
 
     %CommandSyntax{
       command: "mode",
-      syntax: gettext("/mode <+/-flags> [params]"),
+      syntax: dgettext("commands", "/mode <+/-flags> [params]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Change channel settings and user privileges using mode flags.\nFlags: +o (operator), +v (voice), +b (ban), +h (half-op), +m (moderated), +i (invite-only), +t (topic protected), +k (key/password), +l (user limit), +n (no external messages), +j (join throttle), +K (no knock).\nRequires: channel operator. Half-operators can only set +v/-v. Must be in a channel."
         ),
       category: :channel,
@@ -105,63 +107,63 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
           required: true,
           type: :mode_flags,
           position: 0,
-          description: gettext("Mode flags to set or unset")
+          description: dgettext("commands", "Mode flags to set or unset")
         },
         %Parameter{
           name: "nick",
           required: false,
           type: :nick,
           position: 1,
-          description: gettext("Target nickname (for +o, +v, +b)")
+          description: dgettext("commands", "Target nickname (for +o, +v, +b)")
         }
       ],
       examples: [
-        gettext("/mode +m"),
-        gettext("/mode +k secret"),
-        gettext("/mode -t"),
-        gettext("/mode +o nickname")
+        dgettext("commands", "/mode +m"),
+        dgettext("commands", "/mode +k secret"),
+        dgettext("commands", "/mode -t"),
+        dgettext("commands", "/mode +o nickname")
       ],
       sub_options: [
         %SubOption{
           flag: "+o",
-          label: gettext("Operator"),
-          description: gettext("Grant operator status"),
+          label: dgettext("commands", "Operator"),
+          description: dgettext("commands", "Grant operator status"),
           requires_param: true
         },
         %SubOption{
           flag: "+v",
-          label: gettext("Voice"),
-          description: gettext("Grant voice to speak in +m"),
+          label: dgettext("commands", "Voice"),
+          description: dgettext("commands", "Grant voice to speak in +m"),
           requires_param: true
         },
         %SubOption{
           flag: "+b",
-          label: gettext("Ban"),
-          description: gettext("Ban user from channel"),
+          label: dgettext("commands", "Ban"),
+          description: dgettext("commands", "Ban user from channel"),
           requires_param: true
         },
         %SubOption{
           flag: "+i",
-          label: gettext("Invite only"),
-          description: gettext("Channel accessible only by invitation"),
+          label: dgettext("commands", "Invite only"),
+          description: dgettext("commands", "Channel accessible only by invitation"),
           requires_param: false
         },
         %SubOption{
           flag: "+m",
-          label: gettext("Moderated"),
-          description: gettext("Only +v and +o can speak"),
+          label: dgettext("commands", "Moderated"),
+          description: dgettext("commands", "Only +v and +o can speak"),
           requires_param: false
         },
         %SubOption{
           flag: "+t",
-          label: gettext("Topic protected"),
-          description: gettext("Only operators can change the topic"),
+          label: dgettext("commands", "Topic protected"),
+          description: dgettext("commands", "Only operators can change the topic"),
           requires_param: false
         },
         %SubOption{
           flag: "+k",
-          label: gettext("Key"),
-          description: gettext("Set channel password"),
+          label: dgettext("commands", "Key"),
+          description: dgettext("commands", "Set channel password"),
           requires_param: true
         }
       ]

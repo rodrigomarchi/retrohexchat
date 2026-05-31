@@ -1,57 +1,81 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "5 sections of intense River Raid action — river starts narrow, fuel is scarce, mines recharge faster. Quick and chaotic. Every second counts in this compressed, high-pressure variant where mistakes are immediately punished."
   )}
 </p>
 <.diagram_game_raid class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("Arrow Left/Right")}</strong> {gettext("— Steer jet laterally")}</li>
-  <li><strong>{gettext("Arrow Up")}</strong> {gettext("— Accelerate")}</li>
-  <li><strong>{gettext("Arrow Down")}</strong> {gettext("— Decelerate")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Fire missile")}</li>
-  <li><strong>{gettext("Shift")}</strong> {gettext("— Drop mine")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
-<ul>
-  <li>{gettext("Same rules as Hex Raid, but only 5 sections")}</li>
-  <li>{gettext("River starts at higher difficulty (narrower from the start)")}</li>
-  <li>{gettext("Mine cooldown is faster (3 seconds instead of 5)")}</li>
-  <li>{gettext("Fuel is scarcer — manage it carefully")}</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Mine early, mine often")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Arrow Left/Right")}</strong> {dgettext(
+      "help_games",
+      "— Steer jet laterally"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Up")}</strong> {dgettext("help_games", "— Accelerate")}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Down")}</strong> {dgettext(
+      "help_games",
+      "— Decelerate"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Space")}</strong> {dgettext("help_games", "— Fire missile")}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Shift")}</strong> {dgettext("help_games", "— Drop mine")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>{dgettext("help_games", "Same rules as Hex Raid, but only 5 sections")}</li>
+  <li>{dgettext("help_games", "River starts at higher difficulty (narrower from the start)")}</li>
+  <li>{dgettext("help_games", "Mine cooldown is faster (3 seconds instead of 5)")}</li>
+  <li>{dgettext("help_games", "Fuel is scarcer — manage it carefully")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_games", "Mine early, mine often")}</strong>
+    {dgettext(
+      "help_games",
       "— With a 3-second cooldown, you can drop mines much more frequently. Use them to disrupt your opponent's rhythm."
     )}
   </li>
   <li>
-    <strong>{gettext("Fuel is critical")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Fuel is critical")}</strong>
+    {dgettext(
+      "help_games",
       "— Scarce fuel means every depot matters. Plan your path to hit fuel depots even if it means fewer enemy kills."
     )}
   </li>
   <li>
-    <strong>{gettext("Narrow river = slower flight")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Narrow river = slower flight")}</strong>
+    {dgettext(
+      "help_games",
       "— Decelerate in narrow sections. One wrong move at high speed means instant death on the banks."
     )}
   </li>
   <li>
-    <strong>{gettext("Go for big targets")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Go for big targets")}</strong>
+    {dgettext(
+      "help_games",
       "— With only 5 sections, maximizing points per section is key. Prioritize high-value targets."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
-<p>{gettext("Inspired by Activision's River Raid (1982) for the Atari 2600.")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
+<p>{dgettext("help_games", "Inspired by Activision's River Raid (1982) for the Atari 2600.")}</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-raid">{gettext("Hex Raid")}</.help_link>
-  · <.help_link topic="feature-hex-raid-pacifist">{gettext("Hex Raid: Pacifist")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-hex-raid">{dgettext("help_games", "Hex Raid")}</.help_link>
+  ·
+  <.help_link topic="feature-hex-raid-pacifist">
+    {dgettext("help_games", "Hex Raid: Pacifist")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

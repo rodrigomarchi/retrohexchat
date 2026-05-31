@@ -1,53 +1,61 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Manage channel registration and access lists through ChanServ, the channel services bot. ChanServ keeps your channel settings safe even when no operators are online."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/cs <subcommand> [arguments]")}</pre>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/cs <subcommand> [arguments]")}</pre>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "ChanServ is an automated service that manages channel ownership and access. When you register a channel, ChanServ remembers who owns it and who has operator privileges, automatically restoring them when those users join. This prevents channels from becoming \"ownerless\" when operators disconnect."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Subcommands")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_commands", "Subcommands")}</.help_h4>
 <p>
-  <code>{gettext("register <#channel>")}</code>
-  {gettext("— Register and claim ownership of a channel (you must be operator).")}<br />
+  <code>{dgettext("help_commands", "register <#channel>")}</code>
+  {dgettext(
+    "help_commands",
+    "— Register and claim ownership of a channel (you must be operator)."
+  )}<br />
   <code>
-    {gettext("drop <#channel>")}
+    {dgettext("help_commands", "drop <#channel>")}
   </code>
-  {gettext("— Unregister a channel, giving up ownership.")}<br />
+  {dgettext("help_commands", "— Unregister a channel, giving up ownership.")}<br />
   <code>
-    {gettext("info <#channel>")}
+    {dgettext("help_commands", "info <#channel>")}
   </code>
-  {gettext("— View channel registration details.")}<br />
+  {dgettext("help_commands", "— View channel registration details.")}<br />
   <code>
-    {gettext("sop <#channel> add/del/list <nick>")}
+    {dgettext("help_commands", "sop <#channel> add/del/list <nick>")}
   </code>
-  {gettext("— Manage Super Operators (can manage all access lists).")}<br />
+  {dgettext("help_commands", "— Manage Super Operators (can manage all access lists).")}<br />
   <code>
-    {gettext("aop <#channel> add/del/list <nick>")}
+    {dgettext("help_commands", "aop <#channel> add/del/list <nick>")}
   </code>
-  {gettext("— Manage Auto Operators (get operator on join).")}<br />
+  {dgettext("help_commands", "— Manage Auto Operators (get operator on join).")}<br />
   <code>
-    {gettext("vop <#channel> add/del/list <nick>")}
+    {dgettext("help_commands", "vop <#channel> add/del/list <nick>")}
   </code>
-  {gettext("— Manage Auto Voice (get voice on join).")}
+  {dgettext("help_commands", "— Manage Auto Voice (get voice on join).")}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("You must be a registered user to use ChanServ")}</li>
-  <li>{gettext("You must be a channel operator to register a channel")}</li>
-  <li>{gettext("Access hierarchy: Owner > SOP > AOP > VOP")}</li>
+  <li>{dgettext("help_commands", "You must be a registered user to use ChanServ")}</li>
+  <li>{dgettext("help_commands", "You must be a channel operator to register a channel")}</li>
+  <li>{dgettext("help_commands", "Access hierarchy: Owner > SOP > AOP > VOP")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/cs register #mychannel /cs info #mychannel /cs aop #mychannel add Alice /cs aop #mychannel list /cs vop #mychannel add Bob /cs drop #mychannel")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/cs register #mychannel /cs info #mychannel /cs aop #mychannel add Alice /cs aop #mychannel list /cs vop #mychannel add Bob /cs drop #mychannel")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ns">{gettext("/ns")}</.help_link>
-  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
-  · <.help_link topic="chanserv">{gettext("ChanServ Overview")}</.help_link>
-  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
+  <.help_link topic="cmd-ns">{dgettext("help_commands", "/ns")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
+  · <.help_link topic="chanserv">{dgettext("help_commands", "ChanServ Overview")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_commands", "Channel Permissions")}
+  </.help_link>
 </p>

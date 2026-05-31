@@ -1,41 +1,51 @@
 <p>
-  {gettext("Remove a user from the channel. Unlike")} <code>{gettext("/ban")}</code>{gettext(
+  {dgettext("help_commands", "Remove a user from the channel. Unlike")} <code>{dgettext("help_commands", "/ban")}</code>{dgettext(
+    "help_commands",
     ", the kicked user can rejoin immediately unless a ban is also set."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/kick <nickname> [reason]")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/kick <nickname> [reason]")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
-  <code>nickname</code> {gettext("— The user to kick.")}<br />
-  <code>reason</code> {gettext("— Optional message explaining why (visible to the channel).")}
+  <code>nickname</code> {dgettext("help_commands", "— The user to kick.")}<br />
+  <code>reason</code> {dgettext(
+    "help_commands",
+    "— Optional message explaining why (visible to the channel)."
+  )}
 </p>
 
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "The user is immediately removed from the channel. All channel members see the kick along with the optional reason message. The kicked user can rejoin the channel immediately unless they are also banned. If you want to permanently prevent someone from returning, use"
   )}
-  <code>{gettext("/ban")}</code>
-  {gettext("instead.")}
+  <code>{dgettext("help_commands", "/ban")}</code>
+  {dgettext("help_commands", "instead.")}
 </p>
 
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Requires half-operator (%) status or higher")}</li>
-  <li>{gettext("Cannot kick users with equal or higher rank than you")}</li>
-  <li>{gettext("An operator cannot kick another operator — only the owner can")}</li>
-  <li>{gettext("The target must be in the channel")}</li>
+  <li>{dgettext("help_commands", "Requires half-operator (%) status or higher")}</li>
+  <li>{dgettext("help_commands", "Cannot kick users with equal or higher rank than you")}</li>
+  <li>
+    {dgettext("help_commands", "An operator cannot kick another operator — only the owner can")}
+  </li>
+  <li>{dgettext("help_commands", "The target must be in the channel")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/kick Spammer /kick Spammer Flooding the channel /kick Troll Please follow the rules")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/kick Spammer /kick Spammer Flooding the channel /kick Troll Please follow the rules")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
-  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
-  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
+  <.help_link topic="cmd-ban">{dgettext("help_commands", "/ban")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_commands", "Channel Permissions")}
+  </.help_link>
 </p>

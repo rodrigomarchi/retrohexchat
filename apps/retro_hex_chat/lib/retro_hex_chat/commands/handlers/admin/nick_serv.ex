@@ -12,27 +12,29 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NickServ do
     nick = strip_at(nick)
 
     case Admin.drop_nick(nick, context.nickname) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
-      {:error, msg} -> {:error, gettext("[NickServ] %{message}", message: msg)}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
+      {:error, msg} -> {:error, dgettext("admin", "[NickServ] %{message}", message: msg)}
     end
   end
 
   def execute(["info", nick], context) do
     nick = strip_at(nick)
-    AuditLogs.log(context.nickname, gettext("ns.info"), {"user", nick})
+    AuditLogs.log(context.nickname, dgettext("admin", "ns.info"), {"user", nick})
 
     case NickServ.info(nick) do
       {:ok, info} ->
         text =
-          gettext("*** [NickServ] %{nick}\n", nick: nick) <>
-            gettext("  Registered: %{registered_at}\n", registered_at: info.registered_at) <>
-            gettext("  Last seen: %{last_seen_at}\n", last_seen_at: info.last_seen_at) <>
-            gettext("  Identified: %{identified}", identified: info.identified)
+          dgettext("admin", "*** [NickServ] %{nick}\n", nick: nick) <>
+            dgettext("admin", "  Registered: %{registered_at}\n",
+              registered_at: info.registered_at
+            ) <>
+            dgettext("admin", "  Last seen: %{last_seen_at}\n", last_seen_at: info.last_seen_at) <>
+            dgettext("admin", "  Identified: %{identified}", identified: info.identified)
 
         {:ok, :system, %{content: text}}
 
       {:error, msg} ->
-        {:error, gettext("[NickServ] %{message}", message: msg)}
+        {:error, dgettext("admin", "[NickServ] %{message}", message: msg)}
     end
   end
 
@@ -40,13 +42,13 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NickServ do
     nick = strip_at(nick)
 
     case Admin.reset_password(nick, new_password, context.nickname) do
-      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
-      {:error, msg} -> {:error, gettext("[NickServ] %{message}", message: msg)}
+      {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
+      {:error, msg} -> {:error, dgettext("admin", "[NickServ] %{message}", message: msg)}
     end
   end
 
   def execute([], _context) do
-    {:error, gettext("Usage: /admin ns <drop|info|resetpass> [args]")}
+    {:error, dgettext("admin", "Usage: /admin ns <drop|info|resetpass> [args]")}
   end
 
   def execute([subcmd | _], _context) do

@@ -1,59 +1,76 @@
 <p>
-  {gettext("Search through messages in the current channel or PM with real-time highlighting.")}
+  {dgettext(
+    "help_features",
+    "Search through messages in the current channel or PM with real-time highlighting."
+  )}
 </p>
-<.help_h4 icon={:icon_folder}>{gettext("Opening")}</.help_h4>
+<.help_h4 icon={:icon_folder}>{dgettext("help_features", "Opening")}</.help_h4>
 <p>
-  {gettext("Press")}
-  <strong>{gettext("Ctrl+Shift+F")}</strong> {gettext("or go to")} <strong>{gettext("View > Find")}</strong>.
+  {dgettext("help_features", "Press")}
+  <strong>{dgettext("help_features", "Ctrl+Shift+F")}</strong> {dgettext(
+    "help_features",
+    "or go to"
+  )} <strong>{dgettext("help_features", "View > Find")}</strong>.
 </p>
-<.help_h4 icon={:icon_dialog_highlight}>{gettext("Highlighting")}</.help_h4>
+<.help_h4 icon={:icon_dialog_highlight}>{dgettext("help_features", "Highlighting")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "As you type, all matching occurrences in the chat are highlighted with a yellow background. The active match is highlighted in orange. The counter shows your position (e.g., \"3 of 17\")."
   )}
 </p>
-<.help_h4 icon={:icon_btn_next}>{gettext("Navigation")}</.help_h4>
+<.help_h4 icon={:icon_btn_next}>{dgettext("help_features", "Navigation")}</.help_h4>
 <p>
-  {gettext("Use")} <strong>{gettext("Prev")}</strong>/<strong>{gettext("Next")}</strong> {gettext(
+  {dgettext("help_features", "Use")} <strong>{dgettext("help_features", "Prev")}</strong>/<strong>{dgettext("help_features", "Next")}</strong> {dgettext(
+    "help_features",
     "buttons, or press"
-  )} <strong>{gettext("Arrow Down")}</strong>/<strong>{gettext("Arrow Up")}</strong> {gettext(
+  )} <strong>{dgettext("help_features", "Arrow Down")}</strong>/<strong>{dgettext("help_features", "Arrow Up")}</strong> {dgettext(
+    "help_features",
     "in the search input to jump between matches. The chat scrolls to each match automatically."
   )}
 </p>
-<.help_h4 icon={:icon_btn_search}>{gettext("Search Filters")}</.help_h4>
+<.help_h4 icon={:icon_btn_search}>{dgettext("help_features", "Search Filters")}</.help_h4>
 <p>
-  <strong>{gettext("Case:")}</strong>
-  {gettext("Case-sensitive matching (default: case-insensitive).")}<br />
+  <strong>{dgettext("help_features", "Case:")}</strong>
+  {dgettext("help_features", "Case-sensitive matching (default: case-insensitive).")}<br />
   <strong>
-    {gettext("Regex:")}
+    {dgettext("help_features", "Regex:")}
   </strong>
-  {gettext("Regular expression matching (e.g.,")} <code>{gettext("error|warn")}</code>{gettext(
+  {dgettext("help_features", "Regular expression matching (e.g.,")} <code>{dgettext("help_features", "error|warn")}</code>{dgettext(
+    "help_features",
     "). Invalid regex patterns show an inline error."
   )}<br />
   <strong>
-    {gettext("My nick:")}
+    {dgettext("help_features", "My nick:")}
   </strong>
-  {gettext("Only search messages that mention your nickname.")}<br />
+  {dgettext("help_features", "Only search messages that mention your nickname.")}<br />
   <strong>
-    {gettext("History:")}
+    {dgettext("help_features", "History:")}
   </strong>
-  {gettext("Extend search into the database beyond currently loaded messages.")}
+  {dgettext("help_features", "Extend search into the database beyond currently loaded messages.")}
 </p>
-<.help_h4 icon={:icon_backup}>{gettext("Session Memory")}</.help_h4>
+<.help_h4 icon={:icon_backup}>{dgettext("help_features", "Session Memory")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The search bar remembers your last search term. When you reopen it, the previous query is restored and matches are re-highlighted."
   )}
 </p>
-<.help_h4 icon={:icon_close}>{gettext("Closing")}</.help_h4>
+<.help_h4 icon={:icon_close}>{dgettext("help_features", "Closing")}</.help_h4>
 <p>
-  {gettext("Press")}
-  <strong>{gettext("Escape")}</strong> {gettext(
+  {dgettext("help_features", "Press")}
+  <strong>{dgettext("help_features", "Escape")}</strong> {dgettext(
+    "help_features",
     "or click the close button. All highlights are removed."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
-  · <.help_link topic="feature-cheatsheet">{gettext("Shortcut Cheatsheet")}</.help_link>
+  <.help_link topic="keyboard-shortcuts">
+    {dgettext("help_features", "Keyboard Shortcuts")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-cheatsheet">
+    {dgettext("help_features", "Shortcut Cheatsheet")}
+  </.help_link>
 </p>

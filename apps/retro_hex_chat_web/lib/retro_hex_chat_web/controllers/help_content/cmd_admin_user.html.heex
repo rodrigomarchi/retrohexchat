@@ -1,62 +1,73 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Manage server users: list, view details, ban, kick, mute, rename, and assign roles. Requires server administrator role."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/admin user list [--search Q] [--online] /admin user info @<nick> /admin user ban @<nick> [--reason R] [--duration D] /admin user unban @<nick> /admin user kick @<nick> [--reason R] /admin user mute @<nick> [--duration D] /admin user unmute @<nick> /admin user rename @<nick> <new_nick> /admin user role @<nick> <admin|server_operator|user> /admin user banlist [--search Q]")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin user list [--search Q] [--online] /admin user info @<nick> /admin user ban @<nick> [--reason R] [--duration D] /admin user unban @<nick> /admin user kick @<nick> [--reason R] /admin user mute @<nick> [--duration D] /admin user unmute @<nick> /admin user rename @<nick> <new_nick> /admin user role @<nick> <admin|server_operator|user> /admin user banlist [--search Q]")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Subcommands")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Subcommands")}</.help_h4>
 <ul>
   <li>
     <code>list</code>
-    {gettext("— List registered users (filter with")} <code>--search</code>, <code>--online</code>)
+    {dgettext("help_commands", "— List registered users (filter with")} <code>--search</code>, <code>--online</code>)
   </li>
   <li>
-    <code>info</code> {gettext("— Show detailed user info (registration, status, channels)")}
+    <code>info</code> {dgettext(
+      "help_commands",
+      "— Show detailed user info (registration, status, channels)"
+    )}
   </li>
   <li>
     <code>ban</code>
-    {gettext("— Server ban (user cannot connect). Supports")} <code>{gettext("--duration 1h")}</code>,
-    <code>{gettext("--reason text")}</code>
+    {dgettext("help_commands", "— Server ban (user cannot connect). Supports")} <code>{dgettext("help_commands", "--duration 1h")}</code>,
+    <code>{dgettext("help_commands", "--reason text")}</code>
   </li>
-  <li><code>unban</code> {gettext("— Remove a server ban")}</li>
-  <li><code>kick</code> {gettext("— Force disconnect (user can reconnect immediately)")}</li>
+  <li><code>unban</code> {dgettext("help_commands", "— Remove a server ban")}</li>
+  <li>
+    <code>kick</code> {dgettext(
+      "help_commands",
+      "— Force disconnect (user can reconnect immediately)"
+    )}
+  </li>
   <li>
     <code>mute</code>
-    {gettext("— Globally mute (cannot send messages anywhere). Supports")} <code>--duration</code>
+    {dgettext("help_commands", "— Globally mute (cannot send messages anywhere). Supports")}
+    <code>--duration</code>
   </li>
-  <li><code>unmute</code> {gettext("— Remove global mute")}</li>
-  <li><code>rename</code> {gettext("— Force nickname change")}</li>
+  <li><code>unmute</code> {dgettext("help_commands", "— Remove global mute")}</li>
+  <li><code>rename</code> {dgettext("help_commands", "— Force nickname change")}</li>
   <li>
     <code>role</code>
-    {gettext("— Set server role:")} <code>admin</code>, <code>server_operator</code>{gettext(
+    {dgettext("help_commands", "— Set server role:")} <code>admin</code>, <code>server_operator</code>{dgettext(
+      "help_commands",
       ", or"
     )} <code>user</code>
-    {gettext("(removes role)")}
+    {dgettext("help_commands", "(removes role)")}
   </li>
-  <li><code>banlist</code> {gettext("— List active server bans")}</li>
+  <li><code>banlist</code> {dgettext("help_commands", "— List active server bans")}</li>
 </ul>
 
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Only root admins (env var) can promote users to admin")}</li>
-  <li>{gettext("Root admins cannot be demoted via commands")}</li>
-  <li>{gettext("All actions are recorded in the audit log")}</li>
+  <li>{dgettext("help_commands", "Only root admins (env var) can promote users to admin")}</li>
+  <li>{dgettext("help_commands", "Root admins cannot be demoted via commands")}</li>
+  <li>{dgettext("help_commands", "All actions are recorded in the audit log")}</li>
   <li>
-    {gettext("Duration format:")} <code>30s</code>, <code>5m</code>, <code>1h</code>,
+    {dgettext("help_commands", "Duration format:")} <code>30s</code>, <code>5m</code>, <code>1h</code>,
     <code>1d</code>
   </li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/admin user list --online /admin user ban @Spammer --reason Flooding --duration 24h /admin user kick @Troll --reason Breaking rules /admin user mute @Noisy --duration 30m /admin user role @Trusted server_operator")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin user list --online /admin user ban @Spammer --reason Flooding --duration 24h /admin user kick @Troll --reason Breaking rules /admin user mute @Noisy --duration 30m /admin user role @Trusted server_operator")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-admin">{gettext("/admin")}</.help_link>
-  · <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
-  · <.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
-  · <.help_link topic="cmd-mute">{gettext("/mute")}</.help_link>
+  <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  · <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
+  · <.help_link topic="cmd-ban">{dgettext("help_commands", "/ban")}</.help_link>
+  · <.help_link topic="cmd-mute">{dgettext("help_commands", "/mute")}</.help_link>
 </p>

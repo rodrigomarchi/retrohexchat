@@ -98,7 +98,14 @@ defmodule RetroHexChat.Services.NickExpiry do
 
   defp promote_successor(channel_name, successor) do
     Queries.remove_access(channel_name, successor.nickname)
-    Queries.add_access(channel_name, successor.nickname, "founder", gettext("NickExpiry"))
+
+    Queries.add_access(
+      channel_name,
+      successor.nickname,
+      "founder",
+      dgettext("services", "NickExpiry")
+    )
+
     Queries.update_channel_founder(channel_name, successor.nickname)
   end
 

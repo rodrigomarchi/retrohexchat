@@ -1,8 +1,8 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">{gettext("Solo Lobby")}</h2>
+  <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Solo Lobby")}</h2>
 
   <.showcase_card
-    title={gettext("Lobby — Game Picker")}
+    title={dgettext("showcase", "Lobby — Game Picker")}
     description="Initial state showing the game selection grid."
   >
     <div class="max-w-lg">
@@ -24,7 +24,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Lobby — Game Preview")}
+    title={dgettext("showcase", "Lobby — Game Preview")}
     description="Detail view after clicking a game card, showing about, controls, and tips."
   >
     <div class="max-w-lg">
@@ -48,7 +48,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Playing State")}
+    title={dgettext("showcase", "Playing State")}
     description="Active game session with timer and end session button."
   >
     <div class="max-w-lg">
@@ -76,7 +76,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Finished State")}
+    title={dgettext("showcase", "Finished State")}
     description="Session complete with play time summary."
   >
     <div class="max-w-lg">
@@ -101,7 +101,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Inactivity Warning")}
+    title={dgettext("showcase", "Inactivity Warning")}
     description="Warning overlay shown when a lobby session is about to time out."
   >
     <div class="max-w-lg">

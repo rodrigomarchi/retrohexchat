@@ -1,7 +1,8 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "Limits how many users can join the channel within a time window. Format is count:seconds. For example, +j 5:10 allows 5 joins per 10 seconds. Operators bypass the throttle."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
-<pre>{gettext("/mode +j 5:10 — Allow 5 joins per 10 seconds /mode +j 3:60 — Allow 3 joins per minute /mode -j — Remove join throttle")}</pre>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
+<pre>{dgettext("help_channels", "/mode +j 5:10 — Allow 5 joins per 10 seconds /mode +j 3:60 — Allow 3 joins per minute /mode -j — Remove join throttle")}</pre>

@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   def auto_respond_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} on_cancel={@on_close}>
-      <.dialog_header id={@id} title={gettext("Auto Respond")} on_close={@on_close}>
+      <.dialog_header id={@id} title={dgettext("dialogs", "Auto Respond")} on_close={@on_close}>
         <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
       </.dialog_header>
 
@@ -70,10 +70,10 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
             <.table>
               <.table_header>
                 <.table_row>
-                  <.table_head class="w-[40px]">{gettext("Enable")}</.table_head>
-                  <.table_head>{gettext("Trigger")}</.table_head>
-                  <.table_head>{gettext("Channel")}</.table_head>
-                  <.table_head>{gettext("Command")}</.table_head>
+                  <.table_head class="w-[40px]">{dgettext("dialogs", "Enable")}</.table_head>
+                  <.table_head>{dgettext("dialogs", "Trigger")}</.table_head>
+                  <.table_head>{dgettext("dialogs", "Channel")}</.table_head>
+                  <.table_head>{dgettext("dialogs", "Command")}</.table_head>
                 </.table_row>
               </.table_header>
               <.table_body>
@@ -108,7 +108,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
           <div class="flex gap-retro-4">
             <.button size="sm" variant="outline" phx-click={@on_add}>
               <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-              {gettext("Add")}
+              {dgettext("dialogs", "Add")}
             </.button>
             <.button
               size="sm"
@@ -117,7 +117,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
               disabled={@selected_position == nil}
             >
               <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-              {gettext("Edit")}
+              {dgettext("dialogs", "Edit")}
             </.button>
             <.button
               size="sm"
@@ -126,7 +126,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
               disabled={@selected_position == nil}
             >
               <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              {gettext("Remove")}
+              {dgettext("dialogs", "Remove")}
             </.button>
           </div>
         </div>
@@ -138,12 +138,16 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
           class="w-[220px] shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
         >
           <h3 class="font-bold text-xs mb-retro-4">
-            {if @selected_position == nil, do: gettext("Add Rule"), else: gettext("Edit Rule")}
+            {if @selected_position == nil,
+              do: dgettext("dialogs", "Add Rule"),
+              else: dgettext("dialogs", "Edit Rule")}
           </h3>
 
           <div class="space-y-retro-4">
             <div>
-              <.label class="text-xs font-bold block mb-retro-2">{gettext("Trigger")}</.label>
+              <.label class="text-xs font-bold block mb-retro-2">
+                {dgettext("dialogs", "Trigger")}
+              </.label>
               <.select
                 :let={builder}
                 id="draft-trigger-select"
@@ -170,7 +174,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
 
             <div>
               <.label class="text-xs font-bold block mb-retro-2">
-                {gettext("Channel (optional)")}
+                {dgettext("dialogs", "Channel (optional)")}
               </.label>
               <.input
                 type="text"
@@ -183,12 +187,14 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
             </div>
 
             <div>
-              <.label class="text-xs font-bold block mb-retro-2">{gettext("Command")}</.label>
+              <.label class="text-xs font-bold block mb-retro-2">
+                {dgettext("dialogs", "Command")}
+              </.label>
               <.input
                 type="text"
                 name="command"
                 value={@draft_command}
-                placeholder={gettext("/say Hello!")}
+                placeholder={dgettext("dialogs", "/say Hello!")}
                 class="w-full"
                 maxlength="500"
               />
@@ -199,11 +205,11 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
             <div class="flex gap-retro-4 pt-retro-4">
               <.button type="submit" size="sm" variant="default">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-                {gettext("Save")}
+                {dgettext("dialogs", "Save")}
               </.button>
               <.button type="button" size="sm" variant="outline" phx-click={@on_cancel_edit}>
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                {gettext("Cancel")}
+                {dgettext("dialogs", "Cancel")}
               </.button>
             </div>
           </div>
@@ -213,11 +219,11 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
       <.dialog_footer>
         <.button variant="default" phx-click={@on_close || hide_modal(@id)}>
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {gettext("OK")}
+          {dgettext("dialogs", "OK")}
         </.button>
         <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {gettext("Cancel")}
+          {dgettext("dialogs", "Cancel")}
         </.button>
       </.dialog_footer>
     </.dialog>
@@ -225,9 +231,9 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   end
 
   @spec trigger_label(String.t()) :: String.t()
-  defp trigger_label("on_join"), do: gettext("On Join")
-  defp trigger_label("on_part"), do: gettext("On Part")
-  defp trigger_label("on_nick_change"), do: gettext("On Nick Change")
+  defp trigger_label("on_join"), do: dgettext("dialogs", "On Join")
+  defp trigger_label("on_part"), do: dgettext("dialogs", "On Part")
+  defp trigger_label("on_nick_change"), do: dgettext("dialogs", "On Nick Change")
   defp trigger_label(trigger), do: trigger
 
   @spec trigger_options() :: [{String.t(), String.t()}]

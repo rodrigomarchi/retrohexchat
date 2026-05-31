@@ -1,46 +1,95 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Top-down tennis duel — automatic hitting where shot angle depends on ball contact position relative to your player sprite. Full set with deuce, advantage, and tiebreak at 6-6."
   )}
 </p>
 <.diagram_game_tennis class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("Arrow keys / WASD")}</strong> {gettext("— Move player")}</li>
-  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Serve (during serving phase)")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
-<ul>
-  <li>{gettext("Players move freely in their half of the court (cannot cross the net)")}</li>
-  <li>{gettext("Hitting is automatic — when the ball enters your hit zone, it's returned")}</li>
-  <li>
-    {gettext("Shot angle depends on horizontal contact position (left/right = cross-court)")}
-  </li>
-  <li>{gettext("Shot power depends on depth of contact (front = drop shot, back = drive)")}</li>
-  <li>{gettext("Ball must clear the net (simulated height arc)")}</li>
-  <li>{gettext("Scoring: Love → 15 → 30 → 40 → Game (deuce at 40-40, advantage, win by 2)")}</li>
-  <li>{gettext("First to 6 games wins the set (win by 2, tiebreak at 6-6)")}</li>
-  <li>{gettext("Serve alternates between deuce and ad court")}</li>
-  <li>{gettext("10-second serve timer — auto-serve on timeout")}</li>
-  <li>{gettext("Double fault (two missed serves) gives point to receiver")}</li>
-</ul>
-<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Hex Tennis")}</strong> {gettext("— Classic: full set with tiebreak at 6-6")}
+    <strong>{dgettext("help_games", "Arrow keys / WASD")}</strong> {dgettext(
+      "help_games",
+      "— Move player"
+    )}
   </li>
-  <li><strong>{gettext("Quick Match")}</strong> {gettext("— First to 3 games wins")}</li>
   <li>
-    <strong>{gettext("Sudden Death")}</strong> {gettext("— Each point wins a game, first to 6")}
+    <strong>{dgettext("help_games", "Space / Shift")}</strong> {dgettext(
+      "help_games",
+      "— Serve (during serving phase)"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
-<p>{gettext("Inspired by Activision Tennis (1981).")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_games",
+      "Players move freely in their half of the court (cannot cross the net)"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Hitting is automatic — when the ball enters your hit zone, it's returned"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Shot angle depends on horizontal contact position (left/right = cross-court)"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Shot power depends on depth of contact (front = drop shot, back = drive)"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Ball must clear the net (simulated height arc)")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Scoring: Love → 15 → 30 → 40 → Game (deuce at 40-40, advantage, win by 2)"
+    )}
+  </li>
+  <li>{dgettext("help_games", "First to 6 games wins the set (win by 2, tiebreak at 6-6)")}</li>
+  <li>{dgettext("help_games", "Serve alternates between deuce and ad court")}</li>
+  <li>{dgettext("help_games", "10-second serve timer — auto-serve on timeout")}</li>
+  <li>{dgettext("help_games", "Double fault (two missed serves) gives point to receiver")}</li>
+</ul>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_games", "Modes")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_games", "Hex Tennis")}</strong> {dgettext(
+      "help_games",
+      "— Classic: full set with tiebreak at 6-6"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Quick Match")}</strong> {dgettext(
+      "help_games",
+      "— First to 3 games wins"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Sudden Death")}</strong> {dgettext(
+      "help_games",
+      "— Each point wins a game, first to 6"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
+<p>{dgettext("help_games", "Inspired by Activision Tennis (1981).")}</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-tennis-quick">{gettext("Hex Tennis: Quick Match")}</.help_link>
+  <.help_link topic="feature-hex-tennis-quick">
+    {dgettext("help_games", "Hex Tennis: Quick Match")}
+  </.help_link>
   ·
-  <.help_link topic="feature-hex-tennis-sudden">{gettext("Hex Tennis: Sudden Death")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-hex-tennis-sudden">
+    {dgettext("help_games", "Hex Tennis: Sudden Death")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

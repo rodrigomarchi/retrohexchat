@@ -13,17 +13,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Progress do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Progress"), active_page: "progress")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Progress"), active_page: "progress")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Progress")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Progress")}</h2>
 
       <.showcase_card
-        title={gettext("Values")}
+        title={dgettext("showcase", "Values")}
         description="Displays an indicator showing completion progress."
       >
         <div class="max-w-sm space-y-3">

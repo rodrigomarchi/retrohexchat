@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
         type="button"
         variant="ghost"
         size="icon"
-        aria-label={gettext("Close tab")}
+        aria-label={dgettext("chat", "Close tab")}
         phx-click={@on_close}
         phx-value-type={@type}
         phx-value-label={@label}

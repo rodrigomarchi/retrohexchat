@@ -1,12 +1,13 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "Grants channel operator status to a user (prefix @). Operators can change channel modes, kick/ban users, and set the topic. They cannot kick owners."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
-<pre>{gettext("/mode +o Alice — Give operator to Alice /mode -o Alice — Remove operator from Alice")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
+<pre>{dgettext("help_channels", "/mode +o Alice — Give operator to Alice /mode -o Alice — Remove operator from Alice")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="mode-q">{gettext("Owner (+q)")}</.help_link>
-  · <.help_link topic="mode-h">{gettext("Half-Operator (+h)")}</.help_link>
+  <.help_link topic="mode-q">{dgettext("help_channels", "Owner (+q)")}</.help_link>
+  · <.help_link topic="mode-h">{dgettext("help_channels", "Half-Operator (+h)")}</.help_link>
 </p>

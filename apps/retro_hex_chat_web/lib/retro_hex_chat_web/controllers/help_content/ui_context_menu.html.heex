@@ -1,37 +1,56 @@
-<p>{gettext("Click a nickname in the user list to open the context menu.")}</p>
-<.help_h4 icon={:icon_dialog_options}>{gettext("Options")}</.help_h4>
+<p>{dgettext("help_ui", "Click a nickname in the user list to open the context menu.")}</p>
+<.help_h4 icon={:icon_dialog_options}>{dgettext("help_ui", "Options")}</.help_h4>
 <p>
-  <strong>{gettext("Query:")}</strong>
-  {gettext("Open a PM with the user.")}<br /><strong>{gettext("Whois:")}</strong>
-  {gettext("Look up user information.")}<br /><strong>{gettext("Add to Contacts:")}</strong>
-  {gettext("Save to your address book.")}<br /><strong>{gettext("Set Nick Color:")}</strong>
-  {gettext("Override the display color for this nick.")}<br />
+  <strong>{dgettext("help_ui", "Query:")}</strong>
+  {dgettext("help_ui", "Open a PM with the user.")}<br />
   <strong>
-    {gettext("Ignore / Unignore:")}
+    {dgettext("help_ui", "Whois:")}
   </strong>
-  {gettext("Block messages from the user.")}
+  {dgettext("help_ui", "Look up user information.")}<br />
+  <strong>
+    {dgettext("help_ui", "Add to Contacts:")}
+  </strong>
+  {dgettext("help_ui", "Save to your address book.")}<br />
+  <strong>
+    {dgettext("help_ui", "Set Nick Color:")}
+  </strong>
+  {dgettext("help_ui", "Override the display color for this nick.")}<br />
+  <strong>
+    {dgettext("help_ui", "Ignore / Unignore:")}
+  </strong>
+  {dgettext("help_ui", "Block messages from the user.")}
 </p>
-<.help_h4 icon={:icon_p2p}>{gettext("P2P Actions (registered users only)")}</.help_h4>
+<.help_h4 icon={:icon_p2p}>{dgettext("help_ui", "P2P Actions (registered users only)")}</.help_h4>
 <p>
-  <strong>{gettext("P2P Session:")}</strong>
-  {gettext("Start a generic P2P session.")}<br /><strong>{gettext("Audio Call:")}</strong>
-  {gettext("Start an audio call.")}<br /><strong>{gettext("Video Call:")}</strong>
-  {gettext("Start a video call.")}<br /><strong>{gettext("Send File:")}</strong>
-  {gettext("Send a file.")}<br />{gettext(
+  <strong>{dgettext("help_ui", "P2P Session:")}</strong>
+  {dgettext("help_ui", "Start a generic P2P session.")}<br />
+  <strong>
+    {dgettext("help_ui", "Audio Call:")}
+  </strong>
+  {dgettext("help_ui", "Start an audio call.")}<br />
+  <strong>
+    {dgettext("help_ui", "Video Call:")}
+  </strong>
+  {dgettext("help_ui", "Start a video call.")}<br />
+  <strong>
+    {dgettext("help_ui", "Send File:")}
+  </strong>
+  {dgettext("help_ui", "Send a file.")}<br />{dgettext(
+    "help_ui",
     "These items are disabled if the target is not registered or is yourself."
   )}
 </p>
-<.help_h4 icon={:icon_role_operator}>{gettext("Operator Actions")}</.help_h4>
+<.help_h4 icon={:icon_role_operator}>{dgettext("help_ui", "Operator Actions")}</.help_h4>
 <p>
-  <strong>{gettext("Kick / Ban:")}</strong>
-  {gettext("Moderation (operators only).")}<br />
+  <strong>{dgettext("help_ui", "Kick / Ban:")}</strong>
+  {dgettext("help_ui", "Moderation (operators only).")}<br />
   <strong>
-    {gettext("Give Op (+o) / Give Voice (+v):")}
+    {dgettext("help_ui", "Give Op (+o) / Give Voice (+v):")}
   </strong>
-  {gettext("Mode changes (operators only).")}
+  {dgettext("help_ui", "Mode changes (operators only).")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-context-menus">{gettext("Context Menus")}</.help_link>
-  · <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
+  <.help_link topic="feature-context-menus">{dgettext("help_ui", "Context Menus")}</.help_link>
+  · <.help_link topic="feature-p2p-sessions">{dgettext("help_ui", "P2P Sessions")}</.help_link>
 </p>

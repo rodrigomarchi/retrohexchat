@@ -141,14 +141,17 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
          |> close_context_menu()
          |> assign(session: new_session)
          |> maybe_persist_contacts(new_session)
-         |> push_status_message(gettext("Added %{nickname} to contacts", nickname: nick), :system)}
+         |> push_status_message(
+           dgettext("chat", "Added %{nickname} to contacts", nickname: nick),
+           :system
+         )}
 
       {:error, :duplicate} ->
         {:halt,
          socket
          |> close_context_menu()
          |> push_status_message(
-           gettext("%{nickname} is already in your contacts", nickname: nick),
+           dgettext("chat", "%{nickname} is already in your contacts", nickname: nick),
            :error
          )}
 
@@ -156,14 +159,14 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
         {:halt,
          socket
          |> close_context_menu()
-         |> push_status_message(gettext("Cannot add yourself to contacts"), :error)}
+         |> push_status_message(dgettext("chat", "Cannot add yourself to contacts"), :error)}
 
       {:error, _reason} ->
         {:halt,
          socket
          |> close_context_menu()
          |> push_status_message(
-           gettext("Could not add %{nickname} to contacts", nickname: nick),
+           dgettext("chat", "Could not add %{nickname} to contacts", nickname: nick),
            :error
          )}
     end
@@ -185,13 +188,13 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
          |> close_context_menu()
          |> assign(session: new_session)
          |> maybe_persist_ignore_list(new_session)
-         |> system_event(gettext("* %{nickname} is now ignored", nickname: nick))}
+         |> system_event(dgettext("chat", "* %{nickname} is now ignored", nickname: nick))}
 
       {:error, :list_full} ->
         {:halt,
          socket
          |> close_context_menu()
-         |> error_event(gettext("Ignore list is full (max 100 entries)"))}
+         |> error_event(dgettext("chat", "Ignore list is full (max 100 entries)"))}
 
       {:error, _reason} ->
         {:halt, close_context_menu(socket)}
@@ -212,7 +215,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
          |> cancel_ignore_timer(nick)
          |> cancel_auto_ignore_with_cooldown(nick)
          |> maybe_persist_ignore_list(new_session)
-         |> system_event(gettext("* %{nickname} is no longer ignored", nickname: nick))}
+         |> system_event(dgettext("chat", "* %{nickname} is no longer ignored", nickname: nick))}
 
       {:error, :not_found} ->
         {:halt, close_context_menu(socket)}
@@ -237,7 +240,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
          |> refresh_active_message_stream(new_session)
          |> maybe_persist_nick_colors(new_session)
          |> push_status_message(
-           gettext("Set %{nickname}'s color to %{color}",
+           dgettext("chat", "Set %{nickname}'s color to %{color}",
              nickname: target,
              color: color_name
            ),
@@ -248,14 +251,14 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
         {:halt,
          socket
          |> close_context_menu()
-         |> push_status_message(gettext("Nick color list is full (max 50)"), :error)}
+         |> push_status_message(dgettext("chat", "Nick color list is full (max 50)"), :error)}
 
       {:error, _reason} ->
         {:halt,
          socket
          |> close_context_menu()
          |> push_status_message(
-           gettext("Could not set color for %{nickname}", nickname: target),
+           dgettext("chat", "Could not set color for %{nickname}", nickname: target),
            :error
          )}
     end
@@ -356,7 +359,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
            |> close_chat_context_menu()
            |> assign(session: new_session)
            |> maybe_persist_ignore_list(new_session)
-           |> system_event(gettext("* %{nickname} is now ignored", nickname: nick))}
+           |> system_event(dgettext("chat", "* %{nickname} is now ignored", nickname: nick))}
 
         {:error, _reason} ->
           {:halt, close_chat_context_menu(socket)}
@@ -376,14 +379,17 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
          |> close_chat_context_menu()
          |> assign(session: new_session)
          |> maybe_persist_contacts(new_session)
-         |> push_status_message(gettext("Added %{nickname} to contacts", nickname: nick), :system)}
+         |> push_status_message(
+           dgettext("chat", "Added %{nickname} to contacts", nickname: nick),
+           :system
+         )}
 
       {:error, _reason} ->
         {:halt,
          socket
          |> close_chat_context_menu()
          |> push_status_message(
-           gettext("Could not add %{nickname} to contacts", nickname: nick),
+           dgettext("chat", "Could not add %{nickname} to contacts", nickname: nick),
            :error
          )}
     end
@@ -457,7 +463,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   end
 
   def handle_event("ctx_chat_save_url", %{"url" => url} = params, socket) do
-    author = params["author"] || gettext("Unknown")
+    author = params["author"] || dgettext("chat", "Unknown")
     channel = socket.assigns.session.active_channel || "unknown"
 
     entry =
@@ -475,7 +481,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      socket
      |> close_chat_context_menu()
      |> assign(url_catcher_entries: entries)
-     |> push_status_message(gettext("URL saved to URL Catcher"), :system)}
+     |> push_status_message(dgettext("chat", "URL saved to URL Catcher"), :system)}
   end
 
   def handle_event("ctx_chat_join", %{"channel" => channel}, socket) do
@@ -525,7 +531,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
          |> close_chat_context_menu()
          |> assign(session: new_session)
          |> maybe_persist_ignore_list(new_session)
-         |> system_event(gettext("* %{nickname} is now ignored", nickname: nick))}
+         |> system_event(dgettext("chat", "* %{nickname} is now ignored", nickname: nick))}
 
       {:error, _reason} ->
         {:halt, close_chat_context_menu(socket)}
@@ -624,7 +630,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
         |> assign(session: new_session)
         |> cancel_ignore_timer(nick)
         |> maybe_persist_ignore_list(new_session)
-        |> system_event(gettext("* %{nickname} is no longer ignored", nickname: nick))
+        |> system_event(dgettext("chat", "* %{nickname} is no longer ignored", nickname: nick))
 
       {:error, :not_found} ->
         socket
@@ -642,7 +648,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
 
   defp context_kick(socket, channel, nick) do
     operator = socket.assigns.session.nickname
-    Server.kick(channel, operator, nick, gettext("Kicked"))
+    Server.kick(channel, operator, nick, dgettext("chat", "Kicked"))
     socket
   end
 

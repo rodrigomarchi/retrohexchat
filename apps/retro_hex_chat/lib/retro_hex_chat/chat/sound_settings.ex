@@ -24,21 +24,21 @@ defmodule RetroHexChat.Chat.SoundSettings do
   ]
 
   @sound_catalog [
-    {"none", gettext("None")},
-    {"beep", gettext("Beep")},
-    {"ding_low", gettext("Ding Low")},
-    {"ding_high", gettext("Ding High")},
-    {"chime_short", gettext("Chime Short")},
-    {"chime_long", gettext("Chime Long")},
-    {"chime_high", gettext("Chime High")},
-    {"chime_low", gettext("Chime Low")},
-    {"alert", gettext("Alert")},
-    {"buzz", gettext("Buzz")},
-    {"click", gettext("Click")},
-    {"ring", gettext("Ring")},
-    {"notify", gettext("Notify")},
-    {"blip", gettext("Blip")},
-    {"whoosh", gettext("Whoosh")}
+    {"none", dgettext("chat", "None")},
+    {"beep", dgettext("chat", "Beep")},
+    {"ding_low", dgettext("chat", "Ding Low")},
+    {"ding_high", dgettext("chat", "Ding High")},
+    {"chime_short", dgettext("chat", "Chime Short")},
+    {"chime_long", dgettext("chat", "Chime Long")},
+    {"chime_high", dgettext("chat", "Chime High")},
+    {"chime_low", dgettext("chat", "Chime Low")},
+    {"alert", dgettext("chat", "Alert")},
+    {"buzz", dgettext("chat", "Buzz")},
+    {"click", dgettext("chat", "Click")},
+    {"ring", dgettext("chat", "Ring")},
+    {"notify", dgettext("chat", "Notify")},
+    {"blip", dgettext("chat", "Blip")},
+    {"whoosh", dgettext("chat", "Whoosh")}
   ]
 
   @valid_sound_names Enum.map(@sound_catalog, &elem(&1, 0))

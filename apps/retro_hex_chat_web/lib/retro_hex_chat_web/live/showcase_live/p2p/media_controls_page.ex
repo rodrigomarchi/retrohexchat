@@ -13,17 +13,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.MediaControlsPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Media Controls"), active_page: "media-controls")}
+    {:ok,
+     assign(socket,
+       page_title: dgettext("showcase", "Media Controls"),
+       active_page: "media-controls"
+     )}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Media Controls")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Media Controls")}</h2>
 
       <.showcase_card
-        title={gettext("Default (In Call)")}
+        title={dgettext("showcase", "Default (In Call)")}
         description="All controls active, mic and camera on."
       >
         <.media_controls />
@@ -32,20 +36,23 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.MediaControlsPage do
         </.code_example>
       </.showcase_card>
 
-      <.showcase_card title={gettext("Muted")} description="Microphone muted.">
+      <.showcase_card title={dgettext("showcase", "Muted")} description="Microphone muted.">
         <.media_controls muted={true} />
       </.showcase_card>
 
-      <.showcase_card title={gettext("Camera Off")} description="Camera disabled.">
+      <.showcase_card title={dgettext("showcase", "Camera Off")} description="Camera disabled.">
         <.media_controls camera_on={false} />
       </.showcase_card>
 
-      <.showcase_card title={gettext("Muted + Camera Off")} description="Both muted and camera off.">
+      <.showcase_card
+        title={dgettext("showcase", "Muted + Camera Off")}
+        description="Both muted and camera off."
+      >
         <.media_controls muted={true} camera_on={false} />
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Not In Call")}
+        title={dgettext("showcase", "Not In Call")}
         description="Controls shown when not actively in a call. End Call button and badge are hidden."
       >
         <.media_controls in_call={false} />

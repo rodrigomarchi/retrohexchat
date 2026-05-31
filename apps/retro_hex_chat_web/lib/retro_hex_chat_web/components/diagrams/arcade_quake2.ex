@@ -18,7 +18,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeQuake2 do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label={gettext("Quake II arcade logo: metallic Q2 emblem on dark industrial background")}
+      aria-label={
+        dgettext("diagrams", "Quake II arcade logo: metallic Q2 emblem on dark industrial background")
+      }
     >
       {win98_chrome("Quake II - Arcade")}
       <%!-- Background --%>
@@ -61,7 +63,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeQuake2 do
         font-family="'Courier New',monospace"
         font-weight="bold"
       >
-        {gettext("Q2")}
+        {dgettext("diagrams", "Q2")}
       </text>
       <%!-- Metallic shine line --%>
       <line x1="210" y1="115" x2="302" y2="115" stroke="#c0c0c0" stroke-width="1" opacity="0.4" />
@@ -75,7 +77,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeQuake2 do
         font-family="'Courier New',monospace"
         font-weight="bold"
       >
-        {gettext("QUAKE II")}
+        {dgettext("diagrams", "QUAKE II")}
       </text>
       <%!-- Subtitle --%>
       <text
@@ -86,7 +88,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeQuake2 do
         font-size="11"
         font-family="'Courier New',monospace"
       >
-        {gettext("Yamagi Quake II WebAssembly")}
+        {dgettext("diagrams", "Yamagi Quake II WebAssembly")}
       </text>
       <%!-- Strogg invasion badge --%>
       <rect
@@ -108,7 +110,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeQuake2 do
         font-family="'Courier New',monospace"
         opacity="0.7"
       >
-        {gettext("THE INVASION")}
+        {dgettext("diagrams", "THE INVASION")}
       </text>
     </svg>
     """

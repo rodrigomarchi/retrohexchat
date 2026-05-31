@@ -1,50 +1,62 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Channel Central provides a comprehensive tabbed dialog for viewing and managing all channel settings in one place."
   )}
 </p>
-<.help_h4 icon={:icon_tab_channel}>{gettext("Tabs")}</.help_h4>
+<.help_h4 icon={:icon_tab_channel}>{dgettext("help_features", "Tabs")}</.help_h4>
 <p>
-  <strong>{gettext("General:")}</strong>
-  {gettext("Channel name, topic, and basic information.")}<br />
+  <strong>{dgettext("help_features", "General:")}</strong>
+  {dgettext("help_features", "Channel name, topic, and basic information.")}<br />
   <strong>
-    {gettext("Modes:")}
+    {dgettext("help_features", "Modes:")}
   </strong>
-  {gettext("View and toggle channel modes (+m, +i, +t, +k, +l).")}<br />
+  {dgettext("help_features", "View and toggle channel modes (+m, +i, +t, +k, +l).")}<br />
   <strong>
-    {gettext("Bans:")}
+    {dgettext("help_features", "Bans:")}
   </strong>
-  {gettext("View and manage the channel ban list.")}<br />
+  {dgettext("help_features", "View and manage the channel ban list.")}<br />
   <strong>
-    {gettext("Ban Exceptions:")}
+    {dgettext("help_features", "Ban Exceptions:")}
   </strong>
-  {gettext("Manage ban exceptions (+e) that let specific users bypass bans.")}<br />
+  {dgettext("help_features", "Manage ban exceptions (+e) that let specific users bypass bans.")}<br />
   <strong>
-    {gettext("Invite Exceptions:")}
+    {dgettext("help_features", "Invite Exceptions:")}
   </strong>
-  {gettext("Manage invite exceptions (+I) that let specific users bypass invite-only mode.")}
+  {dgettext(
+    "help_features",
+    "Manage invite exceptions (+I) that let specific users bypass invite-only mode."
+  )}
 </p>
-<.help_h4 icon={:icon_folder}>{gettext("Opening")}</.help_h4>
+<.help_h4 icon={:icon_folder}>{dgettext("help_features", "Opening")}</.help_h4>
 <p>
-  {gettext("Double-click a channel in the conversations sidebar, or go to")} <strong>{gettext("Tools > Channel Central")}</strong>.
+  {dgettext("help_features", "Double-click a channel in the conversations sidebar, or go to")} <strong>{dgettext("help_features", "Tools > Channel Central")}</strong>.
 </p>
-<.help_h4 icon={:icon_tab_modes}>{gettext("Permissions")}</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_features", "Permissions")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Channel operators see editable controls and can modify settings directly. Non-operators see read-only views of the channel configuration."
   )}
 </p>
-<.help_h4 icon={:icon_websocket}>{gettext("Real-Time Updates")}</.help_h4>
+<.help_h4 icon={:icon_websocket}>{dgettext("help_features", "Real-Time Updates")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The dialog updates in real time when other users change channel settings, so you always see the current state."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-mode">{gettext("/mode Command")}</.help_link>
-  · <.help_link topic="cmd-ban">{gettext("/ban Command")}</.help_link>
-  · <.help_link topic="cmd-topic">{gettext("/topic Command")}</.help_link>
-  · <.help_link topic="feature-ban-exceptions">{gettext("Ban Exceptions")}</.help_link>
-  · <.help_link topic="feature-invite-exceptions">{gettext("Invite Exceptions")}</.help_link>
+  <.help_link topic="cmd-mode">{dgettext("help_features", "/mode Command")}</.help_link>
+  · <.help_link topic="cmd-ban">{dgettext("help_features", "/ban Command")}</.help_link>
+  · <.help_link topic="cmd-topic">{dgettext("help_features", "/topic Command")}</.help_link>
+  ·
+  <.help_link topic="feature-ban-exceptions">
+    {dgettext("help_features", "Ban Exceptions")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-invite-exceptions">
+    {dgettext("help_features", "Invite Exceptions")}
+  </.help_link>
 </p>

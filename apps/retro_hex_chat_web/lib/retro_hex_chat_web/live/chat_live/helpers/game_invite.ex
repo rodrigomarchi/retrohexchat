@@ -18,7 +18,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.GameInvite do
   def handle_game_invite(socket, session, payload) do
     %{target: target, token: token} = payload
 
-    pm_content = gettext("Game session started! Join the lobby: /game/%{token}", token: token)
+    pm_content =
+      dgettext("chat", "Game session started! Join the lobby: /game/%{token}", token: token)
 
     socket =
       case Service.send_private_message(session.nickname, target, pm_content, "p2p_invite") do
@@ -39,13 +40,15 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.GameInvite do
           socket
           |> PM.open_pm_conversation(target)
           |> Messages.system_event(
-            gettext("Game invite sent to %{target}. Waiting for response...", target: target)
+            dgettext("chat", "Game invite sent to %{target}. Waiting for response...",
+              target: target
+            )
           )
 
         {:error, _reason} ->
           Messages.system_event(
             socket,
-            gettext("Failed to send game invite to %{target}.", target: target)
+            dgettext("chat", "Failed to send game invite to %{target}.", target: target)
           )
       end
 

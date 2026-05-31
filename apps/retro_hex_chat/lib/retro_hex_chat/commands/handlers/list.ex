@@ -27,7 +27,10 @@ defmodule RetroHexChat.Commands.Handlers.List do
       name: "list",
       syntax: "/list",
       description:
-        gettext("Browse all public channels on the server in a sortable, filterable dialog."),
+        dgettext(
+          "commands",
+          "Browse all public channels on the server in a sortable, filterable dialog."
+        ),
       examples: ["/list"]
     }
   end
@@ -44,7 +47,10 @@ defmodule RetroHexChat.Commands.Handlers.List do
       command: "list",
       syntax: "/list",
       description:
-        gettext("Browse all public channels on the server in a sortable, filterable dialog."),
+        dgettext(
+          "commands",
+          "Browse all public channels on the server in a sortable, filterable dialog."
+        ),
       category: :channel,
       parameters: [],
       examples: ["/list"]

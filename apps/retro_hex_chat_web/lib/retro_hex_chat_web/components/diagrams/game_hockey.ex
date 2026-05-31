@@ -17,7 +17,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameHockey do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext("Hex Hockey game screen: ice hockey rink with players, goalies, and a puck")
+        dgettext(
+          "diagrams",
+          "Hex Hockey game screen: ice hockey rink with players, goalies, and a puck"
+        )
       }
     >
       {win98_chrome("Hex Hockey")}
@@ -83,7 +86,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameHockey do
         -
       </text>
       <text x="210" y="340" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
-        {gettext("Period 2 1:34")}
+        {dgettext("diagrams", "Period 2 1:34")}
       </text>
     </svg>
     """

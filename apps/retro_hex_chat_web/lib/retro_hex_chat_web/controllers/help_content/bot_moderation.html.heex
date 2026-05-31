@@ -1,80 +1,109 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_bots",
     "The Moderation capability provides automatic chat moderation. It runs as a passive capability, processing every message without blocking other bot features."
   )}
 </p>
 
-<.help_h4 icon={:icon_shield}>{gettext("Detection Types")}</.help_h4>
+<.help_h4 icon={:icon_shield}>{dgettext("help_bots", "Detection Types")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Word Filter")}</strong> {gettext(
+    <strong>{dgettext("help_bots", "Word Filter")}</strong> {dgettext(
+      "help_bots",
       "— Detects messages containing blocked words or phrases. Matches are case-insensitive."
     )}
   </li>
   <li>
-    <strong>{gettext("Spam Detection")}</strong> {gettext(
+    <strong>{dgettext("help_bots", "Spam Detection")}</strong> {dgettext(
+      "help_bots",
       "— Detects repeated identical messages from the same user. Configurable threshold (default: 3 messages)."
     )}
   </li>
   <li>
-    <strong>{gettext("Flood Detection")}</strong> {gettext(
+    <strong>{dgettext("help_bots", "Flood Detection")}</strong> {dgettext(
+      "help_bots",
       "— Detects too many messages in a short time from one user. Configurable threshold (default: 5 messages)."
     )}
   </li>
   <li>
-    <strong>{gettext("Caps Lock Abuse")}</strong> {gettext(
+    <strong>{dgettext("help_bots", "Caps Lock Abuse")}</strong> {dgettext(
+      "help_bots",
       "— Detects messages that are mostly uppercase (potential shouting)."
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_wrench}>{gettext("Configuration")}</.help_h4>
-<p>{gettext("Admins can configure via")} <code>{gettext("/bot set")}</code>:</p>
+<.help_h4 icon={:icon_wrench}>{dgettext("help_bots", "Configuration")}</.help_h4>
+<p>
+  {dgettext("help_bots", "Admins can configure via")} <code>{dgettext("help_bots", "/bot set")}</code>:
+</p>
 <ul>
   <li>
-    <code>mod_words</code> {gettext("— Comma-separated list of blocked words (e.g.,")} <code>{gettext("badword1,badword2")}</code>)
+    <code>mod_words</code> {dgettext(
+      "help_bots",
+      "— Comma-separated list of blocked words (e.g.,"
+    )} <code>{dgettext("help_bots", "badword1,badword2")}</code>)
   </li>
   <li>
     <code>mod_action</code>
-    {gettext("— Action on violation:")} <code>warn</code>, <code>mute</code>{gettext(", or")}
+    {dgettext("help_bots", "— Action on violation:")} <code>warn</code>, <code>mute</code>{dgettext(
+      "help_bots",
+      ", or"
+    )}
     <code>kick</code>
-    {gettext("(default: warn)")}
+    {dgettext("help_bots", "(default: warn)")}
   </li>
-  <li><code>mod_spam</code> {gettext("— Spam detection threshold (default: 3)")}</li>
-  <li><code>mod_flood</code> {gettext("— Flood detection threshold (default: 5)")}</li>
+  <li>
+    <code>mod_spam</code> {dgettext("help_bots", "— Spam detection threshold (default: 3)")}
+  </li>
+  <li>
+    <code>mod_flood</code> {dgettext("help_bots", "— Flood detection threshold (default: 5)")}
+  </li>
 </ul>
-<pre>{gettext("/bot set MyBot mod_words spam,offensive,banned /bot set MyBot mod_action warn /bot set MyBot mod_spam 3 /bot set MyBot mod_flood 5")}</pre>
+<pre>{dgettext("help_bots", "/bot set MyBot mod_words spam,offensive,banned /bot set MyBot mod_action warn /bot set MyBot mod_spam 3 /bot set MyBot mod_flood 5")}</pre>
 
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_bots", "How It Works")}</.help_h4>
 <p>
-  {gettext("Moderation runs as a")}
-  <strong>passive</strong> {gettext(
+  {dgettext("help_bots", "Moderation runs as a")}
+  <strong>passive</strong> {dgettext(
+    "help_bots",
     "capability — it processes every message before active capabilities (like dice or trivia). This means:"
   )}
 </p>
 <ul>
-  <li>{gettext("It does not consume the message — other capabilities still process it")}</li>
-  <li>{gettext("It runs even during cooldown periods")}</li>
-  <li>{gettext("Multiple violations in one message trigger only one action")}</li>
-  <li>{gettext("The bot sends a warning or takes action in the same channel")}</li>
+  <li>
+    {dgettext(
+      "help_bots",
+      "It does not consume the message — other capabilities still process it"
+    )}
+  </li>
+  <li>{dgettext("help_bots", "It runs even during cooldown periods")}</li>
+  <li>{dgettext("help_bots", "Multiple violations in one message trigger only one action")}</li>
+  <li>{dgettext("help_bots", "The bot sends a warning or takes action in the same channel")}</li>
 </ul>
 
-<.help_h4 icon={:icon_rules}>{gettext("Actions")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_bots", "Actions")}</.help_h4>
 <ul>
-  <li><strong>warn</strong> {gettext("— Bot sends a warning message to the channel")}</li>
   <li>
-    <strong>mute</strong> {gettext("— Bot requests the user be muted (requires channel operator)")}
+    <strong>warn</strong> {dgettext("help_bots", "— Bot sends a warning message to the channel")}
   </li>
   <li>
-    <strong>kick</strong> {gettext(
+    <strong>mute</strong> {dgettext(
+      "help_bots",
+      "— Bot requests the user be muted (requires channel operator)"
+    )}
+  </li>
+  <li>
+    <strong>kick</strong> {dgettext(
+      "help_bots",
       "— Bot requests the user be kicked (requires channel operator)"
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_bots", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="botservice">{gettext("BotService Overview")}</.help_link>
-  · <.help_link topic="bot-command">{gettext("/bot Command Reference")}</.help_link>
-  · <.help_link topic="chanserv">{gettext("ChanServ")}</.help_link>
+  <.help_link topic="botservice">{dgettext("help_bots", "BotService Overview")}</.help_link>
+  · <.help_link topic="bot-command">{dgettext("help_bots", "/bot Command Reference")}</.help_link>
+  · <.help_link topic="chanserv">{dgettext("help_bots", "ChanServ")}</.help_link>
 </p>

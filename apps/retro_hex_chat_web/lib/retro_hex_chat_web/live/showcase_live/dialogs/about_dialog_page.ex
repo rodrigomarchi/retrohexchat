@@ -16,22 +16,23 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AboutDialogPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("About Dialog"), active_page: "about-dialog")}
+    {:ok,
+     assign(socket, page_title: dgettext("showcase", "About Dialog"), active_page: "about-dialog")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("About Dialog")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "About Dialog")}</h2>
 
       <.showcase_card
-        title={gettext("About Dialog")}
+        title={dgettext("showcase", "About Dialog")}
         description="Application info with logo, version, and credits."
       >
         <.button variant="outline" phx-click={show_modal("about-demo")}>
           <:icon><Icons.icon_lightbulb class="w-4 h-4" /></:icon>
-          {gettext("About")}
+          {dgettext("showcase", "About")}
         </.button>
         <.about_dialog id="about-demo" version="2.1.0" />
         <.code_example>

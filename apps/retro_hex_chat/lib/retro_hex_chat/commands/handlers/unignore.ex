@@ -7,7 +7,7 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, gettext("Usage: /unignore <nickname>")}
+  def validate(""), do: {:error, dgettext("commands", "Usage: /unignore <nickname>")}
   def validate(_args), do: :ok
 
   @impl true
@@ -26,13 +26,14 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
   def help do
     %{
       name: "unignore",
-      syntax: gettext("/unignore <nickname>"),
+      syntax: dgettext("commands", "/unignore <nickname>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Stop ignoring a user you previously blocked, making their messages visible again.\nNickname is required. Use /ignore with no args to see your ignore list first."
         ),
       examples: [
-        gettext("/unignore SpamBot")
+        dgettext("commands", "/unignore SpamBot")
       ]
     }
   end
@@ -48,9 +49,10 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
 
     %CommandSyntax{
       command: "unignore",
-      syntax: gettext("/unignore <nickname>"),
+      syntax: dgettext("commands", "/unignore <nickname>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Stop ignoring a user you previously blocked, making their messages visible again."
         ),
       category: :user,
@@ -60,11 +62,11 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
           required: true,
           type: :nick,
           position: 0,
-          description: gettext("Remove user from ignore list")
+          description: dgettext("commands", "Remove user from ignore list")
         }
       ],
       examples: [
-        gettext("/unignore SpamBot")
+        dgettext("commands", "/unignore SpamBot")
       ]
     }
   end

@@ -8,114 +8,138 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
     [
       %{
         id: "ui-overview",
-        title: gettext("User Interface Overview"),
-        category: gettext("User Interface"),
+        title: dgettext("help", "User Interface Overview"),
+        category: dgettext("help", "User Interface"),
         keywords: ["ui", "interface", "layout", "window", "mdi"],
         icon: :icon_laptop,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Overview of the RetroHexChat interface layout including panels, toolbar, and navigation."
           )
       },
       %{
         id: "ui-conversations",
-        title: gettext("Conversations"),
-        category: gettext("User Interface"),
+        title: dgettext("help", "Conversations"),
+        category: dgettext("help", "User Interface"),
         keywords: ["conversations", "sidebar", "navigation", "left pane", "channels", "popular"],
         icon: :icon_tab_conversations,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Navigate channels and private conversations using the left-side conversations panel."
           )
       },
       %{
         id: "ui-tab-bar",
-        title: gettext("Tab Bar"),
-        category: gettext("User Interface"),
-        keywords: ["tab", gettext("tab bar"), "switch", gettext("close tab")],
+        title: dgettext("help", "Tab Bar"),
+        category: dgettext("help", "User Interface"),
+        keywords: ["tab", dgettext("help", "tab bar"), "switch", dgettext("help", "close tab")],
         icon: :icon_tab_channel,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Switch between channels and conversations using the tab bar at the top of the chat area."
           )
       },
       %{
         id: "ui-nicklist",
-        title: gettext("User List"),
-        category: gettext("User Interface"),
+        title: dgettext("help", "User List"),
+        category: dgettext("help", "User Interface"),
         keywords: [
           "nicklist",
-          gettext("user list"),
-          gettext("nick list"),
+          dgettext("help", "user list"),
+          dgettext("help", "nick list"),
           "users",
-          gettext("conversations users")
+          dgettext("help", "conversations users")
         ],
         icon: :icon_tab_nicklist,
         description:
-          gettext(
+          dgettext(
+            "help",
             "View and interact with users in the current channel through the right-side user list."
           )
       },
       %{
         id: "ui-topic-bar",
-        title: gettext("Topic Bar"),
-        category: gettext("User Interface"),
-        keywords: [gettext("topic bar"), gettext("channel info"), gettext("modes display")],
+        title: dgettext("help", "Topic Bar"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          dgettext("help", "topic bar"),
+          dgettext("help", "channel info"),
+          dgettext("help", "modes display")
+        ],
         icon: :icon_btn_set_topic,
         description:
-          gettext("View the channel topic and active modes in the bar below the tab bar.")
+          dgettext(
+            "help",
+            "View the channel topic and active modes in the bar below the tab bar."
+          )
       },
       %{
         id: "ui-context-menu",
-        title: gettext("Context Menu"),
-        category: gettext("User Interface"),
-        keywords: [gettext("context menu"), gettext("right click"), "right-click", "popup"],
+        title: dgettext("help", "Context Menu"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          dgettext("help", "context menu"),
+          dgettext("help", "right click"),
+          "right-click",
+          "popup"
+        ],
         icon: :icon_dialog_custom_menus,
         description:
-          gettext("Access user actions and channel operations through right-click context menus.")
+          dgettext(
+            "help",
+            "Access user actions and channel operations through right-click context menus."
+          )
       },
       %{
         id: "ui-status-tab",
-        title: gettext("Status Tab"),
-        category: gettext("User Interface"),
+        title: dgettext("help", "Status Tab"),
+        category: dgettext("help", "User Interface"),
         keywords: [
           "status",
-          gettext("status tab"),
-          gettext("status window"),
-          gettext("system messages"),
+          dgettext("help", "status tab"),
+          dgettext("help", "status window"),
+          dgettext("help", "system messages"),
           "observability"
         ],
         icon: :icon_tab_status,
         description:
-          gettext(
+          dgettext(
+            "help",
             "View server messages, connection events, and system notifications in the Status tab."
           )
       },
       %{
         id: "ui-toolbar",
-        title: gettext("Toolbar"),
-        category: gettext("User Interface"),
+        title: dgettext("help", "Toolbar"),
+        category: dgettext("help", "User Interface"),
         keywords: ["toolbar", "buttons", "icons", "tools", "menu"],
         icon: :icon_group_tools,
         description:
-          gettext("Access all features through the toolbar buttons organized in six groups.")
+          dgettext(
+            "help",
+            "Access all features through the toolbar buttons organized in six groups."
+          )
       },
       %{
         id: "empty-states",
-        title: gettext("Empty States"),
-        category: gettext("User Interface"),
+        title: dgettext("help", "Empty States"),
+        category: dgettext("help", "User Interface"),
         keywords: [
           "empty",
-          gettext("empty state"),
+          dgettext("help", "empty state"),
           "placeholder",
-          gettext("no messages"),
-          gettext("no users"),
-          gettext("no channels"),
-          gettext("no urls")
+          dgettext("help", "no messages"),
+          dgettext("help", "no users"),
+          dgettext("help", "no channels"),
+          dgettext("help", "no urls")
         ],
         icon: :icon_folder,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Helpful placeholders shown when lists are empty, guiding you on what to do next."
           )
       }

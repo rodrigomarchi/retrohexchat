@@ -342,12 +342,20 @@ defmodule RetroHexChatWeb.V2.SoloSessionLive do
     end
   end
 
-  defp expired_reason_label("user_closed"), do: gettext("Session closed by user.")
-  defp expired_reason_label("tab_closed"), do: gettext("Session closed (disconnected).")
-  defp expired_reason_label("disconnected"), do: gettext("Session closed (disconnected).")
-  defp expired_reason_label("expired"), do: gettext("Session expired due to inactivity.")
-  defp expired_reason_label("game_over"), do: gettext("Game session ended.")
-  defp expired_reason_label("pending_timeout"), do: gettext("Session expired.")
-  defp expired_reason_label("lobby_inactivity"), do: gettext("Session expired due to inactivity.")
-  defp expired_reason_label(_reason), do: gettext("Arcade session ended.")
+  defp expired_reason_label("user_closed"), do: dgettext("games", "Session closed by user.")
+  defp expired_reason_label("tab_closed"), do: dgettext("games", "Session closed (disconnected).")
+
+  defp expired_reason_label("disconnected"),
+    do: dgettext("games", "Session closed (disconnected).")
+
+  defp expired_reason_label("expired"),
+    do: dgettext("games", "Session expired due to inactivity.")
+
+  defp expired_reason_label("game_over"), do: dgettext("games", "Game session ended.")
+  defp expired_reason_label("pending_timeout"), do: dgettext("games", "Session expired.")
+
+  defp expired_reason_label("lobby_inactivity"),
+    do: dgettext("games", "Session expired due to inactivity.")
+
+  defp expired_reason_label(_reason), do: dgettext("games", "Arcade session ended.")
 end

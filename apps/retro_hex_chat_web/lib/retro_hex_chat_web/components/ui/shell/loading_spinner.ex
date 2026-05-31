@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.LoadingSpinner do
 
   @spec loading_spinner(map()) :: Phoenix.LiveView.Rendered.t()
   def loading_spinner(assigns) do
-    assigns = assign(assigns, :resolved_text, assigns.text || gettext("Loading..."))
+    assigns = assign(assigns, :resolved_text, assigns.text || dgettext("ui", "Loading..."))
 
     ~H"""
     <div
@@ -60,7 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.LoadingSpinner do
         class="pointer-events-auto"
       >
         <:icon><Icons.icon_retry class="w-4 h-4" /></:icon>
-        {gettext("Retry")}
+        {dgettext("ui", "Retry")}
       </.button>
       {render_slot(@inner_block)}
     </div>

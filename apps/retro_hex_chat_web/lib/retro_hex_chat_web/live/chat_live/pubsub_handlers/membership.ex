@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   # ── User joined/left/nick_changed ─────────────────────────
 
   def handle_info({:user_joined, %{nickname: nick} = payload}, socket) do
-    msg = gettext("%{nickname} has joined the channel", nickname: nick)
+    msg = dgettext("chat", "%{nickname} has joined the channel", nickname: nick)
     role = Map.get(payload, :role, :regular)
     channel = Map.get(payload, :channel)
     user = %{nickname: nick, role: role, away: false}
@@ -69,9 +69,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   def handle_info({:user_left, %{nickname: nick, reason: reason} = payload}, socket) do
     msg =
       if reason do
-        gettext("%{nickname} has left (%{reason})", nickname: nick, reason: reason)
+        dgettext("chat", "%{nickname} has left (%{reason})", nickname: nick, reason: reason)
       else
-        gettext("%{nickname} has left", nickname: nick)
+        dgettext("chat", "%{nickname} has left", nickname: nick)
       end
 
     channel = Map.get(payload, :channel)
@@ -113,7 +113,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     channel = Map.get(payload, :channel, socket.assigns.session.active_channel)
 
     msg =
-      gettext("%{old_nick} is now known as %{new_nick}", old_nick: old_nick, new_nick: new_nick)
+      dgettext("chat", "%{old_nick} is now known as %{new_nick}",
+        old_nick: old_nick,
+        new_nick: new_nick
+      )
 
     socket =
       if NotifyList.tracking?(socket.assigns.session.notify_list, old_nick) do
@@ -125,7 +128,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
         |> assign(session: new_session)
         |> maybe_persist_notify_list(new_session)
         |> push_status_message(
-          gettext("* Your notify list buddy %{old_nick} is now known as %{new_nick}",
+          dgettext("chat", "* Your notify list buddy %{old_nick} is now known as %{new_nick}",
             old_nick: old_nick,
             new_nick: new_nick
           ),
@@ -226,7 +229,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{guest_nick}")
 
     msg =
-      gettext("[NickServ] %{reason}. You are now %{nickname}",
+      dgettext("chat", "[NickServ] %{reason}. You are now %{nickname}",
         reason: reason,
         nickname: guest_nick
       )
@@ -253,7 +256,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
        |> assign(session: new_session)
        |> rebuild_nick_color_fn(new_session)
        |> push_status_message(
-         gettext("You are now identified as %{nickname}", nickname: nick),
+         dgettext("chat", "You are now identified as %{nickname}", nickname: nick),
          :system
        )}
     else
@@ -401,7 +404,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
           assign(socket,
             hover_card:
               Map.merge(card, %{
-                away: if(away, do: message || gettext("Away")),
+                away: if(away, do: message || dgettext("chat", "Away")),
                 data: Map.merge(data, %{away: away, away_message: message})
               })
           )
@@ -427,7 +430,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     Enum.each(session.channels, fn channel ->
       try do
         Tracker.untrack_user("channel:#{channel}", session.nickname)
-        Server.part(channel, session.nickname, gettext("Connection lost"))
+        Server.part(channel, session.nickname, dgettext("chat", "Connection lost"))
       rescue
         e ->
           require Logger

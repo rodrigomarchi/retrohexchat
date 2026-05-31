@@ -1,89 +1,130 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "ChanServ is the channel registration service. It protects your channel when no operators are online, preserves settings across restarts, and manages access control with persistent access lists."
   )}
 </p>
 
-<.help_h4 icon={:icon_question}>{gettext("Why Register a Channel?")}</.help_h4>
+<.help_h4 icon={:icon_question}>{dgettext("help_channels", "Why Register a Channel?")}</.help_h4>
 <ul>
-  <li>{gettext("Your channel settings (modes, topic) are preserved even when empty")}</li>
-  <li>{gettext("Access lists automatically grant operator/voice status when users join")}</li>
-  <li>{gettext("Bans persist across channel restarts")}</li>
-  <li>{gettext("Only the founder can drop (unregister) the channel")}</li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Your channel settings (modes, topic) are preserved even when empty"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Access lists automatically grant operator/voice status when users join"
+    )}
+  </li>
+  <li>{dgettext("help_channels", "Bans persist across channel restarts")}</li>
+  <li>{dgettext("help_channels", "Only the founder can drop (unregister) the channel")}</li>
 </ul>
 
-<.help_h4 icon={:icon_terminal}>{gettext("Common Commands")}</.help_h4>
-<pre>{gettext("/cs register #channel — Register a channel (must be op) /cs info #channel — View registration details /cs sop #channel add <nick> — Add Super Operator /cs aop #channel add <nick> — Add Auto Operator /cs vop #channel add <nick> — Add Auto Voice /cs sop #channel del <nick> — Remove Super Operator /cs sop #channel list — List Super Operators /cs drop #channel — Unregister a channel (founder only)")}</pre>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Common Commands")}</.help_h4>
+<pre>{dgettext("help_channels", "/cs register #channel — Register a channel (must be op) /cs info #channel — View registration details /cs sop #channel add <nick> — Add Super Operator /cs aop #channel add <nick> — Add Auto Operator /cs vop #channel add <nick> — Add Auto Voice /cs sop #channel del <nick> — Remove Super Operator /cs sop #channel list — List Super Operators /cs drop #channel — Unregister a channel (founder only)")}</pre>
 
-<.help_h4 icon={:icon_shield}>{gettext("Access Levels")}</.help_h4>
+<.help_h4 icon={:icon_shield}>{dgettext("help_channels", "Access Levels")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "ChanServ uses a hierarchy of access levels. Higher levels inherit all privileges of lower levels."
   )}
 </p>
 <ul>
   <li>
-    <strong>{gettext("Founder (Owner)")}</strong>
-    {gettext(
+    <strong>{dgettext("help_channels", "Founder (Owner)")}</strong>
+    {dgettext(
+      "help_channels",
       "— Full control. Can drop the channel, manage all access lists, and cannot be kicked or banned. Automatically gets +q (owner) on join."
     )}
   </li>
   <li>
-    <strong>{gettext("SOP (Super Operator)")}</strong>
-    {gettext(
+    <strong>{dgettext("help_channels", "SOP (Super Operator)")}</strong>
+    {dgettext(
+      "help_channels",
       "— Can manage AOP and VOP lists, set all channel modes, kick and ban users. Automatically gets +o (operator) on join."
     )}
   </li>
   <li>
-    <strong>{gettext("AOP (Auto Operator)")}</strong>
-    {gettext("— Gets +o (operator) automatically on join. Can kick, ban, and set basic modes.")}
+    <strong>{dgettext("help_channels", "AOP (Auto Operator)")}</strong>
+    {dgettext(
+      "help_channels",
+      "— Gets +o (operator) automatically on join. Can kick, ban, and set basic modes."
+    )}
   </li>
   <li>
-    <strong>{gettext("VOP (Auto Voice)")}</strong>
-    {gettext("— Gets +v (voice) automatically on join. Can speak in moderated (+m) channels.")}
+    <strong>{dgettext("help_channels", "VOP (Auto Voice)")}</strong>
+    {dgettext(
+      "help_channels",
+      "— Gets +v (voice) automatically on join. Can speak in moderated (+m) channels."
+    )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_checkmark}>{gettext("Requirements")}</.help_h4>
+<.help_h4 icon={:icon_checkmark}>{dgettext("help_channels", "Requirements")}</.help_h4>
 <ul>
   <li>
-    {gettext("You must be a")}
-    <strong>{gettext("registered user")}</strong> {gettext("(via")} <code>{gettext("/ns register")}</code>{gettext(
+    {dgettext("help_channels", "You must be a")}
+    <strong>{dgettext("help_channels", "registered user")}</strong> {dgettext(
+      "help_channels",
+      "(via"
+    )} <code>{dgettext("help_channels", "/ns register")}</code>{dgettext(
+      "help_channels",
       ") to use ChanServ"
     )}
   </li>
   <li>
-    {gettext("You must be a")}
-    <strong>{gettext("channel operator")}</strong> {gettext("to register a channel")}
+    {dgettext("help_channels", "You must be a")}
+    <strong>{dgettext("help_channels", "channel operator")}</strong> {dgettext(
+      "help_channels",
+      "to register a channel"
+    )}
   </li>
   <li>
-    {gettext("You must be")} <strong>identified</strong>
-    {gettext("(via")} <code>{gettext("/ns identify")}</code>{gettext(
+    {dgettext("help_channels", "You must be")} <strong>identified</strong>
+    {dgettext("help_channels", "(via")} <code>{dgettext("help_channels", "/ns identify")}</code>{dgettext(
+      "help_channels",
       ") for ChanServ to recognize your access level"
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_clock}>{gettext("Channel Expiration")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_channels", "Channel Expiration")}</.help_h4>
 <ul>
   <li>
-    {gettext("Registered channels expire after")}
-    <strong>{gettext("7 days of inactivity")}</strong> {gettext("(no joins or messages)")}
+    {dgettext("help_channels", "Registered channels expire after")}
+    <strong>{dgettext("help_channels", "7 days of inactivity")}</strong> {dgettext(
+      "help_channels",
+      "(no joins or messages)"
+    )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_channels",
       "When a founder's nick expires, the next-ranked user is promoted to founder (SOP → AOP → VOP)"
     )}
   </li>
   <li>
-    {gettext("Channels with no remaining access list entries are deregistered immediately")}
+    {dgettext(
+      "help_channels",
+      "Channels with no remaining access list entries are deregistered immediately"
+    )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-cs">{gettext("/cs Command")}</.help_link>
-  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
-  · <.help_link topic="channel-modes-overview">{gettext("Channel Modes")}</.help_link>
-  · <.help_link topic="cmd-ns">{gettext("/ns Command")}</.help_link>
+  <.help_link topic="cmd-cs">{dgettext("help_channels", "/cs Command")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_channels", "Channel Permissions")}
+  </.help_link>
+  ·
+  <.help_link topic="channel-modes-overview">
+    {dgettext("help_channels", "Channel Modes")}
+  </.help_link>
+  · <.help_link topic="cmd-ns">{dgettext("help_channels", "/ns Command")}</.help_link>
 </p>

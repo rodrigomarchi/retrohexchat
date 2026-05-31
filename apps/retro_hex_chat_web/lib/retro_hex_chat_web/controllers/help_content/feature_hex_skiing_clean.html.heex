@@ -1,56 +1,69 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Pure downhill time trial — no avalanche, no items, no distractions. Navigate the course cleanly and reach the finish line in the fastest time. The purist mode — nothing between you and the mountain but your reflexes."
   )}
 </p>
 <.diagram_game_skiing class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("Arrow keys (←/→) or A/D")}</strong> {gettext("— Steer left/right")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
-<ul>
-  <li>{gettext("Best of 3 rounds with increasing difficulty")}</li>
-  <li>{gettext("No avalanche chasing you — pure skill-based racing")}</li>
-  <li>{gettext("No speed boosts or ice patches — obstacle avoidance only")}</li>
-  <li>{gettext("Slalom gates still award time bonuses (-2s per gate)")}</li>
-  <li>{gettext("Collisions still stun, costing precious seconds")}</li>
-  <li>{gettext("Fastest time to the finish line wins each round")}</li>
-  <li>{gettext("The purist mode — tests raw navigation ability")}</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Hit every slalom gate")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Arrow keys (←/→) or A/D")}</strong> {dgettext(
+      "help_games",
+      "— Steer left/right"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>{dgettext("help_games", "Best of 3 rounds with increasing difficulty")}</li>
+  <li>{dgettext("help_games", "No avalanche chasing you — pure skill-based racing")}</li>
+  <li>{dgettext("help_games", "No speed boosts or ice patches — obstacle avoidance only")}</li>
+  <li>{dgettext("help_games", "Slalom gates still award time bonuses (-2s per gate)")}</li>
+  <li>{dgettext("help_games", "Collisions still stun, costing precious seconds")}</li>
+  <li>{dgettext("help_games", "Fastest time to the finish line wins each round")}</li>
+  <li>{dgettext("help_games", "The purist mode — tests raw navigation ability")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_games", "Hit every slalom gate")}</strong>
+    {dgettext(
+      "help_games",
       "— Each gate saves 2 seconds. Over a full run, gates make the difference between winning and losing."
     )}
   </li>
   <li>
-    <strong>{gettext("Smooth lines over speed")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Smooth lines over speed")}</strong>
+    {dgettext(
+      "help_games",
       "— Sharp turns slow you down. Plan your path 2-3 obstacles ahead for the smoothest line."
     )}
   </li>
   <li>
-    <strong>{gettext("Memorize obstacle patterns")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Memorize obstacle patterns")}</strong>
+    {dgettext(
+      "help_games",
       "— Courses repeat. In best-of-3, the third round favors the player who learned the layout."
     )}
   </li>
   <li>
-    <strong>{gettext("Stay calm on narrow sections")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Stay calm on narrow sections")}</strong>
+    {dgettext(
+      "help_games",
       "— Tight gaps require micro-adjustments. Don't overcorrect and bounce between obstacles."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
-<p>{gettext("Inspired by Activision Skiing (1980).")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
+<p>{dgettext("help_games", "Inspired by Activision Skiing (1980).")}</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-skiing">{gettext("Hex Skiing")}</.help_link>
-  · <.help_link topic="feature-hex-skiing-escape">{gettext("Hex Skiing: Escape")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-hex-skiing">{dgettext("help_games", "Hex Skiing")}</.help_link>
+  ·
+  <.help_link topic="feature-hex-skiing-escape">
+    {dgettext("help_games", "Hex Skiing: Escape")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

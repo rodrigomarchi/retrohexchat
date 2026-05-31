@@ -47,7 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
     ~H"""
     <.dialog id={@id} show={@show} lock={@show_add_dialog || @show_edit_dialog}>
       <div data-testid="notify-list">
-        <.dialog_header id={@id} title={gettext("Notify List")}>
+        <.dialog_header id={@id} title={dgettext("dialogs", "Notify List")}>
           <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
         </.dialog_header>
 
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 id={"#{@id}-auto-add-pm"}
               />
               <label for={"#{@id}-auto-add-pm"} class="text-xs cursor-pointer select-none">
-                {gettext("Auto-add PM contacts to notify list")}
+                {dgettext("dialogs", "Auto-add PM contacts to notify list")}
               </label>
             </div>
             <div class="flex items-center gap-retro-4">
@@ -73,7 +73,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 id={"#{@id}-auto-whois"}
               />
               <label for={"#{@id}-auto-whois"} class="text-xs cursor-pointer select-none">
-                {gettext("Perform WHOIS on notify nicks when they come online")}
+                {dgettext("dialogs", "Perform WHOIS on notify nicks when they come online")}
               </label>
             </div>
           </div>
@@ -83,9 +83,9 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
             <.table>
               <.table_header>
                 <.table_row>
-                  <.table_head>{gettext("Nick")}</.table_head>
-                  <.table_head>{gettext("Status")}</.table_head>
-                  <.table_head>{gettext("Last Seen")}</.table_head>
+                  <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
+                  <.table_head>{dgettext("dialogs", "Status")}</.table_head>
+                  <.table_head>{dgettext("dialogs", "Last Seen")}</.table_head>
                 </.table_row>
               </.table_header>
               <.table_body>
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
           <div class="flex gap-retro-4">
             <.button size="sm" variant="outline" phx-click={@on_add}>
               <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-              {gettext("Add")}
+              {dgettext("dialogs", "Add")}
             </.button>
             <.button
               size="sm"
@@ -124,7 +124,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               disabled={@selected_entry == nil}
             >
               <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-              {gettext("Edit")}
+              {dgettext("dialogs", "Edit")}
             </.button>
             <.button
               size="sm"
@@ -134,7 +134,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               disabled={@selected_entry == nil}
             >
               <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              {gettext("Remove")}
+              {dgettext("dialogs", "Remove")}
             </.button>
           </div>
         </.dialog_body>
@@ -142,7 +142,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
         <.dialog_footer>
           <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            {gettext("Close")}
+            {dgettext("dialogs", "Close")}
           </.button>
         </.dialog_footer>
       </div>
@@ -167,17 +167,21 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
         <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
           <span class="text-xs font-bold text-white truncate select-none">
-            {gettext("Add Notify Entry")}
+            {dgettext("dialogs", "Add Notify Entry")}
           </span>
           <div class="ml-auto">
-            <button type="button" aria-label={gettext("Close")} phx-click="notify_add_cancel" />
+            <button
+              type="button"
+              aria-label={dgettext("dialogs", "Close")}
+              phx-click="notify_add_cancel"
+            />
           </div>
         </div>
         <div class="p-2">
           <form phx-submit="notify_add" data-testid="notify-add-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="notify-add-nickname">
-                {gettext("Nickname:")}
+                {dgettext("dialogs", "Nickname:")}
               </label>
               <.input
                 type="text"
@@ -190,7 +194,9 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               />
             </div>
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="notify-add-note">{gettext("Note:")}</label>
+              <label class="text-xs font-bold" for="notify-add-note">
+                {dgettext("dialogs", "Note:")}
+              </label>
               <.input
                 type="text"
                 id="notify-add-note"
@@ -203,11 +209,11 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
             <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-                {gettext("OK")}
+                {dgettext("dialogs", "OK")}
               </.button>
               <.button type="button" size="sm" variant="outline" phx-click="notify_add_cancel">
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                {gettext("Cancel")}
+                {dgettext("dialogs", "Cancel")}
               </.button>
             </div>
           </form>
@@ -226,17 +232,21 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
         <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
           <span class="text-xs font-bold text-white truncate select-none">
-            {gettext("Edit Notify Entry")}
+            {dgettext("dialogs", "Edit Notify Entry")}
           </span>
           <div class="ml-auto">
-            <button type="button" aria-label={gettext("Close")} phx-click="notify_edit_cancel" />
+            <button
+              type="button"
+              aria-label={dgettext("dialogs", "Close")}
+              phx-click="notify_edit_cancel"
+            />
           </div>
         </div>
         <div class="p-2">
           <form phx-submit="notify_edit" data-testid="notify-edit-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="notify-edit-nickname">
-                {gettext("Nickname:")}
+                {dgettext("dialogs", "Nickname:")}
               </label>
               <.input
                 type="text"
@@ -248,7 +258,9 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               />
             </div>
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="notify-edit-note">{gettext("Note:")}</label>
+              <label class="text-xs font-bold" for="notify-edit-note">
+                {dgettext("dialogs", "Note:")}
+              </label>
               <.input
                 type="text"
                 id="notify-edit-note"
@@ -262,11 +274,11 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
             <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-                {gettext("OK")}
+                {dgettext("dialogs", "OK")}
               </.button>
               <.button type="button" size="sm" variant="outline" phx-click="notify_edit_cancel">
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                {gettext("Cancel")}
+                {dgettext("dialogs", "Cancel")}
               </.button>
             </div>
           </form>
@@ -283,7 +295,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   defp online_status(%{online: true} = assigns) do
     ~H"""
     <span class="inline-flex items-center gap-retro-2 text-xs">
-      <span class="w-2 h-2 rounded-full bg-success inline-block" /> {gettext("Online")}
+      <span class="w-2 h-2 rounded-full bg-success inline-block" /> {dgettext("dialogs", "Online")}
     </span>
     """
   end
@@ -291,7 +303,10 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   defp online_status(assigns) do
     ~H"""
     <span class="inline-flex items-center gap-retro-2 text-xs text-muted-foreground">
-      <span class="w-2 h-2 rounded-full bg-muted-foreground inline-block" /> {gettext("Offline")}
+      <span class="w-2 h-2 rounded-full bg-muted-foreground inline-block" /> {dgettext(
+        "dialogs",
+        "Offline"
+      )}
     </span>
     """
   end

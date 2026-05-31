@@ -42,14 +42,14 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
     ~H"""
     <span data-testid="invite-dialog">
       <.dialog id={@id} show={@show}>
-        <.dialog_header id={@id} title={gettext("Channel Invite")}>
+        <.dialog_header id={@id} title={dgettext("dialogs", "Channel Invite")}>
           <:icon><Icons.icon_dialog_invite class="w-4 h-4" /></:icon>
         </.dialog_header>
 
         <.dialog_body>
           <div class="space-y-retro-8">
             <p class="text-xs text-muted-foreground">
-              {gettext("You have been invited to join the following channels:")}
+              {dgettext("dialogs", "You have been invited to join the following channels:")}
             </p>
 
             <div class="space-y-retro-4">
@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
                 </div>
                 <div class="p-retro-8">
                   <p class="text-xs mb-retro-8">
-                    {gettext("%{inviter} has invited you to join %{channel}.",
+                    {dgettext("dialogs", "%{inviter} has invited you to join %{channel}.",
                       inviter: invite_inviter(invite),
                       channel: invite.channel
                     )}
@@ -77,7 +77,7 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
                       data-testid={"invite-join-#{invite.channel}"}
                     >
                       <:icon><Icons.icon_dialog_invite class="w-4 h-4" /></:icon>
-                      {gettext("Join")}
+                      {dgettext("dialogs", "Join")}
                     </.button>
                     <.button
                       variant="outline"
@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
                       data-testid={"invite-ignore-#{invite.channel}"}
                     >
                       <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                      {gettext("Ignore")}
+                      {dgettext("dialogs", "Ignore")}
                     </.button>
                   </div>
                 </div>
@@ -94,7 +94,7 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
             </div>
 
             <p :if={@invites == []} class="text-xs text-muted-foreground italic">
-              {gettext("No pending invites.")}
+              {dgettext("dialogs", "No pending invites.")}
             </p>
           </div>
         </.dialog_body>
@@ -105,5 +105,5 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
 
   defp invite_inviter(%{inviter: inviter}), do: inviter
   defp invite_inviter(%{from: from}), do: from
-  defp invite_inviter(_invite), do: gettext("Someone")
+  defp invite_inviter(_invite), do: dgettext("dialogs", "Someone")
 end

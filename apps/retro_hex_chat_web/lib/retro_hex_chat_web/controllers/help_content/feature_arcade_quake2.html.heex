@@ -1,88 +1,109 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Play the Quake II demo in your browser via WebAssembly. The official shareware demo includes Unit 1 of the singleplayer campaign."
   )}
 </p>
 <.diagram_arcade_quake2 class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_game_quake2}>{gettext("Game Data")}</.help_h4>
+<.help_h4 icon={:icon_game_quake2}>{dgettext("help_arcade", "Game Data")}</.help_h4>
 <ul>
   <li>
     <.help_link topic="feature-arcade-quake2-shareware">
-      {gettext("Quake II: The Invasion")}
+      {dgettext("help_arcade", "Quake II: The Invasion")}
     </.help_link>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "— The official demo (1997). Unit 1 of the singleplayer campaign — fight the Strogg invasion. Freely redistributable shareware."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_webrtc}>{gettext("Engine")}</.help_h4>
+<.help_h4 icon={:icon_webrtc}>{dgettext("help_arcade", "Engine")}</.help_h4>
 <p>
-  {gettext("Powered by")} <strong>{gettext("Qwasm2")}</strong>
-  {gettext(
+  {dgettext("help_arcade", "Powered by")} <strong>{dgettext("help_arcade", "Qwasm2")}</strong>
+  {dgettext(
+    "help_arcade",
     "— Yamagi Quake II compiled to WebAssembly via Emscripten. Features WebGL 2 rendering, software rendering fallback, and in-browser save games."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("WASD")}</strong> {gettext("— Move")}</li>
-  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim")}</li>
-  <li><strong>{gettext("Left click")}</strong> {gettext("— Fire")}</li>
-  <li><strong>E</strong> {gettext("— Use / Open doors")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Jump")}</li>
-  <li><strong>C</strong> {gettext("— Crouch")}</li>
-  <li><strong>R</strong> {gettext("— Reload")}</li>
-  <li><strong>1-9</strong> {gettext("— Weapon select")}</li>
+  <li><strong>{dgettext("help_arcade", "WASD")}</strong> {dgettext("help_arcade", "— Move")}</li>
+  <li><strong>{dgettext("help_arcade", "Mouse")}</strong> {dgettext("help_arcade", "— Aim")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left click")}</strong> {dgettext("help_arcade", "— Fire")}
+  </li>
+  <li><strong>E</strong> {dgettext("help_arcade", "— Use / Open doors")}</li>
+  <li><strong>{dgettext("help_arcade", "Space")}</strong> {dgettext("help_arcade", "— Jump")}</li>
+  <li><strong>C</strong> {dgettext("help_arcade", "— Crouch")}</li>
+  <li><strong>R</strong> {dgettext("help_arcade", "— Reload")}</li>
+  <li><strong>1-9</strong> {dgettext("help_arcade", "— Weapon select")}</li>
 </ul>
-<.help_h4 icon={:icon_clock}>{gettext("History")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "History")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Released by id Software on December 9, 1997, Quake II shifted from its predecessor's Lovecraftian horror to a sci-fi military campaign against the alien Strogg. The id Tech 2 engine introduced colored dynamic lighting and a hub-based level structure. Quake II's multiplayer became a cornerstone of early esports, with the Cyberathlete Professional League (CPL) featuring it as a main event from 1997 to 2004."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Use the Blaster wisely")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Use the Blaster wisely")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Your starting Blaster has infinite ammo but low damage. Switch to better weapons as soon as you find them."
     )}
   </li>
   <li>
-    <strong>{gettext("Explore side paths")}</strong>
-    {gettext("— The hub-based levels reward exploration with armor, weapons, and secret areas.")}
+    <strong>{dgettext("help_arcade", "Explore side paths")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— The hub-based levels reward exploration with armor, weapons, and secret areas."
+    )}
   </li>
   <li>
-    <strong>{gettext("Save before boss fights")}</strong>
-    {gettext("— The demo includes challenging encounters. Quick-save with F5 frequently.")}
+    <strong>{dgettext("help_arcade", "Save before boss fights")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— The demo includes challenging encounters. Quick-save with F5 frequently."
+    )}
   </li>
   <li>
-    <strong>{gettext("Strafe and shoot")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Strafe and shoot")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Strogg enemies lead their shots. Keep moving laterally while firing to avoid damage."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Quake II was originally going to be called \"Wor\" — id couldn't secure the trademark, so they reused the Quake name despite having a completely different setting and story."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "id Software released the Quake II source code under GPL in 2001, leading to dozens of enhanced source ports including Yamagi Quake II used here."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The Strogg are a cybernetic alien race that assimilate other species — they were the primary antagonists through Quake 4 (2005)."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade">{gettext("Solo Arcade")}</.help_link>
-  · <.help_link topic="feature-arcade-quake">{gettext("Quake (Arcade)")}</.help_link>
-  · <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade">{dgettext("help_arcade", "Solo Arcade")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-quake">
+    {dgettext("help_arcade", "Quake (Arcade)")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-doom">{dgettext("help_arcade", "DOOM (Arcade)")}</.help_link>
 </p>

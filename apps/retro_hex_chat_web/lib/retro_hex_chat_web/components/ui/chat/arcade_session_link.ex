@@ -19,9 +19,9 @@ defmodule RetroHexChatWeb.Components.UI.ArcadeSessionLink do
   def arcade_session_link(assigns) do
     ~H"""
     <span {@rest}>
-      {gettext("* Arcade session ready!")}
+      {dgettext("chat", "* Arcade session ready!")}
       <a href={@href} class={classes(["underline", @class])} target="_blank" rel="noopener noreferrer">
-        {gettext("Open Arcade")}
+        {dgettext("chat", "Open Arcade")}
       </a>
     </span>
     """

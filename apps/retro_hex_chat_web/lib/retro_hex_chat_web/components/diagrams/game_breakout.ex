@@ -17,7 +17,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameBreakout do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext("Block Breakers game screen: two paddles with colored block rows between them")
+        dgettext(
+          "diagrams",
+          "Block Breakers game screen: two paddles with colored block rows between them"
+        )
       }
     >
       {win98_chrome("Block Breakers")}
@@ -41,10 +44,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameBreakout do
       <rect x="250" y="220" width="6" height="6" fill="#fff" />
       <%!-- Score + Lives --%>
       <text x="30" y="340" fill="#00ff41" font-size="10" font-family="'Courier New',monospace">
-        {gettext("Score: 340")}
+        {dgettext("diagrams", "Score: 340")}
       </text>
       <text x="420" y="340" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
-        {gettext("Lives: 2")}
+        {dgettext("diagrams", "Lives: 2")}
       </text>
     </svg>
     """

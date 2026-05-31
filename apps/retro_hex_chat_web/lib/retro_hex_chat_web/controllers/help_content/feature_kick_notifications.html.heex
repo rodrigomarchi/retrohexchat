@@ -1,15 +1,26 @@
-<p>{gettext("When you are kicked from a channel, a dialog appears with the details.")}</p>
-<.help_h4 icon={:icon_dialog_options}>{gettext("Dialog Contents")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
+    "When you are kicked from a channel, a dialog appears with the details."
+  )}
+</p>
+<.help_h4 icon={:icon_dialog_options}>{dgettext("help_features", "Dialog Contents")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
     "The dialog shows: the channel name, who kicked you, and the reason (if provided). Example: \"You have been kicked from #general by AdminNick: spam\""
   )}
 </p>
-<.help_h4 icon={:icon_dialog_kick}>{gettext("Multiple Kicks")}</.help_h4>
+<.help_h4 icon={:icon_dialog_kick}>{dgettext("help_features", "Multiple Kicks")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "If you are kicked from multiple channels simultaneously, the dialogs queue and display one at a time. Click OK to dismiss each dialog."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
-<p><.help_link topic="feature-unread-indicators">{gettext("Unread Indicators")}</.help_link></p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-unread-indicators">
+    {dgettext("help_features", "Unread Indicators")}
+  </.help_link>
+</p>

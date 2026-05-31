@@ -1,31 +1,51 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The Notify List tracks when specific users come online or go offline. You receive notifications in the Status tab."
   )}
 </p>
-<.help_h4 icon={:icon_tab_notify}>{gettext("Opening the Notify List")}</.help_h4>
+<.help_h4 icon={:icon_tab_notify}>
+  {dgettext("help_features", "Opening the Notify List")}
+</.help_h4>
 <p>
-  {gettext("Use the conversations sidebar (click \"Notify List\") or the")}
-  <code>{gettext("/notify")}</code> {gettext("command.")}
+  {dgettext("help_features", "Use the conversations sidebar (click \"Notify List\") or the")}
+  <code>{dgettext("help_features", "/notify")}</code> {dgettext("help_features", "command.")}
 </p>
-<.help_h4 icon={:icon_btn_add}>{gettext("Adding Users")}</.help_h4>
-<pre>{gettext("/notify add <nickname> [note]")}</pre>
+<.help_h4 icon={:icon_btn_add}>{dgettext("help_features", "Adding Users")}</.help_h4>
+<pre>{dgettext("help_features", "/notify add <nickname> [note]")}</pre>
 <p>
-  {gettext("Or use the")}
-  <strong>{gettext("Add")}</strong> {gettext("button in the Notify List window.")}
+  {dgettext("help_features", "Or use the")}
+  <strong>{dgettext("help_features", "Add")}</strong> {dgettext(
+    "help_features",
+    "button in the Notify List window."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_contacts}>{gettext("Auto-Add PM Contacts")}</.help_h4>
+<.help_h4 icon={:icon_tab_contacts}>{dgettext("help_features", "Auto-Add PM Contacts")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "When enabled (default), anyone you exchange private messages with is automatically added to the notify list. If the list is full (50 entries), the oldest entry is removed to make room. Toggle this in the Notify List dialog settings."
   )}
 </p>
-<.help_h4 icon={:icon_tab_contacts}>{gettext("Auto-Whois")}</.help_h4>
-<p>{gettext("Enable auto-whois to automatically look up user info when they come online.")}</p>
-<.help_h4 icon={:icon_btn_save}>{gettext("Persistence")}</.help_h4>
-<p>{gettext("Register and identify with NickServ to save your notify list across sessions.")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_tab_contacts}>{dgettext("help_features", "Auto-Whois")}</.help_h4>
 <p>
-  <.help_link topic="cmd-notify">{gettext("/notify Command")}</.help_link>
-  · <.help_link topic="feature-address-book">{gettext("Address Book")}</.help_link>
+  {dgettext(
+    "help_features",
+    "Enable auto-whois to automatically look up user info when they come online."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_save}>{dgettext("help_features", "Persistence")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Register and identify with NickServ to save your notify list across sessions."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-notify">{dgettext("help_features", "/notify Command")}</.help_link>
+  ·
+  <.help_link topic="feature-address-book">
+    {dgettext("help_features", "Address Book")}
+  </.help_link>
 </p>

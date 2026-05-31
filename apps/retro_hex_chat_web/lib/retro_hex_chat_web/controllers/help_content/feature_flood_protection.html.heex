@@ -1,41 +1,52 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Flood Protection automatically detects and handles various types of abuse, including message flooding and duplicate spam. All detection runs on your side — other users are not affected."
   )}
 </p>
-<.help_h4 icon={:icon_star}>{gettext("Features")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_features", "Features")}</.help_h4>
 <p>
-  <strong>{gettext("Duplicate Detection:")}</strong>
-  {gettext(
+  <strong>{dgettext("help_features", "Duplicate Detection:")}</strong>
+  {dgettext(
+    "help_features",
     "Detects repeated identical messages from the same sender. Default: 3 identical messages in 10 seconds triggers blocking."
   )}<br />
   <strong>
-    {gettext("Auto-Ignore:")}
+    {dgettext("help_features", "Auto-Ignore:")}
   </strong>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Users who exceed the message flood threshold are automatically added to your ignore list for a configurable duration (default: 5 minutes). The ignore is automatically removed when the timer expires."
   )}<br />
   <strong>
-    {gettext("Cooldown:")}
+    {dgettext("help_features", "Cooldown:")}
   </strong>
-  {gettext(
+  {dgettext(
+    "help_features",
     "If you manually un-ignore an auto-ignored user, a 60-second cooldown prevents the auto-ignore from re-triggering immediately."
   )}
 </p>
-<.help_h4 icon={:icon_tab_general}>{gettext("Default Thresholds")}</.help_h4>
-<pre>{gettext("Flood Threshold: 10 messages in 15 seconds Spam Threshold: 3 duplicates in 10 seconds Auto-Ignore Duration: 5 minutes")}</pre>
-<.help_h4 icon={:icon_dialog_options}>{gettext("Customizing Settings")}</.help_h4>
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_features", "Default Thresholds")}</.help_h4>
+<pre>{dgettext("help_features", "Flood Threshold: 10 messages in 15 seconds Spam Threshold: 3 duplicates in 10 seconds Auto-Ignore Duration: 5 minutes")}</pre>
+<.help_h4 icon={:icon_dialog_options}>
+  {dgettext("help_features", "Customizing Settings")}
+</.help_h4>
 <p>
-  {gettext("Go to")} <strong>{gettext("Tools > Flood Protection")}</strong>
-  {gettext("to customize all thresholds. Settings persist for registered (identified) users.")}
+  {dgettext("help_features", "Go to")}
+  <strong>{dgettext("help_features", "Tools > Flood Protection")}</strong>
+  {dgettext(
+    "help_features",
+    "to customize all thresholds. Settings persist for registered (identified) users."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_exceptions}>{gettext("Exemptions")}</.help_h4>
+<.help_h4 icon={:icon_tab_exceptions}>{dgettext("help_features", "Exemptions")}</.help_h4>
 <p>
-  {gettext("- System messages (joins, parts, kicks) are never filtered")}<br />{gettext(
+  {dgettext("help_features", "- System messages (joins, parts, kicks) are never filtered")}<br />{dgettext(
+    "help_features",
     "- Your own messages do not trigger flood tracking"
-  )}<br />{gettext("- Different channels/PM targets are tracked independently")}
+  )}<br />{dgettext("help_features", "- Different channels/PM targets are tracked independently")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-ignore-list">{gettext("Ignore List")}</.help_link>
+  <.help_link topic="feature-ignore-list">{dgettext("help_features", "Ignore List")}</.help_link>
 </p>

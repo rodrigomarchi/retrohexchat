@@ -38,7 +38,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   def join(token, user_id) do
     case Registry.lookup(token) do
       {:ok, pid} -> GenServer.call(pid, {:join, user_id})
-      {:error, :not_found} -> {:error, gettext("Session process not running")}
+      {:error, :not_found} -> {:error, dgettext("arcade", "Session process not running")}
     end
   end
 
@@ -46,7 +46,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   def close(token, user_id, reason) do
     case Registry.lookup(token) do
       {:ok, pid} -> GenServer.call(pid, {:close, user_id, reason})
-      {:error, :not_found} -> {:error, gettext("Session process not running")}
+      {:error, :not_found} -> {:error, dgettext("arcade", "Session process not running")}
     end
   end
 
@@ -114,7 +114,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
       state = maybe_transition_to_lobby(state)
       {:reply, :ok, state}
     else
-      {:reply, {:error, gettext("Not the session creator")}, state}
+      {:reply, {:error, dgettext("arcade", "Not the session creator")}, state}
     end
   end
 

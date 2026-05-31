@@ -13,31 +13,32 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatMessagePage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Chat Message"), active_page: "chat-message")}
+    {:ok,
+     assign(socket, page_title: dgettext("showcase", "Chat Message"), active_page: "chat-message")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Chat Message")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Chat Message")}</h2>
 
       <.showcase_card
-        title={gettext("Normal Messages")}
+        title={dgettext("showcase", "Normal Messages")}
         description="Standard IRC messages with timestamps and colored nicks."
       >
         <.chat_message_list class="min-h-[120px]">
           <.chat_message timestamp="27/02 11:49" nick="Brutus" nick_color="text-teal">
-            {gettext("*nods silently* Stay out of trouble, Troll.")}
+            {dgettext("showcase", "*nods silently* Stay out of trouble, Troll.")}
           </.chat_message>
           <.chat_message timestamp="27/02 11:49" nick="Reginald" nick_color="text-success-dark">
-            {gettext("*tips hat* Do return soon, Troll.")}
+            {dgettext("showcase", "*tips hat* Do return soon, Troll.")}
           </.chat_message>
           <.chat_message timestamp="27/02 11:49" nick="Patches" nick_color="text-error">
-            {gettext("Troll heading out? Cool cool. The lobby will keep your seat warm.")}
+            {dgettext("showcase", "Troll heading out? Cool cool. The lobby will keep your seat warm.")}
           </.chat_message>
           <.chat_message timestamp="27/02 12:08" nick="Reginald" nick_color="text-success-dark">
-            {gettext("*adjusts monocle* Reginald here &mdash; your server concierge.")}
+            {dgettext("showcase", "*adjusts monocle* Reginald here &mdash; your server concierge.")}
           </.chat_message>
         </.chat_message_list>
         <.code_example>
@@ -50,27 +51,27 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatMessagePage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Message Types")}
+        title={dgettext("showcase", "Message Types")}
         description="Different message types: action, system, error, notice, service."
       >
         <.chat_message_list class="min-h-[140px]">
           <.chat_message timestamp="14:30" nick="Troll" type="normal" nick_color="text-link">
-            {gettext("Hello everyone!")}
+            {dgettext("showcase", "Hello everyone!")}
           </.chat_message>
           <.chat_message timestamp="14:30" nick="Troll" type="action">
-            {gettext("waves to the channel")}
+            {dgettext("showcase", "waves to the channel")}
           </.chat_message>
           <.chat_message timestamp="14:31" type="system">
-            {gettext("Troll has joined the channel.")}
+            {dgettext("showcase", "Troll has joined the channel.")}
           </.chat_message>
           <.chat_message timestamp="14:31" type="error">
-            {gettext("Cannot send to channel: you are banned.")}
+            {dgettext("showcase", "Cannot send to channel: you are banned.")}
           </.chat_message>
           <.chat_message timestamp="14:32" type="notice">
-            {gettext("[Server] Maintenance in 5 minutes.")}
+            {dgettext("showcase", "[Server] Maintenance in 5 minutes.")}
           </.chat_message>
           <.chat_message timestamp="14:32" type="service">
-            {gettext("ChanServ has set mode +o Troll.")}
+            {dgettext("showcase", "ChanServ has set mode +o Troll.")}
           </.chat_message>
         </.chat_message_list>
         <.code_example>
@@ -87,40 +88,42 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatMessagePage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Nick Colors")}
+        title={dgettext("showcase", "Nick Colors")}
         description="Different nick colors for user identification."
       >
         <.chat_message_list class="min-h-[100px]">
           <.chat_message timestamp="15:00" nick="Alice" nick_color="text-error">
-            {gettext("Hey!")}
+            {dgettext("showcase", "Hey!")}
           </.chat_message>
           <.chat_message timestamp="15:00" nick="Bob" nick_color="text-link">
-            {gettext("Hi Alice!")}
+            {dgettext("showcase", "Hi Alice!")}
           </.chat_message>
           <.chat_message timestamp="15:01" nick="Charlie" nick_color="text-teal">
-            {gettext("What's up?")}
+            {dgettext("showcase", "What's up?")}
           </.chat_message>
           <.chat_message timestamp="15:01" nick="Diana" nick_color="text-action">
-            {gettext("Not much, you?")}
+            {dgettext("showcase", "Not much, you?")}
           </.chat_message>
           <.chat_message timestamp="15:02" nick="Reginald" nick_color="text-success-dark">
-            {gettext("Greetings, everyone.")}
+            {dgettext("showcase", "Greetings, everyone.")}
           </.chat_message>
         </.chat_message_list>
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Long Messages & Wrapping")}
+        title={dgettext("showcase", "Long Messages & Wrapping")}
         description="Messages with long text wrap properly within the grid."
       >
         <.chat_message_list class="min-h-[80px]">
           <.chat_message timestamp="16:00" nick="Patches" nick_color="text-error">
-            {gettext(
+            {dgettext(
+              "showcase",
               "Troll heading out? Cool cool. The lobby will keep your seat warm. We're always open. Like a 24/7 diner but with better Wi-Fi."
             )}
           </.chat_message>
           <.chat_message timestamp="16:01" nick="Brutus" nick_color="text-teal">
-            {gettext(
+            {dgettext(
+              "showcase",
               "Brutus here &mdash; I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
             )}
           </.chat_message>

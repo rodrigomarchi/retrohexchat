@@ -15,7 +15,7 @@ defmodule RetroHexChat.Bots.Capabilities.CustomCommands do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: gettext("Custom bot commands (!prefix trigger)")
+  def description, do: dgettext("bots", "Custom bot commands (!prefix trigger)")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::

@@ -16,26 +16,30 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ConfirmDialogPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Confirm Dialog"), active_page: "confirm-dialog")}
+    {:ok,
+     assign(socket,
+       page_title: dgettext("showcase", "Confirm Dialog"),
+       active_page: "confirm-dialog"
+     )}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Confirm Dialog")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Confirm Dialog")}</h2>
 
       <.showcase_card
-        title={gettext("Default Confirmation")}
+        title={dgettext("showcase", "Default Confirmation")}
         description="Standard confirmation dialog with OK/Cancel."
       >
         <.button variant="outline" phx-click={show_modal("confirm-default")}>
           <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
-          {gettext("Show Confirm")}
+          {dgettext("showcase", "Show Confirm")}
         </.button>
         <.confirm_dialog
           id="confirm-default"
-          title={gettext("Confirm Action")}
+          title={dgettext("showcase", "Confirm Action")}
           message="Are you sure you want to proceed with this action?"
         />
         <.code_example>
@@ -48,16 +52,16 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ConfirmDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Destructive Confirmation")}
+        title={dgettext("showcase", "Destructive Confirmation")}
         description="Destructive variant for dangerous actions."
       >
         <.button variant="destructive" phx-click={show_modal("confirm-delete")}>
           <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-          {gettext("Delete Channel")}
+          {dgettext("showcase", "Delete Channel")}
         </.button>
         <.confirm_dialog
           id="confirm-delete"
-          title={gettext("Delete Channel")}
+          title={dgettext("showcase", "Delete Channel")}
           message="Are you sure you want to delete #lobby? This action cannot be undone."
           confirm_label="Delete"
           variant="destructive"

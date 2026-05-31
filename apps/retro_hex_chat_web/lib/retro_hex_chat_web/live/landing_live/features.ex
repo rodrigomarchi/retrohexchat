@@ -15,10 +15,14 @@ defmodule RetroHexChatWeb.LandingLive.Features do
     {:ok,
      assign(socket,
        active_page: :features,
-       page_title: gettext("Features — Retro Hex Chat"),
+       page_title: dgettext("landing", "Features — Retro Hex Chat"),
        page_description:
-         gettext("Real-time chat, channels, P2P voice/video calls, 28 multiplayer games, ") <>
-           gettext(
+         dgettext(
+           "landing",
+           "Real-time chat, channels, P2P voice/video calls, 28 multiplayer games, "
+         ) <>
+           dgettext(
+             "landing",
              "18 classic arcade games, programmable bots, IRC-style commands, and built-in help."
            )
      )}

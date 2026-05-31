@@ -37,12 +37,13 @@ defmodule RetroHexChat.Commands.Handlers.Help do
   def help do
     %{
       name: "help",
-      syntax: gettext("/help [command]"),
+      syntax: dgettext("commands", "/help [command]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "View help for any command, or browse all available commands.\nWith no args: lists all commands. With a command name: shows detailed help.\nAlso accessible via Help Topics in the toolbar."
         ),
-      examples: ["/help", gettext("/help join")]
+      examples: ["/help", dgettext("commands", "/help join")]
     }
   end
 
@@ -57,9 +58,10 @@ defmodule RetroHexChat.Commands.Handlers.Help do
 
     %CommandSyntax{
       command: "help",
-      syntax: gettext("/help [command]"),
+      syntax: dgettext("commands", "/help [command]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "View help for any command, or browse all available commands.\nWith no args: lists all commands. With a command name: shows detailed help.\nAlso accessible via Help Topics in the toolbar."
         ),
       category: :basics,
@@ -69,10 +71,10 @@ defmodule RetroHexChat.Commands.Handlers.Help do
           required: false,
           type: :command,
           position: 0,
-          description: gettext("Command name to view detailed help")
+          description: dgettext("commands", "Command name to view detailed help")
         }
       ],
-      examples: ["/help", gettext("/help join")]
+      examples: ["/help", dgettext("commands", "/help join")]
     }
   end
 end

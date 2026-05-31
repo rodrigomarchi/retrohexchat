@@ -17,7 +17,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Diagrams do
     groups = build_groups()
 
     {:ok,
-     assign(socket, page_title: gettext("Diagrams"), active_page: "diagrams", groups: groups)}
+     assign(socket,
+       page_title: dgettext("showcase", "Diagrams"),
+       active_page: "diagrams",
+       groups: groups
+     )}
   end
 
   defp build_groups do
@@ -34,17 +38,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Diagrams do
 
   defp categorize(diagrams) do
     groups = [
-      {"P2P", gettext("Flow and architecture diagrams"),
+      {"P2P", dgettext("showcase", "Flow and architecture diagrams"),
        &String.starts_with?(&1, "diagram_p2p_")},
-      {gettext("Security"), gettext("Encryption layers and protocol diagrams"),
+      {dgettext("showcase", "Security"),
+       dgettext("showcase", "Encryption layers and protocol diagrams"),
        &String.starts_with?(&1, "diagram_security_")},
-      {gettext("Voice"), gettext("Voice/video call mockups"),
+      {dgettext("showcase", "Voice"), dgettext("showcase", "Voice/video call mockups"),
        &String.starts_with?(&1, "diagram_voice_")},
-      {gettext("Game Flows"), gettext("P2P multiplayer and solo arcade flow"),
+      {dgettext("showcase", "Game Flows"),
+       dgettext("showcase", "P2P multiplayer and solo arcade flow"),
        &(&1 in ["diagram_p2p_games", "diagram_arcade_flow"])},
-      {gettext("Game Screens"), gettext("Win98-style game screen illustrations"),
+      {dgettext("showcase", "Game Screens"),
+       dgettext("showcase", "Win98-style game screen illustrations"),
        &String.starts_with?(&1, "diagram_game_")},
-      {gettext("Arcade Logos"), gettext("Solo Arcade game logos/cover art"),
+      {dgettext("showcase", "Arcade Logos"),
+       dgettext("showcase", "Solo Arcade game logos/cover art"),
        &(String.starts_with?(&1, "diagram_arcade_") and &1 != "diagram_arcade_flow")}
     ]
 
@@ -59,9 +67,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Diagrams do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Diagrams")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Diagrams")}</h2>
       <p class="text-xs text-muted-foreground mb-4">
-        {gettext("Auto-discovered from submodules. Each diagram gets its own window.")}
+        {dgettext("showcase", "Auto-discovered from submodules. Each diagram gets its own window.")}
       </p>
 
       <div :for={{mod, _title, _description, diagrams} <- @groups}>

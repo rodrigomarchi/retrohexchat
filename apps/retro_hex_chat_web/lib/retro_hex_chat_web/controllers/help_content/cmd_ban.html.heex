@@ -1,45 +1,58 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Permanently block a user from the current channel. The banned user is immediately removed and cannot rejoin until the ban is lifted."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/ban <nickname> [reason]")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/ban <nickname> [reason]")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>nickname</code>
-  {gettext("— The user to ban from the channel.")}<br /><code>reason</code>
-  {gettext("— Optional reason for the ban.")}
+  {dgettext("help_commands", "— The user to ban from the channel.")}<br /><code>reason</code>
+  {dgettext("help_commands", "— Optional reason for the ban.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "The user is kicked from the channel and a ban is set, preventing them from rejoining. The ban stays in effect until a channel operator removes it using"
   )}
-  <code>{gettext("/unban nickname")}</code>
-  or <code>{gettext("/mode -b nickname")}</code>{gettext(
+  <code>{dgettext("help_commands", "/unban nickname")}</code>
+  or <code>{dgettext("help_commands", "/mode -b nickname")}</code>{dgettext(
+    "help_commands",
     ". Other channel members see that the user was banned. For registered channels, bans are persisted and survive channel restarts."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Requires channel operator or owner status")}</li>
-  <li>{gettext("Cannot ban yourself")}</li>
+  <li>{dgettext("help_commands", "Requires channel operator or owner status")}</li>
+  <li>{dgettext("help_commands", "Cannot ban yourself")}</li>
   <li>
-    {gettext("Cannot ban users with equal or higher rank (operators cannot ban the owner)")}
+    {dgettext(
+      "help_commands",
+      "Cannot ban users with equal or higher rank (operators cannot ban the owner)"
+    )}
   </li>
   <li>
-    {gettext("To remove a ban, use")} <code>{gettext("/unban nickname")}</code>
-    or <code>{gettext("/mode -b nickname")}</code>
+    {dgettext("help_commands", "To remove a ban, use")}
+    <code>{dgettext("help_commands", "/unban nickname")}</code>
+    or <code>{dgettext("help_commands", "/mode -b nickname")}</code>
   </li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/ban Spammer /ban Troll Repeated violations")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/ban Spammer /ban Troll Repeated violations")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-unban">{gettext("/unban")}</.help_link>
-  · <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
-  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
-  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
-  · <.help_link topic="feature-channel-central">{gettext("Channel Central")}</.help_link>
+  <.help_link topic="cmd-unban">{dgettext("help_commands", "/unban")}</.help_link>
+  · <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_commands", "Channel Permissions")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-channel-central">
+    {dgettext("help_commands", "Channel Central")}
+  </.help_link>
 </p>

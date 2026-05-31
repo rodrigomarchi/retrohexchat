@@ -1,18 +1,20 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "Grants half-operator status to a user (prefix %). Half-operators can kick users of lower rank and grant/revoke voice (+v), but cannot set channel modes or ban users."
   )}
 </p>
-<.help_h4 icon={:icon_tab_modes}>{gettext("Permissions")}</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_channels", "Permissions")}</.help_h4>
 <p>
-  {gettext("Can: kick regular/voiced users, set +v/-v")}<br />{gettext(
+  {dgettext("help_channels", "Can: kick regular/voiced users, set +v/-v")}<br />{dgettext(
+    "help_channels",
     "Cannot: set channel modes, ban users, kick operators or owners"
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
-<pre>{gettext("/mode +h Alice — Make Alice a half-operator /mode -h Alice — Remove half-operator from Alice")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
+<pre>{dgettext("help_channels", "/mode +h Alice — Make Alice a half-operator /mode -h Alice — Remove half-operator from Alice")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="mode-q">{gettext("Owner (+q)")}</.help_link>
-  · <.help_link topic="mode-o">{gettext("Operator (+o)")}</.help_link>
+  <.help_link topic="mode-q">{dgettext("help_channels", "Owner (+q)")}</.help_link>
+  · <.help_link topic="mode-o">{dgettext("help_channels", "Operator (+o)")}</.help_link>
 </p>

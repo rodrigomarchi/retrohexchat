@@ -1,11 +1,20 @@
 <p>
-  {gettext("When invite-only is set, users cannot join unless they are invited by an operator.")}
+  {dgettext(
+    "help_channels",
+    "When invite-only is set, users cannot join unless they are invited by an operator."
+  )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
-<pre>{gettext("/mode +i — Enable invite only /mode -i — Disable invite only")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
+<pre>{dgettext("help_channels", "/mode +i — Enable invite only /mode -i — Disable invite only")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-invite">{gettext("/invite Command")}</.help_link>
-  · <.help_link topic="feature-channel-invites">{gettext("Channel Invites")}</.help_link>
-  · <.help_link topic="feature-invite-exceptions">{gettext("Invite Exceptions")}</.help_link>
+  <.help_link topic="cmd-invite">{dgettext("help_channels", "/invite Command")}</.help_link>
+  ·
+  <.help_link topic="feature-channel-invites">
+    {dgettext("help_channels", "Channel Invites")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-invite-exceptions">
+    {dgettext("help_channels", "Invite Exceptions")}
+  </.help_link>
 </p>

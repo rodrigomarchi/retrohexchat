@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
       lock={@show_highlight_add_dialog || @show_highlight_edit_dialog}
       on_cancel={@on_cancel}
     >
-      <.dialog_header id={@id} title={gettext("Highlight Words")} on_close={@on_cancel}>
+      <.dialog_header id={@id} title={dgettext("dialogs", "Highlight Words")} on_close={@on_cancel}>
         <:icon><Icons.icon_star class="w-4 h-4" /></:icon>
       </.dialog_header>
 
@@ -65,7 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
         <div class="flex items-center gap-retro-4">
           <.button size="sm" variant="outline" phx-click={@on_add}>
             <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-            {gettext("Add")}
+            {dgettext("dialogs", "Add")}
           </.button>
         </div>
 
@@ -73,8 +73,8 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
         <.table>
           <.table_header>
             <.table_row>
-              <.table_head>{gettext("Word")}</.table_head>
-              <.table_head>{gettext("Color")}</.table_head>
+              <.table_head>{dgettext("dialogs", "Word")}</.table_head>
+              <.table_head>{dgettext("dialogs", "Color")}</.table_head>
               <.table_head class="w-[40px]"></.table_head>
             </.table_row>
           </.table_header>
@@ -83,7 +83,9 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             <.table_row :if={@own_nick} class="bg-hover-bg">
               <.table_cell>
                 <span class="font-bold">{@own_nick}</span>
-                <span class="text-muted-foreground text-[10px] ml-retro-4">{gettext("(you)")}</span>
+                <span class="text-muted-foreground text-[10px] ml-retro-4">
+                  {dgettext("dialogs", "(you)")}
+                </span>
               </.table_cell>
               <.table_cell>
                 <div class="w-4 h-4 border border-border bg-warning" />
@@ -115,7 +117,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
         <div class="flex gap-retro-4">
           <.button size="sm" variant="outline" phx-click={@on_edit} disabled={@selected_word == nil}>
             <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-            {gettext("Edit")}
+            {dgettext("dialogs", "Edit")}
           </.button>
           <.button
             size="sm"
@@ -125,7 +127,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             disabled={@selected_word == nil}
           >
             <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-            {gettext("Remove")}
+            {dgettext("dialogs", "Remove")}
           </.button>
         </div>
 
@@ -140,11 +142,11 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
       <.dialog_footer>
         <.button variant="default" phx-click={@on_ok || hide_modal(@id)}>
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {gettext("OK")}
+          {dgettext("dialogs", "OK")}
         </.button>
         <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {gettext("Cancel")}
+          {dgettext("dialogs", "Cancel")}
         </.button>
       </.dialog_footer>
     </.dialog>
@@ -170,12 +172,12 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
         <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
           <span class="text-xs font-bold text-white truncate select-none">
-            {gettext("Add Highlight Word")}
+            {dgettext("dialogs", "Add Highlight Word")}
           </span>
           <div class="ml-auto">
             <button
               type="button"
-              aria-label={gettext("Close")}
+              aria-label={dgettext("dialogs", "Close")}
               phx-click="close_highlight_add_dialog"
             />
           </div>
@@ -184,7 +186,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
           <form phx-submit="highlight_add" data-testid="highlight-add-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="highlight-word-input">
-                {gettext("Word:")}
+                {dgettext("dialogs", "Word:")}
               </label>
               <.input
                 type="text"
@@ -198,7 +200,9 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             </div>
             <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
             <div class="flex flex-col gap-1.5 mt-2">
-              <label class="text-xs font-bold">{gettext("Background Color (optional):")}</label>
+              <label class="text-xs font-bold">
+                {dgettext("dialogs", "Background Color (optional):")}
+              </label>
               <.color_picker
                 id="highlight-add-color"
                 selected={@selected_color}
@@ -208,7 +212,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             <div class="flex justify-end gap-1 mt-3">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-                {gettext("Add")}
+                {dgettext("dialogs", "Add")}
               </.button>
               <.button
                 type="button"
@@ -217,7 +221,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 phx-click="close_highlight_add_dialog"
               >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                {gettext("Cancel")}
+                {dgettext("dialogs", "Cancel")}
               </.button>
             </div>
           </form>
@@ -236,12 +240,12 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
         <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
           <span class="text-xs font-bold text-white truncate select-none">
-            {gettext("Edit Highlight Color")}
+            {dgettext("dialogs", "Edit Highlight Color")}
           </span>
           <div class="ml-auto">
             <button
               type="button"
-              aria-label={gettext("Close")}
+              aria-label={dgettext("dialogs", "Close")}
               phx-click="close_highlight_edit_dialog"
             />
           </div>
@@ -251,7 +255,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             <input type="hidden" name="word" value={@selected_word || ""} />
             <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold">{gettext("Background Color:")}</label>
+              <label class="text-xs font-bold">{dgettext("dialogs", "Background Color:")}</label>
               <.color_picker
                 id="highlight-edit-color"
                 selected={@selected_color}
@@ -261,7 +265,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             <div class="flex justify-end gap-1 mt-3">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-                {gettext("OK")}
+                {dgettext("dialogs", "OK")}
               </.button>
               <.button
                 type="button"
@@ -270,7 +274,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 phx-click="close_highlight_edit_dialog"
               >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                {gettext("Cancel")}
+                {dgettext("dialogs", "Cancel")}
               </.button>
             </div>
           </form>

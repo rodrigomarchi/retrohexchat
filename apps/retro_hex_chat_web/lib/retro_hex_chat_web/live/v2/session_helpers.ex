@@ -72,10 +72,10 @@ defmodule RetroHexChatWeb.V2.SessionHelpers do
   end
 
   @spec webrtc_state_label(String.t(), any()) :: String.t() | nil
-  def webrtc_state_label("connecting", _attempt), do: gettext("Connecting...")
-  def webrtc_state_label("connected", _attempt), do: gettext("Connected")
-  def webrtc_state_label("disconnected", _attempt), do: gettext("Reconnecting...")
-  def webrtc_state_label("failed", _attempt), do: gettext("Connection failed")
+  def webrtc_state_label("connecting", _attempt), do: dgettext("chat", "Connecting...")
+  def webrtc_state_label("connected", _attempt), do: dgettext("chat", "Connected")
+  def webrtc_state_label("disconnected", _attempt), do: dgettext("chat", "Reconnecting...")
+  def webrtc_state_label("failed", _attempt), do: dgettext("chat", "Connection failed")
   def webrtc_state_label(_state, _attempt), do: nil
 
   # --- Private Helpers ---

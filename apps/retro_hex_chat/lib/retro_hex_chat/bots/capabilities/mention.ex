@@ -14,7 +14,7 @@ defmodule RetroHexChat.Bots.Capabilities.Mention do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: gettext("Respond when mentioned by name")
+  def description, do: dgettext("bots", "Respond when mentioned by name")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
@@ -52,12 +52,12 @@ defmodule RetroHexChat.Bots.Capabilities.Mention do
   def validate_config(%{"response" => r}) when is_binary(r) and byte_size(r) > 0, do: :ok
 
   def validate_config(%{"response" => _}),
-    do: {:error, gettext("Response must be a non-empty string")}
+    do: {:error, dgettext("bots", "Response must be a non-empty string")}
 
   def validate_config(_), do: :ok
 
   @spec default_response() :: String.t()
-  defp default_response, do: gettext("Hi {nickname}! Try {prefix}help for my commands.")
+  defp default_response, do: dgettext("bots", "Hi {nickname}! Try {prefix}help for my commands.")
 
   @spec mentions_bot?(String.t(), String.t()) :: boolean()
   defp mentions_bot?(content, bot_nickname) do

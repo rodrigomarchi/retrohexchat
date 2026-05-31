@@ -1,34 +1,50 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "NickServ administration: drop nick registrations, view info, and reset passwords. Requires server administrator role."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/admin ns drop @<nick> /admin ns info @<nick> /admin ns resetpass @<nick> <new_password>")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin ns drop @<nick> /admin ns info @<nick> /admin ns resetpass @<nick> <new_password>")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Subcommands")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Subcommands")}</.help_h4>
 <ul>
-  <li><code>drop</code> {gettext("— Force-drop a nick registration (disconnects the user)")}</li>
-  <li><code>info</code> {gettext("— View detailed registration info for a nick")}</li>
   <li>
-    <code>resetpass</code> {gettext("— Reset a user's password (the new password is NOT logged)")}
+    <code>drop</code> {dgettext(
+      "help_commands",
+      "— Force-drop a nick registration (disconnects the user)"
+    )}
+  </li>
+  <li>
+    <code>info</code> {dgettext("help_commands", "— View detailed registration info for a nick")}
+  </li>
+  <li>
+    <code>resetpass</code> {dgettext(
+      "help_commands",
+      "— Reset a user's password (the new password is NOT logged)"
+    )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Dropping a nick disconnects the user with a notice")}</li>
-  <li>{gettext("Password resets are audited but the new password is never stored in logs")}</li>
-  <li>{gettext("All actions are recorded in the audit log")}</li>
+  <li>{dgettext("help_commands", "Dropping a nick disconnects the user with a notice")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "Password resets are audited but the new password is never stored in logs"
+    )}
+  </li>
+  <li>{dgettext("help_commands", "All actions are recorded in the audit log")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/admin ns info @Alice /admin ns drop @OldAccount /admin ns resetpass @Alice newpassword123")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin ns info @Alice /admin ns drop @OldAccount /admin ns resetpass @Alice newpassword123")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-admin">{gettext("/admin")}</.help_link>
-  · <.help_link topic="cmd-ns">{gettext("/ns")}</.help_link>
-  · <.help_link topic="nickserv">{gettext("NickServ")}</.help_link>
+  <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  · <.help_link topic="cmd-ns">{dgettext("help_commands", "/ns")}</.help_link>
+  · <.help_link topic="nickserv">{dgettext("help_commands", "NickServ")}</.help_link>
 </p>

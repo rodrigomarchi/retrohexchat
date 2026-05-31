@@ -131,7 +131,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
       if recent_matches == [] do
         []
       else
-        [gettext("Recent") | recent_matches]
+        [dgettext("commands", "Recent") | recent_matches]
       end
 
     remaining_limit = remaining_limit(limit, length(recent_matches))

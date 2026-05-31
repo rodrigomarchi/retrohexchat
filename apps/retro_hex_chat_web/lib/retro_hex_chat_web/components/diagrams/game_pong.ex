@@ -17,7 +17,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.GamePong do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext(
+        dgettext(
+          "diagrams",
           "Hex Pong game screen: two paddles and a ball on a dark field with dashed center line"
         )
       }

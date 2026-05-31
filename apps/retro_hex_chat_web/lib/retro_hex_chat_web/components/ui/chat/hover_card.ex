@@ -77,7 +77,7 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
 
       <.window_body class="p-retro-8 text-xs space-y-retro-4">
         <%= if @loading do %>
-          <.loading_spinner size="sm" text={gettext("Looking up %{nick}...", nick: @nick)} />
+          <.loading_spinner size="sm" text={dgettext("chat", "Looking up %{nick}...", nick: @nick)} />
         <% else %>
           <%!-- Role badge (from role attr) --%>
           <div :if={@role} class="flex gap-retro-4 flex-wrap">
@@ -90,31 +90,35 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
           </div>
 
           <%!-- Info fields --%>
-          <.info_field :if={@real_name} label={gettext("Name")} value={@real_name} />
-          <.info_field :if={@away} label={gettext("Away")} value={@away} />
-          <.info_field :if={@host} label={gettext("Host")} value={@host} />
-          <.info_field :if={@server} label={gettext("Server")} value={@server} />
-          <.info_field :if={@online_since} label={gettext("Online")} value={@online_since} />
-          <.info_field :if={@online_for} label={gettext("For")} value={@online_for} />
-          <.info_field :if={@idle} label={gettext("Idle")} value={@idle} />
-          <.info_field :if={@client} label={gettext("Client")} value={@client} />
-          <.info_field :if={@browser} label={gettext("Browser")} value={@browser} />
-          <.info_field :if={@os} label={gettext("OS")} value={@os} />
-          <.info_field :if={@screen_resolution} label={gettext("Screen")} value={@screen_resolution} />
-          <.info_field :if={@language} label={gettext("Lang")} value={@language} />
-          <.info_field :if={@timezone_info} label={gettext("TZ")} value={@timezone_info} />
-          <.info_field :if={@color_depth} label={gettext("Colors")} value={@color_depth} />
-          <.info_field :if={@contact_note} label={gettext("Note")} value={@contact_note} />
+          <.info_field :if={@real_name} label={dgettext("chat", "Name")} value={@real_name} />
+          <.info_field :if={@away} label={dgettext("chat", "Away")} value={@away} />
+          <.info_field :if={@host} label={dgettext("chat", "Host")} value={@host} />
+          <.info_field :if={@server} label={dgettext("chat", "Server")} value={@server} />
+          <.info_field :if={@online_since} label={dgettext("chat", "Online")} value={@online_since} />
+          <.info_field :if={@online_for} label={dgettext("chat", "For")} value={@online_for} />
+          <.info_field :if={@idle} label={dgettext("chat", "Idle")} value={@idle} />
+          <.info_field :if={@client} label={dgettext("chat", "Client")} value={@client} />
+          <.info_field :if={@browser} label={dgettext("chat", "Browser")} value={@browser} />
+          <.info_field :if={@os} label={dgettext("chat", "OS")} value={@os} />
+          <.info_field
+            :if={@screen_resolution}
+            label={dgettext("chat", "Screen")}
+            value={@screen_resolution}
+          />
+          <.info_field :if={@language} label={dgettext("chat", "Lang")} value={@language} />
+          <.info_field :if={@timezone_info} label={dgettext("chat", "TZ")} value={@timezone_info} />
+          <.info_field :if={@color_depth} label={dgettext("chat", "Colors")} value={@color_depth} />
+          <.info_field :if={@contact_note} label={dgettext("chat", "Note")} value={@contact_note} />
 
           <%!-- Registration status --%>
           <div :if={@registered} class="flex items-center gap-retro-4">
             <Icons.icon_checkmark class="w-3 h-3 text-success" />
-            <span class="text-muted-foreground">{gettext("Registered")}</span>
+            <span class="text-muted-foreground">{dgettext("chat", "Registered")}</span>
           </div>
 
           <div :if={@channels != []} class="space-y-retro-2">
             <.separator />
-            <div class="font-bold text-muted-foreground">{gettext("Channels")}</div>
+            <div class="font-bold text-muted-foreground">{dgettext("chat", "Channels")}</div>
             <div class="flex flex-wrap gap-retro-4">
               <.badge :for={ch <- @channels} variant="outline">{ch}</.badge>
             </div>
@@ -123,8 +127,8 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
           <div :if={@is_contact || @is_ignored}>
             <.separator />
             <div class="flex gap-retro-8 mt-retro-4">
-              <.badge :if={@is_contact} variant="default">{gettext("Contact")}</.badge>
-              <.badge :if={@is_ignored} variant="destructive">{gettext("Ignored")}</.badge>
+              <.badge :if={@is_contact} variant="default">{dgettext("chat", "Contact")}</.badge>
+              <.badge :if={@is_ignored} variant="destructive">{dgettext("chat", "Ignored")}</.badge>
             </div>
           </div>
         <% end %>
@@ -155,23 +159,23 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   attr :role, :atom, required: true
 
   defp role_badge(%{role: :owner} = assigns) do
-    ~H'<.badge variant="destructive">{gettext("Owner")}</.badge>'
+    ~H'<.badge variant="destructive">{dgettext("chat", "Owner")}</.badge>'
   end
 
   defp role_badge(%{role: :operator} = assigns) do
-    ~H'<.badge variant="default">{gettext("Operator")}</.badge>'
+    ~H'<.badge variant="default">{dgettext("chat", "Operator")}</.badge>'
   end
 
   defp role_badge(%{role: :half_operator} = assigns) do
-    ~H'<.badge variant="secondary">{gettext("Half-Op")}</.badge>'
+    ~H'<.badge variant="secondary">{dgettext("chat", "Half-Op")}</.badge>'
   end
 
   defp role_badge(%{role: :voiced} = assigns) do
-    ~H'<.badge variant="outline">{gettext("Voiced")}</.badge>'
+    ~H'<.badge variant="outline">{dgettext("chat", "Voiced")}</.badge>'
   end
 
   defp role_badge(%{role: :bot} = assigns) do
-    ~H'<.badge variant="secondary">{gettext("Bot")}</.badge>'
+    ~H'<.badge variant="secondary">{dgettext("chat", "Bot")}</.badge>'
   end
 
   defp role_badge(assigns) do

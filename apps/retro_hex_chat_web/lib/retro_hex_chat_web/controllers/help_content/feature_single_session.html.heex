@@ -1,37 +1,42 @@
 <p>
-  {gettext("RetroHexChat enforces a")} <strong>{gettext("single active session per nickname")}</strong>{gettext(
+  {dgettext("help_games", "RetroHexChat enforces a")} <strong>{dgettext("help_games", "single active session per nickname")}</strong>{dgettext(
+    "help_games",
     ". Only one browser window or tab can be connected with the same nickname at a time."
   )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_games", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "When you connect with a nickname that is already in use by another session (even your own in another tab or browser), the"
   )}
-  <strong>{gettext("previous session is immediately disconnected")}</strong>
-  {gettext("and redirected to the Connect screen with the message:")}
+  <strong>{dgettext("help_games", "previous session is immediately disconnected")}</strong>
+  {dgettext("help_games", "and redirected to the Connect screen with the message:")}
 </p>
-<pre>{gettext("Session ended — login started in another window")}</pre>
-<p>{gettext("The new session takes over and becomes the active connection.")}</p>
-<.help_h4 icon={:icon_clock}>{gettext("Session Expiry")}</.help_h4>
+<pre>{dgettext("help_games", "Session ended — login started in another window")}</pre>
+<p>{dgettext("help_games", "The new session takes over and becomes the active connection.")}</p>
+<.help_h4 icon={:icon_clock}>{dgettext("help_games", "Session Expiry")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "If your connection drops unexpectedly, the client attempts to reconnect automatically with exponential backoff (up to 10 attempts). If all attempts fail, the session is considered"
   )}
   <strong>expired</strong>
-  {gettext("and you are redirected to the Connect screen with the message:")}
+  {dgettext("help_games", "and you are redirected to the Connect screen with the message:")}
 </p>
-<pre>{gettext("Session expired")}</pre>
-<p>{gettext("You can then reconnect manually.")}</p>
-<.help_h4 icon={:icon_question}>{gettext("Why Single Session?")}</.help_h4>
-<p>{gettext("Enforcing one session per nickname prevents:")}</p>
+<pre>{dgettext("help_games", "Session expired")}</pre>
+<p>{dgettext("help_games", "You can then reconnect manually.")}</p>
+<.help_h4 icon={:icon_question}>{dgettext("help_games", "Why Single Session?")}</.help_h4>
+<p>{dgettext("help_games", "Enforcing one session per nickname prevents:")}</p>
 <ul>
-  <li>{gettext("Duplicate presence in channels")}</li>
-  <li>{gettext("Messages being received in multiple windows simultaneously")}</li>
-  <li>{gettext("State inconsistencies between sessions")}</li>
+  <li>{dgettext("help_games", "Duplicate presence in channels")}</li>
+  <li>{dgettext("help_games", "Messages being received in multiple windows simultaneously")}</li>
+  <li>{dgettext("help_games", "State inconsistencies between sessions")}</li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-auto-reconnect">{gettext("Auto-Reconnect")}</.help_link>
-  | <.help_link topic="cmd-ghost">{gettext("GHOST Command")}</.help_link>
+  <.help_link topic="feature-auto-reconnect">
+    {dgettext("help_games", "Auto-Reconnect")}
+  </.help_link>
+  | <.help_link topic="cmd-ghost">{dgettext("help_games", "GHOST Command")}</.help_link>
 </p>

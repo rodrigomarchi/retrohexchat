@@ -19,7 +19,7 @@ defmodule RetroHexChat.Bots.Capabilities.Arcade do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: gettext("Start solo arcade sessions with !play")
+  def description, do: dgettext("bots", "Start solo arcade sessions with !play")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
@@ -50,7 +50,7 @@ defmodule RetroHexChat.Bots.Capabilities.Arcade do
   @impl true
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]
   def commands do
-    [%{trigger: "play", description: gettext("Start a solo arcade session")}]
+    [%{trigger: "play", description: dgettext("bots", "Start a solo arcade session")}]
   end
 
   # ── Internal ──
@@ -91,7 +91,9 @@ defmodule RetroHexChat.Bots.Capabilities.Arcade do
       :ok
     else
       {:reply,
-       gettext("%{author}: You must be identified to play. Use /ns identify <password> first.",
+       dgettext(
+         "bots",
+         "%{author}: You must be identified to play. Use /ns identify <password> first.",
          author: author
        )}
     end
@@ -102,7 +104,9 @@ defmodule RetroHexChat.Bots.Capabilities.Arcade do
     case RetroHexChat.Repo.get_by(RegisteredNick, nickname: author) do
       nil ->
         {:reply,
-         gettext("%{author}: You must be registered to play. Use /ns register <password> first.",
+         dgettext(
+           "bots",
+           "%{author}: You must be registered to play. Use /ns register <password> first.",
            author: author
          )}
 

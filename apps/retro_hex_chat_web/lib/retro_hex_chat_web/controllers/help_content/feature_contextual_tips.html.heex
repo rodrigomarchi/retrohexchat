@@ -1,40 +1,49 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Contextual tips show helpful hints at the right moment — when you first encounter a feature. Each tip appears at most once."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Tip Triggers")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_features", "Tip Triggers")}</.help_h4>
 <p>
-  <strong>{gettext("First message:")}</strong>
-  {gettext("\"Use ↑ to edit your last message\"")}<br /><strong>{gettext("First join:")}</strong>
-  {gettext("\"Channels you join appear in the left panel\"")}<br />
+  <strong>{dgettext("help_features", "First message:")}</strong>
+  {dgettext("help_features", "\"Use ↑ to edit your last message\"")}<br />
   <strong>
-    {gettext("First PM:")}
+    {dgettext("help_features", "First join:")}
   </strong>
-  {gettext("\"PMs appear as separate windows in the conversations sidebar\"")}<br />
+  {dgettext("help_features", "\"Channels you join appear in the left panel\"")}<br />
   <strong>
-    {gettext("First highlight:")}
+    {dgettext("help_features", "First PM:")}
   </strong>
-  {gettext("\"Your nick was mentioned! Configure alerts in Settings\"")}<br />
+  {dgettext("help_features", "\"PMs appear as separate windows in the conversations sidebar\"")}<br />
   <strong>
-    {gettext("Idle (30s):")}
+    {dgettext("help_features", "First highlight:")}
   </strong>
-  {gettext("\"Type /help to see all commands\"")}
+  {dgettext("help_features", "\"Your nick was mentioned! Configure alerts in Settings\"")}<br />
+  <strong>
+    {dgettext("help_features", "Idle (30s):")}
+  </strong>
+  {dgettext("help_features", "\"Type /help to see all commands\"")}
 </p>
-<.help_h4 icon={:icon_close}>{gettext("Disabling Tips")}</.help_h4>
+<.help_h4 icon={:icon_close}>{dgettext("help_features", "Disabling Tips")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Check \"Don't show more tips\" on any tip toast to suppress all future tips. You can re-enable tips in"
-  )} <strong>{gettext("Options > Display > Show contextual tips")}</strong>.
+  )} <strong>{dgettext("help_features", "Options > Display > Show contextual tips")}</strong>.
 </p>
-<.help_h4 icon={:icon_tab_general}>{gettext("Behavior")}</.help_h4>
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_features", "Behavior")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Tips queue if multiple triggers fire at once (2-second gap between toasts). Tips do not appear while a dialog is open. Tips auto-dismiss after 8 seconds."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="getting-started">{gettext("Getting Started")}</.help_link>
-  · <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
+  <.help_link topic="getting-started">{dgettext("help_features", "Getting Started")}</.help_link>
+  ·
+  <.help_link topic="keyboard-shortcuts">
+    {dgettext("help_features", "Keyboard Shortcuts")}
+  </.help_link>
 </p>

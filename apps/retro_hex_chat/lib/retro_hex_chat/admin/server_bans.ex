@@ -48,7 +48,7 @@ defmodule RetroHexChat.Admin.ServerBans do
         |> Repo.update()
 
         BanCache.remove(nickname)
-        {:ok, gettext("%{nickname} has been unbanned", nickname: nickname)}
+        {:ok, dgettext("admin", "%{nickname} has been unbanned", nickname: nickname)}
     end
   end
 

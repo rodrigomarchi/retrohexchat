@@ -72,7 +72,9 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
           ]}
           style={"background-color: #{hex};"}
           title={color_name(color)}
-          aria-label={gettext("Color %{index}: %{name}", index: idx, name: color_name(color))}
+          aria-label={
+            dgettext("chat", "Color %{index}: %{name}", index: idx, name: color_name(color))
+          }
           phx-click={@on_select}
           phx-value-index={idx}
           phx-value-picker={@id}
@@ -89,20 +91,20 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
     Enum.map(@irc_colors, fn {color, hex} -> {color_name(color), hex} end)
   end
 
-  defp color_name(:white), do: gettext("White")
-  defp color_name(:black), do: gettext("Black")
-  defp color_name(:navy), do: gettext("Navy")
-  defp color_name(:green), do: gettext("Green")
-  defp color_name(:red), do: gettext("Red")
-  defp color_name(:maroon), do: gettext("Maroon")
-  defp color_name(:purple), do: gettext("Purple")
-  defp color_name(:orange), do: gettext("Orange")
-  defp color_name(:yellow), do: gettext("Yellow")
-  defp color_name(:lime), do: gettext("Lime")
-  defp color_name(:teal), do: gettext("Teal")
-  defp color_name(:cyan), do: gettext("Cyan")
-  defp color_name(:royal_blue), do: gettext("Royal Blue")
-  defp color_name(:magenta), do: gettext("Magenta")
-  defp color_name(:gray), do: gettext("Gray")
-  defp color_name(:silver), do: gettext("Silver")
+  defp color_name(:white), do: dgettext("chat", "White")
+  defp color_name(:black), do: dgettext("chat", "Black")
+  defp color_name(:navy), do: dgettext("chat", "Navy")
+  defp color_name(:green), do: dgettext("chat", "Green")
+  defp color_name(:red), do: dgettext("chat", "Red")
+  defp color_name(:maroon), do: dgettext("chat", "Maroon")
+  defp color_name(:purple), do: dgettext("chat", "Purple")
+  defp color_name(:orange), do: dgettext("chat", "Orange")
+  defp color_name(:yellow), do: dgettext("chat", "Yellow")
+  defp color_name(:lime), do: dgettext("chat", "Lime")
+  defp color_name(:teal), do: dgettext("chat", "Teal")
+  defp color_name(:cyan), do: dgettext("chat", "Cyan")
+  defp color_name(:royal_blue), do: dgettext("chat", "Royal Blue")
+  defp color_name(:magenta), do: dgettext("chat", "Magenta")
+  defp color_name(:gray), do: dgettext("chat", "Gray")
+  defp color_name(:silver), do: dgettext("chat", "Silver")
 end

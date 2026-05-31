@@ -19,6 +19,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.FieldsetPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Fieldset"), active_page: "fieldset")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Fieldset"), active_page: "fieldset")}
   end
 end

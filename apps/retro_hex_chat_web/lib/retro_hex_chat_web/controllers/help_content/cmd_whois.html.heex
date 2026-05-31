@@ -1,32 +1,38 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Look up detailed information about an online user, including their channels, idle time, bio, and registration status."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/whois <nickname>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>nickname</code> {gettext("— The user to look up.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/whois <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p><code>nickname</code> {dgettext("help_commands", "— The user to look up.")}</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Displays comprehensive information about the user in the Status tab. You can see: their channels (with shared channels highlighted), how long they've been online, how long they've been idle, their away message (if set), their bio (if set), whether they're registered with NickServ, and client details (browser, OS, screen resolution, language, and timezone) when available. You can also trigger"
   )}
-  <code>{gettext("/whois")}</code>
-  {gettext("by double-clicking a nickname in the nick list. You can look up yourself too.")}
+  <code>{dgettext("help_commands", "/whois")}</code>
+  {dgettext(
+    "help_commands",
+    "by double-clicking a nickname in the nick list. You can look up yourself too."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>
-    {gettext("The user must be online (for offline users, use")}
-    <code>{gettext("/whowas")}</code> {gettext("instead)")}
+    {dgettext("help_commands", "The user must be online (for offline users, use")}
+    <code>{dgettext("help_commands", "/whowas")}</code> {dgettext("help_commands", "instead)")}
   </li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/whois Alice /whois YourOwnNick")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/whois Alice /whois YourOwnNick")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-whowas">{gettext("/whowas")}</.help_link>
-  · <.help_link topic="cmd-bio">{gettext("/bio")}</.help_link>
-  · <.help_link topic="feature-notify-list">{gettext("Notify List")}</.help_link>
+  <.help_link topic="cmd-whowas">{dgettext("help_commands", "/whowas")}</.help_link>
+  · <.help_link topic="cmd-bio">{dgettext("help_commands", "/bio")}</.help_link>
+  ·
+  <.help_link topic="feature-notify-list">{dgettext("help_commands", "Notify List")}</.help_link>
 </p>

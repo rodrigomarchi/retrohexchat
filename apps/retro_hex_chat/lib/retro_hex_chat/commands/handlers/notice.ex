@@ -9,17 +9,17 @@ defmodule RetroHexChat.Commands.Handlers.Notice do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, gettext("Usage: /notice <target> <message>")}
+  def validate(""), do: {:error, dgettext("commands", "Usage: /notice <target> <message>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], RetroHexChat.Commands.Handler.context()) ::
           RetroHexChat.Commands.Handler.result()
   def execute([], _context),
-    do: {:error, gettext("Usage: /notice <target> <message>")}
+    do: {:error, dgettext("commands", "Usage: /notice <target> <message>")}
 
   def execute([_target], _context),
-    do: {:error, gettext("No message specified. Usage: /notice <target> <message>")}
+    do: {:error, dgettext("commands", "No message specified. Usage: /notice <target> <message>")}
 
   def execute([target | rest], _context) do
     content = Enum.join(rest, " ")
@@ -36,14 +36,15 @@ defmodule RetroHexChat.Commands.Handlers.Notice do
   def help do
     %{
       name: "notice",
-      syntax: gettext("/notice <target> <message>"),
+      syntax: dgettext("commands", "/notice <target> <message>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Send a notice to a user or channel without opening a PM window on their side.\nBoth target and message are required. Target can be a nickname or a #channel."
         ),
       examples: [
-        gettext("/notice Alice Check out #project"),
-        gettext("/notice #elixir Server maintenance in 30 minutes")
+        dgettext("commands", "/notice Alice Check out #project"),
+        dgettext("commands", "/notice #elixir Server maintenance in 30 minutes")
       ]
     }
   end
@@ -59,9 +60,10 @@ defmodule RetroHexChat.Commands.Handlers.Notice do
 
     %CommandSyntax{
       command: "notice",
-      syntax: gettext("/notice <target> <message>"),
+      syntax: dgettext("commands", "/notice <target> <message>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Send a lightweight notice to a user or channel that doesn't open a PM window on their side."
         ),
       category: :user,
@@ -71,19 +73,19 @@ defmodule RetroHexChat.Commands.Handlers.Notice do
           required: true,
           type: :nick,
           position: 0,
-          description: gettext("Recipient (nickname or channel)")
+          description: dgettext("commands", "Recipient (nickname or channel)")
         },
         %Parameter{
           name: "message",
           required: true,
           type: :text,
           position: 1,
-          description: gettext("Notice content")
+          description: dgettext("commands", "Notice content")
         }
       ],
       examples: [
-        gettext("/notice Alice Check out #project"),
-        gettext("/notice #elixir Server maintenance in 30 minutes")
+        dgettext("commands", "/notice Alice Check out #project"),
+        dgettext("commands", "/notice #elixir Server maintenance in 30 minutes")
       ]
     }
   end

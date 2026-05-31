@@ -14,27 +14,27 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Switch do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Switch"), active_page: "switch")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Switch"), active_page: "switch")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Switch")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Switch")}</h2>
 
       <.showcase_card
-        title={gettext("Usage")}
+        title={dgettext("showcase", "Usage")}
         description="A control that allows the user to toggle between on and off."
       >
         <div class="space-y-3">
           <div class="flex items-center gap-2">
             <.switch id="switch-1" />
-            <.label for="switch-1">{gettext("Airplane mode")}</.label>
+            <.label for="switch-1">{dgettext("showcase", "Airplane mode")}</.label>
           </div>
           <div class="flex items-center gap-2">
             <.switch id="switch-2" default-value={true} />
-            <.label for="switch-2">{gettext("Dark mode")}</.label>
+            <.label for="switch-2">{dgettext("showcase", "Dark mode")}</.label>
           </div>
         </div>
         <.code_example>

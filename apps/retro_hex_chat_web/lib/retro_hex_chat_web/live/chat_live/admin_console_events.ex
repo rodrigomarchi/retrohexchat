@@ -23,7 +23,10 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       {:halt, assign(socket, show_admin_console: true, admin_console_results: [])}
     else
       {:halt,
-       error_event(socket, gettext("Admin Console is restricted to server administrators."))}
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
     end
   end
 
@@ -37,7 +40,10 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       {:halt, assign(socket, admin_console_results: results)}
     else
       {:halt,
-       error_event(socket, gettext("Admin Console is restricted to server administrators."))}
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
     end
   end
 
@@ -96,7 +102,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
         entry = %{
           line: line,
           status: :error,
-          message: gettext("Not a command (must start with /)")
+          message: dgettext("chat", "Not a command (must start with /)")
         }
 
         {entry, context}
@@ -162,25 +168,29 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   defp result_status(_), do: :ok
 
   defp result_message({:ok, :system, %{content: text}}), do: text
-  defp result_message({:ok, :join, channel}), do: gettext("Joined %{channel}", channel: channel)
+
+  defp result_message({:ok, :join, channel}),
+    do: dgettext("chat", "Joined %{channel}", channel: channel)
 
   defp result_message({:ok, :join, channel, _pw}),
-    do: gettext("Joined %{channel}", channel: channel)
+    do: dgettext("chat", "Joined %{channel}", channel: channel)
 
   defp result_message({:ok, :ui_action, :set_topic, %{topic: t}}),
-    do: gettext("Topic set: %{topic}", topic: t)
+    do: dgettext("chat", "Topic set: %{topic}", topic: t)
 
   defp result_message({:ok, :ui_action, :set_mode, %{mode_string: m}}),
-    do: gettext("Mode set: %{mode}", mode: m)
+    do: dgettext("chat", "Mode set: %{mode}", mode: m)
 
-  defp result_message({:ok, :ui_action, :view_topic, _}), do: gettext("Done")
+  defp result_message({:ok, :ui_action, :view_topic, _}), do: dgettext("chat", "Done")
   defp result_message({:error, msg}), do: msg
 
   defp result_message({:ok, _type, payload}) when is_map(payload) do
-    payload |> Map.get(:content, Map.get(payload, :message, gettext("Done"))) |> to_string()
+    payload
+    |> Map.get(:content, Map.get(payload, :message, dgettext("chat", "Done")))
+    |> to_string()
   end
 
-  defp result_message(_), do: gettext("Done")
+  defp result_message(_), do: dgettext("chat", "Done")
 
   defp blank?(""), do: true
   defp blank?(_), do: false

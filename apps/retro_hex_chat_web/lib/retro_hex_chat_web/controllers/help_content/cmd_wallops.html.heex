@@ -1,34 +1,43 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Send a message to all users who have opted in to receive operator announcements by enabling +w user mode."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/wallops <message>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>message</code> {gettext("— The broadcast message to send.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/wallops <message>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p><code>message</code> {dgettext("help_commands", "— The broadcast message to send.")}</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext("Wallops messages are delivered to all users who have enabled the")}
-  <code>{gettext("+w")}</code>
-  {gettext("user mode (via")} <code>{gettext("/umode +w")}</code>{gettext(
+  {dgettext("help_commands", "Wallops messages are delivered to all users who have enabled the")}
+  <code>{dgettext("help_commands", "+w")}</code>
+  {dgettext("help_commands", "user mode (via")} <code>{dgettext("help_commands", "/umode +w")}</code>{dgettext(
+    "help_commands",
     "). The message appears in each recipient's Status tab. Unlike"
-  )} <code>{gettext("/announce")}</code>{gettext(
+  )} <code>{dgettext("help_commands", "/announce")}</code>{dgettext(
+    "help_commands",
     ", wallops can be opted out of — users who haven't enabled"
   )}
-  <code>{gettext("+w")}</code>
-  {gettext("won't see them. This makes wallops suitable for non-critical operator announcements.")}
+  <code>{dgettext("help_commands", "+w")}</code>
+  {dgettext(
+    "help_commands",
+    "won't see them. This makes wallops suitable for non-critical operator announcements."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Server operator or administrator only")}</li>
-  <li>{gettext("Only users with +w mode enabled will see the message")}</li>
+  <li>{dgettext("help_commands", "Server operator or administrator only")}</li>
+  <li>{dgettext("help_commands", "Only users with +w mode enabled will see the message")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/wallops Server maintenance in 10 minutes /wallops New chat features available — check #announcements")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/wallops Server maintenance in 10 minutes /wallops New chat features available — check #announcements")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-umode">{gettext("/umode")}</.help_link>
-  · <.help_link topic="cmd-announce">{gettext("/announce")}</.help_link>
-  · <.help_link topic="feature-special-messages">{gettext("Special Messages")}</.help_link>
+  <.help_link topic="cmd-umode">{dgettext("help_commands", "/umode")}</.help_link>
+  · <.help_link topic="cmd-announce">{dgettext("help_commands", "/announce")}</.help_link>
+  ·
+  <.help_link topic="feature-special-messages">
+    {dgettext("help_commands", "Special Messages")}
+  </.help_link>
 </p>

@@ -18,7 +18,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
     target_meta = find_user_presence(target, session.channels)
 
     if target_meta == nil and target != session.nickname do
-      Messages.system_event(socket, gettext("* %{target} is not online.", target: target))
+      Messages.system_event(
+        socket,
+        dgettext("chat", "* %{target} is not online.", target: target)
+      )
     else
       lines = build_whois_lines(socket, session, target, target_meta)
 
@@ -33,7 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
     if Tracker.online?("presence:global", target) do
       Messages.system_event(
         socket,
-        gettext("* %{target} is online. Use /whois %{target} for current info.",
+        dgettext("chat", "* %{target} is online. Use /whois %{target} for current info.",
           target: target
         )
       )
@@ -56,20 +59,22 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
       {:error, :not_found} ->
         Messages.system_event(
           socket,
-          gettext("* No whowas information available for %{target}.", target: target)
+          dgettext("chat", "* No whowas information available for %{target}.", target: target)
         )
     end
   end
 
   defp whowas_lines(entry) do
     [
-      gettext("----- Whowas: %{nickname} -----", nickname: entry.nickname),
-      gettext("Last seen: %{time}", time: TimeFormatter.format_relative(entry.disconnected_at)),
-      gettext("Channels: %{channels}", channels: Enum.join(entry.channels, ", "))
+      dgettext("chat", "----- Whowas: %{nickname} -----", nickname: entry.nickname),
+      dgettext("chat", "Last seen: %{time}",
+        time: TimeFormatter.format_relative(entry.disconnected_at)
+      ),
+      dgettext("chat", "Channels: %{channels}", channels: Enum.join(entry.channels, ", "))
     ]
     |> maybe_append(
       entry.quit_message != nil,
-      gettext("Quit message: %{message}", message: entry.quit_message)
+      dgettext("chat", "Quit message: %{message}", message: entry.quit_message)
     )
     |> Kernel.++(["-----------------------------"])
   end
@@ -143,26 +148,28 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   end
 
   defp format_whois_lines(data, target, my_nick) do
-    lines = [gettext("----- Whois: %{target} -----", target: target)]
+    lines = [dgettext("chat", "----- Whois: %{target} -----", target: target)]
 
     lines =
       maybe_append(
         lines,
         data.target_channels != [],
-        gettext("Channels: %{channels}", channels: Enum.join(data.target_channels, ", "))
+        dgettext("chat", "Channels: %{channels}", channels: Enum.join(data.target_channels, ", "))
       )
 
     lines =
       maybe_append(
         lines,
         data.shared_channels != [] and target != my_nick,
-        gettext("Shared channels: %{channels}", channels: Enum.join(data.shared_channels, ", "))
+        dgettext("chat", "Shared channels: %{channels}",
+          channels: Enum.join(data.shared_channels, ", ")
+        )
       )
 
     lines =
       lines ++
         [
-          gettext("Online for: %{duration}",
+          dgettext("chat", "Online for: %{duration}",
             duration: TimeFormatter.format_duration(data.online_seconds)
           )
         ]
@@ -170,50 +177,58 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
     lines =
       lines ++
         [
-          gettext("Idle for: %{duration}",
+          dgettext("chat", "Idle for: %{duration}",
             duration: TimeFormatter.format_duration(data.idle_seconds)
           )
         ]
 
-    registered = if data.registered, do: gettext("Yes"), else: gettext("No")
-    lines = lines ++ [gettext("Registered: %{status}", status: registered)]
+    registered = if data.registered, do: dgettext("chat", "Yes"), else: dgettext("chat", "No")
+    lines = lines ++ [dgettext("chat", "Registered: %{status}", status: registered)]
 
     lines =
       maybe_append(
         lines,
         data.away,
-        gettext("Away: %{message}", message: data.away_message || "")
+        dgettext("chat", "Away: %{message}", message: data.away_message || "")
       )
 
-    lines = maybe_append(lines, data.bio != nil, gettext("Bio: %{bio}", bio: data.bio))
+    lines = maybe_append(lines, data.bio != nil, dgettext("chat", "Bio: %{bio}", bio: data.bio))
 
     lines =
       maybe_append(
         lines,
         data.contact_note != nil,
-        gettext("Contact note: %{note}", note: data.contact_note)
+        dgettext("chat", "Contact note: %{note}", note: data.contact_note)
       )
 
     client_label = client_display(data.browser, data.os)
 
     lines =
-      maybe_append(lines, client_label != nil, gettext("Client: %{client}", client: client_label))
+      maybe_append(
+        lines,
+        client_label != nil,
+        dgettext("chat", "Client: %{client}", client: client_label)
+      )
 
     lines =
-      maybe_append(lines, data.screen != nil, gettext("Screen: %{screen}", screen: data.screen))
+      maybe_append(
+        lines,
+        data.screen != nil,
+        dgettext("chat", "Screen: %{screen}", screen: data.screen)
+      )
 
     lines =
       maybe_append(
         lines,
         data.language != nil,
-        gettext("Language: %{language}", language: data.language)
+        dgettext("chat", "Language: %{language}", language: data.language)
       )
 
     lines =
       maybe_append(
         lines,
         data.client_timezone != nil,
-        gettext("Timezone: %{timezone}", timezone: data.client_timezone)
+        dgettext("chat", "Timezone: %{timezone}", timezone: data.client_timezone)
       )
 
     lines ++ ["-----------------------------"]
@@ -222,7 +237,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   defp client_display(nil, nil), do: nil
   defp client_display(browser, nil), do: browser
   defp client_display(nil, os), do: os
-  defp client_display(browser, os), do: gettext("%{browser} — %{os}", browser: browser, os: os)
+
+  defp client_display(browser, os),
+    do: dgettext("chat", "%{browser} — %{os}", browser: browser, os: os)
 
   defp maybe_append(lines, true, line), do: lines ++ [line]
   defp maybe_append(lines, _, _line), do: lines

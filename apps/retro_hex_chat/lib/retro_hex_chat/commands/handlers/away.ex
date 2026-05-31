@@ -30,12 +30,13 @@ defmodule RetroHexChat.Commands.Handlers.Away do
   def help do
     %{
       name: "away",
-      syntax: gettext("/away [message]"),
+      syntax: dgettext("commands", "/away [message]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Mark yourself as temporarily unavailable, with an optional message shown in /whois.\nWith a message: sets you as away. Without arguments: clears your away status and marks you as back."
         ),
-      examples: [gettext("/away Gone to lunch"), "/away"]
+      examples: [dgettext("commands", "/away Gone to lunch"), "/away"]
     }
   end
 
@@ -50,9 +51,10 @@ defmodule RetroHexChat.Commands.Handlers.Away do
 
     %CommandSyntax{
       command: "away",
-      syntax: gettext("/away [message]"),
+      syntax: dgettext("commands", "/away [message]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Mark yourself as temporarily unavailable, with an optional message shown in /whois."
         ),
       category: :basics,
@@ -62,10 +64,10 @@ defmodule RetroHexChat.Commands.Handlers.Away do
           required: false,
           type: :text,
           position: 0,
-          description: gettext("Away message (empty to return)")
+          description: dgettext("commands", "Away message (empty to return)")
         }
       ],
-      examples: [gettext("/away Gone to lunch"), "/away"]
+      examples: [dgettext("commands", "/away Gone to lunch"), "/away"]
     }
   end
 end

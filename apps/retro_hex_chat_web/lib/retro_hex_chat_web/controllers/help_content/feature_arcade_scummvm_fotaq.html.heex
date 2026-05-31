@@ -1,79 +1,130 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Flight of the Amazon Queen (1995) is a comic Indiana Jones-style point-and-click adventure in the Amazon. Pilot Joe King crash-lands in the jungle and stumbles into a mad scientist's plot to turn humans into dinosaurs."
   )}
 </p>
 <.diagram_arcade_scummvm class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "About")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Developed by Interactive Binary Illusions, an Australian partnership between John Passfield and Steve Stamatiadis, established in 1993. Development spanned four years (1991–1995), initially built on the Amiga 500 using the AMOS programming language. The MS-DOS port was rewritten from scratch in C by Tony Ball. The game follows pilot Joe King as he navigates the Amazon after a plane crash, encountering a mad scientist, dinosaur hybrids, and Amazonian warriors."
   )}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Released as freeware in 2004 for use with ScummVM. A 20th Anniversary Edition was released in March 2016 on iOS and Android. A sequel, \"Return of the Amazon Queen,\" was announced in January 2022. This is the full CD version with voice acting, running on ScummVM compiled to WebAssembly."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("Left Click")}</strong> {gettext("— Walk / interact with object")}</li>
-  <li><strong>{gettext("Right Click")}</strong> {gettext("— Examine")}</li>
-  <li><strong>{gettext("F5")}</strong> {gettext("— Save / load game")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Skip cutscene")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Pause game")}</li>
-  <li><strong>.</strong> {gettext("— Skip dialogue line")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Walk / interact with object"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Right Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Examine"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "F5")}</strong> {dgettext(
+      "help_arcade",
+      "— Save / load game"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Skip cutscene")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Space")}</strong> {dgettext("help_arcade", "— Pause game")}
+  </li>
+  <li><strong>.</strong> {dgettext("help_arcade", "— Skip dialogue line")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Talk to everyone exhaustively")}</strong>
-    {gettext("— Joe's quips are hilarious, and dialogue often contains puzzle hints.")}
+    <strong>{dgettext("help_arcade", "Talk to everyone exhaustively")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Joe's quips are hilarious, and dialogue often contains puzzle hints."
+    )}
   </li>
   <li>
-    <strong>{gettext("Combine inventory items")}</strong>
-    {gettext("— Creative combinations are key to solving puzzles. Think outside the box.")}
+    <strong>{dgettext("help_arcade", "Combine inventory items")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Creative combinations are key to solving puzzles. Think outside the box."
+    )}
   </li>
   <li>
-    <strong>{gettext("Opens up after crash")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Opens up after crash")}</strong>
+    {dgettext(
+      "help_arcade",
       "— The game's world expands significantly after the plane crash. Explore everywhere."
     )}
   </li>
   <li>
-    <strong>{gettext("Multiple solutions")}</strong>
-    {gettext("— Some puzzles have more than one solution. Experiment freely.")}
+    <strong>{dgettext("help_arcade", "Multiple solutions")}</strong>
+    {dgettext("help_arcade", "— Some puzzles have more than one solution. Experiment freely.")}
   </li>
   <li>
-    <strong>{gettext("LucasArts-inspired humor")}</strong>
-    {gettext("— If you enjoy Monkey Island or Day of the Tentacle, you'll love this.")}
+    <strong>{dgettext("help_arcade", "LucasArts-inspired humor")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— If you enjoy Monkey Island or Day of the Tentacle, you'll love this."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Development spanned four years and was originally built on the Amiga 500 using the AMOS programming language. The MS-DOS port was completely rewritten from scratch in C."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Released as freeware in 2004, a 20th Anniversary Edition hit iOS and Android in 2016, and a sequel \"Return of the Amazon Queen\" was announced in January 2022."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The game was distributed by Warner Interactive (WarnerActive) in the US — one of the few adventure games to get a major US publisher during the genre's declining years."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-scummvm">{gettext("ScummVM Adventures")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-bass">{gettext("Beneath a Steel Sky")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-drascula">{gettext("Drascula")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-dreamweb">{gettext("Dreamweb")}</.help_link>
+  <.help_link topic="feature-arcade-scummvm">
+    {dgettext("help_arcade", "ScummVM Adventures")}
+  </.help_link>
   ·
-  <.help_link topic="feature-arcade-scummvm-lure">{gettext("Lure of the Temptress")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-soltys">{gettext("Soltys")}</.help_link>
+  <.help_link topic="feature-arcade-scummvm-bass">
+    {dgettext("help_arcade", "Beneath a Steel Sky")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-drascula">
+    {dgettext("help_arcade", "Drascula")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-dreamweb">
+    {dgettext("help_arcade", "Dreamweb")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-lure">
+    {dgettext("help_arcade", "Lure of the Temptress")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-soltys">
+    {dgettext("help_arcade", "Soltys")}
+  </.help_link>
 </p>

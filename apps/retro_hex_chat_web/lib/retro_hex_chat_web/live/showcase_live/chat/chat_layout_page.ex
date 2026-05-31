@@ -15,44 +15,44 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatLayoutPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("Chat Layout"),
+       page_title: dgettext("showcase", "Chat Layout"),
        active_page: "chat-layout",
        messages: [
          %{
            timestamp: "14:20",
            nick: "alice",
-           text: gettext("Hey everyone!"),
+           text: dgettext("showcase", "Hey everyone!"),
            nick_color: "text-blue-600"
          },
          %{
            timestamp: "14:21",
            nick: "bob",
-           text: gettext("Hi alice! How's it going?"),
+           text: dgettext("showcase", "Hi alice! How's it going?"),
            nick_color: "text-green-600"
          },
          %{
            timestamp: "14:22",
            nick: "carol",
-           text: gettext("Welcome to #lobby!"),
+           text: dgettext("showcase", "Welcome to #lobby!"),
            nick_color: "text-red-600"
          },
          %{
            timestamp: "14:23",
            nick: "alice",
-           text: gettext("Pretty good, working on some code"),
+           text: dgettext("showcase", "Pretty good, working on some code"),
            nick_color: "text-blue-600"
          },
-         %{timestamp: "14:24", nick: "dave", text: gettext("Anyone up for a game?")},
+         %{timestamp: "14:24", nick: "dave", text: dgettext("showcase", "Anyone up for a game?")},
          %{
            timestamp: "14:25",
            nick: "bob",
-           text: gettext("Sure! What game?"),
+           text: dgettext("showcase", "Sure! What game?"),
            nick_color: "text-green-600"
          },
          %{
            timestamp: "14:25",
-           nick: gettext("System"),
-           text: gettext("eve has joined #lobby"),
+           nick: dgettext("showcase", "System"),
+           text: dgettext("showcase", "eve has joined #lobby"),
            type: "system"
          }
        ],
@@ -70,10 +70,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatLayoutPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Chat Layout")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Chat Layout")}</h2>
 
       <.showcase_card
-        title={gettext("Full MDI Layout")}
+        title={dgettext("showcase", "Full MDI Layout")}
         description="Complete chat interface: sidebar + tabs + topic + messages + nicklist + input."
       >
         <.chat_layout

@@ -1,27 +1,37 @@
-<p>{gettext("Choose where incoming notices from other users appear on your screen.")}</p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/notice_routing [active|status|sender]")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Choose where incoming notices from other users appear on your screen."
+  )}
+</p>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/notice_routing [active|status|sender]")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>active</code>
-  {gettext("— Show notices in your currently active window (default).")}<br /><code>status</code>
-  {gettext("— Show notices in the Status tab.")}<br /><code>sender</code>
-  {gettext("— Show notices in the sender's PM window (opens one if needed).")}
+  {dgettext("help_commands", "— Show notices in your currently active window (default).")}<br />
+  <code>
+    status
+  </code>
+  {dgettext("help_commands", "— Show notices in the Status tab.")}<br /><code>sender</code>
+  {dgettext("help_commands", "— Show notices in the sender's PM window (opens one if needed).")}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext("This controls the delivery of user-targeted notices (sent via")} <code>{gettext("/notice")}</code>{gettext(
+  {dgettext("help_commands", "This controls the delivery of user-targeted notices (sent via")} <code>{dgettext("help_commands", "/notice")}</code>{dgettext(
+    "help_commands",
     "). Channel notices always go to the channel window regardless of this setting. Running"
   )}
-  <code>{gettext("/notice_routing")}</code>
-  {gettext(
+  <code>{dgettext("help_commands", "/notice_routing")}</code>
+  {dgettext(
+    "help_commands",
     "with no arguments shows your current preference. The setting is saved across sessions for registered users."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/notice_routing /notice_routing status /notice_routing sender /notice_routing active")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/notice_routing /notice_routing status /notice_routing sender /notice_routing active")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-notice">{gettext("/notice")}</.help_link>
-  · <.help_link topic="feature-notices">{gettext("Notices")}</.help_link>
+  <.help_link topic="cmd-notice">{dgettext("help_commands", "/notice")}</.help_link>
+  · <.help_link topic="feature-notices">{dgettext("help_commands", "Notices")}</.help_link>
 </p>

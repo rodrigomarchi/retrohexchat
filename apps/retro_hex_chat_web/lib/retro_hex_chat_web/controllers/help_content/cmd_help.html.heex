@@ -1,27 +1,35 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "View help for any command, or browse all available commands. Your gateway to learning how RetroHexChat works."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/help [command]")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/help [command]")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>command</code>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "— Optional command name (without the / prefix). If omitted, shows a list of all commands."
   )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext("Running")} <code>{gettext("/help")}</code>
-  {gettext(
+  {dgettext("help_commands", "Running")} <code>{dgettext("help_commands", "/help")}</code>
+  {dgettext(
+    "help_commands",
     "with no arguments displays a categorized list of all available commands with brief descriptions. Adding a command name (like"
-  )} <code>{gettext("/help join")}</code>{gettext(
+  )} <code>{dgettext("help_commands", "/help join")}</code>{dgettext(
+    "help_commands",
     ") shows detailed help for that specific command. Use Help Topics from the menu bar to browse and search all help topics."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/help /help join /help mode /help ns")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
-<p><.help_link topic="commands-overview">{gettext("Commands Reference")}</.help_link></p>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/help /help join /help mode /help ns")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="commands-overview">
+    {dgettext("help_commands", "Commands Reference")}
+  </.help_link>
+</p>

@@ -12,30 +12,34 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, gettext("Usage: /nick <newnick>")}
+  def validate(""), do: {:error, dgettext("commands", "Usage: /nick <newnick>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, gettext("Usage: /nick <newnick>")}
+  def execute([], _context), do: {:error, dgettext("commands", "Usage: /nick <newnick>")}
 
   def execute([_ | rest], _context) when rest != [] do
-    {:error, gettext("Nickname cannot contain spaces")}
+    {:error, dgettext("commands", "Nickname cannot contain spaces")}
   end
 
   def execute([new_nick], context) do
     cond do
       new_nick == context.nickname ->
-        {:error, gettext("You are already using that nickname")}
+        {:error, dgettext("commands", "You are already using that nickname")}
 
       String.length(new_nick) > 16 ->
-        {:error, gettext("Nickname too long (max 16 characters)")}
+        {:error, dgettext("commands", "Nickname too long (max 16 characters)")}
 
       not Regex.match?(@first_char_pattern, new_nick) ->
-        {:error, gettext("Nickname must start with a letter or special character ([\\]^_{|})")}
+        {:error,
+         dgettext(
+           "commands",
+           "Nickname must start with a letter or special character ([\\]^_{|})"
+         )}
 
       not Regex.match?(@valid_nick_pattern, new_nick) ->
-        {:error, gettext("Nickname contains invalid characters")}
+        {:error, dgettext("commands", "Nickname contains invalid characters")}
 
       true ->
         {:ok, :nick_change, new_nick}
@@ -52,12 +56,13 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
   def help do
     %{
       name: "nick",
-      syntax: gettext("/nick <newnick>"),
+      syntax: dgettext("commands", "/nick <newnick>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Change your display name. A confirmation dialog appears before the change takes effect.\nRules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\nAllowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\nCannot change to your current nickname or one already in use."
         ),
-      examples: [gettext("/nick NewNick"), gettext("/nick [Bot]")]
+      examples: [dgettext("commands", "/nick NewNick"), dgettext("commands", "/nick [Bot]")]
     }
   end
 
@@ -72,9 +77,10 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
 
     %CommandSyntax{
       command: "nick",
-      syntax: gettext("/nick <newnick>"),
+      syntax: dgettext("commands", "/nick <newnick>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Change your display name in the chat. A confirmation dialog appears before the change takes effect."
         ),
       category: :basics,
@@ -84,10 +90,10 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
           required: true,
           type: :nick,
           position: 0,
-          description: gettext("New nickname (max 16 characters)")
+          description: dgettext("commands", "New nickname (max 16 characters)")
         }
       ],
-      examples: [gettext("/nick NewNick"), gettext("/nick [Bot]")]
+      examples: [dgettext("commands", "/nick NewNick"), dgettext("commands", "/nick [Bot]")]
     }
   end
 end

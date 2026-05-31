@@ -67,7 +67,9 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
             {:error, target_socket} ->
               error_event(
                 target_socket,
-                gettext("* Timer '%{name}' target window is no longer available", name: name)
+                dgettext("chat", "* Timer '%{name}' target window is no longer available",
+                  name: name
+                )
               )
           end
 
@@ -94,7 +96,9 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
          |> assign(session: new_session, ignore_timers: timers)
          |> maybe_persist_ignore_list(new_session)
          |> system_event(
-           gettext("* %{nickname} is no longer ignored (timer expired)", nickname: nickname)
+           dgettext("chat", "* %{nickname} is no longer ignored (timer expired)",
+             nickname: nickname
+           )
          )}
 
       {:error, :not_found} ->
@@ -125,7 +129,9 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
            flood_tracker: new_tracker
          )
          |> maybe_persist_ignore_list(new_session)
-         |> system_event(gettext("* %{nickname} is no longer auto-ignored", nickname: nickname))}
+         |> system_event(
+           dgettext("chat", "* %{nickname} is no longer auto-ignored", nickname: nickname)
+         )}
 
       {:error, :not_found} ->
         new_active = Map.delete(auto_state.active, sender_key)
@@ -149,7 +155,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
 
       socket =
         socket
-        |> system_event(gettext("* Performing: %{command}", command: masked))
+        |> system_event(dgettext("chat", "* Performing: %{command}", command: masked))
         |> execute_perform_command(session, entry.command)
 
       Process.send_after(self(), {:execute_perform, index + 1}, 100)
@@ -176,7 +182,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
           socket
         else
           socket
-          |> system_event(gettext("* Auto-joining %{channel}...", channel: channel))
+          |> system_event(dgettext("chat", "* Auto-joining %{channel}...", channel: channel))
           |> join_channel_in_background(channel, session, key)
         end
 
@@ -200,7 +206,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
           socket
         else
           socket
-          |> system_event(gettext("* Rejoining %{channel}...", channel: channel))
+          |> system_event(dgettext("chat", "* Rejoining %{channel}...", channel: channel))
           |> join_channel_in_background(channel, session, nil)
         end
 
@@ -225,7 +231,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
 
         push_status_message(
           socket,
-          gettext("* Channel invite to %{channel} expired", channel: channel),
+          dgettext("chat", "* Channel invite to %{channel} expired", channel: channel),
           :system
         )
       else
@@ -307,7 +313,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       {:message, _text} ->
         error_event(
           socket,
-          gettext("Perform: invalid command format: %{command}",
+          dgettext("chat", "Perform: invalid command format: %{command}",
             command: PerformList.mask_command(command)
           )
         )

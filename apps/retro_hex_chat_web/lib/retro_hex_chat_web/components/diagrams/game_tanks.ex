@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameTanks do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label={gettext("Pixel Tanks game screen: two tanks in a maze arena")}
+      aria-label={dgettext("diagrams", "Pixel Tanks game screen: two tanks in a maze arena")}
     >
       {win98_chrome("Pixel Tanks")}
       <%!-- Maze walls --%>
@@ -36,13 +36,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameTanks do
       <rect x="120" y="182" width="4" height="4" fill="#ff0" />
       <%!-- Scores --%>
       <text x="30" y="44" fill="#00ff41" font-size="12" font-family="'Courier New',monospace">
-        {gettext("P1: 3")}
+        {dgettext("diagrams", "P1: 3")}
       </text>
       <text x="440" y="44" fill="#00d4ff" font-size="12" font-family="'Courier New',monospace">
-        {gettext("P2: 1")}
+        {dgettext("diagrams", "P2: 1")}
       </text>
       <text x="210" y="44" fill="#ffaa00" font-size="12" font-family="'Courier New',monospace">
-        {gettext("ROUND 2 1:24")}
+        {dgettext("diagrams", "ROUND 2 1:24")}
       </text>
     </svg>
     """

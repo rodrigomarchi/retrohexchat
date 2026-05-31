@@ -27,6 +27,6 @@ defmodule RetroHexChat.P2P.SessionToken do
 
   defp secret_key_base do
     Application.get_env(:retro_hex_chat, :p2p_token_secret) ||
-      raise gettext("Missing :p2p_token_secret configuration")
+      raise dgettext("p2p", "Missing :p2p_token_secret configuration")
   end
 end

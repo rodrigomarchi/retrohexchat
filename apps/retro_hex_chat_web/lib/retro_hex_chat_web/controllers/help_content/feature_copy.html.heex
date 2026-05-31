@@ -1,21 +1,29 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Select text in the chat area by clicking and dragging. Right-click to see a context menu with"
-  )} <strong>{gettext("Copy")}</strong>{gettext(", or use")} <kbd>{gettext("Ctrl+C")}</kbd>.
+  )} <strong>{dgettext("help_features", "Copy")}</strong>{dgettext("help_features", ", or use")} <kbd>{dgettext("help_features", "Ctrl+C")}</kbd>.
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "Usage")}</.help_h4>
 <p>
-  {gettext("1. Click and drag to select text in the chat area.")}<br />{gettext(
+  {dgettext("help_features", "1. Click and drag to select text in the chat area.")}<br />{dgettext(
+    "help_features",
     "2. Right-click and choose"
-  )} <strong>{gettext("Copy")}</strong>{gettext(", or press")} <kbd>{gettext("Ctrl+C")}</kbd>.<br />{gettext(
+  )} <strong>{dgettext("help_features", "Copy")}</strong>{dgettext("help_features", ", or press")} <kbd>{dgettext("help_features", "Ctrl+C")}</kbd>.<br />{dgettext(
+    "help_features",
     "3. The selected text is copied to your clipboard as plain text."
   )}
 </p>
-<.help_h4 icon={:icon_document_alert}>{gettext("Notes")}</.help_h4>
+<.help_h4 icon={:icon_document_alert}>{dgettext("help_features", "Notes")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "If no text is selected, the Copy option appears disabled. Rich formatting is stripped — only plain text is copied."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
-<p><.help_link topic="feature-context-menus">{gettext("Context Menus")}</.help_link></p>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-context-menus">
+    {dgettext("help_features", "Context Menus")}
+  </.help_link>
+</p>

@@ -1,9 +1,10 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "Makes the channel secret. Secret channels do not appear in the channel list (/list) for non-members and are hidden from /whois output. Mutually exclusive with +p (private)."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
-<pre>{gettext("/mode +s — Make channel secret /mode -s — Remove secret mode")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
-<p><.help_link topic="mode-p">{gettext("Private (+p)")}</.help_link></p>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
+<pre>{dgettext("help_channels", "/mode +s — Make channel secret /mode -s — Remove secret mode")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p><.help_link topic="mode-p">{dgettext("help_channels", "Private (+p)")}</.help_link></p>

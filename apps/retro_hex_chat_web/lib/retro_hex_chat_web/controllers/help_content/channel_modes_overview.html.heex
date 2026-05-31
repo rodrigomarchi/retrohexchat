@@ -1,109 +1,129 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "Channel modes control how a channel behaves. Only channel operators (or owners) can change modes using"
-  )} <code>{gettext("/mode")}</code>.
+  )} <code>{dgettext("help_channels", "/mode")}</code>.
 </p>
-<.help_h4 icon={:icon_tab_modes}>{gettext("User Modes")}</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_channels", "User Modes")}</.help_h4>
 <p>
-  <strong>{gettext("+q")}</strong>
-  — <.help_link topic="mode-q">{gettext("Owner")}</.help_link>{gettext(
+  <strong>{dgettext("help_channels", "+q")}</strong>
+  — <.help_link topic="mode-q">{dgettext("help_channels", "Owner")}</.help_link>{dgettext(
+    "help_channels",
     ": Channel owner with full control (~)."
   )}<br />
   <strong>
-    {gettext("+o")}
+    {dgettext("help_channels", "+o")}
   </strong>
-  — <.help_link topic="mode-o">{gettext("Operator")}</.help_link>{gettext(
+  — <.help_link topic="mode-o">{dgettext("help_channels", "Operator")}</.help_link>{dgettext(
+    "help_channels",
     ": Channel operator (@)."
   )}<br />
   <strong>
-    {gettext("+h")}
+    {dgettext("help_channels", "+h")}
   </strong>
-  — <.help_link topic="mode-h">{gettext("Half-Operator")}</.help_link>{gettext(
+  — <.help_link topic="mode-h">{dgettext("help_channels", "Half-Operator")}</.help_link>{dgettext(
+    "help_channels",
     ": Limited operator (%)."
   )}<br />
   <strong>
-    {gettext("+v")}
+    {dgettext("help_channels", "+v")}
   </strong>
-  — <.help_link topic="mode-v">{gettext("Voice")}</.help_link>{gettext(
+  — <.help_link topic="mode-v">{dgettext("help_channels", "Voice")}</.help_link>{dgettext(
+    "help_channels",
     ": Can speak in moderated channels (+)."
   )}
 </p>
-<.help_h4 icon={:icon_tab_modes}>{gettext("Channel Modes")}</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_channels", "Channel Modes")}</.help_h4>
 <p>
-  <strong>{gettext("+m")}</strong>
-  — <.help_link topic="mode-m">{gettext("Moderated")}</.help_link>{gettext(
+  <strong>{dgettext("help_channels", "+m")}</strong>
+  — <.help_link topic="mode-m">{dgettext("help_channels", "Moderated")}</.help_link>{dgettext(
+    "help_channels",
     ": Only operators and voiced users can speak."
   )}<br />
   <strong>
-    {gettext("+i")}
+    {dgettext("help_channels", "+i")}
   </strong>
-  — <.help_link topic="mode-i">{gettext("Invite Only")}</.help_link>{gettext(
+  — <.help_link topic="mode-i">{dgettext("help_channels", "Invite Only")}</.help_link>{dgettext(
+    "help_channels",
     ": Users must be invited to join."
   )}<br />
   <strong>
-    {gettext("+t")}
+    {dgettext("help_channels", "+t")}
   </strong>
-  — <.help_link topic="mode-t">{gettext("Topic Lock")}</.help_link>{gettext(
+  — <.help_link topic="mode-t">{dgettext("help_channels", "Topic Lock")}</.help_link>{dgettext(
+    "help_channels",
     ": Only operators can change the topic."
   )}<br />
   <strong>
-    {gettext("+k")}
+    {dgettext("help_channels", "+k")}
   </strong>
-  — <.help_link topic="mode-k">{gettext("Key")}</.help_link>{gettext(
+  — <.help_link topic="mode-k">{dgettext("help_channels", "Key")}</.help_link>{dgettext(
+    "help_channels",
     ": Requires a password to join."
   )}<br />
   <strong>
-    {gettext("+l")}
+    {dgettext("help_channels", "+l")}
   </strong>
-  — <.help_link topic="mode-l">{gettext("User Limit")}</.help_link>{gettext(
+  — <.help_link topic="mode-l">{dgettext("help_channels", "User Limit")}</.help_link>{dgettext(
+    "help_channels",
     ": Limits the number of users."
   )}<br />
   <strong>
-    {gettext("+n")}
+    {dgettext("help_channels", "+n")}
   </strong>
-  — <.help_link topic="mode-n">{gettext("No External")}</.help_link>{gettext(
+  — <.help_link topic="mode-n">{dgettext("help_channels", "No External")}</.help_link>{dgettext(
+    "help_channels",
     ": Only members can send messages."
   )}<br />
   <strong>
-    {gettext("+s")}
+    {dgettext("help_channels", "+s")}
   </strong>
-  — <.help_link topic="mode-s">{gettext("Secret")}</.help_link>{gettext(
+  — <.help_link topic="mode-s">{dgettext("help_channels", "Secret")}</.help_link>{dgettext(
+    "help_channels",
     ": Channel hidden from /list and /whois."
   )}<br />
   <strong>
-    {gettext("+p")}
+    {dgettext("help_channels", "+p")}
   </strong>
-  — <.help_link topic="mode-p">{gettext("Private")}</.help_link>{gettext(
+  — <.help_link topic="mode-p">{dgettext("help_channels", "Private")}</.help_link>{dgettext(
+    "help_channels",
     ": Channel shown as \"Prv\" in /list."
   )}<br />
   <strong>
-    {gettext("+c")}
+    {dgettext("help_channels", "+c")}
   </strong>
-  — <.help_link topic="mode-c">{gettext("Strip Colors")}</.help_link>{gettext(
+  — <.help_link topic="mode-c">{dgettext("help_channels", "Strip Colors")}</.help_link>{dgettext(
+    "help_channels",
     ": Remove formatting from messages."
   )}<br />
   <strong>
-    {gettext("+R")}
+    {dgettext("help_channels", "+R")}
   </strong>
-  — <.help_link topic="mode-r">{gettext("Registered Only")}</.help_link>{gettext(
+  — <.help_link topic="mode-r">{dgettext("help_channels", "Registered Only")}</.help_link>{dgettext(
+    "help_channels",
     ": Only registered users can join."
   )}<br />
   <strong>
-    {gettext("+K")}
+    {dgettext("help_channels", "+K")}
   </strong>
-  — <.help_link topic="mode-nk">{gettext("No Knock")}</.help_link>{gettext(
+  — <.help_link topic="mode-nk">{dgettext("help_channels", "No Knock")}</.help_link>{dgettext(
+    "help_channels",
     ": Disable /knock requests."
   )}<br />
   <strong>
-    {gettext("+j")}
+    {dgettext("help_channels", "+j")}
   </strong>
-  — <.help_link topic="mode-j">{gettext("Join Throttle")}</.help_link>{gettext(
+  — <.help_link topic="mode-j">{dgettext("help_channels", "Join Throttle")}</.help_link>{dgettext(
+    "help_channels",
     ": Limit join rate."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-mode">{gettext("/mode Command")}</.help_link>
-  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
-  · <.help_link topic="cmd-knock">{gettext("/knock Command")}</.help_link>
+  <.help_link topic="cmd-mode">{dgettext("help_channels", "/mode Command")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_channels", "Channel Permissions")}
+  </.help_link>
+  · <.help_link topic="cmd-knock">{dgettext("help_channels", "/knock Command")}</.help_link>
 </p>

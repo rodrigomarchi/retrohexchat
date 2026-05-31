@@ -15,7 +15,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext(
+        dgettext(
+          "diagrams",
           "Vertical flowchart showing 4 steps: Alice calls Bob, server exchanges signaling, P2P connection established, then direct data flow with server out of the loop"
         )
       }
@@ -57,7 +58,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Alice wants to call Bob")}
+        {dgettext("diagrams", "Alice wants to call Bob")}
       </text>
       
     <!-- Arrow 1->2 -->
@@ -96,7 +97,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Server exchanges signaling (SDP/ICE)")}
+        {dgettext("diagrams", "Server exchanges signaling (SDP/ICE)")}
       </text>
       
     <!-- Arrow 2->3 -->
@@ -134,7 +135,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Direct P2P connection established")}
+        {dgettext("diagrams", "Direct P2P connection established")}
       </text>
       
     <!-- Arrow 3->4 (Accent color to show success) -->
@@ -174,7 +175,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Voice, video, and files flow directly")}
+        {dgettext("diagrams", "Voice, video, and files flow directly")}
       </text>
       
     <!-- Alice & Bob nodes -->
@@ -194,7 +195,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Alice")}
+        {dgettext("diagrams", "Alice")}
       </text>
       <rect x="84" y="275" width="62" height="12" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -205,7 +206,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
         font-size="9"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Connected")}
+        {dgettext("diagrams", "Connected")}
       </text>
       
     <!-- Bob Shadow -->
@@ -224,7 +225,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Bob")}
+        {dgettext("diagrams", "Bob")}
       </text>
       <rect x="274" y="275" width="62" height="12" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -235,7 +236,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
         font-size="9"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Connected")}
+        {dgettext("diagrams", "Connected")}
       </text>
       
     <!-- Bidirectional Data Flow Arrow -->
@@ -261,7 +262,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
         font-size="10"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Server is out of the loop")}
+        {dgettext("diagrams", "Server is out of the loop")}
       </text>
     </svg>
     """

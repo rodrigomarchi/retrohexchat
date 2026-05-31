@@ -14,6 +14,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatContextMenuPage do
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, page_title: gettext("Chat Context Menu"), active_page: :chat_context_menu)}
+     assign(socket,
+       page_title: dgettext("showcase", "Chat Context Menu"),
+       active_page: :chat_context_menu
+     )}
   end
 end

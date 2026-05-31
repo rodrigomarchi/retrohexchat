@@ -11,30 +11,30 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
   def validate("list"), do: :ok
 
   def validate("add") do
-    {:error, gettext("Usage: /notify add <nickname> [note]")}
+    {:error, dgettext("commands", "Usage: /notify add <nickname> [note]")}
   end
 
   def validate("add " <> _rest), do: :ok
 
   def validate("remove") do
-    {:error, gettext("Usage: /notify remove <nickname>")}
+    {:error, dgettext("commands", "Usage: /notify remove <nickname>")}
   end
 
   def validate("remove " <> _rest), do: :ok
 
   def validate("edit") do
-    {:error, gettext("Usage: /notify edit <nickname> <note>")}
+    {:error, dgettext("commands", "Usage: /notify edit <nickname> <note>")}
   end
 
   def validate("edit " <> rest) do
     case String.split(rest) do
-      [_nick] -> {:error, gettext("Usage: /notify edit <nickname> <note>")}
+      [_nick] -> {:error, dgettext("commands", "Usage: /notify edit <nickname> <note>")}
       [_nick | _note_words] -> :ok
     end
   end
 
   def validate(_),
-    do: {:error, gettext("Unknown /notify subcommand. Use: add, remove, edit, list")}
+    do: {:error, dgettext("commands", "Unknown /notify subcommand. Use: add, remove, edit, list")}
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -72,16 +72,17 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
   def help do
     %{
       name: "notify",
-      syntax: gettext("/notify [add|remove|edit|list] [args]"),
+      syntax: dgettext("commands", "/notify [add|remove|edit|list] [args]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Track when specific users come online or go offline with your buddy list.\nSubcommands: add <nick> [note], remove <nick>, edit <nick> <note>, list. No args opens the dialog.\nRegistered users: persisted. Guests: session-only."
         ),
       examples: [
-        gettext("/notify add Alice Works on Elixir"),
-        gettext("/notify remove Alice"),
-        gettext("/notify edit Alice New note"),
-        gettext("/notify list"),
+        dgettext("commands", "/notify add Alice Works on Elixir"),
+        dgettext("commands", "/notify remove Alice"),
+        dgettext("commands", "/notify edit Alice New note"),
+        dgettext("commands", "/notify list"),
         "/notify"
       ]
     }
@@ -98,9 +99,12 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
 
     %CommandSyntax{
       command: "notify",
-      syntax: gettext("/notify [add|remove|edit|list] [args]"),
+      syntax: dgettext("commands", "/notify [add|remove|edit|list] [args]"),
       description:
-        gettext("Track when specific users come online or go offline with your buddy list."),
+        dgettext(
+          "commands",
+          "Track when specific users come online or go offline with your buddy list."
+        ),
       category: :config,
       parameters: [
         %Parameter{
@@ -108,28 +112,31 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
           required: false,
           type: :text,
           position: 0,
-          description: gettext("Subcommand: add, remove, edit, list")
+          description: dgettext("commands", "Subcommand: add, remove, edit, list")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: gettext("Subcommand arguments")
+          description: dgettext("commands", "Subcommand arguments")
         }
       ],
       examples: [
-        gettext("/notify add Alice Works on Elixir"),
-        gettext("/notify remove Alice"),
-        gettext("/notify edit Alice New note"),
-        gettext("/notify list"),
+        dgettext("commands", "/notify add Alice Works on Elixir"),
+        dgettext("commands", "/notify remove Alice"),
+        dgettext("commands", "/notify edit Alice New note"),
+        dgettext("commands", "/notify list"),
         "/notify"
       ],
       subcommands: [
-        %{name: "add", description: gettext("Add a user to your notify list")},
-        %{name: "remove", description: gettext("Remove a user from your notify list")},
-        %{name: "edit", description: gettext("Edit a user's note")},
-        %{name: "list", description: gettext("Show your notify list")}
+        %{name: "add", description: dgettext("commands", "Add a user to your notify list")},
+        %{
+          name: "remove",
+          description: dgettext("commands", "Remove a user from your notify list")
+        },
+        %{name: "edit", description: dgettext("commands", "Edit a user's note")},
+        %{name: "list", description: dgettext("commands", "Show your notify list")}
       ]
     }
   end

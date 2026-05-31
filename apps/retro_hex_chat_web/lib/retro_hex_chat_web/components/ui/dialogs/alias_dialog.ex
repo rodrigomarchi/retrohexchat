@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
   def alias_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} on_cancel={@on_close}>
-      <.dialog_header id={@id} title={gettext("Alias Editor")} on_close={@on_close}>
+      <.dialog_header id={@id} title={dgettext("dialogs", "Alias Editor")} on_close={@on_close}>
         <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
       </.dialog_header>
 
@@ -69,14 +69,14 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
           <.table>
             <.table_header>
               <.table_row>
-                <.table_head>{gettext("Name")}</.table_head>
-                <.table_head>{gettext("Expansion")}</.table_head>
+                <.table_head>{dgettext("dialogs", "Name")}</.table_head>
+                <.table_head>{dgettext("dialogs", "Expansion")}</.table_head>
               </.table_row>
             </.table_header>
             <.table_body>
               <tr :if={@aliases == []}>
                 <td colspan="2" class="p-4 text-center text-muted-foreground text-xs">
-                  {gettext("No aliases configured. Click \"Add\" to create one.")}
+                  {dgettext("dialogs", "No aliases configured. Click \"Add\" to create one.")}
                 </td>
               </tr>
               <.table_row
@@ -116,17 +116,19 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
           class="shadow-retro-field bg-white p-retro-8 space-y-retro-4"
         >
           <h3 class="font-bold text-xs mb-retro-4">
-            {if @selected_alias, do: gettext("Edit Alias"), else: gettext("Add Alias")}
+            {if @selected_alias,
+              do: dgettext("dialogs", "Edit Alias"),
+              else: dgettext("dialogs", "Add Alias")}
           </h3>
 
           <div class="space-y-retro-4">
             <div>
-              <label class="text-xs font-bold block mb-retro-2">{gettext("Name")}</label>
+              <label class="text-xs font-bold block mb-retro-2">{dgettext("dialogs", "Name")}</label>
               <.input
                 type="text"
                 name="name"
                 value={@draft_name}
-                placeholder={gettext("e.g. hi")}
+                placeholder={dgettext("dialogs", "e.g. hi")}
                 data-testid="alias-name-input"
                 class="w-full text-xs h-7"
                 maxlength="30"
@@ -134,19 +136,21 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
               />
             </div>
             <div>
-              <label class="text-xs font-bold block mb-retro-2">{gettext("Expansion")}</label>
+              <label class="text-xs font-bold block mb-retro-2">
+                {dgettext("dialogs", "Expansion")}
+              </label>
               <.input
                 type="text"
                 name="expansion"
                 value={@draft_expansion}
-                placeholder={gettext("e.g. /msg $1 hello!")}
+                placeholder={dgettext("dialogs", "e.g. /msg $1 hello!")}
                 data-testid="alias-expansion-input"
                 class="w-full text-xs h-7"
                 maxlength="500"
               />
             </div>
             <p class="text-[10px] text-muted-foreground">
-              {gettext("Variables: $1–$9 (args), $nick (your nick), $chan (channel)")}
+              {dgettext("dialogs", "Variables: $1–$9 (args), $nick (your nick), $chan (channel)")}
             </p>
           </div>
 
@@ -161,11 +165,11 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
           <div class="flex gap-retro-4 pt-retro-4">
             <.button type="submit" size="sm" variant="default">
               <:icon><Icons.icon_btn_save class="w-4 h-4" /></:icon>
-              {gettext("Save")}
+              {dgettext("dialogs", "Save")}
             </.button>
             <.button type="button" size="sm" variant="outline" phx-click={@on_cancel_edit}>
               <:icon><Icons.icon_btn_cancel class="w-4 h-4" /></:icon>
-              {gettext("Cancel")}
+              {dgettext("dialogs", "Cancel")}
             </.button>
           </div>
         </form>
@@ -174,7 +178,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
         <div class="flex gap-retro-4">
           <.button size="sm" variant="outline" phx-click={@on_add}>
             <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-            {gettext("Add")}
+            {dgettext("dialogs", "Add")}
           </.button>
           <.button
             size="sm"
@@ -183,7 +187,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
             disabled={@selected_alias == nil}
           >
             <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-            {gettext("Edit")}
+            {dgettext("dialogs", "Edit")}
           </.button>
           <.button
             size="sm"
@@ -192,7 +196,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
             disabled={@selected_alias == nil}
           >
             <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-            {gettext("Remove")}
+            {dgettext("dialogs", "Remove")}
           </.button>
         </div>
       </.dialog_body>
@@ -200,7 +204,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
       <.dialog_footer>
         <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {gettext("Close")}
+          {dgettext("dialogs", "Close")}
         </.button>
       </.dialog_footer>
     </.dialog>

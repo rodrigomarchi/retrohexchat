@@ -1,17 +1,25 @@
-<p>{gettext("You can send private messages to other users that only the two of you can see.")}</p>
-<.help_h4 icon={:icon_tab_pm}>{gettext("Starting a Conversation")}</.help_h4>
-<pre>{gettext("/query <nickname>")}</pre>
-<p>{gettext("This opens a PM tab. Alternatively, send a single message:")}</p>
-<pre>{gettext("/msg <nickname> <message>")}</pre>
-<.help_h4 icon={:icon_tab_nicklist}>{gettext("Using the User List")}</.help_h4>
 <p>
-  {gettext("Click a nickname in the conversations sidebar user list and select")}
-  <strong>{gettext("Query")}</strong>
-  {gettext("to open a PM tab. You can also double-click a nickname to open a PM directly.")}
+  {dgettext(
+    "help",
+    "You can send private messages to other users that only the two of you can see."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_tab_pm}>{dgettext("help", "Starting a Conversation")}</.help_h4>
+<pre>{dgettext("help", "/query <nickname>")}</pre>
+<p>{dgettext("help", "This opens a PM tab. Alternatively, send a single message:")}</p>
+<pre>{dgettext("help", "/msg <nickname> <message>")}</pre>
+<.help_h4 icon={:icon_tab_nicklist}>{dgettext("help", "Using the User List")}</.help_h4>
 <p>
-  <.help_link topic="cmd-msg">{gettext("Msg Command")}</.help_link>
-  · <.help_link topic="cmd-query">{gettext("Query Command")}</.help_link>
-  · <.help_link topic="feature-notices">{gettext("Notices")}</.help_link>
+  {dgettext("help", "Click a nickname in the conversations sidebar user list and select")}
+  <strong>{dgettext("help", "Query")}</strong>
+  {dgettext(
+    "help",
+    "to open a PM tab. You can also double-click a nickname to open a PM directly."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-msg">{dgettext("help", "Msg Command")}</.help_link>
+  · <.help_link topic="cmd-query">{dgettext("help", "Query Command")}</.help_link>
+  · <.help_link topic="feature-notices">{dgettext("help", "Notices")}</.help_link>
 </p>

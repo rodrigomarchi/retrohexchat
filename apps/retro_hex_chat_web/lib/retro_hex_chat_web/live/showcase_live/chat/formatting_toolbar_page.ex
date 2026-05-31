@@ -14,17 +14,20 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.FormattingToolbarPage do
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, page_title: gettext("Formatting Toolbar"), active_page: "formatting-toolbar")}
+     assign(socket,
+       page_title: dgettext("showcase", "Formatting Toolbar"),
+       active_page: "formatting-toolbar"
+     )}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Formatting Toolbar")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Formatting Toolbar")}</h2>
 
       <.showcase_card
-        title={gettext("Default")}
+        title={dgettext("showcase", "Default")}
         description="Formatting toolbar with B/I/U, color, control, strip, and emoji buttons. Click the color button to toggle the dropdown."
       >
         <.formatting_toolbar id="demo-default" />
@@ -34,21 +37,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.FormattingToolbarPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Active Formatting")}
+        title={dgettext("showcase", "Active Formatting")}
         description="Bold and underline active (pressed state)."
       >
         <.formatting_toolbar id="demo-active" bold_active={true} underline_active={true} />
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Strip Active")}
+        title={dgettext("showcase", "Strip Active")}
         description="Strip formatting toggle active."
       >
         <.formatting_toolbar id="demo-strip" strip_active={true} />
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("All Active")}
+        title={dgettext("showcase", "All Active")}
         description="All formatting states active simultaneously."
       >
         <.formatting_toolbar

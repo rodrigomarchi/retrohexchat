@@ -1,34 +1,39 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Start a peer-to-peer audio call with another user. Both users must be registered and identified."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/call <nickname>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>nickname</code> {gettext("— The user you want to call.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/call <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p><code>nickname</code> {dgettext("help_commands", "— The user you want to call.")}</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext("Running")} <code>{gettext("/call")}</code>
-  {gettext(
+  {dgettext("help_commands", "Running")} <code>{dgettext("help_commands", "/call")}</code>
+  {dgettext(
+    "help_commands",
     "creates a P2P session and both users enter a lobby. The audio call starts automatically — your peer receives a notification and must accept the call. Your browser will ask for microphone permission the first time. Once connected, audio flows directly between your browsers without going through the server."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>
-    {gettext("Both you and the target must be registered and identified (via")} <code>{gettext("/ns identify")}</code>)
+    {dgettext("help_commands", "Both you and the target must be registered and identified (via")} <code>{dgettext("help_commands", "/ns identify")}</code>)
   </li>
-  <li>{gettext("Cannot call yourself")}</li>
-  <li>{gettext("Only one active P2P session per user pair at a time")}</li>
-  <li>{gettext("Requires browser microphone permission")}</li>
+  <li>{dgettext("help_commands", "Cannot call yourself")}</li>
+  <li>{dgettext("help_commands", "Only one active P2P session per user pair at a time")}</li>
+  <li>{dgettext("help_commands", "Requires browser microphone permission")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/call Mario /call Alice")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/call Mario /call Alice")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-p2p">{gettext("/p2p")}</.help_link>
-  · <.help_link topic="cmd-sendfile">{gettext("/sendfile")}</.help_link>
-  · <.help_link topic="feature-audio-call">{gettext("Audio Calls")}</.help_link>
-  · <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
+  <.help_link topic="cmd-p2p">{dgettext("help_commands", "/p2p")}</.help_link>
+  · <.help_link topic="cmd-sendfile">{dgettext("help_commands", "/sendfile")}</.help_link>
+  · <.help_link topic="feature-audio-call">{dgettext("help_commands", "Audio Calls")}</.help_link>
+  ·
+  <.help_link topic="feature-p2p-sessions">
+    {dgettext("help_commands", "P2P Sessions")}
+  </.help_link>
 </p>

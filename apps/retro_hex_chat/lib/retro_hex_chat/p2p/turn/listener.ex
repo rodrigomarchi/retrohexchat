@@ -30,7 +30,7 @@ defmodule RetroHexChat.P2P.Turn.Listener do
   @spec listen(:inet.ip_address(), :inet.port_number(), integer(), Config.t()) :: :ok
   def listen(ip, port, id, config) do
     listener_addr =
-      gettext("%{inet_ntoa_ip}:%{port}/UDP", inet_ntoa_ip: :inet.ntoa(ip), port: port)
+      dgettext("p2p", "%{inet_ntoa_ip}:%{port}/UDP", inet_ntoa_ip: :inet.ntoa(ip), port: port)
 
     Logger.info("TURN Listener #{id} started on: #{listener_addr}")
     Logger.metadata(listener: listener_addr)

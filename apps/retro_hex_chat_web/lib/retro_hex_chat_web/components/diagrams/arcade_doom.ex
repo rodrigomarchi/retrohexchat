@@ -18,7 +18,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeDoom do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label={gettext("DOOM arcade logo: bold red angular letters on dark background")}
+      aria-label={
+        dgettext("diagrams", "DOOM arcade logo: bold red angular letters on dark background")
+      }
     >
       {win98_chrome("DOOM - Arcade")}
       <%!-- Background gradient effect --%>
@@ -84,7 +86,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeDoom do
         font-size="11"
         font-family="'Courier New',monospace"
       >
-        {gettext("PrBoom+ WebAssembly")}
+        {dgettext("diagrams", "PrBoom+ WebAssembly")}
       </text>
       <%!-- Pentagram star (simplified) --%>
       <polygon

@@ -13,17 +13,18 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.EmojiPickerPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Emoji Picker"), active_page: "emoji-picker")}
+    {:ok,
+     assign(socket, page_title: dgettext("showcase", "Emoji Picker"), active_page: "emoji-picker")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Emoji Picker")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Emoji Picker")}</h2>
 
       <.showcase_card
-        title={gettext("Default")}
+        title={dgettext("showcase", "Default")}
         description="Emoji picker with category tabs, search, scrollable grid, and preview."
       >
         <.emoji_picker id="emoji-default" />
@@ -33,21 +34,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.EmojiPickerPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With Selected Emoji")}
+        title={dgettext("showcase", "With Selected Emoji")}
         description="Emoji picker showing a selected emoji in the preview bar."
       >
         <.emoji_picker id="emoji-selected" selected_emoji="🐶" active_category="nature" />
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Food Category")}
+        title={dgettext("showcase", "Food Category")}
         description="Emoji picker opened on the Food category."
       >
         <.emoji_picker id="emoji-food" active_category="food" />
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With Search Text")}
+        title={dgettext("showcase", "With Search Text")}
         description="Emoji picker with a search query entered."
       >
         <.emoji_picker id="emoji-search" search="heart" />

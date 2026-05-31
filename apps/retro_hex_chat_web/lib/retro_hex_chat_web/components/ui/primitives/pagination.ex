@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.Pagination do
   def pagination(assigns) do
     ~H"""
     <nav
-      aria-label={gettext("Pagination")}
+      aria-label={dgettext("ui", "Pagination")}
       role="navigation"
       class={
         classes([
@@ -149,12 +149,12 @@ defmodule RetroHexChatWeb.Components.UI.Pagination do
   def pagination_next(assigns) do
     ~H"""
     <.pagination_link
-      aria-label={gettext("Go to next page")}
+      aria-label={dgettext("ui", "Go to next page")}
       size="default"
       class={classes(["gap-1 pr-2.5", @class])}
       {@rest}
     >
-      <span>{gettext("Next")}</span>
+      <span>{dgettext("ui", "Next")}</span>
       <Icons.icon_chevron_right class="w-3.5 h-3.5" />
     </.pagination_link>
     """
@@ -169,13 +169,13 @@ defmodule RetroHexChatWeb.Components.UI.Pagination do
   def pagination_previous(assigns) do
     ~H"""
     <.pagination_link
-      aria-label={gettext("Go to previous page")}
+      aria-label={dgettext("ui", "Go to previous page")}
       size="default"
       class={classes(["gap-1 pr-2.5", @class])}
       {@rest}
     >
       <Icons.icon_chevron_left class="w-3.5 h-3.5" />
-      <span>{gettext("Previous")}</span>
+      <span>{dgettext("ui", "Previous")}</span>
     </.pagination_link>
     """
   end
@@ -199,7 +199,7 @@ defmodule RetroHexChatWeb.Components.UI.Pagination do
     >
       <Icons.icon_ellipsis class="w-4 h-4" />
 
-      <span class="sr-only">{gettext("More pages")}</span>
+      <span class="sr-only">{dgettext("ui", "More pages")}</span>
     </span>
     """
   end

@@ -1,38 +1,45 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "View or change the channel topic — the text displayed in the topic bar at the top of the channel window."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/topic [new topic text]")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/topic [new topic text]")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
-  <code>{gettext("new topic text")}</code> {gettext(
+  <code>{dgettext("help_commands", "new topic text")}</code> {dgettext(
+    "help_commands",
     "— The new topic to set. If omitted, shows the current topic."
   )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext("Running")} <code>{gettext("/topic")}</code>
-  {gettext(
+  {dgettext("help_commands", "Running")} <code>{dgettext("help_commands", "/topic")}</code>
+  {dgettext(
+    "help_commands",
     "with no arguments displays the current channel topic and who set it. Providing text sets a new topic that appears in the topic bar at the top of the channel for all members to see. The topic bar is always visible, making it a good place for channel rules, links, or the current discussion subject."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_commands",
       "If the channel has +t mode (topic lock), only operators and owners can change the topic"
     )}
   </li>
-  <li>{gettext("Without +t, any channel member can change the topic")}</li>
-  <li>{gettext("Must be in a channel to use this command")}</li>
+  <li>{dgettext("help_commands", "Without +t, any channel member can change the topic")}</li>
+  <li>{dgettext("help_commands", "Must be in a channel to use this command")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/topic /topic Welcome to #elixir! Today: LiveView discussion /topic Rules: Be respectful, no spam")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/topic /topic Welcome to #elixir! Today: LiveView discussion /topic Rules: Be respectful, no spam")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
-  · <.help_link topic="cmd-join">{gettext("/join")}</.help_link>
-  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
+  <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
+  · <.help_link topic="cmd-join">{dgettext("help_commands", "/join")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_commands", "Channel Permissions")}
+  </.help_link>
 </p>

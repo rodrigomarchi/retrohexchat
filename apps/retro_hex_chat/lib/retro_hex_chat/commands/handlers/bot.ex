@@ -103,22 +103,26 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   def help do
     %{
       name: "bot",
-      syntax: gettext("/bot <subcommand> [args]"),
+      syntax: dgettext("commands", "/bot <subcommand> [args]"),
       description:
-        gettext("Create, manage, and configure bots for your channels.\n") <>
-          gettext("Subcommands: create, destroy, list, info, join, part, enable, disable, ") <>
-          gettext("set, commands, addcmd, delcmd, help.\n") <>
-          gettext(
+        dgettext("commands", "Create, manage, and configure bots for your channels.\n") <>
+          dgettext(
+            "commands",
+            "Subcommands: create, destroy, list, info, join, part, enable, disable, "
+          ) <>
+          dgettext("commands", "set, commands, addcmd, delcmd, help.\n") <>
+          dgettext(
+            "commands",
             "Without arguments, opens the Bot Management dialog (admins) or shows bot list."
           ),
       examples: [
-        gettext("/bot create GreeterBot Welcomes new users"),
-        gettext("/bot join GreeterBot #general"),
-        gettext("/bot addcmd GreeterBot rules Read the #rules channel"),
-        gettext("/bot set GreeterBot greeting Welcome, {nickname}!"),
-        gettext("/bot info GreeterBot"),
-        gettext("/bot list"),
-        gettext("/bot disable GreeterBot")
+        dgettext("commands", "/bot create GreeterBot Welcomes new users"),
+        dgettext("commands", "/bot join GreeterBot #general"),
+        dgettext("commands", "/bot addcmd GreeterBot rules Read the #rules channel"),
+        dgettext("commands", "/bot set GreeterBot greeting Welcome, {nickname}!"),
+        dgettext("commands", "/bot info GreeterBot"),
+        dgettext("commands", "/bot list"),
+        dgettext("commands", "/bot disable GreeterBot")
       ]
     }
   end
@@ -164,11 +168,16 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
         Supervisor.start_bot(bot_data)
 
         {:ok, :system,
-         %{content: gettext("[BotService] Bot '%{name}' created successfully.", name: name)}}
+         %{
+           content:
+             dgettext("commands", "[BotService] Bot '%{name}' created successfully.", name: name)
+         }}
 
       {:error, changeset} ->
         msg = format_changeset_errors(changeset)
-        {:error, gettext("[BotService] Failed to create bot: %{message}", message: msg)}
+
+        {:error,
+         dgettext("commands", "[BotService] Failed to create bot: %{message}", message: msg)}
     end
   end
 
@@ -176,11 +185,13 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp do_destroy(name) do
     case Queries.get_bot_by_name(name) do
       nil ->
-        {:error, gettext("[BotService] Bot '%{name}' not found.", name: name)}
+        {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: name)}
 
       bot ->
         Lifecycle.destroy_bot(bot)
-        {:ok, :system, %{content: gettext("[BotService] Bot '%{name}' destroyed.", name: name)}}
+
+        {:ok, :system,
+         %{content: dgettext("commands", "[BotService] Bot '%{name}' destroyed.", name: name)}}
     end
   end
 
@@ -188,34 +199,44 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp do_info(name) do
     case Queries.get_bot_by_name(name) do
       nil ->
-        {:error, gettext("[BotService] Bot '%{name}' not found.", name: name)}
+        {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: name)}
 
       bot ->
         channels = Queries.list_channel_configs(bot.id)
         commands = Queries.list_custom_commands(bot.id)
-        status = if bot.enabled, do: gettext("Enabled"), else: gettext("Disabled")
+
+        status =
+          if bot.enabled,
+            do: dgettext("commands", "Enabled"),
+            else: dgettext("commands", "Disabled")
 
         runtime_info =
           case Server.get_state(bot.nickname) do
             {:ok, state} ->
-              gettext("Uptime stats: %{state_stats_messages_handled} msgs handled",
+              dgettext("commands", "Uptime stats: %{state_stats_messages_handled} msgs handled",
                 state_stats_messages_handled: state.stats.messages_handled
               )
 
             {:error, :not_found} ->
-              gettext("Process: Not running")
+              dgettext("commands", "Process: Not running")
           end
 
         lines =
           [
-            gettext("[BotService] Bot Info: %{name}", name: bot.name),
-            gettext("  Nickname: %{nickname}", nickname: bot.nickname),
-            gettext("  Status: %{status}", status: status),
-            gettext("  Prefix: %{command_prefix}", command_prefix: bot.command_prefix),
-            gettext("  Cooldown: %{cooldown_ms}ms", cooldown_ms: bot.cooldown_ms),
-            gettext("  Created by: %{created_by}", created_by: bot.created_by),
-            gettext("  Channels: %{channels_count}", channels_count: length(channels)),
-            gettext("  Commands: %{commands_count}", commands_count: length(commands)),
+            dgettext("commands", "[BotService] Bot Info: %{name}", name: bot.name),
+            dgettext("commands", "  Nickname: %{nickname}", nickname: bot.nickname),
+            dgettext("commands", "  Status: %{status}", status: status),
+            dgettext("commands", "  Prefix: %{command_prefix}",
+              command_prefix: bot.command_prefix
+            ),
+            dgettext("commands", "  Cooldown: %{cooldown_ms}ms", cooldown_ms: bot.cooldown_ms),
+            dgettext("commands", "  Created by: %{created_by}", created_by: bot.created_by),
+            dgettext("commands", "  Channels: %{channels_count}",
+              channels_count: length(channels)
+            ),
+            dgettext("commands", "  Commands: %{commands_count}",
+              commands_count: length(commands)
+            ),
             "  #{runtime_info}"
           ]
           |> maybe_add_description(bot.description)
@@ -230,7 +251,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
     case Queries.get_bot_by_name(bot_name) do
       nil ->
-        {:error, gettext("[BotService] Bot '%{name}' not found.", name: bot_name)}
+        {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: bot_name)}
 
       bot ->
         join_bot_to_channel(bot, bot_name, channel)
@@ -245,7 +266,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
         {:ok, :system,
          %{
            content:
-             gettext("[BotService] Bot '%{name}' joined %{channel}.",
+             dgettext("commands", "[BotService] Bot '%{name}' joined %{channel}.",
                name: bot_name,
                channel: channel
              )
@@ -253,7 +274,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
       {:error, _} ->
         {:error,
-         gettext("[BotService] Bot '%{name}' is already in %{channel}.",
+         dgettext("commands", "[BotService] Bot '%{name}' is already in %{channel}.",
            name: bot_name,
            channel: channel
          )}
@@ -266,7 +287,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
     case Queries.get_bot_by_name(bot_name) do
       nil ->
-        {:error, gettext("[BotService] Bot '%{name}' not found.", name: bot_name)}
+        {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: bot_name)}
 
       bot ->
         Queries.remove_channel_config(bot.id, channel)
@@ -275,7 +296,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
         {:ok, :system,
          %{
            content:
-             gettext("[BotService] Bot '%{name}' left %{channel}.",
+             dgettext("commands", "[BotService] Bot '%{name}' left %{channel}.",
                name: bot_name,
                channel: channel
              )
@@ -287,7 +308,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp do_set_enabled(bot_name, enabled) do
     case Queries.get_bot_by_name(bot_name) do
       nil ->
-        {:error, gettext("[BotService] Bot '%{name}' not found.", name: bot_name)}
+        {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: bot_name)}
 
       bot ->
         Queries.update_bot(bot, %{enabled: enabled})
@@ -298,7 +319,10 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
         {:ok, :system,
          %{
            content:
-             gettext("[BotService] Bot '%{name}' %{action}.", name: bot_name, action: action)
+             dgettext("commands", "[BotService] Bot '%{name}' %{action}.",
+               name: bot_name,
+               action: action
+             )
          }}
     end
   end
@@ -307,15 +331,16 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp do_set(bot_name, key, value) do
     case Queries.get_bot_by_name(bot_name) do
       nil ->
-        {:error, gettext("[BotService] Bot '%{name}' not found.", name: bot_name)}
+        {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: bot_name)}
 
       bot ->
         case apply_setting(bot, key, value) do
           {:ok, msg} ->
-            {:ok, :system, %{content: gettext("[BotService] %{message}", message: msg)}}
+            {:ok, :system,
+             %{content: dgettext("commands", "[BotService] %{message}", message: msg)}}
 
           {:error, msg} ->
-            {:error, gettext("[BotService] %{message}", message: msg)}
+            {:error, dgettext("commands", "[BotService] %{message}", message: msg)}
         end
     end
   end
@@ -325,10 +350,10 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     case Queries.update_bot(bot, %{command_prefix: value}) do
       {:ok, _} ->
         maybe_update_running(bot.nickname, %{command_prefix: value})
-        {:ok, gettext("Prefix set to '%{value}'.", value: value)}
+        {:ok, dgettext("commands", "Prefix set to '%{value}'.", value: value)}
 
       {:error, _} ->
-        {:error, gettext("Invalid prefix.")}
+        {:error, dgettext("commands", "Invalid prefix.")}
     end
   end
 
@@ -338,20 +363,20 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
         case Queries.update_bot(bot, %{cooldown_ms: ms}) do
           {:ok, _} ->
             maybe_update_running(bot.nickname, %{cooldown_ms: ms})
-            {:ok, gettext("Cooldown set to %{ms}ms.", ms: ms)}
+            {:ok, dgettext("commands", "Cooldown set to %{ms}ms.", ms: ms)}
 
           {:error, _} ->
-            {:error, gettext("Invalid cooldown value.")}
+            {:error, dgettext("commands", "Invalid cooldown value.")}
         end
 
       :error ->
-        {:error, gettext("Cooldown must be a number.")}
+        {:error, dgettext("commands", "Cooldown must be a number.")}
     end
   end
 
   defp apply_setting(bot, "description", value) do
     Queries.update_bot(bot, %{description: value})
-    {:ok, gettext("Description updated.")}
+    {:ok, dgettext("commands", "Description updated.")}
   end
 
   defp apply_setting(bot, "greeting", value) do
@@ -359,7 +384,15 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     caps = Map.update(bot.capabilities, "greeter", %{}, &Map.put(&1, "greeting", greeting))
     Queries.update_bot(bot, %{capabilities: caps})
     reload_bot_capabilities(bot)
-    {:ok, "Greeting #{if greeting, do: "set to '#{greeting}'gettext(", else: ")disabled"}."}
+
+    message =
+      if greeting do
+        dgettext("commands", "Greeting set to '%{greeting}'.", greeting: greeting)
+      else
+        dgettext("commands", "Greeting disabled.")
+      end
+
+    {:ok, message}
   end
 
   defp apply_setting(bot, "farewell", value) do
@@ -367,14 +400,22 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     caps = Map.update(bot.capabilities, "greeter", %{}, &Map.put(&1, "farewell", farewell))
     Queries.update_bot(bot, %{capabilities: caps})
     reload_bot_capabilities(bot)
-    {:ok, "Farewell #{if farewell, do: "set to '#{farewell}'gettext(", else: ")disabled"}."}
+
+    message =
+      if farewell do
+        dgettext("commands", "Farewell set to '%{farewell}'.", farewell: farewell)
+      else
+        dgettext("commands", "Farewell disabled.")
+      end
+
+    {:ok, message}
   end
 
   defp apply_setting(bot, "mention_response", value) do
     caps = Map.update(bot.capabilities, "mention", %{}, &Map.put(&1, "response", value))
     Queries.update_bot(bot, %{capabilities: caps})
     reload_bot_capabilities(bot)
-    {:ok, gettext("Mention response updated.")}
+    {:ok, dgettext("commands", "Mention response updated.")}
   end
 
   # ── Dice settings ──
@@ -402,7 +443,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     if value in ["warn", "mute", "kick"] do
       update_capability_field(bot, "moderation", "action", value)
     else
-      {:error, gettext("Action must be: warn, mute, or kick.")}
+      {:error, dgettext("commands", "Action must be: warn, mute, or kick.")}
     end
   end
 
@@ -471,20 +512,21 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
         caps = Map.delete(bot.capabilities, "arcade")
         Queries.update_bot(bot, %{capabilities: caps})
         reload_bot_capabilities(bot)
-        {:ok, gettext("Arcade capability disabled.")}
+        {:ok, dgettext("commands", "Arcade capability disabled.")}
 
       _ ->
-        {:error, gettext("arcade_enabled must be: true or false.")}
+        {:error, dgettext("commands", "arcade_enabled must be: true or false.")}
     end
   end
 
   defp apply_setting(_bot, key, _value) do
     {:error,
-     gettext(
+     dgettext(
+       "commands",
        "Unknown setting '%{key}'. Valid: prefix, cooldown, description, greeting, farewell, ",
        key: key
      ) <>
-       gettext("mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*, arcade_*")}
+       dgettext("commands", "mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*, arcade_*")}
   end
 
   @spec update_capability_field(map(), String.t(), String.t(), term()) ::
@@ -496,7 +538,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     display = if is_list(value), do: Enum.join(value, ", "), else: inspect(value)
 
     {:ok,
-     gettext("%{cap_name}.%{field} set to %{display}.",
+     dgettext("commands", "%{cap_name}.%{field} set to %{display}.",
        cap_name: cap_name,
        field: field,
        display: display
@@ -522,7 +564,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp do_list_commands(bot_name) do
     case Queries.get_bot_by_name(bot_name) do
       nil ->
-        {:error, gettext("[BotService] Bot '%{name}' not found.", name: bot_name)}
+        {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: bot_name)}
 
       bot ->
         commands = Queries.list_custom_commands(bot.id)
@@ -532,12 +574,15 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   defp format_command_list(_bot, bot_name, []) do
     {:ok, :system,
-     %{content: gettext("[BotService] %{name} has no custom commands.", name: bot_name)}}
+     %{
+       content:
+         dgettext("commands", "[BotService] %{name} has no custom commands.", name: bot_name)
+     }}
   end
 
   defp format_command_list(bot, bot_name, commands) do
     lines =
-      [gettext("[BotService] Commands for %{bot_name}:", bot_name: bot_name)] ++
+      [dgettext("commands", "[BotService] Commands for %{bot_name}:", bot_name: bot_name)] ++
         Enum.map(commands, &format_command_line(bot, bot_name, &1))
 
     {:ok, :system, %{content: Enum.join(lines, "\n")}}
@@ -546,7 +591,8 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp format_command_line(bot, bot_name, cmd) do
     status = if cmd.enabled, do: "", else: " [disabled]"
 
-    gettext(
+    dgettext(
+      "commands",
       "  %{command_prefix}%{bot_name} %{trigger} — %{cmd_description_cmd_response}%{status}",
       command_prefix: bot.command_prefix,
       bot_name: bot_name,
@@ -560,7 +606,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp do_add_command(bot_name, trigger, response, added_by) do
     case Queries.get_bot_by_name(bot_name) do
       nil ->
-        {:error, gettext("[BotService] Bot '%{name}' not found.", name: bot_name)}
+        {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: bot_name)}
 
       bot ->
         attrs = %{trigger: trigger, response: response, added_by: added_by}
@@ -572,7 +618,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
             {:ok, :system,
              %{
                content:
-                 gettext("[BotService] Command '%{trigger}' set for %{name}.",
+                 dgettext("commands", "[BotService] Command '%{trigger}' set for %{name}.",
                    trigger: trigger,
                    name: bot_name
                  )
@@ -582,7 +628,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
             msg = format_changeset_errors(changeset)
 
             {:error,
-             gettext("[BotService] Failed to add command '%{trigger}': %{message}",
+             dgettext("commands", "[BotService] Failed to add command '%{trigger}': %{message}",
                trigger: trigger,
                message: msg
              )}
@@ -594,7 +640,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp do_delete_command(bot_name, trigger) do
     case Queries.get_bot_by_name(bot_name) do
       nil ->
-        {:error, gettext("[BotService] Bot '%{name}' not found.", name: bot_name)}
+        {:error, dgettext("commands", "[BotService] Bot '%{name}' not found.", name: bot_name)}
 
       bot ->
         Queries.remove_custom_command(bot.id, trigger)
@@ -603,7 +649,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
         {:ok, :system,
          %{
            content:
-             gettext("[BotService] Command '%{trigger}' removed from %{name}.",
+             dgettext("commands", "[BotService] Command '%{trigger}' removed from %{name}.",
                trigger: trigger,
                name: bot_name
              )
@@ -654,19 +700,21 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp format_bot_list do
     case Queries.list_bots() do
       [] ->
-        gettext("[BotService] No bots configured.")
+        dgettext("commands", "[BotService] No bots configured.")
 
       bots ->
-        lines = [gettext("[BotService] Bots:")] ++ Enum.map(bots, &format_bot_entry/1)
+        lines =
+          [dgettext("commands", "[BotService] Bots:")] ++ Enum.map(bots, &format_bot_entry/1)
+
         Enum.join(lines, "\n")
     end
   end
 
   defp format_bot_entry(bot) do
-    status = if bot.enabled, do: gettext("ON"), else: gettext("OFF")
-    description = bot.description || gettext("No description")
+    status = if bot.enabled, do: dgettext("commands", "ON"), else: dgettext("commands", "OFF")
+    description = bot.description || dgettext("commands", "No description")
 
-    gettext("  %{name} [%{status}] — %{description}",
+    dgettext("commands", "  %{name} [%{status}] — %{description}",
       name: bot.name,
       status: status,
       description: description
@@ -681,7 +729,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
       end)
     end)
     |> Enum.map(fn {field, errors} ->
-      gettext("%{field}: %{errors}", field: field, errors: Enum.join(errors, ", "))
+      dgettext("commands", "%{field}: %{errors}", field: field, errors: Enum.join(errors, ", "))
     end)
     |> Enum.join("; ")
   end
@@ -694,7 +742,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp maybe_add_description(lines, nil), do: lines
 
   defp maybe_add_description(lines, desc),
-    do: lines ++ [gettext("  Description: %{desc}", desc: desc)]
+    do: lines ++ [dgettext("commands", "  Description: %{desc}", desc: desc)]
 
   @spec help_text() :: String.t()
   defp help_text do

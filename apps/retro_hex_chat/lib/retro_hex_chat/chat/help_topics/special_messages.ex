@@ -9,88 +9,103 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
       %{
         id: "cmd-motd",
         title: "/motd",
-        category: gettext("Server Messages"),
-        keywords: ["motd", gettext("message of the day")],
+        category: dgettext("help", "Server Messages"),
+        keywords: ["motd", dgettext("help", "message of the day")],
         icon: :icon_notepad,
-        description: gettext("View the server's Message of the Day.")
+        description: dgettext("help", "View the server's Message of the Day.")
       },
       %{
         id: "cmd-setmotd",
         title: "/setmotd",
-        category: gettext("Server Messages"),
-        keywords: ["setmotd", "motd", gettext("set message of the day"), "admin"],
+        category: dgettext("help", "Server Messages"),
+        keywords: ["setmotd", "motd", dgettext("help", "set message of the day"), "admin"],
         icon: :icon_notepad,
         description:
-          gettext("Set or update the server's Message of the Day. Requires admin privileges.")
+          dgettext(
+            "help",
+            "Set or update the server's Message of the Day. Requires admin privileges."
+          )
       },
       %{
         id: "cmd-clearmotd",
         title: "/clearmotd",
-        category: gettext("Server Messages"),
-        keywords: ["clearmotd", "motd", gettext("clear message of the day"), "admin"],
+        category: dgettext("help", "Server Messages"),
+        keywords: ["clearmotd", "motd", dgettext("help", "clear message of the day"), "admin"],
         icon: :icon_trash,
-        description: gettext("Remove the server's Message of the Day. Requires admin privileges.")
+        description:
+          dgettext("help", "Remove the server's Message of the Day. Requires admin privileges.")
       },
       %{
         id: "cmd-setwelcome",
         title: "/setwelcome",
-        category: gettext("Server Messages"),
-        keywords: ["setwelcome", "welcome", gettext("channel welcome"), "greeting"],
+        category: dgettext("help", "Server Messages"),
+        keywords: ["setwelcome", "welcome", dgettext("help", "channel welcome"), "greeting"],
         icon: :icon_megaphone,
         description:
-          gettext("Set a welcome message displayed to users when they join your channel.")
+          dgettext(
+            "help",
+            "Set a welcome message displayed to users when they join your channel."
+          )
       },
       %{
         id: "cmd-clearwelcome",
         title: "/clearwelcome",
-        category: gettext("Server Messages"),
-        keywords: ["clearwelcome", "welcome", gettext("clear welcome")],
+        category: dgettext("help", "Server Messages"),
+        keywords: ["clearwelcome", "welcome", dgettext("help", "clear welcome")],
         icon: :icon_trash,
-        description: gettext("Remove the channel welcome message.")
+        description: dgettext("help", "Remove the channel welcome message.")
       },
       %{
         id: "cmd-wallops",
         title: "/wallops",
-        category: gettext("Server Messages"),
-        keywords: ["wallops", gettext("operator broadcast"), gettext("server message")],
+        category: dgettext("help", "Server Messages"),
+        keywords: [
+          "wallops",
+          dgettext("help", "operator broadcast"),
+          dgettext("help", "server message")
+        ],
         icon: :icon_megaphone,
         description:
-          gettext("Send a broadcast message to all users who have wallops mode enabled.")
+          dgettext("help", "Send a broadcast message to all users who have wallops mode enabled.")
       },
       %{
         id: "cmd-announce",
         title: "/announce",
-        category: gettext("Server Messages"),
+        category: dgettext("help", "Server Messages"),
         keywords: ["announce", "announcement", "global", "broadcast", "admin"],
         icon: :icon_megaphone,
         description:
-          gettext("Send a global announcement to all connected users. Requires admin privileges.")
+          dgettext(
+            "help",
+            "Send a global announcement to all connected users. Requires admin privileges."
+          )
       },
       %{
         id: "cmd-umode",
         title: "/umode",
-        category: gettext("Channels"),
-        keywords: ["umode", gettext("user mode"), "wallops", "mode"],
+        category: dgettext("help", "Channels"),
+        keywords: ["umode", dgettext("help", "user mode"), "wallops", "mode"],
         icon: :icon_tab_modes,
         description:
-          gettext("View or change your user modes, such as enabling wallops reception.")
+          dgettext("help", "View or change your user modes, such as enabling wallops reception.")
       },
       %{
         id: "feature-special-messages",
-        title: gettext("Special Messages"),
-        category: gettext("Server Messages"),
+        title: dgettext("help", "Special Messages"),
+        category: dgettext("help", "Server Messages"),
         keywords: [
           "motd",
           "welcome",
           "wallops",
           "announce",
           "announcement",
-          gettext("special messages"),
-          gettext("server messages")
+          dgettext("help", "special messages"),
+          dgettext("help", "server messages")
         ],
         icon: :icon_megaphone,
         description:
-          gettext(
+          dgettext(
+            "help",
             "Overview of special message types including MOTD, welcome messages, wallops, and announcements."
           )
       }

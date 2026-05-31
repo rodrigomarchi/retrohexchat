@@ -69,7 +69,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
     {c_ip, c_port, s_ip, s_port, _transport} = five_tuple
 
     alloc_id =
-      gettext("(%{inet_ntoa_c_ip}:%{c_port}, %{inet_ntoa_s_ip}:%{s_port}, UDP)",
+      dgettext("p2p", "(%{inet_ntoa_c_ip}:%{c_port}, %{inet_ntoa_s_ip}:%{s_port}, UDP)",
         inet_ntoa_c_ip: :inet.ntoa(c_ip),
         c_port: c_port,
         inet_ntoa_s_ip: :inet.ntoa(s_ip),

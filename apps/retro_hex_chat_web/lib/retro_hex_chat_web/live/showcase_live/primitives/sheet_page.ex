@@ -15,6 +15,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.SheetPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Sheet"), active_page: "sheet")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Sheet"), active_page: "sheet")}
   end
 end

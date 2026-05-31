@@ -14,41 +14,50 @@ defmodule RetroHexChatWeb.ShowcaseLive.Index do
   alias RetroHexChatWeb.Icons
 
   @groups [
-    {gettext("Primitives"), :icon_btn_ok, 23,
-     gettext(
+    {dgettext("showcase", "Primitives"), :icon_btn_ok, 23,
+     dgettext(
+       "showcase",
        "SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other atomic form controls."
      )},
-    {gettext("Layout"), :icon_group_view, 11,
-     gettext(
+    {dgettext("showcase", "Layout"), :icon_group_view, 11,
+     dgettext(
+       "showcase",
        "Structural containers — dialogs, tabs, tables, menus, tree views, windows, and scroll areas."
      )},
-    {gettext("Chat"), :icon_chat, 21,
-     gettext(
+    {dgettext("showcase", "Chat"), :icon_chat, 21,
+     dgettext(
+       "showcase",
        "Chat-specific components — messages, nicklist, emoji picker, formatting toolbar, context menus, and more."
      )},
-    {gettext("Shell"), :icon_laptop, 7,
-     gettext(
+    {dgettext("showcase", "Shell"), :icon_laptop, 7,
+     dgettext(
+       "showcase",
        "Win98 app shell composites — toolbar app, status bar app, app header, config form, and empty states."
      )},
-    {gettext("Dialogs"), :icon_dialog_options, 25,
-     gettext(
+    {dgettext("showcase", "Dialogs"), :icon_dialog_options, 25,
+     dgettext(
+       "showcase",
        "Complex dialog composites — channel settings, perform, address book, sound settings, and 20+ more."
      )},
     {"P2P", :icon_p2p, 3,
-     gettext("Peer-to-peer session components — P2P lobby, file transfer, and media controls.")},
-    {gettext("Games"), :icon_joystick, 5,
-     gettext(
+     dgettext(
+       "showcase",
+       "Peer-to-peer session components — P2P lobby, file transfer, and media controls."
+     )},
+    {dgettext("showcase", "Games"), :icon_joystick, 5,
+     dgettext(
+       "showcase",
        "Arcade and solo game components — game lobby, game canvas, solo lobby, and arcade frame."
      )},
-    {gettext("Assets"), :icon_folder, 3,
-     gettext("Icons catalog, SVG diagrams, and design tokens reference.")}
+    {dgettext("showcase", "Assets"), :icon_folder, 3,
+     dgettext("showcase", "Icons catalog, SVG diagrams, and design tokens reference.")}
   ]
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("Component Showcase"),
+       page_title: dgettext("showcase", "Component Showcase"),
        active_page: "index",
        groups: @groups
      )}

@@ -1,27 +1,29 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Start a solo arcade session from chat. This is an administrator-only command used for direct arcade session creation."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/singleplayer")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/singleplayer")}</pre>
 
-<.help_h4 icon={:icon_rules}>{gettext("Requirements")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Requirements")}</.help_h4>
 <ul>
-  <li>{gettext("You must be a server administrator.")}</li>
-  <li>{gettext("Your nickname must be registered and identified.")}</li>
+  <li>{dgettext("help_commands", "You must be a server administrator.")}</li>
+  <li>{dgettext("help_commands", "Your nickname must be registered and identified.")}</li>
   <li>
-    {gettext("Regular users should join")} <code>#games</code> {gettext("and type")}
-    <code>{gettext("!play")}</code> {gettext("instead.")}
+    {dgettext("help_commands", "Regular users should join")}
+    <code>#games</code> {dgettext("help_commands", "and type")}
+    <code>{dgettext("help_commands", "!play")}</code> {dgettext("help_commands", "instead.")}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/singleplayer")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/singleplayer")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade">{gettext("Solo Arcade")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-arcade">{dgettext("help_commands", "Solo Arcade")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_commands", "/game")}</.help_link>
 </p>

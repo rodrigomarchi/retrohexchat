@@ -16,7 +16,12 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameFrost do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label={gettext("Hex Frost game screen: ice blocks floating on water with igloos on shore")}
+      aria-label={
+        dgettext(
+          "diagrams",
+          "Hex Frost game screen: ice blocks floating on water with igloos on shore"
+        )
+      }
     >
       {win98_chrome("Hex Frost")}
       <%!-- Shore (top) --%>
@@ -47,13 +52,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameFrost do
       <rect x="240" y="50" width="10" height="8" fill="#fff" />
       <%!-- Temperature --%>
       <text x="220" y="44" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
-        {gettext("32° R2")}
+        {dgettext("diagrams", "32° R2")}
       </text>
       <text x="30" y="340" fill="#00ff41" font-size="10" font-family="'Courier New',monospace">
-        {gettext("P1: 8/15")}
+        {dgettext("diagrams", "P1: 8/15")}
       </text>
       <text x="420" y="340" fill="#00d4ff" font-size="10" font-family="'Courier New',monospace">
-        {gettext("P2: 5/15")}
+        {dgettext("diagrams", "P2: 5/15")}
       </text>
     </svg>
     """

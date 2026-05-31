@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
   def config_form(assigns) do
     assigns =
       assigns
-      |> assign(:resolved_title, assigns.title || gettext("Configuration"))
+      |> assign(:resolved_title, assigns.title || dgettext("ui", "Configuration"))
       |> assign(:resolved_columns, assigns.columns || [:name, :value])
 
     ~H"""
@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
           <div class="flex gap-retro-4">
             <.button size="sm" variant="outline" phx-click={@on_add}>
               <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-              {gettext("Add")}
+              {dgettext("ui", "Add")}
             </.button>
             <.button
               size="sm"
@@ -95,7 +95,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
               disabled={@selected_index == nil}
             >
               <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-              {gettext("Edit")}
+              {dgettext("ui", "Edit")}
             </.button>
             <.button
               size="sm"
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
               disabled={@selected_index == nil}
             >
               <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              {gettext("Remove")}
+              {dgettext("ui", "Remove")}
             </.button>
           </div>
         </div>
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
           class="w-full md:w-[200px] md:shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
         >
           <h3 class="font-bold text-xs mb-retro-4">
-            {if @editing, do: gettext("Edit"), else: gettext("Add")}
+            {if @editing, do: dgettext("ui", "Edit"), else: dgettext("ui", "Add")}
           </h3>
           {render_slot(@form)}
         </div>
@@ -124,20 +124,20 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
       <.dialog_footer>
         <.button variant="default" phx-click={@on_ok || hide_modal(@id)}>
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {gettext("OK")}
+          {dgettext("ui", "OK")}
         </.button>
         <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {gettext("Cancel")}
+          {dgettext("ui", "Cancel")}
         </.button>
       </.dialog_footer>
     </.dialog>
     """
   end
 
-  defp translate_column("Name"), do: gettext("Name")
-  defp translate_column("Value"), do: gettext("Value")
-  defp translate_column(:name), do: gettext("Name")
-  defp translate_column(:value), do: gettext("Value")
+  defp translate_column("Name"), do: dgettext("ui", "Name")
+  defp translate_column("Value"), do: dgettext("ui", "Value")
+  defp translate_column(:name), do: dgettext("ui", "Name")
+  defp translate_column(:value), do: dgettext("ui", "Value")
   defp translate_column(column), do: column
 end

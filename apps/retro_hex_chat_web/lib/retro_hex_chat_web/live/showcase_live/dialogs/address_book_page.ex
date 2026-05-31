@@ -18,17 +18,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AddressBookPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("Address Book"),
+       page_title: dgettext("showcase", "Address Book"),
        active_page: "address-book",
        contacts: [
          %{
            contact_nickname: "alice",
-           note: gettext("Friend"),
+           note: dgettext("showcase", "Friend"),
            first_contact_date: DateTime.add(DateTime.utc_now(), -30, :day)
          },
          %{
            contact_nickname: "bob",
-           note: gettext("Colleague"),
+           note: dgettext("showcase", "Colleague"),
            first_contact_date: DateTime.add(DateTime.utc_now(), -7, :day)
          },
          %{contact_nickname: "carol", note: "", first_contact_date: DateTime.utc_now()}
@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AddressBookPage do
          %{
            tracked_nickname: "dave",
            online: false,
-           note: gettext("AFK since Monday"),
+           note: dgettext("showcase", "AFK since Monday"),
            last_seen_at: DateTime.add(DateTime.utc_now(), -120, :minute)
          }
        ],
@@ -61,15 +61,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AddressBookPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Address Book")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Address Book")}</h2>
 
       <.showcase_card
-        title={gettext("Address Book")}
+        title={dgettext("showcase", "Address Book")}
         description="Contact list with color assignments."
       >
         <.button variant="outline" phx-click={show_modal("address-book-demo")}>
           <:icon><Icons.icon_dialog_address_book class="w-4 h-4" /></:icon>
-          {gettext("Open Address Book")}
+          {dgettext("showcase", "Open Address Book")}
         </.button>
         <.address_book
           id="address-book-demo"

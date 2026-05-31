@@ -1,13 +1,13 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">{gettext("Channel Central Dialog")}</h2>
+  <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Channel Central Dialog")}</h2>
 
   <.showcase_card
-    title={gettext("Operator View")}
+    title={dgettext("showcase", "Operator View")}
     description="Channel Central with full operator access — all fields are editable."
   >
     <.button phx-click={show_modal("channel-central-op")}>
       <:icon><Icons.icon_btn_channel_central /></:icon>
-      {gettext("Open as Operator")}
+      {dgettext("showcase", "Open as Operator")}
     </.button>
 
     <.channel_central_dialog
@@ -49,12 +49,12 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Regular User View")}
+    title={dgettext("showcase", "Regular User View")}
     description="Channel Central as a non-operator — topic and modes are read-only, list management is hidden."
   >
     <.button phx-click={show_modal("channel-central-user")}>
       <:icon><Icons.icon_btn_channel_central /></:icon>
-      {gettext("Open as User")}
+      {dgettext("showcase", "Open as User")}
     </.button>
 
     <.channel_central_dialog
@@ -75,43 +75,45 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Tabs Overview")}
+    title={dgettext("showcase", "Tabs Overview")}
     description="The dialog has 5 tabs for comprehensive channel management."
   >
     <div class="overflow-x-auto">
       <table class="w-full text-xs">
         <thead>
           <tr class="border-b">
-            <th class="text-left px-2 py-1">{gettext("Tab")}</th>
-            <th class="text-left px-2 py-1">{gettext("Contents")}</th>
-            <th class="text-left px-2 py-1">{gettext("Operator Only")}</th>
+            <th class="text-left px-2 py-1">{dgettext("showcase", "Tab")}</th>
+            <th class="text-left px-2 py-1">{dgettext("showcase", "Contents")}</th>
+            <th class="text-left px-2 py-1">{dgettext("showcase", "Operator Only")}</th>
           </tr>
         </thead>
         <tbody>
           <tr class="border-b">
-            <td class="px-2 py-1 font-bold">{gettext("General")}</td>
-            <td class="px-2 py-1">{gettext("Channel info, topic editing")}</td>
-            <td class="px-2 py-1">{gettext("Topic save button")}</td>
+            <td class="px-2 py-1 font-bold">{dgettext("showcase", "General")}</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Channel info, topic editing")}</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Topic save button")}</td>
           </tr>
           <tr class="border-b">
-            <td class="px-2 py-1 font-bold">{gettext("Modes")}</td>
-            <td class="px-2 py-1">{gettext("Moderated, invite-only, topic lock, key, limit")}</td>
-            <td class="px-2 py-1">{gettext("Apply modes button, field editing")}</td>
+            <td class="px-2 py-1 font-bold">{dgettext("showcase", "Modes")}</td>
+            <td class="px-2 py-1">
+              {dgettext("showcase", "Moderated, invite-only, topic lock, key, limit")}
+            </td>
+            <td class="px-2 py-1">{dgettext("showcase", "Apply modes button, field editing")}</td>
           </tr>
           <tr class="border-b">
-            <td class="px-2 py-1 font-bold">{gettext("Bans")}</td>
-            <td class="px-2 py-1">{gettext("Ban masks with set_by/set_at")}</td>
-            <td class="px-2 py-1">{gettext("Add/Remove buttons")}</td>
+            <td class="px-2 py-1 font-bold">{dgettext("showcase", "Bans")}</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Ban masks with set_by/set_at")}</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Add/Remove buttons")}</td>
           </tr>
           <tr class="border-b">
-            <td class="px-2 py-1 font-bold">{gettext("Ban Exc.")}</td>
-            <td class="px-2 py-1">{gettext("Ban exception masks")}</td>
-            <td class="px-2 py-1">{gettext("Add/Remove buttons")}</td>
+            <td class="px-2 py-1 font-bold">{dgettext("showcase", "Ban Exc.")}</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Ban exception masks")}</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Add/Remove buttons")}</td>
           </tr>
           <tr>
-            <td class="px-2 py-1 font-bold">{gettext("Invite Exc.")}</td>
-            <td class="px-2 py-1">{gettext("Invite exception masks")}</td>
-            <td class="px-2 py-1">{gettext("Add/Remove buttons")}</td>
+            <td class="px-2 py-1 font-bold">{dgettext("showcase", "Invite Exc.")}</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Invite exception masks")}</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Add/Remove buttons")}</td>
           </tr>
         </tbody>
       </table>

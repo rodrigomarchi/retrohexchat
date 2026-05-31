@@ -15,11 +15,11 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, %{is_admin: false}) do
-    {:error, gettext("Permission denied: you must be a server administrator.")}
+    {:error, dgettext("commands", "Permission denied: you must be a server administrator.")}
   end
 
   def execute([], _context) do
-    {:error, gettext("Usage: /announce <message>")}
+    {:error, dgettext("commands", "Usage: /announce <message>")}
   end
 
   def execute(args, %{is_admin: true, nickname: sender}) do
@@ -36,7 +36,7 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
        }}
     )
 
-    {:ok, :system, %{content: gettext("Announcement sent to all users.")}}
+    {:ok, :system, %{content: dgettext("commands", "Announcement sent to all users.")}}
   end
 
   @impl true
@@ -49,12 +49,13 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
   def help do
     %{
       name: "announce",
-      syntax: gettext("/announce <message>"),
+      syntax: dgettext("commands", "/announce <message>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Send an urgent broadcast message to every connected user. Bypasses all ignore filters.\nRequires: server administrator."
         ),
-      examples: [gettext("/announce Server will restart at midnight")]
+      examples: [dgettext("commands", "/announce Server will restart at midnight")]
     }
   end
 
@@ -69,9 +70,10 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
 
     %CommandSyntax{
       command: "announce",
-      syntax: gettext("/announce <message>"),
+      syntax: dgettext("commands", "/announce <message>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Send an urgent broadcast message to every connected user. Bypasses all ignore filters."
         ),
       category: :advanced,
@@ -81,10 +83,10 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
           required: true,
           type: :text,
           position: 0,
-          description: gettext("Global announcement message")
+          description: dgettext("commands", "Global announcement message")
         }
       ],
-      examples: [gettext("/announce Server will restart at midnight")]
+      examples: [dgettext("commands", "/announce Server will restart at midnight")]
     }
   end
 end

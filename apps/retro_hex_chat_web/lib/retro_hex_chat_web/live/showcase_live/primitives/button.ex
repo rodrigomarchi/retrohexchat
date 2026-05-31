@@ -14,40 +14,43 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Button do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Button"), active_page: "button")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Button"), active_page: "button")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Button")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Button")}</h2>
 
-      <.showcase_card title={gettext("Variants")} description="All button style variants.">
+      <.showcase_card
+        title={dgettext("showcase", "Variants")}
+        description="All button style variants."
+      >
         <div class="flex flex-wrap gap-2">
           <.button variant="default">
             <:icon><Icons.icon_btn_star /></:icon>
-            {gettext("Default")}
+            {dgettext("showcase", "Default")}
           </.button>
           <.button variant="secondary">
             <:icon><Icons.icon_btn_settings /></:icon>
-            {gettext("Secondary")}
+            {dgettext("showcase", "Secondary")}
           </.button>
           <.button variant="destructive">
             <:icon><Icons.icon_btn_remove /></:icon>
-            {gettext("Destructive")}
+            {dgettext("showcase", "Destructive")}
           </.button>
           <.button variant="outline">
             <:icon><Icons.icon_btn_page /></:icon>
-            {gettext("Outline")}
+            {dgettext("showcase", "Outline")}
           </.button>
           <.button variant="ghost">
             <:icon><Icons.icon_btn_info /></:icon>
-            {gettext("Ghost")}
+            {dgettext("showcase", "Ghost")}
           </.button>
           <.button variant="link">
             <:icon><Icons.icon_btn_link /></:icon>
-            {gettext("Link")}
+            {dgettext("showcase", "Link")}
           </.button>
         </div>
         <.code_example>
@@ -58,19 +61,19 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Button do
         </.code_example>
       </.showcase_card>
 
-      <.showcase_card title={gettext("Sizes")} description="Available button sizes.">
+      <.showcase_card title={dgettext("showcase", "Sizes")} description="Available button sizes.">
         <div class="flex flex-wrap items-center gap-2">
           <.button size="sm">
             <:icon><Icons.icon_btn_star /></:icon>
-            {gettext("Small")}
+            {dgettext("showcase", "Small")}
           </.button>
           <.button size="default">
             <:icon><Icons.icon_btn_star /></:icon>
-            {gettext("Default")}
+            {dgettext("showcase", "Default")}
           </.button>
           <.button size="lg">
             <:icon><Icons.icon_btn_star /></:icon>
-            {gettext("Large")}
+            {dgettext("showcase", "Large")}
           </.button>
           <.button size="icon">
             <:icon><Icons.icon_btn_add /></:icon>
@@ -82,15 +85,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Button do
         </.code_example>
       </.showcase_card>
 
-      <.showcase_card title={gettext("States")} description="Disabled state.">
+      <.showcase_card title={dgettext("showcase", "States")} description="Disabled state.">
         <div class="flex flex-wrap gap-2">
           <.button>
             <:icon><Icons.icon_btn_ok /></:icon>
-            {gettext("Normal")}
+            {dgettext("showcase", "Normal")}
           </.button>
           <.button disabled>
             <:icon><Icons.icon_btn_ok /></:icon>
-            {gettext("Disabled")}
+            {dgettext("showcase", "Disabled")}
           </.button>
         </div>
         <.code_example>

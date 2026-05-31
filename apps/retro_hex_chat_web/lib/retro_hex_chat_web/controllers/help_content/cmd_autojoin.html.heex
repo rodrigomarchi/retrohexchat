@@ -1,37 +1,50 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Set channels to join automatically every time you connect, so you never have to manually rejoin your favorite rooms."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/autojoin /autojoin list /autojoin add <#channel> [key] /autojoin remove <#channel> /autojoin clear")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/autojoin /autojoin list /autojoin add <#channel> [key] /autojoin remove <#channel> /autojoin clear")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>#channel</code>
-  {gettext("— The channel name (must start with #).")}<br /><code>key</code>
-  {gettext("— Optional password for channels that require one (+k mode).")}
+  {dgettext("help_commands", "— The channel name (must start with #).")}<br /><code>key</code>
+  {dgettext("help_commands", "— Optional password for channels that require one (+k mode).")}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "When you connect to the server, your auto-join channels are joined automatically after all perform commands finish. This ensures things like NickServ identification happen before joining channels. When you use"
   )}
-  <code>{gettext("/join")}</code>
-  {gettext("to enter a channel, it is automatically added to your auto-join list. When you use")}
-  <code>{gettext("/part")}</code>
-  {gettext("to leave, it is automatically removed. Running")} <code>{gettext("/autojoin")}</code>
-  {gettext("with no arguments opens the Auto-Join dialog.")}
+  <code>{dgettext("help_commands", "/join")}</code>
+  {dgettext(
+    "help_commands",
+    "to enter a channel, it is automatically added to your auto-join list. When you use"
+  )}
+  <code>{dgettext("help_commands", "/part")}</code>
+  {dgettext("help_commands", "to leave, it is automatically removed. Running")}
+  <code>{dgettext("help_commands", "/autojoin")}</code>
+  {dgettext("help_commands", "with no arguments opens the Auto-Join dialog.")}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Registered users only — guests cannot save auto-join lists")}</li>
-  <li>{gettext("Maximum number of channels matches the channel limit (10)")}</li>
+  <li>
+    {dgettext("help_commands", "Registered users only — guests cannot save auto-join lists")}
+  </li>
+  <li>
+    {dgettext("help_commands", "Maximum number of channels matches the channel limit (10)")}
+  </li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/autojoin list /autojoin add #elixir /autojoin add #secret mykey /autojoin remove #elixir /autojoin clear")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/autojoin list /autojoin add #elixir /autojoin add #secret mykey /autojoin remove #elixir /autojoin clear")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-join">{gettext("/join")}</.help_link>
-  · <.help_link topic="cmd-perform">{gettext("/perform")}</.help_link>
-  · <.help_link topic="feature-auto-join-channels">{gettext("Auto-Join Channels")}</.help_link>
+  <.help_link topic="cmd-join">{dgettext("help_commands", "/join")}</.help_link>
+  · <.help_link topic="cmd-perform">{dgettext("help_commands", "/perform")}</.help_link>
+  ·
+  <.help_link topic="feature-auto-join-channels">
+    {dgettext("help_commands", "Auto-Join Channels")}
+  </.help_link>
 </p>

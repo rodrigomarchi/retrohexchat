@@ -13,17 +13,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ReplyBarPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Reply Bar"), active_page: "reply-bar")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Reply Bar"), active_page: "reply-bar")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Reply Bar")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Reply Bar")}</h2>
 
       <.showcase_card
-        title={gettext("With Message Preview")}
+        title={dgettext("showcase", "With Message Preview")}
         description="Reply bar showing author and original message."
       >
         <.reply_bar author="alice" message="Hello everyone! How's it going today?" />
@@ -33,14 +33,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ReplyBarPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Without Message")}
+        title={dgettext("showcase", "Without Message")}
         description="Reply bar with just the author name."
       >
         <.reply_bar author="bob" />
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Long Message")}
+        title={dgettext("showcase", "Long Message")}
         description="Reply bar with a very long message that gets truncated."
       >
         <.reply_bar

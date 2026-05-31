@@ -1,79 +1,123 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "A complete free replacement for DOOM II: Hell on Earth — 32 levels featuring the devastating Super Shotgun. Compatible with thousands of community-made PWAD mods, all under the BSD license."
   )}
 </p>
 <.diagram_arcade_doom class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "About")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Freedoom Phase 2 replaces DOOM II with 32 levels of original content — new sprites, textures, sounds, and music created entirely by the open source community. The Super Shotgun is included, along with all weapon and enemy equivalents from the original game."
   )}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Because it's a complete DOOM II replacement, Phase 2 is compatible with the vast library of community PWAD mods built for DOOM II over the past three decades. The Freedoom project provides three separate IWADs: Phase 1 (Ultimate DOOM), Phase 2 (DOOM II), and FreeDM (deathmatch). It runs on the PrBoom+ engine compiled to WebAssembly."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("W / ↑")}</strong> {gettext("— Move forward")}</li>
-  <li><strong>{gettext("S / ↓")}</strong> {gettext("— Move backward")}</li>
-  <li><strong>A</strong> {gettext("— Strafe left")}</li>
-  <li><strong>D</strong> {gettext("— Strafe right")}</li>
-  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim / turn")}</li>
-  <li><strong>{gettext("Left Click")}</strong> {gettext("— Fire weapon")}</li>
-  <li><strong>E</strong> {gettext("— Use / open doors")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Jump (PrBoom+)")}</li>
-  <li><strong>1–7</strong> {gettext("— Select weapon")}</li>
-  <li><strong>{gettext("Tab")}</strong> {gettext("— Toggle automap")}</li>
-  <li><strong>{gettext("Shift")}</strong> {gettext("— Run (hold)")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Menu")}</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Super Shotgun is king")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "W / ↑")}</strong> {dgettext("help_arcade", "— Move forward")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "S / ↓")}</strong> {dgettext(
+      "help_arcade",
+      "— Move backward"
+    )}
+  </li>
+  <li><strong>A</strong> {dgettext("help_arcade", "— Strafe left")}</li>
+  <li><strong>D</strong> {dgettext("help_arcade", "— Strafe right")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Mouse")}</strong> {dgettext("help_arcade", "— Aim / turn")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Fire weapon"
+    )}
+  </li>
+  <li><strong>E</strong> {dgettext("help_arcade", "— Use / open doors")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Space")}</strong> {dgettext(
+      "help_arcade",
+      "— Jump (PrBoom+)"
+    )}
+  </li>
+  <li><strong>1–7</strong> {dgettext("help_arcade", "— Select weapon")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Tab")}</strong> {dgettext("help_arcade", "— Toggle automap")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Shift")}</strong> {dgettext("help_arcade", "— Run (hold)")}
+  </li>
+  <li><strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Menu")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_arcade", "Super Shotgun is king")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Devastating at close range with a wide spread. Your go-to weapon for most encounters."
     )}
   </li>
   <li>
-    <strong>{gettext("More open levels")}</strong>
-    {gettext("— Phase 2 levels are generally more open than Phase 1, with larger outdoor areas.")}
+    <strong>{dgettext("help_arcade", "More open levels")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Phase 2 levels are generally more open than Phase 1, with larger outdoor areas."
+    )}
   </li>
   <li>
-    <strong>{gettext("PWAD compatible")}</strong>
-    {gettext("— Works with community DOOM II mods — decades of free content at your fingertips.")}
+    <strong>{dgettext("help_arcade", "PWAD compatible")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Works with community DOOM II mods — decades of free content at your fingertips."
+    )}
   </li>
   <li>
-    <strong>{gettext("Ammo management")}</strong>
-    {gettext("— Later levels get stingy with ammo. Manage your resources carefully.")}
+    <strong>{dgettext("help_arcade", "Ammo management")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Later levels get stingy with ammo. Manage your resources carefully."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Phase 2 is compatible with DOOM II and Final Doom PWADs, giving you access to over 30 years of community-created content — thousands of level packs, total conversions, and gameplay mods."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The Freedoom project provides three separate IWADs sharing the same BSD-licensed asset pool: Phase 1, Phase 2, and FreeDM."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade-doom">{dgettext("help_arcade", "DOOM (Arcade)")}</.help_link>
   ·
   <.help_link topic="feature-arcade-doom-shareware">
-    {gettext("DOOM: Knee-Deep in the Dead")}
+    {dgettext("help_arcade", "DOOM: Knee-Deep in the Dead")}
   </.help_link>
-  · <.help_link topic="feature-arcade-freedoom1">{gettext("Freedoom: Phase 1")}</.help_link>
-  · <.help_link topic="feature-arcade-freedm">{gettext("FreeDM")}</.help_link>
-  · <.help_link topic="feature-arcade-chex-quest">{gettext("Chex Quest")}</.help_link>
-  · <.help_link topic="feature-arcade-hacx">{gettext("HacX")}</.help_link>
-  · <.help_link topic="feature-arcade-rekkr">{gettext("REKKR")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-freedoom1">
+    {dgettext("help_arcade", "Freedoom: Phase 1")}
+  </.help_link>
+  · <.help_link topic="feature-arcade-freedm">{dgettext("help_arcade", "FreeDM")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-chex-quest">
+    {dgettext("help_arcade", "Chex Quest")}
+  </.help_link>
+  · <.help_link topic="feature-arcade-hacx">{dgettext("help_arcade", "HacX")}</.help_link>
+  · <.help_link topic="feature-arcade-rekkr">{dgettext("help_arcade", "REKKR")}</.help_link>
 </p>

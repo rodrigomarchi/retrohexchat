@@ -1,25 +1,34 @@
 <p>
-  {gettext("Open a private message tab with a user without sending any message. Unlike")} <code>{gettext("/msg")}</code>{gettext(
+  {dgettext(
+    "help_commands",
+    "Open a private message tab with a user without sending any message. Unlike"
+  )} <code>{dgettext("help_commands", "/msg")}</code>{dgettext(
+    "help_commands",
     ", this just creates the conversation window."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/query <nickname>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>nickname</code> {gettext("— The user to open a PM tab with.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/query <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p><code>nickname</code> {dgettext("help_commands", "— The user to open a PM tab with.")}</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Creates or switches to a PM conversation tab with the specified user. No message is sent — it simply opens the window so you can start typing. If you already have a PM tab open with that user, it switches to it. If you want to open the tab"
   )}
   <em>and</em>
-  {gettext("send a message in one step, use")} <code>{gettext("/msg")}</code>
-  {gettext("instead.")}
+  {dgettext("help_commands", "send a message in one step, use")}
+  <code>{dgettext("help_commands", "/msg")}</code>
+  {dgettext("help_commands", "instead.")}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/query Alice /query Bob")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/query Alice /query Bob")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-msg">{gettext("/msg")}</.help_link>
-  · <.help_link topic="private-messages">{gettext("Private Messages")}</.help_link>
+  <.help_link topic="cmd-msg">{dgettext("help_commands", "/msg")}</.help_link>
+  ·
+  <.help_link topic="private-messages">
+    {dgettext("help_commands", "Private Messages")}
+  </.help_link>
 </p>

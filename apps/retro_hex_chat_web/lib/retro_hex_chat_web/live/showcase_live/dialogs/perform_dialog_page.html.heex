@@ -1,13 +1,13 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">{gettext("Perform Dialog")}</h2>
+  <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Perform Dialog")}</h2>
 
   <.showcase_card
-    title={gettext("Perform Dialog")}
+    title={dgettext("showcase", "Perform Dialog")}
     description="Win98-style dialog for managing auto-execute commands and auto-join channels on connect."
   >
     <.button phx-click={show_modal("perform-demo")}>
       <:icon><Icons.icon_btn_perform /></:icon>
-      {gettext("Open Perform")}
+      {dgettext("showcase", "Open Perform")}
     </.button>
 
     <.perform_dialog
@@ -46,33 +46,35 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Password Masking")}
+    title={dgettext("showcase", "Password Masking")}
     description="NickServ IDENTIFY passwords are automatically masked in the commands list for security."
   >
     <div class="shadow-retro-field bg-white p-2">
       <p class="text-xs mb-1">
-        <span class="font-bold">{gettext("Input:")}</span>
-        <code class="font-mono">{gettext("/msg NickServ IDENTIFY mySecretPass")}</code>
+        <span class="font-bold">{dgettext("showcase", "Input:")}</span>
+        <code class="font-mono">
+          {dgettext("showcase", "/msg NickServ IDENTIFY mySecretPass")}
+        </code>
       </p>
       <p class="text-xs">
-        <span class="font-bold">{gettext("Display:")}</span>
-        <code class="font-mono">{gettext("/msg NickServ IDENTIFY ***")}</code>
+        <span class="font-bold">{dgettext("showcase", "Display:")}</span>
+        <code class="font-mono">{dgettext("showcase", "/msg NickServ IDENTIFY ***")}</code>
       </p>
     </div>
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Component Attributes")}
+    title={dgettext("showcase", "Component Attributes")}
     description="Full list of supported attributes for the perform_dialog component."
   >
     <div class="overflow-x-auto">
       <table class="w-full text-xs">
         <thead>
           <tr class="border-b">
-            <th class="text-left px-2 py-1">{gettext("Attribute")}</th>
-            <th class="text-left px-2 py-1">{gettext("Type")}</th>
-            <th class="text-left px-2 py-1">{gettext("Default")}</th>
-            <th class="text-left px-2 py-1">{gettext("Description")}</th>
+            <th class="text-left px-2 py-1">{dgettext("showcase", "Attribute")}</th>
+            <th class="text-left px-2 py-1">{dgettext("showcase", "Type")}</th>
+            <th class="text-left px-2 py-1">{dgettext("showcase", "Default")}</th>
+            <th class="text-left px-2 py-1">{dgettext("showcase", "Description")}</th>
           </tr>
         </thead>
         <tbody>
@@ -80,34 +82,36 @@
             <td class="px-2 py-1 font-mono">id</td>
             <td class="px-2 py-1">string</td>
             <td class="px-2 py-1">required</td>
-            <td class="px-2 py-1">{gettext("Dialog element ID")}</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Dialog element ID")}</td>
           </tr>
           <tr class="border-b">
             <td class="px-2 py-1 font-mono">perform_entries</td>
             <td class="px-2 py-1">list</td>
             <td class="px-2 py-1">[]</td>
-            <td class="px-2 py-1">{gettext("List of %&#123;position, command&#125; maps")}</td>
+            <td class="px-2 py-1">
+              {dgettext("showcase", "List of %&#123;position, command&#125; maps")}
+            </td>
           </tr>
           <tr class="border-b">
             <td class="px-2 py-1 font-mono">autojoin_entries</td>
             <td class="px-2 py-1">list</td>
             <td class="px-2 py-1">[]</td>
             <td class="px-2 py-1">
-              {gettext("List of %&#123;channel_name, channel_key&#125; maps")}
+              {dgettext("showcase", "List of %&#123;channel_name, channel_key&#125; maps")}
             </td>
           </tr>
           <tr class="border-b">
             <td class="px-2 py-1 font-mono">perform_enabled</td>
             <td class="px-2 py-1">boolean</td>
             <td class="px-2 py-1">true</td>
-            <td class="px-2 py-1">{gettext("Enable perform on connect")}</td>
+            <td class="px-2 py-1">{dgettext("showcase", "Enable perform on connect")}</td>
           </tr>
           <tr>
-            <td class="px-2 py-1 font-mono">{gettext("on_*")}</td>
+            <td class="px-2 py-1 font-mono">{dgettext("showcase", "on_*")}</td>
             <td class="px-2 py-1">any</td>
             <td class="px-2 py-1">nil</td>
             <td class="px-2 py-1">
-              {gettext("Event callbacks (tab, select, add, edit, remove, etc.)")}
+              {dgettext("showcase", "Event callbacks (tab, select, add, edit, remove, etc.)")}
             </td>
           </tr>
         </tbody>

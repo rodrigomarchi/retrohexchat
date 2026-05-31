@@ -1,93 +1,126 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "View server information and manage server settings. Requires server administrator role."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/admin server info /admin server set <key> <value> /admin server get <key> /admin server settings")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin server info /admin server set <key> <value> /admin server get <key> /admin server settings")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Subcommands")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Subcommands")}</.help_h4>
 <ul>
   <li>
-    <code>info</code> {gettext(
+    <code>info</code> {dgettext(
+      "help_commands",
       "— Show server stats: online users, active channels, registered nicks, uptime"
     )}
   </li>
-  <li><code>{gettext("set <key> <value>")}</code> {gettext("— Change a server setting")}</li>
-  <li><code>{gettext("get <key>")}</code> {gettext("— View the current value of a setting")}</li>
-  <li><code>settings</code> {gettext("— List all server settings with their values")}</li>
+  <li>
+    <code>{dgettext("help_commands", "set <key> <value>")}</code> {dgettext(
+      "help_commands",
+      "— Change a server setting"
+    )}
+  </li>
+  <li>
+    <code>{dgettext("help_commands", "get <key>")}</code> {dgettext(
+      "help_commands",
+      "— View the current value of a setting"
+    )}
+  </li>
+  <li>
+    <code>settings</code> {dgettext(
+      "help_commands",
+      "— List all server settings with their values"
+    )}
+  </li>
 </ul>
 
-<.help_h4 icon={:icon_tab_control}>{gettext("Available Settings")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "Available Settings")}</.help_h4>
 <ul>
   <li>
     <code>server_name</code>
-    {gettext("— Display name of the server (shown in welcome message and server info)")}
+    {dgettext(
+      "help_commands",
+      "— Display name of the server (shown in welcome message and server info)"
+    )}
   </li>
   <li>
-    <code>server_description</code> {gettext("— Server description text (shown in server info)")}
+    <code>server_description</code> {dgettext(
+      "help_commands",
+      "— Server description text (shown in server info)"
+    )}
   </li>
   <li>
     <code>welcome_message</code>
-    {gettext("— Custom message shown to users on connect (after the default welcome)")}
+    {dgettext(
+      "help_commands",
+      "— Custom message shown to users on connect (after the default welcome)"
+    )}
   </li>
   <li>
     <code>max_channels</code>
-    {gettext(
+    {dgettext(
+      "help_commands",
       "— Maximum number of channels a user can join (default: 10, must be a positive integer)"
     )}
   </li>
   <li>
     <code>registration</code>
-    {gettext("— Whether new nick registrations are allowed:")} <code>open</code>
-    {gettext("(default) or")} <code>closed</code>
+    {dgettext("help_commands", "— Whether new nick registrations are allowed:")} <code>open</code>
+    {dgettext("help_commands", "(default) or")} <code>closed</code>
   </li>
   <li>
     <code>whowas_retention_seconds</code>
-    {gettext(
+    {dgettext(
+      "help_commands",
       "— How long recently disconnected user records stay available (default: 3600, range: 1-86400)"
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_rules}>{gettext("Enforcement")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Enforcement")}</.help_h4>
 <ul>
   <li>
-    <code>server_name</code> {gettext("— Used in the welcome message header when users connect")}
+    <code>server_name</code> {dgettext(
+      "help_commands",
+      "— Used in the welcome message header when users connect"
+    )}
   </li>
   <li>
-    <code>welcome_message</code> {gettext(
+    <code>welcome_message</code> {dgettext(
+      "help_commands",
       "— Displayed as a system message right after the default welcome"
     )}
   </li>
   <li>
-    <code>max_channels</code> {gettext("— Enforced when users try to")}
-    <code>{gettext("/join")}</code> {gettext("a channel")}
+    <code>max_channels</code> {dgettext("help_commands", "— Enforced when users try to")}
+    <code>{dgettext("help_commands", "/join")}</code> {dgettext("help_commands", "a channel")}
   </li>
   <li>
     <code>registration</code>
-    {gettext("— Enforced in NickServ; when")} <code>closed</code>,
-    <code>{gettext("/ns register")}</code>
-    {gettext("is rejected")}
+    {dgettext("help_commands", "— Enforced in NickServ; when")} <code>closed</code>,
+    <code>{dgettext("help_commands", "/ns register")}</code>
+    {dgettext("help_commands", "is rejected")}
   </li>
   <li>
-    <code>whowas_retention_seconds</code> {gettext("— Enforced when users run")}
-    <code>{gettext("/whowas")}</code>
+    <code>whowas_retention_seconds</code> {dgettext("help_commands", "— Enforced when users run")}
+    <code>{dgettext("help_commands", "/whowas")}</code>
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_commands",
       "Nickname length is a compile-time constant (16 characters) and cannot be changed at runtime"
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/admin server info /admin server set server_name \"My IRC Server\" /admin server get registration /admin server settings")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin server info /admin server set server_name \"My IRC Server\" /admin server get registration /admin server settings")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-admin">{gettext("/admin")}</.help_link>
-  · <.help_link topic="cmd-admin-log">{gettext("/admin log")}</.help_link>
-  · <.help_link topic="cmd-admin-debug">{gettext("/admin debug")}</.help_link>
+  <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  · <.help_link topic="cmd-admin-log">{dgettext("help_commands", "/admin log")}</.help_link>
+  · <.help_link topic="cmd-admin-debug">{dgettext("help_commands", "/admin debug")}</.help_link>
 </p>

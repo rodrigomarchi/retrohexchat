@@ -15,22 +15,22 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
 
     case parts do
       [_name, _expansion] -> :ok
-      [_name] -> {:error, gettext("Usage: /alias add <name> <expansion>")}
-      _ -> {:error, gettext("Usage: /alias add <name> <expansion>")}
+      [_name] -> {:error, dgettext("commands", "Usage: /alias add <name> <expansion>")}
+      _ -> {:error, dgettext("commands", "Usage: /alias add <name> <expansion>")}
     end
   end
 
-  def validate("add"), do: {:error, gettext("Usage: /alias add <name> <expansion>")}
+  def validate("add"), do: {:error, dgettext("commands", "Usage: /alias add <name> <expansion>")}
 
   def validate("remove " <> rest) do
     if String.trim(rest) == "" do
-      {:error, gettext("Usage: /alias remove <name>")}
+      {:error, dgettext("commands", "Usage: /alias remove <name>")}
     else
       :ok
     end
   end
 
-  def validate("remove"), do: {:error, gettext("Usage: /alias remove <name>")}
+  def validate("remove"), do: {:error, dgettext("commands", "Usage: /alias remove <name>")}
 
   def validate(_), do: :ok
 
@@ -63,17 +63,18 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
   def help do
     %{
       name: "alias",
-      syntax: gettext("/alias [list|add|remove]"),
+      syntax: dgettext("commands", "/alias [list|add|remove]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Create short command shortcuts that expand into longer commands.\nSubcommands: list, add <name> <expansion>, remove <name>. No args opens the dialog.\nSupports $1-$9 for positional arguments, $nick for your nickname, $chan for current channel.\nMax 50 aliases. Registered users: persisted. Guests: session-only."
         ),
       examples: [
         "/alias",
-        gettext("/alias list"),
-        gettext("/alias add hi /me says hello everyone!"),
-        gettext("/alias add greet /me waves at $1"),
-        gettext("/alias remove hi")
+        dgettext("commands", "/alias list"),
+        dgettext("commands", "/alias add hi /me says hello everyone!"),
+        dgettext("commands", "/alias add greet /me waves at $1"),
+        dgettext("commands", "/alias remove hi")
       ]
     }
   end
@@ -89,8 +90,9 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
 
     %CommandSyntax{
       command: "alias",
-      syntax: gettext("/alias [list|add|remove]"),
-      description: gettext("Create short command shortcuts that expand into longer commands."),
+      syntax: dgettext("commands", "/alias [list|add|remove]"),
+      description:
+        dgettext("commands", "Create short command shortcuts that expand into longer commands."),
       category: :config,
       parameters: [
         %Parameter{
@@ -98,27 +100,27 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
           required: false,
           type: :text,
           position: 0,
-          description: gettext("Subcommand: list, add, remove")
+          description: dgettext("commands", "Subcommand: list, add, remove")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: gettext("Subcommand arguments")
+          description: dgettext("commands", "Subcommand arguments")
         }
       ],
       examples: [
         "/alias",
-        gettext("/alias list"),
-        gettext("/alias add hi /me says hello everyone!"),
-        gettext("/alias add greet /me waves at $1"),
-        gettext("/alias remove hi")
+        dgettext("commands", "/alias list"),
+        dgettext("commands", "/alias add hi /me says hello everyone!"),
+        dgettext("commands", "/alias add greet /me waves at $1"),
+        dgettext("commands", "/alias remove hi")
       ],
       subcommands: [
-        %{name: "add", description: gettext("Create a new command alias")},
-        %{name: "remove", description: gettext("Remove an existing alias")},
-        %{name: "list", description: gettext("Show all defined aliases")}
+        %{name: "add", description: dgettext("commands", "Create a new command alias")},
+        %{name: "remove", description: dgettext("commands", "Remove an existing alias")},
+        %{name: "list", description: dgettext("commands", "Show all defined aliases")}
       ]
     }
   end

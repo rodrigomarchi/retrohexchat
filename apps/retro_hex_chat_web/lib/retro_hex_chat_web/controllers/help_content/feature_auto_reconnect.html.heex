@@ -1,43 +1,58 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "RetroHexChat automatically attempts to reconnect when an unexpected disconnection occurs."
   )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "How It Works")}</.help_h4>
 <p>
-  {gettext("When the connection drops unexpectedly, the client retries with exponential backoff:")}
+  {dgettext(
+    "help_features",
+    "When the connection drops unexpectedly, the client retries with exponential backoff:"
+  )}
 </p>
-<pre>{gettext("Attempt 1: 1 second Attempt 2: 2 seconds Attempt 3: 4 seconds Attempt 4: 8 seconds Attempt 5: 16 seconds Attempt 6+: 30 seconds (cap)")}</pre>
+<pre>{dgettext("help_features", "Attempt 1: 1 second Attempt 2: 2 seconds Attempt 3: 4 seconds Attempt 4: 8 seconds Attempt 5: 16 seconds Attempt 6+: 30 seconds (cap)")}</pre>
 <p>
-  {gettext("A maximum of")} <strong>{gettext("10 attempts")}</strong>
-  {gettext(
+  {dgettext("help_features", "A maximum of")}
+  <strong>{dgettext("help_features", "10 attempts")}</strong>
+  {dgettext(
+    "help_features",
     "are made. If all attempts fail, you are automatically redirected to the Connect screen with a"
   )}
-  <em>{gettext("Session expired")}</em>
-  {gettext("message.")}
+  <em>{dgettext("help_features", "Session expired")}</em>
+  {dgettext("help_features", "message.")}
 </p>
-<.help_h4 icon={:icon_btn_cancel}>{gettext("Cancel")}</.help_h4>
+<.help_h4 icon={:icon_btn_cancel}>{dgettext("help_features", "Cancel")}</.help_h4>
 <p>
-  {gettext("During reconnection attempts, a")} <strong>{gettext("Cancel")}</strong>
-  {gettext(
+  {dgettext("help_features", "During reconnection attempts, a")}
+  <strong>{dgettext("help_features", "Cancel")}</strong>
+  {dgettext(
+    "help_features",
     "button is available to stop retrying. You can also refresh the page to start a fresh connection."
   )}
 </p>
-<.help_h4 icon={:icon_close}>{gettext("Intentional Disconnect")}</.help_h4>
+<.help_h4 icon={:icon_close}>{dgettext("help_features", "Intentional Disconnect")}</.help_h4>
 <p>
-  {gettext("Auto-reconnect does")} <strong>not</strong>
-  {gettext("trigger on intentional disconnects via")} <code>{gettext("/quit")}</code>{gettext(
+  {dgettext("help_features", "Auto-reconnect does")} <strong>not</strong>
+  {dgettext("help_features", "trigger on intentional disconnects via")} <code>{dgettext("help_features", "/quit")}</code>{dgettext(
+    "help_features",
     ". It only activates on unexpected connection loss."
   )}
 </p>
-<.help_h4 icon={:icon_backup}>{gettext("Session Restoration")}</.help_h4>
+<.help_h4 icon={:icon_backup}>{dgettext("help_features", "Session Restoration")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "On successful reconnection, your previous session is restored: channels are rejoined and the active tab is restored to its previous state."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-perform">{gettext("Perform / Auto-Commands")}</.help_link>
-  | <.help_link topic="feature-single-session">{gettext("Single Session")}</.help_link>
+  <.help_link topic="feature-perform">
+    {dgettext("help_features", "Perform / Auto-Commands")}
+  </.help_link>
+  |
+  <.help_link topic="feature-single-session">
+    {dgettext("help_features", "Single Session")}
+  </.help_link>
 </p>

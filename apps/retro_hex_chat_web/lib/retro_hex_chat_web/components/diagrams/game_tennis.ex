@@ -17,7 +17,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameTennis do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext("Hex Tennis game screen: top-down tennis court with two players and a ball")
+        dgettext(
+          "diagrams",
+          "Hex Tennis game screen: top-down tennis court with two players and a ball"
+        )
       }
     >
       {win98_chrome("Hex Tennis")}
@@ -64,10 +67,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameTennis do
       <circle cx="240" cy="160" r="3" fill="#ff0" />
       <%!-- Score --%>
       <text x="30" y="44" fill="#00ff41" font-size="10" font-family="'Courier New',monospace">
-        {gettext("P1: 30")}
+        {dgettext("diagrams", "P1: 30")}
       </text>
       <text x="430" y="44" fill="#00d4ff" font-size="10" font-family="'Courier New',monospace">
-        {gettext("P2: 15")}
+        {dgettext("diagrams", "P2: 15")}
       </text>
       <text x="200" y="44" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
         4-3

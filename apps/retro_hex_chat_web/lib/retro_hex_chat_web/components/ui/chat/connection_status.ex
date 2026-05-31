@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
     <.alert>
       <:icon><Icons.icon_status_signal class="w-4 h-4 text-success" /></:icon>
       <div class="flex items-center gap-retro-4">
-        <.alert_title class="flex-1">{gettext("Connected")}</.alert_title>
+        <.alert_title class="flex-1">{dgettext("chat", "Connected")}</.alert_title>
         <.button
           :if={@on_dismiss}
           type="button"
@@ -61,13 +61,13 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
           size="icon"
           class="w-5 h-5 min-h-0 text-xs"
           phx-click={@on_dismiss}
-          aria-label={gettext("Dismiss")}
+          aria-label={dgettext("chat", "Dismiss")}
         >
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
         </.button>
       </div>
       <.alert_description :if={@server}>
-        {gettext("Connected to %{server}", server: @server)}
+        {dgettext("chat", "Connected to %{server}", server: @server)}
       </.alert_description>
     </.alert>
     """
@@ -84,10 +84,10 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
       <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
       <div class="flex items-center gap-retro-4">
         <.loading_spinner size="sm" text="" />
-        <.alert_title>{gettext("Reconnecting...")}</.alert_title>
+        <.alert_title>{dgettext("chat", "Reconnecting...")}</.alert_title>
       </div>
       <.alert_description>
-        {gettext("Attempt %{attempt} of %{max_attempts}",
+        {dgettext("chat", "Attempt %{attempt} of %{max_attempts}",
           attempt: @attempt,
           max_attempts: @max_attempts
         )}
@@ -105,11 +105,11 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
     <.alert variant="destructive">
       <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
       <div class="flex items-center gap-retro-4">
-        <.alert_title>{gettext("Disconnected")}</.alert_title>
+        <.alert_title>{dgettext("chat", "Disconnected")}</.alert_title>
       </div>
       <.alert_description>
         <div class="flex items-center gap-retro-4 mt-retro-4">
-          <span>{gettext("Connection lost.")}</span>
+          <span>{dgettext("chat", "Connection lost.")}</span>
           <.button
             size="sm"
             variant="outline"
@@ -117,7 +117,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
             data-testid="connection-status-reconnect"
           >
             <:icon><Icons.icon_status_signal class="w-4 h-4" /></:icon>
-            {gettext("Reconnect")}
+            {dgettext("chat", "Reconnect")}
           </.button>
         </div>
       </.alert_description>

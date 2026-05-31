@@ -14,7 +14,7 @@ defmodule RetroHexChat.Chat.TimerManager do
 
   @spec parse_timer_args([String.t()]) :: {:ok, map()} | {:error, String.t()}
   def parse_timer_args([]) do
-    {:error, gettext("Usage: /timer <name> [repeat] <seconds> <command>")}
+    {:error, dgettext("chat", "Usage: /timer <name> [repeat] <seconds> <command>")}
   end
 
   def parse_timer_args(["list"]) do
@@ -22,7 +22,7 @@ defmodule RetroHexChat.Chat.TimerManager do
   end
 
   def parse_timer_args(["stop"]) do
-    {:error, gettext("Usage: /timer stop <name>")}
+    {:error, dgettext("chat", "Usage: /timer stop <name>")}
   end
 
   def parse_timer_args(["stop", name]) do
@@ -48,11 +48,11 @@ defmodule RetroHexChat.Chat.TimerManager do
   end
 
   def parse_timer_args([_name, "repeat", _interval_str]) do
-    {:error, gettext("Usage: /timer <name> repeat <seconds> <command>")}
+    {:error, dgettext("chat", "Usage: /timer <name> repeat <seconds> <command>")}
   end
 
   def parse_timer_args([_name, "repeat"]) do
-    {:error, gettext("Usage: /timer <name> repeat <seconds> <command>")}
+    {:error, dgettext("chat", "Usage: /timer <name> repeat <seconds> <command>")}
   end
 
   def parse_timer_args([name, interval_str | command_parts]) when command_parts != [] do
@@ -73,11 +73,11 @@ defmodule RetroHexChat.Chat.TimerManager do
   end
 
   def parse_timer_args([_name, _interval_str]) do
-    {:error, gettext("Usage: /timer <name> <seconds> <command>")}
+    {:error, dgettext("chat", "Usage: /timer <name> <seconds> <command>")}
   end
 
   def parse_timer_args([_name]) do
-    {:error, gettext("Usage: /timer <name> <seconds> <command>")}
+    {:error, dgettext("chat", "Usage: /timer <name> <seconds> <command>")}
   end
 
   @spec validate_create(map(), String.t(), :once | :repeat, integer(), String.t()) ::
@@ -95,7 +95,8 @@ defmodule RetroHexChat.Chat.TimerManager do
       :ok
     else
       {:error,
-       gettext(
+       dgettext(
+         "chat",
          "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars).",
          max_name_length: @max_name_length
        )}
@@ -123,7 +124,7 @@ defmodule RetroHexChat.Chat.TimerManager do
   @spec clamp_interval(:once | :repeat, integer()) :: {integer(), String.t() | nil}
   def clamp_interval(:repeat, interval) when interval < @min_repeat_interval do
     {@min_repeat_interval,
-     gettext("Repeat interval clamped to minimum %{min_repeat_interval} seconds.",
+     dgettext("chat", "Repeat interval clamped to minimum %{min_repeat_interval} seconds.",
        min_repeat_interval: @min_repeat_interval
      )}
   end
@@ -132,7 +133,7 @@ defmodule RetroHexChat.Chat.TimerManager do
 
   @spec format_timer_list(map()) :: String.t()
   def format_timer_list(timers) when map_size(timers) == 0 do
-    gettext("No active timers.")
+    dgettext("chat", "No active timers.")
   end
 
   def format_timer_list(timers) do
@@ -140,7 +141,7 @@ defmodule RetroHexChat.Chat.TimerManager do
       timers
       |> Enum.sort_by(fn {name, _} -> name end)
       |> Enum.map(fn {name, info} ->
-        gettext("  %{name} (%{type}, %{interval}s) → %{command}",
+        dgettext("chat", "  %{name} (%{type}, %{interval}s) → %{command}",
           name: name,
           type: info.type,
           interval: info.interval,
@@ -148,7 +149,7 @@ defmodule RetroHexChat.Chat.TimerManager do
         )
       end)
 
-    gettext("Active timers:\n") <> Enum.join(lines, "\n")
+    dgettext("chat", "Active timers:\n") <> Enum.join(lines, "\n")
   end
 
   defp valid_name?(name) do

@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.UrlCatcherPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("URL Catcher"),
+       page_title: dgettext("showcase", "URL Catcher"),
        active_page: "url-catcher",
        entries: @sample_entries,
        channels: ["#dev", "#random"]
@@ -62,15 +62,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.UrlCatcherPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("URL Catcher")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "URL Catcher")}</h2>
 
       <.showcase_card
-        title={gettext("URL Catcher")}
+        title={dgettext("showcase", "URL Catcher")}
         description="All URLs posted in channels, sortable by column with channel filter and search."
       >
         <.button variant="outline" phx-click={show_modal("url-catcher-demo")}>
           <:icon><Icons.icon_link class="w-4 h-4" /></:icon>
-          {gettext("URL Catcher")}
+          {dgettext("showcase", "URL Catcher")}
         </.button>
         <.url_catcher
           id="url-catcher-demo"
@@ -94,12 +94,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.UrlCatcherPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Sorted by Nick (Ascending)")}
+        title={dgettext("showcase", "Sorted by Nick (Ascending)")}
         description="URL table with sort indicator on the Nick column."
       >
         <.button variant="outline" phx-click={show_modal("url-catcher-sorted")}>
           <:icon><Icons.icon_link class="w-4 h-4" /></:icon>
-          {gettext("URL Catcher (Sorted)")}
+          {dgettext("showcase", "URL Catcher (Sorted)")}
         </.button>
         <.url_catcher
           id="url-catcher-sorted"
@@ -112,12 +112,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.UrlCatcherPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Channel Filtered")}
+        title={dgettext("showcase", "Channel Filtered")}
         description="URL table showing only entries from #dev."
       >
         <.button variant="outline" phx-click={show_modal("url-catcher-filtered")}>
           <:icon><Icons.icon_link class="w-4 h-4" /></:icon>
-          {gettext("URL Catcher (Filtered)")}
+          {dgettext("showcase", "URL Catcher (Filtered)")}
         </.button>
         <.url_catcher
           id="url-catcher-filtered"
@@ -129,12 +129,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.UrlCatcherPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Empty State")}
+        title={dgettext("showcase", "Empty State")}
         description="URL catcher with no captured URLs."
       >
         <.button variant="outline" phx-click={show_modal("url-catcher-empty")}>
           <:icon><Icons.icon_link class="w-4 h-4" /></:icon>
-          {gettext("URL Catcher (Empty)")}
+          {dgettext("showcase", "URL Catcher (Empty)")}
         </.button>
         <.url_catcher id="url-catcher-empty" entries={[]} entry_count={0} />
       </.showcase_card>

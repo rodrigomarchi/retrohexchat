@@ -18,30 +18,35 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.CustomMenusDialogPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("Custom Menus Dialog"),
+       page_title: dgettext("showcase", "Custom Menus Dialog"),
        active_page: "custom-menus-dialog",
        entries: [
-         %{label: gettext("Whois"), command: "/whois $1", menu_type: :nicklist, position: 1},
          %{
-           label: gettext("Slap"),
+           label: dgettext("showcase", "Whois"),
+           command: "/whois $1",
+           menu_type: :nicklist,
+           position: 1
+         },
+         %{
+           label: dgettext("showcase", "Slap"),
            command: "/me slaps $1 with a large trout",
            menu_type: :nicklist,
            position: 2
          },
          %{
-           label: gettext("Private Message"),
+           label: dgettext("showcase", "Private Message"),
            command: "/query $1",
            menu_type: :nicklist,
            position: 3
          },
          %{
-           label: gettext("Get Topic"),
+           label: dgettext("showcase", "Get Topic"),
            command: "/topic $chan",
            menu_type: :channel,
            position: 4
          },
          %{
-           label: gettext("Leave Channel"),
+           label: dgettext("showcase", "Leave Channel"),
            command: "/part $chan Bye!",
            menu_type: :channel,
            position: 5
@@ -54,15 +59,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.CustomMenusDialogPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Custom Menus Dialog")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Custom Menus Dialog")}</h2>
 
       <.showcase_card
-        title={gettext("Nicklist Tab")}
+        title={dgettext("showcase", "Nicklist Tab")}
         description="Custom context menus editor. Nicklist tab shown by default with sample entries."
       >
         <.button variant="outline" phx-click={show_modal("custom-menus-nicklist")}>
           <:icon><Icons.icon_dialog_custom_menus class="w-4 h-4" /></:icon>
-          {gettext("Open Custom Menus (Nicklist)")}
+          {dgettext("showcase", "Open Custom Menus (Nicklist)")}
         </.button>
         <.custom_menus_dialog
           id="custom-menus-nicklist"
@@ -87,12 +92,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.CustomMenusDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Channel Tab")}
+        title={dgettext("showcase", "Channel Tab")}
         description="Channel context menu entries, filtered to menu_type: :channel."
       >
         <.button variant="outline" phx-click={show_modal("custom-menus-channel")}>
           <:icon><Icons.icon_dialog_custom_menus class="w-4 h-4" /></:icon>
-          {gettext("Open Custom Menus (Channel)")}
+          {dgettext("showcase", "Open Custom Menus (Channel)")}
         </.button>
         <.custom_menus_dialog
           id="custom-menus-channel"
@@ -102,12 +107,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.CustomMenusDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Editing State")}
+        title={dgettext("showcase", "Editing State")}
         description="Edit form visible on the nicklist tab with a selected item pre-populated."
       >
         <.button variant="outline" phx-click={show_modal("custom-menus-editing")}>
           <:icon><Icons.icon_dialog_custom_menus class="w-4 h-4" /></:icon>
-          {gettext("Open Custom Menus (Editing)")}
+          {dgettext("showcase", "Open Custom Menus (Editing)")}
         </.button>
         <.custom_menus_dialog
           id="custom-menus-editing"

@@ -1,56 +1,74 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Quick tennis match — first to 3 games wins. Same gameplay as Classic, shorter format. No tiebreak needed since you can't reach 6-6. Perfect for a fast match when you don't have time for a full set."
   )}
 </p>
 <.diagram_game_tennis class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("Arrow keys / WASD")}</strong> {gettext("— Move player")}</li>
-  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Serve (during serving phase)")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    <strong>{dgettext("help_games", "Arrow keys / WASD")}</strong> {dgettext(
+      "help_games",
+      "— Move player"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Space / Shift")}</strong> {dgettext(
+      "help_games",
+      "— Serve (during serving phase)"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_games",
       "Same hitting mechanics as Classic — automatic hitting, angle based on contact position"
     )}
   </li>
-  <li>{gettext("Standard tennis scoring: Love → 15 → 30 → 40 → Game")}</li>
-  <li>{gettext("Deuce and advantage rules still apply")}</li>
-  <li>{gettext("First to 3 games wins (no win-by-2 requirement)")}</li>
+  <li>{dgettext("help_games", "Standard tennis scoring: Love → 15 → 30 → 40 → Game")}</li>
+  <li>{dgettext("help_games", "Deuce and advantage rules still apply")}</li>
+  <li>{dgettext("help_games", "First to 3 games wins (no win-by-2 requirement)")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Every point matters more")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Every point matters more")}</strong>
+    {dgettext(
+      "help_games",
       "— With only 3 games needed, losing even one game puts you at a serious disadvantage."
     )}
   </li>
   <li>
-    <strong>{gettext("Serve aggressively")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Serve aggressively")}</strong>
+    {dgettext(
+      "help_games",
       "— In a short match, holding serve is critical. Aim for the corners on your service games."
     )}
   </li>
   <li>
-    <strong>{gettext("Force deuce")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Force deuce")}</strong>
+    {dgettext(
+      "help_games",
       "— Even when behind in a game, fighting to deuce gives you a chance. Never give up a game easily."
     )}
   </li>
   <li>
-    <strong>{gettext("Read the contact angle")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Read the contact angle")}</strong>
+    {dgettext(
+      "help_games",
       "— The ball angle depends on where it hits your player. Position yourself to control shot direction."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-tennis">{gettext("Hex Tennis")}</.help_link>
+  <.help_link topic="feature-hex-tennis">{dgettext("help_games", "Hex Tennis")}</.help_link>
   ·
-  <.help_link topic="feature-hex-tennis-sudden">{gettext("Hex Tennis: Sudden Death")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  <.help_link topic="feature-hex-tennis-sudden">
+    {dgettext("help_games", "Hex Tennis: Sudden Death")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
 </p>

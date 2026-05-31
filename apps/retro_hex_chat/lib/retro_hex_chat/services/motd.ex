@@ -29,7 +29,7 @@ defmodule RetroHexChat.Services.Motd do
         :ok
 
       {:error, _changeset} ->
-        {:error, gettext("Failed to save MOTD.")}
+        {:error, dgettext("services", "Failed to save MOTD.")}
     end
   end
 

@@ -15,7 +15,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext(
+        dgettext(
+          "diagrams",
           "Peer-to-peer connection diagram showing Alice and Bob connected directly via WebRTC, with the server only used for signaling"
         )
       }
@@ -39,7 +40,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Alice")}
+        {dgettext("diagrams", "Alice")}
       </text>
       <!-- Content Area Inset -->
       <rect x="26" y="48" width="128" height="46" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -47,7 +48,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
       <polyline points="153,50 153,93 27,93" fill="none" stroke="#fff" stroke-width="1" />
 
       <text x="90" y="80" text-anchor="middle" fill="#000" font-size="28">
-        {gettext("&#x1F468;")}
+        {dgettext("diagrams", "&#x1F468;")}
       </text>
       
     <!-- Bob window -->
@@ -69,7 +70,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Bob")}
+        {dgettext("diagrams", "Bob")}
       </text>
       <!-- Content Area Inset -->
       <rect x="366" y="48" width="128" height="46" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -77,7 +78,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
       <polyline points="493,50 493,93 367,93" fill="none" stroke="#fff" stroke-width="1" />
 
       <text x="430" y="80" text-anchor="middle" fill="#000" font-size="28">
-        {gettext("&#x1F469;")}
+        {dgettext("diagrams", "&#x1F469;")}
       </text>
       
     <!-- P2P arrow (bidirectional thick line) -->
@@ -102,7 +103,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("WebRTC P2P")}
+        {dgettext("diagrams", "WebRTC P2P")}
       </text>
       <text
         x="260"
@@ -112,7 +113,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
         font-size="9"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("voice / video / files")}
+        {dgettext("diagrams", "voice / video / files")}
       </text>
       
     <!-- Dashed lines to server -->
@@ -172,7 +173,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Server (signaling)")}
+        {dgettext("diagrams", "Server (signaling)")}
       </text>
 
       <text
@@ -183,7 +184,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
         font-size="10"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("· only connects them")}
+        {dgettext("diagrams", "· only connects them")}
       </text>
       <text
         x="256"
@@ -193,7 +194,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
         font-size="10"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("· never sees data")}
+        {dgettext("diagrams", "· never sees data")}
       </text>
     </svg>
     """

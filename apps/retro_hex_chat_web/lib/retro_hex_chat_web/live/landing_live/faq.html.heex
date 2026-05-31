@@ -1,11 +1,11 @@
 <.landing_layout active_page={@active_page}>
   <section class="m-4" aria-labelledby="faq-heading">
-    <h2 id="faq-heading" class="sr-only">{gettext("Frequently Asked Questions")}</h2>
+    <h2 id="faq-heading" class="sr-only">{dgettext("landing", "Frequently Asked Questions")}</h2>
 
     <div class="grid md:grid-cols-2 gap-4">
       <%!-- ══════════════ GETTING STARTED ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Getting Started")} controls={[:close]}>
+        <.window_title_bar title={dgettext("landing", "Getting Started")} controls={[:close]}>
           <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
@@ -13,11 +13,12 @@
             <.accordion_item>
               <.accordion_trigger group="faq-start">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("What is P2P?")}
+                {dgettext("landing", "What is P2P?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext(
+                  {dgettext(
+                    "landing",
                     "P2P (peer-to-peer) means data goes directly between users without passing through a server. Retro Hex Chat uses WebRTC for voice calls, video calls, and file transfers. The server only helps users find each other (signaling), then steps out of the way."
                   )}
                 </p>
@@ -27,11 +28,12 @@
             <.accordion_item>
               <.accordion_trigger group="faq-start">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("Do I need to run my own server?")}
+                {dgettext("landing", "Do I need to run my own server?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext(
+                  {dgettext(
+                    "landing",
                     "Not necessarily! You can create an account on any public server. Running your own server is for those who want total control."
                   )}
                 </p>
@@ -41,11 +43,12 @@
             <.accordion_item>
               <.accordion_trigger group="faq-start">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("Is it free?")}
+                {dgettext("landing", "Is it free?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext(
+                  {dgettext(
+                    "landing",
                     "Yes, the software is 100% free and open source (MIT). If you run your own server, you only pay for hosting (a $5/month VPS is enough)."
                   )}
                 </p>
@@ -55,11 +58,12 @@
             <.accordion_item>
               <.accordion_trigger group="faq-start">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("How is it different from Discord?")}
+                {dgettext("landing", "How is it different from Discord?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext(
+                  {dgettext(
+                    "landing",
                     "On Discord, your data lives on their servers and your communities can be removed at any time. On Retro Hex Chat, you control your data, voice and video calls go directly between users via P2P, and the code is open source &mdash; you can audit every line."
                   )}
                 </p>
@@ -69,11 +73,12 @@
             <.accordion_item>
               <.accordion_trigger group="faq-start">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("What if my server goes down?")}
+                {dgettext("landing", "What if my server goes down?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext(
+                  {dgettext(
+                    "landing",
                     "Your data lives in your PostgreSQL database. Regular backups mean you can restore on any new machine. Active P2P calls continue working even if the server has a brief interruption, since they connect directly between users."
                   )}
                 </p>
@@ -83,11 +88,12 @@
             <.accordion_item>
               <.accordion_trigger group="faq-start">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("Is it secure?")}
+                {dgettext("landing", "Is it secure?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext(
+                  {dgettext(
+                    "landing",
                     "Yes. Server connections use HTTPS/WSS with TLS encryption. P2P calls are encrypted end-to-end via DTLS-SRTP (built into WebRTC). Passwords are hashed with bcrypt. And the code is open source &mdash; anyone can audit it for vulnerabilities."
                   )}
                 </p>
@@ -96,13 +102,18 @@
           </.accordion>
         </.window_body>
         <.window_status_bar>
-          <.window_status_bar_field grow>{gettext("6 questions")}</.window_status_bar_field>
+          <.window_status_bar_field grow>
+            {dgettext("landing", "6 questions")}
+          </.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ TECHNICAL & COMMUNITY ══════════════ --%>
       <.window>
-        <.window_title_bar title={gettext("Technical & Community")} controls={[:close]}>
+        <.window_title_bar
+          title={dgettext("landing", "Technical & Community")}
+          controls={[:close]}
+        >
           <:icon><Icons.icon_code class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
@@ -110,11 +121,12 @@
             <.accordion_item>
               <.accordion_trigger group="faq-tech">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("What technologies are used?")}
+                {dgettext("landing", "What technologies are used?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext(
+                  {dgettext(
+                    "landing",
                     "Elixir and Phoenix on the backend, PostgreSQL for data, a retro design system for the classic look, WebSocket for real-time messaging, and WebRTC for P2P. Everything is open source."
                   )}
                 </p>
@@ -124,11 +136,12 @@
             <.accordion_item>
               <.accordion_trigger group="faq-tech">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("How can I contribute?")}
+                {dgettext("landing", "How can I contribute?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext(
+                  {dgettext(
+                    "landing",
                     "Check out our contributing guide on GitHub! We accept code, documentation, translation, design, testing, and bug reports. Issues marked &ldquo;good first issue&rdquo; are a great place to start."
                   )}
                 </p>
@@ -138,11 +151,12 @@
             <.accordion_item>
               <.accordion_trigger group="faq-tech">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("How can I support financially?")}
+                {dgettext("landing", "How can I support financially?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext(
+                  {dgettext(
+                    "landing",
                     "Through GitHub Sponsors. Every contribution, no matter how small, helps keep the project alive and in active development."
                   )}
                 </p>
@@ -152,11 +166,12 @@
             <.accordion_item>
               <.accordion_trigger group="faq-tech">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("Does it work on mobile?")}
+                {dgettext("landing", "Does it work on mobile?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext(
+                  {dgettext(
+                    "landing",
                     "Yes! The interface is responsive and works on any modern browser. Native apps are planned for the future."
                   )}
                 </p>
@@ -166,11 +181,12 @@
             <.accordion_item>
               <.accordion_trigger group="faq-tech">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("Can I use it for my company or team?")}
+                {dgettext("landing", "Can I use it for my company or team?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext(
+                  {dgettext(
+                    "landing",
                     "Absolutely. Run a private server, create invite-only channels, and keep all your team&rsquo;s communication on your own infrastructure. No per-seat pricing, no message limits."
                   )}
                 </p>
@@ -180,12 +196,13 @@
             <.accordion_item>
               <.accordion_trigger group="faq-tech">
                 <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-                {gettext("How do sessions work?")}
+                {dgettext("landing", "How do sessions work?")}
               </.accordion_trigger>
               <.accordion_content>
                 <p class="text-sm">
-                  {gettext("Each nickname can only have")}
-                  <strong>{gettext("one active session")}</strong> {gettext(
+                  {dgettext("landing", "Each nickname can only have")}
+                  <strong>{dgettext("landing", "one active session")}</strong> {dgettext(
+                    "landing",
                     "at a time. If you connect from another browser or tab, the previous session is automatically disconnected. If your connection drops, the client attempts to reconnect up to 10 times with exponential backoff. After all attempts fail, the session expires and you&rsquo;re redirected to the login screen. Registered nicknames are protected by password &mdash; only the owner can connect with that nick."
                   )}
                 </p>
@@ -194,7 +211,9 @@
           </.accordion>
         </.window_body>
         <.window_status_bar>
-          <.window_status_bar_field grow>{gettext("6 questions")}</.window_status_bar_field>
+          <.window_status_bar_field grow>
+            {dgettext("landing", "6 questions")}
+          </.window_status_bar_field>
         </.window_status_bar>
       </.window>
     </div>

@@ -1,60 +1,90 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "One intense period of 3 minutes — the puck moves 25% faster and tackles succeed 80% of the time. Pure intensity from start to finish. With nearly guaranteed tackles, defense is almost impossible — score fast or get scored on."
   )}
 </p>
 <.diagram_game_hockey class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("Arrow keys or WASD")}</strong> {gettext("— Move in 8 directions")}</li>
   <li>
-    <strong>{gettext("Space or Shift (with puck)")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Arrow keys or WASD")}</strong> {dgettext(
+      "help_games",
+      "— Move in 8 directions"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Space or Shift (with puck)")}</strong> {dgettext(
+      "help_games",
       "— Shoot in your facing direction"
     )}
   </li>
   <li>
-    <strong>{gettext("Space or Shift (without puck)")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Space or Shift (without puck)")}</strong> {dgettext(
+      "help_games",
       "— Tackle opponent to steal puck"
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_rules}>{gettext("Blitz Differences")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Blitz Differences")}</.help_h4>
 <ul>
-  <li><strong>{gettext("1 period")}</strong> {gettext("of 3 minutes (no side switching)")}</li>
   <li>
-    <strong>{gettext("Faster puck")}</strong> {gettext("— 25% speed increase on all shots")}
+    <strong>{dgettext("help_games", "1 period")}</strong> {dgettext(
+      "help_games",
+      "of 3 minutes (no side switching)"
+    )}
   </li>
   <li>
-    <strong>{gettext("80% tackle success")}</strong> {gettext("— more aggressive, less risk")}
+    <strong>{dgettext("help_games", "Faster puck")}</strong> {dgettext(
+      "help_games",
+      "— 25% speed increase on all shots"
+    )}
   </li>
-  <li>{gettext("Tied at the end? Sudden death — next goal wins")}</li>
+  <li>
+    <strong>{dgettext("help_games", "80% tackle success")}</strong> {dgettext(
+      "help_games",
+      "— more aggressive, less risk"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Tied at the end? Sudden death — next goal wins")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Shoot immediately")}</strong>
-    {gettext("— With 80% tackle success, holding the puck is dangerous. Shoot on sight.")}
+    <strong>{dgettext("help_games", "Shoot immediately")}</strong>
+    {dgettext(
+      "help_games",
+      "— With 80% tackle success, holding the puck is dangerous. Shoot on sight."
+    )}
   </li>
   <li>
-    <strong>{gettext("Tackle aggressively")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Tackle aggressively")}</strong>
+    {dgettext(
+      "help_games",
       "— The 80% success rate means tackling is almost always worth it. Chase the puck carrier relentlessly."
     )}
   </li>
   <li>
-    <strong>{gettext("Use the faster puck")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Use the faster puck")}</strong>
+    {dgettext(
+      "help_games",
       "— The 25% speed boost makes long-range shots more effective. Catch the opponent off guard."
     )}
   </li>
   <li>
-    <strong>{gettext("Sudden death mindset")}</strong>
-    {gettext("— If tied at the end, the next goal wins. Stay composed under pressure.")}
+    <strong>{dgettext("help_games", "Sudden death mindset")}</strong>
+    {dgettext(
+      "help_games",
+      "— If tied at the end, the next goal wins. Stay composed under pressure."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-hockey">{gettext("Hex Hockey")}</.help_link>
-  · <.help_link topic="feature-hex-hockey-showdown">{gettext("Showdown")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  <.help_link topic="feature-hex-hockey">{dgettext("help_games", "Hex Hockey")}</.help_link>
+  ·
+  <.help_link topic="feature-hex-hockey-showdown">
+    {dgettext("help_games", "Showdown")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
 </p>

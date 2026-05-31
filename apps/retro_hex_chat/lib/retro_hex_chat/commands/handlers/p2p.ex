@@ -9,12 +9,12 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, gettext("Usage: /p2p <nickname>")}
+  def validate(""), do: {:error, dgettext("commands", "Usage: /p2p <nickname>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, gettext("Usage: /p2p <nickname>")}
+  def execute([], _context), do: {:error, dgettext("commands", "Usage: /p2p <nickname>")}
 
   def execute([target | _rest], context) do
     do_execute(target, "generic", context)
@@ -30,12 +30,13 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
   def help do
     %{
       name: "p2p",
-      syntax: gettext("/p2p <nickname>"),
+      syntax: dgettext("commands", "/p2p <nickname>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Start a direct peer-to-peer session with another user for file transfers, audio calls, or video calls.\nRequires: both you and the target must be registered and identified (/ns identify).\nYou cannot start a session with yourself."
         ),
-      examples: [gettext("/p2p mario")]
+      examples: [dgettext("commands", "/p2p mario")]
     }
   end
 
@@ -50,9 +51,10 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
 
     %CommandSyntax{
       command: "p2p",
-      syntax: gettext("/p2p <nickname>"),
+      syntax: dgettext("commands", "/p2p <nickname>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Start a direct peer-to-peer session with another user for file transfers, audio calls, or video calls.\nRequires: both users must be registered and identified (/ns identify)."
         ),
       category: :user,
@@ -62,10 +64,10 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
           required: true,
           type: :nick,
           position: 0,
-          description: gettext("Target user")
+          description: dgettext("commands", "Target user")
         }
       ],
-      examples: [gettext("/p2p mario")]
+      examples: [dgettext("commands", "/p2p mario")]
     }
   end
 
@@ -85,11 +87,13 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
   end
 
   defp validate_identified(%{identified: true}), do: :ok
-  defp validate_identified(_), do: {:error, gettext("You must be identified to use /p2p.")}
+
+  defp validate_identified(_),
+    do: {:error, dgettext("commands", "You must be identified to use /p2p.")}
 
   defp validate_not_self(target, %{nickname: nick}) do
     if String.downcase(target) == String.downcase(nick) do
-      {:error, gettext("You cannot start a P2P session with yourself.")}
+      {:error, dgettext("commands", "You cannot start a P2P session with yourself.")}
     else
       :ok
     end
@@ -97,8 +101,12 @@ defmodule RetroHexChat.Commands.Handlers.P2p do
 
   defp resolve_registered_nick(nickname) do
     case RetroHexChat.Repo.get_by(RegisteredNick, nickname: nickname) do
-      nil -> {:error, gettext("User '%{nickname}' is not registered.", nickname: nickname)}
-      nick -> {:ok, nick.id}
+      nil ->
+        {:error,
+         dgettext("commands", "User '%{nickname}' is not registered.", nickname: nickname)}
+
+      nick ->
+        {:ok, nick.id}
     end
   end
 

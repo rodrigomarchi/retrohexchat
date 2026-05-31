@@ -1,37 +1,47 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Transfer channel ownership to another user. The current owner is demoted to operator and the target becomes the new owner."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/transfer <nickname>")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/transfer <nickname>")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
-  <code>nickname</code> {gettext("— The user to transfer ownership to. Must be in the channel.")}
+  <code>nickname</code> {dgettext(
+    "help_commands",
+    "— The user to transfer ownership to. Must be in the channel."
+  )}
 </p>
 
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "The current channel owner gives up ownership to the specified user. The previous owner is automatically set as an operator. If the channel is registered, the ChanServ access list is updated accordingly."
   )}
 </p>
 
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Only the channel owner (~) can transfer ownership")}</li>
-  <li>{gettext("The target must be in the channel")}</li>
-  <li>{gettext("This action cannot be undone without the new owner's cooperation")}</li>
+  <li>{dgettext("help_commands", "Only the channel owner (~) can transfer ownership")}</li>
+  <li>{dgettext("help_commands", "The target must be in the channel")}</li>
+  <li>
+    {dgettext("help_commands", "This action cannot be undone without the new owner's cooperation")}
+  </li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/transfer Alice")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/transfer Alice")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-op">{gettext("/op")}</.help_link>
-  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
-  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
+  <.help_link topic="cmd-op">{dgettext("help_commands", "/op")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_commands", "Channel Permissions")}
+  </.help_link>
 </p>

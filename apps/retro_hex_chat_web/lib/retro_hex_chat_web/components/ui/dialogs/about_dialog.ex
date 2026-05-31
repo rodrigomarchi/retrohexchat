@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.AboutDialog do
   def about_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} class="md:max-w-sm">
-      <.dialog_header id={@id} title={gettext("About RetroHexChat")}>
+      <.dialog_header id={@id} title={dgettext("dialogs", "About RetroHexChat")}>
         <:icon><Icons.icon_dialog_about class="w-4 h-4" /></:icon>
       </.dialog_header>
 
@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.AboutDialog do
         <div class="flex justify-center pt-2 pb-3">
           <img
             src="/images/landing/logo-compact.svg"
-            alt={gettext("RetroHexChat")}
+            alt={dgettext("dialogs", "RetroHexChat")}
             class="w-16 h-16"
             draggable="false"
           />
@@ -44,19 +44,20 @@ defmodule RetroHexChatWeb.Components.UI.AboutDialog do
 
         <%!-- Wordmark --%>
         <p class="text-base font-bold mb-1">
-          <span class="text-text">{gettext("Retro")}</span><span class="text-desktop">{gettext("Hex")}</span><span class="text-selection-bg">{gettext("Chat")}</span>
+          <span class="text-text">{dgettext("dialogs", "Retro")}</span><span class="text-desktop">{dgettext("dialogs", "Hex")}</span><span class="text-selection-bg">{dgettext("dialogs", "Chat")}</span>
         </p>
         <p class="text-xs text-muted-foreground mb-3">
-          {gettext("Version %{version}", version: @version)}
+          {dgettext("dialogs", "Version %{version}", version: @version)}
         </p>
 
         <.separator />
 
         <%!-- Description --%>
         <div class="my-3 space-y-2">
-          <p class="text-xs font-bold text-text">{gettext("Public Chat Platform")}</p>
+          <p class="text-xs font-bold text-text">{dgettext("dialogs", "Public Chat Platform")}</p>
           <p class="text-[11px] text-muted-foreground leading-relaxed px-2">
-            {gettext(
+            {dgettext(
+              "dialogs",
               "A retro-styled IRC chat platform inspired by the classic desktop chat clients of the late '90s. Real-time messaging, channels, peer-to-peer sessions, and arcade games — all in the browser."
             )}
           </p>
@@ -67,17 +68,25 @@ defmodule RetroHexChatWeb.Components.UI.AboutDialog do
         <%!-- Tech & credits --%>
         <div class="my-3">
           <div class="flex items-center justify-center gap-2 text-[10px] text-muted-foreground mb-2">
-            <span class="shadow-retro-raised bg-surface px-1.5 py-px">{gettext("Elixir")}</span>
-            <span class="shadow-retro-raised bg-surface px-1.5 py-px">{gettext("Phoenix")}</span>
-            <span class="shadow-retro-raised bg-surface px-1.5 py-px">{gettext("LiveView")}</span>
-            <span class="shadow-retro-raised bg-surface px-1.5 py-px">{gettext("WebRTC")}</span>
+            <span class="shadow-retro-raised bg-surface px-1.5 py-px">
+              {dgettext("dialogs", "Elixir")}
+            </span>
+            <span class="shadow-retro-raised bg-surface px-1.5 py-px">
+              {dgettext("dialogs", "Phoenix")}
+            </span>
+            <span class="shadow-retro-raised bg-surface px-1.5 py-px">
+              {dgettext("dialogs", "LiveView")}
+            </span>
+            <span class="shadow-retro-raised bg-surface px-1.5 py-px">
+              {dgettext("dialogs", "WebRTC")}
+            </span>
           </div>
         </div>
 
         <.separator />
 
         <p class="text-[10px] text-muted-foreground mt-3">
-          {gettext("© 2024–2026 RetroHexChat Contributors")}
+          {dgettext("dialogs", "© 2024–2026 RetroHexChat Contributors")}
         </p>
       </.dialog_body>
 
@@ -89,7 +98,7 @@ defmodule RetroHexChatWeb.Components.UI.AboutDialog do
           phx-click={hide_modal(@id)}
         >
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {gettext("OK")}
+          {dgettext("dialogs", "OK")}
         </.button>
       </.dialog_footer>
     </.dialog>

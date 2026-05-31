@@ -1,27 +1,27 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">{gettext("Menu")}</h2>
+  <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Menu")}</h2>
 
   <.showcase_card
-    title={gettext("Basic Menu")}
+    title={dgettext("showcase", "Basic Menu")}
     description="A simple context menu with items and icons."
   >
     <div class="inline-block">
       <.menu>
         <.menu_item>
           <:icon><Icons.icon_btn_channel_list class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Channel List")}
+          {dgettext("showcase", "Channel List")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_conversations class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Toggle Conversations")}
+          {dgettext("showcase", "Toggle Conversations")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_nicklist class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Toggle Nicklist")}
+          {dgettext("showcase", "Toggle Nicklist")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_find class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Find")}
+          {dgettext("showcase", "Find")}
         </.menu_item>
       </.menu>
     </div>
@@ -36,52 +36,52 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("With Separators")}
+    title={dgettext("showcase", "With Separators")}
     description="Menu items grouped by separators."
   >
     <div class="inline-block">
       <.menu>
         <.menu_item>
           <:icon><Icons.icon_btn_channel_list class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Channel List")}
+          {dgettext("showcase", "Channel List")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_conversations class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Toggle Conversations")}
+          {dgettext("showcase", "Toggle Conversations")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_nicklist class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Toggle Nicklist")}
+          {dgettext("showcase", "Toggle Nicklist")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_find class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Find")}
+          {dgettext("showcase", "Find")}
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_address_book class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Address Book")}
+          {dgettext("showcase", "Address Book")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_highlight_words class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Highlight Words")}
+          {dgettext("showcase", "Highlight Words")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_ignore_list class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Ignore List")}
+          {dgettext("showcase", "Ignore List")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_url_catcher class="w-[16px] h-[16px]" /></:icon>
-          {gettext("URL Catcher")}
+          {dgettext("showcase", "URL Catcher")}
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_settings class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Settings")}
+          {dgettext("showcase", "Settings")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Bot Management")}
+          {dgettext("showcase", "Bot Management")}
         </.menu_item>
       </.menu>
     </div>
@@ -99,31 +99,31 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("With Shortcuts")}
+    title={dgettext("showcase", "With Shortcuts")}
     description="Menu items with keyboard shortcut hints."
   >
     <div class="inline-block">
       <.menu>
         <.menu_item>
           <:icon><Icons.icon_btn_edit class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Cut")}
-          <:shortcut>{gettext("Ctrl+X")}</:shortcut>
+          {dgettext("showcase", "Cut")}
+          <:shortcut>{dgettext("showcase", "Ctrl+X")}</:shortcut>
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_copy class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Copy")}
-          <:shortcut>{gettext("Ctrl+C")}</:shortcut>
+          {dgettext("showcase", "Copy")}
+          <:shortcut>{dgettext("showcase", "Ctrl+C")}</:shortcut>
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_dialog_paste class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Paste")}
-          <:shortcut>{gettext("Ctrl+V")}</:shortcut>
+          {dgettext("showcase", "Paste")}
+          <:shortcut>{dgettext("showcase", "Ctrl+V")}</:shortcut>
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_search class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Select All")}
-          <:shortcut>{gettext("Ctrl+A")}</:shortcut>
+          {dgettext("showcase", "Select All")}
+          <:shortcut>{dgettext("showcase", "Ctrl+A")}</:shortcut>
         </.menu_item>
       </.menu>
     </div>
@@ -136,29 +136,32 @@
     </.code_example>
   </.showcase_card>
 
-  <.showcase_card title={gettext("Disabled Items")} description="Some menu items can be disabled.">
+  <.showcase_card
+    title={dgettext("showcase", "Disabled Items")}
+    description="Some menu items can be disabled."
+  >
     <div class="inline-block">
       <.menu>
         <.menu_item>
           <:icon><Icons.icon_folder class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Open")}
+          {dgettext("showcase", "Open")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_save class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Save")}
+          {dgettext("showcase", "Save")}
         </.menu_item>
         <.menu_item disabled>
           <:icon><Icons.icon_btn_save class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Save As...")}
+          {dgettext("showcase", "Save As...")}
         </.menu_item>
         <.menu_separator />
         <.menu_item disabled>
           <:icon><Icons.icon_notepad class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Print")}
+          {dgettext("showcase", "Print")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_close class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Exit")}
+          {dgettext("showcase", "Exit")}
         </.menu_item>
       </.menu>
     </div>
@@ -171,81 +174,81 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Platform-Style Tools Menu")}
+    title={dgettext("showcase", "Platform-Style Tools Menu")}
     description="Replicating the platform's Tools dropdown menu with icons."
   >
     <div class="inline-block">
       <.menu class="min-w-[200px]">
         <.menu_item>
           <:icon><Icons.icon_btn_channel_list class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Channel List")}
+          {dgettext("showcase", "Channel List")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_conversations class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Toggle Conversations")}
+          {dgettext("showcase", "Toggle Conversations")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_nicklist class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Toggle Nicklist")}
+          {dgettext("showcase", "Toggle Nicklist")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_find class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Find")}
+          {dgettext("showcase", "Find")}
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_address_book class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Address Book")}
+          {dgettext("showcase", "Address Book")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_highlight_words class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Highlight Words")}
+          {dgettext("showcase", "Highlight Words")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_ignore_list class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Ignore List")}
+          {dgettext("showcase", "Ignore List")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_url_catcher class="w-[16px] h-[16px]" /></:icon>
-          {gettext("URL Catcher")}
+          {dgettext("showcase", "URL Catcher")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_channel_central class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Channel Central")}
+          {dgettext("showcase", "Channel Central")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_perform class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Perform")}
+          {dgettext("showcase", "Perform")}
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_sounds class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Sounds")}
+          {dgettext("showcase", "Sounds")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_flood_protection class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Flood Protection")}
+          {dgettext("showcase", "Flood Protection")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_alias_editor class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Alias Editor")}
+          {dgettext("showcase", "Alias Editor")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_custom_menus class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Custom Menus")}
+          {dgettext("showcase", "Custom Menus")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_auto_respond class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Auto-Respond")}
+          {dgettext("showcase", "Auto-Respond")}
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_settings class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Settings")}
+          {dgettext("showcase", "Settings")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
-          {gettext("Bot Management")}
+          {dgettext("showcase", "Bot Management")}
         </.menu_item>
       </.menu>
     </div>

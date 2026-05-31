@@ -14,14 +14,17 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
     {:error,
-     gettext("Usage: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> [args]")}
+     dgettext(
+       "commands",
+       "Usage: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> [args]"
+     )}
   end
 
   def execute(args, context) do
     if context.is_admin do
       dispatch(args, context)
     else
-      {:error, gettext("You must be a server administrator to use this command")}
+      {:error, dgettext("commands", "You must be a server administrator to use this command")}
     end
   end
 
@@ -37,7 +40,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
 
   defp dispatch([subcmd | _], _context) do
     {:error,
-     gettext(
+     dgettext(
+       "commands",
        "Unknown admin subcommand: %{subcmd}. Try: server, user, channel, ns, cs, debug, log, turn, nuke",
        subcmd: subcmd
      )}
@@ -47,23 +51,26 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
   def help do
     %{
       name: "admin",
-      syntax: gettext("/admin <subcommand> [args]"),
+      syntax: dgettext("commands", "/admin <subcommand> [args]"),
       description:
-        gettext("Server administration commands. Requires admin privilege.\n") <>
-          gettext("Subcommands: server, user, channel, ns, cs, debug, log, turn, nuke.\n") <>
-          gettext("Type /admin <subcommand> for usage details."),
+        dgettext("commands", "Server administration commands. Requires admin privilege.\n") <>
+          dgettext(
+            "commands",
+            "Subcommands: server, user, channel, ns, cs, debug, log, turn, nuke.\n"
+          ) <>
+          dgettext("commands", "Type /admin <subcommand> for usage details."),
       examples: [
-        gettext("/admin server info"),
-        gettext("/admin user list"),
-        gettext("/admin user ban @nick --reason Spam"),
-        gettext("/admin channel delete #canal"),
-        gettext("/admin ns drop @nick"),
-        gettext("/admin cs transfer #canal @nick"),
-        gettext("/admin debug memory"),
-        gettext("/admin log --last 20"),
-        gettext("/admin turn stats"),
-        gettext("/admin nuke"),
-        gettext("/admin nuke --confirm")
+        dgettext("commands", "/admin server info"),
+        dgettext("commands", "/admin user list"),
+        dgettext("commands", "/admin user ban @nick --reason Spam"),
+        dgettext("commands", "/admin channel delete #canal"),
+        dgettext("commands", "/admin ns drop @nick"),
+        dgettext("commands", "/admin cs transfer #canal @nick"),
+        dgettext("commands", "/admin debug memory"),
+        dgettext("commands", "/admin log --last 20"),
+        dgettext("commands", "/admin turn stats"),
+        dgettext("commands", "/admin nuke"),
+        dgettext("commands", "/admin nuke --confirm")
       ]
     }
   end
@@ -79,8 +86,9 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
 
     %CommandSyntax{
       command: "admin",
-      syntax: gettext("/admin <subcommand> [args]"),
-      description: gettext("Server administration commands. Requires admin privilege."),
+      syntax: dgettext("commands", "/admin <subcommand> [args]"),
+      description:
+        dgettext("commands", "Server administration commands. Requires admin privilege."),
       category: :advanced,
       parameters: [
         %Parameter{
@@ -88,36 +96,53 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
           required: true,
           type: :text,
           position: 0,
-          description: gettext("server, user, channel, ns, cs, debug, log, turn, or nuke")
+          description:
+            dgettext("commands", "server, user, channel, ns, cs, debug, log, turn, or nuke")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: gettext("Subcommand arguments")
+          description: dgettext("commands", "Subcommand arguments")
         }
       ],
       examples: [
-        gettext("/admin server info"),
-        gettext("/admin user list"),
-        gettext("/admin user ban @nick"),
-        gettext("/admin log"),
-        gettext("/admin turn stats"),
-        gettext("/admin nuke --confirm")
+        dgettext("commands", "/admin server info"),
+        dgettext("commands", "/admin user list"),
+        dgettext("commands", "/admin user ban @nick"),
+        dgettext("commands", "/admin log"),
+        dgettext("commands", "/admin turn stats"),
+        dgettext("commands", "/admin nuke --confirm")
       ],
       subcommands: [
-        %{name: "server", description: gettext("Server info and settings")},
-        %{name: "user", description: gettext("User management (ban, kick, mute, rename, role)")},
-        %{name: "channel", description: gettext("Channel management (create, delete, purge)")},
-        %{name: "ns", description: gettext("NickServ admin (drop, info, resetpass)")},
-        %{name: "cs", description: gettext("ChanServ admin (drop, info, transfer, access)")},
-        %{name: "debug", description: gettext("Debug info (connections, processes, memory)")},
-        %{name: "log", description: gettext("View audit log")},
-        %{name: "turn", description: gettext("TURN server status and allocations")},
+        %{name: "server", description: dgettext("commands", "Server info and settings")},
+        %{
+          name: "user",
+          description: dgettext("commands", "User management (ban, kick, mute, rename, role)")
+        },
+        %{
+          name: "channel",
+          description: dgettext("commands", "Channel management (create, delete, purge)")
+        },
+        %{
+          name: "ns",
+          description: dgettext("commands", "NickServ admin (drop, info, resetpass)")
+        },
+        %{
+          name: "cs",
+          description: dgettext("commands", "ChanServ admin (drop, info, transfer, access)")
+        },
+        %{
+          name: "debug",
+          description: dgettext("commands", "Debug info (connections, processes, memory)")
+        },
+        %{name: "log", description: dgettext("commands", "View audit log")},
+        %{name: "turn", description: dgettext("commands", "TURN server status and allocations")},
         %{
           name: "nuke",
-          description: gettext("Factory reset — destroy all data except admin infrastructure")
+          description:
+            dgettext("commands", "Factory reset — destroy all data except admin infrastructure")
         }
       ]
     }

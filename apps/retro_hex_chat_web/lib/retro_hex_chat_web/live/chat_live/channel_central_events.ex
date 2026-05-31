@@ -91,7 +91,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
         {:halt, refresh_channel_central(socket)}
 
       {:error, msg} ->
-        {:halt, error_event(socket, gettext("Topic error: %{message}", message: msg))}
+        {:halt, error_event(socket, dgettext("chat", "Topic error: %{message}", message: msg))}
     end
   end
 
@@ -118,7 +118,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
          |> refresh_channel_central()}
 
       {:error, msg} ->
-        {:halt, error_event(socket, gettext("Ban error: %{message}", message: msg))}
+        {:halt, error_event(socket, dgettext("chat", "Ban error: %{message}", message: msg))}
     end
   end
 
@@ -137,7 +137,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
            |> refresh_channel_central()}
 
         {:error, msg} ->
-          {:halt, error_event(socket, gettext("Unban error: %{message}", message: msg))}
+          {:halt, error_event(socket, dgettext("chat", "Unban error: %{message}", message: msg))}
       end
     else
       {:halt, socket}
@@ -158,7 +158,8 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
          |> refresh_channel_central()}
 
       {:error, msg} ->
-        {:halt, error_event(socket, gettext("Ban exception error: %{message}", message: msg))}
+        {:halt,
+         error_event(socket, dgettext("chat", "Ban exception error: %{message}", message: msg))}
     end
   end
 
@@ -178,7 +179,10 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
 
         {:error, msg} ->
           {:halt,
-           error_event(socket, gettext("Remove exception error: %{message}", message: msg))}
+           error_event(
+             socket,
+             dgettext("chat", "Remove exception error: %{message}", message: msg)
+           )}
       end
     else
       {:halt, socket}
@@ -199,7 +203,8 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
          |> refresh_channel_central()}
 
       {:error, msg} ->
-        {:halt, error_event(socket, gettext("Invite exception error: %{message}", message: msg))}
+        {:halt,
+         error_event(socket, dgettext("chat", "Invite exception error: %{message}", message: msg))}
     end
   end
 
@@ -219,7 +224,10 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
 
         {:error, msg} ->
           {:halt,
-           error_event(socket, gettext("Remove exception error: %{message}", message: msg))}
+           error_event(
+             socket,
+             dgettext("chat", "Remove exception error: %{message}", message: msg)
+           )}
       end
     else
       {:halt, socket}
@@ -262,14 +270,15 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
           {:halt,
            error_event(
              socket,
-             gettext("You must be a member of %{channel} to open Channel Central",
+             dgettext("chat", "You must be a member of %{channel} to open Channel Central",
                channel: channel
              )
            )}
         end
 
       {:error, _} ->
-        {:halt, error_event(socket, gettext("Channel %{channel} not found", channel: channel))}
+        {:halt,
+         error_event(socket, dgettext("chat", "Channel %{channel} not found", channel: channel))}
     end
   end
 
@@ -316,8 +325,11 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
 
     Enum.reduce(mode_ops, socket, fn {mode_str, mode_params}, acc ->
       case Server.set_mode(channel, nickname, mode_str, mode_params) do
-        :ok -> acc
-        {:error, msg} -> error_event(acc, gettext("Mode error: %{message}", message: msg))
+        :ok ->
+          acc
+
+        {:error, msg} ->
+          error_event(acc, dgettext("chat", "Mode error: %{message}", message: msg))
       end
     end)
   end

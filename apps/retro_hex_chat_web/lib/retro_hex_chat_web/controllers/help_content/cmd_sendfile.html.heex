@@ -1,33 +1,41 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Send a file to another user through a direct peer-to-peer connection. The file transfers directly between your browsers without going through the server."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/sendfile <nickname>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>nickname</code> {gettext("— The user to send a file to.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/sendfile <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p><code>nickname</code> {dgettext("help_commands", "— The user to send a file to.")}</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext("Running")} <code>{gettext("/sendfile")}</code>
-  {gettext(
+  {dgettext("help_commands", "Running")} <code>{dgettext("help_commands", "/sendfile")}</code>
+  {dgettext(
+    "help_commands",
     "creates a P2P session and both users enter a lobby. The file transfer dialog opens automatically — you select a file, and the recipient gets a notification to accept or decline the transfer. Once accepted, the file is sent directly between browsers (peer-to-peer). You can see the transfer progress in the lobby window."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>
-    {gettext("Both you and the target must be registered and identified (via")} <code>{gettext("/ns identify")}</code>)
+    {dgettext("help_commands", "Both you and the target must be registered and identified (via")} <code>{dgettext("help_commands", "/ns identify")}</code>)
   </li>
-  <li>{gettext("Cannot send files to yourself")}</li>
-  <li>{gettext("Only one active P2P session per user pair at a time")}</li>
+  <li>{dgettext("help_commands", "Cannot send files to yourself")}</li>
+  <li>{dgettext("help_commands", "Only one active P2P session per user pair at a time")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/sendfile Mario /sendfile Alice")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/sendfile Mario /sendfile Alice")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-p2p">{gettext("/p2p")}</.help_link>
-  · <.help_link topic="cmd-call">{gettext("/call")}</.help_link>
-  · <.help_link topic="feature-file-transfer">{gettext("File Transfer")}</.help_link>
-  · <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
+  <.help_link topic="cmd-p2p">{dgettext("help_commands", "/p2p")}</.help_link>
+  · <.help_link topic="cmd-call">{dgettext("help_commands", "/call")}</.help_link>
+  ·
+  <.help_link topic="feature-file-transfer">
+    {dgettext("help_commands", "File Transfer")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-p2p-sessions">
+    {dgettext("help_commands", "P2P Sessions")}
+  </.help_link>
 </p>

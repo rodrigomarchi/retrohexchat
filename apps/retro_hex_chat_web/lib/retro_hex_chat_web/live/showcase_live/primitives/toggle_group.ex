@@ -13,25 +13,30 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.ToggleGroup do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Toggle Group"), active_page: "toggle-group")}
+    {:ok,
+     assign(socket, page_title: dgettext("showcase", "Toggle Group"), active_page: "toggle-group")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Toggle Group")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Toggle Group")}</h2>
 
       <.showcase_card
-        title={gettext("Single")}
+        title={dgettext("showcase", "Single")}
         description="A set of two-state buttons where only one can be active (single mode)."
       >
         <.toggle_group :let={builder} name="align" value="left">
-          <.toggle_group_item value="left" builder={builder}>{gettext("Left")}</.toggle_group_item>
-          <.toggle_group_item value="center" builder={builder}>
-            {gettext("Center")}
+          <.toggle_group_item value="left" builder={builder}>
+            {dgettext("showcase", "Left")}
           </.toggle_group_item>
-          <.toggle_group_item value="right" builder={builder}>{gettext("Right")}</.toggle_group_item>
+          <.toggle_group_item value="center" builder={builder}>
+            {dgettext("showcase", "Center")}
+          </.toggle_group_item>
+          <.toggle_group_item value="right" builder={builder}>
+            {dgettext("showcase", "Right")}
+          </.toggle_group_item>
         </.toggle_group>
         <.code_example>
           &lt;.toggle_group :let=&#123;builder&#125; name="align" value="left"&gt;
@@ -43,7 +48,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.ToggleGroup do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Multiple")}
+        title={dgettext("showcase", "Multiple")}
         description="Multiple buttons can be active simultaneously. Pass multiple={true} and a list value."
       >
         <.code_example>

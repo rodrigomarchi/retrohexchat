@@ -1,28 +1,38 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Set a message shown once to each user when they join the current channel. Great for posting rules or helpful information for newcomers."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/setwelcome <message>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>message</code> {gettext("— The welcome text to display to joining users.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/setwelcome <message>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
-  {gettext(
+  <code>message</code> {dgettext(
+    "help_commands",
+    "— The welcome text to display to joining users."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
     "After setting a welcome message, any user who joins the channel sees it once per session. If they leave and rejoin, they won't see it again during the same session. The person who set the welcome message does not see it themselves. Each channel has its own independent welcome message."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Channel operator or owner only")}</li>
-  <li>{gettext("Must be used inside a channel")}</li>
-  <li>{gettext("Message text is required")}</li>
+  <li>{dgettext("help_commands", "Channel operator or owner only")}</li>
+  <li>{dgettext("help_commands", "Must be used inside a channel")}</li>
+  <li>{dgettext("help_commands", "Message text is required")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/setwelcome Welcome to #elixir! Please be respectful and use English.")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/setwelcome Welcome to #elixir! Please be respectful and use English.")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-clearwelcome">{gettext("/clearwelcome")}</.help_link>
-  · <.help_link topic="feature-special-messages">{gettext("Special Messages")}</.help_link>
+  <.help_link topic="cmd-clearwelcome">{dgettext("help_commands", "/clearwelcome")}</.help_link>
+  ·
+  <.help_link topic="feature-special-messages">
+    {dgettext("help_commands", "Special Messages")}
+  </.help_link>
 </p>

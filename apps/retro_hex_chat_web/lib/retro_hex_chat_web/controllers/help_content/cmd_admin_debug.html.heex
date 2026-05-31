@@ -1,31 +1,41 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Server debug tools for viewing runtime information about the BEAM VM. Requires server administrator role. Read-only, no side effects."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/admin debug connections /admin debug processes /admin debug memory")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin debug connections /admin debug processes /admin debug memory")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Subcommands")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Subcommands")}</.help_h4>
 <ul>
-  <li><code>connections</code> {gettext("— Show the number of active client connections")}</li>
   <li>
-    <code>processes</code> {gettext(
+    <code>connections</code> {dgettext(
+      "help_commands",
+      "— Show the number of active client connections"
+    )}
+  </li>
+  <li>
+    <code>processes</code> {dgettext(
+      "help_commands",
       "— List active channel GenServer processes with member counts"
     )}
   </li>
   <li>
     <code>memory</code>
-    {gettext("— Show BEAM VM memory usage breakdown (total, processes, atoms, binary, ETS)")}
+    {dgettext(
+      "help_commands",
+      "— Show BEAM VM memory usage breakdown (total, processes, atoms, binary, ETS)"
+    )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/admin debug connections /admin debug memory /admin debug processes")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin debug connections /admin debug memory /admin debug processes")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-admin">{gettext("/admin")}</.help_link>
-  · <.help_link topic="cmd-admin-server">{gettext("/admin server")}</.help_link>
+  <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  · <.help_link topic="cmd-admin-server">{dgettext("help_commands", "/admin server")}</.help_link>
 </p>

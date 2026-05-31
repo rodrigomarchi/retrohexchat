@@ -14,7 +14,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ColorPickerPage do
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, page_title: gettext("Color Picker"), active_page: "color-picker", selected: 3)}
+     assign(socket,
+       page_title: dgettext("showcase", "Color Picker"),
+       active_page: "color-picker",
+       selected: 3
+     )}
   end
 
   @impl true
@@ -26,10 +30,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ColorPickerPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Color Picker")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Color Picker")}</h2>
 
       <.showcase_card
-        title={gettext("Default")}
+        title={dgettext("showcase", "Default")}
         description="4x4 grid of the 16 standard IRC colors."
       >
         <.color_picker id="demo-default" />
@@ -39,15 +43,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ColorPickerPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With Selection")}
+        title={dgettext("showcase", "With Selection")}
         description="Click a color to select it. The selected swatch gets a bold border."
       >
         <div class="flex items-center gap-retro-12">
           <.color_picker id="demo-selected" selected={@selected} />
           <div class="text-xs text-muted-foreground">
-            <p>{gettext("Selected:")} <span class="font-bold">{@selected}</span></p>
+            <p>{dgettext("showcase", "Selected:")} <span class="font-bold">{@selected}</span></p>
             <p>
-              {gettext("Color:")}
+              {dgettext("showcase", "Color:")}
               <span
                 class="inline-block w-[14px] h-[14px] border border-gray-500 align-middle"
                 style={"background-color: #{elem(Enum.at(irc_colors(), @selected), 1)};"}
@@ -62,7 +66,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ColorPickerPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Color Reference")}
+        title={dgettext("showcase", "Color Reference")}
         description="All 16 IRC colors with their indices."
       >
         <div class="grid grid-cols-4 gap-2">

@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
       <%!-- Group 1: Connection --%>
       <.toolbar_button
         :if={!@connected}
-        label={gettext("Connect")}
+        label={dgettext("ui", "Connect")}
         phx-click={@on_action}
         phx-value-action="restore_session"
       >
@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
       </.toolbar_button>
       <.toolbar_button
         :if={@connected}
-        label={gettext("Disconnect")}
+        label={dgettext("ui", "Disconnect")}
         phx-click={@on_action}
         phx-value-action="disconnect"
       >
@@ -47,7 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
       <%!-- Group 2: Options (dropdown) --%>
       <div class="toolbar-group relative">
         <.toolbar_button
-          label={gettext("Options")}
+          label={dgettext("ui", "Options")}
           class="toolbar-group-toggle"
           data-toolbar-group="options"
         >
@@ -57,25 +57,25 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
           <%!-- View items --%>
           <.dropdown_item
             icon_fn={:icon_btn_channel_list}
-            label={gettext("Channel List")}
+            label={dgettext("ui", "Channel List")}
             action="toggle_channel_list"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_toggle_conversations}
-            label={gettext("Toggle Conversations")}
+            label={dgettext("ui", "Toggle Conversations")}
             action="toggle_conversations"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_toggle_nicklist}
-            label={gettext("Toggle Nicklist")}
+            label={dgettext("ui", "Toggle Nicklist")}
             action="toggle_nicklist"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_find}
-            label={gettext("Find")}
+            label={dgettext("ui", "Find")}
             action="toggle_search"
             on_action={@on_action}
           />
@@ -85,61 +85,61 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
           <%!-- Tool items --%>
           <.dropdown_item
             icon_fn={:icon_btn_address_book}
-            label={gettext("Address Book")}
+            label={dgettext("ui", "Address Book")}
             action="toggle_address_book"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_highlight_words}
-            label={gettext("Highlight Words")}
+            label={dgettext("ui", "Highlight Words")}
             action="open_highlight_dialog"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_url_catcher}
-            label={gettext("URL Catcher")}
+            label={dgettext("ui", "URL Catcher")}
             action="toggle_url_catcher"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_channel_central}
-            label={gettext("Channel Central")}
+            label={dgettext("ui", "Channel Central")}
             action="open_channel_central"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_perform}
-            label={gettext("Perform")}
+            label={dgettext("ui", "Perform")}
             action="open_perform_dialog"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_sounds}
-            label={gettext("Sounds")}
+            label={dgettext("ui", "Sounds")}
             action="open_sound_settings_dialog"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_flood_protection}
-            label={gettext("Flood Protection")}
+            label={dgettext("ui", "Flood Protection")}
             action="open_flood_protection_dialog"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_alias_editor}
-            label={gettext("Alias Editor")}
+            label={dgettext("ui", "Alias Editor")}
             action="open_alias_dialog"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_custom_menus}
-            label={gettext("Custom Menus")}
+            label={dgettext("ui", "Custom Menus")}
             action="open_custom_menus_dialog"
             on_action={@on_action}
           />
           <.dropdown_item
             icon_fn={:icon_btn_auto_respond}
-            label={gettext("Auto Respond")}
+            label={dgettext("ui", "Auto Respond")}
             action="open_autorespond_dialog"
             on_action={@on_action}
           />
@@ -147,7 +147,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
           <.dropdown_item
             :if={@is_admin}
             icon_fn={:icon_dialog_admin_console}
-            label={gettext("Admin Console")}
+            label={dgettext("ui", "Admin Console")}
             action="open_admin_console"
             on_action={@on_action}
           />
@@ -158,7 +158,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
 
       <%!-- Group 3: Help --%>
       <.toolbar_button
-        label={gettext("Help Topics")}
+        label={dgettext("ui", "Help Topics")}
         phx-click={@on_action}
         phx-value-action="help_topics"
       >

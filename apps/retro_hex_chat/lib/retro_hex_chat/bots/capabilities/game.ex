@@ -9,7 +9,8 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: gettext("AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)")
+  def description,
+    do: dgettext("bots", "AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::

@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
     entries = IgnoreList.sorted_entries(session.ignore_list)
 
     if entries == [] do
-      system_event(socket, gettext("Your ignore list is empty"))
+      system_event(socket, dgettext("chat", "Your ignore list is empty"))
     else
       Enum.reduce(entries, socket, fn entry, acc ->
         system_event(acc, format_ignore_entry(entry))
@@ -49,9 +49,12 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
 
         msg =
           if existing do
-            gettext("* %{nickname} ignore updated to: %{type}", nickname: nick, type: type)
+            dgettext("chat", "* %{nickname} ignore updated to: %{type}",
+              nickname: nick,
+              type: type
+            )
           else
-            gettext("* %{nickname} is now ignored (%{type})", nickname: nick, type: type)
+            dgettext("chat", "* %{nickname} is now ignored (%{type})", nickname: nick, type: type)
           end
 
         if p2p_blocking_ignore?(type) do
@@ -66,10 +69,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
         |> system_event(msg)
 
       {:error, :list_full} ->
-        error_event(socket, gettext("Ignore list is full (max 100 entries)"))
+        error_event(socket, dgettext("chat", "Ignore list is full (max 100 entries)"))
 
       {:error, :invalid_type} ->
-        error_event(socket, gettext("Invalid ignore type: %{type}", type: type))
+        error_event(socket, dgettext("chat", "Invalid ignore type: %{type}", type: type))
     end
   end
 
@@ -85,17 +88,23 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
         |> cancel_ignore_timer(nick)
         |> cancel_auto_ignore_with_cooldown(nick)
         |> maybe_persist_ignore_list(new_session)
-        |> system_event(gettext("* %{nickname} is no longer ignored", nickname: nick))
+        |> system_event(dgettext("chat", "* %{nickname} is no longer ignored", nickname: nick))
 
       {:error, :not_found} ->
-        error_event(socket, gettext("%{nickname} is not in your ignore list", nickname: nick))
+        error_event(
+          socket,
+          dgettext("chat", "%{nickname} is not in your ignore list", nickname: nick)
+        )
     end
   end
 
   defp format_ignore_entry(entry) do
-    expires = if IgnoreEntry.permanent?(entry), do: gettext("permanent"), else: gettext("timed")
+    expires =
+      if IgnoreEntry.permanent?(entry),
+        do: dgettext("chat", "permanent"),
+        else: dgettext("chat", "timed")
 
-    gettext("  %{nickname} [%{type}] (%{expires})",
+    dgettext("chat", "  %{nickname} [%{type}] (%{expires})",
       nickname: entry.nickname,
       type: entry.ignore_type,
       expires: expires

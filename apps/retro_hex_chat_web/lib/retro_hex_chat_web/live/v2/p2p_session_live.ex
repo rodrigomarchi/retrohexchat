@@ -71,8 +71,9 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
       if turn_only and not P2P.turn_configured?() do
         warn_msg = %{
           id: System.unique_integer([:positive]),
-          sender_nick: gettext("System"),
-          content: gettext("Private mode requires a TURN server. Using direct connection."),
+          sender_nick: dgettext("p2p", "System"),
+          content:
+            dgettext("p2p", "Private mode requires a TURN server. Using direct connection."),
           type: "system",
           timestamp: DateTime.utc_now()
         }
@@ -148,7 +149,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
 
     feedback_msg = %{
       id: System.unique_integer([:positive]),
-      sender_nick: gettext("System"),
+      sender_nick: dgettext("p2p", "System"),
       content: action_response_message(response[:action_type], response[:accepted]),
       type: "system",
       timestamp: DateTime.utc_now()
@@ -175,8 +176,8 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   def handle_info(%{event: "p2p_action_expired"}, socket) do
     expired_msg = %{
       id: System.unique_integer([:positive]),
-      sender_nick: gettext("System"),
-      content: gettext("Request expired."),
+      sender_nick: dgettext("p2p", "System"),
+      content: dgettext("p2p", "Request expired."),
       type: "system",
       timestamp: DateTime.utc_now()
     }
@@ -254,8 +255,8 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
     if socket.assigns.call do
       msg = %{
         id: System.unique_integer([:positive]),
-        sender_nick: gettext("System"),
-        content: gettext("Call ended: %{reason}", reason: reason),
+        sender_nick: dgettext("p2p", "System"),
+        content: dgettext("p2p", "Call ended: %{reason}", reason: reason),
         type: "system",
         timestamp: DateTime.utc_now()
       }
@@ -304,8 +305,8 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
 
         msg = %{
           id: System.unique_integer([:positive]),
-          sender_nick: gettext("System"),
-          content: gettext("Video request declined."),
+          sender_nick: dgettext("p2p", "System"),
+          content: dgettext("p2p", "Video request declined."),
           type: "system",
           timestamp: DateTime.utc_now()
         }
@@ -679,7 +680,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
     else
       msg = %{
         id: System.unique_integer([:positive]),
-        sender_nick: gettext("System"),
+        sender_nick: dgettext("p2p", "System"),
         content: message,
         type: "system",
         timestamp: DateTime.utc_now()
@@ -755,7 +756,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   def handle_event("media_device_fallback", %{"message" => message}, socket) do
     msg = %{
       id: System.unique_integer([:positive]),
-      sender_nick: gettext("System"),
+      sender_nick: dgettext("p2p", "System"),
       content: message,
       type: "system",
       timestamp: DateTime.utc_now()
@@ -777,8 +778,8 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
     else
       error_msg = %{
         id: System.unique_integer([:positive]),
-        sender_nick: gettext("System"),
-        content: gettext("Permission denied for %{type}. Please try again.", type: type),
+        sender_nick: dgettext("p2p", "System"),
+        content: dgettext("p2p", "Permission denied for %{type}. Please try again.", type: type),
         type: "system",
         timestamp: DateTime.utc_now()
       }
@@ -1033,27 +1034,33 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   end
 
   defp action_response_message(action_type, true) do
-    gettext("%{action} request accepted.", action: action_label(action_type))
+    dgettext("p2p", "%{action} request accepted.", action: action_label(action_type))
   end
 
   defp action_response_message(action_type, _accepted) do
-    gettext("%{action} request declined.", action: action_label(action_type))
+    dgettext("p2p", "%{action} request declined.", action: action_label(action_type))
   end
 
-  defp action_label("audio_call"), do: gettext("Audio call")
-  defp action_label("video_call"), do: gettext("Video call")
-  defp action_label("file_transfer"), do: gettext("File transfer")
+  defp action_label("audio_call"), do: dgettext("p2p", "Audio call")
+  defp action_label("video_call"), do: dgettext("p2p", "Video call")
+  defp action_label("file_transfer"), do: dgettext("p2p", "File transfer")
   defp action_label(action), do: to_string(action)
 
-  defp expired_reason_label("user_closed"), do: gettext("Session closed by user.")
-  defp expired_reason_label("rejected"), do: gettext("P2P invite was rejected.")
-  defp expired_reason_label("tab_closed"), do: gettext("Session closed (disconnected).")
-  defp expired_reason_label("disconnected"), do: gettext("Session closed (disconnected).")
-  defp expired_reason_label("expired"), do: gettext("Session expired due to inactivity.")
-  defp expired_reason_label("failed"), do: gettext("Session closed due to connection failure.")
-  defp expired_reason_label("call_ended"), do: gettext("Call ended.")
-  defp expired_reason_label("file_transfer_completed"), do: gettext("File transfer completed.")
-  defp expired_reason_label(_reason), do: gettext("P2P session ended.")
+  defp expired_reason_label("user_closed"), do: dgettext("p2p", "Session closed by user.")
+  defp expired_reason_label("rejected"), do: dgettext("p2p", "P2P invite was rejected.")
+  defp expired_reason_label("tab_closed"), do: dgettext("p2p", "Session closed (disconnected).")
+  defp expired_reason_label("disconnected"), do: dgettext("p2p", "Session closed (disconnected).")
+  defp expired_reason_label("expired"), do: dgettext("p2p", "Session expired due to inactivity.")
+
+  defp expired_reason_label("failed"),
+    do: dgettext("p2p", "Session closed due to connection failure.")
+
+  defp expired_reason_label("call_ended"), do: dgettext("p2p", "Call ended.")
+
+  defp expired_reason_label("file_transfer_completed"),
+    do: dgettext("p2p", "File transfer completed.")
+
+  defp expired_reason_label(_reason), do: dgettext("p2p", "P2P session ended.")
 
   @spec compute_session_duration(Phoenix.LiveView.Socket.t()) :: integer()
   defp compute_session_duration(socket) do

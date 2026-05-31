@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       socket.assigns.show_status_tab ->
         Messages.push_status_message(
           socket,
-          gettext("Cannot send text to status window. Use /commands."),
+          dgettext("chat", "Cannot send text to status window. Use /commands."),
           :error
         )
 
@@ -147,7 +147,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     else
       Messages.error_event(
         socket,
-        gettext("You must be a member of %{channel} to send notices there", channel: channel)
+        dgettext("chat", "You must be a member of %{channel} to send notices there",
+          channel: channel
+        )
       )
     end
   end

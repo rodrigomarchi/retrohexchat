@@ -1,33 +1,44 @@
-<p>{gettext("Start peer-to-peer audio calls with another user in a P2P session.")}</p>
-<.help_h4 icon={:icon_microphone}>{gettext("Starting a Call")}</.help_h4>
 <p>
-  {gettext("In the P2P session, click")} <strong>{gettext("Audio Call")}</strong>{gettext(
+  {dgettext("help_p2p", "Start peer-to-peer audio calls with another user in a P2P session.")}
+</p>
+<.help_h4 icon={:icon_microphone}>{dgettext("help_p2p", "Starting a Call")}</.help_h4>
+<p>
+  {dgettext("help_p2p", "In the P2P session, click")} <strong>{dgettext("help_p2p", "Audio Call")}</strong>{dgettext(
+    "help_p2p",
     ". The other user must accept the request."
   )}
 </p>
-<.help_h4 icon={:icon_mute}>{gettext("Mute/Unmute Microphone")}</.help_h4>
+<.help_h4 icon={:icon_mute}>{dgettext("help_p2p", "Mute/Unmute Microphone")}</.help_h4>
 <p>
-  {gettext("Click the")} <strong>{gettext("Mute")}</strong>
-  {gettext(
+  {dgettext("help_p2p", "Click the")} <strong>{dgettext("help_p2p", "Mute")}</strong>
+  {dgettext(
+    "help_p2p",
     "button to mute your microphone. The other user will see an indication that you are muted."
   )}
 </p>
-<.help_h4 icon={:icon_phone_end}>{gettext("End Call")}</.help_h4>
+<.help_h4 icon={:icon_phone_end}>{dgettext("help_p2p", "End Call")}</.help_h4>
 <p>
-  {gettext("Click")}
-  <strong>{gettext("End Call")}</strong> {gettext("to finish. Both users return to the lobby.")}
+  {dgettext("help_p2p", "Click")}
+  <strong>{dgettext("help_p2p", "End Call")}</strong> {dgettext(
+    "help_p2p",
+    "to finish. Both users return to the lobby."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_status}>{gettext("Indicators")}</.help_h4>
+<.help_h4 icon={:icon_tab_status}>{dgettext("help_p2p", "Indicators")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
     "The timer shows the call duration. The quality indicator shows 4 levels: Excellent, Good, Fair, Poor."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
-  · <.help_link topic="feature-video-call">{gettext("Video Call")}</.help_link>
-  · <.help_link topic="feature-media-devices">{gettext("Media Devices")}</.help_link>
-  · <.help_link topic="feature-call-quality">{gettext("Call Quality")}</.help_link>
-  · <.help_link topic="feature-privacy-settings">{gettext("Privacy Settings")}</.help_link>
+  <.help_link topic="feature-p2p-sessions">{dgettext("help_p2p", "P2P Sessions")}</.help_link>
+  · <.help_link topic="feature-video-call">{dgettext("help_p2p", "Video Call")}</.help_link>
+  · <.help_link topic="feature-media-devices">{dgettext("help_p2p", "Media Devices")}</.help_link>
+  · <.help_link topic="feature-call-quality">{dgettext("help_p2p", "Call Quality")}</.help_link>
+  ·
+  <.help_link topic="feature-privacy-settings">
+    {dgettext("help_p2p", "Privacy Settings")}
+  </.help_link>
 </p>

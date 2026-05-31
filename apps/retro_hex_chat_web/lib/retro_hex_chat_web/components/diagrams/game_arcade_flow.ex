@@ -15,7 +15,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext(
+        dgettext(
+          "diagrams",
           "Solo arcade flow: type !play in #games channel, pick a game from catalog, new window opens, WASM game runs in browser"
         )
       }
@@ -61,7 +62,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="9"
         font-family="'Courier New',monospace"
       >
-        {gettext("!play")}
+        {dgettext("diagrams", "!play")}
       </text>
       <%!-- Send button --%>
       <rect x="254" y="34" width="40" height="14" fill="#c0c0c0" stroke="#000" stroke-width="1" />
@@ -75,7 +76,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Send")}
+        {dgettext("diagrams", "Send")}
       </text>
 
       <%!-- Arrow 1 → 2 --%>
@@ -114,7 +115,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Arcade — Select a Game")}
+        {dgettext("diagrams", "Arcade — Select a Game")}
       </text>
       <%!-- Content inset --%>
       <rect x="66" y="100" width="288" height="52" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -133,7 +134,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("DOOM")}
+        {dgettext("diagrams", "DOOM")}
       </text>
       <rect x="162" y="104" width="86" height="20" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -144,7 +145,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Quake")}
+        {dgettext("diagrams", "Quake")}
       </text>
       <rect x="252" y="104" width="86" height="20" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -155,7 +156,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Wolf3D")}
+        {dgettext("diagrams", "Wolf3D")}
       </text>
       <%!-- Row 2 --%>
       <rect x="72" y="128" width="86" height="20" fill="#fff" stroke="#808080" stroke-width="1" />
@@ -167,7 +168,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("BASS")}
+        {dgettext("diagrams", "BASS")}
       </text>
       <rect x="162" y="128" width="86" height="20" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -178,7 +179,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Quake II")}
+        {dgettext("diagrams", "Quake II")}
       </text>
       <rect x="252" y="128" width="86" height="20" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -189,7 +190,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("HacX")}
+        {dgettext("diagrams", "HacX")}
       </text>
 
       <%!-- Arrow 2 → 3 --%>
@@ -210,7 +211,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Arcade — Select a Game")}
+        {dgettext("diagrams", "Arcade — Select a Game")}
       </text>
 
       <%!-- Front window (game, opening) --%>
@@ -243,7 +244,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("New Window Opens")}
+        {dgettext("diagrams", "New Window Opens")}
       </text>
       <%!-- Content --%>
       <rect x="148" y="218" width="204" height="14" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -257,7 +258,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Loading DOOM: Knee-Deep in the Dead...")}
+        {dgettext("diagrams", "Loading DOOM: Knee-Deep in the Dead...")}
       </text>
 
       <%!-- Arrow 3 → 4 (green accent) --%>
@@ -301,7 +302,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("DOOM: Knee-Deep in the Dead")}
+        {dgettext("diagrams", "DOOM: Knee-Deep in the Dead")}
       </text>
       <%!-- Black game canvas --%>
       <rect x="68" y="290" width="284" height="46" fill="#000" stroke="#808080" stroke-width="1" />
@@ -317,7 +318,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-family="'Courier New',monospace"
         font-weight="bold"
       >
-        {gettext("WebAssembly")}
+        {dgettext("diagrams", "WebAssembly")}
       </text>
       <text
         x="210"
@@ -327,7 +328,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("Engine: Dwasm · Running in browser")}
+        {dgettext("diagrams", "Engine: Dwasm · Running in browser")}
       </text>
 
       <%!-- Tooltip --%>
@@ -342,7 +343,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="9"
         font-family="Tahoma,sans-serif"
       >
-        {gettext("18 classic games · Runs in your browser via WebAssembly")}
+        {dgettext("diagrams", "18 classic games · Runs in your browser via WebAssembly")}
       </text>
     </svg>
     """

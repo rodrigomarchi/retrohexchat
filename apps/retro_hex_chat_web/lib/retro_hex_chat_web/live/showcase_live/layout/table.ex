@@ -13,41 +13,41 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Table do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Table"), active_page: "table")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Table"), active_page: "table")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Table")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Table")}</h2>
 
       <.showcase_card
-        title={gettext("Usage")}
+        title={dgettext("showcase", "Usage")}
         description="Displays tabular data with header and body rows."
       >
         <.table>
           <.table_header>
             <.table_row>
-              <.table_head>{gettext("Nickname")}</.table_head>
-              <.table_head>{gettext("Status")}</.table_head>
-              <.table_head>{gettext("Channel")}</.table_head>
+              <.table_head>{dgettext("showcase", "Nickname")}</.table_head>
+              <.table_head>{dgettext("showcase", "Status")}</.table_head>
+              <.table_head>{dgettext("showcase", "Channel")}</.table_head>
             </.table_row>
           </.table_header>
           <.table_body>
             <.table_row>
-              <.table_cell>{gettext("Alice")}</.table_cell>
-              <.table_cell>{gettext("Online")}</.table_cell>
+              <.table_cell>{dgettext("showcase", "Alice")}</.table_cell>
+              <.table_cell>{dgettext("showcase", "Online")}</.table_cell>
               <.table_cell>#general</.table_cell>
             </.table_row>
             <.table_row>
-              <.table_cell>{gettext("Bob")}</.table_cell>
-              <.table_cell>{gettext("Away")}</.table_cell>
+              <.table_cell>{dgettext("showcase", "Bob")}</.table_cell>
+              <.table_cell>{dgettext("showcase", "Away")}</.table_cell>
               <.table_cell>#random</.table_cell>
             </.table_row>
             <.table_row>
-              <.table_cell>{gettext("Charlie")}</.table_cell>
-              <.table_cell>{gettext("Offline")}</.table_cell>
+              <.table_cell>{dgettext("showcase", "Charlie")}</.table_cell>
+              <.table_cell>{dgettext("showcase", "Offline")}</.table_cell>
               <.table_cell>#help</.table_cell>
             </.table_row>
           </.table_body>
@@ -71,33 +71,33 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Table do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Caption & Footer")}
+        title={dgettext("showcase", "Caption & Footer")}
         description="Table with caption and footer row for summaries."
       >
         <.table>
-          <.table_caption>{gettext("Server statistics — March 2026")}</.table_caption>
+          <.table_caption>{dgettext("showcase", "Server statistics — March 2026")}</.table_caption>
           <.table_header>
             <.table_row>
-              <.table_head>{gettext("Server")}</.table_head>
-              <.table_head>{gettext("Users")}</.table_head>
-              <.table_head>{gettext("Channels")}</.table_head>
+              <.table_head>{dgettext("showcase", "Server")}</.table_head>
+              <.table_head>{dgettext("showcase", "Users")}</.table_head>
+              <.table_head>{dgettext("showcase", "Channels")}</.table_head>
             </.table_row>
           </.table_header>
           <.table_body>
             <.table_row>
-              <.table_cell>{gettext("Sun")}</.table_cell>
+              <.table_cell>{dgettext("showcase", "Sun")}</.table_cell>
               <.table_cell>128</.table_cell>
               <.table_cell>24</.table_cell>
             </.table_row>
             <.table_row>
-              <.table_cell>{gettext("Moon")}</.table_cell>
+              <.table_cell>{dgettext("showcase", "Moon")}</.table_cell>
               <.table_cell>64</.table_cell>
               <.table_cell>12</.table_cell>
             </.table_row>
           </.table_body>
           <.table_footer>
             <.table_row>
-              <.table_cell class="font-bold">{gettext("Total")}</.table_cell>
+              <.table_cell class="font-bold">{dgettext("showcase", "Total")}</.table_cell>
               <.table_cell class="font-bold">192</.table_cell>
               <.table_cell class="font-bold">36</.table_cell>
             </.table_row>

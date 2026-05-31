@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConversationsPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("Conversations"),
+       page_title: dgettext("showcase", "Conversations"),
        active_page: "conversations"
      )}
   end

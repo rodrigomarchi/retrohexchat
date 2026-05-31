@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.HighlightDialogPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("Highlight Dialog"),
+       page_title: dgettext("showcase", "Highlight Dialog"),
        active_page: "highlight-dialog",
        words: [
          HighlightWord.new(word: "important", bg_color: 4, position: 0),
@@ -33,15 +33,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.HighlightDialogPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Highlight Dialog")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Highlight Dialog")}</h2>
 
       <.showcase_card
-        title={gettext("Highlight Words")}
+        title={dgettext("showcase", "Highlight Words")}
         description="Manage highlight words with color assignments."
       >
         <.button variant="outline" phx-click={show_modal("highlight-demo")}>
           <:icon><Icons.icon_star class="w-4 h-4" /></:icon>
-          {gettext("Highlights")}
+          {dgettext("showcase", "Highlights")}
         </.button>
         <.highlight_dialog id="highlight-demo" words={@words} own_nick="MyNick" selected_color={4} />
         <.code_example>

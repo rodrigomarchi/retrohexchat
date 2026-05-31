@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
     assigns =
       assigns
       |> assign(:char_count, String.length(assigns.value || ""))
-      |> assign(:placeholder, assigns.placeholder || gettext("Type a message..."))
+      |> assign(:placeholder, assigns.placeholder || dgettext("chat", "Type a message..."))
 
     ~H"""
     <div
@@ -106,7 +106,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
             class="min-w-[60px]"
           >
             <:icon><Icons.icon_btn_send class="w-4 h-4" /></:icon>
-            {gettext("Send")}
+            {dgettext("chat", "Send")}
           </.button>
           <span class="hidden md:block text-[10px] text-muted-foreground" data-testid="char-counter">
             {@char_count}/{@max_length}

@@ -21,7 +21,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext(
+        dgettext(
+          "diagrams",
           "Retro-style voice call window showing timer, mute, camera, screen share, and end call buttons"
         )
       }
@@ -43,7 +44,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
         font-family="'Segoe UI',Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("Voice Call with Bob")}
+        {dgettext("diagrams", "Voice Call with Bob")}
       </text>
       
     <!-- Title bar buttons (fake) -->
@@ -82,7 +83,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
     <!-- Small avatar icon square -->
       <rect x="30" y="52" width="32" height="32" fill="#008080" stroke="#fff" stroke-width="1" />
       <text x="46" y="74" text-anchor="middle" fill="#fff" font-size="20">
-        {gettext("&#x1F469;")}
+        {dgettext("diagrams", "&#x1F469;")}
       </text>
       
     <!-- Timer elements -->
@@ -116,7 +117,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
         font-size="11"
         font-family="'Segoe UI',Tahoma,sans-serif"
       >
-        {gettext("Mute")}
+        {dgettext("diagrams", "Mute")}
       </text>
       
     <!-- Camera -->
@@ -131,7 +132,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
         font-size="11"
         font-family="'Segoe UI',Tahoma,sans-serif"
       >
-        {gettext("Camera")}
+        {dgettext("diagrams", "Camera")}
       </text>
       
     <!-- Screen -->
@@ -146,7 +147,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
         font-size="11"
         font-family="'Segoe UI',Tahoma,sans-serif"
       >
-        {gettext("Screen")}
+        {dgettext("diagrams", "Screen")}
       </text>
       
     <!-- End Call (Disabled/Red style) -->
@@ -167,7 +168,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
         font-family="'Segoe UI',Tahoma,sans-serif"
         font-weight="bold"
       >
-        {gettext("End")}
+        {dgettext("diagrams", "End")}
       </text>
     </svg>
     """

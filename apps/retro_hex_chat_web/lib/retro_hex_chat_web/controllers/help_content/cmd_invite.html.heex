@@ -1,38 +1,47 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Send a channel invitation to another user. This is required for invite-only (+i) channels where users cannot join on their own."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/invite <nickname> [#channel] /invite auto")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/invite <nickname> [#channel] /invite auto")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>nickname</code>
-  {gettext("— The user to invite.")}<br /><code>#channel</code>
-  {gettext("— Target channel (defaults to your current channel).")}<br /><code>auto</code>
-  {gettext("— Toggle whether you auto-join channels when you receive invitations.")}
+  {dgettext("help_commands", "— The user to invite.")}<br /><code>#channel</code>
+  {dgettext("help_commands", "— Target channel (defaults to your current channel).")}<br />
+  <code>
+    auto
+  </code>
+  {dgettext(
+    "help_commands",
+    "— Toggle whether you auto-join channels when you receive invitations."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "The invited user receives a popup dialog with options to Join or Decline the invitation. The invitation expires after 5 minutes if not acted upon. For invite-only (+i) channels, only channel operators can send invites. Using"
   )}
-  <code>{gettext("/invite auto")}</code>
-  {gettext(
+  <code>{dgettext("help_commands", "/invite auto")}</code>
+  {dgettext(
+    "help_commands",
     "toggles your personal preference for automatically joining channels when someone invites you."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("You must be in the channel to invite someone to it")}</li>
-  <li>{gettext("For +i channels, you must be a channel operator")}</li>
-  <li>{gettext("Invitations expire after 5 minutes")}</li>
+  <li>{dgettext("help_commands", "You must be in the channel to invite someone to it")}</li>
+  <li>{dgettext("help_commands", "For +i channels, you must be a channel operator")}</li>
+  <li>{dgettext("help_commands", "Invitations expire after 5 minutes")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/invite Alice /invite Alice #private /invite auto")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/invite Alice /invite Alice #private /invite auto")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-join">{gettext("/join")}</.help_link>
-  · <.help_link topic="cmd-knock">{gettext("/knock")}</.help_link>
-  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
+  <.help_link topic="cmd-join">{dgettext("help_commands", "/join")}</.help_link>
+  · <.help_link topic="cmd-knock">{dgettext("help_commands", "/knock")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
 </p>

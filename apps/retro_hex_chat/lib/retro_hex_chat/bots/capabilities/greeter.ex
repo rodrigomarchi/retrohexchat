@@ -14,7 +14,7 @@ defmodule RetroHexChat.Bots.Capabilities.Greeter do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: gettext("Greet users on join, say goodbye on part")
+  def description, do: dgettext("bots", "Greet users on join, say goodbye on part")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
@@ -47,7 +47,7 @@ defmodule RetroHexChat.Bots.Capabilities.Greeter do
   def validate_config(_), do: :ok
 
   @spec default_greeting() :: String.t()
-  defp default_greeting, do: gettext("Welcome, {nickname}!")
+  defp default_greeting, do: dgettext("bots", "Welcome, {nickname}!")
 
   @spec render_if_present(String.t() | nil, String.t(), map()) ::
           RetroHexChat.Bots.Capability.capability_result()

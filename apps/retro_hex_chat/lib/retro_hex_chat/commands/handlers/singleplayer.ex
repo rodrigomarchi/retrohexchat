@@ -14,8 +14,8 @@ defmodule RetroHexChat.Commands.Handlers.SinglePlayer do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, %{is_admin: false}) do
     {:error,
-     gettext("This command is reserved for administrators. ") <>
-       gettext("Join #games and type !play to start an arcade session.")}
+     dgettext("commands", "This command is reserved for administrators. ") <>
+       dgettext("commands", "Join #games and type !play to start an arcade session.")}
   end
 
   def execute(_args, context) do
@@ -38,9 +38,9 @@ defmodule RetroHexChat.Commands.Handlers.SinglePlayer do
       name: "singleplayer",
       syntax: "/singleplayer",
       description:
-        gettext("Start a solo arcade session (admin-only debug command).\n") <>
-          gettext("Regular users should type !play in #games instead.\n") <>
-          gettext("Requires: server administrator, registered and identified."),
+        dgettext("commands", "Start a solo arcade session (admin-only debug command).\n") <>
+          dgettext("commands", "Regular users should type !play in #games instead.\n") <>
+          dgettext("commands", "Requires: server administrator, registered and identified."),
       examples: ["/singleplayer"]
     }
   end
@@ -57,7 +57,10 @@ defmodule RetroHexChat.Commands.Handlers.SinglePlayer do
       command: "singleplayer",
       syntax: "/singleplayer",
       description:
-        gettext("Start a solo arcade session (admin-only). Regular users: type !play in #games."),
+        dgettext(
+          "commands",
+          "Start a solo arcade session (admin-only). Regular users: type !play in #games."
+        ),
       category: :advanced,
       parameters: [],
       examples: ["/singleplayer"]
@@ -67,11 +70,11 @@ defmodule RetroHexChat.Commands.Handlers.SinglePlayer do
   defp validate_identified(%{identified: true}), do: :ok
 
   defp validate_identified(_),
-    do: {:error, gettext("You must be identified to use /singleplayer.")}
+    do: {:error, dgettext("commands", "You must be identified to use /singleplayer.")}
 
   defp resolve_registered_nick(nickname) do
     case RetroHexChat.Repo.get_by(RegisteredNick, nickname: nickname) do
-      nil -> {:error, gettext("You must be registered to play arcade games.")}
+      nil -> {:error, dgettext("commands", "You must be registered to play arcade games.")}
       nick -> {:ok, nick.id}
     end
   end

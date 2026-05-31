@@ -24,7 +24,10 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       {:halt, assign(socket, show_bot_dialog: true, bot_dialog_bots: bots)}
     else
       {:halt,
-       error_event(socket, gettext("Bot management is restricted to server administrators."))}
+       error_event(
+         socket,
+         dgettext("chat", "Bot management is restricted to server administrators.")
+       )}
     end
   end
 
@@ -69,13 +72,13 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       notify_bot_if_running(bot.nickname, &Server.set_enabled(&1, new_enabled))
 
       bots = Queries.list_bots()
-      action = if new_enabled, do: gettext("enabled"), else: gettext("disabled")
+      action = if new_enabled, do: dgettext("chat", "enabled"), else: dgettext("chat", "disabled")
 
       {:halt,
        socket
        |> assign(bot_dialog_bots: bots)
        |> system_event(
-         gettext("[BotService] Bot '%{name}' %{action}.", name: name, action: action)
+         dgettext("chat", "[BotService] Bot '%{name}' %{action}.", name: name, action: action)
        )}
     else
       {:halt, socket}
@@ -97,7 +100,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
          bot_dialog_channels: [],
          bot_dialog_commands: []
        )
-       |> system_event(gettext("[BotService] Bot '%{name}' destroyed.", name: name))}
+       |> system_event(dgettext("chat", "[BotService] Bot '%{name}' destroyed.", name: name))}
     else
       {:halt, socket}
     end
@@ -154,7 +157,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         {:halt,
          socket
          |> assign(show_new_bot_dialog: false, bot_dialog_bots: bots)
-         |> system_event(gettext("[BotService] Bot '%{name}' created.", name: name))}
+         |> system_event(dgettext("chat", "[BotService] Bot '%{name}' created.", name: name))}
 
       {:error, changeset} ->
         msg = format_changeset_errors(changeset)
@@ -162,7 +165,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         {:halt,
          error_event(
            socket,
-           gettext("[BotService] Failed to create bot '%{name}': %{message}",
+           dgettext("chat", "[BotService] Failed to create bot '%{name}': %{message}",
              name: name,
              message: msg
            )
@@ -194,7 +197,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
        socket
        |> assign(bot_dialog_channels: channels)
        |> system_event(
-         gettext("[BotService] Bot '%{name}' left %{channel}.",
+         dgettext("chat", "[BotService] Bot '%{name}' left %{channel}.",
            name: bot_name,
            channel: channel
          )
@@ -227,11 +230,16 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
           {:halt,
            socket
            |> assign(bot_dialog_commands: commands, show_add_command_dialog: false)
-           |> system_event(gettext("[BotService] Command '%{trigger}' added.", trigger: trigger))}
+           |> system_event(
+             dgettext("chat", "[BotService] Command '%{trigger}' added.", trigger: trigger)
+           )}
 
         {:error, _} ->
           {:halt,
-           error_event(socket, gettext("Command '%{trigger}' already exists.", trigger: trigger))}
+           error_event(
+             socket,
+             dgettext("chat", "Command '%{trigger}' already exists.", trigger: trigger)
+           )}
       end
     else
       {:halt, socket}
@@ -249,7 +257,9 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       {:halt,
        socket
        |> assign(bot_dialog_commands: commands)
-       |> system_event(gettext("[BotService] Command '%{trigger}' removed.", trigger: trigger))}
+       |> system_event(
+         dgettext("chat", "[BotService] Command '%{trigger}' removed.", trigger: trigger)
+       )}
     else
       {:halt, socket}
     end
@@ -282,7 +292,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     if bot do
       handle_field_update(bot, field, value, socket)
     else
-      {:halt, error_event(socket, gettext("Bot not found."))}
+      {:halt, error_event(socket, dgettext("chat", "Bot not found."))}
     end
   end
 
@@ -325,11 +335,11 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
            socket
            |> assign(bot_dialog_selected: updated_bot)
            |> system_event(
-             gettext("[BotService] %{capability} config updated.", capability: cap_name)
+             dgettext("chat", "[BotService] %{capability} config updated.", capability: cap_name)
            )}
 
         {:error, _} ->
-          {:halt, error_event(socket, gettext("Failed to update config."))}
+          {:halt, error_event(socket, dgettext("chat", "Failed to update config."))}
       end
     else
       {:halt, socket}
@@ -359,14 +369,15 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
          socket
          |> assign(bot_dialog_channels: channels)
          |> system_event(
-           gettext("[BotService] Bot '%{name}' joined %{channel}.",
+           dgettext("chat", "[BotService] Bot '%{name}' joined %{channel}.",
              name: bot_name,
              channel: channel
            )
          )}
 
       {:error, _} ->
-        {:halt, error_event(socket, gettext("Bot already in %{channel}.", channel: channel))}
+        {:halt,
+         error_event(socket, dgettext("chat", "Bot already in %{channel}.", channel: channel))}
     end
   end
 
@@ -425,16 +436,16 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         {:halt,
          socket
          |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
-         |> system_event(gettext("[BotService] Description updated."))}
+         |> system_event(dgettext("chat", "[BotService] Description updated."))}
 
       {:error, _} ->
-        {:halt, error_event(socket, gettext("Failed to update description."))}
+        {:halt, error_event(socket, dgettext("chat", "Failed to update description."))}
     end
   end
 
   defp handle_field_update(bot, "prefix", value, socket) do
     if value == "" do
-      {:halt, error_event(socket, gettext("Prefix cannot be empty."))}
+      {:halt, error_event(socket, dgettext("chat", "Prefix cannot be empty."))}
     else
       case Queries.update_bot(bot, %{command_prefix: value}) do
         {:ok, updated_bot} ->
@@ -443,10 +454,12 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
           {:halt,
            socket
            |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
-           |> system_event(gettext("[BotService] Prefix updated to '%{prefix}'.", prefix: value))}
+           |> system_event(
+             dgettext("chat", "[BotService] Prefix updated to '%{prefix}'.", prefix: value)
+           )}
 
         {:error, _} ->
-          {:halt, error_event(socket, gettext("Failed to update prefix."))}
+          {:halt, error_event(socket, dgettext("chat", "Failed to update prefix."))}
       end
     end
   end
@@ -462,23 +475,23 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
              socket
              |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
              |> system_event(
-               gettext("[BotService] Cooldown updated to %{cooldown}ms.", cooldown: n)
+               dgettext("chat", "[BotService] Cooldown updated to %{cooldown}ms.", cooldown: n)
              )}
 
           {:error, _} ->
-            {:halt, error_event(socket, gettext("Failed to update cooldown."))}
+            {:halt, error_event(socket, dgettext("chat", "Failed to update cooldown."))}
         end
 
       {_, _} ->
-        {:halt, error_event(socket, gettext("Cooldown must be at least 500ms."))}
+        {:halt, error_event(socket, dgettext("chat", "Cooldown must be at least 500ms."))}
 
       :error ->
-        {:halt, error_event(socket, gettext("Cooldown must be a number."))}
+        {:halt, error_event(socket, dgettext("chat", "Cooldown must be a number."))}
     end
   end
 
   defp handle_field_update(_bot, _field, _value, socket) do
-    {:halt, error_event(socket, gettext("Unknown field."))}
+    {:halt, error_event(socket, dgettext("chat", "Unknown field."))}
   end
 
   defp do_toggle_capability(nil, _cap_name, socket), do: socket
@@ -493,19 +506,23 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     case Queries.update_bot(bot, %{capabilities: new_caps}) do
       {:ok, updated_bot} ->
         restart_bot_if_running(updated_bot)
-        action = if currently_enabled, do: gettext("disabled"), else: gettext("enabled")
+
+        action =
+          if currently_enabled,
+            do: dgettext("chat", "disabled"),
+            else: dgettext("chat", "enabled")
 
         socket
         |> assign(bot_dialog_selected: updated_bot)
         |> system_event(
-          gettext("[BotService] Capability '%{capability}' %{action}.",
+          dgettext("chat", "[BotService] Capability '%{capability}' %{action}.",
             capability: cap_name,
             action: action
           )
         )
 
       {:error, _} ->
-        error_event(socket, gettext("Failed to update capability."))
+        error_event(socket, dgettext("chat", "Failed to update capability."))
     end
   end
 
@@ -522,12 +539,14 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         new_enabled = !config.enabled
         Queries.update_channel_config(config, %{enabled: new_enabled})
         channels = Queries.list_channel_configs(bot.id)
-        action = if new_enabled, do: gettext("enabled"), else: gettext("disabled")
+
+        action =
+          if new_enabled, do: dgettext("chat", "enabled"), else: dgettext("chat", "disabled")
 
         socket
         |> assign(bot_dialog_channels: channels)
         |> system_event(
-          gettext("[BotService] %{bot} %{action} in %{channel}.",
+          dgettext("chat", "[BotService] %{bot} %{action} in %{channel}.",
             bot: bot_name,
             action: action,
             channel: channel
@@ -594,7 +613,10 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       end)
     end)
     |> Enum.map(fn {field, errors} ->
-      gettext("%{field}: %{errors}", field: to_string(field), errors: Enum.join(errors, ", "))
+      dgettext("chat", "%{field}: %{errors}",
+        field: to_string(field),
+        errors: Enum.join(errors, ", ")
+      )
     end)
     |> Enum.join("; ")
   end

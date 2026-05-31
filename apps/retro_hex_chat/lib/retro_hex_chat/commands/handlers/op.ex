@@ -11,7 +11,7 @@ defmodule RetroHexChat.Commands.Handlers.Op do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, gettext("Usage: /op <nickname>")}
+  def execute([], _context), do: {:error, dgettext("commands", "Usage: /op <nickname>")}
 
   def execute([nick | _], context) do
     with {:ok, channel} <- require_channel(context),
@@ -24,12 +24,13 @@ defmodule RetroHexChat.Commands.Handlers.Op do
   def help do
     %{
       name: "op",
-      syntax: gettext("/op <nickname>"),
+      syntax: dgettext("commands", "/op <nickname>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Give channel operator status to a user. Shortcut for /mode +o <nickname>.\nRequires: channel operator or owner."
         ),
-      examples: [gettext("/op alice")]
+      examples: [dgettext("commands", "/op alice")]
     }
   end
 
@@ -44,8 +45,8 @@ defmodule RetroHexChat.Commands.Handlers.Op do
 
     %CommandSyntax{
       command: "op",
-      syntax: gettext("/op <nickname>"),
-      description: gettext("Give channel operator status to a user."),
+      syntax: dgettext("commands", "/op <nickname>"),
+      description: dgettext("commands", "Give channel operator status to a user."),
       category: :channel,
       parameters: [
         %Parameter{
@@ -53,15 +54,15 @@ defmodule RetroHexChat.Commands.Handlers.Op do
           required: true,
           type: :nick,
           position: 0,
-          description: gettext("User to give operator status")
+          description: dgettext("commands", "User to give operator status")
         }
       ],
-      examples: [gettext("/op alice")]
+      examples: [dgettext("commands", "/op alice")]
     }
   end
 
   defp require_channel(%{active_channel: nil}),
-    do: {:error, gettext("You are not in any channel")}
+    do: {:error, dgettext("commands", "You are not in any channel")}
 
   defp require_channel(%{active_channel: ch}), do: {:ok, ch}
 
@@ -69,7 +70,7 @@ defmodule RetroHexChat.Commands.Handlers.Op do
     if channel in context.operator_in do
       :ok
     else
-      {:error, gettext("You must be a channel operator to use this command")}
+      {:error, dgettext("commands", "You must be a channel operator to use this command")}
     end
   end
 end

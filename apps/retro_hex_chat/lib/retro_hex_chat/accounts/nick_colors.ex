@@ -15,22 +15,22 @@ defmodule RetroHexChat.Accounts.NickColors do
   @max_entries 50
 
   @irc_color_names %{
-    0 => gettext("White"),
-    1 => gettext("Black"),
-    2 => gettext("Navy"),
-    3 => gettext("Green"),
-    4 => gettext("Red"),
-    5 => gettext("Maroon"),
-    6 => gettext("Purple"),
-    7 => gettext("Orange"),
-    8 => gettext("Yellow"),
-    9 => gettext("Lime"),
-    10 => gettext("Teal"),
-    11 => gettext("Cyan"),
-    12 => gettext("Blue"),
-    13 => gettext("Magenta"),
-    14 => gettext("Grey"),
-    15 => gettext("Silver")
+    0 => dgettext("accounts", "White"),
+    1 => dgettext("accounts", "Black"),
+    2 => dgettext("accounts", "Navy"),
+    3 => dgettext("accounts", "Green"),
+    4 => dgettext("accounts", "Red"),
+    5 => dgettext("accounts", "Maroon"),
+    6 => dgettext("accounts", "Purple"),
+    7 => dgettext("accounts", "Orange"),
+    8 => dgettext("accounts", "Yellow"),
+    9 => dgettext("accounts", "Lime"),
+    10 => dgettext("accounts", "Teal"),
+    11 => dgettext("accounts", "Cyan"),
+    12 => dgettext("accounts", "Blue"),
+    13 => dgettext("accounts", "Magenta"),
+    14 => dgettext("accounts", "Grey"),
+    15 => dgettext("accounts", "Silver")
   }
 
   # ---------------------------------------------------------------------------

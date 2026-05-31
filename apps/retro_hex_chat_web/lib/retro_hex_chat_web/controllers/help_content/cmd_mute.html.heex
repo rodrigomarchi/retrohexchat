@@ -1,40 +1,51 @@
 <p>
-  {gettext("Mute a user in the current channel, preventing them from sending messages. Unlike")}
-  <code>{gettext("/mode +m")}</code> {gettext(
+  {dgettext(
+    "help_commands",
+    "Mute a user in the current channel, preventing them from sending messages. Unlike"
+  )}
+  <code>{dgettext("help_commands", "/mode +m")}</code> {dgettext(
+    "help_commands",
     "which moderates the entire channel, this targets a specific user."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/mute <nickname> [duration]")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/mute <nickname> [duration]")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
-  <code>nickname</code> {gettext("— The user to mute.")}<br />
-  <code>duration</code> {gettext("— Optional duration in seconds. Omit for permanent mute.")}
+  <code>nickname</code> {dgettext("help_commands", "— The user to mute.")}<br />
+  <code>duration</code> {dgettext(
+    "help_commands",
+    "— Optional duration in seconds. Omit for permanent mute."
+  )}
 </p>
 
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "The muted user cannot send messages in the channel but can still read them. If a duration is specified, the mute automatically expires after that time. Channel operators and above can mute users with lower rank."
   )}
 </p>
 
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Requires half-operator (%) status or higher")}</li>
-  <li>{gettext("Cannot mute users with equal or higher rank")}</li>
-  <li>{gettext("The target must be in the channel")}</li>
+  <li>{dgettext("help_commands", "Requires half-operator (%) status or higher")}</li>
+  <li>{dgettext("help_commands", "Cannot mute users with equal or higher rank")}</li>
+  <li>{dgettext("help_commands", "The target must be in the channel")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/mute Spammer /mute Spammer 300")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/mute Spammer /mute Spammer 300")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-unmute">{gettext("/unmute")}</.help_link>
-  · <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
-  · <.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
-  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
+  <.help_link topic="cmd-unmute">{dgettext("help_commands", "/unmute")}</.help_link>
+  · <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
+  · <.help_link topic="cmd-ban">{dgettext("help_commands", "/ban")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_commands", "Channel Permissions")}
+  </.help_link>
 </p>

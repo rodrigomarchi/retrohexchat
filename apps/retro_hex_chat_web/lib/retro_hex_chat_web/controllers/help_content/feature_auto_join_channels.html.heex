@@ -1,64 +1,83 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Channels are automatically remembered for registered users. When you join a channel with"
-  )} <code>{gettext("/join")}</code>{gettext(
+  )} <code>{dgettext("help_features", "/join")}</code>{dgettext(
+    "help_features",
     ", it is added to your auto-join list. When you leave with"
-  )} <code>{gettext("/part")}</code>{gettext(", it is removed.")}
+  )} <code>{dgettext("help_features", "/part")}</code>{dgettext(
+    "help_features",
+    ", it is removed."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "How It Works")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("On /join")}</strong>{gettext(
+    <strong>{dgettext("help_features", "On /join")}</strong>{dgettext(
+      "help_features",
       ": The channel is automatically added to your auto-join list (up to 20 channels)."
     )}
   </li>
   <li>
-    <strong>{gettext("On /part")}</strong>{gettext(
+    <strong>{dgettext("help_features", "On /part")}</strong>{dgettext(
+      "help_features",
       ": The channel is automatically removed from your auto-join list."
     )}
   </li>
   <li>
-    <strong>{gettext("On connect")}</strong>{gettext(
+    <strong>{dgettext("help_features", "On connect")}</strong>{dgettext(
+      "help_features",
       ": All channels in your auto-join list are joined automatically."
     )}
   </li>
   <li>
-    <strong>{gettext("Channel keys")}</strong>{gettext(
+    <strong>{dgettext("help_features", "Channel keys")}</strong>{dgettext(
+      "help_features",
       ": If the channel requires a key (+k mode), the key is stored with the auto-join entry."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_rules}>{gettext("Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_features", "Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Maximum 20 channels in the auto-join list.")}</li>
+  <li>{dgettext("help_features", "Maximum 20 channels in the auto-join list.")}</li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_features",
       "If the list is full, joining a new channel still works but a system message explains it was not added to auto-join."
     )}
   </li>
   <li>
-    <code>#lobby</code> {gettext(
+    <code>#lobby</code> {dgettext(
+      "help_features",
       "is always joined by default and is NOT added to the auto-join list."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_checkmark}>{gettext("Requirements")}</.help_h4>
+<.help_h4 icon={:icon_checkmark}>{dgettext("help_features", "Requirements")}</.help_h4>
 <ul>
   <li>
-    {gettext("You must be registered and identified with NickServ for auto-join persistence.")}
+    {dgettext(
+      "help_features",
+      "You must be registered and identified with NickServ for auto-join persistence."
+    )}
   </li>
-  <li>{gettext("Guest users can join channels but they are not remembered across sessions.")}</li>
+  <li>
+    {dgettext(
+      "help_features",
+      "Guest users can join channels but they are not remembered across sessions."
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_wrench}>{gettext("Manual Management")}</.help_h4>
+<.help_h4 icon={:icon_wrench}>{dgettext("help_features", "Manual Management")}</.help_h4>
 <p>
-  {gettext("You can also manage your auto-join list manually with the")}
-  <code>{gettext("/autojoin")}</code>
-  {gettext("command for finer control.")}
+  {dgettext("help_features", "You can also manage your auto-join list manually with the")}
+  <code>{dgettext("help_features", "/autojoin")}</code>
+  {dgettext("help_features", "command for finer control.")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-autojoin">{gettext("/autojoin")}</.help_link>
-  · <.help_link topic="cmd-join">{gettext("/join")}</.help_link>
-  · <.help_link topic="cmd-part">{gettext("/part")}</.help_link>
-  · <.help_link topic="nickserv">{gettext("NickServ")}</.help_link>
+  <.help_link topic="cmd-autojoin">{dgettext("help_features", "/autojoin")}</.help_link>
+  · <.help_link topic="cmd-join">{dgettext("help_features", "/join")}</.help_link>
+  · <.help_link topic="cmd-part">{dgettext("help_features", "/part")}</.help_link>
+  · <.help_link topic="nickserv">{dgettext("help_features", "NickServ")}</.help_link>
 </p>

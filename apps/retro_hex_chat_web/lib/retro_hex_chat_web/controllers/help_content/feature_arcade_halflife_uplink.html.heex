@@ -1,92 +1,132 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "The official Half-Life demo (1999) — 3 unique levels not found in the full game, set in Black Mesa's underground labs. Real-time storytelling with no cutscenes, no chapter breaks — just you, Gordon Freeman, and a crowbar."
   )}
 </p>
 <.diagram_arcade_halflife class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "About")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Released February 12, 1999 as a standalone demo for Valve's Half-Life (1998). Unlike most game demos, Uplink features levels and a scenario that do not appear in the full game — the chapters were cut during Half-Life's development and heavily revised for the demo. Fight through Black Mesa's underground labs in the aftermath of the resonance cascade, encountering headcrabs, zombies, and military soldiers."
   )}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Originally distributed as a free standalone disc in retail outlets. In November 2023, Uplink was bundled with Half-Life as part of the 25th Anniversary Update, making it officially available on Steam for the first time. This runs on Xash3D-FWGS (GoldSource reimplementation) compiled to WebAssembly."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("W / ↑")}</strong> {gettext("— Move forward")}</li>
-  <li><strong>{gettext("S / ↓")}</strong> {gettext("— Move backward")}</li>
-  <li><strong>A</strong> {gettext("— Strafe left")}</li>
-  <li><strong>D</strong> {gettext("— Strafe right")}</li>
-  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim / look")}</li>
-  <li><strong>{gettext("Left Click")}</strong> {gettext("— Primary fire")}</li>
-  <li><strong>{gettext("Right Click")}</strong> {gettext("— Secondary / alt-fire")}</li>
-  <li><strong>E</strong> {gettext("— Interact")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Jump")}</li>
-  <li><strong>{gettext("Shift")}</strong> {gettext("— Crouch")}</li>
-  <li><strong>R</strong> {gettext("— Reload")}</li>
-  <li><strong>1–5</strong> {gettext("— Weapon category")}</li>
-  <li><strong>Q</strong> {gettext("— Last weapon")}</li>
-  <li><strong>F</strong> {gettext("— Flashlight")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Menu")}</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Secondary fire is key")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "W / ↑")}</strong> {dgettext("help_arcade", "— Move forward")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "S / ↓")}</strong> {dgettext(
+      "help_arcade",
+      "— Move backward"
+    )}
+  </li>
+  <li><strong>A</strong> {dgettext("help_arcade", "— Strafe left")}</li>
+  <li><strong>D</strong> {dgettext("help_arcade", "— Strafe right")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Mouse")}</strong> {dgettext("help_arcade", "— Aim / look")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Primary fire"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Right Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Secondary / alt-fire"
+    )}
+  </li>
+  <li><strong>E</strong> {dgettext("help_arcade", "— Interact")}</li>
+  <li><strong>{dgettext("help_arcade", "Space")}</strong> {dgettext("help_arcade", "— Jump")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Shift")}</strong> {dgettext("help_arcade", "— Crouch")}
+  </li>
+  <li><strong>R</strong> {dgettext("help_arcade", "— Reload")}</li>
+  <li><strong>1–5</strong> {dgettext("help_arcade", "— Weapon category")}</li>
+  <li><strong>Q</strong> {dgettext("help_arcade", "— Last weapon")}</li>
+  <li><strong>F</strong> {dgettext("help_arcade", "— Flashlight")}</li>
+  <li><strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Menu")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_arcade", "Secondary fire is key")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Weapons have alt-fire modes. The shotgun's double-barrel blast is devastating up close."
     )}
   </li>
   <li>
-    <strong>{gettext("Use the flashlight")}</strong> {gettext(
+    <strong>{dgettext("help_arcade", "Use the flashlight")}</strong> {dgettext(
+      "help_arcade",
       "— Dark areas hide enemies and items. Toggle with F."
     )}
   </li>
   <li>
-    <strong>{gettext("Crowbar headcrabs")}</strong>
-    {gettext("— Headcrabs are weak to melee. Save bullets for tougher enemies.")}
+    <strong>{dgettext("help_arcade", "Crowbar headcrabs")}</strong>
+    {dgettext("help_arcade", "— Headcrabs are weak to melee. Save bullets for tougher enemies.")}
   </li>
   <li>
-    <strong>{gettext("Crouch-jump for height")}</strong>
-    {gettext("— Hold crouch while jumping to reach higher ledges. Essential for navigation.")}
+    <strong>{dgettext("help_arcade", "Crouch-jump for height")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Hold crouch while jumping to reach higher ledges. Essential for navigation."
+    )}
   </li>
   <li>
-    <strong>{gettext("Listen to scientists")}</strong>
-    {gettext("— NPCs give hints about what's ahead. Pay attention to their dialogue.")}
+    <strong>{dgettext("help_arcade", "Listen to scientists")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— NPCs give hints about what's ahead. Pay attention to their dialogue."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Half-Life: Uplink contains 3 levels that don't appear in the full game — they were designed exclusively for the demo from cut chapters."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Half-Life was almost cancelled when Valve showed it to Sierra in 1997 — the publisher thought it wasn't fun enough. Valve scrapped 12 months of work and started over."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "In November 2023, Uplink was bundled with Half-Life as part of the 25th Anniversary Update, making it officially available on Steam for the first time after 24 years."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-halflife">{gettext("Half-Life (Arcade)")}</.help_link>
-  · <.help_link topic="feature-arcade-wolfenstein-3d">{gettext("Wolfenstein 3D")}</.help_link>
+  <.help_link topic="feature-arcade-halflife">
+    {dgettext("help_arcade", "Half-Life (Arcade)")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-wolfenstein-3d">
+    {dgettext("help_arcade", "Wolfenstein 3D")}
+  </.help_link>
   ·
   <.help_link topic="feature-arcade-doom-shareware">
-    {gettext("DOOM: Knee-Deep in the Dead")}
+    {dgettext("help_arcade", "DOOM: Knee-Deep in the Dead")}
   </.help_link>
   ·
   <.help_link topic="feature-arcade-quake-shareware">
-    {gettext("Quake: Dimension of the Doomed")}
+    {dgettext("help_arcade", "Quake: Dimension of the Doomed")}
   </.help_link>
 </p>

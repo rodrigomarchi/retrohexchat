@@ -1,17 +1,22 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "When you paste text containing multiple lines into the chat input, a confirmation dialog appears before sending."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_options}>{gettext("Dialog Options")}</.help_h4>
+<.help_h4 icon={:icon_dialog_options}>{dgettext("help_features", "Dialog Options")}</.help_h4>
 <p>
-  <strong>{gettext("Send All")}</strong>
-  {gettext("— Sends each line as a separate message.")}<br /><strong>{gettext("Cancel")}</strong>
-  {gettext("— Cancels the paste operation.")}
+  <strong>{dgettext("help_features", "Send All")}</strong>
+  {dgettext("help_features", "— Sends each line as a separate message.")}<br />
+  <strong>
+    {dgettext("help_features", "Cancel")}
+  </strong>
+  {dgettext("help_features", "— Cancels the paste operation.")}
 </p>
-<.help_h4 icon={:icon_dialog_flood}>{gettext("Flood Warning")}</.help_h4>
+<.help_h4 icon={:icon_dialog_flood}>{dgettext("help_features", "Flood Warning")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Pasting more than 50 lines shows an additional flood warning. This prevents accidentally flooding a channel."
   )}
 </p>

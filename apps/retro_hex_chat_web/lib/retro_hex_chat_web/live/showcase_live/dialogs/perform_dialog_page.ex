@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.PerformDialogPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: gettext("Perform Dialog"),
+       page_title: dgettext("showcase", "Perform Dialog"),
        active_page: :perform_dialog,
        perform_selected: nil,
        autojoin_selected: nil,

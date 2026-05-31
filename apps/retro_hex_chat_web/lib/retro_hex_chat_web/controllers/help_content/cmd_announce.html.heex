@@ -1,27 +1,42 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Send an urgent broadcast message to every connected user. This is for critical server-wide announcements that everyone must see."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/announce <message>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>message</code> {gettext("— The announcement text to broadcast to all users.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/announce <message>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
-  {gettext(
+  <code>message</code> {dgettext(
+    "help_commands",
+    "— The announcement text to broadcast to all users."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
     "The announcement appears in each user's currently active window with distinctive bold styling. Unlike regular messages, announcements bypass all ignore filters — every connected user will see it regardless of their ignore settings. Use this for important server-wide notices like scheduled maintenance or rule changes."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Server administrator only — regular users cannot send announcements")}</li>
-  <li>{gettext("Cannot be filtered or ignored by recipients")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "Server administrator only — regular users cannot send announcements"
+    )}
+  </li>
+  <li>{dgettext("help_commands", "Cannot be filtered or ignored by recipients")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/announce Server will restart at midnight UTC /announce Please read the updated rules in #rules")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/announce Server will restart at midnight UTC /announce Please read the updated rules in #rules")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-wallops">{gettext("/wallops")}</.help_link>
-  · <.help_link topic="feature-special-messages">{gettext("Special Messages")}</.help_link>
+  <.help_link topic="cmd-wallops">{dgettext("help_commands", "/wallops")}</.help_link>
+  ·
+  <.help_link topic="feature-special-messages">
+    {dgettext("help_commands", "Special Messages")}
+  </.help_link>
 </p>

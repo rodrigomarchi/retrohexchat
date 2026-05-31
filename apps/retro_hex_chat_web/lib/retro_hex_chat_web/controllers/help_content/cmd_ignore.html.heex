@@ -1,43 +1,46 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Hide messages from a specific user. The ignored user is not notified — their messages are silently hidden from your view."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/ignore /ignore <nickname> /ignore <nickname> <type> /ignore <nickname> <type> <duration>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/ignore /ignore <nickname> /ignore <nickname> <type> /ignore <nickname> <type> <duration>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>nickname</code>
-  {gettext("— The user to ignore.")}<br /><code>type</code>
-  {gettext("— What to block:")} <code>all</code>
-  {gettext("(default),")} <code>messages</code>
-  {gettext("(channel only),")} <code>pms</code>
-  {gettext("(private messages only),")} <code>actions</code>
-  {gettext("(/me messages only),")} <code>notices</code>
-  {gettext("(notice messages only),")} <code>invites</code>
-  {gettext("(channel invites only).")}<br /><code>duration</code>
-  {gettext("— How long to ignore: e.g.")} <code>5m</code>
-  {gettext("(5 minutes),")} <code>2h</code>
-  {gettext("(2 hours),")} <code>1d</code>
-  {gettext("(1 day). No duration means permanent until you")} <code>{gettext("/unignore")}</code>.
+  {dgettext("help_commands", "— The user to ignore.")}<br /><code>type</code>
+  {dgettext("help_commands", "— What to block:")} <code>all</code>
+  {dgettext("help_commands", "(default),")} <code>messages</code>
+  {dgettext("help_commands", "(channel only),")} <code>pms</code>
+  {dgettext("help_commands", "(private messages only),")} <code>actions</code>
+  {dgettext("help_commands", "(/me messages only),")} <code>notices</code>
+  {dgettext("help_commands", "(notice messages only),")} <code>invites</code>
+  {dgettext("help_commands", "(channel invites only).")}<br /><code>duration</code>
+  {dgettext("help_commands", "— How long to ignore: e.g.")} <code>5m</code>
+  {dgettext("help_commands", "(5 minutes),")} <code>2h</code>
+  {dgettext("help_commands", "(2 hours),")} <code>1d</code>
+  {dgettext("help_commands", "(1 day). No duration means permanent until you")} <code>{dgettext("help_commands", "/unignore")}</code>.
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext("Running")} <code>{gettext("/ignore")}</code>
-  {gettext(
+  {dgettext("help_commands", "Running")} <code>{dgettext("help_commands", "/ignore")}</code>
+  {dgettext(
+    "help_commands",
     "with no arguments shows your current ignore list. When you ignore someone, their specified content types are silently hidden from your view. They receive no notification that they're being ignored. Timed ignores automatically expire after the specified duration."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Cannot ignore yourself")}</li>
-  <li>{gettext("Duration must be a positive number")}</li>
-  <li>{gettext("Ignore list persists for registered users")}</li>
+  <li>{dgettext("help_commands", "Cannot ignore yourself")}</li>
+  <li>{dgettext("help_commands", "Duration must be a positive number")}</li>
+  <li>{dgettext("help_commands", "Ignore list persists for registered users")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/ignore /ignore SpamBot /ignore AnnoyingGuy pms /ignore InfoBot notices /ignore LoudPerson all 5m /ignore Troll messages 2h")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/ignore /ignore SpamBot /ignore AnnoyingGuy pms /ignore InfoBot notices /ignore LoudPerson all 5m /ignore Troll messages 2h")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-unignore">{gettext("/unignore")}</.help_link>
-  · <.help_link topic="feature-ignore-list">{gettext("Ignore List")}</.help_link>
+  <.help_link topic="cmd-unignore">{dgettext("help_commands", "/unignore")}</.help_link>
+  ·
+  <.help_link topic="feature-ignore-list">{dgettext("help_commands", "Ignore List")}</.help_link>
 </p>

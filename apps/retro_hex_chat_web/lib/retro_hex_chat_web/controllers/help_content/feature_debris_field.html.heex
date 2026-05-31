@@ -1,69 +1,101 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Star Duel variant with 8 floating asteroids that block missiles and destroy ships on contact. Use the debris as cover — or watch it destroy you. The asteroid layout changes every match, forcing you to adapt your strategy on the fly."
   )}
 </p>
 <.diagram_game_space class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("Arrow Up / W")}</strong> {gettext("— Thrust forward")}</li>
-  <li><strong>{gettext("Arrow Left / A")}</strong> {gettext("— Rotate left")}</li>
-  <li><strong>{gettext("Arrow Right / D")}</strong> {gettext("— Rotate right")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Fire missile")}</li>
   <li>
-    <strong>{gettext("Arrow Down / S")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Arrow Up / W")}</strong> {dgettext(
+      "help_games",
+      "— Thrust forward"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Left / A")}</strong> {dgettext(
+      "help_games",
+      "— Rotate left"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Right / D")}</strong> {dgettext(
+      "help_games",
+      "— Rotate right"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Space")}</strong> {dgettext("help_games", "— Fire missile")}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Down / S")}</strong> {dgettext(
+      "help_games",
       "— Hyperspace warp (random teleport, 20% death chance)"
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_rules}>{gettext("What's Different")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "What's Different")}</.help_h4>
 <ul>
-  <li>{gettext("8 asteroids of varying sizes are scattered across the arena")}</li>
+  <li>{dgettext("help_games", "8 asteroids of varying sizes are scattered across the arena")}</li>
   <li>
-    {gettext("Colliding with an asteroid is instant death (scores a point for your opponent)")}
+    {dgettext(
+      "help_games",
+      "Colliding with an asteroid is instant death (scores a point for your opponent)"
+    )}
   </li>
-  <li>{gettext("Missiles are destroyed when they hit asteroids — use them as cover")}</li>
   <li>
-    {gettext("Asteroids are static — same layout for both players, randomly generated per match")}
+    {dgettext("help_games", "Missiles are destroyed when they hit asteroids — use them as cover")}
   </li>
-  <li>{gettext("Warp is extra risky — you might teleport onto an asteroid")}</li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_games",
+      "Asteroids are static — same layout for both players, randomly generated per match"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Warp is extra risky — you might teleport onto an asteroid")}</li>
+  <li>
+    {dgettext(
+      "help_games",
       "All other rules are identical to Star Duel (first to 7, wraparound, hyperspace warp)"
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Use asteroids as shields")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Use asteroids as shields")}</strong>
+    {dgettext(
+      "help_games",
       "— Park behind a large asteroid and force your opponent to come to you. Patience wins in the debris field."
     )}
   </li>
   <li>
-    <strong>{gettext("Mind your warp")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Mind your warp")}</strong>
+    {dgettext(
+      "help_games",
       "— Hyperspace has a chance of dropping you on an asteroid. The more debris, the more dangerous warping becomes."
     )}
   </li>
   <li>
-    <strong>{gettext("Herd your opponent")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Herd your opponent")}</strong>
+    {dgettext(
+      "help_games",
       "— Use missiles to force your opponent toward asteroid clusters where they have less room to maneuver."
     )}
   </li>
   <li>
-    <strong>{gettext("Learn the layout fast")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Learn the layout fast")}</strong>
+    {dgettext(
+      "help_games",
       "— Spend the first few seconds memorizing asteroid positions. The layout stays fixed for the entire match."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-star-duel">{gettext("Star Duel")}</.help_link>
-  · <.help_link topic="feature-gravity-well">{gettext("Gravity Well")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-star-duel">{dgettext("help_games", "Star Duel")}</.help_link>
+  · <.help_link topic="feature-gravity-well">{dgettext("help_games", "Gravity Well")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

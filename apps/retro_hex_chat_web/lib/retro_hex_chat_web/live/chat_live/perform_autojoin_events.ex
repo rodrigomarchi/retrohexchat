@@ -61,7 +61,9 @@ defmodule RetroHexChatWeb.ChatLive.PerformAutojoinEvents do
          stream_insert(
            socket,
            :chat_messages,
-           error_message(gettext("Failed to add perform command: %{reason}", reason: reason))
+           error_message(
+             dgettext("chat", "Failed to add perform command: %{reason}", reason: reason)
+           )
          )}
     end
   end
@@ -207,7 +209,9 @@ defmodule RetroHexChatWeb.ChatLive.PerformAutojoinEvents do
          stream_insert(
            socket,
            :chat_messages,
-           error_message(gettext("Failed to add auto-join channel: %{reason}", reason: reason))
+           error_message(
+             dgettext("chat", "Failed to add auto-join channel: %{reason}", reason: reason)
+           )
          )}
     end
   end

@@ -26,12 +26,12 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
     entries = PerformList.entries(session.perform_list)
 
     if entries == [] do
-      system_event(socket, gettext("Your perform list is empty"))
+      system_event(socket, dgettext("chat", "Your perform list is empty"))
     else
       Enum.with_index(entries)
       |> Enum.reduce(socket, fn {entry, idx}, acc ->
         masked = PerformList.mask_command(entry.command)
-        system_event(acc, gettext("  %{index}: %{command}", index: idx, command: masked))
+        system_event(acc, dgettext("chat", "  %{index}: %{command}", index: idx, command: masked))
       end)
     end
   end
@@ -47,19 +47,19 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
         socket
         |> assign(session: new_session)
         |> maybe_persist_perform_list(new_session)
-        |> system_event(gettext("* Added to perform list: %{command}", command: masked))
+        |> system_event(dgettext("chat", "* Added to perform list: %{command}", command: masked))
 
       {:error, :invalid_command} ->
-        error_event(socket, gettext("Invalid command. Commands must start with /"))
+        error_event(socket, dgettext("chat", "Invalid command. Commands must start with /"))
 
       {:error, :disallowed_command} ->
-        error_event(socket, gettext("That command cannot be added to the perform list"))
+        error_event(socket, dgettext("chat", "That command cannot be added to the perform list"))
 
       {:error, :command_too_long} ->
-        error_event(socket, gettext("Command too long (max 500 characters)"))
+        error_event(socket, dgettext("chat", "Command too long (max 500 characters)"))
 
       {:error, :list_full} ->
-        error_event(socket, gettext("Perform list is full (max 50 commands)"))
+        error_event(socket, dgettext("chat", "Perform list is full (max 50 commands)"))
     end
   end
 
@@ -73,10 +73,15 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
         socket
         |> assign(session: new_session)
         |> maybe_persist_perform_list(new_session)
-        |> system_event(gettext("* Removed command at position %{position}", position: position))
+        |> system_event(
+          dgettext("chat", "* Removed command at position %{position}", position: position)
+        )
 
       {:error, :not_found} ->
-        error_event(socket, gettext("No command at position %{position}", position: position))
+        error_event(
+          socket,
+          dgettext("chat", "No command at position %{position}", position: position)
+        )
     end
   end
 
@@ -91,14 +96,14 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
         |> assign(session: new_session)
         |> maybe_persist_perform_list(new_session)
         |> system_event(
-          gettext("* Moved command from position %{from} to %{to}", from: from, to: to)
+          dgettext("chat", "* Moved command from position %{from} to %{to}", from: from, to: to)
         )
 
       {:error, :same_position} ->
-        error_event(socket, gettext("Source and destination are the same"))
+        error_event(socket, dgettext("chat", "Source and destination are the same"))
 
       {:error, :invalid_position} ->
-        error_event(socket, gettext("Invalid position"))
+        error_event(socket, dgettext("chat", "Invalid position"))
     end
   end
 
@@ -110,6 +115,6 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
     socket
     |> assign(session: new_session)
     |> maybe_persist_perform_list(new_session)
-    |> system_event(gettext("* Perform list cleared"))
+    |> system_event(dgettext("chat", "* Perform list cleared"))
   end
 end

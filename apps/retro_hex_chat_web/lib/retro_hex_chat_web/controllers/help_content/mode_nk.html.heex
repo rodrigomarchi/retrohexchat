@@ -1,19 +1,23 @@
 <p>
-  {gettext("Prevents users from sending")}
-  <.help_link topic="cmd-knock">{gettext("/knock")}</.help_link>
-  {gettext("requests to the channel.")}
+  {dgettext("help_channels", "Prevents users from sending")}
+  <.help_link topic="cmd-knock">{dgettext("help_channels", "/knock")}</.help_link>
+  {dgettext("help_channels", "requests to the channel.")}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
-<pre>{gettext("/mode +K — Enable no-knock mode /mode -K — Disable no-knock mode")}</pre>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Details")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
+<pre>{dgettext("help_channels", "/mode +K — Enable no-knock mode /mode -K — Disable no-knock mode")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_channels", "Details")}</.help_h4>
 <p>
-  {gettext("When")} <code>{gettext("+K")}</code> {gettext("is set, any")}
-  <code>{gettext("/knock")}</code> {gettext(
+  {dgettext("help_channels", "When")}
+  <code>{dgettext("help_channels", "+K")}</code> {dgettext("help_channels", "is set, any")}
+  <code>{dgettext("help_channels", "/knock")}</code> {dgettext(
+    "help_channels",
     "attempt will be silently rejected. This is useful for invite-only channels that do not want to receive join requests."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-knock">{gettext("/knock")}</.help_link>, <.help_link topic="mode-i">{gettext("+i Invite Only")}</.help_link>,
-  <.help_link topic="channel-modes-overview">{gettext("Channel Modes Overview")}</.help_link>
+  <.help_link topic="cmd-knock">{dgettext("help_channels", "/knock")}</.help_link>, <.help_link topic="mode-i">{dgettext("help_channels", "+i Invite Only")}</.help_link>,
+  <.help_link topic="channel-modes-overview">
+    {dgettext("help_channels", "Channel Modes Overview")}
+  </.help_link>
 </p>

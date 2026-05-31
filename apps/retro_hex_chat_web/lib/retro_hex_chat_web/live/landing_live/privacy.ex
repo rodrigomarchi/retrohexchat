@@ -14,9 +14,11 @@ defmodule RetroHexChatWeb.LandingLive.Privacy do
     {:ok,
      assign(socket,
        active_page: :privacy,
-       page_title: gettext("Privacy Comparison — Retro Hex Chat vs Discord, Slack & Telegram"),
+       page_title:
+         dgettext("landing", "Privacy Comparison — Retro Hex Chat vs Discord, Slack & Telegram"),
        page_description:
-         gettext(
+         dgettext(
+           "landing",
            "Side-by-side privacy comparison: data ownership, call routing, message access, AI training, and source code transparency."
          )
      )}

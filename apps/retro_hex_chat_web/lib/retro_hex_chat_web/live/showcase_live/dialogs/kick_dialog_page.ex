@@ -16,22 +16,23 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.KickDialogPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Kick Dialog"), active_page: "kick-dialog")}
+    {:ok,
+     assign(socket, page_title: dgettext("showcase", "Kick Dialog"), active_page: "kick-dialog")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Kick Dialog")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Kick Dialog")}</h2>
 
       <.showcase_card
-        title={gettext("With Kick Info")}
+        title={dgettext("showcase", "With Kick Info")}
         description="Notification shown when the user is kicked from a channel."
       >
         <.button variant="outline" phx-click={show_modal("kick-with-info")}>
           <:icon><Icons.icon_dialog_kick class="w-4 h-4" /></:icon>
-          {gettext("Show Kick Dialog")}
+          {dgettext("showcase", "Show Kick Dialog")}
         </.button>
         <.kick_dialog
           id="kick-with-info"
@@ -46,12 +47,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.KickDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Without Kick Info")}
+        title={dgettext("showcase", "Without Kick Info")}
         description="Fallback message when no kick details are available."
       >
         <.button variant="outline" phx-click={show_modal("kick-no-info")}>
           <:icon><Icons.icon_dialog_kick class="w-4 h-4" /></:icon>
-          {gettext("Show (no details)")}
+          {dgettext("showcase", "Show (no details)")}
         </.button>
         <.kick_dialog id="kick-no-info" />
         <.code_example>

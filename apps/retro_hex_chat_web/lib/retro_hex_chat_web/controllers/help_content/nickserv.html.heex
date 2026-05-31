@@ -1,52 +1,67 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "NickServ is the nickname registration service. It protects your nickname with a password so nobody else can use it."
   )}
 </p>
-<.help_h4 icon={:icon_lock}>{gettext("How Registration Works")}</.help_h4>
+<.help_h4 icon={:icon_lock}>{dgettext("help_channels", "How Registration Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "Registration happens automatically on the connect screen. When you first connect with a new nickname, you'll be prompted to choose a password. On future visits, you'll enter that password to log in."
   )}
 </p>
 <p>
-  {gettext("You can also manage your registration from inside the chat using the")}
-  <code>{gettext("/ns")}</code> {gettext("command.")}
+  {dgettext(
+    "help_channels",
+    "You can also manage your registration from inside the chat using the"
+  )}
+  <code>{dgettext("help_channels", "/ns")}</code> {dgettext("help_channels", "command.")}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Commands")}</.help_h4>
-<pre>{gettext("/ns register <password> — Register your current nickname (if not already registered) /ns identify <password> — Identify (log in) for this session /ns info [nickname] — Look up registration info /ns ghost <nick> <password> — Disconnect a ghost session /ns drop <password> — Permanently unregister your nickname")}</pre>
-<.help_h4 icon={:icon_question}>{gettext("Why Register?")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Commands")}</.help_h4>
+<pre>{dgettext("help_channels", "/ns register <password> — Register your current nickname (if not already registered) /ns identify <password> — Identify (log in) for this session /ns info [nickname] — Look up registration info /ns ghost <nick> <password> — Disconnect a ghost session /ns drop <password> — Permanently unregister your nickname")}</pre>
+<.help_h4 icon={:icon_question}>{dgettext("help_channels", "Why Register?")}</.help_h4>
 <ul>
-  <li>{gettext("Protect your nickname — nobody else can use it")}</li>
+  <li>{dgettext("help_channels", "Protect your nickname — nobody else can use it")}</li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_channels",
       "Persist your settings (notify list, contacts, highlight words, nick colors) across sessions"
     )}
   </li>
-  <li>{gettext("Access channels that require registration (mode +R)")}</li>
+  <li>{dgettext("help_channels", "Access channels that require registration (mode +R)")}</li>
 </ul>
-<.help_h4 icon={:icon_warning}>{gettext("Important Notes")}</.help_h4>
+<.help_h4 icon={:icon_warning}>{dgettext("help_channels", "Important Notes")}</.help_h4>
 <ul>
   <li>
-    {gettext("Nicknames are")}
-    <strong>{gettext("case sensitive")}</strong> {gettext(
+    {dgettext("help_channels", "Nicknames are")}
+    <strong>{dgettext("help_channels", "case sensitive")}</strong> {dgettext(
+      "help_channels",
       "— \"Alice\" and \"alice\" are different"
     )}
   </li>
   <li>
-    {gettext("Nicknames expire after")} <strong>{gettext("7 days")}</strong>
-    {gettext("of inactivity — connect regularly to keep yours (see")} <.help_link topic="feature-nick-expiry">{gettext("Nick Expiration")}</.help_link>)
+    {dgettext("help_channels", "Nicknames expire after")}
+    <strong>{dgettext("help_channels", "7 days")}</strong>
+    {dgettext("help_channels", "of inactivity — connect regularly to keep yours (see")} <.help_link topic="feature-nick-expiry">{dgettext("help_channels", "Nick Expiration")}</.help_link>)
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_channels",
       "If you change your nick in chat to a registered name you don't own, you have 60 seconds to identify before being force-renamed"
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ns">{gettext("/ns Command")}</.help_link>
-  · <.help_link topic="connecting">{gettext("Connecting")}</.help_link>
-  · <.help_link topic="connect-authentication">{gettext("Connect Authentication")}</.help_link>
-  · <.help_link topic="feature-nick-expiry">{gettext("Nick Expiration")}</.help_link>
+  <.help_link topic="cmd-ns">{dgettext("help_channels", "/ns Command")}</.help_link>
+  · <.help_link topic="connecting">{dgettext("help_channels", "Connecting")}</.help_link>
+  ·
+  <.help_link topic="connect-authentication">
+    {dgettext("help_channels", "Connect Authentication")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-nick-expiry">
+    {dgettext("help_channels", "Nick Expiration")}
+  </.help_link>
 </p>

@@ -18,7 +18,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeHalflife do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label={gettext("Half-Life arcade logo: orange lambda symbol on dark background")}
+      aria-label={
+        dgettext("diagrams", "Half-Life arcade logo: orange lambda symbol on dark background")
+      }
     >
       {win98_chrome("Half-Life - Arcade")}
       <%!-- Background --%>
@@ -48,7 +50,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeHalflife do
         font-family="'Courier New',monospace"
         font-weight="bold"
       >
-        {gettext("HALF-LIFE")}
+        {dgettext("diagrams", "HALF-LIFE")}
       </text>
       <%!-- Subtitle --%>
       <text
@@ -59,7 +61,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeHalflife do
         font-size="11"
         font-family="'Courier New',monospace"
       >
-        {gettext("Xash3D-FWGS WebAssembly")}
+        {dgettext("diagrams", "Xash3D-FWGS WebAssembly")}
       </text>
       <%!-- Uplink badge --%>
       <rect
@@ -81,7 +83,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeHalflife do
         font-family="'Courier New',monospace"
         opacity="0.7"
       >
-        {gettext("UPLINK DEMO")}
+        {dgettext("diagrams", "UPLINK DEMO")}
       </text>
     </svg>
     """

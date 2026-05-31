@@ -12,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, gettext("Usage: /knock #channel [message]")}
+    {:error, dgettext("commands", "Usage: /knock #channel [message]")}
   end
 
   def execute([channel_name | rest], _context) do
@@ -20,7 +20,7 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
       message = if rest == [], do: nil, else: Enum.join(rest, " ")
       {:ok, :ui_action, :knock_channel, %{channel: channel_name, message: message}}
     else
-      {:error, gettext("Usage: /knock #channel [message]")}
+      {:error, dgettext("commands", "Usage: /knock #channel [message]")}
     end
   end
 
@@ -34,14 +34,15 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
   def help do
     %{
       name: "knock",
-      syntax: gettext("/knock #channel [message]"),
+      syntax: dgettext("commands", "/knock #channel [message]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\nChannel name must start with #."
         ),
       examples: [
-        gettext("/knock #private"),
-        gettext("/knock #private Hey, can I join?")
+        dgettext("commands", "/knock #private"),
+        dgettext("commands", "/knock #private Hey, can I join?")
       ]
     }
   end
@@ -57,9 +58,10 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
 
     %CommandSyntax{
       command: "knock",
-      syntax: gettext("/knock #channel [message]"),
+      syntax: dgettext("commands", "/knock #channel [message]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\nChannel name must start with #."
         ),
       category: :channel,
@@ -69,19 +71,19 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
           required: true,
           type: :channel,
           position: 0,
-          description: gettext("Channel to request access to")
+          description: dgettext("commands", "Channel to request access to")
         },
         %Parameter{
           name: "message",
           required: false,
           type: :text,
           position: 1,
-          description: gettext("Message for the channel operators")
+          description: dgettext("commands", "Message for the channel operators")
         }
       ],
       examples: [
-        gettext("/knock #private"),
-        gettext("/knock #private Hey, can I join?")
+        dgettext("commands", "/knock #private"),
+        dgettext("commands", "/knock #private Hey, can I join?")
       ]
     }
   end

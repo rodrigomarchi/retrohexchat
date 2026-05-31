@@ -1,42 +1,52 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Automatically run a command when someone joins a channel, leaves, or changes their nickname. Useful for auto-greeting new users or reacting to events."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/autorespond /autorespond list /autorespond add <trigger> [#channel] <command> /autorespond remove <position>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/autorespond /autorespond list /autorespond add <trigger> [#channel] <command> /autorespond remove <position>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>trigger</code>
-  {gettext("— Event type:")} <code>on_join</code>
-  {gettext("(someone joins),")} <code>on_part</code>
-  {gettext("(someone leaves), or")} <code>on_nick_change</code>
-  {gettext("(someone renames).")}<br /><code>#channel</code>
-  {gettext("— Optional channel filter. Omit to match all channels.")}<br /><code>command</code>
-  {gettext("— The slash command to execute when the event fires. Use")}
-  <code>{gettext("$nick")}</code>
-  {gettext("for the triggering user's name and")} <code>{gettext("$chan")}</code>
-  {gettext("for the channel name.")}<br /><code>position</code>
-  {gettext("— Rule number shown in")} <code>{gettext("/autorespond list")}</code>.
+  {dgettext("help_commands", "— Event type:")} <code>on_join</code>
+  {dgettext("help_commands", "(someone joins),")} <code>on_part</code>
+  {dgettext("help_commands", "(someone leaves), or")} <code>on_nick_change</code>
+  {dgettext("help_commands", "(someone renames).")}<br /><code>#channel</code>
+  {dgettext("help_commands", "— Optional channel filter. Omit to match all channels.")}<br />
+  <code>
+    command
+  </code>
+  {dgettext("help_commands", "— The slash command to execute when the event fires. Use")}
+  <code>{dgettext("help_commands", "$nick")}</code>
+  {dgettext("help_commands", "for the triggering user's name and")}
+  <code>{dgettext("help_commands", "$chan")}</code>
+  {dgettext("help_commands", "for the channel name.")}<br /><code>position</code>
+  {dgettext("help_commands", "— Rule number shown in")} <code>{dgettext("help_commands", "/autorespond list")}</code>.
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "When the specified event occurs (and optionally in the specified channel), the command is executed automatically. For example, you can greet anyone who joins #welcome with a notice. Running"
   )}
-  <code>{gettext("/autorespond")}</code>
-  {gettext("with no arguments opens the Auto-Respond dialog.")}
+  <code>{dgettext("help_commands", "/autorespond")}</code>
+  {dgettext("help_commands", "with no arguments opens the Auto-Respond dialog.")}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Registered users only — rules are persisted across sessions")}</li>
-  <li>{gettext("The command must be a valid slash command")}</li>
+  <li>
+    {dgettext("help_commands", "Registered users only — rules are persisted across sessions")}
+  </li>
+  <li>{dgettext("help_commands", "The command must be a valid slash command")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /say $nick left the channel /autorespond list /autorespond remove 0")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /say $nick left the channel /autorespond list /autorespond remove 0")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-autorespond">{gettext("Auto-Respond Feature")}</.help_link>
-  · <.help_link topic="cmd-alias">{gettext("/alias")}</.help_link>
-  · <.help_link topic="cmd-timer">{gettext("/timer")}</.help_link>
+  <.help_link topic="feature-autorespond">
+    {dgettext("help_commands", "Auto-Respond Feature")}
+  </.help_link>
+  · <.help_link topic="cmd-alias">{dgettext("help_commands", "/alias")}</.help_link>
+  · <.help_link topic="cmd-timer">{dgettext("help_commands", "/timer")}</.help_link>
 </p>

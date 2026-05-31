@@ -15,6 +15,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.MenuPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Menu"), active_page: "menu")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Menu"), active_page: "menu")}
   end
 end

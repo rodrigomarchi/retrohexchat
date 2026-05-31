@@ -31,7 +31,8 @@ defmodule RetroHexChat.Commands.Handlers.Popups do
       name: "popups",
       syntax: "/popups",
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list and channels."
         ),
       examples: [
@@ -52,7 +53,8 @@ defmodule RetroHexChat.Commands.Handlers.Popups do
       command: "popups",
       syntax: "/popups",
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list and channels."
         ),
       category: :config,

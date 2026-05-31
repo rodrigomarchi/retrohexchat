@@ -1,61 +1,67 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Server administration commands for managing users, channels, services, and settings. Only available to server administrators and operators."
   )}
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/admin <category> <subcommand> [arguments]")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin <category> <subcommand> [arguments]")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Categories")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Categories")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="cmd-admin-server">{gettext("/admin server")}</.help_link>
-    {gettext("— Server info and settings (")}<code>info</code>, <code>set</code>, <code>get</code>, <code>settings</code>)
+    <.help_link topic="cmd-admin-server">{dgettext("help_commands", "/admin server")}</.help_link>
+    {dgettext("help_commands", "— Server info and settings (")}<code>info</code>, <code>set</code>, <code>get</code>, <code>settings</code>)
   </li>
   <li>
-    <.help_link topic="cmd-admin-user">{gettext("/admin user")}</.help_link>
-    {gettext("— User management (")}<code>list</code>, <code>info</code>, <code>ban</code>, <code>unban</code>, <code>kick</code>, <code>mute</code>, <code>unmute</code>, <code>rename</code>, <code>role</code>, <code>banlist</code>)
+    <.help_link topic="cmd-admin-user">{dgettext("help_commands", "/admin user")}</.help_link>
+    {dgettext("help_commands", "— User management (")}<code>list</code>, <code>info</code>, <code>ban</code>, <code>unban</code>, <code>kick</code>, <code>mute</code>, <code>unmute</code>, <code>rename</code>, <code>role</code>, <code>banlist</code>)
   </li>
   <li>
-    <.help_link topic="cmd-admin-channel">{gettext("/admin channel")}</.help_link>
-    {gettext("— Channel management (")}<code>list</code>, <code>info</code>, <code>create</code>, <code>delete</code>, <code>purge</code>, <code>banlist</code>)
+    <.help_link topic="cmd-admin-channel">
+      {dgettext("help_commands", "/admin channel")}
+    </.help_link>
+    {dgettext("help_commands", "— Channel management (")}<code>list</code>, <code>info</code>, <code>create</code>, <code>delete</code>, <code>purge</code>, <code>banlist</code>)
   </li>
   <li>
-    <.help_link topic="cmd-admin-ns">{gettext("/admin ns")}</.help_link>
-    {gettext("— NickServ administration (")}<code>drop</code>, <code>info</code>, <code>resetpass</code>)
+    <.help_link topic="cmd-admin-ns">{dgettext("help_commands", "/admin ns")}</.help_link>
+    {dgettext("help_commands", "— NickServ administration (")}<code>drop</code>, <code>info</code>, <code>resetpass</code>)
   </li>
   <li>
-    <.help_link topic="cmd-admin-cs">{gettext("/admin cs")}</.help_link>
-    {gettext("— ChanServ administration (")}<code>drop</code>, <code>info</code>, <code>transfer</code>, <code>access</code>)
+    <.help_link topic="cmd-admin-cs">{dgettext("help_commands", "/admin cs")}</.help_link>
+    {dgettext("help_commands", "— ChanServ administration (")}<code>drop</code>, <code>info</code>, <code>transfer</code>, <code>access</code>)
   </li>
   <li>
-    <.help_link topic="cmd-admin-debug">{gettext("/admin debug")}</.help_link>
-    {gettext("— Debug information (")}<code>connections</code>, <code>processes</code>, <code>memory</code>)
+    <.help_link topic="cmd-admin-debug">{dgettext("help_commands", "/admin debug")}</.help_link>
+    {dgettext("help_commands", "— Debug information (")}<code>connections</code>, <code>processes</code>, <code>memory</code>)
   </li>
   <li>
-    <.help_link topic="cmd-admin-log">{gettext("/admin log")}</.help_link> {gettext(
+    <.help_link topic="cmd-admin-log">{dgettext("help_commands", "/admin log")}</.help_link> {dgettext(
+      "help_commands",
       "— Audit log queries"
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/admin server info /admin user ban @Spammer --reason Flooding --duration 24h /admin user list --online /admin channel delete #old-channel /admin ns drop @OldNick /admin cs transfer #channel @NewOwner /admin debug memory /admin log --last 20 --user Admin")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/admin server info /admin user ban @Spammer --reason Flooding --duration 24h /admin user list --online /admin channel delete #old-channel /admin ns drop @OldNick /admin cs transfer #channel @NewOwner /admin debug memory /admin log --last 20 --user Admin")}</pre>
 
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Requires server administrator or server operator role")}</li>
-  <li>{gettext("All admin actions are recorded in the audit log")}</li>
-  <li>{gettext("Root admins (configured via environment) cannot be demoted")}</li>
-  <li>{gettext("Only root admins can promote new admins")}</li>
+  <li>{dgettext("help_commands", "Requires server administrator or server operator role")}</li>
+  <li>{dgettext("help_commands", "All admin actions are recorded in the audit log")}</li>
+  <li>
+    {dgettext("help_commands", "Root admins (configured via environment) cannot be demoted")}
+  </li>
+  <li>{dgettext("help_commands", "Only root admins can promote new admins")}</li>
 </ul>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-op">{gettext("/op")}</.help_link>
-  · <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
-  · <.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
-  · <.help_link topic="cmd-mute">{gettext("/mute")}</.help_link>
-  · <.help_link topic="cmd-transfer">{gettext("/transfer")}</.help_link>
+  <.help_link topic="cmd-op">{dgettext("help_commands", "/op")}</.help_link>
+  · <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
+  · <.help_link topic="cmd-ban">{dgettext("help_commands", "/ban")}</.help_link>
+  · <.help_link topic="cmd-mute">{dgettext("help_commands", "/mute")}</.help_link>
+  · <.help_link topic="cmd-transfer">{dgettext("help_commands", "/transfer")}</.help_link>
 </p>

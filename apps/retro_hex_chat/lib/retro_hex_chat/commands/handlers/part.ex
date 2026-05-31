@@ -13,7 +13,7 @@ defmodule RetroHexChat.Commands.Handlers.Part do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], context) do
     case context.active_channel do
-      nil -> {:error, gettext("You are not in any channel")}
+      nil -> {:error, dgettext("commands", "You are not in any channel")}
       channel -> {:ok, :part, channel, nil}
     end
   end
@@ -30,7 +30,7 @@ defmodule RetroHexChat.Commands.Handlers.Part do
     else
       # No channel specified, treat all args as message for active channel
       case context.active_channel do
-        nil -> {:error, gettext("You are not in any channel")}
+        nil -> {:error, dgettext("commands", "You are not in any channel")}
         channel -> {:ok, :part, channel, Enum.join([channel_name | rest], " ")}
       end
     end
@@ -46,12 +46,17 @@ defmodule RetroHexChat.Commands.Handlers.Part do
   def help do
     %{
       name: "part",
-      syntax: gettext("/part [#channel] [message]"),
+      syntax: dgettext("commands", "/part [#channel] [message]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Leave the current channel or a specified channel, with an optional parting message.\nDefaults to current channel. If the first word doesn't start with #, it's treated as the part message.\nYou must be in the channel to leave it."
         ),
-      examples: ["/part", gettext("/part #elixir"), gettext("/part #elixir Goodbye!")]
+      examples: [
+        "/part",
+        dgettext("commands", "/part #elixir"),
+        dgettext("commands", "/part #elixir Goodbye!")
+      ]
     }
   end
 
@@ -66,9 +71,10 @@ defmodule RetroHexChat.Commands.Handlers.Part do
 
     %CommandSyntax{
       command: "part",
-      syntax: gettext("/part [#channel] [message]"),
+      syntax: dgettext("commands", "/part [#channel] [message]"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Leave the current channel or a specified channel, with an optional parting message shown to others."
         ),
       category: :channel,
@@ -78,17 +84,21 @@ defmodule RetroHexChat.Commands.Handlers.Part do
           required: false,
           type: :channel,
           position: 0,
-          description: gettext("Channel to leave (defaults to current)")
+          description: dgettext("commands", "Channel to leave (defaults to current)")
         },
         %Parameter{
           name: "message",
           required: false,
           type: :text,
           position: 1,
-          description: gettext("Part message")
+          description: dgettext("commands", "Part message")
         }
       ],
-      examples: ["/part", gettext("/part #elixir"), gettext("/part #elixir Goodbye!")]
+      examples: [
+        "/part",
+        dgettext("commands", "/part #elixir"),
+        dgettext("commands", "/part #elixir Goodbye!")
+      ]
     }
   end
 end

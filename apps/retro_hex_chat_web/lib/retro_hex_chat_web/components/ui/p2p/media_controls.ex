@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.MediaControls do
     >
       <%!-- Mute/Unmute --%>
       <.toolbar_button
-        label={if @muted, do: gettext("Unmute"), else: gettext("Mute")}
+        label={if @muted, do: dgettext("p2p", "Unmute"), else: dgettext("p2p", "Mute")}
         active={@muted}
         phx-click={@on_mute_toggle}
         data-testid="media-controls-mute"
@@ -47,7 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.MediaControls do
 
       <%!-- Camera --%>
       <.toolbar_button
-        label={if @camera_on, do: gettext("Camera Off"), else: gettext("Camera On")}
+        label={if @camera_on, do: dgettext("p2p", "Camera Off"), else: dgettext("p2p", "Camera On")}
         active={!@camera_on}
         phx-click={@on_camera_toggle}
         data-testid="media-controls-camera"
@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.Components.UI.MediaControls do
       <%!-- End call --%>
       <.toolbar_button
         :if={@in_call}
-        label={gettext("End Call")}
+        label={dgettext("p2p", "End Call")}
         phx-click={@on_end_call}
         data-testid="media-controls-end-call"
       >
@@ -69,7 +69,9 @@ defmodule RetroHexChatWeb.Components.UI.MediaControls do
       </.toolbar_button>
 
       <%!-- Status badge --%>
-      <.badge :if={@in_call} variant="default" class="text-[10px]">{gettext("In Call")}</.badge>
+      <.badge :if={@in_call} variant="default" class="text-[10px]">
+        {dgettext("p2p", "In Call")}
+      </.badge>
     </.toolbar>
     """
   end

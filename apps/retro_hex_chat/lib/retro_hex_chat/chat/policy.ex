@@ -15,13 +15,13 @@ defmodule RetroHexChat.Chat.Policy do
   def validate_content(content) when is_binary(content) do
     cond do
       byte_size(content) == 0 ->
-        {:error, gettext("Message cannot be empty")}
+        {:error, dgettext("chat", "Message cannot be empty")}
 
       String.length(content) > @max_content_length ->
         {:error, "Message exceeds maximum length of #{@max_content_length} characters"}
 
       not Formatter.has_visible_text?(content) ->
-        {:error, gettext("Message cannot be empty")}
+        {:error, dgettext("chat", "Message cannot be empty")}
 
       true ->
         :ok
@@ -32,16 +32,16 @@ defmodule RetroHexChat.Chat.Policy do
   def can_edit?(message, nickname) do
     cond do
       message.author_nickname != nickname ->
-        {:error, gettext("You cannot edit other users' messages.")}
+        {:error, dgettext("chat", "You cannot edit other users' messages.")}
 
       message.deleted_at != nil ->
-        {:error, gettext("Message has already been deleted.")}
+        {:error, dgettext("chat", "Message has already been deleted.")}
 
       not within_window?(message.inserted_at, @edit_window_seconds) ->
-        {:error, gettext("Edit window has expired.")}
+        {:error, dgettext("chat", "Edit window has expired.")}
 
       debounced?(message.edited_at, @edit_debounce_seconds) ->
-        {:error, gettext("Please wait a few seconds before editing again.")}
+        {:error, dgettext("chat", "Please wait a few seconds before editing again.")}
 
       true ->
         :ok
@@ -54,10 +54,10 @@ defmodule RetroHexChat.Chat.Policy do
 
     cond do
       message.author_nickname != nickname ->
-        {:error, gettext("You cannot edit other users' messages.")}
+        {:error, dgettext("chat", "You cannot edit other users' messages.")}
 
       message.deleted_at != nil ->
-        {:error, gettext("Message has already been deleted.")}
+        {:error, dgettext("chat", "Message has already been deleted.")}
 
       within_window?(message.inserted_at, @edit_window_seconds) ->
         check_debounce(message)
@@ -67,7 +67,7 @@ defmodule RetroHexChat.Chat.Policy do
         check_debounce(message)
 
       true ->
-        {:error, gettext("Edit window has expired.")}
+        {:error, dgettext("chat", "Edit window has expired.")}
     end
   end
 
@@ -75,13 +75,13 @@ defmodule RetroHexChat.Chat.Policy do
   def can_delete?(message, nickname) do
     cond do
       message.author_nickname != nickname ->
-        {:error, gettext("You cannot delete other users' messages.")}
+        {:error, dgettext("chat", "You cannot delete other users' messages.")}
 
       message.deleted_at != nil ->
-        {:error, gettext("Message has already been deleted.")}
+        {:error, dgettext("chat", "Message has already been deleted.")}
 
       not within_window?(message.inserted_at, @edit_window_seconds) ->
-        {:error, gettext("Delete window has expired.")}
+        {:error, dgettext("chat", "Delete window has expired.")}
 
       true ->
         :ok
@@ -106,7 +106,7 @@ defmodule RetroHexChat.Chat.Policy do
 
   defp check_debounce(message) do
     if debounced?(message.edited_at, @edit_debounce_seconds) do
-      {:error, gettext("Please wait a few seconds before editing again.")}
+      {:error, dgettext("chat", "Please wait a few seconds before editing again.")}
     else
       :ok
     end

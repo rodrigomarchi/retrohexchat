@@ -40,10 +40,10 @@ defmodule RetroHexChat.Bots.Bot do
     |> validate_length(:command_prefix, min: 1, max: 3)
     |> validate_number(:cooldown_ms, greater_than_or_equal_to: 500)
     |> validate_format(:name, ~r/^[a-zA-Z0-9_-]+$/,
-      message: gettext("only letters, numbers, _ and -")
+      message: dgettext("bots", "only letters, numbers, _ and -")
     )
     |> validate_format(:nickname, ~r/^[a-zA-Z][a-zA-Z0-9_-]*$/,
-      message: gettext("must start with a letter")
+      message: dgettext("bots", "must start with a letter")
     )
     |> unique_constraint(:name, name: :bots_name_index)
     |> unique_constraint(:nickname, name: :bots_nickname_index)

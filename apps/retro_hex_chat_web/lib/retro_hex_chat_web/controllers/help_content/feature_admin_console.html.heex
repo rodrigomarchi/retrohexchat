@@ -1,34 +1,42 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The Admin Console lets server administrators execute multiple commands at once by pasting them into a text area. This is useful for initial server setup, configuring ChanServ for multiple channels, or creating bots."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("How to Use")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_features", "How to Use")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Open the Admin Console from the toolbar (only visible to admins). Paste your commands one per line, then click"
-  )} <strong>{gettext("Execute")}</strong>{gettext(
+  )} <strong>{dgettext("help_features", "Execute")}</strong>{dgettext(
+    "help_features",
     ". Each command runs sequentially and results are displayed inline."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Input Format")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_features", "Input Format")}</.help_h4>
 <p>
-  {gettext("Each line should be a slash command (e.g.,")} <code>{gettext("/chanserv register #main")}</code>{gettext(
+  {dgettext("help_features", "Each line should be a slash command (e.g.,")} <code>{dgettext("help_features", "/chanserv register #main")}</code>{dgettext(
+    "help_features",
     "). Lines starting with"
   )}
   <code>#</code>
-  {gettext("are treated as comments and skipped. Empty lines are also ignored.")}
+  {dgettext("help_features", "are treated as comments and skipped. Empty lines are also ignored.")}
 </p>
-<.help_h4 icon={:icon_checkmark}>{gettext("Example Script")}</.help_h4>
-<pre><code>{gettext("# Configure main channels /chanserv register #general /chanserv set #general guard on /chanserv set #general topiclock on # Create a bot /bot create HelperBot")}</code></pre>
-<.help_h4 icon={:icon_lock}>{gettext("Access")}</.help_h4>
+<.help_h4 icon={:icon_checkmark}>{dgettext("help_features", "Example Script")}</.help_h4>
+<pre><code>{dgettext("help_features", "# Configure main channels /chanserv register #general /chanserv set #general guard on /chanserv set #general topiclock on # Create a bot /bot create HelperBot")}</code></pre>
+<.help_h4 icon={:icon_lock}>{dgettext("help_features", "Access")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Only server administrators and server operators can access the Admin Console. Non-admin users will see an error message if they attempt to open it."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-admin">{gettext("/admin Command")}</.help_link>
-  · <.help_link topic="feature-perform">{gettext("Perform / Auto-Commands")}</.help_link>
+  <.help_link topic="cmd-admin">{dgettext("help_features", "/admin Command")}</.help_link>
+  ·
+  <.help_link topic="feature-perform">
+    {dgettext("help_features", "Perform / Auto-Commands")}
+  </.help_link>
 </p>

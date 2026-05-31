@@ -17,7 +17,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameRaid do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext("Hex Raid game screen: two jets flying through a scrolling river with enemies")
+        dgettext(
+          "diagrams",
+          "Hex Raid game screen: two jets flying through a scrolling river with enemies"
+        )
       }
     >
       {win98_chrome("Hex Raid")}
@@ -52,13 +55,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameRaid do
       <rect x="260" y="260" width="6" height="6" fill="#ff0000" />
       <%!-- HUD --%>
       <text x="30" y="340" fill="#00ff41" font-size="10" font-family="'Courier New',monospace">
-        {gettext("P1: 2340")}
+        {dgettext("diagrams", "P1: 2340")}
       </text>
       <text x="420" y="340" fill="#00d4ff" font-size="10" font-family="'Courier New',monospace">
-        {gettext("P2: 1820")}
+        {dgettext("diagrams", "P2: 1820")}
       </text>
       <text x="220" y="340" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
-        {gettext("SEC 4")}
+        {dgettext("diagrams", "SEC 4")}
       </text>
     </svg>
     """

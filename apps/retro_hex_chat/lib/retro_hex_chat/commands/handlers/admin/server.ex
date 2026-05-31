@@ -28,20 +28,20 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
     uptime_days = div(uptime_hours, 24)
     remaining_hours = rem(uptime_hours, 24)
 
-    AuditLogs.log(context.nickname, gettext("server.info"))
+    AuditLogs.log(context.nickname, dgettext("admin", "server.info"))
 
     desc_line = if server_desc, do: "\n#{server_desc}", else: ""
 
     text =
-      gettext("*** %{server_name} ***%{desc_line}\n",
+      dgettext("admin", "*** %{server_name} ***%{desc_line}\n",
         server_name: server_name,
         desc_line: desc_line
       ) <>
-        gettext("Users online: %{online_count}\n", online_count: online_count) <>
-        gettext("Active channels: %{channel_count}\n", channel_count: channel_count) <>
-        gettext("Registered nicks: %{nick_count}\n", nick_count: nick_count) <>
-        gettext("Registration: %{registration}\n", registration: registration) <>
-        gettext("BEAM uptime: %{uptime_days}d %{remaining_hours}h",
+        dgettext("admin", "Users online: %{online_count}\n", online_count: online_count) <>
+        dgettext("admin", "Active channels: %{channel_count}\n", channel_count: channel_count) <>
+        dgettext("admin", "Registered nicks: %{nick_count}\n", nick_count: nick_count) <>
+        dgettext("admin", "Registration: %{registration}\n", registration: registration) <>
+        dgettext("admin", "BEAM uptime: %{uptime_days}d %{remaining_hours}h",
           uptime_days: uptime_days,
           remaining_hours: remaining_hours
         )
@@ -53,8 +53,11 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
     case validate_setting_value(key, value) do
       :ok ->
         case Admin.set_setting(key, value, context.nickname) do
-          {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
-          {:error, msg} -> {:error, msg}
+          {:ok, msg} ->
+            {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
+
+          {:error, msg} ->
+            {:error, msg}
         end
 
       {:error, msg} ->
@@ -76,8 +79,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
 
     text =
       if value,
-        do: gettext("*** %{key} = '%{value}'", key: key, value: value),
-        else: gettext("*** %{key} is not set", key: key)
+        do: dgettext("admin", "*** %{key} = '%{value}'", key: key, value: value),
+        else: dgettext("admin", "*** %{key} is not set", key: key)
 
     {:ok, :system, %{content: text}}
   end
@@ -87,13 +90,13 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
 
     text =
       if settings == [] do
-        gettext("*** No server settings configured.")
+        dgettext("admin", "*** No server settings configured.")
       else
-        header = gettext("*** Server Settings ***")
+        header = dgettext("admin", "*** Server Settings ***")
 
         lines =
           Enum.map(settings, fn s ->
-            gettext("  %{key} = '%{value}' (by %{updated_by})",
+            dgettext("admin", "  %{key} = '%{value}' (by %{updated_by})",
               key: s.key,
               value: s.value,
               updated_by: s.updated_by
@@ -107,7 +110,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
   end
 
   def execute([], _context) do
-    {:error, gettext("Usage: /admin server <info|set|get|settings>")}
+    {:error, dgettext("admin", "Usage: /admin server <info|set|get|settings>")}
   end
 
   def execute([subcmd | _], _context) do
@@ -118,20 +121,23 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
   defp validate_setting_value("max_channels", value) do
     case Integer.parse(value) do
       {n, ""} when n > 0 -> :ok
-      _ -> {:error, gettext("max_channels must be a positive integer")}
+      _ -> {:error, dgettext("admin", "max_channels must be a positive integer")}
     end
   end
 
   defp validate_setting_value("registration", value) when value in ~w(open closed), do: :ok
 
   defp validate_setting_value("registration", _) do
-    {:error, gettext("registration must be 'open' or 'closed'")}
+    {:error, dgettext("admin", "registration must be 'open' or 'closed'")}
   end
 
   defp validate_setting_value("whowas_retention_seconds", value) do
     case Integer.parse(value) do
-      {n, ""} when n >= 1 and n <= 86_400 -> :ok
-      _ -> {:error, gettext("whowas_retention_seconds must be an integer from 1 to 86400")}
+      {n, ""} when n >= 1 and n <= 86_400 ->
+        :ok
+
+      _ ->
+        {:error, dgettext("admin", "whowas_retention_seconds must be an integer from 1 to 86400")}
     end
   end
 

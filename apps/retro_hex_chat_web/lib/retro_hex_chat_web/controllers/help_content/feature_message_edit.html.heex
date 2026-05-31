@@ -1,41 +1,58 @@
 <p>
-  {gettext("Edit your own messages within 5 minutes of sending to fix typos or correct content.")}
+  {dgettext(
+    "help_features",
+    "Edit your own messages within 5 minutes of sending to fix typos or correct content."
+  )}
 </p>
-<.help_h4 icon={:icon_btn_edit}>{gettext("How to Edit")}</.help_h4>
+<.help_h4 icon={:icon_btn_edit}>{dgettext("help_features", "How to Edit")}</.help_h4>
 <p>
-  <strong>{gettext("↑ key:")}</strong>
-  {gettext(
+  <strong>{dgettext("help_features", "↑ key:")}</strong>
+  {dgettext(
+    "help_features",
     "Press the up arrow in an empty input to edit your last message. The input fills with the message text, and the message gets a dashed border indicating edit mode."
   )}
 </p>
-<.help_h4 icon={:icon_btn_ok}>{gettext("Submitting & Canceling")}</.help_h4>
+<.help_h4 icon={:icon_btn_ok}>{dgettext("help_features", "Submitting & Canceling")}</.help_h4>
 <p>
-  <strong>{gettext("Enter:")}</strong>
-  {gettext("Submit the edit. The message updates for all viewers with an \"(editado)\" tag.")}<br />
+  <strong>{dgettext("help_features", "Enter:")}</strong>
+  {dgettext(
+    "help_features",
+    "Submit the edit. The message updates for all viewers with an \"(editado)\" tag."
+  )}<br />
   <strong>
-    {gettext("Escape:")}
+    {dgettext("help_features", "Escape:")}
   </strong>
-  {gettext("Cancel the edit and restore the input to its previous state.")}<br />
+  {dgettext("help_features", "Cancel the edit and restore the input to its previous state.")}<br />
   <strong>
-    {gettext("Empty edit:")}
+    {dgettext("help_features", "Empty edit:")}
   </strong>
-  {gettext("Submitting with empty text opens a delete confirmation dialog.")}
+  {dgettext("help_features", "Submitting with empty text opens a delete confirmation dialog.")}
 </p>
-<.help_h4 icon={:icon_btn_edit}>{gettext("Edited Indicator")}</.help_h4>
+<.help_h4 icon={:icon_btn_edit}>{dgettext("help_features", "Edited Indicator")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Edited messages show a small \"(editado)\" tag. Hover over it to see the edit timestamp."
   )}
 </p>
-<.help_h4 icon={:icon_warning}>{gettext("Limitations")}</.help_h4>
+<.help_h4 icon={:icon_warning}>{dgettext("help_features", "Limitations")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "You can only edit your own messages. The 5-minute time limit is enforced server-side. Editing preserves any reply context (if the message was a reply)."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-message-reply">{gettext("Message Reply")}</.help_link>
-  · <.help_link topic="feature-message-delete">{gettext("Message Delete")}</.help_link>
-  · <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
+  <.help_link topic="feature-message-reply">
+    {dgettext("help_features", "Message Reply")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-message-delete">
+    {dgettext("help_features", "Message Delete")}
+  </.help_link>
+  ·
+  <.help_link topic="keyboard-shortcuts">
+    {dgettext("help_features", "Keyboard Shortcuts")}
+  </.help_link>
 </p>

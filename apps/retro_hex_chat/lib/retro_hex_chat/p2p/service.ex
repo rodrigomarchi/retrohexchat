@@ -101,7 +101,7 @@ defmodule RetroHexChat.P2P.Service do
   end
 
   defp session_process_not_running?(message) do
-    message in ["Session process not running", gettext("Session process not running")]
+    message in ["Session process not running", dgettext("p2p", "Session process not running")]
   end
 
   @valid_action_types ~w(audio_call video_call file_transfer)
@@ -160,7 +160,7 @@ defmodule RetroHexChat.P2P.Service do
 
       {:error, changeset} ->
         Logger.warning("Failed to insert P2P session: #{inspect(changeset.errors)}")
-        {:error, gettext("Failed to create session")}
+        {:error, dgettext("p2p", "Failed to create session")}
     end
   end
 
@@ -173,7 +173,7 @@ defmodule RetroHexChat.P2P.Service do
 
   defp fetch_session(token) do
     case Queries.get_session_by_token(token) do
-      nil -> {:error, gettext("Session not found")}
+      nil -> {:error, dgettext("p2p", "Session not found")}
       session -> {:ok, session}
     end
   end

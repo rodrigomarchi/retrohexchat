@@ -1,18 +1,25 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "When someone is typing a message in a PM conversation, a subtle indicator appears showing \""
-  )}<em>{gettext("NickName is typing...")}</em>".
+  )}<em>{dgettext("help_features", "NickName is typing...")}</em>".
 </p>
-<.help_h4 icon={:icon_tab_general}>{gettext("Key Behaviors")}</.help_h4>
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_features", "Key Behaviors")}</.help_h4>
 <p>
-  {gettext("- Only appears in private message conversations (not channels)")}<br />{gettext(
+  {dgettext("help_features", "- Only appears in private message conversations (not channels)")}<br />{dgettext(
+    "help_features",
     "- Disappears after 5 seconds of inactivity"
-  )}<br />{gettext("- Disappears immediately when the other user sends their message")}<br />{gettext(
+  )}<br />{dgettext(
+    "help_features",
+    "- Disappears immediately when the other user sends their message"
+  )}<br />{dgettext(
+    "help_features",
     "- Both users can see each other's typing indicators simultaneously"
-  )}<br />{gettext("- Ignored users' typing indicators are not shown")}
+  )}<br />{dgettext("help_features", "- Ignored users' typing indicators are not shown")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-msg">{gettext("/msg Command")}</.help_link>
-  · <.help_link topic="feature-ignore-list">{gettext("Ignore List")}</.help_link>
+  <.help_link topic="cmd-msg">{dgettext("help_features", "/msg Command")}</.help_link>
+  ·
+  <.help_link topic="feature-ignore-list">{dgettext("help_features", "Ignore List")}</.help_link>
 </p>

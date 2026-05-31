@@ -22,7 +22,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Bots do
       bots = Queries.list_bots()
       assign(socket, show_bot_dialog: true, bot_dialog_bots: bots)
     else
-      error_event(socket, gettext("Bot management is restricted to server administrators."))
+      error_event(
+        socket,
+        dgettext("chat", "Bot management is restricted to server administrators.")
+      )
     end
   end
 

@@ -1,35 +1,38 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Track when specific users come online or go offline. Build a buddy list so you never miss when your friends connect."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/notify /notify add <nickname> [note] /notify remove <nickname> /notify edit <nickname> <note> /notify list")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/notify /notify add <nickname> [note] /notify remove <nickname> /notify edit <nickname> <note> /notify list")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>nickname</code>
-  {gettext("— The user to track.")}<br /><code>note</code>
-  {gettext("— Optional text to remind you who this person is.")}
+  {dgettext("help_commands", "— The user to track.")}<br /><code>note</code>
+  {dgettext("help_commands", "— Optional text to remind you who this person is.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "When someone on your notify list connects or disconnects, you receive a notification in the Status tab. You can add personal notes to help remember who each person is. Running"
   )}
-  <code>{gettext("/notify")}</code>
-  {gettext(
+  <code>{dgettext("help_commands", "/notify")}</code>
+  {dgettext(
+    "help_commands",
     "with no arguments opens the Notify List dialog where you can manage your list visually."
   )}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Registered users: list is saved across sessions")}</li>
-  <li>{gettext("Guests: list lasts only for the current session")}</li>
+  <li>{dgettext("help_commands", "Registered users: list is saved across sessions")}</li>
+  <li>{dgettext("help_commands", "Guests: list lasts only for the current session")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/notify add Alice My friend from #elixir /notify add Bob /notify edit Alice Best friend /notify remove Bob /notify list")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/notify add Alice My friend from #elixir /notify add Bob /notify edit Alice Best friend /notify remove Bob /notify list")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-notify-list">{gettext("Notify List")}</.help_link>
-  · <.help_link topic="cmd-whois">{gettext("/whois")}</.help_link>
+  <.help_link topic="feature-notify-list">{dgettext("help_commands", "Notify List")}</.help_link>
+  · <.help_link topic="cmd-whois">{dgettext("help_commands", "/whois")}</.help_link>
 </p>

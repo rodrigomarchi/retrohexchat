@@ -1,20 +1,31 @@
 <p>
-  {gettext("Channels are chat rooms where multiple users can talk. Channel names begin with")} <strong>#</strong>.
+  {dgettext(
+    "help_channels",
+    "Channels are chat rooms where multiple users can talk. Channel names begin with"
+  )} <strong>#</strong>.
 </p>
-<.help_h4 icon={:icon_btn_join}>{gettext("Joining a Channel")}</.help_h4>
-<pre>{gettext("/join #channel-name")}</pre>
-<.help_h4 icon={:icon_btn_remove}>{gettext("Leaving a Channel")}</.help_h4>
-<pre>{gettext("/part [#channel-name]")}</pre>
-<p>{gettext("If no channel is specified, you leave the current channel.")}</p>
-<.help_h4 icon={:icon_dialog_channel_list}>{gettext("Listing Channels")}</.help_h4>
-<pre>{gettext("/list")}</pre>
+<.help_h4 icon={:icon_btn_join}>{dgettext("help_channels", "Joining a Channel")}</.help_h4>
+<pre>{dgettext("help_channels", "/join #channel-name")}</pre>
+<.help_h4 icon={:icon_btn_remove}>{dgettext("help_channels", "Leaving a Channel")}</.help_h4>
+<pre>{dgettext("help_channels", "/part [#channel-name]")}</pre>
+<p>{dgettext("help_channels", "If no channel is specified, you leave the current channel.")}</p>
+<.help_h4 icon={:icon_dialog_channel_list}>
+  {dgettext("help_channels", "Listing Channels")}
+</.help_h4>
+<pre>{dgettext("help_channels", "/list")}</pre>
 <p>
-  {gettext("Or use the")}
-  <strong>{gettext("Channel List")}</strong> {gettext("button in the toolbar.")}
+  {dgettext("help_channels", "Or use the")}
+  <strong>{dgettext("help_channels", "Channel List")}</strong> {dgettext(
+    "help_channels",
+    "button in the toolbar."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-join">{gettext("Join Command")}</.help_link>
-  · <.help_link topic="cmd-part">{gettext("Part Command")}</.help_link>
-  · <.help_link topic="channel-modes-overview">{gettext("Channel Modes")}</.help_link>
+  <.help_link topic="cmd-join">{dgettext("help_channels", "Join Command")}</.help_link>
+  · <.help_link topic="cmd-part">{dgettext("help_channels", "Part Command")}</.help_link>
+  ·
+  <.help_link topic="channel-modes-overview">
+    {dgettext("help_channels", "Channel Modes")}
+  </.help_link>
 </p>

@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
       <div class="p2p-diagram__peers">
         <.peer_panel
           nick={@nickname}
-          label={gettext("(you)")}
+          label={dgettext("p2p", "(you)")}
           online={true}
           status_label={peer_status_label(@diagram_state, :local)}
           info={@local_info}
@@ -123,13 +123,16 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
           <.whois_row :if={@info[:timezone]} value={format_timezone(@info[:timezone])}>
             <span>🕐</span>
           </.whois_row>
-          <.whois_row :if={@info[:cores]} value={gettext("%{count} cores", count: @info[:cores])}>
+          <.whois_row
+            :if={@info[:cores]}
+            value={dgettext("p2p", "%{count} cores", count: @info[:cores])}
+          >
             <span>⚙</span>
           </.whois_row>
           <.whois_row :if={@info[:color_depth]} value={"#{@info[:color_depth]}-bit"}>
             <span>🎨</span>
           </.whois_row>
-          <.whois_row :if={@info[:touch] == true} value={gettext("Touch")}>
+          <.whois_row :if={@info[:touch] == true} value={dgettext("p2p", "Touch")}>
             <span>👆</span>
           </.whois_row>
         </div>
@@ -267,11 +270,11 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
 
         %{
           id: "transferring",
-          label: ft[:file_name] || gettext("File"),
+          label: ft[:file_name] || dgettext("p2p", "File"),
           icon: "📄",
           sub_label:
-            gettext("%{speed} — %{percent}%",
-              speed: ft[:speed] || gettext("0 B/s"),
+            dgettext("p2p", "%{speed} — %{percent}%",
+              speed: ft[:speed] || dgettext("p2p", "0 B/s"),
               percent: percent
             ),
           progress: percent,
@@ -282,7 +285,12 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
         }
 
       "verifying" ->
-        %{id: "verifying", label: gettext("Verifying..."), icon: "🔍", sub_label: ft[:file_name]}
+        %{
+          id: "verifying",
+          label: dgettext("p2p", "Verifying..."),
+          icon: "🔍",
+          sub_label: ft[:file_name]
+        }
 
       _ ->
         nil
@@ -293,16 +301,16 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
 
   defp derive_call_state(%{call: call}) when is_map(call) do
     sub =
-      gettext("%{duration} — %{quality}",
+      dgettext("p2p", "%{duration} — %{quality}",
         duration: call[:duration] || "00:00:00",
-        quality: call[:quality_label] || gettext("Starting")
+        quality: call[:quality_label] || dgettext("p2p", "Starting")
       )
 
     case call[:type] do
       "video" ->
         %{
           id: "video-call",
-          label: gettext("Video Call"),
+          label: dgettext("p2p", "Video Call"),
           icon: "📹",
           sub_label: sub,
           direction: "bidi",
@@ -313,7 +321,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
       "audio" ->
         %{
           id: "audio-call",
-          label: gettext("Audio Call"),
+          label: dgettext("p2p", "Audio Call"),
           icon: "🎤",
           sub_label: sub,
           direction: "bidi",
@@ -322,60 +330,62 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
         }
 
       _ ->
-        %{id: "call-init", label: gettext("Starting call..."), icon: "📞"}
+        %{id: "call-init", label: dgettext("p2p", "Starting call..."), icon: "📞"}
     end
   end
 
   defp derive_call_state(_), do: nil
 
   defp derive_webrtc_state(%{webrtc_state: "Connected"}),
-    do: %{id: "connected", label: gettext("Connected"), icon: "✓"}
+    do: %{id: "connected", label: dgettext("p2p", "Connected"), icon: "✓"}
 
   defp derive_webrtc_state(%{webrtc_state: "Connecting..."}),
-    do: %{id: "connecting", label: gettext("Connecting..."), direction: "bidi"}
+    do: %{id: "connecting", label: dgettext("p2p", "Connecting..."), direction: "bidi"}
 
   defp derive_webrtc_state(%{webrtc_state: "Reconnecting...", retry_attempt: attempt}) do
     label =
       if attempt do
-        gettext("Reconnecting (%{attempt}/3)", attempt: attempt)
+        dgettext("p2p", "Reconnecting (%{attempt}/3)", attempt: attempt)
       else
-        gettext("Reconnecting")
+        dgettext("p2p", "Reconnecting")
       end
 
     %{id: "reconnecting", label: label, direction: "bidi"}
   end
 
   defp derive_webrtc_state(%{webrtc_state: "Connection failed"}),
-    do: %{id: "failed", label: gettext("Failed"), icon: "✗"}
+    do: %{id: "failed", label: dgettext("p2p", "Failed"), icon: "✗"}
 
   defp derive_webrtc_state(_), do: nil
 
   defp derive_session_state(%{session_status: "connecting"}),
-    do: %{id: "connecting", label: gettext("Connecting..."), direction: "bidi"}
+    do: %{id: "connecting", label: dgettext("p2p", "Connecting..."), direction: "bidi"}
 
   defp derive_session_state(%{session_status: status})
        when status in ~w(closed expired failed),
-       do: %{id: "disconnected", label: gettext("Disconnected")}
+       do: %{id: "disconnected", label: dgettext("p2p", "Disconnected")}
 
   defp derive_session_state(%{peer_online: true}),
-    do: %{id: "ready", label: gettext("Ready")}
+    do: %{id: "ready", label: dgettext("p2p", "Ready")}
 
   defp derive_session_state(_),
-    do: %{id: "waiting", label: gettext("Waiting...")}
+    do: %{id: "waiting", label: dgettext("p2p", "Waiting...")}
 
   @spec peer_status_label(map(), :local | :remote) :: String.t() | nil
-  defp peer_status_label(%{id: "transferring", direction: "ltr"}, :local), do: gettext("Sending")
+  defp peer_status_label(%{id: "transferring", direction: "ltr"}, :local),
+    do: dgettext("p2p", "Sending")
 
   defp peer_status_label(%{id: "transferring", direction: "rtl"}, :local),
-    do: gettext("Receiving")
+    do: dgettext("p2p", "Receiving")
 
   defp peer_status_label(%{id: "transferring", direction: "ltr"}, :remote),
-    do: gettext("Receiving")
+    do: dgettext("p2p", "Receiving")
 
-  defp peer_status_label(%{id: "transferring", direction: "rtl"}, :remote), do: gettext("Sending")
+  defp peer_status_label(%{id: "transferring", direction: "rtl"}, :remote),
+    do: dgettext("p2p", "Sending")
 
   defp peer_status_label(%{id: id}, _side) when id in ["audio-call", "video-call"],
-    do: gettext("In Call")
+    do: dgettext("p2p", "In Call")
 
   defp peer_status_label(_state, _side), do: nil
 

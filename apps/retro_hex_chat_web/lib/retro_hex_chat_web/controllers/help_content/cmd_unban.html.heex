@@ -1,25 +1,34 @@
-<p>{gettext("Remove a ban from a user, allowing them to rejoin the channel.")}</p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/unban <nickname>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
-<p><code>nickname</code> {gettext("— The user to unban.")}</p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  {gettext(
-    "Removes the ban entry for the specified user. Once unbanned, the user can rejoin the channel normally. For registered channels, the unban is persisted. You can also unban using"
-  )} <code>{gettext("/mode -b nickname")}</code>.
+  {dgettext("help_commands", "Remove a ban from a user, allowing them to rejoin the channel.")}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
-<ul>
-  <li>{gettext("Requires channel operator or owner status")}</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/unban user123")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/unban <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p><code>nickname</code> {dgettext("help_commands", "— The user to unban.")}</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
-  · <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
-  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
-  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
-  · <.help_link topic="feature-channel-central">{gettext("Channel Central")}</.help_link>
+  {dgettext(
+    "help_commands",
+    "Removes the ban entry for the specified user. Once unbanned, the user can rejoin the channel normally. For registered channels, the unban is persisted. You can also unban using"
+  )} <code>{dgettext("help_commands", "/mode -b nickname")}</code>.
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>{dgettext("help_commands", "Requires channel operator or owner status")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/unban user123")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-ban">{dgettext("help_commands", "/ban")}</.help_link>
+  · <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_commands", "Channel Permissions")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-channel-central">
+    {dgettext("help_commands", "Channel Central")}
+  </.help_link>
 </p>

@@ -1,84 +1,129 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "A Viking-themed total conversion for the DOOM engine with stunning hand-drawn pixel art. Battle through Norse-inspired levels with axes, bows, and runic magic. Winner of the 2018 Cacoward."
   )}
 </p>
 <.diagram_arcade_doom class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "About")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Created primarily by Matthew Little (Revae) with a soundtrack by Tom Jensen (HexenMapper). The name \"REKKR\" is Old Norse for \"warrior.\" Announced in September 2016, first released on July 10, 2018, it won a 2018 Cacoward (the annual Doom community awards from Doomworld), and Matthew Little also received that year's Creator of the Year title. Doomworld called it \"the missing link between Ultimate Doom and Heretic.\""
   )}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "REKKR replaces every DOOM asset with hand-drawn Viking-themed pixel art — new weapons (axe, sword, bow, runic spells), new enemies, and Norse-inspired levels. Designed to official 1990s vanilla Doom specifications, it will even run on ancient DOS PCs. The Sunken Land edition was released in 2021. It runs on the PrBoom+ engine compiled to WebAssembly."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("W / ↑")}</strong> {gettext("— Move forward")}</li>
-  <li><strong>{gettext("S / ↓")}</strong> {gettext("— Move backward")}</li>
-  <li><strong>A</strong> {gettext("— Strafe left")}</li>
-  <li><strong>D</strong> {gettext("— Strafe right")}</li>
-  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim / turn")}</li>
-  <li><strong>{gettext("Left Click")}</strong> {gettext("— Fire / swing weapon")}</li>
-  <li><strong>E</strong> {gettext("— Use / open doors")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Jump (PrBoom+)")}</li>
-  <li><strong>1–7</strong> {gettext("— Select weapon")}</li>
-  <li><strong>{gettext("Tab")}</strong> {gettext("— Toggle automap")}</li>
-  <li><strong>{gettext("Shift")}</strong> {gettext("— Run (hold)")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Menu")}</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Melee weapons are powerful")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "W / ↑")}</strong> {dgettext("help_arcade", "— Move forward")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "S / ↓")}</strong> {dgettext(
+      "help_arcade",
+      "— Move backward"
+    )}
+  </li>
+  <li><strong>A</strong> {dgettext("help_arcade", "— Strafe left")}</li>
+  <li><strong>D</strong> {dgettext("help_arcade", "— Strafe right")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Mouse")}</strong> {dgettext("help_arcade", "— Aim / turn")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Fire / swing weapon"
+    )}
+  </li>
+  <li><strong>E</strong> {dgettext("help_arcade", "— Use / open doors")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Space")}</strong> {dgettext(
+      "help_arcade",
+      "— Jump (PrBoom+)"
+    )}
+  </li>
+  <li><strong>1–7</strong> {dgettext("help_arcade", "— Select weapon")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Tab")}</strong> {dgettext("help_arcade", "— Toggle automap")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Shift")}</strong> {dgettext("help_arcade", "— Run (hold)")}
+  </li>
+  <li><strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Menu")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_arcade", "Melee weapons are powerful")}</strong>
+    {dgettext(
+      "help_arcade",
       "— The axe and sword deal heavy damage and don't consume ammo. Use them on weaker enemies."
     )}
   </li>
   <li>
-    <strong>{gettext("Conserve arrows")}</strong>
-    {gettext("— The bow is effective but arrows are limited. Save them for tougher foes.")}
+    <strong>{dgettext("help_arcade", "Conserve arrows")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— The bow is effective but arrows are limited. Save them for tougher foes."
+    )}
   </li>
   <li>
-    <strong>{gettext("Runic magic for crowds")}</strong>
-    {gettext("— Use runic magic abilities for crowd control when overwhelmed.")}
+    <strong>{dgettext("help_arcade", "Runic magic for crowds")}</strong>
+    {dgettext("help_arcade", "— Use runic magic abilities for crowd control when overwhelmed.")}
   </li>
   <li>
-    <strong>{gettext("Hand-drawn secrets")}</strong>
-    {gettext("— The detailed pixel art hides secret areas. Look for visual irregularities.")}
+    <strong>{dgettext("help_arcade", "Hand-drawn secrets")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— The detailed pixel art hides secret areas. Look for visual irregularities."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "REKKR won a 2018 Cacoward and its creator Matthew Little received the Creator of the Year title. Doomworld called it \"the missing link between Ultimate Doom and Heretic.\""
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The name \"REKKR\" is Old Norse for \"warrior.\" The game is designed to official 1990s vanilla Doom specifications and will even run on ancient DOS PCs."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The Sunken Land edition was released on December 22, 2021 on the ZOOM Platform, bundled with its FLAC soundtrack."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade-doom">{dgettext("help_arcade", "DOOM (Arcade)")}</.help_link>
   ·
   <.help_link topic="feature-arcade-doom-shareware">
-    {gettext("DOOM: Knee-Deep in the Dead")}
+    {dgettext("help_arcade", "DOOM: Knee-Deep in the Dead")}
   </.help_link>
-  · <.help_link topic="feature-arcade-freedoom1">{gettext("Freedoom: Phase 1")}</.help_link>
-  · <.help_link topic="feature-arcade-freedoom2">{gettext("Freedoom: Phase 2")}</.help_link>
-  · <.help_link topic="feature-arcade-freedm">{gettext("FreeDM")}</.help_link>
-  · <.help_link topic="feature-arcade-chex-quest">{gettext("Chex Quest")}</.help_link>
-  · <.help_link topic="feature-arcade-hacx">{gettext("HacX")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-freedoom1">
+    {dgettext("help_arcade", "Freedoom: Phase 1")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-freedoom2">
+    {dgettext("help_arcade", "Freedoom: Phase 2")}
+  </.help_link>
+  · <.help_link topic="feature-arcade-freedm">{dgettext("help_arcade", "FreeDM")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-chex-quest">
+    {dgettext("help_arcade", "Chex Quest")}
+  </.help_link>
+  · <.help_link topic="feature-arcade-hacx">{dgettext("help_arcade", "HacX")}</.help_link>
 </p>

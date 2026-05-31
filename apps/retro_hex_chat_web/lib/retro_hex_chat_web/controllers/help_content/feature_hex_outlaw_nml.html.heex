@@ -1,55 +1,83 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Hex Outlaw variant with no obstacles and full horizontal movement. Each gunslinger can advance within their 30% of the arena — closing the distance reduces your opponent's reaction time but leaves you exposed too. The purest test of reflexes and positioning."
   )}
 </p>
 <.diagram_game_outlaw class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Arrow keys / WASD")}</strong>
-    {gettext("— Move gunslinger vertically and horizontally within your half")}
+    <strong>{dgettext("help_games", "Arrow keys / WASD")}</strong>
+    {dgettext("help_games", "— Move gunslinger vertically and horizontally within your half")}
   </li>
-  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Fire (one bullet at a time)")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("What's Different")}</.help_h4>
-<ul>
-  <li>{gettext("No obstacle — clear line of sight between both gunslingers")}</li>
   <li>
-    {gettext(
+    <strong>{dgettext("help_games", "Space / Shift")}</strong> {dgettext(
+      "help_games",
+      "— Fire (one bullet at a time)"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "What's Different")}</.help_h4>
+<ul>
+  <li>{dgettext("help_games", "No obstacle — clear line of sight between both gunslingers")}</li>
+  <li>
+    {dgettext(
+      "help_games",
       "Each player can move horizontally within their 30% zone (the center 40% is no-man's-land)"
     )}
   </li>
-  <li>{gettext("Horizontal speed is slightly slower than vertical to prevent easy dodging")}</li>
-  <li>{gettext("Advancing closer gives less reaction time for both players")}</li>
-  <li>{gettext("Same scoring: first to 10 points, best of 3 rounds")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Horizontal speed is slightly slower than vertical to prevent easy dodging"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Advancing closer gives less reaction time for both players")}</li>
+  <li>{dgettext("help_games", "Same scoring: first to 10 points, best of 3 rounds")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Control the distance")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Control the distance")}</strong>
+    {dgettext(
+      "help_games",
       "— Advancing gives you faster bullet travel time but also means less time to dodge. Find your sweet spot."
     )}
   </li>
   <li>
-    <strong>{gettext("Feint advances")}</strong>
-    {gettext("— Move forward to draw a shot, then dodge it while your opponent reloads.")}
+    <strong>{dgettext("help_games", "Feint advances")}</strong>
+    {dgettext(
+      "help_games",
+      "— Move forward to draw a shot, then dodge it while your opponent reloads."
+    )}
   </li>
   <li>
-    <strong>{gettext("Use the full vertical range")}</strong>
-    {gettext("— With no obstacles, vertical movement is your only defense. Never stand still.")}
+    <strong>{dgettext("help_games", "Use the full vertical range")}</strong>
+    {dgettext(
+      "help_games",
+      "— With no obstacles, vertical movement is your only defense. Never stand still."
+    )}
   </li>
   <li>
-    <strong>{gettext("Commit to aggression or patience")}</strong>
-    {gettext("— Half-measures get you killed. Either push hard or stay back and react.")}
+    <strong>{dgettext("help_games", "Commit to aggression or patience")}</strong>
+    {dgettext(
+      "help_games",
+      "— Half-measures get you killed. Either push hard or stay back and react."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-outlaw">{gettext("Hex Outlaw")}</.help_link>
-  · <.help_link topic="feature-hex-outlaw-ricochet">{gettext("Ricochet")}</.help_link>
-  · <.help_link topic="feature-hex-outlaw-stagecoach">{gettext("Stagecoach")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-hex-outlaw">{dgettext("help_games", "Hex Outlaw")}</.help_link>
+  ·
+  <.help_link topic="feature-hex-outlaw-ricochet">
+    {dgettext("help_games", "Ricochet")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-hex-outlaw-stagecoach">
+    {dgettext("help_games", "Stagecoach")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

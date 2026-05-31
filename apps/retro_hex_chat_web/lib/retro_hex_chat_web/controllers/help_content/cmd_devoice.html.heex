@@ -1,28 +1,34 @@
 <p>
-  {gettext("Remove voice status from a user in the current channel. This is a shorthand for")} <code>{gettext("/mode -v nickname")}</code>.
+  {dgettext(
+    "help_commands",
+    "Remove voice status from a user in the current channel. This is a shorthand for"
+  )} <code>{dgettext("help_commands", "/mode -v nickname")}</code>.
 </p>
 
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/devoice <nickname>")}</pre>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/devoice <nickname>")}</pre>
 
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
-  <code>nickname</code> {gettext("— The user to remove voice from.")}
+  <code>nickname</code> {dgettext("help_commands", "— The user to remove voice from.")}
 </p>
 
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Requires half-operator (%) status or higher")}</li>
-  <li>{gettext("The target must be in the channel")}</li>
+  <li>{dgettext("help_commands", "Requires half-operator (%) status or higher")}</li>
+  <li>{dgettext("help_commands", "The target must be in the channel")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/devoice Bob")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/devoice Bob")}</pre>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-voice">{gettext("/voice")}</.help_link>
-  · <.help_link topic="cmd-deop">{gettext("/deop")}</.help_link>
-  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
-  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
+  <.help_link topic="cmd-voice">{dgettext("help_commands", "/voice")}</.help_link>
+  · <.help_link topic="cmd-deop">{dgettext("help_commands", "/deop")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_commands", "Channel Permissions")}
+  </.help_link>
 </p>

@@ -107,16 +107,20 @@ defmodule RetroHexChatWeb.V2.V2Helpers do
   def input_placeholder(assigns) do
     cond do
       assigns.show_status_tab ->
-        gettext("Type a command — / for list")
+        dgettext("chat", "Type a command — / for list")
 
       assigns.session.active_pm != nil ->
-        gettext("Message to %{target} — / for commands", target: assigns.session.active_pm)
+        dgettext("chat", "Message to %{target} — / for commands",
+          target: assigns.session.active_pm
+        )
 
       assigns.session.active_channel != nil ->
-        gettext("Message to %{target} — / for commands", target: assigns.session.active_channel)
+        dgettext("chat", "Message to %{target} — / for commands",
+          target: assigns.session.active_channel
+        )
 
       true ->
-        gettext("Type a command — / for list")
+        dgettext("chat", "Type a command — / for list")
     end
   end
 end

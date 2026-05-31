@@ -71,7 +71,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       <%!-- Header tab --%>
       <div class="flex items-center bg-surface shadow-retro-raised px-retro-4 py-retro-2">
         <Icons.icon_tab_conversations class="w-4 h-4 mr-retro-4" />
-        <span class="text-xs font-bold flex-1">{gettext("Conversations")}</span>
+        <span class="text-xs font-bold flex-1">{dgettext("chat", "Conversations")}</span>
         <.button
           :if={@on_close}
           type="button"
@@ -79,8 +79,8 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
           size="icon"
           class="w-5 h-5 min-h-0 text-xs"
           phx-click={@on_close}
-          title={gettext("Hide channel list")}
-          aria-label={gettext("Hide channel list")}
+          title={dgettext("chat", "Hide channel list")}
+          aria-label={dgettext("chat", "Hide channel list")}
           data-testid="conversations-close"
         >
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
@@ -92,8 +92,8 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         <%= if @channels == [] and @pm_conversations == [] do %>
           <.empty_state>
             <:icon><Icons.icon_channels class="w-6 h-6" /></:icon>
-            <:title>{gettext("No channels")}</:title>
-            <:description>{gettext("/join #channel to get started")}</:description>
+            <:title>{dgettext("chat", "No channels")}</:title>
+            <:description>{dgettext("chat", "/join #channel to get started")}</:description>
             <:action>
               <.button
                 :if={@on_browse_channels}
@@ -103,14 +103,14 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
                 data-testid="conversations-browse-channels"
               >
                 <:icon><Icons.icon_btn_channel_list class="w-4 h-4" /></:icon>
-                {gettext("Browse channels")}
+                {dgettext("chat", "Browse channels")}
               </.button>
             </:action>
           </.empty_state>
         <% else %>
           <%!-- My Channels --%>
           <.tree_view_group
-            label={gettext("MY CHANNELS")}
+            label={dgettext("chat", "MY CHANNELS")}
             open={"channels" not in @collapsed_sections}
             phx-click={@on_toggle_section}
             phx-value-section="channels"
@@ -135,7 +135,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
           <%!-- Private Messages --%>
           <.tree_view_group
             :if={@pm_conversations != []}
-            label={gettext("PRIVATE MESSAGES")}
+            label={dgettext("chat", "PRIVATE MESSAGES")}
             open={"pms" not in @collapsed_sections}
             phx-click={@on_toggle_section}
             phx-value-section="pms"
@@ -156,7 +156,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
           <%!-- Popular Channels --%>
           <.tree_view_group
-            label={gettext("POPULAR CHANNELS")}
+            label={dgettext("chat", "POPULAR CHANNELS")}
             open={"popular" not in @collapsed_sections}
             phx-click={@on_toggle_section}
             phx-value-section="popular"
@@ -177,7 +177,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
                 data-testid="conversations-browse-all"
               >
                 <:icon><Icons.icon_dialog_channel_list class="w-3 h-3" /></:icon>
-                {gettext("Browse All Channels...")}
+                {dgettext("chat", "Browse All Channels...")}
               </.button>
             </div>
           </.tree_view_group>
@@ -220,7 +220,11 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       data-testid={"channel-#{@name}"}
     >
       <:icon>
-        <span :if={@disconnected} class="text-warning-alt text-[10px]" title={gettext("Disconnected")}>
+        <span
+          :if={@disconnected}
+          class="text-warning-alt text-[10px]"
+          title={dgettext("chat", "Disconnected")}
+        >
           ⚡
         </span>
         <Icons.icon_tab_channel :if={!@disconnected} class="w-3 h-3" />
@@ -315,7 +319,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         class="ml-1 shrink-0 w-4 h-4 min-h-0"
         phx-click={@on_join}
         phx-value-channel={@channel.name}
-        title={gettext("Join %{channel}", channel: @channel.name)}
+        title={dgettext("chat", "Join %{channel}", channel: @channel.name)}
         data-testid={"join-#{@channel.name}"}
       >
         <:icon><Icons.icon_btn_add class="w-3 h-3" /></:icon>

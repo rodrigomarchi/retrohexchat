@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
 
   @impl true
   def menu_link(_, _) do
-    {:ok, gettext("App Info")}
+    {:ok, dgettext("admin", "App Info")}
   end
 
   @impl true
@@ -26,8 +26,8 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
       Enum.map(channels, fn name ->
         users = Tracker.list_users("channel:#{name}")
 
-        {gettext("#%{name}", name: name),
-         gettext("%{users_count} users", users_count: length(users))}
+        {dgettext("admin", "#%{name}", name: name),
+         dgettext("admin", "%{users_count} users", users_count: length(users))}
       end)
 
     assigns =
@@ -41,7 +41,7 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
     <.row>
       <:col>
         <.fields_card
-          title={gettext("Overview")}
+          title={dgettext("admin", "Overview")}
           inner_title="Application Stats"
           fields={[
             {"Active Channels", @channel_count},
@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
       </:col>
       <:col>
         <.fields_card
-          title={gettext("Channels")}
+          title={dgettext("admin", "Channels")}
           fields={@channel_fields}
         />
       </:col>

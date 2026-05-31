@@ -1,27 +1,44 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_ui",
     "The user list appears in the conversations sidebar (left pane) under the active channel, showing all users sorted by role."
   )}
 </p>
-<.help_h4 icon={:icon_role_operator}>{gettext("Roles")}</.help_h4>
+<.help_h4 icon={:icon_role_operator}>{dgettext("help_ui", "Roles")}</.help_h4>
 <p>
-  {gettext("Users are sorted by role priority and distinguished by icon and color:")}<br />
+  {dgettext("help_ui", "Users are sorted by role priority and distinguished by icon and color:")}<br />
   <strong>
-    {gettext("Owners (~):")}
+    {dgettext("help_ui", "Owners (~):")}
   </strong>
-  {gettext("Purple, bold. Channel founders.")}<br /><strong>{gettext("Operators (@):")}</strong>
-  {gettext("Red, bold. Can manage the channel.")}<br /><strong>{gettext("Half-Ops (%):")}</strong>
-  {gettext("Green, bold. Limited moderation.")}<br /><strong>{gettext("Voiced (+):")}</strong>
-  {gettext("Blue. Can speak in moderated channels.")}<br /><strong>{gettext("Regular:")}</strong>
-  {gettext("Default color.")}
+  {dgettext("help_ui", "Purple, bold. Channel founders.")}<br />
+  <strong>
+    {dgettext("help_ui", "Operators (@):")}
+  </strong>
+  {dgettext("help_ui", "Red, bold. Can manage the channel.")}<br />
+  <strong>
+    {dgettext("help_ui", "Half-Ops (%):")}
+  </strong>
+  {dgettext("help_ui", "Green, bold. Limited moderation.")}<br />
+  <strong>
+    {dgettext("help_ui", "Voiced (+):")}
+  </strong>
+  {dgettext("help_ui", "Blue. Can speak in moderated channels.")}<br />
+  <strong>
+    {dgettext("help_ui", "Regular:")}
+  </strong>
+  {dgettext("help_ui", "Default color.")}
 </p>
-<.help_h4 icon={:icon_community}>{gettext("User Count")}</.help_h4>
+<.help_h4 icon={:icon_community}>{dgettext("help_ui", "User Count")}</.help_h4>
 <p>
-  {gettext("The active channel shows a user count in parentheses next to the channel name, e.g.")} <strong>{gettext("#lobby (12)")}</strong>.
+  {dgettext(
+    "help_ui",
+    "The active channel shows a user count in parentheses next to the channel name, e.g."
+  )} <strong>{dgettext("help_ui", "#lobby (12)")}</strong>.
 </p>
-<.help_h4 icon={:icon_dialog_custom_menus}>{gettext("Context Menu")}</.help_h4>
+<.help_h4 icon={:icon_dialog_custom_menus}>{dgettext("help_ui", "Context Menu")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_ui",
     "Click a nickname to access Query, Whois, Kick, Ban, Mode, Add to Contacts, and Set Nick Color options. Double-click to open a private message."
   )}
 </p>

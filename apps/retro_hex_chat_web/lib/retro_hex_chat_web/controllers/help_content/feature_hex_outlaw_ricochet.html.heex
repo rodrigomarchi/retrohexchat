@@ -1,64 +1,91 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Hex Outlaw variant with bouncing bullets. A wide wall blocks direct horizontal shots — fire at 30-degree angles and bounce bullets off the ceiling or floor to hit your opponent. This variant rewards geometric thinking and precise vertical positioning."
   )}
 </p>
 <.diagram_game_outlaw class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Arrow Up / Down")}</strong> or <strong>{gettext("W / S")}</strong>
-    {gettext("— Move vertically and set aim direction (last pressed determines angle)")}
+    <strong>{dgettext("help_games", "Arrow Up / Down")}</strong>
+    or <strong>{dgettext("help_games", "W / S")}</strong>
+    {dgettext(
+      "help_games",
+      "— Move vertically and set aim direction (last pressed determines angle)"
+    )}
   </li>
-  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Fire (one bullet at a time)")}</li>
+  <li>
+    <strong>{dgettext("help_games", "Space / Shift")}</strong> {dgettext(
+      "help_games",
+      "— Fire (one bullet at a time)"
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_rules}>{gettext("What's Different")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "What's Different")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_games",
       "A wide wall (60% of arena height) replaces the cactus — no straight shots get through"
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_games",
       "Bullets fire at a fixed 30-degree angle, aimed up or down based on your last vertical input"
     )}
   </li>
-  <li>{gettext("Each bullet bounces once off the ceiling or floor, then flies straight")}</li>
-  <li>{gettext("Same scoring: first to 10 points, best of 3 rounds")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Each bullet bounces once off the ceiling or floor, then flies straight"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Same scoring: first to 10 points, best of 3 rounds")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Predict the bounce")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Predict the bounce")}</strong>
+    {dgettext(
+      "help_games",
       "— Bullets always bounce at matching angles. Position yourself so the ricochet lands where your opponent tends to stand."
     )}
   </li>
   <li>
-    <strong>{gettext("Stay mobile vertically")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Stay mobile vertically")}</strong>
+    {dgettext(
+      "help_games",
       "— Your last directional input sets your aim. Keep moving up and down to make your shots unpredictable."
     )}
   </li>
   <li>
-    <strong>{gettext("Hug the edges")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Hug the edges")}</strong>
+    {dgettext(
+      "help_games",
       "— Standing near the ceiling or floor gives your bullets a shorter bounce path, making them harder to dodge."
     )}
   </li>
   <li>
-    <strong>{gettext("Wait for the shot")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Wait for the shot")}</strong>
+    {dgettext(
+      "help_games",
       "— You can only fire one bullet at a time. Don't waste shots — wait for a clear angle."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-outlaw">{gettext("Hex Outlaw")}</.help_link>
-  · <.help_link topic="feature-hex-outlaw-stagecoach">{gettext("Stagecoach")}</.help_link>
-  · <.help_link topic="feature-hex-outlaw-nml">{gettext("No Man's Land")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-hex-outlaw">{dgettext("help_games", "Hex Outlaw")}</.help_link>
+  ·
+  <.help_link topic="feature-hex-outlaw-stagecoach">
+    {dgettext("help_games", "Stagecoach")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-hex-outlaw-nml">
+    {dgettext("help_games", "No Man's Land")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

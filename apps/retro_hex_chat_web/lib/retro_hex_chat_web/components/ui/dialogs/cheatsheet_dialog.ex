@@ -44,14 +44,14 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
   def cheatsheet_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} class="max-w-xl">
-      <.dialog_header id={@id} title={gettext("Keyboard Shortcuts")}>
+      <.dialog_header id={@id} title={dgettext("dialogs", "Keyboard Shortcuts")}>
         <:icon><Icons.icon_dialog_cheatsheet class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body class="max-h-96 overflow-y-auto">
         <div data-testid="cheatsheet-dialog">
           <div :if={@bindings == []} class="text-xs text-muted-foreground italic">
-            {gettext("No shortcuts defined.")}
+            {dgettext("dialogs", "No shortcuts defined.")}
           </div>
 
           <div :for={group <- @bindings} class="mb-retro-8 last:mb-0">
@@ -61,9 +61,9 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
             <.table>
               <.table_header>
                 <.table_row>
-                  <.table_head class="text-xs w-1/3">{gettext("Action")}</.table_head>
-                  <.table_head class="text-xs w-1/4">{gettext("Keys")}</.table_head>
-                  <.table_head class="text-xs">{gettext("Description")}</.table_head>
+                  <.table_head class="text-xs w-1/3">{dgettext("dialogs", "Action")}</.table_head>
+                  <.table_head class="text-xs w-1/4">{dgettext("dialogs", "Keys")}</.table_head>
+                  <.table_head class="text-xs">{dgettext("dialogs", "Description")}</.table_head>
                 </.table_row>
               </.table_header>
               <.table_body>
@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
           data-testid="cheatsheet-dialog-close"
         >
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {gettext("Close")}
+          {dgettext("dialogs", "Close")}
         </.button>
       </.dialog_footer>
     </.dialog>

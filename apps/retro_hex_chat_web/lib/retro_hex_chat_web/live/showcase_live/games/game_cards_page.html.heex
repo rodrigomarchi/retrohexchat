@@ -1,20 +1,20 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">{gettext("Game Cards")}</h2>
+  <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Game Cards")}</h2>
 
   <.showcase_card
-    title={gettext("Arcade Grid")}
+    title={dgettext("showcase", "Arcade Grid")}
     description="Responsive grid of selectable game cards with icons and descriptions."
   >
     <.window>
-      <.window_title_bar title={gettext("Arcade — Troll")} controls={[:close]}>
+      <.window_title_bar title={dgettext("showcase", "Arcade — Troll")} controls={[:close]}>
         <:icon><Icons.icon_joystick class="w-[16px] h-[16px]" /></:icon>
       </.window_title_bar>
       <.window_body>
-        <p class="text-sm font-bold mb-1">{gettext("Retro Arcade")}</p>
+        <p class="text-sm font-bold mb-1">{dgettext("showcase", "Retro Arcade")}</p>
         <p class="text-xs text-muted-foreground mb-3">
-          {gettext("Classic games running in your browser via WebAssembly")}
+          {dgettext("showcase", "Classic games running in your browser via WebAssembly")}
         </p>
-        <p class="text-sm font-bold mb-2">{gettext("Choose a game:")}</p>
+        <p class="text-sm font-bold mb-2">{dgettext("showcase", "Choose a game:")}</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
           <.button
             :for={
@@ -51,7 +51,7 @@
         <div class="mt-3">
           <.button variant="outline">
             <:icon><Icons.icon_btn_prev /></:icon>
-            {gettext("Leave")}
+            {dgettext("showcase", "Leave")}
           </.button>
         </div>
       </.window_body>
@@ -67,11 +67,12 @@
   </.showcase_card>
 
   <.showcase_card
-    title={gettext("Selected State")}
+    title={dgettext("showcase", "Selected State")}
     description="Click a game above to see the selected state change."
   >
     <p class="text-sm">
-      {gettext("Currently selected:")} <span class="font-bold">{@selected || "none"}</span>
+      {dgettext("showcase", "Currently selected:")}
+      <span class="font-bold">{@selected || "none"}</span>
     </p>
   </.showcase_card>
 </.showcase_layout>

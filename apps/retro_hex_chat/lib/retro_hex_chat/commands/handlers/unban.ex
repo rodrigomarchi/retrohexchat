@@ -12,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, gettext("Usage: /unban <nickname>")}
+    {:error, dgettext("commands", "Usage: /unban <nickname>")}
   end
 
   def execute([target | _rest], context) do
@@ -32,17 +32,18 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
   def help do
     %{
       name: "unban",
-      syntax: gettext("/unban <nickname>"),
+      syntax: dgettext("commands", "/unban <nickname>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Remove a ban from a user, allowing them to rejoin the channel.\nRequires: channel operator. Must be in a channel."
         ),
-      examples: [gettext("/unban user123")]
+      examples: [dgettext("commands", "/unban user123")]
     }
   end
 
   defp require_channel(%{active_channel: nil}),
-    do: {:error, gettext("You are not in any channel")}
+    do: {:error, dgettext("commands", "You are not in any channel")}
 
   defp require_channel(%{active_channel: channel}), do: {:ok, channel}
 
@@ -50,7 +51,7 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
     if channel in operator_in do
       :ok
     else
-      {:error, gettext("You must be a channel operator to unban users")}
+      {:error, dgettext("commands", "You must be a channel operator to unban users")}
     end
   end
 
@@ -65,8 +66,9 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
 
     %CommandSyntax{
       command: "unban",
-      syntax: gettext("/unban <nickname>"),
-      description: gettext("Remove a ban from a user, allowing them to rejoin the channel."),
+      syntax: dgettext("commands", "/unban <nickname>"),
+      description:
+        dgettext("commands", "Remove a ban from a user, allowing them to rejoin the channel."),
       category: :channel,
       parameters: [
         %Parameter{
@@ -74,10 +76,10 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
           required: true,
           type: :nick,
           position: 0,
-          description: gettext("User to unban")
+          description: dgettext("commands", "User to unban")
         }
       ],
-      examples: [gettext("/unban user123")]
+      examples: [dgettext("commands", "/unban user123")]
     }
   end
 end

@@ -17,7 +17,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameTrails do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext("Light Trails game screen: two glowing trails on a dark grid, green and cyan")
+        dgettext(
+          "diagrams",
+          "Light Trails game screen: two glowing trails on a dark grid, green and cyan"
+        )
       }
     >
       {win98_chrome("Light Trails")}
@@ -77,13 +80,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameTrails do
       <rect x="440" y="156" width="8" height="8" fill="#fff" />
       <%!-- Scores --%>
       <text x="30" y="44" fill="#00ff41" font-size="14" font-family="'Courier New',monospace">
-        {gettext("P1: 2")}
+        {dgettext("diagrams", "P1: 2")}
       </text>
       <text x="440" y="44" fill="#00d4ff" font-size="14" font-family="'Courier New',monospace">
-        {gettext("P2: 1")}
+        {dgettext("diagrams", "P2: 1")}
       </text>
       <text x="230" y="44" fill="#ffaa00" font-size="12" font-family="'Courier New',monospace">
-        {gettext("ROUND 4")}
+        {dgettext("diagrams", "ROUND 4")}
       </text>
     </svg>
     """

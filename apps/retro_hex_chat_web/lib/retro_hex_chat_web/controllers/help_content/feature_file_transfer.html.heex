@@ -1,42 +1,53 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
     "Send files directly to another user via a peer-to-peer connection (WebRTC DataChannel)."
   )}
 </p>
-<.help_h4 icon={:icon_file_send}>{gettext("Sending a File")}</.help_h4>
-<pre>{gettext("/sendfile <nickname>")}</pre>
+<.help_h4 icon={:icon_file_send}>{dgettext("help_p2p", "Sending a File")}</.help_h4>
+<pre>{dgettext("help_p2p", "/sendfile <nickname>")}</pre>
 <p>
-  {gettext("Or in the P2P session, click")}
-  <strong>{gettext("Send File")}</strong> {gettext("and select the file.")}
+  {dgettext("help_p2p", "Or in the P2P session, click")}
+  <strong>{dgettext("help_p2p", "Send File")}</strong> {dgettext(
+    "help_p2p",
+    "and select the file."
+  )}
 </p>
-<.help_h4 icon={:icon_btn_down}>{gettext("Receiving")}</.help_h4>
+<.help_h4 icon={:icon_btn_down}>{dgettext("help_p2p", "Receiving")}</.help_h4>
 <p>
-  {gettext("When you receive an offer, you see the file name and size. Click")}
-  <strong>{gettext("Accept")}</strong> or <strong>{gettext("Reject")}</strong>.
+  {dgettext("help_p2p", "When you receive an offer, you see the file name and size. Click")}
+  <strong>{dgettext("help_p2p", "Accept")}</strong>
+  or <strong>{dgettext("help_p2p", "Reject")}</strong>.
 </p>
-<.help_h4 icon={:icon_tab_status}>{gettext("Progress")}</.help_h4>
+<.help_h4 icon={:icon_tab_status}>{dgettext("help_p2p", "Progress")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
     "The progress bar shows: percentage, speed, and estimated time. You can cancel at any time."
   )}
 </p>
-<.help_h4 icon={:icon_shield}>{gettext("Integrity Check")}</.help_h4>
+<.help_h4 icon={:icon_shield}>{dgettext("help_p2p", "Integrity Check")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
     "After the transfer, the SHA-256 hash is verified automatically. If it fails, you can try again."
   )}
 </p>
-<.help_h4 icon={:icon_clock}>{gettext("Pause and Resume")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_p2p", "Pause and Resume")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
     "If the connection drops briefly, the transfer pauses automatically and resumes when the connection is re-established."
   )}
 </p>
-<.help_h4 icon={:icon_ban}>{gettext("Restrictions")}</.help_h4>
+<.help_h4 icon={:icon_ban}>{dgettext("help_p2p", "Restrictions")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_p2p",
     "Blocked extensions: .exe, .bat, .cmd, .com, .msi, .scr, .pif, .vbs, .js, among others. Maximum size is configurable by the server (default: 500 MB)."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
-<p><.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link></p>
+<.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-p2p-sessions">{dgettext("help_p2p", "P2P Sessions")}</.help_link>
+</p>

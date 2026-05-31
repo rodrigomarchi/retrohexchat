@@ -29,7 +29,7 @@ defmodule RetroHexChat.Bots.BotCustomCommand do
     |> validate_length(:trigger, min: 1, max: 32)
     |> validate_length(:response, min: 1, max: 500)
     |> validate_format(:trigger, ~r/^[a-zA-Z0-9_-]+$/,
-      message: gettext("only letters, numbers, _ and -")
+      message: dgettext("bots", "only letters, numbers, _ and -")
     )
     |> unique_constraint([:bot_id, :trigger], name: :bot_custom_commands_bot_id_trigger_index)
   end

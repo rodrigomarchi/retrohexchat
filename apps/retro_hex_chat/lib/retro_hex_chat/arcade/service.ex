@@ -63,7 +63,7 @@ defmodule RetroHexChat.Arcade.Service do
   end
 
   defp session_process_not_running?(message) do
-    message in ["Session process not running", gettext("Session process not running")]
+    message in ["Session process not running", dgettext("arcade", "Session process not running")]
   end
 
   @spec select_game(String.t(), integer(), String.t()) :: :ok | {:error, atom() | String.t()}
@@ -111,13 +111,13 @@ defmodule RetroHexChat.Arcade.Service do
 
       {:error, changeset} ->
         Logger.warning("Failed to insert arcade session: #{inspect(changeset.errors)}")
-        {:error, gettext("Failed to create session")}
+        {:error, dgettext("arcade", "Failed to create session")}
     end
   end
 
   defp fetch_session(token) do
     case Queries.get_session_by_token(token) do
-      nil -> {:error, gettext("Session not found")}
+      nil -> {:error, dgettext("arcade", "Session not found")}
       session -> {:ok, session}
     end
   end

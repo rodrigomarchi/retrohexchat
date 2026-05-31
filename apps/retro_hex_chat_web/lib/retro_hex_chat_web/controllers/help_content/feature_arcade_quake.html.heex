@@ -1,92 +1,111 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Play Quake-engine games in your browser via WebAssembly. Two game data options are available — the original shareware and the open-source LibreQuake."
   )}
 </p>
 <.diagram_arcade_quake class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_game_quake}>{gettext("Game Data")}</.help_h4>
+<.help_h4 icon={:icon_game_quake}>{dgettext("help_arcade", "Game Data")}</.help_h4>
 <ul>
   <li>
     <.help_link topic="feature-arcade-quake-shareware">
-      {gettext("Quake: Dimension of the Doomed")}
+      {dgettext("help_arcade", "Quake: Dimension of the Doomed")}
     </.help_link>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "— The original Episode 1 shareware (1996). Full 3D FPS with Lovecraftian horrors. Freely redistributable."
     )}
   </li>
   <li>
-    <.help_link topic="feature-arcade-librequake">{gettext("LibreQuake")}</.help_link>
-    {gettext(
+    <.help_link topic="feature-arcade-librequake">
+      {dgettext("help_arcade", "LibreQuake")}
+    </.help_link>
+    {dgettext(
+      "help_arcade",
       "— A complete free replacement for Quake. Original levels, art, and music under BSD license."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_webrtc}>{gettext("Engine")}</.help_h4>
+<.help_h4 icon={:icon_webrtc}>{dgettext("help_arcade", "Engine")}</.help_h4>
 <p>
-  {gettext("Powered by")} <strong>{gettext("Qwasm")}</strong>
-  {gettext(
+  {dgettext("help_arcade", "Powered by")} <strong>{dgettext("help_arcade", "Qwasm")}</strong>
+  {dgettext(
+    "help_arcade",
     "— QuakeSpasm compiled to WebAssembly via Emscripten. Features dual WebGL + software rendering, QuakeC mod support, and in-browser save games."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("WASD")}</strong> {gettext("— Move")}</li>
-  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim")}</li>
-  <li><strong>{gettext("Left click")}</strong> {gettext("— Fire")}</li>
-  <li><strong>E</strong> {gettext("— Use / Open doors")}</li>
-  <li><strong>1-8</strong> {gettext("— Weapon select")}</li>
+  <li><strong>{dgettext("help_arcade", "WASD")}</strong> {dgettext("help_arcade", "— Move")}</li>
+  <li><strong>{dgettext("help_arcade", "Mouse")}</strong> {dgettext("help_arcade", "— Aim")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left click")}</strong> {dgettext("help_arcade", "— Fire")}
+  </li>
+  <li><strong>E</strong> {dgettext("help_arcade", "— Use / Open doors")}</li>
+  <li><strong>1-8</strong> {dgettext("help_arcade", "— Weapon select")}</li>
 </ul>
-<.help_h4 icon={:icon_clock}>{gettext("History")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "History")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Released by id Software on June 22, 1996, Quake was the first true 3D FPS — fully polygonal environments, real-time lighting, and a client-server multiplayer architecture that became the foundation of modern online gaming. John Carmack's engine innovations enabled the birth of competitive esports, with the Red Annihilation tournament (1997) awarding winner Dennis \"Thresh\" Fong John Carmack's own Ferrari 328."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Rocket jump")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Rocket jump")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Fire a rocket at your feet while jumping to reach secret areas. You'll take damage but it's worth it."
     )}
   </li>
   <li>
-    <strong>{gettext("Listen for audio cues")}</strong>
-    {gettext("— Enemies make distinct sounds. You can identify threats before you see them.")}
+    <strong>{dgettext("help_arcade", "Listen for audio cues")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Enemies make distinct sounds. You can identify threats before you see them."
+    )}
   </li>
   <li>
-    <strong>{gettext("Nail the Nailgun")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Nail the Nailgun")}</strong>
+    {dgettext(
+      "help_arcade",
       "— The Super Nailgun is one of the most ammo-efficient weapons. Prioritize finding it."
     )}
   </li>
   <li>
-    <strong>{gettext("Explore thoroughly")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Explore thoroughly")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Quake is full of secrets. Look for shootable walls, hidden platforms, and underwater passages."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Quake's soundtrack was composed by Trent Reznor of Nine Inch Nails — the nail ammunition boxes feature the NIN logo."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "QuakeWorld (1996) was the first game to implement client-side prediction for smoother online play over dial-up connections."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The \"Quake Guy\" was originally going to be a hammer-wielding warrior — the Lovecraftian theme was a late design change."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade">{gettext("Solo Arcade")}</.help_link>
-  · <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade">{dgettext("help_arcade", "Solo Arcade")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-doom">{dgettext("help_arcade", "DOOM (Arcade)")}</.help_link>
 </p>

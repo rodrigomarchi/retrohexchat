@@ -17,7 +17,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameWarlords do
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label={
-        gettext(
+        dgettext(
+          "diagrams",
           "Hex Warlords game screen: two castles with brick walls and a fireball bouncing between them"
         )
       }
@@ -72,10 +73,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameWarlords do
       <rect x="252" y="152" width="3" height="3" fill="#ff6600" />
       <%!-- Lives --%>
       <text x="30" y="44" fill="#00ff41" font-size="12" font-family="'Courier New',monospace">
-        {gettext("Lives: 3")}
+        {dgettext("diagrams", "Lives: 3")}
       </text>
       <text x="420" y="44" fill="#00d4ff" font-size="12" font-family="'Courier New',monospace">
-        {gettext("Lives: 2")}
+        {dgettext("diagrams", "Lives: 2")}
       </text>
     </svg>
     """

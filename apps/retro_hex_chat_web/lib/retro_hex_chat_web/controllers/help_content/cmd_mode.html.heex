@@ -1,83 +1,115 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Change channel settings and user privileges using mode flags. Modes control who can speak, who can join, and who has special powers in the channel."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/mode <+/-flag> [parameter]")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/mode <+/-flag> [parameter]")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>flag</code>
-  {gettext("— The mode letter to set (+) or remove (-). See the list below.")}<br />
+  {dgettext("help_commands", "— The mode letter to set (+) or remove (-). See the list below.")}<br />
   <code>
     parameter
   </code>
-  {gettext("— Required for some modes (nickname for +o/+h/+v/+b, key for +k, number for +l/+j).")}
+  {dgettext(
+    "help_commands",
+    "— Required for some modes (nickname for +o/+h/+v/+b, key for +k, number for +l/+j)."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_modes}>{gettext("Channel Modes")}</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_commands", "Channel Modes")}</.help_h4>
 <p>
-  <code>{gettext("+m")}</code>
-  {gettext("(moderated) — Only voiced (+v) users and operators can send messages.")}<br />
+  <code>{dgettext("help_commands", "+m")}</code>
+  {dgettext(
+    "help_commands",
+    "(moderated) — Only voiced (+v) users and operators can send messages."
+  )}<br />
   <code>
-    {gettext("+i")}
+    {dgettext("help_commands", "+i")}
   </code>
-  {gettext("(invite-only) — Users must be invited to join the channel.")}<br />
+  {dgettext("help_commands", "(invite-only) — Users must be invited to join the channel.")}<br />
   <code>
-    {gettext("+t")}
+    {dgettext("help_commands", "+t")}
   </code>
-  {gettext("(topic protected) — Only operators can change the channel topic.")}<br />
+  {dgettext("help_commands", "(topic protected) — Only operators can change the channel topic.")}<br />
   <code>
-    {gettext("+k <key>")}
+    {dgettext("help_commands", "+k <key>")}
   </code>
-  {gettext("(keyed) — Requires a password to join the channel.")}<br />
+  {dgettext("help_commands", "(keyed) — Requires a password to join the channel.")}<br />
   <code>
-    {gettext("+l <number>")}
+    {dgettext("help_commands", "+l <number>")}
   </code>
-  {gettext("(user limit) — Sets the maximum number of users allowed in the channel.")}<br />
+  {dgettext(
+    "help_commands",
+    "(user limit) — Sets the maximum number of users allowed in the channel."
+  )}<br />
   <code>
-    {gettext("+n")}
+    {dgettext("help_commands", "+n")}
   </code>
-  {gettext("(no external messages) — Only channel members can send messages to the channel.")}<br />
+  {dgettext(
+    "help_commands",
+    "(no external messages) — Only channel members can send messages to the channel."
+  )}<br />
   <code>
-    {gettext("+j <joins:seconds>")}
+    {dgettext("help_commands", "+j <joins:seconds>")}
   </code>
-  {gettext("(join throttle) — Limits how quickly users can join (e.g.,")} <code>3:10</code>
-  {gettext("= max 3 joins per 10 seconds).")}<br /><code>{gettext("+K")}</code>
-  {gettext("(no knock) — Disables")} <code>{gettext("/knock")}</code>
-  {gettext("requests for this channel.")}
+  {dgettext("help_commands", "(join throttle) — Limits how quickly users can join (e.g.,")}
+  <code>3:10</code>
+  {dgettext("help_commands", "= max 3 joins per 10 seconds).")}<br />
+  <code>
+    {dgettext("help_commands", "+K")}
+  </code>
+  {dgettext("help_commands", "(no knock) — Disables")}
+  <code>{dgettext("help_commands", "/knock")}</code>
+  {dgettext("help_commands", "requests for this channel.")}
 </p>
-<.help_h4 icon={:icon_tab_modes}>{gettext("User Privilege Modes")}</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_commands", "User Privilege Modes")}</.help_h4>
 <p>
-  <code>{gettext("+o <nick>")}</code>
-  {gettext("(operator) — Give or remove full operator status (can manage all modes).")}<br />
+  <code>{dgettext("help_commands", "+o <nick>")}</code>
+  {dgettext(
+    "help_commands",
+    "(operator) — Give or remove full operator status (can manage all modes)."
+  )}<br />
   <code>
-    {gettext("+h <nick>")}
+    {dgettext("help_commands", "+h <nick>")}
   </code>
-  {gettext("(half-operator) — Give or remove half-op status (can kick and set +v).")}<br />
+  {dgettext(
+    "help_commands",
+    "(half-operator) — Give or remove half-op status (can kick and set +v)."
+  )}<br />
   <code>
-    {gettext("+v <nick>")}
+    {dgettext("help_commands", "+v <nick>")}
   </code>
-  {gettext("(voice) — Give or remove voice (allows speaking in +m channels).")}<br />
+  {dgettext("help_commands", "(voice) — Give or remove voice (allows speaking in +m channels).")}<br />
   <code>
-    {gettext("+b <nick>")}
+    {dgettext("help_commands", "+b <nick>")}
   </code>
-  {gettext("(ban) — Ban or unban a user from the channel.")}
+  {dgettext("help_commands", "(ban) — Ban or unban a user from the channel.")}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Requires channel operator (@) or owner (~) status to set most modes")}</li>
-  <li>{gettext("Half-operators (%) can only set +v and -v")}</li>
-  <li>{gettext("Only owners can set +q (grant/revoke owner status)")}</li>
-  <li>{gettext("Use + to enable a mode, - to disable it")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "Requires channel operator (@) or owner (~) status to set most modes"
+    )}
+  </li>
+  <li>{dgettext("help_commands", "Half-operators (%) can only set +v and -v")}</li>
+  <li>{dgettext("help_commands", "Only owners can set +q (grant/revoke owner status)")}</li>
+  <li>{dgettext("help_commands", "Use + to enable a mode, - to disable it")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/mode +m /mode -m /mode +o Alice /mode -o Alice /mode +v Bob /mode +k secretpass /mode -k /mode +l 25 /mode +i /mode +b Troll /mode -b Troll")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/mode +m /mode -m /mode +o Alice /mode -o Alice /mode +v Bob /mode +k secretpass /mode -k /mode +l 25 /mode +i /mode +b Troll /mode -b Troll")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
-  · <.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
-  · <.help_link topic="cmd-unban">{gettext("/unban")}</.help_link>
-  · <.help_link topic="cmd-cs">{gettext("/cs")}</.help_link>
-  · <.help_link topic="cmd-topic">{gettext("/topic")}</.help_link>
-  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
+  <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
+  · <.help_link topic="cmd-ban">{dgettext("help_commands", "/ban")}</.help_link>
+  · <.help_link topic="cmd-unban">{dgettext("help_commands", "/unban")}</.help_link>
+  · <.help_link topic="cmd-cs">{dgettext("help_commands", "/cs")}</.help_link>
+  · <.help_link topic="cmd-topic">{dgettext("help_commands", "/topic")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_commands", "Channel Permissions")}
+  </.help_link>
 </p>

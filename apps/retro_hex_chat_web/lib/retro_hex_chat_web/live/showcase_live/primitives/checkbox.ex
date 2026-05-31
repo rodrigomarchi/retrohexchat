@@ -14,27 +14,27 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Checkbox do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Checkbox"), active_page: "checkbox")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Checkbox"), active_page: "checkbox")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Checkbox")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Checkbox")}</h2>
 
       <.showcase_card
-        title={gettext("Usage")}
+        title={dgettext("showcase", "Usage")}
         description="A control that allows the user to toggle between checked and not checked."
       >
         <div class="space-y-2">
           <div class="flex items-center gap-2">
             <.checkbox id="check-1" />
-            <.label for="check-1">{gettext("Accept terms and conditions")}</.label>
+            <.label for="check-1">{dgettext("showcase", "Accept terms and conditions")}</.label>
           </div>
           <div class="flex items-center gap-2">
             <.checkbox id="check-2" default-value={true} />
-            <.label for="check-2">{gettext("Send notifications")}</.label>
+            <.label for="check-2">{dgettext("showcase", "Send notifications")}</.label>
           </div>
         </div>
         <.code_example>

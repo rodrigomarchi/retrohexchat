@@ -1,54 +1,81 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Create short command shortcuts that expand into longer commands or messages. For example, create"
   )}
-  <code>{gettext("/hi")}</code>
-  {gettext("to automatically say hello to everyone.")}
+  <code>{dgettext("help_commands", "/hi")}</code>
+  {dgettext("help_commands", "to automatically say hello to everyone.")}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/alias /alias list /alias add <name> <expansion> /alias remove <name>")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/alias /alias list /alias add <name> <expansion> /alias remove <name>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>name</code>
-  {gettext("— Short name for the alias (letters, numbers, hyphens, underscores).")}<br />
+  {dgettext(
+    "help_commands",
+    "— Short name for the alias (letters, numbers, hyphens, underscores)."
+  )}<br />
   <code>
     expansion
   </code>
-  {gettext("— Command or text to expand to. Supports variables (see below).")}
+  {dgettext("help_commands", "— Command or text to expand to. Supports variables (see below).")}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext("After creating an alias, type")} <code>{gettext("/aliasname")}</code>
-  {gettext("to run it. For example, if you create an alias called")} <code>hi</code>
-  {gettext("with expansion")} <code>{gettext("/me says hello!")}</code>{gettext(", typing")}
-  <code>{gettext("/hi")}</code>
-  {gettext("will send the action message. You can use variables in expansions:")} <code>$1</code>
+  {dgettext("help_commands", "After creating an alias, type")}
+  <code>{dgettext("help_commands", "/aliasname")}</code>
+  {dgettext("help_commands", "to run it. For example, if you create an alias called")}
+  <code>hi</code>
+  {dgettext("help_commands", "with expansion")} <code>{dgettext("help_commands", "/me says hello!")}</code>{dgettext(
+    "help_commands",
+    ", typing"
+  )}
+  <code>{dgettext("help_commands", "/hi")}</code>
+  {dgettext("help_commands", "will send the action message. You can use variables in expansions:")}
+  <code>$1</code>
   through <code>$9</code>
-  {gettext("for positional arguments,")} <code>{gettext("$nick")}</code>
-  {gettext("for your current nickname,")} <code>{gettext("$chan")}</code>
-  {gettext("for the current channel name, and")} <code>$$</code>
-  {gettext("for a literal dollar sign. Running")} <code>{gettext("/alias")}</code>
-  {gettext("with no arguments opens the Aliases dialog.")}
+  {dgettext("help_commands", "for positional arguments,")}
+  <code>{dgettext("help_commands", "$nick")}</code>
+  {dgettext("help_commands", "for your current nickname,")}
+  <code>{dgettext("help_commands", "$chan")}</code>
+  {dgettext("help_commands", "for the current channel name, and")} <code>$$</code>
+  {dgettext("help_commands", "for a literal dollar sign. Running")}
+  <code>{dgettext("help_commands", "/alias")}</code>
+  {dgettext("help_commands", "with no arguments opens the Aliases dialog.")}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Maximum 50 aliases per user")}</li>
-  <li>{gettext("Aliases that shadow built-in commands will override them (with a warning)")}</li>
+  <li>{dgettext("help_commands", "Maximum 50 aliases per user")}</li>
   <li>
-    {gettext("Recursive aliases (A calls B calls A) are detected and rejected (max 5 levels)")}
+    {dgettext(
+      "help_commands",
+      "Aliases that shadow built-in commands will override them (with a warning)"
+    )}
   </li>
   <li>
-    {gettext("Command chaining (")}<code>|</code>, <code>&amp;&amp;</code>, <code>;</code>{gettext(
+    {dgettext(
+      "help_commands",
+      "Recursive aliases (A calls B calls A) are detected and rejected (max 5 levels)"
+    )}
+  </li>
+  <li>
+    {dgettext("help_commands", "Command chaining (")}<code>|</code>, <code>&amp;&amp;</code>, <code>;</code>{dgettext(
+      "help_commands",
       ") is not allowed in expansions"
     )}
   </li>
-  <li>{gettext("Registered users: aliases are saved across sessions. Guests: session-only")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "Registered users: aliases are saved across sessions. Guests: session-only"
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/alias add hi /me says hello everyone! /alias add greet /me waves at $1 /alias add info /whois $1 /alias remove hi /alias list")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/alias add hi /me says hello everyone! /alias add greet /me waves at $1 /alias add info /whois $1 /alias remove hi /alias list")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-aliases">{gettext("Aliases Feature")}</.help_link>
-  · <.help_link topic="cmd-timer">{gettext("/timer")}</.help_link>
-  · <.help_link topic="cmd-popups">{gettext("/popups")}</.help_link>
+  <.help_link topic="feature-aliases">{dgettext("help_commands", "Aliases Feature")}</.help_link>
+  · <.help_link topic="cmd-timer">{dgettext("help_commands", "/timer")}</.help_link>
+  · <.help_link topic="cmd-popups">{dgettext("help_commands", "/popups")}</.help_link>
 </p>

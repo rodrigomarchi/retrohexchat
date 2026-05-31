@@ -1,35 +1,46 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Set up commands that automatically run every time you connect, like identifying with NickServ or joining channels."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/perform /perform list /perform add <command> /perform remove <position> /perform move <from> <to> /perform clear")}</pre>
-<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/perform /perform list /perform add <command> /perform remove <position> /perform move <from> <to> /perform clear")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
 <p>
   <code>command</code>
-  {gettext("— A slash command to add to the perform list.")}<br /><code>position</code>
-  {gettext("— The position number of the command (shown in")} <code>{gettext("/perform list")}</code>).<br /><code>from</code>,
+  {dgettext("help_commands", "— A slash command to add to the perform list.")}<br />
+  <code>
+    position
+  </code>
+  {dgettext("help_commands", "— The position number of the command (shown in")} <code>{dgettext("help_commands", "/perform list")}</code>).<br /><code>from</code>,
   <code>to</code>
-  {gettext("— Position numbers for reordering commands.")}
+  {dgettext("help_commands", "— Position numbers for reordering commands.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Perform commands execute sequentially when you connect, before auto-join channels are joined. This ensures that commands like"
   )}
-  <code>{gettext("/ns identify")}</code>
-  {gettext("run first, so you're identified before entering channels. Passwords in")}
-  <code>{gettext("/ns identify")}</code>
-  {gettext("commands are masked in the list display for security. Running")}
-  <code>{gettext("/perform")}</code>
-  {gettext("with no arguments opens the Perform dialog.")}
+  <code>{dgettext("help_commands", "/ns identify")}</code>
+  {dgettext(
+    "help_commands",
+    "run first, so you're identified before entering channels. Passwords in"
+  )}
+  <code>{dgettext("help_commands", "/ns identify")}</code>
+  {dgettext("help_commands", "commands are masked in the list display for security. Running")}
+  <code>{dgettext("help_commands", "/perform")}</code>
+  {dgettext("help_commands", "with no arguments opens the Perform dialog.")}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/perform list /perform add /ns identify mypassword /perform add /away AFK /perform remove 2 /perform move 3 1 /perform clear")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/perform list /perform add /ns identify mypassword /perform add /away AFK /perform remove 2 /perform move 3 1 /perform clear")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-autojoin">{gettext("/autojoin")}</.help_link>
-  · <.help_link topic="cmd-ns">{gettext("/ns")}</.help_link>
-  · <.help_link topic="feature-perform">{gettext("Perform / Auto-Commands")}</.help_link>
+  <.help_link topic="cmd-autojoin">{dgettext("help_commands", "/autojoin")}</.help_link>
+  · <.help_link topic="cmd-ns">{dgettext("help_commands", "/ns")}</.help_link>
+  ·
+  <.help_link topic="feature-perform">
+    {dgettext("help_commands", "Perform / Auto-Commands")}
+  </.help_link>
 </p>

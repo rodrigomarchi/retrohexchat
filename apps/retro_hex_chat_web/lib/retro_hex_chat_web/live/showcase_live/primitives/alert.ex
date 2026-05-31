@@ -15,29 +15,32 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Alert do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Alert"), active_page: "alert")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Alert"), active_page: "alert")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Alert")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Alert")}</h2>
 
-      <.showcase_card title={gettext("Variants")} description="Displays a callout for user attention.">
+      <.showcase_card
+        title={dgettext("showcase", "Variants")}
+        description="Displays a callout for user attention."
+      >
         <div class="space-y-3">
           <.alert>
             <:icon><Icons.icon_btn_info class="w-4 h-4" /></:icon>
-            <.alert_title>{gettext("Default Alert")}</.alert_title>
+            <.alert_title>{dgettext("showcase", "Default Alert")}</.alert_title>
             <.alert_description>
-              {gettext("This is a default informational alert.")}
+              {dgettext("showcase", "This is a default informational alert.")}
             </.alert_description>
           </.alert>
           <.alert variant="destructive">
             <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
-            <.alert_title>{gettext("Error")}</.alert_title>
+            <.alert_title>{dgettext("showcase", "Error")}</.alert_title>
             <.alert_description>
-              {gettext("Something went wrong. Please try again.")}
+              {dgettext("showcase", "Something went wrong. Please try again.")}
             </.alert_description>
           </.alert>
         </div>

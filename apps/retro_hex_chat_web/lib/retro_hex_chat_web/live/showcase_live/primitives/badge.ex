@@ -13,25 +13,25 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Badge"), active_page: "badge")}
+    {:ok, assign(socket, page_title: dgettext("showcase", "Badge"), active_page: "badge")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Badge")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Badge")}</h2>
 
       <.showcase_card
-        title={gettext("Variants")}
+        title={dgettext("showcase", "Variants")}
         description="All badge variants — sunken status-bar panel style."
       >
         <div class="flex flex-wrap items-center gap-2">
-          <.badge>{gettext("Default")}</.badge>
-          <.badge variant="secondary">{gettext("Secondary")}</.badge>
-          <.badge variant="destructive">{gettext("Destructive")}</.badge>
-          <.badge variant="outline">{gettext("Outline")}</.badge>
-          <.badge variant="success">{gettext("Success")}</.badge>
+          <.badge>{dgettext("showcase", "Default")}</.badge>
+          <.badge variant="secondary">{dgettext("showcase", "Secondary")}</.badge>
+          <.badge variant="destructive">{dgettext("showcase", "Destructive")}</.badge>
+          <.badge variant="outline">{dgettext("showcase", "Outline")}</.badge>
+          <.badge variant="success">{dgettext("showcase", "Success")}</.badge>
         </div>
         <.code_example>
           &lt;.badge&gt;Default&lt;/.badge&gt;
@@ -43,41 +43,41 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Status Indicators")}
+        title={dgettext("showcase", "Status Indicators")}
         description="Badges as connection or session state labels."
       >
         <div class="flex flex-wrap items-center gap-2">
-          <.badge variant="success">{gettext("Connected")}</.badge>
-          <.badge variant="secondary">{gettext("Waiting")}</.badge>
-          <.badge variant="destructive">{gettext("Failed")}</.badge>
-          <.badge variant="outline">{gettext("Idle")}</.badge>
-          <.badge>{gettext("In Call")}</.badge>
+          <.badge variant="success">{dgettext("showcase", "Connected")}</.badge>
+          <.badge variant="secondary">{dgettext("showcase", "Waiting")}</.badge>
+          <.badge variant="destructive">{dgettext("showcase", "Failed")}</.badge>
+          <.badge variant="outline">{dgettext("showcase", "Idle")}</.badge>
+          <.badge>{dgettext("showcase", "In Call")}</.badge>
         </div>
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Role Labels")}
+        title={dgettext("showcase", "Role Labels")}
         description="Badges as user role indicators in chat."
       >
         <div class="flex flex-wrap items-center gap-2">
-          <.badge variant="destructive">{gettext("Owner")}</.badge>
-          <.badge>{gettext("Operator")}</.badge>
-          <.badge variant="secondary">{gettext("Half-Op")}</.badge>
-          <.badge variant="success">{gettext("Voiced")}</.badge>
-          <.badge variant="outline">{gettext("Regular")}</.badge>
+          <.badge variant="destructive">{dgettext("showcase", "Owner")}</.badge>
+          <.badge>{dgettext("showcase", "Operator")}</.badge>
+          <.badge variant="secondary">{dgettext("showcase", "Half-Op")}</.badge>
+          <.badge variant="success">{dgettext("showcase", "Voiced")}</.badge>
+          <.badge variant="outline">{dgettext("showcase", "Regular")}</.badge>
         </div>
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Metadata Tags")}
+        title={dgettext("showcase", "Metadata Tags")}
         description="Badges as small metadata tags on channels or files."
       >
         <div class="flex flex-wrap items-center gap-2">
-          <.badge variant="outline">{gettext("+nt")}</.badge>
-          <.badge variant="outline">{gettext("+s")}</.badge>
-          <.badge variant="secondary">{gettext("PNG")}</.badge>
-          <.badge variant="secondary">{gettext("2.4 MB")}</.badge>
-          <.badge>{gettext("ScummVM")}</.badge>
+          <.badge variant="outline">{dgettext("showcase", "+nt")}</.badge>
+          <.badge variant="outline">{dgettext("showcase", "+s")}</.badge>
+          <.badge variant="secondary">{dgettext("showcase", "PNG")}</.badge>
+          <.badge variant="secondary">{dgettext("showcase", "2.4 MB")}</.badge>
+          <.badge>{dgettext("showcase", "ScummVM")}</.badge>
         </div>
       </.showcase_card>
     </.showcase_layout>

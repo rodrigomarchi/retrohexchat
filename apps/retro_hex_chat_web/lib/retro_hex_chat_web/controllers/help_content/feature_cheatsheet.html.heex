@@ -1,35 +1,48 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The Shortcut Cheatsheet displays all available keyboard shortcuts organized by category in a read-only retro-styled dialog."
   )}
 </p>
-<.help_h4 icon={:icon_folder}>{gettext("Opening")}</.help_h4>
+<.help_h4 icon={:icon_folder}>{dgettext("help_features", "Opening")}</.help_h4>
 <p>
-  {gettext("Press")}
-  <strong>{gettext("Ctrl+Shift+/")}</strong> {gettext("to toggle the cheatsheet dialog.")}
+  {dgettext("help_features", "Press")}
+  <strong>{dgettext("help_features", "Ctrl+Shift+/")}</strong> {dgettext(
+    "help_features",
+    "to toggle the cheatsheet dialog."
+  )}
 </p>
-<.help_h4 icon={:icon_folder}>{gettext("Categories")}</.help_h4>
+<.help_h4 icon={:icon_folder}>{dgettext("help_features", "Categories")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Shortcuts are grouped into categories: Navigation, Windows & Dialogs, and Text Formatting. Each category shows a table with Action and Binding columns."
   )}
 </p>
-<.help_h4 icon={:icon_dialog_cheatsheet}>{gettext("Custom Bindings")}</.help_h4>
+<.help_h4 icon={:icon_dialog_cheatsheet}>{dgettext("help_features", "Custom Bindings")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The cheatsheet reflects your current key bindings. If you have customized shortcuts in"
-  )} <strong>{gettext("Options > Key Bindings")}</strong>{gettext(
+  )} <strong>{dgettext("help_features", "Options > Key Bindings")}</strong>{dgettext(
+    "help_features",
     ", the cheatsheet shows your custom bindings. Unbound actions show an em dash (&mdash;)."
   )}
 </p>
-<.help_h4 icon={:icon_close}>{gettext("Closing")}</.help_h4>
+<.help_h4 icon={:icon_close}>{dgettext("help_features", "Closing")}</.help_h4>
 <p>
-  {gettext("Press")} <strong>{gettext("Escape")}</strong>, <strong>{gettext("Ctrl+Shift+/")}</strong>{gettext(
+  {dgettext("help_features", "Press")} <strong>{dgettext("help_features", "Escape")}</strong>, <strong>{dgettext("help_features", "Ctrl+Shift+/")}</strong>{dgettext(
+    "help_features",
     ", or click the close button."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
-  · <.help_link topic="feature-key-bindings">{gettext("Key Bindings")}</.help_link>
+  <.help_link topic="keyboard-shortcuts">
+    {dgettext("help_features", "Keyboard Shortcuts")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-key-bindings">
+    {dgettext("help_features", "Key Bindings")}
+  </.help_link>
 </p>

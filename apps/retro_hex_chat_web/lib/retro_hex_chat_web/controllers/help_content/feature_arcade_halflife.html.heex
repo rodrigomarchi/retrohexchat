@@ -1,87 +1,115 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Play Half-Life: Uplink in your browser via WebAssembly. The official 1999 Valve demo with 3 unique missions not found in the full game."
   )}
 </p>
 <.diagram_arcade_halflife class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_game_halflife}>{gettext("Game Data")}</.help_h4>
+<.help_h4 icon={:icon_game_halflife}>{dgettext("help_arcade", "Game Data")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="feature-arcade-halflife-uplink">{gettext("Half-Life: Uplink")}</.help_link>
-    {gettext(
+    <.help_link topic="feature-arcade-halflife-uplink">
+      {dgettext("help_arcade", "Half-Life: Uplink")}
+    </.help_link>
+    {dgettext(
+      "help_arcade",
       "— The official Valve demo (1999) with 3 unique levels set in Black Mesa's underground labs. Freely redistributable."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_webrtc}>{gettext("Engine")}</.help_h4>
+<.help_h4 icon={:icon_webrtc}>{dgettext("help_arcade", "Engine")}</.help_h4>
 <p>
-  {gettext("Powered by")} <strong>{gettext("Xash3D-FWGS")}</strong>
-  {gettext(
+  {dgettext("help_arcade", "Powered by")}
+  <strong>{dgettext("help_arcade", "Xash3D-FWGS")}</strong>
+  {dgettext(
+    "help_arcade",
     "— an open-source reimplementation of the GoldSource engine, compiled to WebAssembly via Emscripten (GPL-2.0). Features WebGL2 rendering and Web Audio support."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("WASD")}</strong> {gettext("— Move")}</li>
-  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim")}</li>
-  <li><strong>{gettext("Left click")}</strong> {gettext("— Fire")}</li>
-  <li><strong>E</strong> {gettext("— Use / interact")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Jump")}</li>
-  <li><strong>{gettext("Shift")}</strong> {gettext("— Crouch")}</li>
-  <li><strong>R</strong> {gettext("— Reload")}</li>
+  <li><strong>{dgettext("help_arcade", "WASD")}</strong> {dgettext("help_arcade", "— Move")}</li>
+  <li><strong>{dgettext("help_arcade", "Mouse")}</strong> {dgettext("help_arcade", "— Aim")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Left click")}</strong> {dgettext("help_arcade", "— Fire")}
+  </li>
+  <li><strong>E</strong> {dgettext("help_arcade", "— Use / interact")}</li>
+  <li><strong>{dgettext("help_arcade", "Space")}</strong> {dgettext("help_arcade", "— Jump")}</li>
+  <li>
+    <strong>{dgettext("help_arcade", "Shift")}</strong> {dgettext("help_arcade", "— Crouch")}
+  </li>
+  <li><strong>R</strong> {dgettext("help_arcade", "— Reload")}</li>
 </ul>
-<.help_h4 icon={:icon_clock}>{gettext("History")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "History")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Released by Valve on November 19, 1998, Half-Life revolutionized FPS storytelling with its seamless, script-driven narrative — no cutscenes, no chapter breaks. Players experience the Black Mesa incident entirely through Gordon Freeman's eyes. The GoldSource engine (a heavily modified Quake engine) powered not just Half-Life but also Counter-Strike, the most popular competitive FPS of its era."
   )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Use the crowbar")}</strong>
-    {gettext("— Break every crate you see. They often contain health kits, ammo, and batteries.")}
+    <strong>{dgettext("help_arcade", "Use the crowbar")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— Break every crate you see. They often contain health kits, ammo, and batteries."
+    )}
   </li>
   <li>
-    <strong>{gettext("Crouch-jump")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Crouch-jump")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Hold crouch while jumping to reach higher ledges. Essential for navigation in Uplink."
     )}
   </li>
   <li>
-    <strong>{gettext("Conserve ammo")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Conserve ammo")}</strong>
+    {dgettext(
+      "help_arcade",
       "— The Uplink demo gives limited supplies. Use the crowbar on headcrabs and save bullets for soldiers."
     )}
   </li>
   <li>
-    <strong>{gettext("Listen to scientists")}</strong>
-    {gettext("— NPCs give hints about what's ahead. Pay attention to their dialogue.")}
+    <strong>{dgettext("help_arcade", "Listen to scientists")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— NPCs give hints about what's ahead. Pay attention to their dialogue."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Half-Life: Uplink contains 3 levels that don't appear in the full game — they were designed exclusively for the demo."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Half-Life was almost cancelled when Valve showed it to Sierra in 1997 — the publisher thought it wasn't fun enough. Valve scrapped 12 months of work and started over."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The lambda (λ) symbol represents the half-life decay constant in physics — a direct reference to the game's title."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade">{gettext("Solo Arcade")}</.help_link>
-  · <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
-  · <.help_link topic="feature-arcade-quake">{gettext("Quake (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade">{dgettext("help_arcade", "Solo Arcade")}</.help_link>
   ·
-  <.help_link topic="feature-arcade-wolfenstein">{gettext("Wolfenstein 3D (Arcade)")}</.help_link>
+  <.help_link topic="feature-arcade-doom">{dgettext("help_arcade", "DOOM (Arcade)")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-quake">
+    {dgettext("help_arcade", "Quake (Arcade)")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-wolfenstein">
+    {dgettext("help_arcade", "Wolfenstein 3D (Arcade)")}
+  </.help_link>
 </p>

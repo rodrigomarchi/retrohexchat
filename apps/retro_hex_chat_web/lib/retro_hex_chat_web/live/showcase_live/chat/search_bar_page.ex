@@ -13,17 +13,18 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SearchBarPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Search Bar"), active_page: "search-bar")}
+    {:ok,
+     assign(socket, page_title: dgettext("showcase", "Search Bar"), active_page: "search-bar")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Search Bar")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Search Bar")}</h2>
 
       <.showcase_card
-        title={gettext("Default")}
+        title={dgettext("showcase", "Default")}
         description="Search bar with query, result counter, navigation buttons, and filter checkboxes."
       >
         <.search_bar
@@ -35,21 +36,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SearchBarPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Empty Search")}
+        title={dgettext("showcase", "Empty Search")}
         description="Search bar with no query entered. Prev/Next buttons are disabled."
       >
         <.search_bar />
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Zero Results")}
+        title={dgettext("showcase", "Zero Results")}
         description="Search bar with a query but no matches found. Navigation buttons disabled."
       >
         <.search_bar query="nonexistent_text_xyz" result_count={0} current_result={0} />
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Regex Error")}
+        title={dgettext("showcase", "Regex Error")}
         description="Search bar with an invalid regex showing error message."
       >
         <.search_bar
@@ -62,7 +63,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.SearchBarPage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With All Filters")}
+        title={dgettext("showcase", "With All Filters")}
         description="All filter checkboxes enabled."
       >
         <.search_bar

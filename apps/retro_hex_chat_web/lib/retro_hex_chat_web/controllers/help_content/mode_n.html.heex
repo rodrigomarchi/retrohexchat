@@ -1,7 +1,8 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_channels",
     "When set, only channel members can send messages to the channel. Non-members attempting to send will receive an error. Service messages (NickServ, ChanServ) are not affected."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
-<pre>{gettext("/mode +n — Enable no external messages /mode -n — Disable no external messages")}</pre>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
+<pre>{dgettext("help_channels", "/mode +n — Enable no external messages /mode -n — Disable no external messages")}</pre>

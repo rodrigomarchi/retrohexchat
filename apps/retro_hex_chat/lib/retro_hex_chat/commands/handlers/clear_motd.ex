@@ -13,12 +13,12 @@ defmodule RetroHexChat.Commands.Handlers.ClearMotd do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, %{is_admin: false}) do
-    {:error, gettext("Permission denied: you must be a server administrator.")}
+    {:error, dgettext("commands", "Permission denied: you must be a server administrator.")}
   end
 
   def execute(_args, %{is_admin: true, nickname: nickname}) do
     Motd.clear(nickname)
-    {:ok, :system, %{content: gettext("MOTD has been cleared.")}}
+    {:ok, :system, %{content: dgettext("commands", "MOTD has been cleared.")}}
   end
 
   @impl true
@@ -33,7 +33,8 @@ defmodule RetroHexChat.Commands.Handlers.ClearMotd do
       name: "clearmotd",
       syntax: "/clearmotd",
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Remove the server's Message of the Day so new users won't see any MOTD. Admin only."
         ),
       examples: ["/clearmotd"]
@@ -52,7 +53,8 @@ defmodule RetroHexChat.Commands.Handlers.ClearMotd do
       command: "clearmotd",
       syntax: "/clearmotd",
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Remove the server's Message of the Day so new users won't see any MOTD. Admin only."
         ),
       category: :advanced,

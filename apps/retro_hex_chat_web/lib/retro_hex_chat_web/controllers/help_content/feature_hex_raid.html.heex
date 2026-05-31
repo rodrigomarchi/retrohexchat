@@ -1,50 +1,84 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies for points, steal fuel, and drop mines on your rival. 10 sections of increasing difficulty."
   )}
 </p>
 <.diagram_game_raid class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("Arrow Left/Right")}</strong> {gettext("— Steer jet laterally")}</li>
-  <li><strong>{gettext("Arrow Up")}</strong> {gettext("— Accelerate")}</li>
-  <li><strong>{gettext("Arrow Down")}</strong> {gettext("— Decelerate")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Fire missile")}</li>
-  <li><strong>{gettext("Shift")}</strong> {gettext("— Drop mine")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
-<ul>
-  <li>{gettext("Destroy enemies (boats, helicopters, jets) for points")}</li>
-  <li>{gettext("Fly over fuel stations to capture fuel — first come, first served")}</li>
-  <li>{gettext("Destroy bridges (3 HP) to advance to the next section")}</li>
-  <li>{gettext("Drop mines to sabotage your opponent")}</li>
-  <li>{gettext("Run out of fuel or crash into banks/enemies and you lose a life")}</li>
   <li>
-    {gettext(
+    <strong>{dgettext("help_games", "Arrow Left/Right")}</strong> {dgettext(
+      "help_games",
+      "— Steer jet laterally"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Up")}</strong> {dgettext("help_games", "— Accelerate")}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Down")}</strong> {dgettext(
+      "help_games",
+      "— Decelerate"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Space")}</strong> {dgettext("help_games", "— Fire missile")}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Shift")}</strong> {dgettext("help_games", "— Drop mine")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>{dgettext("help_games", "Destroy enemies (boats, helicopters, jets) for points")}</li>
+  <li>
+    {dgettext("help_games", "Fly over fuel stations to capture fuel — first come, first served")}
+  </li>
+  <li>{dgettext("help_games", "Destroy bridges (3 HP) to advance to the next section")}</li>
+  <li>{dgettext("help_games", "Drop mines to sabotage your opponent")}</li>
+  <li>
+    {dgettext("help_games", "Run out of fuel or crash into banks/enemies and you lose a life")}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
       "3 lives per player — highest score when all sections clear or both out of lives wins"
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_games", "Modes")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Hex Raid")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Hex Raid")}</strong> {dgettext(
+      "help_games",
       "— Full rules: mines, fuel competition, 10 sections"
     )}
   </li>
-  <li><strong>{gettext("Pacifist")}</strong> {gettext("— No mines, pure skill competition")}</li>
   <li>
-    <strong>{gettext("Blitz")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Pacifist")}</strong> {dgettext(
+      "help_games",
+      "— No mines, pure skill competition"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Blitz")}</strong> {dgettext(
+      "help_games",
       "— 5 sections, narrow river, faster mine recharge"
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
-<p>{gettext("Inspired by Activision's River Raid (1982) for the Atari 2600.")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
+<p>{dgettext("help_games", "Inspired by Activision's River Raid (1982) for the Atari 2600.")}</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-raid-pacifist">{gettext("Hex Raid: Pacifist")}</.help_link>
-  · <.help_link topic="feature-hex-raid-blitz">{gettext("Hex Raid: Blitz")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-hex-raid-pacifist">
+    {dgettext("help_games", "Hex Raid: Pacifist")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-hex-raid-blitz">
+    {dgettext("help_games", "Hex Raid: Blitz")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

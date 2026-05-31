@@ -16,10 +16,13 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
     {:ok, :system,
      %{
        content:
-         gettext("Usage: /timer <name> <seconds> <command> — one-shot timer\n") <>
-           gettext("       /timer <name> repeat <seconds> <command> — repeating timer\n") <>
-           gettext("       /timer list — show active timers\n") <>
-           gettext("       /timer stop <name> — cancel a timer")
+         dgettext("commands", "Usage: /timer <name> <seconds> <command> — one-shot timer\n") <>
+           dgettext(
+             "commands",
+             "       /timer <name> repeat <seconds> <command> — repeating timer\n"
+           ) <>
+           dgettext("commands", "       /timer list — show active timers\n") <>
+           dgettext("commands", "       /timer stop <name> — cancel a timer")
      }}
   end
 
@@ -55,16 +58,17 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
   def help do
     %{
       name: "timer",
-      syntax: gettext("/timer <name> [repeat] <seconds> <command>"),
+      syntax: dgettext("commands", "/timer <name> [repeat] <seconds> <command>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Schedule a command to run after a delay or on a repeating interval.\nCreate: /timer <name> <seconds> <command>. Repeat: /timer <name> repeat <seconds> <command>.\nTimers run in the window that was active when they were created and do not switch your current window when they fire.\nManage: /timer list, /timer stop <name>.\nMax 5 timers. One-shot: 1-86400s. Repeat minimum: 10s. Session-only (lost on disconnect)."
         ),
       examples: [
-        gettext("/timer remind 1800 /me reminds everyone: standup in 30 minutes"),
-        gettext("/timer heartbeat repeat 600 /me is still here"),
-        gettext("/timer list"),
-        gettext("/timer stop heartbeat")
+        dgettext("commands", "/timer remind 1800 /me reminds everyone: standup in 30 minutes"),
+        dgettext("commands", "/timer heartbeat repeat 600 /me is still here"),
+        dgettext("commands", "/timer list"),
+        dgettext("commands", "/timer stop heartbeat")
       ]
     }
   end
@@ -80,9 +84,10 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
 
     %CommandSyntax{
       command: "timer",
-      syntax: gettext("/timer <name> [repeat] <seconds> <command>"),
+      syntax: dgettext("commands", "/timer <name> [repeat] <seconds> <command>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Schedule a command to run after a delay or on a repeating interval. The command runs in the window that was active when the timer was created."
         ),
       category: :config,
@@ -92,25 +97,25 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
           required: true,
           type: :text,
           position: 0,
-          description: gettext("Timer name")
+          description: dgettext("commands", "Timer name")
         },
         %Parameter{
           name: "args",
           required: true,
           type: :text,
           position: 1,
-          description: gettext("Configuration: [repeat] <seconds> <command>")
+          description: dgettext("commands", "Configuration: [repeat] <seconds> <command>")
         }
       ],
       examples: [
-        gettext("/timer remind 1800 /me reminds everyone: standup in 30 minutes"),
-        gettext("/timer heartbeat repeat 600 /me is still here"),
-        gettext("/timer list"),
-        gettext("/timer stop heartbeat")
+        dgettext("commands", "/timer remind 1800 /me reminds everyone: standup in 30 minutes"),
+        dgettext("commands", "/timer heartbeat repeat 600 /me is still here"),
+        dgettext("commands", "/timer list"),
+        dgettext("commands", "/timer stop heartbeat")
       ],
       subcommands: [
-        %{name: "list", description: gettext("Show active timers")},
-        %{name: "stop", description: gettext("Stop a running timer")}
+        %{name: "list", description: dgettext("commands", "Show active timers")},
+        %{name: "stop", description: dgettext("commands", "Stop a running timer")}
       ]
     }
   end

@@ -81,27 +81,32 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
          |> assign(session: new_session, show_contact_add_dialog: false)
          |> maybe_persist_contacts(new_session)
          |> push_status_message(
-           gettext("Added %{nickname} to contacts", nickname: nickname),
+           dgettext("chat", "Added %{nickname} to contacts", nickname: nickname),
            :system
          )}
 
       {:error, :self_add} ->
-        {:halt, push_status_message(socket, gettext("Cannot add yourself to contacts"), :system)}
+        {:halt,
+         push_status_message(socket, dgettext("chat", "Cannot add yourself to contacts"), :system)}
 
       {:error, :duplicate} ->
         {:halt,
          push_status_message(
            socket,
-           gettext("%{nickname} is already in your contacts", nickname: nickname),
+           dgettext("chat", "%{nickname} is already in your contacts", nickname: nickname),
            :system
          )}
 
       {:error, :list_full} ->
         {:halt,
-         push_status_message(socket, gettext("Contact list is full (max 100 entries)"), :system)}
+         push_status_message(
+           socket,
+           dgettext("chat", "Contact list is full (max 100 entries)"),
+           :system
+         )}
 
       {:error, :invalid_nickname} ->
-        {:halt, push_status_message(socket, gettext("Invalid nickname"), :system)}
+        {:halt, push_status_message(socket, dgettext("chat", "Invalid nickname"), :system)}
     end
   end
 
@@ -134,7 +139,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
            )
            |> maybe_persist_contacts(new_session)
            |> push_status_message(
-             gettext("Updated note for %{nickname}", nickname: nickname),
+             dgettext("chat", "Updated note for %{nickname}", nickname: nickname),
              :system
            )}
 
@@ -142,12 +147,12 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
           {:halt,
            push_status_message(
              socket,
-             gettext("%{nickname} is not in your contacts", nickname: nickname),
+             dgettext("chat", "%{nickname} is not in your contacts", nickname: nickname),
              :system
            )}
       end
     else
-      {:halt, push_status_message(socket, gettext("No contact selected"), :system)}
+      {:halt, push_status_message(socket, dgettext("chat", "No contact selected"), :system)}
     end
   end
 
@@ -164,7 +169,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
          |> assign(session: new_session, contacts_selected: nil)
          |> maybe_persist_contacts(new_session)
          |> push_status_message(
-           gettext("Removed %{nickname} from contacts", nickname: nick),
+           dgettext("chat", "Removed %{nickname} from contacts", nickname: nick),
            :system
          )}
 
@@ -172,7 +177,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
         {:halt,
          push_status_message(
            socket,
-           gettext("%{nickname} is not in your contacts", nickname: nick),
+           dgettext("chat", "%{nickname} is not in your contacts", nickname: nick),
            :system
          )}
     end
@@ -220,18 +225,19 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
         {:halt,
          push_status_message(
            socket,
-           gettext("%{nickname} already has a custom color", nickname: nickname),
+           dgettext("chat", "%{nickname} already has a custom color", nickname: nickname),
            :error
          )}
 
       {:error, :list_full} ->
-        {:halt, push_status_message(socket, gettext("Nick color list is full (max 50)"), :error)}
+        {:halt,
+         push_status_message(socket, dgettext("chat", "Nick color list is full (max 50)"), :error)}
 
       {:error, :invalid_nickname} ->
-        {:halt, push_status_message(socket, gettext("Invalid nickname"), :error)}
+        {:halt, push_status_message(socket, dgettext("chat", "Invalid nickname"), :error)}
 
       {:error, :invalid_color} ->
-        {:halt, push_status_message(socket, gettext("Invalid color"), :error)}
+        {:halt, push_status_message(socket, dgettext("chat", "Invalid color"), :error)}
     end
   end
 
@@ -268,10 +274,11 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
          |> maybe_persist_nick_colors(new_session)}
 
       {:error, :not_found} ->
-        {:halt, push_status_message(socket, gettext("Nick color entry not found"), :error)}
+        {:halt,
+         push_status_message(socket, dgettext("chat", "Nick color entry not found"), :error)}
 
       {:error, :invalid_color} ->
-        {:halt, push_status_message(socket, gettext("Invalid color"), :error)}
+        {:halt, push_status_message(socket, dgettext("chat", "Invalid color"), :error)}
     end
   end
 
@@ -290,7 +297,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
          |> refresh_active_message_stream(new_session)
          |> maybe_persist_nick_colors(new_session)
          |> push_status_message(
-           gettext("Removed custom color for %{nickname}", nickname: nick),
+           dgettext("chat", "Removed custom color for %{nickname}", nickname: nick),
            :system
          )}
 
@@ -298,7 +305,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
         {:halt,
          push_status_message(
            socket,
-           gettext("%{nickname} has no custom color", nickname: nick),
+           dgettext("chat", "%{nickname} has no custom color", nickname: nick),
            :system
          )}
     end
@@ -326,11 +333,12 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
 
     cond do
       String.downcase(String.trim(nick)) == String.downcase(session.nickname) ->
-        {:halt, error_event(socket, gettext("You cannot ignore yourself"))}
+        {:halt, error_event(socket, dgettext("chat", "You cannot ignore yourself"))}
 
       duration_str != nil and duration_str != "" and
           match?({nil, nil}, parse_dialog_duration(duration_str)) ->
-        {:halt, error_event(socket, gettext("Invalid duration format. Use: 5m, 2h, or 1d"))}
+        {:halt,
+         error_event(socket, dgettext("chat", "Invalid duration format. Use: 5m, 2h, or 1d"))}
 
       true ->
         {duration, expires_at} = parse_dialog_duration(duration_str)
@@ -346,7 +354,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
              |> maybe_start_ignore_timer(nick, duration)
              |> maybe_persist_ignore_list(new_session)
              |> system_event(
-               gettext("* %{nickname} is now ignored (%{type})",
+               dgettext("chat", "* %{nickname} is now ignored (%{type})",
                  nickname: nick,
                  type: ignore_type_label(type)
                )
@@ -354,7 +362,10 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
 
           {:error, reason} ->
             {:halt,
-             error_event(socket, gettext("Failed to add ignore: %{reason}", reason: reason))}
+             error_event(
+               socket,
+               dgettext("chat", "Failed to add ignore: %{reason}", reason: reason)
+             )}
         end
     end
   end
@@ -375,7 +386,7 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
            |> cancel_ignore_timer(nick)
            |> cancel_auto_ignore_with_cooldown(nick)
            |> maybe_persist_ignore_list(new_session)
-           |> system_event(gettext("* %{nickname} is no longer ignored", nickname: nick))}
+           |> system_event(dgettext("chat", "* %{nickname} is no longer ignored", nickname: nick))}
 
         {:error, :not_found} ->
           {:halt, socket}
@@ -398,10 +409,10 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
 
   defp present_string(_value), do: nil
 
-  defp ignore_type_label(:all), do: gettext("all")
-  defp ignore_type_label(:messages), do: gettext("messages")
-  defp ignore_type_label(:notices), do: gettext("notices")
-  defp ignore_type_label(:invites), do: gettext("invites")
+  defp ignore_type_label(:all), do: dgettext("chat", "all")
+  defp ignore_type_label(:messages), do: dgettext("chat", "messages")
+  defp ignore_type_label(:notices), do: dgettext("chat", "notices")
+  defp ignore_type_label(:invites), do: dgettext("chat", "invites")
   defp ignore_type_label(type), do: to_string(type)
 
   defp close_address_book(socket) do

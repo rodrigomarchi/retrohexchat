@@ -1,84 +1,130 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Dreamweb (1994) is a dark cyberpunk top-down adventure by Creative Reality — a disturbing journey through the Dreamweb, a mystical barrier protecting reality, heavily inspired by Blade Runner."
   )}
 </p>
 <.diagram_arcade_scummvm class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
+<.help_h4 icon={:icon_clock}>{dgettext("help_arcade", "About")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "Developed by Creative Reality (founded by Neil Dodwell and David Dew) and published by Empire Interactive in 1994. You are Ryan, an ordinary man plagued by nightmares about the Dreamweb — a mystical barrier protecting reality from chaos. Seven corrupt guardians have infiltrated the waking world, and Ryan must stop them. The game features a unique top-down perspective and explores mature, dark themes."
   )}
 </p>
 <p>
-  {gettext(
+  {dgettext(
+    "help_arcade",
     "The game shipped with a physical \"Diary of a (Mad?) Man\" booklet containing Ryan's thoughts and vital gameplay hints. Released as freeware by Empire Interactive in October 2012. This is the full CD version with voice acting, running on ScummVM compiled to WebAssembly."
   )}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
-<ul>
-  <li><strong>{gettext("Left Click")}</strong> {gettext("— Walk / interact with object")}</li>
-  <li><strong>{gettext("Right Click")}</strong> {gettext("— Examine")}</li>
-  <li><strong>{gettext("F5")}</strong> {gettext("— Save / load game")}</li>
-  <li><strong>{gettext("Esc")}</strong> {gettext("— Skip cutscene")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Pause game")}</li>
-  <li><strong>.</strong> {gettext("— Skip dialogue line")}</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Dark mature tone")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Left Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Walk / interact with object"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Right Click")}</strong> {dgettext(
+      "help_arcade",
+      "— Examine"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "F5")}</strong> {dgettext(
+      "help_arcade",
+      "— Save / load game"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Esc")}</strong> {dgettext("help_arcade", "— Skip cutscene")}
+  </li>
+  <li>
+    <strong>{dgettext("help_arcade", "Space")}</strong> {dgettext("help_arcade", "— Pause game")}
+  </li>
+  <li><strong>.</strong> {dgettext("help_arcade", "— Skip dialogue line")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_arcade", "Gameplay Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_arcade", "Dark mature tone")}</strong>
+    {dgettext(
+      "help_arcade",
       "— The game deals with heavy themes. It's one of the darkest point-and-click adventures ever made."
     )}
   </li>
   <li>
-    <strong>{gettext("Limited inventory")}</strong>
-    {gettext("— You can only carry a limited number of items. Choose wisely what to take.")}
+    <strong>{dgettext("help_arcade", "Limited inventory")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— You can only carry a limited number of items. Choose wisely what to take."
+    )}
   </li>
   <li>
-    <strong>{gettext("Top-down pixel hunting")}</strong>
-    {gettext("— The top-down perspective makes small items harder to spot. Click everywhere.")}
+    <strong>{dgettext("help_arcade", "Top-down pixel hunting")}</strong>
+    {dgettext(
+      "help_arcade",
+      "— The top-down perspective makes small items harder to spot. Click everywhere."
+    )}
   </li>
   <li>
-    <strong>{gettext("Read Ryan's diary")}</strong>
-    {gettext("— The in-game diary contains essential backstory and puzzle hints.")}
+    <strong>{dgettext("help_arcade", "Read Ryan's diary")}</strong>
+    {dgettext("help_arcade", "— The in-game diary contains essential backstory and puzzle hints.")}
   </li>
   <li>
-    <strong>{gettext("Dream sequences")}</strong>
-    {gettext(
+    <strong>{dgettext("help_arcade", "Dream sequences")}</strong>
+    {dgettext(
+      "help_arcade",
       "— Dreamworld sequences contain clues for real-world puzzles. Pay attention to details."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "Did You Know?")}</.help_h4>
 <ul>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "Dreamweb was one of the first mainstream games to feature an uncensored sex scene, which was controversial at release."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The game contains pop culture Easter eggs: apartment number 42 (from The Hitchhiker's Guide to the Galaxy) and a notepad brand called \"HAL\" (from 2001: A Space Odyssey)."
     )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_arcade",
       "The physical \"Diary of a (Mad?) Man\" booklet that shipped with the game is essential reading — it contains Ryan's inner thoughts and vital gameplay hints."
     )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_arcade", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-scummvm">{gettext("ScummVM Adventures")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-bass">{gettext("Beneath a Steel Sky")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-drascula">{gettext("Drascula")}</.help_link>
-  ·
-  <.help_link topic="feature-arcade-scummvm-fotaq">
-    {gettext("Flight of the Amazon Queen")}
+  <.help_link topic="feature-arcade-scummvm">
+    {dgettext("help_arcade", "ScummVM Adventures")}
   </.help_link>
   ·
-  <.help_link topic="feature-arcade-scummvm-lure">{gettext("Lure of the Temptress")}</.help_link>
-  · <.help_link topic="feature-arcade-scummvm-soltys">{gettext("Soltys")}</.help_link>
+  <.help_link topic="feature-arcade-scummvm-bass">
+    {dgettext("help_arcade", "Beneath a Steel Sky")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-drascula">
+    {dgettext("help_arcade", "Drascula")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-fotaq">
+    {dgettext("help_arcade", "Flight of the Amazon Queen")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-lure">
+    {dgettext("help_arcade", "Lure of the Temptress")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-arcade-scummvm-soltys">
+    {dgettext("help_arcade", "Soltys")}
+  </.help_link>
 </p>

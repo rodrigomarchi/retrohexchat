@@ -1,31 +1,43 @@
-<p>{gettext("Delete your own messages within 5 minutes of sending.")}</p>
-<.help_h4 icon={:icon_trash}>{gettext("How to Delete")}</.help_h4>
+<p>{dgettext("help_features", "Delete your own messages within 5 minutes of sending.")}</p>
+<.help_h4 icon={:icon_trash}>{dgettext("help_features", "How to Delete")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Right-click your message and select \"Apagar mensagem\". A confirmation dialog appears with Confirmar/Cancelar buttons. Press Escape or click Cancelar to dismiss."
   )}
 </p>
-<.help_h4 icon={:icon_question}>{gettext("What Happens")}</.help_h4>
+<.help_h4 icon={:icon_question}>{dgettext("help_features", "What Happens")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "The message is replaced with \"[mensagem removida]\" in italic text for all viewers. The original content is preserved in the database (soft-delete) for audit purposes."
   )}
 </p>
-<.help_h4 icon={:icon_warning}>{gettext("Limitations")}</.help_h4>
+<.help_h4 icon={:icon_warning}>{dgettext("help_features", "Limitations")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "You can only delete your own messages. The 5-minute time limit is enforced server-side. Channel operators cannot delete other users' messages."
   )}
 </p>
-<.help_h4 icon={:icon_chat}>{gettext("Replies to Deleted Messages")}</.help_h4>
+<.help_h4 icon={:icon_chat}>{dgettext("help_features", "Replies to Deleted Messages")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "If someone replied to a message that is later deleted, the reply quote shows \"[mensagem removida]\" instead of the original content."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-message-reply">{gettext("Message Reply")}</.help_link>
-  · <.help_link topic="feature-message-edit">{gettext("Message Edit")}</.help_link>
-  · <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
+  <.help_link topic="feature-message-reply">
+    {dgettext("help_features", "Message Reply")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-message-edit">
+    {dgettext("help_features", "Message Edit")}
+  </.help_link>
+  ·
+  <.help_link topic="keyboard-shortcuts">
+    {dgettext("help_features", "Keyboard Shortcuts")}
+  </.help_link>
 </p>

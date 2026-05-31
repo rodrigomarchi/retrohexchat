@@ -1,36 +1,59 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Race across a neon grid leaving a glowing trail behind you. Hit any trail or the wall and you're out. Trap your opponent to win. Both players move continuously at a fixed pace — there's no stopping, only choosing where to turn next. First to 3 round wins takes the match."
   )}
 </p>
 <.diagram_game_trails class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Arrow keys")}</strong> {gettext(
+    <strong>{dgettext("help_games", "Arrow keys")}</strong> {dgettext(
+      "help_games",
       "— Change direction (Up, Down, Left, Right)"
     )}
   </li>
-  <li><strong>{gettext("WASD")}</strong> {gettext("— Alternative controls")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
-<ul>
-  <li>{gettext("Both players move one cell per tick on a 60x40 grid (10 ticks per second)")}</li>
-  <li>{gettext("Every cell you cross becomes part of your trail permanently")}</li>
-  <li>{gettext("Crashing into any trail (yours or opponent's) or the arena wall kills you")}</li>
-  <li>{gettext("You cannot reverse direction — 180-degree turns are blocked")}</li>
   <li>
-    {gettext("If both players collide head-on in the same cell, the round is a draw (no points)")}
+    <strong>{dgettext("help_games", "WASD")}</strong> {dgettext(
+      "help_games",
+      "— Alternative controls"
+    )}
   </li>
-  <li>{gettext("First to 3 round wins takes the match")}</li>
-  <li>{gettext("Starting positions swap each round for fairness")}</li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_games",
+      "Both players move one cell per tick on a 60x40 grid (10 ticks per second)"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Every cell you cross becomes part of your trail permanently")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Crashing into any trail (yours or opponent's) or the arena wall kills you"
+    )}
+  </li>
+  <li>{dgettext("help_games", "You cannot reverse direction — 180-degree turns are blocked")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "If both players collide head-on in the same cell, the round is a draw (no points)"
+    )}
+  </li>
+  <li>{dgettext("help_games", "First to 3 round wins takes the match")}</li>
+  <li>{dgettext("help_games", "Starting positions swap each round for fairness")}</li>
+</ul>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
 <p>
-  {gettext("Based on Atari's Surround (1977) and Tron's Light Cycles — the original trail game.")}
+  {dgettext(
+    "help_games",
+    "Based on Atari's Surround (1977) and Tron's Light Cycles — the original trail game."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

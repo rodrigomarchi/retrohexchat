@@ -1,50 +1,79 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Blitz Space Invaders — instant alien drops, easier combo thresholds, 5 waves of pure chaos from the start. The lowered combo thresholds mean aggressive play is rewarded — chain kills to bury your opponent in aliens."
   )}
 </p>
 <.diagram_game_invaders class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
-  <li><strong>{gettext("Arrow Left / A")}</strong> {gettext("— Move cannon left")}</li>
-  <li><strong>{gettext("Arrow Right / D")}</strong> {gettext("— Move cannon right")}</li>
-  <li><strong>{gettext("Space")}</strong> {gettext("— Fire missile")}</li>
-</ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
-<ul>
-  <li>{gettext("Same as Hex Invaders but with instant alien drops (no delay)")}</li>
   <li>
-    {gettext("Combo thresholds lowered: 2 kills = extra drop, 4 = 2 + armored, 6+ = 3 + armored")}
+    <strong>{dgettext("help_games", "Arrow Left / A")}</strong> {dgettext(
+      "help_games",
+      "— Move cannon left"
+    )}
   </li>
-  <li>{gettext("Only 5 waves — faster and more intense")}</li>
-  <li>{gettext("All other rules from Hex Invaders apply")}</li>
+  <li>
+    <strong>{dgettext("help_games", "Arrow Right / D")}</strong> {dgettext(
+      "help_games",
+      "— Move cannon right"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Space")}</strong> {dgettext("help_games", "— Fire missile")}
+  </li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Chain kills relentlessly")}</strong>
-    {gettext(
+    {dgettext("help_games", "Same as Hex Invaders but with instant alien drops (no delay)")}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Combo thresholds lowered: 2 kills = extra drop, 4 = 2 + armored, 6+ = 3 + armored"
+    )}
+  </li>
+  <li>{dgettext("help_games", "Only 5 waves — faster and more intense")}</li>
+  <li>{dgettext("help_games", "All other rules from Hex Invaders apply")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_games", "Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_games", "Chain kills relentlessly")}</strong>
+    {dgettext(
+      "help_games",
       "— With lowered combo thresholds (2 kills for a drop), rapid-fire is your best weapon against the opponent."
     )}
   </li>
   <li>
-    <strong>{gettext("Clear bottom rows first")}</strong>
-    {gettext("— Aliens descend faster in Blitz. Focus on the lowest rows to buy yourself time.")}
+    <strong>{dgettext("help_games", "Clear bottom rows first")}</strong>
+    {dgettext(
+      "help_games",
+      "— Aliens descend faster in Blitz. Focus on the lowest rows to buy yourself time."
+    )}
   </li>
   <li>
-    <strong>{gettext("Watch for armored aliens")}</strong>
-    {gettext(
+    <strong>{dgettext("help_games", "Watch for armored aliens")}</strong>
+    {dgettext(
+      "help_games",
       "— At combo 4+, armored drops appear. These take 2 hits and can clog your opponent's screen."
     )}
   </li>
   <li>
-    <strong>{gettext("Speed over accuracy")}</strong>
-    {gettext("— In Blitz, volume of kills matters more than perfect accuracy. Keep firing.")}
+    <strong>{dgettext("help_games", "Speed over accuracy")}</strong>
+    {dgettext(
+      "help_games",
+      "— In Blitz, volume of kills matters more than perfect accuracy. Keep firing."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-invaders">{gettext("Hex Invaders")}</.help_link>
-  · <.help_link topic="feature-hex-invaders-coop">{gettext("Hex Invaders: Co-op")}</.help_link>
-  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  <.help_link topic="feature-hex-invaders">{dgettext("help_games", "Hex Invaders")}</.help_link>
+  ·
+  <.help_link topic="feature-hex-invaders-coop">
+    {dgettext("help_games", "Hex Invaders: Co-op")}
+  </.help_link>
+  · <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
 </p>

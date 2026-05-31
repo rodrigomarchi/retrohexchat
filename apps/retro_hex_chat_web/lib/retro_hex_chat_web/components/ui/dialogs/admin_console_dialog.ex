@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
       phx-key="Escape"
     >
       <.dialog id={@id} show={@show} class="max-w-lg">
-        <.dialog_header id={@id} title={gettext("Admin Console")}>
+        <.dialog_header id={@id} title={dgettext("dialogs", "Admin Console")}>
           <:icon><Icons.icon_dialog_admin_console class="w-[16px] h-[16px]" /></:icon>
         </.dialog_header>
         <.dialog_body>
@@ -50,7 +50,10 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
               </span>
             </div>
             <div :if={@results == []} class="text-muted-foreground">
-              {gettext(~s(Type a command and press Enter. Type "help" for available commands.))}
+              {dgettext(
+                "dialogs",
+                "Type a command and press Enter. Type \"help\" for available commands."
+              )}
             </div>
           </div>
 
@@ -60,25 +63,25 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             <textarea
               id="admin-console-input"
               name="input"
-              placeholder={gettext("Enter admin command(s)... (one per line)")}
+              placeholder={dgettext("dialogs", "Enter admin command(s)... (one per line)")}
               class="flex-1 font-mono text-sm shadow-retro-sunken bg-white px-retro-4 py-retro-2 resize-y min-h-[28px] h-[56px]"
               autocomplete="off"
               rows="2"
             />
             <.button type="submit" size="sm" class="self-end">
               <:icon><Icons.icon_btn_play class="w-[14px] h-[14px]" /></:icon>
-              {gettext("Run")}
+              {dgettext("dialogs", "Run")}
             </.button>
           </form>
         </.dialog_body>
         <.dialog_footer>
           <.button type="button" variant="outline" phx-click="clear_admin_console">
             <:icon><Icons.icon_trash class="w-[14px] h-[14px]" /></:icon>
-            {gettext("Clear")}
+            {dgettext("dialogs", "Clear")}
           </.button>
           <.button type="button" phx-click={@on_close}>
             <:icon><Icons.icon_close class="w-[14px] h-[14px]" /></:icon>
-            {gettext("Close")}
+            {dgettext("dialogs", "Close")}
           </.button>
         </.dialog_footer>
       </.dialog>

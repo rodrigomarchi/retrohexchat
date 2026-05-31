@@ -16,24 +16,27 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.EmptyStatePage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Empty State"), active_page: "empty-state")}
+    {:ok,
+     assign(socket, page_title: dgettext("showcase", "Empty State"), active_page: "empty-state")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Empty State")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Empty State")}</h2>
 
       <.showcase_card
-        title={gettext("Basic")}
+        title={dgettext("showcase", "Basic")}
         description="Empty state with icon, title, and description."
       >
         <div class="shadow-retro-field bg-white">
           <.empty_state>
             <:icon><Icons.icon_chat class="w-8 h-8" /></:icon>
-            <:title>{gettext("No messages yet")}</:title>
-            <:description>{gettext("Start a conversation to see messages here.")}</:description>
+            <:title>{dgettext("showcase", "No messages yet")}</:title>
+            <:description>
+              {dgettext("showcase", "Start a conversation to see messages here.")}
+            </:description>
           </.empty_state>
         </div>
         <.code_example>
@@ -46,20 +49,20 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.EmptyStatePage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("With Action")}
+        title={dgettext("showcase", "With Action")}
         description="Empty state with a call-to-action button."
       >
         <div class="shadow-retro-field bg-white">
           <.empty_state>
             <:icon><Icons.icon_channels class="w-8 h-8" /></:icon>
-            <:title>{gettext("No channels joined")}</:title>
+            <:title>{dgettext("showcase", "No channels joined")}</:title>
             <:description>
-              {gettext("Browse available channels and join one to start chatting.")}
+              {dgettext("showcase", "Browse available channels and join one to start chatting.")}
             </:description>
             <:action>
               <.button variant="outline" size="sm">
                 <:icon><Icons.icon_btn_channel_list class="w-4 h-4" /></:icon>
-                {gettext("Browse Channels")}
+                {dgettext("showcase", "Browse Channels")}
               </.button>
             </:action>
           </.empty_state>
@@ -77,22 +80,22 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.EmptyStatePage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Variations")}
+        title={dgettext("showcase", "Variations")}
         description="Different icons and contexts for empty states."
       >
         <div class="grid grid-cols-2 gap-4">
           <div class="shadow-retro-field bg-white">
             <.empty_state>
               <:icon><Icons.icon_btn_search class="w-8 h-8" /></:icon>
-              <:title>{gettext("No results")}</:title>
-              <:description>{gettext("Try a different search term.")}</:description>
+              <:title>{dgettext("showcase", "No results")}</:title>
+              <:description>{dgettext("showcase", "Try a different search term.")}</:description>
             </.empty_state>
           </div>
           <div class="shadow-retro-field bg-white">
             <.empty_state>
               <:icon><Icons.icon_tab_contacts class="w-8 h-8" /></:icon>
-              <:title>{gettext("No contacts")}</:title>
-              <:description>{gettext("Add users to your address book.")}</:description>
+              <:title>{dgettext("showcase", "No contacts")}</:title>
+              <:description>{dgettext("showcase", "Add users to your address book.")}</:description>
             </.empty_state>
           </div>
         </div>

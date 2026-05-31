@@ -1,44 +1,61 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_games",
     "Top-down tank combat in a destructible maze. Rotate your tank, drive forward, and fire missiles at your opponent. One missile at a time — miss and you're vulnerable until it expires. 2-minute rounds, best of 3. Five maze layouts keep every match fresh."
   )}
 </p>
 <.diagram_game_tanks class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Arrow Left / Right")}</strong>
-    or <strong>{gettext("A / D")}</strong> {gettext("— Rotate tank")}
+    <strong>{dgettext("help_games", "Arrow Left / Right")}</strong>
+    or
+    <strong>{dgettext("help_games", "A / D")}</strong> {dgettext("help_games", "— Rotate tank")}
   </li>
   <li>
-    <strong>{gettext("Arrow Up")}</strong> or <strong>W</strong> {gettext("— Drive forward")}
+    <strong>{dgettext("help_games", "Arrow Up")}</strong>
+    or <strong>W</strong> {dgettext("help_games", "— Drive forward")}
   </li>
-  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Fire missile")}</li>
+  <li>
+    <strong>{dgettext("help_games", "Space / Shift")}</strong> {dgettext(
+      "help_games",
+      "— Fire missile"
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
 <ul>
   <li>
-    {gettext("One missile per player at a time — you can't fire again until it expires or hits")}
+    {dgettext(
+      "help_games",
+      "One missile per player at a time — you can't fire again until it expires or hits"
+    )}
   </li>
-  <li>{gettext("Missiles travel at 2.5x tank speed with a 2-second lifetime")}</li>
-  <li>{gettext("Half-second cooldown after each missile expires")}</li>
+  <li>{dgettext("help_games", "Missiles travel at 2.5x tank speed with a 2-second lifetime")}</li>
+  <li>{dgettext("help_games", "Half-second cooldown after each missile expires")}</li>
   <li>
-    {gettext("Hits score 1 point — most hits when the 2-minute timer runs out wins the round")}
+    {dgettext(
+      "help_games",
+      "Hits score 1 point — most hits when the 2-minute timer runs out wins the round"
+    )}
   </li>
   <li>
-    {gettext(
+    {dgettext(
+      "help_games",
       "After each hit, both tanks respawn at starting positions with 2 seconds of invulnerability"
     )}
   </li>
-  <li>{gettext("Best of 3 rounds — first to 2 round wins takes the match")}</li>
-  <li>{gettext("Tied round? No round win awarded to either player")}</li>
-  <li>{gettext("No backward movement — plan your approach carefully")}</li>
-  <li>{gettext("Maze is randomly selected from 5 symmetrical layouts")}</li>
+  <li>{dgettext("help_games", "Best of 3 rounds — first to 2 round wins takes the match")}</li>
+  <li>{dgettext("help_games", "Tied round? No round win awarded to either player")}</li>
+  <li>{dgettext("help_games", "No backward movement — plan your approach carefully")}</li>
+  <li>{dgettext("help_games", "Maze is randomly selected from 5 symmetrical layouts")}</li>
 </ul>
-<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
-<p>{gettext("Based on Atari's Combat (1977) — the quintessential tank battle game.")}</p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
 <p>
-  <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
-  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  {dgettext("help_games", "Based on Atari's Combat (1977) — the quintessential tank battle game.")}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-p2p-games">{dgettext("help_games", "P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_games", "/game")}</.help_link>
 </p>

@@ -10,7 +10,7 @@ defmodule RetroHexChat.Services.NickServRaceTest do
       server_name = :"test_nickserv_race_#{System.unique_integer([:positive])}"
       {:ok, _pid} = NickServ.start_link(name: server_name, identify_timeout_ms: 300)
 
-      nickname = "RaceNick#{System.unique_integer([:positive])}"
+      nickname = unique_nick("RaceNick")
       password = "secret123"
 
       # Register the nick
@@ -49,7 +49,7 @@ defmodule RetroHexChat.Services.NickServRaceTest do
       server_name = :"test_nickserv_timeout_#{System.unique_integer([:positive])}"
       {:ok, _pid} = NickServ.start_link(name: server_name, identify_timeout_ms: 100)
 
-      nickname = "TimeoutNick#{System.unique_integer([:positive])}"
+      nickname = unique_nick("TimeoutNick")
       password = "secret123"
 
       # Register the nick using a separate server
@@ -75,7 +75,7 @@ defmodule RetroHexChat.Services.NickServRaceTest do
       server_name = :"test_nickserv_serial_#{System.unique_integer([:positive])}"
       {:ok, _pid} = NickServ.start_link(name: server_name, identify_timeout_ms: 100)
 
-      nickname = "SerialNick#{System.unique_integer([:positive])}"
+      nickname = unique_nick("SerialNick")
       password = "secret123"
 
       # Register via this server (auto-identifies)
@@ -96,5 +96,14 @@ defmodule RetroHexChat.Services.NickServRaceTest do
       # Timer should have been cancelled during identify
       refute_receive {:force_rename, _}, 300
     end
+  end
+
+  defp unique_nick(prefix) do
+    suffix =
+      [:positive]
+      |> System.unique_integer()
+      |> rem(10_000)
+
+    "#{prefix}#{suffix}"
   end
 end

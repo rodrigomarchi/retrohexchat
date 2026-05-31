@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
           data-testid="file-transfer-status"
           class="text-success font-bold"
         >
-          {gettext("Complete")}
+          {dgettext("p2p", "Complete")}
         </span>
         <span :if={@state == "cancelled"} data-testid="file-transfer-status" class="font-bold">
           {cancelled_label(@cancelled_by)}
@@ -82,17 +82,17 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
           data-testid="file-transfer-status"
           class="text-error font-bold"
         >
-          {gettext("Rejected")}
+          {dgettext("p2p", "Rejected")}
         </span>
         <span
           :if={@state in ~w(failed validation_error)}
           data-testid="file-transfer-status"
           class="text-error font-bold"
         >
-          {gettext("Failed")}
+          {dgettext("p2p", "Failed")}
         </span>
         <span :if={@state in ~w(offering offer_received ready)} class="italic">
-          {gettext("Pending...")}
+          {dgettext("p2p", "Pending...")}
         </span>
         <span :if={@speed && @state in ~w(transferring paused resuming)}>{@speed}</span>
         <span :if={@formatted_size}>{@formatted_size}</span>
@@ -105,7 +105,7 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
           data-testid="file-transfer-accept"
         >
           <:icon><Icons.icon_checkmark class="w-3 h-3" /></:icon>
-          {gettext("Accept")}
+          {dgettext("p2p", "Accept")}
         </.button>
         <.button
           :if={@state in ~w(offering offer_received ready transferring paused resuming)}
@@ -115,16 +115,18 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
           data-testid="file-transfer-cancel"
         >
           <:icon><Icons.icon_close class="w-3 h-3" /></:icon>
-          {gettext("Cancel")}
+          {dgettext("p2p", "Cancel")}
         </.button>
       </div>
     </div>
     """
   end
 
-  defp direction_label("sending"), do: gettext("Sending")
-  defp direction_label(_direction), do: gettext("Receiving")
+  defp direction_label("sending"), do: dgettext("p2p", "Sending")
+  defp direction_label(_direction), do: dgettext("p2p", "Receiving")
 
-  defp cancelled_label(nil), do: gettext("Cancelled")
-  defp cancelled_label(nickname), do: gettext("Cancelled by %{nickname}", nickname: nickname)
+  defp cancelled_label(nil), do: dgettext("p2p", "Cancelled")
+
+  defp cancelled_label(nickname),
+    do: dgettext("p2p", "Cancelled by %{nickname}", nickname: nickname)
 end

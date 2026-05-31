@@ -1,33 +1,41 @@
-<p>{gettext("Control how your P2P connection works to protect your privacy.")}</p>
-<.help_h4 icon={:icon_privacy}>{gettext("Private Mode (TURN-Only)")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext("help_features", "Control how your P2P connection works to protect your privacy.")}
+</p>
+<.help_h4 icon={:icon_privacy}>{dgettext("help_features", "Private Mode (TURN-Only)")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
     "When enabled, all P2P traffic is routed through the TURN server (relay), preventing the other user from seeing your real IP address."
   )}
 </p>
-<.help_h4 icon={:icon_checkmark}>{gettext("How to Enable")}</.help_h4>
+<.help_h4 icon={:icon_checkmark}>{dgettext("help_features", "How to Enable")}</.help_h4>
 <p>
-  {gettext("In the P2P session, check the")}
-  <strong>{gettext("Private mode (TURN-only)")}</strong>
-  {gettext(
+  {dgettext("help_features", "In the P2P session, check the")}
+  <strong>{dgettext("help_features", "Private mode (TURN-only)")}</strong>
+  {dgettext(
+    "help_features",
     "checkbox in the lobby footer. The preference is saved and remembered for future sessions."
   )}
 </p>
-<.help_h4 icon={:icon_question}>{gettext("Tradeoff")}</.help_h4>
+<.help_h4 icon={:icon_question}>{dgettext("help_features", "Tradeoff")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Private mode adds latency because traffic passes through the server. Direct connections (default) are faster but expose your IP to the peer."
   )}
 </p>
-<.help_h4 icon={:icon_checkmark}>{gettext("Requirements")}</.help_h4>
+<.help_h4 icon={:icon_checkmark}>{dgettext("help_features", "Requirements")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_features",
     "Private mode requires the TURN server to be configured. If it is not available, you will see a warning and the connection will be direct."
   )}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
-  · <.help_link topic="feature-audio-call">{gettext("Audio Call")}</.help_link>
-  · <.help_link topic="feature-video-call">{gettext("Video Call")}</.help_link>
+  <.help_link topic="feature-p2p-sessions">
+    {dgettext("help_features", "P2P Sessions")}
+  </.help_link>
+  · <.help_link topic="feature-audio-call">{dgettext("help_features", "Audio Call")}</.help_link>
+  · <.help_link topic="feature-video-call">{dgettext("help_features", "Video Call")}</.help_link>
 </p>

@@ -1,122 +1,148 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "RetroHexChat supports the following slash commands. Type them in the chat input and press Enter."
   )}
 </p>
-<.help_h4 icon={:icon_connect}>{gettext("Connection & Navigation")}</.help_h4>
+<.help_h4 icon={:icon_connect}>{dgettext("help_commands", "Connection & Navigation")}</.help_h4>
 <p>
-  <.help_link topic="cmd-join">{gettext("/join")}</.help_link>
-  {gettext("— Join a channel")}<br /><.help_link topic="cmd-part">{gettext("/part")}</.help_link>
-  {gettext("— Leave a channel")}<br /><.help_link topic="cmd-quit">{gettext("/quit")}</.help_link>
-  {gettext("— Disconnect from chat")}<br />
+  <.help_link topic="cmd-join">{dgettext("help_commands", "/join")}</.help_link>
+  {dgettext("help_commands", "— Join a channel")}<br />
+  <.help_link topic="cmd-part">
+    {dgettext("help_commands", "/part")}
+  </.help_link>
+  {dgettext("help_commands", "— Leave a channel")}<br />
+  <.help_link topic="cmd-quit">
+    {dgettext("help_commands", "/quit")}
+  </.help_link>
+  {dgettext("help_commands", "— Disconnect from chat")}<br />
   <.help_link topic="cmd-list">
-    {gettext("/list")}
+    {dgettext("help_commands", "/list")}
   </.help_link>
-  {gettext("— List available channels")}
+  {dgettext("help_commands", "— List available channels")}
 </p>
-<.help_h4 icon={:icon_send}>{gettext("Messaging")}</.help_h4>
+<.help_h4 icon={:icon_send}>{dgettext("help_commands", "Messaging")}</.help_h4>
 <p>
-  <.help_link topic="cmd-msg">{gettext("/msg")}</.help_link>
-  {gettext("— Send a private message")}<br />
+  <.help_link topic="cmd-msg">{dgettext("help_commands", "/msg")}</.help_link>
+  {dgettext("help_commands", "— Send a private message")}<br />
   <.help_link topic="cmd-query">
-    {gettext("/query")}
+    {dgettext("help_commands", "/query")}
   </.help_link>
-  {gettext("— Open a PM window")}<br /><.help_link topic="cmd-me">{gettext("/me")}</.help_link>
-  {gettext("— Send an action message")}<br />
+  {dgettext("help_commands", "— Open a PM window")}<br />
+  <.help_link topic="cmd-me">
+    {dgettext("help_commands", "/me")}
+  </.help_link>
+  {dgettext("help_commands", "— Send an action message")}<br />
   <.help_link topic="cmd-notice">
-    {gettext("/notice")}
+    {dgettext("help_commands", "/notice")}
   </.help_link>
-  {gettext("— Send a notice")}
+  {dgettext("help_commands", "— Send a notice")}
 </p>
-<.help_h4 icon={:icon_wrench}>{gettext("User Management")}</.help_h4>
+<.help_h4 icon={:icon_wrench}>{dgettext("help_commands", "User Management")}</.help_h4>
 <p>
-  <.help_link topic="cmd-nick">{gettext("/nick")}</.help_link>
-  {gettext("— Change nickname")}<br /><.help_link topic="cmd-away">{gettext("/away")}</.help_link>
-  {gettext("— Set/clear away status")}<br />
+  <.help_link topic="cmd-nick">{dgettext("help_commands", "/nick")}</.help_link>
+  {dgettext("help_commands", "— Change nickname")}<br />
+  <.help_link topic="cmd-away">
+    {dgettext("help_commands", "/away")}
+  </.help_link>
+  {dgettext("help_commands", "— Set/clear away status")}<br />
   <.help_link topic="cmd-whois">
-    {gettext("/whois")}
+    {dgettext("help_commands", "/whois")}
   </.help_link>
-  {gettext("— Look up user info")}<br />
+  {dgettext("help_commands", "— Look up user info")}<br />
   <.help_link topic="cmd-whowas">
-    {gettext("/whowas")}
+    {dgettext("help_commands", "/whowas")}
   </.help_link>
-  {gettext("— Look up past user info")}<br />
+  {dgettext("help_commands", "— Look up past user info")}<br />
   <.help_link topic="cmd-ignore">
-    {gettext("/ignore")}
+    {dgettext("help_commands", "/ignore")}
   </.help_link>
-  {gettext("— Ignore a user")}<br />
+  {dgettext("help_commands", "— Ignore a user")}<br />
   <.help_link topic="cmd-unignore">
-    {gettext("/unignore")}
+    {dgettext("help_commands", "/unignore")}
   </.help_link>
-  {gettext("— Remove ignore")}
+  {dgettext("help_commands", "— Remove ignore")}
 </p>
-<.help_h4 icon={:icon_wrench}>{gettext("Channel Management")}</.help_h4>
+<.help_h4 icon={:icon_wrench}>{dgettext("help_commands", "Channel Management")}</.help_h4>
 <p>
-  <.help_link topic="cmd-topic">{gettext("/topic")}</.help_link>
-  {gettext("— View/set channel topic")}<br />
+  <.help_link topic="cmd-topic">{dgettext("help_commands", "/topic")}</.help_link>
+  {dgettext("help_commands", "— View/set channel topic")}<br />
   <.help_link topic="cmd-mode">
-    {gettext("/mode")}
+    {dgettext("help_commands", "/mode")}
   </.help_link>
-  {gettext("— Set channel or user modes")}<br />
+  {dgettext("help_commands", "— Set channel or user modes")}<br />
   <.help_link topic="cmd-kick">
-    {gettext("/kick")}
+    {dgettext("help_commands", "/kick")}
   </.help_link>
-  {gettext("— Kick a user")}<br /><.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
-  {gettext("— Ban a user")}<br /><.help_link topic="cmd-invite">{gettext("/invite")}</.help_link>
-  {gettext("— Invite a user")}
+  {dgettext("help_commands", "— Kick a user")}<br />
+  <.help_link topic="cmd-ban">
+    {dgettext("help_commands", "/ban")}
+  </.help_link>
+  {dgettext("help_commands", "— Ban a user")}<br />
+  <.help_link topic="cmd-invite">
+    {dgettext("help_commands", "/invite")}
+  </.help_link>
+  {dgettext("help_commands", "— Invite a user")}
 </p>
-<.help_h4 icon={:icon_shield}>{gettext("Services")}</.help_h4>
+<.help_h4 icon={:icon_shield}>{dgettext("help_commands", "Services")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ns">{gettext("/ns")}</.help_link>
-  {gettext("— NickServ commands")}<br /><.help_link topic="cmd-cs">{gettext("/cs")}</.help_link>
-  {gettext("— ChanServ commands")}
+  <.help_link topic="cmd-ns">{dgettext("help_commands", "/ns")}</.help_link>
+  {dgettext("help_commands", "— NickServ commands")}<br />
+  <.help_link topic="cmd-cs">
+    {dgettext("help_commands", "/cs")}
+  </.help_link>
+  {dgettext("help_commands", "— ChanServ commands")}
 </p>
-<.help_h4 icon={:icon_dialog_options}>{gettext("Customization")}</.help_h4>
+<.help_h4 icon={:icon_dialog_options}>{dgettext("help_commands", "Customization")}</.help_h4>
 <p>
-  <.help_link topic="cmd-notify">{gettext("/notify")}</.help_link>
-  {gettext("— Manage notify list")}<br />
+  <.help_link topic="cmd-notify">{dgettext("help_commands", "/notify")}</.help_link>
+  {dgettext("help_commands", "— Manage notify list")}<br />
   <.help_link topic="cmd-perform">
-    {gettext("/perform")}
+    {dgettext("help_commands", "/perform")}
   </.help_link>
-  {gettext("— Auto-run commands")}<br />
+  {dgettext("help_commands", "— Auto-run commands")}<br />
   <.help_link topic="cmd-autojoin">
-    {gettext("/autojoin")}
+    {dgettext("help_commands", "/autojoin")}
   </.help_link>
-  {gettext("— Auto-join channels")}<br />
+  {dgettext("help_commands", "— Auto-join channels")}<br />
   <.help_link topic="cmd-alias">
-    {gettext("/alias")}
+    {dgettext("help_commands", "/alias")}
   </.help_link>
-  {gettext("— Create command aliases")}<br />
+  {dgettext("help_commands", "— Create command aliases")}<br />
   <.help_link topic="cmd-timer">
-    {gettext("/timer")}
+    {dgettext("help_commands", "/timer")}
   </.help_link>
-  {gettext("— Schedule commands")}<br />
+  {dgettext("help_commands", "— Schedule commands")}<br />
   <.help_link topic="cmd-autorespond">
-    {gettext("/autorespond")}
+    {dgettext("help_commands", "/autorespond")}
   </.help_link>
-  {gettext("— Auto-respond rules")}
+  {dgettext("help_commands", "— Auto-respond rules")}
 </p>
-<.help_h4 icon={:icon_p2p}>{gettext("P2P")}</.help_h4>
+<.help_h4 icon={:icon_p2p}>{dgettext("help_commands", "P2P")}</.help_h4>
 <p>
-  <.help_link topic="cmd-p2p">{gettext("/p2p")}</.help_link>
-  {gettext("— Start a P2P session")}<br />
+  <.help_link topic="cmd-p2p">{dgettext("help_commands", "/p2p")}</.help_link>
+  {dgettext("help_commands", "— Start a P2P session")}<br />
   <.help_link topic="cmd-call">
-    {gettext("/call")}
+    {dgettext("help_commands", "/call")}
   </.help_link>
-  {gettext("— Start an audio call")}<br />
+  {dgettext("help_commands", "— Start an audio call")}<br />
   <.help_link topic="cmd-sendfile">
-    {gettext("/sendfile")}
+    {dgettext("help_commands", "/sendfile")}
   </.help_link>
-  {gettext("— Send a file")}
+  {dgettext("help_commands", "— Send a file")}
 </p>
-<.help_h4 icon={:icon_wrench}>{gettext("Utility")}</.help_h4>
+<.help_h4 icon={:icon_wrench}>{dgettext("help_commands", "Utility")}</.help_h4>
 <p>
-  <.help_link topic="cmd-clear">{gettext("/clear")}</.help_link>
-  {gettext("— Clear chat window")}<br />
+  <.help_link topic="cmd-clear">{dgettext("help_commands", "/clear")}</.help_link>
+  {dgettext("help_commands", "— Clear chat window")}<br />
   <.help_link topic="cmd-help">
-    {gettext("/help")}
+    {dgettext("help_commands", "/help")}
   </.help_link>
-  {gettext("— Show help")}
+  {dgettext("help_commands", "— Show help")}
 </p>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
-<p><.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link></p>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="keyboard-shortcuts">
+    {dgettext("help_commands", "Keyboard Shortcuts")}
+  </.help_link>
+</p>

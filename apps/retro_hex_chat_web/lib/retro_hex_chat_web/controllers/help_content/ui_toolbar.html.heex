@@ -1,111 +1,162 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_ui",
     "The toolbar provides quick access to all RetroHexChat features through icon buttons, organized in six groups separated by dividers."
   )}
 </p>
 
-<h3>{gettext("Button Groups")}</h3>
+<h3>{dgettext("help_ui", "Button Groups")}</h3>
 
-<.help_h4 icon={:icon_connect}>{gettext("Connection")}</.help_h4>
+<.help_h4 icon={:icon_connect}>{dgettext("help_ui", "Connection")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Connect / Disconnect")}</strong> {gettext(
+    <strong>{dgettext("help_ui", "Connect / Disconnect")}</strong> {dgettext(
+      "help_ui",
       "— Connect to the server or disconnect from it."
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_group_view}>{gettext("View")}</.help_h4>
+<.help_h4 icon={:icon_group_view}>{dgettext("help_ui", "View")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Channel List")}</strong> {gettext("— Browse and join available channels.")}
+    <strong>{dgettext("help_ui", "Channel List")}</strong> {dgettext(
+      "help_ui",
+      "— Browse and join available channels."
+    )}
   </li>
   <li>
-    <strong>{gettext("Toggle Conversations")}</strong> {gettext(
+    <strong>{dgettext("help_ui", "Toggle Conversations")}</strong> {dgettext(
+      "help_ui",
       "— Show or hide the left-side channel tree."
     )}
   </li>
   <li>
-    <strong>{gettext("Toggle Nicklist")}</strong> {gettext(
+    <strong>{dgettext("help_ui", "Toggle Nicklist")}</strong> {dgettext(
+      "help_ui",
       "— Show or hide the right-side user list."
     )}
   </li>
   <li>
-    <strong>{gettext("Find")}</strong> {gettext(
+    <strong>{dgettext("help_ui", "Find")}</strong> {dgettext(
+      "help_ui",
       "— Open the search bar to find text in the current channel."
     )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_group_tools}>{gettext("Tools")}</.help_h4>
+<.help_h4 icon={:icon_group_tools}>{dgettext("help_ui", "Tools")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Address Book")}</strong> {gettext(
+    <strong>{dgettext("help_ui", "Address Book")}</strong> {dgettext(
+      "help_ui",
       "— Manage contacts, notify list, and nick colors."
     )}
   </li>
   <li>
-    <strong>{gettext("Highlight Words")}</strong> {gettext(
+    <strong>{dgettext("help_ui", "Highlight Words")}</strong> {dgettext(
+      "help_ui",
       "— Configure words that trigger message highlighting."
     )}
   </li>
-  <li><strong>{gettext("Ignore List")}</strong> {gettext("— Manage ignored users.")}</li>
   <li>
-    <strong>{gettext("URL Catcher")}</strong> {gettext("— View URLs shared across channels.")}
+    <strong>{dgettext("help_ui", "Ignore List")}</strong> {dgettext(
+      "help_ui",
+      "— Manage ignored users."
+    )}
   </li>
   <li>
-    <strong>{gettext("Channel Central")}</strong> {gettext(
+    <strong>{dgettext("help_ui", "URL Catcher")}</strong> {dgettext(
+      "help_ui",
+      "— View URLs shared across channels."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "Channel Central")}</strong> {dgettext(
+      "help_ui",
       "— View and manage channel settings, bans, and modes."
     )}
   </li>
   <li>
-    <strong>{gettext("Log Viewer")}</strong> {gettext("— Browse chat history and export logs.")}
+    <strong>{dgettext("help_ui", "Log Viewer")}</strong> {dgettext(
+      "help_ui",
+      "— Browse chat history and export logs."
+    )}
   </li>
   <li>
-    <strong>{gettext("Perform")}</strong> {gettext(
+    <strong>{dgettext("help_ui", "Perform")}</strong> {dgettext(
+      "help_ui",
       "— Configure auto-perform commands and auto-join channels."
     )}
   </li>
   <li>
-    <strong>{gettext("Sounds")}</strong> {gettext("— Configure sound notifications for events.")}
+    <strong>{dgettext("help_ui", "Sounds")}</strong> {dgettext(
+      "help_ui",
+      "— Configure sound notifications for events."
+    )}
   </li>
   <li>
-    <strong>{gettext("Flood Protection")}</strong> {gettext(
+    <strong>{dgettext("help_ui", "Flood Protection")}</strong> {dgettext(
+      "help_ui",
       "— Configure anti-flood and auto-ignore settings."
     )}
   </li>
   <li>
-    <strong>{gettext("Alias Editor")}</strong> {gettext("— Create custom command aliases.")}
+    <strong>{dgettext("help_ui", "Alias Editor")}</strong> {dgettext(
+      "help_ui",
+      "— Create custom command aliases."
+    )}
   </li>
   <li>
-    <strong>{gettext("Custom Menus")}</strong> {gettext("— Add custom items to context menus.")}
+    <strong>{dgettext("help_ui", "Custom Menus")}</strong> {dgettext(
+      "help_ui",
+      "— Add custom items to context menus."
+    )}
   </li>
   <li>
-    <strong>{gettext("Auto-Respond")}</strong> {gettext("— Configure automatic response rules.")}
+    <strong>{dgettext("help_ui", "Auto-Respond")}</strong> {dgettext(
+      "help_ui",
+      "— Configure automatic response rules."
+    )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_group_notifications}>{gettext("Notifications")}</.help_h4>
+<.help_h4 icon={:icon_group_notifications}>{dgettext("help_ui", "Notifications")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("DND (Do Not Disturb)")}</strong>
-    {gettext("— Toggle Do Not Disturb mode. When active, notifications are suppressed.")}
+    <strong>{dgettext("help_ui", "DND (Do Not Disturb)")}</strong>
+    {dgettext(
+      "help_ui",
+      "— Toggle Do Not Disturb mode. When active, notifications are suppressed."
+    )}
   </li>
   <li>
-    <strong>{gettext("Bell")}</strong>
-    {gettext("— Open the Notification Center. A badge shows the count of unread notifications.")}
+    <strong>{dgettext("help_ui", "Bell")}</strong>
+    {dgettext(
+      "help_ui",
+      "— Open the Notification Center. A badge shows the count of unread notifications."
+    )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_question}>{gettext("Help")}</.help_h4>
+<.help_h4 icon={:icon_question}>{dgettext("help_ui", "Help")}</.help_h4>
 <ul>
   <li>
-    <strong>{gettext("Help Topics")}</strong> {gettext("— Opens the help page in a new tab.")}
+    <strong>{dgettext("help_ui", "Help Topics")}</strong> {dgettext(
+      "help_ui",
+      "— Opens the help page in a new tab."
+    )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
 <ul>
-  <li><.help_link topic="ui-overview">{gettext("User Interface Overview")}</.help_link></li>
-  <li><.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link></li>
+  <li>
+    <.help_link topic="ui-overview">{dgettext("help_ui", "User Interface Overview")}</.help_link>
+  </li>
+  <li>
+    <.help_link topic="keyboard-shortcuts">
+      {dgettext("help_ui", "Keyboard Shortcuts")}
+    </.help_link>
+  </li>
 </ul>

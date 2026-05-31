@@ -1,51 +1,57 @@
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "Register and protect your nickname with a password through NickServ, the nickname services bot. Once registered, nobody else can use your name."
   )}
 </p>
-<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
-<pre>{gettext("/ns <subcommand> [arguments]")}</pre>
-<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/ns <subcommand> [arguments]")}</pre>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
 <p>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "NickServ manages nickname ownership. After registering, you \"identify\" (log in) each session to prove the nickname is yours. This unlocks features like saved preferences, auto-join lists, and channel access lists. If someone else tries to use your registered nickname, they'll be asked for the password."
   )}
 </p>
-<.help_h4 icon={:icon_terminal}>{gettext("Subcommands")}</.help_h4>
+<.help_h4 icon={:icon_terminal}>{dgettext("help_commands", "Subcommands")}</.help_h4>
 <p>
-  <code>{gettext("register <password>")}</code>
-  {gettext("— Register your current nickname with a password.")}<br />
+  <code>{dgettext("help_commands", "register <password>")}</code>
+  {dgettext("help_commands", "— Register your current nickname with a password.")}<br />
   <code>
-    {gettext("identify <password>")}
+    {dgettext("help_commands", "identify <password>")}
   </code>
-  {gettext("— Log in to your registered nickname for this session.")}<br />
+  {dgettext("help_commands", "— Log in to your registered nickname for this session.")}<br />
   <code>
-    {gettext("ghost <nick> <password>")}
+    {dgettext("help_commands", "ghost <nick> <password>")}
   </code>
-  {gettext(
+  {dgettext(
+    "help_commands",
     "— Disconnect another session using a registered nickname after proving you know its password (if you got disconnected and your old session is still lingering)."
   )}<br />
   <code>
-    {gettext("info [nick]")}
+    {dgettext("help_commands", "info [nick]")}
   </code>
-  {gettext("— View registration info about a nickname (defaults to your own).")}<br />
+  {dgettext("help_commands", "— View registration info about a nickname (defaults to your own).")}<br />
   <code>
-    {gettext("drop <password>")}
+    {dgettext("help_commands", "drop <password>")}
   </code>
-  {gettext("— Permanently unregister your nickname.")}
+  {dgettext("help_commands", "— Permanently unregister your nickname.")}
 </p>
-<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{gettext("Password is required for register, identify, and drop")}</li>
-  <li>{gettext("Ghost requires the registered nickname's password")}</li>
-  <li>{gettext("You must be using the nickname you want to register")}</li>
+  <li>{dgettext("help_commands", "Password is required for register, identify, and drop")}</li>
+  <li>{dgettext("help_commands", "Ghost requires the registered nickname's password")}</li>
+  <li>{dgettext("help_commands", "You must be using the nickname you want to register")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
-<pre>{gettext("/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice /ns ghost MyNick mySecurePassword /ns drop mySecurePassword")}</pre>
-<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>{dgettext("help_commands", "/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice /ns ghost MyNick mySecurePassword /ns drop mySecurePassword")}</pre>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-cs">{gettext("/cs")}</.help_link>
-  · <.help_link topic="cmd-nick">{gettext("/nick")}</.help_link>
-  · <.help_link topic="cmd-perform">{gettext("/perform")}</.help_link>
-  · <.help_link topic="connect-authentication">{gettext("Connect Authentication")}</.help_link>
+  <.help_link topic="cmd-cs">{dgettext("help_commands", "/cs")}</.help_link>
+  · <.help_link topic="cmd-nick">{dgettext("help_commands", "/nick")}</.help_link>
+  · <.help_link topic="cmd-perform">{dgettext("help_commands", "/perform")}</.help_link>
+  ·
+  <.help_link topic="connect-authentication">
+    {dgettext("help_commands", "Connect Authentication")}
+  </.help_link>
 </p>

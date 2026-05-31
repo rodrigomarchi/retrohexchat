@@ -13,17 +13,18 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.ArcadeFramePage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: gettext("Arcade Frame"), active_page: "arcade-frame")}
+    {:ok,
+     assign(socket, page_title: dgettext("showcase", "Arcade Frame"), active_page: "arcade-frame")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">{gettext("Arcade Frame")}</h2>
+      <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Arcade Frame")}</h2>
 
       <.showcase_card
-        title={gettext("Default")}
+        title={dgettext("showcase", "Default")}
         description="Arcade game iframe container with game name, player nickname, and Leave Game button."
       >
         <.arcade_frame
@@ -43,7 +44,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.ArcadeFramePage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Different Game")}
+        title={dgettext("showcase", "Different Game")}
         description="Same component with a different game and player."
       >
         <.arcade_frame
@@ -55,7 +56,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.ArcadeFramePage do
       </.showcase_card>
 
       <.showcase_card
-        title={gettext("Long Game Name")}
+        title={dgettext("showcase", "Long Game Name")}
         description="Title bar truncates long game names gracefully."
       >
         <.arcade_frame

@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         )
       ]}>
         <.window_title_bar
-          title={gettext("Arcade — %{nickname}", nickname: @nickname)}
+          title={dgettext("games", "Arcade — %{nickname}", nickname: @nickname)}
           controls={[:close]}
           on_close={@on_close}
         >
@@ -58,7 +58,8 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           >
             <Icons.icon_warning class="w-4 h-4 flex-shrink-0" />
             <span>
-              {gettext(
+              {dgettext(
+                "games",
                 "Session will be closed due to inactivity soon. Select a game to keep it active."
               )}
             </span>
@@ -113,16 +114,16 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <div class="flex items-center gap-retro-12">
         <Icons.icon_game_arcade class="w-8 h-8 flex-shrink-0" />
         <div>
-          <p class="text-sm font-bold">{gettext("Retro Arcade")}</p>
+          <p class="text-sm font-bold">{dgettext("games", "Retro Arcade")}</p>
           <p class="text-xs text-muted-foreground">
-            {gettext("Classic games running in your browser via WebAssembly")}
+            {dgettext("games", "Classic games running in your browser via WebAssembly")}
           </p>
         </div>
       </div>
 
       <%!-- Game grid --%>
       <div>
-        <p class="text-xs font-bold mb-retro-4">{gettext("Choose a game:")}</p>
+        <p class="text-xs font-bold mb-retro-4">{dgettext("games", "Choose a game:")}</p>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-retro-8">
           <button
             :for={game <- @games}
@@ -150,7 +151,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <div>
         <.button variant="outline" phx-click={@on_close}>
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {gettext("Leave")}
+          {dgettext("games", "Leave")}
         </.button>
       </div>
     </div>
@@ -174,13 +175,15 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           <h3 class="text-sm font-bold">{@previewed_game.name}</h3>
           <p class="text-xs text-muted-foreground">{@previewed_game.description}</p>
           <.badge variant="secondary">
-            {gettext("%{engine} Engine", engine: String.upcase(to_string(@previewed_game.engine)))}
+            {dgettext("games", "%{engine} Engine",
+              engine: String.upcase(to_string(@previewed_game.engine))
+            )}
           </.badge>
         </div>
         <div class="flex gap-retro-6 flex-shrink-0">
           <.button variant="outline" size="sm" phx-click={@on_back}>
             <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
-            {gettext("Back")}
+            {dgettext("games", "Back")}
           </.button>
           <.button
             size="sm"
@@ -190,11 +193,11 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             data-testid={"solo-game-start-#{@previewed_game.id}"}
           >
             <:icon><Icons.icon_btn_join class="w-4 h-4" /></:icon>
-            {gettext("Start Game")}
+            {dgettext("games", "Start Game")}
           </.button>
           <.button variant="outline" size="sm" phx-click={@on_close}>
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            {gettext("Leave")}
+            {dgettext("games", "Leave")}
           </.button>
         </div>
       </div>
@@ -206,7 +209,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           :if={@previewed_game[:about] && @previewed_game.about != []}
           class="retro-fieldset p-retro-8 min-w-0"
         >
-          <legend class="text-xs font-bold px-retro-4">{gettext("About")}</legend>
+          <legend class="text-xs font-bold px-retro-4">{dgettext("games", "About")}</legend>
           <p
             :for={paragraph <- @previewed_game.about}
             class="text-xs mb-retro-6 last:mb-0 leading-relaxed"
@@ -220,15 +223,17 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           :if={@previewed_game[:controls] && @previewed_game.controls != []}
           class="retro-fieldset p-retro-8 min-w-0"
         >
-          <legend class="text-xs font-bold px-retro-4">{gettext("Keyboard Controls")}</legend>
+          <legend class="text-xs font-bold px-retro-4">
+            {dgettext("games", "Keyboard Controls")}
+          </legend>
           <table class="w-full text-xs">
             <thead>
               <tr>
                 <th class="text-left py-retro-2 pr-retro-6 font-bold border-b border-gray-400">
-                  {gettext("Key")}
+                  {dgettext("games", "Key")}
                 </th>
                 <th class="text-left py-retro-2 font-bold border-b border-gray-400">
-                  {gettext("Action")}
+                  {dgettext("games", "Action")}
                 </th>
               </tr>
             </thead>
@@ -248,7 +253,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           :if={@previewed_game[:tips] && @previewed_game.tips != []}
           class="retro-fieldset p-retro-8 min-w-0"
         >
-          <legend class="text-xs font-bold px-retro-4">{gettext("Tips")}</legend>
+          <legend class="text-xs font-bold px-retro-4">{dgettext("games", "Tips")}</legend>
           <ul class="list-disc pl-retro-16 text-xs space-y-retro-4 leading-relaxed">
             <li :for={tip <- @previewed_game.tips}>{tip}</li>
           </ul>
@@ -271,9 +276,9 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <Icons.game_icon game_id={@game_id} class="w-8 h-8 flex-shrink-0" />
       <div class="flex-1 space-y-retro-2">
         <h3 class="text-sm font-bold">{@game_name}</h3>
-        <p class="text-xs text-muted-foreground">{gettext("Game in progress...")}</p>
+        <p class="text-xs text-muted-foreground">{dgettext("games", "Game in progress...")}</p>
         <p :if={@game_started_at} class="text-xs font-mono">
-          {gettext("Started: %{started_at}", started_at: @game_started_at)}
+          {dgettext("games", "Started: %{started_at}", started_at: @game_started_at)}
         </p>
       </div>
       <.button
@@ -284,7 +289,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         data-testid="solo-session-end"
       >
         <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-        {gettext("End Session")}
+        {dgettext("games", "End Session")}
       </.button>
     </div>
     """
@@ -312,12 +317,12 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <div class="space-y-retro-6">
         <div class="flex items-center gap-retro-6 text-xs">
           <Icons.icon_checkmark class="w-4 h-4 flex-shrink-0" />
-          <span>{gettext("Session Complete")}</span>
+          <span>{dgettext("games", "Session Complete")}</span>
         </div>
         <div :if={@game_duration} class="flex items-center gap-retro-6 text-xs">
           <Icons.icon_clock class="w-4 h-4 flex-shrink-0" />
           <span>
-            {gettext("Play time:")} <strong>{format_duration(@game_duration)}</strong>
+            {dgettext("games", "Play time:")} <strong>{format_duration(@game_duration)}</strong>
           </span>
         </div>
       </div>
@@ -328,7 +333,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <div>
         <.button variant="outline" phx-click={@on_close} data-testid="solo-session-close">
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {gettext("Close")}
+          {dgettext("games", "Close")}
         </.button>
       </div>
     </div>
@@ -339,7 +344,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   @spec format_duration(integer()) :: String.t()
   defp format_duration(seconds) when seconds < 60,
-    do: gettext("%{seconds}s", seconds: seconds)
+    do: dgettext("games", "%{seconds}s", seconds: seconds)
 
   defp format_duration(seconds) do
     minutes = div(seconds, 60)
@@ -348,9 +353,14 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
     if minutes >= 60 do
       hours = div(minutes, 60)
       mins = rem(minutes, 60)
-      gettext("%{hours}h %{minutes}m %{seconds}s", hours: hours, minutes: mins, seconds: secs)
+
+      dgettext("games", "%{hours}h %{minutes}m %{seconds}s",
+        hours: hours,
+        minutes: mins,
+        seconds: secs
+      )
     else
-      gettext("%{minutes}m %{seconds}s", minutes: minutes, seconds: secs)
+      dgettext("games", "%{minutes}m %{seconds}s", minutes: minutes, seconds: secs)
     end
   end
 end

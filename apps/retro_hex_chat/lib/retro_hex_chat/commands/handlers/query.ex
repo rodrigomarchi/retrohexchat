@@ -7,12 +7,12 @@ defmodule RetroHexChat.Commands.Handlers.Query do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, gettext("Usage: /query <nickname>")}
+  def validate(""), do: {:error, dgettext("commands", "Usage: /query <nickname>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, gettext("Usage: /query <nickname>")}
+  def execute([], _context), do: {:error, dgettext("commands", "Usage: /query <nickname>")}
 
   def execute([target | _rest], _context) do
     {:ok, :ui_action, :open_query, %{nickname: target}}
@@ -28,12 +28,13 @@ defmodule RetroHexChat.Commands.Handlers.Query do
   def help do
     %{
       name: "query",
-      syntax: gettext("/query <nickname>"),
+      syntax: dgettext("commands", "/query <nickname>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Open a private message tab with a user without sending any message, unlike /msg.\nNickname is required. If the PM tab already exists, switches to it."
         ),
-      examples: [gettext("/query Nick")]
+      examples: [dgettext("commands", "/query Nick")]
     }
   end
 
@@ -48,9 +49,10 @@ defmodule RetroHexChat.Commands.Handlers.Query do
 
     %CommandSyntax{
       command: "query",
-      syntax: gettext("/query <nickname>"),
+      syntax: dgettext("commands", "/query <nickname>"),
       description:
-        gettext(
+        dgettext(
+          "commands",
           "Open a private message tab with a user without sending any message, unlike /msg."
         ),
       category: :user,
@@ -60,10 +62,10 @@ defmodule RetroHexChat.Commands.Handlers.Query do
           required: true,
           type: :nick,
           position: 0,
-          description: gettext("Open a PM tab with this user")
+          description: dgettext("commands", "Open a PM tab with this user")
         }
       ],
-      examples: [gettext("/query Nick")]
+      examples: [dgettext("commands", "/query Nick")]
     }
   end
 end
