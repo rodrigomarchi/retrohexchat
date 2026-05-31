@@ -28,6 +28,32 @@ defmodule RetroHexChatWeb.I18nTest do
     end
   end
 
+  describe "put_locale/1" do
+    test "sets both application Gettext backends" do
+      on_exit(fn -> I18n.put_locale("en") end)
+
+      assert I18n.put_locale("pt-BR") == "pt_BR"
+      assert Gettext.get_locale(RetroHexChat.Gettext) == "pt_BR"
+      assert Gettext.get_locale(RetroHexChatWeb.Gettext) == "pt_BR"
+
+      assert I18n.put_locale("unsupported") == "en"
+      assert Gettext.get_locale(RetroHexChat.Gettext) == "en"
+      assert Gettext.get_locale(RetroHexChatWeb.Gettext) == "en"
+    end
+  end
+
+  describe "supported_locales/0" do
+    test "returns labels translated for the active locale" do
+      on_exit(fn -> I18n.put_locale("en") end)
+
+      I18n.put_locale("en")
+      assert I18n.supported_locales() == [{"en", "English"}, {"pt_BR", "Português (Brasil)"}]
+
+      I18n.put_locale("pt_BR")
+      assert I18n.supported_locales() == [{"en", "Inglês"}, {"pt_BR", "Português (Brasil)"}]
+    end
+  end
+
   test "html_lang/0 returns a BCP 47 language tag" do
     on_exit(fn -> I18n.put_locale("en") end)
 
